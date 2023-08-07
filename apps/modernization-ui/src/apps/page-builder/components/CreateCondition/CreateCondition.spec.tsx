@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { CreateCondition } from './CreateCondition';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -37,7 +37,13 @@ describe('Condition component tests', () => {
     });
 
     it('should render a dropdown to select Program Area from the provided options', () => {
-        const { container } = render(<CreateCondition />);
+        const { getByTestId, queryByText, container } = render(<CreateCondition />);
+        const nameElement = getByTestId('conditionName');
+        fireEvent.change(nameElement, { target: { value: 'valuetest' } });
+        fireEvent.blur(nameElement);
+        const nameErrorText = queryByText('Condition Name Not Valid');
+        expect(nameErrorText).not.toBeInTheDocument();
+
         const options = container.getElementsByTagName('option');
 
         expect(options[0]).toHaveTextContent('- Select -');

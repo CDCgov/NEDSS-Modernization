@@ -4,6 +4,7 @@ import { Button } from '@trussworks/react-uswds';
 
 import { ProgramAreaControllerService, ConditionControllerService, ValueSetControllerService } from '../../generated';
 import { UserContext } from 'user';
+import { useAlert } from 'alert';
 
 export const CreateCondition = () => {
     // Fields
@@ -11,13 +12,14 @@ export const CreateCondition = () => {
     const [system, setSystem] = useState('');
     const [code, setCode] = useState('');
     const [area, setArea] = useState('');
-    const [isReportable, setIsReportable] = useState(true);
-    const [isMorbidity, setIsMorbidity] = useState(true);
-    const [isAggregate, setIsAggregate] = useState(false);
-    const [isTracingModule, setIsTracingModule] = useState(true);
+    const [isReportable, setIsReportable] = useState('Y');
+    const [isMorbidity, setIsMorbidity] = useState('Y');
+    const [isAggregate, setIsAggregate] = useState('N');
+    const [isTracingModule, setIsTracingModule] = useState('Y');
     const [family, setFamily] = useState('');
     const [group, setGroup] = useState('');
     const { state } = useContext(UserContext);
+    const { showAlert } = useAlert();
 
     // DropDown Options
     const [familyOptions, setFamilyOptions] = useState([]);
@@ -103,6 +105,7 @@ export const CreateCondition = () => {
         const request = {
             codeSystemDescTxt: system,
             conditionShortNm: name,
+            id: code,
             progAreaCd: area,
             nndInd: isReportable,
             reportableMorbidityInd: isMorbidity,
@@ -116,8 +119,17 @@ export const CreateCondition = () => {
             authorization,
             request
         }).then((response: any) => {
+            showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
+            // Fields
+            resetInput();
             return response;
         });
+    };
+    const resetInput = () => {
+        setName('');
+        setSystem('');
+        setCode('');
+        setArea('');
     };
     const validateConditionName = (name: any) => {
         const pattern = /^[a-zA-Z0-9_]*$/;
@@ -130,9 +142,9 @@ export const CreateCondition = () => {
         }
     };
 
-    const validateConditionCode = (name: any) => {
+    const validateConditionCode = (code: any) => {
         const pattern = /^[a-zA-Z0-9_]*$/;
-        if (name.match(pattern)) {
+        if (code.match(pattern)) {
             setIsConditionCodeNotValid(false);
             setIsValidationFailure(false);
         } else {
@@ -162,10 +174,12 @@ export const CreateCondition = () => {
                     <label>
                         Condition Name<span className="mandatory-indicator">*</span>
                     </label>
-                    <p className="error-text">Condition Name Not Valid</p>
+                    {isConditionNotValid && <label className="error-text">Condition Name Not Valid</label>}
                     <input
                         className="field-space"
                         type="text"
+                        id="conditionName"
+                        data-testid="conditionName"
                         name="conditionName"
                         style={{ border: isConditionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateConditionName(e.target.value)}
@@ -223,19 +237,19 @@ export const CreateCondition = () => {
                 <input
                     type="radio"
                     name="reportableCondition"
-                    value="yes"
+                    value="Y"
                     className="field-space"
-                    checked={isReportable}
-                    onChange={(e: any) => setIsReportable(e.target.checked)}
+                    checked={isReportable === 'Y'}
+                    onChange={(e: any) => setIsReportable(e.target.value)}
                 />
                 <span className="radio-label">Yes</span>
                 <input
                     type="radio"
                     name="reportableCondition"
-                    value="no"
+                    value="N"
                     className="right-radio"
-                    checked={!isReportable}
-                    onChange={(e: any) => setIsReportable(!e.target.checked)}
+                    checked={isReportable === 'Y'}
+                    onChange={(e: any) => setIsReportable(e.target.value)}
                 />
                 <span className="radio-label">No</span>
                 <br></br>
@@ -247,19 +261,19 @@ export const CreateCondition = () => {
                 <input
                     type="radio"
                     name="mobilityReports"
-                    value="Yes"
+                    value="Y"
                     className="field-space"
-                    checked={isMorbidity}
-                    onChange={(e: any) => setIsMorbidity(e.target.checked)}
+                    checked={isMorbidity === 'Y'}
+                    onChange={(e: any) => setIsMorbidity(e.target.value)}
                 />
                 <span className="radio-label">Yes</span>
                 <input
                     type="radio"
                     name="mobilityReports"
-                    value="No"
+                    value="N"
                     className="right-radio"
-                    checked={!isMorbidity}
-                    onChange={(e: any) => setIsMorbidity(!e.target.checked)}
+                    checked={isMorbidity !== 'Y'}
+                    onChange={(e: any) => setIsMorbidity(e.target.value)}
                 />
                 <span className="radio-label">No</span>
                 <br></br>
@@ -271,19 +285,19 @@ export const CreateCondition = () => {
                 <input
                     type="radio"
                     name="reportableAggregate"
-                    value="Yes"
+                    value="Y"
                     className="field-space"
-                    checked={isAggregate}
-                    onChange={(e: any) => setIsAggregate(e.target.checked)}
+                    checked={isAggregate === 'Y'}
+                    onChange={(e: any) => setIsAggregate(e.target.value)}
                 />
                 <span className="radio-label">Yes</span>
                 <input
                     type="radio"
                     name="reportableAggregate"
-                    value="No"
+                    value="N"
                     className="right-radio"
-                    checked={!isAggregate}
-                    onChange={(e: any) => setIsAggregate(!e.target.checked)}
+                    checked={isAggregate !== 'Y'}
+                    onChange={(e: any) => setIsAggregate(e.target.value)}
                 />
                 <span className="radio-label">No</span>
                 <br />
@@ -295,19 +309,19 @@ export const CreateCondition = () => {
                 <input
                     type="radio"
                     name="tracingModule"
-                    value="Yes"
+                    value="Y"
                     className="field-space"
-                    checked={isTracingModule}
-                    onChange={(e: any) => setIsTracingModule(e.target.checked)}
+                    checked={isTracingModule === 'Y'}
+                    onChange={(e: any) => setIsTracingModule(e.target.value)}
                 />
                 <span className="radio-label">Yes</span>
                 <input
                     type="radio"
                     name="tracingModule"
-                    value="No"
+                    value="N"
                     className="right-radio"
-                    checked={!isTracingModule}
-                    onChange={(e: any) => setIsTracingModule(!e.target.checked)}
+                    checked={isTracingModule !== 'Y'}
+                    onChange={(e: any) => setIsTracingModule(e.target.value)}
                 />
                 <span className="radio-label">No</span>
                 <br />
@@ -320,7 +334,7 @@ export const CreateCondition = () => {
                     className="field-space"
                     name="conditionFamily"
                     defaultValue={family}
-                    onSelect={(e: any) => setFamily(e.target.value)}>
+                    onChange={(e: any) => setFamily(e.target.value)}>
                     <option>-Select-</option>
                     {buildOptions(familyOptions)}
                 </select>
@@ -331,7 +345,7 @@ export const CreateCondition = () => {
                     className="field-space"
                     name="coinfectionGroup"
                     defaultValue={group}
-                    onSelect={(e: any) => setGroup(e.target.value)}>
+                    onChange={(e: any) => setGroup(e.target.value)}>
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
                 </select>
@@ -344,7 +358,7 @@ export const CreateCondition = () => {
                 disabled={isValidationFailure || isDisableBtn}>
                 Create & add condition
             </Button>
-            <Button className="cancel-btn" type="submit" onClick={handleSubmit}>
+            <Button className="cancel-btn" type="submit" onClick={() => resetInput()}>
                 Cancel
             </Button>
         </div>
