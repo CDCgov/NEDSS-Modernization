@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
-import org.springframework.security.core.parameters.P;
 
 public interface ConditionCodeRepository extends JpaRepository<ConditionCode, String> {
 

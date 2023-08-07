@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,10 +26,11 @@ public class ReadConditionSteps {
     ConditionController conditionController;
 
     @Autowired
+    private ConditionHolder conditionHolder;
+
+
     private ReadConditionRequest readConditionRequest;
 
-    @Autowired
-    private ConditionHolder conditionHolder;
 
 
     @Given("I request to retrieve all conditions")

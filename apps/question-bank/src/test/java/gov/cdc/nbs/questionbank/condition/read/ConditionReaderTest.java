@@ -23,7 +23,7 @@ import gov.cdc.nbs.questionbank.condition.response.ReadConditionResponse;
 import gov.cdc.nbs.questionbank.condition.request.ReadConditionRequest;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 
-public class ConditionReaderTest {
+class ConditionReaderTest {
 
     @Mock
     ConditionCodeRepository conditionCodeRepository;
