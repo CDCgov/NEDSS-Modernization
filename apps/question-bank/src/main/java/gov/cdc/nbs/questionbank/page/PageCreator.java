@@ -86,7 +86,7 @@ public class PageCreator {
 		Set<PageCondMapping> result = new HashSet<>();
 		Iterator<String> map = request.conditionIds().iterator();
 		while (map.hasNext()) {
-			String conditionId = map.next().toString();
+			String conditionId = map.next();
 			PageCondMapping aMapping = new PageCondMapping();
 			aMapping.setWaTemplateUid(savePaged);
 			aMapping.setLastChgTime(Instant.now());
