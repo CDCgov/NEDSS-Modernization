@@ -188,18 +188,18 @@ public class ReviewDocumentFinder {
     List<BooleanExpression> getWhereClauses(NbsUserDetails userDetails) {
         List<BooleanExpression> clauses = new ArrayList<>();
         if (userDetails.hasPermission("DOCUMENT", "VIEW")) {
-            clauses.add(documentWhereClause(userDetails));
+            clauses.add(documentWhereClause());
         }
         if (userDetails.hasPermission("OBSERVATIONLABREPORT", "VIEW")) {
-            clauses.add(labReportWhereClause(userDetails));
+            clauses.add(labReportWhereClause());
         }
         if (userDetails.hasPermission("OBSERVATIONMORBIDITYREPORT", "VIEW")) {
-            clauses.add(morbidityReportWhereClause(userDetails));
+            clauses.add(morbidityReportWhereClause());
         }
         return clauses;
     }
 
-    private BooleanExpression documentWhereClause(NbsUserDetails userDetails) {
+    private BooleanExpression documentWhereClause() {
         return DOCUMENT.recordStatusCd.ne("LOG_DEL")
                 .and(PARTICIPATION.id.typeCd.eq("SubjOfDoc"))
                 .and(PARTICIPATION.actClassCd.eq("DOC"))
@@ -210,7 +210,7 @@ public class ReviewDocumentFinder {
                 .and(DOCUMENT.recordStatusCd.eq("UNPROCESSED"));
     }
 
-    private BooleanExpression labReportWhereClause(NbsUserDetails userDetails) {
+    private BooleanExpression labReportWhereClause() {
         return PARTICIPATION.id.typeCd.eq("PATSBJ")
                 .and(PARTICIPATION.actClassCd.eq("OBS"))
                 .and(PARTICIPATION.subjectClassCd.eq("PSN"))
@@ -219,7 +219,7 @@ public class ReviewDocumentFinder {
                 .and(OBSERVATION.recordStatusCd.eq("UNPROCESSED"));
     }
 
-    private BooleanExpression morbidityReportWhereClause(NbsUserDetails userDetails) {
+    private BooleanExpression morbidityReportWhereClause() {
         return PARTICIPATION.id.typeCd.eq("SubjOfMorbReport")
                 .and(PARTICIPATION.actClassCd.eq("OBS"))
                 .and(PARTICIPATION.subjectClassCd.eq("PSN"))

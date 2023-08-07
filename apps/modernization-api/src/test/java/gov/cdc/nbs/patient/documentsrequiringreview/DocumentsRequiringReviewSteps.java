@@ -1,8 +1,12 @@
 package gov.cdc.nbs.patient.documentsrequiringreview;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.report.lab.LabReportMother;
@@ -40,8 +44,9 @@ public class DocumentsRequiringReviewSteps {
 
     @Given("the patient has an unprocessed lab report")
     public void patient_has_an_unprocessed_lab_report() {
+        long piedmontHospital = 10003001L; // From test db
         PatientIdentifier revision = patientMother.revise(patients.one());
-        labReportMother.unprocessedLabReport(revision.id());
+        labReportMother.unprocessedLabReport(revision.id(), piedmontHospital);
     }
 
     @When("I search for documents requiring review for the patient")
@@ -61,9 +66,21 @@ public class DocumentsRequiringReviewSteps {
         assertNotNull(doc);
     }
 
-    @Then("an access denied is thrown")
+    @Then("no lab reports are returned")
+    public void no_lab_reports_are_returned() {
+        holder.all().forEach(d -> assertNotEquals("LabReport", d.type()));
+    }
+
+    @Then("an access denied exception is thrown")
     public void an_exception_is_thrown() {
         assertNotNull(e);
+        assertTrue(e instanceof AccessDeniedException);
+    }
+
+    @Then("a credentials not found exception is thrown")
+    public void an_credentials_not_found_exception_is_thrown() {
+        assertNotNull(e);
+        assertTrue(e instanceof AuthenticationCredentialsNotFoundException);
     }
 
 }

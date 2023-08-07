@@ -41,7 +41,7 @@ const renderType = (document: DocumentRequiringReview) => {
 const renderDateReceived = (document: DocumentRequiringReview) => {
     return (
         <span>
-            {format(new Date(document?.dateReceived), 'MM / dd / yyyy')} <br />{' '}
+            {format(new Date(document?.dateReceived), 'MM/dd/yyyy')} <br />
             {format(new Date(document?.dateReceived), 'hh:mm a').toLowerCase()}
         </span>
     );
@@ -72,7 +72,7 @@ const renderReportingFacility = (document: DocumentRequiringReview) => {
 const renderEventDate = (document: DocumentRequiringReview) => {
     return (
         <span>
-            {format(new Date(document?.eventDate), 'MM / dd / yyyy')} <br />{' '}
+            {format(new Date(document?.eventDate), 'MM/dd/yyyy')} <br />
             {format(new Date(document?.eventDate), 'hh:mm a').toLowerCase()}
         </span>
     );
@@ -183,7 +183,7 @@ export const DocumentsRequiringReviewTable = ({
     return (
         <div className="margin-top-6 margin-bottom-2 flex-row common-card">
             <TableComponent
-                tableHeader={'Open Investigations'}
+                tableHeader={'Documents requiring review'}
                 tableHead={headers}
                 tableBody={bodies}
                 isPagination={true}

@@ -103,6 +103,16 @@ test {
     if (System.getProperty("testing.database.image") != null) {
         systemProperty "testing.database.image", System.getProperty("testing.database.image")
     }
+
+    debugOptions {
+        enabled = true
+        server = true
+        suspend = false
+        port = java.util.Optional.ofNullable(findProperty('debug.port'))
+                .map(Object::toString)
+                .map(Integer::parseInt)
+                .orElse(5005)
+    }
 }
 
 tasks.withType(JavaExec).configureEach {

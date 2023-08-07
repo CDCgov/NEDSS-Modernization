@@ -15,12 +15,12 @@ export type Sort = {
 export const DocumentRequiringReview = ({ patient }: Props) => {
     return (
         <PageProvider pageSize={10}>
-            <DocumentsRequiringReviewWrapper patient={patient} />
+            <DocumentsRequiringReviewContainer patient={patient} />
         </PageProvider>
     );
 };
 
-const DocumentsRequiringReviewWrapper = ({ patient }: Props) => {
+const DocumentsRequiringReviewContainer = ({ patient }: Props) => {
     const [sort, setSort] = useState<Sort>();
     const documents = useDocumentsRequiringReviewApi(patient, sort);
     const { firstPage } = usePage();
