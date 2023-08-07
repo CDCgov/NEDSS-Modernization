@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class PageCreateResponse {
 		private Long pageId;
 		private String pageName;
-		private String Message;
+		private String message;
 		private HttpStatus status;
 
 }

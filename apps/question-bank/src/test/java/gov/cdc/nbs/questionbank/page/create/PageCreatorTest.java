@@ -39,7 +39,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 	}
 
 	@Test
-	public void testCreatePage() {
+	void testCreatePage() {
 		Long id = 1l;
 		PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
 				"unit test", "dataMart");
@@ -55,7 +55,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 	}
 	
 	@Test
-	public void testCreatePageNOName() {
+	void testCreatePageNOName() {
 		PageCreateRequest request = new PageCreateRequest(null, Set.of(), null, 0l, "HEP_Case_Map_V1.0",
 				"unit test", "dataMart");
 		
@@ -65,7 +65,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 	}
 	
 	@Test
-	public void testCreatePageNOCondition() {
+	void testCreatePageNOCondition() {
 		PageCreateRequest request = new PageCreateRequest(null, Set.of(), "TestPage", 0l, "HEP_Case_Map_V1.0",
 				"unit test", "dataMart");
 		
@@ -75,7 +75,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 	}
 	
 	@Test
-	public void testCreatePageNOEventType() {
+	void testCreatePageNOEventType() {
 		PageCreateRequest request = new PageCreateRequest(null, Set.of("1023"), "TestPage", 0l, "HEP_Case_Map_V1.0",
 				"unit test", "dataMart");
 		
@@ -85,7 +85,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 	}
 	
 	@Test
-	public void testCreatePageNOTemplate() {
+	void testCreatePageNOTemplate() {
 		PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 0l, "HEP_Case_Map_V1.0",
 				"unit test", "dataMart");
 		
@@ -95,7 +95,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 	}
 	
 	@Test
-	public void testCreatePageNOMMG() {
+	void testCreatePageNOMMG() {
 		PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, null,
 				"unit test", "dataMart");
 		
@@ -106,7 +106,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 	}
 
 	@Test
-	public void testCreatePageException() {
+	void testCreatePageException() {
 		final String message = "Could not find page invalid id provided";
 		when(templateRepository.save(Mockito.any())).thenThrow(new IllegalArgumentException(message));
 		PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",

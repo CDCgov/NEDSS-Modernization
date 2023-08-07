@@ -37,7 +37,7 @@ public class PageCreator {
 				return response;
 			}
 
-			if (request.conditionIds().size() == 0) {
+			if (request.conditionIds().isEmpty()) {
 				response.setMessage(PageConstants.ADD_PAGE_CONDITION_EMPTY);
 				response.setStatus(HttpStatus.BAD_REQUEST);
 				return response;
@@ -84,7 +84,7 @@ public class PageCreator {
 
 	public Set<PageCondMapping> savePageCondMapping(PageCreateRequest request, WaTemplate savePaged, Long userId) {
 		Set<PageCondMapping> result = new HashSet<>();
-		Iterator map = request.conditionIds().iterator();
+		Iterator<String> map = request.conditionIds().iterator();
 		while (map.hasNext()) {
 			String conditionId = map.next().toString();
 			PageCondMapping aMapping = new PageCondMapping();
@@ -99,13 +99,13 @@ public class PageCreator {
 		return result;
 	}
 
-	public WaTemplate buildPage(PageCreateRequest request, String chosenConditionId, String EventType, Long userId) {
+	public WaTemplate buildPage(PageCreateRequest request, String chosenConditionId, String eventType, Long userId) {
 		WaTemplate result = new WaTemplate();
 		result.setTemplateType("Draft");
 		result.setXmlPayload("XML Payload");
 		result.setFormCd("PG_" + request.name());
 		result.setConditionCd(chosenConditionId);
-		result.setBusObjType(EventType);
+		result.setBusObjType(eventType);
 		result.setDatamartNm(request.dataMartName());
 		result.setRecordStatusCd("Active");
 		result.setRecordStatusTime(Instant.now());
