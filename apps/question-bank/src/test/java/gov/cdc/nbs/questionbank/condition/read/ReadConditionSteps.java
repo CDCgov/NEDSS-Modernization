@@ -49,14 +49,6 @@ public class ReadConditionSteps {
     public void i_search_for_a_condition_that_exists() {
         try {
             readConditionRequest = new ReadConditionRequest();
-            readConditionRequest.setConditionShortNm("TestCondShortNm");
-            readConditionRequest.setId("B1234354353");
-            readConditionRequest.setProgAreaCd("ARBO");
-            readConditionRequest.setFamilyCd("ARBO");
-            readConditionRequest.setCoinfectionGrpCd(null);
-            readConditionRequest.setNndInd('Y');
-            readConditionRequest.setInvestigationFormCd("PG_Arboviral_Human_Investigation");
-            readConditionRequest.setStatusCd('A');
             Page<ReadConditionResponse.GetCondition> result = conditionController.searchConditions(readConditionRequest, PageRequest.ofSize(20));
             conditionHolder.setReadConditionResponse(result);
         } catch (AccessDeniedException e) {
@@ -70,7 +62,7 @@ public class ReadConditionSteps {
     public void i_search_for_a_condition_that_does_not_exist() {
         try {
             readConditionRequest = new ReadConditionRequest();
-            Page<ReadConditionResponse.GetCondition> result = conditionController.searchConditions(readConditionRequest, PageRequest.ofSize(0));
+            Page<ReadConditionResponse.GetCondition> result = conditionController.searchConditions(readConditionRequest, PageRequest.ofSize(20));
             conditionHolder.setReadConditionResponse(result);
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
