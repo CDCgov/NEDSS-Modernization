@@ -8,6 +8,15 @@ public class PageConstants {
 	public static final String SAVE_DRAFT_SUCCESS = "Draft was saved successfully.";
 	public static final String SAVE_DRAFT_FAIL = " Failed to update to draft status: ";
 	
+	//Page Create
+	public static final String ADD_PAGE_MESSAGE= "page has been successfully added"; 
+	public static final String ADD_PAGE_FAIL = "could not successfully add page: ";
+	public static final String ADD_PAGE_NAME_EMPTY = "Page name is required.";
+	public static final String ADD_PAGE_CONDITION_EMPTY = "At least one condition is required.";
+	public static final String ADD_PAGE_EVENTTYPE_EMPTY = "EventType is required.";
+	public static final String ADD_PAGE_TEMPLATE_EMPTY = "Template is required.";
+	public static final String ADD_PAGE_MMG_EMPTY = "MMG is required.";
+	
 	
 	
 	
