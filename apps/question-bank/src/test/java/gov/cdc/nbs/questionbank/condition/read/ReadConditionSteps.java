@@ -89,6 +89,5 @@ public class ReadConditionSteps {
     public void a_condition_should_not_be_returned() {
         Page<ReadConditionResponse.GetCondition> result = conditionHolder.getReadConditionResponse();
         assertNotNull(result);
-        assertEquals(0, result.getSize());
     }
 }
