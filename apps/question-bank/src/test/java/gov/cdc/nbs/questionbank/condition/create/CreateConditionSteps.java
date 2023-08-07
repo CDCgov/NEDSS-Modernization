@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.condition;
+package gov.cdc.nbs.questionbank.condition.create;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

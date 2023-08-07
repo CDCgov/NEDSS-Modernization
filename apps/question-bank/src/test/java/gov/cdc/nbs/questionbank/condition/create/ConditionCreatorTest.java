@@ -1,5 +1,6 @@
-package gov.cdc.nbs.questionbank.condition;
+package gov.cdc.nbs.questionbank.condition.create;
 
+import gov.cdc.nbs.questionbank.condition.ConditionCreator;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
