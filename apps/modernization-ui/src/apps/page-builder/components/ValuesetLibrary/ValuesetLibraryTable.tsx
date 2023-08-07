@@ -11,6 +11,7 @@ import { SearchBar } from './SearchBar';
 import { Icon } from '@trussworks/react-uswds';
 import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
+import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
 
 export enum Column {
     Type = 'Type',
@@ -34,13 +35,15 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
-
+    const [expandedRows, setExpandedRows] = useState<number[]>([]);
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
 
     const asTableRow = (page: ValueSet): TableBody => ({
         id: page.nbsUid,
         checkbox: true,
+        expanded: expandedRows.some((id) => id === page.nbsUid),
+        expandedViewComponent: <ValuesetLibraryTableRowExpanded data={page} />,
         tableDetails: [
             {
                 id: 1,
@@ -56,19 +59,55 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
                 title:
                     (
                         <div className="ds-u-text-align--right">
-                            <Icon.ExpandMore style={{ cursor: 'pointer' }} size={4} color="black" />
+                            {expandedRows.some((id) => id === page.nbsUid) ? (
+                                <Button type="button" unstyled aria-label="expand-less">
+                                    <Icon.ExpandLess
+                                        style={{ cursor: 'pointer' }}
+                                        size={4}
+                                        color="black"
+                                        onClick={() => handleExpandLessClick(page.nbsUid)}
+                                    />
+                                </Button>
+                            ) : (
+                                <Button type="button" unstyled aria-label="expand-more">
+                                    <Icon.ExpandMore
+                                        style={{ cursor: 'pointer' }}
+                                        size={4}
+                                        color="black"
+                                        onClick={() => handleExpandMoreClick(page.nbsUid)}
+                                    />
+                                </Button>
+                            )}
                         </div>
                     ) || null
             }
         ]
     });
-    const handleSelected = ({ target }: any, index: number) => {
+
+    const handleExpandMoreClick = (id: number | undefined) => {
+        if (id) {
+            setExpandedRows([...expandedRows, id]);
+        }
+    };
+
+    const handleExpandLessClick = (id: number | undefined) => {
+        const indexToRemove = expandedRows.findIndex((rowId) => rowId === id);
+
+        if (indexToRemove !== -1) {
+            const rows = [...expandedRows];
+            rows.splice(indexToRemove, 1);
+            setExpandedRows(rows);
+        }
+    };
+
+    function handleSelected({ target }: any, index: number): void {
         if (target.checked) {
             setSelectedValueSet(summaries[index]);
         } else {
             setSelectedValueSet({});
         }
-    };
+    }
+
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
 
     /*
@@ -92,11 +131,12 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
 
     useEffect(() => {
         setTableRows(asTableRows(summaries));
-    }, [summaries]);
+    }, [summaries, expandedRows]);
 
     const handleSort = (name: string, direction: Direction): void => {
         sortChange(toSortString(name, direction));
     };
+
     const handleAddQsn = async () => {
         // @ts-ignore
         // TODO :  we have to add logic for get quetion ID here

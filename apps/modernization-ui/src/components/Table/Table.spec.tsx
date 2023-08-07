@@ -21,6 +21,7 @@ describe('Table component', () => {
                     {
                         id: 1,
                         checkbox: true,
+                        expanded: false,
                         tableDetails: [
                             { id: 1, title: '10/05/2022' },
                             { id: 2, title: 'Test Desc Text' },
@@ -66,6 +67,7 @@ describe('Table component', () => {
                     {
                         id: 1,
                         checkbox: true,
+                        expanded: false,
                         tableDetails: [
                             { id: 1, title: null },
                             { id: 2, title: 'Test Desc Text' },
@@ -102,10 +104,12 @@ describe('when a table has a sortable header', () => {
                 tableBody={[
                     {
                         id: 1,
+                        expanded: false,
                         tableDetails: [{ id: 1, title: 'one' }]
                     },
                     {
                         id: 2,
+                        expanded: false,
                         tableDetails: [{ id: 2, title: 'two' }]
                     }
                 ]}
@@ -136,10 +140,12 @@ describe('when a table has a sortable header', () => {
                 tableBody={[
                     {
                         id: 1,
+                        expanded: false,
                         tableDetails: [{ id: 1, title: 'one' }]
                     },
                     {
                         id: 2,
+                        expanded: false,
                         tableDetails: [{ id: 2, title: 'two' }]
                     }
                 ]}
@@ -173,10 +179,12 @@ describe('when a table has a sortable header', () => {
                 tableBody={[
                     {
                         id: 1,
+                        expanded: false,
                         tableDetails: [{ id: 1, title: 'one' }]
                     },
                     {
                         id: 2,
+                        expanded: false,
                         tableDetails: [{ id: 2, title: 'two' }]
                     }
                 ]}

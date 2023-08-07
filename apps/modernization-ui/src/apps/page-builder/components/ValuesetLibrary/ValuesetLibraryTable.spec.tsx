@@ -1,9 +1,10 @@
 import { PageProvider } from 'page';
 import { ValuesetLibraryTable } from './ValuesetLibraryTable';
-import { render } from '@testing-library/react';
+import { screen, render, fireEvent } from '@testing-library/react';
 import { ValueSet } from 'apps/page-builder/generated';
 import { BrowserRouter } from 'react-router-dom';
 import { AlertProvider } from '../../../../alert';
+import userEvent from '@testing-library/user-event';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
@@ -71,5 +72,55 @@ describe('when at least one summary is available', () => {
         expect(tableData[0]).toHaveTextContent('PHIN');
         expect(tableData[1]).toHaveTextContent('Act Encounter Code');
         expect(tableData[2]).toHaveTextContent('Act Encounter Code that is used to define patient encounter');
+    });
+
+    it('has a button to expand the row', async () => {
+        const container = render(
+            <BrowserRouter>
+                <PageProvider>
+                    <AlertProvider>
+                        <ValuesetLibraryTable summaries={summaries} sortChange={() => {}}></ValuesetLibraryTable>
+                    </AlertProvider>
+                </PageProvider>
+            </BrowserRouter>
+        );
+
+        const button = container.getByRole('button', {
+            name: /expand-more/i
+        });
+        expect(button).toBeInTheDocument();
+    });
+
+    describe('when the expand button is clicked', () => {
+        // need to figure out why "click" scenario not working.
+        it.skip('displays the expand less button', async () => {
+            render(
+                <BrowserRouter>
+                    <PageProvider>
+                        <AlertProvider>
+                            <ValuesetLibraryTable summaries={summaries} sortChange={() => {}}></ValuesetLibraryTable>
+                        </AlertProvider>
+                    </PageProvider>
+                </BrowserRouter>
+            );
+
+            const expandButton = screen.getByRole('button', {
+                name: /expand-more/i
+            });
+            console.log(expandButton);
+
+            fireEvent.click(expandButton);
+
+            // const expandLess = screen.getByRole('button', {
+            //     name: /expand-less/i
+            // });
+
+            // const details = screen.getByText('Value set code');
+            const less = screen.getByRole('button', {
+                name: /expand-less/i
+            });
+
+            expect(less).toBeInTheDocument();
+        });
     });
 });

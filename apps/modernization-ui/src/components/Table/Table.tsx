@@ -29,6 +29,8 @@ export type TableBody = {
     checkbox?: boolean;
     tableDetails: TableDetail[];
     data?: any;
+    expanded?: boolean;
+    expandedViewComponent?: React.ReactNode;
 };
 
 type SortHandler = (name: string, type: Direction) => void;
@@ -84,9 +86,7 @@ export const TableComponent = ({
 }: TableContentProps) => {
     const initialState: SortState = {};
     tableHead.forEach((header) => (initialState[header.name] = Direction.None));
-
     const [sortState, setSortState] = useState<SortState>(initialState);
-
     const [isActions, setIsActions] = useState<any>(null);
 
     const handleSort = (headerName: string) => {
@@ -174,9 +174,7 @@ export const TableComponent = ({
     );
 
     const renderNoDataDetail = (detail: TableDetail, column: number) => (
-        <td key={column} className={`no-data ${resolveDetailStyle(detail, column)}`}>
-            No data
-        </td>
+        <td className={`no-data ${resolveDetailStyle(detail, column)}`}>No data</td>
     );
 
     return (
@@ -195,60 +193,71 @@ export const TableComponent = ({
                 <tbody>
                     {tableBody?.length > 0
                         ? tableBody.map((item: TableBody, row: number) => (
-                              <tr key={row}>
-                                  {item.tableDetails.map((detail: TableDetail, column: number) =>
-                                      detail.title ? (
-                                          <td className={resolveDetailStyle(detail, column)} key={column}>
-                                              <div>
-                                                  {column === 0 && item.checkbox && (
-                                                      <Fieldset>
-                                                          <Checkbox
-                                                              key={row}
-                                                              id={`${detail.title}-${row}`}
-                                                              name={'tableCheck'}
-                                                              label=""
-                                                              onChange={(e) => handleSelected?.(e, row)}
-                                                          />
-                                                      </Fieldset>
-                                                  )}
-                                                  {detail?.type !== 'actions' && (
-                                                      <span
-                                                          className={
-                                                              column === 0 && item.checkbox
-                                                                  ? 'check-title'
-                                                                  : detail.class
-                                                                  ? detail.class
-                                                                  : 'table-span'
-                                                          }>
-                                                          {renderTitle(detail)}
-                                                      </span>
-                                                  )}
-                                              </div>
-                                              {detail?.type === 'actions' && (
-                                                  <div className="table-span">
-                                                      <Button
-                                                          onClick={() => setIsActions(isActions === row ? null : row)}
-                                                          type="button"
-                                                          unstyled>
-                                                          {detail.title}
-                                                      </Button>
-                                                      {isActions === row && (
-                                                          <Actions
-                                                              handleOutsideClick={() => setIsActions(null)}
-                                                              handleAction={(data: string) => {
-                                                                  handleAction?.(data, JSON.stringify(item?.data));
-                                                                  setIsActions(null);
-                                                              }}
-                                                          />
+                              <>
+                                  <tr key={row}>
+                                      {item.tableDetails.map((detail: TableDetail, column: number) =>
+                                          detail.title ? (
+                                              <td key={detail.id} className={resolveDetailStyle(detail, column)}>
+                                                  <div>
+                                                      {column === 0 && item.checkbox && (
+                                                          <Fieldset>
+                                                              <Checkbox
+                                                                  key={row}
+                                                                  id={`${detail.title}-${row}`}
+                                                                  name={'tableCheck'}
+                                                                  label=""
+                                                                  onChange={(e) => handleSelected?.(e, row)}
+                                                              />
+                                                          </Fieldset>
+                                                      )}
+                                                      {detail?.type !== 'actions' && (
+                                                          <span
+                                                              className={
+                                                                  column === 0 && item.checkbox
+                                                                      ? 'check-title'
+                                                                      : detail.class
+                                                                      ? detail.class
+                                                                      : 'table-span'
+                                                              }>
+                                                              {renderTitle(detail)}
+                                                          </span>
                                                       )}
                                                   </div>
-                                              )}
+                                                  {detail?.type === 'actions' && (
+                                                      <div className="table-span">
+                                                          <Button
+                                                              onClick={() =>
+                                                                  setIsActions(isActions === row ? null : row)
+                                                              }
+                                                              type="button"
+                                                              unstyled>
+                                                              {detail.title}
+                                                          </Button>
+                                                          {isActions === row && (
+                                                              <Actions
+                                                                  handleOutsideClick={() => setIsActions(null)}
+                                                                  handleAction={(data: string) => {
+                                                                      handleAction?.(data, JSON.stringify(item?.data));
+                                                                      setIsActions(null);
+                                                                  }}
+                                                              />
+                                                          )}
+                                                      </div>
+                                                  )}
+                                              </td>
+                                          ) : (
+                                              renderNoDataDetail(detail, column)
+                                          )
+                                      )}
+                                  </tr>
+                                  {item.expanded && (
+                                      <tr>
+                                          <td colSpan={tableHead.length}>
+                                              <div>{item.expandedViewComponent}</div>
                                           </td>
-                                      ) : (
-                                          renderNoDataDetail(detail, column)
-                                      )
+                                      </tr>
                                   )}
-                              </tr>
+                              </>
                           ))
                         : dataNotAvailalbe}
                 </tbody>
