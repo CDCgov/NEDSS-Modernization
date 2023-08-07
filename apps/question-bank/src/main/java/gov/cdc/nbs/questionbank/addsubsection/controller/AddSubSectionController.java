@@ -4,7 +4,6 @@ package gov.cdc.nbs.questionbank.addsubsection.controller;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.addsubsection.CreateSubSectionResponse;
 import gov.cdc.nbs.questionbank.addsubsection.CreateSubSectionService;
-import gov.cdc.nbs.questionbank.addsubsection.exception.AddSubSectionException;
 import gov.cdc.nbs.questionbank.addsubsection.model.CreateSubSectionRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +27,7 @@ public class AddSubSectionController {
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     @PostMapping("addsubsection")
     @ResponseBody
-    public CreateSubSectionResponse createSubSection(@RequestBody CreateSubSectionRequest request) throws AddSubSectionException {
+    public CreateSubSectionResponse createSubSection(@RequestBody CreateSubSectionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return createSubSectionService.createSubSection(userId, request);
     }

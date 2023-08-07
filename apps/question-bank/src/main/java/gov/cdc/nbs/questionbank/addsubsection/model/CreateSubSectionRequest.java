@@ -1,5 +1,5 @@
 package gov.cdc.nbs.questionbank.addsubsection.model;
 
-public record CreateSubSectionRequest(long wa_ui_metadata_uid, long page, String name, String visible) {
+public record CreateSubSectionRequest(long sectionId, long page, String name, String visible) {
 
 }

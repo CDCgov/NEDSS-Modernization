@@ -2,10 +2,7 @@ package gov.cdc.nbs.questionbank.addsubsection;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.addsubsection.CreateSubSectionResponse;
-import gov.cdc.nbs.questionbank.addsubsection.CreateSubSectionService;
 import gov.cdc.nbs.questionbank.addsubsection.controller.AddSubSectionController;
-import gov.cdc.nbs.questionbank.addsubsection.exception.AddSubSectionException;
 import gov.cdc.nbs.questionbank.addsubsection.model.CreateSubSectionRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +22,7 @@ class AddSubSectionControllerTest {
     private UserDetailsProvider userDetailsProvider;
 
     @Test
-    void createSubSectionTest() throws AddSubSectionException {
+    void createSubSectionTest() {
 
         AddSubSectionController addSubSectionController = new AddSubSectionController(createSubSectionService,
                 userDetailsProvider);

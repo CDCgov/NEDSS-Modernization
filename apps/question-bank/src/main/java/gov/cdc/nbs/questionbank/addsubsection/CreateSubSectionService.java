@@ -18,10 +18,10 @@ public class CreateSubSectionService implements CreateSubSectionInterface {
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
     @Override
-    public CreateSubSectionResponse createSubSection(Long userId, CreateSubSectionRequest request) throws AddSubSectionException {
+    public CreateSubSectionResponse createSubSection(Long userId, CreateSubSectionRequest request) {
         try {
             WaUiMetadata waUiMetadata = createWaUiMetadata(userId, request);
-            log.info("Saving Rule to DB");
+            log.info("Updating Wa_UI_metadata table by adding new subsection");
             waUiMetaDataRepository.save(waUiMetadata);
             waUiMetaDataRepository.updateOrderNumber(waUiMetadata.getOrderNbr(), waUiMetadata.getId());
             return new CreateSubSectionResponse(waUiMetadata.getId(), "SubSection Created Successfully");
@@ -37,11 +37,11 @@ public class CreateSubSectionService implements CreateSubSectionInterface {
         waUiMetadata.setNbsUiComponentUid(1016L);
         waUiMetadata.getNbsUiComponentUid();
         waUiMetadata.setWaTemplateUid(request.page());
-        Long nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSubSection_first(request.wa_ui_metadata_uid(),
-                request.page());
+        Long nextOrderNumber = waUiMetaDataRepository.findOrderNbr(request.sectionId(),
+                request.page(), 1015L);
         if (nextOrderNumber == null) {
-            nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSubSection(request.wa_ui_metadata_uid(),
-                    request.page());
+            nextOrderNumber = waUiMetaDataRepository.findOrderNbr_2(request.sectionId(),
+                    request.page(), 1015L);
         }
         waUiMetadata.setQuestionLabel(request.name());
         waUiMetadata.setDisplayInd(request.visible());

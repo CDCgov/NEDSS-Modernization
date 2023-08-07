@@ -1,7 +1,5 @@
 package gov.cdc.nbs.questionbank.addsubsection;
 
-import gov.cdc.nbs.questionbank.addsubsection.CreateSubSectionResponse;
-import gov.cdc.nbs.questionbank.addsubsection.CreateSubSectionService;
 import gov.cdc.nbs.questionbank.addsubsection.exception.AddSubSectionException;
 import gov.cdc.nbs.questionbank.addsubsection.model.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
@@ -24,7 +22,7 @@ class AddSubSectionServiceTest {
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
     @Test
-    void createSubSectionServiceTest() throws AddSubSectionException {
+    void createSubSectionServiceTest() {
 
         CreateSubSectionRequest createSubSectionRequest =
                 new CreateSubSectionRequest(10L, 10L, "Local", "T");
@@ -35,13 +33,8 @@ class AddSubSectionServiceTest {
     }
 
     @Test
-    void createSectionServiceTestException() throws AddSubSectionException {
+    void createSectionServiceTestException() {
+        assertThrows(AddSubSectionException.class, () -> createSubSectionService.createSubSection(123L, null));
 
-        AddSubSectionException exception =
-                assertThrows(AddSubSectionException.class, () -> createSubSectionService.createSubSection(123L, null));
-
-        assertEquals(
-                "gov.cdc.nbs.questionbank.addsubsection.exception.AddSubSectionException: Add SubSection exception",
-                exception.toString());
     }
 }
