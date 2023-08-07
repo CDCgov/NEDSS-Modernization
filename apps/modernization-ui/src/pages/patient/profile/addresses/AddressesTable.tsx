@@ -7,6 +7,7 @@ import {
     useDeletePatientAddressMutation,
     useUpdatePatientAddressMutation
 } from 'generated/graphql/schema';
+import './AddressesTable.scss';
 import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
 import { internalizeDate } from 'date';
 import { TOTAL_TABLE_DATA } from 'utils/util';
@@ -103,13 +104,14 @@ export const AddressesTable = ({ patient }: Props) => {
     }, [selected]);
 
     const [addresses, setAddresses] = useState<PatientAddress[]>([]);
+    const [modalContext, setModalContext] = useState<string>('add-address-modal');
 
     const handleComplete = (data: PatientProfileAddressesResult) => {
         setTotal(data?.findPatientProfile?.addresses?.total ?? 0);
         setAddresses(data?.findPatientProfile?.addresses?.content ?? []);
     };
 
-    const [fetch, { refetch }] = useFindPatientProfileAddresses({ onCompleted: handleComplete });
+    const [fetch, { refetch, loading }] = useFindPatientProfileAddresses({ onCompleted: handleComplete });
 
     const [add] = useAddPatientAddressMutation();
     const [update] = useUpdatePatientAddressMutation();
@@ -126,6 +128,10 @@ export const AddressesTable = ({ patient }: Props) => {
             }
         });
     }, [currentPage]);
+
+    const onModalContextChange = (modalContext: string) => {
+        setModalContext(modalContext);
+    };
 
     const onAdded = (entry: AddressEntry) => {
         if (isAdd(entry) && entry.use && entry.type) {
@@ -265,6 +271,7 @@ export const AddressesTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
+                isLoading={loading}
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
@@ -345,8 +352,14 @@ export const AddressesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-address-modal" title="Add - Address">
-                    <AddressEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
+                <EntryModal modal={modal} id="add-patient-address-modal" className={modalContext}>
+                    <AddressEntryForm
+                        action={'Add'}
+                        entry={initial}
+                        onCancel={actions.reset}
+                        onChange={onAdded}
+                        onModalContextChange={onModalContextChange}
+                    />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (

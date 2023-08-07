@@ -6,6 +6,9 @@
     .verified-button-group {
         justify-content: center;
     }
+    .verified-modal {
+        max-width: 50em;
+    }
 }
 
 .content {
@@ -69,6 +72,11 @@
             font-weight: normal !important;
             border-left: 4px solid transparent !important;
             font-size: 0.85rem;
+
+            &:focus {
+                outline: none !important;
+                background-color: transparent !important;
+            }
 
             &.visible {
                 color: #1b1b1b !important;

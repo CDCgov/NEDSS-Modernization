@@ -1,16 +1,15 @@
-package gov.cdc.nbs.questionbank.page;
+package gov.cdc.nbs.questionbank.exception;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import gov.cdc.nbs.questionbank.exception.QueryException;
-import gov.cdc.nbs.questionbank.page.PageExceptionHandler.ExceptionMessage;
+import gov.cdc.nbs.questionbank.exception.PageBuilderExceptionHandler.ExceptionMessage;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 
-class PageExceptionHandlerTest {
+class PageBuilderExceptionHandlerTest {
 
-    private final PageExceptionHandler handler = new PageExceptionHandler();
+    private final PageBuilderExceptionHandler handler = new PageBuilderExceptionHandler();
 
     @Test
     void should_pass_message_for_create_exceptions() {

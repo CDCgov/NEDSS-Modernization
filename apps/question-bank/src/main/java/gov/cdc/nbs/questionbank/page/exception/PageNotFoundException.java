@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.page.exception;
 
-public class PageNotFoundException extends RuntimeException {
+import gov.cdc.nbs.questionbank.exception.NotFoundException;
+
+public class PageNotFoundException extends NotFoundException {
     public PageNotFoundException(String message) {
         super(message);
     }

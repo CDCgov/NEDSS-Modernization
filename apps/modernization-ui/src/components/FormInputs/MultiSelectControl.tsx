@@ -99,7 +99,14 @@ export const MultiSelectControl = ({ control, name, options, label }: EventTypes
                         className="multiselect"
                         isMulti
                         name={name}
-                        styles={customStyles}
+                        styles={{
+                            ...customStyles,
+                            menu: (base: any) => ({
+                                ...base,
+                                top: name === 'notificationStatus' ? 'unset' : '100%',
+                                bottom: name === 'notificationStatus' ? '100%' : 'unset'
+                            })
+                        }}
                         hideSelectedOptions={false}
                         closeMenuOnSelect={false}
                         closeMenuOnScroll={false}

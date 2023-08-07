@@ -9,6 +9,8 @@ import gov.cdc.nbs.entity.srte.QJurisdictionCode;
 import gov.cdc.nbs.patient.NameRenderer;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Objects;
 
 class PatientInvestigationTupleMapper {
@@ -50,7 +52,7 @@ class PatientInvestigationTupleMapper {
             "An investigation identifier is required."
         );
 
-        Instant startedOn = tuple.get(tables.investigation().activityFromTime);
+        LocalDate startedOn = resolveStartedOn(tuple);
         String condition = tuple.get(tables.condition().conditionShortNm);
         String status = tuple.get(tables.status().codeShortDescTxt);
         String caseStatus = tuple.get(tables.caseStatus().codeShortDescTxt);
@@ -73,6 +75,16 @@ class PatientInvestigationTupleMapper {
             notification,
             investigator
         );
+    }
+
+    private LocalDate resolveStartedOn(final Tuple tuple) {
+
+        Instant value = tuple.get(tables.investigation().activityFromTime);
+
+        return value == null
+            ? null
+            : LocalDate.ofInstant(value, ZoneId.of("UTC"));
+
     }
 
     private String mapInvestigator(final Tuple tuple) {

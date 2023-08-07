@@ -222,7 +222,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     forceAction
                                     id="example-incomplete-form-confirmation-modal"
                                     aria-labelledby="incomplete-form-confirmation-modal-heading"
-                                    className="padding-0"
+                                    className="padding-0 verified-modal"
                                     aria-describedby="incomplete-form-confirmation-modal-description">
                                     <ModalHeading
                                         id="incomplete-form-confirmation-modal-heading"
@@ -276,7 +276,10 @@ export default function AddressFields({ id, title, coded }: Props) {
                                                 Continue without update
                                             </ModalToggleButton>
                                             <ModalToggleButton
-                                                onClick={() => setVerified(false)}
+                                                onClick={() => {
+                                                    handleSuggestionSelection(suggestions[0]);
+                                                    setVerified(false);
+                                                }}
                                                 modalRef={verifiedModalRef}
                                                 closer
                                                 className="padding-105 text-center">

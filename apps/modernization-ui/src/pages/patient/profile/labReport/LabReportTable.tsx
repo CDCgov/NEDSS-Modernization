@@ -9,16 +9,16 @@ import {
     useFindLabReportsByFilterLazyQuery
 } from 'generated/graphql/schema';
 
-import { TOTAL_TABLE_DATA } from 'utils/util';
 import { SortableTable } from 'components/Table/SortableTable';
 import { ClassicButton, ClassicLink } from 'classic';
 
 type PatientLabReportTableProps = {
     patient?: string;
     pageSize?: number;
+    allowAdd?: boolean;
 };
 
-export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: PatientLabReportTableProps) => {
+export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientLabReportTableProps) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [labReportData, setLabReportData] = useState<any>([]);
@@ -38,7 +38,7 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
         setLabReportData(data.findLabReportsByFilter?.content);
     };
 
-    const [getLabReport] = useFindLabReportsByFilterLazyQuery({ onCompleted: handleComplete });
+    const [getLabReport, { loading }] = useFindLabReportsByFilterLazyQuery({ onCompleted: handleComplete });
 
     const getOrderingProviderName = (labReport: LabReport): string | undefined => {
         const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
@@ -202,14 +202,17 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
 
     return (
         <SortableTable
+            isLoading={loading}
             isPagination={true}
             buttons={
-                <div className="grid-row">
-                    <ClassicButton url={`/nbs/api/profile/${patient}/report/lab`}>
-                        <Icon.Add className="margin-right-05" />
-                        Add lab report
-                    </ClassicButton>
-                </div>
+                allowAdd && (
+                    <div className="grid-row">
+                        <ClassicButton url={`/nbs/api/profile/${patient}/report/lab`}>
+                            <Icon.Add className="margin-right-05" />
+                            Add lab report
+                        </ClassicButton>
+                    </div>
+                )
             }
             tableHeader={'Lab reports'}
             tableHead={tableHead}

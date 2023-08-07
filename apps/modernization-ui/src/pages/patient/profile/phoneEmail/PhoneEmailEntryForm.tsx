@@ -19,7 +19,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
         handleSubmit,
         control,
         formState: { isValid }
-    } = useForm();
+    } = useForm({ mode: 'onBlur' });
 
     const coded = usePatientPhoneCodedValues();
 
@@ -97,18 +97,28 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             control={control}
                             name="countryCode"
                             defaultValue={entry.countryCode}
-                            render={({ field: { onChange, value } }) => (
-                                <Input
-                                    flexBox
-                                    onChange={onChange}
-                                    defaultValue={value}
-                                    type="text"
-                                    label="Country code"
-                                    name="countryCode"
-                                    htmlFor="countryCode"
-                                    id="countryCode"
-                                />
-                            )}
+                            rules={{
+                                pattern: {
+                                    value: /^\+?\d{1,3}$/,
+                                    message: 'A country code should be 1 to 3 digits"'
+                                }
+                            }}
+                            render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => {
+                                return (
+                                    <Input
+                                        flexBox
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        defaultValue={value}
+                                        type="tel"
+                                        label="Country code"
+                                        name="countryCode"
+                                        htmlFor="countryCode"
+                                        id="countryCode"
+                                        error={error?.message}
+                                    />
+                                );
+                            }}
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
@@ -142,8 +152,9 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             name="extension"
                             defaultValue={entry.extension}
                             rules={{
-                                validate: {
-                                    properNumber: (value) => validatePhoneNumber(value)
+                                pattern: {
+                                    value: /^\+?\d{1,4}$/,
+                                    message: 'A Extension should be 1 to 4 digits"'
                                 }
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (

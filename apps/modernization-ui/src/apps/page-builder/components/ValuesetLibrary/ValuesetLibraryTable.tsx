@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
 import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'apps/page-builder/generated';
-import { Button } from '@trussworks/react-uswds';
+import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ValueSet } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { usePage } from 'page';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import './ValuesetLibraryTable.scss';
 import { SearchBar } from './SearchBar';
@@ -12,6 +12,8 @@ import { Icon } from '@trussworks/react-uswds';
 import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
 import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
+import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
+import { AddValueset } from '../AddValueset/AddValueset';
 
 export enum Column {
     Type = 'Type',
@@ -29,8 +31,9 @@ const tableColumns = [
 type Props = {
     sortChange: (sort?: string) => void;
     summaries: ValueSet[];
+    labModalRef?: any;
 };
-export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
+export const ValuesetLibraryTable = ({ summaries, sortChange, labModalRef }: Props) => {
     const { page, request } = usePage();
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
@@ -39,6 +42,7 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
 
+    // @ts-ignore
     const asTableRow = (page: ValueSet): TableBody => ({
         id: page.nbsUid,
         checkbox: true,
@@ -100,13 +104,14 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
         }
     };
 
-    function handleSelected({ target }: any, index: number): void {
+    const handleSelected = ({ target }: any, item: any) => {
         if (target.checked) {
-            setSelectedValueSet(summaries[index]);
+            const value: any = summaries.filter((val: any) => item.id === val.nbsUid);
+            setSelectedValueSet(value);
         } else {
             setSelectedValueSet({});
         }
-    }
+    };
 
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
 
@@ -133,6 +138,10 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
         setTableRows(asTableRows(summaries));
     }, [summaries, expandedRows]);
 
+    useEffect(() => {
+        return () => localStorage.setItem('selectedQuestion', '0');
+    }, []);
+
     const handleSort = (name: string, direction: Direction): void => {
         sortChange(toSortString(name, direction));
     };
@@ -140,8 +149,7 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
     const handleAddQsn = async () => {
         // @ts-ignore
         // TODO :  we have to add logic for get quetion ID here
-        const id: number = selectedValueSet?.codeSetGroupId;
-
+        const id: number = parseInt(localStorage.getItem('selectedQuestion'));
         const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
             authorization,
             id
@@ -160,7 +168,9 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
             mask,
             dataMartInfo,
             uniqueName,
-            fieldLength
+            fieldLength,
+            size,
+            fieldSize
         }: any = question;
 
         const request = {
@@ -176,7 +186,9 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
             defaultLabelInReport: dataMartInfo.defaultLabelInReport,
             uniqueName,
             valueSet,
-            unitValue
+            unitValue,
+            size: size,
+            fieldSize
         };
 
         QuestionControllerService.updateQuestionUsingPut({
@@ -190,18 +202,45 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
         });
     };
 
+    const handlerSearch = (search: string) => {
+        console.log(search);
+    };
+
     const footerActionBtn = (
         <div className="valueset-action-btn ds-u-text-align--right margin-bottom-1em">
-            <Button className="cancel-btn" type="button" onClick={() => setSelectedValueSet({})}>
+            <ModalToggleButton
+                closer
+                modalRef={labModalRef}
+                className="cancel-btn"
+                type="button"
+                onClick={() => setSelectedValueSet({})}>
                 Cancel
-            </Button>
-            <Button
+            </ModalToggleButton>
+            <ModalToggleButton
+                closer
+                modalRef={labModalRef}
                 className="submit-btn"
                 type="button"
                 onClick={handleAddQsn}
                 disabled={!Object.keys(selectedValueSet).length}>
                 Add to question
-            </Button>
+            </ModalToggleButton>
+        </div>
+    );
+
+    const modalRef = useRef<ModalRef>(null);
+    const dataNotAvailableElement = (
+        <div className="display-block">
+            <div className="margin-bottom-1em">No data</div>
+            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef}>
+                Add value set
+            </ModalToggleButton>
+            <ModalComponent
+                isLarge
+                modalRef={modalRef}
+                modalHeading={'Add value set'}
+                modalBody={<AddValueset hideHeader modalRef={modalRef} />}
+            />
         </div>
     );
 
@@ -216,9 +255,10 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
             currentPage={page.current}
             handleNext={request}
             sortData={handleSort}
-            buttons={<SearchBar />}
+            buttons={<SearchBar onChange={handlerSearch} />}
             handleSelected={handleSelected}
             footerAction={footerActionBtn}
+            dataNotAvailableElement={dataNotAvailableElement}
         />
     );
 };

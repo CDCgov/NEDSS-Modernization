@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.question.exception;
 
-public class QuestionNotFoundException extends RuntimeException {
+import gov.cdc.nbs.questionbank.exception.NotFoundException;
+
+public class QuestionNotFoundException extends NotFoundException {
     public QuestionNotFoundException(String message) {
         super(message);
     }

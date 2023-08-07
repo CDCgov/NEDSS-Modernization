@@ -23,7 +23,7 @@ public class QuestionMother {
 
     public void clean() {
         histRepository.deleteAll();
-        questionRepository.deleteAll(findAllTestQuestions());
+        questionRepository.deleteAll();
         allQuestions.clear();
     }
 
@@ -58,8 +58,5 @@ public class QuestionMother {
         return q;
     }
 
-    private List<WaQuestion> findAllTestQuestions() {
-        return questionRepository.findAllByNameOrIdentifier("test", -1L, null).getContent();
-    }
 }
 

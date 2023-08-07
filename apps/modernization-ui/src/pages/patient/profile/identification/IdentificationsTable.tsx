@@ -73,7 +73,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
         setIdentifications(data?.findPatientProfile?.identification?.content || []);
     };
 
-    const [getProfile, { refetch }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
+    const [getProfile, { refetch, loading }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
 
     const [add] = useAddPatientIdentificationMutation();
     const [update] = useUpdatePatientIdentificationMutation();
@@ -209,6 +209,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
+                isLoading={loading}
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
