@@ -70,7 +70,7 @@ public class ReadConditionSteps {
     public void i_search_for_a_condition_that_does_not_exist() {
         try {
             readConditionRequest = new ReadConditionRequest();
-            Page<ReadConditionResponse.GetCondition> result = conditionController.searchConditions(readConditionRequest, PageRequest.ofSize(20));
+            Page<ReadConditionResponse.GetCondition> result = conditionController.searchConditions(readConditionRequest, PageRequest.ofSize(0));
             conditionHolder.setReadConditionResponse(result);
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
