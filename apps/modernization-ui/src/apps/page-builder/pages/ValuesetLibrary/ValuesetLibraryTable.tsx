@@ -3,7 +3,6 @@ import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'app
 import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ValueSet } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { usePage } from 'page';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import './ValuesetLibraryTable.scss';
@@ -12,7 +11,8 @@ import { Icon } from '@trussworks/react-uswds';
 import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { AddValueset } from '../AddValueset/AddValueset';
+import { AddValueset } from '../../components/AddValueset/AddValueset';
+import { PagesContext } from '../../context/PagesContext';
 
 export enum Column {
     Type = 'Type',
@@ -28,21 +28,20 @@ const tableColumns = [
 ];
 
 type Props = {
-    sortChange: (sort?: string) => void;
-    toSearch?: (search?: string, filter?: any) => void;
     summaries: ValueSet[];
     labModalRef?: any;
+    pages?: any;
 };
-export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModalRef }: Props) => {
-    const { page, request } = usePage();
+export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) => {
     const { showAlert } = useAlert();
-    const [search, setSearch] = useState<string>('');
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
 
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
-
+    setSortBy('');
+    setSortDirection('');
     // @ts-ignore
     const asTableRow = (page: ValueSet): TableBody => ({
         id: page.nbsUid,
@@ -81,17 +80,20 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
-    const toSortString = (name: string, direction: Direction): string | undefined => {
-        if (name && direction && direction !== Direction.None) {
+    const toSortString = (name: string): string | undefined => {
+        if (name) {
             switch (name) {
                 case Column.Type:
-                    return `valueSetTypeCd,${direction}`;
+                    setSortBy('valueSetTypeCd');
+                    break;
                 case Column.ValuesetName:
-                    return `valueSetNm,${direction}`;
+                    setSortBy('valueSetNm');
+                    break;
                 case Column.ValuesetDesc:
-                    return `codeSetDescTxt,${direction}`;
+                    setSortBy('codeSetDescTxt');
+                    break;
                 default:
-                    return undefined;
+                    return '';
             }
         }
         return undefined;
@@ -106,11 +108,10 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
     }, []);
 
     const handleSort = (name: string, direction: Direction): void => {
-        sortChange(toSortString(name, direction));
-    };
-    const handleSearch = (search: string, filter: any) => {
-        setSearch(search);
-        toSearch?.(search, filter);
+        if (name && Direction) {
+            toSortString(name);
+            setSortDirection(direction);
+        }
     };
     const handleAddQsn = async () => {
         // @ts-ignore
@@ -193,7 +194,7 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
     const dataNotAvailableElement = (
         <div className="no-data-available">
             <label className="margin-bottom-1em no-text">
-                {search ? `No results found for ‘${search}’` : 'No results found '}
+                {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
             <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
                 Add value set
@@ -209,19 +210,20 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
 
     return (
         <div>
-            <div>{<SearchBar onChange={handleSearch} />}</div>
+            <div>{<SearchBar onChange={setSearchQuery} />}</div>
             {summaries?.length ? (
                 <TableComponent
                     tableHeader=""
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={page.pageSize}
-                    totalResults={page.total}
-                    currentPage={page.current}
-                    handleNext={request}
+                    pageSize={pages.pageSize}
+                    totalResults={pages.totalElements}
+                    currentPage={pages.currentPage}
+                    handleNext={setCurrentPage}
                     sortData={handleSort}
                     handleSelected={handleSelected}
+                    rangeSelector={true}
                 />
             ) : (
                 dataNotAvailableElement

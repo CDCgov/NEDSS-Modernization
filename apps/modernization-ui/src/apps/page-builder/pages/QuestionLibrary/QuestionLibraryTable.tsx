@@ -3,7 +3,6 @@ import { PageControllerService, PageSummary } from 'apps/page-builder/generated'
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Question } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { usePage } from 'page';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import './QuestionLibraryTable.scss';
@@ -12,6 +11,7 @@ import { Icon } from '@trussworks/react-uswds';
 import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
+import { PagesContext } from '../../context/PagesContext';
 
 export enum Column {
     Type = 'Type',
@@ -29,21 +29,17 @@ const tableColumns = [
 ];
 
 type Props = {
-    sortChange: (sort?: string) => void;
-    toSearch?: (search?: string, filter?: any) => void;
     summaries: Question[];
+    pages?: any;
 };
-export const QuestionLibraryTable = ({ summaries, sortChange, toSearch }: Props) => {
-    const { page, request } = usePage();
+export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const [search, setSearch] = useState<string>('');
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
 
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
-
-    // @ts-ignore
     const asTableRow = (page: Question): TableBody => ({
         id: page.id,
         checkbox: true,
@@ -85,17 +81,21 @@ export const QuestionLibraryTable = ({ summaries, sortChange, toSearch }: Props)
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
-    const toSortString = (name: string, direction: Direction): string | undefined => {
-        if (name && direction && direction !== Direction.None) {
+    const toSortString = (name: string): string | undefined => {
+        if (name) {
             switch (name) {
                 case Column.Type:
-                    return `questionType,${direction}`;
+                    setSortBy('questionType');
+                    break;
                 case Column.UniqueId:
-                    return `uniqueId,${direction}`;
+                    setSortBy('uniqueId');
+                    break;
                 case Column.UniqueName:
-                    return `uniqueName,${direction}`;
+                    setSortBy('uniqueName');
+                    break;
                 case Column.SubGroup:
-                    return `subgroup,${direction}`;
+                    setSortBy('subgroup');
+                    break;
                 default:
                     return undefined;
             }
@@ -107,22 +107,19 @@ export const QuestionLibraryTable = ({ summaries, sortChange, toSearch }: Props)
         setTableRows(asTableRows(summaries));
     }, [summaries]);
 
-    const handleSearch = (search: string, filter: any) => {
-        setSearch(search);
-        toSearch?.(search, filter);
-    };
-
     useEffect(() => {
         return () => localStorage.setItem('selectedQuestion', '0');
     }, []);
 
     const handleSort = (name: string, direction: Direction): void => {
-        sortChange(toSortString(name, direction));
+        if (name && Direction) {
+            toSortString(name);
+            setSortDirection(direction);
+        }
     };
     const handleAddQsntoPage = async () => {
-        // @ts-ignore
-        const id: number = selectedQuestion[0]?.id;
-
+        // TODO need to add logic for find orderNumber and Id
+        const id: number = 0;
         const request = {
             orderNumber: 'orderNumber',
             questionId: id
@@ -157,7 +154,7 @@ export const QuestionLibraryTable = ({ summaries, sortChange, toSearch }: Props)
     const dataNotAvailableElement = (
         <div className="no-data-available">
             <label className="margin-bottom-1em no-text">
-                {search ? `No results found for ‘${search}’` : 'No results found '}
+                {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
             <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
                 Create New
@@ -173,19 +170,20 @@ export const QuestionLibraryTable = ({ summaries, sortChange, toSearch }: Props)
 
     return (
         <div>
-            <div>{<SearchBar onChange={handleSearch} />}</div>
+            <div>{<SearchBar onChange={setSearchQuery} />}</div>
             {summaries?.length ? (
                 <TableComponent
                     tableHeader=""
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={page.pageSize}
-                    totalResults={page.total}
-                    currentPage={page.current}
-                    handleNext={request}
+                    pageSize={pages.pageSize}
+                    totalResults={pages.totalElements}
+                    currentPage={pages.currentPage}
+                    handleNext={setCurrentPage}
                     sortData={handleSort}
                     handleSelected={handleSelected}
+                    rangeSelector={true}
                 />
             ) : (
                 dataNotAvailableElement

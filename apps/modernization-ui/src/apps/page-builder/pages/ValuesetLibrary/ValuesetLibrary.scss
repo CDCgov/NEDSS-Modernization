@@ -1,7 +1,7 @@
-@import 'settings.scss';
+@import '../../../../settings';
 
-.question-local-library {
-
+.valueset-local-library {
+  background-color: $color-white;
   .search-description-block {
      p { margin: 32px 32px 8px}
     color: var(--base-black, #000);
@@ -13,7 +13,7 @@
   }
   position: relative;
 
-  .question-local-library__table {
+  .valueset-local-library__table {
     .padding-x-2.search-box {
       display: none;
     }
@@ -26,6 +26,10 @@
       border: 1px solid var(--base-lighter, #DCDEE0);
       border-bottom: 1px solid rgba(27, 27, 27, 0.95);
       background: var(--base-white, #FFF);
+      .check-title {
+        display: block;
+        margin-left: 64px;
+      }
     }
     .check-title {
       display: block;
@@ -34,17 +38,12 @@
     thead th {
       &:nth-of-type(1) .table-head {
         margin-left: 66px;
-        min-width: 100px;
-
       }
       &:nth-of-type(2) {
         width: 250px;
       }
-      &:nth-of-type(3) {
-        width: 40%;
-      }
-      &:nth-of-type(5) {
-        width: 80px;
+      &:nth-of-type(4) {
+        width: 100px;
       }
     }
     tbody tr {
@@ -62,7 +61,7 @@
     padding: 24px 0;
     justify-content: flex-end;
     align-items: center;
-    .question-action-btn {
+    .valueset-action-btn {
       .cancel-btn {
         border-radius: 4px;
         border: 2px solid #005EA2;
@@ -107,7 +106,7 @@
     line-height: normal;
   }
 }
-.question-local-library__header {
+.valueset-local-library__header {
   display: flex;
   flex-direction: row;
   align-items: center;

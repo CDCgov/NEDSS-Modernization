@@ -10,7 +10,7 @@ describe('when rendered', () => {
             <BrowserRouter>
                 <PageProvider>
                     <AlertProvider>
-                        <QuestionLibraryTable summaries={[]} sortChange={() => {}}></QuestionLibraryTable>
+                        <QuestionLibraryTable summaries={[]} />
                     </AlertProvider>
                 </PageProvider>
             </BrowserRouter>
@@ -62,7 +62,7 @@ describe('when at least one summary is available', () => {
         const { container } = render(
             <PageProvider>
                 <AlertProvider>
-                    <QuestionLibraryTable summaries={summaries} sortChange={() => {}}></QuestionLibraryTable>
+                    <QuestionLibraryTable summaries={summaries} />
                 </AlertProvider>
             </PageProvider>
         );

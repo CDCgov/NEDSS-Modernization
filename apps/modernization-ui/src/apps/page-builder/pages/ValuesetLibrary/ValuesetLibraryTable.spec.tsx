@@ -11,7 +11,7 @@ describe('when rendered', () => {
             <BrowserRouter>
                 <PageProvider>
                     <AlertProvider>
-                        <ValuesetLibraryTable summaries={[]} sortChange={() => {}}></ValuesetLibraryTable>
+                        <ValuesetLibraryTable summaries={[]} />
                     </AlertProvider>
                 </PageProvider>
             </BrowserRouter>
@@ -61,7 +61,7 @@ describe('when at least one summary is available', () => {
             <BrowserRouter>
                 <PageProvider>
                     <AlertProvider>
-                        <ValuesetLibraryTable summaries={summaries} sortChange={() => {}}></ValuesetLibraryTable>
+                        <ValuesetLibraryTable summaries={summaries} />
                     </AlertProvider>
                 </PageProvider>
             </BrowserRouter>

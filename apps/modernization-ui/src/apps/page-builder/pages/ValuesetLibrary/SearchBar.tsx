@@ -19,11 +19,11 @@ export const SearchBar = ({ onChange }: any) => {
         setIsModalHidden(!isModalHidden);
     };
     const applyFilter = () => {
-        onChange(search, filterData);
+        // onChange(search, filterData);
         setIsModalHidden(true);
     };
     const removeFilter = () => {
-        onChange(search, filterData);
+        onChange(search);
         setIsModalHidden(true);
         setFilterData(initial);
     };
@@ -41,7 +41,7 @@ export const SearchBar = ({ onChange }: any) => {
     };
     const handleRemove = (removeTag: string) => {
         setSearch('');
-        onChange('', filterData);
+        onChange('', '');
         setSearchTags((preTag: string[]) => preTag.filter((tag) => tag !== removeTag));
     };
 
