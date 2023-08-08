@@ -36,10 +36,38 @@ class ConditionStatusTest {
     }
 
     @Test
+    void activateConditionFailTest() {
+        when(conditionCodeRepository.activateCondition(Mockito.anyString())).thenReturn(0);
+        ConditionStatusResponse response = conditionStatus.activateCondition(id);
+        assertEquals(id, response.getId());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
+    }
+
+    @Test
+    void activateConditionNullTest() {
+        ConditionStatusResponse response = conditionStatus.activateCondition(null);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
+    }
+
+    @Test
     void inactivateConditionTest() {
         when(conditionCodeRepository.inactivateCondition(Mockito.anyString())).thenReturn(1);
         ConditionStatusResponse response = conditionStatus.inactivateCondition(id);
         assertEquals(id, response.getId());
         assertEquals(HttpStatus.OK, response.getStatus());
+    }
+
+    @Test
+    void inactivateConditionFailTest() {
+        when(conditionCodeRepository.inactivateCondition(Mockito.anyString())).thenReturn(0);
+        ConditionStatusResponse response = conditionStatus.inactivateCondition(id);
+        assertEquals(id, response.getId());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
+    }
+
+    @Test
+    void inactivateNullTest() {
+        ConditionStatusResponse response = conditionStatus.inactivateCondition(null);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
     }
 }
