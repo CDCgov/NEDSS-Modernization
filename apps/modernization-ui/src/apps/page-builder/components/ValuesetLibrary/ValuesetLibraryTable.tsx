@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'apps/page-builder/generated';
-import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ValueSet } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { usePage } from 'page';

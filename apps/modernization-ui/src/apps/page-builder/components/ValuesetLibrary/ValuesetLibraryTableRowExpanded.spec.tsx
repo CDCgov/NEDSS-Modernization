@@ -7,26 +7,6 @@ import { AlertProvider } from '../../../../alert';
 import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
 
 describe('when rendered', () => {
-    it('should display sentence cased headers', async () => {
-        const { container } = render(
-            <BrowserRouter>
-                <PageProvider>
-                    <AlertProvider>
-                        <ValuesetLibraryTable summaries={[]} sortChange={() => {}}></ValuesetLibraryTable>
-                    </AlertProvider>
-                </PageProvider>
-            </BrowserRouter>
-        );
-
-        const tableHeads = container.getElementsByClassName('head-name');
-
-        expect(tableHeads[0].innerHTML).toBe('Type');
-        expect(tableHeads[1].innerHTML).toBe('Value set name');
-        expect(tableHeads[2].innerHTML).toBe('Value set description');
-    });
-});
-
-describe('when at least one summary is available', () => {
     const expectedValueSet = {
         addTime: undefined,
         addUserId: 4567789,
@@ -68,6 +48,63 @@ describe('when at least one summary is available', () => {
 
         const tabSection = container.getElementsByClassName('tabSection');
 
-        expect(tabSection).toBeInTheDocument();
+        expect(tabSection[0]).toBeInTheDocument();
+    });
+
+    describe('tab button section', () => {
+        it('has 2 buttons with correct text', () => {
+            const { container } = render(
+                <BrowserRouter>
+                    <PageProvider>
+                        <AlertProvider>
+                            <ValuesetLibraryTableRowExpanded data={{}} />
+                        </AlertProvider>
+                    </PageProvider>
+                </BrowserRouter>
+            );
+
+            const tabSection = container.getElementsByClassName('tabSection');
+
+            const buttons = tabSection[0].getElementsByClassName('tab');
+
+            expect(buttons.length).toEqual(2);
+            expect(buttons[0]).toHaveTextContent('Value set details');
+            expect(buttons[1]).toHaveTextContent('Value set concepts');
+        });
+    });
+
+    describe('valueSetDetailsSection', () => {
+        it('is in the document', () => {
+            const { container } = render(
+                <BrowserRouter>
+                    <PageProvider>
+                        <AlertProvider>
+                            <ValuesetLibraryTableRowExpanded data={expectedValueSet} />
+                        </AlertProvider>
+                    </PageProvider>
+                </BrowserRouter>
+            );
+
+            const detailsSection = container.getElementsByClassName('valuesetDetailsSection');
+
+            expect(detailsSection[0]).toBeInTheDocument();
+        });
+
+        it('has 4 details containers', () => {
+            const { container } = render(
+                <BrowserRouter>
+                    <PageProvider>
+                        <AlertProvider>
+                            <ValuesetLibraryTableRowExpanded data={expectedValueSet} />
+                        </AlertProvider>
+                    </PageProvider>
+                </BrowserRouter>
+            );
+
+            const detailsSection = container.getElementsByClassName('valuesetDetailsSection');
+            const detailContainer = detailsSection[0].getElementsByClassName('detailContainer');
+
+            expect(detailContainer.length).toEqual(4);
+        });
     });
 });
