@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.documentsrequiringreview;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
@@ -196,7 +197,7 @@ class ReviewDocumentFinderTest {
         assertEquals("labPrefix labFirstName labLastName Esquire", orderingProvider.name());
 
         FacilityProvider reportingFacility = actual.facilityProviders().get(1);
-        assertEquals("Reporting Facility", reportingFacility.title());
+        assertEquals("Reporting facility", reportingFacility.title());
         assertEquals("labReportingFacility", reportingFacility.name());
 
         assertEquals(1, actual.descriptions().size());
@@ -228,13 +229,31 @@ class ReviewDocumentFinderTest {
         assertEquals("morbPrefix morbFirstName morbLastName", orderingProvider.name());
 
         FacilityProvider reportingFacility = actual.facilityProviders().get(1);
-        assertEquals("Reporting Facility", reportingFacility.title());
+        assertEquals("Reporting facility", reportingFacility.title());
         assertEquals("morbReportingFacility", reportingFacility.name());
 
         assertEquals(1, actual.descriptions().size());
         Description description = actual.descriptions().get(0);
         assertEquals("Title", description.title());
         assertEquals("Value", description.value());
+    }
+
+    @Test
+    void should_throw_exception_if_no_id() {
+        // Given a DocumentRequiringReview for a lab report
+        Page<DocumentRequiringReview> docs = new PageImpl<>(Collections.singletonList(morbDocumentRequiringReview()));
+
+        // And extended data for a lab report that has an incorrect Id
+        JPAQuery<Tuple> query = mockLabMorbExtendedQuery();
+        Tuple row = Mockito.mock(Tuple.class);
+        when(row.get(QObservation.observation.id)).thenReturn(9L);
+
+        List<Tuple> results = Collections.singletonList(row);
+        when(query.fetch()).thenReturn(results);
+
+        // When I add extended data to it
+        // Then an exception should be thrown
+        assertThrows(RuntimeException.class, () -> finder.setLabAndMorbReportData(docs));
     }
 
     private DocumentRequiringReview labDocumentRequiringReview() {

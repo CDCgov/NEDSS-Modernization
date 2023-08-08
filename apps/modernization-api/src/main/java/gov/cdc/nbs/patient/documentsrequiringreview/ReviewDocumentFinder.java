@@ -1,12 +1,9 @@
 package gov.cdc.nbs.patient.documentsrequiringreview;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +30,6 @@ import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.srte.QConditionCode;
-import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.Description;
-import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.FacilityProvider;
 import gov.cdc.nbs.service.SecurityService;
 
 @Component
@@ -68,6 +63,7 @@ public class ReviewDocumentFinder {
     private final UserDetailsProvider detailsProvider;
     private final JPAQueryFactory queryFactory;
     private final SecurityService securityService;
+    private final DocumentRequiringReviewMapper mapper = new DocumentRequiringReviewMapper();
 
     public ReviewDocumentFinder(
             final UserDetailsProvider detailsProvider,
@@ -116,7 +112,7 @@ public class ReviewDocumentFinder {
                 // Sorting
                 .orderBy(getSort(pageable))
                 .fetch();
-        var mappedResults = results.stream().map(this::toDocumentRequiringReview).filter(Objects::nonNull).toList();
+        var mappedResults = results.stream().map(mapper::toDocumentRequiringReview).filter(Objects::nonNull).toList();
         return new PageImpl<>(mappedResults, pageable, total);
     }
 
@@ -227,39 +223,7 @@ public class ReviewDocumentFinder {
                 .and(OBSERVATION.recordStatusCd.eq("UNPROCESSED"));
     }
 
-    private DocumentRequiringReview toDocumentRequiringReview(Tuple row) {
-        String type = row.get(Expressions.stringPath(TYPE));
-        if (type.equals("Document")) {
-            return new DocumentRequiringReview(
-                    row.get(Expressions.path(Long.class, ID)),
-                    row.get(Expressions.path(String.class, LOCAL_ID)),
-                    row.get(Expressions.path(String.class, TYPE)),
-                    row.get(Expressions.path(Instant.class, EVENT_DATE)),
-                    row.get(Expressions.path(Instant.class, DATE_RECEIVED)),
-                    false,
-                    row.get(DOCUMENT.externalVersionCtrlNbr) > 1,
-                    Arrays.asList(new FacilityProvider("Sending Facility", row.get(DOCUMENT.sendingFacilityNm))),
-                    Arrays.asList(new Description(row.get(CONDITION.conditionDescTxt), "")));
-        } else if (type.equals("MorbReport") || type.equals("LabReport")) {
-            List<Description> descriptions = type.equals("MorbReport")
-                    ? Arrays.asList(new Description(row.get(CONDITION.conditionDescTxt), ""))
-                    : new ArrayList<>();
-            Character externalIndicator = row.get(OBSERVATION.electronicInd);
-            boolean isExternal = externalIndicator != null && !externalIndicator.equals('N');
-            return new DocumentRequiringReview(
-                    row.get(Expressions.path(Long.class, ID)),
-                    row.get(Expressions.path(String.class, LOCAL_ID)),
-                    row.get(Expressions.path(String.class, TYPE)),
-                    row.get(Expressions.path(Instant.class, EVENT_DATE)),
-                    row.get(Expressions.path(Instant.class, DATE_RECEIVED)),
-                    isExternal,
-                    false,
-                    new ArrayList<>(),
-                    descriptions);
-        } else {
-            return null;
-        }
-    }
+
 
     void setLabAndMorbReportData(Page<DocumentRequiringReview> docs) {
         List<Long> ids = docs.stream()
@@ -277,37 +241,15 @@ public class ReviewDocumentFinder {
             // What type of data are we adding?
             String type = row.get(PARTICIPATION.id.typeCd);
             if (type.equals("PhysicianOfMorb") || type.equals("ORD")) {
-                addOrderingProvider(doc, row);
+                doc.facilityProviders().add(mapper.toOrderingProvider(row));
             } else if (type.equals("ReporterOfMorbReport") || type.equals("AUT")) {
-                addReportingFacility(doc, row);
+                doc.facilityProviders().add(mapper.toReportingFacility(row));
             } else if (type.equals("SPC")) {
-                addDescription(doc, row);
+                doc.descriptions().add(mapper.toDescription(row));
             }
         });
     }
 
-    private void addOrderingProvider(DocumentRequiringReview doc, Tuple row) {
-        String name = Arrays.asList(
-                row.get(PERSON_NAME.nmPrefix),
-                row.get(PERSON_NAME.firstNm),
-                row.get(PERSON_NAME.lastNm),
-                row.get(PERSON_NAME.nmSuffix) != null ? row.get(PERSON_NAME.nmSuffix).display() : null)
-                .stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.joining(" "));
-        doc.facilityProviders().add(new FacilityProvider("Ordering provider", name));
-    }
-
-    private void addReportingFacility(DocumentRequiringReview doc, Tuple row) {
-        doc.facilityProviders().add(
-                new FacilityProvider(
-                        "Reporting Facility",
-                        row.get(ORGANIZATION.displayNm)));
-    }
-
-    private void addDescription(DocumentRequiringReview doc, Tuple row) {
-        doc.descriptions().add(new Description(row.get(OBSERVATION_2.cdDescTxt), row.get(OBS_VALUE_CODED.displayName)));
-    }
 
     private List<Tuple> fetchLabAndMorbReportData(List<Long> ids) {
         return queryFactory.select(

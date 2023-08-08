@@ -84,7 +84,7 @@ public class LabReportMother {
 
     }
 
-    public void unprocessedLabReport(final long patient, final long organization) {
+    public void unprocessed(final long patient, final long organization) {
         // Observation
         long identifier = idGenerator.next();
         String localId = idGenerator.nextLocal(LAB_REPORT_CLASS_CODE);
