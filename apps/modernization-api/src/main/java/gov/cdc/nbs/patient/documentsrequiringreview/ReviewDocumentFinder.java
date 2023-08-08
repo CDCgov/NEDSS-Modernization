@@ -135,6 +135,7 @@ public class ReviewDocumentFinder {
                 .where(getWhereForPermissionSet(patient));
     }
 
+    @SuppressWarnings("squid:S1452") // generic wildcard
     OrderSpecifier<?> getSort(Pageable pageable) {
         if (pageable == null) {
             return Expressions.stringPath(TYPE).desc();
