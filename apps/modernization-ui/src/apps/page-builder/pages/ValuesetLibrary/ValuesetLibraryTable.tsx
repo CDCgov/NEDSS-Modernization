@@ -3,7 +3,6 @@ import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'app
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ValueSet } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { usePage } from 'page';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import './ValuesetLibraryTable.scss';
@@ -13,7 +12,8 @@ import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
 import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { AddValueset } from '../AddValueset/AddValueset';
+import { AddValueset } from '../../components/AddValueset/AddValueset';
+import { PagesContext } from '../../context/PagesContext';
 
 export enum Column {
     Type = 'Type',
@@ -29,19 +29,20 @@ const tableColumns = [
 ];
 
 type Props = {
-    sortChange: (sort?: string) => void;
     summaries: ValueSet[];
     labModalRef?: any;
+    pages?: any;
 };
-export const ValuesetLibraryTable = ({ summaries, sortChange, labModalRef }: Props) => {
-    const { page, request } = usePage();
+export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
-
+    setSortBy('');
+    setSortDirection('');
     // @ts-ignore
     const asTableRow = (page: ValueSet): TableBody => ({
         id: page.nbsUid,
@@ -118,17 +119,20 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, labModalRef }: Pro
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
-    const toSortString = (name: string, direction: Direction): string | undefined => {
-        if (name && direction && direction !== Direction.None) {
+    const toSortString = (name: string): string | undefined => {
+        if (name) {
             switch (name) {
                 case Column.Type:
-                    return `valueSetTypeCd,${direction}`;
+                    setSortBy('valueSetTypeCd');
+                    break;
                 case Column.ValuesetName:
-                    return `valueSetNm,${direction}`;
+                    setSortBy('valueSetNm');
+                    break;
                 case Column.ValuesetDesc:
-                    return `codeSetDescTxt,${direction}`;
+                    setSortBy('codeSetDescTxt');
+                    break;
                 default:
-                    return undefined;
+                    return '';
             }
         }
         return undefined;
@@ -143,12 +147,14 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, labModalRef }: Pro
     }, []);
 
     const handleSort = (name: string, direction: Direction): void => {
-        sortChange(toSortString(name, direction));
+        if (name && Direction) {
+            toSortString(name);
+            setSortDirection(direction);
+        }
     };
 
     const handleAddQsn = async () => {
         // @ts-ignore
-        // TODO :  we have to add logic for get quetion ID here
         const id: number = parseInt(localStorage.getItem('selectedQuestion'));
         const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
             authorization,
@@ -202,10 +208,6 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, labModalRef }: Pro
         });
     };
 
-    const handlerSearch = (search: string) => {
-        console.log(search);
-    };
-
     const footerActionBtn = (
         <div className="valueset-action-btn ds-u-text-align--right margin-bottom-1em">
             <ModalToggleButton
@@ -230,9 +232,11 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, labModalRef }: Pro
 
     const modalRef = useRef<ModalRef>(null);
     const dataNotAvailableElement = (
-        <div className="display-block">
-            <div className="margin-bottom-1em">No data</div>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef}>
+        <div className="no-data-available">
+            <label className="margin-bottom-1em no-text">
+                {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
+            </label>
+            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
                 Add value set
             </ModalToggleButton>
             <ModalComponent
@@ -245,20 +249,26 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, labModalRef }: Pro
     );
 
     return (
-        <TableComponent
-            tableHeader=""
-            tableHead={tableColumns}
-            tableBody={tableRows}
-            isPagination={true}
-            pageSize={page.pageSize}
-            totalResults={page.total}
-            currentPage={page.current}
-            handleNext={request}
-            sortData={handleSort}
-            buttons={<SearchBar onChange={handlerSearch} />}
-            handleSelected={handleSelected}
-            footerAction={footerActionBtn}
-            dataNotAvailableElement={dataNotAvailableElement}
-        />
+        <div>
+            <div>{<SearchBar onChange={setSearchQuery} />}</div>
+            {summaries?.length ? (
+                <TableComponent
+                    tableHeader=""
+                    tableHead={tableColumns}
+                    tableBody={tableRows}
+                    isPagination={true}
+                    pageSize={pages.pageSize}
+                    totalResults={pages.totalElements}
+                    currentPage={pages.currentPage}
+                    handleNext={setCurrentPage}
+                    sortData={handleSort}
+                    handleSelected={handleSelected}
+                    rangeSelector={true}
+                />
+            ) : (
+                dataNotAvailableElement
+            )}
+            <div className="footer-action">{footerActionBtn}</div>
+        </div>
     );
 };
