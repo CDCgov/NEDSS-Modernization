@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 
@@ -19,4 +21,14 @@ public interface ConditionCodeRepository extends JpaRepository<ConditionCode, St
     Page<ConditionCode> findByField(@Param("id")String id, @Param("conditionShortNm") String conditionShortNm, @Param("progAreaCd") String progAreaCd,
                                     @Param("familyCd")String familyCd, @Param("coinfectionGrpCd")String coinfectionGrpCd, @Param("nndInd")Character nndInd, @Param("investigationFormCd") String investigationFormCd,
                                     @Param("statusCd")Character statusCd, Pageable pageable);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE ConditionCode SET statusCd='A' WHERE ConditionCode.id =:id")
+    int activateCondition(@Param("id") String id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE ConditionCode SET statusCd='I' WHERE ConditionCode.id =:id")
+    int inactivateCondition(@Param("id") String id);
 }
