@@ -47,6 +47,7 @@
                 color: #1b1b1b !important;
                 font-weight: bold !important;
                 border-left: 4px solid #1b1b1b !important;
+                transition: 0.2s ease-in;
             }
 
             &.visible ~ a {
