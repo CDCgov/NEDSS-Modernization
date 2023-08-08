@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/")
+@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class AddSubSectionController {
 
     private final CreateSubSectionService createSubSectionService;
@@ -23,8 +24,6 @@ public class AddSubSectionController {
         this.userDetailsProvider = userDetailsProvider;
         this.createSubSectionService = createSubSectionService;
     }
-
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     @PostMapping("addsubsection")
     @ResponseBody
     public CreateSubSectionResponse createSubSection(@RequestBody CreateSubSectionRequest request) {
