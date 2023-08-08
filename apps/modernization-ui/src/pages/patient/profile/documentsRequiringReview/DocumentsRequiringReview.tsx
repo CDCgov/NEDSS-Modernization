@@ -30,5 +30,5 @@ const DocumentsRequiringReviewContainer = ({ patient }: Props) => {
             firstPage();
         }
     }, [patient, sort]);
-    return <DocumentsRequiringReviewTable setSort={setSort} documents={documents} />;
+    return <DocumentsRequiringReviewTable patient={patient} setSort={setSort} documents={documents} />;
 };

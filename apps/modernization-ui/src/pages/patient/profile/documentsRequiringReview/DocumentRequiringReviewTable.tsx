@@ -5,6 +5,7 @@ import { usePage } from 'page/usePage';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Direction } from 'sorting/Sort';
 import { Sort } from './DocumentsRequiringReview';
+import { ClassicLink } from 'classic';
 
 enum Headers {
     DocumentType = 'Document type',
@@ -24,10 +25,26 @@ const headers = [
     { name: Headers.EventID, sortable: true }
 ];
 
-const renderType = (document: DocumentRequiringReview) => {
+const renderType = (document: DocumentRequiringReview, patient?: string) => {
     return (
         <>
-            <span>{document.type}</span>
+            {document.type === 'MorbReport' ? (
+                <>
+                    <ClassicLink url={`/nbs/api/profile/${patient}/report/morbidity/${document.id}`}>
+                        Morbidity Report
+                    </ClassicLink>
+                </>
+            ) : null}
+            {document.type === 'LabReport' ? (
+                <>
+                    <ClassicLink url={`/nbs/api/profile/${patient}/report/lab/${document.id}`}>Lab Report</ClassicLink>
+                </>
+            ) : null}
+            {document.type === 'Document' ? (
+                <>
+                    <ClassicLink url={`/nbs/api/profile/${patient}/document/${document.id}`}>Document</ClassicLink>
+                </>
+            ) : null}
             {document.isElectronic ? (
                 <>
                     <br />
@@ -108,13 +125,13 @@ const renderIdLink = (document: DocumentRequiringReview) => {
     );
 };
 
-const asTableBody = (document: DocumentRequiringReview): TableBody => ({
+const asTableBody = (document: DocumentRequiringReview, patient: string): TableBody => ({
     id: document.id,
     checkbox: false,
     tableDetails: [
         {
             id: 1,
-            title: renderType(document)
+            title: renderType(document, patient)
         },
         {
             id: 2,
@@ -139,22 +156,24 @@ const asTableBody = (document: DocumentRequiringReview): TableBody => ({
     ]
 });
 
-const asTableBodies = (documents: DocumentRequiringReview[]): TableBody[] =>
-    documents?.map((d) => asTableBody(d)) || [];
+const asTableBodies = (documents: DocumentRequiringReview[], patient: string): TableBody[] =>
+    documents?.map((d) => asTableBody(d, patient)) || [];
 
 export const DocumentsRequiringReviewTable = ({
     documents,
+    patient,
     setSort
 }: {
     documents: DocumentRequiringReview[] | undefined;
+    patient: string | undefined;
     setSort: Dispatch<SetStateAction<Sort | undefined>>;
 }) => {
     const { page, request } = usePage();
     const [bodies, setBodies] = useState<TableBody[]>([]);
 
     useEffect(() => {
-        if (documents) {
-            setBodies(asTableBodies(documents));
+        if (documents && patient) {
+            setBodies(asTableBodies(documents, patient));
         }
     }, [documents]);
 
