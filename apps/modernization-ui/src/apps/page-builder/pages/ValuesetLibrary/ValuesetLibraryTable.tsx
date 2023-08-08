@@ -112,7 +112,6 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             setSelectedValueSet({});
         }
     };
-
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
 
     /*
