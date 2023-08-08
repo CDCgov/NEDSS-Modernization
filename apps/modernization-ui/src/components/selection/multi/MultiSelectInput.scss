@@ -1,6 +1,20 @@
-@import '../../../settings.scss';
+@import 'settings.scss';
+
+.multi-select-input {
+    label {
+        margin-top: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+    &.required {
+        label::after {
+            content: " *";
+            color: $color-emergency;
+        }
+    }
+}
 
 .multi-select__control {
+    height: 40px;
     border-radius: 0 !important;
     border-color: #565c65 !important;
 }

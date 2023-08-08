@@ -7,6 +7,6 @@
         top: 134px;
         width: 100%;
         background-color: $color-bg-base-lightest;
-        height: calc(100vh - 58px);
+        min-height: calc(100vh - 58px);
     }
 }
