@@ -44,25 +44,25 @@ public class CreateSectionService implements CreateSectionInterface {
                     request.page(), 1010L);
         }
         waUiMetadata.setQuestionLabel(request.name());
-        waUiMetadata.setDisplayInd(request.visible());
         waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
+        waUiMetadata.setDisplayInd(request.visible());
+        waUiMetadata.setPublishIndCd("T");
+        waUiMetadata.setEnableInd("T");
         waUiMetadata.setRequiredInd("F");
         waUiMetadata.setCoinfectionIndCd("F");
         waUiMetadata.setFutureDateIndCd("F");
         waUiMetadata.setStandardQuestionIndCd("F");
-        waUiMetadata.setPublishIndCd("T");
-        waUiMetadata.setQuestionLabel(request.name());
-        waUiMetadata.setEnableInd("T");
         waUiMetadata.setStandardNndIndCd("F");
+        waUiMetadata.setQuestionLabel(request.name());
         waUiMetadata.setAddTime(Instant.now());
-        waUiMetadata.setAddUserId(uid);
         waUiMetadata.setLastChgTime(Instant.now());
-        waUiMetadata.setLastChgUserId(uid);
+        waUiMetadata.setAddUserId(uid);
         waUiMetadata.setRecordStatusCd("Active");
-        waUiMetadata.setRecordStatusTime(Instant.now());
+        waUiMetadata.setLastChgUserId(uid);
         waUiMetadata.setVersionCtrlNbr(1);
-        waUiMetadata.setLocalId("NBS_1_15");
+        waUiMetadata.setRecordStatusTime(Instant.now());
         waUiMetadata.setQuestionIdentifier("NBS_1_15");
+        waUiMetadata.setLocalId("NBS_1_15");
 
         return waUiMetadata;
 
