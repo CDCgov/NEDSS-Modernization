@@ -24,11 +24,11 @@ public interface ConditionCodeRepository extends JpaRepository<ConditionCode, St
 
     @Modifying
     @Transactional
-    @Query("UPDATE ConditionCode SET statusCd='A' WHERE ConditionCode.id =:id")
+    @Query("UPDATE ConditionCode c SET c.statusCd='A' WHERE c.id =:id")
     int activateCondition(@Param("id") String id);
 
     @Modifying
     @Transactional
-    @Query("UPDATE ConditionCode SET statusCd='I' WHERE ConditionCode.id =:id")
+    @Query("UPDATE ConditionCode c SET c.statusCd='I' WHERE c.id =:id")
     int inactivateCondition(@Param("id") String id);
 }
