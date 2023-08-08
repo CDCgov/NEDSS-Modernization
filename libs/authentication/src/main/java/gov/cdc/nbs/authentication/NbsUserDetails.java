@@ -53,7 +53,7 @@ public class NbsUserDetails implements UserDetails {
         }
         return getAuthorities()
                 .stream()
-                .anyMatch((a) -> a.getBusinessObject().equals(businessObject)
+                .anyMatch(a -> a.getBusinessObject().equals(businessObject)
                         && a.getBusinessOperation().equals(operation));
     }
 

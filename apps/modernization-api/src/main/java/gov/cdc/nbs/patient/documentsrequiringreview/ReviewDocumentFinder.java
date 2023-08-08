@@ -34,6 +34,8 @@ import gov.cdc.nbs.service.SecurityService;
 
 @Component
 public class ReviewDocumentFinder {
+    private static final String UNPROCESSED = "UNPROCESSED";
+    private static final String PATSBJ = "PATSBJ";
     // Document tables
     private static final QPerson PERSON = QPerson.person;
     private static final QParticipation PARTICIPATION = QParticipation.participation;
@@ -136,7 +138,7 @@ public class ReviewDocumentFinder {
     }
 
     OrderSpecifier<?> getSort(Pageable pageable) {
-        if (pageable == null || pageable.getSort() == null) {
+        if (pageable == null) {
             return Expressions.stringPath(TYPE).desc();
         }
         Order order = pageable.getSort().stream().findFirst().orElse(new Order(Direction.DESC, LOCAL_ID));
@@ -196,23 +198,22 @@ public class ReviewDocumentFinder {
     }
 
     private BooleanExpression documentWhereClause() {
-        return DOCUMENT.recordStatusCd.ne("LOG_DEL")
+        return DOCUMENT.recordStatusCd.eq(UNPROCESSED)
                 .and(PARTICIPATION.id.typeCd.eq("SubjOfDoc"))
                 .and(PARTICIPATION.actClassCd.eq("DOC"))
                 .and(PARTICIPATION.subjectClassCd.eq("PSN"))
                 .and(PARTICIPATION.recordStatusCd.eq(RecordStatus.ACTIVE))
                 .and(EDX_EVENT_PROCESS.docEventTypeCd.in("CASE", "LabReport", "MorbReport", "CT"))
-                .and(EDX_EVENT_PROCESS.parsedInd.eq('N'))
-                .and(DOCUMENT.recordStatusCd.eq("UNPROCESSED"));
+                .and(EDX_EVENT_PROCESS.parsedInd.eq('N'));
     }
 
     private BooleanExpression labReportWhereClause() {
-        return PARTICIPATION.id.typeCd.eq("PATSBJ")
+        return PARTICIPATION.id.typeCd.eq(PATSBJ)
                 .and(PARTICIPATION.actClassCd.eq("OBS"))
                 .and(PARTICIPATION.subjectClassCd.eq("PSN"))
                 .and(PARTICIPATION.recordStatusCd.eq(RecordStatus.ACTIVE))
-                .and(PARTICIPATION_2.id.typeCd.in("AUT", "SPC", "PATSBJ", "ORD"))
-                .and(OBSERVATION.recordStatusCd.eq("UNPROCESSED"));
+                .and(PARTICIPATION_2.id.typeCd.in("AUT", "SPC", PATSBJ, "ORD"))
+                .and(OBSERVATION.recordStatusCd.eq(UNPROCESSED));
     }
 
     private BooleanExpression morbidityReportWhereClause() {
@@ -220,7 +221,7 @@ public class ReviewDocumentFinder {
                 .and(PARTICIPATION.actClassCd.eq("OBS"))
                 .and(PARTICIPATION.subjectClassCd.eq("PSN"))
                 .and(PARTICIPATION.recordStatusCd.eq(RecordStatus.ACTIVE))
-                .and(OBSERVATION.recordStatusCd.eq("UNPROCESSED"));
+                .and(OBSERVATION.recordStatusCd.eq(UNPROCESSED));
     }
 
 
@@ -272,7 +273,7 @@ public class ReviewDocumentFinder {
                 .join(OBS_VALUE_CODED).on(OBS_VALUE_CODED.observationUid.id.eq(RELATIONSHIP.sourceActUid.id))
                 .leftJoin(OBSERVATION_2).on(OBSERVATION_2.id.eq(OBS_VALUE_CODED.observationUid.id))
                 .where(OBSERVATION.id.in(ids)
-                        .and(PARTICIPATION.id.typeCd.notIn("PATSBJ", "SubjOfMorbReport"))
+                        .and(PARTICIPATION.id.typeCd.notIn(PATSBJ, "SubjOfMorbReport"))
                         .and((PARTICIPATION.subjectClassCd.in("ORG")
                                 .and(PARTICIPATION.id.typeCd.in("AUT", "ReporterOfMorbReport"))
                                 .or(PARTICIPATION.subjectClassCd.in("PSN")
