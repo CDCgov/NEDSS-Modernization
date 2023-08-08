@@ -111,7 +111,7 @@ test {
         port = java.util.Optional.ofNullable(findProperty('debug.port'))
                 .map(Object::toString)
                 .map(Integer::parseInt)
-                .orElse(5005)
+                .orElse(5105)
     }
 }
 

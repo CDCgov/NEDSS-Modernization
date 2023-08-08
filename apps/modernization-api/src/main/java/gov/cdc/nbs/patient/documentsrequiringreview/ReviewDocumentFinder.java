@@ -7,13 +7,11 @@ import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -141,19 +139,23 @@ public class ReviewDocumentFinder {
         if (pageable == null) {
             return Expressions.stringPath(TYPE).desc();
         }
-        Order order = pageable.getSort().stream().findFirst().orElse(new Order(Direction.DESC, LOCAL_ID));
-        boolean isAsc = order.getDirection().equals(Direction.ASC);
-        return switch (order.getProperty()) {
-            case TYPE -> setAscDesc(Expressions.stringPath(TYPE), isAsc);
-            case DATE_RECEIVED -> setAscDesc(Expressions.numberPath(Long.class, DATE_RECEIVED), isAsc);
-            case EVENT_DATE -> setAscDesc(Expressions.numberPath(Long.class, EVENT_DATE), isAsc);
-            case LOCAL_ID -> setAscDesc(Expressions.stringPath(LOCAL_ID), isAsc);
-            default -> Expressions.stringPath(TYPE).desc();
-        };
-    }
 
-    private OrderSpecifier<?> setAscDesc(ComparableExpressionBase<?> path, boolean isAsc) {
-        return isAsc ? path.asc() : path.desc();
+        return pageable.getSort()
+                .stream()
+                .findFirst()
+                .map(m -> {
+                    var direction = m.getDirection().isAscending() ? Order.ASC : Order.DESC;
+                    return switch (m.getProperty()) {
+                        case TYPE -> new OrderSpecifier<>(direction, Expressions.stringPath(TYPE));
+                        case DATE_RECEIVED -> new OrderSpecifier<>(direction,
+                                Expressions.numberPath(Long.class, DATE_RECEIVED));
+                        case EVENT_DATE -> new OrderSpecifier<>(direction,
+                                Expressions.numberPath(Long.class, EVENT_DATE));
+                        case LOCAL_ID -> new OrderSpecifier<>(direction, Expressions.stringPath(LOCAL_ID));
+                        default -> Expressions.stringPath(TYPE).desc();
+                    };
+                })
+                .orElse(Expressions.stringPath(TYPE).desc());
     }
 
     private BooleanExpression getWhereForPermissionSet(long patient) {
