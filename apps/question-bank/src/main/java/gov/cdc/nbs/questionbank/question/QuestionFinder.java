@@ -43,7 +43,7 @@ public class QuestionFinder {
     }
 
     public Page<Question> find(FindQuestionRequest request, Pageable pageable) {
-        Page<WaQuestion> page = questionRepository.findAllByNameOrIdentifierOrQuestionType(
+        Page<WaQuestion> page = questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(
                 request.search(),
                 tryConvert(request.search()),
                 request.questionType(),

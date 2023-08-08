@@ -2,14 +2,18 @@ package gov.cdc.nbs.questionbank.entity.condition;
 
 import java.io.Serializable;
 import java.time.Instant;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+
+import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -70,6 +74,9 @@ public class ConditionCode implements Serializable {
     @Column(name = "parent_is_cd", length = 20)
     private String parentIsCd;
 
+    @Column(name = "prog_area_cd")
+    private String progAreaCd;
+
     @Column(name = "reportable_morbidity_ind", nullable = false)
     private Character reportableMorbidityInd;
 
@@ -115,5 +122,31 @@ public class ConditionCode implements Serializable {
     @Column(name = "coinfection_grp_cd", length = 20)
     private String coinfectionGrpCd;
 
+    @Column(name = "rhap_parse_nbs_ind")
+    private String rhapParseNbsInd;
 
+    @Column(name = "rhap_action_value")
+    private String rhapActionValue;
+
+    @OneToMany(mappedBy = "conditionCd")
+    private Set<LdfPageSet> ldfPageSets = new LinkedHashSet<>();
+
+    public ConditionCode(final ConditionCommand.AddCondition request) {
+        this.id = request.id();
+        this.codeSystemDescTxt = request.codeSystemDescTxt();
+        this.conditionShortNm = request.conditionShortNm();
+        this.nndInd = request.nndInd();
+        this.progAreaCd = request.progAreaCd();
+        this.reportableMorbidityInd = request.reportableMorbidityInd();
+        this.reportableSummaryInd = request.reportableSummaryInd();
+        this.contactTracingEnableInd = request.contactTracingEnableInd();
+        this.familyCd = request.familyCd();
+        this.coinfectionGrpCd = request.coinfectionGrpCd();
+
+       this.ldfPageSets = new LinkedHashSet<>();
+    }
+
+    public void setLdf(LdfPageSet... ldf) {
+        this.ldfPageSets.addAll(Arrays.asList(ldf));
+    }
 }
