@@ -4,7 +4,6 @@ import { screen, render, fireEvent } from '@testing-library/react';
 import { ValueSet } from 'apps/page-builder/generated';
 import { BrowserRouter } from 'react-router-dom';
 import { AlertProvider } from '../../../../alert';
-import userEvent from '@testing-library/user-event';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
@@ -79,7 +78,7 @@ describe('when at least one summary is available', () => {
             <BrowserRouter>
                 <PageProvider>
                     <AlertProvider>
-                        <ValuesetLibraryTable summaries={summaries} sortChange={() => {}}></ValuesetLibraryTable>
+                        <ValuesetLibraryTable summaries={summaries}></ValuesetLibraryTable>
                     </AlertProvider>
                 </PageProvider>
             </BrowserRouter>
@@ -107,7 +106,6 @@ describe('when at least one summary is available', () => {
             const expandButton = screen.getByRole('button', {
                 name: /expand-more/i
             });
-            console.log(expandButton);
 
             fireEvent.click(expandButton);
 
