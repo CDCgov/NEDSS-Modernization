@@ -108,7 +108,6 @@ public class PageCreator {
 			return response;
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			response.setMessage(PageConstants.ADD_PAGE_FAIL + e.getMessage());
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 			return response;
