@@ -4,22 +4,24 @@ import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './AddNewPage.scss';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Button, Form, ModalRef } from '@trussworks/react-uswds';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditionLookup/QuickConditionLookup';
 import { UserContext } from 'user';
 import { fetchCodingSystemOptions, fetchFamilyOptions } from 'apps/page-builder/services/valueSetAPI';
 import { Controller, useForm } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
+import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
+import { createPage } from 'apps/page-builder/services/pagesAPI';
 
 type FormValues = {
-    conditions: [];
-    pageName: string;
-    eventType: string;
-    template: string;
-    mmg: string;
-    description?: string;
+    conditionIds: [];
     dataMartName?: string;
+    eventType: string;
+    messageMappingGuide: string;
+    name: string;
+    pageDescription?: string;
+    templateId: number;
 };
 
 type MMG = {
@@ -28,17 +30,34 @@ type MMG = {
 };
 
 type CONDITION = {
-    value: string;
     conceptCode: string;
+    display: string;
 };
+
+type TEMPLATE = {
+    id: string;
+    templateNm: string;
+};
+
+const eventType = [
+    { value: 'CON', name: 'Contact Record' },
+    { value: 'IXS', name: 'Interview' },
+    { value: 'INV', name: 'Investigation' },
+    { value: 'ISO', name: 'Lab Isolate Tracking' },
+    { value: 'LAB', name: 'Lab Report' },
+    { value: 'SUS', name: 'Lab Susceptibility' },
+    { value: 'VAC', name: 'Vaccination' }
+];
 
 export const AddNewPage = () => {
     const [showQuickConditionLookup, setShowQuickConditionLookup] = useState(false);
     const modal = useRef<ModalRef>(null);
+    const navigate = useNavigate();
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
     const [conditions, setConditions] = useState<CONDITION[]>([]);
     const [mmgs, setMMGs] = useState<MMG[]>([]);
+    const [templates, setTemplates] = useState<TEMPLATE[]>([]);
     const { handleSubmit, control } = useForm<FormValues, any>();
 
     useEffect(() => {
@@ -52,27 +71,51 @@ export const AddNewPage = () => {
         fetchFamilyOptions(token).then((data: any) => {
             setConditions(data);
         });
+        fetchTemplates(token).then((data: any) => {
+            setTemplates(data);
+        });
     }, [token]);
 
+    const onSubmit = handleSubmit(async (data) => {
+        await createPage(
+            token,
+            data.conditionIds,
+            data.eventType,
+            data.messageMappingGuide,
+            data.name,
+            Number(data.templateId),
+            data.pageDescription,
+            data?.dataMartName
+        ).then((response: any) => {
+            navigate(`/page-builder/edit/page/${response.id}`);
+        });
+    });
     return (
         <PageBuilder page="add-new-page">
             <div className="add-new-page">
                 <div className="add-new-page__form">
-                    <Form onSubmit={handleSubmit((data) => console.log(data))}>
+                    <Form onSubmit={onSubmit}>
                         <PagesBreadcrumb />
                         <div className="add-new-page__content">
                             <h2>Add new page</h2>
                             <h4>Let’s fill out some information about your new page before creating it</h4>
                             <p>All fields with * are required</p>
-                            <MultiSelectInput
-                                options={conditions.map((m) => {
-                                    return {
-                                        name: m.value,
-                                        value: m.conceptCode
-                                    };
-                                })}
-                                label="Condition(s)"
-                                required></MultiSelectInput>
+                            <Controller
+                                control={control}
+                                name="conditionIds"
+                                render={({ field: { onChange, value } }) => (
+                                    <MultiSelectInput
+                                        onChange={onChange}
+                                        value={value}
+                                        options={conditions.map((m) => {
+                                            return {
+                                                name: m.display,
+                                                value: m.conceptCode
+                                            };
+                                        })}
+                                        label="Condition(s)"></MultiSelectInput>
+                                )}
+                            />
                             <p>
                                 Can’t find the condition you’re looking for?
                                 <br />
@@ -87,34 +130,77 @@ export const AddNewPage = () => {
                             </p>
                             <Controller
                                 control={control}
-                                name="pageName"
-                                render={({ field: { onChange, value } }) => (
+                                name="name"
+                                rules={{ required: { value: true, message: 'Name is required.' } }}
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
                                     <Input
                                         onChange={onChange}
                                         defaultValue={value}
                                         label="Page name"
                                         type="text"
+                                        error={error?.message}
                                         required
                                     />
                                 )}
                             />
-                            <SelectInput label="Event type" options={[]} required></SelectInput>
-                            <SelectInput label="Templates" options={[]} required></SelectInput>
+                            <Controller
+                                control={control}
+                                name="eventType"
+                                rules={{ required: { value: true, message: 'Event type is required.' } }}
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                    <SelectInput
+                                        label="Event type"
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        options={eventType}
+                                        error={error?.message}
+                                        required></SelectInput>
+                                )}
+                            />
+                            <Controller
+                                control={control}
+                                name="templateId"
+                                rules={{ required: { value: true, message: 'Template is required.' } }}
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                    <SelectInput
+                                        label="Templates"
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        options={templates.map((template) => {
+                                            return {
+                                                name: template.templateNm,
+                                                value: template.id
+                                            };
+                                        })}
+                                        error={error?.message}
+                                        required></SelectInput>
+                                )}
+                            />
                             <p>
                                 Can’t find the template you’re looking for?
                                 <br />
                                 <NavLink to={'add/template'}>Import a new template here</NavLink>
                             </p>
-                            <SelectInput
-                                label="MMG"
-                                name="mmg"
-                                options={mmgs.map((m) => {
-                                    return {
-                                        name: m.localCode,
-                                        value: m.value
-                                    };
-                                })}
-                                required></SelectInput>
+                            <Controller
+                                control={control}
+                                name="messageMappingGuide"
+                                rules={{ required: { value: true, message: 'MMG is required.' } }}
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                    <SelectInput
+                                        label="MMG"
+                                        name="messageMappingGuide"
+                                        onChange={onChange}
+                                        defaultValue={value}
+                                        options={mmgs.map((m) => {
+                                            return {
+                                                name: m.localCode,
+                                                value: m.value
+                                            };
+                                        })}
+                                        error={error?.message}
+                                        required></SelectInput>
+                                )}
+                            />
                             <p>
                                 Would you like to add any additional information?
                                 <br />
@@ -122,7 +208,7 @@ export const AddNewPage = () => {
                             </p>
                             <Controller
                                 control={control}
-                                name="description"
+                                name="pageDescription"
                                 render={({ field: { onChange, value } }) => (
                                     <Input
                                         onChange={(d: any) => {

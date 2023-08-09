@@ -8,6 +8,7 @@ type SelectProps = {
     dataTestid?: string;
     flexBox?: boolean;
     error?: string;
+    required?: boolean;
 } & JSX.IntrinsicElements['select'];
 
 export const SelectInput = ({
@@ -22,6 +23,7 @@ export const SelectInput = ({
     dataTestid,
     flexBox,
     error,
+    required,
     onBlur,
     ...props
 }: SelectProps) => {
@@ -48,7 +50,6 @@ export const SelectInput = ({
             </Dropdown>
         );
     };
-
     return (
         <>
             {flexBox ? (
@@ -56,7 +57,10 @@ export const SelectInput = ({
                     <Grid col={6}>
                         {label && (
                             <>
-                                <Label htmlFor={htmlFor || ''}>{label}</Label>
+                                <Label htmlFor={htmlFor || ''}>
+                                    {label}
+                                    <small className="text-red">{required && ' *'}</small>
+                                </Label>
                                 <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
                             </>
                         )}
@@ -68,7 +72,15 @@ export const SelectInput = ({
                 </Grid>
             ) : (
                 <>
-                    {label && <Label htmlFor={htmlFor || ''}>{label}</Label>}
+                    {label && (
+                        <>
+                            <Label htmlFor={htmlFor || ''}>
+                                {label}
+                                <small className="text-red">{required && ' *'}</small>
+                            </Label>
+                            <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
+                        </>
+                    )}
                     {defaultValue && <DropDown />}
                     {!defaultValue && <DropDown />}
                 </>
