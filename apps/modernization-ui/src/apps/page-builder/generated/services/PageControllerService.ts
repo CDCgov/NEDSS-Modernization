@@ -4,7 +4,7 @@
 import type { Page_PageSummary_ } from '../models/Page_PageSummary_';
 import type { PageSummary } from '../models/PageSummary';
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
-import type { UpdatePageDetailsRequest } from '../models/UpdatePageDetailsRequest';
+import type { UpdatePageDetailsRequest, AddPageDetailsRequest } from '../models/UpdatePageDetailsRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -113,6 +113,40 @@ export class PageControllerService {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/page-builder/api/v1/pages/{id}/details',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * add questions
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static addPageQuestionsUsingPost({authorization, id, request}: {
+        authorization: any,
+        /**
+         * id
+         */
+        id: number,
+        /**
+         * request
+         */
+        request: AddPageDetailsRequest,
+    }): CancelablePromise<PageSummary | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/page-builder/api/v1/pages/{id}/questions',
             path: {
                 'id': id,
             },

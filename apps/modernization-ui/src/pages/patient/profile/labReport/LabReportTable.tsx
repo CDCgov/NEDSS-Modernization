@@ -238,7 +238,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                         <>
                                             <strong>Reporting facility:</strong>
                                             <br />
-                                            <span>{getReportingFacility(report)?.name}</span>
+                                            <p className="margin-0">{getReportingFacility(report)?.name}</p>
                                             <br />
                                         </>
                                     )}
@@ -246,7 +246,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                         <>
                                             <strong>Ordering provider:</strong>
                                             <br />
-                                            <span>{getOrderingProviderName(report) ?? ''}</span>
+                                            <p className="margin-0">{getOrderingProviderName(report) ?? ''}</p>
                                             <br />
                                         </>
                                     )}
@@ -254,7 +254,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                         <>
                                             <strong>Ordering facility:</strong>
                                             <br />
-                                            <span>{getOrderingFacility(report)?.name}</span>
+                                            <p className="margin-0">{getOrderingFacility(report)?.name}</p>
                                         </>
                                     )}
                                 </div>

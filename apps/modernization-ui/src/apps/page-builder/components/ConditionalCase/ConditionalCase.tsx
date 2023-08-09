@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import './ConditionalCase.scss';
-import { ValuesetLibrary } from '../ValuesetLibrary/ValuesetLibrary';
+import { ValuesetLibrary } from '../../pages/ValuesetLibrary/ValuesetLibrary';
 import { Accordion, Button, ButtonGroup, Icon, ModalToggleButton, ModalRef } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { QuestionControllerService } from '../../generated';
