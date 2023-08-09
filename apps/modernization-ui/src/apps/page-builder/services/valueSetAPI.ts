@@ -24,7 +24,6 @@ export const fetchFamilyOptions = (token: string) => {
             codeSetNm: 'CONDITION_FAMILY'
         })
             .then((response: any) => {
-                console.log('CONDITIONS', response);
                 resolve(response);
             })
             .catch((error) => {
