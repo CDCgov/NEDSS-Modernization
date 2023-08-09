@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
 
@@ -21,12 +22,16 @@ public class PageMother {
     
     @Autowired
 	private WaUiMetadatumRepository waUiMetadatumRepository;
+    
+    @Autowired
+	private PageCondMappingRepository pageConMappingRepository;
 
     private List<WaTemplate> allPages = new ArrayList<>();
 
     public void clean() {   	
     	waUiMetadatumRepository.deleteAll();
-        repository.deleteAll();   
+        repository.deleteAll();
+        pageConMappingRepository.deleteAll();
         allPages.clear();
     }
 
