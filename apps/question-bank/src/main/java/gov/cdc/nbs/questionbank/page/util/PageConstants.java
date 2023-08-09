@@ -12,9 +12,11 @@ public class PageConstants {
 	public static final String ADD_PAGE_MESSAGE= "page has been successfully added"; 
 	public static final String ADD_PAGE_FAIL = "could not successfully add page: ";
 	public static final String ADD_PAGE_NAME_EMPTY = "Page name is required.";
+	public static final String ADD_PAGE_TEMPLATENAME_EXISTS = "A Template  with Template Name %s already exists in the system";
 	public static final String ADD_PAGE_CONDITION_EMPTY = "At least one condition is required.";
 	public static final String ADD_PAGE_EVENTTYPE_EMPTY = "EventType is required.";
 	public static final String ADD_PAGE_TEMPLATE_EMPTY = "Template is required.";
+	public static final String ADD_PAGE_DATAMART_NAME_EXISTS = "A Page with Data Mart Name %s already exists in the system";
 	public static final String ADD_PAGE_MMG_EMPTY = "MMG is required.";
 	
 	

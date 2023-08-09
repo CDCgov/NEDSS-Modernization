@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -16,8 +18,10 @@ import org.springframework.http.HttpStatus;
 
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadatum;
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
 import gov.cdc.nbs.questionbank.page.PageCreator;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
@@ -30,6 +34,9 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 
 	@Mock
 	private PageCondMappingRepository pageConMappingRepository;
+	
+	@Mock
+	private WaUiMetadatumRepository waUiMetadatumRepository;
 
 	@InjectMocks
 	private PageCreator pageCreator;
@@ -52,6 +59,42 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 		assertEquals(HttpStatus.CREATED, response.getStatus());
 		assertEquals(page.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE, response.getMessage());
 
+	}
+	
+	@Test
+	void testCreatePageTemplateNameExists() {
+		 WaTemplate existing = getTemplate(10l);
+		 String templateName= "TestPageExist";
+		 PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), templateName, 10l, "HEP_Case_Map_V1.0",
+					"unit test", "dataMart");
+		 
+		 existing.setTemplateNm(templateName);
+		 when(templateRepository.findFirstByTemplateNm(Mockito.any())).thenReturn(Optional.of(existing));
+		 
+		
+		String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, templateName);
+		PageCreateResponse response = pageCreator.createPage(request, 1l);
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
+		assertEquals(finalMessage, response.getMessage());
+	}
+	
+	
+	@Test
+	void testCreatePageDataMartNameExist() {
+		 WaTemplate existing = getTemplate(10l);
+		 String dataMartNm="dataMartExist";
+		 PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
+					"unit test", dataMartNm);
+		 
+		 String finalMessage = String.format(PageConstants.ADD_PAGE_DATAMART_NAME_EXISTS,
+				 dataMartNm);
+		 existing.setDatamartNm(dataMartNm);
+		 when(templateRepository.findFirstByDatamartNm(Mockito.any())).thenReturn(Optional.of(existing));
+		 
+		
+		PageCreateResponse response = pageCreator.createPage(request, 1l);
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
+		assertEquals(finalMessage, response.getMessage());
 	}
 	
 	@Test
@@ -113,7 +156,19 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 				"unit test", "dataMart");
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
-		assertEquals(PageConstants.ADD_PAGE_MESSAGE + message, response.getMessage());
+		assertEquals(PageConstants.ADD_PAGE_FAIL + message, response.getMessage());
+
+	}
+	
+	@Test
+	void testCopyWaTemplateUIMetaData() {
+		WaTemplate oldPage = getTemplate(10l);
+		when(waUiMetadatumRepository.findAllByWaTemplateUid(Mockito.any()))
+				.thenReturn(List.of(getwaUiMetaDtum(oldPage)));
+		WaTemplate newPage = getTemplate(20l);
+		List<WaUiMetadatum> result = pageCreator.copyWaTemplateUIMetaData(oldPage, newPage);
+		assertNotNull(result);
+		assertEquals(newPage.getId(), result.get(0).getWaTemplateUid().getId());
 
 	}
 
@@ -141,6 +196,13 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 		assertEquals("PG_" + request.name(), page.getFormCd());
 		assertEquals(request.name(), page.getTemplateNm());
 	}
+	
+	private WaUiMetadatum getwaUiMetaDtum(WaTemplate aPage) {
+		WaUiMetadatum record = new WaUiMetadatum();
+		record.setWaTemplateUid(aPage);
+		return record;
+	}
+
 
 	private WaTemplate getTemplate(Long id) {
 		WaTemplate template = new WaTemplate();
