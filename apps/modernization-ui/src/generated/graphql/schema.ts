@@ -202,7 +202,7 @@ export type DocumentRequiringReview = {
   dateReceived: Scalars['DateTime'];
   descriptions: Array<Maybe<Description>>;
   eventDate?: Maybe<Scalars['DateTime']>;
-  facilityProviders: Array<Maybe<FacilityProvider>>;
+  facilityProviders: FacilityProviders;
   id: Scalars['ID'];
   isElectronic: Scalars['Boolean'];
   localId: Scalars['String'];
@@ -263,10 +263,11 @@ export enum EventStatus {
   Update = 'UPDATE'
 }
 
-export type FacilityProvider = {
-  __typename?: 'FacilityProvider';
-  name?: Maybe<Scalars['String']>;
-  title: Scalars['String'];
+export type FacilityProviders = {
+  __typename?: 'FacilityProviders';
+  orderingProvider?: Maybe<OrderingProvider>;
+  reportingFacility?: Maybe<ReportingFacility>;
+  sendingFacility?: Maybe<SendingFacility>;
 };
 
 export enum Gender {
@@ -1019,6 +1020,11 @@ export enum Operator {
   Before = 'BEFORE',
   Equal = 'EQUAL'
 }
+
+export type OrderingProvider = {
+  __typename?: 'OrderingProvider';
+  name?: Maybe<Scalars['String']>;
+};
 
 export type Organization = {
   __typename?: 'Organization';
@@ -2518,6 +2524,16 @@ export enum ReportingEntityType {
   Provider = 'PROVIDER'
 }
 
+export type ReportingFacility = {
+  __typename?: 'ReportingFacility';
+  name?: Maybe<Scalars['String']>;
+};
+
+export type SendingFacility = {
+  __typename?: 'SendingFacility';
+  name?: Maybe<Scalars['String']>;
+};
+
 export type SnomedCode = {
   __typename?: 'SnomedCode';
   id?: Maybe<Scalars['String']>;
@@ -3142,7 +3158,7 @@ export type FindDocumentsRequiringReviewForPatientQueryVariables = Exact<{
 }>;
 
 
-export type FindDocumentsRequiringReviewForPatientQuery = { __typename?: 'Query', findDocumentsRequiringReviewForPatient: { __typename?: 'PatientDocumentRequiringReviewResults', total: number, number: number, content: Array<{ __typename?: 'DocumentRequiringReview', id: string, localId: string, type: string, dateReceived: any, eventDate?: any | null, isElectronic: boolean, facilityProviders: Array<{ __typename?: 'FacilityProvider', title: string, name?: string | null } | null>, descriptions: Array<{ __typename?: 'Description', title?: string | null, value?: string | null } | null> } | null> } };
+export type FindDocumentsRequiringReviewForPatientQuery = { __typename?: 'Query', findDocumentsRequiringReviewForPatient: { __typename?: 'PatientDocumentRequiringReviewResults', total: number, number: number, content: Array<{ __typename?: 'DocumentRequiringReview', id: string, localId: string, type: string, dateReceived: any, eventDate?: any | null, isElectronic: boolean, facilityProviders: { __typename?: 'FacilityProviders', reportingFacility?: { __typename?: 'ReportingFacility', name?: string | null } | null, orderingProvider?: { __typename?: 'OrderingProvider', name?: string | null } | null, sendingFacility?: { __typename?: 'SendingFacility', name?: string | null } | null }, descriptions: Array<{ __typename?: 'Description', title?: string | null, value?: string | null } | null> } | null> } };
 
 export type FindInvestigationsByFilterQueryVariables = Exact<{
   filter: InvestigationFilter;
@@ -5964,8 +5980,15 @@ export const FindDocumentsRequiringReviewForPatientDocument = gql`
       eventDate
       isElectronic
       facilityProviders {
-        title
-        name
+        reportingFacility {
+          name
+        }
+        orderingProvider {
+          name
+        }
+        sendingFacility {
+          name
+        }
       }
       descriptions {
         title

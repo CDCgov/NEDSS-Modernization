@@ -2,6 +2,10 @@ package gov.cdc.nbs.patient.documentsrequiringreview;
 
 import java.time.Instant;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public record DocumentRequiringReview(
         Long id,
@@ -11,12 +15,15 @@ public record DocumentRequiringReview(
         Instant dateReceived,
         boolean isElectronic,
         boolean isUpdate,
-        List<FacilityProvider> facilityProviders,
+        FacilityProviders facilityProviders,
         List<Description> descriptions) {
 
-    public record FacilityProvider(
-            String title,
-            String name) {
+
+    public record ReportingFacility(String name) {
+    }
+    public record OrderingProvider(String name) {
+    }
+    public record SendingFacility(String name) {
     }
 
     public record Description(
@@ -24,4 +31,18 @@ public record DocumentRequiringReview(
             String value) {
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FacilityProviders {
+        // These need to be settable after the intial DocumentRequiringReview creation
+        private ReportingFacility reportingFacility;
+        private OrderingProvider orderingProvider;
+        private SendingFacility sendingFacility;
+
+        public FacilityProviders(String sendingFacility) {
+            this.sendingFacility = new SendingFacility(sendingFacility);
+        }
+    }
 }

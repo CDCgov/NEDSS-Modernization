@@ -8,8 +8,15 @@ query findDocumentsRequiringReviewForPatient($patient: Int!, $page: DocumentRequ
             eventDate
             isElectronic
             facilityProviders{
-                title
-                name
+                reportingFacility{
+                    name
+                }
+                orderingProvider{
+                    name
+                }
+                sendingFacility{
+                    name
+                }
             }
             descriptions{
                 title

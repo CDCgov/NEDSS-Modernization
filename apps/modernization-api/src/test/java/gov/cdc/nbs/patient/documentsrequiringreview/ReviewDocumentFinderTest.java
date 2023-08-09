@@ -42,7 +42,8 @@ import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.Description;
-import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.FacilityProvider;
+import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.OrderingProvider;
+import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.ReportingFacility;
 import gov.cdc.nbs.service.SecurityService;
 
 @ExtendWith(MockitoExtension.class)
@@ -191,13 +192,10 @@ class ReviewDocumentFinderTest {
         assertNotNull(docs);
         DocumentRequiringReview actual = docs.getContent().get(0);
 
-        assertEquals(2, actual.facilityProviders().size());
-        FacilityProvider orderingProvider = actual.facilityProviders().get(0);
-        assertEquals("Ordering provider", orderingProvider.title());
-        assertEquals("labPrefix labFirstName labLastName Esquire", orderingProvider.name());
+        OrderingProvider orderingProvider = actual.facilityProviders().getOrderingProvider();
+        assertEquals("labPrefix labFirstName labLastName ESQ", orderingProvider.name());
 
-        FacilityProvider reportingFacility = actual.facilityProviders().get(1);
-        assertEquals("Reporting facility", reportingFacility.title());
+        ReportingFacility reportingFacility = actual.facilityProviders().getReportingFacility();
         assertEquals("labReportingFacility", reportingFacility.name());
 
         assertEquals(1, actual.descriptions().size());
@@ -223,13 +221,10 @@ class ReviewDocumentFinderTest {
         assertNotNull(docs);
         DocumentRequiringReview actual = docs.getContent().get(0);
 
-        assertEquals(2, actual.facilityProviders().size());
-        FacilityProvider orderingProvider = actual.facilityProviders().get(0);
-        assertEquals("Ordering provider", orderingProvider.title());
+        OrderingProvider orderingProvider = actual.facilityProviders().getOrderingProvider();
         assertEquals("morbPrefix morbFirstName morbLastName", orderingProvider.name());
 
-        FacilityProvider reportingFacility = actual.facilityProviders().get(1);
-        assertEquals("Reporting facility", reportingFacility.title());
+        ReportingFacility reportingFacility = actual.facilityProviders().getReportingFacility();
         assertEquals("morbReportingFacility", reportingFacility.name());
 
         assertEquals(1, actual.descriptions().size());
@@ -265,7 +260,7 @@ class ReviewDocumentFinderTest {
                 null,
                 false,
                 false,
-                new ArrayList<>(),
+                new FacilityProviders(null, null),
                 new ArrayList<>());
     }
 
@@ -278,7 +273,7 @@ class ReviewDocumentFinderTest {
                 null,
                 false,
                 false,
-                new ArrayList<>(),
+                new FacilityProviders(null, null),
                 new ArrayList<>());
     }
 

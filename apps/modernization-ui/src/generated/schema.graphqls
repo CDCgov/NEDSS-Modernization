@@ -815,12 +815,25 @@ type DocumentRequiringReview {
   dateReceived: DateTime!
   eventDate: DateTime
   isElectronic: Boolean!
-  facilityProviders: [FacilityProvider]!
+  facilityProviders: FacilityProviders!
   descriptions: [Description]!
 }
 
-type FacilityProvider {
-  title: String!
+type FacilityProviders {
+  reportingFacility: ReportingFacility
+  orderingProvider: OrderingProvider
+  sendingFacility: SendingFacility
+}
+
+type ReportingFacility {
+  name: String
+}
+
+type OrderingProvider {
+  name: String
+}
+
+type SendingFacility {
   name: String
 }
 

@@ -245,9 +245,9 @@ public class ReviewDocumentFinder {
             // What type of data are we adding?
             String type = row.get(PARTICIPATION.id.typeCd);
             if (type.equals("PhysicianOfMorb") || type.equals("ORD")) {
-                doc.facilityProviders().add(mapper.toOrderingProvider(row));
+                doc.facilityProviders().setOrderingProvider((mapper.toOrderingProvider(row)));
             } else if (type.equals("ReporterOfMorbReport") || type.equals("AUT")) {
-                doc.facilityProviders().add(mapper.toReportingFacility(row));
+                doc.facilityProviders().setReportingFacility((mapper.toReportingFacility(row)));
             } else if (type.equals("SPC")) {
                 doc.descriptions().add(mapper.toDescription(row));
             }

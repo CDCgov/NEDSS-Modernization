@@ -67,21 +67,39 @@ const renderDateReceived = (document: DocumentRequiringReview) => {
 const renderReportingFacility = (document: DocumentRequiringReview) => {
     return (
         <>
-            {document.facilityProviders.length === 0 ? (
+            {document.facilityProviders.reportingFacility ? (
+                <>
+                    <div>
+                        <strong>Reporting facility</strong>
+                        <br />
+                        <span>{document.facilityProviders.reportingFacility.name}</span>
+                    </div>
+                </>
+            ) : null}
+            {document.facilityProviders.orderingProvider ? (
+                <>
+                    <div>
+                        <strong>Ordering provider</strong>
+                        <br />
+                        <span>{document.facilityProviders.orderingProvider.name}</span>
+                    </div>
+                </>
+            ) : null}
+            {document.facilityProviders.sendingFacility ? (
+                <>
+                    <div>
+                        <strong>Sending facility</strong>
+                        <br />
+                        <span>{document.facilityProviders.sendingFacility.name}</span>
+                    </div>
+                </>
+            ) : null}
+            {document.facilityProviders.orderingProvider === undefined &&
+            document.facilityProviders.reportingFacility === undefined ? (
                 <>
                     <span className="no-data">No data</span>
                 </>
-            ) : (
-                <>
-                    {document.facilityProviders.map((fp, key) => (
-                        <div key={key}>
-                            <strong>{fp?.title}</strong>
-                            <br />
-                            <span>{fp?.name}</span>
-                        </div>
-                    ))}
-                </>
-            )}
+            ) : null}
         </>
     );
 };
@@ -89,8 +107,14 @@ const renderReportingFacility = (document: DocumentRequiringReview) => {
 const renderEventDate = (document: DocumentRequiringReview) => {
     return (
         <span>
-            {format(new Date(document?.eventDate), 'MM/dd/yyyy')} <br />
-            {format(new Date(document?.eventDate), 'hh:mm a').toLowerCase()}
+            {document.eventDate ? (
+                <>
+                    {format(new Date(document?.eventDate), 'MM/dd/yyyy')} <br />
+                    {format(new Date(document?.eventDate), 'hh:mm a').toLowerCase()}
+                </>
+            ) : (
+                <>No date</>
+            )}
         </span>
     );
 };

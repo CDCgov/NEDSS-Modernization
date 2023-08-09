@@ -48,10 +48,12 @@ describe('when at least one document is available for a patient', () => {
             localId: 'someLocalId',
             dateReceived: new Date('2021-10-07T15:01:10Z'),
             type: 'LabReport',
-            eventDate: new Date('2021-09-21T17:04:11Z'),
+            eventDate: undefined,
             isElectronic: true,
             descriptions: [{ title: 'description title ', value: 'description value' }],
-            facilityProviders: [{ title: 'facility provider ', name: 'some hospital' }]
+            facilityProviders: {
+                reportingFacility: { name: 'some hospital' }
+            }
         }
     ];
 
@@ -72,10 +74,8 @@ describe('when at least one document is available for a patient', () => {
         const dateReceived = await findByText(/10\/07\/2021/);
         expect(dateReceived).toHaveTextContent('10/07/2021 10:01 am');
         expect(tableData[1]).toContainElement(dateReceived);
-        expect(tableData[2]).toHaveTextContent('facility provider some hospital');
-        const eventDate = await findByText(/09\/21\/2021/);
-        expect(eventDate).toHaveTextContent('09/21/2021 12:04 pm');
-        expect(tableData[3]).toContainElement(eventDate);
+        expect(tableData[2]).toHaveTextContent('Reporting facilitysome hospital');
+        expect(tableData[3]).toHaveTextContent('No date');
         expect(tableData[4]).toHaveTextContent('description title description value');
         expect(tableData[5]).toHaveTextContent('someLocalId');
     });

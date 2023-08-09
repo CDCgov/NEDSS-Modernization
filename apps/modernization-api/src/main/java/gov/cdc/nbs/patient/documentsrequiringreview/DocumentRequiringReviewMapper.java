@@ -14,7 +14,9 @@ import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.srte.QConditionCode;
 import gov.cdc.nbs.patient.NameRenderer;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.Description;
-import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.FacilityProvider;
+import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.FacilityProviders;
+import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.OrderingProvider;
+import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.ReportingFacility;
 
 class DocumentRequiringReviewMapper {
     private static final String ID = "id";
@@ -43,13 +45,15 @@ class DocumentRequiringReviewMapper {
                     row.get(Expressions.path(Instant.class, DATE_RECEIVED)),
                     false,
                     row.get(DOCUMENT.externalVersionCtrlNbr) > 1,
-                    Arrays.asList(new FacilityProvider("Sending Facility", row.get(DOCUMENT.sendingFacilityNm))),
+                    new FacilityProviders(row.get(DOCUMENT.sendingFacilityNm)),
                     Arrays.asList(new Description(row.get(CONDITION.conditionDescTxt), "")));
+
         } else if (type.equals("MorbReport") || type.equals("LabReport")) {
             List<Description> descriptions = type.equals("MorbReport")
                     ? Arrays.asList(new Description(row.get(CONDITION.conditionDescTxt), ""))
                     : new ArrayList<>();
             boolean isElectronic = Character.valueOf('Y').equals(row.get(OBSERVATION.electronicInd));
+
             return new DocumentRequiringReview(
                     row.get(Expressions.path(Long.class, ID)),
                     row.get(Expressions.path(String.class, LOCAL_ID)),
@@ -58,25 +62,24 @@ class DocumentRequiringReviewMapper {
                     row.get(Expressions.path(Instant.class, DATE_RECEIVED)),
                     isElectronic,
                     false,
-                    new ArrayList<>(),
+                    new FacilityProviders(),
                     descriptions);
         } else {
             return null;
         }
     }
 
-    FacilityProvider toOrderingProvider(Tuple row) {
+    OrderingProvider toOrderingProvider(Tuple row) {
         String name = NameRenderer.render(row.get(PERSON_NAME.nmPrefix),
                 row.get(PERSON_NAME.firstNm),
                 row.get(PERSON_NAME.lastNm),
                 row.get(PERSON_NAME.nmSuffix));
-        return new FacilityProvider("Ordering provider", name);
+
+        return new OrderingProvider(name);
     }
 
-    FacilityProvider toReportingFacility(Tuple row) {
-        return new FacilityProvider(
-                "Reporting facility",
-                row.get(ORGANIZATION.displayNm));
+    ReportingFacility toReportingFacility(Tuple row) {
+        return new ReportingFacility(row.get(ORGANIZATION.displayNm));
     }
 
     Description toDescription(Tuple row) {

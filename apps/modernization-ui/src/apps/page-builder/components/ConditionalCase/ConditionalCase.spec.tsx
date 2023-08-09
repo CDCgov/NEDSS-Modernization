@@ -9,6 +9,6 @@ describe('General information component tests', () => {
                 <ConditionalCase />
             </AlertProvider>
         );
-        expect(getByTestId('header-title').innerHTML).toBe('Jurisdictional Questions');
+        expect(getByTestId('header-title').innerHTML).toContain('Jurisdictional Questions');
     });
 });

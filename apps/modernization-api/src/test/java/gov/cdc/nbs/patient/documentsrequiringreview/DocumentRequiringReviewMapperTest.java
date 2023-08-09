@@ -18,7 +18,8 @@ import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.srte.QConditionCode;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.Description;
-import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.FacilityProvider;
+import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.OrderingProvider;
+import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.ReportingFacility;
 
 class DocumentRequiringReviewMapperTest {
     private static final String ID = "id";
@@ -62,8 +63,7 @@ class DocumentRequiringReviewMapperTest {
         assertEquals(fiveMinutesAgo, actual.dateReceived());
         assertEquals(true, actual.isUpdate());
         assertEquals(false, actual.isElectronic());
-        assertEquals("Sending Facility", actual.facilityProviders().get(0).title());
-        assertEquals("SendingFacilityName", actual.facilityProviders().get(0).name());
+        assertEquals("SendingFacilityName", actual.facilityProviders().getReportingFacility().name());
         assertEquals("ConditionName", actual.descriptions().get(0).title());
         assertEquals("", actual.descriptions().get(0).value());
 
@@ -95,7 +95,8 @@ class DocumentRequiringReviewMapperTest {
         assertEquals(false, actual.isElectronic());
         assertEquals(false, actual.isUpdate());
         assertTrue(actual.descriptions().isEmpty());
-        assertTrue(actual.facilityProviders().isEmpty());
+        assertNull(actual.facilityProviders().getOrderingProvider());
+        assertNull(actual.facilityProviders().getReportingFacility());
     }
 
     @Test
@@ -155,7 +156,8 @@ class DocumentRequiringReviewMapperTest {
         assertEquals(1, actual.descriptions().size());
         assertEquals("ConditionName", actual.descriptions().get(0).title());
         assertEquals("", actual.descriptions().get(0).value());
-        assertTrue(actual.facilityProviders().isEmpty());
+        assertNull(actual.facilityProviders().getOrderingProvider());
+        assertNull(actual.facilityProviders().getReportingFacility());
     }
 
 
@@ -167,17 +169,15 @@ class DocumentRequiringReviewMapperTest {
         when(tuple.get(PERSON_NAME.lastNm)).thenReturn("lastName");
         when(tuple.get(PERSON_NAME.nmSuffix)).thenReturn(Suffix.JR);
 
-        FacilityProvider provider = mapper.toOrderingProvider(tuple);
-        assertEquals("Ordering provider", provider.title());
-        assertEquals("prefix firstName lastName " + Suffix.JR.display(), provider.name());
+        OrderingProvider provider = mapper.toOrderingProvider(tuple);
+        assertEquals("prefix firstName lastName " + Suffix.JR.name(), provider.name());
     }
 
     @Test
     void should_map_reporting_facility() {
         Tuple tuple = Mockito.mock(Tuple.class);
         when(tuple.get(ORGANIZATION.displayNm)).thenReturn("organization display name");
-        FacilityProvider reportingFacility = mapper.toReportingFacility(tuple);
-        assertEquals("Reporting facility", reportingFacility.title());
+        ReportingFacility reportingFacility = mapper.toReportingFacility(tuple);
         assertEquals("organization display name", reportingFacility.name());
     }
 
