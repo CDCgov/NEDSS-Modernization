@@ -63,10 +63,9 @@ class DocumentRequiringReviewMapperTest {
         assertEquals(fiveMinutesAgo, actual.dateReceived());
         assertEquals(true, actual.isUpdate());
         assertEquals(false, actual.isElectronic());
-        assertEquals("SendingFacilityName", actual.facilityProviders().getReportingFacility().name());
+        assertEquals("SendingFacilityName", actual.facilityProviders().getSendingFacility().name());
         assertEquals("ConditionName", actual.descriptions().get(0).title());
         assertEquals("", actual.descriptions().get(0).value());
-
     }
 
     @Test

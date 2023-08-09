@@ -42,6 +42,7 @@ import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.Description;
+import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.FacilityProviders;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.OrderingProvider;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.ReportingFacility;
 import gov.cdc.nbs.service.SecurityService;
@@ -260,7 +261,7 @@ class ReviewDocumentFinderTest {
                 null,
                 false,
                 false,
-                new FacilityProviders(null, null),
+                new FacilityProviders(),
                 new ArrayList<>());
     }
 
@@ -273,7 +274,7 @@ class ReviewDocumentFinderTest {
                 null,
                 false,
                 false,
-                new FacilityProviders(null, null),
+                new FacilityProviders(),
                 new ArrayList<>());
     }
 
