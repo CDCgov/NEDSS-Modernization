@@ -8,12 +8,13 @@ import gov.cdc.nbs.questionbank.addtab.model.CreateTabRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import javax.persistence.EntityManager;
 
 @Slf4j
 @Service
+@Transactional
 public class CreateTabService implements CreateTabInterface {
 
     @Autowired
@@ -47,7 +48,7 @@ public class CreateTabService implements CreateTabInterface {
         waUiMetadata.setNbsUiComponentUid(1010L);
         waUiMetadata.getNbsUiComponentUid();
         waUiMetadata.setWaTemplateUid(page);
-        Long nextOrderNumber = getCurrentHighestOrderNumber(request.page()) + 1;
+        Long nextOrderNumber = getCurrentHighestOrderNumber(request.page());
 
         waUiMetadata.setDisplayInd(request.visible());
         waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
