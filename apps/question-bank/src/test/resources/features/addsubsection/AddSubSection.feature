@@ -7,7 +7,7 @@ Feature: Create SubSection Service
     Scenario: I can add a subsection to a page
         Given I am an admin user
         When I send an add subsection request with "<visibility>"
-        Then the section is created with "<visibility>"
+        Then the subsection is created with "<visibility>"
         Examples:
             | visibility |
             | T          |

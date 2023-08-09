@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.questionbank.condition.ConditionCreator;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
-
-import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 
-@Slf4j
 @RestController
 @RequestMapping("api/v1/condition/")
 @RequiredArgsConstructor

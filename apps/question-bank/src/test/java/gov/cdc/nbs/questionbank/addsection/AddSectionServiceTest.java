@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import javax.persistence.EntityManager;
 
 @ExtendWith(MockitoExtension.class)
 class AddSectionServiceTest {
@@ -20,6 +21,9 @@ class AddSectionServiceTest {
 
     @Mock
     private WaUiMetaDataRepository waUiMetaDataRepository;
+
+    @Mock
+    private EntityManager entityManager;
 
     @Test
     void createSectionServiceTest() {

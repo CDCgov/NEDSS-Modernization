@@ -2,14 +2,16 @@ package gov.cdc.nbs.questionbank.support;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 
 @Component
 public class PageMother {
@@ -18,15 +20,15 @@ public class PageMother {
 
     @Autowired
     private WaTemplateRepository repository;
-    
+
     @Autowired
-	private WaUiMetadatumRepository waUiMetadatumRepository;
+    private WaUiMetadataRepository waUiMetadataRepository;
 
     private List<WaTemplate> allPages = new ArrayList<>();
 
-    public void clean() {   	
-    	waUiMetadatumRepository.deleteAll();
-        repository.deleteAll();   
+    public void clean() {
+        waUiMetadataRepository.deleteAll();
+        repository.deleteAll();
         allPages.clear();
     }
 
@@ -55,7 +57,7 @@ public class PageMother {
                 .findFirst()
                 .orElseGet(this::createAsepticMeningitisPage);
     }
-    
+
 
     private WaTemplate createBrucellosisPage() {
         Instant now = Instant.now();
@@ -81,6 +83,23 @@ public class PageMother {
         conditionMapping.setLastChgUserId(1l);
 
         page.setConditionMappings(Collections.singleton(conditionMapping));
+
+
+        WaUiMetadata tab = new WaUiMetadata();
+        tab.setWaTemplateUid(page);
+        tab.setNbsUiComponentUid(1010L);
+        tab.setOrderNbr(1);
+        tab.setDisplayInd("T");
+        tab.setVersionCtrlNbr(1);
+
+        WaUiMetadata section = new WaUiMetadata();
+        section.setWaTemplateUid(page);
+        section.setNbsUiComponentUid(1015L);
+        section.setOrderNbr(2);
+        section.setDisplayInd("T");
+        section.setVersionCtrlNbr(1);
+
+        page.setUiMetadata(Arrays.asList(tab, section));
         page = repository.save(page);
         allPages.add(page);
         return page;

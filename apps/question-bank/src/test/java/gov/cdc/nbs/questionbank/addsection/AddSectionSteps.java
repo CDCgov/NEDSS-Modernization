@@ -4,7 +4,7 @@ import gov.cdc.nbs.questionbank.addsection.controller.AddSectionController;
 import gov.cdc.nbs.questionbank.addsection.model.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 public class AddSectionSteps {
 
     @Autowired
-    private AddSectionController SectionController;
+    private AddSectionController sectionController;
 
     @Autowired
     private WaUiMetaDataRepository waUiMetadataRepository;
@@ -34,9 +34,10 @@ public class AddSectionSteps {
     @Given("I send an add section request with {string}")
     public void i_send_an_add_section_request(String visibility) {
         WaTemplate template = pageMother.one();
-        CreateSectionRequest createSectionRequest = new CreateSectionRequest(1L, template.getId(), "Local SubSection", visibility);
+        CreateSectionRequest createSectionRequest =
+                new CreateSectionRequest(1L, template.getId(), "Local Section", visibility);
         try {
-            response = SectionController.createSection(createSectionRequest);
+            response = sectionController.createSection(createSectionRequest);
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -46,8 +47,8 @@ public class AddSectionSteps {
 
     @Then("the section is created with {string}")
     public void the_section_created_successfully(String visibility) {
-        WaUiMetadata metadata = waUiMetadataRepository.findById(1L).orElseThrow();
-        assertEquals(1016L, metadata.getNbsUiComponentUid().longValue());
+        WaUiMetadata metadata = waUiMetadataRepository.findById(response.uid()).orElseThrow();
+        assertEquals(1015L, metadata.getNbsUiComponentUid().longValue());
         assertEquals("Local Section", metadata.getQuestionLabel());
         assertEquals(visibility, metadata.getDisplayInd());
     }
