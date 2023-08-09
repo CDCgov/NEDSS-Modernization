@@ -9,7 +9,7 @@ export const fetchValueSet = (
     pageSize: number,
     filter: any
 ) => {
-    if (!search) {
+    if (filter?.newestToOldest || (!search && !filter?.questionType)) {
         return ValueSetControllerService.searchValueSetUsingPost({
             authorization,
             search: search
