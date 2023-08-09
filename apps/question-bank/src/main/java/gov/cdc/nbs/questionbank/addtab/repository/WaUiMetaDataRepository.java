@@ -1,20 +1,18 @@
 package gov.cdc.nbs.questionbank.addtab.repository;
 
-import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 
 @Repository
 public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long> {
 
-    @Transactional
-    @Query(value = "SELECT Top 1 order_nbr FROM WA_Ui_metadata w WHERE w.wa_template_uid = ?1 order by order_nbr desc", nativeQuery = true )
-    Long findMaxOrderNumberByTemplateUid(Long waTemplateId);
+    @Query(value = "SELECT MAX(w.orderNbr) FROM WaUiMetadata w WHERE w.waTemplateUid.id =:page")
+    Long findMaxOrderNumberByTemplateUid(@Param("page") Long page);
 
-    @Transactional
     @Query(value = "SELECT" +
             "    COALESCE((SELECT" +
             "            MIN(order_nbr)" +
@@ -31,10 +29,9 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
             "                    MAX(order_nbr) + 1" +
             "                    FROM WA_UI_metadata" +
             "                WHERE" +
-            "                    wa_template_uid = ?2))", nativeQuery = true )
+            "                    wa_template_uid = ?2))", nativeQuery = true)
     Long findOrderNbr_2(Long waUiMetadataUid, Long waTemplateId, Long nbsComponentUid);
 
-    @Transactional
     @Query(value = "SELECT" +
             "    MIN(order_nbr)" +
             "    FROM" +
@@ -52,11 +49,28 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
     Long findOrderNbr(Long waUiMetadataUid, Long waTemplateId, Long nbsComponentUid);
 
 
-    @Transactional
+    /**
+     * Increments the orderNbr for all entries for a page beginning with the given orderNbr. This is typically used when
+     * inserting a new entry into the page
+     * 
+     * @param orderNbr
+     * @param page
+     */
     @Modifying
-    @Query(value = "update wa_ui_metadata set order_nbr = order_nbr + 1 where order_nbr >= ?1 and wa_ui_metadata_uid!=?2", nativeQuery = true)
-    void updateOrderNumber(Integer orderNbr, Long waUiMetadataUid);
+    @Query("UPDATE WaUiMetadata m set m.orderNbr = m.orderNbr + 1 where m.orderNbr >= :orderNbr and m.waTemplateUid.id =:page")
+    void incrementOrderNumbers(@Param("orderNbr") Integer orderNbr, @Param("page") Long page);
 
 
+    /**
+     * Finds the orderNbr of the next section or tab within a page given the starting orderNbr
+     * 
+     * @param orderNbr
+     * @param page
+     * @return
+     */
+    @Query("SELECT MIN(m.orderNbr) FROM WaUiMetadata m WHERE m.waTemplateUid.id =:page AND m.orderNbr > :orderNbr AND (m.nbsUiComponentUid = 1015 OR m.nbsUiComponentUid = 1010)")
+    Long findOrderNbrOfNextSectionOrTab(
+            @Param("orderNbr") Integer orderNbr,
+            @Param("page") long page);
 
 }

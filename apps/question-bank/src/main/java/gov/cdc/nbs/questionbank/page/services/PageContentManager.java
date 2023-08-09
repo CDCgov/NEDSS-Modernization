@@ -5,9 +5,9 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadatum;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddQuestion;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
@@ -20,12 +20,12 @@ import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 public class PageContentManager {
 
     private final WaQuestionRepository questionRepository;
-    private final WaUiMetadatumRepository uiMetadatumRepository;
+    private final WaUiMetadataRepository uiMetadatumRepository;
     private final EntityManager entityManager;
 
     public PageContentManager(
             final WaQuestionRepository questionRepository,
-            final WaUiMetadatumRepository uiMetadatumRepository,
+            final WaUiMetadataRepository uiMetadatumRepository,
             final EntityManager entityManager) {
         this.questionRepository = questionRepository;
         this.uiMetadatumRepository = uiMetadatumRepository;
@@ -55,7 +55,7 @@ public class PageContentManager {
         uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, request.orderNumber());
 
         // create an new entity 
-        WaUiMetadatum questionPageEntry = new WaUiMetadatum(asAdd(template, question, user, orderNbr));
+        WaUiMetadata questionPageEntry = new WaUiMetadata(asAdd(template, question, user, orderNbr));
 
         // save the new entry
         return uiMetadatumRepository.save(questionPageEntry).getId();

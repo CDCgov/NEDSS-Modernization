@@ -27,11 +27,9 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "WA_UI_metadata", catalog = "NBS_ODSE")
-public class WaUiMetadatum {
-
+public class WaUiMetadata {
     public static final String ACTIVE = "Active";
     public static final String INACTIVE = "Inactive";
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -208,7 +206,7 @@ public class WaUiMetadatum {
     private String blockNm;
 
 
-    public WaUiMetadatum(PageContentCommand.AddQuestion command) {
+    public WaUiMetadata(PageContentCommand.AddQuestion command) {
         // Defaults
         this.standardNndIndCd = 'F';
         this.standardQuestionIndCd = 'F';

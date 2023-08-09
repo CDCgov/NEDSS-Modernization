@@ -1,17 +1,11 @@
 package gov.cdc.nbs.questionbank.addsection.exception;
 
-public class AddSectionException extends RuntimeException {
+import gov.cdc.nbs.questionbank.exception.BadRequestException;
 
-    private final int errorCode;
+public class AddSectionException extends BadRequestException {
 
-    public AddSectionException(String message, int errorCode){
+    public AddSectionException(String message) {
         super(message);
-        this.errorCode = errorCode;
-
-    }
-
-    public int getErrorCode() {
-        return errorCode;
     }
 
 }

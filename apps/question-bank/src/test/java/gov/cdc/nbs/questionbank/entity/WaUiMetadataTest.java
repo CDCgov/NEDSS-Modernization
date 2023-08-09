@@ -17,7 +17,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 @ExtendWith(MockitoExtension.class)
-class WaUiMetadatumTest {
+class WaUiMetadataTest {
 
     @Test
     void should_set_valid_values_for_text_question() {
@@ -32,7 +32,7 @@ class WaUiMetadatumTest {
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadatum metadata = new WaUiMetadatum(command);
+        WaUiMetadata metadata = new WaUiMetadata(command);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
@@ -55,7 +55,7 @@ class WaUiMetadatumTest {
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadatum metadata = new WaUiMetadatum(command);
+        WaUiMetadata metadata = new WaUiMetadata(command);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
@@ -77,7 +77,7 @@ class WaUiMetadatumTest {
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadatum metadata = new WaUiMetadatum(command);
+        WaUiMetadata metadata = new WaUiMetadata(command);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
@@ -104,7 +104,7 @@ class WaUiMetadatumTest {
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadatum metadata = new WaUiMetadatum(command);
+        WaUiMetadata metadata = new WaUiMetadata(command);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
@@ -138,11 +138,11 @@ class WaUiMetadatumTest {
                 now);
         // When a new WaUiMetadata entry is created 
         // Then an exception is thrown
-        assertThrows(AddQuestionException.class, () -> new WaUiMetadatum(command));
+        assertThrows(AddQuestionException.class, () -> new WaUiMetadata(command));
 
     }
 
-    private void assertDefaultValues(WaUiMetadatum metadata) {
+    private void assertDefaultValues(WaUiMetadata metadata) {
         assertEquals('F', metadata.getStandardNndIndCd().charValue());
         assertEquals('F', metadata.getStandardQuestionIndCd().charValue());
         assertEquals("T", metadata.getEnableInd());
@@ -153,7 +153,7 @@ class WaUiMetadatumTest {
         assertEquals(1, metadata.getVersionCtrlNbr().intValue());
     }
 
-    private void assertGeneralValues(WaUiMetadatum metadata, PageContentCommand.AddQuestion command) {
+    private void assertGeneralValues(WaUiMetadata metadata, PageContentCommand.AddQuestion command) {
         var question = command.question();
         assertEquals(command.page().getId(), metadata.getWaTemplateUid().getId());
         assertEquals(question.getNbsUiComponentUid(), metadata.getNbsUiComponentUid());
