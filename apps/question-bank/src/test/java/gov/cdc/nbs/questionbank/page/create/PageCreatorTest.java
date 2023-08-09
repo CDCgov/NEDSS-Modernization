@@ -54,10 +54,10 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 		page.setId(id);
 		when(templateRepository.save(Mockito.any())).thenReturn(page);
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
-		assertEquals(page.getId(), response.getPageId());
-		assertEquals(page.getTemplateNm(), response.getPageName());
-		assertEquals(HttpStatus.CREATED, response.getStatus());
-		assertEquals(page.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE, response.getMessage());
+		assertEquals(page.getId(), response.pageId());
+		assertEquals(page.getTemplateNm(), response.pageName());
+		assertEquals(HttpStatus.CREATED, response.status());
+		assertEquals(page.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE, response.message());
 
 	}
 	
@@ -74,8 +74,8 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 		
 		String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, templateName);
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
-		assertEquals(finalMessage, response.getMessage());
+		assertEquals(HttpStatus.BAD_REQUEST, response.status());
+		assertEquals(finalMessage, response.message());
 	}
 	
 	
@@ -93,8 +93,8 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 		 
 		
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
-		assertEquals(finalMessage, response.getMessage());
+		assertEquals(HttpStatus.BAD_REQUEST, response.status());
+		assertEquals(finalMessage, response.message());
 	}
 	
 	@Test
@@ -103,8 +103,8 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 				"unit test", "dataMart");
 		
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
-		assertEquals(PageConstants.ADD_PAGE_NAME_EMPTY, response.getMessage());
+		assertEquals(HttpStatus.BAD_REQUEST, response.status());
+		assertEquals(PageConstants.ADD_PAGE_NAME_EMPTY, response.message());
 	}
 	
 	@Test
@@ -113,8 +113,8 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 				"unit test", "dataMart");
 		
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
-		assertEquals(PageConstants.ADD_PAGE_CONDITION_EMPTY, response.getMessage());
+		assertEquals(HttpStatus.BAD_REQUEST, response.status());
+		assertEquals(PageConstants.ADD_PAGE_CONDITION_EMPTY, response.message());
 	}
 	
 	@Test
@@ -123,8 +123,8 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 				"unit test", "dataMart");
 		
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
-		assertEquals(PageConstants.ADD_PAGE_EVENTTYPE_EMPTY, response.getMessage());
+		assertEquals(HttpStatus.BAD_REQUEST, response.status());
+		assertEquals(PageConstants.ADD_PAGE_EVENTTYPE_EMPTY, response.message());
 	}
 	
 	@Test
@@ -133,8 +133,8 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 				"unit test", "dataMart");
 		
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
-		assertEquals(PageConstants.ADD_PAGE_TEMPLATE_EMPTY, response.getMessage());
+		assertEquals(HttpStatus.BAD_REQUEST, response.status());
+		assertEquals(PageConstants.ADD_PAGE_TEMPLATE_EMPTY, response.message());
 	}
 	
 	@Test
@@ -143,8 +143,8 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 				"unit test", "dataMart");
 		
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
-		assertEquals(PageConstants.ADD_PAGE_MMG_EMPTY, response.getMessage());
+		assertEquals(HttpStatus.BAD_REQUEST, response.status());
+		assertEquals(PageConstants.ADD_PAGE_MMG_EMPTY, response.message());
 
 	}
 
@@ -155,8 +155,8 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 		PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
 				"unit test", "dataMart");
 		PageCreateResponse response = pageCreator.createPage(request, 1l);
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
-		assertEquals(PageConstants.ADD_PAGE_FAIL + message, response.getMessage());
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.status());
+		assertEquals(PageConstants.ADD_PAGE_FAIL + message, response.message());
 
 	}
 	

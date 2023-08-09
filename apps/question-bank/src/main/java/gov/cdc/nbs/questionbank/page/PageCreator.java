@@ -37,35 +37,29 @@ public class PageCreator {
 	private WaUiMetadatumRepository waUiMetadatumRepository;
 
 	public PageCreateResponse createPage(PageCreateRequest request, Long userId) {
-		PageCreateResponse response = new PageCreateResponse();
+		PageCreateResponse response = null;
 		try {
 			if (request.name() == null || request.name().isEmpty()) {
-				response.setMessage(PageConstants.ADD_PAGE_NAME_EMPTY);
-				response.setStatus(HttpStatus.BAD_REQUEST);
-				return response;
+				return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_NAME_EMPTY, HttpStatus.BAD_REQUEST);
 			}
 
 			if (request.conditionIds().isEmpty()) {
-				response.setMessage(PageConstants.ADD_PAGE_CONDITION_EMPTY);
-				response.setStatus(HttpStatus.BAD_REQUEST);
-				return response;
+				return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_CONDITION_EMPTY,
+						HttpStatus.BAD_REQUEST);
 			}
 
 			if (request.eventType() == null || request.eventType().isEmpty()) {
-				response.setMessage(PageConstants.ADD_PAGE_EVENTTYPE_EMPTY);
-				response.setStatus(HttpStatus.BAD_REQUEST);
-				return response;
+				return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_EVENTTYPE_EMPTY,
+						HttpStatus.BAD_REQUEST);
 			}
 
 			if (request.templateId() == null || request.templateId().intValue() < 1) {
-				response.setMessage(PageConstants.ADD_PAGE_TEMPLATE_EMPTY);
-				response.setStatus(HttpStatus.BAD_REQUEST);
-				return response;
+				return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_TEMPLATE_EMPTY,
+						HttpStatus.BAD_REQUEST);
 			}
 
 			if (request.messageMappingGuide() == null || request.messageMappingGuide().isEmpty()) {
-				response.setMessage(PageConstants.ADD_PAGE_MMG_EMPTY);
-				response.setStatus(HttpStatus.BAD_REQUEST);
+				response = new PageCreateResponse(null, null, PageConstants.ADD_PAGE_MMG_EMPTY, HttpStatus.BAD_REQUEST);
 				return response;
 			}
 
@@ -73,44 +67,34 @@ public class PageCreator {
 
 			if (existingPageName.isPresent()) {
 				String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, request.name());
-				response.setMessage(finalMessage);
-				response.setStatus(HttpStatus.BAD_REQUEST);
-				return response;
+				return new PageCreateResponse(null, null, finalMessage, HttpStatus.BAD_REQUEST);
 			}
 
 			Optional<WaTemplate> existingDataMartNm = templateRepository.findFirstByDatamartNm(request.dataMartName());
 			if (existingDataMartNm.isPresent()) {
 				String finalMessage = String.format(PageConstants.ADD_PAGE_DATAMART_NAME_EXISTS,
 						request.dataMartName());
-				response.setMessage(finalMessage);
-				response.setStatus(HttpStatus.BAD_REQUEST);
-				return response;
+				return new PageCreateResponse(null, null, finalMessage, HttpStatus.BAD_REQUEST);
 			}
-			
+
 			WaTemplate newPage = buildPage(request, (String) request.conditionIds().toArray()[0], request.eventType(),
 					userId);
 			WaTemplate savedPage = templateRepository.save(newPage);
 			Set<PageCondMapping> mapping = savePageCondMapping(request, savedPage, userId);
 			pageConMappingRepository.saveAll(mapping);
-			
+
 			Optional<WaTemplate> template = templateRepository.findById(request.templateId());
-			if(template.isPresent()) {
+			if (template.isPresent()) {
 				List<WaUiMetadatum> uiMappings = copyWaTemplateUIMetaData(template.get(), savedPage);
 				waUiMetadatumRepository.saveAll(uiMappings);
 			}
-			
-			
-			response.setPageId(savedPage.getId());
-			response.setPageName(savedPage.getTemplateNm());
-			response.setMessage(savedPage.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE);
-			response.setStatus(HttpStatus.CREATED);
 
-			return response;
+			return new PageCreateResponse(savedPage.getId(), savedPage.getTemplateNm(),
+					savedPage.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE, HttpStatus.CREATED);
 
 		} catch (Exception e) {
-			response.setMessage(PageConstants.ADD_PAGE_FAIL + e.getMessage());
-			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-			return response;
+			return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_FAIL + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}

@@ -73,7 +73,7 @@ public class PageController {
         return results;
     }
 
-    @PostMapping
+    @PostMapping("/search")
     public Page<PageSummary> search(
             @RequestBody PageSummaryRequest request,
             @PageableDefault(size = 25, sort = "id", page = 0) Pageable pageable) {
@@ -83,7 +83,7 @@ public class PageController {
         return results;
     }
     
-    @PostMapping("/add")
+    @PostMapping
     public PageCreateResponse createPage(@RequestBody PageCreateRequest request) {
     	Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     	return creator.createPage(request,userId);
