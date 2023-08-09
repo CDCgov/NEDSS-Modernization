@@ -4,8 +4,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.Expressions;
 import gov.cdc.nbs.entity.odse.QNbsDocument;
@@ -14,6 +12,7 @@ import gov.cdc.nbs.entity.odse.QObservation;
 import gov.cdc.nbs.entity.odse.QOrganization;
 import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.srte.QConditionCode;
+import gov.cdc.nbs.patient.NameRenderer;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.Description;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.FacilityProvider;
 
@@ -67,14 +66,10 @@ class DocumentRequiringReviewMapper {
     }
 
     FacilityProvider toOrderingProvider(Tuple row) {
-        String name = Arrays.asList(
-                row.get(PERSON_NAME.nmPrefix),
+        String name = NameRenderer.render(row.get(PERSON_NAME.nmPrefix),
                 row.get(PERSON_NAME.firstNm),
                 row.get(PERSON_NAME.lastNm),
-                row.get(PERSON_NAME.nmSuffix) != null ? row.get(PERSON_NAME.nmSuffix).display() : null)
-                .stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.joining(" "));
+                row.get(PERSON_NAME.nmSuffix));
         return new FacilityProvider("Ordering provider", name);
     }
 
