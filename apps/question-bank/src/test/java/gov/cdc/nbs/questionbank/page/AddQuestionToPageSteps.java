@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadatum;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.model.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.page.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -28,7 +28,7 @@ public class AddQuestionToPageSteps {
     private PageController pageController;
 
     @Autowired
-    private WaUiMetadatumRepository repository;
+    private WaUiMetadataRepository repository;
 
     @Autowired
     private QuestionMother questionMother;
@@ -66,7 +66,7 @@ public class AddQuestionToPageSteps {
     public void the_question_is_added_to_the_page() {
         assertNull(exceptionHolder.getException());
         assertNotNull(response.componentId());
-        WaUiMetadatum metadata = repository.findById(response.componentId())
+        WaUiMetadata metadata = repository.findById(response.componentId())
                 .orElseThrow(() -> new RuntimeException("Failed to find inserted metadata"));
         assertEquals(1, metadata.getOrderNbr().intValue());
     }

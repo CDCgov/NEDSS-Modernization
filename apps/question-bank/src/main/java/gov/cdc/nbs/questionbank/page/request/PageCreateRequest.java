@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.page.request;
 import java.util.Set;
 
 public record PageCreateRequest(
-		Long eventTypeId,
+		String eventType,
 		Set<String> conditionIds,
 		String name,
 		Long templateId,

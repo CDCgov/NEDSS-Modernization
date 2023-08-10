@@ -64,13 +64,4 @@ class LabReportResolverTest {
         assertEquals(filter.getCodedResult(), actualFilter.getCodedResult());
     }
 
-    @Test
-    void should_pass_patientId() {
-        Long patientId = 123L;
-        resolver.findDocumentsRequiringReviewForPatient(patientId, new GraphQLPage(maxPageSize));
-        verify(finder).findUnprocessedDocumentsForPatient(patientIdCaptor.capture(), Mockito.any());
-        var actualPatient = patientIdCaptor.getValue();
-        assertEquals(patientId, actualPatient);
-    }
-
 }

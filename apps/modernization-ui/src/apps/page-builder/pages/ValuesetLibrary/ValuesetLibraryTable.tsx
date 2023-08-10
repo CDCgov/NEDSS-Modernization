@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'apps/page-builder/generated';
-import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ValueSet } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -10,6 +10,7 @@ import { SearchBar } from './SearchBar';
 import { Icon } from '@trussworks/react-uswds';
 import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
+import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { AddValueset } from '../../components/AddValueset/AddValueset';
 import { PagesContext } from '../../context/PagesContext';
@@ -36,8 +37,8 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
+    const [expandedRows, setExpandedRows] = useState<number[]>([]);
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
-
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
     setSortBy('');
@@ -46,6 +47,8 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     const asTableRow = (page: ValueSet): TableBody => ({
         id: page.nbsUid,
         checkbox: true,
+        expanded: expandedRows.some((id) => id === page.nbsUid),
+        expandedViewComponent: <ValuesetLibraryTableRowExpanded data={page} />,
         tableDetails: [
             {
                 id: 1,
@@ -61,12 +64,47 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                 title:
                     (
                         <div className="ds-u-text-align--right">
-                            <Icon.ExpandMore style={{ cursor: 'pointer' }} size={4} color="black" />
+                            {expandedRows.some((id) => id === page.nbsUid) ? (
+                                <Button type="button" unstyled aria-label="expand-less">
+                                    <Icon.ExpandLess
+                                        style={{ cursor: 'pointer' }}
+                                        size={4}
+                                        color="black"
+                                        onClick={() => handleExpandLessClick(page.nbsUid)}
+                                    />
+                                </Button>
+                            ) : (
+                                <Button type="button" unstyled aria-label="expand-more">
+                                    <Icon.ExpandMore
+                                        style={{ cursor: 'pointer' }}
+                                        size={4}
+                                        color="black"
+                                        onClick={() => handleExpandMoreClick(page.nbsUid)}
+                                    />
+                                </Button>
+                            )}
                         </div>
                     ) || null
             }
         ]
     });
+
+    const handleExpandMoreClick = (id: number | undefined) => {
+        if (id) {
+            setExpandedRows([...expandedRows, id]);
+        }
+    };
+
+    const handleExpandLessClick = (id: number | undefined) => {
+        const indexToRemove = expandedRows.findIndex((rowId) => rowId === id);
+
+        if (indexToRemove !== -1) {
+            const rows = [...expandedRows];
+            rows.splice(indexToRemove, 1);
+            setExpandedRows(rows);
+        }
+    };
+
     const handleSelected = ({ target }: any, item: any) => {
         if (target.checked) {
             const value: any = summaries.filter((val: any) => item.id === val.nbsUid);
@@ -75,6 +113,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             setSelectedValueSet({});
         }
     };
+
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
 
     /*
@@ -101,7 +140,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
 
     useEffect(() => {
         setTableRows(asTableRows(summaries));
-    }, [summaries]);
+    }, [summaries, expandedRows]);
 
     useEffect(() => {
         return () => localStorage.setItem('selectedQuestion', '0');
@@ -113,6 +152,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             setSortDirection(direction);
         }
     };
+
     const handleAddQsn = async () => {
         // @ts-ignore
         const id: number = parseInt(localStorage.getItem('selectedQuestion'));
