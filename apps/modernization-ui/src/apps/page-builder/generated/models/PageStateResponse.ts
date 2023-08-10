@@ -2,12 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type CreateConditionResponse = {
-    id?: string;
-    status?: CreateConditionResponse.status;
+export type PageStateResponse = {
+    message?: string;
+    status?: PageStateResponse.status;
+    templateId?: number;
 };
 
-export namespace CreateConditionResponse {
+export namespace PageStateResponse {
 
     export enum status {
         ACCEPTED = 'ACCEPTED',

@@ -2,6 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Question = {
+export type CreateUiResponse = {
+    message?: string;
+    uid?: number;
 };
 

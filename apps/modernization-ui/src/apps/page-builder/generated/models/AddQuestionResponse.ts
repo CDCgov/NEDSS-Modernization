@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Question = {
+export type AddQuestionResponse = {
+    componentId?: number;
 };
 

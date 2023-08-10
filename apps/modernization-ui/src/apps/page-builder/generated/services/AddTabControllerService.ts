@@ -1,22 +1,22 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateConditionRequest } from '../models/CreateConditionRequest';
-import type { CreateConditionResponse } from '../models/CreateConditionResponse';
+import type { CreateTabRequest } from '../models/CreateTabRequest';
+import type { CreateUiResponse } from '../models/CreateUiResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class ConditionControllerService {
+export class AddTabControllerService {
 
     /**
-     * createCondition
-     * @returns CreateConditionResponse OK
+     * createTab
+     * @returns CreateUiResponse OK
      * @returns any Created
      * @throws ApiError
      */
-    public static createConditionUsingPost({
+    public static createTabUsingPost({
         authorization,
         request,
     }: {
@@ -24,11 +24,11 @@ export class ConditionControllerService {
         /**
          * request
          */
-        request: CreateConditionRequest,
-    }): CancelablePromise<CreateConditionResponse | any> {
+        request: CreateTabRequest,
+    }): CancelablePromise<CreateUiResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/condition/',
+            url: '/page-builder/api/v1/addtab',
             headers: {
                 'Authorization': authorization,
             },

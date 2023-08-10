@@ -1,7 +1,13 @@
 /* eslint-disable camelcase */
-import { PageControllerService, PageSummary } from 'apps/page-builder/generated';
+import {
+    CodedQuestion,
+    DateQuestion,
+    NumericQuestion,
+    PageControllerService,
+    PageSummary,
+    TextQuestion
+} from 'apps/page-builder/generated';
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { Question } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
@@ -28,6 +34,8 @@ const tableColumns = [
     { name: '', sortable: false }
 ];
 
+type Question = TextQuestion | DateQuestion | NumericQuestion | CodedQuestion;
+
 type Props = {
     summaries: Question[];
     pages?: any;
@@ -46,7 +54,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
         tableDetails: [
             {
                 id: 1,
-                title: <div className="page-name">{page?.questionType || page.codeSet}</div> || null
+                title: <div className="page-name">{page?.type || page.codeSet}</div> || null
             },
             { id: 2, title: <div className="event-text">{page?.uniqueId}</div> || null },
             {
@@ -121,11 +129,11 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
         // TODO need to add logic for find orderNumber and Id
         const id: number = 0;
         const request = {
-            orderNumber: 'orderNumber',
+            orderNumber: 1,
             questionId: id
         };
 
-        PageControllerService.addPageQuestionsUsingPost({
+        PageControllerService.addQuestionToPageUsingPost({
             authorization,
             id,
             request

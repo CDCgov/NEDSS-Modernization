@@ -2,11 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UpdatePageDetailsRequest = {
+export type PageCreateRequest = {
     conditionIds?: Array<string>;
     dataMartName?: string;
-    description?: string;
+    eventType?: string;
     messageMappingGuide?: string;
     name?: string;
+    pageDescription?: string;
+    templateId?: number;
 };
 
