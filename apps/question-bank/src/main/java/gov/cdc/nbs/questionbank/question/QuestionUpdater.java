@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestionHist;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
@@ -22,14 +22,14 @@ public class QuestionUpdater {
     private final WaQuestionHistRepository histRepository;
     private final WaQuestionRepository repository;
     private final QuestionMapper questionMapper;
-    private final WaUiMetadatumRepository uiMetadatumRepository;
+    private final WaUiMetadataRepository uiMetadatumRepository;
     private final QuestionManagementUtil managementUtil;
 
     public QuestionUpdater(
             WaQuestionHistRepository histRepository,
             WaQuestionRepository repository,
             QuestionMapper questionMapper,
-            WaUiMetadatumRepository uiMetadatumRepository,
+            WaUiMetadataRepository uiMetadatumRepository,
             QuestionManagementUtil managementUtil) {
         this.histRepository = histRepository;
         this.repository = repository;

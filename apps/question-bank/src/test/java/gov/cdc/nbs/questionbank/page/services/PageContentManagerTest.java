@@ -16,9 +16,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadatum;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import gov.cdc.nbs.questionbank.page.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
@@ -32,7 +32,7 @@ class PageContentManagerTest {
     private WaQuestionRepository questionRepository;
 
     @Mock
-    private WaUiMetadatumRepository uiMetadatumRepository;
+    private WaUiMetadataRepository uiMetadatumRepository;
 
     @Mock
     private EntityManager entityManager;
@@ -61,9 +61,9 @@ class PageContentManagerTest {
                 .thenReturn(0L);
 
         // when an add question request is processed
-        ArgumentCaptor<WaUiMetadatum> captor = ArgumentCaptor.forClass(WaUiMetadatum.class);
+        ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
         when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
-            WaUiMetadatum savedMetadatum = m.getArgument(0);
+            WaUiMetadata savedMetadatum = m.getArgument(0);
             savedMetadatum.setId(77L);
             return savedMetadatum;
         });
@@ -153,9 +153,9 @@ class PageContentManagerTest {
         when(uiMetadatumRepository.findMaxOrderNbrForPage(pageId)).thenReturn(3);
 
         // when an add question request is processed
-        ArgumentCaptor<WaUiMetadatum> captor = ArgumentCaptor.forClass(WaUiMetadatum.class);
+        ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
         when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
-            WaUiMetadatum savedMetadatum = m.getArgument(0);
+            WaUiMetadata savedMetadatum = m.getArgument(0);
             savedMetadatum.setId(77L);
             return savedMetadatum;
         });
@@ -191,9 +191,9 @@ class PageContentManagerTest {
         when(uiMetadatumRepository.findMaxOrderNbrForPage(pageId)).thenReturn(100);
 
         // when an add question request is processed
-        ArgumentCaptor<WaUiMetadatum> captor = ArgumentCaptor.forClass(WaUiMetadatum.class);
+        ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
         when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
-            WaUiMetadatum savedMetadatum = m.getArgument(0);
+            WaUiMetadata savedMetadatum = m.getArgument(0);
             savedMetadatum.setId(77L);
             return savedMetadatum;
         });
