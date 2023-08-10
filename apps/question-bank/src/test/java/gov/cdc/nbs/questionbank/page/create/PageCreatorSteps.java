@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.page.PageController;
@@ -38,7 +37,7 @@ public class PageCreatorSteps {
 
         try {
             userMother.adminUser();
-            pageCreateResponse = new PageCreateResponse(null, null, null, null);
+            pageCreateResponse = new PageCreateResponse(null, null, null);
             request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
                     "create page steps", "dataMart");
         } catch (AccessDeniedException e) {
@@ -63,11 +62,9 @@ public class PageCreatorSteps {
     @Then("A page is created")
     public void a_page_is_created() {
         assertNotNull(pageCreateResponse);
-        assertEquals(HttpStatus.CREATED, pageCreateResponse.status());
         assertTrue(pageCreateResponse.pageId() > 0);
         assertEquals(request.name() + PageConstants.ADD_PAGE_MESSAGE, pageCreateResponse.message());
         assertEquals(request.name(), pageCreateResponse.pageName());
-
     }
 
 }

@@ -2,23 +2,21 @@ package gov.cdc.nbs.questionbank.page.state;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.PageStateChanger;
+import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 
@@ -44,31 +42,23 @@ class PageStateChangeTest {
         when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(before));
         PageStateResponse response = pageStateChanger.savePageAsDraft(requestId);
         assertEquals(requestId, response.getTemplateId());
-        assertEquals(HttpStatus.OK, response.getStatus());
         assertEquals(PageConstants.SAVE_DRAFT_SUCCESS, response.getMessage());
-
     }
 
     @Test
     void pageStateExceptionTest() {
         Long requestId = 1l;
-        final String message = "Could not find page invalid id provided";
-        when(templateRepository.findById(Mockito.anyLong())).thenThrow(new IllegalArgumentException(message));
-        PageStateResponse response = pageStateChanger.savePageAsDraft(requestId);
-        assertEquals(requestId, response.getTemplateId());
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
-        assertEquals(message, response.getMessage());
-
+        when(templateRepository.findById(Mockito.anyLong())).thenThrow(new IllegalArgumentException());
+        var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
+        assertEquals(PageConstants.SAVE_DRAFT_FAIL, exception.getMessage());
     }
 
     @Test
     void pageStateNotFoundTest() {
         Long requestId = 1l;
         when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        PageStateResponse response = pageStateChanger.savePageAsDraft(requestId);
-        assertEquals(requestId, response.getTemplateId());
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatus());
-        assertEquals(PageConstants.SAVE_DRAFT_FAIL, response.getMessage());
+        var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
+        assertEquals(PageConstants.SAVE_DRAFT_FAIL, exception.getMessage());
     }
 
 
@@ -80,7 +70,6 @@ class PageStateChangeTest {
         assertEquals("Draft", newPage.getTemplateType());
         assertEquals(0, newPage.getPublishVersionNbr().intValue());
         assertEquals('F', newPage.getPublishIndCd().charValue());
-
     }
 
     @Test

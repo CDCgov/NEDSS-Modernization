@@ -7,17 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.exception.PageCreateException;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
@@ -37,46 +35,40 @@ public class PageCreator {
     private WaUiMetadataRepository waUiMetadataRepository;
 
     public PageCreateResponse createPage(PageCreateRequest request, Long userId) {
-        PageCreateResponse response = null;
+        if (request.name() == null || request.name().isEmpty()) {
+            throw new PageCreateException(PageConstants.ADD_PAGE_NAME_EMPTY);
+        }
+
+        if (request.conditionIds().isEmpty()) {
+            throw new PageCreateException(PageConstants.ADD_PAGE_CONDITION_EMPTY);
+        }
+
+        if (request.eventType() == null || request.eventType().isEmpty()) {
+            throw new PageCreateException(PageConstants.ADD_PAGE_EVENTTYPE_EMPTY);
+        }
+
+        if (request.templateId() == null || request.templateId().intValue() < 1) {
+            throw new PageCreateException(PageConstants.ADD_PAGE_TEMPLATE_EMPTY);
+        }
+
+        if (request.messageMappingGuide() == null || request.messageMappingGuide().isEmpty()) {
+            throw new PageCreateException(PageConstants.ADD_PAGE_MMG_EMPTY);
+        }
+
+        Optional<WaTemplate> existingPageName = templateRepository.findFirstByTemplateNm(request.name());
+
+        if (existingPageName.isPresent()) {
+            String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, request.name());
+            throw new PageCreateException(finalMessage);
+        }
+
+        Optional<WaTemplate> existingDataMartNm = templateRepository.findFirstByDatamartNm(request.dataMartName());
+        if (existingDataMartNm.isPresent()) {
+            String finalMessage = String.format(PageConstants.ADD_PAGE_DATAMART_NAME_EXISTS,
+                    request.dataMartName());
+            throw new PageCreateException(finalMessage);
+        }
         try {
-            if (request.name() == null || request.name().isEmpty()) {
-                return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_NAME_EMPTY, HttpStatus.BAD_REQUEST);
-            }
-
-            if (request.conditionIds().isEmpty()) {
-                return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_CONDITION_EMPTY,
-                        HttpStatus.BAD_REQUEST);
-            }
-
-            if (request.eventType() == null || request.eventType().isEmpty()) {
-                return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_EVENTTYPE_EMPTY,
-                        HttpStatus.BAD_REQUEST);
-            }
-
-            if (request.templateId() == null || request.templateId().intValue() < 1) {
-                return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_TEMPLATE_EMPTY,
-                        HttpStatus.BAD_REQUEST);
-            }
-
-            if (request.messageMappingGuide() == null || request.messageMappingGuide().isEmpty()) {
-                response = new PageCreateResponse(null, null, PageConstants.ADD_PAGE_MMG_EMPTY, HttpStatus.BAD_REQUEST);
-                return response;
-            }
-
-            Optional<WaTemplate> existingPageName = templateRepository.findFirstByTemplateNm(request.name());
-
-            if (existingPageName.isPresent()) {
-                String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, request.name());
-                return new PageCreateResponse(null, null, finalMessage, HttpStatus.BAD_REQUEST);
-            }
-
-            Optional<WaTemplate> existingDataMartNm = templateRepository.findFirstByDatamartNm(request.dataMartName());
-            if (existingDataMartNm.isPresent()) {
-                String finalMessage = String.format(PageConstants.ADD_PAGE_DATAMART_NAME_EXISTS,
-                        request.dataMartName());
-                return new PageCreateResponse(null, null, finalMessage, HttpStatus.BAD_REQUEST);
-            }
-
             WaTemplate newPage = buildPage(request, (String) request.conditionIds().toArray()[0], request.eventType(),
                     userId);
             WaTemplate savedPage = templateRepository.save(newPage);
@@ -89,12 +81,13 @@ public class PageCreator {
                 waUiMetadataRepository.saveAll(uiMappings);
             }
 
-            return new PageCreateResponse(savedPage.getId(), savedPage.getTemplateNm(),
-                    savedPage.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE, HttpStatus.CREATED);
+            return new PageCreateResponse(
+                    savedPage.getId(),
+                    savedPage.getTemplateNm(),
+                    savedPage.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE);
 
         } catch (Exception e) {
-            return new PageCreateResponse(null, null, PageConstants.ADD_PAGE_FAIL + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new PageCreateException(PageConstants.ADD_PAGE_FAIL);
         }
 
     }
