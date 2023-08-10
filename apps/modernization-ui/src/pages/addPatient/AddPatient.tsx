@@ -32,7 +32,7 @@ import {
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { useAddPatientCodedValues } from './useAddPatientCodedValues';
-import { useCountyCodedValues, useLocationCodedValues } from 'location';
+import { useLocationCodedValues } from 'location';
 import { externalizeDateTime } from 'date';
 
 export default function AddPatient() {
@@ -332,14 +332,7 @@ export default function AddPatient() {
                                                     maritalStatuses: coded.maritalStatuses
                                                 }}
                                             />
-                                            <AddressFields
-                                                id={'section-Address'}
-                                                title="Address"
-                                                coded={{
-                                                    ...locations,
-                                                    byState: (state) => useCountyCodedValues(state).counties
-                                                }}
-                                            />
+                                            <AddressFields id={'section-Address'} title="Address" coded={locations} />
                                             <ContactFields id={'section-Telephone'} title="Telephone" />
                                             <EthnicityFields
                                                 id={'section-Ethnicity'}

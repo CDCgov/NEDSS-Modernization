@@ -1,7 +1,9 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { LocationCodedValues } from 'location';
+import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
+
 import {
-    Button,
     ButtonGroup,
     ErrorMessage,
     Grid,
@@ -17,36 +19,15 @@ import {
 import FormCard from 'components/FormCard/FormCard';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 
-import { CodedValue } from 'coded';
 import { Input } from 'components/FormInputs/Input';
-import { StateCodedValue } from 'location';
-
-export interface AddressSuggestion {
-    street_line: string;
-    secondary: string;
-    city: string;
-    state: string;
-    zipcode: string;
-    entries: number;
-}
-
-type CodedValueLists = {
-    states: StateCodedValue[];
-    countries: CodedValue[];
-    byState: (state: string) => CodedValue[];
-};
 
 type Props = {
     id: string;
     title: string;
-    coded: CodedValueLists;
+    coded: LocationCodedValues;
 };
 
 export default function AddressFields({ id, title, coded }: Props) {
-    const wrapperRef = useRef<any>(null);
-    const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
-    const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
-
     const [verified, setVerified] = useState<boolean>(false);
     const [unverified, setUnverified] = useState<boolean>(false);
     const verifiedModalRef = useRef<ModalRef>(null);
@@ -55,48 +36,16 @@ export default function AddressFields({ id, title, coded }: Props) {
     const { control, setValue } = useFormContext();
 
     const selectedState = useWatch({ control, name: 'state' });
+    const enteredCity = useWatch({ control, name: 'city' });
+    const enteredZip = useWatch({ control, name: 'zip' });
 
-    const counties = coded.byState(selectedState);
-
-    useEffect(() => {
-        function handleClickOutside(event: any) {
-            if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-                setShowSuggestions(false);
-            }
-        }
-        // Bind the event listener
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [wrapperRef]);
-
-    async function populateSuggestions(eve: ChangeEvent<HTMLInputElement>) {
-        if (eve.target.value.length > 2) {
-            const data = await fetch(
-                `https://us-autocomplete-pro.api.smarty.com/lookup?key=166215385741384990&search=${eve.target.value}`,
-                {
-                    headers: {
-                        referer: 'localhost'
-                    }
-                }
-            ).then((resp) => resp.json());
-            setSuggestions(data.suggestions);
-        }
-        setShowSuggestions(true);
-    }
+    const counties = coded.counties.byState(selectedState);
 
     function handleSuggestionSelection(selected: AddressSuggestion) {
-        setValue('streetAddress1', selected.street_line);
-        setValue('streetAddress2', selected.secondary);
+        setValue('streetAddress1', selected.address1);
         setValue('city', selected.city);
-
-        const state = coded.states.find((state) => state.abbreviation === selected.state)?.value || '';
-        setValue('state', state);
-        setValue('zip', selected.zipcode);
-
-        setShowSuggestions(false);
+        setValue('state', selected.state?.value);
+        setValue('zip', selected.zip);
     }
 
     useEffect(() => {
@@ -107,18 +56,6 @@ export default function AddressFields({ id, title, coded }: Props) {
         unverifiedModalRef.current?.toggleModal(undefined, true);
     }, [unverified]);
 
-    const handleKeyDown = async (event: any) => {
-        setVerified(false);
-        setUnverified(false);
-        switch (event.key) {
-            case 'Enter' || 'enter': {
-                event.preventDefault();
-                await populateSuggestions(event);
-                setShowSuggestions(false);
-            }
-        }
-    };
-
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3 address-fields-grid">
@@ -127,43 +64,18 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="streetAddress1"
-                            render={({ field: { onChange, value } }) => (
-                                <Input
-                                    onChange={(v: any) => {
-                                        populateSuggestions(v);
-                                        onChange(v);
-                                    }}
-                                    type="text"
+                            render={({ field: { onChange, value, name } }) => (
+                                <AddressSuggestionInput
+                                    id={name}
+                                    locations={coded}
+                                    criteria={{ zip: enteredZip, city: enteredCity, state: selectedState }}
                                     label="Street address 1"
                                     defaultValue={value}
-                                    htmlFor="streetAddress1"
-                                    id="streetAddress1"
-                                    onKeyDown={handleKeyDown}
+                                    onChange={onChange}
+                                    onSelection={handleSuggestionSelection}
                                 />
                             )}
                         />
-                        {showSuggestions && (
-                            <div className="button-group">
-                                <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
-                                    {suggestions.map((suggestion, idx) => (
-                                        <li key={idx} className="usa-nav__submenu-item">
-                                            <Button
-                                                key={idx}
-                                                onClick={() => handleSuggestionSelection(suggestion)}
-                                                type={'button'}
-                                                unstyled>
-                                                <span className="address-suggestion-line">
-                                                    {suggestion.street_line}
-                                                </span>
-                                                <span className="address-suggestion-line">
-                                                    {suggestion.city}, {suggestion.state} {suggestion.zipcode}
-                                                </span>
-                                            </Button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
 
                         {unverified && (
                             <span>
@@ -246,17 +158,13 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     <div className="margin-left-9 address-section">
                                         <div>
                                             <p className="text-bold">Entered address:</p>
-                                            <p>{suggestions[0].street_line}</p>
-                                            <p>
-                                                {suggestions[0].city}, {suggestions[0].state} {suggestions[0].zipcode}
-                                            </p>
+                                            <p>street_line</p>
+                                            <p>city, state zipcode</p>
                                         </div>
                                         <div className="margin-right-9">
                                             <p className="text-bold">Valid address found:</p>
-                                            <p>{suggestions[0].street_line}</p>
-                                            <p>
-                                                {suggestions[0].city}, {suggestions[0].state} {suggestions[0].zipcode}
-                                            </p>
+                                            <p>street_line</p>
+                                            <p>city, state zipcode</p>
                                         </div>
                                     </div>
                                     <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
@@ -277,7 +185,6 @@ export default function AddressFields({ id, title, coded }: Props) {
                                             </ModalToggleButton>
                                             <ModalToggleButton
                                                 onClick={() => {
-                                                    handleSuggestionSelection(suggestions[0]);
                                                     setVerified(false);
                                                 }}
                                                 modalRef={verifiedModalRef}
@@ -341,7 +248,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     name="state"
                                     htmlFor={'state'}
                                     label="State"
-                                    options={coded.states}
+                                    options={coded.states.all}
                                 />
                             )}
                         />
@@ -351,12 +258,12 @@ export default function AddressFields({ id, title, coded }: Props) {
                             control={control}
                             name="zip"
                             rules={{ pattern: { value: /[\d]{5}(-[\d]{4})?/, message: 'Invalid zip' } }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <>
-                                    <Label htmlFor="zip">ZIP</Label>
+                                    <Label htmlFor={name}>ZIP</Label>
                                     <TextInput
-                                        id="zip"
-                                        name="zip"
+                                        id={name}
+                                        name={name}
                                         type="text"
                                         inputSize="medium"
                                         defaultValue={value}
