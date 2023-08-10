@@ -1,6 +1,5 @@
 Feature: Save Page as Draft
 
-
     Scenario: Page does not exist cannot save as draft
         Given I am an admin user
         When I save as draft a page that does not exist
