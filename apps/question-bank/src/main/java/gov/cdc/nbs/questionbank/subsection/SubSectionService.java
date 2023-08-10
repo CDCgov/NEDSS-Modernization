@@ -1,9 +1,12 @@
-package gov.cdc.nbs.questionbank.addsubsection;
-
-import gov.cdc.nbs.questionbank.addsubsection.exception.AddSubSectionException;
-import gov.cdc.nbs.questionbank.addsubsection.model.CreateSubSectionRequest;
+package gov.cdc.nbs.questionbank.subsection;
+import gov.cdc.nbs.questionbank.subsection.exception.AddSubSectionException;
+import gov.cdc.nbs.questionbank.subsection.exception.DeleteSubSectionException;
+import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionResponse;
+import gov.cdc.nbs.questionbank.subsection.model.DeleteSubSectionRequest;
+import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
+import gov.cdc.nbs.questionbank.subsection.model.DeleteSubSectionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +15,7 @@ import java.time.Instant;
 
 @Slf4j
 @Service
-public class CreateSubSectionService implements CreateSubSectionInterface {
+public class SubSectionService implements CreateSubSectionInterface {
 
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
@@ -27,6 +30,19 @@ public class CreateSubSectionService implements CreateSubSectionInterface {
             return new CreateSubSectionResponse(waUiMetadata.getId(), "SubSection Created Successfully");
         } catch(Exception exception) {
             throw new AddSubSectionException("Add SubSection exception", 1015);
+        }
+
+    }
+
+    public DeleteSubSectionResponse deleteSubSection(DeleteSubSectionRequest request) {
+        try {
+            log.info("Deleting section");
+            Integer order_nbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
+            waUiMetaDataRepository.deletefromTable(request.subSectionId());
+            waUiMetaDataRepository.updateOrderNumberByDecreasing(order_nbr, request.subSectionId());
+            return new DeleteSubSectionResponse(request.subSectionId(), "Sub Section Deleted Successfully");
+        } catch(Exception exception) {
+            throw new DeleteSubSectionException("Delete Sub Section exception", 1015);
         }
 
     }

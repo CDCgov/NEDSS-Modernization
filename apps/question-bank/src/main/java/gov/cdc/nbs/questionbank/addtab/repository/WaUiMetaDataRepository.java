@@ -21,7 +21,7 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
             "            FROM WA_UI_metadata" +
             "        WHERE" +
             "            wa_template_uid = ?2" +
-            "            AND nbs_ui_component_uid = ?3" +
+            "            AND (nbs_ui_component_uid = ?3 or nbs_ui_component_uid = 1010)" +
             "            AND order_nbr > (" +
             "                SELECT" +
             "                    order_nbr FROM WA_UI_metadata" +
@@ -41,7 +41,7 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
             "            WA_UI_metadata" +
             "    WHERE" +
             "            wa_template_uid = ?2" +
-            "    AND nbs_ui_component_uid = ?3" +
+            "    AND (nbs_ui_component_uid = ?3 or nbs_ui_component_uid = 1010)" +
             "    AND order_nbr > (" +
             "    SELECT" +
             "            order_nbr" +
@@ -57,6 +57,18 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
     @Query(value = "update wa_ui_metadata set order_nbr = order_nbr + 1 where order_nbr >= ?1 and wa_ui_metadata_uid!=?2", nativeQuery = true)
     void updateOrderNumber(Integer orderNbr, Long waUiMetadataUid);
 
+    @Transactional
+    @Modifying
+    @Query(value = "update wa_ui_metadata set order_nbr = order_nbr - 1 where order_nbr >= ?1 and wa_ui_metadata_uid!=?2", nativeQuery = true)
+    void updateOrderNumberByDecreasing(Integer orderNbr, Long waUiMetadataUid);
 
+
+    @Query(value = "select order_nbr from WA_Ui_metadata w where w.wa_ui_metadata_uid=?1", nativeQuery = true)
+    Integer getOrderNumber(Long waUiMetadataUid);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from WA_Ui_metadata where wa_ui_metadata_uid=?1", nativeQuery = true)
+    void deletefromTable(Long waUiMetadataUid);
 
 }

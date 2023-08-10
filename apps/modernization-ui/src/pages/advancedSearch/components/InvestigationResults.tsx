@@ -4,6 +4,7 @@ import { Investigation, PersonParticipation } from '../../../generated/graphql/s
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
+import { NotificationStatus } from '../../../generated/graphql/schema';
 
 type InvestigationResultsProps = {
     data: [Investigation];
@@ -206,7 +207,7 @@ export const InvestigationResults = ({
                                                 NOTIFICATION
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.notificationRecordStatusCd ?? '--'}
+                                                {item.notificationRecordStatusCd} {NotificationStatus.Approved}
                                             </p>
                                         </Grid>
                                     </Grid>

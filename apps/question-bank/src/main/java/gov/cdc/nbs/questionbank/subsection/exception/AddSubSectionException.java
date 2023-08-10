@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.addsubsection.exception;
+package gov.cdc.nbs.questionbank.subsection.exception;
 
 public class AddSubSectionException extends RuntimeException {
 

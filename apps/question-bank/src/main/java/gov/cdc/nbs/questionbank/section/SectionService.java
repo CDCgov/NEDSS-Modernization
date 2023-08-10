@@ -1,18 +1,23 @@
-package gov.cdc.nbs.questionbank.addsection;
+package gov.cdc.nbs.questionbank.section;
 
-import gov.cdc.nbs.questionbank.addsection.exception.AddSectionException;
-import gov.cdc.nbs.questionbank.addsection.model.CreateSectionRequest;
+import gov.cdc.nbs.questionbank.section.exception.AddSectionException;
+import gov.cdc.nbs.questionbank.section.exception.DeleteSectionException;
+import gov.cdc.nbs.questionbank.section.model.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
+import gov.cdc.nbs.questionbank.section.model.CreateSectionResponse;
+import gov.cdc.nbs.questionbank.section.model.DeleteSectionRequest;
+import gov.cdc.nbs.questionbank.section.model.DeleteSectionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.DestroyFailedException;
 import java.time.Instant;
 
 @Slf4j
 @Service
-public class CreateSectionService implements CreateSectionInterface {
+public class SectionService implements CreateSectionInterface {
 
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
@@ -27,6 +32,19 @@ public class CreateSectionService implements CreateSectionInterface {
             return new CreateSectionResponse(waUiMetadata.getId(), "Section Created Successfully");
         } catch(Exception exception) {
             throw new AddSectionException("Add Section exception", 1015);
+        }
+
+    }
+
+    public DeleteSectionResponse deleteSection(DeleteSectionRequest request) {
+        try {
+            log.info("Deleting section");
+            Integer order_nbr = waUiMetaDataRepository.getOrderNumber(request.sectionId());
+            waUiMetaDataRepository.deletefromTable(request.sectionId());
+            waUiMetaDataRepository.updateOrderNumberByDecreasing(order_nbr, request.sectionId());
+            return new DeleteSectionResponse(request.sectionId(), "Section Deleted Successfully");
+        } catch(Exception exception) {
+            throw new DeleteSectionException(exception.toString(), 1015);
         }
 
     }

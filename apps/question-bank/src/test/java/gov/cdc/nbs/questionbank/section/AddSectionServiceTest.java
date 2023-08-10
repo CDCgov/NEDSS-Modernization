@@ -1,8 +1,9 @@
-package gov.cdc.nbs.questionbank.addsection;
+package gov.cdc.nbs.questionbank.section;
 
-import gov.cdc.nbs.questionbank.addsection.exception.AddSectionException;
-import gov.cdc.nbs.questionbank.addsection.model.CreateSectionRequest;
+import gov.cdc.nbs.questionbank.section.exception.AddSectionException;
+import gov.cdc.nbs.questionbank.section.model.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.section.model.CreateSectionResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class AddSectionServiceTest {
 
     @InjectMocks
-    private CreateSectionService createSectionService;
+    private SectionService createSectionService;
 
     @Mock
     private WaUiMetaDataRepository waUiMetaDataRepository;

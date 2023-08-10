@@ -1,9 +1,10 @@
-package gov.cdc.nbs.questionbank.addsection;
+package gov.cdc.nbs.questionbank.section;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.addsection.controller.AddSectionController;
-import gov.cdc.nbs.questionbank.addsection.model.CreateSectionRequest;
+import gov.cdc.nbs.questionbank.section.controller.SectionController;
+import gov.cdc.nbs.questionbank.section.model.CreateSectionRequest;
+import gov.cdc.nbs.questionbank.section.model.CreateSectionResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AddSectionControllerTest {
 
     @Mock
-    private CreateSectionService createSectionService;
+    private SectionService createSectionService;
 
     @Mock
     private UserDetailsProvider userDetailsProvider;
@@ -24,7 +25,7 @@ class AddSectionControllerTest {
     @Test
     void createSectionTest() {
 
-        AddSectionController addSectionController = new AddSectionController(createSectionService,
+        SectionController addSectionController = new SectionController(createSectionService,
                 userDetailsProvider);
 
         CreateSectionRequest createSectionRequest = new CreateSectionRequest(1000L, 1000376L, "Local", "T");

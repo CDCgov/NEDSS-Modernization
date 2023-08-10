@@ -1,7 +1,8 @@
-package gov.cdc.nbs.questionbank.addsubsection;
+package gov.cdc.nbs.questionbank.subsection;
 
-import gov.cdc.nbs.questionbank.addsubsection.controller.AddSubSectionController;
-import gov.cdc.nbs.questionbank.addsubsection.model.CreateSubSectionRequest;
+import gov.cdc.nbs.questionbank.subsection.controller.SubSectionController;
+import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionResponse;
+import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 public class AddSubSectionSteps {
 
     @Autowired
-    private AddSubSectionController subSectionController;
+    private SubSectionController subSectionController;
 
     @Autowired
     private WaUiMetaDataRepository waUiMetadataRepository;

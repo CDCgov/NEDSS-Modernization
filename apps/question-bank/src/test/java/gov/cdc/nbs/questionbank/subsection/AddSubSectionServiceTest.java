@@ -1,7 +1,8 @@
-package gov.cdc.nbs.questionbank.addsubsection;
+package gov.cdc.nbs.questionbank.subsection;
 
-import gov.cdc.nbs.questionbank.addsubsection.exception.AddSubSectionException;
-import gov.cdc.nbs.questionbank.addsubsection.model.CreateSubSectionRequest;
+import gov.cdc.nbs.questionbank.subsection.exception.AddSubSectionException;
+import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionResponse;
+import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class AddSubSectionServiceTest {
 
     @InjectMocks
-    private CreateSubSectionService createSubSectionService;
+    private SubSectionService createSubSectionService;
 
     @Mock
     private WaUiMetaDataRepository waUiMetaDataRepository;

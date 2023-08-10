@@ -1,10 +1,10 @@
-package gov.cdc.nbs.questionbank.addsection;
+package gov.cdc.nbs.questionbank.section;
 
-import gov.cdc.nbs.questionbank.addsection.controller.AddSectionController;
-import gov.cdc.nbs.questionbank.addsection.model.CreateSectionRequest;
+import gov.cdc.nbs.questionbank.section.model.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
+import gov.cdc.nbs.questionbank.section.model.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 public class AddSectionSteps {
 
     @Autowired
-    private AddSectionController SectionController;
+    private gov.cdc.nbs.questionbank.section.controller.SectionController SectionController;
 
     @Autowired
     private WaUiMetaDataRepository waUiMetadataRepository;
