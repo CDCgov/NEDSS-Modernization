@@ -4,7 +4,6 @@
 
 export type CreateTabRequest = {
     name?: string;
-    page?: number;
-    visible?: string;
+    visible?: boolean;
 };
 

@@ -1,24 +1,23 @@
 /* eslint-disable camelcase */
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { useAlert } from 'alert';
 import {
     CodedQuestion,
     DateQuestion,
     NumericQuestion,
-    PageControllerService,
+    PageQuestionControllerService,
     PageSummary,
     TextQuestion
 } from 'apps/page-builder/generated';
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { usePage } from 'page';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
+import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
+import { UserContext } from '../../../../providers/UserContext';
+import { PagesContext } from '../../context/PagesContext';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
-import { Icon } from '@trussworks/react-uswds';
-import { UserContext } from '../../../../providers/UserContext';
-import { useAlert } from 'alert';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { PagesContext } from '../../context/PagesContext';
-import { usePage } from 'page';
 
 export enum Column {
     Type = 'Type',
@@ -135,9 +134,9 @@ export const QuestionLibraryTable = ({ summaries }: Props) => {
             questionId: id
         };
 
-        PageControllerService.addQuestionToPageUsingPost({
+        PageQuestionControllerService.addQuestionToPageUsingPost({
             authorization,
-            id,
+            page: id,
             request
         }).then((response: any) => {
             setSelectedQuestion({});

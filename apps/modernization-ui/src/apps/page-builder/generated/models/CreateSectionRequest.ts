@@ -4,8 +4,7 @@
 
 export type CreateSectionRequest = {
     name?: string;
-    page?: number;
     tabId?: number;
-    visible?: string;
+    visible?: boolean;
 };
 

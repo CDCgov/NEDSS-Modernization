@@ -1,8 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AddQuestionRequest } from '../models/AddQuestionRequest';
-import type { AddQuestionResponse } from '../models/AddQuestionResponse';
 import type { Page_PageSummary_ } from '../models/Page_PageSummary_';
 import type { PageCreateRequest } from '../models/PageCreateRequest';
 import type { PageCreateResponse } from '../models/PageCreateResponse';
@@ -189,45 +187,6 @@ export class PageControllerService {
             headers: {
                 'Authorization': authorization,
             },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * addQuestionToPage
-     * @returns AddQuestionResponse OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static addQuestionToPageUsingPost({
-        authorization,
-        id,
-        request,
-    }: {
-        authorization: any,
-        /**
-         * id
-         */
-        id: number,
-        /**
-         * request
-         */
-        request: AddQuestionRequest,
-    }): CancelablePromise<AddQuestionResponse | any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/page-builder/api/v1/pages/{id}/questions',
-            path: {
-                'id': id,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

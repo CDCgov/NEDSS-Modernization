@@ -4,8 +4,7 @@
 
 export type CreateSubSectionRequest = {
     name?: string;
-    page?: number;
     sectionId?: number;
-    visible?: string;
+    visible?: boolean;
 };
 

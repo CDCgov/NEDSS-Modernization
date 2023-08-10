@@ -2,8 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type PageStateResponse = {
+export type CreateTabResponse = {
     message?: string;
-    templateId?: number;
+    uid?: number;
 };
 
