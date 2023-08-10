@@ -25,7 +25,7 @@ nbs:
   gateway:
     defaults:
       protocol: 'http'
-    classic: 'http://localhost:7001'
+    classic: '${nbs.gateway.defaults.protocol}://localhost:7001'
     patient:
       search:
         enabled: true

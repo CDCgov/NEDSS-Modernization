@@ -28,8 +28,8 @@ services:
     container_name: nbs-gateway
     environment:
       - NBS_GATEWAY_CLASSIC=http://wildfly:7001
-      - NBS_GATEWAY_PATIENT_SEARCH_SERVICE=modernization-api:8080
-      - NBS_GATEWAY_PATIENT_PROFILE_SERVICE=modernization-api:8080
+      - NBS_GATEWAY_PATIENT_SEARCH_SERVICE=${NBS_GATEWAY_PATIENT_SEARCH_SERVICE:-reverse-proxy:8080}
+      - NBS_GATEWAY_PATIENT_PROFILE_SERVICE=${NBS_GATEWAY_PATIENT_PROFILE_SERVICE:-reverse-proxy:8080}
     networks:
       - nbs
 
