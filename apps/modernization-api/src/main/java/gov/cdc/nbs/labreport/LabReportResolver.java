@@ -30,17 +30,4 @@ public class LabReportResolver {
         return finder.find(filter, GraphQLPage.toPageable(page, maxPageSize));
     }
 
-    /**
-     * Return a list of lab reports that the user has access to, are associated with a particular patient, and have the
-     * status of "UNPROCESSED"
-     *
-     * This currently only returns lab reports as those are the only documents ingested in elasticsearch, but in the
-     * future will also include morbidity reports and case reports
-     */
-    @QueryMapping
-    @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT') and hasAuthority('VIEW-OBSERVATIONLABREPORT')")
-    public Page<LabReport> findDocumentsRequiringReviewForPatient(@Argument Long patientId,
-            @Argument GraphQLPage page) {
-        return finder.findUnprocessedDocumentsForPatient(patientId, GraphQLPage.toPageable(page, maxPageSize));
-    }
 }

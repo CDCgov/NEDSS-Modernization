@@ -51,6 +51,9 @@ public class Act {
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<Treatment> treatments;
 
+    @OneToMany(mappedBy = "nbsEventUid", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    private List<EdxEventProcess> edxEventProcesses;
+
     @OneToMany(mappedBy = "targetActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ActRelationship> targetActRelationships;
 
