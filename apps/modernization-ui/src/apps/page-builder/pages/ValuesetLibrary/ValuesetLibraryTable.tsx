@@ -14,6 +14,7 @@ import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { AddValueset } from '../../components/AddValueset/AddValueset';
 import { PagesContext } from '../../context/PagesContext';
+import { usePage } from 'page';
 
 export enum Column {
     Type = 'Type',
@@ -33,7 +34,8 @@ type Props = {
     labModalRef?: any;
     pages?: any;
 };
-export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) => {
+export const ValuesetLibraryTable = ({ summaries, labModalRef }: Props) => {
+    const { page } = usePage();
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
@@ -44,33 +46,33 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     setSortBy('');
     setSortDirection('');
     // @ts-ignore
-    const asTableRow = (page: ValueSet): TableBody => ({
-        id: page.nbsUid,
+    const asTableRow = (valueSet: ValueSet): TableBody => ({
+        id: valueSet.nbsUid,
         checkbox: true,
-        expanded: expandedRows.some((id) => id === page.nbsUid),
-        expandedViewComponent: <ValuesetLibraryTableRowExpanded data={page} />,
+        expanded: expandedRows.some((id) => id === valueSet.nbsUid),
+        expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         tableDetails: [
             {
                 id: 1,
-                title: <div className="page-name">{page?.valueSetTypeCd}</div> || null
+                title: <div className="page-name">{valueSet?.valueSetTypeCd}</div> || null
             },
-            { id: 2, title: <div className="event-text">{page?.valueSetNm}</div> || null },
+            { id: 2, title: <div className="event-text">{valueSet?.valueSetNm}</div> || null },
             {
                 id: 3,
-                title: <div>{page?.codeSetDescTxt}</div> || null
+                title: <div>{valueSet?.codeSetDescTxt}</div> || null
             },
             {
                 id: 4,
                 title:
                     (
                         <div className="ds-u-text-align--right">
-                            {expandedRows.some((id) => id === page.nbsUid) ? (
+                            {expandedRows.some((id) => id === valueSet.nbsUid) ? (
                                 <Button type="button" unstyled aria-label="expand-less">
                                     <Icon.ExpandLess
                                         style={{ cursor: 'pointer' }}
                                         size={4}
                                         color="black"
-                                        onClick={() => handleExpandLessClick(page.nbsUid)}
+                                        onClick={() => handleExpandLessClick(valueSet.nbsUid)}
                                     />
                                 </Button>
                             ) : (
@@ -79,7 +81,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                                         style={{ cursor: 'pointer' }}
                                         size={4}
                                         color="black"
-                                        onClick={() => handleExpandMoreClick(page.nbsUid)}
+                                        onClick={() => handleExpandMoreClick(valueSet.nbsUid)}
                                     />
                                 </Button>
                             )}
@@ -257,9 +259,9 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={pages.pageSize}
-                    totalResults={pages.totalElements}
-                    currentPage={pages.currentPage}
+                    pageSize={page.pageSize}
+                    totalResults={page.total}
+                    currentPage={page.current}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     handleSelected={handleSelected}

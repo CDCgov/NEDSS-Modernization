@@ -6,21 +6,23 @@ import { AlertProvider } from '../../../../alert';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
+        const questionsSummary: any = {};
+        const summaries = [questionsSummary];
         const { container } = render(
             <BrowserRouter>
                 <PageProvider>
                     <AlertProvider>
-                        <QuestionLibraryTable summaries={[]} />
+                        <QuestionLibraryTable summaries={summaries} />
                     </AlertProvider>
                 </PageProvider>
             </BrowserRouter>
         );
 
-        const tableHeads = container.getElementsByClassName('head-name');
+        const tableHeads = container.getElementsByClassName('table-head');
 
-        expect(tableHeads[0].innerHTML).toBe('Type');
-        expect(tableHeads[1].innerHTML).toBe('Unique ID');
-        expect(tableHeads[2].innerHTML).toBe('Unique name');
+        expect(tableHeads[0].textContent).toBe('Type');
+        expect(tableHeads[1].textContent).toBe('Unique ID');
+        expect(tableHeads[2].textContent).toBe('Unique name');
     });
 });
 

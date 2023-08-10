@@ -18,6 +18,7 @@ import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { PagesContext } from '../../context/PagesContext';
+import { usePage } from 'page';
 
 export enum Column {
     Type = 'Type',
@@ -40,7 +41,8 @@ type Props = {
     summaries: Question[];
     pages?: any;
 };
-export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
+export const QuestionLibraryTable = ({ summaries }: Props) => {
+    const { page } = usePage();
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
@@ -185,9 +187,9 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={pages.pageSize}
-                    totalResults={pages.totalElements}
-                    currentPage={pages.currentPage}
+                    pageSize={page.pageSize}
+                    totalResults={page.total}
+                    currentPage={page.current}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     handleSelected={handleSelected}

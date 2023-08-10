@@ -6,6 +6,7 @@ import { ValuesetLibraryTable } from './ValuesetLibraryTable';
 import { fetchValueSet } from './useValuesetAPI';
 import { PagesContext } from '../../context/PagesContext';
 import { UserContext } from 'user';
+import { PageProvider } from 'page';
 
 export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     const [activeTab, setActiveTab] = useState(types || 'local');
@@ -62,11 +63,13 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
                     </div>
                     <div className="valueset-local-library__container">
                         <div className="valueset-local-library__table">
-                            <ValuesetLibraryTable
-                                summaries={summaries}
-                                pages={{ currentPage, pageSize, totalElements }}
-                                labModalRef={modalRef}
-                            />
+                            <PageProvider>
+                                <ValuesetLibraryTable
+                                    summaries={summaries}
+                                    pages={{ currentPage, pageSize, totalElements }}
+                                    labModalRef={modalRef}
+                                />
+                            </PageProvider>
                         </div>
                     </div>
                 </div>

@@ -7,21 +7,23 @@ import { AlertProvider } from '../../../../alert';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
+        const pageSummary: ValueSet = {};
+        const summaries = [pageSummary];
         const { container } = render(
             <BrowserRouter>
                 <PageProvider>
                     <AlertProvider>
-                        <ValuesetLibraryTable summaries={[]} />
+                        <ValuesetLibraryTable summaries={summaries} />
                     </AlertProvider>
                 </PageProvider>
             </BrowserRouter>
         );
 
-        const tableHeads = container.getElementsByClassName('head-name');
-
-        expect(tableHeads[0].innerHTML).toBe('Type');
-        expect(tableHeads[1].innerHTML).toBe('Value set name');
-        expect(tableHeads[2].innerHTML).toBe('Value set description');
+        const tableHeader = container.getElementsByClassName('table-head');
+        expect(tableHeader[0].textContent).toBe('Type');
+        expect(tableHeader[1].textContent).toBe('Value set name');
+        expect(tableHeader[2].textContent).toBe('Value set description');
+        expect(tableHeader[3].textContent).toBe('');
     });
 });
 
