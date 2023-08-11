@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - CNFT1-1238-Spring-Cloud-Planning-and-Tracking-Routes
     paths-ignore:
       - "apps/nbs-gateway/**"
 
