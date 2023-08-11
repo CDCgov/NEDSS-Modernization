@@ -1,21 +1,20 @@
 package gov.cdc.nbs.questionbank.condition;
 
-import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
-import gov.cdc.nbs.questionbank.entity.condition.LdfPageSet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.http.HttpStatus;
-import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
-import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
-import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
-import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
-import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
-import lombok.RequiredArgsConstructor;
-
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
+import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
+import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
+import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
+import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
+import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
+import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
+import gov.cdc.nbs.questionbank.entity.condition.LdfPageSet;
+import lombok.RequiredArgsConstructor;
 
 
 @Service
@@ -36,15 +35,13 @@ public class ConditionCreator {
         String conditionNm = request.getConditionShortNm();
 
         //check if id already exists
-        if(checkId(id)) {
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            return response;
+        if (checkId(id)) {
+            throw new ConditionCreateException("Condition Id already exists");
         }
 
         //check if conditionNm already exists
         if (checkConditionNm(conditionNm)) {
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            return response;
+            throw new ConditionCreateException("Condition Name already exists");
         }
 
         try {
@@ -59,15 +56,19 @@ public class ConditionCreator {
                 conditionCode.setIndentLevelNbr((short) 2); //This scenario should not happen
             }
             //codeSetNm
-            String codeSetNm = conditionCode.getConditionCodesetNm()== null ? "PHC_TYPE" : conditionCode.getConditionCodesetNm();
+            String codeSetNm =
+                    conditionCode.getConditionCodesetNm() == null ? "PHC_TYPE" : conditionCode.getConditionCodesetNm();
             conditionCode.setConditionCodesetNm(codeSetNm);
             //conditionSeqNm
-            Short conditionSeqNm = conditionCode.getConditionSeqNum()== null ? 1 : conditionCode.getConditionSeqNum();
+            Short conditionSeqNm = conditionCode.getConditionSeqNum() == null ? 1 : conditionCode.getConditionSeqNum();
             conditionCode.setConditionSeqNum(conditionSeqNm);
             //assigning authority cd/txt
-            String assigningAuthorityCd = conditionCode.getAssigningAuthorityCd()== null ? "2.16.840.1.114222" : conditionCode.getAssigningAuthorityCd();
+            String assigningAuthorityCd = conditionCode.getAssigningAuthorityCd() == null ? "2.16.840.1.114222"
+                    : conditionCode.getAssigningAuthorityCd();
             conditionCode.setAssigningAuthorityCd(assigningAuthorityCd);
-            String assigningAuthorityDescTxt = conditionCode.getAssigningAuthorityDescTxt()== null ? "Centers for Disease Control" : conditionCode.getAssigningAuthorityDescTxt();
+            String assigningAuthorityDescTxt =
+                    conditionCode.getAssigningAuthorityDescTxt() == null ? "Centers for Disease Control"
+                            : conditionCode.getAssigningAuthorityDescTxt();
             conditionCode.setAssigningAuthorityDescTxt(assigningAuthorityDescTxt);
 
             //code system
@@ -76,7 +77,7 @@ public class ConditionCreator {
                 conditionCode.setCodeSystemCd("L");
             } else if (codeSystemTxt.equals("SNOMED-CT")) {
                 conditionCode.setCodeSystemCd("2.16.840.1.113883.6.96");
-            } else{
+            } else {
                 conditionCode.setCodeSystemCd("2.16.840.1.114222.4.5.277");
             }
             //radio buttons
@@ -120,10 +121,9 @@ public class ConditionCreator {
             conditionCodeRepository.save(result);
 
             response.setId(result.getId());
-            response.setStatus(HttpStatus.CREATED);
 
         } catch (Exception e) {
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ConditionCreateException("Failed to create condition");
         }
         return response;
 

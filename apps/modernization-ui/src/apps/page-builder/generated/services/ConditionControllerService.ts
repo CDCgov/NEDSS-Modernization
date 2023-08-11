@@ -28,7 +28,7 @@ export class ConditionControllerService {
     }): CancelablePromise<CreateConditionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/condition/',
+            url: '/page-builder/api/v1/conditions/',
             headers: {
                 'Authorization': authorization,
             },

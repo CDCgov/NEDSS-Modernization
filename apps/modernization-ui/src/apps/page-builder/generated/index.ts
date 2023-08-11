@@ -17,7 +17,7 @@ export type { Concept } from './models/Concept';
 export type { Condition } from './models/Condition';
 export type { CreateCodedValue } from './models/CreateCodedValue';
 export type { CreateConditionRequest } from './models/CreateConditionRequest';
-export { CreateConditionResponse } from './models/CreateConditionResponse';
+export type { CreateConditionResponse } from './models/CreateConditionResponse';
 export type { CreateQuestionRequest } from './models/CreateQuestionRequest';
 export type { CreateQuestionResponse } from './models/CreateQuestionResponse';
 export type { CreateRuleRequest } from './models/CreateRuleRequest';
