@@ -1,20 +1,17 @@
 /* eslint-disable camelcase */
-import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'apps/page-builder/generated';
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { ValueSet } from 'apps/page-builder/generated';
-import { TableBody, TableComponent } from 'components/Table/Table';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Direction } from 'sorting';
-import './ValuesetLibraryTable.scss';
-import { SearchBar } from './SearchBar';
-import { Icon } from '@trussworks/react-uswds';
-import { UserContext } from '../../../../providers/UserContext';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
-import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
+import { GetQuestionResponse, PageSummary, QuestionControllerService, ValueSet } from 'apps/page-builder/generated';
+import { TableBody, TableComponent } from 'components/Table/Table';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
+import { UserContext } from '../../../../providers/UserContext';
 import { AddValueset } from '../../components/AddValueset/AddValueset';
 import { PagesContext } from '../../context/PagesContext';
-import { usePage } from 'page';
+import { SearchBar } from './SearchBar';
+import './ValuesetLibraryTable.scss';
+import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
 
 export enum Column {
     Type = 'Type',
