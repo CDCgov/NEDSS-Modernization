@@ -8,11 +8,11 @@ export const ImportTemplate = () => {
             <Button className="usa-button--unstyled close-btn" type={'button'} onClick={() => {}}>
                 <Icon.Close />
             </Button>
-            <h3 className="main-header-title" data-testid="header-title">
+            <h3 className="main-header-title">
                 <Button className="usa-button--unstyled back-btn" type={'button'} onClick={() => {}}>
                     <Icon.ArrowBack />
                 </Button>
-                Import template
+                <span data-testid="header-title">Import template</span>
             </h3>
             <div className="drop-container">
                 <div className="heading">

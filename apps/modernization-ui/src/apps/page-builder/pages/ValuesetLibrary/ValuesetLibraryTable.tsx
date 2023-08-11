@@ -1,19 +1,17 @@
 /* eslint-disable camelcase */
-import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'apps/page-builder/generated';
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { ValueSet } from 'apps/page-builder/generated';
-import { TableBody, TableComponent } from 'components/Table/Table';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Direction } from 'sorting';
-import './ValuesetLibraryTable.scss';
-import { SearchBar } from './SearchBar';
-import { Icon } from '@trussworks/react-uswds';
-import { UserContext } from '../../../../providers/UserContext';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
-import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
+import { GetQuestionResponse, PageSummary, QuestionControllerService, ValueSet } from 'apps/page-builder/generated';
+import { TableBody, TableComponent } from 'components/Table/Table';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
+import { UserContext } from '../../../../providers/UserContext';
 import { AddValueset } from '../../components/AddValueset/AddValueset';
 import { PagesContext } from '../../context/PagesContext';
+import { SearchBar } from './SearchBar';
+import './ValuesetLibraryTable.scss';
+import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
 
 export enum Column {
     Type = 'Type',
@@ -43,33 +41,33 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     const authorization = `Bearer ${state.getToken()}`;
 
     // @ts-ignore
-    const asTableRow = (page: ValueSet): TableBody => ({
-        id: page.nbsUid,
+    const asTableRow = (valueSet: ValueSet): TableBody => ({
+        id: valueSet.nbsUid,
         checkbox: true,
-        expanded: expandedRows.some((id) => id === page.nbsUid),
-        expandedViewComponent: <ValuesetLibraryTableRowExpanded data={page} />,
+        expanded: expandedRows.some((id) => id === valueSet.nbsUid),
+        expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         tableDetails: [
             {
                 id: 1,
-                title: <div className="page-name">{page?.valueSetTypeCd}</div> || null
+                title: <div className="page-name">{valueSet?.valueSetTypeCd}</div> || null
             },
-            { id: 2, title: <div className="event-text">{page?.valueSetNm}</div> || null },
+            { id: 2, title: <div className="event-text">{valueSet?.valueSetNm}</div> || null },
             {
                 id: 3,
-                title: <div>{page?.codeSetDescTxt}</div> || null
+                title: <div>{valueSet?.codeSetDescTxt}</div> || null
             },
             {
                 id: 4,
                 title:
                     (
                         <div className="ds-u-text-align--right">
-                            {expandedRows.some((id) => id === page.nbsUid) ? (
+                            {expandedRows.some((id) => id === valueSet.nbsUid) ? (
                                 <Button type="button" unstyled aria-label="expand-less">
                                     <Icon.ExpandLess
                                         style={{ cursor: 'pointer' }}
                                         size={4}
                                         color="black"
-                                        onClick={() => handleExpandLessClick(page.nbsUid)}
+                                        onClick={() => handleExpandLessClick(valueSet.nbsUid)}
                                     />
                                 </Button>
                             ) : (
@@ -78,7 +76,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                                         style={{ cursor: 'pointer' }}
                                         size={4}
                                         color="black"
-                                        onClick={() => handleExpandMoreClick(page.nbsUid)}
+                                        onClick={() => handleExpandMoreClick(valueSet.nbsUid)}
                                     />
                                 </Button>
                             )}
@@ -251,9 +249,9 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={pages.pageSize}
-                    totalResults={pages.totalElements}
-                    currentPage={pages.currentPage}
+                    pageSize={pages?.pageSize || 0}
+                    totalResults={pages?.total || 0}
+                    currentPage={pages?.current || 0}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     handleSelected={handleSelected}

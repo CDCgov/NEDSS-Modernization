@@ -1,17 +1,19 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateConditionResponse} from '../models/CreateConditionResponse';
-import type { CreateConditionRequest} from '../models/CreateConditionRequest';
+import type { CreateConditionRequest } from '../models/CreateConditionRequest';
+import type { CreateConditionResponse } from '../models/CreateConditionResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class ConditionControllerService {
+
     /**
      * createCondition
-     * @returns CreateConditionResponse Created
+     * @returns CreateConditionResponse OK
+     * @returns any Created
      * @throws ApiError
      */
     public static createConditionUsingPost({
@@ -23,10 +25,10 @@ export class ConditionControllerService {
          * request
          */
         request: CreateConditionRequest,
-    }): CancelablePromise<CreateConditionResponse> {
+    }): CancelablePromise<CreateConditionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/condition/',
+            url: '/page-builder/api/v1/conditions/',
             headers: {
                 'Authorization': authorization,
             },
@@ -38,4 +40,5 @@ export class ConditionControllerService {
             },
         });
     }
+
 }

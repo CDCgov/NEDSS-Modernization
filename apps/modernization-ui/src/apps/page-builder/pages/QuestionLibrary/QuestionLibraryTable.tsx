@@ -1,17 +1,22 @@
 /* eslint-disable camelcase */
-import { PageControllerService, PageSummary } from 'apps/page-builder/generated';
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { Question } from 'apps/page-builder/generated';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { useAlert } from 'alert';
+import {
+    CodedQuestion,
+    DateQuestion,
+    NumericQuestion,
+    PageQuestionControllerService,
+    PageSummary,
+    TextQuestion
+} from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
+import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
+import { UserContext } from '../../../../providers/UserContext';
+import { PagesContext } from '../../context/PagesContext';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
-import { Icon } from '@trussworks/react-uswds';
-import { UserContext } from '../../../../providers/UserContext';
-import { useAlert } from 'alert';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { PagesContext } from '../../context/PagesContext';
 
 export enum Column {
     Type = 'Type',
@@ -27,6 +32,8 @@ const tableColumns = [
     { name: Column.SubGroup, sortable: true },
     { name: '', sortable: false }
 ];
+
+type Question = TextQuestion | DateQuestion | NumericQuestion | CodedQuestion;
 
 type Props = {
     summaries: Question[];
@@ -46,7 +53,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
         tableDetails: [
             {
                 id: 1,
-                title: <div className="page-name">{page?.questionType || page.codeSet}</div> || null
+                title: <div className="page-name">{page?.type || page.codeSet}</div> || null
             },
             { id: 2, title: <div className="event-text">{page?.uniqueId}</div> || null },
             {
@@ -116,13 +123,13 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
         // TODO need to add logic for find orderNumber and Id
         const id: number = 0;
         const request = {
-            orderNumber: 'orderNumber',
+            orderNumber: 1,
             questionId: id
         };
 
-        PageControllerService.addPageQuestionsUsingPost({
+        PageQuestionControllerService.addQuestionToPageUsingPost({
             authorization,
-            id,
+            page: id,
             request
         }).then((response: any) => {
             setSelectedQuestion({});
@@ -172,9 +179,9 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={pages.pageSize}
-                    totalResults={pages.totalElements}
-                    currentPage={pages.currentPage}
+                    pageSize={pages?.pageSize || 0}
+                    totalResults={pages?.total || 0}
+                    currentPage={pages?.current || 0}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     handleSelected={handleSelected}

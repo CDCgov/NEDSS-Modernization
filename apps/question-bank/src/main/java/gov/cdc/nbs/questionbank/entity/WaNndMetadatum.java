@@ -89,7 +89,7 @@ public class WaNndMetadatum {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "wa_ui_metadata_uid", nullable = false)
-    private WaUiMetadatum waUiMetadataUid;
+    private WaUiMetadata waUiMetadataUid;
 
     @Column(name = "question_map", length = 2000)
     private String questionMap;
