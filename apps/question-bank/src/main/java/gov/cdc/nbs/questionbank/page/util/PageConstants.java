@@ -19,6 +19,9 @@ public class PageConstants {
 	public static final String ADD_PAGE_DATAMART_NAME_EXISTS = "A Page with Data Mart Name %s already exists in the system";
 	public static final String ADD_PAGE_MMG_EMPTY = "MMG is required.";
 	
+	//Page Details
+	public static final String 
+	
 	
 	
 	

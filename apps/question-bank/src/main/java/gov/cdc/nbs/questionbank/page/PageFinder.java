@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,13 +28,28 @@ public class PageFinder {
 	
 	
 	public PageDetailResponse getPageDetails(Long pageId) {
+		
+
+		// Get Page
+		Optional<WaTemplate> page = getPageDetail(pageId);
+		if(page.isEmpty()) {
+		// Get Page tabs
+		
+		// get Sections 
+		
+		// Get SubSections
+		}
+		else {
+			
+		}
 		return null;
 	}
 	
 	
 	
-	public WaTemplate getPageDetail(Long pageId) {
-		
+	public Optional<WaTemplate> getPageDetail(Long pageId) {
+		Optional<WaTemplate> page =	templateRepository.findById(pageId);
+		return page;	
 	}
 	
 	public List<WaUiMetadata> getComponentForPage(WaTemplate page, Long componentType) {
