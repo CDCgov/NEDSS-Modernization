@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'user';
 import { PagesContext } from '../../context/PagesContext';
-import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './ValuesetLibrary.scss';
 import { ValuesetLibraryTable } from './ValuesetLibraryTable';
 import './ValuesetTabs.scss';
