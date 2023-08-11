@@ -1,4 +1,3 @@
-import React, { useContext, useState, useEffect } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'user';
 import { PagesContext } from '../../context/PagesContext';
