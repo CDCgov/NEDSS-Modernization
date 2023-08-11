@@ -1,4 +1,3 @@
-import { PageProvider } from 'page';
 import { QuestionLibraryTable } from './QuestionLibraryTable';
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
@@ -10,11 +9,9 @@ describe('when rendered', () => {
         const summaries = [questionsSummary];
         const { container } = render(
             <BrowserRouter>
-                <PageProvider>
-                    <AlertProvider>
-                        <QuestionLibraryTable summaries={summaries} />
-                    </AlertProvider>
-                </PageProvider>
+                <AlertProvider>
+                    <QuestionLibraryTable summaries={summaries} />
+                </AlertProvider>
             </BrowserRouter>
         );
 
@@ -62,11 +59,9 @@ describe('when at least one summary is available', () => {
 
     it('should display the questions summaries', async () => {
         const { container } = render(
-            <PageProvider>
-                <AlertProvider>
-                    <QuestionLibraryTable summaries={summaries} />
-                </AlertProvider>
-            </PageProvider>
+            <AlertProvider>
+                <QuestionLibraryTable summaries={summaries} />
+            </AlertProvider>
         );
 
         const tableData = container.getElementsByClassName('table-data');

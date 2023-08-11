@@ -1,8 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
-import { CreateCondition } from './CreateCondition';
-import { BrowserRouter } from 'react-router-dom';
-import { PageProvider } from 'page';
 import { AlertProvider } from 'alert';
+import { BrowserRouter } from 'react-router-dom';
+import { CreateCondition } from './CreateCondition';
 
 describe('General information component tests', () => {
     it('should display create condition form', () => {
@@ -20,9 +19,7 @@ describe('When page loads', () => {
         const { container } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageProvider>
-                        <CreateCondition />
-                    </PageProvider>
+                    <CreateCondition />
                 </AlertProvider>
             </BrowserRouter>
         );
@@ -35,9 +32,7 @@ describe('Condition component tests', () => {
     it('should render a grid with 10 inputs labels which are Condition Name, Coding System, Condition Code, Others', () => {
         const { getByText } = render(
             <AlertProvider>
-                <PageProvider>
-                    <CreateCondition />
-                </PageProvider>
+                <CreateCondition />
             </AlertProvider>
         );
         expect(getByText('Condition Name')).toBeInTheDocument();

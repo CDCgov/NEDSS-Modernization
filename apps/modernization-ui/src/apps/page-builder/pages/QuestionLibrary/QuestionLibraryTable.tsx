@@ -10,7 +10,6 @@ import {
     TextQuestion
 } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { usePage } from 'page';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
@@ -40,8 +39,7 @@ type Props = {
     summaries: Question[];
     pages?: any;
 };
-export const QuestionLibraryTable = ({ summaries }: Props) => {
-    const { page } = usePage();
+export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
@@ -186,9 +184,9 @@ export const QuestionLibraryTable = ({ summaries }: Props) => {
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={page.pageSize}
-                    totalResults={page.total}
-                    currentPage={page.current}
+                    pageSize={pages?.pageSize || 0}
+                    totalResults={pages?.total || 0}
+                    currentPage={pages?.current || 0}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     handleSelected={handleSelected}

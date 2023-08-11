@@ -34,8 +34,7 @@ type Props = {
     labModalRef?: any;
     pages?: any;
 };
-export const ValuesetLibraryTable = ({ summaries, labModalRef }: Props) => {
-    const { page } = usePage();
+export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
@@ -259,9 +258,9 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef }: Props) => {
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={page.pageSize}
-                    totalResults={page.total}
-                    currentPage={page.current}
+                    pageSize={pages?.pageSize || 0}
+                    totalResults={pages?.total || 0}
+                    currentPage={pages?.current || 0}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     handleSelected={handleSelected}

@@ -1,12 +1,11 @@
-import { PageBuilder } from '../PageBuilder/PageBuilder';
-import React, { useContext, useState, useEffect } from 'react';
-import './ValuesetLibrary.scss';
-import './ValuesetTabs.scss';
-import { ValuesetLibraryTable } from './ValuesetLibraryTable';
-import { fetchValueSet } from './useValuesetAPI';
-import { PagesContext } from '../../context/PagesContext';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'user';
-import { PageProvider } from 'page';
+import { PagesContext } from '../../context/PagesContext';
+import { PageBuilder } from '../PageBuilder/PageBuilder';
+import './ValuesetLibrary.scss';
+import { ValuesetLibraryTable } from './ValuesetLibraryTable';
+import './ValuesetTabs.scss';
+import { fetchValueSet } from './useValuesetAPI';
 
 export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     const [activeTab, setActiveTab] = useState(types || 'local');
@@ -63,13 +62,11 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
                     </div>
                     <div className="valueset-local-library__container">
                         <div className="valueset-local-library__table">
-                            <PageProvider>
-                                <ValuesetLibraryTable
-                                    summaries={summaries}
-                                    pages={{ currentPage, pageSize, totalElements }}
-                                    labModalRef={modalRef}
-                                />
-                            </PageProvider>
+                            <ValuesetLibraryTable
+                                summaries={summaries}
+                                pages={{ currentPage, pageSize, totalElements }}
+                                labModalRef={modalRef}
+                            />
                         </div>
                     </div>
                 </div>

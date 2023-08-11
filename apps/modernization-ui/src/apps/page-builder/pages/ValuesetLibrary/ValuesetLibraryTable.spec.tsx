@@ -1,9 +1,8 @@
-import { PageProvider } from 'page';
-import { ValuesetLibraryTable } from './ValuesetLibraryTable';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { ValueSet } from 'apps/page-builder/generated';
 import { BrowserRouter } from 'react-router-dom';
 import { AlertProvider } from '../../../../alert';
+import { ValuesetLibraryTable } from './ValuesetLibraryTable';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
@@ -11,11 +10,9 @@ describe('when rendered', () => {
         const summaries = [pageSummary];
         const { container } = render(
             <BrowserRouter>
-                <PageProvider>
-                    <AlertProvider>
-                        <ValuesetLibraryTable summaries={summaries} />
-                    </AlertProvider>
-                </PageProvider>
+                <AlertProvider>
+                    <ValuesetLibraryTable summaries={summaries} />
+                </AlertProvider>
             </BrowserRouter>
         );
 
@@ -61,11 +58,9 @@ describe('when at least one summary is available', () => {
     it('should display the page summaries', async () => {
         const { container } = render(
             <BrowserRouter>
-                <PageProvider>
-                    <AlertProvider>
-                        <ValuesetLibraryTable summaries={summaries} />
-                    </AlertProvider>
-                </PageProvider>
+                <AlertProvider>
+                    <ValuesetLibraryTable summaries={summaries} />
+                </AlertProvider>
             </BrowserRouter>
         );
 
@@ -78,11 +73,9 @@ describe('when at least one summary is available', () => {
     it('has a button to expand the row', async () => {
         const container = render(
             <BrowserRouter>
-                <PageProvider>
-                    <AlertProvider>
-                        <ValuesetLibraryTable summaries={summaries}></ValuesetLibraryTable>
-                    </AlertProvider>
-                </PageProvider>
+                <AlertProvider>
+                    <ValuesetLibraryTable summaries={summaries}></ValuesetLibraryTable>
+                </AlertProvider>
             </BrowserRouter>
         );
 
@@ -97,11 +90,9 @@ describe('when at least one summary is available', () => {
         it.skip('displays the expand less button', async () => {
             render(
                 <BrowserRouter>
-                    <PageProvider>
-                        <AlertProvider>
-                            <ValuesetLibraryTable summaries={summaries}></ValuesetLibraryTable>
-                        </AlertProvider>
-                    </PageProvider>
+                    <AlertProvider>
+                        <ValuesetLibraryTable summaries={summaries}></ValuesetLibraryTable>
+                    </AlertProvider>
                 </BrowserRouter>
             );
 
