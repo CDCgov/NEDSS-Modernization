@@ -11,6 +11,7 @@ public record Concept(
         String messagingConceptName,
         String codeSystem,
         String status,
+        String conceptCode,
         Instant effectiveFromTime,
         Instant effectiveToTime) {
 
