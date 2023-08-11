@@ -2,20 +2,17 @@ package gov.cdc.nbs.questionbank.page.create;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -23,6 +20,7 @@ import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.PageCreator;
+import gov.cdc.nbs.questionbank.page.exception.PageCreateException;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
@@ -56,9 +54,7 @@ class PageCreatorTest {
         PageCreateResponse response = pageCreator.createPage(request, 1l);
         assertEquals(page.getId(), response.pageId());
         assertEquals(page.getTemplateNm(), response.pageName());
-        assertEquals(HttpStatus.CREATED, response.status());
         assertEquals(page.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE, response.message());
-
     }
 
     @Test
@@ -73,9 +69,8 @@ class PageCreatorTest {
 
 
         String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, templateName);
-        PageCreateResponse response = pageCreator.createPage(request, 1l);
-        assertEquals(HttpStatus.BAD_REQUEST, response.status());
-        assertEquals(finalMessage, response.message());
+        var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
+        assertEquals(finalMessage, exception.getMessage());
     }
 
 
@@ -92,9 +87,8 @@ class PageCreatorTest {
         when(templateRepository.findFirstByDatamartNm(Mockito.any())).thenReturn(Optional.of(existing));
 
 
-        PageCreateResponse response = pageCreator.createPage(request, 1l);
-        assertEquals(HttpStatus.BAD_REQUEST, response.status());
-        assertEquals(finalMessage, response.message());
+        var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
+        assertEquals(finalMessage, exception.getMessage());
     }
 
     @Test
@@ -102,9 +96,8 @@ class PageCreatorTest {
         PageCreateRequest request = new PageCreateRequest(null, Set.of(), null, 0l, "HEP_Case_Map_V1.0",
                 "unit test", "dataMart");
 
-        PageCreateResponse response = pageCreator.createPage(request, 1l);
-        assertEquals(HttpStatus.BAD_REQUEST, response.status());
-        assertEquals(PageConstants.ADD_PAGE_NAME_EMPTY, response.message());
+        var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
+        assertEquals(PageConstants.ADD_PAGE_NAME_EMPTY, exception.getMessage());
     }
 
     @Test
@@ -112,9 +105,8 @@ class PageCreatorTest {
         PageCreateRequest request = new PageCreateRequest(null, Set.of(), "TestPage", 0l, "HEP_Case_Map_V1.0",
                 "unit test", "dataMart");
 
-        PageCreateResponse response = pageCreator.createPage(request, 1l);
-        assertEquals(HttpStatus.BAD_REQUEST, response.status());
-        assertEquals(PageConstants.ADD_PAGE_CONDITION_EMPTY, response.message());
+        var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
+        assertEquals(PageConstants.ADD_PAGE_CONDITION_EMPTY, exception.getMessage());
     }
 
     @Test
@@ -122,9 +114,8 @@ class PageCreatorTest {
         PageCreateRequest request = new PageCreateRequest(null, Set.of("1023"), "TestPage", 0l, "HEP_Case_Map_V1.0",
                 "unit test", "dataMart");
 
-        PageCreateResponse response = pageCreator.createPage(request, 1l);
-        assertEquals(HttpStatus.BAD_REQUEST, response.status());
-        assertEquals(PageConstants.ADD_PAGE_EVENTTYPE_EMPTY, response.message());
+        var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
+        assertEquals(PageConstants.ADD_PAGE_EVENTTYPE_EMPTY, exception.getMessage());
     }
 
     @Test
@@ -132,9 +123,8 @@ class PageCreatorTest {
         PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 0l, "HEP_Case_Map_V1.0",
                 "unit test", "dataMart");
 
-        PageCreateResponse response = pageCreator.createPage(request, 1l);
-        assertEquals(HttpStatus.BAD_REQUEST, response.status());
-        assertEquals(PageConstants.ADD_PAGE_TEMPLATE_EMPTY, response.message());
+        var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
+        assertEquals(PageConstants.ADD_PAGE_TEMPLATE_EMPTY, exception.getMessage());
     }
 
     @Test
@@ -142,10 +132,8 @@ class PageCreatorTest {
         PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, null,
                 "unit test", "dataMart");
 
-        PageCreateResponse response = pageCreator.createPage(request, 1l);
-        assertEquals(HttpStatus.BAD_REQUEST, response.status());
-        assertEquals(PageConstants.ADD_PAGE_MMG_EMPTY, response.message());
-
+        var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
+        assertEquals(PageConstants.ADD_PAGE_MMG_EMPTY, exception.getMessage());
     }
 
     @Test
@@ -154,10 +142,8 @@ class PageCreatorTest {
         when(templateRepository.save(Mockito.any())).thenThrow(new IllegalArgumentException(message));
         PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
                 "unit test", "dataMart");
-        PageCreateResponse response = pageCreator.createPage(request, 1l);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.status());
-        assertEquals(PageConstants.ADD_PAGE_FAIL + message, response.message());
-
+        var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
+        assertEquals(PageConstants.ADD_PAGE_FAIL, exception.getMessage());
     }
 
     @Test

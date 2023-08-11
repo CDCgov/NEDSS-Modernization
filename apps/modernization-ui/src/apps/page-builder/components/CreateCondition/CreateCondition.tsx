@@ -196,7 +196,7 @@ export const CreateCondition = () => {
                     name="codingSystem"
                     value={system}
                     onChange={(e: any) => setSystem(e.target.value)}>
-                    <option>-Select-</option>
+                    <option>- Select -</option>
                     {buildOptions(systemOptions)}
                 </select>
                 <br></br>

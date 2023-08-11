@@ -3,6 +3,6 @@
 /* eslint-disable */
 
 export type CreateConditionResponse = {
-    questionId?: number;
+    id?: string;
 };
 

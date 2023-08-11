@@ -10,8 +10,9 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.model.AddQuestionResponse;
-import gov.cdc.nbs.questionbank.page.request.AddQuestionRequest;
+import gov.cdc.nbs.questionbank.page.content.question.PageQuestionController;
+import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
+import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
@@ -25,7 +26,7 @@ public class AddQuestionToPageSteps {
     private ExceptionHolder exceptionHolder;
 
     @Autowired
-    private PageController pageController;
+    private PageQuestionController pageQuestionController;
 
     @Autowired
     private WaUiMetadataRepository repository;
@@ -54,7 +55,7 @@ public class AddQuestionToPageSteps {
         WaTemplate page = pageMother.one();
         var request = new AddQuestionRequest(question.getId(), 1);
         try {
-            response = pageController.addQuestionToPage(page.getId(), request);
+            response = pageQuestionController.addQuestionToPage(page.getId(), request);
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
