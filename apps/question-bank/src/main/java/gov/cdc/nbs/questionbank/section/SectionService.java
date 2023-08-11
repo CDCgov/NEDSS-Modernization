@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.section;
 
 import gov.cdc.nbs.questionbank.section.exception.AddSectionException;
 import gov.cdc.nbs.questionbank.section.exception.DeleteSectionException;
+import gov.cdc.nbs.questionbank.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.section.model.*;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
@@ -62,7 +63,7 @@ public class SectionService implements CreateSectionInterface {
                 return new UpdateSectionResponse(request.sectionId(), "questionLabel or Visible is required to update section");
             }
         } catch(Exception exception) {
-            throw new DeleteSectionException(exception.toString(), 1015);
+            throw new UpdateSectionException(exception.toString(), 1015);
         }
 
     }

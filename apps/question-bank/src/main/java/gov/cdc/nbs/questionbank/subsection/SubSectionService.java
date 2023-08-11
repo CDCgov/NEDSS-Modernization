@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.subsection;
 import gov.cdc.nbs.questionbank.section.exception.DeleteSectionException;
 import gov.cdc.nbs.questionbank.subsection.exception.AddSubSectionException;
 import gov.cdc.nbs.questionbank.subsection.exception.DeleteSubSectionException;
+import gov.cdc.nbs.questionbank.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.subsection.model.*;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
@@ -37,18 +38,18 @@ public class SubSectionService implements CreateSubSectionInterface {
             log.info("Updating section");
             if (request.questionLabel() != null && request.visible() != null) {
                 waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.subSectionId());
-                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+                return new UpdateSubSectionResponse(request.subSectionId(), "Sub Section Updated Successfully");
             } else if ( request.questionLabel() != null ) {
                 waUiMetaDataRepository.updateQuestionLabel(request.questionLabel(), request.subSectionId());
-                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+                return new UpdateSubSectionResponse(request.subSectionId(), "Sub Section Updated Successfully");
             } else if ( request.visible() != null ) {
                 waUiMetaDataRepository.updateVisibility(request.visible(), request.subSectionId());
-                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+                return new UpdateSubSectionResponse(request.subSectionId(), "Sub Section Updated Successfully");
             } else {
-                return new UpdateSubSectionResponse(request.subSectionId(), "questionLabel or Visible is required to update section");
+                return new UpdateSubSectionResponse(request.subSectionId(), "questionLabel or Visible is required to update sub section");
             }
         } catch(Exception exception) {
-            throw new DeleteSectionException(exception.toString(), 1015);
+            throw new UpdateSubSectionException(exception.toString(), 1015);
         }
 
     }
