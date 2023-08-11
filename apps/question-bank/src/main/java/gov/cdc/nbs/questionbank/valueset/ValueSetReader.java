@@ -99,7 +99,6 @@ public class ValueSetReader {
                 codeValueGeneral.getConceptPreferredNm(),
                 codeValueGeneral.getCodeSystemDescTxt(),
                 codeValueGeneral.getConceptStatusCd(),
-                codeValueGeneral.getConceptCode(),
                 codeValueGeneral.getEffectiveFromTime(),
                 codeValueGeneral.getEffectiveToTime());
     }
