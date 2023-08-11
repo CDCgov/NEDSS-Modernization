@@ -59,6 +59,21 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
 
     @Transactional
     @Modifying
+    @Query(value = "update wa_ui_metadata set question_label = ?1 where wa_ui_metadata_uid=?2", nativeQuery = true)
+    void updateQuestionLabel(String questionLabel, Long waUiMetadataUid);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update wa_ui_metadata set display_ind = ?1 where wa_ui_metadata_uid=?2", nativeQuery = true)
+    void updateVisibility(String visibility, Long waUiMetadataUid);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update wa_ui_metadata set question_label = ?1, display_ind = ?2 where wa_ui_metadata_uid=?3", nativeQuery = true)
+    void updateQuestionLabelAndVisibility(String questionLabel, String visibility, Long waUiMetadataUid);
+
+    @Transactional
+    @Modifying
     @Query(value = "update wa_ui_metadata set order_nbr = order_nbr - 1 where order_nbr >= ?1 and wa_ui_metadata_uid!=?2", nativeQuery = true)
     void updateOrderNumberByDecreasing(Integer orderNbr, Long waUiMetadataUid);
 

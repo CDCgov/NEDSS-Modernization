@@ -2,11 +2,10 @@ package gov.cdc.nbs.questionbank.subsection.controller;
 
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionResponse;
+import gov.cdc.nbs.questionbank.section.model.UpdateSectionRequest;
+import gov.cdc.nbs.questionbank.section.model.UpdateSectionResponse;
+import gov.cdc.nbs.questionbank.subsection.model.*;
 import gov.cdc.nbs.questionbank.subsection.SubSectionService;
-import gov.cdc.nbs.questionbank.subsection.model.DeleteSubSectionRequest;
-import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionRequest;
-import gov.cdc.nbs.questionbank.subsection.model.DeleteSubSectionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +25,7 @@ public class SubSectionController {
         this.userDetailsProvider = userDetailsProvider;
         this.createSubSectionService = createSubSectionService;
     }
+
     @PostMapping("addsubsection")
     @ResponseBody
     public CreateSubSectionResponse createSubSection(@RequestBody CreateSubSectionRequest request) {
@@ -33,10 +33,16 @@ public class SubSectionController {
         return createSubSectionService.createSubSection(userId, request);
     }
 
-    @PostMapping("deletesubsection")
+    @DeleteMapping("deletesubsection")
     @ResponseBody
     public DeleteSubSectionResponse deleteSubSection(@RequestBody DeleteSubSectionRequest request) {
         return createSubSectionService.deleteSubSection(request);
+    }
+
+    @PutMapping("updatesubsection")
+    @ResponseBody
+    public UpdateSubSectionResponse updateSubSection(@RequestBody UpdateSubSectionRequest request) {
+        return createSubSectionService.updateSubSection(request);
     }
 
 }

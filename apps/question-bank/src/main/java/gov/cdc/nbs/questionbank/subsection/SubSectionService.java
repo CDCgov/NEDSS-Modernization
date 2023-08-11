@@ -1,12 +1,10 @@
 package gov.cdc.nbs.questionbank.subsection;
+import gov.cdc.nbs.questionbank.section.exception.DeleteSectionException;
 import gov.cdc.nbs.questionbank.subsection.exception.AddSubSectionException;
 import gov.cdc.nbs.questionbank.subsection.exception.DeleteSubSectionException;
-import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionResponse;
-import gov.cdc.nbs.questionbank.subsection.model.DeleteSubSectionRequest;
-import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionRequest;
+import gov.cdc.nbs.questionbank.subsection.model.*;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
-import gov.cdc.nbs.questionbank.subsection.model.DeleteSubSectionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +28,27 @@ public class SubSectionService implements CreateSubSectionInterface {
             return new CreateSubSectionResponse(waUiMetadata.getId(), "SubSection Created Successfully");
         } catch(Exception exception) {
             throw new AddSubSectionException("Add SubSection exception", 1015);
+        }
+
+    }
+
+    public UpdateSubSectionResponse updateSubSection(UpdateSubSectionRequest request) {
+        try {
+            log.info("Updating section");
+            if (request.questionLabel() != null && request.visible() != null) {
+                waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.subSectionId());
+                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+            } else if ( request.questionLabel() != null ) {
+                waUiMetaDataRepository.updateQuestionLabel(request.questionLabel(), request.subSectionId());
+                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+            } else if ( request.visible() != null ) {
+                waUiMetaDataRepository.updateVisibility(request.visible(), request.subSectionId());
+                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+            } else {
+                return new UpdateSubSectionResponse(request.subSectionId(), "questionLabel or Visible is required to update section");
+            }
+        } catch(Exception exception) {
+            throw new DeleteSectionException(exception.toString(), 1015);
         }
 
     }

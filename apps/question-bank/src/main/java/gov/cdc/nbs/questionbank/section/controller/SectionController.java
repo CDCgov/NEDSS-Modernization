@@ -2,11 +2,8 @@ package gov.cdc.nbs.questionbank.section.controller;
 
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.section.model.CreateSectionResponse;
+import gov.cdc.nbs.questionbank.section.model.*;
 import gov.cdc.nbs.questionbank.section.SectionService;
-import gov.cdc.nbs.questionbank.section.model.CreateSectionRequest;
-import gov.cdc.nbs.questionbank.section.model.DeleteSectionRequest;
-import gov.cdc.nbs.questionbank.section.model.DeleteSectionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +31,16 @@ public class SectionController {
         return createSectionService.createSection(userId, request);
     }
 
-    @PostMapping("deletesection")
+    @DeleteMapping("deletesection")
     @ResponseBody
     public DeleteSectionResponse deleteSection(@RequestBody DeleteSectionRequest request) {
         return createSectionService.deleteSection(request);
+    }
+
+    @PutMapping("updatesection")
+    @ResponseBody
+    public UpdateSectionResponse updateSection(@RequestBody UpdateSectionRequest request) {
+        return createSectionService.updateSection(request);
     }
 
 }
