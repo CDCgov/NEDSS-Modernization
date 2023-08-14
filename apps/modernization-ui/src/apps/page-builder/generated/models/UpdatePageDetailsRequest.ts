@@ -10,8 +10,3 @@ export type UpdatePageDetailsRequest = {
     name?: string;
 };
 
-export type AddPageDetailsRequest = {
-    orderNumber?: string;
-    questionId?: number;
-};
-

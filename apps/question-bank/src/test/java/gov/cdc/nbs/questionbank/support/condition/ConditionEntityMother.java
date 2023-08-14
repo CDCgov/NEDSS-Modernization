@@ -1,12 +1,10 @@
 package gov.cdc.nbs.questionbank.support.condition;
 
+import java.time.Instant;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 
-import javax.persistence.Column;
-import java.time.Instant;
-
-public class    ConditionEntityMother {
-    private ConditionEntityMother(){}
+public class ConditionEntityMother {
+    private ConditionEntityMother() {}
 
     public static ConditionCode conditionCode() {
         Instant now = Instant.now();

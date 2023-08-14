@@ -16,10 +16,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadatum;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
@@ -44,7 +44,7 @@ class QuestionUpdaterTest {
     private QuestionManagementUtil managementUtil;
 
     @Mock
-    private WaUiMetadatumRepository metadatumRepository;
+    private WaUiMetadataRepository metadatumRepository;
 
     @Spy
     private QuestionMapper questionMapper = new QuestionMapper();
@@ -202,7 +202,7 @@ class QuestionUpdaterTest {
         // and a question that is in use
         when(metadatumRepository
                 .findAllByQuestionIdentifier(QuestionEntityMother.textQuestion().getQuestionIdentifier()))
-                        .thenReturn(Collections.singletonList(new WaUiMetadatum()));
+                        .thenReturn(Collections.singletonList(new WaUiMetadata()));
 
         // and the question can be saved
         when(repository.save(Mockito.any())).thenReturn(QuestionEntityMother.textQuestion());
