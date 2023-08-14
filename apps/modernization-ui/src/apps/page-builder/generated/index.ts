@@ -14,6 +14,7 @@ export type { Codeset } from './models/Codeset';
 export type { CodeSetGroupMetadatum } from './models/CodeSetGroupMetadatum';
 export type { CodesetId } from './models/CodesetId';
 export type { Concept } from './models/Concept';
+export type { ConceptMessagingInfo } from './models/ConceptMessagingInfo';
 export type { Condition } from './models/Condition';
 export type { CreateCodedValue } from './models/CreateCodedValue';
 export type { CreateConditionRequest } from './models/CreateConditionRequest';

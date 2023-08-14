@@ -227,7 +227,7 @@ export class ValueSetControllerService {
      * @returns any Created
      * @throws ApiError
      */
-    public static updateConceptUsingPost({
+    public static updateConceptUsingPut({
         authorization,
         codeSetNm,
         conceptCode,
@@ -248,7 +248,7 @@ export class ValueSetControllerService {
         request: UpdateConceptRequest,
     }): CancelablePromise<Concept | any> {
         return __request(OpenAPI, {
-            method: 'POST',
+            method: 'PUT',
             url: '/page-builder/api/v1/valueset/{codeSetNm}/concepts/{conceptCode}',
             path: {
                 'codeSetNm': codeSetNm,
