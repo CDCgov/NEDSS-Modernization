@@ -1,15 +1,17 @@
 import { Input } from 'components/FormInputs/Input';
 import { Button, Checkbox, Icon, Tag } from '@trussworks/react-uswds';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 import { useForm } from 'react-hook-form';
 import { useSubGroupAPI } from './useQuestionAPI';
+import { PagesContext } from '../../context/PagesContext';
 
 export const SearchBar = ({ onChange }: any) => {
     const methods = useForm();
     const { control } = methods;
     const initial = { questionSubGroup: '', questionType: '', newestToOldest: false };
     const subGroups = useSubGroupAPI();
+    const { setFilter } = useContext(PagesContext);
 
     const [searchTags, setSearchTags] = useState<any>([]);
     const [search, setSearch] = useState<string>('');
@@ -21,11 +23,12 @@ export const SearchBar = ({ onChange }: any) => {
     };
     const applyFilter = () => {
         setIsModalHidden(true);
+        setFilter(filterData);
     };
     const removeFilter = () => {
-        onChange(search);
         setIsModalHidden(true);
         setFilterData(initial);
+        setFilter(initial);
     };
     const handleOnChange = ({ target }: any) => {
         setFilterData({ ...filterData, [target.name]: target?.type === 'checkbox' ? target?.checked : target.value });

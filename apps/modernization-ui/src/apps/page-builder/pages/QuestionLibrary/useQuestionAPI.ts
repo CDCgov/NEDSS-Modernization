@@ -11,15 +11,9 @@ export const fetchQuestion = (
     pageSize: number,
     filter: any
 ) => {
-    if (search) {
-        const request = {
-            search,
-            questionType: filter.questionType,
-            questionSubGroup: filter.questionSubGroup
-        };
-        QuestionControllerService.findQuestionsUsingPost({
+    if (filter?.newestToOldest || (!search && !filter?.questionType)) {
+        return QuestionControllerService.findAllQuestionsUsingGet({
             authorization,
-            request,
             page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
             size: pageSize,
             sort
@@ -27,8 +21,14 @@ export const fetchQuestion = (
             return response || [];
         });
     } else {
-        return QuestionControllerService.findAllQuestionsUsingGet({
+        const request = {
+            search,
+            questionType: filter.questionType,
+            questionSubGroup: filter.questionSubGroup
+        };
+        return QuestionControllerService.findQuestionsUsingPost({
             authorization,
+            request,
             page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
             size: pageSize,
             sort
