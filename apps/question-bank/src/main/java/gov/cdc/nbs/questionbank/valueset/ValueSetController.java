@@ -83,7 +83,7 @@ public class ValueSetController {
         return valueSetReador.findConceptCodes(codeSetNm);
     }
 
-    @PostMapping("{codeSetNm}/concepts/{conceptCode}")
+    @PutMapping("{codeSetNm}/concepts/{conceptCode}")
     public Concept updateConcept(
             @PathVariable String codeSetNm,
             @PathVariable String conceptCode,
