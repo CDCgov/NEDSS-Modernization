@@ -181,6 +181,11 @@
     line-height: normal;
   }
 }
+.header-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 .no-data-available {
   border-radius: 5px;
   border: 1px solid var(--base-lighter, #DCDEE0);
@@ -191,6 +196,7 @@
   align-items: center;
   gap: 20px;
   align-self: stretch;
+
   .no-text {
     color: var(--base-black, #000);
     text-align: center;

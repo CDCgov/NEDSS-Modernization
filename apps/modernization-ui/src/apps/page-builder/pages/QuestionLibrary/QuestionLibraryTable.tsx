@@ -169,6 +169,28 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
             />
         </div>
     );
+    const searchAvailableElement = (
+        <div className="no-data-available">
+            <label className="no-text">Still can't find what are you're looking for?</label>
+            <label className="margin-bottom-1em search-desc">
+                Please try searching in the local library before creating new
+            </label>
+            <div>
+                <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+                    Create New
+                </ModalToggleButton>
+                <Button className="submit-btn" type="button">
+                    Search Local
+                </Button>
+            </div>
+            <ModalComponent
+                isLarge
+                modalRef={modalRef}
+                modalHeading={'Add question'}
+                modalBody={<div> Add page </div>}
+            />
+        </div>
+    );
 
     return (
         <div>
@@ -190,6 +212,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
             ) : (
                 dataNotAvailableElement
             )}
+            {summaries?.length > 0 && searchQuery && searchAvailableElement}
             <div className="footer-action">{footerActionBtn}</div>
         </div>
     );

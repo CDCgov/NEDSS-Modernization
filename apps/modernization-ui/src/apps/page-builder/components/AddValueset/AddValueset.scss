@@ -1,6 +1,9 @@
 @import '../../../../settings';
 
 .add-valueset {
+    .tabs {
+        padding-left: unset;
+    }
     padding: 5px 30px;
     .field-space {
         margin-top: 10px;
@@ -10,7 +13,7 @@
         font-size: 22px;
     }
     input {
-        width: 480px;
+        width: 100%;
         height: 40px;
         border: 1px solid #171717;
     }
@@ -35,23 +38,28 @@
         margin-left: 45px;
     }
     .add-valueset__container {
-        width: 500px;
-        margin: 50px auto;
+        width: 680px;
+        margin: 32px auto;
         .header-title {
             font-size: 16px;
             text-align: center;
+            margin-bottom: 0;
         }
         .description {
             font-size: 16px;
             font-weight: bold;
         }
         .fields-info {
+            margin-top: 0px;
             color: #71767A;
             text-align: center;
             padding-bottom: 20px;
         }
         .mandatory-indicator {
             color: #D83933;
+        }
+        .usa-form-group {
+            margin-top: 0;
         }
     }
     .submit-btn {
@@ -106,4 +114,25 @@
             background: #C9C9C9;
         }
     }
+}
+
+.form-container {
+    .field-space {
+        width: 100%;
+    }
+    .inline-field {
+        input {
+            width: 100%;
+        }
+    }
+    .right-radio {
+        margin-left: 24px;
+    }
+    .effective-date-field {
+        margin-bottom: 24px;
+    }
+}
+// check logic for data and apply class
+.value_set_concept_container .description {
+    display: none;
 }
