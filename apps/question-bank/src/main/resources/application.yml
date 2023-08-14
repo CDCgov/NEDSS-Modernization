@@ -20,6 +20,7 @@ spring:
         dialect: org.hibernate.dialect.SQLServer2012Dialect
         hbm2ddl.jdbc_metadata_extraction_strategy: individually
         jdbc.time_zone: UTC
+        jdbc.batch_size: 25
         format_sql: true
         default_schema: dbo
     hibernate:

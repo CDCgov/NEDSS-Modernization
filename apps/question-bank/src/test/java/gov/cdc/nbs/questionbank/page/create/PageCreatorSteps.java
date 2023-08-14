@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.page.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import java.util.Set;
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -38,8 +38,14 @@ public class PageCreatorSteps {
         try {
             userMother.adminUser();
             pageCreateResponse = new PageCreateResponse(null, null, null);
-            request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
-                    "create page steps", "dataMart");
+            request = new PageCreateRequest(
+                    "INV",
+                    Arrays.asList("1023"),
+                    "TestPage",
+                    10l,
+                    "HEP_Case_Map_V1.0",
+                    "create page steps",
+                    "dataMart");
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
