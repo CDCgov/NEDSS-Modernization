@@ -9,8 +9,9 @@ import {
     ModalToggleButton,
     TextInput
 } from '@trussworks/react-uswds';
-import { RefObject } from 'react';
+import { RefObject, useState } from 'react';
 import './QuickConditionLookup.scss';
+import { TableComponent } from 'components/Table/Table';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -18,6 +19,17 @@ type Props = {
 };
 
 export const QuickConditionLookup = ({ modal, onClose }: Props) => {
+    const [conditions] = useState(['hello']);
+
+    const tableHeaders = [
+        { name: 'Condition', sortable: true },
+        { name: 'Code', sortable: true },
+        { name: 'Program area', sortable: true },
+        { name: 'Condition Family', sortable: true },
+        { name: 'Investigateion page', sortable: true },
+        { name: 'Status', sortable: true }
+    ];
+
     return (
         <Modal
             ref={modal}
@@ -63,8 +75,54 @@ export const QuickConditionLookup = ({ modal, onClose }: Props) => {
                     </Button>
                 </div>
 
-                <p>Body</p>
-                <p>Body</p>
+                {conditions?.length ? (
+                    <TableComponent
+                        tableHeader=""
+                        tableHead={tableHeaders}
+                        tableBody={[
+                            {
+                                id: 1000,
+                                checkbox: true,
+                                tableDetails: [{ id: 1, title: 'hello' }]
+                            },
+                            {
+                                id: 1000,
+                                checkbox: false,
+                                tableDetails: [{ id: 1, title: 'hello' }]
+                            },
+                            {
+                                id: 1000,
+                                checkbox: false,
+                                tableDetails: [{ id: 1, title: 'hello' }]
+                            },
+                            {
+                                id: 1000,
+                                checkbox: false,
+                                tableDetails: [{ id: 1, title: 'hello' }]
+                            },
+                            {
+                                id: 1000,
+                                checkbox: false,
+                                tableDetails: [{ id: 1, title: 'hello' }]
+                            },
+                            {
+                                id: 1000,
+                                checkbox: false,
+                                tableDetails: [{ id: 1, title: 'hello' }]
+                            }
+                        ]}
+                        isPagination={true}
+                        pageSize={10}
+                        totalResults={10}
+                        currentPage={1}
+                        handleNext={() => null}
+                        sortData={() => null}
+                        handleSelected={() => null}
+                        rangeSelector={true}
+                    />
+                ) : (
+                    <div>No data </div>
+                )}
             </div>
             <ModalFooter className="padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
