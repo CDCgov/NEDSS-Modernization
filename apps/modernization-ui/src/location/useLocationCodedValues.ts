@@ -45,16 +45,20 @@ const initial = {
     }
 };
 
+type StateCodedValues = {
+    all: StateCodedValue[];
+    byAbbreviation: (_abbreviation: string) => StateCodedValue | null;
+    byValue: (_value: string | null) => StateCodedValue | null;
+};
+
+type CountyCodedValues = {
+    byState: (state: string) => CodedValue[];
+};
+
 type LocationCodedValues = {
     countries: CodedValue[];
-    states: {
-        all: StateCodedValue[];
-        byAbbreviation: (_abbreviation: string) => StateCodedValue | null;
-        byValue: (_value: string) => StateCodedValue | null;
-    };
-    counties: {
-        byState: (state: string) => CodedValue[];
-    };
+    states: StateCodedValues;
+    counties: CountyCodedValues;
 };
 
 const useLocationCodedValues = () => {
@@ -68,7 +72,7 @@ const useLocationCodedValues = () => {
                 all: values.states,
                 byAbbreviation: (abbreviation: string) =>
                     values.states.find((state) => state.abbreviation === abbreviation) ?? null,
-                byValue: (value: string) => values.states.find((state) => state.value === value) ?? null
+                byValue: (value: string | null) => values.states.find((state) => state.value === value) ?? null
             }
         });
     };
@@ -83,4 +87,4 @@ const useLocationCodedValues = () => {
 };
 
 export { useLocationCodedValues, initial };
-export type { LocationCodedValues, StateCodedValue };
+export type { LocationCodedValues, StateCodedValue, StateCodedValues, CountyCodedValues };

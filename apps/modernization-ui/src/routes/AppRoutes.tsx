@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
 import { PatientProfile } from '../pages/patient/profile';
-import AddPatient from '../pages/addPatient/AddPatient';
+import { AddPatient } from 'pages/addPatient/AddPatient';
 import { ManagePages } from 'apps/page-builder/pages/ManagePages/ManagePages';
 import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
 import { ReactNode, useContext, useEffect, useState } from 'react';

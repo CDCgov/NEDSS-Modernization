@@ -27,6 +27,13 @@ module.exports = {
         'require-jsdoc': 'off',
         'react/no-unescaped-entities': 0,
         'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': 'error'
+        '@typescript-eslint/no-unused-vars': [
+            'error',
+            {
+                argsIgnorePattern: '^_',
+                varsIgnorePattern: '^_',
+                caughtErrorsIgnorePattern: '^_'
+            }
+        ]
     }
 };
