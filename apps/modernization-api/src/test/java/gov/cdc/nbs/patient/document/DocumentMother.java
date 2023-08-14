@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.document;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
+import gov.cdc.nbs.entity.odse.EdxEventProcess;
 import gov.cdc.nbs.entity.odse.NbsDocument;
 import gov.cdc.nbs.entity.odse.NbsDocumentMetadatum;
 import gov.cdc.nbs.entity.odse.Participation;
@@ -9,11 +10,13 @@ import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import org.springframework.stereotype.Component;
-
+import org.springframework.transaction.annotation.Transactional;
+import java.time.Instant;
 import javax.persistence.EntityManager;
 
 @Component
-class DocumentMother {
+@Transactional
+public class DocumentMother {
 
     private static final String DOCUMENT_CLASS = "DOC";
     private static final String PERSON_CLASS = "PSN";
@@ -161,5 +164,51 @@ class DocumentMother {
             return metadatum;
         }
         return ref;
+    }
+
+    public NbsDocument unprocessed(long patient) {
+        //  create a document
+        NbsDocument document = new NbsDocument();
+        long identifier = idGenerator.next();
+
+        document.setExternalVersionCtrlNbr((short) 1);
+        document.setId(identifier);
+        document.setDocPayload("<?xml version=\"1.0\"?>");
+        document.setDocTypeCd("PHC236");
+        document.setLocalId(idGenerator.nextLocal(DOCUMENT_CLASS));
+
+        document.setNbsInterfaceUid(227L); // not sure what this refers to
+
+        document.setSharedInd('F');
+        document.setVersionCtrlNbr((short) 1);
+
+        document.setRecordStatusCd("UNPROCESSED");
+        document.setRecordStatusTime(settings.createdOn());
+        document.setAddTime(settings.createdOn());
+        document.setAddUserId(settings.createdBy());
+        document.setProgramJurisdictionOid(CLAYTON_STD_OID); // Clayton
+
+        document.setNbsDocumentMetadataUid(metadatum());
+
+        entityManager.persist(document);
+
+        Participation participation = subjectOfDocument(patient, identifier);
+        edxEventProcess(document, participation);
+
+        this.documents.available(document.getId());
+
+        return document;
+    }
+
+    private EdxEventProcess edxEventProcess(NbsDocument document, Participation participation) {
+        EdxEventProcess eventProcess = new EdxEventProcess();
+        eventProcess.setNbsDocumentUid(document);
+        eventProcess.setNbsEventUid(participation.getActUid());
+        eventProcess.setDocEventTypeCd("CASE");
+        eventProcess.setParsedInd('N');
+        eventProcess.setAddTime(Instant.now());
+        eventProcess.setAddUserId(settings.createdBy());
+        entityManager.persist(eventProcess);
+        return eventProcess;
     }
 }

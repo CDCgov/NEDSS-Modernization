@@ -20,7 +20,7 @@ public class PageConstants {
 	public static final String ADD_PAGE_MMG_EMPTY = "MMG is required.";
 	
 	//Page Details
-	public static final String 
+	//public static final String 
 	
 	
 	
