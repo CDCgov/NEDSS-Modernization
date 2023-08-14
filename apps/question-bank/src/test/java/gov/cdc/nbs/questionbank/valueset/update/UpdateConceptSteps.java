@@ -101,7 +101,7 @@ public class UpdateConceptSteps {
                 .orElseThrow();
         assertEquals("updated name", actual.getCodeDescTxt());
         assertEquals("updated display", actual.getCodeShortDescTxt());
-        // DB loses some time accuracy, allow for 1s difference
+        // DB loses some time accuracy, allow for 1 second difference
         var secondsBetweenFromTime = Duration.between(updatedTime, actual.getEffectiveFromTime()).getSeconds();
         assertTrue(Math.abs(secondsBetweenFromTime) <= 1);
         var secondsBetweenToTime = Duration.between(updatedTime, actual.getEffectiveToTime()).getSeconds();
