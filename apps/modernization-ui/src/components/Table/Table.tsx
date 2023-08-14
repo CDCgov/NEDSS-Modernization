@@ -206,8 +206,8 @@ export const TableComponent = ({
                         </tr>
                     ) : tableBody?.length > 0 ? (
                         tableBody.map((item: TableBody, row: number) => (
-                            <>
-                                <tr key={row}>
+                            <React.Fragment key={row}>
+                                <tr>
                                     {item.tableDetails.map((detail: TableDetail, column: number) => (
                                         <td className={resolveDetailStyle(detail, column)} key={column}>
                                             {column === 0 && item.checkbox && (
@@ -274,7 +274,7 @@ export const TableComponent = ({
                                         </td>
                                     </tr>
                                 )}
-                            </>
+                            </React.Fragment>
                         ))
                     ) : (
                         dataNotAvailalbe

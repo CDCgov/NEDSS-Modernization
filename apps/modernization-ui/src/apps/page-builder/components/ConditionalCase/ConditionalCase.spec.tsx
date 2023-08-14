@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import { ConditionalCase } from './ConditionalCase';
 import { AlertProvider } from '../../../../alert';
+import { ConditionalCase } from './ConditionalCase';
 
 describe('General information component tests', () => {
     it('should display condition form', () => {

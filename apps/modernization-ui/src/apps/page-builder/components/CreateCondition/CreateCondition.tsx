@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './CreateCondition.scss';
 import { Button } from '@trussworks/react-uswds';
-
 import { ProgramAreaControllerService, ConditionControllerService, ValueSetControllerService } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
@@ -120,7 +119,6 @@ export const CreateCondition = () => {
             request
         }).then((response: any) => {
             showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
-            // Fields
             resetInput();
             return response;
         });
@@ -196,7 +194,7 @@ export const CreateCondition = () => {
                     name="codingSystem"
                     value={system}
                     onChange={(e: any) => setSystem(e.target.value)}>
-                    <option>-Select-</option>
+                    <option>- Select -</option>
                     {buildOptions(systemOptions)}
                 </select>
                 <br></br>

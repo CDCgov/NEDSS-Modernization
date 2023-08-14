@@ -3,15 +3,13 @@ package gov.cdc.nbs.questionbank.page;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import lombok.RequiredArgsConstructor;
@@ -40,19 +38,14 @@ public class PageStateChanger {
                 waUiMetadataRepository.saveAll(draftMappings);
 
                 response.setMessage(PageConstants.SAVE_DRAFT_SUCCESS);
-                response.setStatus(HttpStatus.OK);
                 response.setTemplateId(page.getId());
-
             } else {
-                response.setMessage(PageConstants.SAVE_DRAFT_FAIL);
-                response.setStatus(HttpStatus.NOT_FOUND);
-                response.setTemplateId(id);
+                throw new PageUpdateException(PageConstants.SAVE_DRAFT_FAIL);
             }
+        } catch (PageUpdateException e) {
+            throw e;
         } catch (Exception e) {
-            response.setMessage(e.getMessage());
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            response.setTemplateId(id);
-
+            throw new PageUpdateException(PageConstants.SAVE_DRAFT_FAIL);
         }
         return response;
     }
