@@ -61,6 +61,7 @@ export type { Template } from './models/Template';
 export type { TemplateSearchRequest } from './models/TemplateSearchRequest';
 export { Text } from './models/Text';
 export type { TextQuestion } from './models/TextQuestion';
+export type { UpdateConceptRequest } from './models/UpdateConceptRequest';
 export { UpdatedValueSetResponse } from './models/UpdatedValueSetResponse';
 export type { UpdatePageDetailsRequest } from './models/UpdatePageDetailsRequest';
 export { UpdateQuestionRequest } from './models/UpdateQuestionRequest';
