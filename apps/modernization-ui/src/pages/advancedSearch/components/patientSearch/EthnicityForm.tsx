@@ -1,7 +1,6 @@
 import { Grid } from '@trussworks/react-uswds';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
-import { formatInterfaceString } from '../../../../utils/util';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 export const EthnicityForm = ({ control }: any) => {
@@ -22,7 +21,7 @@ export const EthnicityForm = ({ control }: any) => {
                                         label="Ethnicity"
                                         options={Object.values(searchCriteria.ethnicities).map((ethnicity) => {
                                             return {
-                                                name: formatInterfaceString(ethnicity.codeDescTxt),
+                                                name: ethnicity.codeDescTxt,
                                                 value: ethnicity.id.code
                                             };
                                         })}
@@ -42,7 +41,7 @@ export const EthnicityForm = ({ control }: any) => {
                                         label="Race"
                                         options={Object.values(searchCriteria.races).map((race) => {
                                             return {
-                                                name: formatInterfaceString(race.codeDescTxt),
+                                                name: race.codeDescTxt,
                                                 value: race.id.code
                                             };
                                         })}
