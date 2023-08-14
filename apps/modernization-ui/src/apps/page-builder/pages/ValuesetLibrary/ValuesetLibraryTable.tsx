@@ -36,11 +36,10 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
-    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy } = useContext(PagesContext);
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
-    setSortBy('');
-    setSortDirection('');
+
     // @ts-ignore
     const asTableRow = (valueSet: ValueSet): TableBody => ({
         id: valueSet.nbsUid,
@@ -111,29 +110,25 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             setSelectedValueSet({});
         }
     };
-
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
 
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
-    const toSortString = (name: string): string | undefined => {
-        if (name) {
+    const toSortString = (name: string, direction: Direction): string => {
+        if (name && direction && direction !== Direction.None) {
             switch (name) {
                 case Column.Type:
-                    setSortBy('valueSetTypeCd');
-                    break;
+                    return `valueSetTypeCd,${direction}`;
                 case Column.ValuesetName:
-                    setSortBy('valueSetNm');
-                    break;
+                    return `valueSetNm,${direction}`;
                 case Column.ValuesetDesc:
-                    setSortBy('codeSetDescTxt');
-                    break;
+                    return `codeSetDescTxt,${direction}`;
                 default:
                     return '';
             }
         }
-        return undefined;
+        return '';
     };
 
     useEffect(() => {
@@ -146,8 +141,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
 
     const handleSort = (name: string, direction: Direction): void => {
         if (name && Direction) {
-            toSortString(name);
-            setSortDirection(direction);
+            setSortBy(toSortString(name, direction));
         }
     };
 

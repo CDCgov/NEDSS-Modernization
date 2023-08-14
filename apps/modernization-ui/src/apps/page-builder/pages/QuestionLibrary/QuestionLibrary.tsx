@@ -8,30 +8,27 @@ import { QuestionLibraryTable } from './QuestionLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
 export const QuestionLibrary = ({ hideTabs }: any) => {
     // const [activeTab] = useState(types || 'recent');
-    const { searchQuery, sortBy, sortDirection, currentPage, pageSize, setIsLoading } = useContext(PagesContext);
+    const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(PagesContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const { state } = useContext(UserContext);
-
-    const filter = {};
 
     // @ts-ignore
     useEffect(async () => {
         const token = `Bearer ${state.getToken()}`;
         setIsLoading(true);
         setSummaries([]);
-        const sort = sortBy ? sortBy.toLowerCase() + ',' + sortDirection : '';
         const { content, totalElements }: any = await fetchQuestion(
             token,
             searchQuery,
-            sort,
+            sortBy,
             currentPage,
             pageSize,
             filter
         );
         setSummaries(content);
         setTotalElements(totalElements);
-    }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
+    }, [searchQuery, currentPage, pageSize, sortBy, filter]);
     return (
         <PageBuilder page="Question">
             <div className="question-local-library">
