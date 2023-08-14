@@ -101,8 +101,11 @@ public class UpdateConceptSteps {
                 .orElseThrow();
         assertEquals("updated name", actual.getCodeDescTxt());
         assertEquals("updated display", actual.getCodeShortDescTxt());
-        assertEquals(0, Duration.between(updatedTime, actual.getEffectiveFromTime()).getSeconds()); // DB loses accuracy to nano's
-        assertEquals(0, Duration.between(updatedTime, actual.getEffectiveToTime()).getSeconds());
+        // DB loses some time accuracy, allow for 1s difference
+        var secondsBetweenFromTime = Duration.between(updatedTime, actual.getEffectiveFromTime()).getSeconds();
+        assertTrue(Math.abs(secondsBetweenFromTime) <= 1);
+        var secondsBetweenToTime = Duration.between(updatedTime, actual.getEffectiveToTime()).getSeconds();
+        assertTrue(Math.abs(secondsBetweenToTime) <= 1);
         assertEquals('I', actual.getStatusCd().charValue());
         assertTrue(concept.getStatusTime().isBefore(actual.getStatusTime()));
         assertEquals("New admin comments", actual.getAdminComments());
