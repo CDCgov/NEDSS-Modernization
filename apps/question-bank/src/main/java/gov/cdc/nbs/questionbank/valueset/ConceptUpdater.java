@@ -33,11 +33,27 @@ public class ConceptUpdater {
         concept.setEffectiveFromTime(request.effectiveFromTime());
         concept.setEffectiveToTime(request.effectiveToTime());
         Character newStatus = request.active() ? 'A' : 'I';
+
         if (!newStatus.equals(concept.getStatusCd())) {
             // There is also a `concept_status_cd` field that doesn't seem to be updated
             concept.setStatusCd(newStatus);
             concept.setStatusTime(Instant.now());
         }
+
+        if (request.conceptMessagingInfo() != null) {
+            concept.setConceptCode(request.conceptMessagingInfo().conceptCode());
+            concept.setConceptNm(request.conceptMessagingInfo().conceptName());
+            concept.setConceptPreferredNm(request.conceptMessagingInfo().preferredConceptName());
+            String codeSystemId = request.conceptMessagingInfo().codeSystem();
+            CodeValueGeneral codeSystem = repository
+                    .findByIdCodeSetNmAndIdCode("CODE_SYSTEM", codeSystemId)
+                    .orElseThrow(() -> new ConceptNotFoundException(
+                            "Failed to find code system with code: " + codeSystemId));
+
+            concept.setCodeSystemCd(codeSystem.getCodeSystemCd());
+            concept.setCodeSystemDescTxt(codeSystem.getCodeSystemDescTxt());
+        }
+
         concept.setAdminComments(request.adminComments());
         concept = repository.save(concept);
 

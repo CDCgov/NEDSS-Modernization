@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.valueset.update;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,12 @@ public class UpdateConceptSteps {
                 updatedTime,
                 updatedTime,
                 false,
-                "New admin comments");
+                "New admin comments",
+                new UpdateConceptRequest.ConceptMessagingInfo(
+                        "message Code",
+                        "message name",
+                        "preferred name",
+                        "HEALTH_LEVEL_7"));
         try {
             controller.updateConcept(id.getCodeSetNm(), concept.getId().getCode(), request);
         } catch (AccessDeniedException e) {
@@ -73,7 +79,7 @@ public class UpdateConceptSteps {
                 updatedTime,
                 updatedTime,
                 false,
-                "New admin comments");
+                "New admin comments", null);
         try {
             controller.updateConcept("I dont", "exist", request);
         } catch (AccessDeniedException e) {
@@ -91,14 +97,22 @@ public class UpdateConceptSteps {
         CodeValueGeneral concept = valueSetMother.concept(id.getCodeSetNm()).get(0);
         assertNull(exceptionHolder.getException());
         CodeValueGeneral actual = codeValueGeneralRepository
-                .findByIdCodeSetNmAndIdCode(id.getCodeSetNm(), concept.getId().getCode()).orElseThrow();
+                .findByIdCodeSetNmAndIdCode(id.getCodeSetNm(), concept.getId().getCode())
+                .orElseThrow();
         assertEquals("updated name", actual.getCodeDescTxt());
         assertEquals("updated display", actual.getCodeShortDescTxt());
-        assertEquals(updatedTime.toEpochMilli(), actual.getEffectiveFromTime().toEpochMilli()); // DB loses accuracy to nano's
-        assertEquals(updatedTime.toEpochMilli(), actual.getEffectiveToTime().toEpochMilli());
+        assertEquals(0, Duration.between(updatedTime, actual.getEffectiveFromTime()).getSeconds()); // DB loses accuracy to nano's
+        assertEquals(0, Duration.between(updatedTime, actual.getEffectiveToTime()).getSeconds());
         assertEquals('I', actual.getStatusCd().charValue());
         assertTrue(concept.getStatusTime().isBefore(actual.getStatusTime()));
         assertEquals("New admin comments", actual.getAdminComments());
+
+        // messaging info
+        assertEquals("message Code", actual.getConceptCode());
+        assertEquals("message name", actual.getConceptNm());
+        assertEquals("preferred name", actual.getConceptPreferredNm());
+        assertEquals("Health Level Seven", actual.getCodeSystemDescTxt()); // From test db
+        assertEquals("2.16.840.1.113883", actual.getCodeSystemCd()); // From test db
     }
 
     @Then("a not found exception is thrown")
