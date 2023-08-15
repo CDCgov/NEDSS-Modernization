@@ -4,7 +4,7 @@ import gov.cdc.nbs.questionbank.section.exception.AddSectionException;
 import gov.cdc.nbs.questionbank.section.exception.DeleteSectionException;
 import gov.cdc.nbs.questionbank.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.section.model.*;
-import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.tab.repository.WaUiMetaDataRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

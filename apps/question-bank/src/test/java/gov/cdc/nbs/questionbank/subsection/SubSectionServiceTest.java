@@ -3,7 +3,7 @@ import gov.cdc.nbs.questionbank.subsection.exception.AddSubSectionException;
 import gov.cdc.nbs.questionbank.subsection.exception.DeleteSubSectionException;
 import gov.cdc.nbs.questionbank.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.subsection.model.*;
-import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.tab.repository.WaUiMetaDataRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

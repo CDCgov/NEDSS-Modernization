@@ -1,10 +1,9 @@
 package gov.cdc.nbs.questionbank.subsection;
-import gov.cdc.nbs.questionbank.section.exception.DeleteSectionException;
 import gov.cdc.nbs.questionbank.subsection.exception.AddSubSectionException;
 import gov.cdc.nbs.questionbank.subsection.exception.DeleteSubSectionException;
 import gov.cdc.nbs.questionbank.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.subsection.model.*;
-import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

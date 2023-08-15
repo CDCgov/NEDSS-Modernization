@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank.section;
 
 import gov.cdc.nbs.questionbank.section.model.CreateSectionRequest;
-import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
 import gov.cdc.nbs.questionbank.section.model.CreateSectionResponse;

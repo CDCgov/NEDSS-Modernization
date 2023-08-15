@@ -1,12 +1,14 @@
-package gov.cdc.nbs.questionbank.addtab;
+package gov.cdc.nbs.questionbank.tab;
 
 import static org.junit.Assert.assertEquals;
+
+import gov.cdc.nbs.questionbank.tab.model.CreateTabResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import gov.cdc.nbs.questionbank.addtab.controller.AddTabController;
-import gov.cdc.nbs.questionbank.addtab.model.CreateTabRequest;
-import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.tab.controller.TabController;
+import gov.cdc.nbs.questionbank.tab.model.CreateTabRequest;
+import gov.cdc.nbs.questionbank.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -17,7 +19,7 @@ import io.cucumber.java.en.Then;
 public class AddTabSteps {
 
     @Autowired
-    private AddTabController tabController;
+    private TabController tabController;
 
     @Autowired
     private WaUiMetaDataRepository waUiMetadataRepository;
@@ -25,7 +27,7 @@ public class AddTabSteps {
     @Autowired
     private PageMother pageMother;
 
-    private CreateUiResponse response;
+    private CreateTabResponse response;
 
     @Autowired
     private ExceptionHolder exceptionHolder;

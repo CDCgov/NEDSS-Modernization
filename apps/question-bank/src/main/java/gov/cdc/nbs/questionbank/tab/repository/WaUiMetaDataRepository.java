@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.addtab.repository;
+package gov.cdc.nbs.questionbank.tab.repository;
 
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -4,13 +4,12 @@ import gov.cdc.nbs.questionbank.section.exception.AddSectionException;
 import gov.cdc.nbs.questionbank.section.exception.DeleteSectionException;
 import gov.cdc.nbs.questionbank.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.section.model.*;
-import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.DestroyFailedException;
 import java.time.Instant;
 
 @Slf4j

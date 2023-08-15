@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.addtab.exceptions;
+package gov.cdc.nbs.questionbank.tab.exceptions;
 
 public class AddTabException extends RuntimeException {
 

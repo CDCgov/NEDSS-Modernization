@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.subsection;
 import gov.cdc.nbs.questionbank.subsection.controller.SubSectionController;
 import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionResponse;
 import gov.cdc.nbs.questionbank.subsection.model.CreateSubSectionRequest;
-import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
