@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'user';
-import { PagesContext } from '../../context/PagesContext';
+import { ValueSetsContext } from '../../context/ValueSetContext';
 import './ValuesetLibrary.scss';
 import { ValuesetLibraryTable } from './ValuesetLibraryTable';
 import './ValuesetTabs.scss';
@@ -8,7 +8,7 @@ import { fetchValueSet } from './useValuesetAPI';
 
 export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     const [activeTab, setActiveTab] = useState(types || 'local');
-    const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(PagesContext);
+    const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(ValueSetsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const { state } = useContext(UserContext);

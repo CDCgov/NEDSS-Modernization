@@ -1,14 +1,11 @@
 /* eslint-disable camelcase */
 import { PageSummary } from 'apps/page-builder/generated';
-// import { Button } from '@trussworks/react-uswds';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import React, { useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import { SearchBar } from './SearchBar';
 import { Icon } from '@trussworks/react-uswds';
-import { UserContext } from '../../../../providers/UserContext';
-import { useAlert } from 'alert';
-import { PagesContext } from '../../context/PagesContext';
+import { ConceptsContext } from '../../context/ConceptContext';
 
 export enum Column {
     localCode = 'Local Code',
@@ -31,14 +28,10 @@ type Props = {
     pages?: any;
 };
 export const ConceptTable = ({ summaries, pages }: Props) => {
-    const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const [selectedConcept, setSelectedConcept] = useState<any>({});
-    const { setSearchQuery, setCurrentPage, setSortBy } = useContext(PagesContext);
+    const { setSearchQuery, setCurrentPage, setSortDirection, setSortBy, searchQuery, setSelectedConcept } =
+        useContext(ConceptsContext);
 
-    const { state } = useContext(UserContext);
-    const authorization = `Bearer ${state.getToken()}`;
-    console.log('showAlert...', showAlert, authorization, selectedConcept);
     const asTableRow = (page: any): TableBody => ({
         id: page.id,
         checkbox: false,
@@ -77,8 +70,7 @@ export const ConceptTable = ({ summaries, pages }: Props) => {
     };
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
 
-    const toSortString = (name: string, direction: string): string | undefined => {
-        console.log('de.....', direction);
+    const toSortString = (name: string) => {
         if (name) {
             switch (name) {
                 case Column.display:
@@ -94,10 +86,10 @@ export const ConceptTable = ({ summaries, pages }: Props) => {
                     setSortBy('effectiveFromTime');
                     break;
                 default:
-                    return undefined;
+                    return '';
             }
         }
-        return undefined;
+        return '';
     };
 
     useEffect(() => {
@@ -110,10 +102,17 @@ export const ConceptTable = ({ summaries, pages }: Props) => {
 
     const handleSort = (name: string, direction: Direction): void => {
         if (name && Direction) {
-            toSortString(name, direction);
+            toSortString(name);
+            setSortDirection(direction);
         }
     };
 
+    if (!summaries?.length && !searchQuery)
+        return (
+            <p className="description">
+                No value set concept is displayed. Please click the button below to add new value set concept.
+            </p>
+        );
     return (
         <div>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
@@ -127,7 +126,6 @@ export const ConceptTable = ({ summaries, pages }: Props) => {
                 currentPage={pages.currentPage}
                 handleNext={setCurrentPage}
                 sortData={handleSort}
-                handleSelected={handleSelected}
                 rangeSelector={true}
             />
         </div>

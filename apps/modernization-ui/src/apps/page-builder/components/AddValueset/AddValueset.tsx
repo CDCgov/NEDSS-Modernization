@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { GetQuestionResponse, QuestionControllerService } from 'apps/page-builder/generated';
-import { Button, DatePicker, Grid, FormGroup, Icon, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, Icon, ModalToggleButton } from '@trussworks/react-uswds';
 import './AddValueset.scss';
 import { ValueSetControllerService } from '../../generated';
 import '../../pages/ValuesetLibrary/ValuesetTabs.scss';
@@ -17,21 +17,17 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
     const [desc, setDesc] = useState('');
     const [code, setCode] = useState('');
     const [activeTab, setActiveTab] = useState('details');
-    const [isShowFrom, setShowForm] = useState(false);
     const [isValuesetNameNotValid, setIsValuesetNameNotValid] = useState(false);
     const [isValuesetCodeNotValid, setIsValuesetCodeNotValid] = useState(false);
     const [isValidationFailure, setIsValidationFailure] = useState(false);
 
     const authorization = `Bearer ${state.getToken()}`;
-    const [concept, setConcept] = useState({ effective: 'always', uIDisplayName: '', localCode: '', conceptCode: '' });
-
     const handleSubmit = () => {
         const request = {
             valueSetNm: name,
             valueSetCode: code,
             valueSetTypeCd: isLocalOrPhin
         };
-
         ValueSetControllerService.createValueSetUsingPost({
             authorization,
             request
@@ -44,8 +40,6 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
             updateQuestion(id);
             return response;
         });
-        // xox- POST API call here
-        // POST /page-builder/api/v1/valueset/
     };
 
     const updateQuestion = async (id: number) => {
@@ -97,14 +91,12 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
             request
         }).then((response: any) => {
             showAlert({ type: 'success', header: 'Add', message: 'Question Added successfully' });
-            // modalRef.current.closeModal();
             return response;
         });
     };
     const handleClose = () => {
         window.close();
     };
-
     const handleBack = () => {
         history.go(-1);
     };
@@ -135,12 +127,6 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
             setIsValidationFailure(true);
         }
     };
-    const handleAddConceptFrom = () => {
-        setShowForm(!isShowFrom);
-    };
-    const handleConcept = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-        setConcept({ ...concept, [target.name]: target.value });
-    };
 
     const disableBtn = isValidationFailure || !name || !code;
     const renderTabs = (
@@ -152,99 +138,6 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
                 Value set concepts
             </li>
         </ul>
-    );
-    const renderConceptForm = (
-        <div className="form-container">
-            <div>
-                <label>UI Display name</label>
-                <input
-                    className="field-space"
-                    type="text"
-                    name="uIDisplayName"
-                    style={{ border: '1px solid black' }}
-                    value={concept.uIDisplayName}
-                    onInput={handleConcept}
-                />
-            </div>
-            <Grid row className="inline-field">
-                <Grid tablet={{ col: true }}>
-                    <div className="margin-right-2">
-                        <label>Local code</label>
-                        <input
-                            className="field-space"
-                            type="text"
-                            name="localCode"
-                            style={{ border: '1px solid black' }}
-                            value={concept.localCode}
-                            onInput={handleConcept}
-                        />
-                    </div>
-                </Grid>
-                <Grid tablet={{ col: true }}>
-                    <div className="width-48-p">
-                        <label>Concept code</label>
-                        <input
-                            className="field-space"
-                            type="text"
-                            name="conceptCode"
-                            style={{ border: '1px solid black' }}
-                            value={concept.conceptCode}
-                            onInput={handleConcept}
-                        />
-                    </div>
-                </Grid>
-            </Grid>
-            <Grid row className="effective-date-field">
-                <Grid col={7}>
-                    <input
-                        type="radio"
-                        name="effective"
-                        value="always"
-                        id="eAlways"
-                        className="field-space"
-                        checked={concept.effective === 'always'}
-                        onChange={handleConcept}
-                    />
-                    <label htmlFor="rdLOCAL" className="radio-label">
-                        Always Effective
-                    </label>
-                    <input
-                        type="radio"
-                        id="eUntil"
-                        name="effective"
-                        value="until"
-                        className="right-radio"
-                        checked={concept.effective === 'until'}
-                        onChange={handleConcept}
-                    />
-                    <label htmlFor="eUntil" className="radio-label">
-                        Effective Until
-                    </label>
-                </Grid>
-                <Grid col={5}>
-                    <FormGroup error={false}>
-                        <DatePicker
-                            id="effectivDate"
-                            name="effectivDate"
-                            // defaultValue={personalDetailsFields.dateOfBirth}
-                            // onChange={handleDobChange}
-                            maxDate={new Date().toISOString()}
-                        />
-                        {/* {isDobInvalid ? <ErrorMessage>DOB cannot be in the future</ErrorMessage> : ''}*/}
-                    </FormGroup>
-                </Grid>
-            </Grid>
-            <div className=" ds-u-text-align--right margin-bottom-1em">
-                <Button type="submit" className="margin-right-2" unstyled onClick={handleAddConceptFrom}>
-                    <Icon.Cancel className="margin-right-2px" />
-                    <span> Cancel</span>
-                </Button>
-                <Button type="submit" unstyled onClick={handleAddConceptFrom}>
-                    <Icon.Check className="margin-right-2px" />
-                    <span> Add value set concept</span>
-                </Button>
-            </div>
-        </div>
     );
 
     return (
@@ -328,7 +221,7 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
                         </div>
                         <div className={isValuesetCodeNotValid ? 'error-border' : ''}>
                             <label>
-                                Value set code<span className="mandatory-indicator">*</span>
+                                Value set code <span className="mandatory-indicator">*</span>
                             </label>
                             <br></br>
                             <p data-testid="error-text" className="error-text">
@@ -348,23 +241,7 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
                         </div>
                     </>
                 ) : (
-                    <div className="value_set_concept_container">
-                        {isShowFrom ? (
-                            renderConceptForm
-                        ) : (
-                            <div>
-                                <p className="description">
-                                    No value set concept is displayed. Please click the button below to add new value
-                                    set concept.
-                                </p>
-                                <Concept />
-                                <Button type="submit" unstyled onClick={handleAddConceptFrom}>
-                                    <Icon.Add className="margin" />
-                                    <span> Add value set concept</span>
-                                </Button>
-                            </div>
-                        )}
-                    </div>
+                    <Concept />
                 )}
             </div>
             <ModalToggleButton

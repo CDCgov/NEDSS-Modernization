@@ -2,12 +2,12 @@
 
 .add-valueset {
     .tabs {
-        padding-left: unset;
+        padding-left: unset !important;
     }
     padding: 5px 30px;
     .field-space {
         margin-top: 10px;
-        margin-bottom: 30px;
+        margin-bottom: 24px;
     }
     .main-header-title {
         font-size: 22px;
@@ -53,7 +53,7 @@
             margin-top: 0px;
             color: #71767A;
             text-align: center;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
         }
         .mandatory-indicator {
             color: #D83933;
@@ -117,6 +117,7 @@
 }
 
 .form-container {
+    min-height: 390px;
     .field-space {
         width: 100%;
     }
@@ -130,6 +131,29 @@
     }
     .effective-date-field {
         margin-bottom: 24px;
+    }
+    .usa-date-picker__external-input {
+        background-color: var(--base-lightest, #F0F0F0);
+        height: 40px;
+        width: 215px;
+    }
+}
+.line-btn {
+    display: flex;
+    padding: 11px 10px;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 6px;
+    text-decoration: none;
+    &.delete-ln-btn {
+       color: var(--error-error, #D54309);
+    }
+}
+.footer-line-btn-block {
+    display: flex;
+    justify-content: space-between;
+    div {
+        display: flex;
     }
 }
 // check logic for data and apply class

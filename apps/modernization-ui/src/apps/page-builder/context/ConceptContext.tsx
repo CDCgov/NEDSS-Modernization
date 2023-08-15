@@ -1,7 +1,9 @@
 /* eslint-disable camelcase */
 import { createContext, useState, Dispatch, SetStateAction } from 'react';
 
-interface PagesContextData {
+interface ConceptsContextData {
+    selectedConcept: any;
+    setSelectedConcept: (concept: any) => void;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     currentPage: number;
@@ -16,14 +18,16 @@ interface PagesContextData {
     setIsLoading: (status: boolean) => void;
 }
 
-const pagesContextDefaultValue: PagesContextData = {
+const conceptsDefaultValue: ConceptsContextData = {
+    selectedConcept: {},
+    setSelectedConcept: () => {},
     searchQuery: '',
     setSearchQuery: () => {},
     currentPage: 1,
     setCurrentPage: () => {},
-    sortBy: 'name',
+    sortBy: '',
     setSortBy: () => {},
-    sortDirection: 'asc',
+    sortDirection: '',
     setSortDirection: () => {},
     pageSize: 10,
     setPageSize: () => {},
@@ -31,19 +35,22 @@ const pagesContextDefaultValue: PagesContextData = {
     setIsLoading: () => {}
 };
 
-export const PagesContext = createContext<PagesContextData>(pagesContextDefaultValue);
+export const ConceptsContext = createContext<ConceptsContextData>(conceptsDefaultValue);
 
-export const PagesProvider = ({ children }: any) => {
-    const [searchQuery, setSearchQuery] = useState(pagesContextDefaultValue.searchQuery);
-    const [currentPage, setCurrentPage] = useState(pagesContextDefaultValue.currentPage);
-    const [sortBy, setSortBy] = useState(pagesContextDefaultValue.sortBy);
-    const [sortDirection, setSortDirection] = useState(pagesContextDefaultValue.sortDirection);
-    const [pageSize, setPageSize] = useState(pagesContextDefaultValue.pageSize);
+export const ConceptsProvider = ({ children }: any) => {
+    const [searchQuery, setSearchQuery] = useState(conceptsDefaultValue.searchQuery);
+    const [sortDirection, setSortDirection] = useState(conceptsDefaultValue.sortDirection);
+    const [currentPage, setCurrentPage] = useState(conceptsDefaultValue.currentPage);
+    const [sortBy, setSortBy] = useState(conceptsDefaultValue.sortBy);
+    const [pageSize, setPageSize] = useState(conceptsDefaultValue.pageSize);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedConcept, setSelectedConcept] = useState(conceptsDefaultValue.selectedConcept);
 
     return (
-        <PagesContext.Provider
+        <ConceptsContext.Provider
             value={{
+                selectedConcept,
+                setSelectedConcept,
                 currentPage,
                 sortBy,
                 setSortBy,
@@ -58,6 +65,6 @@ export const PagesProvider = ({ children }: any) => {
                 setIsLoading
             }}>
             {children}
-        </PagesContext.Provider>
+        </ConceptsContext.Provider>
     );
 };

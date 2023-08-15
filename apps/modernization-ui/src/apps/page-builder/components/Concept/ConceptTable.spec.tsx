@@ -26,39 +26,20 @@ describe('when rendered', () => {
 
 describe('when at least one summary is available', () => {
     const questionsSummary: any = {
-        id: 1006253,
-        mask: 'Test',
-        fieldSize: '10',
-        defaultValue: null,
-        codeSet: 'PHIN',
-        uniqueId: 'INV118',
-        uniqueName: 'Reporting Source Zip',
-        status: 'Active',
-        subgroup: 'INV',
-        description: 'TestFromUI',
-        type: 'TEXT',
-        label: 'Test',
-        tooltip: 'Test',
-        displayControl: 0,
-        adminComments: null,
-        dataMartInfo: {
-            defaultLabelInReport: 'Test',
-            defaultRdbTableName: 'D_ORGANIZATION',
-            rdbColumnName: 'ORGANIZATION_ZIP',
-            dataMartColumnName: null
-        },
-        messagingInfo: {
-            includedInMessage: false,
-            messageVariableId: null,
-            labelInMessage: null,
-            codeSystem: '2.16.840.1.113883.6.1',
-            requiredInMessage: false,
-            hl7DataType: null
-        }
+        localCode: 'ARBO',
+        codesetName: 'CONDITION_FAMILY',
+        display: 'Arboviral',
+        description: 'Arboviral',
+        conceptCode: 'ARBO',
+        messagingConceptName: 'Arboviral',
+        codeSystem: 'Local',
+        status: 'A',
+        effectiveFromTime: '2015-01-01T00:00:00Z',
+        effectiveToTime: null
     };
     const summaries = [questionsSummary];
 
-    it('should display the questions summaries', async () => {
+    it('should display the valueset', async () => {
         const { container } = render(
             <PageProvider>
                 <AlertProvider>
@@ -68,7 +49,7 @@ describe('when at least one summary is available', () => {
         );
 
         const tableData = container.getElementsByClassName('table-data');
-        expect(tableData[0]).toHaveTextContent('TEXT');
+        expect(tableData[0]).toHaveTextContent('ARBO');
         expect(tableData[1]).toHaveTextContent('INV118');
         expect(tableData[2]).toHaveTextContent('Reporting Source Zip');
         expect(tableData[3]).toHaveTextContent('INV');

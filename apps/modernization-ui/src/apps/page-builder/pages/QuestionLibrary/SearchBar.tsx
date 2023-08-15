@@ -4,14 +4,14 @@ import { useContext, useState } from 'react';
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 import { useForm } from 'react-hook-form';
 import { useSubGroupAPI } from './useQuestionAPI';
-import { PagesContext } from '../../context/PagesContext';
+import { QuestionsContext } from '../../context/QuestionsContext';
 
 export const SearchBar = ({ onChange }: any) => {
     const methods = useForm();
     const { control } = methods;
     const initial = { questionSubGroup: '', questionType: '', newestToOldest: false };
     const subGroups = useSubGroupAPI();
-    const { setFilter } = useContext(PagesContext);
+    const { setFilter } = useContext(QuestionsContext);
 
     const [searchTags, setSearchTags] = useState<any>([]);
     const [search, setSearch] = useState<string>('');

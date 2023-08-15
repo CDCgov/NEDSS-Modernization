@@ -14,7 +14,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { UserContext } from '../../../../providers/UserContext';
-import { PagesContext } from '../../context/PagesContext';
+import { QuestionsContext } from '../../context/QuestionsContext';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
 
@@ -43,7 +43,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
-    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy } = useContext(PagesContext);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy } = useContext(QuestionsContext);
 
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
