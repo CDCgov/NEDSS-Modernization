@@ -80,6 +80,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     ]);
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [actionDetails, setActionDetails] = useState<PatientPhone>();
 
     const initial = resolveInitialEntry(patient);
 
@@ -171,6 +172,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     };
 
     const onDeleted = () => {
+        console.log("'asd':", 'asd');
         if (selected?.type == 'delete') {
             remove({
                 variables: {
@@ -283,6 +285,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, phone)(type);
+                                            setActionDetails(phone);
                                             setIsActions(null);
                                         }}
                                     />
@@ -297,12 +300,20 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-phone-email-modal" title="Add - Phone & email">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="add-patient-phone-email-modal"
+                    title="Add - Phone & email">
                     <PhoneEmailEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-phone-email-modal" title="Edit - PhoneEmail">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="edit-patient-phone-email-modal"
+                    title="Edit - Phone & email">
                     <PhoneEmailEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
@@ -327,7 +338,11 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     title={'View details - Phone & email'}
                     modal={modal}
                     details={asDetail(selected.item)}
-                    onClose={actions.reset}
+                    onClose={() => {
+                        setActionDetails(undefined);
+                        actions.reset();
+                    }}
+                    onViewAction={(type) => actionDetails && tableActionStateAdapter(actions, actionDetails)(type)}
                 />
             )}
         </>

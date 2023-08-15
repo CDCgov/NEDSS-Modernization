@@ -57,6 +57,7 @@ export const RacesTable = ({ patient }: Props) => {
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [actionDetails, setActionDetails] = useState<PatientRace>();
 
     const initial = resolveInitialEntry(patient);
 
@@ -252,6 +253,7 @@ export const RacesTable = ({ patient }: Props) => {
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, race)(type);
+                                            setActionDetails(race);
                                             setIsActions(null);
                                         }}
                                     />
@@ -266,12 +268,22 @@ export const RacesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-name-modal" title="Add - Race" overflow>
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="add-patient-name-modal"
+                    title="Add - Race"
+                    overflow>
                     <RaceEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-name-modal" title="Edit - Race" overflow>
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="edit-patient-name-modal"
+                    title="Edit - Race"
+                    overflow>
                     <RaceEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
@@ -295,7 +307,11 @@ export const RacesTable = ({ patient }: Props) => {
                     title={'View details - Race'}
                     modal={modal}
                     details={asDetail(selected.item)}
-                    onClose={actions.reset}
+                    onClose={() => {
+                        setActionDetails(undefined);
+                        actions.reset();
+                    }}
+                    onViewAction={(type) => actionDetails && tableActionStateAdapter(actions, actionDetails)(type)}
                 />
             )}
         </>

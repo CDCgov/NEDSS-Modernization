@@ -85,6 +85,7 @@ export const NamesTable = ({ patient }: Props) => {
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [actionDetails, setActionDetails] = useState<PatientName>();
 
     const initial = resolveInitialEntry(patient);
 
@@ -326,6 +327,7 @@ export const NamesTable = ({ patient }: Props) => {
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, name)(type);
                                             setIsActions(null);
+                                            setActionDetails(name);
                                         }}
                                     />
                                 )}
@@ -339,12 +341,12 @@ export const NamesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-name-modal" title="Add - Name">
+                <EntryModal onClose={actions.reset} modal={modal} id="add-patient-name-modal" title="Add - Name">
                     <NameEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-name-modal" title="Edit - Name">
+                <EntryModal onClose={actions.reset} modal={modal} id="edit-patient-name-modal" title="Edit - Name">
                     <NameEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
@@ -369,7 +371,11 @@ export const NamesTable = ({ patient }: Props) => {
                     title={'View details - Name'}
                     modal={modal}
                     details={asDetail(selected.item)}
-                    onClose={actions.reset}
+                    onClose={() => {
+                        setActionDetails(undefined);
+                        actions.reset();
+                    }}
+                    onViewAction={(type) => actionDetails && tableActionStateAdapter(actions, actionDetails)(type)}
                 />
             )}
         </>

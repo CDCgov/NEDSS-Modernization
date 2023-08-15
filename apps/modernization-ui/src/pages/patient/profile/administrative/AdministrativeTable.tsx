@@ -48,6 +48,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [actionDetails, setActionDetails] = useState<PatientAdministrative>();
 
     const [isActions, setIsActions] = useState<any>(null);
 
@@ -170,9 +171,11 @@ export const AdministrativeTable = ({ patient }: Props) => {
                                 </Button>
                                 {isActions === index && (
                                     <ActionState
+                                        notDeletable
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, administrative)(type);
+                                            setActionDetails(administrative);
                                             setIsActions(null);
                                         }}
                                     />
@@ -188,13 +191,21 @@ export const AdministrativeTable = ({ patient }: Props) => {
             />
 
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-identification-modal" title="Add - Administrative">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="add-patient-identification-modal"
+                    title="Add - Administrative">
                     <AdministrativeForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onChanged} />
                 </EntryModal>
             )}
 
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-identification-modal" title="Edit - Administrative">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="edit-patient-identification-modal"
+                    title="Edit - Administrative">
                     <AdministrativeForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
@@ -218,7 +229,11 @@ export const AdministrativeTable = ({ patient }: Props) => {
                     title={'View details - Administrative'}
                     modal={modal}
                     details={asDetail(selected.item)}
-                    onClose={actions.reset}
+                    onClose={() => {
+                        setActionDetails(undefined);
+                        actions.reset();
+                    }}
+                    onViewAction={(type) => actionDetails && tableActionStateAdapter(actions, actionDetails)(type)}
                 />
             )}
         </>

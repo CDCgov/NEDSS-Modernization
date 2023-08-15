@@ -90,6 +90,7 @@ export const AddressesTable = ({ patient }: Props) => {
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [actionDetails, setActionDetails] = useState<PatientAddress>();
 
     const initial = resolveInitialEntry(patient);
 
@@ -338,6 +339,7 @@ export const AddressesTable = ({ patient }: Props) => {
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, name)(type);
+                                            setActionDetails(name);
                                             setIsActions(null);
                                         }}
                                     />
@@ -352,7 +354,12 @@ export const AddressesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-address-modal" className={modalContext}>
+                <EntryModal
+                    onClose={actions.reset}
+                    title="Add - Address"
+                    modal={modal}
+                    id="add-patient-address-modal"
+                    className={modalContext}>
                     <AddressEntryForm
                         action={'Add'}
                         entry={initial}
@@ -363,7 +370,11 @@ export const AddressesTable = ({ patient }: Props) => {
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-address-modal" title="Edit - Address">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="edit-patient-address-modal"
+                    title="Edit - Address">
                     <AddressEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
@@ -388,7 +399,11 @@ export const AddressesTable = ({ patient }: Props) => {
                     title={'View details - Address'}
                     modal={modal}
                     details={asDetail(selected.item)}
-                    onClose={actions.reset}
+                    onClose={() => {
+                        setActionDetails(undefined);
+                        actions.reset();
+                    }}
+                    onViewAction={(type) => actionDetails && tableActionStateAdapter(actions, actionDetails)(type)}
                 />
             )}
         </>

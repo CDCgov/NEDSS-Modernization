@@ -68,3 +68,14 @@
         right: 15px;
     }
 }
+
+.details-footer {
+    box-shadow: 0px -2px 2px 0px #e0e0e0;
+
+    .delete--modal-btn {
+        text-decoration: none !important;
+        .delete-icon {
+            font-size: 20px;
+        }
+    }
+}

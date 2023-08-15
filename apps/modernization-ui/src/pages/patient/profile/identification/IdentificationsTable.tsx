@@ -62,6 +62,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [actionDetails, setActionDetails] = useState<Identification>();
 
     const initial = resolveInitialEntry(patient);
 
@@ -266,6 +267,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, identification)(type);
+                                            setActionDetails(identification);
                                             setIsActions(null);
                                         }}
                                     />
@@ -281,7 +283,11 @@ export const IdentificationsTable = ({ patient }: Props) => {
             />
 
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-identification-modal" title="Add - Identification">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="add-patient-identification-modal"
+                    title="Add - Identification">
                     <IdentificationEntryForm
                         action={'Add'}
                         entry={initial}
@@ -292,7 +298,11 @@ export const IdentificationsTable = ({ patient }: Props) => {
             )}
 
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-identification-modal" title="Edit - Identification">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="edit-patient-identification-modal"
+                    title="Edit - Identification">
                     <IdentificationEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
@@ -318,7 +328,11 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     title={'View details - Identification'}
                     modal={modal}
                     details={asDetail(selected.item)}
-                    onClose={actions.reset}
+                    onClose={() => {
+                        setActionDetails(undefined);
+                        actions.reset();
+                    }}
+                    onViewAction={(type) => actionDetails && tableActionStateAdapter(actions, actionDetails)(type)}
                 />
             )}
         </>
