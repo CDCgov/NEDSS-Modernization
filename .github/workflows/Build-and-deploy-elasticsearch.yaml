@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'cdc-sandbox/elasticsearch/**'
+      - "cdc-sandbox/elasticsearch/**"
 
 jobs:
   call-build-microservice-container-workflow:
@@ -13,22 +13,20 @@ jobs:
       microservice_name: elasticsearch
       dockerfile_relative_path: ./cdc-sandbox/elasticsearch
       environment_classifier: SNAPSHOT
-      update_helm_chart: true
-      values_file_with_path: charts/elasticsearch/values-dev.yaml
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
       ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}      
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   call-update-helm:
-    needs: call-build-microservice-container-workflow    
+    needs: call-build-microservice-container-workflow
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
     with:
       microservice_name: modernization-api
       values_file_with_path: charts/elasticsearch/values-dev.yaml
-      new_image_tag: ${{ needs.call-build-microservice-container-workflow.outputs.output_image_tag }}      
+      new_image_tag: ${{ needs.call-build-microservice-container-workflow.outputs.output_image_tag }}
     secrets:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}  
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
