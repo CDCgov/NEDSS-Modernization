@@ -3,13 +3,14 @@ import { Input } from 'components/FormInputs/Input';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './AddNewPage.scss';
 import { MultiSelectInput } from 'components/selection/multi';
-import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Button, Form, ModalRef } from '@trussworks/react-uswds';
+import { NavLink } from 'react-router-dom';
 import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditionLookup/QuickConditionLookup';
 import { UserContext } from 'user';
 import { fetchCodingSystemOptions, fetchFamilyOptions } from 'apps/page-builder/services/valueSetAPI';
 import { Controller, useForm } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 
 type FormValues = {
     conditions: [];
@@ -34,10 +35,6 @@ type CONDITION = {
 export const AddNewPage = () => {
     const [showQuickConditionLookup, setShowQuickConditionLookup] = useState(false);
     const modal = useRef<ModalRef>(null);
-    const navigate = useNavigate();
-    const goBack = () => {
-        navigate(`/page-builder/manage/pages`);
-    };
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
     const [conditions, setConditions] = useState<CONDITION[]>([]);
@@ -62,10 +59,7 @@ export const AddNewPage = () => {
             <div className="add-new-page">
                 <div className="add-new-page__form">
                     <Form onSubmit={handleSubmit((data) => console.log(data))}>
-                        <div className="add-new-page__breadcrumb" onClick={goBack}>
-                            <Icon.ArrowBack size={3} />
-                            <h4>Page library</h4>
-                        </div>
+                        <PagesBreadcrumb />
                         <div className="add-new-page__content">
                             <h2>Add new page</h2>
                             <h4>Let’s fill out some information about your new page before creating it</h4>

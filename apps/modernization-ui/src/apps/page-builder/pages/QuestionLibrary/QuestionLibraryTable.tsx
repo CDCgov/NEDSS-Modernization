@@ -43,7 +43,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
-    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy } = useContext(PagesContext);
 
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
@@ -88,26 +88,22 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
-    const toSortString = (name: string): string | undefined => {
-        if (name) {
+    const toSortString = (name: string, direction: Direction): string => {
+        if (name && direction && direction !== Direction.None) {
             switch (name) {
                 case Column.Type:
-                    setSortBy('questionType');
-                    break;
+                    return `questionType,${direction}`;
                 case Column.UniqueId:
-                    setSortBy('uniqueId');
-                    break;
+                    return `uniqueId,${direction}`;
                 case Column.UniqueName:
-                    setSortBy('uniqueName');
-                    break;
+                    return `uniqueName,${direction}`;
                 case Column.SubGroup:
-                    setSortBy('subgroup');
-                    break;
+                    return `subgroup,${direction}`;
                 default:
-                    return undefined;
+                    return '';
             }
         }
-        return undefined;
+        return '';
     };
 
     useEffect(() => {
@@ -120,8 +116,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
 
     const handleSort = (name: string, direction: Direction): void => {
         if (name && Direction) {
-            toSortString(name);
-            setSortDirection(direction);
+            setSortBy(toSortString(name, direction));
         }
     };
     const handleAddQsntoPage = async () => {
