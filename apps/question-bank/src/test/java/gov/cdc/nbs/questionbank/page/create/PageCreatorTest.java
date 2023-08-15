@@ -4,7 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -46,9 +47,15 @@ class PageCreatorTest {
     @Test
     void testCreatePage() {
         Long id = 1l;
-        PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
-                "unit test", "dataMart");
-        WaTemplate page = pageCreator.buildPage(request, "1023", "INV", 10l);
+        PageCreateRequest request =
+                new PageCreateRequest("INV",
+                        Arrays.asList("1023"),
+                        "TestPage",
+                        10l,
+                        "HEP_Case_Map_V1.0",
+                        "unit test",
+                        "dataMart");
+        WaTemplate page = pageCreator.buildPage(request, "INV", 10l);
         page.setId(id);
         when(templateRepository.save(Mockito.any())).thenReturn(page);
         PageCreateResponse response = pageCreator.createPage(request, 1l);
@@ -61,8 +68,9 @@ class PageCreatorTest {
     void testCreatePageTemplateNameExists() {
         WaTemplate existing = getTemplate(10l);
         String templateName = "TestPageExist";
-        PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), templateName, 10l, "HEP_Case_Map_V1.0",
-                "unit test", "dataMart");
+        PageCreateRequest request =
+                new PageCreateRequest("INV", Arrays.asList("1023"), templateName, 10l, "HEP_Case_Map_V1.0",
+                        "unit test", "dataMart");
 
         existing.setTemplateNm(templateName);
         when(templateRepository.findFirstByTemplateNm(Mockito.any())).thenReturn(Optional.of(existing));
@@ -78,8 +86,9 @@ class PageCreatorTest {
     void testCreatePageDataMartNameExist() {
         WaTemplate existing = getTemplate(10l);
         String dataMartNm = "dataMartExist";
-        PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
-                "unit test", dataMartNm);
+        PageCreateRequest request =
+                new PageCreateRequest("INV", Arrays.asList("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
+                        "unit test", dataMartNm);
 
         String finalMessage = String.format(PageConstants.ADD_PAGE_DATAMART_NAME_EXISTS,
                 dataMartNm);
@@ -93,7 +102,12 @@ class PageCreatorTest {
 
     @Test
     void testCreatePageNOName() {
-        PageCreateRequest request = new PageCreateRequest(null, Set.of(), null, 0l, "HEP_Case_Map_V1.0",
+        PageCreateRequest request = new PageCreateRequest(
+                null,
+                Arrays.asList(),
+                null,
+                0l,
+                "HEP_Case_Map_V1.0",
                 "unit test", "dataMart");
 
         var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
@@ -101,18 +115,16 @@ class PageCreatorTest {
     }
 
     @Test
-    void testCreatePageNOCondition() {
-        PageCreateRequest request = new PageCreateRequest(null, Set.of(), "TestPage", 0l, "HEP_Case_Map_V1.0",
-                "unit test", "dataMart");
-
-        var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
-        assertEquals(PageConstants.ADD_PAGE_CONDITION_EMPTY, exception.getMessage());
-    }
-
-    @Test
     void testCreatePageNOEventType() {
-        PageCreateRequest request = new PageCreateRequest(null, Set.of("1023"), "TestPage", 0l, "HEP_Case_Map_V1.0",
-                "unit test", "dataMart");
+        PageCreateRequest request =
+                new PageCreateRequest(
+                        null,
+                        Arrays.asList("1023"),
+                        "TestPage",
+                        0l,
+                        "HEP_Case_Map_V1.0",
+                        "unit test",
+                        "dataMart");
 
         var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
         assertEquals(PageConstants.ADD_PAGE_EVENTTYPE_EMPTY, exception.getMessage());
@@ -120,8 +132,15 @@ class PageCreatorTest {
 
     @Test
     void testCreatePageNOTemplate() {
-        PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 0l, "HEP_Case_Map_V1.0",
-                "unit test", "dataMart");
+        PageCreateRequest request =
+                new PageCreateRequest(
+                        "INV",
+                        Arrays.asList("1023"),
+                        "TestPage",
+                        0l,
+                        "HEP_Case_Map_V1.0",
+                        "unit test",
+                        "dataMart");
 
         var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
         assertEquals(PageConstants.ADD_PAGE_TEMPLATE_EMPTY, exception.getMessage());
@@ -129,8 +148,14 @@ class PageCreatorTest {
 
     @Test
     void testCreatePageNOMMG() {
-        PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, null,
-                "unit test", "dataMart");
+        PageCreateRequest request = new PageCreateRequest(
+                "INV",
+                Arrays.asList("1023"),
+                "TestPage",
+                10l,
+                null,
+                "unit test",
+                "dataMart");
 
         var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
         assertEquals(PageConstants.ADD_PAGE_MMG_EMPTY, exception.getMessage());
@@ -140,8 +165,7 @@ class PageCreatorTest {
     void testCreatePageException() {
         final String message = "Could not find page invalid id provided";
         when(templateRepository.save(Mockito.any())).thenThrow(new IllegalArgumentException(message));
-        PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
-                "unit test", "dataMart");
+        PageCreateRequest request = pageRequest();
         var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
         assertEquals(PageConstants.ADD_PAGE_FAIL, exception.getMessage());
     }
@@ -160,11 +184,18 @@ class PageCreatorTest {
 
     @Test
     void testSavePageCondMapping() {
-        Set<String> conditionIds = new HashSet<String>();
+        List<String> conditionIds = new ArrayList<>();
         conditionIds.add("1023");
         conditionIds.add("1024");
         conditionIds.add("1025");
-        PageCreateRequest request = new PageCreateRequest(null, conditionIds, null, 0l, null, null, null);
+        PageCreateRequest request = new PageCreateRequest(
+                null,
+                conditionIds,
+                null,
+                0l,
+                null,
+                null,
+                null);
         Long templateId = 1l;
         WaTemplate page = getTemplate(templateId);
         Set<PageCondMapping> result = pageCreator.savePageCondMapping(request, page, 2l);
@@ -175,12 +206,22 @@ class PageCreatorTest {
 
     @Test
     void testBuildPage() {
-        PageCreateRequest request = new PageCreateRequest("INV", Set.of("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
-                "unit test", "dataMart");
-        WaTemplate page = pageCreator.buildPage(request, "1023", "INV", 10l);
+        PageCreateRequest request = pageRequest();
+        WaTemplate page = pageCreator.buildPage(request, "INV", 10l);
         assertEquals("Draft", page.getTemplateType());
         assertEquals("PG_" + request.name(), page.getFormCd());
         assertEquals(request.name(), page.getTemplateNm());
+    }
+
+    private PageCreateRequest pageRequest() {
+        return new PageCreateRequest(
+                "INV",
+                Arrays.asList("1023"),
+                "TestPage",
+                10l,
+                "HEP_Case_Map_V1.0",
+                "unit test",
+                "dataMart");
     }
 
     private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage) {

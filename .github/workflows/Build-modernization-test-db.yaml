@@ -12,8 +12,6 @@ jobs:
       microservice_name: modernization-test-db
       dockerfile_relative_path: ./cdc-sandbox/test-db
       environment_classifier: SNAPSHOT
-      update_helm_chart: false
-      values_file_with_path: ""
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
       ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}

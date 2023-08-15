@@ -9,7 +9,7 @@ public class PageConstants {
 	public static final String SAVE_DRAFT_FAIL = " Failed to update to draft status: ";
 	
 	//Page Create
-	public static final String ADD_PAGE_MESSAGE= "page has been successfully added"; 
+	public static final String ADD_PAGE_MESSAGE= " page has been successfully added"; 
 	public static final String ADD_PAGE_FAIL = "could not successfully add page";
 	public static final String ADD_PAGE_NAME_EMPTY = "Page name is required.";
 	public static final String ADD_PAGE_TEMPLATENAME_EXISTS = "A Template with Template Name %s already exists in the system";
