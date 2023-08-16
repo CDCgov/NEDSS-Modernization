@@ -44,7 +44,7 @@ export const Concept = () => {
 
     useEffect(() => {
         setConcept(selectedConcept);
-        setShowForm(!isShowFrom);
+        selectedConcept.status && setShowForm(!isShowFrom);
     }, [selectedConcept]);
 
     const handleCancelFrom = () => {
@@ -85,7 +85,12 @@ export const Concept = () => {
     const handleConcept = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         setConcept({ ...concept, [target.name]: target.value });
     };
-    // const effectiveDate = new Date(concept?.effectiveFromTime).toISOString();
+
+    const newDate = new Date(concept?.effectiveFromTime) || new Date();
+    const month = newDate.getMonth() + 1;
+    const day = newDate.getDate();
+    const year = newDate.getFullYear();
+    const effectiveDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}/`;
 
     const renderConceptForm = (
         <div className="form-container">
@@ -166,7 +171,7 @@ export const Concept = () => {
                         <DatePicker
                             id="effectivDate"
                             name="effectivDate"
-                            // defaultValue={effectiveDate}
+                            defaultValue={effectiveDate}
                             maxDate={new Date().toISOString()}
                         />
                     </FormGroup>
@@ -198,20 +203,29 @@ export const Concept = () => {
             </div>
         </div>
     );
-
     return (
         <div className="value_set_concept_container">
             {isShowFrom ? (
                 renderConceptForm
             ) : (
                 <div>
-                    <div className="concept-local-library">
-                        <div className="concept-local-library__container">
-                            <div className="concept-local-library__table">
-                                <ConceptTable summaries={summaries} pages={{ currentPage, pageSize, totalElements }} />
+                    {!summaries?.length && !searchQuery ? (
+                        <p className="description">
+                            No value set concept is displayed. Please click the button below to add new value set
+                            concept.
+                        </p>
+                    ) : (
+                        <div className="concept-local-library">
+                            <div className="concept-local-library__container">
+                                <div className="concept-local-library__table">
+                                    <ConceptTable
+                                        summaries={summaries}
+                                        pages={{ currentPage, pageSize, totalElements }}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                     <Button type="submit" className="line-btn" unstyled onClick={handleAddConceptFrom}>
                         <Icon.Add className="margin" />
                         <span>Add value set concept</span>

@@ -260,15 +260,19 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             <ModalComponent
                 isLarge
                 modalRef={modalRef}
-                modalHeading={'Add question'}
-                modalBody={<div> Add page </div>}
+                modalHeading={
+                    <span className="header-icon-title">
+                        <Icon.ArrowBack /> Add value set
+                    </span>
+                }
+                modalBody={<AddValueset hideHeader modalRef={modalRef} />}
             />
         </div>
     );
     return (
         <div>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
-            {!summaries?.length ? (
+            {summaries?.length ? (
                 <TableComponent
                     tableHeader=""
                     tableHead={tableColumns}
@@ -285,7 +289,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             ) : (
                 dataNotAvailableElement
             )}
-            {searchQuery && searchAvailableElement}
+            {searchQuery && summaries?.length > 0 && searchAvailableElement}
             <div className="footer-action">{footerActionBtn}</div>
         </div>
     );

@@ -238,6 +238,16 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
                                 value={code}
                                 onInput={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
                             />
+                            <div className="value-set-line-action-footer">
+                                <Button
+                                    type="submit"
+                                    className="line-btn"
+                                    unstyled
+                                    onClick={() => setActiveTab('concepts')}>
+                                    <Icon.ArrowForward className="margin" />
+                                    <span>Continue to value set concept</span>
+                                </Button>
+                            </div>
                         </div>
                     </>
                 ) : (

@@ -1,5 +1,8 @@
 @import '../../../../settings';
 
+.value_set_concept_container {
+  min-height: 486px;
+}
 .concept-local-library {
   background-color: $color-white;
   .search-description-block {

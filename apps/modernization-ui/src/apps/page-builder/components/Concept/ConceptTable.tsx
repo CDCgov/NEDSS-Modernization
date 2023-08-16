@@ -29,7 +29,7 @@ type Props = {
 };
 export const ConceptTable = ({ summaries, pages }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const { setSearchQuery, setCurrentPage, setSortDirection, setSortBy, searchQuery, setSelectedConcept } =
+    const { setSearchQuery, setCurrentPage, setSortDirection, setSortBy, setSelectedConcept } =
         useContext(ConceptsContext);
 
     const asTableRow = (page: any): TableBody => ({
@@ -107,12 +107,6 @@ export const ConceptTable = ({ summaries, pages }: Props) => {
         }
     };
 
-    if (!summaries?.length && !searchQuery)
-        return (
-            <p className="description">
-                No value set concept is displayed. Please click the button below to add new value set concept.
-            </p>
-        );
     return (
         <div>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
