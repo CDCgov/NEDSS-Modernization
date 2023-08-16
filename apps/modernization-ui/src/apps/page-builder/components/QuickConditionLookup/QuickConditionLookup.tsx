@@ -19,7 +19,16 @@ type Props = {
 };
 
 export const QuickConditionLookup = ({ modal, onClose }: Props) => {
-    const [conditions] = useState(['hello']);
+    const conditions = ['hello', 'world', 'this', 'is', 'a', 'test'];
+    const [selectedConditions, setSelectedConditions] = useState([]);
+
+    const addCondition = (condition: string) => {
+        setSelectedConditions([...selectedConditions, condition]);
+    };
+
+    const removeCondition = (condition: string) => {
+        setSelectedConditions(selectedConditions.filter((c: string) => c !== condition));
+    };
 
     const tableHeaders = [
         { name: 'Condition', sortable: true },
@@ -79,38 +88,7 @@ export const QuickConditionLookup = ({ modal, onClose }: Props) => {
                     <TableComponent
                         tableHeader=""
                         tableHead={tableHeaders}
-                        tableBody={[
-                            {
-                                id: 1000,
-                                checkbox: true,
-                                tableDetails: [{ id: 1, title: 'hello' }]
-                            },
-                            {
-                                id: 1000,
-                                checkbox: false,
-                                tableDetails: [{ id: 1, title: 'hello' }]
-                            },
-                            {
-                                id: 1000,
-                                checkbox: false,
-                                tableDetails: [{ id: 1, title: 'hello' }]
-                            },
-                            {
-                                id: 1000,
-                                checkbox: false,
-                                tableDetails: [{ id: 1, title: 'hello' }]
-                            },
-                            {
-                                id: 1000,
-                                checkbox: false,
-                                tableDetails: [{ id: 1, title: 'hello' }]
-                            },
-                            {
-                                id: 1000,
-                                checkbox: false,
-                                tableDetails: [{ id: 1, title: 'hello' }]
-                            }
-                        ]}
+                        tableBody={[]}
                         isPagination={true}
                         pageSize={10}
                         totalResults={10}
