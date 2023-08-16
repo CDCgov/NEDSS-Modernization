@@ -9,7 +9,6 @@ import com.querydsl.core.types.Predicate;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
