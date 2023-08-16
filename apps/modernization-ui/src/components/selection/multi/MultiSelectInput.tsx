@@ -64,7 +64,6 @@ export const MultiSelectInput = ({
     }, [JSON.stringify(value), selectableOptions]);
 
     const handleOnChange = (newValue: MultiValue<Selectable>) => {
-        console.log('CHANGE', newValue, selectableOptions);
         setSelectedOptions([...newValue]);
 
         if (onChange) {
