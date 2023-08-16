@@ -301,6 +301,15 @@ type ActId {
   lastChangeTime: DateTime
 }
 
+type ActId2 {
+  id: Int
+  recordStatus: String
+  actIdSeq: Int
+  rootExtensionTxt: String
+  typeCd: String
+  lastChangeTime: DateTime
+}
+
 input InvestigationFilter {
   patientId: Int
   conditions: [String]
@@ -568,6 +577,101 @@ enum LaboratoryReportStatus {
 }
 extend type Query {
   findDistinctCodedResults(searchText: String!): [CodedResult!]!
+}
+
+extend type Query {
+  findLabReports2ByFilter(
+    filter: LabReport2Filter!
+    page: SortablePage
+  ): LabReport2Results!
+}
+
+type LabReport2Results {
+  content: [LabReport2]!
+  total: Int!
+}
+
+input LabReport2Filter {
+  patientId: Int
+  programAreas: [String]
+  jurisdictions: [ID]
+  pregnancyStatus: PregnancyStatus
+  eventId: LabReportEventId
+  eventDate: LaboratoryEventDateSearch
+  entryMethods: [EntryMethod]
+  enteredBy: [UserType]
+  eventStatus: [EventStatus]
+  processingStatus: [LaboratoryReportStatus]
+  createdBy: ID
+  lastUpdatedBy: ID
+  providerSearch: LabReportProviderSearch
+  resultedTest: String
+  codedResult: String
+}
+
+type LabReport2 {
+  id: String
+  observationUid: Int
+  lastChange: DateTime
+  classCd: String
+  moodCd: String
+  observationLastChgTime: DateTime
+  cdDescTxt: String
+  recordStatusCd: String
+  programAreaCd: String
+  jurisdictionCd: Int
+  jurisdictionCodeDescTxt: String
+  pregnantIndCd: String
+  localId: String
+  activityToTime: DateTime
+  effectiveFromTime: DateTime
+  rptToStateTime: DateTime
+  addTime: DateTime
+  electronicInd: String
+  versionCtrlNbr: Int
+  addUserId: Int
+  lastChgUserId: Int
+  personParticipations2: [PersonParticipation2]
+  organizationParticipations2: [OrganizationParticipation2]
+  materialParticipations2: [MaterialParticipation2]
+  observations2: [Observation2]
+  actIds2: [ActId2]
+  associatedInvestigations2: [AssociatedInvestigation2]
+}
+
+type MaterialParticipation2 {
+  actUid: Int
+  typeCd: String
+  entityId: String
+  subjectClassCd: String
+  typeDescTxt: String
+  participationRecordStatus: String
+  participationLastChangeTime: DateTime
+  cd: String
+  cdDescTxt: String
+}
+
+type Observation2 {
+  cd: String
+  cdDescTxt: String
+  domainCd: String
+  statusCd: String
+  altCd: String
+  altDescTxt: String
+  altCdSystemCd: String
+  displayName: String
+  ovcCode: String
+  ovcAltCode: String
+  ovcAltDescTxt: String
+  ovcAltCdSystemCd: String
+}
+
+type AssociatedInvestigation2 {
+  publicHealthCaseUid: Int
+  cdDescTxt: String
+  localId: String
+  lastChgTime: DateTime
+  actRelationshipLastChgTime: DateTime
 }
 
 type CodedResult {
@@ -1888,6 +1992,38 @@ type PersonParticipation {
 }
 
 type OrganizationParticipation {
+  actUid: Int
+  typeCd: String
+  entityId: Int
+  subjectClassCd: String
+  typeDescTxt: String
+  participationRecordStatus: String
+  participationLastChangeTime: DateTime
+  name: String
+  organizationLastChangeTime: DateTime
+}
+
+type PersonParticipation2 {
+  actUid: Int!
+  localId: String
+  typeCd: String
+  entityId: Int!
+  subjectClassCd: String
+  participationRecordStatus: String
+  typeDescTxt: String
+  participationLastChangeTime: DateTime
+  firstName: String
+  lastName: String
+  birthTime: DateTime
+  currSexCd: String
+  personCd: String!
+  personParentUid: Int
+  personRecordStatus: String!
+  personLastChangeTime: DateTime
+  shortId: Int
+}
+
+type OrganizationParticipation2 {
   actUid: Int
   typeCd: String
   entityId: Int

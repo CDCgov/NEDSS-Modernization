@@ -46,6 +46,7 @@ module.exports.findAllJurisdictions = fs.readFileSync(path.join(__dirname, 'find
 module.exports.findLabReportsByFilter = fs.readFileSync(path.join(__dirname, 'findLabReportsByFilter.gql'), 'utf8');
 module.exports.findDistinctCodedResults = fs.readFileSync(path.join(__dirname, 'findDistinctCodedResults.gql'), 'utf8');
 module.exports.findDistinctResultedTest = fs.readFileSync(path.join(__dirname, 'findDistinctResultedTest.gql'), 'utf8');
+module.exports.findLabReports2ByFilter = fs.readFileSync(path.join(__dirname, 'findLabReports2ByFilter.gql'), 'utf8');
 module.exports.findOrganizationById = fs.readFileSync(path.join(__dirname, 'findOrganizationById.gql'), 'utf8');
 module.exports.findAllOrganizations = fs.readFileSync(path.join(__dirname, 'findAllOrganizations.gql'), 'utf8');
 module.exports.findOrganizationsByFilter = fs.readFileSync(path.join(__dirname, 'findOrganizationsByFilter.gql'), 'utf8');
