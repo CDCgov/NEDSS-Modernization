@@ -103,8 +103,7 @@ export const AddNewPage = () => {
                             <Controller
                                 control={control}
                                 name="conditionIds"
-                                rules={{ required: { value: true, message: 'Condition is required.' } }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                render={({ field: { onChange, value } }) => (
                                     <MultiSelectInput
                                         onChange={onChange}
                                         value={value}
@@ -114,9 +113,7 @@ export const AddNewPage = () => {
                                                 value: m.conceptCode
                                             };
                                         })}
-                                        label="Condition(s)"
-                                        error={error?.message}
-                                        required></MultiSelectInput>
+                                        label="Condition(s)"></MultiSelectInput>
                                 )}
                             />
                             <p>
