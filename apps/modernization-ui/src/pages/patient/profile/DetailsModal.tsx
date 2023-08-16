@@ -1,5 +1,6 @@
 import { Button, Grid, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
+import './DetailsModal.scss';
 
 export type Detail = {
     name: string;
@@ -11,7 +12,8 @@ type Props = {
     title: string;
     details?: Detail[];
     onClose?: () => void;
-    onViewAction?: (type: 'delete' | 'edit') => void;
+    onEdit?: () => void;
+    onDelete?: () => void;
 };
 
 const noData = <span className="no-data">No data</span>;
@@ -27,7 +29,7 @@ const renderField = (detail: Detail, index: number) => (
 
 const maybeRender = (value: string | number | null | undefined) => <>{value}</> ?? noData;
 
-export const DetailsModal = ({ modal, title, onClose, details, onViewAction }: Props) => {
+export const DetailsModal = ({ modal, title, onClose, details, onEdit, onDelete }: Props) => {
     return (
         <Modal
             ref={modal}
@@ -55,11 +57,11 @@ export const DetailsModal = ({ modal, title, onClose, details, onViewAction }: P
                         title.includes('Administrative') ? 'ds-u-visibility--hidden' : ''
                     }`}
                     type="button"
-                    onClick={() => onViewAction?.('delete')}>
+                    onClick={onDelete}>
                     <Icon.Delete className="delete-icon" />
                     Delete
                 </Button>
-                <Button type="button" onClick={() => onViewAction?.('edit')}>
+                <Button type="button" onClick={onEdit}>
                     Edit
                 </Button>
             </ModalFooter>

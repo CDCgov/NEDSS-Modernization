@@ -57,7 +57,6 @@ export const RacesTable = ({ patient }: Props) => {
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [actionDetails, setActionDetails] = useState<PatientRace>();
 
     const initial = resolveInitialEntry(patient);
 
@@ -253,7 +252,6 @@ export const RacesTable = ({ patient }: Props) => {
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, race)(type);
-                                            setActionDetails(race);
                                             setIsActions(null);
                                         }}
                                     />
@@ -307,11 +305,9 @@ export const RacesTable = ({ patient }: Props) => {
                     title={'View details - Race'}
                     modal={modal}
                     details={asDetail(selected.item)}
-                    onClose={() => {
-                        setActionDetails(undefined);
-                        actions.reset();
-                    }}
-                    onViewAction={(type) => actionDetails && tableActionStateAdapter(actions, actionDetails)(type)}
+                    onClose={actions.reset}
+                    onEdit={() => actions.selectForEdit(selected.item)}
+                    onDelete={() => actions.selectForDelete(selected.item)}
                 />
             )}
         </>

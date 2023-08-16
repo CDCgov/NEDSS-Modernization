@@ -90,7 +90,6 @@ export const AddressesTable = ({ patient }: Props) => {
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [actionDetails, setActionDetails] = useState<PatientAddress>();
 
     const initial = resolveInitialEntry(patient);
 
@@ -339,7 +338,6 @@ export const AddressesTable = ({ patient }: Props) => {
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, name)(type);
-                                            setActionDetails(name);
                                             setIsActions(null);
                                         }}
                                     />
@@ -399,11 +397,9 @@ export const AddressesTable = ({ patient }: Props) => {
                     title={'View details - Address'}
                     modal={modal}
                     details={asDetail(selected.item)}
-                    onClose={() => {
-                        setActionDetails(undefined);
-                        actions.reset();
-                    }}
-                    onViewAction={(type) => actionDetails && tableActionStateAdapter(actions, actionDetails)(type)}
+                    onClose={actions.reset}
+                    onEdit={() => actions.selectForEdit(selected.item)}
+                    onDelete={() => actions.selectForDelete(selected.item)}
                 />
             )}
         </>

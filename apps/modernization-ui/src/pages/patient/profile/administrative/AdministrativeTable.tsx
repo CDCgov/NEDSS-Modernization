@@ -48,7 +48,6 @@ export const AdministrativeTable = ({ patient }: Props) => {
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [actionDetails, setActionDetails] = useState<PatientAdministrative>();
 
     const [isActions, setIsActions] = useState<any>(null);
 
@@ -175,7 +174,6 @@ export const AdministrativeTable = ({ patient }: Props) => {
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, administrative)(type);
-                                            setActionDetails(administrative);
                                             setIsActions(null);
                                         }}
                                     />
@@ -229,11 +227,9 @@ export const AdministrativeTable = ({ patient }: Props) => {
                     title={'View details - Administrative'}
                     modal={modal}
                     details={asDetail(selected.item)}
-                    onClose={() => {
-                        setActionDetails(undefined);
-                        actions.reset();
-                    }}
-                    onViewAction={(type) => actionDetails && tableActionStateAdapter(actions, actionDetails)(type)}
+                    onClose={actions.reset}
+                    onEdit={() => actions.selectForEdit(selected.item)}
+                    onDelete={() => actions.selectForDelete(selected.item)}
                 />
             )}
         </>
