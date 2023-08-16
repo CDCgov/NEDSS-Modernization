@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page;
 
-import gov.cdc.nbs.questionbank.page.services.PageSummaryFinder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -12,15 +11,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.page.model.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.page.model.PageSummary;
-import gov.cdc.nbs.questionbank.page.request.AddQuestionRequest;
+import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.request.PageSummaryRequest;
 import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
+import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
-import gov.cdc.nbs.questionbank.page.services.PageContentManager;
+import gov.cdc.nbs.questionbank.page.services.PageSummaryFinder;
 import gov.cdc.nbs.questionbank.page.services.PageUpdater;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,20 +30,20 @@ public class PageController {
 
     private final PageUpdater pageUpdater;
     private final PageSummaryFinder finder;
+    private final PageCreator creator;
     private final PageStateChanger stateChange;
-    private final PageContentManager contentManager;
     private final UserDetailsProvider userDetailsProvider;
-    
+
     public PageController(
             final PageUpdater pageUpdater,
             final PageSummaryFinder finder,
+            final PageCreator creator,
             final PageStateChanger stateChange,
-            final PageContentManager contentManager,
             final UserDetailsProvider userDetailsProvider) {
         this.pageUpdater = pageUpdater;
         this.finder = finder;
-         this.stateChange = stateChange;
-        this.contentManager = contentManager;
+        this.creator = creator;
+        this.stateChange = stateChange;
         this.userDetailsProvider = userDetailsProvider;
     }
 
@@ -68,7 +66,7 @@ public class PageController {
         return results;
     }
 
-    @PostMapping
+    @PostMapping("/search")
     public Page<PageSummary> search(
             @RequestBody PageSummaryRequest request,
             @PageableDefault(size = 25, sort = "id", page = 0) Pageable pageable) {
@@ -77,21 +75,17 @@ public class PageController {
         log.debug("Returning page summaries");
         return results;
     }
-    
-    @PutMapping("{id}/draft")
-    public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
-    	return stateChange.savePageAsDraft(pageId);
+
+    @PostMapping
+    public PageCreateResponse createPage(@RequestBody PageCreateRequest request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return creator.createPage(request, userId);
     }
 
-    @PostMapping("{id}/questions")
-    public AddQuestionResponse addQuestionToPage(
-            @PathVariable("id") Long pageId,
-            @RequestBody AddQuestionRequest request) {
-        log.debug("Received add question to page request");
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Long componentId = contentManager.addQuestion(pageId, request, userId);
-        log.debug("COmpleted add question to page request");
-        return new AddQuestionResponse(componentId);
+
+    @PutMapping("{id}/draft")
+    public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
+        return stateChange.savePageAsDraft(pageId);
     }
 
 }

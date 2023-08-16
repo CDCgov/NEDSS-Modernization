@@ -9,10 +9,6 @@ type Query {
         filter: OrganizationFilter!
         page: SortablePage
     ): PersonResults!
-    findDocumentsRequiringReviewForPatient(
-        patientId: Int!
-        page: Page
-    ): LabReportResults!
     findOpenInvestigationsForPatient(
         patientId: Int!
         page: Page

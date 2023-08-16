@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.condition.response;
 
-import org.springframework.http.HttpStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,5 +7,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateConditionResponse {
     private String id;
-    private HttpStatus status;
 }

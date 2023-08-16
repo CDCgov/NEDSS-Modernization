@@ -20,8 +20,8 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadatum;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
@@ -38,7 +38,7 @@ class QuestionFinderTest {
     private QuestionMapper questionMapper = new QuestionMapper();
 
     @Mock
-    private WaUiMetadatumRepository metadatumRepository;
+    private WaUiMetadataRepository metadatumRepository;
 
     @InjectMocks
     private QuestionFinder finder;
@@ -76,7 +76,7 @@ class QuestionFinderTest {
         
         // and it is in use
         when(metadatumRepository.findAllByQuestionIdentifier(QuestionEntityMother.dateQuestion().getQuestionIdentifier()))
-            .thenReturn(Collections.singletonList(new WaUiMetadatum()));
+            .thenReturn(Collections.singletonList(new WaUiMetadata()));
 
         // when i try to find a question
         GetQuestionResponse response = finder.find(1L);
@@ -89,12 +89,13 @@ class QuestionFinderTest {
     @Test
     void should_try_search_id() {
         // given a request that can be converted to an id
-        FindQuestionRequest request = new FindQuestionRequest("123","LOCAL");
+        FindQuestionRequest request = new FindQuestionRequest("123", "LOCAL");
 
         // and a question exists
         ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-        when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("123"), captor.capture(), Mockito.anyString(), Mockito.any()))
-                .thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("123"), captor.capture(),
+                Mockito.anyString(), Mockito.any()))
+                        .thenReturn(new PageImpl<>(new ArrayList<>()));
 
         // when a query is run
         finder.find(request, PageRequest.ofSize(10));
@@ -106,12 +107,13 @@ class QuestionFinderTest {
     @Test
     void should_try_not_fail_if_search_not_id() {
         // given a request that can be converted to an id
-        FindQuestionRequest request = new FindQuestionRequest("abc","LOCAL");
+        FindQuestionRequest request = new FindQuestionRequest("abc", "LOCAL");
 
         // and a question exists
         ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-        when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("abc"), captor.capture(), Mockito.anyString(), Mockito.any()))
-                .thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("abc"), captor.capture(),
+                Mockito.anyString(), Mockito.any()))
+                        .thenReturn(new PageImpl<>(new ArrayList<>()));
 
         // when a query is run
         finder.find(request, PageRequest.ofSize(10));

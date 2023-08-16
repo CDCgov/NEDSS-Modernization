@@ -7,7 +7,7 @@ public record Concept(
         String codesetName,
         String display,
         String description,
-        String value,
+        String conceptCode,
         String messagingConceptName,
         String codeSystem,
         String status,

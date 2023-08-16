@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -108,6 +109,8 @@ public class WaTemplate {
             })
     private Set<PageCondMapping> conditionMappings;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = CascadeType.ALL)
+    private List<WaUiMetadata> uiMetadata;
 
     public void changed(final PageCommand command) {
         setLastChgTime(command.requestedOn());

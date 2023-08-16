@@ -5,6 +5,7 @@
 export type Concept = {
     codeSystem?: string;
     codesetName?: string;
+    conceptCode?: string;
     description?: string;
     display?: string;
     effectiveFromTime?: string;
@@ -12,6 +13,5 @@ export type Concept = {
     localCode?: string;
     messagingConceptName?: string;
     status?: string;
-    value?: string;
 };
 

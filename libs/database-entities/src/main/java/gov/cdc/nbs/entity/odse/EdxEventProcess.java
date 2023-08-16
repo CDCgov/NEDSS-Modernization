@@ -16,6 +16,7 @@ import java.time.Instant;
 @Table(name = "EDX_event_process")
 public class EdxEventProcess {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "edx_event_process_uid", nullable = false)
     private Long id;
 

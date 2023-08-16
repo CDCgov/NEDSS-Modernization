@@ -1,0 +1,87 @@
+@import 'settings.scss';
+
+.wrapper {
+    display: block;
+    width: 100%;
+}
+
+.tabSection {
+    padding: 1.5rem;
+    display: block;
+    width: 100%;
+}
+
+.tabContainer {
+    background-color: $color-bg-base-lightest;
+    padding: 4px;
+}
+
+.tab {
+    background-color: $color-bg-base-lightest;
+    color: $color-black;
+    border: none;
+    &:hover {
+        background-color: $color-bg-base-lightest;
+        color: $color-black;
+    }
+}
+
+.selected {
+    background-color: #ffffff;
+    &:hover {
+        background-color: #ffffff;
+    }
+}
+.valuesetDetailsSection {
+    display: block;
+    padding: 0px 30px;
+}
+
+.valuesetDetails {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-self: stretch;
+    border-radius: 5px;
+    border: 1px solid var(--base-lighter, #dcdee0);
+    padding: 1.5rem;
+
+    .detailContainer {
+        display: inline-block;
+        width: 25%;
+    }
+
+    dt {
+        min-width: 100%;
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 162%;
+    }
+    dd {
+        display: inline-block;
+        color: var(--base-darker, #3d4551);
+        margin: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 162%;
+    }
+}
+
+.footer {
+    padding: 1rem 1.5rem;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+
+    .edit {
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        text-decoration: none;
+    }
+}
