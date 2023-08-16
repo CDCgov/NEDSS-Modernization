@@ -15,7 +15,6 @@ export const fetchPageSummaries = (
         size: pageSize,
         sort
     }).then((response: Page_PageSummary_) => {
-        console.log('Pages', response);
         return response;
     });
 };
@@ -30,12 +29,10 @@ export const createPage = (
     pageDescription?: string,
     dataMartName?: string
 ) => {
-    console.log(token, conditionIds, eventType, messageMappingGuide, name, pageDescription, templateId, dataMartName);
     return PageControllerService.createPageUsingPost({
         authorization: token,
         request: { conditionIds, dataMartName, eventType, messageMappingGuide, name, pageDescription, templateId }
     }).then((response: any) => {
-        console.log('RESPONSE', response);
         return response;
     });
 };
