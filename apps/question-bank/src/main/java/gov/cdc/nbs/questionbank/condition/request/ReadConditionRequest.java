@@ -5,20 +5,14 @@ import lombok.Data;
 @Data
 public class ReadConditionRequest {
 
-    private String id;
+    private String searchText;
 
-    private String conditionShortNm;
+    private String filterField;
 
-    private String progAreaCd;
+    private String filterValue;
 
-    private String familyCd;
+    private String singleCharFilterField;
 
-    private String coinfectionGrpCd;
-
-    private Character nndInd;
-
-    private String investigationFormCd;
-
-    private Character statusCd;
+    private Character singleCharValueField;
 
 }

@@ -2,11 +2,15 @@ package gov.cdc.nbs.questionbank.condition.read;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,6 +26,7 @@ import gov.cdc.nbs.questionbank.condition.ConditionReader;
 import gov.cdc.nbs.questionbank.condition.response.ReadConditionResponse;
 import gov.cdc.nbs.questionbank.condition.request.ReadConditionRequest;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
+
 
 class ConditionReaderTest {
 
@@ -48,21 +53,19 @@ class ConditionReaderTest {
     @Test
     void searchConditionTest() {
         ReadConditionRequest readConditionRequest = new ReadConditionRequest();
-        readConditionRequest.setConditionShortNm("TestingShortNm");
-        readConditionRequest.setId("Z12356789");
-        readConditionRequest.setProgAreaCd("GCD");
-        readConditionRequest.setFamilyCd("ARBO");
-        readConditionRequest.setCoinfectionGrpCd("STD_HIV_GROUP");
-        readConditionRequest.setNndInd('Y');
-        readConditionRequest.setInvestigationFormCd("INV_FORM_GEN");
-        readConditionRequest.setStatusCd('A');
-        Pageable pageable = PageRequest.of(0, 3);
-        Page<ConditionCode> conditionCode = getConditionList(pageable);
-        when(conditionCodeRepository.findByField(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
-                Mockito.anyString(), Mockito.anyString(), Mockito.anyChar(), Mockito.anyString(), Mockito.anyChar(), Mockito.any())).thenReturn(conditionCode);
-        Page<ReadConditionResponse.GetCondition> result = conditionReader.searchCondition(readConditionRequest, pageable);
-        assertNotNull(result);
-        assertEquals(3, result.getTotalElements());
+        readConditionRequest.setSearchText("Y2798");
+        readConditionRequest.setFilterField("progAreaCd");
+        readConditionRequest.setFilterValue("GCD");
+        readConditionRequest.setSingleCharFilterField("nndInd");
+        readConditionRequest.setSingleCharValueField('Y');
+
+        List<ConditionCode> mockConditionList = new ArrayList<>();
+        Pageable pageable = Pageable.unpaged();
+        Page<ConditionCode> mockConditionPage = new PageImpl<>(mockConditionList);
+        BooleanExpression predicate = QConditionCode.conditionCode.id.eq("Z3456789");
+        when(conditionCodeRepository.findAll(eq(predicate), any(Pageable.class))).thenReturn(mockConditionPage);
+        Page<ReadConditionResponse.GetCondition> resultPage = conditionReader.searchCondition(readConditionRequest, pageable);
+        assertEquals(mockConditionPage.getContent().size(), resultPage.getContent().size());
     }
 
     private Page<ConditionCode> getConditionList(Pageable pageable) {

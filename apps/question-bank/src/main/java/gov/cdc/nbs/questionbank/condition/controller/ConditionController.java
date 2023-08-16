@@ -49,5 +49,6 @@ public class ConditionController {
     public Page<ReadConditionResponse.GetCondition> searchConditions(@RequestBody ReadConditionRequest search, @PageableDefault(size = 20) Pageable pageable) {
         return conditionReader.searchCondition(search, pageable);
     }
+
     
 }
