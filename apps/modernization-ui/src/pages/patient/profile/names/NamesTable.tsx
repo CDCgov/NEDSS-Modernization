@@ -338,12 +338,12 @@ export const NamesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-name-modal" title="Add - Name">
+                <EntryModal onClose={actions.reset} modal={modal} id="add-patient-name-modal" title="Add - Name">
                     <NameEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-name-modal" title="Edit - Name">
+                <EntryModal onClose={actions.reset} modal={modal} id="edit-patient-name-modal" title="Edit - Name">
                     <NameEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
@@ -369,6 +369,8 @@ export const NamesTable = ({ patient }: Props) => {
                     modal={modal}
                     details={asDetail(selected.item)}
                     onClose={actions.reset}
+                    onEdit={() => actions.selectForEdit(selected.item)}
+                    onDelete={() => actions.selectForDelete(selected.item)}
                 />
             )}
         </>

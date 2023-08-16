@@ -171,6 +171,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     };
 
     const onDeleted = () => {
+        console.log("'asd':", 'asd');
         if (selected?.type == 'delete') {
             remove({
                 variables: {
@@ -296,12 +297,20 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-phone-email-modal" title="Add - Phone & email">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="add-patient-phone-email-modal"
+                    title="Add - Phone & email">
                     <PhoneEmailEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-phone-email-modal" title="Edit - PhoneEmail">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="edit-patient-phone-email-modal"
+                    title="Edit - Phone & email">
                     <PhoneEmailEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
@@ -327,6 +336,8 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     modal={modal}
                     details={asDetail(selected.item)}
                     onClose={actions.reset}
+                    onEdit={() => actions.selectForEdit(selected.item)}
+                    onDelete={() => actions.selectForDelete(selected.item)}
                 />
             )}
         </>
