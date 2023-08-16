@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import gov.cdc.nbs.entity.odse.Observation;
+import gov.cdc.nbs.entity.projections.LabReport2;
 
 public interface ObservationRepository
         extends JpaRepository<Observation, Long>, QuerydslPredicateExecutor<Observation> {
@@ -37,4 +38,45 @@ public interface ObservationRepository
                     """, nativeQuery = true)
     List<Observation> findAllObservationsAssociatedWithAnObservation(
             @Param("observationUid") Long observationUid);
+
+    @Query(value = """
+            SELECT
+                act.class_cd classCd,
+                act.mood_cd moodCd,
+                act.act_uid actUid,
+                o.last_chg_time observationLastChgTime,
+                o.observation_uid observationUid,
+                o.cd_desc_txt cdDescTxt,
+                o.record_status_cd recordStatusCd,
+                o.program_jurisdiction_oid programJurisdictionOid,
+                o.prog_area_cd programAreaCd,
+                o.jurisdiction_cd jurisdictionCd,
+                o.pregnant_ind_cd pregnantIndCd,
+                o.local_id localId,
+                o.activity_to_time activityToTime,
+                o.effective_from_time effectiveFromTime,
+                o.rpt_to_state_time rptToStateTime,
+                o.add_time addTime,
+                o.electronic_ind electronicInd,
+                o.version_ctrl_nbr versionCtrlNbr,
+                o.add_user_id addUserId,
+                o.last_chg_user_id lastChgUserId
+            FROM observation o
+                inner join act_relationship act  on o.observation_uid = act.target_act_uid
+                inner join observation o2 on act.source_act_uid = o2.observation_uid
+                inner join Participation part on part.act_uid = o.observation_uid
+                inner join person p on p.person_uid = part.subject_entity_uid
+                AND o2.obs_domain_cd_st_1 = 'Result'
+                AND act.source_act_uid = o2.observation_uid
+                AND act.target_class_cd = 'OBS'
+                AND act.type_cd = 'COMP'
+                AND act.source_class_cd = 'OBS'
+                AND act.record_status_cd = 'ACTIVE'
+                and o.record_status_cd in ('PROCESSED', 'UNPROCESSED')
+                and o.ctrl_cd_display_form = 'LabReport'
+            WHERE
+                p.person_uid = :personUid
+                """, nativeQuery = true)
+    List<LabReport2> findAllLabReportsByPersonUid(
+            @Param("personUid") Long personUid);
 }

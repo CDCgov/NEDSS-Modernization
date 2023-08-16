@@ -56,4 +56,31 @@ public interface PersonRepository extends JpaRepository<Person, Long>, QuerydslP
                     """, nativeQuery = true)
   List<PersonParticipation2> findAllPersonParticipationsByObservationUid(
       @Param("observationUid") Long observationUid);
+
+  @Query(value = """
+        SELECT
+        p.act_uid actUid,
+        p.type_cd typeCd,
+        p.subject_entity_uid entityId,
+        p.subject_class_cd subjectClassCd,
+        p.record_status_cd recordStatus,
+        p.last_chg_time lastChgTime,
+        p.type_desc_txt typeDescTxt,
+        person.first_nm firstNm,
+        person.last_nm lastNm,
+        person.local_id localId,
+        person.birth_time birthTime,
+        person.curr_sex_cd currSexCd,
+        person.cd AS person_cd personCd,
+        person.person_parent_uid personParentUid,
+        person.record_status_cd personRecordStatus,
+        person.last_chg_time personLastChgTime
+      FROM
+        participation p
+        JOIN person ON person.person_parent_uid = p.subject_entity_uid
+      WHERE
+        p.person_uid = :personUid
+                    """, nativeQuery = true)
+  List<PersonParticipation2> findAllPersonParticipationsByPersonUid(
+      @Param("personUid") Long personUid);
 }
