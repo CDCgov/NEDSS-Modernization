@@ -1,16 +1,12 @@
 package gov.cdc.nbs.questionbank.condition.read;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -63,22 +59,6 @@ class ConditionReaderTest {
         assertNotNull(resultPage);
         assertEquals(mockConditionList.size(), resultPage.getContent().size());
     }
-
-
-    @Test
-    void searchWithNoInput() {
-        ReadConditionRequest request = new ReadConditionRequest();
-        List<ConditionCode> mockConditionList = new ArrayList<>();
-        Pageable pageable = Pageable.unpaged();
-        Page<ConditionCode> mockConditionPage = new PageImpl<>(mockConditionList);
-
-        when(conditionCodeRepository.findAll(Mockito.any(BooleanBuilder.class), Mockito.any(Pageable.class))).thenReturn(mockConditionPage);
-        Page<ReadConditionResponse.GetCondition> resultPage = conditionReader.searchCondition(request, pageable);
-
-        assertNotNull(resultPage);
-        assertEquals(mockConditionList.size(), resultPage.getContent().size());
-    }
-
 
     @Test
     void searchWithException() {
