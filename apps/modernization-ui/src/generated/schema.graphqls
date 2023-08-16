@@ -580,6 +580,10 @@ extend type Query {
 }
 
 extend type Query {
+  findAllLabReportsByPersonUid(personUid: Int!): [LabReport2]!
+}
+
+extend type Query {
   findLabReports2ByFilter(
     filter: LabReport2Filter!
     page: SortablePage

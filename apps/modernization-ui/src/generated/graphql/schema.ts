@@ -2076,6 +2076,7 @@ export type Query = {
   findAllEthnicityValues: EthnicityResults;
   findAllIdentificationTypes: IdentificationTypesResults;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
+  findAllLabReportsByPersonUid: Array<Maybe<LabReport2>>;
   findAllNamePrefixes: NamePrefixResults;
   findAllNameTypes: NameTypeResults;
   findAllOrganizations: OrganizationResults;
@@ -2173,6 +2174,11 @@ export type QueryFindAllIdentificationTypesArgs = {
 
 export type QueryFindAllJurisdictionsArgs = {
   page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllLabReportsByPersonUidArgs = {
+  personUid: Scalars['Int'];
 };
 
 
@@ -2867,6 +2873,13 @@ export type FindAllJurisdictionsQueryVariables = Exact<{
 
 
 export type FindAllJurisdictionsQuery = { __typename?: 'Query', findAllJurisdictions: Array<{ __typename?: 'Jurisdiction', id: string, typeCd: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, stateDomainCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeqNum?: number | null, nbsUid?: string | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null, exportInd?: string | null } | null> };
+
+export type FindAllLabReportsByPersonUidQueryVariables = Exact<{
+  personUid: Scalars['Int'];
+}>;
+
+
+export type FindAllLabReportsByPersonUidQuery = { __typename?: 'Query', findAllLabReportsByPersonUid: Array<{ __typename?: 'LabReport2', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations2?: Array<{ __typename?: 'PersonParticipation2', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations2?: Array<{ __typename?: 'OrganizationParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations2?: Array<{ __typename?: 'MaterialParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations2?: Array<{ __typename?: 'Observation2', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds2?: Array<{ __typename?: 'ActId2', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations2?: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> };
 
 export type FindAllNamePrefixesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -4801,6 +4814,131 @@ export type FindAllJurisdictionsQueryHookResult = ReturnType<typeof useFindAllJu
 export type FindAllJurisdictionsLazyQueryHookResult = ReturnType<typeof useFindAllJurisdictionsLazyQuery>;
 export type FindAllJurisdictionsSuspenseQueryHookResult = ReturnType<typeof useFindAllJurisdictionsSuspenseQuery>;
 export type FindAllJurisdictionsQueryResult = Apollo.QueryResult<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>;
+export const FindAllLabReportsByPersonUidDocument = gql`
+    query findAllLabReportsByPersonUid($personUid: Int!) {
+  findAllLabReportsByPersonUid(personUid: $personUid) {
+    id
+    observationUid
+    lastChange
+    classCd
+    moodCd
+    observationLastChgTime
+    cdDescTxt
+    recordStatusCd
+    programAreaCd
+    jurisdictionCd
+    jurisdictionCodeDescTxt
+    pregnantIndCd
+    localId
+    activityToTime
+    effectiveFromTime
+    rptToStateTime
+    addTime
+    electronicInd
+    versionCtrlNbr
+    addUserId
+    lastChgUserId
+    personParticipations2 {
+      actUid
+      localId
+      typeCd
+      entityId
+      subjectClassCd
+      participationRecordStatus
+      typeDescTxt
+      participationLastChangeTime
+      firstName
+      lastName
+      birthTime
+      currSexCd
+      personCd
+      personParentUid
+      personRecordStatus
+      personLastChangeTime
+      shortId
+    }
+    organizationParticipations2 {
+      actUid
+      typeCd
+      entityId
+      subjectClassCd
+      typeDescTxt
+      participationRecordStatus
+      participationLastChangeTime
+      name
+      organizationLastChangeTime
+    }
+    materialParticipations2 {
+      actUid
+      typeCd
+      entityId
+      subjectClassCd
+      typeDescTxt
+      participationRecordStatus
+      participationLastChangeTime
+      cd
+      cdDescTxt
+    }
+    observations2 {
+      cd
+      cdDescTxt
+      domainCd
+      statusCd
+      altCd
+      altDescTxt
+      altCdSystemCd
+      displayName
+      ovcCode
+      ovcAltCode
+      ovcAltDescTxt
+      ovcAltCdSystemCd
+    }
+    actIds2 {
+      id
+      recordStatus
+      actIdSeq
+      rootExtensionTxt
+      typeCd
+      lastChangeTime
+    }
+    associatedInvestigations2 {
+      publicHealthCaseUid
+      cdDescTxt
+      localId
+      lastChgTime
+      actRelationshipLastChgTime
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindAllLabReportsByPersonUidQuery__
+ *
+ * To run a query within a React component, call `useFindAllLabReportsByPersonUidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllLabReportsByPersonUidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllLabReportsByPersonUidQuery({
+ *   variables: {
+ *      personUid: // value for 'personUid'
+ *   },
+ * });
+ */
+export function useFindAllLabReportsByPersonUidQuery(baseOptions: Apollo.QueryHookOptions<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>(FindAllLabReportsByPersonUidDocument, options);
+      }
+export function useFindAllLabReportsByPersonUidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>(FindAllLabReportsByPersonUidDocument, options);
+        }
+export type FindAllLabReportsByPersonUidQueryHookResult = ReturnType<typeof useFindAllLabReportsByPersonUidQuery>;
+export type FindAllLabReportsByPersonUidLazyQueryHookResult = ReturnType<typeof useFindAllLabReportsByPersonUidLazyQuery>;
+export type FindAllLabReportsByPersonUidQueryResult = Apollo.QueryResult<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>;
 export const FindAllNamePrefixesDocument = gql`
     query findAllNamePrefixes($page: Page) {
   findAllNamePrefixes(page: $page) {
