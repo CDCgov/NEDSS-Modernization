@@ -18,24 +18,21 @@ import gov.cdc.nbs.questionbank.condition.ConditionCreator;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 
-@Slf4j
 @RestController
-@RequestMapping("api/v1/condition/")
+@RequestMapping("api/v1/conditions/")
 @RequiredArgsConstructor
 public class ConditionController {
     private final ConditionCreator conditionCreator;
     private final ConditionReader conditionReader;
     private final UserDetailsProvider userDetailsProvider;
-    
+
     @PostMapping
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public ResponseEntity<CreateConditionResponse> createCondition(@RequestBody CreateConditionRequest request) {
+    public CreateConditionResponse createCondition(@RequestBody CreateConditionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        CreateConditionResponse createConditionResponse = conditionCreator.createCondition(request, userId);
-        return new ResponseEntity<>(createConditionResponse, null, createConditionResponse.getStatus());
+        return conditionCreator.createCondition(request, userId);
     }
 
     @GetMapping

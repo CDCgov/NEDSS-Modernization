@@ -1,11 +1,8 @@
 package gov.cdc.nbs.questionbank.condition.util;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
-import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
-import gov.cdc.nbs.questionbank.condition.response.ReadConditionResponse;
+import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,5 +12,4 @@ import lombok.Setter;
 public class ConditionHolder {
     CreateConditionResponse createConditionResponse;
     ConditionCode conditionCode;
-    Page<ReadConditionResponse.GetCondition> readConditionResponse;
 }
