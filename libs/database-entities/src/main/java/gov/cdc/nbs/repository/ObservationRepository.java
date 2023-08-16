@@ -51,6 +51,7 @@ public interface ObservationRepository
                 o.program_jurisdiction_oid programJurisdictionOid,
                 o.prog_area_cd programAreaCd,
                 o.jurisdiction_cd jurisdictionCd,
+                jc.jurisdiction_code_desc_txt jurisdictionCodeDescTxt,
                 o.pregnant_ind_cd pregnantIndCd,
                 o.local_id localId,
                 o.activity_to_time activityToTime,
@@ -66,6 +67,7 @@ public interface ObservationRepository
                 inner join observation o2 on act.source_act_uid = o2.observation_uid
                 inner join Participation part on part.act_uid = o.observation_uid
                 inner join person p on p.person_uid = part.subject_entity_uid
+                LEFT JOIN nbs_srte.dbo.jurisdiction_code jc ON o.jurisdiction_cd = jc.code
                 AND o2.obs_domain_cd_st_1 = 'Result'
                 AND act.source_act_uid = o2.observation_uid
                 AND act.target_class_cd = 'OBS'
