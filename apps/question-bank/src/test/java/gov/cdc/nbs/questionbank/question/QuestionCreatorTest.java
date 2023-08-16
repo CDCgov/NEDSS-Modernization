@@ -61,16 +61,49 @@ class QuestionCreatorTest {
     private QuestionCreator creator;
 
     @Test
-    void should_return_proper_local_id() {
+    void should_return_user_specified_local_id() {
+        // given a "LOCAL" create question request with an Id specified
+        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
+
+        // when I generate the localId
+        String localId = creator.getLocalId(request);
+
+        // then I am returned the specified Id
+        assertEquals(request.uniqueId(), localId);
+    }
+
+    @Test
+    void should_return_generated_local_id_null() {
         // given the idGenerator will return a generated Id
         when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(1000L, "PREFIX","SUFFIX"));
+        
         // and the configRepository will return a NBS_CLASS_CODE
         NbsConfiguration configEntry = new NbsConfiguration();
         configEntry.setConfigValue("GA");
         when(configRepository.findById("NBS_CLASS_CODE")).thenReturn(Optional.of(configEntry));
 
-        // given a "LOCAL" create question request
-        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
+        // given a "LOCAL" create question request with null uniqueId
+        CreateQuestionRequest.Text request = QuestionRequestMother.localWithUniqueId(null);
+
+        // when I generate the localId
+        String localId = creator.getLocalId(request);
+
+        // then I am returned the datbaases next available Id
+        assertEquals(configEntry.getConfigValue() + "1000", localId);
+    }
+
+    @Test
+    void should_return_generated_local_id_empty() {
+        // given the idGenerator will return a generated Id
+        when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(1000L, "PREFIX","SUFFIX"));
+        
+        // and the configRepository will return a NBS_CLASS_CODE
+        NbsConfiguration configEntry = new NbsConfiguration();
+        configEntry.setConfigValue("GA");
+        when(configRepository.findById("NBS_CLASS_CODE")).thenReturn(Optional.of(configEntry));
+
+        // given a "LOCAL" create question request with null uniqueId
+        CreateQuestionRequest.Text request = QuestionRequestMother.localWithUniqueId("  ");
 
         // when I generate the localId
         String localId = creator.getLocalId(request);
