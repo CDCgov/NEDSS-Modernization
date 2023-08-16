@@ -12,12 +12,14 @@ import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvest
 import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
 import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
 import { CreateCondition } from '../apps/page-builder/components/CreateCondition/CreateCondition';
+import { CreateQuestion } from '../apps/page-builder/components/CreateQuestion/CreateQuestion';
 import { Config } from 'config';
 import { ValuesetLibrary } from '../apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
 import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase/ConditionalCase';
 import { ImportTemplate } from '../apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
+import { EditQuestion } from '../apps/page-builder/components/EditQuestion/EditQuestion';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -78,9 +80,11 @@ export const AppRoutes = () => {
                                         <Route path="import-template" element={<ImportTemplate />} />
                                         <Route path="condition" element={<CreateCondition />} />
                                         <Route path="conditional-case" element={<ConditionalCase />} />
+                                        <Route path="question" element={<CreateQuestion />} />
                                     </Route>
                                     <Route path="edit">
                                         <Route path="page/:pageId?" element={<EditPage />} />
+                                        <Route path="question/:questionId?" element={<EditQuestion />} />
                                     </Route>
                                 </Route>
                             </Route>

@@ -53,6 +53,11 @@ export const ConditionalCase = () => {
         });
     };
 
+    const handleAddQuetion = (e: any) => {
+        e.stopPropagation();
+        console.log('hand....');
+    };
+
     const singleSelect = (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +181,7 @@ export const ConditionalCase = () => {
                         <p className="desc">Question group for patient</p>
                     </div>
                     <span className="header-actions">
-                        <Button className="add-btn" type="button" onClick={() => {}}>
+                        <Button className="add-btn" type="button" onClick={handleAddQuetion}>
                             Add Questions
                         </Button>
                         <Icon.MoreVert className="primary-color" size={5} />
