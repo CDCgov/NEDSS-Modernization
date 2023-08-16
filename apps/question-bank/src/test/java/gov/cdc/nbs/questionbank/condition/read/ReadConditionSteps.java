@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.condition.read;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -12,8 +11,8 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
+import gov.cdc.nbs.questionbank.condition.ConditionController;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.condition.controller.ConditionController;
 import gov.cdc.nbs.questionbank.condition.request.ReadConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.ReadConditionResponse;
 import gov.cdc.nbs.questionbank.condition.util.ConditionHolder;
