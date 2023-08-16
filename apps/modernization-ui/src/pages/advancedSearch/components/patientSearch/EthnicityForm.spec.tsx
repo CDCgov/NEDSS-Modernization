@@ -3,7 +3,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import { EthnicityForm } from './EthnicityForm';
 import { Race, Ethnicity } from '../../../../generated/graphql/schema';
-import { formatInterfaceString } from '../../../../utils/util';
 import { SearchCriteria, SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 describe('EthnicityForm component tests', () => {
@@ -37,7 +36,7 @@ describe('EthnicityForm component tests', () => {
         );
         const options = container.querySelectorAll('div select')[0].childNodes;
         Object.values(ethnicities).forEach((value, idx) => {
-            expect(formatInterfaceString(value.codeDescTxt)).toBe(options[idx + 1].textContent);
+            expect(value.codeDescTxt).toBe(options[idx + 1].textContent);
         });
     });
 
@@ -64,7 +63,7 @@ describe('EthnicityForm component tests', () => {
         );
         const options = container.querySelectorAll('div select')[1].childNodes;
         Object.values(races).forEach((value, idx) => {
-            expect(formatInterfaceString(value.codeDescTxt)).toBe(options[idx + 1].textContent);
+            expect(value.codeDescTxt).toBe(options[idx + 1].textContent);
         });
     });
 });
