@@ -163,9 +163,6 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel, onModalCon
         <div className="width-full maxw-full modal-form">
             {!unverified && !verified && (
                 <div>
-                    <ModalHeading className="border-bottom border-base-lighter font-sans-lg padding-2 margin-0 modal-1-heading">
-                        Add - Address
-                    </ModalHeading>
                     <div className="modal-body address-entry-form-container">
                         <Grid row>
                             <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
