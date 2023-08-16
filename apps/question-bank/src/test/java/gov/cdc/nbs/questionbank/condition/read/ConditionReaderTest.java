@@ -7,12 +7,14 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -56,28 +58,12 @@ class ConditionReaderTest {
         List<ConditionCode> mockConditionList = new ArrayList<>();
         Pageable pageable = Pageable.unpaged();
         Page<ConditionCode> mockConditionPage = new PageImpl<>(mockConditionList);
-        BooleanExpression predicate = QConditionCode.conditionCode.id.eq("Y2798");
-        when(conditionCodeRepository.findAll(eq(predicate), any(Pageable.class))).thenReturn(mockConditionPage);
+        when(conditionCodeRepository.findAll(Mockito.any(BooleanBuilder.class), Mockito.any(Pageable.class))).thenReturn(mockConditionPage);
         Page<ReadConditionResponse.GetCondition> resultPage = conditionReader.searchCondition(readConditionRequest, pageable);
         assertNotNull(resultPage);
         assertEquals(mockConditionList.size(), resultPage.getContent().size());
     }
 
-    @Test
-    void searchWithFilterField() {
-        ReadConditionRequest request = new ReadConditionRequest();
-        request.setFilterField("progAreaCd");
-        request.setFilterValue("GCD");
-
-        List<ConditionCode> mockConditionList = new ArrayList<>();
-        Pageable pageable = Pageable.unpaged();
-        Page<ConditionCode> mockConditionPage = new PageImpl<>(mockConditionList);
-        BooleanExpression predicate = QConditionCode.conditionCode.progAreaCd.eq("GCD");
-        when(conditionCodeRepository.findAll(eq(predicate), any(Pageable.class))).thenReturn(mockConditionPage);
-        Page<ReadConditionResponse.GetCondition> resultPage = conditionReader.searchCondition(request, pageable);
-        assertNotNull(resultPage);
-        assertEquals(mockConditionList.size(), resultPage.getContent().size());
-    }
 
     @Test
     void searchWithNoInput() {
@@ -86,24 +72,13 @@ class ConditionReaderTest {
         Pageable pageable = Pageable.unpaged();
         Page<ConditionCode> mockConditionPage = new PageImpl<>(mockConditionList);
 
-        when(conditionCodeRepository.findAll(any(Predicate.class), any(Pageable.class))).thenReturn(mockConditionPage);
+        when(conditionCodeRepository.findAll(Mockito.any(BooleanBuilder.class), Mockito.any(Pageable.class))).thenReturn(mockConditionPage);
         Page<ReadConditionResponse.GetCondition> resultPage = conditionReader.searchCondition(request, pageable);
 
         assertNotNull(resultPage);
         assertEquals(mockConditionList.size(), resultPage.getContent().size());
     }
 
-    @Test
-    void searchWithInvalidFilterField() {
-        ReadConditionRequest request = new ReadConditionRequest();
-        request.setFilterField("invalidfield");
-        Pageable pageable = Pageable.unpaged();
-
-        Page<ReadConditionResponse.GetCondition> resultPage = conditionReader.searchCondition(request, pageable);
-
-        assertNotNull(resultPage);
-        assertTrue(resultPage.getContent().isEmpty());
-    }
 
     @Test
     void searchWithException() {
@@ -111,7 +86,7 @@ class ConditionReaderTest {
         request.setSearchText("Z57685");
         Pageable pageable = Pageable.unpaged();
 
-        when(conditionCodeRepository.findAll(any(Predicate.class), any(Pageable.class))).thenThrow(new RuntimeException("Repository error"));
+        when(conditionCodeRepository.findAll(Mockito.any(BooleanBuilder.class), Mockito.any(Pageable.class))).thenThrow(new RuntimeException("Repository error"));
 
         assertThrows(RuntimeException.class, () -> conditionReader.searchCondition(request, pageable));
     }

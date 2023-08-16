@@ -33,48 +33,49 @@ public class ConditionReader {
 
 
     public Page<ReadConditionResponse.GetCondition> searchCondition(ReadConditionRequest request, Pageable pageable) {
-        BooleanBuilder predicate = new BooleanBuilder();
-        Predicate filterPredicate = buildFilterPredicate(request);
         if (request.getSearchText() != null && !request.getSearchText().trim().isEmpty()) {
+            BooleanBuilder predicate = new BooleanBuilder();
             BooleanExpression searchPredicate = QConditionCode.conditionCode.id.eq(request.getSearchText())
                     .or(QConditionCode.conditionCode.conditionShortNm.containsIgnoreCase(request.getSearchText()));
             predicate.or(searchPredicate);
+            Page<ConditionCode> conditionCodePage = conditionCodeRepository.findAll(predicate, pageable);
+            List<ReadConditionResponse.GetCondition> resultToList = readCondition(conditionCodePage);
+            return new PageImpl<>(resultToList, pageable, conditionCodePage.getTotalElements());
+        } else {
+            return findConditions(pageable);
         }
-        predicate.and(filterPredicate);
-        Page<ConditionCode> conditionCodePage = conditionCodeRepository.findAll(predicate, pageable);
-        List<ReadConditionResponse.GetCondition> resultToList = readCondition(conditionCodePage);
-        return new PageImpl<>(resultToList, pageable, conditionCodePage.getTotalElements());
+
     }
 
-    private Predicate buildFilterPredicate(ReadConditionRequest request) {
-        QConditionCode conditionCode = QConditionCode.conditionCode;
-        String filterField = request.getFilterField();
-        String filterValue = request.getFilterValue();
-        String singleCharFilterField = request.getSingleCharFilterField();
-        Character singleCharValueField = request.getSingleCharValueField();
-
-        BooleanBuilder filterPredicate = new BooleanBuilder();
-
-        if (filterField != null && filterValue != null) {
-            if ("progAreaCd".equalsIgnoreCase(filterField)) {
-                filterPredicate.and(conditionCode.progAreaCd.eq(filterValue));
-            } else if ("familyCd".equalsIgnoreCase(filterField)) {
-                filterPredicate.and(conditionCode.familyCd.eq(filterValue));
-            } else if ("coinfectionGrpCd".equalsIgnoreCase(filterField)) {
-                filterPredicate.and(conditionCode.coinfectionGrpCd.eq(filterValue));
-            } else if ("investigationFormCd".equalsIgnoreCase(filterField)) {
-                filterPredicate.and(conditionCode.investigationFormCd.eq(filterValue));
-            }
-        }
-            if (singleCharFilterField != null && singleCharValueField != null) {
-                if ("nndInd".equalsIgnoreCase(singleCharFilterField)) {
-                    filterPredicate.and(conditionCode.nndInd.eq(singleCharValueField));
-                } else if ("statusCd".equalsIgnoreCase(singleCharFilterField)) {
-                    filterPredicate.and(conditionCode.statusCd.eq(singleCharValueField));
-                }
-            }
-        return filterPredicate;
-    }
+//    private Predicate buildFilterPredicate(ReadConditionRequest request) {
+//        QConditionCode conditionCode = QConditionCode.conditionCode;
+//        String filterField = request.getFilterField();
+//        String filterValue = request.getFilterValue();
+//        String singleCharFilterField = request.getSingleCharFilterField();
+//        Character singleCharValueField = request.getSingleCharValueField();
+//
+//        BooleanBuilder filterPredicate = new BooleanBuilder();
+//
+//        if (filterField != null && filterValue != null) {
+//            if ("progAreaCd".equalsIgnoreCase(filterField)) {
+//                filterPredicate.and(conditionCode.progAreaCd.eq(filterValue));
+//            } else if ("familyCd".equalsIgnoreCase(filterField)) {
+//                filterPredicate.and(conditionCode.familyCd.eq(filterValue));
+//            } else if ("coinfectionGrpCd".equalsIgnoreCase(filterField)) {
+//                filterPredicate.and(conditionCode.coinfectionGrpCd.eq(filterValue));
+//            } else if ("investigationFormCd".equalsIgnoreCase(filterField)) {
+//                filterPredicate.and(conditionCode.investigationFormCd.eq(filterValue));
+//            }
+//        }
+//            if (singleCharFilterField != null && singleCharValueField != null) {
+//                if ("nndInd".equalsIgnoreCase(singleCharFilterField)) {
+//                    filterPredicate.and(conditionCode.nndInd.eq(singleCharValueField));
+//                } else if ("statusCd".equalsIgnoreCase(singleCharFilterField)) {
+//                    filterPredicate.and(conditionCode.statusCd.eq(singleCharValueField));
+//                }
+//            }
+//        return filterPredicate;
+//    }
 
     public List<ReadConditionResponse.GetCondition> readCondition(Page<ConditionCode> result) {
         List<ReadConditionResponse.GetCondition> results = new ArrayList<>();
