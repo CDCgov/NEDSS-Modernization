@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 
 
 import com.querydsl.core.types.dsl.BooleanExpression;
