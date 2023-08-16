@@ -4,7 +4,7 @@ An entry point for the Classic NBS Application that allows a Strangler Fig appro
 
 ## Running
 
-The NBS Gateway is a Spring Cloud Gateway applicaiton that runs on port `8000` by default. It can be started from the root directory by executing;
+The NBS Gateway is a Spring Cloud Gateway application that runs on port `8000` by default. It can be started from the root directory by executing;
 
 ```bash
 ./gradlew nbs-gateway:bootRun
@@ -44,17 +44,19 @@ docker compose build nbs-gateway
 Spring Config allows configuration values to be overwritten at runtime. Values can be set through Java System Variables,
 Environment Variable,and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference/html/features.html#features.external-config). The default profile contains the following properties configuration most likely to change.
 
-| Name                               | Default               | Description                                      |
-| ---------------------------------- | --------------------- | ------------------------------------------------ |
-| nbs.gateway.defaults.protocol      | http                  | The default protocol used to connect to services |
-| nbs.gateway.classic                | http://localhost:7001 | The URI location of the classic NBS Application  |
-| nbs.gateway.patient.search.enabled | true                  | Enables the Patient Search routing               |
-| nbs.gateway.patient.search.service | localhost:8080        | The host name of the Patient Search service      |
+| Name                                 | Default                 | Description                                                                          |
+|--------------------------------------|-------------------------|--------------------------------------------------------------------------------------|
+| nbs.gateway.defaults.protocol        | `http`                  | The default protocol used to connect to services.  Intra-pod communication is `http` |
+| nbs.gateway.classic                  | `http://localhost:7001` | The URI location of the classic NBS Application                                      |
+| nbs.gateway.patient.search.enabled   | `true`                  | Enables the Patient Search routing                                                   |
+| nbs.gateway.patient.search.service   | `localhost:8080`        | The host name of the Patient Search service                                          |
+| nbs.gateway.patient.profile.enabled  | `true`                  | Enables the Patient Profile routing                                                  |
+| nbs.gateway.patient.profile.service  | `localhost:8080`        | The host name of the Patient Profile service                                         |
 
 ### Configuring the Reverse Proxy to use local nbs-gateway
 
 Start the reverse proxy configured to route to the local backend by running the following command from the `cdc-sandbox`
-folder
+folder.
 
 ```shell
 NBS_GATEWAY_SERVER=host.docker.internal docker compose up -d reverse-proxy
