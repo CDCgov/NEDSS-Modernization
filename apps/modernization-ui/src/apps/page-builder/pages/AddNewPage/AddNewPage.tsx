@@ -77,7 +77,6 @@ export const AddNewPage = () => {
     }, [token]);
 
     const onSubmit = handleSubmit(async (data) => {
-        console.log(data);
         await createPage(
             token,
             data.conditionIds,
