@@ -8,6 +8,7 @@ on:
       - "docker-compose.yml"
       - "**.md"
       - ".github/workflows/**"
+      - "apps/nbs-gateway/**"
 
 jobs:
   call-build-microservice-container-workflow:
