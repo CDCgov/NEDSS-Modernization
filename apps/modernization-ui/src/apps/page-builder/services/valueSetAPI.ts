@@ -1,36 +1,15 @@
-import { ValueSetControllerService } from '../generated';
+import { Concept, ValueSetControllerService } from '../generated';
 
 export const fetchCodingSystemOptions = (token: string) => {
-    return new Promise<never[]>((resolve, reject) => {
-        ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization: token,
-            codeSetNm: 'CODE_SYSTEM'
-        })
-            .then((response: any) => {
-                const data = response || [];
-                resolve(data);
-            })
-            .catch((error) => {
-                console.log(error.toJSON());
-                reject(error);
-            });
-    });
+    return fetchValueSetOptions(token, 'CODE_SYSTEM');
+};
+
+export const fetchMMGOptions = (token: string) => {
+    return fetchValueSetOptions(token, 'NBS_MSG_PROFILE');
 };
 
 export const fetchFamilyOptions = (token: string) => {
-    return new Promise<never[]>((resolve, reject) => {
-        ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization: token,
-            codeSetNm: 'CONDITION_FAMILY'
-        })
-            .then((response: any) => {
-                resolve(response);
-            })
-            .catch((error) => {
-                console.log(error.toJSON());
-                reject(error);
-            });
-    });
+    return fetchValueSetOptions(token, 'CONDITION_FAMILY');
 };
 
 export const fetchGroupOptions = (token: string) => {
@@ -39,5 +18,21 @@ export const fetchGroupOptions = (token: string) => {
         codeSetNm: 'COINFECTION_GROUP'
     }).then((response: any) => {
         return response;
+    });
+};
+
+export const fetchValueSetOptions = (token: string, codeSet: string) => {
+    return new Promise<Concept[]>((resolve, reject) => {
+        ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
+            authorization: token,
+            codeSetNm: codeSet
+        })
+            .then((response: any) => {
+                resolve(response);
+            })
+            .catch((error) => {
+                console.log(error.toJSON());
+                reject(error);
+            });
     });
 };
