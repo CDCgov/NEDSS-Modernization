@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './CreateQuestion.scss';
-import { Button } from '@trussworks/react-uswds';
+import ReactSelect from 'react-select';
+import { ModalToggleButton } from '@trussworks/react-uswds';
 import { ProgramAreaControllerService, ValueSetControllerService, QuestionControllerService } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
 
-export const CreateQuestion = () => {
+export const CreateQuestion = ({ modalRef, question }: any) => {
     // Fields
     const [name, setName] = useState('');
     const [system, setSystem] = useState('');
@@ -17,7 +18,6 @@ export const CreateQuestion = () => {
     const [group, setGroup] = useState('');
     const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
-
     // DropDown Options
     const [familyOptions, setFamilyOptions] = useState([]);
     const [groupOptions, setGroupOptions] = useState([]);
@@ -81,6 +81,7 @@ export const CreateQuestion = () => {
             </option>
         ));
     const handleSubmit = () => {
+        if (question?.id) return handleUpdateQuestion();
         const request = {
             codeSystemDescTxt: system,
             conditionShortNm: name,
@@ -96,6 +97,52 @@ export const CreateQuestion = () => {
             request
         }).then((response: any) => {
             showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
+            resetInput();
+            return response;
+        });
+    };
+    const handleUpdateQuestion = () => {
+        const request = {
+            codeSystemDescTxt: system,
+            conditionShortNm: name,
+            id: code,
+            progAreaCd: area,
+            reportableMorbidityInd: isLocalOrPhin,
+            familyCd: family,
+            coinfectionGrpCd: group,
+            adminComments: '',
+            allowFutureDates: true
+            // codeSystem: 'string',
+            // datamartColumnName: 'string',
+            // defaultLabelInReport: 'string',
+            // defaultValue: 'string',
+            // description: 'string',
+            // displayControl: 0,
+            // fieldLength: 'string',
+            // hl7DataType: 'string',
+            // includedInMessage: true,
+            // label: 'string',
+            // labelInMessage: 'string',
+            // mask: 'string',
+            // maxValue: 0,
+            // messageVariableId: 'string',
+            // minValue: 0,
+            // rdbColumnName: 'string',
+            // requiredInMessage: true,
+            // tooltip: 'string',
+            // type: 'CODED',
+            // uniqueName: 'string',
+            // unitType: 'CODED',
+            // unitValue: 'string',
+            // valueSet: 0
+        };
+
+        QuestionControllerService.updateQuestionUsingPut({
+            authorization,
+            id: 101,
+            request
+        }).then((response: any) => {
+            showAlert({ type: 'success', header: 'Updated', message: 'Question updated successfully' });
             resetInput();
             return response;
         });
@@ -123,7 +170,9 @@ export const CreateQuestion = () => {
         <div className="create-question">
             <div className="create-question__container">
                 <div className="ds-u-text-align--center margin-bottom-2em">
-                    <h3 className="header-title margin-bottom-2px">Let's create a new question</h3>
+                    <h3 className="header-title margin-bottom-2px">
+                        {question?.id ? `Edit question` : `Let's create a new question`}
+                    </h3>
                     <label className="fields-info">
                         All fields with <span className="mandatory-indicator">*</span> are required
                     </label>
@@ -170,6 +219,13 @@ export const CreateQuestion = () => {
                     <option>-Select-</option>
                     {buildOptions(programAreaOptions)}
                 </select>
+                <ReactSelect
+                    className="field-space display-none"
+                    options={programAreaOptions}
+                    name="programArea"
+                    defaultValue={area}
+                    // getOptionLabel={(option: any) => <div>{option}</div>}
+                    onChange={(e: any) => setArea(e.target.value)}></ReactSelect>
                 <hr className="divider" />
                 <p className="fields-info">
                     These fields will not be displayed to your users, it only makes it easier for others to search for
@@ -405,16 +461,17 @@ export const CreateQuestion = () => {
                     onInput={(e: any) => setName(e.target.value)}
                 />
             </div>
-            <Button
+            <ModalToggleButton
                 className="submit-btn"
-                type="submit"
+                type="button"
+                modalRef={modalRef}
                 onClick={handleSubmit}
                 disabled={isValidationFailure || isDisableBtn}>
-                Create and add to page
-            </Button>
-            <Button className="cancel-btn" type="submit" onClick={() => resetInput()}>
+                {question?.id ? 'Save' : 'Create and add to page'}
+            </ModalToggleButton>
+            <ModalToggleButton className="cancel-btn" modalRef={modalRef} onClick={() => resetInput()} type="button">
                 Cancel
-            </Button>
+            </ModalToggleButton>
         </div>
     );
 };

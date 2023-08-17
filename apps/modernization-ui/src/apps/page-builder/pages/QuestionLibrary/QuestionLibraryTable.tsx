@@ -15,6 +15,7 @@ import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { UserContext } from '../../../../providers/UserContext';
 import { QuestionsContext } from '../../context/QuestionsContext';
+import { CreateQuestion } from '../../components/CreateQuestion/CreateQuestion';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
 
@@ -165,7 +166,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
                 isLarge
                 modalRef={modalRef}
                 modalHeading={'Add question'}
-                modalBody={<div> Add page </div>}
+                modalBody={<CreateQuestion modalRef={modalRef} />}
             />
         </div>
     );
@@ -187,7 +188,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
                 isLarge
                 modalRef={modalRef}
                 modalHeading={'Add question'}
-                modalBody={<div> Add page </div>}
+                modalBody={<CreateQuestion modalRef={modalRef} />}
             />
         </div>
     );

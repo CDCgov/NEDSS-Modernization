@@ -6,11 +6,15 @@ import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accor
 import { QuestionControllerService } from '../../generated';
 import { UserContext } from '../../../../providers/UserContext';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
+import { CreateQuestion } from '../CreateQuestion/CreateQuestion';
+import { QuestionLibrary } from '../../pages/QuestionLibrary/QuestionLibrary';
 
 export const ConditionalCase = () => {
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
     const modalRef = useRef<ModalRef>(null);
+    const queEditModalRef = useRef<ModalRef>(null);
+    const queListModalRef = useRef<ModalRef>(null);
 
     const count = 1;
     const subCount = 2;
@@ -53,10 +57,36 @@ export const ConditionalCase = () => {
         });
     };
 
-    const handleAddQuetion = (e: any) => {
+    const handleAddQuestion = (e: any) => {
         e.stopPropagation();
-        console.log('hand....');
     };
+
+    const renderEditQuestionModal = (que: any) => (
+        <>
+            <ModalToggleButton className="submit-btn" modalRef={queEditModalRef} unstyled outline>
+                <Icon.Edit style={{ cursor: 'pointer' }} className="primary-color" onClick={() => editQtn(que.id)} />
+            </ModalToggleButton>
+            <ModalComponent
+                isLarge
+                modalRef={queEditModalRef}
+                modalHeading={'Edit question'}
+                modalBody={<CreateQuestion modalRef={queEditModalRef} question={que} />}
+            />
+        </>
+    );
+    const renderQuestionListModal = () => (
+        <>
+            <ModalToggleButton className="add-btn" onClick={handleAddQuestion} modalRef={queListModalRef}>
+                Add Questions
+            </ModalToggleButton>
+            <ModalComponent
+                isLarge
+                modalRef={queListModalRef}
+                modalHeading={'Add question'}
+                modalBody={<QuestionLibrary hideTabs modalRef={queListModalRef} />}
+            />
+        </>
+    );
 
     const singleSelect = (
         <svg
@@ -116,13 +146,7 @@ export const ConditionalCase = () => {
                             </li>
                         </ul>
                         <ul className="icon-btn">
-                            <li>
-                                <Icon.Edit
-                                    style={{ cursor: 'pointer' }}
-                                    className="primary-color"
-                                    onClick={() => editQtn(que.id)}
-                                />
-                            </li>
+                            <li>{renderEditQuestionModal(que)}</li>
                             <li>
                                 <Icon.Delete
                                     style={{ cursor: 'pointer' }}
@@ -151,7 +175,6 @@ export const ConditionalCase = () => {
                         <div className="que-add-valueset">
                             <div className="label">
                                 {singleSelect}
-                                {/* <Icon.List size={4} color="gray" className="margin-right-2" /> */}
                                 Radio boxes (single select)
                             </div>
                             <ModalToggleButton
@@ -181,9 +204,7 @@ export const ConditionalCase = () => {
                         <p className="desc">Question group for patient</p>
                     </div>
                     <span className="header-actions">
-                        <Button className="add-btn" type="button" onClick={handleAddQuetion}>
-                            Add Questions
-                        </Button>
+                        {renderQuestionListModal()}
                         <Icon.MoreVert className="primary-color" size={5} />
                         <Icon.ExpandLess className="primary-color" size={5} />
                     </span>
