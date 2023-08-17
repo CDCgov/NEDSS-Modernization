@@ -83,7 +83,7 @@ export const AddNewPage = () => {
             data.pageDescription,
             data?.dataMartName
         ).then((response: any) => {
-            navigate(`/page-builder/edit/page/${response.id}`);
+            navigate(`/page-builder/edit/page/${response.pageId}`);
         });
     });
     return (
