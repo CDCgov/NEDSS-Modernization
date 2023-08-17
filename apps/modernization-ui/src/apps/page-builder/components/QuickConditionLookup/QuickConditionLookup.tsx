@@ -9,16 +9,18 @@ import {
     ModalToggleButton,
     TextInput
 } from '@trussworks/react-uswds';
-import { RefObject, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, RefObject, useContext, useEffect, useState } from 'react';
 import './QuickConditionLookup.scss';
 import { TableComponent, TableBody } from 'components/Table/Table';
-import { Condition, ConditionControllerService } from 'apps/page-builder/generated';
+import { ConditionControllerService } from 'apps/page-builder/generated';
 import { UserContext } from 'user';
+import { NavLink } from 'react-router-dom';
+import { PagesContext } from 'apps/page-builder/context/PagesContext';
 
 type Props = {
     modal: RefObject<ModalRef>;
-    onClose?: () => void;
-    addConditions: (conditions: Condition[]) => void;
+    onClose: () => void;
+    addConditions: (conditions: string[]) => void;
 };
 
 const tableHeaders = [
@@ -32,23 +34,32 @@ const tableHeaders = [
 
 export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) => {
     const [conditions, setConditions] = useState<any[]>([]);
-    const [selectedConditions, setSelectedConditions] = useState<Condition[]>([]);
+    const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
     const [searchText, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(0);
     const [totalConditions, setTotalConditions] = useState(0);
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const { state } = useContext(UserContext);
+    const { currentPage, setCurrentPage } = useContext(PagesContext);
 
-    const handleSelectConditions = (condition: Condition) => {
-        setSelectedConditions([...selectedConditions, condition]);
+    const handleSelectConditions = (event: ChangeEvent<HTMLInputElement>, condition: any) => {
+        if (selectedConditions.includes(condition.id)) {
+            const newSelectedConditions = selectedConditions.filter((c) => c !== condition.id);
+            setSelectedConditions(newSelectedConditions);
+        } else {
+            setSelectedConditions([...selectedConditions, condition.id]);
+        }
     };
 
     const handleSearch = (value: string) => {
         setSearchTerm(value);
     };
 
-    const handleSubmitSearch = () => {
+    const handleAddConditions = () => {
+        addConditions(selectedConditions);
+    };
+
+    const handleSubmitSearch = (page: number) => {
         setLoading(true);
         const authorization = `Bearer ${state.getToken()}`;
         const request = { searchText };
@@ -56,22 +67,25 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
         ConditionControllerService.searchConditionUsingPost({
             authorization,
             request,
-            page: currentPage,
+            page,
             size: 10
-        }).then((response: any) => {
-            // set conditions
-            setLoading(false);
-            console.log('response', response);
-            setConditions(response.content);
-            setTotalConditions(response.totalElements);
-        });
+        })
+            .then((response: any) => {
+                setLoading(false);
+                setConditions(response.content);
+                setTotalConditions(response.totalElements);
+            })
+            .catch((error: any) => {
+                console.error('Error', error);
+            });
     };
 
     useEffect(() => {
-        handleSubmitSearch();
-    }, []);
+        handleSubmitSearch(currentPage);
+    }, [currentPage]);
 
     useEffect(() => {
+        addConditions(selectedConditions);
         setTableRows(asTableRows(conditions));
     }, [conditions]);
 
@@ -97,13 +111,9 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
 
     const asTableRows = (conditions: any | undefined): TableBody[] => conditions?.map(asTableRow) || [];
 
-    const handleAddConditions = () => {
-        addConditions(selectedConditions);
-    };
-
     return (
         <Modal
-            style={{ minWidth: '80%' }}
+            style={{ minWidth: '85%' }}
             ref={modal}
             forceAction
             id="quick-condition-lookup"
@@ -136,7 +146,13 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
                             name={'condition-search'}
                             type="search"
                         />
-                        <Button type="button" style={{ height: '41px', borderRadius: 0 }} onClick={handleSubmitSearch}>
+                        <Button
+                            type="button"
+                            style={{ height: '41px', borderRadius: 0 }}
+                            onClick={() => {
+                                handleSubmitSearch(1);
+                                setCurrentPage ? setCurrentPage(1) : null;
+                            }}>
                             <Icon.Search />
                         </Button>
                     </div>
@@ -144,9 +160,11 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
                         <Icon.FilterAlt />
                         Filter
                     </Button>
-                    <Button type="button" style={{ height: '41px' }}>
-                        Add new condition
-                    </Button>
+                    <NavLink to={'page-builder/add/condition'}>
+                        <Button type="button" style={{ height: '41px' }}>
+                            Add new condition
+                        </Button>
+                    </NavLink>
                 </div>
                 {conditions?.length ? (
                     <TableComponent
@@ -171,7 +189,7 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
                     <ModalToggleButton modalRef={modal} closer onClick={onClose} outline>
                         Cancel
                     </ModalToggleButton>
-                    <ModalToggleButton modalRef={modal} closer onClick={onClose}>
+                    <ModalToggleButton modalRef={modal} closer onClick={handleAddConditions}>
                         Add Condition
                     </ModalToggleButton>
                 </ButtonGroup>
