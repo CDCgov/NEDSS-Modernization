@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -183,6 +183,7 @@ class PageCreatorTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testSavePageCondMapping() {
         List<String> conditionIds = new ArrayList<>();
         conditionIds.add("1023");
@@ -198,9 +199,11 @@ class PageCreatorTest {
                 null);
         Long templateId = 1l;
         WaTemplate page = getTemplate(templateId);
-        Set<PageCondMapping> result = pageCreator.savePageCondMapping(request, page, 2l);
-        assertNotNull(result);
-        assertEquals(3, result.size());
+        ArgumentCaptor<List<PageCondMapping>> captor = ArgumentCaptor.forClass(List.class);
+        when(pageConMappingRepository.saveAll(captor.capture())).thenReturn(null);
+        pageCreator.createPageCondMappings(request, page, 2l);
+        assertNotNull(captor.getValue());
+        assertEquals(3, captor.getValue().size());
 
     }
 
@@ -240,3 +243,4 @@ class PageCreatorTest {
         return template;
     }
 }
+

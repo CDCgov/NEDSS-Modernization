@@ -2,11 +2,8 @@ package gov.cdc.nbs.questionbank.page;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,8 +72,7 @@ public class PageCreator {
                     request.eventType(),
                     userId);
             WaTemplate savedPage = templateRepository.save(newPage);
-            Set<PageCondMapping> mapping = savePageCondMapping(request, savedPage, userId);
-            pageConMappingRepository.saveAll(mapping);
+            createPageCondMappings(request, savedPage, userId);
 
             Optional<WaTemplate> template = templateRepository.findById(request.templateId());
             if (template.isPresent()) {
@@ -107,21 +103,25 @@ public class PageCreator {
 
     }
 
-    public Set<PageCondMapping> savePageCondMapping(PageCreateRequest request, WaTemplate savePaged, Long userId) {
-        Set<PageCondMapping> result = new HashSet<>();
-        Iterator<String> map = request.conditionIds().iterator();
-        while (map.hasNext()) {
-            String conditionId = map.next();
-            PageCondMapping aMapping = new PageCondMapping();
-            aMapping.setWaTemplateUid(savePaged);
-            aMapping.setLastChgTime(Instant.now());
-            aMapping.setLastChgUserId(userId);
-            aMapping.setAddTime(Instant.now());
-            aMapping.setAddUserId(userId);
-            aMapping.setConditionCd(conditionId);
-            result.add(aMapping);
+    public void createPageCondMappings(PageCreateRequest request, WaTemplate savePaged, Long userId) {
+        if (request.conditionIds() == null) {
+            return;
         }
-        return result;
+        Instant now = Instant.now();
+        List<PageCondMapping> mappings = request.conditionIds()
+                .stream()
+                .map(c -> {
+                    PageCondMapping mapping = new PageCondMapping();
+                    mapping.setWaTemplateUid(savePaged);
+                    mapping.setLastChgTime(now);
+                    mapping.setLastChgUserId(userId);
+                    mapping.setAddTime(now);
+                    mapping.setAddUserId(userId);
+                    mapping.setConditionCd(c);
+                    return mapping;
+                }).toList();
+
+        pageConMappingRepository.saveAll(mappings);
     }
 
     public WaTemplate buildPage(PageCreateRequest request, String eventType, Long userId) {
@@ -149,3 +149,4 @@ public class PageCreator {
     }
 
 }
+
