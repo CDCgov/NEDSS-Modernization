@@ -9,25 +9,52 @@ import {
     ModalToggleButton,
     TextInput
 } from '@trussworks/react-uswds';
-import { RefObject, useState } from 'react';
+import { RefObject, useContext, useState } from 'react';
 import './QuickConditionLookup.scss';
 import { TableComponent } from 'components/Table/Table';
+import { Spinner } from '@cmsgov/design-system';
+import { ConditionControllerService, SearchConditionRequest } from 'apps/page-builder/generated';
+import { UserContext } from 'user';
 
 type Props = {
     modal: RefObject<ModalRef>;
     onClose?: () => void;
+    addConditions?: () => void;
 };
 
 export const QuickConditionLookup = ({ modal, onClose }: Props) => {
     const conditions = ['hello', 'world', 'this', 'is', 'a', 'test'];
-    const [selectedConditions, setSelectedConditions] = useState([]);
+    // const [selectedConditions, setSelectedConditions] = useState([]);
+    const [searchText, setSearchText] = useState('');
+    const [loading, setLoading] = useState(false);
+    const { state } = useContext(UserContext);
 
-    const addCondition = (condition: string) => {
-        setSelectedConditions([...selectedConditions, condition]);
+    // const addCondition = (condition: string) => {
+    //     setSelectedConditions([...selectedConditions, condition]);
+    // };
+
+    // const removeCondition = (condition: string) => {
+    //     setSelectedConditions(selectedConditions.filter((c: string) => c !== condition));
+    // };
+
+    const handleSearch = (e: string) => {
+        setSearchText(e);
     };
 
-    const removeCondition = (condition: string) => {
-        setSelectedConditions(selectedConditions.filter((c: string) => c !== condition));
+    const handleSubmitSearch = () => {
+        console.log('searching for', searchText);
+        setLoading(true);
+        const authorization = `Bearer ${state.getToken()}`;
+        const request = { searchText };
+
+        ConditionControllerService.searchConditionUsingPost({
+            authorization,
+            request
+        }).then((response: any) => {
+            // set conditions
+            setLoading(false);
+            console.log('response', response);
+        });
     };
 
     const tableHeaders = [
@@ -41,6 +68,7 @@ export const QuickConditionLookup = ({ modal, onClose }: Props) => {
 
     return (
         <Modal
+            style={{ minWidth: '80%' }}
             ref={modal}
             forceAction
             id="quick-condition-lookup"
@@ -65,13 +93,15 @@ export const QuickConditionLookup = ({ modal, onClose }: Props) => {
                     <div style={{ display: 'flex' }}>
                         <TextInput
                             inputSize="medium"
+                            value={searchTerm}
+                            onChange={(e) => handleSearch(e.target.value)}
                             placeholder="Type something here..."
-                            id={''}
+                            id={'condition-search'}
                             style={{ height: '41px', border: 'none' }}
                             name={'condition-search'}
                             type="search"
                         />
-                        <Button type="button" style={{ height: '41px', borderRadius: 0 }}>
+                        <Button type="button" style={{ height: '41px', borderRadius: 0 }} onClick={handleSubmitSearch}>
                             <Icon.Search />
                         </Button>
                     </div>
@@ -83,7 +113,7 @@ export const QuickConditionLookup = ({ modal, onClose }: Props) => {
                         Add new condition
                     </Button>
                 </div>
-
+                {loading && <Spinner />}
                 {conditions?.length ? (
                     <TableComponent
                         tableHeader=""

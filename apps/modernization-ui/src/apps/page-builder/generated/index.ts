@@ -55,6 +55,7 @@ export type { ProgramArea } from './models/ProgramArea';
 export type { Question } from './models/Question';
 export type { QuestionStatusRequest } from './models/QuestionStatusRequest';
 export type { ReportingInfo } from './models/ReportingInfo';
+export type { SearchConditionRequest } from './models/SearchConditionRequest';
 export type { Sort } from './models/Sort';
 export type { SourceValues } from './models/SourceValues';
 export type { Status } from './models/Status';
