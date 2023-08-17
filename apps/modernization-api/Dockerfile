@@ -1,4 +1,13 @@
-FROM amazoncorretto:17 as builder
+FROM node:16-alpine as ui-builder
+
+# Copy required sources
+COPY apps/modernization-ui /usr/modernization-ui
+
+# Install node modules
+WORKDIR /usr/modernization-ui
+RUN npm install && npm run build
+
+FROM amazoncorretto:17-alpine as api-builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -9,31 +18,21 @@ COPY settings.gradle /usr/src/nbs/settings.gradle
 COPY lombok.config /usr/src/nbs/lombok.config
 
 # Copy required sources
-COPY apps/modernization-ui /usr/src/nbs/apps/modernization-ui
 COPY apps/modernization-api /usr/src/nbs/apps/modernization-api
 COPY libs /usr/src/nbs/libs
 
-# Preparation for the modernization-ui build
-# Install node
-RUN yum update -y \
-    && curl --silent --location https://rpm.nodesource.com/setup_16.x | bash - \
-    && yum install tar gzip nodejs -y
 
-# Install node modules
-WORKDIR /usr/src/nbs/apps/modernization-ui
-RUN npm install
+# Copy the UI
+copy --from=ui-builder /usr/modernization-ui/build /usr/src/nbs/apps/modernization-ui/build
 
 WORKDIR /usr/src/nbs
-
-# Build the UI
-RUN ./gradlew :modernization-ui:build -x test --no-daemon 
 
 # Build just the modernization-api and any required library
 RUN ./gradlew :modernization-api:buildNeeded -x test --no-daemon
 
-FROM amazoncorretto:17
+FROM amazoncorretto:17-alpine
 
-COPY --from=builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api*.jar api.jar 
+COPY --from=api-builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api*.jar api.jar 
 
 ENV NBS_DATASOURCE_SERVER=nbs-mssql
 ENV NBS_ELASTICSEARCH_SERVER=elasticsearch

@@ -1,4 +1,4 @@
-FROM amazoncorretto:17 as builder
+FROM eclipse-temurin:17 as builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -17,7 +17,7 @@ WORKDIR /usr/src/nbs
 # Build just the pagebuilder-api and any required library
 RUN ./gradlew :question-bank:buildNeeded -x test --no-daemon
 
-FROM amazoncorretto:17
+FROM eclipse-temurin:17-jre
 
 COPY --from=builder /usr/src/nbs/apps/question-bank/build/libs/question-bank*.jar api.jar 
 
