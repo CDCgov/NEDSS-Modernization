@@ -9,62 +9,97 @@ import {
     ModalToggleButton,
     TextInput
 } from '@trussworks/react-uswds';
-import { RefObject, useContext, useState } from 'react';
+import { RefObject, useContext, useEffect, useState } from 'react';
 import './QuickConditionLookup.scss';
-import { TableComponent } from 'components/Table/Table';
-import { Spinner } from '@cmsgov/design-system';
-import { ConditionControllerService, SearchConditionRequest } from 'apps/page-builder/generated';
+import { TableComponent, TableBody } from 'components/Table/Table';
+import { Condition, ConditionControllerService } from 'apps/page-builder/generated';
 import { UserContext } from 'user';
 
 type Props = {
     modal: RefObject<ModalRef>;
     onClose?: () => void;
-    addConditions?: () => void;
+    addConditions: (conditions: Condition[]) => void;
 };
 
-export const QuickConditionLookup = ({ modal, onClose }: Props) => {
-    const conditions = ['hello', 'world', 'this', 'is', 'a', 'test'];
-    // const [selectedConditions, setSelectedConditions] = useState([]);
-    const [searchText, setSearchText] = useState('');
+const tableHeaders = [
+    { name: 'Condition', sortable: true },
+    { name: 'Code', sortable: true },
+    { name: 'Program area', sortable: true },
+    { name: 'Condition Family', sortable: true },
+    { name: 'Investigateion page', sortable: true },
+    { name: 'Status', sortable: true }
+];
+
+export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) => {
+    const [conditions, setConditions] = useState<any[]>([]);
+    const [selectedConditions, setSelectedConditions] = useState<Condition[]>([]);
+    const [searchText, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalConditions, setTotalConditions] = useState(0);
+    const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const { state } = useContext(UserContext);
 
-    // const addCondition = (condition: string) => {
-    //     setSelectedConditions([...selectedConditions, condition]);
-    // };
+    const handleSelectConditions = (condition: Condition) => {
+        setSelectedConditions([...selectedConditions, condition]);
+    };
 
-    // const removeCondition = (condition: string) => {
-    //     setSelectedConditions(selectedConditions.filter((c: string) => c !== condition));
-    // };
-
-    const handleSearch = (e: string) => {
-        setSearchText(e);
+    const handleSearch = (value: string) => {
+        setSearchTerm(value);
     };
 
     const handleSubmitSearch = () => {
-        console.log('searching for', searchText);
         setLoading(true);
         const authorization = `Bearer ${state.getToken()}`;
         const request = { searchText };
 
         ConditionControllerService.searchConditionUsingPost({
             authorization,
-            request
+            request,
+            page: currentPage,
+            size: 10
         }).then((response: any) => {
             // set conditions
             setLoading(false);
             console.log('response', response);
+            setConditions(response.content);
+            setTotalConditions(response.totalElements);
         });
     };
 
-    const tableHeaders = [
-        { name: 'Condition', sortable: true },
-        { name: 'Code', sortable: true },
-        { name: 'Program area', sortable: true },
-        { name: 'Condition Family', sortable: true },
-        { name: 'Investigateion page', sortable: true },
-        { name: 'Status', sortable: true }
-    ];
+    useEffect(() => {
+        handleSubmitSearch();
+    }, []);
+
+    useEffect(() => {
+        setTableRows(asTableRows(conditions));
+    }, [conditions]);
+
+    const asTableRow = (condition: any): TableBody => ({
+        id: condition.id,
+        checkbox: true,
+        expanded: true,
+        tableDetails: [
+            {
+                id: 1,
+                title: condition?.conditionShortNm || null
+            },
+            { id: 2, title: condition.id || null },
+            {
+                id: 3,
+                title: condition?.progAreaCd || null
+            },
+            { id: 4, title: condition.familyCd },
+            { id: 5, title: condition.investigationFormCd || null },
+            { id: 6, title: condition.statusCd === 'A' ? 'Active' : 'Inactive' }
+        ]
+    });
+
+    const asTableRows = (conditions: any | undefined): TableBody[] => conditions?.map(asTableRow) || [];
+
+    const handleAddConditions = () => {
+        addConditions(selectedConditions);
+    };
 
     return (
         <Modal
@@ -93,7 +128,7 @@ export const QuickConditionLookup = ({ modal, onClose }: Props) => {
                     <div style={{ display: 'flex' }}>
                         <TextInput
                             inputSize="medium"
-                            value={searchTerm}
+                            value={searchText}
                             onChange={(e) => handleSearch(e.target.value)}
                             placeholder="Type something here..."
                             id={'condition-search'}
@@ -113,19 +148,18 @@ export const QuickConditionLookup = ({ modal, onClose }: Props) => {
                         Add new condition
                     </Button>
                 </div>
-                {loading && <Spinner />}
                 {conditions?.length ? (
                     <TableComponent
+                        isLoading={loading}
                         tableHeader=""
                         tableHead={tableHeaders}
-                        tableBody={[]}
+                        tableBody={tableRows}
                         isPagination={true}
                         pageSize={10}
-                        totalResults={10}
-                        currentPage={1}
-                        handleNext={() => null}
-                        sortData={() => null}
-                        handleSelected={() => null}
+                        totalResults={totalConditions}
+                        currentPage={currentPage}
+                        handleNext={setCurrentPage}
+                        handleSelected={handleSelectConditions}
                         rangeSelector={true}
                     />
                 ) : (
@@ -134,8 +168,11 @@ export const QuickConditionLookup = ({ modal, onClose }: Props) => {
             </div>
             <ModalFooter className="padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
+                    <ModalToggleButton modalRef={modal} closer onClick={onClose} outline>
+                        Cancel
+                    </ModalToggleButton>
                     <ModalToggleButton modalRef={modal} closer onClick={onClose}>
-                        Go back
+                        Add Condition
                     </ModalToggleButton>
                 </ButtonGroup>
             </ModalFooter>
