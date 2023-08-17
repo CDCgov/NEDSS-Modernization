@@ -25,6 +25,7 @@ export const EditPage = () => {
     const [active, setActive] = useState('Patient');
     useEffect(() => {
         // Fetch page summary
+        console.log('PAGEID', pageId);
     }, [pageId]);
 
     return (

@@ -272,7 +272,7 @@ export const RacesTable = ({ patient }: Props) => {
                     id="add-patient-name-modal"
                     title="Add - Race"
                     overflow>
-                    <RaceEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
+                    <RaceEntryForm action={'Add'} entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
@@ -285,7 +285,7 @@ export const RacesTable = ({ patient }: Props) => {
                     <RaceEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
-                        onCancel={actions.reset}
+                        onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}
                     />
                 </EntryModal>
