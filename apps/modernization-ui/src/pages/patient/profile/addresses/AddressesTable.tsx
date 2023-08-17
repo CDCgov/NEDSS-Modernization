@@ -361,7 +361,6 @@ export const AddressesTable = ({ patient }: Props) => {
                     <AddressEntryForm
                         action={'Add'}
                         entry={initial}
-                        onCancel={actions.reset}
                         onChange={onAdded}
                         onModalContextChange={onModalContextChange}
                     />
@@ -376,7 +375,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     <AddressEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
-                        onCancel={actions.reset}
+                        onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}
                     />
                 </EntryModal>
