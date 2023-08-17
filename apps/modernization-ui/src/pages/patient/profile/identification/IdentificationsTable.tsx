@@ -281,7 +281,11 @@ export const IdentificationsTable = ({ patient }: Props) => {
             />
 
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-identification-modal" title="Add - Identification">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="add-patient-identification-modal"
+                    title="Add - Identification">
                     <IdentificationEntryForm
                         action={'Add'}
                         entry={initial}
@@ -292,7 +296,11 @@ export const IdentificationsTable = ({ patient }: Props) => {
             )}
 
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-identification-modal" title="Edit - Identification">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="edit-patient-identification-modal"
+                    title="Edit - Identification">
                     <IdentificationEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
@@ -319,6 +327,8 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     modal={modal}
                     details={asDetail(selected.item)}
                     onClose={actions.reset}
+                    onEdit={() => actions.selectForEdit(selected.item)}
+                    onDelete={() => actions.selectForDelete(selected.item)}
                 />
             )}
         </>
