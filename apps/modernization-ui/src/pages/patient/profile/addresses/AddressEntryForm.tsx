@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Grid, Label, Textarea } from '@trussworks/react-uswds';
+import { Button, Grid, Icon, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
 import { externalizeDateTime } from 'date';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -13,10 +13,10 @@ type EntryProps = {
     action: string;
     entry: AddressEntry;
     onChange: (updated: AddressEntry) => void;
-    onCancel: () => void;
+    onDelete?: () => void;
 };
 
-export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
+export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryProps) => {
     const {
         handleSubmit,
         control,
@@ -285,20 +285,26 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                     </Grid>
                 </Grid>
             </div>
-            <div className="border-top border-base-lighter padding-2 margin-left-auto">
-                <ButtonGroup className="flex-justify-end">
-                    <Button type="button" className="margin-top-0" data-testid="cancel-btn" outline onClick={onCancel}>
-                        Go Back
-                    </Button>
-                    <Button
-                        disabled={!isValid}
-                        onClick={handleSubmit(onSubmit)}
-                        type="submit"
-                        className="padding-105 text-center margin-top-0">
-                        {action}
-                    </Button>
-                </ButtonGroup>
-            </div>
+            <ModalFooter className="padding-2 margin-left-auto flex-justify display-flex details-footer">
+                <Button
+                    unstyled
+                    className={`text-red display-flex flex-align-center delete--modal-btn ${
+                        action !== 'Edit' ? 'ds-u-visibility--hidden' : ''
+                    }`}
+                    type="button"
+                    onClick={onDelete}>
+                    <Icon.Delete className="delete-icon" />
+                    Delete
+                </Button>
+
+                <Button
+                    disabled={!isValid}
+                    onClick={handleSubmit(onSubmit)}
+                    type="submit"
+                    className="padding-105 text-center margin-0">
+                    Save
+                </Button>
+            </ModalFooter>
         </div>
     );
 };

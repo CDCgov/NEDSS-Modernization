@@ -339,7 +339,7 @@ export const NamesTable = ({ patient }: Props) => {
             />
             {selected?.type === 'add' && (
                 <EntryModal onClose={actions.reset} modal={modal} id="add-patient-name-modal" title="Add - Name">
-                    <NameEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
+                    <NameEntryForm action={'Add'} entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
@@ -347,8 +347,8 @@ export const NamesTable = ({ patient }: Props) => {
                     <NameEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
-                        onCancel={actions.reset}
                         onChange={onChanged}
+                        onDelete={() => actions.selectForDelete(selected.item)}
                     />
                 </EntryModal>
             )}

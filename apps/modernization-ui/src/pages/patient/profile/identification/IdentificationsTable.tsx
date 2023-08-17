@@ -285,12 +285,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     modal={modal}
                     id="add-patient-identification-modal"
                     title="Add - Identification">
-                    <IdentificationEntryForm
-                        action={'Add'}
-                        entry={initial}
-                        onCancel={actions.reset}
-                        onChange={onAdded}
-                    />
+                    <IdentificationEntryForm action={'Add'} entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
 
@@ -303,7 +298,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     <IdentificationEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
-                        onCancel={actions.reset}
+                        onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}
                     />
                 </EntryModal>

@@ -302,7 +302,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     modal={modal}
                     id="add-patient-phone-email-modal"
                     title="Add - Phone & email">
-                    <PhoneEmailEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
+                    <PhoneEmailEntryForm action={'Add'} entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
@@ -314,7 +314,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     <PhoneEmailEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
-                        onCancel={actions.reset}
+                        onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}
                     />
                 </EntryModal>

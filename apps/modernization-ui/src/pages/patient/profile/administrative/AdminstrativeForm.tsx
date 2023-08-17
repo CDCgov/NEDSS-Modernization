@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Grid, Label, ModalFooter, Textarea, ErrorMessage } from '@trussworks/react-uswds';
+import { Button, Grid, Label, ModalFooter, Textarea, ErrorMessage } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { AdministrativeEntry } from './AdminstrativeEntry';
@@ -7,10 +7,10 @@ type EntryProps = {
     action: string;
     entry: AdministrativeEntry;
     onChange: (updated: AdministrativeEntry) => void;
-    onCancel: () => void;
+    onDelete?: () => void;
 };
 
-export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
+export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
     const {
         handleSubmit,
         control,
@@ -76,19 +76,14 @@ export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryP
                 </Grid>
             </div>
 
-            <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto margin-0">
-                <ButtonGroup className="flex-justify-end">
-                    <Button type="button" className="margin-top-0" data-testid="cancel-btn" outline onClick={onCancel}>
-                        Go Back
-                    </Button>
-                    <Button
-                        disabled={!isValid}
-                        onClick={handleSubmit(onSubmit)}
-                        type="submit"
-                        className="padding-105 text-center margin-top-0">
-                        {action}
-                    </Button>
-                </ButtonGroup>
+            <ModalFooter className="padding-2 margin-left-auto flex-justify-end display-flex details-footer">
+                <Button
+                    disabled={!isValid}
+                    onClick={handleSubmit(onSubmit)}
+                    type="submit"
+                    className="padding-105 text-center margin-0">
+                    Save
+                </Button>
             </ModalFooter>
         </div>
     );

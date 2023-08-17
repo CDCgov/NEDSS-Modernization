@@ -193,7 +193,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                     modal={modal}
                     id="add-patient-identification-modal"
                     title="Add - Administrative">
-                    <AdministrativeForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onChanged} />
+                    <AdministrativeForm action={'Add'} entry={initial} onChange={onChanged} />
                 </EntryModal>
             )}
 
@@ -206,7 +206,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                     <AdministrativeForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
-                        onCancel={actions.reset}
+                        onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}
                     />
                 </EntryModal>
