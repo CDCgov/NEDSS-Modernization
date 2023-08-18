@@ -23,13 +23,16 @@ public class PageConstants {
 	public static final Long TAB_COMPONENT = 1010L;
 	public static final Long SECTION_COMPONENT= 1015L;
 	public static final Long SUB_SECTION_COMPONENT= 1016L;
-	
+	public static final Long GEN_QUESTION_COMPONENT=1007L;
+	public static final Long SPE_QUESTION_COMPONENT=1008L;
 	
 	
 	
 	
 	// General
-	public static final String NOT_EXISTS= "could not find template with given Id";
+	public static final String NOT_EXISTS= "Could not find template with given Id";
+	public static final String PAGE_NOT_EXISTS= "Could not find page with given Id: ";
+	public static final String BAD_REQUEST= "Could not process request. ";
 	
 
 }

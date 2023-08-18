@@ -86,7 +86,7 @@ public class PageController {
     }
     
     @GetMapping("{id}/details")
-    public PageDetailResponse getPageDetails(@PathVariable("id") Long pageId) {
+    public PageDetailResponse.PagedDetail getPageDetails(@PathVariable("id") Long pageId) {
     	return pageFinder.getPageDetails(pageId);
     }
 
