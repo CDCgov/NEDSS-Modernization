@@ -47,14 +47,8 @@ public class ConditionCreator {
         try {
             ConditionCode conditionCode = new ConditionCode(conditionAdd(request, userId));
             //setting default values for create condition
+            conditionCode.setIndentLevelNbr((short) 1);
 
-            //setIndentLevel
-            String parentIsCd = conditionCode.getParentIsCd();
-            if (parentIsCd == null) {
-                conditionCode.setIndentLevelNbr((short) 1);
-            } else {
-                conditionCode.setIndentLevelNbr((short) 2); //This scenario should not happen
-            }
             //codeSetNm
             String codeSetNm =
                     conditionCode.getConditionCodesetNm() == null ? "PHC_TYPE" : conditionCode.getConditionCodesetNm();
