@@ -131,11 +131,25 @@
     }
     .effective-date-field {
         margin-bottom: 24px;
+        .effective-radio {
+            display: flex;
+            gap: 16px;
+        }
     }
     .usa-date-picker__external-input {
         background-color: var(--base-lightest, #F0F0F0);
         height: 40px;
         width: 215px;
+    }
+}
+.usa-radio__label {
+    color: #171717;
+    font-family: Public Sans;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    &::before {
+        box-shadow: 0 0 0 2px #71767A;
     }
 }
 .line-btn {

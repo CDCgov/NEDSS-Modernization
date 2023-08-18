@@ -43,7 +43,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
-    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy } = useContext(QuestionsContext);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(QuestionsContext);
 
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
@@ -208,6 +208,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
                     sortData={handleSort}
                     handleSelected={handleSelected}
                     rangeSelector={true}
+                    isLoading={isLoading}
                 />
             ) : (
                 dataNotAvailableElement

@@ -28,6 +28,7 @@ export const QuestionLibrary = ({ hideTabs }: any) => {
         );
         setSummaries(content);
         setTotalElements(totalElements);
+        setIsLoading(false);
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
     return (
         <PageBuilder page="Question">

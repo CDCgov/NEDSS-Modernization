@@ -36,7 +36,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
-    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy } = useContext(ValueSetsContext);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(ValueSetsContext);
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
 
@@ -285,6 +285,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     sortData={handleSort}
                     handleSelected={handleSelected}
                     rangeSelector={true}
+                    isLoading={isLoading}
                 />
             ) : (
                 dataNotAvailableElement

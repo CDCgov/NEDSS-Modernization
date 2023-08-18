@@ -14,8 +14,6 @@ interface ConceptsContextData {
     setSortDirection: (direction: string) => void;
     pageSize: number;
     setPageSize: Dispatch<SetStateAction<number>>;
-    isLoading: boolean;
-    setIsLoading: (status: boolean) => void;
 }
 
 const conceptsDefaultValue: ConceptsContextData = {
@@ -30,9 +28,7 @@ const conceptsDefaultValue: ConceptsContextData = {
     sortDirection: '',
     setSortDirection: () => {},
     pageSize: 10,
-    setPageSize: () => {},
-    isLoading: false,
-    setIsLoading: () => {}
+    setPageSize: () => {}
 };
 
 export const ConceptsContext = createContext<ConceptsContextData>(conceptsDefaultValue);
@@ -43,7 +39,6 @@ export const ConceptsProvider = ({ children }: any) => {
     const [currentPage, setCurrentPage] = useState(conceptsDefaultValue.currentPage);
     const [sortBy, setSortBy] = useState(conceptsDefaultValue.sortBy);
     const [pageSize, setPageSize] = useState(conceptsDefaultValue.pageSize);
-    const [isLoading, setIsLoading] = useState(false);
     const [selectedConcept, setSelectedConcept] = useState(conceptsDefaultValue.selectedConcept);
 
     return (
@@ -60,9 +55,7 @@ export const ConceptsProvider = ({ children }: any) => {
                 setSearchQuery,
                 setCurrentPage,
                 pageSize,
-                setPageSize,
-                isLoading,
-                setIsLoading
+                setPageSize
             }}>
             {children}
         </ConceptsContext.Provider>

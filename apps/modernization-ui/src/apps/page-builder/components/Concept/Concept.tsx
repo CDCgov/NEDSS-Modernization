@@ -4,7 +4,7 @@ import { ConceptsContext } from '../../context/ConceptContext';
 import { useConceptPI } from './useConceptAPI';
 import { ConceptTable } from './ConceptTable';
 import { UserContext } from '../../../../providers/UserContext';
-import { Button, DatePicker, FormGroup, Grid, Icon } from '@trussworks/react-uswds';
+import { Button, DatePicker, FormGroup, Grid, Icon, TextInput, Radio } from '@trussworks/react-uswds';
 import { ValueSetControllerService } from '../../generated';
 
 const initConcept = {
@@ -26,15 +26,15 @@ export const Concept = () => {
     const { selectedConcept } = useContext(ConceptsContext);
     const authorization = `Bearer ${state.getToken()}`;
 
-    const { searchQuery, sortBy, sortDirection, currentPage, pageSize, setIsLoading } = useContext(ConceptsContext);
+    const { searchQuery, sortBy, sortDirection, currentPage, pageSize } = useContext(ConceptsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const [isShowFrom, setShowForm] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
     const [concept, setConcept] = useState(initConcept);
 
     // @ts-ignore
     useEffect(async () => {
-        setIsLoading(true);
         setSummaries([]);
         const sort = sortBy ? sortBy.toLowerCase() + ',' + sortDirection : '';
         const content: any = await useConceptPI(authorization, '', sort);
@@ -78,7 +78,8 @@ export const Concept = () => {
             authorization,
             codeSetNm: concept.codesetName
         }).then((response: any) => {
-            setShowForm(!isShowFrom);
+            // setShowForm(!isShowFrom);
+            setIsDelete(false);
             return response;
         });
     };
@@ -94,17 +95,35 @@ export const Concept = () => {
 
     const renderConceptForm = (
         <div className="form-container">
+            {isDelete && (
+                <div className="usa-alert__body-delete">
+                    <p>
+                        <Icon.Warning className="margin-left-2" size={3} />
+                        <span>Are you sure you want to delete the concept?</span>
+                    </p>
+                    <div>
+                        <Button type="submit" className="line-btn" unstyled onClick={handleDeleteConcept}>
+                            <span> Yes, Delete</span>
+                        </Button>
+                        <div className={'vertical-divider'} />
+                        <Button type="submit" className="line-btn" unstyled onClick={() => setIsDelete(false)}>
+                            <span> Cancel</span>
+                        </Button>
+                    </div>
+                </div>
+            )}
             <div>
                 <label>
                     UI Display name <span className="mandatory-indicator">*</span>
                 </label>
-                <input
+                <TextInput
                     className="field-space"
                     type="text"
                     name="display"
+                    id="iUdisplay"
                     style={{ border: '1px solid black' }}
                     value={concept.display}
-                    onInput={handleConcept}
+                    onChange={handleConcept}
                 />
             </div>
             <Grid row className="inline-field">
@@ -113,13 +132,14 @@ export const Concept = () => {
                         <label>
                             Local code <span className="mandatory-indicator">*</span>
                         </label>
-                        <input
+                        <TextInput
                             className="field-space"
                             type="text"
                             name="localCode"
+                            id="localCode"
                             style={{ border: '1px solid black' }}
                             value={concept.localCode}
-                            onInput={handleConcept}
+                            onChange={handleConcept}
                         />
                     </div>
                 </Grid>
@@ -128,43 +148,37 @@ export const Concept = () => {
                         <label>
                             Concept code <span className="mandatory-indicator">*</span>
                         </label>
-                        <input
+                        <TextInput
+                            onChange={handleConcept}
                             className="field-space"
                             type="text"
+                            id="conceptCode"
+                            value={concept.conceptCode}
                             name="conceptCode"
                             style={{ border: '1px solid black' }}
-                            value={concept.conceptCode}
-                            onInput={handleConcept}
                         />
                     </div>
                 </Grid>
             </Grid>
             <Grid row className="effective-date-field">
-                <Grid col={7}>
-                    <input
+                <Grid col={6} className="effective-radio">
+                    <Radio
                         type="radio"
                         name="duration"
                         value="always"
                         id="eAlways"
-                        className="field-space"
                         checked={concept.duration === 'always'}
                         onChange={handleConcept}
+                        label="Always Effective"
                     />
-                    <label htmlFor="rdLOCAL" className="radio-label">
-                        Always Effective
-                    </label>
-                    <input
-                        type="radio"
+                    <Radio
                         id="eUntil"
                         name="duration"
                         value="until"
-                        className="right-radio"
                         checked={concept.duration === 'until'}
                         onChange={handleConcept}
+                        label="Effective Until"
                     />
-                    <label htmlFor="eUntil" className="radio-label">
-                        Effective Until
-                    </label>
                 </Grid>
                 <Grid col={5}>
                     <FormGroup error={false}>
@@ -178,12 +192,12 @@ export const Concept = () => {
                 </Grid>
             </Grid>
             <div className=" ds-u-text-align--right footer-line-btn-block margin-bottom-1em">
-                {concept?.status ? (
+                {!isDelete && concept?.status ? (
                     <Button
                         type="submit"
                         className="margin-right-2 line-btn delete-ln-btn"
                         unstyled
-                        onClick={handleDeleteConcept}>
+                        onClick={() => setIsDelete(true)}>
                         <Icon.Delete className="margin-right-2px" />
                         <span> Delete</span>
                     </Button>

@@ -121,3 +121,22 @@
   font-weight: 400;
   margin-bottom: 0;
 }
+.usa-alert__body-delete {
+  display: flex;
+  justify-content: space-between;
+  background: #FAF3D1;
+  height: 46px;
+  border-left: 8px solid #FFBE2E;
+  margin-bottom: 24px;
+  align-items: center;
+  div,p {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+}
+.vertical-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--base-light, #A9AEB1);
+}

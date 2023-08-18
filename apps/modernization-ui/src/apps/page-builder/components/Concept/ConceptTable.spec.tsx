@@ -3,6 +3,7 @@ import { ConceptTable } from './ConceptTable';
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { AlertProvider } from '../../../../alert';
+import { Concept } from './Concept';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
@@ -18,9 +19,10 @@ describe('when rendered', () => {
 
         const tableHeads = container.getElementsByClassName('head-name');
 
-        expect(tableHeads[0].innerHTML).toBe('Type');
-        expect(tableHeads[1].innerHTML).toBe('Unique ID');
-        expect(tableHeads[2].innerHTML).toBe('Unique name');
+        expect(tableHeads[0].innerHTML).toBe('Local Code');
+        expect(tableHeads[1].innerHTML).toBe('UI display Name');
+        expect(tableHeads[2].innerHTML).toBe('Concept Code');
+        expect(tableHeads[3].innerHTML).toBe('Effective Date');
     });
 });
 
@@ -39,7 +41,7 @@ describe('when at least one summary is available', () => {
     };
     const summaries = [questionsSummary];
 
-    it('should display the valueset', async () => {
+    it('should display the Concept details in table', async () => {
         const { container } = render(
             <PageProvider>
                 <AlertProvider>
@@ -50,8 +52,22 @@ describe('when at least one summary is available', () => {
 
         const tableData = container.getElementsByClassName('table-data');
         expect(tableData[0]).toHaveTextContent('ARBO');
-        expect(tableData[1]).toHaveTextContent('INV118');
-        expect(tableData[2]).toHaveTextContent('Reporting Source Zip');
-        expect(tableData[3]).toHaveTextContent('INV');
+        expect(tableData[1]).toHaveTextContent('Arboviral');
+        expect(tableData[2]).toHaveTextContent('ARBO');
+        expect(tableData[3]).toHaveTextContent('01/01/2015');
+    });
+});
+describe('Concept component tests', () => {
+    it('should render a grid with 5 inputs labels which are Local code, UI Display name, Concept Code, Always Effective and Effective Until', () => {
+        const { getByText } = render(
+            <AlertProvider>
+                <Concept />
+            </AlertProvider>
+        );
+        expect(getByText('Local code')).toBeInTheDocument();
+        expect(getByText('UI Display name')).toBeTruthy();
+        expect(getByText('Concept code')).toBeTruthy();
+        expect(getByText('Always Effective')).toBeTruthy();
+        expect(getByText('Effective Until')).toBeTruthy();
     });
 });

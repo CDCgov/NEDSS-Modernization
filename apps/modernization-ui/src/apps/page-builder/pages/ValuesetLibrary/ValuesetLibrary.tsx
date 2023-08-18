@@ -31,6 +31,7 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
             filter
         );
         setTotalElements(totalElements);
+        setIsLoading(false);
         setSummaries(content);
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
 

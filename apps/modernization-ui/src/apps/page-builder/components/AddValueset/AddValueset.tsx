@@ -156,10 +156,6 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
                 </h3>
             )}
             <div className="add-valueset__container">
-                <h3 className="header-title">Add value set</h3>
-                <p className="fields-info">
-                    All fields with <span className="mandatory-indicator">*</span> are required
-                </p>
                 {renderTabs}
                 {activeTab === 'details' ? (
                     <>
