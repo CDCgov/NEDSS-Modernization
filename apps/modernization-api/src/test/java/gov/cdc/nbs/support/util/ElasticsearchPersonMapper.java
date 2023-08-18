@@ -69,7 +69,7 @@ public class ElasticsearchPersonMapper {
         address.setZip(pl.getZipCd());
 
         ElasticsearchInstantValueConverter instantConverter = new ElasticsearchInstantValueConverter();
-        boolean isLegalNameDifferent = id==20000001 && person.getFirstNm() == "John" && person.getLastNm() == "Smith";
+        boolean isLegalNameDifferent = id==20000002 && person.getFirstNm() == "John" && person.getLastNm() == "Smith";
         return ElasticsearchPerson.builder()
                 .id(String.valueOf(id))
                 .personUid(id)
