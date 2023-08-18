@@ -3,8 +3,14 @@ package gov.cdc.nbs.questionbank.page.content.addsubsection;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.subsection.SubSectionCreator;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.AddSubSectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +46,73 @@ class AddSubSectionServiceTest {
         CreateSubSectionResponse createSubSectionResponse =
                 createSubSectionService.createSubSection(10L, 123L, createSubSectionRequest);
         assertEquals("SubSection Created Successfully", createSubSectionResponse.message());
+    }
+
+
+    @Test
+    void updateSubSectionServiceTest() {
+
+        UpdateSubSectionRequest updateSubSectionRequest =
+                new UpdateSubSectionRequest(123L,  "Local", "T");
+
+        UpdateSubSectionResponse updateSubSectionResponse =
+                createSubSectionService.updateSubSection( updateSubSectionRequest);
+        assertEquals("Sub Section Updated Successfully", updateSubSectionResponse.message());
+    }
+
+    @Test
+    void updateSubSectionServiceOnlyQuestionLabelTest() {
+
+        UpdateSubSectionRequest updateSubSectionRequest =
+                new UpdateSubSectionRequest(123L,  "Local", null);
+
+        UpdateSubSectionResponse updateSubSectionResponse =
+                createSubSectionService.updateSubSection( updateSubSectionRequest);
+        assertEquals("Sub Section Updated Successfully", updateSubSectionResponse.message());
+    }
+
+    @Test
+    void updateSubSectionServiceOnlyVisibilityTest() {
+
+        UpdateSubSectionRequest updateSubSectionRequest =
+                new UpdateSubSectionRequest(123L,  null, "T");
+
+        UpdateSubSectionResponse updateSubSectionResponse =
+                createSubSectionService.updateSubSection( updateSubSectionRequest);
+        assertEquals("Sub Section Updated Successfully", updateSubSectionResponse.message());
+    }
+
+    @Test
+    void updateSubSectionServiceNoLabelOrVisibilityTest() {
+
+        UpdateSubSectionRequest updateSubSectionRequest =
+                new UpdateSubSectionRequest(123L,  null, null);
+
+        UpdateSubSectionResponse updateSubSectionResponse =
+                createSubSectionService.updateSubSection( updateSubSectionRequest);
+        assertEquals("questionLabel or Visible is required to update sub section", updateSubSectionResponse.message());
+    }
+
+    @Test
+    void deleteSubSectionTest() {
+
+        DeleteSubSectionRequest deleteSubSectionRequest =
+                new DeleteSubSectionRequest(123L);
+
+        DeleteSubSectionResponse deleteSubSectionResponse =
+                createSubSectionService.deleteSubSection( deleteSubSectionRequest);
+        assertEquals("Sub Section Deleted Successfully", deleteSubSectionResponse.message());
+    }
+
+    @Test
+    void updateSubSectionServiceTestException() {
+        assertThrows(UpdateSubSectionException.class, () -> createSubSectionService.updateSubSection(null));
+
+    }
+    @Test
+    void deleteSubSectionServiceTestException() {
+        assertThrows(DeleteSubSectionException.class, () -> createSubSectionService.deleteSubSection( null));
+
     }
 
     @Test

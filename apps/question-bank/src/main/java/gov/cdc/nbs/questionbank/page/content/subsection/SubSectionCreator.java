@@ -3,8 +3,14 @@ package gov.cdc.nbs.questionbank.page.content.subsection;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.AddSubSectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +42,42 @@ public class SubSectionCreator {
             throw new AddSubSectionException("Failed to add SubSection");
         }
     }
+
+
+    public DeleteSubSectionResponse deleteSubSection(DeleteSubSectionRequest request) {
+        try {
+            log.info("Deleting section");
+            Integer order_nbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
+            waUiMetaDataRepository.deletefromTable(request.subSectionId());
+            waUiMetaDataRepository.updateOrderNumberByDecreasing(order_nbr, request.subSectionId());
+            return new DeleteSubSectionResponse(request.subSectionId(), "Sub Section Deleted Successfully");
+        } catch(Exception exception) {
+            throw new DeleteSubSectionException("Delete Sub Section exception", 1015);
+        }
+
+    }
+
+    public UpdateSubSectionResponse updateSubSection(UpdateSubSectionRequest request) {
+        try {
+            log.info("Updating section");
+            if (request.questionLabel() != null && request.visible() != null) {
+                waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.subSectionId());
+                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+            } else if ( request.questionLabel() != null ) {
+                waUiMetaDataRepository.updateQuestionLabel(request.questionLabel(), request.subSectionId());
+                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+            } else if ( request.visible() != null ) {
+                waUiMetaDataRepository.updateVisibility(request.visible(), request.subSectionId());
+                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+            } else {
+                return new UpdateSubSectionResponse(request.subSectionId(), "questionLabel or Visible is required to update section");
+            }
+        } catch(Exception exception) {
+            throw new UpdateSubSectionException(exception.toString(), 1015);
+        }
+
+    }
+
 
     private WaUiMetadata createWaUiMetadata(long pageId, Long uid, CreateSubSectionRequest request) {
         Instant now = Instant.now();
