@@ -22,6 +22,7 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
+import gov.cdc.nbs.patient.PatientSearchSteps;
 
 public class ElasticsearchPersonMapper {
 
@@ -57,7 +58,6 @@ public class ElasticsearchPersonMapper {
             nestedEntityIds.add(nestedEntityId);
         }
 
-
         var address = new NestedAddress();
         PostalLocator pl = PersonUtil.getPostalLocators(person).get(0);
         address.setStreetAddr1(pl.getStreetAddr1());
@@ -69,7 +69,8 @@ public class ElasticsearchPersonMapper {
         address.setZip(pl.getZipCd());
 
         ElasticsearchInstantValueConverter instantConverter = new ElasticsearchInstantValueConverter();
-        boolean isLegalNameDifferent = id==20000001 && person.getFirstNm() == "John" && person.getLastNm() == "Smith";
+        boolean isLegalNameDifferent = id == PatientSearchSteps.RELEVANCE_SEARCH_SECONDARY_NAME_PERSON_ID
+                && person.getFirstNm().equals("John") && person.getLastNm().equals("Smith");
         return ElasticsearchPerson.builder()
                 .id(String.valueOf(id))
                 .personUid(id)

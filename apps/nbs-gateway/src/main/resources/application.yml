@@ -1,0 +1,35 @@
+server:
+  port: 8000
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - RewriteLocationResponseHeader
+      routes:
+        - id: classic
+          uri: ${nbs.gateway.classic}
+          predicates:
+            - Path=/nbs/**
+          filters:
+            - RemoveRequestHeader=Referer
+        - id: nbs-logo
+          uri: ${nbs.gateway.classic}
+          predicates:
+            - Path=/images/nedssLogo.jpg
+        - id: favicon
+          uri: ${nbs.gateway.classic}
+          predicates:
+            - Path=/favicon.ico
+nbs:
+  gateway:
+    defaults:
+      protocol: 'http'
+    classic: '${nbs.gateway.defaults.protocol}://localhost:7001'
+    patient:
+      search:
+        enabled: true
+        service: 'localhost:8080'
+      profile:
+        enabled: true
+        service: 'localhost:8080'

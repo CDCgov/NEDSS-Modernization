@@ -2,8 +2,6 @@
 import { createContext, useState, Dispatch, SetStateAction } from 'react';
 
 interface PagesContextData {
-    filter: any;
-    setFilter: (filter: any) => void;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     currentPage: number;
@@ -19,15 +17,13 @@ interface PagesContextData {
 }
 
 const pagesContextDefaultValue: PagesContextData = {
-    filter: {},
-    setFilter: () => {},
     searchQuery: '',
     setSearchQuery: () => {},
     currentPage: 1,
     setCurrentPage: () => {},
-    sortBy: '',
+    sortBy: 'name',
     setSortBy: () => {},
-    sortDirection: '',
+    sortDirection: 'asc',
     setSortDirection: () => {},
     pageSize: 10,
     setPageSize: () => {},
@@ -38,7 +34,6 @@ const pagesContextDefaultValue: PagesContextData = {
 export const PagesContext = createContext<PagesContextData>(pagesContextDefaultValue);
 
 export const PagesProvider = ({ children }: any) => {
-    const [filter, setFilter] = useState(pagesContextDefaultValue.filter);
     const [searchQuery, setSearchQuery] = useState(pagesContextDefaultValue.searchQuery);
     const [currentPage, setCurrentPage] = useState(pagesContextDefaultValue.currentPage);
     const [sortBy, setSortBy] = useState(pagesContextDefaultValue.sortBy);
@@ -50,8 +45,6 @@ export const PagesProvider = ({ children }: any) => {
         <PagesContext.Provider
             value={{
                 currentPage,
-                filter,
-                setFilter,
                 sortBy,
                 setSortBy,
                 sortDirection,

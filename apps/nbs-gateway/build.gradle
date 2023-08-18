@@ -1,0 +1,49 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'jvm-test-suite'
+    alias libs.plugins.springBoot
+    alias libs.plugins.springDependencies
+}
+
+group = 'gov.cdc'
+version = '0.0.1-SNAPSHOT'
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation 'org.springframework.boot:spring-boot-starter-test'
+                implementation "com.github.tomakehurst:wiremock-jre8:2.35.0"
+            }
+        }
+    }
+}
+
+dependencies {
+
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.8")
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+}
+
+tasks.withType(JavaExec).configureEach {
+
+    debugOptions {
+        enabled = true
+        server = true
+        suspend = false
+        port = java.util.Optional.ofNullable(findProperty('debug.port'))
+                .map(Object::toString)
+                .map(Integer::parseInt)
+                .orElse(5008)
+    }
+}
+
+tasks.named("bootRun") {
+    // Enables the local profile when run from the command line
+    systemProperty 'spring.profiles.active', 'default,development'
+}

@@ -19,7 +19,7 @@ export const EventTypes = ({ control, name, defaultValue, onChangeMethod }: Even
                     defaultValue={defaultValue}
                     onChange={(e: any) => {
                         onChangeMethod(e.target.value);
-                        onChange({});
+                        onChange();
                     }}
                     label="Event type"
                     options={[

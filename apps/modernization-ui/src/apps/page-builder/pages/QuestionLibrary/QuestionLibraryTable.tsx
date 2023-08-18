@@ -14,7 +14,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { UserContext } from '../../../../providers/UserContext';
-import { PagesContext } from '../../context/PagesContext';
+import { QuestionsContext } from '../../context/QuestionsContext';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
 
@@ -43,7 +43,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
-    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy } = useContext(PagesContext);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(QuestionsContext);
 
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
@@ -169,6 +169,28 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
             />
         </div>
     );
+    const searchAvailableElement = (
+        <div className="no-data-available">
+            <label className="no-text">Still can't find what are you're looking for?</label>
+            <label className="margin-bottom-1em search-desc">
+                Please try searching in the local library before creating new
+            </label>
+            <div>
+                <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+                    Create New
+                </ModalToggleButton>
+                <Button className="submit-btn" type="button">
+                    Search Local
+                </Button>
+            </div>
+            <ModalComponent
+                isLarge
+                modalRef={modalRef}
+                modalHeading={'Add question'}
+                modalBody={<div> Add page </div>}
+            />
+        </div>
+    );
 
     return (
         <div>
@@ -186,10 +208,12 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
                     sortData={handleSort}
                     handleSelected={handleSelected}
                     rangeSelector={true}
+                    isLoading={isLoading}
                 />
             ) : (
                 dataNotAvailableElement
             )}
+            {summaries?.length > 0 && searchQuery && searchAvailableElement}
             <div className="footer-action">{footerActionBtn}</div>
         </div>
     );
