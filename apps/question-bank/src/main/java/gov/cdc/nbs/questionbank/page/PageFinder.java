@@ -14,6 +14,10 @@ import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import gov.cdc.nbs.questionbank.page.response.PageDetailResponse;
+import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PageRule;
+import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PageSection;
+import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PageSubSection;
+import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PageTab;
 import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PagedDetail;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
@@ -57,7 +61,7 @@ public class PageFinder {
 				List<WaUiMetadata> tabSections = getChildComponents(page.get(), PageConstants.SECTION_COMPONENT, min,
 						max);
 				for (int j = 0; j < tabSections.size(); j++) {
-					List<PageDetailResponse.PageSubSection> subSections = new ArrayList<>();
+					List<PageSubSection> subSections = new ArrayList<>();
 					Integer minSectionOrder = -1;
 					Integer maxSectionOrder = -1;
 					if (j == tabSections.size() - 1 && tabSections.size() > 1) {
@@ -71,68 +75,47 @@ public class PageFinder {
 						maxSectionOrder = tabSections.get(j + 1).getOrderNbr();
 					}
 					// Get SubSections
-					List<WaUiMetadata> SectionSubSections = getChildComponents(page.get(),
+					List<WaUiMetadata> sectionSubSections = getChildComponents(page.get(),
 							PageConstants.SUB_SECTION_COMPONENT, minSectionOrder, maxSectionOrder);
-					for (int k = 0; k < SectionSubSections.size(); k++) {
-						Integer minSubSectionOrder = -1;
-						Integer maxSubSectionOrder = -1;
-						if (k == SectionSubSections.size() - 1 && SectionSubSections.size() > 1) {
-							minSubSectionOrder = SectionSubSections.get(k - 1).getOrderNbr();
-							maxSubSectionOrder = SectionSubSections.get(k).getOrderNbr();
-						} else if (k == SectionSubSections.size() - 1 && SectionSubSections.size() == 0) {
-							minSubSectionOrder = SectionSubSections.get(k).getOrderNbr();
-							maxSubSectionOrder = SectionSubSections.get(k).getOrderNbr() + 1;
-						} else {
-							minSubSectionOrder = SectionSubSections.get(k).getOrderNbr();
-							maxSubSectionOrder = SectionSubSections.get(k + 1).getOrderNbr();
-						}
+					
+					subSections = getQuestionsForSubSection(page.get(),sectionSubSections);
+					
+					
+					 // End SubSection building
 
-						// questions for subsection
-						List<WaUiMetadata> generalQuestions = getChildComponents(page.get(),
-								PageConstants.GEN_QUESTION_COMPONENT, minSubSectionOrder, maxSubSectionOrder);
-						List<WaUiMetadata> specificQuestions = getChildComponents(page.get(),
-								PageConstants.SPE_QUESTION_COMPONENT, minSubSectionOrder, maxSubSectionOrder);
-						List<WaUiMetadata> questions = mergeOrderedQuetionLists(generalQuestions, specificQuestions);
-						List<PageDetailResponse.PageQuestion> resultQuestions = buildQuestions(questions);
-						PageDetailResponse.PageSubSection aSubSection = new PageDetailResponse.PageSubSection(
-								SectionSubSections.get(k).getId(), SectionSubSections.get(k).getQuestionLabel(),
-								SectionSubSections.get(k).getDisplayInd(), resultQuestions);
-						subSections.add(aSubSection);
-					} // End SubSection building
-
-					PageDetailResponse.PageSection aSection = new PageDetailResponse.PageSection(
+					PageSection aSection = new PageSection(
 							tabSections.get(j).getId(), tabSections.get(j).getQuestionLabel(),
 							tabSections.get(j).getDisplayInd(), subSections);
 					sections.add(aSection);
 				} // EndSection building
-				PageDetailResponse.PageTab aTab = new PageDetailResponse.PageTab(pageTabs.get(i).getId(),
+				PageTab aTab = new PageTab(pageTabs.get(i).getId(),
 						pageTabs.get(i).getQuestionLabel(), pageTabs.get(i).getDisplayInd(), sections);
 				tabs.add(aTab);
 			} // End tab
-			List<PagedDetail.PageRule> rules = getPageRules(page.get().getId());
-			PageDetailResponse.PagedDetail response = new PageDetailResponse.PagedDetail(page.get().getId(),
-					page.get().getTemplateNm(), page.get().getDescTxt(), tabs, rules);
-			return response;
+			
+			List<PageRule> rules = getPageRules(page.get().getId());
+			return new PageDetailResponse.PagedDetail(page.get().getId(), page.get().getTemplateNm(),
+					page.get().getDescTxt(), tabs, rules);
+			
 		} else {
 			throw new PageNotFoundException(PageConstants.PAGE_NOT_EXISTS + pageId);
 		}
 	}
-	
+
 	public List<WaUiMetadata> getChildComponents(WaTemplate page, Long nbsUiComponentUid, Integer orderNmbrMin,
 			Integer orderNmbrMax) {
 		return waUiMetadatumRepository.findOrderedChildComponents(page.getId(), nbsUiComponentUid, orderNmbrMin,
 				orderNmbrMax);
 	}
-	
 
 	public List<WaUiMetadata> mergeOrderedQuetionLists(List<WaUiMetadata> questions1, List<WaUiMetadata> questions2) {
-		if(questions1.isEmpty() && !questions2.isEmpty()) {
+		if (questions1.isEmpty() && !questions2.isEmpty()) {
 			return questions2;
 		}
-		if(!questions1.isEmpty() && questions2.isEmpty()) {
+		if (!questions1.isEmpty() && questions2.isEmpty()) {
 			return questions1;
 		}
-		if(questions1.isEmpty() && questions2.isEmpty()) {
+		if (questions1.isEmpty() && questions2.isEmpty()) {
 			return new ArrayList<>();
 		}
 		Integer qOneLastItemOrder = questions1.get(questions1.size() - 1).getOrderNbr();
@@ -146,26 +129,59 @@ public class PageFinder {
 		}
 	}
 
-
-
-	public List<PagedDetail.PageRule> getPageRules(Long pageId) {
-		List<PagedDetail.PageRule> rules = new ArrayList<>();
+	public List<PageRule> getPageRules(Long pageId) {
+		List<PageRule> rules = new ArrayList<>();
 		List<WaRuleMetadata> rawRules = waRuleMetaDataRepository.findByWaTemplateUid(pageId);
 		for (WaRuleMetadata rawRule : rawRules) {
-			PagedDetail.PageRule rule = new PagedDetail.PageRule(rawRule.getId(), pageId, rawRule.getLogic(),
-					rawRule.getSourceValues(), rawRule.getRuleCd(), rawRule.getRuleDescText(), rawRule.getTargetType());
+			PageRule rule = new PageRule(rawRule.getId(), pageId, rawRule.getLogic(), rawRule.getSourceValues(),
+					rawRule.getRuleCd(), rawRule.getSourceQuestionIdentifier(), rawRule.getTargetQuestionIdentifier());
 			rules.add(rule);
 		}
 
 		return rules;
 
 	}
-	
+
+	private List<PageSubSection> getQuestionsForSubSection(WaTemplate page, List<WaUiMetadata> sectionSubSections) {
+
+		List<PageSubSection> subSections = new ArrayList<>();
+
+		for (int k = 0; k < sectionSubSections.size(); k++) {
+			Integer minSubSectionOrder = -1;
+			Integer maxSubSectionOrder = -1;
+			if (k == sectionSubSections.size() - 1 && sectionSubSections.size() > 1) {
+				minSubSectionOrder = sectionSubSections.get(k - 1).getOrderNbr();
+				maxSubSectionOrder = sectionSubSections.get(k).getOrderNbr();
+			} else if (k == sectionSubSections.size() - 1 && sectionSubSections.size() == 1) {
+				minSubSectionOrder = sectionSubSections.get(k).getOrderNbr();
+				maxSubSectionOrder = sectionSubSections.get(k).getOrderNbr() + 1;
+			} else {
+				minSubSectionOrder = sectionSubSections.get(k).getOrderNbr();
+				maxSubSectionOrder = sectionSubSections.get(k + 1).getOrderNbr();
+			}
+
+			// questions for subsection
+			List<WaUiMetadata> generalQuestions = getChildComponents(page, PageConstants.GEN_QUESTION_COMPONENT,
+					minSubSectionOrder, maxSubSectionOrder);
+			List<WaUiMetadata> specificQuestions = getChildComponents(page, PageConstants.SPE_QUESTION_COMPONENT,
+					minSubSectionOrder, maxSubSectionOrder);
+			List<WaUiMetadata> questions = mergeOrderedQuetionLists(generalQuestions, specificQuestions);
+			List<PageDetailResponse.PageQuestion> resultQuestions = buildQuestions(questions);
+			PageSubSection aSubSection = new PageSubSection(sectionSubSections.get(k).getId(),
+					sectionSubSections.get(k).getQuestionLabel(), sectionSubSections.get(k).getDisplayInd(),
+					resultQuestions);
+
+			subSections.add(aSubSection);
+
+		}
+
+		return subSections;
+	}
+
 	private List<WaUiMetadata> getTabsForPage(WaTemplate page) {
 		return waUiMetadatumRepository.findOrderedTabsForPage(page.getId(), PageConstants.TAB_COMPONENT);
 	}
 
-	
 	private List<PageDetailResponse.PageQuestion> buildQuestions(List<WaUiMetadata> questions) {
 		List<PageDetailResponse.PageQuestion> results = new ArrayList<>();
 		int i = 0;
@@ -182,12 +198,11 @@ public class PageFinder {
 
 		return results;
 	}
-	
+
 	private Optional<WaTemplate> getPageDetail(Long pageId) {
-		Optional<WaTemplate> page = templateRepository.findById(pageId);
-		return page;
+		return templateRepository.findById(pageId);
 	}
-	
+
 	private boolean toBoolean(Character character, Character trueValue) {
 		if (character == null) {
 			return false;

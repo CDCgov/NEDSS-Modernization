@@ -130,6 +130,7 @@ public class PageMother {
         page.setAddUserId(1L);
         page.setLastChgTime(now);
         page.setLastChgUserId(1L);
+        
 
         PageCondMapping conditionMapping = new PageCondMapping();
         conditionMapping.setWaTemplateUid(page);
@@ -163,6 +164,7 @@ public class PageMother {
 		record.setWaTemplateUid(aPage);
 		record.setNbsUiComponentUid(nbsUiComponentUid);
 		record.setOrderNbr(orderNumber);
+		record.setVersionCtrlNbr(0);
 		return record;
 	}
     

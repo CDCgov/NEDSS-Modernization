@@ -21,6 +21,7 @@ public class PageFinderSteps {
 	@Autowired
 	private UserMother userMother;
 
+	@Autowired
 	private PageMother pageMother;
 
 	@Autowired

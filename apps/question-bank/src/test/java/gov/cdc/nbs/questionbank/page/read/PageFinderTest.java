@@ -29,7 +29,7 @@ import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 
-public class PageFinderTest {
+ class PageFinderTest {
 
 	@Mock
 	private WaTemplateRepository templateRepository;
@@ -137,7 +137,7 @@ public class PageFinderTest {
 		
 		List<WaUiMetadata> merged = PageFinder.mergeOrderedQuetionLists(one , two);
 		assertNotNull(merged);
-		assertTrue(merged.size() == 2);
+		assertEquals(2, merged.size());
 		Integer min = merged.get(0).getOrderNbr();
 		Integer max = merged.get(1).getOrderNbr();
 		assertTrue(min.compareTo(max) < 0);
@@ -156,7 +156,8 @@ public class PageFinderTest {
 		assertEquals("Hide", rule.function());
 		assertEquals(">=", rule.logic());
 		assertEquals("Admission Date", rule.values());
-		assertEquals("Question", rule.targetField());
+		assertEquals("INV146", rule.targetField());
+		assertEquals("INV145", rule.sourceField());
 
 	}
 
@@ -186,6 +187,7 @@ public class PageFinderTest {
 		record.setWaTemplateUid(aPage);
 		record.setNbsUiComponentUid(nbsUiComponentUid);
 		record.setOrderNbr(orderNumber);
+		record.setVersionCtrlNbr(0);		
 		return record;
 	}
 
@@ -198,6 +200,8 @@ public class PageFinderTest {
 		ruleMetadata.setLogic(">=");
 		ruleMetadata.setSourceValues("Admission Date");
 		ruleMetadata.setTargetType("Question");
+		ruleMetadata.setSourceQuestionIdentifier("INV145");
+		ruleMetadata.setTargetQuestionIdentifier("INV146");
 
 		return ruleMetadata;
 	}
