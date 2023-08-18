@@ -1,4 +1,4 @@
-import { ProgramAreaControllerService } from "../generated";
+import { ProgramAreaControllerService } from '../generated';
 
 export const fetchProgramAreaOptions = (
     token: string

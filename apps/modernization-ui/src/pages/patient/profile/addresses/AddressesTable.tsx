@@ -352,22 +352,30 @@ export const AddressesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-address-modal" className={modalContext}>
+                <EntryModal
+                    onClose={actions.reset}
+                    title="Add - Address"
+                    modal={modal}
+                    id="add-patient-address-modal"
+                    className={modalContext}>
                     <AddressEntryForm
                         action={'Add'}
                         entry={initial}
-                        onCancel={actions.reset}
                         onChange={onAdded}
                         onModalContextChange={onModalContextChange}
                     />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-address-modal" title="Edit - Address">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="edit-patient-address-modal"
+                    title="Edit - Address">
                     <AddressEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
-                        onCancel={actions.reset}
+                        onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}
                     />
                 </EntryModal>
@@ -389,6 +397,8 @@ export const AddressesTable = ({ patient }: Props) => {
                     modal={modal}
                     details={asDetail(selected.item)}
                     onClose={actions.reset}
+                    onEdit={() => actions.selectForEdit(selected.item)}
+                    onDelete={() => actions.selectForDelete(selected.item)}
                 />
             )}
         </>
