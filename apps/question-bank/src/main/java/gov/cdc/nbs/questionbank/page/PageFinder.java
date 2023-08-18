@@ -95,18 +95,18 @@ public class PageFinder {
 						List<WaUiMetadata> questions = mergeOrderedQuetionLists(generalQuestions, specificQuestions);
 						List<PageDetailResponse.PageQuestion> resultQuestions = buildQuestions(questions);
 						PageDetailResponse.PageSubSection aSubSection = new PageDetailResponse.PageSubSection(
-								SectionSubSections.get(k).getId(), SectionSubSections.get(k).getQuestionNm(),
+								SectionSubSections.get(k).getId(), SectionSubSections.get(k).getQuestionLabel(),
 								SectionSubSections.get(k).getDisplayInd(), resultQuestions);
 						subSections.add(aSubSection);
 					} // End SubSection building
 
 					PageDetailResponse.PageSection aSection = new PageDetailResponse.PageSection(
-							tabSections.get(j).getId(), tabSections.get(j).getQuestionNm(),
+							tabSections.get(j).getId(), tabSections.get(j).getQuestionLabel(),
 							tabSections.get(j).getDisplayInd(), subSections);
 					sections.add(aSection);
 				} // EndSection building
 				PageDetailResponse.PageTab aTab = new PageDetailResponse.PageTab(pageTabs.get(i).getId(),
-						pageTabs.get(i).getQuestionNm(), pageTabs.get(i).getDisplayInd(), sections);
+						pageTabs.get(i).getQuestionLabel(), pageTabs.get(i).getDisplayInd(), sections);
 				tabs.add(aTab);
 			} // End tab
 			List<PagedDetail.PageRule> rules = getPageRules(page.get().getId());
@@ -177,6 +177,7 @@ public class PageFinder {
 					aQuestion.getMask(), toBoolean(aQuestion.getFutureDateIndCd(), 'T'), aQuestion.getQuestionLabel(),
 					aQuestion.getQuestionToolTip(), aQuestion.getDisplayInd(), aQuestion.getEnableInd(),
 					aQuestion.getRequiredInd(), aQuestion.getDefaultValue()));
+			i++;
 		}
 
 		return results;
