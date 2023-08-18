@@ -149,7 +149,7 @@ public class PatientService {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
 
             firstNameBuilder.should(QueryBuilders.queryStringQuery(
-                    addWildcards(filter.getLastName()))
+                    addWildcards(filter.getFirstName()))
                     .defaultField(ElasticsearchPerson.FIRST_NM)
                     .defaultOperator(Operator.AND).boost(FIRST_NAME_PRIMARY_BOOST));
 
