@@ -41,7 +41,8 @@ public class ConditionController {
 
     @PostMapping("/search")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public Page<ReadConditionResponse.GetCondition> searchConditions(@RequestBody ReadConditionRequest search, @PageableDefault(size = 20) Pageable pageable) {
+    public Page<ReadConditionResponse.GetCondition> searchConditions(@RequestBody ReadConditionRequest search,
+            @PageableDefault(size = 20) Pageable pageable) {
         return conditionReader.searchCondition(search, pageable);
     }
 
