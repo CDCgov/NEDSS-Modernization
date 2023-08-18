@@ -12,6 +12,8 @@ on:
 jobs:
   sonar_scan:
     uses: ./.github/workflows/sonar.yaml
+    secrets:
+      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
   call-build-microservice-container-workflow:
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
     with:
