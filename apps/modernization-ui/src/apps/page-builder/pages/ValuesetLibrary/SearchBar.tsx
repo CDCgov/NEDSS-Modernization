@@ -4,14 +4,14 @@ import { Icon } from '@trussworks/react-uswds';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
-import { PagesContext } from '../../context/PagesContext';
+import { ValueSetsContext } from '../../context/ValueSetContext';
 
 export const SearchBar = ({ onChange }: any) => {
     const [search, setSearch] = useState<string>('');
     const methods = useForm();
     const { control } = methods;
     const initial = { questionSubGroup: '', questionType: '', newestToOldest: false };
-    const { setFilter } = useContext(PagesContext);
+    const { setFilter } = useContext(ValueSetsContext);
 
     const [searchTags, setSearchTags] = useState<any>([]);
     const [isModalHidden, setIsModalHidden] = useState<any>(true);
