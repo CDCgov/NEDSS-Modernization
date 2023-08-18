@@ -50,6 +50,8 @@ services:
     networks:
       - nbs
     environment:
+      - NBS_GATEWAY_SERVER=${NBS_GATEWAY_SERVER:-nbs-gateway}
+      - NBS_GATEWAY_PORT=${NBS_GATEWAY_PORT:-8000}
       - MODERNIZATION_UI_SERVER=${MODERNIZATION_UI_SERVER:-modernization-api}
       - MODERNIZATION_UI_PORT=${MODERNIZATION_UI_PORT:-8080}
       - MODERNIZATION_API_SERVER=${MODERNIZATION_API_SERVER:-modernization-api}
