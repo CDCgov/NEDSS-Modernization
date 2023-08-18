@@ -293,7 +293,7 @@ public class ElasticsearchPerson {
     private String firstNm;
 
     // allows sorting
-    @MultiField(mainField = @Field(name = LAST_NM, type = FieldType.Text), otherFields = {
+    @MultiField(mainField = @Field(name = LAST_NM, type = FieldType.Text, fielddata = true), otherFields = {
             @InnerField(suffix = TEXT, type = FieldType.Text)
     })
     private String lastNm;
