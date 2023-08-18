@@ -191,4 +191,23 @@ public class QuestionRequestMother {
         return update(QuestionType.TEXT);
     }
 
+    public static CreateQuestionRequest.Text localWithUniqueId(String uniqueId) {
+        return new CreateQuestionRequest.Text(
+                "LOCAL",
+                uniqueId,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                QuestionType.TEXT,
+                null,
+                null,
+                null);
+    }
+
 }
