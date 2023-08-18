@@ -18,6 +18,9 @@ project(':question-bank').projectDir = new File('apps/question-bank')
 include ':geocoding-api'
 project(':geocoding-api').projectDir = new File('apps/geocoding-api')
 
+include ':nbs-gateway'
+project(':nbs-gateway').projectDir = new File('apps/nbs-gateway')
+
 // libs
 include ':database-entities'
 project(':database-entities').projectDir = new File('libs/database-entities')
@@ -27,6 +30,9 @@ include ':authentication'
 project(':authentication').projectDir = new File('libs/authentication')
 include ':id-generator'
 project(':id-generator').projectDir = new File('libs/id-generator')
+
+
+
 
 include ':coverage-report'
 

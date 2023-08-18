@@ -3,12 +3,7 @@
 name: "Sonar Scanner"
 
 on:
-  push:
-    paths:
-      - "apps/**"
-      - "libs/**"
-    branches:
-      - main
+  workflow_call:
   pull_request:
     paths:
       - "apps/**"

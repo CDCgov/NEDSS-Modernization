@@ -76,7 +76,7 @@ public class ElasticsearchPerson {
     public static final String SURVIVED_IND_CD = "survived_ind_cd";
     public static final String USER_AFFILIATION_TXT = "user_affiliation_txt";
     public static final String FIRST_NM = "first_nm";
-    public static final String LAST_NM_KEYWORD = "last_nm";
+    public static final String LAST_NM = "last_nm";
     public static final String TEXT = "text";
     public static final String MIDDLE_NM = "middle_nm";
     public static final String NM_PREFIX = "nm_prefix";
@@ -293,7 +293,7 @@ public class ElasticsearchPerson {
     private String firstNm;
 
     // allows sorting
-    @MultiField(mainField = @Field(name = LAST_NM_KEYWORD, type = FieldType.Keyword), otherFields = {
+    @MultiField(mainField = @Field(name = LAST_NM, type = FieldType.Text, fielddata = true), otherFields = {
             @InnerField(suffix = TEXT, type = FieldType.Text)
     })
     private String lastNm;

@@ -8,8 +8,6 @@ services:
       - NBS_DATASOURCE_SERVER=nbs-mssql
       - NBS_ELASTICSEARCH_SERVER=elasticsearch
       - NBS_WILDFLY_SERVER=wildfly:7001
-    depends_on:
-      - cdc-address-api
     networks:
       - nbs
 
@@ -23,11 +21,15 @@ services:
     networks:
       - nbs
 
-  cdc-address-api:
-    image: ghcr.io/cdcgov/phdi/ingestion:latest
-    container_name: cdc-address-api
-#    ports:
-#      - 8081:8080
+  nbs-gateway:
+    build:
+      context: ./
+      dockerfile: ./apps/nbs-gateway/Dockerfile
+    container_name: nbs-gateway
+    environment:
+      - NBS_GATEWAY_CLASSIC=http://wildfly:7001
+      - NBS_GATEWAY_PATIENT_SEARCH_SERVICE=${NBS_GATEWAY_PATIENT_SEARCH_SERVICE:-reverse-proxy:8080}
+      - NBS_GATEWAY_PATIENT_PROFILE_SERVICE=${NBS_GATEWAY_PATIENT_PROFILE_SERVICE:-reverse-proxy:8080}
     networks:
       - nbs
 
