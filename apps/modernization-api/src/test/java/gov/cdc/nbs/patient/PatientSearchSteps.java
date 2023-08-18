@@ -57,6 +57,10 @@ public class PatientSearchSteps {
     private QueryException exception;
     private String searchText;
 
+    final long RELEVANCE_SEARCH_SOUNDEX_NAME_PERSON_ID = 20000000;
+    final long RELEVANCE_SEARCH_SECONDARY_NAME_PERSON_ID = 20000001;
+    final long RELEVANCE_SEARCH_LEGAL_NAME_PERSON_ID = 20000002;
+
     @Given("there are {int} patients")
     public void there_are_patients(int patientCount) {
         // person data is randomly generated but the Ids are always the same.
@@ -116,7 +120,7 @@ public class PatientSearchSteps {
         var deletedRecord = PersonMother.janeDoe_deleted();
         personRepository.save(deletedRecord);
         elasticsearchPersonRepository
-            .saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(Arrays.asList(deletedRecord)));
+                .saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(Arrays.asList(deletedRecord)));
     }
 
     @When("I search patients by {string} {string}")
@@ -141,7 +145,7 @@ public class PatientSearchSteps {
 
     @When("I search patients by {string} {string} {string} {string} {string} {string}")
     public void i_search_patients_by_multiple_fields(String field, String qualifier, String field2, String qualifier2,
-        String field3, String qualifier3) {
+            String field3, String qualifier3) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         updatePatientDataFilter(filter, field2, qualifier2);
         updatePatientDataFilter(filter, field3, qualifier3);
@@ -157,12 +161,12 @@ public class PatientSearchSteps {
 
     @When("I search for patients sorted by {string} {string} {string} {string}")
     public void i_search_for_ordered_patients(String field, String qualifier, String aSortField,
-        String aSortDirection) {
+            String aSortDirection) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         sortDirection = aSortDirection.equalsIgnoreCase("desc") ? Direction.DESC : Direction.ASC;
         sortField = aSortField;
         searchResults = patientController
-            .findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
+                .findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
     }
 
     @When("I search for a patient by {string} and there is a space at the end")
@@ -208,7 +212,7 @@ public class PatientSearchSteps {
         Soundex soundex = new Soundex();
         String searchSoundex = soundex.encode(searchText.trim());
         switch (field) {
-            case "first name":                
+            case "first name":
                 searchResults.forEach(r -> {
                     assertTrue(r.getFirstNm().contains(searchText.trim())
                             || soundex.encode(r.getFirstNm()).contains(searchSoundex));
@@ -217,7 +221,7 @@ public class PatientSearchSteps {
             case "last name":
                 searchResults.forEach(r -> {
                     assertTrue(r.getLastNm().contains(searchText.trim())
-                     || soundex.encode(r.getLastNm()).contains(searchSoundex));
+                            || soundex.encode(r.getLastNm()).contains(searchSoundex));
                 });
                 break;
             case "address":
@@ -237,9 +241,9 @@ public class PatientSearchSteps {
         Comparator<Person> comparator = getPersonSortComparator(sortField, sortDirection);
         if (comparator == null) {
             // check relevance ordering manually (ie there is no simple comparator)
-            Assert.assertEquals(searchResults.get(0), generatedPersons.get(2));
-            Assert.assertEquals(searchResults.get(1), generatedPersons.get(1));
-            Assert.assertEquals(searchResults.get(2), generatedPersons.get(0));
+            Assert.assertEquals(searchResults.get(0).getId(), (Long) RELEVANCE_SEARCH_LEGAL_NAME_PERSON_ID);
+            Assert.assertEquals(searchResults.get(1).getId(), (Long) RELEVANCE_SEARCH_SECONDARY_NAME_PERSON_ID);
+            Assert.assertEquals(searchResults.get(2).getId(), (Long) RELEVANCE_SEARCH_SOUNDEX_NAME_PERSON_ID);
             return;
         }
         List<Person> sortedPersons = generatedPersons.stream().sorted(comparator).collect(Collectors.toList());
@@ -295,7 +299,7 @@ public class PatientSearchSteps {
             case "identification":
                 var patientId = searchPatient.identifications().get(0);
                 filter.setIdentification(
-                    new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
+                        new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;
             case "patient id":
                 filter.setId(searchPatient.getLocalId());
@@ -360,7 +364,7 @@ public class PatientSearchSteps {
             case "identification":
                 var patientId = searchPatient.identifications().get(0);
                 filter.setIdentification(
-                    new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
+                        new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;
             case "ssn":
                 filter.setSsn(RandomUtil.randomPartialDataSearchString(searchPatient.getSsn()));
