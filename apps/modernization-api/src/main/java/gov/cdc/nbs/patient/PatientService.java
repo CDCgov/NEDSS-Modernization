@@ -174,7 +174,7 @@ public class PatientService {
 
             lastNameBuilder.should(QueryBuilders.queryStringQuery(
                     addWildcards(filter.getLastName()))
-                    .defaultField(ElasticsearchPerson.LAST_NM_KEYWORD)
+                    .defaultField(ElasticsearchPerson.LAST_NM)
                     .defaultOperator(Operator.AND).boost(LAST_NAME_PRIMARY_BOOST));
 
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
@@ -415,7 +415,7 @@ public class PatientService {
                     sorts.add(SortBuilders.scoreSort());
                     break;
                 case "lastNm":
-                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD)
+                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM)
                         .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 case "birthTime":
