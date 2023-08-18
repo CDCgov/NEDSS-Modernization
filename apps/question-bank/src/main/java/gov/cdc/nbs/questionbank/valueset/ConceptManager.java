@@ -95,13 +95,15 @@ public class ConceptManager {
         } else {
             codeSystemType = "PHIN";
         }
-        CodeValueGeneral newConcept = new CodeValueGeneral(
-                asAdd(
-                        valueSet,
-                        request,
-                        userId,
-                        codeSystemType,
-                        codeSystem.getCodeDescTxt()));
+        ConceptCommand.AddConcept command = asAdd(
+                valueSet,
+                request,
+                userId,
+                codeSystemType,
+                codeSystem.getCodeShortDescTxt(),
+                codeSystem.getCodeDescTxt());
+
+        CodeValueGeneral newConcept = new CodeValueGeneral(command);
         newConcept = repository.save(newConcept);
         return conceptMapper.toConcept(newConcept);
     }
@@ -111,6 +113,7 @@ public class ConceptManager {
             AddConceptRequest request,
             Long userId,
             String conceptType,
+            String codeSystemDescription,
             String codeSystemId) {
         return new ConceptCommand.AddConcept(
                 codeset,
@@ -125,7 +128,7 @@ public class ConceptManager {
                 request.messagingInfo().conceptCode(),
                 request.messagingInfo().conceptName(),
                 request.messagingInfo().preferredConceptName(),
-                request.messagingInfo().codeSystem(),
+                codeSystemDescription,
                 codeSystemId,
                 userId,
                 Instant.now());

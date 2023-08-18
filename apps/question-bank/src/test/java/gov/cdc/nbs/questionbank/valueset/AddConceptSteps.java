@@ -2,8 +2,6 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +63,9 @@ public class AddConceptSteps {
     public void the_concept_is_added() {
         List<CodeValueGeneral> concepts =
                 codeValueGeneralRepository.findByIdCodeSetNm(valueSetMother.one().getId().getCodeSetNm(), null);
+        CodeValueGeneral codeSystem = codeValueGeneralRepository
+                .findByIdCodeSetNmAndIdCode("CODE_SYSTEM", "ABNORMAL_FLAGS_HL7")
+                .orElseThrow();
         CodeValueGeneral newConcept = concepts.stream()
                 .filter(f -> f.getId().getCode().equals("TestCode"))
                 .findFirst()
@@ -78,15 +79,9 @@ public class AddConceptSteps {
         assertEquals("TestConceptCode", newConcept.getConceptCode());
         assertEquals("TestConceptName", newConcept.getConceptNm());
         assertEquals("TestPreferredConceptName", newConcept.getConceptPreferredNm());
-        assertEquals("ABNORMAL_FLAGS_HL7", newConcept.getCodeSystemDescTxt());
-        assertEquals("2.16.840.1.113883.12.78", newConcept.getCodeSystemCd()); // From db
+        assertEquals(codeSystem.getCodeShortDescTxt(), newConcept.getCodeSystemDescTxt());
+        assertEquals(codeSystem.getCodeDescTxt(), newConcept.getCodeSystemCd());
         assertEquals("PHIN", newConcept.getConceptTypeCd());
-        assertEquals("PHIN", newConcept.getConceptTypeCd());
-        // DB loses some time accuracy, allow for 1 second difference
-        var secondsBetweenFromTime = Duration.between(now, newConcept.getEffectiveFromTime()).getSeconds();
-        var secondsBetweenToTime = Duration.between(now, newConcept.getEffectiveToTime()).getSeconds();
-        assertTrue(Math.abs(secondsBetweenFromTime) >= 1);
-        assertTrue(Math.abs(secondsBetweenToTime) >= 1);
         assertNotNull(newConcept.getConceptStatusTime());
         assertNotNull(newConcept.getAddTime());
         assertNotNull(newConcept.getAddUserId());

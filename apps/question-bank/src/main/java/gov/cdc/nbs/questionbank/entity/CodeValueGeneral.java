@@ -109,6 +109,7 @@ public class CodeValueGeneral {
         this.effectiveFromTime = command.effectiveFromTime();
         this.effectiveToTime = command.effectiveToTime();
         this.statusCd = command.statusCode().equals(StatusCode.A) ? 'A' : 'I';
+        this.statusTime = command.requestedOn();
         this.conceptStatusCd = command.statusCode().equals(StatusCode.A) ? "Active" : "Inactive";
         this.conceptStatusTime = command.requestedOn();
         this.adminComments = command.adminComments();
