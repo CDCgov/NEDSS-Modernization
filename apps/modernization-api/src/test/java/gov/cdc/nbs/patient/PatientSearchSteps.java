@@ -57,9 +57,9 @@ public class PatientSearchSteps {
     private QueryException exception;
     private String searchText;
 
-    final long RELEVANCE_SEARCH_SOUNDEX_NAME_PERSON_ID = 20000000;
-    final long RELEVANCE_SEARCH_SECONDARY_NAME_PERSON_ID = 20000001;
-    final long RELEVANCE_SEARCH_LEGAL_NAME_PERSON_ID = 20000002;
+    public static final long RELEVANCE_SEARCH_SOUNDEX_NAME_PERSON_ID = 20000000;
+    public static final long RELEVANCE_SEARCH_SECONDARY_NAME_PERSON_ID = 20000001;
+    public static final long RELEVANCE_SEARCH_LEGAL_NAME_PERSON_ID = 20000002;
 
     @Given("there are {int} patients")
     public void there_are_patients(int patientCount) {
