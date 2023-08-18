@@ -170,6 +170,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                                 </Button>
                                 {isActions === index && (
                                     <ActionState
+                                        notDeletable
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, administrative)(type);
@@ -188,17 +189,25 @@ export const AdministrativeTable = ({ patient }: Props) => {
             />
 
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-identification-modal" title="Add - Administrative">
-                    <AdministrativeForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onChanged} />
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="add-patient-identification-modal"
+                    title="Add - Administrative">
+                    <AdministrativeForm action={'Add'} entry={initial} onChange={onChanged} />
                 </EntryModal>
             )}
 
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-identification-modal" title="Edit - Administrative">
+                <EntryModal
+                    onClose={actions.reset}
+                    modal={modal}
+                    id="edit-patient-identification-modal"
+                    title="Edit - Administrative">
                     <AdministrativeForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
-                        onCancel={actions.reset}
+                        onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}
                     />
                 </EntryModal>
@@ -219,6 +228,8 @@ export const AdministrativeTable = ({ patient }: Props) => {
                     modal={modal}
                     details={asDetail(selected.item)}
                     onClose={actions.reset}
+                    onEdit={() => actions.selectForEdit(selected.item)}
+                    onDelete={() => actions.selectForDelete(selected.item)}
                 />
             )}
         </>

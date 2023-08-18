@@ -20,14 +20,9 @@
             max-width: unset;
             width: 100%;
         }
-        .add-new-page__breadcrumb {
-            cursor: pointer;
-            display: flex;
-            width: 100%;
-            align-items: center;
-            padding: 0.4rem 1.2rem;
-            gap: 0.5rem;
-            color: $color-primary;
+        .pages-breadcrumb {
+            padding-top: 1.4rem;
+            padding-left: 1.4rem;
         }
         .add-new-page__content {
             width: 480px;

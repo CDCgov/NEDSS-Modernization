@@ -3,12 +3,12 @@
 /* eslint-disable */
 
 export type PageCreateRequest = {
-    conditionIds?: Array<string>;
+    conditionIds: Array<string>;
     dataMartName?: string;
-    eventType?: string;
-    messageMappingGuide?: string;
-    name?: string;
+    eventType: string;
+    messageMappingGuide: string;
+    name: string;
     pageDescription?: string;
-    templateId?: number;
+    templateId: number;
 };
 
