@@ -57,7 +57,7 @@ class AddSubSectionServiceTest {
 
         UpdateSubSectionResponse updateSubSectionResponse =
                 createSubSectionService.updateSubSection( updateSubSectionRequest);
-        assertEquals("Sub Section Updated Successfully", updateSubSectionResponse.message());
+        assertEquals("SubSection Updated Successfully", updateSubSectionResponse.message());
     }
 
     @Test
@@ -68,7 +68,7 @@ class AddSubSectionServiceTest {
 
         UpdateSubSectionResponse updateSubSectionResponse =
                 createSubSectionService.updateSubSection( updateSubSectionRequest);
-        assertEquals("Sub Section Updated Successfully", updateSubSectionResponse.message());
+        assertEquals("SubSection Updated Successfully", updateSubSectionResponse.message());
     }
 
     @Test
@@ -79,7 +79,7 @@ class AddSubSectionServiceTest {
 
         UpdateSubSectionResponse updateSubSectionResponse =
                 createSubSectionService.updateSubSection( updateSubSectionRequest);
-        assertEquals("Sub Section Updated Successfully", updateSubSectionResponse.message());
+        assertEquals("SubSection Updated Successfully", updateSubSectionResponse.message());
     }
 
     @Test
@@ -90,7 +90,7 @@ class AddSubSectionServiceTest {
 
         UpdateSubSectionResponse updateSubSectionResponse =
                 createSubSectionService.updateSubSection( updateSubSectionRequest);
-        assertEquals("questionLabel or Visible is required to update sub section", updateSubSectionResponse.message());
+        assertEquals("questionLabel or Visible is required to update subsection", updateSubSectionResponse.message());
     }
 
     @Test

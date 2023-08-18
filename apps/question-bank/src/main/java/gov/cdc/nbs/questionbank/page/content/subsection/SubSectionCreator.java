@@ -62,15 +62,15 @@ public class SubSectionCreator {
             log.info("Updating section");
             if (request.questionLabel() != null && request.visible() != null) {
                 waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.subSectionId());
-                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+                return new UpdateSubSectionResponse(request.subSectionId(), "SubSection Updated Successfully");
             } else if ( request.questionLabel() != null ) {
                 waUiMetaDataRepository.updateQuestionLabel(request.questionLabel(), request.subSectionId());
-                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+                return new UpdateSubSectionResponse(request.subSectionId(), "SubSection Updated Successfully");
             } else if ( request.visible() != null ) {
                 waUiMetaDataRepository.updateVisibility(request.visible(), request.subSectionId());
-                return new UpdateSubSectionResponse(request.subSectionId(), "Section Updated Successfully");
+                return new UpdateSubSectionResponse(request.subSectionId(), "SubSection Updated Successfully");
             } else {
-                return new UpdateSubSectionResponse(request.subSectionId(), "questionLabel or Visible is required to update section");
+                return new UpdateSubSectionResponse(request.subSectionId(), "questionLabel or Visible is required to update subsection");
             }
         } catch(Exception exception) {
             throw new UpdateSubSectionException(exception.toString(), 1015);
