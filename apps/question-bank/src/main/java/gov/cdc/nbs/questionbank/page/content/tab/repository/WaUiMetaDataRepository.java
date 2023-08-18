@@ -94,8 +94,4 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
     @Query(value = "select order_nbr from WA_Ui_metadata w where w.wa_ui_metadata_uid=?1", nativeQuery = true)
     Integer getOrderNumber(Long waUiMetadataUid);
 
-    @Modifying
-    @Query(value = "delete from WA_Ui_metadata where wa_ui_metadata_uid=?1", nativeQuery = true)
-    void deletefromTable(Long waUiMetadataUid);
-
 }

@@ -60,27 +60,6 @@ class AddSubSectionServiceTest {
         assertEquals("SubSection Updated Successfully", updateSubSectionResponse.message());
     }
 
-    @Test
-    void updateSubSectionServiceOnlyQuestionLabelTest() {
-
-        UpdateSubSectionRequest updateSubSectionRequest =
-                new UpdateSubSectionRequest(123L,  "Local", null);
-
-        UpdateSubSectionResponse updateSubSectionResponse =
-                createSubSectionService.updateSubSection( updateSubSectionRequest);
-        assertEquals("SubSection Updated Successfully", updateSubSectionResponse.message());
-    }
-
-    @Test
-    void updateSubSectionServiceOnlyVisibilityTest() {
-
-        UpdateSubSectionRequest updateSubSectionRequest =
-                new UpdateSubSectionRequest(123L,  null, "T");
-
-        UpdateSubSectionResponse updateSubSectionResponse =
-                createSubSectionService.updateSubSection( updateSubSectionRequest);
-        assertEquals("SubSection Updated Successfully", updateSubSectionResponse.message());
-    }
 
     @Test
     void updateSubSectionServiceNoLabelOrVisibilityTest() {
@@ -88,9 +67,9 @@ class AddSubSectionServiceTest {
         UpdateSubSectionRequest updateSubSectionRequest =
                 new UpdateSubSectionRequest(123L,  null, null);
 
-        UpdateSubSectionResponse updateSubSectionResponse =
-                createSubSectionService.updateSubSection( updateSubSectionRequest);
-        assertEquals("questionLabel or Visible is required to update subsection", updateSubSectionResponse.message());
+
+        assertThrows(UpdateSubSectionException.class, () ->createSubSectionService.updateSubSection(updateSubSectionRequest));
+
     }
 
     @Test

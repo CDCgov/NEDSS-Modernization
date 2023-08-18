@@ -27,6 +27,7 @@ public class SubSectionCreator {
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
+    private static final String UPDATE_MESSAGE = "SubSection Updated Successfully";
     @Autowired
     private EntityManager entityManager;
 
@@ -47,33 +48,26 @@ public class SubSectionCreator {
     public DeleteSubSectionResponse deleteSubSection(DeleteSubSectionRequest request) {
         try {
             log.info("Deleting section");
-            Integer order_nbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
-            waUiMetaDataRepository.deletefromTable(request.subSectionId());
-            waUiMetaDataRepository.updateOrderNumberByDecreasing(order_nbr, request.subSectionId());
+            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
+            waUiMetaDataRepository.deleteById(request.subSectionId());
+            waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.subSectionId());
             return new DeleteSubSectionResponse(request.subSectionId(), "Sub Section Deleted Successfully");
         } catch(Exception exception) {
-            throw new DeleteSubSectionException("Delete Sub Section exception", 1015);
+            throw new DeleteSubSectionException("Delete Sub Section exception");
         }
 
     }
 
     public UpdateSubSectionResponse updateSubSection(UpdateSubSectionRequest request) {
         try {
-            log.info("Updating section");
-            if (request.questionLabel() != null && request.visible() != null) {
-                waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.subSectionId());
-                return new UpdateSubSectionResponse(request.subSectionId(), "SubSection Updated Successfully");
-            } else if ( request.questionLabel() != null ) {
-                waUiMetaDataRepository.updateQuestionLabel(request.questionLabel(), request.subSectionId());
-                return new UpdateSubSectionResponse(request.subSectionId(), "SubSection Updated Successfully");
-            } else if ( request.visible() != null ) {
-                waUiMetaDataRepository.updateVisibility(request.visible(), request.subSectionId());
-                return new UpdateSubSectionResponse(request.subSectionId(), "SubSection Updated Successfully");
-            } else {
-                return new UpdateSubSectionResponse(request.subSectionId(), "questionLabel or Visible is required to update subsection");
+            log.info("Updating subsection");
+            if (request.questionLabel() == null || request.visible() == null) {
+                throw new UpdateSubSectionException("Label and visibility fields are required");
             }
+            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.subSectionId());
+            return new UpdateSubSectionResponse(request.subSectionId(), UPDATE_MESSAGE);
         } catch(Exception exception) {
-            throw new UpdateSubSectionException(exception.toString(), 1015);
+            throw new UpdateSubSectionException(exception.toString());
         }
 
     }

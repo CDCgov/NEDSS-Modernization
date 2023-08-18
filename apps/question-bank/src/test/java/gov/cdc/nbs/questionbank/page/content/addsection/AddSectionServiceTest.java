@@ -53,30 +53,9 @@ class AddSectionServiceTest {
 
         UpdateSectionResponse updateSectionResponse =
                 createSectionService.updateSection( updateSectionRequest);
-        assertEquals("Section Updated Successfully", updateSectionResponse.message());
+        assertEquals("Section updated successfully", updateSectionResponse.message());
     }
 
-    @Test
-    void updateSectionServiceOnlyQuestionLabelTest() {
-
-        UpdateSectionRequest updateSectionRequest =
-                new UpdateSectionRequest(123L,  "Local", null);
-
-        UpdateSectionResponse updateSectionResponse =
-                createSectionService.updateSection( updateSectionRequest);
-        assertEquals("Section Updated Successfully", updateSectionResponse.message());
-    }
-
-    @Test
-    void updateSectionServiceOnlyVisibilityTest() {
-
-        UpdateSectionRequest updateSectionRequest =
-                new UpdateSectionRequest(123L,  null, "T");
-
-        UpdateSectionResponse updateSectionResponse =
-                createSectionService.updateSection( updateSectionRequest);
-        assertEquals("Section Updated Successfully", updateSectionResponse.message());
-    }
 
     @Test
     void updateSectionServiceNoLabelOrVisibilityTest() {
@@ -84,9 +63,8 @@ class AddSectionServiceTest {
         UpdateSectionRequest updateSectionRequest =
                 new UpdateSectionRequest(123L,  null, null);
 
-        UpdateSectionResponse updateSectionResponse =
-                createSectionService.updateSection( updateSectionRequest);
-        assertEquals("questionLabel or Visible is required to update section", updateSectionResponse.message());
+                assertThrows(UpdateSectionException.class, () ->createSectionService.updateSection(updateSectionRequest));
+
     }
 
     @Test

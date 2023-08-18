@@ -28,6 +28,8 @@ public class SectionCreator {
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
+    private static final String UPDATE_MESSAGE = "Section updated successfully";
+
     @Autowired
     private EntityManager entityManager;
 
@@ -48,12 +50,12 @@ public class SectionCreator {
     public DeleteSectionResponse deleteSection(DeleteSectionRequest request) {
         try {
             log.info("Deleting section");
-            Integer order_nbr = waUiMetaDataRepository.getOrderNumber(request.sectionId());
-            waUiMetaDataRepository.deletefromTable(request.sectionId());
-            waUiMetaDataRepository.updateOrderNumberByDecreasing(order_nbr, request.sectionId());
+            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.sectionId());
+            waUiMetaDataRepository.deleteById(request.sectionId());
+            waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.sectionId());
             return new DeleteSectionResponse(request.sectionId(), "Section Deleted Successfully");
         } catch(Exception exception) {
-            throw new DeleteSectionException(exception.toString(), 1015);
+            throw new DeleteSectionException(exception.toString());
         }
 
     }
@@ -61,20 +63,13 @@ public class SectionCreator {
     public UpdateSectionResponse updateSection(UpdateSectionRequest request) {
         try {
             log.info("Updating section");
-            if (request.questionLabel() != null && request.visible() != null) {
-                waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.sectionId());
-                return new UpdateSectionResponse(request.sectionId(), "Section Updated Successfully");
-            } else if ( request.questionLabel() != null ) {
-                waUiMetaDataRepository.updateQuestionLabel(request.questionLabel(), request.sectionId());
-                return new UpdateSectionResponse(request.sectionId(), "Section Updated Successfully");
-            } else if ( request.visible() != null ) {
-                waUiMetaDataRepository.updateVisibility(request.visible(), request.sectionId());
-                return new UpdateSectionResponse(request.sectionId(), "Section Updated Successfully");
-            } else {
-                return new UpdateSectionResponse(request.sectionId(), "questionLabel or Visible is required to update section");
+            if (request.questionLabel() == null || request.visible() == null) {
+                throw new UpdateSectionException("Label and visibility fields are required");
             }
+            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.sectionId());
+            return new UpdateSectionResponse(request.sectionId(), UPDATE_MESSAGE);
         } catch(Exception exception) {
-            throw new UpdateSectionException(exception.toString(), 1015);
+            throw new UpdateSectionException(exception.toString());
         }
 
     }
