@@ -1,7 +1,9 @@
 /* eslint-disable camelcase */
 import { createContext, useState, Dispatch, SetStateAction } from 'react';
 
-interface PagesContextData {
+interface ValueSetsContextData {
+    filter: any;
+    setFilter: (filter: any) => void;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     currentPage: number;
@@ -16,14 +18,16 @@ interface PagesContextData {
     setIsLoading: (status: boolean) => void;
 }
 
-const pagesContextDefaultValue: PagesContextData = {
+const valueSetsDefaultValue: ValueSetsContextData = {
+    filter: {},
+    setFilter: () => {},
     searchQuery: '',
     setSearchQuery: () => {},
     currentPage: 1,
     setCurrentPage: () => {},
-    sortBy: 'name',
+    sortBy: '',
     setSortBy: () => {},
-    sortDirection: 'asc',
+    sortDirection: '',
     setSortDirection: () => {},
     pageSize: 10,
     setPageSize: () => {},
@@ -31,19 +35,22 @@ const pagesContextDefaultValue: PagesContextData = {
     setIsLoading: () => {}
 };
 
-export const PagesContext = createContext<PagesContextData>(pagesContextDefaultValue);
+export const ValueSetsContext = createContext<ValueSetsContextData>(valueSetsDefaultValue);
 
-export const PagesProvider = ({ children }: any) => {
-    const [searchQuery, setSearchQuery] = useState(pagesContextDefaultValue.searchQuery);
-    const [currentPage, setCurrentPage] = useState(pagesContextDefaultValue.currentPage);
-    const [sortBy, setSortBy] = useState(pagesContextDefaultValue.sortBy);
-    const [sortDirection, setSortDirection] = useState(pagesContextDefaultValue.sortDirection);
-    const [pageSize, setPageSize] = useState(pagesContextDefaultValue.pageSize);
+export const ValueSetsProvider = ({ children }: any) => {
+    const [searchQuery, setSearchQuery] = useState(valueSetsDefaultValue.searchQuery);
+    const [sortDirection, setSortDirection] = useState(valueSetsDefaultValue.sortDirection);
+    const [currentPage, setCurrentPage] = useState(valueSetsDefaultValue.currentPage);
+    const [sortBy, setSortBy] = useState(valueSetsDefaultValue.sortBy);
+    const [pageSize, setPageSize] = useState(valueSetsDefaultValue.pageSize);
     const [isLoading, setIsLoading] = useState(false);
+    const [filter, setFilter] = useState(valueSetsDefaultValue.filter);
 
     return (
-        <PagesContext.Provider
+        <ValueSetsContext.Provider
             value={{
+                filter,
+                setFilter,
                 currentPage,
                 sortBy,
                 setSortBy,
@@ -58,6 +65,6 @@ export const PagesProvider = ({ children }: any) => {
                 setIsLoading
             }}>
             {children}
-        </PagesContext.Provider>
+        </ValueSetsContext.Provider>
     );
 };

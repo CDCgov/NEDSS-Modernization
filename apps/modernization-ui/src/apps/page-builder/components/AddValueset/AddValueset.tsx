@@ -3,8 +3,10 @@ import { GetQuestionResponse, QuestionControllerService } from 'apps/page-builde
 import { Button, Icon, ModalToggleButton } from '@trussworks/react-uswds';
 import './AddValueset.scss';
 import { ValueSetControllerService } from '../../generated';
+import '../../pages/ValuesetLibrary/ValuesetTabs.scss';
 import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
+import { Concept } from '../Concept/Concept';
 
 export const AddValueset = ({ hideHeader, modalRef }: any) => {
     const { state } = useContext(UserContext);
@@ -14,20 +16,18 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
     const [code, setCode] = useState('');
-
+    const [activeTab, setActiveTab] = useState('details');
     const [isValuesetNameNotValid, setIsValuesetNameNotValid] = useState(false);
     const [isValuesetCodeNotValid, setIsValuesetCodeNotValid] = useState(false);
     const [isValidationFailure, setIsValidationFailure] = useState(false);
 
     const authorization = `Bearer ${state.getToken()}`;
-
     const handleSubmit = () => {
         const request = {
             valueSetNm: name,
             valueSetCode: code,
             valueSetTypeCd: isLocalOrPhin
         };
-
         ValueSetControllerService.createValueSetUsingPost({
             authorization,
             request
@@ -40,8 +40,6 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
             updateQuestion(id);
             return response;
         });
-        // xox- POST API call here
-        // POST /page-builder/api/v1/valueset/
     };
 
     const updateQuestion = async (id: number) => {
@@ -93,14 +91,12 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
             request
         }).then((response: any) => {
             showAlert({ type: 'success', header: 'Add', message: 'Question Added successfully' });
-            // modalRef.current.closeModal();
             return response;
         });
     };
     const handleClose = () => {
         window.close();
     };
-
     const handleBack = () => {
         history.go(-1);
     };
@@ -131,7 +127,18 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
             setIsValidationFailure(true);
         }
     };
+
     const disableBtn = isValidationFailure || !name || !code;
+    const renderTabs = (
+        <ul className="tabs">
+            <li className={activeTab == 'details' ? 'active' : ''} onClick={() => setActiveTab('details')}>
+                Value set details
+            </li>
+            <li className={activeTab == 'concepts' ? 'active' : ''} onClick={() => setActiveTab('concepts')}>
+                Value set concepts
+            </li>
+        </ul>
+    );
 
     return (
         <div className="add-valueset">
@@ -149,84 +156,99 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
                 </h3>
             )}
             <div className="add-valueset__container">
-                <h3 className="header-title">Add value set</h3>
-                <p className="fields-info">
-                    All fields with <span className="mandatory-indicator">*</span> are required
-                </p>
-                <p className="description">
-                    These fields will not be displayed to your users, it only makes it easier for others to search for
-                    this question in the Value set library
-                </p>
-                <br></br>
-                <input
-                    type="radio"
-                    name="isLocalOrPhin"
-                    value="LOCAL"
-                    id="rdLOCAL"
-                    className="field-space"
-                    checked={isLocalOrPhin === 'LOCAL'}
-                    onChange={handleType}
-                />
-                <label htmlFor="rdLOCAL" className="radio-label">
-                    LOCAL
-                </label>
-                <input
-                    type="radio"
-                    id="rdPHIN"
-                    name="isLocalOrPhin"
-                    value="PHIN"
-                    className="right-radio"
-                    checked={isLocalOrPhin === 'PHIN'}
-                    onChange={handleType}
-                />
-                <label htmlFor="rdPHIN" className="radio-label">
-                    PHIN
-                </label>
-                <br></br>
-                <div className={isValuesetNameNotValid ? 'error-border' : ''}>
-                    <label>
-                        Value set name<span className="mandatory-indicator">*</span>
-                    </label>
-                    <p className="error-text">Value set Name Not Valid</p>
-                    <input
-                        className="field-space"
-                        type="text"
-                        name="valuesetName"
-                        style={{ border: isValuesetNameNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: any) => validateValuesetName(e.target.value)}
-                        value={name}
-                        onInput={(e: any) => setName(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Value set description</label>
-                    <input
-                        className="field-space"
-                        type="text"
-                        name="valuesetDesc"
-                        style={{ border: '1px solid black' }}
-                        value={desc}
-                        onInput={(e: React.ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)}
-                    />
-                </div>
-                <div className={isValuesetCodeNotValid ? 'error-border' : ''}>
-                    <label>
-                        Value set code<span className="mandatory-indicator">*</span>
-                    </label>
-                    <br></br>
-                    <p data-testid="error-text" className="error-text">
-                        Value set code Not Valid
-                    </p>
-                    <input
-                        className="field-space"
-                        type="text"
-                        name="valuesetCode"
-                        style={{ border: isValuesetCodeNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: React.ChangeEvent<HTMLInputElement>) => validateValuesetCode(e.target.value)}
-                        value={code}
-                        onInput={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
-                    />
-                </div>
+                {renderTabs}
+                {activeTab === 'details' ? (
+                    <>
+                        <p className="description">
+                            These fields will not be displayed to your users, it only makes it easier for others to
+                            search for search for this question in the Value set library
+                        </p>
+                        <br></br>
+                        <input
+                            type="radio"
+                            name="isLocalOrPhin"
+                            value="LOCAL"
+                            id="rdLOCAL"
+                            className="field-space"
+                            checked={isLocalOrPhin === 'LOCAL'}
+                            onChange={handleType}
+                        />
+                        <label htmlFor="rdLOCAL" className="radio-label">
+                            LOCAL
+                        </label>
+                        <input
+                            type="radio"
+                            id="rdPHIN"
+                            name="isLocalOrPhin"
+                            value="PHIN"
+                            className="right-radio"
+                            checked={isLocalOrPhin === 'PHIN'}
+                            onChange={handleType}
+                        />
+                        <label htmlFor="rdPHIN" className="radio-label">
+                            PHIN
+                        </label>
+                        <br></br>
+                        <div className={isValuesetNameNotValid ? 'error-border' : ''}>
+                            <label>
+                                Value set name<span className="mandatory-indicator">*</span>
+                            </label>
+                            <p className="error-text">Value set Name Not Valid</p>
+                            <input
+                                className="field-space"
+                                type="text"
+                                name="valuesetName"
+                                style={{ border: isValuesetNameNotValid ? '1px solid #dc3545' : '1px solid black' }}
+                                onBlur={(e: any) => validateValuesetName(e.target.value)}
+                                value={name}
+                                onInput={(e: any) => setName(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label>Value set description</label>
+                            <input
+                                className="field-space"
+                                type="text"
+                                name="valuesetDesc"
+                                style={{ border: '1px solid black' }}
+                                value={desc}
+                                onInput={(e: React.ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)}
+                            />
+                        </div>
+                        <div className={isValuesetCodeNotValid ? 'error-border' : ''}>
+                            <label>
+                                Value set code <span className="mandatory-indicator">*</span>
+                            </label>
+                            <br></br>
+                            <p data-testid="error-text" className="error-text">
+                                Value set code Not Valid
+                            </p>
+                            <input
+                                className="field-space"
+                                type="text"
+                                name="valuesetCode"
+                                style={{ border: isValuesetCodeNotValid ? '1px solid #dc3545' : '1px solid black' }}
+                                onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    validateValuesetCode(e.target.value)
+                                }
+                                value={code}
+                                onInput={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
+                            />
+                            <div className="value-set-line-action-footer">
+                                <Button
+                                    type="submit"
+                                    className="line-btn"
+                                    unstyled
+                                    onClick={() => setActiveTab('concepts')}>
+                                    <Icon.ArrowForward className="margin" />
+                                    <span>Continue to value set concept</span>
+                                </Button>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <Concept />
+                )}
             </div>
             <ModalToggleButton
                 className="submit-btn"
@@ -234,7 +256,7 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
                 modalRef={modalRef}
                 onClick={handleSubmit}
                 disabled={disableBtn}>
-                Add to question
+                Create and Add to question
             </ModalToggleButton>
             <ModalToggleButton className="cancel-btn" modalRef={modalRef} type="button">
                 Cancel
