@@ -144,19 +144,23 @@ public class PatientProfileAddressChangeSteps {
 
     @Then("I am unable to add a patient's address")
     public void i_am_unable_to_add_a_patient_ethnicity() {
-        assertThatThrownBy(() -> controller.add(newRequest.maybeActive().orElse(null)))
+        NewPatientAddressInput input = newRequest.maybeActive().orElse(null);
+        assertThatThrownBy(() -> controller.add(input))
             .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("I am unable to change a patient's address")
     public void i_am_unable_to_change_a_patient_ethnicity() {
-        assertThatThrownBy(() -> controller.update(updateRequest.maybeActive().orElse(null)))
+        UpdatePatientAddressInput input = updateRequest.maybeActive().orElse(null);
+        assertThatThrownBy(() -> controller.update(input))
             .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("I am unable to remove a patient's address")
     public void i_am_unable_to_remove_a_patient_ethnicity() {
-        assertThatThrownBy(() -> controller.delete(deleteRequest.maybeActive().orElse(null)))
+        DeletePatientAddressInput input = deleteRequest.maybeActive().orElse(null);
+
+        assertThatThrownBy(() -> controller.delete(input))
             .isInstanceOf(AccessDeniedException.class);
     }
 }
