@@ -1,10 +1,10 @@
-import { Button, Form, ModalRef } from '@trussworks/react-uswds';
+import { Button, Form, Modal, ModalToggleButton, ModalRef } from '@trussworks/react-uswds';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditionLookup/QuickConditionLookup';
 import { Concept } from 'apps/page-builder/generated';
 import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
-import { fetchFamilyOptions, fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
+import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
@@ -14,6 +14,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { UserContext } from 'user';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './AddNewPage.scss';
+import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
+import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 
 type FormValues = {
     conditionIds: [];
@@ -26,8 +28,8 @@ type FormValues = {
 };
 
 type CONDITION = {
-    conceptCode: string;
-    display: string;
+    id: string;
+    conditionShortNm: string;
 };
 
 type TEMPLATE = {
@@ -46,8 +48,8 @@ const eventType = [
 ];
 
 export const AddNewPage = () => {
-    const [showQuickConditionLookup, setShowQuickConditionLookup] = useState(false);
-    const modal = useRef<ModalRef>(null);
+    const modalQuick = useRef<ModalRef>(null);
+    const modalCreate = useRef<ModalRef>(null);
     const navigate = useNavigate();
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
@@ -64,8 +66,8 @@ export const AddNewPage = () => {
             .catch((error: any) => {
                 console.log('Error', error);
             });
-        fetchFamilyOptions(token).then((data: any) => {
-            setConditions(data);
+        fetchConditions(token, undefined, undefined, undefined, 'conditionShortNm,asc').then((data: any) => {
+            setConditions(data.content);
         });
         fetchTemplates(token).then((data: any) => {
             setTemplates(data);
@@ -105,8 +107,8 @@ export const AddNewPage = () => {
                                         value={value}
                                         options={conditions.map((m) => {
                                             return {
-                                                name: m.display,
-                                                value: m.conceptCode
+                                                name: m.conditionShortNm,
+                                                value: m.id
                                             };
                                         })}
                                         label="Condition(s)"></MultiSelectInput>
@@ -115,14 +117,13 @@ export const AddNewPage = () => {
                             <p>
                                 Can’t find the condition you’re looking for?
                                 <br />
-                                <a
-                                    onClick={() => {
-                                        setShowQuickConditionLookup(!showQuickConditionLookup);
-                                    }}>
-                                    Quick condition lookup
-                                </a>
+                                <ModalToggleButton modalRef={modalQuick} unstyled>
+                                    <p>Search and add condition(s)</p>
+                                </ModalToggleButton>
                                 &nbsp; or &nbsp;
-                                <NavLink to={'add/condition'}>Create new condition here</NavLink>
+                                <ModalToggleButton modalRef={modalCreate} unstyled>
+                                    <p>create a new condition here</p>
+                                </ModalToggleButton>
                             </p>
                             <Controller
                                 control={control}
@@ -238,12 +239,10 @@ export const AddNewPage = () => {
                         </div>
                     </Form>
                 </div>
-                {showQuickConditionLookup ? (
-                    <QuickConditionLookup
-                        modal={modal}
-                        onClose={() => setShowQuickConditionLookup(!showQuickConditionLookup)}
-                    />
-                ) : null}
+                <QuickConditionLookup modal={modalQuick} />
+                <Modal id="create-condition-modal" isLarge ref={modalCreate}>
+                    <CreateCondition modal={modalCreate} />
+                </Modal>
             </div>
         </PageBuilder>
     );

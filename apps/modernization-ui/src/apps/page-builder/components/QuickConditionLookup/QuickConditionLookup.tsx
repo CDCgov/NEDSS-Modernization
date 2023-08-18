@@ -3,16 +3,15 @@ import { RefObject } from 'react';
 
 type Props = {
     modal: RefObject<ModalRef>;
-    onClose?: () => void;
 };
 
-export const QuickConditionLookup = ({ modal, onClose }: Props) => {
+export const QuickConditionLookup = ({ modal }: Props) => {
     return (
         <Modal
             ref={modal}
             forceAction
             id="quick-condition-lookup"
-            isInitiallyOpen={true}
+            isInitiallyOpen={false}
             isLarge
             aria-labelledby="incomplete-form-confirmation-modal-heading"
             className="padding-0"
@@ -28,7 +27,7 @@ export const QuickConditionLookup = ({ modal, onClose }: Props) => {
             <p>Body</p>
             <ModalFooter className="padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
-                    <ModalToggleButton modalRef={modal} closer onClick={onClose}>
+                    <ModalToggleButton modalRef={modal} closer>
                         Go back
                     </ModalToggleButton>
                 </ButtonGroup>

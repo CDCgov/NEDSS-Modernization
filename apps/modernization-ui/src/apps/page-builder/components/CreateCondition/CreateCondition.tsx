@@ -1,11 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { RefObject, useContext, useEffect, useState } from 'react';
 import './CreateCondition.scss';
-import { Button } from '@trussworks/react-uswds';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ProgramAreaControllerService, ConditionControllerService, ValueSetControllerService } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
 
-export const CreateCondition = () => {
+type Props = {
+    modal?: RefObject<ModalRef>;
+};
+
+export const CreateCondition = ({ modal }: Props) => {
     // Fields
     const [name, setName] = useState('');
     const [system, setSystem] = useState('');
@@ -37,8 +41,8 @@ export const CreateCondition = () => {
         }).then((response: any) => {
             const data = response || [];
             const codingSystemList: never[] = [];
-            data.map((each: { value: never }) => {
-                codingSystemList.push(each.value);
+            data.map((each: { conceptCode: never }) => {
+                codingSystemList.push(each.conceptCode);
             });
             setSystemOptions(codingSystemList);
         });
@@ -74,7 +78,6 @@ export const CreateCondition = () => {
     const fetchGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: `Bearer ${state.getToken()}`,
-            // authorization: `Bearer ${token}`,
             codeSetNm: 'COINFECTION_GROUP'
         }).then((response: any) => {
             const data = response || [];
@@ -94,8 +97,8 @@ export const CreateCondition = () => {
     }, []);
 
     const buildOptions = (optionsToBuild: any[]) =>
-        optionsToBuild.map((opt: string) => (
-            <option value={opt} key={opt}>
+        optionsToBuild.map((opt: string, i: number) => (
+            <option value={opt} key={i}>
                 {opt}
             </option>
         ));
@@ -117,11 +120,16 @@ export const CreateCondition = () => {
         ConditionControllerService.createConditionUsingPost({
             authorization,
             request
-        }).then((response: any) => {
-            showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
-            resetInput();
-            return response;
-        });
+        })
+            .then((response: any) => {
+                showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
+                resetInput();
+                return response;
+            })
+            .catch((error: any) => {
+                console.log(error.body);
+                showAlert({ type: 'error', header: 'Error', message: error.body.message });
+            });
     };
     const resetInput = () => {
         setName('');
@@ -349,13 +357,19 @@ export const CreateCondition = () => {
                 </select>
                 <br></br>
             </div>
-            <Button
-                className="submit-btn"
-                type="submit"
-                onClick={handleSubmit}
-                disabled={isValidationFailure || isDisableBtn}>
-                Create & add condition
-            </Button>
+            {modal ? (
+                <ModalToggleButton modalRef={modal} closer className="submit-btn" onClick={handleSubmit}>
+                    Create & add condition
+                </ModalToggleButton>
+            ) : (
+                <Button
+                    className="submit-btn"
+                    type="submit"
+                    onClick={handleSubmit}
+                    disabled={isValidationFailure || isDisableBtn}>
+                    Create & add condition
+                </Button>
+            )}
             <Button className="cancel-btn" type="submit" onClick={() => resetInput()}>
                 Cancel
             </Button>
