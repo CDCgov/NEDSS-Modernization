@@ -18,7 +18,6 @@ import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PageRule;
 import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PageSection;
 import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PageSubSection;
 import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PageTab;
-import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PagedDetail;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +43,6 @@ public class PageFinder {
 			List<WaUiMetadata> pageTabs = getTabsForPage(page.get());
 			List<PageDetailResponse.PageTab> tabs = new ArrayList<>();
 			for (int i = 0; i < pageTabs.size(); i++) {
-				List<PageDetailResponse.PageSection> sections = new ArrayList<>();
 				Integer min = -1;
 				Integer max = -1;
 				if (i == pageTabs.size() - 1 && pageTabs.size() > 1) {
@@ -60,34 +58,8 @@ public class PageFinder {
 				// get Sections
 				List<WaUiMetadata> tabSections = getChildComponents(page.get(), PageConstants.SECTION_COMPONENT, min,
 						max);
-				for (int j = 0; j < tabSections.size(); j++) {
-					List<PageSubSection> subSections = new ArrayList<>();
-					Integer minSectionOrder = -1;
-					Integer maxSectionOrder = -1;
-					if (j == tabSections.size() - 1 && tabSections.size() > 1) {
-						minSectionOrder = tabSections.get(j - 1).getOrderNbr();
-						maxSectionOrder = tabSections.get(j).getOrderNbr();
-					} else if (j == tabSections.size() - 1 && tabSections.size() == 1) {
-						minSectionOrder = tabSections.get(j).getOrderNbr();
-						maxSectionOrder = tabSections.get(j).getOrderNbr() + 1;
-					} else {
-						minSectionOrder = tabSections.get(j).getOrderNbr();
-						maxSectionOrder = tabSections.get(j + 1).getOrderNbr();
-					}
-					// Get SubSections
-					List<WaUiMetadata> sectionSubSections = getChildComponents(page.get(),
-							PageConstants.SUB_SECTION_COMPONENT, minSectionOrder, maxSectionOrder);
-					
-					subSections = getQuestionsForSubSection(page.get(),sectionSubSections);
-					
-					
-					 // End SubSection building
-
-					PageSection aSection = new PageSection(
-							tabSections.get(j).getId(), tabSections.get(j).getQuestionLabel(),
-							tabSections.get(j).getDisplayInd(), subSections);
-					sections.add(aSection);
-				} // EndSection building
+				List<PageSection> sections =getSectionForTab(page.get(),tabSections);
+				
 				PageTab aTab = new PageTab(pageTabs.get(i).getId(),
 						pageTabs.get(i).getQuestionLabel(), pageTabs.get(i).getDisplayInd(), sections);
 				tabs.add(aTab);
@@ -140,6 +112,38 @@ public class PageFinder {
 
 		return rules;
 
+	}
+	
+	private List<PageSection> getSectionForTab(WaTemplate page, List<WaUiMetadata> tabSections) {
+
+		List<PageSection> sections = new ArrayList<>();
+		for (int j = 0; j < tabSections.size(); j++) {
+			Integer minSectionOrder = -1;
+			Integer maxSectionOrder = -1;
+			if (j == tabSections.size() - 1 && tabSections.size() > 1) {
+				minSectionOrder = tabSections.get(j - 1).getOrderNbr();
+				maxSectionOrder = tabSections.get(j).getOrderNbr();
+			} else if (j == tabSections.size() - 1 && tabSections.size() == 1) {
+				minSectionOrder = tabSections.get(j).getOrderNbr();
+				maxSectionOrder = tabSections.get(j).getOrderNbr() + 1;
+			} else {
+				minSectionOrder = tabSections.get(j).getOrderNbr();
+				maxSectionOrder = tabSections.get(j + 1).getOrderNbr();
+			}
+			// Get SubSections
+			List<WaUiMetadata> sectionSubSections = getChildComponents(page, PageConstants.SUB_SECTION_COMPONENT,
+					minSectionOrder, maxSectionOrder);
+
+			List<PageSubSection> subSections = getQuestionsForSubSection(page, sectionSubSections);
+
+			// End SubSection building
+
+			PageSection aSection = new PageSection(tabSections.get(j).getId(), tabSections.get(j).getQuestionLabel(),
+					tabSections.get(j).getDisplayInd(), subSections);
+			sections.add(aSection);
+		} // EndSection building
+
+		return sections;
 	}
 
 	private List<PageSubSection> getQuestionsForSubSection(WaTemplate page, List<WaUiMetadata> sectionSubSections) {
