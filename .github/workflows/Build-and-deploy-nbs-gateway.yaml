@@ -7,8 +7,6 @@ on:
       - "apps/nbs-gateway/**"
 
 jobs:
-  sonar_scan:
-    uses: ./.github/workflows/sonar.yaml
   call-build-microservice-container-workflow:
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
     with:
