@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import static gov.cdc.nbs.questionbank.util.Util.requireNotEmpty;
+import static gov.cdc.nbs.questionbank.util.Util.requireNonNull;
 import gov.cdc.nbs.questionbank.valueset.command.ConceptCommand;
 import gov.cdc.nbs.questionbank.valueset.exception.ConceptNotFoundException;
 import gov.cdc.nbs.questionbank.valueset.exception.DuplicateConceptException;
@@ -36,9 +38,9 @@ public class ConceptManager {
     public Concept update(String codeSetNm, String conceptCode, UpdateConceptRequest request) {
         CodeValueGeneral concept = repository.findByIdCodeSetNmAndIdCode(codeSetNm, conceptCode)
                 .orElseThrow(() -> new ConceptNotFoundException(codeSetNm, conceptCode));
-        concept.setCodeDescTxt(request.longName());
-        concept.setCodeShortDescTxt(request.displayName());
-        concept.setEffectiveFromTime(request.effectiveFromTime());
+        concept.setCodeDescTxt(requireNotEmpty(request.longName(), "longName"));
+        concept.setCodeShortDescTxt(requireNotEmpty(request.displayName(), "displayName"));
+        concept.setEffectiveFromTime(requireNonNull(request.effectiveFromTime(), "effectiveFromTime must not be null"));
         concept.setEffectiveToTime(request.effectiveToTime());
         Character newStatus = request.active() ? 'A' : 'I';
 
@@ -49,9 +51,15 @@ public class ConceptManager {
         }
 
         if (request.conceptMessagingInfo() != null) {
-            concept.setConceptCode(request.conceptMessagingInfo().conceptCode());
-            concept.setConceptNm(request.conceptMessagingInfo().conceptName());
-            concept.setConceptPreferredNm(request.conceptMessagingInfo().preferredConceptName());
+            concept.setConceptCode(
+                    requireNotEmpty(request.conceptMessagingInfo().conceptCode(),
+                            "conceptMessagingInfo.conceptCode"));
+            concept.setConceptNm(
+                    requireNotEmpty(request.conceptMessagingInfo().conceptName(),
+                            "conceptMessagingInfo.conceptName"));
+            concept.setConceptPreferredNm(
+                    requireNotEmpty(request.conceptMessagingInfo().preferredConceptName(),
+                            "conceptMessagingInfo.preferredConceptName"));
             CodeValueGeneral codeSystem = findCodeSystem(request.conceptMessagingInfo().codeSystem());
 
             concept.setCodeSystemCd(codeSystem.getCodeSystemCd());

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
-import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
+import static gov.cdc.nbs.questionbank.util.Util.requireNonNull;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -19,14 +19,14 @@ public class TextQuestionEntity extends WaQuestion {
     private String mask;
 
     public void setMask(String mask) {
-        this.mask = requireNonNull(mask, "Mask must not be null");
+        this.mask = requireNonNull(mask, "Mask");
     }
 
     @Column(name = "field_size", length = 10)
     private String fieldSize;
 
     public void setFieldSize(String fieldSize) {
-        this.fieldSize = requireNonNull(fieldSize, "Field size must not be null");
+        this.fieldSize = requireNonNull(fieldSize, "Field size");
     }
 
     @Column(name = "default_value", length = 300)
