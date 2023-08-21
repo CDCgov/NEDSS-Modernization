@@ -6,7 +6,7 @@ type Props = {
     name?: string;
     className?: string;
     id?: string;
-    onChange?: () => void;
+    onChange?: (e: any) => void;
 };
 
 export const ToggleButton = ({ checked, className, ...Props }: Props) => {

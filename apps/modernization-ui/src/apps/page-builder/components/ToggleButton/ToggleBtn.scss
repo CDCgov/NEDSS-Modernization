@@ -1,4 +1,4 @@
-.toggle-btn{
+.toggle-btn {
   .switch {
     position: relative;
     display: inline-block;
@@ -18,7 +18,6 @@
           }
         }
       }
-
       &:focus {
         & + .slider {
           box-shadow: 0 0 1px #73B3E7;

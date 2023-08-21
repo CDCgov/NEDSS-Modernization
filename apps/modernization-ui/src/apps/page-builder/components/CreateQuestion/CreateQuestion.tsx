@@ -1,21 +1,41 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './CreateQuestion.scss';
 import ReactSelect from 'react-select';
-import { ModalToggleButton } from '@trussworks/react-uswds';
+import { ModalToggleButton, Radio, TextInput } from '@trussworks/react-uswds';
 import { ProgramAreaControllerService, ValueSetControllerService, QuestionControllerService } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
 
 export const CreateQuestion = ({ modalRef, question }: any) => {
+    const init = {
+        label: '',
+        description: '',
+        type: '',
+        subgroup: '',
+        uniqueId: '',
+        uniqueName: '',
+        defaultLabelInReport: '',
+        defaultRdbTableName: '',
+        rdbColumnName: '',
+        includedInMessage: false,
+        messageVariableId: '',
+        labelInMessage: '',
+        codeSystem: '',
+        hl7DataType: ',',
+        requiredInMessage: false,
+        dataMartColumnName: '',
+        adminComments: '',
+        codeSet: 'PHIN',
+        reportLabel: '',
+        defaultValue: 'test@gmai.com',
+        fieldLength: '50',
+        mask: 'TXT',
+        tooltip: ''
+    };
     // Fields
-    const [name, setName] = useState('');
-    const [system, setSystem] = useState('');
-    const [code, setCode] = useState('');
+    const [questionData, setQestionData] = useState(init);
     const [area, setArea] = useState('');
-    const [isLocalOrPhin, setIsLocalOrPhin] = useState('Y');
-    const [family, setFamily] = useState('');
-    const [group, setGroup] = useState('');
     const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
     // DropDown Options
@@ -39,6 +59,9 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setProgramAreaOptions(programAreaList);
         });
     };
+    useEffect(() => {
+        if (question?.id) setQestionData({ ...question, ...question?.messagingInfo, ...question?.dataMartInfo });
+    }, [question]);
 
     const fetchFamilyOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
@@ -47,8 +70,8 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         }).then((response: any) => {
             const data = response || [];
             const familyList: never[] = [];
-            data.map((each: { value: never }) => {
-                familyList.push(each.value);
+            data.map((each: { localCode: never }) => {
+                familyList.push(each.localCode);
             });
             setFamilyOptions(familyList);
         });
@@ -61,8 +84,8 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         }).then((response: any) => {
             const data = response || [];
             const coinfectionGroupList: never[] = [];
-            data.map((each: { value: never }) => {
-                coinfectionGroupList.push(each.value);
+            data.map((each: { localCode: never }) => {
+                coinfectionGroupList.push(each.localCode);
             });
             setGroupOptions(coinfectionGroupList);
         });
@@ -83,63 +106,54 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const handleSubmit = () => {
         if (question?.id) return handleUpdateQuestion();
         const request = {
-            codeSystemDescTxt: system,
-            conditionShortNm: name,
-            id: code,
-            progAreaCd: area,
-            reportableMorbidityInd: isLocalOrPhin,
-            familyCd: family,
-            coinfectionGrpCd: group
+            dataMartInfo: {
+                defaultLabelInReport: 'Test',
+                defaultRdbTableName: questionData.defaultRdbTableName,
+                rdbColumnName: questionData.rdbColumnName,
+                dataMartColumnName: questionData.dataMartColumnName,
+                reportLabel: questionData.reportLabel || 'Report label'
+            },
+            messagingInfo: {
+                includedInMessage: questionData.includedInMessage,
+                messageVariableId: questionData.messageVariableId,
+                labelInMessage: questionData.labelInMessage,
+                codeSystem: questionData.codeSystem,
+                requiredInMessage: questionData.requiredInMessage,
+                hl7DataType: questionData.hl7DataType
+            },
+            label: questionData.label,
+            uniqueName: questionData.uniqueName,
+            uniqueId: questionData.uniqueId,
+            subgroup: questionData.subgroup,
+            adminComments: questionData.adminComments,
+            description: questionData.label,
+            type: questionData.type,
+            codeSet: questionData.codeSet,
+            tooltip: '',
+            allowFutureDates: true,
+            displayControl: 0,
+            defaultValue: null,
+            fieldLength: '50',
+            mask: 'TXT'
         };
-
         QuestionControllerService.createQuestionUsingPost({
             authorization,
             request
         }).then((response: any) => {
             showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
             resetInput();
+            resetInput();
             return response;
         });
     };
     const handleUpdateQuestion = () => {
         const request = {
-            codeSystemDescTxt: system,
-            conditionShortNm: name,
-            id: code,
-            progAreaCd: area,
-            reportableMorbidityInd: isLocalOrPhin,
-            familyCd: family,
-            coinfectionGrpCd: group,
-            adminComments: '',
-            allowFutureDates: true
-            // codeSystem: 'string',
-            // datamartColumnName: 'string',
-            // defaultLabelInReport: 'string',
-            // defaultValue: 'string',
-            // description: 'string',
-            // displayControl: 0,
-            // fieldLength: 'string',
-            // hl7DataType: 'string',
-            // includedInMessage: true,
-            // label: 'string',
-            // labelInMessage: 'string',
-            // mask: 'string',
-            // maxValue: 0,
-            // messageVariableId: 'string',
-            // minValue: 0,
-            // rdbColumnName: 'string',
-            // requiredInMessage: true,
-            // tooltip: 'string',
-            // type: 'CODED',
-            // uniqueName: 'string',
-            // unitType: 'CODED',
-            // unitValue: 'string',
-            // valueSet: 0
+            ...questionData
         };
 
         QuestionControllerService.updateQuestionUsingPut({
             authorization,
-            id: 101,
+            id: question.id,
             request
         }).then((response: any) => {
             showAlert({ type: 'success', header: 'Updated', message: 'Question updated successfully' });
@@ -147,11 +161,14 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             return response;
         });
     };
+    const handleQuestionInput = ({ target }: any) => {
+        setQestionData({
+            ...questionData,
+            [target.name]: target?.type === 'checkbox' ? target?.checked : target.value
+        });
+    };
     const resetInput = () => {
-        setName('');
-        setSystem('');
-        setCode('');
-        setArea('');
+        setQestionData(init);
     };
     const validateQuestionLabel = (name: any) => {
         const pattern = /^[a-zA-Z0-9_]*$/;
@@ -163,8 +180,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setIsValidationFailure(true);
         }
     };
-
-    const isDisableBtn = !name || !system || !code || !area;
 
     return (
         <div className="create-question">
@@ -184,38 +199,38 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         Question Label<span className="mandatory-indicator">*</span>
                     </label>
                     {isQuestionNotValid && <label className="error-text">Question Name Not Valid</label>}
-                    <input
+                    <TextInput
                         className="field-space"
                         type="text"
                         id="questionLabel"
                         data-testid="questionLabel"
-                        name="questionLabel"
+                        name="label"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateQuestionLabel(e.target.value)}
-                        value={name}
-                        onInput={(e: any) => setName(e.target.value)}
+                        value={questionData.label}
+                        onChange={handleQuestionInput}
                     />
                 </div>
                 <label>Description</label>
                 <br></br>
-                <input
+                <TextInput
                     className="field-space"
                     type="text"
                     id="questionDesc"
                     data-testid="questionDesc"
-                    name="questionDesc"
+                    name="description"
                     style={{ border: '1px solid black' }}
-                    value={name}
-                    onInput={(e: any) => setName(e.target.value)}
+                    value={questionData.description}
+                    onChange={handleQuestionInput}
                 />
                 <br></br>
                 <label>Field Type</label>
                 <br></br>
                 <select
                     className="field-space"
-                    name="programArea"
-                    defaultValue={area}
-                    onChange={(e: any) => setArea(e.target.value)}>
+                    name="type"
+                    defaultValue={questionData.type}
+                    onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(programAreaOptions)}
                 </select>
@@ -238,38 +253,40 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 <br></br>
                 <select
                     className="field-space"
-                    name="subGroup"
-                    defaultValue={family}
-                    onChange={(e: any) => setFamily(e.target.value)}>
+                    name="subgroup"
+                    defaultValue={questionData.subgroup}
+                    onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(familyOptions)}
                 </select>
                 <br></br>
-                <input
-                    type="radio"
-                    name="localOrPhin"
-                    value="Y"
-                    className="field-space"
-                    checked={isLocalOrPhin === 'Y'}
-                    onChange={(e: any) => setIsLocalOrPhin(e.target.value)}
-                />
-                <span className="radio-label">LOCAL</span>
-                <input
-                    type="radio"
-                    name="localOrPhin"
-                    value="N"
-                    className="right-radio"
-                    checked={isLocalOrPhin !== 'Y'}
-                    onChange={(e: any) => setIsLocalOrPhin(e.target.value)}
-                />
-                <span className="radio-label">PHIN</span>
+                <div className={'display-flex'}>
+                    <Radio
+                        name="codeSet"
+                        id="localOrPhin"
+                        value="LOCAL"
+                        className="margin-right-1em"
+                        checked={questionData.codeSet === 'LOCAL'}
+                        onChange={handleQuestionInput}
+                        label="LOCAL"
+                    />
+                    <Radio
+                        name="codeSet"
+                        id="localOrPhin"
+                        value="PHIN"
+                        checked={questionData.codeSet === 'PHIN'}
+                        onChange={handleQuestionInput}
+                        label="PHIN"
+                    />
+                </div>
+
                 <br></br>
                 <div className={isQuestionNotValid ? 'error-border' : ''}>
                     <label>
                         Unique ID<span className="mandatory-indicator">*</span>
                     </label>
                     {isQuestionNotValid && <label className="error-text">Unique ID Not Valid</label>}
-                    <input
+                    <TextInput
                         className="field-space"
                         type="text"
                         id="uniqueId"
@@ -277,8 +294,8 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         name="uniqueId"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateQuestionLabel(e.target.value)}
-                        value={name}
-                        onInput={(e: any) => setName(e.target.value)}
+                        value={questionData.uniqueId}
+                        onChange={handleQuestionInput}
                     />
                 </div>
                 <div className={isQuestionNotValid ? 'error-border' : ''}>
@@ -286,7 +303,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         Unique name<span className="mandatory-indicator">*</span>
                     </label>
                     {isQuestionNotValid && <label className="error-text">Unique name Not Valid</label>}
-                    <input
+                    <TextInput
                         className="field-space"
                         type="text"
                         id="uniqueName"
@@ -294,8 +311,8 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         name="uniqueName"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateQuestionLabel(e.target.value)}
-                        value={name}
-                        onInput={(e: any) => setName(e.target.value)}
+                        value={questionData.uniqueName}
+                        onChange={handleQuestionInput}
                     />
                 </div>
                 <p className="description">Is this question required?</p>
@@ -308,7 +325,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         Default Label in report<span className="mandatory-indicator">*</span>
                     </label>
                     {isQuestionNotValid && <label className="error-text">Default Label in report Not Valid</label>}
-                    <input
+                    <TextInput
                         className="field-space"
                         type="text"
                         id="defaultLabelInReport"
@@ -316,8 +333,8 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         name="defaultLabelInReport"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateQuestionLabel(e.target.value)}
-                        value={name}
-                        onInput={(e: any) => setName(e.target.value)}
+                        value={questionData.defaultLabelInReport}
+                        onChange={handleQuestionInput}
                     />
                 </div>
                 <div className={isQuestionNotValid ? 'error-border' : ''}>
@@ -325,16 +342,16 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         Default RDB table name<span className="mandatory-indicator">*</span>
                     </label>
                     {isQuestionNotValid && <label className="error-text">Default RDB table name Not Valid</label>}
-                    <input
+                    <TextInput
                         className="field-space"
                         type="text"
                         id="defaultRDBTable"
                         data-testid="defaultRDBTable"
-                        name="defaultRDBTable"
+                        name="defaultRdbTableName"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateQuestionLabel(e.target.value)}
-                        value={name}
-                        onInput={(e: any) => setName(e.target.value)}
+                        value={questionData.defaultRdbTableName}
+                        onChange={handleQuestionInput}
                     />
                 </div>
                 <div className={isQuestionNotValid ? 'error-border' : ''}>
@@ -342,51 +359,53 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         RDB column name<span className="mandatory-indicator">*</span>
                     </label>
                     {isQuestionNotValid && <label className="error-text">RDB column name Not Valid</label>}
-                    <input
+                    <TextInput
                         className="field-space"
                         type="text"
-                        id="questionLabel"
-                        data-testid="questionLabel"
-                        name="questionLabel"
+                        id="rdbColumnName"
+                        data-testid="rdbColumnName"
+                        name="rdbColumnName"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateQuestionLabel(e.target.value)}
-                        value={name}
-                        onInput={(e: any) => setName(e.target.value)}
+                        value={questionData.rdbColumnName}
+                        onChange={handleQuestionInput}
                     />
                 </div>
                 <label>Data mart column name</label>
                 <br></br>
-                <input
+                <TextInput
                     className="field-space"
                     type="text"
                     id="datamartColName"
                     data-testid="datamartColName"
-                    name="datamartColName"
+                    name="dataMartColumnName"
                     style={{ border: '1px solid black' }}
-                    value={name}
-                    onInput={(e: any) => setName(e.target.value)}
+                    value={questionData.dataMartColumnName}
+                    onChange={handleQuestionInput}
                 />
-                <br></br>
-                <br></br>
                 <p className="fields-info">Messaging - these fields will not be displayed to your users</p>
-                <br></br>
                 <p className="fields-info">Included in message?</p>
-                <ToggleButton className="margin-bottom-1em" checked={true} name="requiredMessage" />
+                <ToggleButton
+                    className="margin-bottom-1em"
+                    checked={questionData.includedInMessage}
+                    name="includedInMessage"
+                    onChange={handleQuestionInput}
+                />
                 <div className={isQuestionNotValid ? 'error-border' : ''}>
                     <label>
                         Message ID<span className="mandatory-indicator">*</span>
                     </label>
                     {isQuestionNotValid && <label className="error-text">Message ID Not Valid</label>}
-                    <input
+                    <TextInput
                         className="field-space"
                         type="text"
                         id="messageId"
                         data-testid="messageId"
-                        name="messageId"
+                        name="messageVariableId"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateQuestionLabel(e.target.value)}
-                        value={name}
-                        onInput={(e: any) => setName(e.target.value)}
+                        value={questionData.messageVariableId}
+                        onChange={handleQuestionInput}
                     />
                 </div>
                 <div className={isQuestionNotValid ? 'error-border' : ''}>
@@ -394,16 +413,16 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         Message label<span className="mandatory-indicator">*</span>
                     </label>
                     {isQuestionNotValid && <label className="error-text">Message label Not Valid</label>}
-                    <input
+                    <TextInput
                         className="field-space"
                         type="text"
                         id="messageLabel"
                         data-testid="messageLabel"
-                        name="messageLabel"
+                        name="labelInMessage"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateQuestionLabel(e.target.value)}
-                        value={name}
-                        onInput={(e: any) => setName(e.target.value)}
+                        value={questionData.labelInMessage}
+                        onChange={handleQuestionInput}
                     />
                 </div>
                 <label>
@@ -412,14 +431,18 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 <br></br>
                 <select
                     className="field-space"
-                    name="codeSystemName"
-                    defaultValue={group}
-                    onChange={(e: any) => setGroup(e.target.value)}>
+                    name="codeSystem"
+                    defaultValue={questionData.codeSystem}
+                    onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
                 </select>
                 <p className="fields-info">Required in message?</p>
-                <ToggleButton checked={true} name="requiredMessage" />
+                <ToggleButton
+                    checked={questionData.requiredInMessage}
+                    name="requiredInMessage"
+                    onChange={handleQuestionInput}
+                />
                 <br></br>
                 <label>
                     HL7 data type <span className="mandatory-indicator">*</span>
@@ -427,38 +450,26 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 <br></br>
                 <select
                     className="field-space"
-                    name="hl7datatype"
-                    defaultValue={group}
-                    onChange={(e: any) => setGroup(e.target.value)}>
+                    name="hl7DataType"
+                    defaultValue={questionData.hl7DataType}
+                    onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
                 </select>
-                <label>Data mart column name</label>
-                <br></br>
-                <input
-                    className="field-space"
-                    type="text"
-                    id="datamartColName"
-                    data-testid="datamartColName"
-                    name="datamartColName"
-                    style={{ border: '1px solid black' }}
-                    value={name}
-                    onInput={(e: any) => setName(e.target.value)}
-                />
                 <hr className="divider" />
                 <p className="fields-info">Administrative - these fields will not be displayed to your users</p>
                 <br></br>
                 <label>Administrative comments</label>
                 <br></br>
-                <input
+                <TextInput
                     className="field-space"
                     type="text"
                     id="adminComments"
                     data-testid="adminComments"
                     name="adminComments"
                     style={{ border: '1px solid black' }}
-                    value={name}
-                    onInput={(e: any) => setName(e.target.value)}
+                    value={questionData.adminComments}
+                    onChange={handleQuestionInput}
                 />
             </div>
             <ModalToggleButton
@@ -466,7 +477,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 type="button"
                 modalRef={modalRef}
                 onClick={handleSubmit}
-                disabled={isValidationFailure || isDisableBtn}>
+                disabled={isValidationFailure}>
                 {question?.id ? 'Save' : 'Create and add to page'}
             </ModalToggleButton>
             <ModalToggleButton className="cancel-btn" modalRef={modalRef} onClick={() => resetInput()} type="button">
