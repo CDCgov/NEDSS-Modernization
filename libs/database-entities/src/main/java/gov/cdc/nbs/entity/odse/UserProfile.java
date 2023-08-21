@@ -16,7 +16,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "USER_PROFILE")
+@Table(catalog = "NBS_ODSE", name = "USER_PROFILE")
 public class UserProfile {
     @Id
     @Column(name = "NEDSS_ENTRY_ID", nullable = false)

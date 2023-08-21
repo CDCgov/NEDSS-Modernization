@@ -5,6 +5,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.services.PageSummaryFinder;
+import gov.cdc.nbs.questionbank.page.PageDownloader;
 import gov.cdc.nbs.questionbank.page.services.PageUpdater;
 import lombok.extern.slf4j.Slf4j;
 
@@ -94,11 +97,13 @@ public class PageController {
         return stateChange.savePageAsDraft(pageId);
     }
     
-    /*@GetMapping("download")
-    public ResponseEntity<Resource> downloadPageLibrary() {
-    String fileName = "PageLibrary.csv";
-    InputStreamResource file  = new InputStreamResource(pageDownloader.downloadLibrary());
-    return null;
-    }*/
+	@GetMapping("download")
+	public ResponseEntity<Resource> downloadPageLibrary() {
+		String fileName = "PageLibrary.csv";
+		InputStreamResource file = new InputStreamResource(pageDownloader.downloadLibrary());
+
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+				.contentType(MediaType.parseMediaType("application/csv")).body(file);
+	}
 
 }

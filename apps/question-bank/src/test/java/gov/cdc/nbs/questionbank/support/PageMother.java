@@ -7,9 +7,13 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
+import gov.cdc.nbs.questionbank.entity.repository.UserProfileRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 
@@ -23,6 +27,15 @@ public class PageMother {
 
     @Autowired
     private WaUiMetadataRepository waUiMetadataRepository;
+    
+    @Autowired
+    private PageCondMappingRepository pageConMappingRepository;
+    
+    @Autowired
+	private ConditionCodeRepository conditionCodeRepository;
+
+	@Autowired
+	private UserProfileRepository userProfileRepository;
 
     private List<WaTemplate> allPages = new ArrayList<>();
 
