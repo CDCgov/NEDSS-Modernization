@@ -19,7 +19,7 @@ class ConceptMapperTest {
         assertEquals("code", concept.localCode());
         assertEquals("codeSetName", concept.codesetName());
         assertEquals("short desc", concept.display());
-        assertEquals("descTxt", concept.description());
+        assertEquals("descTxt", concept.longName());
         assertEquals("conceptCode", concept.conceptCode());
         assertEquals("preferred name", concept.messagingConceptName());
         assertEquals("systemDescTxt", concept.codeSystem());

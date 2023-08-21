@@ -11,6 +11,6 @@ export type UpdateConceptRequest = {
     displayName: string;
     effectiveFromTime: string;
     effectiveToTime?: string;
-    name: string;
+    longName: string;
 };
 

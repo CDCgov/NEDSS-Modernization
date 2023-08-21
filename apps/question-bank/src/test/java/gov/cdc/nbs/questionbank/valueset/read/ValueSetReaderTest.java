@@ -68,12 +68,13 @@ class ValueSetReaderTest {
         search.setValueSetCode("setCode");
         search.setValueSetTypeCd("LOCAL");
         search.setValueSetDescription("descText");
-        
+
         int max = 5;
         Pageable pageable = PageRequest.of(0, max);
         Page<Codeset> codePage = getCodeSetPage(max, pageable);
-        when(valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCodeorValueSetType(Mockito.anyString(), Mockito.anyString(),
-                Mockito.anyString(),Mockito.anyString(),Mockito.anyString(), Mockito.any())).thenReturn(codePage);
+        when(valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCodeorValueSetType(Mockito.anyString(),
+                Mockito.anyString(),
+                Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.any())).thenReturn(codePage);
         Page<ValueSet> result = valueSetReader.searchValueSearch(search, pageable);
         assertNotNull(result);
         assertEquals(max, result.getTotalElements());
@@ -149,7 +150,7 @@ class ValueSetReaderTest {
         assertEquals(cvg.getId().getCode(), concept.localCode());
         assertEquals(cvg.getId().getCodeSetNm(), concept.codesetName());
         assertEquals(cvg.getCodeShortDescTxt(), concept.display());
-        assertEquals(cvg.getCodeDescTxt(), concept.description());
+        assertEquals(cvg.getCodeDescTxt(), concept.longName());
         assertEquals(cvg.getConceptCode(), concept.conceptCode());
         assertEquals(cvg.getConceptPreferredNm(), concept.messagingConceptName());
         assertEquals(cvg.getCodeSystemDescTxt(), concept.codeSystem());

@@ -36,7 +36,7 @@ public class ConceptManager {
     public Concept update(String codeSetNm, String conceptCode, UpdateConceptRequest request) {
         CodeValueGeneral concept = repository.findByIdCodeSetNmAndIdCode(codeSetNm, conceptCode)
                 .orElseThrow(() -> new ConceptNotFoundException(codeSetNm, conceptCode));
-        concept.setCodeDescTxt(request.name());
+        concept.setCodeDescTxt(request.longName());
         concept.setCodeShortDescTxt(request.displayName());
         concept.setEffectiveFromTime(request.effectiveFromTime());
         concept.setEffectiveToTime(request.effectiveToTime());
