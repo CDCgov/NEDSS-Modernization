@@ -2,7 +2,6 @@ import { Grid } from '@trussworks/react-uswds';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
-import { formatInterfaceString } from '../../../../utils/util';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 export const IDForm = ({ control }: any) => {
@@ -19,7 +18,7 @@ export const IDForm = ({ control }: any) => {
                                     defaultValue={value}
                                     options={Object.values(searchCriteria.identificationTypes).map((type) => {
                                         return {
-                                            name: formatInterfaceString(type.codeDescTxt),
+                                            name: type.codeDescTxt,
                                             value: type.id.code
                                         };
                                     })}
