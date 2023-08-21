@@ -2,9 +2,9 @@ package gov.cdc.nbs.questionbank.util;
 
 import gov.cdc.nbs.questionbank.exception.NullObjectException;
 
-public class Util {
+public class PageBuilderUtil {
 
-    private Util() {
+    private PageBuilderUtil() {
 
     }
 

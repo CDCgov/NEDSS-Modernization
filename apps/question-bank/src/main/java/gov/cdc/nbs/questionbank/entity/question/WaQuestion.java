@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
-import static gov.cdc.nbs.questionbank.util.Util.requireNonNull;
+import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
