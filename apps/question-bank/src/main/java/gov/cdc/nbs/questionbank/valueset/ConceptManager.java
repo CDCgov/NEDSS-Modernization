@@ -52,13 +52,16 @@ public class ConceptManager {
 
         if (request.conceptMessagingInfo() != null) {
             concept.setConceptCode(
-                    requireNotEmpty(request.conceptMessagingInfo().conceptCode(),
+                    requireNotEmpty(
+                            request.conceptMessagingInfo().conceptCode(),
                             "conceptMessagingInfo.conceptCode"));
             concept.setConceptNm(
-                    requireNotEmpty(request.conceptMessagingInfo().conceptName(),
+                    requireNotEmpty(
+                            request.conceptMessagingInfo().conceptName(),
                             "conceptMessagingInfo.conceptName"));
             concept.setConceptPreferredNm(
-                    requireNotEmpty(request.conceptMessagingInfo().preferredConceptName(),
+                    requireNotEmpty(
+                            request.conceptMessagingInfo().preferredConceptName(),
                             "conceptMessagingInfo.preferredConceptName"));
             CodeValueGeneral codeSystem = findCodeSystem(request.conceptMessagingInfo().codeSystem());
 
