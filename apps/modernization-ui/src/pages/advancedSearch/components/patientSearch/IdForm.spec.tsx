@@ -2,7 +2,6 @@ import { render } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import { IDForm } from './IdForm';
-import { formatInterfaceString } from '../../../../utils/util';
 import { IdentificationType } from '../../../../generated/graphql/schema';
 import { SearchCriteria, SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
@@ -38,7 +37,7 @@ describe('IDForm component tests', () => {
         );
         const options = container.querySelectorAll('div select')[0].childNodes;
         Object.values(identificationTypes).forEach((value, idx) => {
-            expect(formatInterfaceString(value.codeDescTxt)).toBe(options[idx + 1].textContent);
+            expect(value.codeDescTxt).toBe(options[idx + 1].textContent);
         });
     });
 });
