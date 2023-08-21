@@ -1,14 +1,5 @@
 import { RefObject } from 'react';
-import {
-    Button,
-    ButtonGroup,
-    Icon,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton
-} from '@trussworks/react-uswds';
+import { Button, ButtonGroup, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -49,9 +40,9 @@ export const ConfirmationModal = ({
                     <Button type="button" onClick={onCancel} outline>
                         {cancelText}
                     </Button>
-                    <ModalToggleButton modalRef={modal} closer className="padding-105 text-center" onClick={onConfirm}>
+                    <Button type="button" onClick={onConfirm} className="padding-105 text-center">
                         {confirmText}
-                    </ModalToggleButton>
+                    </Button>
                 </ButtonGroup>
             </ModalFooter>
         </Modal>

@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './QuestionLibrary.scss';
 import './QuestionTabs.scss';
-import { PagesContext } from '../../context/PagesContext';
+import { QuestionsContext } from '../../context/QuestionsContext';
 import { fetchQuestion } from './useQuestionAPI';
 import { QuestionLibraryTable } from './QuestionLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
 export const QuestionLibrary = ({ hideTabs }: any) => {
     // const [activeTab] = useState(types || 'recent');
-    const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(PagesContext);
+    const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(QuestionsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const { state } = useContext(UserContext);
@@ -28,6 +28,7 @@ export const QuestionLibrary = ({ hideTabs }: any) => {
         );
         setSummaries(content);
         setTotalElements(totalElements);
+        setIsLoading(false);
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
     return (
         <PageBuilder page="Question">

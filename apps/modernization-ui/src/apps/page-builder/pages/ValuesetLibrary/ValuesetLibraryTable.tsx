@@ -8,10 +8,10 @@ import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { UserContext } from '../../../../providers/UserContext';
 import { AddValueset } from '../../components/AddValueset/AddValueset';
-import { PagesContext } from '../../context/PagesContext';
 import { SearchBar } from './SearchBar';
 import './ValuesetLibraryTable.scss';
 import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
+import { ValueSetsContext } from '../../context/ValueSetContext';
 
 export enum Column {
     Type = 'Type',
@@ -36,7 +36,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
-    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy } = useContext(PagesContext);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(ValueSetsContext);
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
 
@@ -234,12 +234,41 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             <ModalComponent
                 isLarge
                 modalRef={modalRef}
-                modalHeading={'Add value set'}
+                modalHeading={
+                    <span className="header-icon-title">
+                        <Icon.ArrowBack /> Add value set
+                    </span>
+                }
                 modalBody={<AddValueset hideHeader modalRef={modalRef} />}
             />
         </div>
     );
-
+    const searchAvailableElement = (
+        <div className="no-data-available">
+            <label className="no-text">Still can't find what are you're looking for?</label>
+            <label className="margin-bottom-1em search-desc">
+                Please try searching in the local library before creating new
+            </label>
+            <div>
+                <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+                    Create New
+                </ModalToggleButton>
+                <Button className="submit-btn" type="button">
+                    Search Local
+                </Button>
+            </div>
+            <ModalComponent
+                isLarge
+                modalRef={modalRef}
+                modalHeading={
+                    <span className="header-icon-title">
+                        <Icon.ArrowBack /> Add value set
+                    </span>
+                }
+                modalBody={<AddValueset hideHeader modalRef={modalRef} />}
+            />
+        </div>
+    );
     return (
         <div>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
@@ -256,10 +285,12 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     sortData={handleSort}
                     handleSelected={handleSelected}
                     rangeSelector={true}
+                    isLoading={isLoading}
                 />
             ) : (
                 dataNotAvailableElement
             )}
+            {searchQuery && summaries?.length > 0 && searchAvailableElement}
             <div className="footer-action">{footerActionBtn}</div>
         </div>
     );

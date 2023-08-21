@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.condition;
+package gov.cdc.nbs.questionbank.condition.create;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import gov.cdc.nbs.questionbank.condition.ConditionCreator;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;

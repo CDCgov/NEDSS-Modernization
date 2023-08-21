@@ -1,8 +1,10 @@
-package gov.cdc.nbs.questionbank.condition;
+package gov.cdc.nbs.questionbank.condition.create;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import gov.cdc.nbs.questionbank.condition.ConditionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
