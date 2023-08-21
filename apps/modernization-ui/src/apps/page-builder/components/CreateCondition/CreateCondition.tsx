@@ -4,6 +4,7 @@ import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ProgramAreaControllerService, ConditionControllerService, ValueSetControllerService } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
+import { Concept } from '../../generated/models/Concept';
 
 type Props = {
     modal?: RefObject<ModalRef>;
@@ -28,7 +29,7 @@ export const CreateCondition = ({ modal }: Props) => {
     const [familyOptions, setFamilyOptions] = useState([]);
     const [groupOptions, setGroupOptions] = useState([]);
     const [programAreaOptions, setProgramAreaOptions] = useState([]);
-    const [systemOptions, setSystemOptions] = useState([]);
+    const [systemOptions, setSystemOptions] = useState([] as Concept[]);
 
     const [isConditionNotValid, setIsConditionNotValid] = useState(false);
     const [isConditionCodeNotValid, setIsConditionCodeNotValid] = useState(false);
@@ -38,13 +39,8 @@ export const CreateCondition = ({ modal }: Props) => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: `Bearer ${state.getToken()}`,
             codeSetNm: 'CODE_SYSTEM'
-        }).then((response: any) => {
-            const data = response || [];
-            const codingSystemList: never[] = [];
-            data.map((each: { conceptCode: never }) => {
-                codingSystemList.push(each.conceptCode);
-            });
-            setSystemOptions(codingSystemList);
+        }).then((response: Concept[]) => {
+            setSystemOptions(response);
         });
     };
 
@@ -203,7 +199,11 @@ export const CreateCondition = ({ modal }: Props) => {
                     value={system}
                     onChange={(e: any) => setSystem(e.target.value)}>
                     <option>- Select -</option>
-                    {buildOptions(systemOptions)}
+                    {systemOptions.map((o, i) => (
+                        <option key={i} value={o.conceptCode}>
+                            {o.display}
+                        </option>
+                    ))}
                 </select>
                 <br></br>
                 <div className={isConditionCodeNotValid ? 'error-border' : ''}>
@@ -370,9 +370,15 @@ export const CreateCondition = ({ modal }: Props) => {
                     Create & add condition
                 </Button>
             )}
-            <Button className="cancel-btn" type="submit" onClick={() => resetInput()}>
-                Cancel
-            </Button>
+            {modal ? (
+                <ModalToggleButton modalRef={modal} closer className="cancel-btn" onClick={() => resetInput()}>
+                    Cancel
+                </ModalToggleButton>
+            ) : (
+                <Button className="cancel-btn" type="submit" onClick={() => resetInput()}>
+                    Cancel
+                </Button>
+            )}
         </div>
     );
 };
