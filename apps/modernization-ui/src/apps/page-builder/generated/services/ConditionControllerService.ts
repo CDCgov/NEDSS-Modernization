@@ -4,7 +4,7 @@
 import type { Condition } from '../models/Condition';
 import type { CreateConditionRequest } from '../models/CreateConditionRequest';
 import type { CreateConditionResponse } from '../models/CreateConditionResponse';
-import type { Page_GetCondition_ } from '../models/Page_GetCondition_';
+import type { Page_Condition_ } from '../models/Page_Condition_';
 import type { ReadConditionRequest } from '../models/ReadConditionRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -15,7 +15,7 @@ export class ConditionControllerService {
 
     /**
      * findConditions
-     * @returns Page_GetCondition_ OK
+     * @returns Page_Condition_ OK
      * @throws ApiError
      */
     public static findConditionsUsingGet({
@@ -28,11 +28,7 @@ export class ConditionControllerService {
         page?: number,
         size?: number,
         sort?: string,
-<<<<<<< HEAD
-    }): CancelablePromise<Page_GetCondition_> {
-=======
     }): CancelablePromise<Page_Condition_> {
->>>>>>> 16886290 (All conditions api (#472))
         return __request(OpenAPI, {
             method: 'GET',
             url: '/page-builder/api/v1/conditions/',
@@ -84,10 +80,6 @@ export class ConditionControllerService {
     }
 
     /**
-<<<<<<< HEAD
-     * searchConditions
-     * @returns Page_GetCondition_ OK
-=======
      * findAllConditions
      * @returns Condition OK
      * @throws ApiError
@@ -114,7 +106,6 @@ export class ConditionControllerService {
     /**
      * searchConditions
      * @returns Page_Condition_ OK
->>>>>>> 16886290 (All conditions api (#472))
      * @returns any Created
      * @throws ApiError
      */
@@ -133,11 +124,7 @@ export class ConditionControllerService {
         page?: number,
         size?: number,
         sort?: string,
-<<<<<<< HEAD
-    }): CancelablePromise<Page_GetCondition_ | any> {
-=======
     }): CancelablePromise<Page_Condition_ | any> {
->>>>>>> 16886290 (All conditions api (#472))
         return __request(OpenAPI, {
             method: 'POST',
             url: '/page-builder/api/v1/conditions/search',
