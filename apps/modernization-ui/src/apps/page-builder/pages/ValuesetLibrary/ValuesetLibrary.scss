@@ -181,6 +181,11 @@
     line-height: normal;
   }
 }
+.header-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 .no-data-available {
   border-radius: 5px;
   border: 1px solid var(--base-lighter, #DCDEE0);
@@ -191,6 +196,7 @@
   align-items: center;
   gap: 20px;
   align-self: stretch;
+
   .no-text {
     color: var(--base-black, #000);
     text-align: center;
@@ -237,4 +243,12 @@
     justify-content: flex-end;
     margin-top: 24px;
   }
+}
+.search-desc {
+  color: var(--base-base, #71767A);
+  font-family: Public Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  margin-bottom: 0;
 }

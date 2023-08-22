@@ -190,14 +190,14 @@ class QuestionCreator {
 
 
     /**
-     * If the request is of 'LOCAL' type, generate the next available Id from the database. Else, return the specified
-     * request.uniqueId
+     * If the request is of 'LOCAL' type and no Id is specified, generate the next available Id from the database. Else,
+     * return the specified request.uniqueId
      * 
      * @param request
      * @return
      */
     String getLocalId(CreateQuestionRequest request) {
-        if (request.codeSet().equals("LOCAL")) {
+        if (request.codeSet().equals("LOCAL") && (request.uniqueId() == null || request.uniqueId().isBlank())) {
             // Question Ids are a combination of the 
             // `NBS_ODSE.NBS_configuration NBS_CLASS_CODE config value + the next valid Id 
             // Ex. GA13004
