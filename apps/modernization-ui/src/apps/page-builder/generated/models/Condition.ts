@@ -12,3 +12,4 @@ export type Condition = {
     progAreaCd?: string;
     statusCd?: string;
 };
+
