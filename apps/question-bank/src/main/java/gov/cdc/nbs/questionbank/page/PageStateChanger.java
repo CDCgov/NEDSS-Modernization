@@ -9,6 +9,8 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.exception.BadRequestException;
+import gov.cdc.nbs.questionbank.exception.NotFoundException;
 import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
@@ -49,6 +51,43 @@ public class PageStateChanger {
         }
         return response;
     }
+    
+	public PageStateResponse deletePageDraft(Long id) {
+		PageStateResponse response = new PageStateResponse();
+		try {
+			Optional<WaTemplate> result = templateRepository.findById(id);
+			if (result.isPresent()) {
+				WaTemplate page = result.get();
+				if (!page.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
+					throw new PageUpdateException(PageConstants.DRAFT_NOT_FOUND);
+				}
+
+				List<WaTemplate> pages = templateRepository.findByTemplateNm(page.getTemplateNm());
+				WaTemplate pageOne = pages.get(0);
+				WaTemplate pageTwo = pages.get(0);
+
+				if (pageOne.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
+					pageOne.setTemplateType(PageConstants.PUBLISHED);
+					templateRepository.deleteById(pageTwo.getId());
+					templateRepository.save(pageOne);
+				} else {
+					pageTwo.setTemplateType(PageConstants.PUBLISHED);
+					templateRepository.deleteById(pageOne.getId());
+					templateRepository.save(pageTwo);
+				}
+
+				response.setMessage(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS);
+				response.setTemplateId(page.getId());
+			} else {
+				throw new PageUpdateException(PageConstants.PAGE_NOT_FOUND);
+			}
+		} catch (PageUpdateException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new PageUpdateException(PageConstants.DELETE_DRAFT_FAIL);
+		}
+		return response;
+	}
 
     public List<WaUiMetadata> copyWaTemplateUIMetaData(WaTemplate page, WaTemplate clonePage) {
         List<WaUiMetadata> draftMappings = new ArrayList<>();

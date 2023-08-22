@@ -21,6 +21,8 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
     
     public Optional<WaTemplate> findFirstByTemplateNm(String templateNm);
     
+    public List<WaTemplate> findByTemplateNm(String templateNm);
+    
     public Optional<WaTemplate> findFirstByDatamartNm(String dataMartNm);
     
     @Query("SELECT v from WaTemplate v WHERE v.id=:id OR v.templateNm LIKE %:templateNm% OR v.conditionCd LIKE %:conditionCd% OR v.datamartNm LIKE %:dataMartNm% OR v.recordStatusCd LIKE %:recordStatusCd% OR v.templateType IN :templateType")
