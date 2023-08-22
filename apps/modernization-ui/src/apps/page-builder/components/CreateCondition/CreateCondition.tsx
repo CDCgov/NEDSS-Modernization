@@ -26,9 +26,9 @@ export const CreateCondition = ({ modal }: Props) => {
     const { showAlert } = useAlert();
 
     // DropDown Options
-    const [familyOptions, setFamilyOptions] = useState([]);
-    const [groupOptions, setGroupOptions] = useState([]);
-    const [programAreaOptions, setProgramAreaOptions] = useState([]);
+    const [familyOptions, setFamilyOptions] = useState([] as Concept[]);
+    const [groupOptions, setGroupOptions] = useState([] as Concept[]);
+    const [programAreaOptions, setProgramAreaOptions] = useState([] as Concept[]);
     const [systemOptions, setSystemOptions] = useState([] as Concept[]);
 
     const [isConditionNotValid, setIsConditionNotValid] = useState(false);
@@ -47,13 +47,8 @@ export const CreateCondition = ({ modal }: Props) => {
     const fetchProgramAreaOptions = () => {
         ProgramAreaControllerService.getProgramAreasUsingGet({
             authorization: `Bearer ${state.getToken()}`
-        }).then((response: any) => {
-            const data = response || [];
-            const programAreaList: never[] = [];
-            data.map((each: { value: never }) => {
-                programAreaList.push(each.value);
-            });
-            setProgramAreaOptions(programAreaList);
+        }).then((response: Concept[]) => {
+            setProgramAreaOptions(response);
         });
     };
 
@@ -61,13 +56,8 @@ export const CreateCondition = ({ modal }: Props) => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: `Bearer ${state.getToken()}`,
             codeSetNm: 'CONDITION_FAMILY'
-        }).then((response: any) => {
-            const data = response || [];
-            const familyList: never[] = [];
-            data.map((each: { value: never }) => {
-                familyList.push(each.value);
-            });
-            setFamilyOptions(familyList);
+        }).then((response: Concept[]) => {
+            setFamilyOptions(response);
         });
     };
 
@@ -75,13 +65,8 @@ export const CreateCondition = ({ modal }: Props) => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: `Bearer ${state.getToken()}`,
             codeSetNm: 'COINFECTION_GROUP'
-        }).then((response: any) => {
-            const data = response || [];
-            const coinfectionGroupList: never[] = [];
-            data.map((each: { value: never }) => {
-                coinfectionGroupList.push(each.value);
-            });
-            setGroupOptions(coinfectionGroupList);
+        }).then((response: Concept[]) => {
+            setGroupOptions(response);
         });
     };
 
@@ -92,10 +77,10 @@ export const CreateCondition = ({ modal }: Props) => {
         fetchCodingSystemOptions();
     }, []);
 
-    const buildOptions = (optionsToBuild: any[]) =>
-        optionsToBuild.map((opt: string, i: number) => (
-            <option value={opt} key={i}>
-                {opt}
+    const buildOptions = (optionsToBuild: Concept[]) =>
+        optionsToBuild.map((o, i) => (
+            <option key={i} value={o.conceptCode}>
+                {o.display}
             </option>
         ));
     const handleSubmit = () => {
@@ -199,11 +184,7 @@ export const CreateCondition = ({ modal }: Props) => {
                     value={system}
                     onChange={(e: any) => setSystem(e.target.value)}>
                     <option>- Select -</option>
-                    {systemOptions.map((o, i) => (
-                        <option key={i} value={o.conceptCode}>
-                            {o.display}
-                        </option>
-                    ))}
+                    {buildOptions(systemOptions)}
                 </select>
                 <br></br>
                 <div className={isConditionCodeNotValid ? 'error-border' : ''}>
