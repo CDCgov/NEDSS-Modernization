@@ -46,15 +46,13 @@ public class ConditionController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public ConditionStatusResponse activateCondition(@PathVariable String id) {
-        ConditionStatusResponse response = conditionStatus.activateCondition(id);
-        return response;
+        return conditionStatus.activateCondition(id);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public ConditionStatusResponse inactivateCondition(@PathVariable String id) {
-        ConditionStatusResponse response = conditionStatus.inactivateCondition(id);
-        return response;
+       return conditionStatus.inactivateCondition(id);
     }
 
 
