@@ -16,7 +16,7 @@ import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './AddNewPage.scss';
 
 type FormValues = {
-    conditionIds: [];
+    conditionIds: string[];
     dataMartName?: string;
     eventType: string;
     messageMappingGuide: string;
@@ -54,7 +54,7 @@ export const AddNewPage = () => {
     const [conditions, setConditions] = useState<CONDITION[]>([]);
     const [mmgs, setMMGs] = useState<Concept[]>([]);
     const [templates, setTemplates] = useState<TEMPLATE[]>([]);
-    const { handleSubmit, control } = useForm<FormValues, any>();
+    const { handleSubmit, control, setValue } = useForm<FormValues, any>();
 
     useEffect(() => {
         fetchMMGOptions(token)
@@ -72,6 +72,10 @@ export const AddNewPage = () => {
         });
     }, [token]);
 
+    const handleAddConditions = (conditions: string[]) => {
+        setValue('conditionIds', conditions);
+    };
+
     const onSubmit = handleSubmit(async (data) => {
         await createPage(
             token,
@@ -86,6 +90,7 @@ export const AddNewPage = () => {
             navigate(`/page-builder/edit/page/${response.pageId}`);
         });
     });
+
     return (
         <PageBuilder page="add-new-page">
             <div className="add-new-page">
@@ -119,7 +124,7 @@ export const AddNewPage = () => {
                                     onClick={() => {
                                         setShowQuickConditionLookup(!showQuickConditionLookup);
                                     }}>
-                                    Quick condition lookup
+                                    Search and add conditions(s)
                                 </a>
                                 &nbsp; or &nbsp;
                                 <NavLink to={'add/condition'}>Create new condition here</NavLink>
@@ -241,6 +246,7 @@ export const AddNewPage = () => {
                 {showQuickConditionLookup ? (
                     <QuickConditionLookup
                         modal={modal}
+                        addConditions={handleAddConditions}
                         onClose={() => setShowQuickConditionLookup(!showQuickConditionLookup)}
                     />
                 ) : null}
