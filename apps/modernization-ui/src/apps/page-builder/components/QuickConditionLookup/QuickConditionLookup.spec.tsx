@@ -1,10 +1,11 @@
-import { render, waitFor, screen, act, getByTestId, fireEvent } from '@testing-library/react';
+import { render, screen, act, fireEvent } from '@testing-library/react';
 import { QuickConditionLookup } from './QuickConditionLookup';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { Direction } from 'sorting';
 import { Column } from 'apps/page-builder/pages/ManagePages/ManagePagesTable';
 import { BrowserRouter } from 'react-router-dom';
 import { ConditionControllerService } from 'apps/page-builder/generated/services/ConditionControllerService';
+import { ModalRef } from '@trussworks/react-uswds';
 
 const pageContext = {
     currentPage: 1,
@@ -22,7 +23,6 @@ const pageContext = {
     isLoading: false,
     setIsLoading: jest.fn()
 };
-const onClose = jest.fn();
 const addConditions = jest.fn();
 const mockSearchConditionUsingPost = jest.spyOn(ConditionControllerService, 'searchConditionsUsingPost');
 
@@ -200,7 +200,7 @@ describe('QuickConditionLookup', () => {
 
     describe('when the cancel button is clicked', () => {
         it('should close the modal', async () => {
-            const modal = { current: null };
+            const modal: React.RefObject<ModalRef> = { current: null };
             const { getByTestId } = render(
                 <BrowserRouter>
                     <PagesContext.Provider value={pageContext}>
@@ -213,7 +213,7 @@ describe('QuickConditionLookup', () => {
             act(() => {
                 cancelBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             });
-            expect(onClose).toHaveBeenCalled();
+            expect(modal.current?.modalIsOpen).toBeFalsy();
         });
     });
 
@@ -261,7 +261,7 @@ describe('QuickConditionLookup', () => {
             expect(mockSearchConditionUsingPost).toHaveBeenCalledWith({
                 authorization: 'Bearer undefined',
                 page: 1,
-                request: {
+                search: {
                     searchText: 'hello'
                 },
                 size: 10

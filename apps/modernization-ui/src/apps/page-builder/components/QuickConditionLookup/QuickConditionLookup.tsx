@@ -16,6 +16,7 @@ import { ConditionControllerService, ReadConditionRequest } from 'apps/page-buil
 import { UserContext } from 'user';
 import { NavLink } from 'react-router-dom';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
+import { act } from '@testing-library/react';
 
 type Props = {
     modal: RefObject<ModalRef>;
