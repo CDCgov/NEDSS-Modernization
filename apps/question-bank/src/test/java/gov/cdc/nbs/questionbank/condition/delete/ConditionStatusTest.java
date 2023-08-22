@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.condition.delete;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,6 @@ class ConditionStatusTest {
         when(conditionCodeRepository.activateCondition(Mockito.anyString())).thenReturn(1);
         ConditionStatusResponse response = conditionStatus.activateCondition(id);
         assertEquals(id, response.getId());
-        assertEquals(HttpStatus.OK, response.getStatus());
     }
 
     @Test
@@ -40,13 +40,12 @@ class ConditionStatusTest {
         when(conditionCodeRepository.activateCondition(Mockito.anyString())).thenReturn(0);
         ConditionStatusResponse response = conditionStatus.activateCondition(id);
         assertEquals(id, response.getId());
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
     }
 
     @Test
     void activateConditionNullTest() {
         ConditionStatusResponse response = conditionStatus.activateCondition(null);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
+        assertTrue(response.getId() == null);
     }
 
     @Test
@@ -54,7 +53,6 @@ class ConditionStatusTest {
         when(conditionCodeRepository.inactivateCondition(Mockito.anyString())).thenReturn(1);
         ConditionStatusResponse response = conditionStatus.inactivateCondition(id);
         assertEquals(id, response.getId());
-        assertEquals(HttpStatus.OK, response.getStatus());
     }
 
     @Test
@@ -62,12 +60,11 @@ class ConditionStatusTest {
         when(conditionCodeRepository.inactivateCondition(Mockito.anyString())).thenReturn(0);
         ConditionStatusResponse response = conditionStatus.inactivateCondition(id);
         assertEquals(id, response.getId());
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
     }
 
     @Test
     void inactivateNullTest() {
         ConditionStatusResponse response = conditionStatus.inactivateCondition(null);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
+        assertTrue(response.getId() == null);
     }
 }

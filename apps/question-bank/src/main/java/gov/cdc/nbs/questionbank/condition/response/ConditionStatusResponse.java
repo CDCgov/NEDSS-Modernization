@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 public class ConditionStatusResponse {
     private String id;
     private Character statusCd;
-    private HttpStatus status;
+
 }

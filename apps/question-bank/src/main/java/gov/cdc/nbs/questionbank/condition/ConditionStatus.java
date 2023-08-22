@@ -1,7 +1,8 @@
 package gov.cdc.nbs.questionbank.condition;
 
+import gov.cdc.nbs.questionbank.condition.exception.ConditionBadRequest;
+import gov.cdc.nbs.questionbank.condition.exception.ConditionInternalServerError;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -17,21 +18,18 @@ public class ConditionStatus {
     public ConditionStatusResponse activateCondition(String id) {
         ConditionStatusResponse response = new ConditionStatusResponse();
         if (id == null) {
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            return response;
+            throw new ConditionBadRequest(null);
         }
         try {
             int result = conditionCodeRepository.activateCondition(id);
             response.setId(id);
             if (result == 1) {
-                response.setStatus(HttpStatus.OK);
                 response.setStatusCd('A');
             } else {
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new ConditionInternalServerError(id);
             }
         } catch (Exception e) {
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            return response;
+            throw new ConditionInternalServerError(id);
         }
         return response;
     }
@@ -39,21 +37,18 @@ public class ConditionStatus {
     public ConditionStatusResponse inactivateCondition(String id) {
         ConditionStatusResponse response = new ConditionStatusResponse();
         if (id == null) {
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            return response;
+            throw new ConditionInternalServerError(null);
         }
         try {
             int result = conditionCodeRepository.inactivateCondition(id);
             response.setId(id);
             if (result == 1) {
-                response.setStatus(HttpStatus.OK);
                 response.setStatusCd('I');
             } else {
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new ConditionInternalServerError(id);
             }
         } catch (Exception e) {
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            return response;
+            throw new ConditionInternalServerError(id);
         }
         return response;
     }
