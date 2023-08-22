@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.condition.delete;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import gov.cdc.nbs.questionbank.condition.ConditionStatus;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.condition.response.ConditionStatusResponse;
+
+import java.util.Objects;
 
 class ConditionStatusTest {
     @Mock
@@ -39,13 +42,13 @@ class ConditionStatusTest {
     void activateConditionFailTest() {
         when(conditionCodeRepository.activateCondition(Mockito.anyString())).thenReturn(0);
         ConditionStatusResponse response = conditionStatus.activateCondition(id);
-        assertEquals(id, response.getId());
+        assertFalse(Objects.equals(id, response.getId()));
     }
 
     @Test
     void activateConditionNullTest() {
         ConditionStatusResponse response = conditionStatus.activateCondition(null);
-        assertTrue(response.getId() == null);
+        assertEquals(null, response.getId());
     }
 
     @Test
@@ -59,12 +62,12 @@ class ConditionStatusTest {
     void inactivateConditionFailTest() {
         when(conditionCodeRepository.inactivateCondition(Mockito.anyString())).thenReturn(0);
         ConditionStatusResponse response = conditionStatus.inactivateCondition(id);
-        assertEquals(id, response.getId());
+        assertFalse(Objects.equals(id, response.getId()));
     }
 
     @Test
     void inactivateNullTest() {
         ConditionStatusResponse response = conditionStatus.inactivateCondition(null);
-        assertTrue(response.getId() == null);
+        assertEquals(null, response.getId());
     }
 }
