@@ -16,6 +16,7 @@ export type { CodesetId } from './models/CodesetId';
 export type { Concept } from './models/Concept';
 export type { ConceptMessagingInfo } from './models/ConceptMessagingInfo';
 export type { Condition } from './models/Condition';
+export type { ConditionSummary } from './models/ConditionSummary';
 export type { CreateCodedValue } from './models/CreateCodedValue';
 export type { CreateConditionRequest } from './models/CreateConditionRequest';
 export type { CreateQuestionRequest } from './models/CreateQuestionRequest';

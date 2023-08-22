@@ -1,7 +1,7 @@
 import { Button, Form, Modal, ModalToggleButton, ModalRef } from '@trussworks/react-uswds';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditionLookup/QuickConditionLookup';
-import { Concept } from 'apps/page-builder/generated';
+import { Concept, Condition } from 'apps/page-builder/generated';
 import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
@@ -26,12 +26,6 @@ type FormValues = {
     pageDescription?: string;
     templateId: number;
 };
-
-type CONDITION = {
-    id: string;
-    conditionShortNm: string;
-};
-
 type TEMPLATE = {
     id: string;
     templateNm: string;
@@ -53,14 +47,14 @@ export const AddNewPage = () => {
     const navigate = useNavigate();
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
-    const [conditions, setConditions] = useState<CONDITION[]>([]);
+    const [conditions, setConditions] = useState<Condition[]>([]);
     const [mmgs, setMMGs] = useState<Concept[]>([]);
     const [templates, setTemplates] = useState<TEMPLATE[]>([]);
-    const { handleSubmit, control } = useForm<FormValues, any>();
+    const { handleSubmit, control, setValue, getValues } = useForm<FormValues, any>();
 
     useEffect(() => {
         fetchMMGOptions(token)
-            .then((data: any) => {
+            .then((data) => {
                 setMMGs(data);
             })
             .catch((error: any) => {
@@ -88,6 +82,15 @@ export const AddNewPage = () => {
             navigate(`/page-builder/edit/page/${response.pageId}`);
         });
     });
+
+    const handleConditionCreated = (condition: Condition) => {
+        // add newly created condition to condition array
+        setConditions(conditions.concat([condition]));
+
+        // select new condition
+        setValue('conditionIds', [condition.id].concat(getValues('conditionIds')) as []);
+    };
+
     return (
         <PageBuilder page="add-new-page">
             <div className="add-new-page">
@@ -96,7 +99,7 @@ export const AddNewPage = () => {
                         <PagesBreadcrumb />
                         <div className="add-new-page__content">
                             <h2>Add new page</h2>
-                            <h4>Let’s fill out some information about your new page before creating it</h4>
+                            <h4>Let's fill out some information about your new page before creating it</h4>
                             <p>All fields with * are required</p>
                             <Controller
                                 control={control}
@@ -107,7 +110,7 @@ export const AddNewPage = () => {
                                         value={value}
                                         options={conditions.map((m) => {
                                             return {
-                                                name: m.conditionShortNm,
+                                                name: m.conditionShortNm ?? '',
                                                 value: m.id
                                             };
                                         })}
@@ -115,7 +118,7 @@ export const AddNewPage = () => {
                                 )}
                             />
                             <p>
-                                Can’t find the condition you’re looking for?
+                                Can't find the condition you're looking for?
                                 <br />
                                 <ModalToggleButton modalRef={modalQuick} unstyled>
                                     <p>Search and add condition(s)</p>
@@ -241,7 +244,7 @@ export const AddNewPage = () => {
                 </div>
                 <QuickConditionLookup modal={modalQuick} />
                 <Modal id="create-condition-modal" isLarge ref={modalCreate}>
-                    <CreateCondition modal={modalCreate} />
+                    <CreateCondition conditionCreated={handleConditionCreated} modal={modalCreate} />
                 </Modal>
             </div>
         </PageBuilder>

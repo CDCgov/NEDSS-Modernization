@@ -14,9 +14,10 @@ import { Concept } from '../../generated/models/Concept';
 
 type Props = {
     modal?: RefObject<ModalRef>;
+    conditionCreated?: (condition: Condition) => void;
 };
 
-export const CreateCondition = ({ modal }: Props) => {
+export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     // Fields
     const [name, setName] = useState('');
     const [system, setSystem] = useState('');
@@ -111,7 +112,10 @@ export const CreateCondition = ({ modal }: Props) => {
             .then((response: Condition) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
                 resetInput();
-                return response;
+                if (conditionCreated) {
+                    conditionCreated(response);
+                }
+                modal?.current?.toggleModal(undefined, false);
             })
             .catch((error: any) => {
                 console.log(error.body);
@@ -123,6 +127,8 @@ export const CreateCondition = ({ modal }: Props) => {
         setSystem('');
         setCode('');
         setArea('');
+        setFamily('');
+        setGroup('');
     };
     const validateConditionName = (name: any) => {
         const pattern = /^\w*$/;
@@ -344,19 +350,14 @@ export const CreateCondition = ({ modal }: Props) => {
                 </select>
                 <br></br>
             </div>
-            {modal ? (
-                <ModalToggleButton modalRef={modal} closer className="submit-btn" onClick={handleSubmit}>
-                    Create & add condition
-                </ModalToggleButton>
-            ) : (
-                <Button
-                    className="submit-btn"
-                    type="submit"
-                    onClick={handleSubmit}
-                    disabled={isValidationFailure || isDisableBtn}>
-                    Create & add condition
-                </Button>
-            )}
+            <Button
+                className="submit-btn"
+                type="submit"
+                onClick={handleSubmit}
+                disabled={isValidationFailure || isDisableBtn}>
+                Create & add condition
+            </Button>
+
             {modal ? (
                 <ModalToggleButton modalRef={modal} closer className="cancel-btn" onClick={() => resetInput()}>
                     Cancel
