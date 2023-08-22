@@ -4,15 +4,13 @@
 import type { Condition } from '../models/Condition';
 import type { CreateConditionRequest } from '../models/CreateConditionRequest';
 import type { CreateConditionResponse } from '../models/CreateConditionResponse';
+import type { SearchConditionRequest } from '../models/SearchConditionRequest';
 import type { Page_Condition_ } from '../models/Page_Condition_';
-import type { ReadConditionRequest } from '../models/ReadConditionRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class ConditionControllerService {
-
     /**
      * findConditions
      * @returns Page_Condition_ OK
@@ -22,29 +20,29 @@ export class ConditionControllerService {
         authorization,
         page,
         size,
-        sort,
+        sort
     }: {
-        authorization: any,
-        page?: number,
-        size?: number,
-        sort?: string,
+        authorization: any;
+        page?: number;
+        size?: number;
+        sort?: string;
     }): CancelablePromise<Page_Condition_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/page-builder/api/v1/conditions/',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -56,26 +54,23 @@ export class ConditionControllerService {
      */
     public static createConditionUsingPost({
         authorization,
-        request,
+        request
     }: {
-        authorization: any,
-        /**
-         * request
-         */
-        request: CreateConditionRequest,
+        authorization: any;
+        request: CreateConditionRequest;
     }): CancelablePromise<CreateConditionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/page-builder/api/v1/conditions/',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -85,64 +80,60 @@ export class ConditionControllerService {
      * @throws ApiError
      */
     public static findAllConditionsUsingGet({
-        authorization,
+        authorization
     }: {
-        authorization: any,
+        authorization: any;
     }): CancelablePromise<Array<Condition>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/page-builder/api/v1/conditions/all',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
     /**
      * searchConditions
-     * @returns Page_Condition_ OK
+     * @returns CreateConditionResponse OK
      * @returns any Created
      * @throws ApiError
      */
-    public static searchConditionsUsingPost({
+    public static searchConditionUsingPost({
         authorization,
-        search,
+        request,
         page,
         size,
-        sort,
+        sort
     }: {
-        authorization: any,
-        /**
-         * search
-         */
-        search: ReadConditionRequest,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_Condition_ | any> {
+        authorization: any;
+        request: SearchConditionRequest;
+        page?: number;
+        size?: number;
+        sort?: string;
+    }): CancelablePromise<CreateConditionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/page-builder/api/v1/conditions/search',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort
             },
-            body: search,
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
-
 }
