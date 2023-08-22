@@ -44,6 +44,8 @@ public class PageStateChanger {
     
     @Autowired
     private WaRuleMetaDataRepository waRuleMetaDataRepository;
+    
+    
 
     public PageStateResponse savePageAsDraft(Long id) {
         PageStateResponse response = new PageStateResponse();
@@ -71,7 +73,7 @@ public class PageStateChanger {
         return response;
     }
     
-    @Transactional
+	@Transactional
 	public PageStateResponse deletePageDraft(Long id) {
 		PageStateResponse response = new PageStateResponse();
 		try {
@@ -82,33 +84,22 @@ public class PageStateChanger {
 					throw new PageUpdateException(PageConstants.DRAFT_NOT_FOUND);
 				}
 
-				List<WaTemplate> pages = templateRepository.findByTemplateNm(page.getTemplateNm());
-				WaTemplate pageOne = pages.get(0);
-				WaTemplate pageTwo = pages.get(0);
+				WaTemplate draft = templateRepository.findByTemplateNmAndTemplateType(page.getTemplateNm(),
+						PageConstants.DRAFT);
 
-				if (pageOne.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
-					pageOne.setTemplateType(PageConstants.PUBLISHED);
-					wanndMetadataRepository.deleteByWaTemplateUid(pageTwo);
-					wanndMetadataRepository.flush();
-					wARDBMetadataRepository.deleteByWaTemplateUid(pageTwo);
-					wARDBMetadataRepository.flush();
-					waRuleMetaDataRepository.deleteByWaTemplateUid(pageTwo.getId());
-					waRuleMetaDataRepository.flush();
-					templateRepository.deleteById(pageTwo.getId());
-					templateRepository.flush();
-					templateRepository.save(pageOne);
-				} else {
-					pageTwo.setTemplateType(PageConstants.PUBLISHED);
-					wanndMetadataRepository.deleteByWaTemplateUid(pageOne);
-					wanndMetadataRepository.flush();
-					wARDBMetadataRepository.deleteByWaTemplateUid(pageOne);
-					wARDBMetadataRepository.flush();
-					waRuleMetaDataRepository.deleteByWaTemplateUid(pageOne.getId());
-					waRuleMetaDataRepository.flush();
-					templateRepository.deleteById(pageOne.getId());
-					templateRepository.flush();
-					templateRepository.save(pageTwo);
-				}
+				wanndMetadataRepository.deleteByWaTemplateUid(draft);
+				wanndMetadataRepository.flush();
+				wARDBMetadataRepository.deleteByWaTemplateUid(draft);
+				wARDBMetadataRepository.flush();
+				waUiMetadataRepository.deleteByWaTemplateUid(draft);
+				waUiMetadataRepository.flush();
+				waRuleMetaDataRepository.deleteByWaTemplateUid(draft.getId());
+				waRuleMetaDataRepository.flush();
+				templateRepository.deleteById(draft.getId());
+				templateRepository.flush();
+
+				page.setTemplateType(PageConstants.PUBLISHED);
+				templateRepository.save(page);
 
 				response.setMessage(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS);
 				response.setTemplateId(page.getId());
@@ -118,9 +109,8 @@ public class PageStateChanger {
 		} catch (PageUpdateException e) {
 			throw e;
 		} catch (EntityNotFoundException a) {
-		log.info("Skipping entity not found..");
+			log.info("Skipping entity not found..");
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new PageUpdateException(PageConstants.DELETE_DRAFT_FAIL);
 		}
 		return response;

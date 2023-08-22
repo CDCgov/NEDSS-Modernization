@@ -21,7 +21,7 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
     
     public Optional<WaTemplate> findFirstByTemplateNm(String templateNm);
     
-    public List<WaTemplate> findByTemplateNm(String templateNm);
+    public WaTemplate findByTemplateNmAndTemplateType(String templateNm, String templateType);
     
     public Optional<WaTemplate> findFirstByDatamartNm(String dataMartNm);
     

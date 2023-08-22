@@ -54,11 +54,8 @@ class PageStateChangeTest {
 		Long requestId = 1l;
 		WaTemplate page = getTemplate(requestId, "NoDraftPage", "Published With Draft");
 		WaTemplate draftPage = getTemplate(2l, "NoDraftPage", "Draft");
-		List<WaTemplate> pages = new ArrayList<>();
-		pages.add(page);
-		pages.add(draftPage);
 		when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(page));
-		when(templateRepository.findByTemplateNm(Mockito.anyString())).thenReturn(pages);
+		when(templateRepository.findByTemplateNmAndTemplateType(Mockito.anyString(),Mockito.anyString())).thenReturn(draftPage);
 		PageStateResponse response = pageStateChanger.deletePageDraft(requestId);
 		assertEquals(requestId, response.getTemplateId());
 		assertEquals(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS, response.getMessage());
@@ -79,7 +76,7 @@ class PageStateChangeTest {
 		Long requestId = 1l;
 		WaTemplate page = getTemplate(requestId, "NoDraftPage", "Published With Draft");
 		when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(page));
-		when(templateRepository.findByTemplateNm(Mockito.anyString()))
+		when(templateRepository.findByTemplateNmAndTemplateType(Mockito.anyString(),Mockito.anyString()))
 				.thenThrow(new PageUpdateException(PageConstants.DELETE_DRAFT_FAIL));
 		var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.deletePageDraft(requestId));
 		assertEquals(PageConstants.DELETE_DRAFT_FAIL, exception.getMessage());
