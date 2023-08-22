@@ -18,7 +18,7 @@ import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 
 type FormValues = {
-    conditionIds: [];
+    conditionIds: string[];
     dataMartName?: string;
     eventType: string;
     messageMappingGuide: string;
@@ -67,6 +67,10 @@ export const AddNewPage = () => {
             setTemplates(data);
         });
     }, [token]);
+
+    const handleAddConditions = (conditions: string[]) => {
+        setValue('conditionIds', conditions);
+    };
 
     const onSubmit = handleSubmit(async (data) => {
         await createPage(
@@ -177,7 +181,7 @@ export const AddNewPage = () => {
                                 )}
                             />
                             <p>
-                                Can’t find the template you’re looking for?
+                                Can't find the template you're looking for?
                                 <br />
                                 <NavLink to={'add/template'}>Import a new template here</NavLink>
                             </p>
@@ -242,10 +246,10 @@ export const AddNewPage = () => {
                         </div>
                     </Form>
                 </div>
-                <QuickConditionLookup modal={modalQuick} />
                 <Modal id="create-condition-modal" isLarge ref={modalCreate}>
                     <CreateCondition conditionCreated={handleConditionCreated} modal={modalCreate} />
                 </Modal>
+                <QuickConditionLookup modal={modalQuick} addConditions={handleAddConditions} />
             </div>
         </PageBuilder>
     );
