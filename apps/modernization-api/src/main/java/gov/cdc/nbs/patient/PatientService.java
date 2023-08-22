@@ -148,8 +148,10 @@ public class PatientService {
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
 
-            firstNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.FIRST_NM,
-                filter.getFirstName().trim()).boost(FIRST_NAME_PRIMARY_BOOST));
+            firstNameBuilder.should(QueryBuilders.queryStringQuery(
+                    addWildcards(filter.getFirstName()))
+                    .defaultField(ElasticsearchPerson.FIRST_NM)
+                    .defaultOperator(Operator.AND).boost(FIRST_NAME_PRIMARY_BOOST));
 
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                 QueryBuilders.queryStringQuery(
@@ -170,8 +172,10 @@ public class PatientService {
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
             BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
 
-            lastNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.LAST_NM_KEYWORD,
-                filter.getLastName().trim()).boost(LAST_NAME_PRIMARY_BOOST));
+            lastNameBuilder.should(QueryBuilders.queryStringQuery(
+                    addWildcards(filter.getLastName()))
+                    .defaultField(ElasticsearchPerson.LAST_NM)
+                    .defaultOperator(Operator.AND).boost(LAST_NAME_PRIMARY_BOOST));
 
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                 QueryBuilders.queryStringQuery(
@@ -411,7 +415,7 @@ public class PatientService {
                     sorts.add(SortBuilders.scoreSort());
                     break;
                 case "lastNm":
-                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD)
+                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM)
                         .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 case "birthTime":

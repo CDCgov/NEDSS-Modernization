@@ -1,5 +1,12 @@
 package gov.cdc.nbs.questionbank.question.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Question.TextQuestion.class),
+        @JsonSubTypes.Type(value = Question.DateQuestion.class),
+        @JsonSubTypes.Type(value = Question.NumericQuestion.class),
+        @JsonSubTypes.Type(value = Question.CodedQuestion.class)})
 public sealed interface Question {
     long id();
 

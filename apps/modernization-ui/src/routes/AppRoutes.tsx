@@ -13,9 +13,11 @@ import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatie
 import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
 import { CreateCondition } from '../apps/page-builder/components/CreateCondition/CreateCondition';
 import { Config } from 'config';
-import { ValuesetLibrary } from '../apps/page-builder/components/ValuesetLibrary/ValuesetLibrary';
+import { ValuesetLibrary } from '../apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
 import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase/ConditionalCase';
 import { ImportTemplate } from '../apps/page-builder/components/ImportTemplate/ImportTemplate';
+import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
+import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -69,12 +71,16 @@ export const AppRoutes = () => {
                                     <Route path="manage">
                                         <Route path="pages" element={<ManagePages />} />
                                         <Route path="valueset-library" element={<ValuesetLibrary />} />
+                                        <Route path="question-library" element={<QuestionLibrary />} />
                                     </Route>
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />
                                         <Route path="import-template" element={<ImportTemplate />} />
                                         <Route path="condition" element={<CreateCondition />} />
                                         <Route path="conditional-case" element={<ConditionalCase />} />
+                                    </Route>
+                                    <Route path="edit">
+                                        <Route path="page/:pageId?" element={<EditPage />} />
                                     </Route>
                                 </Route>
                             </Route>

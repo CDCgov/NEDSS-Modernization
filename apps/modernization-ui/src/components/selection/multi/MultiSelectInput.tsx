@@ -2,7 +2,7 @@ import ReactSelect, { MultiValue, components } from 'react-select';
 import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
 import './MultiSelectInput.scss';
 import { mapNonNull } from 'utils';
-import { Label } from '@trussworks/react-uswds';
+import { Label, ErrorMessage } from '@trussworks/react-uswds';
 
 const CheckedOption = (props: any) => {
     return (
@@ -35,6 +35,7 @@ type MultiSelectInputProps = {
     onChange?: (value: string[]) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
     required?: boolean;
+    error?: string;
 };
 
 type Selectable = { value: string; label: string };
@@ -47,7 +48,8 @@ export const MultiSelectInput = ({
     onChange,
     onBlur,
     value = [],
-    required
+    required,
+    error
 }: MultiSelectInputProps) => {
     const selectableOptions = useMemo(
         () => options.map((item) => ({ value: item.value, label: item.name })),
@@ -72,7 +74,13 @@ export const MultiSelectInput = ({
 
     return (
         <div className={`multi-select-input ${required ? 'required' : ''}`}>
-            {label && <Label htmlFor={label}>{label}</Label>}
+            {label && (
+                <Label htmlFor={label}>
+                    {label}
+                    <small className="text-red">{required && ' *'}</small>
+                </Label>
+            )}
+            <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
             <ReactSelect
                 isMulti={true}
                 id={id}

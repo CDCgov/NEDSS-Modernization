@@ -191,6 +191,38 @@ export type DeletePatientRace = {
   patient: Scalars['Int'];
 };
 
+export type Description = {
+  __typename?: 'Description';
+  title?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type DocumentRequiringReview = {
+  __typename?: 'DocumentRequiringReview';
+  dateReceived: Scalars['DateTime'];
+  descriptions: Array<Maybe<Description>>;
+  eventDate?: Maybe<Scalars['DateTime']>;
+  facilityProviders: FacilityProviders;
+  id: Scalars['ID'];
+  isElectronic: Scalars['Boolean'];
+  localId: Scalars['String'];
+  type: Scalars['String'];
+};
+
+export enum DocumentRequiringReviewSortableField {
+  DateReceived = 'dateReceived',
+  EventDate = 'eventDate',
+  LocalId = 'localId',
+  Type = 'type'
+}
+
+export type DocumentRequiringReviewSortablePage = {
+  pageNumber?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  sortDirection?: InputMaybe<SortDirection>;
+  sortField?: InputMaybe<DocumentRequiringReviewSortableField>;
+};
+
 export enum EntryMethod {
   Electronic = 'ELECTRONIC',
   Manual = 'MANUAL'
@@ -230,6 +262,13 @@ export enum EventStatus {
   New = 'NEW',
   Update = 'UPDATE'
 }
+
+export type FacilityProviders = {
+  __typename?: 'FacilityProviders';
+  orderingProvider?: Maybe<OrderingProvider>;
+  reportingFacility?: Maybe<ReportingFacility>;
+  sendingFacility?: Maybe<SendingFacility>;
+};
 
 export enum Gender {
   F = 'F',
@@ -982,6 +1021,11 @@ export enum Operator {
   Equal = 'EQUAL'
 }
 
+export type OrderingProvider = {
+  __typename?: 'OrderingProvider';
+  name?: Maybe<Scalars['String']>;
+};
+
 export type Organization = {
   __typename?: 'Organization';
   addReasonCd?: Maybe<Scalars['String']>;
@@ -1223,6 +1267,13 @@ export type PatientDocumentInvestigation = {
   __typename?: 'PatientDocumentInvestigation';
   id: Scalars['ID'];
   local: Scalars['String'];
+};
+
+export type PatientDocumentRequiringReviewResults = {
+  __typename?: 'PatientDocumentRequiringReviewResults';
+  content: Array<Maybe<DocumentRequiringReview>>;
+  number: Scalars['Int'];
+  total: Scalars['Int'];
 };
 
 export type PatientDocumentResults = {
@@ -2126,7 +2177,7 @@ export type Query = {
   findAllUsers: UserResults;
   findContactsNamedByPatient?: Maybe<ContactsNamedByPatientResults>;
   findDocumentsForPatient?: Maybe<PatientDocumentResults>;
-  findDocumentsRequiringReviewForPatient: LabReportResults;
+  findDocumentsRequiringReviewForPatient: PatientDocumentRequiringReviewResults;
   findInvestigationsByFilter: InvestigationResults;
   findInvestigationsForPatient?: Maybe<PatientInvestigationResults>;
   findLabReportsByFilter: LabReportResults;
@@ -2310,8 +2361,8 @@ export type QueryFindDocumentsForPatientArgs = {
 
 
 export type QueryFindDocumentsRequiringReviewForPatientArgs = {
-  page?: InputMaybe<Page>;
-  patientId: Scalars['Int'];
+  page?: InputMaybe<DocumentRequiringReviewSortablePage>;
+  patient: Scalars['Int'];
 };
 
 
@@ -2472,6 +2523,16 @@ export enum ReportingEntityType {
   Facility = 'FACILITY',
   Provider = 'PROVIDER'
 }
+
+export type ReportingFacility = {
+  __typename?: 'ReportingFacility';
+  name?: Maybe<Scalars['String']>;
+};
+
+export type SendingFacility = {
+  __typename?: 'SendingFacility';
+  name?: Maybe<Scalars['String']>;
+};
 
 export type SnomedCode = {
   __typename?: 'SnomedCode';
@@ -3092,12 +3153,12 @@ export type FindDocumentsForPatientQueryVariables = Exact<{
 export type FindDocumentsForPatientQuery = { __typename?: 'Query', findDocumentsForPatient?: { __typename?: 'PatientDocumentResults', total: number, number: number, content: Array<{ __typename?: 'PatientDocument', document: string, receivedOn: any, type: string, sendingFacility: string, reportedOn: any, condition?: string | null, event: string, associatedWith?: { __typename?: 'PatientDocumentInvestigation', id: string, local: string } | null } | null> } | null };
 
 export type FindDocumentsRequiringReviewForPatientQueryVariables = Exact<{
-  patientId: Scalars['Int'];
-  page?: InputMaybe<Page>;
+  patient: Scalars['Int'];
+  page?: InputMaybe<DocumentRequiringReviewSortablePage>;
 }>;
 
 
-export type FindDocumentsRequiringReviewForPatientQuery = { __typename?: 'Query', findDocumentsRequiringReviewForPatient: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations?: Array<{ __typename?: 'AssociatedInvestigation', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> } };
+export type FindDocumentsRequiringReviewForPatientQuery = { __typename?: 'Query', findDocumentsRequiringReviewForPatient: { __typename?: 'PatientDocumentRequiringReviewResults', total: number, number: number, content: Array<{ __typename?: 'DocumentRequiringReview', id: string, localId: string, type: string, dateReceived: any, eventDate?: any | null, isElectronic: boolean, facilityProviders: { __typename?: 'FacilityProviders', reportingFacility?: { __typename?: 'ReportingFacility', name?: string | null } | null, orderingProvider?: { __typename?: 'OrderingProvider', name?: string | null } | null, sendingFacility?: { __typename?: 'SendingFacility', name?: string | null } | null }, descriptions: Array<{ __typename?: 'Description', title?: string | null, value?: string | null } | null> } | null> } };
 
 export type FindInvestigationsByFilterQueryVariables = Exact<{
   filter: InvestigationFilter;
@@ -5909,102 +5970,33 @@ export type FindDocumentsForPatientQueryHookResult = ReturnType<typeof useFindDo
 export type FindDocumentsForPatientLazyQueryHookResult = ReturnType<typeof useFindDocumentsForPatientLazyQuery>;
 export type FindDocumentsForPatientQueryResult = Apollo.QueryResult<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>;
 export const FindDocumentsRequiringReviewForPatientDocument = gql`
-    query findDocumentsRequiringReviewForPatient($patientId: Int!, $page: Page) {
-  findDocumentsRequiringReviewForPatient(patientId: $patientId, page: $page) {
+    query findDocumentsRequiringReviewForPatient($patient: Int!, $page: DocumentRequiringReviewSortablePage) {
+  findDocumentsRequiringReviewForPatient(patient: $patient, page: $page) {
     content {
       id
-      observationUid
-      lastChange
-      classCd
-      moodCd
-      observationLastChgTime
-      cdDescTxt
-      recordStatusCd
-      programAreaCd
-      jurisdictionCd
-      jurisdictionCodeDescTxt
-      pregnantIndCd
       localId
-      activityToTime
-      effectiveFromTime
-      rptToStateTime
-      addTime
-      electronicInd
-      versionCtrlNbr
-      addUserId
-      lastChgUserId
-      personParticipations {
-        actUid
-        localId
-        typeCd
-        entityId
-        subjectClassCd
-        participationRecordStatus
-        typeDescTxt
-        participationLastChangeTime
-        firstName
-        lastName
-        birthTime
-        currSexCd
-        personCd
-        personParentUid
-        personRecordStatus
-        personLastChangeTime
-        shortId
+      type
+      dateReceived
+      eventDate
+      isElectronic
+      facilityProviders {
+        reportingFacility {
+          name
+        }
+        orderingProvider {
+          name
+        }
+        sendingFacility {
+          name
+        }
       }
-      organizationParticipations {
-        actUid
-        typeCd
-        entityId
-        subjectClassCd
-        typeDescTxt
-        participationRecordStatus
-        participationLastChangeTime
-        name
-        organizationLastChangeTime
-      }
-      materialParticipations {
-        actUid
-        typeCd
-        entityId
-        subjectClassCd
-        typeDescTxt
-        participationRecordStatus
-        participationLastChangeTime
-        cd
-        cdDescTxt
-      }
-      observations {
-        cd
-        cdDescTxt
-        domainCd
-        statusCd
-        altCd
-        altDescTxt
-        altCdSystemCd
-        displayName
-        ovcCode
-        ovcAltCode
-        ovcAltDescTxt
-        ovcAltCdSystemCd
-      }
-      actIds {
-        id
-        recordStatus
-        actIdSeq
-        rootExtensionTxt
-        typeCd
-        lastChangeTime
-      }
-      associatedInvestigations {
-        publicHealthCaseUid
-        cdDescTxt
-        localId
-        lastChgTime
-        actRelationshipLastChgTime
+      descriptions {
+        title
+        value
       }
     }
     total
+    number
   }
 }
     `;
@@ -6021,7 +6013,7 @@ export const FindDocumentsRequiringReviewForPatientDocument = gql`
  * @example
  * const { data, loading, error } = useFindDocumentsRequiringReviewForPatientQuery({
  *   variables: {
- *      patientId: // value for 'patientId'
+ *      patient: // value for 'patient'
  *      page: // value for 'page'
  *   },
  * });

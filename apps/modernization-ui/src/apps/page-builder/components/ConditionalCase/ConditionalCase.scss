@@ -121,6 +121,9 @@ padding: 24px;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 16px;
+    .usa-icon {
+      cursor: pointer;
+    }
     .strong-label {
       color: var(--base-darkest, #1B1B1B);
       font-family: Public Sans;

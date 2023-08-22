@@ -2,6 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Page_PageSummary_ } from '../models/Page_PageSummary_';
+import type { PageCreateRequest } from '../models/PageCreateRequest';
+import type { PageCreateResponse } from '../models/PageCreateResponse';
+import type { PageStateResponse } from '../models/PageStateResponse';
 import type { PageSummary } from '../models/PageSummary';
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
 import type { UpdatePageDetailsRequest } from '../models/UpdatePageDetailsRequest';
@@ -48,6 +51,37 @@ export class PageControllerService {
     }
 
     /**
+     * createPage
+     * @returns PageCreateResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static createPageUsingPost({
+        authorization,
+        request,
+    }: {
+        authorization: any,
+        /**
+         * request
+         */
+        request: PageCreateRequest,
+    }): CancelablePromise<PageCreateResponse | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/page-builder/api/v1/pages',
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
      * search
      * @returns Page_PageSummary_ OK
      * @returns any Created
@@ -71,7 +105,7 @@ export class PageControllerService {
     }): CancelablePromise<Page_PageSummary_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/pages',
+            url: '/page-builder/api/v1/pages/search',
             headers: {
                 'Authorization': authorization,
             },
@@ -120,6 +154,39 @@ export class PageControllerService {
                 'Authorization': authorization,
             },
             body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * savePageDraft
+     * @returns PageStateResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static savePageDraftUsingPut({
+        authorization,
+        id,
+    }: {
+        authorization: any,
+        /**
+         * id
+         */
+        id: number,
+    }): CancelablePromise<PageStateResponse | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/page-builder/api/v1/pages/{id}/draft',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

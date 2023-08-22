@@ -8,6 +8,7 @@
 - [Modernization UI](apps/modernization-ui/README.md)
 - [Patient Listener](apps/patient-listener/README.md)
 - [Question Bank](apps/question-bank/README.md)
+- [NBS Gateway](apps/nbs-gateway/README.md)
 - [CDC Sandbox](cdc-sandbox/README.md)
 - [Database-Entities](libs/database-entities/README.md)
 - [Event-Schema](libs/event-schema/README.md)
@@ -56,39 +57,27 @@
    ```
 10. Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
 
-```sh
-docker-compose up elasticsearch kibana reverse-proxy -d
-```
+    ```sh
+    docker-compose up elasticsearch kibana reverse-proxy -d
+    ```
 
-11. CD into the `apps/modernization-ui` directory
+11. Start the `modernization` containers `modernization-api` and `nbs-gateway`
     ```sh
-    cd ../apps/modernization-ui
+    docker-compose up -d
     ```
-12. Run `npm install`
-    ```sh
-    npm i
-    ```
-13. CD to the `apps/modernization-api` directory
-    ```sh
-    cd ../modernization-api
-    ```
-14. Start the `modernization-api` container
-    ```sh
-    docker-compose up modernization-api -d
-    ```
-15. CD into the `cdc-sandbox` directory and Start NiFi
+12. CD into the `cdc-sandbox` directory and Start NiFi
     ```sh
     cd ../cdc-sandbox
     docker-compose up nifi -d
     ```
-16. Visit http://localhost:8080/nbs/login
+13. Visit http://localhost:8080/nbs/login
 
     ```
     username: msa
     password:
     ```
 
-17. To create your own user account visit site (line 15):
+14. To create your own user account visit site (line 15):
 
 - Navigate to System Management
 - Expand Security Management
@@ -110,14 +99,18 @@ Version: 1.0.0-SNAPSHOT
 
 ## Running with local servers
 
-By default, the reverse proxy will route to the containerized `modernization-api` or `modernization-ui`. Routing to a local `modernization-api` or `modernization-ui` servers can be achieved by altering the configuration to point to the local instances.
+By default, the reverse proxy will route to the containerized services. Routing to a local services can be achieved by altering the configuration to point to the local instances.
 
-| Name                     | Default             | Description                                                |
-| ------------------------ | ------------------- | ---------------------------------------------------------- |
-| MODERNIZATION_UI_SERVER  | `modernization-ui`  | The host name of the server that provides the frontend UI. |
-| MODERNIZATION_UI_PORT    | `80`                | The port the frontend UI is served from.                   |
-| MODERNIZATION_API_SERVER | `modernization-api` | The host name of the server that provides the backend API  |
-| MODERNIZATION_API_PORT   | `8080`              | The port the frontend UI is served from.                   |
+| Name                     | Default             | Description                                                     |
+|--------------------------|---------------------|-----------------------------------------------------------------|
+| MODERNIZATION_UI_SERVER  | `modernization-ui`  | The host name of the server that provides the frontend UI.      |
+| MODERNIZATION_UI_PORT    | `80`                | The port the frontend UI is served from.                        |
+| MODERNIZATION_API_SERVER | `modernization-api` | The host name of the server that provides the backend API.      |
+| MODERNIZATION_API_PORT   | `8080`              | The port that modernization-api is served from.                 |
+| PAGEBUILDER_API          | `pagebuilder-api`   | The host name of the server that provides the page-builder API. |
+| PAGEBUILDER_API_PORT     | `8095`              | The port that page-builder is served from.                      |
+| NBS_GATEWAY_SERVER       | `nbs-gateway`       | The host name of the server that provides the NBS Gateway.      |
+| NBS_GATEWAY_PORT         | `8000`              | The port the NBS Gateway is served from.                        |
 
 ### Configuring the Reverse Proxy to use local modernization-ui
 

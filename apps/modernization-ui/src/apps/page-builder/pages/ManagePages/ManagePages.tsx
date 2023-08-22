@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './ManagePages.scss';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
-import { fetchPageSummaries } from './usePageSummaryAPI';
+import { fetchPageSummaries } from '../../services/pagesAPI';
 import { ManagePagesTable } from './ManagePagesTable';
 import { UserContext } from 'user';
 

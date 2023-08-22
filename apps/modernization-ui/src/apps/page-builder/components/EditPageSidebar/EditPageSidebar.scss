@@ -1,0 +1,12 @@
+@import 'settings';
+
+.edit-page-sidebar {
+    background-color: $color-white;
+    border: 1px solid $color-base-lighter;
+    border-radius: 0.45rem;
+    position: absolute;
+    top: 1.2rem;
+    right: 0;
+    width: 10rem;
+    min-height: 15rem;
+}

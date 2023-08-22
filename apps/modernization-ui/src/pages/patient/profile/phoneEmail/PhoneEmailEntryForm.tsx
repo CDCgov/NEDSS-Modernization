@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Grid, Label, Textarea } from '@trussworks/react-uswds';
+import { Button, Grid, Icon, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
@@ -11,10 +11,10 @@ type EntryProps = {
     action: string;
     entry: PhoneEmailEntry;
     onChange: (updated: PhoneEmailEntry) => void;
-    onCancel: () => void;
+    onDelete?: () => void;
 };
 
-export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
+export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: EntryProps) => {
     const {
         handleSubmit,
         control,
@@ -100,7 +100,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             rules={{
                                 pattern: {
                                     value: /^\+?\d{1,3}$/,
-                                    message: 'A country code should be 1 to 3 digits"'
+                                    message: 'A country code should be 1 to 3 digits'
                                 }
                             }}
                             render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => {
@@ -154,7 +154,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             rules={{
                                 pattern: {
                                     value: /^\+?\d{1,4}$/,
-                                    message: 'A Extension should be 1 to 4 digits"'
+                                    message: 'A Extension should be 1 to 4 digits'
                                 }
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -241,20 +241,27 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                     </Grid>
                 </Grid>
             </div>
-            <div className="border-top border-base-lighter padding-2 margin-left-auto">
-                <ButtonGroup className="flex-justify-end">
-                    <Button type="button" className="margin-top-0" data-testid="cancel-btn" outline onClick={onCancel}>
-                        Go Back
-                    </Button>
-                    <Button
-                        disabled={!isValid}
-                        onClick={handleSubmit(onSubmit)}
-                        type="submit"
-                        className="padding-105 text-center margin-top-0">
-                        {action}
-                    </Button>
-                </ButtonGroup>
-            </div>
+
+            <ModalFooter className="padding-2 margin-left-auto flex-justify display-flex details-footer">
+                <Button
+                    unstyled
+                    className={`text-red display-flex flex-align-center delete--modal-btn ${
+                        action !== 'Edit' ? 'ds-u-visibility--hidden' : ''
+                    }`}
+                    type="button"
+                    onClick={onDelete}>
+                    <Icon.Delete className="delete-icon" />
+                    Delete
+                </Button>
+
+                <Button
+                    disabled={!isValid}
+                    onClick={handleSubmit(onSubmit)}
+                    type="submit"
+                    className="padding-105 text-center margin-0">
+                    Save
+                </Button>
+            </ModalFooter>
         </div>
     );
 };
