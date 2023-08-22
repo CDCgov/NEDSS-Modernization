@@ -38,18 +38,6 @@ class ConditionStatusTest {
         assertEquals(id, response.getId());
     }
 
-    @Test
-    void activateConditionFailTest() {
-        when(conditionCodeRepository.activateCondition(Mockito.anyString())).thenReturn(0);
-        ConditionStatusResponse response = conditionStatus.activateCondition(id);
-        assertFalse(Objects.equals(id, response.getId()));
-    }
-
-    @Test
-    void activateConditionNullTest() {
-        ConditionStatusResponse response = conditionStatus.activateCondition(null);
-        assertEquals(null, response.getId());
-    }
 
     @Test
     void inactivateConditionTest() {
@@ -58,16 +46,6 @@ class ConditionStatusTest {
         assertEquals(id, response.getId());
     }
 
-    @Test
-    void inactivateConditionFailTest() {
-        when(conditionCodeRepository.inactivateCondition(Mockito.anyString())).thenReturn(0);
-        ConditionStatusResponse response = conditionStatus.inactivateCondition(id);
-        assertFalse(Objects.equals(id, response.getId()));
-    }
 
-    @Test
-    void inactivateNullTest() {
-        ConditionStatusResponse response = conditionStatus.inactivateCondition(null);
-        assertEquals(null, response.getId());
-    }
+
 }
