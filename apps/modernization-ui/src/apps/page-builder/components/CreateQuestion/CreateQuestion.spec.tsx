@@ -10,7 +10,7 @@ describe('General information component tests', () => {
                 <CreateQuestion />
             </AlertProvider>
         );
-        expect(getByTestId('header-title').innerHTML).toBe('Lets create a new question');
+        expect(getByTestId('header-title').innerHTML).toBe("Let's create a new question");
     });
 });
 
@@ -35,16 +35,24 @@ describe('Question component tests', () => {
                 <CreateQuestion />
             </AlertProvider>
         );
-        expect(getByText('Question Name')).toBeInTheDocument();
-        expect(getByText('Coding System')).toBeTruthy();
-        expect(getByText('Question Code')).toBeTruthy();
-        expect(getByText('Program Area')).toBeTruthy();
-        expect(getByText('Is this a CDC reportable question (NND)?')).toBeTruthy();
-        expect(getByText('Is this reportable through Morbidity Reports?')).toBeTruthy();
-        expect(getByText('Is this reportable in Aggregate (summary)?')).toBeTruthy();
-        expect(getByText('Will this question need the Contact Tracing Module?')).toBeTruthy();
-        expect(getByText('Question family')).toBeTruthy();
-        expect(getByText('Co-infection group')).toBeTruthy();
+        expect(getByText('Question Label')).toBeInTheDocument();
+        expect(getByText('Description')).toBeInTheDocument();
+        expect(getByText('Field Type')).toBeInTheDocument();
+        expect(getByText('Subgroup')).toBeInTheDocument();
+        expect(getByText('LOCAL')).toBeInTheDocument();
+        expect(getByText('PHIN')).toBeInTheDocument();
+        expect(getByText('Unique ID')).toBeInTheDocument();
+        expect(getByText('Unique name')).toBeInTheDocument();
+        expect(getByText('Default Label in report')).toBeInTheDocument();
+        expect(getByText('Default RDB table name')).toBeTruthy();
+        expect(getByText('RDB column name')).toBeTruthy();
+        expect(getByText('Data mart column name')).toBeTruthy();
+        expect(getByText('Included in message?')).toBeTruthy();
+        expect(getByText('Message ID')).toBeTruthy();
+        expect(getByText('Message label')).toBeTruthy();
+        expect(getByText('Code system name')).toBeTruthy();
+        expect(getByText('HL7 data type')).toBeTruthy();
+        expect(getByText('Administrative comments')).toBeTruthy();
     });
 
     it('should render a dropdown to select Program Area from the provided options', () => {
@@ -53,8 +61,8 @@ describe('Question component tests', () => {
                 <CreateQuestion />
             </AlertProvider>
         );
-        const nameElement = getByTestId('conditionName');
-        fireEvent.change(nameElement, { target: { value: 'valuetest' } });
+        const nameElement = getByTestId('questionLabel');
+        fireEvent.change(nameElement, { target: { value: 'question Label' } });
         fireEvent.blur(nameElement);
         const nameErrorText = queryByText('Question Name Not Valid');
         expect(nameErrorText).not.toBeInTheDocument();

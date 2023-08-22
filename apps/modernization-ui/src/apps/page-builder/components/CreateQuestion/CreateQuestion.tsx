@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './CreateQuestion.scss';
-import ReactSelect from 'react-select';
-import { ModalToggleButton, Radio, TextInput } from '@trussworks/react-uswds';
+import ReactSelect, { components } from 'react-select';
+import { ModalToggleButton, Radio, TextInput, Dropdown, Icon } from '@trussworks/react-uswds';
 import { ProgramAreaControllerService, ValueSetControllerService, QuestionControllerService } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
@@ -11,7 +11,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const init = {
         label: '',
         description: '',
-        type: '',
+        type: 'TEXT',
         subgroup: '',
         uniqueId: '',
         uniqueName: '',
@@ -31,11 +31,11 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         defaultValue: 'test@gmai.com',
         fieldLength: '50',
         mask: 'TXT',
-        tooltip: ''
+        tooltip: '',
+        displayControl: 0
     };
     // Fields
-    const [questionData, setQestionData] = useState(init);
-    const [area, setArea] = useState('');
+    const [questionData, setQuestionData] = useState(init);
     const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
     // DropDown Options
@@ -52,15 +52,20 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             authorization
         }).then((response: any) => {
             const data = response || [];
-            const programAreaList: never[] = [];
+            const programAreaList: any = [];
             data.map((each: { value: never }) => {
-                programAreaList.push(each.value);
+                programAreaList.push({ label: each.value, value: each.value });
             });
             setProgramAreaOptions(programAreaList);
         });
     };
     useEffect(() => {
-        if (question?.id) setQestionData({ ...question, ...question?.messagingInfo, ...question?.dataMartInfo });
+        if (question?.id) {
+            const updatedQuestion = { ...question, ...question?.messagingInfo, ...question?.dataMartInfo };
+            delete updatedQuestion.messagingInfo;
+            delete updatedQuestion.dataMartInfo;
+            setQuestionData(updatedQuestion);
+        }
     }, [question]);
 
     const fetchFamilyOptions = () => {
@@ -142,13 +147,13 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         }).then((response: any) => {
             showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
             resetInput();
-            resetInput();
             return response;
         });
     };
     const handleUpdateQuestion = () => {
         const request = {
-            ...questionData
+            ...questionData,
+            tooltip: questionData.tooltip || ''
         };
 
         QuestionControllerService.updateQuestionUsingPut({
@@ -162,14 +167,15 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         });
     };
     const handleQuestionInput = ({ target }: any) => {
-        setQestionData({
+        setQuestionData({
             ...questionData,
             [target.name]: target?.type === 'checkbox' ? target?.checked : target.value
         });
     };
     const resetInput = () => {
-        setQestionData(init);
+        setQuestionData(init);
     };
+
     const validateQuestionLabel = (name: any) => {
         const pattern = /^[a-zA-Z0-9_]*$/;
         if (name.match(pattern)) {
@@ -180,6 +186,54 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setIsValidationFailure(true);
         }
     };
+
+    const { label, uniqueName, labelInMessage } = questionData || {};
+    const isDisableBtn = label || uniqueName || labelInMessage;
+
+    const formatOptionLabel = ({ value, label }: any) => (
+        <div key={value} style={{ display: 'flex', alignItems: 'center', lineHeight: '12px', marginTop: '-5px' }}>
+            <div style={{ marginRight: '16px' }}>
+                <Icon.List size={4} />
+            </div>
+            <div>{label}</div>
+        </div>
+    );
+
+    const customStyles = {
+        control: (base: any, state: any) => ({
+            ...base,
+            background: 'none',
+            borderRadius: 0,
+            borderColor: '#565c65',
+            height: '40px',
+            boxShadow: state.isFocused ? null : null,
+            '&:hover': {
+                borderColor: '#565c65'
+            },
+            outline: state.isFocused ? '0.25rem solid #2491ff' : 'none'
+        }),
+        container: (base: any) => {
+            return {
+                ...base
+            };
+        },
+        indicatorSeparator: (base: any) => {
+            return {
+                ...base,
+                backgroundColor: 'unset'
+            };
+        },
+        path: (base: any) => ({
+            ...base,
+            display: 'none !important'
+        })
+    };
+
+    const USWDSDropdownIndicator = (props: any) => (
+        <components.DropdownIndicator {...props}>
+            <div className="multi-select select-indicator margin-top-neg-1" />
+        </components.DropdownIndicator>
+    );
 
     return (
         <div className="create-question">
@@ -192,7 +246,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         All fields with <span className="mandatory-indicator">*</span> are required
                     </label>
                 </div>
-
                 <p className="fields-info margin-bottom-2em">These fields will be displayed to your users</p>
                 <div className={isQuestionNotValid ? 'error-border' : ''}>
                     <label>
@@ -206,7 +259,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         data-testid="questionLabel"
                         name="label"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
                         value={questionData.label}
                         onChange={handleQuestionInput}
                     />
@@ -226,21 +278,17 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 <br></br>
                 <label>Field Type</label>
                 <br></br>
-                <select
-                    className="field-space"
-                    name="type"
-                    defaultValue={questionData.type}
-                    onChange={handleQuestionInput}>
-                    <option>-Select-</option>
-                    {buildOptions(programAreaOptions)}
-                </select>
                 <ReactSelect
-                    className="field-space display-none"
+                    className="field-space"
                     options={programAreaOptions}
                     name="programArea"
-                    defaultValue={area}
-                    // getOptionLabel={(option: any) => <div>{option}</div>}
-                    onChange={(e: any) => setArea(e.target.value)}></ReactSelect>
+                    placeholder="- Select -"
+                    formatOptionLabel={formatOptionLabel}
+                    styles={{
+                        ...customStyles
+                    }}
+                    isSearchable={false}
+                    components={{ DropdownIndicator: USWDSDropdownIndicator }}></ReactSelect>
                 <hr className="divider" />
                 <p className="fields-info">
                     These fields will not be displayed to your users, it only makes it easier for others to search for
@@ -251,14 +299,15 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     Subgroup<span className="mandatory-indicator">*</span>
                 </label>
                 <br></br>
-                <select
+                <Dropdown
                     className="field-space"
                     name="subgroup"
+                    id="subgroup"
                     defaultValue={questionData.subgroup}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(familyOptions)}
-                </select>
+                </Dropdown>
                 <br></br>
                 <div className={'display-flex'}>
                     <Radio
@@ -310,7 +359,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         data-testid="uniqueName"
                         name="uniqueName"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
                         value={questionData.uniqueName}
                         onChange={handleQuestionInput}
                     />
@@ -332,7 +380,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         data-testid="defaultLabelInReport"
                         name="defaultLabelInReport"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
                         value={questionData.defaultLabelInReport}
                         onChange={handleQuestionInput}
                     />
@@ -349,7 +396,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         data-testid="defaultRDBTable"
                         name="defaultRdbTableName"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
                         value={questionData.defaultRdbTableName}
                         onChange={handleQuestionInput}
                     />
@@ -366,7 +412,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         data-testid="rdbColumnName"
                         name="rdbColumnName"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
                         value={questionData.rdbColumnName}
                         onChange={handleQuestionInput}
                     />
@@ -420,7 +465,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         data-testid="messageLabel"
                         name="labelInMessage"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
                         value={questionData.labelInMessage}
                         onChange={handleQuestionInput}
                     />
@@ -429,14 +473,15 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     Code system name<span className="mandatory-indicator">*</span>
                 </label>
                 <br></br>
-                <select
+                <Dropdown
                     className="field-space"
+                    id="codeSystem"
                     name="codeSystem"
                     defaultValue={questionData.codeSystem}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
-                </select>
+                </Dropdown>
                 <p className="fields-info">Required in message?</p>
                 <ToggleButton
                     checked={questionData.requiredInMessage}
@@ -448,14 +493,15 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     HL7 data type <span className="mandatory-indicator">*</span>
                 </label>
                 <br></br>
-                <select
+                <Dropdown
                     className="field-space"
                     name="hl7DataType"
+                    id="hl7DataType"
                     defaultValue={questionData.hl7DataType}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
-                </select>
+                </Dropdown>
                 <hr className="divider" />
                 <p className="fields-info">Administrative - these fields will not be displayed to your users</p>
                 <br></br>
@@ -477,7 +523,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 type="button"
                 modalRef={modalRef}
                 onClick={handleSubmit}
-                disabled={isValidationFailure}>
+                disabled={isValidationFailure || !isDisableBtn}>
                 {question?.id ? 'Save' : 'Create and add to page'}
             </ModalToggleButton>
             <ModalToggleButton className="cancel-btn" modalRef={modalRef} onClick={() => resetInput()} type="button">

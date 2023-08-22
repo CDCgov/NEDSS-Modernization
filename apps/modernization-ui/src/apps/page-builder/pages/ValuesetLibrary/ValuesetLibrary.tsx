@@ -16,8 +16,6 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     const handleTab = (tab: string) => {
         setActiveTab(tab);
     };
-    console.log('summaries....', summaries);
-
     // @ts-ignore
     useEffect(async () => {
         const token = `Bearer ${state.getToken()}`;
@@ -31,7 +29,6 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
             pageSize,
             filter
         );
-        console.log('content...', content);
         setTotalElements(totalElements);
         setIsLoading(false);
         setSummaries(content);
