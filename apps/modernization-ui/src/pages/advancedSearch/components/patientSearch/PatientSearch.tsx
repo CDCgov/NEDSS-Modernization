@@ -59,7 +59,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
 
     const simpleSearchItems: AccordionItemProps[] = [
         {
-            title: 'Basic info',
+            title: 'Basic information',
             content: (
                 <>
                     <Grid col={12}>
