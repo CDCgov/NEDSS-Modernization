@@ -18,7 +18,7 @@ const initConcept = {
     effectiveFromTime: new Date().toLocaleString(),
     effectiveToTime: new Date().toLocaleString(),
     duration: 'always',
-    status: ''
+    status: true
 };
 
 export const Concept = () => {

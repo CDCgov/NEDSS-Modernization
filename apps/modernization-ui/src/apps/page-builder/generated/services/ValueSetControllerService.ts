@@ -245,7 +245,7 @@ export class ValueSetControllerService {
         /**
          * request
          */
-        request: UpdateConceptRequest | any,
+        request: UpdateConceptRequest,
     }): CancelablePromise<Concept | any> {
         return __request(OpenAPI, {
             method: 'PUT',
