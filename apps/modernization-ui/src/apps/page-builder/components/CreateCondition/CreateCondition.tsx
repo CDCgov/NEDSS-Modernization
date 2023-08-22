@@ -1,7 +1,13 @@
 import React, { RefObject, useContext, useEffect, useState } from 'react';
 import './CreateCondition.scss';
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { ProgramAreaControllerService, ConditionControllerService, ValueSetControllerService } from '../../generated';
+import {
+    ProgramAreaControllerService,
+    ConditionControllerService,
+    ValueSetControllerService,
+    Condition,
+    CreateConditionRequest
+} from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { Concept } from '../../generated/models/Concept';
@@ -85,10 +91,10 @@ export const CreateCondition = ({ modal }: Props) => {
         ));
     const handleSubmit = () => {
         const authorization = `Bearer ${state.getToken()}`;
-        const request = {
+        const request: CreateConditionRequest = {
             codeSystemDescTxt: system,
             conditionShortNm: name,
-            id: code,
+            code,
             progAreaCd: area,
             nndInd: isReportable,
             reportableMorbidityInd: isMorbidity,
@@ -102,7 +108,7 @@ export const CreateCondition = ({ modal }: Props) => {
             authorization,
             request
         })
-            .then((response: any) => {
+            .then((response: Condition) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
                 resetInput();
                 return response;
@@ -119,7 +125,7 @@ export const CreateCondition = ({ modal }: Props) => {
         setArea('');
     };
     const validateConditionName = (name: any) => {
-        const pattern = /^[a-zA-Z0-9_]*$/;
+        const pattern = /^\w*$/;
         if (name.match(pattern)) {
             setIsConditionNotValid(false);
             setIsValidationFailure(false);
@@ -130,7 +136,7 @@ export const CreateCondition = ({ modal }: Props) => {
     };
 
     const validateConditionCode = (code: any) => {
-        const pattern = /^[a-zA-Z0-9_]*$/;
+        const pattern = /^\w*$/;
         if (code.match(pattern)) {
             setIsConditionCodeNotValid(false);
             setIsValidationFailure(false);
@@ -235,7 +241,7 @@ export const CreateCondition = ({ modal }: Props) => {
                     name="reportableCondition"
                     value="N"
                     className="right-radio"
-                    checked={isReportable === 'Y'}
+                    checked={isReportable === 'N'}
                     onChange={(e: any) => setIsReportable(e.target.value)}
                 />
                 <span className="radio-label">No</span>

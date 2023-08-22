@@ -18,6 +18,7 @@ import java.time.Instant;
 @Entity
 @Table(catalog = "NBS_SRTE", name = "LDF_page_set")
 public class LdfPageSet implements Serializable {
+
     @Id
     @Column(name = "ldf_page_id", nullable = false, length = 20)
     private String id;
@@ -67,5 +68,25 @@ public class LdfPageSet implements Serializable {
 
     @Column(name = "display_column")
     private Short displayColumn;
-    
+
+    public LdfPageSet(ConditionCode conditionCode, String id, Short displayRow, Integer nbsUid) {
+        this.setId(id);
+        this.setBusinessObjectNm("PHC");
+        this.setConditionCd(conditionCode);
+        this.setUiDisplay("Link");
+        this.setIndentLevelNbr((short) 2);
+        this.setParentIsCd("30");
+        this.setCodeSetNm("LDF_PAGE_SET");
+        this.setSeqNum((short) 1);
+        this.setCodeVersion(String.valueOf(1));
+        this.setEffectiveFromTime(conditionCode.getEffectiveFromTime());
+        this.setEffectiveToTime(conditionCode.getEffectiveToTime());
+        this.setNbsUid(nbsUid);
+        this.setStatusCd(conditionCode.getStatusCd());
+        this.setCodeShortDescTxt(conditionCode.getConditionDescTxt());
+        this.setDisplayRow(displayRow);
+        this.setDisplayColumn((short) 2);
+    }
+
+
 }

@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
-import { ConditionControllerService, ReadConditionRequest } from '../generated';
-import { Condition_Summaries_ } from '../generated/models/Condition_Summaries';
+import { ConditionControllerService, Page_Condition_, ReadConditionRequest } from '../generated';
 
 export const fetchConditions = (
     token: string,
@@ -8,14 +7,14 @@ export const fetchConditions = (
     page?: number,
     size?: number,
     sort?: string
-): Promise<Condition_Summaries_> => {
+): Promise<Page_Condition_> => {
     return ConditionControllerService.searchConditionsUsingPost({
         authorization: token,
-        search: search ? search : {},
+        search: search ?? {},
         page: page && page > 1 ? page - 1 : 0,
         size: size,
         sort
-    }).then((response: Condition_Summaries_) => {
+    }).then((response: Page_Condition_) => {
         return response;
     });
 };
