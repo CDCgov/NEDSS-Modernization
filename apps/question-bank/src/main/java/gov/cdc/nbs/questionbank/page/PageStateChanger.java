@@ -3,10 +3,17 @@ package gov.cdc.nbs.questionbank.page;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.exception.BadRequestException;
@@ -14,8 +21,11 @@ import gov.cdc.nbs.questionbank.exception.NotFoundException;
 import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PageStateChanger {
@@ -25,6 +35,15 @@ public class PageStateChanger {
 
     @Autowired
     private WaUiMetadataRepository waUiMetadataRepository;
+    
+    @Autowired
+    private WANNDMetadataRepository wanndMetadataRepository;
+    
+    @Autowired
+    private WARDBMetadataRepository wARDBMetadataRepository;
+    
+    @Autowired
+    private WaRuleMetaDataRepository waRuleMetaDataRepository;
 
     public PageStateResponse savePageAsDraft(Long id) {
         PageStateResponse response = new PageStateResponse();
@@ -52,6 +71,7 @@ public class PageStateChanger {
         return response;
     }
     
+    @Transactional
 	public PageStateResponse deletePageDraft(Long id) {
 		PageStateResponse response = new PageStateResponse();
 		try {
@@ -68,11 +88,25 @@ public class PageStateChanger {
 
 				if (pageOne.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
 					pageOne.setTemplateType(PageConstants.PUBLISHED);
+					wanndMetadataRepository.deleteByWaTemplateUid(pageTwo);
+					wanndMetadataRepository.flush();
+					wARDBMetadataRepository.deleteByWaTemplateUid(pageTwo);
+					wARDBMetadataRepository.flush();
+					waRuleMetaDataRepository.deleteByWaTemplateUid(pageTwo.getId());
+					waRuleMetaDataRepository.flush();
 					templateRepository.deleteById(pageTwo.getId());
+					templateRepository.flush();
 					templateRepository.save(pageOne);
 				} else {
 					pageTwo.setTemplateType(PageConstants.PUBLISHED);
+					wanndMetadataRepository.deleteByWaTemplateUid(pageOne);
+					wanndMetadataRepository.flush();
+					wARDBMetadataRepository.deleteByWaTemplateUid(pageOne);
+					wARDBMetadataRepository.flush();
+					waRuleMetaDataRepository.deleteByWaTemplateUid(pageOne.getId());
+					waRuleMetaDataRepository.flush();
 					templateRepository.deleteById(pageOne.getId());
+					templateRepository.flush();
 					templateRepository.save(pageTwo);
 				}
 
@@ -83,7 +117,10 @@ public class PageStateChanger {
 			}
 		} catch (PageUpdateException e) {
 			throw e;
+		} catch (EntityNotFoundException a) {
+		log.info("Skipping entity not found..");
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new PageUpdateException(PageConstants.DELETE_DRAFT_FAIL);
 		}
 		return response;

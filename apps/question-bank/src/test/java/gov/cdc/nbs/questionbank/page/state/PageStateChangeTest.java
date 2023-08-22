@@ -15,12 +15,15 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.PageStateChanger;
 import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 
 class PageStateChangeTest {
 
@@ -29,6 +32,15 @@ class PageStateChangeTest {
 
     @Mock
     private WaUiMetadataRepository waUiMetadataRepository;
+    
+    @Mock
+    private WANNDMetadataRepository wanndMetadataRepository;
+    
+    @Mock
+    private WARDBMetadataRepository wARDBMetadataRepository;
+    
+    @Mock
+    private WaRuleMetaDataRepository waRuleMetaDataRepository;
 
     @InjectMocks
     PageStateChanger pageStateChanger;
