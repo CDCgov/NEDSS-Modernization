@@ -43,7 +43,7 @@ export type { MessagingInfo } from './models/MessagingInfo';
 export type { MessagingInfo0 } from './models/MessagingInfo0';
 export { Numeric } from './models/Numeric';
 export type { NumericQuestion } from './models/NumericQuestion';
-export type { Page_GetCondition_ } from './models/Page_GetCondition_';
+export type { Page_Condition_ } from './models/Page_Condition_';
 export type { Page_PageSummary_ } from './models/Page_PageSummary_';
 export type { Page_Question_ } from './models/Page_Question_';
 export type { Page_Template_ } from './models/Page_Template_';

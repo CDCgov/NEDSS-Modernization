@@ -3,7 +3,7 @@ import React, { Ref } from 'react';
 
 type ModalProps = {
     modalRef?: Ref<ModalRef> | undefined;
-    modalHeading?: string;
+    modalHeading?: React.ReactNode | string;
     modalBody?: React.ReactNode | React.ReactNode[] | string;
     isLarge?: boolean;
 };
