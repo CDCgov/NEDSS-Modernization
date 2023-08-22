@@ -42,6 +42,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
     const { currentPage, setCurrentPage } = useContext(PagesContext);
 
     const handleSelectConditions = (event: ChangeEvent<HTMLInputElement>, condition: any) => {
+        console.log('selection', condition);
         if (selectedConditions.includes(condition.id)) {
             const newSelectedConditions = selectedConditions.filter((c) => c !== condition.id);
             setSelectedConditions(newSelectedConditions);
@@ -55,6 +56,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
     };
 
     const handleAddConditions = () => {
+        console.log('add called, current selection: ', selectedConditions);
         addConditions(selectedConditions);
     };
 

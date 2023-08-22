@@ -1,7 +1,9 @@
-import { Button, Form, Modal, ModalToggleButton, ModalRef } from '@trussworks/react-uswds';
+import { Button, Form, Modal, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditionLookup/QuickConditionLookup';
 import { Concept, Condition } from 'apps/page-builder/generated';
+import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
 import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
@@ -14,8 +16,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { UserContext } from 'user';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './AddNewPage.scss';
-import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
-import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 
 type FormValues = {
     conditionIds: string[];
@@ -60,8 +60,8 @@ export const AddNewPage = () => {
             .catch((error: any) => {
                 console.log('Error', error);
             });
-        fetchConditions(token, undefined, undefined, undefined, 'conditionShortNm,asc').then((data: any) => {
-            setConditions(data.content);
+        fetchConditions(token).then((data: Condition[]) => {
+            setConditions(data);
         });
         fetchTemplates(token).then((data: any) => {
             setTemplates(data);
@@ -69,7 +69,7 @@ export const AddNewPage = () => {
     }, [token]);
 
     const handleAddConditions = (conditions: string[]) => {
-        setValue('conditionIds', conditions);
+        setValue('conditionIds', conditions.concat(getValues('conditionIds')));
     };
 
     const onSubmit = handleSubmit(async (data) => {
@@ -92,7 +92,7 @@ export const AddNewPage = () => {
         setConditions(conditions.concat([condition]));
 
         // select new condition
-        setValue('conditionIds', [condition.id].concat(getValues('conditionIds')) as []);
+        setValue('conditionIds', [condition.id].concat(getValues('conditionIds')));
     };
 
     return (
