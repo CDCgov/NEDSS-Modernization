@@ -3,6 +3,10 @@
 /* eslint-disable */
 import type { Condition } from '../models/Condition';
 import type { CreateConditionRequest } from '../models/CreateConditionRequest';
+<<<<<<< HEAD
+=======
+import type { CreateConditionResponse } from '../models/CreateConditionResponse';
+>>>>>>> main
 import type { Page_Condition_ } from '../models/Page_Condition_';
 import type { ReadConditionRequest } from '../models/ReadConditionRequest';
 
