@@ -24,7 +24,7 @@ type Props = {
 };
 
 const tableHeaders = [
-    { name: 'Condition', sortable: true },
+    { name: 'Condition', sortable: true, className: 'asdf' },
     { name: 'Code', sortable: true },
     { name: 'Program area', sortable: true },
     { name: 'Condition Family', sortable: true },
@@ -96,7 +96,7 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
         tableDetails: [
             {
                 id: 1,
-                title: condition?.conditionShortNm || null
+                title: <div className="condition-name">{condition?.conditionShortNm || null}</div>
             },
             { id: 2, title: condition.id || null },
             {
@@ -132,7 +132,7 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
                     </Button>
                 </div>
             </ModalHeading>
-            <div className="modal-body">
+            <div className="condition-lookup-modal-body">
                 <p className="description">You can search for existing condition(s) or create a new one</p>
                 <div className="search-container">
                     <div style={{ display: 'flex' }}>
@@ -140,13 +140,15 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
                             inputSize="medium"
                             value={searchText}
                             onChange={(e) => handleSearch(e.target.value)}
-                            placeholder="Type something here..."
-                            id={'condition-search'}
+                            placeholder="Search by keyword"
+                            data-testid="condition-search"
+                            id="condition-search"
                             style={{ height: '41px', border: 'none' }}
                             name={'condition-search'}
                             type="search"
                         />
                         <Button
+                            data-testid="condition-search-btn"
                             type="button"
                             style={{ height: '41px', borderRadius: 0 }}
                             onClick={() => {
@@ -178,18 +180,26 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
                         currentPage={currentPage}
                         handleNext={setCurrentPage}
                         handleSelected={handleSelectConditions}
-                        rangeSelector={true}
                     />
                 ) : (
                     <div>No data </div>
                 )}
             </div>
-            <ModalFooter className="padding-2 margin-left-auto">
+            <ModalFooter className="padding-2 margin-left-auto footer">
                 <ButtonGroup className="flex-justify-end">
-                    <ModalToggleButton modalRef={modal} closer onClick={onClose} outline>
+                    <ModalToggleButton
+                        modalRef={modal}
+                        closer
+                        onClick={onClose}
+                        outline
+                        data-testid="condition-cancel-btn">
                         Cancel
                     </ModalToggleButton>
-                    <ModalToggleButton modalRef={modal} closer onClick={handleAddConditions}>
+                    <ModalToggleButton
+                        modalRef={modal}
+                        closer
+                        onClick={handleAddConditions}
+                        data-testid="condition-add-btn">
                         Add Condition
                     </ModalToggleButton>
                 </ButtonGroup>

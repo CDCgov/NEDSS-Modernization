@@ -124,7 +124,7 @@ export const AddNewPage = () => {
                                     onClick={() => {
                                         setShowQuickConditionLookup(!showQuickConditionLookup);
                                     }}>
-                                    Quick condition lookup
+                                    Search and add conditions(s)
                                 </a>
                                 &nbsp; or &nbsp;
                                 <NavLink to={'add/condition'}>Create new condition here</NavLink>
