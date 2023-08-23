@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 import { CodedValue } from 'coded';
 import { useEffect, useState } from 'react';
+import { useCountyCodedValues } from './useCountyCodedValues';
 
 const Query = gql`
     query locations {
@@ -34,18 +35,49 @@ function useCodedValueQuery(baseOptions?: Apollo.QueryHookOptions<Result, Variab
 
 const initial = {
     countries: [],
-    states: []
+    states: {
+        all: [],
+        byAbbreviation: () => null,
+        byValue: () => null
+    },
+    counties: {
+        byState: (state: string) => useCountyCodedValues(state).counties
+    }
+};
+
+type StateCodedValues = {
+    all: StateCodedValue[];
+    byAbbreviation: (_abbreviation: string) => StateCodedValue | null;
+    byValue: (_value: string | null) => StateCodedValue | null;
+};
+
+type CountyCodedValues = {
+    byState: (state: string) => CodedValue[];
 };
 
 type LocationCodedValues = {
     countries: CodedValue[];
-    states: StateCodedValue[];
+    states: StateCodedValues;
+    counties: CountyCodedValues;
 };
 
 const useLocationCodedValues = () => {
     const [coded, setCoded] = useState<LocationCodedValues>(initial);
 
-    const [getCodedValues] = useCodedValueQuery({ onCompleted: setCoded });
+    const handleCompleted = (values: Result) => {
+        setCoded({
+            ...initial,
+            countries: values.countries,
+            states: {
+                all: values.states,
+                byAbbreviation: (abbreviation: string) =>
+                    values.states.find((state) => state.abbreviation === abbreviation) ?? null,
+                byValue: (value: string | null) => values.states.find((state) => state.value === value) ?? null
+            }
+        });
+    };
+
+    const [getCodedValues] = useCodedValueQuery({ onCompleted: handleCompleted });
 
     useEffect(() => {
         getCodedValues();
@@ -54,5 +86,5 @@ const useLocationCodedValues = () => {
     return coded;
 };
 
-export { useLocationCodedValues };
-export type { LocationCodedValues, StateCodedValue };
+export { useLocationCodedValues, initial };
+export type { LocationCodedValues, StateCodedValue, StateCodedValues, CountyCodedValues };

@@ -1,169 +1,147 @@
-import {
-    Button,
-    ButtonGroup,
-    Form,
-    Grid,
-    Icon,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton
-} from '@trussworks/react-uswds';
-import './AddPatient.scss';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FormProvider, useForm } from 'react-hook-form';
+import { PersonInput, useCreatePatientMutation } from 'generated/graphql/schema';
+import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
+
+import { StateCodedValues, useLocationCodedValues } from 'location';
+import { ConfirmationModal } from 'confirmation';
+import { useAddPatientCodedValues } from './useAddPatientCodedValues';
+import { asPersonInput } from './asPersonInput';
+
 import NameFields from './components/nameFields/NameFields';
 import AddressFields from './components/addressFields/AddressFields';
 import ContactFields from './components/contactFields/ContactFields';
 import EthnicityFields from './components/ethnicityFields/EthnicityFields';
-import { useEffect, useRef, useState } from 'react';
 import { ACTIVE_TAB, LeftBar } from './components/LeftBar/LeftBar';
 import RaceFields from './components/Race/RaceFields';
 import GeneralInformation from './components/generalInformation/generalInformation';
 import { IdentificationFields } from './components/identificationFields/IdentificationFields';
-import { FormProvider, useForm } from 'react-hook-form';
 import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
-import {
-    NameUseCd,
-    NewPatientPhoneNumber,
-    NewPatientIdentification,
-    PersonInput,
-    useCreatePatientMutation
-} from 'generated/graphql/schema';
-import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
-import { useAddPatientCodedValues } from './useAddPatientCodedValues';
-import { useCountyCodedValues, useLocationCodedValues } from 'location';
-import { externalizeDateTime } from 'date';
 
-export default function AddPatient() {
+import './AddPatient.scss';
+import { VerifiableAdddress, AddressVerificationModal } from 'address/verification';
+import { orNull } from 'utils';
+import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'pages/patient/add';
+
+// The process of creating a patient is broken into steps once input is valid and the form has been submitted.
+//
+//      1.  Check Missing Fields
+//          - Go back   > Return to Entry
+//          - Continue  >> Verify Address
+//      2.  Verify Address
+//          if address has been entered
+//              if verified >> Create Patient
+//              if unverified
+//                  - Go back   > Return to Entry
+//                  - Continue  >> Create Patient
+//              if verified-found
+//                  - Go back   > Return to Entry
+//                  - Continue without update       >> Create Patient (with entered address)
+//                  - Update address and continue   >> Create Patient (with found address)
+//              -
+//          else    >>  Create Patient
+//      3.  Create Patient
+
+const asVerifiableAddress = (states: StateCodedValues, input: NewPatientEntry): VerifiableAdddress => ({
+    address1: orNull(input.streetAddress1),
+    city: orNull(input.city),
+    state: states.byValue(input.state),
+    zip: orNull(input.zip)
+});
+
+const withVerifiedAddress = (entry: NewPatientEntry, address: VerifiableAdddress): NewPatientEntry => ({
+    ...entry,
+    streetAddress1: address.address1,
+    city: address.city,
+    state: orNull(address.state?.value),
+    zip: address.zip
+});
+
+type EntryState =
+    | { step: 'entry' }
+    | {
+          step: 'verify-missing-fields' | 'verify-address' | 'create';
+          entry: NewPatientEntry;
+      }
+    | { step: 'created'; id: number; name: string };
+
+const resolveName = (input: PersonInput): string => {
+    const name = input?.names && input?.names[0];
+
+    return (name && [name.last, name.first].filter((e) => e).join(', ')) || 'Patient';
+};
+
+const AddPatient = () => {
     const navigate = useNavigate();
 
     const locations = useLocationCodedValues();
 
     const coded = useAddPatientCodedValues();
 
-    const [successSubmit, setSuccessSubmit] = useState<boolean>(false);
-
     const [handleSavePatient] = useCreatePatientMutation();
     const modalRef = useRef<ModalRef>(null);
 
-    function isEmpty(obj: any) {
-        for (const key in obj) {
-            if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
-        }
-        return true;
-    }
+    const [entryState, setEntryState] = useState<EntryState>({ step: 'entry' });
 
-    type formDefaultValueType = { [key: string]: [{ [key: string]: any }] };
-
-    const defaultValues: formDefaultValueType = {
-        identification: [{ type: null, authority: null, value: null }],
-        phoneNumbers: [{ cellPhone: null }],
-        emailAddresses: [{ email: null }]
-    };
-
-    const methods = useForm({
-        defaultValues: defaultValues
+    const methods = useForm<NewPatientEntry, DefaultNewPatentEntry>({
+        defaultValues: initialEntry()
     });
 
     const {
         handleSubmit,
         control,
-        formState: { errors, isValid }
+        formState: { errors }
     } = methods;
 
-    const submit = (data: any) => {
-        setSuccessSubmit(true);
-        const phoneNumbers: NewPatientPhoneNumber[] = [];
-        data?.emailAddresses?.map((item: any, index: number) => {
-            item.email = data?.[`emailAddresses_${index}`];
-        });
-        data?.phoneNumbers?.map((item: any, index: number) => {
-            item.cellPhone = data?.[`cellPhone_${index}`];
-            if (item.cellPhone) {
-                phoneNumbers.push({
-                    number: data?.[`cellPhone_${index}`],
-                    type: 'CP',
-                    use: 'MC'
-                });
-            }
-        });
-        if (data?.homePhone) {
-            phoneNumbers.push({
-                number: data?.homePhone,
-                type: 'PH',
-                use: 'H'
-            });
-        }
-        if (data?.workPhone) {
-            phoneNumbers.push({
-                number: data?.workPhone,
-                type: 'PH',
-                use: 'WP'
-            });
-        }
-        const addressObj = {
-            streetAddress1: data?.streetAddress1,
-            streetAddress2: data?.streetAddress2,
-            state: data?.state,
-            county: data?.county,
-            zip: data?.zip,
-            censusTract: data?.censusTract,
-            country: data?.country,
-            city: data?.city
-        };
-        const payload: PersonInput = {
-            asOf: externalizeDateTime(data.asOf),
-            comments: data?.additionalComments,
-            names: [
-                {
-                    last: data?.lastName,
-                    first: data?.firstName,
-                    middle: data?.middleName,
-                    suffix: data?.suffix,
-                    use: NameUseCd.L
-                }
-            ],
-            dateOfBirth: data?.dob,
-            birthGender: data?.birthSex,
-            currentGender: data?.gender,
-            deceased: data?.deceased,
-            maritalStatus: data?.maritalStatus,
-            stateHIVCase: data?.hivId,
-            ethnicity: data?.ethnicity,
-            races: data?.race,
-            phoneNumbers
-        };
+    const formHasErrors = Object.keys(errors).length > 0;
 
-        const hasIdentificationValues = data?.identification.filter((item: NewPatientIdentification) =>
-            Object.values(item).every((value) => value)
+    const cancelSubmission = () => {
+        setEntryState({ step: 'entry' });
+    };
+
+    const evaluateMissingFields = (entry: NewPatientEntry) => {
+        setEntryState({ step: 'verify-missing-fields', entry });
+    };
+
+    const evaluateAddress = () => {
+        setEntryState((existing) => ('entry' in existing ? { ...existing, step: 'verify-address' } : existing));
+    };
+
+    const prepareCreate = (address: VerifiableAdddress) => {
+        setEntryState((existing) =>
+            'entry' in existing ? { step: 'create', entry: withVerifiedAddress(existing.entry, address) } : existing
         );
+    };
 
-        if (hasIdentificationValues?.length > 0) {
-            payload.identifications = hasIdentificationValues;
-        }
-        if (data?.emailAddresses?.length > 0) {
-            payload.emailAddresses = data?.emailAddresses.map((it: any) => it.email).filter((str: any) => str);
-        }
-        if (!isEmpty(addressObj)) {
-            payload.addresses = [addressObj];
-        }
-        data?.dod && (payload.deceasedTime = format(new Date(data?.dod), `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`));
+    const create = (entry: NewPatientEntry) => {
+        const payload = asPersonInput(entry);
+        const name = resolveName(payload);
 
         handleSavePatient({
             variables: {
                 patient: payload
             }
-        }).then((re) => {
-            if (re.data) {
-                const name =
-                    data?.lastName || data?.firstName
-                        ? `${data?.lastName || ''}${(data?.lastName && ', ') || ''}${data?.firstName || ''}`
-                        : 'Patient';
-                navigate(`/add-patient/patient-added?shortId=${re?.data?.createPatient.shortId}&name=${name}`);
+        }).then((result) => {
+            if (result.data?.createPatient) {
+                setEntryState({ step: 'created', id: result?.data?.createPatient.shortId, name: name });
             }
         });
     };
+
+    useEffect(() => {
+        //  controls the modal visibility
+        const shown = entryState.step === 'verify-missing-fields' || entryState.step === 'verify-address';
+        modalRef.current?.toggleModal(undefined, shown);
+    }, [entryState.step]);
+
+    useEffect(() => {
+        if (entryState.step === 'create') {
+            create(entryState.entry);
+        } else if (entryState.step === 'created') {
+            navigate(`/add-patient/patient-added?shortId=${entryState.id}&name=${entryState.name}`);
+        }
+    }, [entryState.step]);
 
     useEffect(() => {
         const sections = Array.from(document.querySelectorAll('section[id]'));
@@ -213,187 +191,147 @@ export default function AddPatient() {
     }, []);
 
     return (
-        <>
-            {!successSubmit && (
-                <Grid
-                    row
-                    style={{
-                        height: 'calc(100vh - 82px)',
-                        overflow: 'hidden'
-                    }}>
-                    <Grid col={3} className="bg-white border-right border-base-light">
-                        <LeftBar activeTab={ACTIVE_TAB.PATIENT} />
-                    </Grid>
-                    <Grid col={9} className="margin-left-auto" style={{ position: 'relative' }}>
-                        <FormProvider {...methods}>
-                            <Form
-                                onSubmit={handleSubmit(submit)}
-                                className="width-full max-width-full"
-                                autoComplete="off">
-                                <Grid
-                                    row
-                                    className="page-title-bar bg-white"
-                                    style={{
-                                        position: 'sticky',
-                                        top: 0,
-                                        zIndex: 1
-                                    }}>
-                                    <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
-                                        New patient
-                                        <div className="button-group">
-                                            {!isValid && (
-                                                <Button className="padding-x-3 add-patient-button" type={'submit'}>
-                                                    Save changes
-                                                </Button>
-                                            )}
-
-                                            {isValid && (
-                                                <span>
-                                                    <ModalToggleButton
-                                                        modalRef={modalRef}
-                                                        opener
-                                                        className="delete-btn add-patient margin-y-0 display-inline-flex">
-                                                        Save changes
-                                                    </ModalToggleButton>
-                                                    <Modal
-                                                        ref={modalRef}
-                                                        id="example-incomplete-form-confirmation-modal"
-                                                        aria-labelledby="incomplete-form-confirmation-modal-heading"
-                                                        className="padding-0"
-                                                        aria-describedby="incomplete-form-confirmation-modal-description">
-                                                        <ModalHeading
-                                                            id="incomplete-form-confirmation-modal-heading"
-                                                            className="border-bottom border-base-lighter font-sans-lg padding-2">
-                                                            Missing data
-                                                        </ModalHeading>
-                                                        <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                                                            <Icon.Warning className="font-sans-2xl margin-x-2" />
-                                                            <h3>Are you sure?</h3>
-                                                        </div>
-                                                        <div className="margin-left-3">
-                                                            <p
-                                                                className="margin-left-9 padding-right-2"
-                                                                id="incomplete-form-confirmation-modal-description">
-                                                                You are about to add a new patient with missing data.
-                                                            </p>
-                                                        </div>
-                                                        <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                                                            <ButtonGroup>
-                                                                <ModalToggleButton outline modalRef={modalRef} closer>
-                                                                    Go back
-                                                                </ModalToggleButton>
-                                                                <ModalToggleButton
-                                                                    onClick={handleSubmit(submit)}
-                                                                    modalRef={modalRef}
-                                                                    closer
-                                                                    className="padding-105 text-center">
-                                                                    Continue anyways
-                                                                </ModalToggleButton>
-                                                            </ButtonGroup>
-                                                        </ModalFooter>
-                                                    </Modal>
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                </Grid>
-                                <div className="content">
-                                    <Grid row className="padding-3" style={{ height: '100%', overflow: 'hidden' }}>
-                                        <Grid col={9} style={{ height: 'calc(100vh - 160px)', overflow: 'auto' }}>
-                                            {!isValid && successSubmit && (
-                                                <div className="border-error bg-error-lighter margin-bottom-2 padding-right-1 grid-row flex-no-wrap border-left-1 flex-align-center">
-                                                    <Icon.Error className="font-sans-2xl margin-x-2" />
-                                                    <p id="form-error">
-                                                        You have some invalid inputs. Please correct the invalid inputs
-                                                        before moving forward.
-                                                    </p>
-                                                </div>
-                                            )}
-                                            <GeneralInformation
-                                                errors={errors}
-                                                control={control}
-                                                title="General information"
-                                                id={'section-General_information'}
-                                            />
-
-                                            <NameFields
-                                                id={'section-Name'}
-                                                title="Name information"
-                                                control={control}
-                                                coded={{ suffixes: coded.suffixes }}
-                                            />
-                                            <OtherInfoFields
-                                                control={control}
-                                                id={'section-Other'}
-                                                title="Other information"
-                                                coded={{
-                                                    deceased: coded.deceased,
-                                                    genders: coded.genders,
-                                                    maritalStatuses: coded.maritalStatuses
-                                                }}
-                                            />
-                                            <AddressFields
-                                                id={'section-Address'}
-                                                title="Address"
-                                                coded={{
-                                                    ...locations,
-                                                    byState: (state) => useCountyCodedValues(state).counties
-                                                }}
-                                            />
-                                            <ContactFields id={'section-Telephone'} title="Telephone" />
-                                            <EthnicityFields
-                                                id={'section-Ethnicity'}
-                                                title="Ethnicity"
-                                                coded={{
-                                                    ethnicGroups: coded.ethnicGroups
-                                                }}
-                                            />
-                                            <RaceFields
-                                                id={'section-Race'}
-                                                title={'Race'}
-                                                coded={{ raceCategories: coded.raceCategories }}
-                                            />
-                                            <IdentificationFields
-                                                id={'section-Identification'}
-                                                title="Identification"
-                                                coded={{
-                                                    identificationTypes: coded.identificationTypes,
-                                                    assigningAuthorities: coded.assigningAuthorities
-                                                }}
-                                            />
-                                            <div style={{ height: `calc(20%)` }} />
-                                        </Grid>
-
-                                        <Grid col={3} style={{ alignSelf: 'flex-start' }}>
-                                            <main className="content-container">
-                                                <aside className="content-sidebar">
-                                                    <nav className="content-navigation">
-                                                        <h3 className="content-navigation-title margin-top-0 margin-bottom-1">
-                                                            On this page
-                                                        </h3>
-                                                        <div className="border-left border-base-lighter">
-                                                            <a href="#section-General_information">
-                                                                General information
-                                                            </a>
-                                                            <a href="#section-Name">Name information</a>
-                                                            <a href="#section-Other">Other information</a>
-                                                            <a href="#section-Address">Address</a>
-                                                            <a href="#section-Telephone">Telephone</a>
-                                                            <a href="#section-Ethnicity">Ethnicity</a>
-                                                            <a href="#section-Race">Race</a>
-                                                            <a href="#section-Identification">Identification</a>
-                                                        </div>
-                                                    </nav>
-                                                </aside>
-                                            </main>
-                                        </Grid>
-                                    </Grid>
-                                </div>
-                            </Form>
-                        </FormProvider>
-                    </Grid>
-                </Grid>
+        <Grid
+            row
+            style={{
+                height: 'calc(100vh - 82px)',
+                overflow: 'hidden'
+            }}>
+            {entryState.step === 'verify-missing-fields' && (
+                <ConfirmationModal
+                    modal={modalRef}
+                    title="Missing data"
+                    message="Are you sure?"
+                    detail="You are about to add a new patient with missing data."
+                    confirmText="Continue anyways"
+                    onConfirm={evaluateAddress}
+                    cancelText="Go back"
+                    onCancel={cancelSubmission}
+                />
             )}
-        </>
+            {entryState.step === 'verify-address' && (
+                <AddressVerificationModal
+                    modal={modalRef}
+                    states={locations.states}
+                    input={asVerifiableAddress(locations.states, entryState.entry)}
+                    onConfirm={prepareCreate}
+                    onCancel={cancelSubmission}
+                />
+            )}
+            <Grid col={3} className="bg-white border-right border-base-light">
+                <LeftBar activeTab={ACTIVE_TAB.PATIENT} />
+            </Grid>
+            <Grid col={9} className="margin-left-auto" style={{ position: 'relative' }}>
+                <FormProvider {...methods}>
+                    <Form
+                        onSubmit={handleSubmit(evaluateMissingFields)}
+                        className="width-full max-width-full"
+                        autoComplete="off">
+                        <Grid
+                            row
+                            className="page-title-bar bg-white"
+                            style={{
+                                position: 'sticky',
+                                top: 0,
+                                zIndex: 1
+                            }}>
+                            <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
+                                New patient
+                                <div className="button-group">
+                                    <Button className="padding-x-3 add-patient-button" type={'submit'}>
+                                        Save changes
+                                    </Button>
+                                </div>
+                            </div>
+                        </Grid>
+                        <div className="content">
+                            <Grid row className="padding-3" style={{ height: '100%', overflow: 'hidden' }}>
+                                <Grid col={9} style={{ height: 'calc(100vh - 160px)', overflow: 'auto' }}>
+                                    {formHasErrors && (
+                                        <div className="border-error bg-error-lighter margin-bottom-2 padding-right-1 grid-row flex-no-wrap border-left-1 flex-align-center">
+                                            <Icon.Error className="font-sans-2xl margin-x-2" />
+                                            <p id="form-error">
+                                                You have some invalid inputs. Please correct the invalid inputs before
+                                                moving forward.
+                                            </p>
+                                        </div>
+                                    )}
+                                    <GeneralInformation
+                                        errors={errors}
+                                        control={control}
+                                        title="General information"
+                                        id={'section-General_information'}
+                                    />
+
+                                    <NameFields
+                                        id={'section-Name'}
+                                        title="Name information"
+                                        control={control}
+                                        coded={{ suffixes: coded.suffixes }}
+                                    />
+                                    <OtherInfoFields
+                                        control={control}
+                                        id={'section-Other'}
+                                        title="Other information"
+                                        coded={{
+                                            deceased: coded.deceased,
+                                            genders: coded.genders,
+                                            maritalStatuses: coded.maritalStatuses
+                                        }}
+                                    />
+                                    <AddressFields id={'section-Address'} title="Address" coded={locations} />
+                                    <ContactFields id={'section-Telephone'} title="Telephone" />
+                                    <EthnicityFields
+                                        id={'section-Ethnicity'}
+                                        title="Ethnicity"
+                                        coded={{
+                                            ethnicGroups: coded.ethnicGroups
+                                        }}
+                                    />
+                                    <RaceFields
+                                        id={'section-Race'}
+                                        title={'Race'}
+                                        coded={{ raceCategories: coded.raceCategories }}
+                                    />
+                                    <IdentificationFields
+                                        id={'section-Identification'}
+                                        title="Identification"
+                                        coded={{
+                                            identificationTypes: coded.identificationTypes,
+                                            assigningAuthorities: coded.assigningAuthorities
+                                        }}
+                                    />
+                                    <div style={{ height: `calc(20%)` }} />
+                                </Grid>
+
+                                <Grid col={3} style={{ alignSelf: 'flex-start' }}>
+                                    <main className="content-container">
+                                        <aside className="content-sidebar">
+                                            <nav className="content-navigation">
+                                                <h3 className="content-navigation-title margin-top-0 margin-bottom-1">
+                                                    On this page
+                                                </h3>
+                                                <div className="border-left border-base-lighter">
+                                                    <a href="#section-General_information">General information</a>
+                                                    <a href="#section-Name">Name information</a>
+                                                    <a href="#section-Other">Other information</a>
+                                                    <a href="#section-Address">Address</a>
+                                                    <a href="#section-Telephone">Telephone</a>
+                                                    <a href="#section-Ethnicity">Ethnicity</a>
+                                                    <a href="#section-Race">Race</a>
+                                                    <a href="#section-Identification">Identification</a>
+                                                </div>
+                                            </nav>
+                                        </aside>
+                                    </main>
+                                </Grid>
+                            </Grid>
+                        </div>
+                    </Form>
+                </FormProvider>
+            </Grid>
+        </Grid>
     );
-}
+};
+
+export { AddPatient };
