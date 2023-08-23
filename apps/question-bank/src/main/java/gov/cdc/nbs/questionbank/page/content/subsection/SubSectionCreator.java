@@ -47,11 +47,17 @@ public class SubSectionCreator {
 
     public DeleteSubSectionResponse deleteSubSection(DeleteSubSectionRequest request) {
         try {
-            log.info("Deleting section");
+            log.info("Deleting sub section");
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
-            waUiMetaDataRepository.deleteById(request.subSectionId());
-            waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.subSectionId());
-            return new DeleteSubSectionResponse(request.subSectionId(), "Sub Section Deleted Successfully");
+            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.subSectionId());
+            Long nbsComponentUid = waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
+            if(nbsComponentUid == 1010L || nbsComponentUid == 1015L || nbsComponentUid == null || nbsComponentUid == 1016L) {
+                waUiMetaDataRepository.deleteById(request.subSectionId());
+                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.subSectionId());
+                return new DeleteSubSectionResponse(request.subSectionId(), "Sub Section Deleted Successfully");
+            } else {
+                throw new DeleteSubSectionException("Conditions not satisfied");
+            }
         } catch(Exception exception) {
             throw new DeleteSubSectionException("Delete Sub Section exception");
         }

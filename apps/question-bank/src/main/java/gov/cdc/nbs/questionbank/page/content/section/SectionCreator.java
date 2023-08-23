@@ -51,9 +51,15 @@ public class SectionCreator {
         try {
             log.info("Deleting section");
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.sectionId());
-            waUiMetaDataRepository.deleteById(request.sectionId());
-            waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.sectionId());
-            return new DeleteSectionResponse(request.sectionId(), "Section Deleted Successfully");
+            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.sectionId());
+            Long nbsComponentUid = waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
+            if(nbsComponentUid == 1010L || nbsComponentUid == 1015L || nbsComponentUid == null ) {
+                waUiMetaDataRepository.deleteById(request.sectionId());
+                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.sectionId());
+                return new DeleteSectionResponse(request.sectionId(), "Section Deleted Successfully");
+            } else {
+                throw new DeleteSectionException("Conditions not satisfied");
+            }
         } catch(Exception exception) {
             throw new DeleteSectionException(exception.toString());
         }

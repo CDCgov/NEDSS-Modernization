@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,9 +74,38 @@ class AddSectionServiceTest {
         DeleteSectionRequest deleteSectionRequest =
                 new DeleteSectionRequest(123L);
 
+        Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
+                .thenReturn(1);
+
+        Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
+                .thenReturn(1234L);
+
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
+                .thenReturn(1015L);
+
         DeleteSectionResponse deleteSectionResponse =
                 createSectionService.deleteSection( deleteSectionRequest);
         assertEquals("Section Deleted Successfully", deleteSectionResponse.message());
+    }
+
+
+    @Test
+    void deleteSectionTestExceptionInElse() {
+
+        DeleteSectionRequest deleteSectionRequest =
+                new DeleteSectionRequest(123L);
+
+        Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
+                .thenReturn(1);
+
+        Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
+                .thenReturn(1234L);
+
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
+                .thenReturn(10100L);
+
+        assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection( deleteSectionRequest));
+
     }
 
     @Test
