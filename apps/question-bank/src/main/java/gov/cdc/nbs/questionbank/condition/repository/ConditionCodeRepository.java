@@ -7,12 +7,16 @@ import org.springframework.data.repository.query.Param;
 
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 
-public interface ConditionCodeRepository extends JpaRepository<ConditionCode, String>, QuerydslPredicateExecutor<ConditionCode> {
+public interface ConditionCodeRepository
+        extends JpaRepository<ConditionCode, String>, QuerydslPredicateExecutor<ConditionCode> {
 
     @Query("SELECT count(*) FROM ConditionCode c WHERE c.id=:id")
     long checkId(@Param("id") String id);
 
     @Query("SELECT count(*) FROM ConditionCode c WHERE c.conditionShortNm=:name")
     long checkConditionName(@Param("name") String name);
+
+    @Query("SELECT MAX(nbsUid) + 2 FROM ConditionCode")
+    long getNextNbsUid();
 
 }

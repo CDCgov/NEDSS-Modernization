@@ -12,14 +12,13 @@ import {
 import { ChangeEvent, RefObject, useContext, useEffect, useState } from 'react';
 import './QuickConditionLookup.scss';
 import { TableComponent, TableBody } from 'components/Table/Table';
-import { ConditionControllerService } from 'apps/page-builder/generated';
+import { ConditionControllerService, ReadConditionRequest } from 'apps/page-builder/generated';
 import { UserContext } from 'user';
 import { NavLink } from 'react-router-dom';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
 
 type Props = {
     modal: RefObject<ModalRef>;
-    onClose: () => void;
     addConditions: (conditions: string[]) => void;
 };
 
@@ -32,7 +31,7 @@ const tableHeaders = [
     { name: 'Status', sortable: true }
 ];
 
-export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) => {
+export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
     const [conditions, setConditions] = useState<any[]>([]);
     const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
     const [searchText, setSearchTerm] = useState('');
@@ -62,11 +61,11 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
     const handleSubmitSearch = (page: number) => {
         setLoading(true);
         const authorization = `Bearer ${state.getToken()}`;
-        const request = { searchText };
+        const search: ReadConditionRequest = { searchText };
 
-        ConditionControllerService.searchConditionUsingPost({
+        ConditionControllerService.searchConditionsUsingPost({
             authorization,
-            request,
+            search,
             page,
             size: 10
         })
@@ -117,7 +116,7 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
             ref={modal}
             forceAction
             id="quick-condition-lookup"
-            isInitiallyOpen={true}
+            isInitiallyOpen={false}
             isLarge
             aria-labelledby="incomplete-form-confirmation-modal-heading"
             className="padding-0"
@@ -127,7 +126,11 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
                 className="border-bottom border-base-lighter font-sans-lg padding-2">
                 <div className="header">
                     <div>Search and add condition(s)</div>
-                    <Button type="button" unstyled onClick={onClose} className="close-btn">
+                    <Button
+                        type="button"
+                        unstyled
+                        onClick={() => modal.current?.toggleModal(undefined, false)}
+                        className="close-btn">
                         <Icon.Close />
                     </Button>
                 </div>
@@ -187,12 +190,7 @@ export const QuickConditionLookup = ({ modal, onClose, addConditions }: Props) =
             </div>
             <ModalFooter className="padding-2 margin-left-auto footer">
                 <ButtonGroup className="flex-justify-end">
-                    <ModalToggleButton
-                        modalRef={modal}
-                        closer
-                        onClick={onClose}
-                        outline
-                        data-testid="condition-cancel-btn">
+                    <ModalToggleButton modalRef={modal} closer outline data-testid="condition-cancel-btn">
                         Cancel
                     </ModalToggleButton>
                     <ModalToggleButton

@@ -1,10 +1,11 @@
-import { render, waitFor, screen, act, getByTestId, fireEvent } from '@testing-library/react';
+import { render, screen, act, fireEvent } from '@testing-library/react';
 import { QuickConditionLookup } from './QuickConditionLookup';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { Direction } from 'sorting';
 import { Column } from 'apps/page-builder/pages/ManagePages/ManagePagesTable';
 import { BrowserRouter } from 'react-router-dom';
 import { ConditionControllerService } from 'apps/page-builder/generated/services/ConditionControllerService';
+import { ModalRef } from '@trussworks/react-uswds';
 
 const pageContext = {
     currentPage: 1,
@@ -22,9 +23,8 @@ const pageContext = {
     isLoading: false,
     setIsLoading: jest.fn()
 };
-const onClose = jest.fn();
 const addConditions = jest.fn();
-const mockSearchConditionUsingPost = jest.spyOn(ConditionControllerService, 'searchConditionUsingPost');
+const mockSearchConditionUsingPost = jest.spyOn(ConditionControllerService, 'searchConditionsUsingPost');
 
 beforeEach(async () => {
     mockSearchConditionUsingPost.mockResolvedValue({
@@ -60,7 +60,7 @@ describe('QuickConditionLookup', () => {
         const { baseElement } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -72,7 +72,7 @@ describe('QuickConditionLookup', () => {
         const { container } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -85,7 +85,7 @@ describe('QuickConditionLookup', () => {
         const { getByText } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -99,7 +99,7 @@ describe('QuickConditionLookup', () => {
         const { container } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -113,7 +113,7 @@ describe('QuickConditionLookup', () => {
         const { container } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -127,7 +127,7 @@ describe('QuickConditionLookup', () => {
         const { container } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -149,10 +149,10 @@ describe('QuickConditionLookup', () => {
 
     it('should display the correct table data', async () => {
         const modal = { current: null };
-        const { container } = render(
+        const {} = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -172,10 +172,10 @@ describe('QuickConditionLookup', () => {
 
     it('should have a cancel button', async () => {
         const modal = { current: null };
-        const { container, getByTestId } = render(
+        const { getByTestId } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -186,10 +186,10 @@ describe('QuickConditionLookup', () => {
 
     it('should have an add condition button', async () => {
         const modal = { current: null };
-        const { container, getByTestId } = render(
+        const { getByTestId } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -200,11 +200,11 @@ describe('QuickConditionLookup', () => {
 
     describe('when the cancel button is clicked', () => {
         it('should close the modal', async () => {
-            const modal = { current: null };
-            const { container, getByTestId } = render(
+            const modal: React.RefObject<ModalRef> = { current: null };
+            const { getByTestId } = render(
                 <BrowserRouter>
                     <PagesContext.Provider value={pageContext}>
-                        <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                        <QuickConditionLookup modal={modal} addConditions={addConditions} />
                     </PagesContext.Provider>
                 </BrowserRouter>
             );
@@ -213,17 +213,17 @@ describe('QuickConditionLookup', () => {
             act(() => {
                 cancelBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             });
-            expect(onClose).toHaveBeenCalled();
+            expect(modal.current?.modalIsOpen).toBeFalsy();
         });
     });
 
     describe('when the search button is clicked', () => {
         it('should search for the condition', async () => {
             const modal = { current: null };
-            const { container, getByTestId } = render(
+            const { getByTestId } = render(
                 <BrowserRouter>
                     <PagesContext.Provider value={pageContext}>
-                        <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                        <QuickConditionLookup modal={modal} addConditions={addConditions} />
                     </PagesContext.Provider>
                 </BrowserRouter>
             );
@@ -240,7 +240,7 @@ describe('QuickConditionLookup', () => {
             const { container, getByTestId } = render(
                 <BrowserRouter>
                     <PagesContext.Provider value={pageContext}>
-                        <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                        <QuickConditionLookup modal={modal} addConditions={addConditions} />
                     </PagesContext.Provider>
                 </BrowserRouter>
             );
@@ -261,7 +261,7 @@ describe('QuickConditionLookup', () => {
             expect(mockSearchConditionUsingPost).toHaveBeenCalledWith({
                 authorization: 'Bearer undefined',
                 page: 1,
-                request: {
+                search: {
                     searchText: 'hello'
                 },
                 size: 10
@@ -272,10 +272,10 @@ describe('QuickConditionLookup', () => {
     describe('when the add button is clicked', () => {
         it('should add the selected conditions', async () => {
             const modal = { current: null };
-            const { container, getByTestId } = render(
+            const { getByTestId } = render(
                 <BrowserRouter>
                     <PagesContext.Provider value={pageContext}>
-                        <QuickConditionLookup modal={modal} onClose={onClose} addConditions={addConditions} />
+                        <QuickConditionLookup modal={modal} addConditions={addConditions} />
                     </PagesContext.Provider>
                 </BrowserRouter>
             );

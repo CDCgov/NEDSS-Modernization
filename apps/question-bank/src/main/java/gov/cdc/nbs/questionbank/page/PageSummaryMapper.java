@@ -12,7 +12,7 @@ import gov.cdc.nbs.questionbank.entity.QCodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.QWaTemplate;
 import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 import gov.cdc.nbs.questionbank.page.model.PageSummary;
-import gov.cdc.nbs.questionbank.question.model.Condition;
+import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 
 @Component
 public class PageSummaryMapper {
@@ -50,8 +50,8 @@ public class PageSummaryMapper {
     }
 
     PageSummary toPageSummary(Tuple tuple) {
-        ArrayList<Condition> conditions = new ArrayList<>();
-        conditions.add(new Condition(tuple.get(conditionCode.id), tuple.get(conditionCode.conditionShortNm)));
+        ArrayList<ConditionSummary> conditions = new ArrayList<>();
+        conditions.add(new ConditionSummary(tuple.get(conditionCode.id), tuple.get(conditionCode.conditionShortNm)));
         return new PageSummary(
                 tuple.get(waTemplate.id),
                 getEventType(tuple.get(waTemplate.busObjType)),

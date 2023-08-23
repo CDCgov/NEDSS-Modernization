@@ -2,7 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type CreateConditionResponse = {
+export type ConditionSummary = {
     id?: string;
+    name?: string;
 };
 

@@ -171,7 +171,6 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     };
 
     const onDeleted = () => {
-        console.log("'asd':", 'asd');
         if (selected?.type == 'delete') {
             remove({
                 variables: {
