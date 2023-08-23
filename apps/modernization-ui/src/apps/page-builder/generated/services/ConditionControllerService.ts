@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type { Condition } from '../models/Condition';
 import type { CreateConditionRequest } from '../models/CreateConditionRequest';
-import type { CreateConditionResponse } from '../models/CreateConditionResponse';
 import type { Page_Condition_ } from '../models/Page_Condition_';
 import type { ReadConditionRequest } from '../models/ReadConditionRequest';
 
@@ -49,7 +48,7 @@ export class ConditionControllerService {
 
     /**
      * createCondition
-     * @returns CreateConditionResponse OK
+     * @returns Condition OK
      * @returns any Created
      * @throws ApiError
      */
@@ -62,7 +61,7 @@ export class ConditionControllerService {
          * request
          */
         request: CreateConditionRequest;
-    }): CancelablePromise<CreateConditionResponse | any> {
+    }): CancelablePromise<Condition | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/page-builder/api/v1/conditions/',

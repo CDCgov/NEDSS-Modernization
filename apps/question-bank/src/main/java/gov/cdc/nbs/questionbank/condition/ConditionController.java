@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
-import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +27,7 @@ public class ConditionController {
     private final UserDetailsProvider userDetailsProvider;
 
     @PostMapping
-    public CreateConditionResponse createCondition(@RequestBody CreateConditionRequest request) {
+    public Condition createCondition(@RequestBody CreateConditionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return conditionCreator.createCondition(request, userId);
     }
@@ -37,7 +36,6 @@ public class ConditionController {
     public List<Condition> findAllConditions() {
         return conditionReader.findAllConditions();
     }
-
 
     @GetMapping
     public Page<Condition> findConditions(@PageableDefault(size = 20) Pageable pageable) {
@@ -49,6 +47,5 @@ public class ConditionController {
             @PageableDefault(size = 20) Pageable pageable) {
         return conditionReader.searchCondition(search, pageable);
     }
-
 
 }

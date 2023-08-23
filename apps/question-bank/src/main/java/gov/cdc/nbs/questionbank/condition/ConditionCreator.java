@@ -1,17 +1,15 @@
 package gov.cdc.nbs.questionbank.condition;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
+import gov.cdc.nbs.questionbank.condition.model.Condition;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
-import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.entity.condition.LdfPageSet;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ConditionCreator {
-    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    Instant instant = timestamp.toInstant();
 
     @Autowired
     private ConditionCodeRepository conditionCodeRepository;
@@ -29,13 +25,12 @@ public class ConditionCreator {
     @Autowired
     private LdfPageSetRepository ldfPageSetRepository;
 
-    public CreateConditionResponse createCondition(CreateConditionRequest request, long userId) {
-        CreateConditionResponse response = new CreateConditionResponse();
-        String id = request.getId();
-        String conditionNm = request.getConditionShortNm();
+    public Condition createCondition(CreateConditionRequest request, long userId) {
+        String conditionNm = request.conditionShortNm();
+        long nbsUid = conditionCodeRepository.getNextNbsUid();
 
         //check if id already exists
-        if (checkId(id)) {
+        if (checkId(request.code())) {
             throw new ConditionCreateException("Condition Id already exists");
         }
 
@@ -45,83 +40,27 @@ public class ConditionCreator {
         }
 
         try {
-            ConditionCode conditionCode = new ConditionCode(conditionAdd(request, userId));
-            //setting default values for create condition
-            conditionCode.setIndentLevelNbr((short) 1);
-
-            //codeSetNm
-            String codeSetNm =
-                    conditionCode.getConditionCodesetNm() == null ? "PHC_TYPE" : conditionCode.getConditionCodesetNm();
-            conditionCode.setConditionCodesetNm(codeSetNm);
-            //conditionSeqNm
-            Short conditionSeqNm = conditionCode.getConditionSeqNum() == null ? 1 : conditionCode.getConditionSeqNum();
-            conditionCode.setConditionSeqNum(conditionSeqNm);
-            //assigning authority cd/txt
-            String assigningAuthorityCd = conditionCode.getAssigningAuthorityCd() == null ? "2.16.840.1.114222"
-                    : conditionCode.getAssigningAuthorityCd();
-            conditionCode.setAssigningAuthorityCd(assigningAuthorityCd);
-            String assigningAuthorityDescTxt =
-                    conditionCode.getAssigningAuthorityDescTxt() == null ? "Centers for Disease Control"
-                            : conditionCode.getAssigningAuthorityDescTxt();
-            conditionCode.setAssigningAuthorityDescTxt(assigningAuthorityDescTxt);
-
-            //code system
-            String codeSystemTxt = conditionCode.getCodeSystemDescTxt();
-            if (codeSystemTxt.equals("Local")) {
-                conditionCode.setCodeSystemCd("L");
-            } else if (codeSystemTxt.equals("SNOMED-CT")) {
-                conditionCode.setCodeSystemCd("2.16.840.1.113883.6.96");
-            } else {
-                conditionCode.setCodeSystemCd("2.16.840.1.114222.4.5.277");
-            }
-            //radio buttons
-            conditionCode.setNndInd('Y');
-            conditionCode.setReportableMorbidityInd('Y');
-            conditionCode.setReportableSummaryInd('N');
-            conditionCode.setContactTracingEnableInd('Y');
-            conditionCode.setIsModifiableInd('N');
-            //additional default values
-            conditionCode.setEffectiveFromTime(instant);
-            conditionCode.setStatusTime(instant);
-            conditionCode.setVaccineEnableInd('N');//ND-19671
-            conditionCode.setTreatmentEnableInd('Y');
-            conditionCode.setLabReportEnableInd('N');//ND-19671
-            conditionCode.setMorbReportEnableInd('Y');
-            conditionCode.setStatusCd('A');
-            conditionCode.setPortReqIndCd('F');
-            conditionCode.setConditionDescTxt(request.getConditionShortNm());
-
-            ConditionCode result = conditionCodeRepository.save(conditionCode);
-            //ldf
-            LdfPageSet ldf = new LdfPageSet();
-            ldf.setId(getLdfId());
-            ldf.setBusinessObjectNm("PHC");
-            ldf.setConditionCd(conditionCode);
-            ldf.setUiDisplay("Link");
-            ldf.setIndentLevelNbr((short) 2);
-            ldf.setParentIsCd("30");
-            ldf.setCodeSetNm("LDF_PAGE_SET");
-            ldf.setSeqNum((short) 1);
-            ldf.setCodeVersion(String.valueOf(1));
-            ldf.setEffectiveFromTime(conditionCode.getEffectiveFromTime());
-            ldf.setEffectiveToTime(conditionCode.getEffectiveToTime());
-            ldf.setNbsUid(ldfPageSetRepository.findNbsUid());
-            ldf.setStatusCd(conditionCode.getStatusCd());
-            ldf.setCodeShortDescTxt(conditionCode.getConditionDescTxt());
-            ldf.setDisplayRow(findDisplayRow());
-            ldf.setDisplayColumn((short) 2);
-            LdfPageSet ldfAdd = ldfPageSetRepository.save(ldf);
-            result.setLdf(ldfAdd);
-            conditionCodeRepository.save(result);
-
-            response.setId(result.getId());
+            ConditionCode conditionCode = new ConditionCode(conditionAdd(request, userId, nbsUid));
+            conditionCode.getLdfPageSets().add(
+                    new LdfPageSet(
+                            conditionCode,
+                            getLdfId(),
+                            ldfPageSetRepository.nextDisplayRow(),
+                            ldfPageSetRepository.nextNbsUid()));
+            conditionCode = conditionCodeRepository.save(conditionCode);
+            return new Condition(
+                    conditionCode.getId(),
+                    conditionCode.getConditionShortNm(),
+                    conditionCode.getProgAreaCd(),
+                    conditionCode.getFamilyCd(),
+                    conditionCode.getCoinfectionGrpCd(),
+                    conditionCode.getNndInd(),
+                    conditionCode.getInvestigationFormCd(),
+                    conditionCode.getStatusCd());
 
         } catch (Exception e) {
             throw new ConditionCreateException("Failed to create condition");
         }
-        return response;
-
-
     }
 
     public boolean checkId(String id) {
@@ -130,10 +69,6 @@ public class ConditionCreator {
 
     public boolean checkConditionNm(String conditionNm) {
         return (conditionNm != null && conditionCodeRepository.checkConditionName(conditionNm) > 0);
-    }
-
-    public short findDisplayRow() {
-        return (short) (ldfPageSetRepository.findMaxDisplayRow() + 1);
     }
 
     public String getLdfId() {
@@ -152,18 +87,19 @@ public class ConditionCreator {
         return currentYear + String.format("%03d", numericPart);
     }
 
-    public ConditionCommand.AddCondition conditionAdd(final CreateConditionRequest request, long userId) {
+    public ConditionCommand.AddCondition conditionAdd(final CreateConditionRequest request, long userId, long nbsUid) {
         return new ConditionCommand.AddCondition(
-                request.getId(),
-                request.getCodeSystemDescTxt(),
-                request.getConditionShortNm(),
-                request.getNndInd(),
-                request.getProgAreaCd(),
-                request.getReportableMorbidityInd(),
-                request.getReportableSummaryInd(),
-                request.getContactTracingEnableInd(),
-                request.getFamilyCd(),
-                request.getCoinfectionGrpCd(),
+                request.code(),
+                nbsUid,
+                request.codeSystemDescTxt(),
+                request.conditionShortNm(),
+                request.nndInd(),
+                request.progAreaCd(),
+                request.reportableMorbidityInd(),
+                request.reportableSummaryInd(),
+                request.contactTracingEnableInd(),
+                request.familyCd(),
+                request.coinfectionGrpCd(),
                 userId);
     }
 

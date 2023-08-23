@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 
 @Component
 public class PageMother {
@@ -22,13 +25,21 @@ public class PageMother {
     private WaTemplateRepository repository;
 
     @Autowired
-    private WaUiMetadataRepository waUiMetadataRepository;
+	private WaUiMetadataRepository waUiMetadatumRepository;
+    
+    @Autowired
+	private PageCondMappingRepository pageConMappingRepository;
+    
+    @Autowired
+	private WaRuleMetaDataRepository waRuleMetaDataRepository;
 
     private List<WaTemplate> allPages = new ArrayList<>();
 
-    public void clean() {
-        waUiMetadataRepository.deleteAll();
+    public void clean() {   	
+    	waUiMetadatumRepository.deleteAll();
         repository.deleteAll();
+        pageConMappingRepository.deleteAll();
+        waRuleMetaDataRepository.deleteAll();
         allPages.clear();
     }
 
@@ -119,6 +130,7 @@ public class PageMother {
         page.setAddUserId(1L);
         page.setLastChgTime(now);
         page.setLastChgUserId(1L);
+        
 
         PageCondMapping conditionMapping = new PageCondMapping();
         conditionMapping.setWaTemplateUid(page);
@@ -131,7 +143,30 @@ public class PageMother {
         page.setConditionMappings(Collections.singleton(conditionMapping));
 
         page = repository.save(page);
+        
+        // add page detail mappings
+        WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
+        WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
+        WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
+        WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
+        
+        waUiMetadatumRepository.save(tab);
+        waUiMetadatumRepository.save(section);
+        waUiMetadatumRepository.save(subSection);
+        waUiMetadatumRepository.save(question);
+        
         allPages.add(page);
         return page;
     }
+    
+    private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage, Long nbsUiComponentUid, Integer orderNumber) {
+		WaUiMetadata record = new WaUiMetadata();
+		record.setWaTemplateUid(aPage);
+		record.setNbsUiComponentUid(nbsUiComponentUid);
+		record.setOrderNbr(orderNumber);
+		record.setVersionCtrlNbr(0);
+		return record;
+	}
+    
+
 }
