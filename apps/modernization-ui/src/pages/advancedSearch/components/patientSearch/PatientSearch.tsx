@@ -134,6 +134,23 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         />
                     </Grid>
                     <Grid col={12}>
+                        <Controller
+                            control={control}
+                            name="patientId"
+                            render={({ field: { onChange, value } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    type="text"
+                                    label="Patient Id"
+                                    name="patientId"
+                                    htmlFor="patientId"
+                                    id="patientId"
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid col={12}>
                         <FormGroup error={selectedRecordStatus.length === 0}>
                             <Label htmlFor={''}>Include records that are</Label>
                             {selectedRecordStatus.length === 0 && (
@@ -240,6 +257,8 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         };
         body.dob && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
+        console.log(body);
+        body.patientId && (rowData.id = body.patientId);
 
         body.address && (rowData.address = body.address);
         body.city && (rowData.city = body.city);

@@ -616,6 +616,9 @@ export const AdvancedSearch = () => {
                 case 'sex':
                     tempPersonFilter = { ...tempPersonFilter, gender: undefined };
                     break;
+                case 'id':
+                    tempPersonFilter = { ...tempPersonFilter, id: undefined };
+                    break;
                 case 'dob':
                     tempPersonFilter = { ...tempPersonFilter, dateOfBirth: undefined };
                     break;
