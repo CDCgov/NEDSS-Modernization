@@ -1,3 +1,5 @@
+import { Config } from 'config';
+
 type Settings = {
     smarty?: {
         key: string;
@@ -16,18 +18,23 @@ type Configuration = {
     features: Features;
 };
 
+const defaultFeatures = {
+    ...{
+        address: {
+            autocomplete: false,
+            verification: false
+        }
+    },
+    ...Config.features
+};
+
 const initial: Configuration = {
     settings: {
         smarty: {
             key: '166215385741384990'
         }
     },
-    features: {
-        address: {
-            autocomplete: true,
-            verification: true
-        }
-    }
+    features: defaultFeatures
 };
 
 const useConfiguration = (): Configuration => initial;
