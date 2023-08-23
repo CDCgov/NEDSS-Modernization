@@ -2,7 +2,7 @@ package gov.cdc.nbs.questionbank.page.model;
 
 import java.time.Instant;
 import java.util.List;
-import gov.cdc.nbs.questionbank.question.model.Condition;
+import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 
 public record PageSummary(
         long id,
@@ -11,7 +11,7 @@ public record PageSummary(
         String description,
         String status,
         MessageMappingGuide messageMappingGuide,
-        List<Condition> conditions,
+        List<ConditionSummary> conditions,
         Instant lastUpdate,
         String lastUpdateBy) {
 

@@ -115,9 +115,9 @@ export const ConceptTable = ({ summaries, pages }: Props) => {
                 tableHead={tableColumns}
                 tableBody={tableRows}
                 isPagination={true}
-                pageSize={pages.pageSize}
-                totalResults={pages.totalElements}
-                currentPage={pages.currentPage}
+                pageSize={pages?.pageSize}
+                totalResults={pages?.totalElements}
+                currentPage={pages?.currentPage}
                 handleNext={setCurrentPage}
                 sortData={handleSort}
                 rangeSelector={true}

@@ -15,3 +15,21 @@ table.usa-table {
         overflow-x: auto;
     }
 }
+.usa-modal-wrapper.is-visible {
+    max-height: 100vh;
+    .usa-modal-overlay {
+        max-height: 100vh;
+        .usa-modal--lg {
+            max-height: 60vh;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            .usa-modal__content {
+                overflow: hidden;
+                max-height: 60vh;
+                .usa-modal__main {
+                    overflow-y: auto;
+                }
+            }
+        }
+    }
+}

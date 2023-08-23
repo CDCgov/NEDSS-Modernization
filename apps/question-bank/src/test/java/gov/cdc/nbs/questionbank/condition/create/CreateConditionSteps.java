@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
+import gov.cdc.nbs.questionbank.condition.model.Condition;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
-import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
 import gov.cdc.nbs.questionbank.condition.util.ConditionHolder;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.exception.BadRequestException;
@@ -39,7 +39,7 @@ public class CreateConditionSteps {
     private ConditionHolder conditionHolder;
 
     private CreateConditionRequest request;
-    private CreateConditionResponse response;
+    private Condition response;
 
 
     @Given("ConditionCd already exists")
@@ -48,17 +48,17 @@ public class CreateConditionSteps {
             userMother.adminUser();
             ConditionCode val = conditionMother.createCondition();
             conditionHolder.setConditionCode(val);
-            request = new CreateConditionRequest();
-            request.setCodeSystemDescTxt("Test1234");
-            request.setId("T1234567");
-            request.setConditionShortNm("Test1234");
-            request.setProgAreaCd("Test");
-            request.setFamilyCd("Test");
-            request.setCoinfectionGrpCd("Test");
-            request.setNndInd('Y');
-            request.setReportableMorbidityInd('Y');
-            request.setReportableSummaryInd('Y');
-            request.setContactTracingEnableInd('Y');
+            request = new CreateConditionRequest(
+                    "T1234567",
+                    "Test1234",
+                    "Test1234",
+                    "Test",
+                    'Y',
+                    'Y',
+                    'Y',
+                    'Y',
+                    "Test",
+                    "Test");
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -74,17 +74,17 @@ public class CreateConditionSteps {
             userMother.adminUser();
             ConditionCode val = conditionMother.createCondition();
             conditionHolder.setConditionCode(val);
-            request = new CreateConditionRequest();
-            request.setCodeSystemDescTxt("Test1234");
-            request.setId("T1234567");
-            request.setConditionShortNm("Sample Text");
-            request.setProgAreaCd("Test");
-            request.setFamilyCd("Test");
-            request.setCoinfectionGrpCd("Test");
-            request.setNndInd('Y');
-            request.setReportableMorbidityInd('Y');
-            request.setReportableSummaryInd('Y');
-            request.setContactTracingEnableInd('Y');
+            request = new CreateConditionRequest(
+                    "T1234567",
+                    "Test1234",
+                    "Sample Text",
+                    "Test",
+                    'Y',
+                    'Y',
+                    'Y',
+                    'Y',
+                    "Test",
+                    "Test");
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -98,17 +98,17 @@ public class CreateConditionSteps {
     public void i_am_an_admin_user_and_a_condition_does_not_exist() {
         userMother.adminUser();
         conditionHolder.setConditionCode(null);
-        request = new CreateConditionRequest();
-        request.setCodeSystemDescTxt("Test1234");
-        request.setId("A1234567");
-        request.setConditionShortNm("Sample");
-        request.setProgAreaCd("STD");
-        request.setFamilyCd("Test");
-        request.setCoinfectionGrpCd("Test");
-        request.setNndInd('Y');
-        request.setReportableMorbidityInd('Y');
-        request.setReportableSummaryInd('Y');
-        request.setContactTracingEnableInd('Y');
+        request = new CreateConditionRequest(
+                "A1234567",
+                "Test1234",
+                "Sample",
+                "STD",
+                'Y',
+                'Y',
+                'Y',
+                'Y',
+                "Test",
+                "Test");
     }
 
     @When("I send a create condition request")
