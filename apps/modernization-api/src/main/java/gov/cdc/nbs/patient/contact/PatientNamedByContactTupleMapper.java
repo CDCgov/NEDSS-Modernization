@@ -7,8 +7,8 @@ import gov.cdc.nbs.entity.odse.QInterview;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPublicHealthCase;
 import gov.cdc.nbs.entity.srte.QConditionCode;
-import gov.cdc.nbs.investigation.association.AssociatedWith;
-import gov.cdc.nbs.investigation.association.AssociatedWithTupleMapper;
+import gov.cdc.nbs.event.investigation.association.AssociatedWith;
+import gov.cdc.nbs.event.investigation.association.AssociatedWithTupleMapper;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.NameRenderer;
 
@@ -18,33 +18,31 @@ import java.util.Objects;
 class PatientNamedByContactTupleMapper {
 
     record Tables(
-        QCtContact tracing,
-        QPerson subject,
-        QPerson contact,
-        AssociatedWithTupleMapper.Tables associatedWith,
-        QInterview interview,
-        Coalesce<Instant> namedOn
+            QCtContact tracing,
+            QPerson subject,
+            QPerson contact,
+            AssociatedWithTupleMapper.Tables associatedWith,
+            QInterview interview,
+            Coalesce<Instant> namedOn
 
     ) {
         Tables {
             namedOn = new Coalesce<>(Instant.class)
-                .add(tracing.namedOnDate)
-                .add(interview.interviewDate)
-                .add(tracing.addTime);
+                    .add(tracing.namedOnDate)
+                    .add(interview.interviewDate)
+                    .add(tracing.addTime);
         }
 
         Tables() {
             this(
-                new QCtContact("tracing"),
-                new QPerson("subject"),
-                new QPerson("contact"),
-                new AssociatedWithTupleMapper.Tables(
-                    QPublicHealthCase.publicHealthCase,
-                    new QConditionCode("condition")
-                ),
-                new QInterview("interview"),
-                null
-            );
+                    new QCtContact("tracing"),
+                    new QPerson("subject"),
+                    new QPerson("contact"),
+                    new AssociatedWithTupleMapper.Tables(
+                            QPublicHealthCase.publicHealthCase,
+                            new QConditionCode("condition")),
+                    new QInterview("interview"),
+                    null);
         }
 
 
@@ -61,9 +59,8 @@ class PatientNamedByContactTupleMapper {
 
     PatientContacts.NamedByContact map(final Tuple tuple) {
         Long identifier = Objects.requireNonNull(
-            tuple.get(this.tables.tracing().id),
-            "A tracing identifier is required"
-        );
+                tuple.get(this.tables.tracing().id),
+                "A tracing identifier is required");
         Instant createdOn = tuple.get(this.tables.tracing().addTime);
         PatientContacts.Condition condition = mapCondition(tuple);
 
@@ -75,14 +72,13 @@ class PatientNamedByContactTupleMapper {
         AssociatedWith associatedWith = this.associatedMapper.map(tuple);
 
         return new PatientContacts.NamedByContact(
-            identifier,
-            createdOn,
-            condition,
-            contact,
-            namedOn,
-            event,
-            associatedWith
-        );
+                identifier,
+                createdOn,
+                condition,
+                contact,
+                namedOn,
+                event,
+                associatedWith);
     }
 
     private PatientContacts.NamedContact mapContact(final Tuple tuple) {
@@ -93,16 +89,14 @@ class PatientNamedByContactTupleMapper {
         Suffix suffix = tuple.get(this.tables.subject().nmSuffix);
 
         String name = NameRenderer.render(
-            prefix,
-            first,
-            last,
-            suffix
-        );
+                prefix,
+                first,
+                last,
+                suffix);
 
         return new PatientContacts.NamedContact(
-            Objects.requireNonNull(identifier, "A subject identifier is required."),
-            name
-        );
+                Objects.requireNonNull(identifier, "A subject identifier is required."),
+                name);
     }
 
     private PatientContacts.Condition mapCondition(final Tuple tuple) {

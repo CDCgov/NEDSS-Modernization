@@ -1,26 +1,22 @@
 package gov.cdc.nbs.patient.contact;
 
-import gov.cdc.nbs.investigation.association.AssociatedWith;
-
 import java.time.Instant;
 import java.util.Collection;
+import gov.cdc.nbs.event.investigation.association.AssociatedWith;
 
 public record PatientContacts(
         long patient,
         Collection<NamedByPatient> namedByPatient,
-        Collection<NamedByContact> namedByContact
-) {
+        Collection<NamedByContact> namedByContact) {
 
     record NamedContact(
             String local,
-            String name
-    ) {
+            String name) {
 
     }
     record Condition(
-        String id,
-        String description
-    ) {
+            String id,
+            String description) {
 
     }
     record NamedByPatient(
@@ -32,8 +28,7 @@ public record PatientContacts(
             String priority,
             String disposition,
             String event,
-            Investigation associatedWith
-    ) {
+            Investigation associatedWith) {
 
     }
 
@@ -45,8 +40,7 @@ public record PatientContacts(
             NamedContact contact,
             Instant namedOn,
             String event,
-            AssociatedWith associatedWith
-    ) {
+            AssociatedWith associatedWith) {
 
     }
 
@@ -54,7 +48,6 @@ public record PatientContacts(
     public record Investigation(
             long id,
             String local,
-            String condition
-    ) {
+            String condition) {
     }
 }

@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.profile.vaccination;
 
 import com.querydsl.core.Tuple;
-import gov.cdc.nbs.investigation.association.AssociatedWith;
+import gov.cdc.nbs.event.investigation.association.AssociatedWith;
 import gov.cdc.nbs.message.enums.Suffix;
 import org.junit.jupiter.api.Test;
 
@@ -65,9 +65,9 @@ class PatientVaccinationTupleMapperTest {
         PatientVaccination actual = mapper.map(tuple);
 
         assertThat(actual).extracting(PatientVaccination::associatedWith)
-            .returns(4127L, AssociatedWith::id)
-            .returns("investigation-local", AssociatedWith::local)
-            .returns("investigation-condition", AssociatedWith::condition);
+                .returns(4127L, AssociatedWith::id)
+                .returns("investigation-local", AssociatedWith::local)
+                .returns("investigation-condition", AssociatedWith::condition);
     }
 
     @Test
@@ -103,7 +103,7 @@ class PatientVaccinationTupleMapperTest {
 
 
         assertThatThrownBy(() -> mapper.map(tuple))
-            .hasMessageContaining("identifier is required");
+                .hasMessageContaining("identifier is required");
 
     }
 }

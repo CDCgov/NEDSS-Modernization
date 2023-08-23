@@ -1,6 +1,6 @@
 package gov.cdc.nbs.controller;
 
-import gov.cdc.nbs.investigation.InvestigationFilter;
+import gov.cdc.nbs.event.InvestigationFilter;
 import gov.cdc.nbs.redirect.search.EventFilterResolver;
 import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
 import gov.cdc.nbs.service.EncryptionService;

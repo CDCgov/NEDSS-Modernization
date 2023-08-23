@@ -6,10 +6,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
-import gov.cdc.nbs.investigation.InvestigationFilter;
-import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
-import gov.cdc.nbs.labreport.LabReportFilter;
-import gov.cdc.nbs.labreport.LabReportFilter.LaboratoryEventIdType;
+import gov.cdc.nbs.event.InvestigationFilter;
+import gov.cdc.nbs.event.LabReportFilter;
+import gov.cdc.nbs.event.InvestigationFilter.IdType;
+import gov.cdc.nbs.event.LabReportFilter.LaboratoryEventIdType;
 
 class EventFilterResolverTest {
     private static final String ACT_TYPE = "patientSearchVO.actType";

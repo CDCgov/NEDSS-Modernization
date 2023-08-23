@@ -6,8 +6,8 @@ import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.odse.QPublicHealthCase;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.entity.srte.QConditionCode;
-import gov.cdc.nbs.investigation.association.AssociatedWith;
-import gov.cdc.nbs.investigation.association.AssociatedWithTupleMapper;
+import gov.cdc.nbs.event.investigation.association.AssociatedWith;
+import gov.cdc.nbs.event.investigation.association.AssociatedWithTupleMapper;
 import gov.cdc.nbs.provider.ProviderNameTupleMapper;
 
 import java.time.Instant;
@@ -16,22 +16,19 @@ import java.util.Objects;
 class PatientVaccinationTupleMapper {
 
     record Tables(
-        QIntervention vaccination,
-        QCodeValueGeneral vaccine,
-        ProviderNameTupleMapper.Tables provider,
-        AssociatedWithTupleMapper.Tables associatedWith
-    ) {
+            QIntervention vaccination,
+            QCodeValueGeneral vaccine,
+            ProviderNameTupleMapper.Tables provider,
+            AssociatedWithTupleMapper.Tables associatedWith) {
 
         Tables() {
             this(
-                QIntervention.intervention,
-                new QCodeValueGeneral("vaccine"),
-                new ProviderNameTupleMapper.Tables(QPersonName.personName),
-                new AssociatedWithTupleMapper.Tables(
-                    QPublicHealthCase.publicHealthCase,
-                    new QConditionCode("condition")
-                )
-            );
+                    QIntervention.intervention,
+                    new QCodeValueGeneral("vaccine"),
+                    new ProviderNameTupleMapper.Tables(QPersonName.personName),
+                    new AssociatedWithTupleMapper.Tables(
+                            QPublicHealthCase.publicHealthCase,
+                            new QConditionCode("condition")));
         }
     }
 
@@ -49,9 +46,8 @@ class PatientVaccinationTupleMapper {
     PatientVaccination map(final Tuple tuple) {
 
         long identifier = Objects.requireNonNull(
-            tuple.get(this.tables.vaccination().id),
-            "A vaccination identifier is required."
-        );
+                tuple.get(this.tables.vaccination().id),
+                "A vaccination identifier is required.");
 
         Instant createdOn = tuple.get(this.tables.vaccination().addTime);
 
@@ -63,17 +59,16 @@ class PatientVaccinationTupleMapper {
         String event = tuple.get(this.tables.vaccination().localId);
 
         AssociatedWith associatedWith = this.associatedWithMapper.maybeMap(tuple)
-            .orElse(null);
+                .orElse(null);
 
         return new PatientVaccination(
-            identifier,
-            createdOn,
-            provider,
-            administeredOn,
-            administered,
-            event,
-            associatedWith
-        );
+                identifier,
+                createdOn,
+                provider,
+                administeredOn,
+                administered,
+                event,
+                associatedWith);
     }
 
 

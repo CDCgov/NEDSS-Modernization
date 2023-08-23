@@ -3,10 +3,11 @@ package gov.cdc.nbs.redirect.search;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import gov.cdc.nbs.investigation.InvestigationFilter;
-import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
-import gov.cdc.nbs.labreport.LabReportFilter;
-import gov.cdc.nbs.labreport.LabReportFilter.LaboratoryEventIdType;
+import gov.cdc.nbs.event.EventFilter;
+import gov.cdc.nbs.event.InvestigationFilter;
+import gov.cdc.nbs.event.LabReportFilter;
+import gov.cdc.nbs.event.InvestigationFilter.IdType;
+import gov.cdc.nbs.event.LabReportFilter.LaboratoryEventIdType;
 
 @Component
 public class EventFilterResolver {
@@ -30,7 +31,7 @@ public class EventFilterResolver {
      * @param map
      * @return
      */
-    public Object resolve(Map<String, String> map) {
+    public EventFilter resolve(Map<String, String> map) {
         if (StringUtils.hasText(map.get(ACT_TYPE)) && StringUtils.hasText(map.get(ID_FIELD))) {
             String id = map.get(ID_FIELD);
             // Attempt to parse an investigation filter
