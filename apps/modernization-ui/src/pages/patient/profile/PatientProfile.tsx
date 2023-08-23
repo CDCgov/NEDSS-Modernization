@@ -21,6 +21,7 @@ import { PatientProfileSummary } from './summary/PatientProfileSummary';
 import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 import { resolveDeleteMessage } from './resolveDeleteMessage';
+import { MessageModal } from 'messageModal';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -86,8 +87,6 @@ export const PatientProfile = () => {
                         Print
                     </Button>
                     <ModalToggleButton
-                        disabled={deletability !== DeletabilityResult.Deletable}
-                        title={resolveDeleteMessage(deletability)}
                         modalRef={modalRef}
                         opener
                         className="delete-btn display-inline-flex"
@@ -95,39 +94,43 @@ export const PatientProfile = () => {
                         <Icon.Delete className="margin-right-05" />
                         Delete patient
                     </ModalToggleButton>
-                    <Modal
-                        ref={modalRef}
-                        id="example-modal-1"
-                        aria-labelledby="modal-1-heading"
-                        className="padding-0"
-                        aria-describedby="modal-1-description">
-                        <ModalHeading
-                            id="modal-1-heading"
-                            className="border-bottom border-base-lighter font-sans-lg padding-2">
-                            Permanently delete patient?
-                        </ModalHeading>
-                        <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                            <Icon.Warning className="font-sans-2xl margin-x-2" />
-                            <p id="modal-1-description">
-                                Would you like to permanently delete patient record {profile?.patient?.shortId},{' '}
-                                {`${profile?.summary?.legalName?.last}, ${profile?.summary?.legalName?.first}`}
-                            </p>
-                        </div>
-                        <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                            <ButtonGroup>
-                                <ModalToggleButton outline modalRef={modalRef} closer>
-                                    No, go back
-                                </ModalToggleButton>
-                                <ModalToggleButton
-                                    onClick={handleDeletePatient}
-                                    modalRef={modalRef}
-                                    closer
-                                    className="padding-105 text-center">
-                                    Yes, delete
-                                </ModalToggleButton>
-                            </ButtonGroup>
-                        </ModalFooter>
-                    </Modal>
+                    {deletability !== DeletabilityResult.Deletable ? (
+                        <MessageModal modal={modalRef} title={`Warning`} message={resolveDeleteMessage(deletability)} />
+                    ) : (
+                        <Modal
+                            ref={modalRef}
+                            id="example-modal-1"
+                            aria-labelledby="modal-1-heading"
+                            className="padding-0"
+                            aria-describedby="modal-1-description">
+                            <ModalHeading
+                                id="modal-1-heading"
+                                className="border-bottom border-base-lighter font-sans-lg padding-2">
+                                Permanently delete patient?
+                            </ModalHeading>
+                            <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
+                                <Icon.Warning className="font-sans-2xl margin-x-2" />
+                                <p id="modal-1-description">
+                                    Would you like to permanently delete patient record {profile?.patient?.shortId},{' '}
+                                    {`${profile?.summary?.legalName?.last}, ${profile?.summary?.legalName?.first}`}
+                                </p>
+                            </div>
+                            <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
+                                <ButtonGroup>
+                                    <ModalToggleButton outline modalRef={modalRef} closer>
+                                        No, go back
+                                    </ModalToggleButton>
+                                    <ModalToggleButton
+                                        onClick={handleDeletePatient}
+                                        modalRef={modalRef}
+                                        closer
+                                        className="padding-105 text-center">
+                                        Yes, delete
+                                    </ModalToggleButton>
+                                </ButtonGroup>
+                            </ModalFooter>
+                        </Modal>
+                    )}
                 </div>
             </div>
             <div className="main-body">
