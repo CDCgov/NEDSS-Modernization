@@ -78,5 +78,6 @@ describe('InvestigationResults component tests', () => {
         expect(getByText('7/21/2023')).toBeInTheDocument();
         expect(getByText('OPEN')).toBeInTheDocument();
         expect(getByText('Clayton County')).toBeInTheDocument();
+        expect(getByText('2019 Novel Coronavirus').closest('a')).toHaveAttribute('href', '#');
     });
 });
