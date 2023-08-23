@@ -20,14 +20,14 @@ export default function NameFields({ id, title, control, coded }: Props) {
                         <Controller
                             control={control}
                             name="lastName"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
                                     type="text"
                                     label="Last"
                                     defaultValue={value}
-                                    htmlFor="lastName"
-                                    id="lastName"
+                                    htmlFor={name}
+                                    id={name}
                                 />
                             )}
                         />
@@ -38,13 +38,13 @@ export default function NameFields({ id, title, control, coded }: Props) {
                         <Controller
                             control={control}
                             name="firstName"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
                                     type="text"
                                     defaultValue={value}
-                                    htmlFor="firstName"
-                                    id="firstName"
+                                    htmlFor={name}
+                                    id={name}
                                     label="First"
                                 />
                             )}
@@ -56,13 +56,13 @@ export default function NameFields({ id, title, control, coded }: Props) {
                         <Controller
                             control={control}
                             name="middleName"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
                                     type="text"
                                     defaultValue={value}
-                                    htmlFor="middleName"
-                                    id="middleName"
+                                    htmlFor={name}
+                                    id={name}
                                     label="Middle"
                                 />
                             )}
@@ -74,12 +74,12 @@ export default function NameFields({ id, title, control, coded }: Props) {
                         <Controller
                             control={control}
                             name="suffix"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     onChange={onChange}
                                     defaultValue={value}
-                                    name="suffix"
-                                    htmlFor={'suffix'}
+                                    name={name}
+                                    htmlFor={name}
                                     label="Suffix"
                                     options={coded.suffixes}
                                 />

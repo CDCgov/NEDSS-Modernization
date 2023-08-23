@@ -147,7 +147,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                                         defaultValue={value}
                                         onChange={onChange}
                                         htmlFor={'state'}
-                                        options={coded.states}
+                                        options={coded.states.all}
                                     />
                                 )}
                             />
