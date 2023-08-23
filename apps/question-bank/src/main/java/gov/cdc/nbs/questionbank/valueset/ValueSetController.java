@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
@@ -36,7 +37,7 @@ public class ValueSetController {
     private final ValueSetReader valueSetReador;
     private final ValueSetUpdater valueSetUpdater;
     private final ValueSetCreator valueSetCreator;
-    private final ConceptUpdater conceptUpdater;
+    private final ConceptManager conceptManager;
     private final UserDetailsProvider userDetailsProvider;
 
     @PostMapping
@@ -88,7 +89,13 @@ public class ValueSetController {
             @PathVariable String codeSetNm,
             @PathVariable String conceptCode,
             @RequestBody UpdateConceptRequest request) {
-        return conceptUpdater.update(codeSetNm, conceptCode, request);
+        return conceptManager.update(codeSetNm, conceptCode, request);
+    }
+
+    @PostMapping("{codeSetNm}/concepts")
+    public Concept addConcept(@PathVariable String codeSetNm, @RequestBody AddConceptRequest request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return conceptManager.addConcept(codeSetNm, request, userId);
     }
 
 }

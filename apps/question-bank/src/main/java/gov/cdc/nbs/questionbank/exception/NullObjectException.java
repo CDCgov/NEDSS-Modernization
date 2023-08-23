@@ -1,6 +1,4 @@
-package gov.cdc.nbs.questionbank.question.exception;
-
-import gov.cdc.nbs.questionbank.exception.BadRequestException;
+package gov.cdc.nbs.questionbank.exception;
 
 public class NullObjectException extends BadRequestException {
 

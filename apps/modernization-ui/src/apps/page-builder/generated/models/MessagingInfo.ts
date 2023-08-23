@@ -3,11 +3,9 @@
 /* eslint-disable */
 
 export type MessagingInfo = {
-    codeSystem?: string;
-    hl7DataType?: string;
-    includedInMessage?: boolean;
-    labelInMessage?: string;
-    messageVariableId?: string;
-    requiredInMessage?: boolean;
+    codeSystem: string;
+    conceptCode: string;
+    conceptName: string;
+    preferredConceptName: string;
 };
 
