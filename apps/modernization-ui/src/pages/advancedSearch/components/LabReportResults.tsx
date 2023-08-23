@@ -92,12 +92,12 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
             <Grid row gap={3}>
                 <Grid col={12} className="margin-bottom-2">
                     <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
-                    <p
+                    <a
                         onClick={redirectPatientProfile}
                         className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                         style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
                         {name}
-                    </p>
+                    </a>
                 </Grid>
                 <Grid col={12} className="margin-bottom-2">
                     <div className="grid-row flex-align-center">
