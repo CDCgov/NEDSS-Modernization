@@ -2,10 +2,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import './CreateQuestion.scss';
 import ReactSelect, { components } from 'react-select';
 import { ModalToggleButton, Radio, TextInput, Dropdown, Icon } from '@trussworks/react-uswds';
-import { ProgramAreaControllerService, ValueSetControllerService, QuestionControllerService } from '../../generated';
+import { ValueSetControllerService, QuestionControllerService } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
+import {
+    singleSelect,
+    multiSelect,
+    expandIcon,
+    textBox,
+    textArea,
+    multiSelectList,
+    calender
+} from '../../constant/svg';
+import { fieldType } from '../../constant/constant';
 
 export const CreateQuestion = ({ modalRef, question }: any) => {
     const init = {
@@ -31,6 +41,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         defaultValue: 'test@gmai.com',
         fieldLength: '50',
         mask: 'TXT',
+        fieldSize: '50',
         tooltip: '',
         displayControl: 0
     };
@@ -41,24 +52,11 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     // DropDown Options
     const [familyOptions, setFamilyOptions] = useState([]);
     const [groupOptions, setGroupOptions] = useState([]);
-    const [programAreaOptions, setProgramAreaOptions] = useState([]);
 
     const [isQuestionNotValid, setIsQuestionNotValid] = useState(false);
     const [isValidationFailure, setIsValidationFailure] = useState(false);
     const authorization = `Bearer ${state.getToken()}`;
 
-    const fetchProgramAreaOptions = () => {
-        ProgramAreaControllerService.getProgramAreasUsingGet({
-            authorization
-        }).then((response: any) => {
-            const data = response || [];
-            const programAreaList: any = [];
-            data.map((each: { value: never }) => {
-                programAreaList.push({ label: each.value, value: each.value });
-            });
-            setProgramAreaOptions(programAreaList);
-        });
-    };
     useEffect(() => {
         if (question?.id) {
             const updatedQuestion = { ...question, ...question?.messagingInfo, ...question?.dataMartInfo };
@@ -99,7 +97,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     useEffect(() => {
         fetchFamilyOptions();
         fetchGroupOptions();
-        fetchProgramAreaOptions();
     }, []);
 
     const buildOptions = (optionsToBuild: any[]) =>
@@ -139,6 +136,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             displayControl: 0,
             defaultValue: null,
             fieldLength: '50',
+            fieldSize: '50',
             mask: 'TXT'
         };
         QuestionControllerService.createQuestionUsingPost({
@@ -155,7 +153,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             ...questionData,
             tooltip: questionData.tooltip || ''
         };
-
         QuestionControllerService.updateQuestionUsingPut({
             authorization,
             id: question.id,
@@ -191,10 +188,8 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const isDisableBtn = label || uniqueName || labelInMessage;
 
     const formatOptionLabel = ({ value, label }: any) => (
-        <div key={value} style={{ display: 'flex', alignItems: 'center', lineHeight: '12px', marginTop: '-5px' }}>
-            <div style={{ marginRight: '16px' }}>
-                <Icon.List size={4} />
-            </div>
+        <div key={value} style={{ display: 'flex', alignItems: 'center', lineHeight: '12px' }}>
+            <div style={{ marginRight: '16px' }}>{renderIconFieldType(value)}</div>
             <div>{label}</div>
         </div>
     );
@@ -234,6 +229,28 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             <div className="multi-select select-indicator margin-top-neg-1" />
         </components.DropdownIndicator>
     );
+
+    const renderIconFieldType = (type: string): JSX.Element => {
+        const size = 3;
+        switch (type) {
+            case 'radio':
+                return singleSelect;
+            case 'check':
+                return multiSelect;
+            case 'dropdown':
+                return expandIcon;
+            case 'text':
+                return textBox;
+            case 'area':
+                return textArea;
+            case 'multi-select':
+                return multiSelectList;
+            case 'date-time':
+                return calender;
+            default:
+                return <Icon.List size={size} />;
+        }
+    };
 
     return (
         <div className="create-question">
@@ -280,7 +297,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 <br></br>
                 <ReactSelect
                     className="field-space"
-                    options={programAreaOptions}
+                    options={fieldType}
                     name="programArea"
                     placeholder="- Select -"
                     formatOptionLabel={formatOptionLabel}
@@ -450,6 +467,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         onBlur={(e: any) => validateQuestionLabel(e.target.value)}
                         value={questionData.messageVariableId}
+                        disabled={!questionData.includedInMessage}
                         onChange={handleQuestionInput}
                     />
                 </div>
@@ -466,6 +484,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         name="labelInMessage"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         value={questionData.labelInMessage}
+                        disabled={!questionData.includedInMessage}
                         onChange={handleQuestionInput}
                     />
                 </div>
@@ -477,6 +496,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     className="field-space"
                     id="codeSystem"
                     name="codeSystem"
+                    disabled={!questionData.includedInMessage}
                     defaultValue={questionData.codeSystem}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
@@ -498,6 +518,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     name="hl7DataType"
                     id="hl7DataType"
                     defaultValue={questionData.hl7DataType}
+                    disabled={!questionData.includedInMessage}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
