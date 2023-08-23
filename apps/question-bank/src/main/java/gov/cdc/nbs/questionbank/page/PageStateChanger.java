@@ -80,29 +80,51 @@ public class PageStateChanger {
 			Optional<WaTemplate> result = templateRepository.findById(id);
 			if (result.isPresent()) {
 				WaTemplate page = result.get();
-				if (!page.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
-					throw new PageUpdateException(PageConstants.DRAFT_NOT_FOUND);
+				
+				if (page.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
+					
+					WaTemplate draft = templateRepository.findByTemplateNmAndTemplateType(page.getTemplateNm(),
+							PageConstants.DRAFT);
+
+					wanndMetadataRepository.deleteByWaTemplateUid(draft);
+					wanndMetadataRepository.flush();
+					wARDBMetadataRepository.deleteByWaTemplateUid(draft);
+					wARDBMetadataRepository.flush();
+					waUiMetadataRepository.deleteByWaTemplateUid(draft);
+					waUiMetadataRepository.flush();
+					waRuleMetaDataRepository.deleteByWaTemplateUid(draft.getId());
+					waRuleMetaDataRepository.flush();
+					templateRepository.deleteById(draft.getId());
+					templateRepository.flush();
+
+					page.setTemplateType(PageConstants.PUBLISHED);
+					templateRepository.save(page);
+
+					response.setMessage(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS);
+					response.setTemplateId(page.getId());	
 				}
-
-				WaTemplate draft = templateRepository.findByTemplateNmAndTemplateType(page.getTemplateNm(),
-						PageConstants.DRAFT);
-
-				wanndMetadataRepository.deleteByWaTemplateUid(draft);
-				wanndMetadataRepository.flush();
-				wARDBMetadataRepository.deleteByWaTemplateUid(draft);
-				wARDBMetadataRepository.flush();
-				waUiMetadataRepository.deleteByWaTemplateUid(draft);
-				waUiMetadataRepository.flush();
-				waRuleMetaDataRepository.deleteByWaTemplateUid(draft.getId());
-				waRuleMetaDataRepository.flush();
-				templateRepository.deleteById(draft.getId());
-				templateRepository.flush();
-
-				page.setTemplateType(PageConstants.PUBLISHED);
-				templateRepository.save(page);
-
-				response.setMessage(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS);
-				response.setTemplateId(page.getId());
+				else if( page.getTemplateType().equals(PageConstants.DRAFT)) {
+                	
+                	wanndMetadataRepository.deleteByWaTemplateUid(page);
+					wanndMetadataRepository.flush();
+					wARDBMetadataRepository.deleteByWaTemplateUid(page);
+					wARDBMetadataRepository.flush();
+					waUiMetadataRepository.deleteByWaTemplateUid(page);
+					waUiMetadataRepository.flush();
+					waRuleMetaDataRepository.deleteByWaTemplateUid(page.getId());
+					waRuleMetaDataRepository.flush();
+					templateRepository.deleteById(page.getId());
+					templateRepository.flush();
+					
+					response.setMessage(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS);
+					response.setTemplateId(page.getId());
+                }
+				else {
+                
+				throw new PageUpdateException(PageConstants.DRAFT_NOT_FOUND);
+				
+				}
+				
 			} else {
 				throw new PageUpdateException(PageConstants.PAGE_NOT_FOUND);
 			}

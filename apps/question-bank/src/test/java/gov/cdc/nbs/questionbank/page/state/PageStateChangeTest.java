@@ -49,11 +49,22 @@ class PageStateChangeTest {
         MockitoAnnotations.openMocks(this);
     }
     
+    @Test
+	void deleteSinglePageDraft() {
+		Long requestId = 1l;
+		WaTemplate page = getTemplate(requestId, "DraftPage", "Draft");
+		when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(page));
+		PageStateResponse response = pageStateChanger.deletePageDraft(requestId);
+		assertEquals(requestId, response.getTemplateId());
+		assertEquals(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS, response.getMessage());
+
+	}
+    
 	@Test
 	void deletePageDraft() {
 		Long requestId = 1l;
-		WaTemplate page = getTemplate(requestId, "NoDraftPage", "Published With Draft");
-		WaTemplate draftPage = getTemplate(2l, "NoDraftPage", "Draft");
+		WaTemplate page = getTemplate(requestId, "DraftPage", "Published With Draft");
+		WaTemplate draftPage = getTemplate(2l, "DraftPage", "Draft");
 		when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(page));
 		when(templateRepository.findByTemplateNmAndTemplateType(Mockito.anyString(),Mockito.anyString())).thenReturn(draftPage);
 		PageStateResponse response = pageStateChanger.deletePageDraft(requestId);
