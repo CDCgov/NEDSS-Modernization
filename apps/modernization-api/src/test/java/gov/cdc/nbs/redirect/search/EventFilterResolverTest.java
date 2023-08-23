@@ -1,6 +1,7 @@
 package gov.cdc.nbs.redirect.search;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
@@ -143,5 +144,31 @@ class EventFilterResolverTest {
         assertEquals("someId", ((LabReportFilter) filter).getEventId().getLabEventId());
         assertEquals(LaboratoryEventIdType.LAB_ID,
                 ((LabReportFilter) filter).getEventId().getLabEventType());
+    }
+
+    @Test
+    void should_return_null_bad_type() {
+        // Given params for act type badType
+        Map<String, String> map = new HashMap<>();
+        map.put(ACT_TYPE, "badType");
+        map.put(ID_FIELD, "someId");
+
+        // When resolving the filter
+        Object filter = resolver.resolve(map);
+
+        // Then a null is returned
+        assertNull(filter);
+    }
+
+    @Test
+    void should_return_null_bad_no_params() {
+        // Given empty parameters
+        Map<String, String> map = new HashMap<>();
+
+        // When resolving the filter
+        Object filter = resolver.resolve(map);
+
+        // Then a null is returned
+        assertNull(filter);
     }
 }

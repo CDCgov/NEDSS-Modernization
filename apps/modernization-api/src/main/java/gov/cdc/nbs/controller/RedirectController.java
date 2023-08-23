@@ -52,17 +52,15 @@ public class RedirectController {
         var redirectedUrl = redirect.getUrl();
         if (redirectedUrl != null && redirectedUrl.equals(ADVANCED_SEARCH) && incomingParams.size() > 0) {
 
-            // Patient filter takes precedence
-            var patientFilter = patientFilterFromRequestParamResolver.resolve(incomingParams);
-            if (patientFilter != null) {
-                attributes.addAttribute("q", encryptionService.handleEncryption(patientFilter));
+            // Event filter takes precedence
+            var eventFilter = eventFilterResolver.resolve(incomingParams);
+            if (eventFilter != null) {
+                attributes.addAttribute("q", encryptionService.handleEncryption(eventFilter));
+                String type = eventFilter instanceof InvestigationFilter ? "investigation" : "labReport";
+                attributes.addAttribute("type", type);
             } else {
-                var eventFilter = eventFilterResolver.resolve(incomingParams);
-                if (eventFilter != null) {
-                    attributes.addAttribute("q", encryptionService.handleEncryption(eventFilter));
-                    String type = eventFilter instanceof InvestigationFilter ? "investigation" : "labReport";
-                    attributes.addAttribute("type", type);
-                }
+                var patientFilter = patientFilterFromRequestParamResolver.resolve(incomingParams);
+                attributes.addAttribute("q", encryptionService.handleEncryption(patientFilter));
             }
         }
         return redirect;
