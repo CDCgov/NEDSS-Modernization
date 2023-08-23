@@ -95,7 +95,11 @@ export const PatientProfile = () => {
                         Delete patient
                     </ModalToggleButton>
                     {deletability !== DeletabilityResult.Deletable ? (
-                        <MessageModal modal={modalRef} title={`Warning`} message={resolveDeleteMessage(deletability)} />
+                        <MessageModal
+                            modal={modalRef}
+                            title={`The patient cannot be deleted`}
+                            message={resolveDeleteMessage(deletability)}
+                        />
                     ) : (
                         <Modal
                             ref={modalRef}
