@@ -3,11 +3,11 @@ package gov.cdc.nbs.redirect.search;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import gov.cdc.nbs.event.EventFilter;
-import gov.cdc.nbs.event.InvestigationFilter;
-import gov.cdc.nbs.event.LabReportFilter;
-import gov.cdc.nbs.event.InvestigationFilter.IdType;
-import gov.cdc.nbs.event.LabReportFilter.LaboratoryEventIdType;
+import gov.cdc.nbs.event.search.EventFilter;
+import gov.cdc.nbs.event.search.InvestigationFilter;
+import gov.cdc.nbs.event.search.LabReportFilter;
+import gov.cdc.nbs.event.search.InvestigationFilter.IdType;
+import gov.cdc.nbs.event.search.LabReportFilter.LaboratoryEventIdType;
 
 @Component
 public class EventFilterResolver {

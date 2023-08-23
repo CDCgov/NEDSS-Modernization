@@ -6,8 +6,8 @@ import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.odse.QPublicHealthCase;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.entity.srte.QConditionCode;
-import gov.cdc.nbs.event.investigation.association.AssociatedWith;
-import gov.cdc.nbs.event.investigation.association.AssociatedWithTupleMapper;
+import gov.cdc.nbs.event.search.investigation.association.AssociatedWith;
+import gov.cdc.nbs.event.search.investigation.association.AssociatedWithTupleMapper;
 import gov.cdc.nbs.provider.ProviderNameTupleMapper;
 
 import java.time.Instant;

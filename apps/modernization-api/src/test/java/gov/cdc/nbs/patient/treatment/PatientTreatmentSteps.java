@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.treatment;
 
+import gov.cdc.nbs.event.search.investigation.TestInvestigations;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.event.investigation.TestInvestigations;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;

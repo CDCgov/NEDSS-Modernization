@@ -2,8 +2,8 @@ package gov.cdc.nbs.patient.contact;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PublicHealthCase;
+import gov.cdc.nbs.event.search.investigation.InvestigationMother;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.event.investigation.InvestigationMother;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
