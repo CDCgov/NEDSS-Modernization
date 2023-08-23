@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type CreateConditionResponse = {
-    id?: string;
+export type ReadConditionRequest = {
+    searchText?: string;
 };
 

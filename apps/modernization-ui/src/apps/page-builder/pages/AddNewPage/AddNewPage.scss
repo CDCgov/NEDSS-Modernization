@@ -42,6 +42,22 @@
                 font-weight: 400;
                 margin-bottom: 0;
             }
+            a {
+                text-decoration: none;
+            }
+            .usa-button {
+                margin-top: 0.4rem;
+                font-size: 0.95rem;
+                text-decoration: none;
+                margin-top: 0;
+            }
+            button {
+                p {
+                    margin: 0;
+                    font-weight: 700;
+                    color: $color-primary;
+                }
+            }
         }
         .add-new-page__buttons {
             display: flex;

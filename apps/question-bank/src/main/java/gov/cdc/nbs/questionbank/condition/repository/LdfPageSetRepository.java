@@ -11,9 +11,9 @@ public interface LdfPageSetRepository extends JpaRepository<LdfPageSet, String> 
     @Query("SELECT id FROM LdfPageSet")
     List<String> findAllIds();
 
-    @Query("SELECT MAX(displayRow) FROM LdfPageSet")
-    Integer findMaxDisplayRow();
+    @Query("SELECT MAX(displayRow) + 1 FROM LdfPageSet")
+    Short nextDisplayRow();
 
-    @Query("SELECT MAX(nbsUid) FROM LdfPageSet")
-    Integer findNbsUid();
+    @Query("SELECT MAX(nbsUid) + 1 FROM LdfPageSet")
+    Integer nextNbsUid();
 }

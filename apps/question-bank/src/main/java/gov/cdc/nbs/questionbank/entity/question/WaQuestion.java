@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
-import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
+import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -47,7 +47,7 @@ public abstract class WaQuestion {
     private String questionIdentifier;
 
     public void setQuestionIdentifier(String questionIdentifier) {
-        this.questionIdentifier = requireNonNull(questionIdentifier, "Question Identifier must not be null");
+        this.questionIdentifier = requireNonNull(questionIdentifier, "Question Identifier");
     }
 
     @Column(name = "question_oid", length = 150)
@@ -66,14 +66,14 @@ public abstract class WaQuestion {
     private String questionLabel;
 
     public void setQuestionLabel(String label) {
-        this.questionLabel = requireNonNull(label, "Question label must not be null");
+        this.questionLabel = requireNonNull(label, "Question label");
     }
 
     @Column(name = "question_tool_tip", length = 2000)
     private String questionToolTip;
 
     public void setQuestionToolTip(String tooltip) {
-        this.questionToolTip = requireNonNull(tooltip, "Question tooltip must not be null");
+        this.questionToolTip = requireNonNull(tooltip, "Question tooltip");
     }
 
     @Column(name = "rdb_column_nm", length = 30)
@@ -111,7 +111,7 @@ public abstract class WaQuestion {
     private String questionNm;
 
     public void setQuestionNm(String questionName) {
-        this.questionNm = requireNonNull(questionName, "Question Name must not be null");
+        this.questionNm = requireNonNull(questionName, "Question Name");
     }
 
     public void setQuestionNm(QuestionCommand.UpdatableQuestionData command) {
@@ -127,14 +127,14 @@ public abstract class WaQuestion {
     private String subGroupNm;
 
     public void setSubGroupNm(String subgroup) {
-        this.subGroupNm = requireNonNull(subgroup, "Question subgroup name must not be null");
+        this.subGroupNm = requireNonNull(subgroup, "Question subgroup name");
     }
 
     @Column(name = "desc_txt", length = 2000)
     private String descTxt;
 
     public void setDescTxt(String descTxt) {
-        this.descTxt = requireNonNull(descTxt, "Description must not be null");
+        this.descTxt = requireNonNull(descTxt, "Description");
     }
 
     @Column(name = "rpt_admin_column_nm", length = 50)
@@ -171,7 +171,7 @@ public abstract class WaQuestion {
     private Long nbsUiComponentUid;
 
     public void setNbsUiComponentUid(Long displayControl) {
-        this.nbsUiComponentUid = requireNonNull(displayControl, "Question display control must not be null");
+        this.nbsUiComponentUid = requireNonNull(displayControl, "Question display control");
     }
 
     @Column(name = "standard_question_ind_cd")
@@ -184,7 +184,7 @@ public abstract class WaQuestion {
     private String questionType;
 
     public void setQuestionType(String questionCodeset) {
-        this.questionType = requireNonNull(questionCodeset, "CodeSet must not be null");
+        this.questionType = requireNonNull(questionCodeset, "CodeSet");
     }
 
     @Column(name = "admin_comment", length = 2000)
@@ -264,11 +264,11 @@ public abstract class WaQuestion {
         setNndMsgInd(data.includedInMessage() ? 'T' : 'F');
         if (data.includedInMessage()) {
             setQuestionIdentifierNnd(
-                    requireNonNull(data.messageVariableId(), "Message Variable Id must not be null"));
-            setQuestionLabelNnd(requireNonNull(data.labelInMessage(), "LabelInMessage must not be null"));
+                    requireNonNull(data.messageVariableId(), "Message Variable Id"));
+            setQuestionLabelNnd(requireNonNull(data.labelInMessage(), "LabelInMessage"));
             setStandardNndIndCd('F');
             setQuestionRequiredNnd(data.requiredInMessage() ? 'R' : 'O');
-            setQuestionDataTypeNnd(requireNonNull(data.hl7DataType(), "HL7 data type must not be null"));
+            setQuestionDataTypeNnd(requireNonNull(data.hl7DataType(), "HL7 data type"));
             setHl7SegmentField("OBX-3.0");
             setOrderGroupId("2");
         } else {
@@ -289,10 +289,10 @@ public abstract class WaQuestion {
      */
     public void setReportingData(QuestionCommand.CreateQuestionCommand command) {
         var data = command.reportingData();
-        setRdbColumnNm(requireNonNull(data.rdbColumnName(), "Rdb Column Name must not be null"));
+        setRdbColumnNm(requireNonNull(data.rdbColumnName(), "Rdb Column Name"));
         setGroupNm("GROUP_INV");
-        setRptAdminColumnNm(requireNonNull(data.reportLabel(), "Report label must not be null"));
-        setRdbTableNm(requireNonNull(data.defaultRdbTableName(), "Default RDB Table Name must not be null"));
+        setRptAdminColumnNm(requireNonNull(data.reportLabel(), "Report label"));
+        setRdbTableNm(requireNonNull(data.defaultRdbTableName(), "Default RDB Table Name"));
         setUserDefinedColumnNm(data.dataMartColumnName());
     }
 
@@ -300,9 +300,9 @@ public abstract class WaQuestion {
         var data = command.reportingData();
         // Can only update rdb column name if the question is not in use
         if (!command.questionData().questionInUse()) {
-            setRdbColumnNm(requireNonNull(data.rdbColumnName(), "Rdb Column Name must not be null"));
+            setRdbColumnNm(requireNonNull(data.rdbColumnName(), "Rdb Column Name"));
         }
-        setRptAdminColumnNm(requireNonNull(data.reportLabel(), "Report label must not be null"));
+        setRptAdminColumnNm(requireNonNull(data.reportLabel(), "Report label"));
         setUserDefinedColumnNm(data.dataMartColumnName());
     }
 
