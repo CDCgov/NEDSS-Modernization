@@ -4,6 +4,7 @@ import { LabReport, OrganizationParticipation, PersonParticipation } from '../..
 import { calculateAge } from '../../..//utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
+import { ClassicLink } from 'classic';
 
 type LabReportResultsProps = {
     data: [LabReport];
@@ -156,11 +157,13 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                     <Grid row gap={3}>
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">DOCUMENT TYPE</h5>
-                                            <p
+                                            <ClassicLink
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
-                                                style={{ wordBreak: 'break-word' }}>
+                                                url={`/nbs/api/profile/${getPatient(item)?.shortId}/report/lab/${
+                                                    item.id
+                                                }`}>
                                                 Lab Report
-                                            </p>
+                                            </ClassicLink>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
