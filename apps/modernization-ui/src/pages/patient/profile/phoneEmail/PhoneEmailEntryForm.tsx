@@ -50,6 +50,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     htmlFor={'asOf'}
                                     label="As of"
                                     errorMessage={error?.message}
+                                    required
                                 />
                             )}
                         />
@@ -69,6 +70,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     label="Type"
                                     options={coded.types}
                                     error={error?.message}
+                                    required
                                 />
                             )}
                         />
@@ -88,6 +90,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     label="Use"
                                     options={coded.uses}
                                     error={error?.message}
+                                    required
                                 />
                             )}
                         />

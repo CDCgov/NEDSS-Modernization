@@ -47,7 +47,9 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1 label-text">
-                    <label htmlFor="asOf">As of:</label>
+                    <label htmlFor="asOf">
+                        As of:<span className="text-red"> *</span>
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller

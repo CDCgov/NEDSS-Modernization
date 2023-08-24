@@ -26,7 +26,11 @@ export type GeneralInformationEntry = {
 };
 
 export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onCancel = () => {} }: Props) => {
-    const { handleSubmit, control } = useForm({ mode: 'onBlur' });
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
 
     const onSubmit = (entered: FieldValues) => {
         onChanged({
@@ -49,7 +53,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    As of:
+                    As of:<span className="text-red"> *</span>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -272,7 +276,8 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     <Button
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
-                        className="padding-105 text-center margin-top-0">
+                        className="padding-105 text-center margin-top-0"
+                        disabled={!isValid}>
                         Save
                     </Button>
                 </ButtonGroup>

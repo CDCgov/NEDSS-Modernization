@@ -23,6 +23,7 @@ describe('DatePickerInput component tests', () => {
 
             const label = getByTestId('label');
             expect(label).toHaveTextContent('Test DP Label');
+            expect(label.children.item(0)).toHaveTextContent('');
 
             const input = getByTestId('date-picker-internal-input');
             expect(input).toHaveValue('2022-12-31');
@@ -155,6 +156,25 @@ describe('DatePickerInput component tests', () => {
             const component = container.firstChild;
 
             expect(component).toHaveClass('error');
+        });
+    });
+
+    describe('when required is provided', () => {
+        it('should render DatePicker which has a label as Test DP Label*', () => {
+            const { container, getByTestId } = render(
+                <DatePickerInput
+                    id="test-dp-id"
+                    name="test-dp-name"
+                    label="Test DP Label"
+                    className="test-dp-class-name"
+                    htmlFor="test-dp-id"
+                    defaultValue="12/31/2022"
+                    required
+                />
+            );
+            const label = getByTestId('label');
+            expect(label).toHaveTextContent('Test DP Label');
+            expect(label.children.item(0)).toHaveTextContent('*');
         });
     });
 });

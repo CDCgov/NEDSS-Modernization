@@ -16,6 +16,7 @@ type DatePickerProps = {
     defaultValue?: string;
     errorMessage?: string;
     flexBox?: boolean;
+    required?: boolean;
     disabled?: boolean;
 };
 
@@ -41,6 +42,7 @@ export const DatePickerInput = ({
     defaultValue,
     flexBox,
     errorMessage,
+    required,
     disabled = false
 }: DatePickerProps) => {
     const emptyDefaultValue = !defaultValue || defaultValue.length === 0;
@@ -63,7 +65,12 @@ export const DatePickerInput = ({
 
     return !flexBox ? (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
-            {label && <Label htmlFor={htmlFor}>{label}</Label>}
+            {label && (
+                <Label htmlFor={htmlFor}>
+                    {label}
+                    <span className="text-red">{required && ' *'}</span>
+                </Label>
+            )}
             <ErrorMessage id={`${error}-message`}>{errorMessage}</ErrorMessage>
             {error && <small className="text-red">{'Not a valid date'}</small>}
             {!intialDefault && (
@@ -90,7 +97,14 @@ export const DatePickerInput = ({
         </div>
     ) : (
         <Grid row className={`date-picker-input ${error === true ? 'error' : ''}`}>
-            <Grid col={6}>{label && <Label htmlFor={htmlFor}>{label}</Label>}</Grid>
+            <Grid col={6}>
+                {label && (
+                    <Label htmlFor={htmlFor}>
+                        {label}
+                        <span className="text-red">{required && ' *'}</span>
+                    </Label>
+                )}
+            </Grid>
             <Grid col={6}>
                 {error && <small className="text-red">{'Not a valid date'}</small>}
                 {!intialDefault && (
