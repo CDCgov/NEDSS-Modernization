@@ -66,15 +66,15 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         <Controller
                             control={control}
                             name="lastName"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
                                     type="text"
                                     label="Last name"
-                                    name="lastName"
+                                    name={name}
                                     defaultValue={value}
-                                    htmlFor="lastName"
-                                    id="lastName"
+                                    htmlFor={name}
+                                    id={name}
                                     error={errors?.lastName && 'Last name is required.'}
                                 />
                             )}
@@ -84,15 +84,15 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         <Controller
                             control={control}
                             name="firstName"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
                                     label="First name"
-                                    name="firstName"
-                                    htmlFor="firstName"
-                                    id="firstName"
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
                                     error={errors?.firstName && 'First name is required.'}
                                 />
                             )}
@@ -102,13 +102,14 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         <Controller
                             control={control}
                             name="dob"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <DatePickerInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="dob"
-                                    htmlFor={'dob'}
+                                    name={name}
+                                    htmlFor={name}
                                     label="Date of birth"
+                                    id={name}
                                 />
                             )}
                         />
@@ -117,13 +118,14 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         <Controller
                             control={control}
                             name="gender"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="gender"
-                                    htmlFor={'gender'}
+                                    name={name}
+                                    htmlFor={name}
                                     label="Sex"
+                                    id={name}
                                     options={[
                                         { name: 'Male', value: Gender.M },
                                         { name: 'Female', value: Gender.F },
@@ -137,15 +139,15 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         <Controller
                             control={control}
                             name="patientId"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
                                     label="Patient Id"
-                                    name="patientId"
-                                    htmlFor="patientId"
-                                    id="patientId"
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
                                 />
                             )}
                         />
@@ -257,7 +259,6 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         };
         body.dob && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
-        console.log(body);
         body.patientId && (rowData.id = body.patientId);
 
         body.address && (rowData.address = body.address);
