@@ -10,23 +10,25 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
-import org.elasticsearch.core.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import gov.cdc.nbs.entity.odse.UserProfile;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
+import gov.cdc.nbs.questionbank.entity.UserProfile;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.UserProfileRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.exception.BadRequestException;
+import gov.cdc.nbs.questionbank.exception.QueryException;
 import gov.cdc.nbs.questionbank.page.PageDownloader;
 
  class PageDownloaderTest {
@@ -53,7 +55,7 @@ import gov.cdc.nbs.questionbank.page.PageDownloader;
 	@Test
 	void downloadLibrary() {
 		when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
-		when(pageConMappingRepository.findByWaTemplate(Mockito.any())).thenReturn(List.of(getMapping()));
+		when(pageConMappingRepository.findByWaTemplateUid(Mockito.any())).thenReturn(List.of(getMapping()));
 		when(conditionCodeRepository.findById(Mockito.anyString())).thenReturn(Optional.of(conditionCode()));
 		ByteArrayInputStream response = pageDownloader.downloadLibrary();
 		byte[] content = response.readAllBytes();
@@ -66,7 +68,7 @@ import gov.cdc.nbs.questionbank.page.PageDownloader;
 	
 	@Test
 	void downloadLibraryException() {
-	when(templateRepository.getAllPagesOrderedByName()).thenThrow(new IOException());
+	when(templateRepository.getAllPagesOrderedByName()).thenThrow(new QueryException("Error downloading Page Library"));
 	var exception = assertThrows(RuntimeException.class, () -> pageDownloader.downloadLibrary());
 	assertTrue(exception.getMessage().contains("Error downloading Page Library"));
 	
@@ -76,7 +78,7 @@ import gov.cdc.nbs.questionbank.page.PageDownloader;
 	@Test
 	void formatttedRelatedConditions() {
 		ConditionCode original = conditionCode();
-		when(pageConMappingRepository.findByWaTemplate(Mockito.any())).thenReturn(List.of(getMapping()));
+		when(pageConMappingRepository.findByWaTemplateUid(Mockito.any())).thenReturn(List.of(getMapping()));
 		when(conditionCodeRepository.findById(Mockito.anyString())).thenReturn(Optional.of(original));
 		String formattedCondition = pageDownloader.formatttedRelatedConditions(getTemplate(1l));
 		assertNotNull(formattedCondition);

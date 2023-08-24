@@ -12,18 +12,20 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import gov.cdc.nbs.entity.odse.UserProfile;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
+import gov.cdc.nbs.questionbank.entity.UserProfile;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.UserProfileRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import lombok.RequiredArgsConstructor;
 
-//
-
+@Service
+@RequiredArgsConstructor
 public class PageDownloader {
 
 	@Autowired
@@ -47,7 +49,7 @@ public class PageDownloader {
 				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format)) {
 			List<WaTemplate> pages = templateRepository.getAllPagesOrderedByName();
 			for (WaTemplate page : pages) {
-				List<String> data = Arrays.asList(page.getBusObjType(), page.getTemplateNm(), page.getTemplateType(),
+				List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
 						formatttedRelatedConditions(page), page.getLastChgTime().toString(),
 						getLastUpdatedUser(page.getLastChgUserId()));
 				csvPrinter.printRecord(data);
@@ -64,7 +66,7 @@ public class PageDownloader {
 
 	public String formatttedRelatedConditions(WaTemplate page) {
 		StringBuffer data = new StringBuffer();
-		List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplate(page);
+		List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUid(page);
 		for (PageCondMapping conMap : mappings) {
 			String conditionId = conMap.getConditionCd();
 			Optional<ConditionCode> condition = conditionCodeRepository.findById(conditionId);
@@ -82,6 +84,23 @@ public class PageDownloader {
 			return user.get().getFirstNm() + " " + user.get().getLastNm();
 		}
 		return " ";
+	}
+	
+	private String getEventType(String type) {
+		if (type == null || type.length() < 1)
+			return " ";
+		String display = switch (type) {
+		case "INV" -> "Investigation";
+		case "CON" -> "Contact";
+		case "VAC" -> "Vaccination";
+		case "IXS" -> "Interview";
+		case "SUS" -> "Lab Susceptibility";
+		case "LAB" -> "Lab Report";
+		case "ISO" -> "Lab Isolate Tracking";
+		default -> type;
+		};
+
+		return display;
 	}
 
 }

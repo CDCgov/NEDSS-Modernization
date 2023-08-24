@@ -34,7 +34,7 @@ public class PageDownloaderSteps {
 	    @Given("I am an admin user make an download page library request")
 	    public  void i_am_an_admin_user_make_an_download_page_library_request() {
 	    	 try {
-	    		 download = new ResponseEntity<Resource>(null);
+	    		 download = new ResponseEntity<Resource>(HttpStatus.OK);
 	             userMother.adminUser();
 	         } catch (AccessDeniedException e) {
 	             exceptionHolder.setException(e);
@@ -43,8 +43,8 @@ public class PageDownloaderSteps {
 	         }	
 	    }
 	    
-	    @When("when_i_make_a_request_to_download_page_library")
-	    public void when_i_make_a_request_to_download_page_library() {
+	    @When("I make a request to download page library")
+	    public void i_make_a_request_to_download_page_library() {
 	    	 try {
 	    		 download  = pageController.downloadPageLibrary();
 	         } catch (AccessDeniedException e) {
@@ -58,7 +58,7 @@ public class PageDownloaderSteps {
 	    @Then("Page library is downloaded")
 	    public void  page_library_is_downloaded() {
 	    	assertNotNull( download);
-	    	assertEquals(HttpStatus.OK.toString(), download.getStatusCode());
+	    	assertEquals(HttpStatus.OK, download.getStatusCode());
 	    	assertTrue(download.getHeaders().getContentDisposition().toString().contains("attachment; filename="));
 	    	assertTrue(download.getHeaders().getContentType().toString().contains("application/csv"));
 	    	

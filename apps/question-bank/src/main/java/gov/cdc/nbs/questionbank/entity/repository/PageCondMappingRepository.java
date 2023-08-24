@@ -8,6 +8,6 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 
 public interface PageCondMappingRepository extends JpaRepository<PageCondMapping, Long> {
 	
-	List<PageCondMapping> findByWaTemplate(WaTemplate page);
+	List<PageCondMapping> findByWaTemplateUid(WaTemplate page);
 
 }
