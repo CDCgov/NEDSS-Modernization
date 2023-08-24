@@ -41,7 +41,11 @@ describe('when at least one summary is available', () => {
     it('should display the page summaries', async () => {
         const { container } = render(
             <BrowserRouter>
-                <ManagePagesTable summaries={summaries} currentPage={1} pageSize={10} totalElements={50}></ManagePagesTable>
+                <ManagePagesTable
+                    summaries={summaries}
+                    currentPage={1}
+                    pageSize={10}
+                    totalElements={50}></ManagePagesTable>
             </BrowserRouter>
         );
 
@@ -53,5 +57,22 @@ describe('when at least one summary is available', () => {
         expect(tableData[3]).toHaveTextContent('Draft');
         expect(tableData[4]).toHaveTextContent('9/25/2019, 1:27:16 PM');
         expect(tableData[5]).toHaveTextContent('last updateBy');
+    });
+
+    // test that the page was redirected to the edit page when test page is clicked
+    it('should redirect to the edit page when the page name is clicked', async () => {
+        const { container } = render(
+            <BrowserRouter>
+                <ManagePagesTable
+                    summaries={summaries}
+                    currentPage={1}
+                    pageSize={10}
+                    totalElements={50}></ManagePagesTable>
+            </BrowserRouter>
+        );
+
+        const pageName = container.getElementsByClassName('page-name');
+
+        expect(pageName[0].innerHTML).toBe('<a href="/page-builder/edit/page/1">test page</a>');
     });
 });
