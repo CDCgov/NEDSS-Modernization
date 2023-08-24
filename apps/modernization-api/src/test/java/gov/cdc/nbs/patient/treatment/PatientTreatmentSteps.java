@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.treatment;
 
+import gov.cdc.nbs.event.search.investigation.TestInvestigations;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.investigation.TestInvestigations;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -73,6 +73,6 @@ public class PatientTreatmentSteps {
         assertThatThrownBy(() -> {
             this.resolver.find(patient, page);
         })
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 }
