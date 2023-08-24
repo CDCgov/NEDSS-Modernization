@@ -6,6 +6,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export { AddConceptRequest } from './models/AddConceptRequest';
 export type { AddQuestionRequest } from './models/AddQuestionRequest';
 export type { AddQuestionResponse } from './models/AddQuestionResponse';
 export { Coded } from './models/Coded';
@@ -35,6 +36,7 @@ export { Date } from './models/Date';
 export type { DateQuestion } from './models/DateQuestion';
 export type { EventType } from './models/EventType';
 export type { FindQuestionRequest } from './models/FindQuestionRequest';
+export type { GetCondition } from './models/GetCondition';
 export type { GetQuestionResponse } from './models/GetQuestionResponse';
 export type { MessageMappingGuide } from './models/MessageMappingGuide';
 export type { MessagingInfo } from './models/MessagingInfo';

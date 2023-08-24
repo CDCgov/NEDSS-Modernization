@@ -7,6 +7,13 @@ public class PageConstants {
 	// Page State Change
 	public static final String SAVE_DRAFT_SUCCESS = "Draft was saved successfully.";
 	public static final String SAVE_DRAFT_FAIL = " Failed to update to draft status: ";
+	public static final String DELETE_DRAFT_FAIL = " Failed to delete page draft. ";
+	public static final String PAGE_NOT_FOUND = " Could not find page with given id.";
+	public static final String DRAFT_NOT_FOUND = " Page does not have draft.";
+	public static final String DRAFT_DELETE_SUCCESS = "page draft has been successfully deleted.";
+	public static final String PUBLISHED_WITH_DRAFT = "Published With Draft";
+	public static final String DRAFT = "Draft";
+	public static final String PUBLISHED = "Published";
 	
 	//Page Create
 	public static final String ADD_PAGE_MESSAGE= " page has been successfully added"; 

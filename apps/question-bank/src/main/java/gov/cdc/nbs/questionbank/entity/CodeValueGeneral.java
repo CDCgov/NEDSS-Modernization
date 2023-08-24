@@ -5,6 +5,8 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import gov.cdc.nbs.questionbank.valueset.command.ConceptCommand;
+import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest.StatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -99,5 +101,29 @@ public class CodeValueGeneral {
 
     @Column(name = "add_user_id")
     private Long addUserId;
+
+    public CodeValueGeneral(ConceptCommand.AddConcept command) {
+        this.id = new CodeValueGeneralId(command.codeset(), command.code());
+        this.codeDescTxt = command.displayName();
+        this.codeShortDescTxt = command.shortDisplayName();
+        this.effectiveFromTime = command.effectiveFromTime();
+        this.effectiveToTime = command.effectiveToTime();
+        this.statusCd = command.statusCode().equals(StatusCode.A) ? 'A' : 'I';
+        this.statusTime = command.requestedOn();
+        this.conceptStatusCd = command.statusCode().equals(StatusCode.A) ? "Active" : "Inactive";
+        this.conceptStatusTime = command.requestedOn();
+        this.adminComments = command.adminComments();
+        this.conceptCode = command.conceptCode();
+        this.conceptNm = command.conceptName();
+        this.conceptPreferredNm = command.preferredConceptName();
+        this.codeSystemDescTxt = command.codeSystem();
+        this.codeSystemCd = command.codeSystemId();
+        this.conceptTypeCd = command.conceptTypeCd();
+
+        this.indentLevelNbr = 1;
+        this.isModifiableInd = 'Y';
+        this.addTime = command.requestedOn();
+        this.addUserId = command.userId();
+    }
 
 }
