@@ -37,3 +37,11 @@
         border-top-width: 1px;
     }
 }
+.modal-message {
+    .modal-body {
+        border-color: $color-warning;
+    }
+    .warning-icon {
+        color: $color-warning;
+    }
+}

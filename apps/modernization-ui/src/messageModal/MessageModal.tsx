@@ -16,13 +16,13 @@ export const MessageModal = ({ modal, title = '', content }: Props) => {
             ref={modal}
             id="example-modal-1"
             aria-labelledby="modal-1-heading"
-            className="padding-0"
+            className="padding-0 modal-message padding-bottom-3"
             aria-describedby="modal-1-description">
             <ModalHeading id="modal-1-heading" className="border-bottom border-base-lighter font-sans-lg padding-2">
                 {title}
             </ModalHeading>
-            <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-start">
-                <Icon.Warning className="font-sans-2xl margin-x-2 text-accent-warm" />
+            <div className="margin-2 grid-row flex-no-wrap border-left-1 flex-align-start modal-body">
+                <Icon.Warning className="font-sans-2xl margin-x-2 warning-icon" />
                 <div className="width-full">
                     <p id="modal-1-description" className="margin-top-0">
                         {content.message}
