@@ -2,7 +2,7 @@ const fieldType = [
     { label: 'Radio buttons (single select)', value: 'radio' },
     { label: 'Checkboxes (multi select)', value: 'check' },
     { label: 'Dropdown', value: 'dropdown' },
-    { label: 'Single textbox', value: 'text' },
+    { label: 'Single textbox', value: 'TEXT' },
     { label: 'Text area', value: 'area' },
     { label: 'Multi-select dropdown', value: 'multi-select' },
     { label: 'Date / time', value: 'date-time' }

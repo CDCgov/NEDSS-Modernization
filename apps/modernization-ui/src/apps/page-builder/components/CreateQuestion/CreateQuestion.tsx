@@ -43,7 +43,8 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         mask: 'TXT',
         fieldSize: '50',
         tooltip: '',
-        displayControl: 0
+        displayControl: 0,
+        allowFutureDates: true
     };
     // Fields
     const [questionData, setQuestionData] = useState(init);
@@ -52,7 +53,9 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     // DropDown Options
     const [familyOptions, setFamilyOptions] = useState([]);
     const [groupOptions, setGroupOptions] = useState([]);
-
+    const [isValid, setIsValid] = useState({});
+    const [codeSystemOptionList, setCodeSystemOptionList] = useState([]);
+    const [isQuestionLabelNotValid, setIsQuestionLabelNotValid] = useState(false);
     const [isQuestionNotValid, setIsQuestionNotValid] = useState(false);
     const [isValidationFailure, setIsValidationFailure] = useState(false);
     const authorization = `Bearer ${state.getToken()}`;
@@ -93,16 +96,36 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setGroupOptions(coinfectionGroupList);
         });
     };
+    const fetchCodeSystemOptions = () => {
+        ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
+            authorization,
+            codeSetNm: 'CODE_SYSTEM'
+        }).then((response: any) => {
+            const data = response || [];
+            const codeSystemOptionList: any = [];
+            data.map((each: { localCode: string; description: string }) => {
+                codeSystemOptionList.push({ label: each.localCode, value: each.description });
+            });
+            setCodeSystemOptionList(codeSystemOptionList);
+        });
+    };
 
     useEffect(() => {
         fetchFamilyOptions();
         fetchGroupOptions();
+        fetchCodeSystemOptions();
     }, []);
 
     const buildOptions = (optionsToBuild: any[]) =>
         optionsToBuild.map((opt: string) => (
             <option value={opt} key={opt}>
                 {opt}
+            </option>
+        ));
+    const buildCodeOptions = (optionsToBuild: any[]) =>
+        optionsToBuild.map((opt: any) => (
+            <option value={opt.value} key={opt.value}>
+                {opt.label}
             </option>
         ));
     const handleSubmit = () => {
@@ -131,13 +154,13 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             description: questionData.label,
             type: questionData.type,
             codeSet: questionData.codeSet,
-            tooltip: '',
-            allowFutureDates: true,
-            displayControl: 0,
-            defaultValue: null,
-            fieldLength: '50',
-            fieldSize: '50',
-            mask: 'TXT'
+            tooltip: questionData.tooltip || '',
+            displayControl: questionData.displayControl || 0,
+            defaultValue: questionData.defaultValue,
+            allowFutureDates: questionData.allowFutureDates,
+            fieldLength: questionData.fieldLength,
+            fieldSize: questionData.fieldSize,
+            mask: questionData.mask
         };
         QuestionControllerService.createQuestionUsingPost({
             authorization,
@@ -169,6 +192,11 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             [target.name]: target?.type === 'checkbox' ? target?.checked : target.value
         });
     };
+    const handleValidation = ({ target }: any) => {
+        const pattern = /^[a-zA-Z0-9_]*$/;
+        setIsValid({ ...isValid, [target?.name]: { error: target?.value?.match(pattern) } });
+    };
+
     const resetInput = () => {
         setQuestionData(init);
     };
@@ -176,11 +204,13 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const validateQuestionLabel = (name: any) => {
         const pattern = /^[a-zA-Z0-9_]*$/;
         if (name.match(pattern)) {
-            setIsQuestionNotValid(false);
+            setIsQuestionLabelNotValid(false);
             setIsValidationFailure(false);
+            setIsQuestionNotValid(false);
         } else {
-            setIsQuestionNotValid(true);
+            // setIsQuestionLabelNotValid(true);
             setIsValidationFailure(true);
+            // setIsQuestionNotValid(true);
         }
     };
 
@@ -193,6 +223,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             <div>{label}</div>
         </div>
     );
+    const setFieldType = (type: string) => fieldType.find((data) => data.value === type);
 
     const customStyles = {
         control: (base: any, state: any) => ({
@@ -229,7 +260,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             <div className="multi-select select-indicator margin-top-neg-1" />
         </components.DropdownIndicator>
     );
-
+    console.log('ques', question);
     const renderIconFieldType = (type: string): JSX.Element => {
         const size = 3;
         switch (type) {
@@ -239,7 +270,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 return multiSelect;
             case 'dropdown':
                 return expandIcon;
-            case 'text':
+            case 'TEXT':
                 return textBox;
             case 'area':
                 return textArea;
@@ -264,18 +295,20 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     </label>
                 </div>
                 <p className="fields-info margin-bottom-2em">These fields will be displayed to your users</p>
-                <div className={isQuestionNotValid ? 'error-border' : ''}>
+                <div className={isQuestionLabelNotValid ? 'error-border' : ''}>
                     <label>
                         Question Label<span className="mandatory-indicator">*</span>
                     </label>
-                    {isQuestionNotValid && <label className="error-text">Question Name Not Valid</label>}
+                    {isQuestionLabelNotValid && <label className="error-text">Question Label Not Valid</label>}
                     <TextInput
                         className="field-space"
                         type="text"
                         id="questionLabel"
                         data-testid="questionLabel"
+                        // onBlur={handleValidation}
+                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
                         name="label"
-                        style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
+                        style={{ border: isQuestionLabelNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         value={questionData.label}
                         onChange={handleQuestionInput}
                     />
@@ -299,6 +332,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     className="field-space"
                     options={fieldType}
                     name="programArea"
+                    defaultValue={setFieldType(questionData.type)}
                     placeholder="- Select -"
                     formatOptionLabel={formatOptionLabel}
                     styles={{
@@ -313,7 +347,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 </p>
                 <br></br>
                 <label>
-                    Subgroup<span className="mandatory-indicator">*</span>
+                    Subgroup <span className="mandatory-indicator">*</span>
                 </label>
                 <br></br>
                 <Dropdown
@@ -377,6 +411,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         name="uniqueName"
                         style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
                         value={questionData.uniqueName}
+                        onBlur={handleValidation}
                         onChange={handleQuestionInput}
                     />
                 </div>
@@ -497,10 +532,10 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     id="codeSystem"
                     name="codeSystem"
                     disabled={!questionData.includedInMessage}
-                    defaultValue={questionData.codeSystem}
+                    value={questionData.codeSystem}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
-                    {buildOptions(groupOptions)}
+                    {buildCodeOptions(codeSystemOptionList)}
                 </Dropdown>
                 <p className="fields-info">Required in message?</p>
                 <ToggleButton
