@@ -1,4 +1,4 @@
-package gov.cdc.nbs.event.search.investigation.association;
+package gov.cdc.nbs.patient.profile.association;
 
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.entity.odse.QPublicHealthCase;

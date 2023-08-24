@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.profile.vaccination;
 
 import java.time.Instant;
-import gov.cdc.nbs.event.search.investigation.association.AssociatedWith;
+import gov.cdc.nbs.patient.profile.association.AssociatedWith;
 
 record PatientVaccination(
         long vaccination,

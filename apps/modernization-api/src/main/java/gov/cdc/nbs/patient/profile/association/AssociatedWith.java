@@ -1,4 +1,4 @@
-package gov.cdc.nbs.event.search.investigation.association;
+package gov.cdc.nbs.patient.profile.association;
 
 public record AssociatedWith(
         long id,

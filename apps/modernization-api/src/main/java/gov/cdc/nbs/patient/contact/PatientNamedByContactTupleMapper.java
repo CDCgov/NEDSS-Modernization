@@ -7,11 +7,10 @@ import gov.cdc.nbs.entity.odse.QInterview;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPublicHealthCase;
 import gov.cdc.nbs.entity.srte.QConditionCode;
-import gov.cdc.nbs.event.search.investigation.association.AssociatedWith;
-import gov.cdc.nbs.event.search.investigation.association.AssociatedWithTupleMapper;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.NameRenderer;
-
+import gov.cdc.nbs.patient.profile.association.AssociatedWith;
+import gov.cdc.nbs.patient.profile.association.AssociatedWithTupleMapper;
 import java.time.Instant;
 import java.util.Objects;
 

@@ -1,8 +1,8 @@
 package gov.cdc.nbs.patient.profile.vaccination;
 
 import com.querydsl.core.Tuple;
-import gov.cdc.nbs.event.search.investigation.association.AssociatedWith;
 import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.patient.profile.association.AssociatedWith;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

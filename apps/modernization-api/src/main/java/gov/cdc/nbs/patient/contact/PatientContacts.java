@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.contact;
 
 import java.time.Instant;
 import java.util.Collection;
-import gov.cdc.nbs.event.search.investigation.association.AssociatedWith;
+import gov.cdc.nbs.patient.profile.association.AssociatedWith;
 
 public record PatientContacts(
         long patient,

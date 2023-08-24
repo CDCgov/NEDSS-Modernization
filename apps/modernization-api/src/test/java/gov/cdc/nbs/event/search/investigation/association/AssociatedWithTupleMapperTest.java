@@ -3,6 +3,8 @@ package gov.cdc.nbs.event.search.investigation.association;
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.entity.odse.QPublicHealthCase;
 import gov.cdc.nbs.entity.srte.QConditionCode;
+import gov.cdc.nbs.patient.profile.association.AssociatedWith;
+import gov.cdc.nbs.patient.profile.association.AssociatedWithTupleMapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
