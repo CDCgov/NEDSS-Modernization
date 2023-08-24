@@ -1,30 +1,16 @@
 package gov.cdc.nbs.questionbank.condition.request;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record CreateConditionRequest(
+        String code,
+        String codeSystemDescTxt,
+        String conditionShortNm,
+        String progAreaCd,
+        Character nndInd,
+        Character reportableMorbidityInd,
+        Character reportableSummaryInd,
+        Character contactTracingEnableInd,
+        String familyCd,
+        String coinfectionGrpCd
 
-@Data
-@NoArgsConstructor
-public class CreateConditionRequest {
-
-    private String id;
-
-    private String codeSystemDescTxt;
-
-    private String conditionShortNm;
-
-    private String progAreaCd;
-
-    private Character nndInd;
-
-    private Character reportableMorbidityInd;
-
-    private Character reportableSummaryInd;
-
-    private Character contactTracingEnableInd;
-
-    private String familyCd;
-
-    private String coinfectionGrpCd;
-
+) {
 }

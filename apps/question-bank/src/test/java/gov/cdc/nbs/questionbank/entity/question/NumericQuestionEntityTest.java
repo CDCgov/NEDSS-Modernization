@@ -3,8 +3,8 @@ package gov.cdc.nbs.questionbank.entity.question;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+import gov.cdc.nbs.questionbank.exception.NullObjectException;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
-import gov.cdc.nbs.questionbank.question.exception.NullObjectException;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
 

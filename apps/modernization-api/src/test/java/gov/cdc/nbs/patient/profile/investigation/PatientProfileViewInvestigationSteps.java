@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
 import gov.cdc.nbs.authorization.SessionCookie;
-import gov.cdc.nbs.investigation.TestInvestigations;
+import gov.cdc.nbs.event.search.investigation.TestInvestigations;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.support.TestActive;
 import io.cucumber.java.Before;
@@ -67,34 +67,28 @@ public class PatientProfileViewInvestigationSteps {
         long patient = patients.one();
 
         server.expect(
-                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit")
-            )
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         long investigation = investigations.one();
 
         String request = String.format(
-            "/nbs/api/profile/%d/investigation/%d",
-            patient,
-            investigation
-        );
+                "/nbs/api/profile/%d/investigation/%d",
+                patient,
+                investigation);
 
         activeResponse.active(
-            mvc.perform(
-                    MockMvcRequestBuilders.get(request)
-                        .with(user(activeUserDetails.active()))
-                        .cookie(activeSession.active().asCookie())
-                )
-                .andReturn()
-                .getResponse()
-        );
+                mvc.perform(
+                        MockMvcRequestBuilders.get(request)
+                                .with(user(activeUserDetails.active()))
+                                .cookie(activeSession.active().asCookie()))
+                        .andReturn()
+                        .getResponse());
     }
 
     @Then("the classic profile is prepared to view an investigation")
@@ -108,18 +102,17 @@ public class PatientProfileViewInvestigationSteps {
         long investigation = investigations.one();
 
         String expected =
-            "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID=" + investigation;
+                "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID=" + investigation;
 
         MockHttpServletResponse response = activeResponse.active();
 
         assertThat(response.getRedirectedUrl()).contains(expected);
 
         assertThat(response.getCookies())
-            .satisfiesOnlyOnce(cookie -> {
+                .satisfiesOnlyOnce(cookie -> {
                     assertThat(cookie.getName()).isEqualTo("Returning-Patient");
                     assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-                }
-            );
+                });
     }
 
     @Then("I am not allowed to view a Classic NBS Investigation")

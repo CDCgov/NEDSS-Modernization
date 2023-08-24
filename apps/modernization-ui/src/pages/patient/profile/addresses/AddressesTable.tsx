@@ -104,7 +104,6 @@ export const AddressesTable = ({ patient }: Props) => {
     }, [selected]);
 
     const [addresses, setAddresses] = useState<PatientAddress[]>([]);
-    const [modalContext, setModalContext] = useState<string>('add-address-modal');
 
     const handleComplete = (data: PatientProfileAddressesResult) => {
         setTotal(data?.findPatientProfile?.addresses?.total ?? 0);
@@ -128,10 +127,6 @@ export const AddressesTable = ({ patient }: Props) => {
             }
         });
     }, [currentPage]);
-
-    const onModalContextChange = (modalContext: string) => {
-        setModalContext(modalContext);
-    };
 
     const onAdded = (entry: AddressEntry) => {
         if (isAdd(entry) && entry.use && entry.type) {
@@ -352,18 +347,8 @@ export const AddressesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal
-                    onClose={actions.reset}
-                    title="Add - Address"
-                    modal={modal}
-                    id="add-patient-address-modal"
-                    className={modalContext}>
-                    <AddressEntryForm
-                        action={'Add'}
-                        entry={initial}
-                        onChange={onAdded}
-                        onModalContextChange={onModalContextChange}
-                    />
+                <EntryModal modal={modal} id="add-patient-address-modal">
+                    <AddressEntryForm action={'Add'} entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (

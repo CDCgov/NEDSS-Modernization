@@ -1,6 +1,5 @@
-import AddPatient from './AddPatient';
+import { AddPatient } from './AddPatient';
 
 describe('AddPatient component tests', () => {
-    it('should render add patient button', () => {
-    });
+    it('should render add patient button', () => {});
 });

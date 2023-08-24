@@ -1,12 +1,12 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
-import { PersonName } from '../../../generated/graphql/schema';
+import { Maybe, Person, PersonName } from '../../../generated/graphql/schema';
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 
 type SearchItemsProps = {
-    data: any;
+    data: Person[];
     totalResults: number;
     handlePagination: (page: number) => void;
     currentPage: number;
@@ -57,17 +57,14 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
         window.addEventListener('resize', getListSize);
     }, []);
 
-    function getOtherNames(
-        item: { firstNm: String; lastNm: String },
-        names: Array<PersonName> | undefined
-    ): String | undefined {
+    function getOtherNames(item: Person, names: Maybe<Maybe<PersonName>[]> | undefined): String | undefined {
         if (!names) {
             return undefined;
         }
         let otherNames = '';
         names
-            .filter((n) => n.firstNm != item.firstNm || n.lastNm != item.lastNm)
-            .forEach((n) => (otherNames = otherNames + ` ${n.firstNm ?? ''} ${n.lastNm ?? ''}`));
+            .filter((n) => n?.firstNm != item.firstNm || n?.lastNm != item.lastNm)
+            .forEach((n) => (otherNames = otherNames + ` ${n?.firstNm ?? ''} ${n?.lastNm ?? ''}`));
         return otherNames;
     }
 
@@ -154,7 +151,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
         return newen;
     };
 
-    const redirectPatientProfile = async (item: any) => {
+    const redirectPatientProfile = async (item: Person) => {
         navigate(`/patient-profile/${item.shortId}`);
     };
 
@@ -179,7 +176,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
             <div ref={searchItemsRef}>
                 {data &&
                     data?.length > 0 &&
-                    data?.map((item: any, index: number) => (
+                    data?.map((item: Person, index: number) => (
                         <div
                             key={index}
                             className="padding-x-3 padding-top-3 padding-bottom-2 margin-bottom-3 bg-white border border-base-light radius-md">
@@ -196,8 +193,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                                                 style={{
                                                     wordBreak: 'break-word',
-                                                    cursor: 'pointer',
-                                                    textDecoration: 'none'
+                                                    cursor: 'pointer'
                                                 }}>
                                                 {!item.lastNm && !item.firstNm
                                                     ? `No data`
@@ -240,7 +236,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 <p className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
                                                     PATIENT ID
                                                 </p>
-                                                <p className="margin-0 font-sans-2xs text-normal">{item.localId}</p>
+                                                <p className="margin-0 font-sans-2xs text-normal">{item.shortId}</p>
                                             </div>
                                         </Grid>
                                     </Grid>
@@ -292,7 +288,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                             )
                                     )}
                                     {!item.entityIds ||
-                                        (item.entityIds?.filter((ent: any) => ent.typeDescTxt).length === 0 && (
+                                        (item.entityIds?.filter((ent) => ent?.typeDescTxt).length === 0 && (
                                             <Grid col={12} className="margin-bottom-2">
                                                 <p className="margin-0 text-normal font-sans-3xs text-gray-50 text-uppercase">
                                                     Id Types
