@@ -196,8 +196,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                                                 style={{
                                                     wordBreak: 'break-word',
-                                                    cursor: 'pointer',
-                                                    textDecoration: 'none'
+                                                    cursor: 'pointer'
                                                 }}>
                                                 {!item.lastNm && !item.firstNm
                                                     ? `No data`

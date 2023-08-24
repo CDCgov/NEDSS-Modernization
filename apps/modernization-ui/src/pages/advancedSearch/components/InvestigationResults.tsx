@@ -4,6 +4,7 @@ import { Investigation, PersonParticipation } from '../../../generated/graphql/s
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
+import { ClassicLink } from 'classic';
 
 type InvestigationResultsProps = {
     data: [Investigation];
@@ -91,12 +92,12 @@ export const InvestigationResults = ({
             <Grid row gap={3}>
                 <Grid col={12} className="margin-bottom-2">
                     <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
-                    <p
+                    <a
                         onClick={redirectPatientProfile}
                         className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                         style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
                         {name}
-                    </p>
+                    </a>
                 </Grid>
                 <Grid col={12} className="margin-bottom-2">
                     <div className="grid-row flex-align-center">
@@ -156,11 +157,14 @@ export const InvestigationResults = ({
                                     <Grid row gap={3} className="fill-height">
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">CONDITION</h5>
-                                            <p
+                                            <ClassicLink
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
-                                                style={{ wordBreak: 'break-word' }}>
+                                                url={`/nbs/api/profile/${getPatient(item)?.shortId}/investigation/${
+                                                    item.id
+                                                }`}>
                                                 {item.cdDescTxt}
-                                            </p>
+                                            </ClassicLink>
+                                            <br />
                                             <span>{item.localId}</span>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
