@@ -59,7 +59,6 @@ describe('when at least one summary is available', () => {
         expect(tableData[5]).toHaveTextContent('last updateBy');
     });
 
-    // test that the page was redirected to the edit page when test page is clicked
     it('should redirect to the edit page when the page name is clicked', async () => {
         const { container } = render(
             <BrowserRouter>
