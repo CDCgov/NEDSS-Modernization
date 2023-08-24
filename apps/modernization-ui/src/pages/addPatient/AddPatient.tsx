@@ -323,6 +323,7 @@ export default function AddPatient() {
                                                 coded={{ suffixes: coded.suffixes }}
                                             />
                                             <OtherInfoFields
+                                                errors={errors}
                                                 control={control}
                                                 id={'section-Other'}
                                                 title="Other information"

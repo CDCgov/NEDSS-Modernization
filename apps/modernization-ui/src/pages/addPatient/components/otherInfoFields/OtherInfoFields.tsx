@@ -14,9 +14,9 @@ type CodedValues = {
     maritalStatuses: CodedValue[];
 };
 
-type Props = { id: string; title: string; control: any; coded: CodedValues };
+type Props = { id: string; title: string; control: any; coded: CodedValues, errors: any; };
 
-export default function OtherInfoFields({ id, title, control, coded }: Props) {
+export default function OtherInfoFields({ id, title, control, coded, errors }: Props) {
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
     const currentBirthday = useWatch({ control, name: 'dob' });
@@ -28,6 +28,9 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                 <Grid row>
                     <Grid col={6}>
                         <Controller
+                            rules={{
+                                required: { value: true, message: 'This field is required' }
+                            }}
                             control={control}
                             name="dob"
                             render={({ field: { onChange, value } }) => (
@@ -37,6 +40,7 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                                     name="dob"
                                     htmlFor={'dob'}
                                     label="Date of birth"
+                                    errorMessage={errors?.asOf?.message || ''}
                                 />
                             )}
                         />
