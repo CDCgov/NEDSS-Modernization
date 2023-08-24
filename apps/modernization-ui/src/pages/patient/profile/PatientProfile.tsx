@@ -21,7 +21,7 @@ import { PatientProfileSummary } from './summary/PatientProfileSummary';
 import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 import { resolveDeleteMessage } from './resolveDeleteMessage';
-import { MessageModal } from 'messageModal';
+import { MessageModal, MessageModalContent } from 'messageModal';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -97,8 +97,8 @@ export const PatientProfile = () => {
                     {deletability !== DeletabilityResult.Deletable ? (
                         <MessageModal
                             modal={modalRef}
-                            title={`The patient cannot be deleted`}
-                            message={resolveDeleteMessage(deletability)}
+                            title={`The patient can not be deleted`}
+                            content={resolveDeleteMessage(deletability) as MessageModalContent}
                         />
                     ) : (
                         <Modal
