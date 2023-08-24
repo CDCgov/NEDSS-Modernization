@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -163,7 +162,7 @@ import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 
 	private Integer rangedRandomOrderNumber(Integer min, Integer max) {
 		Random order = new Random();
-		int rangedOrder = order.nextInt(max + 1 - min) + min;
+		int rangedOrder = order.nextInt(max - min) + min;
 		return rangedOrder;
 	}
 

@@ -4,7 +4,7 @@ import java.time.Instant;
 import io.swagger.annotations.ApiModelProperty;
 
 public record UpdateConceptRequest(
-        @ApiModelProperty(required = true) String name,
+        @ApiModelProperty(required = true) String longName,
         @ApiModelProperty(required = true) String displayName,
         @ApiModelProperty(required = true) Instant effectiveFromTime,
         Instant effectiveToTime,

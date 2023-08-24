@@ -16,10 +16,10 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import gov.cdc.nbs.questionbank.condition.ConditionCreator;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
+import gov.cdc.nbs.questionbank.condition.model.Condition;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
-import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 
 
@@ -45,26 +45,46 @@ class ConditionCreatorTest {
     @Test
     void createConditionTest() {
         CreateConditionRequest request = getCreateConditionRequest();
-        ConditionCode conditionDb = new ConditionCode(conditionCreator.conditionAdd(request, userId));
+        ConditionCode conditionDb = new ConditionCode(conditionCreator.conditionAdd(request, userId, 123));
         when(conditionCodeRepository.save(Mockito.any(ConditionCode.class))).thenReturn(conditionDb);
         when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn(0L);
         when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(0L);
-        CreateConditionResponse response = conditionCreator.createCondition(request, userId);
-        assertEquals(conditionDb.getId(), response.getId());
+        Condition response = conditionCreator.createCondition(request, userId);
+        assertEquals(conditionDb.getId(), response.id());
     }
 
     @Test
     void createIdExistsTest() {
-        CreateConditionRequest request = new CreateConditionRequest();
-        request.setId("1L");
+        CreateConditionRequest request =
+                new CreateConditionRequest(
+                        "1L",
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn((1L));
         assertThrows(ConditionCreateException.class, () -> conditionCreator.createCondition(request, userId));
     }
 
     @Test
     void createConditionNameExistsTest() {
-        CreateConditionRequest request = new CreateConditionRequest();
-        request.setConditionShortNm("condition name");
+        CreateConditionRequest request =
+                new CreateConditionRequest(
+                        null,
+                        null,
+                        "condition name",
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(1l);
         assertThrows(ConditionCreateException.class, () -> conditionCreator.createCondition(request, userId));
     }
@@ -96,14 +116,6 @@ class ConditionCreatorTest {
     }
 
     @Test
-    void testFindDisplayRow() {
-        int maxDisplayRow = 10;
-        doReturn(maxDisplayRow).when(ldfPageSetRepository).findMaxDisplayRow();
-        int result = conditionCreator.findDisplayRow();
-        assertEquals(maxDisplayRow + 1, result);
-    }
-
-    @Test
     void testGenerateNewIdWithNoExistingIds() {
         doReturn(new ArrayList<>()).when(ldfPageSetRepository).findAllIds();
         String newId = conditionCreator.getLdfId();
@@ -127,18 +139,17 @@ class ConditionCreatorTest {
     }
 
     private CreateConditionRequest getCreateConditionRequest() {
-        CreateConditionRequest request = new CreateConditionRequest();
-        request.setId("1L");
-        request.setCodeSystemDescTxt("code system");
-        request.setConditionShortNm("condition name");
-        request.setProgAreaCd("prog test");
-        request.setNndInd('Y');
-        request.setReportableMorbidityInd('Y');
-        request.setReportableSummaryInd('Y');
-        request.setContactTracingEnableInd('Y');
-        request.setFamilyCd("family test");
-        request.setCoinfectionGrpCd("co infection test");
-
+        CreateConditionRequest request = new CreateConditionRequest(
+                "1",
+                "code system",
+                "condition name",
+                "prog test",
+                'Y',
+                'Y',
+                'Y',
+                'Y',
+                "family test",
+                "co infection test");
         return request;
     }
 

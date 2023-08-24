@@ -74,8 +74,8 @@ export default function ContactFields({ id, title }: Props) {
                     <Grid col={2}>
                         <Controller
                             control={control}
-                            name="ext"
-                            render={({ field: { onChange, value } }) => (
+                            name="extension"
+                            render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     inputMode="numeric"
                                     placeholder="1234"
@@ -83,8 +83,8 @@ export default function ContactFields({ id, title }: Props) {
                                     type="tel"
                                     label="Ext"
                                     defaultValue={value}
-                                    htmlFor="ext"
-                                    id="ext"
+                                    htmlFor={name}
+                                    id={name}
                                 />
                             )}
                         />
@@ -95,19 +95,19 @@ export default function ContactFields({ id, title }: Props) {
                         <Grid col={6}>
                             <Controller
                                 control={control}
-                                name={`cellPhone_${index}`}
+                                name={`phoneNumbers[${index}].number`}
                                 rules={{
                                     validate: {
                                         properNumber: validatePhoneNumber
                                     }
                                 }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                     <PhoneNumberInput
                                         placeholder="333-444-555"
                                         onChange={onChange}
                                         label="Cell phone"
                                         defaultValue={value}
-                                        id={`cellPhone_${index}`}
+                                        id={name}
                                         error={error?.message}
                                     />
                                 )}
@@ -121,7 +121,9 @@ export default function ContactFields({ id, title }: Props) {
                             type={'button'}
                             onClick={() =>
                                 phoneNumberAppend({
-                                    cellPhone: null
+                                    number: null,
+                                    type: 'CP',
+                                    use: 'MC'
                                 })
                             }
                             className="text-bold"
@@ -136,22 +138,22 @@ export default function ContactFields({ id, title }: Props) {
                         <Grid col={6}>
                             <Controller
                                 control={control}
-                                name={`emailAddresses_${index}`}
+                                name={`emailAddresses[${index}].email`}
                                 rules={{
                                     pattern: {
                                         value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                                         message: 'Invalid email'
                                     }
                                 }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                     <Input
                                         placeholder="jdoe@gmail.com"
                                         onChange={onChange}
                                         type="text"
                                         label="Email"
                                         defaultValue={value}
-                                        htmlFor={`emailAddresses_${index}`}
-                                        id={`emailAddresses_${index}`}
+                                        htmlFor={name}
+                                        id={name}
                                         error={error?.message}
                                     />
                                 )}

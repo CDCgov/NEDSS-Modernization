@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Condition } from './Condition';
+import type { ConditionSummary } from './ConditionSummary';
 import type { EventType } from './EventType';
 import type { MessageMappingGuide } from './MessageMappingGuide';
 
 export type PageSummary = {
-    conditions?: Array<Condition>;
+    conditions?: Array<ConditionSummary>;
     description?: string;
     eventType?: EventType;
     id?: number;

@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AddConceptRequest } from '../models/AddConceptRequest';
 import type { Concept } from '../models/Concept';
 import type { CreateValueSetResponse } from '../models/CreateValueSetResponse';
 import type { Page_ValueSet_ } from '../models/Page_ValueSet_';
@@ -213,6 +214,45 @@ export class ValueSetControllerService {
             headers: {
                 'Authorization': authorization,
             },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * addConcept
+     * @returns Concept OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static addConceptUsingPost({
+        authorization,
+        codeSetNm,
+        request,
+    }: {
+        authorization: any,
+        /**
+         * codeSetNm
+         */
+        codeSetNm: string,
+        /**
+         * request
+         */
+        request: AddConceptRequest,
+    }): CancelablePromise<Concept | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/page-builder/api/v1/valueset/{codeSetNm}/concepts',
+            path: {
+                'codeSetNm': codeSetNm,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
