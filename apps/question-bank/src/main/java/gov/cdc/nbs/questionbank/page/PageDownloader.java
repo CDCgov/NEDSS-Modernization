@@ -59,13 +59,13 @@ public class PageDownloader {
 			return new ByteArrayInputStream(out.toByteArray());
 
 		} catch (IOException e) {
-			throw new RuntimeException("Error downloading Page Library: " + e.getMessage());
+			throw new IOException("Error downloading Page Library: " + e.getMessage());
 		}
 
 	}
 
 	public String formatttedRelatedConditions(WaTemplate page) {
-		StringBuffer data = new StringBuffer();
+		StringBuilder data = new StringBuilder();
 		List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUid(page);
 		for (PageCondMapping conMap : mappings) {
 			String conditionId = conMap.getConditionCd();
@@ -87,20 +87,29 @@ public class PageDownloader {
 	}
 	
 	private String getEventType(String type) {
-		if (type == null || type.length() < 1)
-			return " ";
-		String display = switch (type) {
-		case "INV" -> "Investigation";
-		case "CON" -> "Contact";
-		case "VAC" -> "Vaccination";
-		case "IXS" -> "Interview";
-		case "SUS" -> "Lab Susceptibility";
-		case "LAB" -> "Lab Report";
-		case "ISO" -> "Lab Isolate Tracking";
-		default -> type;
-		};
+	if (type == null || type.length() < 1)
+	 return " ";
+	
+	  switch (type) {
+		case "INV":
+			return  "Investigation";
+		case "CON":
+		    return "Contact";
+		case "VAC":
+			return "Vaccination";
+		case "IXS":
+			return "Interview";
+		case "SUS":
+			return "Lab Susceptibility";
+		case "LAB":
+			return "Lab Report";
+		case "ISO":
+			return "Lab Isolate Tracking";
+		default:
+			return type;
 
-		return display;
+	}
+	  
 	}
 
 }
