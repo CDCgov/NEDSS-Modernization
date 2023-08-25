@@ -36,3 +36,12 @@ export const createPage = (
         return response;
     });
 };
+
+export const fetchPageDetails = (token: string, id: number) => {
+    return PageControllerService.getPageDetails({
+        authorization: token,
+        id: id
+    }).then((response: any) => {
+        return response;
+    });
+};
