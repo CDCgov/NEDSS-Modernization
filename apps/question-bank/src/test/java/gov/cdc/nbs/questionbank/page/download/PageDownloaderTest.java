@@ -53,7 +53,7 @@ import gov.cdc.nbs.questionbank.page.PageDownloader;
 	}
 	
 	@Test
-	void downloadLibrary() {
+	void downloadLibrary() throws IOException {
 		when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
 		when(pageConMappingRepository.findByWaTemplateUid(Mockito.any())).thenReturn(List.of(getMapping()));
 		when(conditionCodeRepository.findById(Mockito.anyString())).thenReturn(Optional.of(conditionCode()));

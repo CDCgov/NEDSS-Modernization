@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -51,6 +53,8 @@ public class PageDownloaderSteps {
 	             exceptionHolder.setException(e);
 	         } catch (AuthenticationCredentialsNotFoundException e) {
 	             exceptionHolder.setException(e);
+	         } catch (IOException e) {
+	        	 exceptionHolder.setException(e);
 	         }
 	    	 
 	    }

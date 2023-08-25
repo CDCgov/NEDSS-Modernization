@@ -41,7 +41,7 @@ public class PageDownloader {
 	private UserProfileRepository userProfileRepository;
 
 	@SuppressWarnings("deprecation")
-	public ByteArrayInputStream downloadLibrary() {
+	public ByteArrayInputStream downloadLibrary()  throws IOException {
 		final CSVFormat format = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL).withHeader("Event Type",
 				"Page Name", "Page State", "Related Conditions(s)", "Last Udated", "Last Udated By ");
 

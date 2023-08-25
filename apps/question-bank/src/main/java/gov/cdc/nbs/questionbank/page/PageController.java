@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page;
 
+import java.io.IOException;
+
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -107,7 +109,7 @@ public class PageController {
     }
     
 	@GetMapping("download")
-	public ResponseEntity<Resource> downloadPageLibrary() {
+	public ResponseEntity<Resource> downloadPageLibrary() throws IOException {
 		String fileName = "PageLibrary.csv";
 		InputStreamResource file = new InputStreamResource(pageDownloader.downloadLibrary());
 
