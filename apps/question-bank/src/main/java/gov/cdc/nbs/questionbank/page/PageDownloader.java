@@ -4,11 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVFormat.Builder;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +43,30 @@ public class PageDownloader {
 	@Autowired
 	private UserProfileRepository userProfileRepository;
 
-	@SuppressWarnings("deprecation")
+	
 	public ByteArrayInputStream downloadLibrary()  throws IOException {
-		final CSVFormat format = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL).withHeader("Event Type",
-				"Page Name", "Page State", "Related Conditions(s)", "Last Udated", "Last Udated By ");
+		final CSVFormat format = CSVFormat.Builder.create().setQuoteMode(QuoteMode.MINIMAL).setHeader("Event Type",
+				"Page Name", "Page State", "Related Conditions(s)", "Last Udated", "Last Udated By ").build();
+		
 
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
 				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format)) {
+			
 			List<WaTemplate> pages = templateRepository.getAllPagesOrderedByName();
+			List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUidIn(pages);
+			List<ConditionCode> conditionCodes = conditionCodeRepository.findByIdIn(conditionIds(mappings));
+
 			for (WaTemplate page : pages) {
+				List<ConditionCode> pageConditions = new ArrayList<>();
+
+				mappings.stream().filter(p -> p.getWaTemplateUid().equals(page)).collect(Collectors.toList())
+						.forEach((v) -> {
+							conditionCodes.stream().filter(c -> c.getId().equals(v.getConditionCd()))
+									.forEach(pageConditions::add);
+						});
+				
 				List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
-						formatttedRelatedConditions(page), page.getLastChgTime().toString(),
+						formatttedRelatedConditions(pageConditions), page.getLastChgTime().toString(),
 						getLastUpdatedUser(page.getLastChgUserId()));
 				csvPrinter.printRecord(data);
 
@@ -64,14 +80,16 @@ public class PageDownloader {
 
 	}
 
-	public String formatttedRelatedConditions(WaTemplate page) {
+	public String formatttedRelatedConditions(List<ConditionCode> conditions) {
 		StringBuilder data = new StringBuilder();
-		List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUid(page);
-		for (PageCondMapping conMap : mappings) {
-			String conditionId = conMap.getConditionCd();
-			Optional<ConditionCode> condition = conditionCodeRepository.findById(conditionId);
-			if (condition.isPresent()) {
-				data.append(condition.get().getConditionDescTxt() + "(" + conditionId + "),");
+
+		for (int i = 0; i < conditions.size(); i++) {
+			ConditionCode curr = conditions.get(i);
+			if (i == conditions.size() - 1) {
+
+				data.append(curr.getConditionDescTxt() + "(" + curr.getId() + ")");
+			} else {
+				data.append(curr.getConditionDescTxt() + "(" + curr.getId() + "),");
 			}
 
 		}
@@ -84,6 +102,13 @@ public class PageDownloader {
 			return user.get().getFirstNm() + " " + user.get().getLastNm();
 		}
 		return " ";
+	}
+	private List<String> conditionIds(List<PageCondMapping> mappings) {
+		List<String> conditionIds = new ArrayList<>();
+		for(PageCondMapping map : mappings) {
+			conditionIds.add(map.getConditionCd());
+		}
+		return conditionIds;
 	}
 	
 	private String getEventType(String type) {

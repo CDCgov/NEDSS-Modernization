@@ -55,8 +55,8 @@ import gov.cdc.nbs.questionbank.page.PageDownloader;
 	@Test
 	void downloadLibrary() throws IOException {
 		when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
-		when(pageConMappingRepository.findByWaTemplateUid(Mockito.any())).thenReturn(List.of(getMapping()));
-		when(conditionCodeRepository.findById(Mockito.anyString())).thenReturn(Optional.of(conditionCode()));
+		when(pageConMappingRepository.findByWaTemplateUidIn(Mockito.any())).thenReturn(List.of(getMapping()));
+		when(conditionCodeRepository.findByIdIn(Mockito.anyList())).thenReturn(List.of(conditionCode()));
 		ByteArrayInputStream response = pageDownloader.downloadLibrary();
 		byte[] content = response.readAllBytes();
 		assertNotNull(content);
@@ -78,11 +78,11 @@ import gov.cdc.nbs.questionbank.page.PageDownloader;
 	@Test
 	void formatttedRelatedConditions() {
 		ConditionCode original = conditionCode();
-		when(pageConMappingRepository.findByWaTemplateUid(Mockito.any())).thenReturn(List.of(getMapping()));
-		when(conditionCodeRepository.findById(Mockito.anyString())).thenReturn(Optional.of(original));
-		String formattedCondition = pageDownloader.formatttedRelatedConditions(getTemplate(1l));
+		when(pageConMappingRepository.findByWaTemplateUidIn(Mockito.any())).thenReturn(List.of(getMapping()));
+		when(conditionCodeRepository.findByIdIn(Mockito.anyList())).thenReturn(List.of(original));
+		String formattedCondition = pageDownloader.formatttedRelatedConditions(List.of(original));
 		assertNotNull(formattedCondition);
-		assertEquals(original.getConditionDescTxt() + "(" + original.getId()+ "),", formattedCondition);
+		assertEquals(original.getConditionDescTxt() + "(" + original.getId()+ ")", formattedCondition);
 	}
 	
 	
