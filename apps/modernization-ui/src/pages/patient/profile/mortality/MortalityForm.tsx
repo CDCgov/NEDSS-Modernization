@@ -52,8 +52,8 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
     return (
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
-                    As of:<span className="text-red"> *</span>
+                <Grid col={6} className="margin-top-1 required">
+                    As of:
                 </Grid>
                 <Grid col={6}>
                     <Controller
