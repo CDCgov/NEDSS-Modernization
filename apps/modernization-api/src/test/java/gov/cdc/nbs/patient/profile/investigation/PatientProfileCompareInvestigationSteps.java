@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
 import gov.cdc.nbs.authorization.SessionCookie;
-import gov.cdc.nbs.investigation.TestInvestigations;
+import gov.cdc.nbs.event.search.investigation.TestInvestigations;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.support.TestActive;
 import io.cucumber.java.Before;
@@ -70,37 +70,31 @@ public class PatientProfileCompareInvestigationSteps {
         long patient = patients.one();
 
         List<Long> comparing = investigations.all()
-            .limit(2)
-            .toList();
+                .limit(2)
+                .toList();
 
         server.expect(
-                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit")
-            )
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         String request = String.format(
-            "/nbs/api/profile/%d/investigation/%d/compare/%d",
-            patient,
-            comparing.get(0),
-            comparing.get(1)
-        );
+                "/nbs/api/profile/%d/investigation/%d/compare/%d",
+                patient,
+                comparing.get(0),
+                comparing.get(1));
 
         activeResponse.active(
-            mvc.perform(
-                    MockMvcRequestBuilders.get(request)
-                        .with(user(activeUserDetails.active()))
-                        .cookie(activeSession.active().asCookie())
-                )
-                .andReturn()
-                .getResponse()
-        );
+                mvc.perform(
+                        MockMvcRequestBuilders.get(request)
+                                .with(user(activeUserDetails.active()))
+                                .cookie(activeSession.active().asCookie()))
+                        .andReturn()
+                        .getResponse());
     }
 
     @Then("the classic profile is prepared to compare investigations")
@@ -113,25 +107,22 @@ public class PatientProfileCompareInvestigationSteps {
         long patient = patients.one();
 
         String expected = investigations.indexed()
-            .limit(2)   // Classic can only compare two investigations
-            .map(investigation -> "publicHealthCaseUID" + investigation.index() + "=" + investigation.item())
-            .collect(
-                Collectors.joining("&",
-                    "/nbs/ViewFile1.do?ContextAction=CompareInvestigations&",
-                    ""
-                )
-            );
+                .limit(2) // Classic can only compare two investigations
+                .map(investigation -> "publicHealthCaseUID" + investigation.index() + "=" + investigation.item())
+                .collect(
+                        Collectors.joining("&",
+                                "/nbs/ViewFile1.do?ContextAction=CompareInvestigations&",
+                                ""));
 
         MockHttpServletResponse response = activeResponse.active();
 
         assertThat(response.getRedirectedUrl()).contains(expected);
 
         assertThat(response.getCookies())
-            .satisfiesOnlyOnce(cookie -> {
+                .satisfiesOnlyOnce(cookie -> {
                     assertThat(cookie.getName()).isEqualTo("Returning-Patient");
                     assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-                }
-            );
+                });
     }
 
     @Then("I am not allowed to compare Classic NBS Investigations")

@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itextpdf.text.DocumentException;
-import gov.cdc.nbs.investigation.InvestigationFilter;
-import gov.cdc.nbs.investigation.InvestigationFinder;
-import gov.cdc.nbs.labreport.LabReportFilter;
-import gov.cdc.nbs.labreport.LabReportFinder;
+import gov.cdc.nbs.event.search.InvestigationFilter;
+import gov.cdc.nbs.event.search.LabReportFilter;
+import gov.cdc.nbs.event.search.investigation.InvestigationFinder;
+import gov.cdc.nbs.event.search.labreport.LabReportFinder;
 import gov.cdc.nbs.service.ExportService;
 import io.swagger.annotations.ApiImplicitParam;
 
