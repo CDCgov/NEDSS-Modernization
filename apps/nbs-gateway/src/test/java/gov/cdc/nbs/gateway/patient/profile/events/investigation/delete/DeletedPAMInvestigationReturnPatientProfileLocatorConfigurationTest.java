@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
@@ -37,7 +37,7 @@ class DeletedPAMInvestigationReturnPatientProfileLocatorConfigurationTest {
 
     @Test
     void should_route_to_service_when_a_Tuberculosis_investigation_is_deleted() {
-        service.stubFor(get(urlPathMatching("/nbs/redirect/patient/investigation/delete\\\\?.*")).willReturn(ok()));
+        service.stubFor(post(urlPathMatching("/nbs/redirect/patient/investigation/delete\\\\?.*")).willReturn(ok()));
 
         webClient
             .post().uri(
@@ -54,7 +54,7 @@ class DeletedPAMInvestigationReturnPatientProfileLocatorConfigurationTest {
 
     @Test
     void should_route_to_service_when_a_Tuberculosis_investigation_is_deleted_after_being_created() {
-        service.stubFor(get(urlPathMatching("/nbs/redirect/patient/investigation/delete\\\\?.*")).willReturn(ok()));
+        service.stubFor(post(urlPathMatching("/nbs/redirect/patient/investigation/delete\\\\?.*")).willReturn(ok()));
 
         webClient
             .post().uri(

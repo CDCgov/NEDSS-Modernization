@@ -40,10 +40,6 @@ class DeleteInvestigationRedirector {
         @RequestParam final MultiValueMap<String, String> data
     ) {
 
-        request.getHeaderNames().asIterator().forEachRemaining(header -> {
-            System.out.printf("%s:\t%s\n", header, request.getHeader(header));
-        });
-
         deleteInvestigation(data);
 
         return resolver.fromReturnPatient(request);

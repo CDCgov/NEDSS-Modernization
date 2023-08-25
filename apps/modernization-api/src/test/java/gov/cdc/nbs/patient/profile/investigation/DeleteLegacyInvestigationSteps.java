@@ -83,7 +83,7 @@ public class DeleteLegacyInvestigationSteps {
     public void a_newly_created_legacy_investigation_is_deleted_from_classic_nbs() throws Exception {
 
         server.expect(
-                requestTo(classicUrl + "/nbs/ViewInvestigation1.do?ContextAction=ReturnToFileEvents&delete=true")
+                requestTo(classicUrl + "/nbs/ViewInvestigation3.do?ContextAction=ReturnToFileEvents&delete=true")
             )
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess())
