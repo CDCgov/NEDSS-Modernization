@@ -49,7 +49,7 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Investigatior:</Grid>
-                                <Grid col={6}>No data</Grid>
+                                <Grid col={6}>No Data</Grid>
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Created:</Grid>
@@ -57,7 +57,7 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Last updated:</Grid>
-                                <Grid col={6}>No data</Grid>
+                                <Grid col={6}>No Data</Grid>
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>By:</Grid>
@@ -65,7 +65,7 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Notificatoin status::</Grid>
-                                <Grid col={6}>No data</Grid>
+                                <Grid col={6}>No Data</Grid>
                             </Grid>
                         </div>
                     </Grid>
@@ -97,7 +97,7 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Investigatior:</Grid>
-                                <Grid col={6}>No data</Grid>
+                                <Grid col={6}>No Data</Grid>
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Created:</Grid>
@@ -105,7 +105,7 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Last updated:</Grid>
-                                <Grid col={6}>No data</Grid>
+                                <Grid col={6}>No Data</Grid>
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>By:</Grid>
@@ -113,7 +113,7 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Notificatoin status::</Grid>
-                                <Grid col={6}>No data</Grid>
+                                <Grid col={6}>No Data</Grid>
                             </Grid>
                         </div>
                     </Grid>

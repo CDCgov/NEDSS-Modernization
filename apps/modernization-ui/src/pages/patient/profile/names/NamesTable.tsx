@@ -271,21 +271,21 @@ export const NamesTable = ({ patient }: Props) => {
                                     {format(new Date(name?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                             {name?.use ? (
                                 <span>{name?.use.description}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                             {name?.prefix ? (
                                 <span>{name?.prefix.description}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
@@ -294,21 +294,21 @@ export const NamesTable = ({ patient }: Props) => {
                                     name?.middle || ''
                                 }`}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                             {name?.suffix ? (
                                 <span>{name?.suffix.description}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
                             {name?.degree ? (
                                 <span>{name?.degree.description}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td>

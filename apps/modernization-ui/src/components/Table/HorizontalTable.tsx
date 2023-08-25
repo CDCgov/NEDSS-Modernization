@@ -35,7 +35,7 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData, type }: Table
                             {item.text && <Grid col={6}>{item.text}</Grid>}
                             {!item.text && (
                                 <Grid col={6} className="font-sans-md no-data">
-                                    No data
+                                    No Data
                                 </Grid>
                             )}
                         </Grid>

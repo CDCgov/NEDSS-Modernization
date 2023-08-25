@@ -174,13 +174,13 @@ export const TableComponent = ({
 
     const dataNotAvailalbe = (
         <tr className="text-center no-data not-available">
-            <td colSpan={tableHead.length}>{dataNotAvailableElement ? dataNotAvailableElement : 'No data'}</td>
+            <td colSpan={tableHead.length}>{dataNotAvailableElement ? dataNotAvailableElement : 'No Data'}</td>
         </tr>
     );
 
     const renderNoDataDetail = (detail: TableDetail, column: number, isCheckbox?: boolean) => (
         <span key={column} className={`no-data ${resolveDetailStyle(detail, column)} ${isCheckbox && 'margin-left-4'}`}>
-            No data
+            No Data
         </span>
     );
 

@@ -97,7 +97,7 @@ const renderReportingFacility = (document: DocumentRequiringReview) => {
             {document.facilityProviders.orderingProvider === undefined &&
             document.facilityProviders.reportingFacility === undefined ? (
                 <>
-                    <span className="no-data">No data</span>
+                    <span className="no-data">No Data</span>
                 </>
             ) : null}
         </>
@@ -124,7 +124,7 @@ const renderDescriptions = (document: DocumentRequiringReview) => {
         <>
             {document.descriptions.length === 0 ? (
                 <>
-                    <span className="no-data">No data</span>
+                    <span className="no-data">No Data</span>
                 </>
             ) : (
                 <>

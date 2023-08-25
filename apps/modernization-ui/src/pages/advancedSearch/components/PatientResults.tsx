@@ -87,7 +87,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                             </p>
                         ))
                     ) : (
-                        <p className="text-italic margin-0 text-gray-30">No Data</p>
+                        <p className="margin-0">No Data</p>
                     )}
                 </div>
             </Grid>
@@ -196,7 +196,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                     cursor: 'pointer'
                                                 }}>
                                                 {!item.lastNm && !item.firstNm
-                                                    ? `No data`
+                                                    ? `No Data`
                                                     : `${item.lastNm}, ${item.firstNm}`}
                                             </a>
                                         </Grid>
@@ -217,7 +217,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                             </span>
                                                         </>
                                                     )}
-                                                    {!item.birthTime && <span className="font-sans-2xs">--</span>}
+                                                    {!item.birthTime && <span className="font-sans-2xs">No Data</span>}
                                                 </p>
                                             </div>
                                             <div className="grid-row flex-align-center">
@@ -236,7 +236,10 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 <p className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
                                                     PATIENT ID
                                                 </p>
-                                                <p className="margin-0 font-sans-2xs text-normal">{item.shortId}</p>
+
+                                                <p className="margin-0 font-sans-2xs text-normal">
+                                                    {item.shortId || 'No Data'}
+                                                </p>
                                             </div>
                                         </Grid>
                                     </Grid>
@@ -250,15 +253,11 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                             <p className="margin-0 text-normal font-sans-3xs text-gray-50">
                                                 OTHER NAMES
                                             </p>
-                                            {getOtherNames(item, item.names) ? (
-                                                <p
-                                                    className="margin-0 font-sans-1xs text-normal margin-top-05"
-                                                    style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                                    {getOtherNames(item, item.names)}
-                                                </p>
-                                            ) : (
-                                                <p className="text-italic margin-0 text-gray-30">No Data</p>
-                                            )}
+                                            <p
+                                                className="margin-0 font-sans-1xs text-normal margin-top-05"
+                                                style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                                {getOtherNames(item, item.names) || 'No Data'}
+                                            </p>
                                         </Grid>
                                         {newOrderAddress(item?.nbsEntity?.entityLocatorParticipations)}
                                     </Grid>

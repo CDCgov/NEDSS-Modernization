@@ -150,14 +150,14 @@ export const AdministrativeTable = ({ patient }: Props) => {
                                     {format(new Date(administrative?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                             {administrative?.comment ? (
                                 <span>{administrative?.comment}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td>

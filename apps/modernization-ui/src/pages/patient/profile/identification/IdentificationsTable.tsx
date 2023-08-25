@@ -229,28 +229,28 @@ export const IdentificationsTable = ({ patient }: Props) => {
                                     {format(new Date(identification?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                             {identification?.type ? (
                                 <span>{identification?.type.description}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                             {identification?.authority ? (
                                 <span>{identification?.authority.description}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                             {identification?.value ? (
                                 <span>{identification?.value}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td>

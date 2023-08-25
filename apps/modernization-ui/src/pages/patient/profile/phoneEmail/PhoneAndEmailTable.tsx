@@ -250,7 +250,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                                     {format(new Date(phone?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
@@ -260,14 +260,14 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                                     {phone.use?.description ? `/${phone.use?.description}` : ''}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.number ? <span>{phone?.number}</span> : <span className="no-data">No data</span>}
+                            {phone?.number ? <span>{phone?.number}</span> : <span className="no-data">No Data</span>}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.email ? <span>{phone?.email}</span> : <span className="no-data">No data</span>}
+                            {phone?.email ? <span>{phone?.email}</span> : <span className="no-data">No Data</span>}
                         </td>
                         <td>
                             <div className="table-span">

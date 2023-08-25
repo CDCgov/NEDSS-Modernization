@@ -55,7 +55,7 @@ export const TableComponent = ({
                                         key={ind}
                                         style={{ color: '#747474', fontStyle: 'italic' }}
                                         className="font-sans-md">
-                                        No data
+                                        No Data
                                     </td>
                                 )
                             )}

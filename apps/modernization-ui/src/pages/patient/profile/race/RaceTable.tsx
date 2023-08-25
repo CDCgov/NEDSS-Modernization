@@ -225,18 +225,18 @@ export const RacesTable = ({ patient }: Props) => {
                                     {format(new Date(race?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                             {race?.category?.description ? (
                                 <span>{race?.category?.description}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {maybeDescriptions(race.detailed).join(' | ') || <span className="no-data">No data</span>}
+                            {maybeDescriptions(race.detailed).join(' | ') || <span className="no-data">No Data</span>}
                         </td>
                         <td>
                             <div className="table-span">

@@ -286,7 +286,7 @@ export const AddressesTable = ({ patient }: Props) => {
                                     {format(new Date(name?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
@@ -296,28 +296,28 @@ export const AddressesTable = ({ patient }: Props) => {
                                     {name.use?.description ? `/${name.use?.description}` : ''}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                             {name?.address1 || name?.address2 ? (
                                 <span>{getAddress(name)}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {name?.city ? <span>{name?.city}</span> : <span className="no-data">No data</span>}
+                            {name?.city ? <span>{name?.city}</span> : <span className="no-data">No Data</span>}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                             {name?.state ? (
                                 <span>{name?.state?.description}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                            {name?.zipcode ? <span>{name?.zipcode}</span> : <span className="no-data">No data</span>}
+                            {name?.zipcode ? <span>{name?.zipcode}</span> : <span className="no-data">No Data</span>}
                         </td>
                         <td>
                             <div className="table-span">

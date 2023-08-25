@@ -16,7 +16,7 @@ type Props = {
     onDelete?: () => void;
 };
 
-const noData = <span className="no-data">No data</span>;
+const noData = <span className="no-data">No Data</span>;
 
 const renderField = (detail: Detail, index: number) => (
     <Grid key={index} col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">

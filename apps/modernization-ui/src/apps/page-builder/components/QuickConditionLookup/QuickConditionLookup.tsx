@@ -185,7 +185,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         handleSelected={handleSelectConditions}
                     />
                 ) : (
-                    <div>No data </div>
+                    <div>No Data </div>
                 )}
             </div>
             <ModalFooter className="padding-2 margin-left-auto footer">

@@ -117,7 +117,7 @@ export const SortableTable = ({
                         tableBody
                     ) : (
                         <tr className="text-center no-data not-available">
-                            <td colSpan={tableHead.length}>No data</td>
+                            <td colSpan={tableHead.length}>No Data</td>
                         </tr>
                     )}
                 </tbody>

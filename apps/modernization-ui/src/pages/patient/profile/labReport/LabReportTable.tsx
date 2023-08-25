@@ -69,7 +69,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                             <br />
                         </div>
                     )
-            ) || <span className="no-data">No data</span>
+            ) || <span className="no-data">No Data</span>
         );
     };
 
@@ -229,7 +229,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                         {format(new Date(report?.addTime), 'hh:mm a')}
                                     </ClassicLink>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
@@ -260,18 +260,18 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                 </div>
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                                <span className="no-data">No data</span>
+                                <span className="no-data">No Data</span>
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                                 {getTestedResults(report) ? (
                                     getTestedResults(report)
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                 {!report.associatedInvestigations ? (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 ) : (
                                     <>
                                         {report.associatedInvestigations?.map(
@@ -292,21 +292,21 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                 {report?.programAreaCd ? (
                                     <span>{report?.programAreaCd}</span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
                                 {report?.jurisdictionCd ? (
                                     <span>{report?.jurisdictionCd}</span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[7].sort !== 'all' && 'sort-td'}`}>
                                 {report?.localId ? (
                                     <span>{report?.localId}</span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                         </tr>

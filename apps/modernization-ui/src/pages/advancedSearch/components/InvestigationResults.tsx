@@ -65,7 +65,7 @@ export const InvestigationResults = ({
             case 'C':
                 return 'CLOSED';
             default:
-                return investigation.investigationStatusCd ?? '';
+                return investigation.investigationStatusCd ?? 'No Data';
         }
     };
 
@@ -76,7 +76,7 @@ export const InvestigationResults = ({
         let age: string | undefined;
         let sex: string | undefined;
         if (patient) {
-            name = !patient.lastName && !patient.firstName ? `No data` : `${patient.lastName}, ${patient.firstName}`;
+            name = !patient.lastName && !patient.firstName ? `No Data` : `${patient.lastName}, ${patient.firstName}`;
             if (patient.birthTime) {
                 birthDate = formatDate(patient.birthTime);
                 age = calculateAge(new Date(patient.birthTime));
@@ -106,7 +106,7 @@ export const InvestigationResults = ({
                         </h5>
                         <p className="margin-0 font-sans-2xs text-normal">
                             <>
-                                {birthDate ? birthDate : <span className="font-sans-2xs">--</span>}
+                                {birthDate ? birthDate : <span className="font-sans-2xs">No Data</span>}
                                 <span className="font-sans-2xs"> {age ? `(${age})` : ''}</span>
                             </>
                         </p>
@@ -114,12 +114,12 @@ export const InvestigationResults = ({
                     <div className="grid-row flex-align-center">
                         <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">SEX</h5>
                         <p className="margin-0 font-sans-2xs text-normal">
-                            {sex ? sex : <span className="font-sans-2xs">--</span>}
+                            {sex ? sex : <span className="font-sans-2xs">No Data</span>}
                         </p>
                     </div>
                     <div className="grid-row flex-align-center">
                         <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">PATIENT ID</h5>
-                        <p className="margin-0 font-sans-2xs text-normal">{patient?.shortId}</p>
+                        <p className="margin-0 font-sans-2xs text-normal">{patient?.shortId || 'No Data'}</p>
                     </div>
                 </Grid>
             </Grid>
@@ -172,7 +172,7 @@ export const InvestigationResults = ({
                                                 START DATE
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {formatDate(item.addTime)}
+                                                {formatDate(item.addTime) || 'No Data'}
                                             </p>
                                         </Grid>
                                     </Grid>
@@ -182,7 +182,7 @@ export const InvestigationResults = ({
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">JURISDICTION</h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.jurisdictionCodeDescTxt}
+                                                {item.jurisdictionCodeDescTxt || 'No Data'}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
@@ -190,7 +190,7 @@ export const InvestigationResults = ({
                                                 INVESTIGATOR
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {getInvestigatorName(item) ?? '--'}
+                                                {getInvestigatorName(item) ?? 'No Data'}
                                             </p>
                                         </Grid>
                                     </Grid>
@@ -210,7 +210,7 @@ export const InvestigationResults = ({
                                                 NOTIFICATION
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.notificationRecordStatusCd ?? '--'}
+                                                {item.notificationRecordStatusCd ?? 'No Data'}
                                             </p>
                                         </Grid>
                                     </Grid>

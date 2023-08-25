@@ -157,14 +157,14 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                                 {patient && treatment?.createdOn ? (
                                     displayCreatedOn(patient, treatment)
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                                 {treatment?.provider ? (
                                     <span>{treatment.provider}</span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
@@ -174,28 +174,28 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                                         {format(new Date(treatment?.treatedOn), 'hh:mm a')}
                                     </span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                                 {treatment?.description ? (
                                     <span>{treatment?.description}</span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                 {patient && treatment?.associatedWith ? (
                                     displayAssociation(patient, treatment.associatedWith)
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
                                 {treatment?.event ? (
                                     <span>{treatment?.event}</span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                         </tr>

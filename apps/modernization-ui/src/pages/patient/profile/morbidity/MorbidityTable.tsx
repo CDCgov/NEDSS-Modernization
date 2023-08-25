@@ -160,7 +160,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                                         {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
                                     </ClassicLink>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
@@ -172,7 +172,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                                         <br />
                                     </>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
@@ -182,26 +182,26 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                                         {format(new Date(morbidity?.reportedOn), 'hh:mm a')}
                                     </span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                                 {morbidity?.condition ? (
                                     <span>{morbidity?.condition}</span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                 {morbidity?.jurisdiction ? (
                                     <span>{morbidity?.jurisdiction}</span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
                                 {!morbidity || !morbidity?.associatedWith ? (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 ) : (
                                     <div>
                                         <ClassicLink
@@ -216,7 +216,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                                 {morbidity?.event ? (
                                     <span>{morbidity?.event}</span>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <span className="no-data">No Data</span>
                                 )}
                             </td>
                         </tr>
