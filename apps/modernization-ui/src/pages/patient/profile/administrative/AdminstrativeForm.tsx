@@ -58,8 +58,8 @@ export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
                             render={({ field: { onBlur, onChange }, fieldState: { error } }) => (
                                 <Grid>
                                     <Grid className="flex-align-self-center">
-                                        <Label htmlFor={'comment'}>
-                                            Additional comments:<span className="text-red">{' *'}</span>
+                                        <Label className="required" htmlFor={'comment'}>
+                                            Additional comments:
                                         </Label>
                                     </Grid>
                                     <Grid>

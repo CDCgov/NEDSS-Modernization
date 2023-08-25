@@ -23,7 +23,6 @@ describe('DatePickerInput component tests', () => {
 
             const label = getByTestId('label');
             expect(label).toHaveTextContent('Test DP Label');
-            expect(label.children.item(0)).toHaveTextContent('');
 
             const input = getByTestId('date-picker-internal-input');
             expect(input).toHaveValue('2022-12-31');
@@ -174,7 +173,7 @@ describe('DatePickerInput component tests', () => {
             );
             const label = getByTestId('label');
             expect(label).toHaveTextContent('Test DP Label');
-            expect(label.children.item(0)).toHaveTextContent('*');
+            expect(label).toHaveClass('required');
         });
     });
 });

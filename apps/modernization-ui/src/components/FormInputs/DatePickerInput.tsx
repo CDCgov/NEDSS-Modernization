@@ -1,6 +1,7 @@
 import { DatePicker, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
 import React, { useState } from 'react';
+import classNames from 'classnames';
 
 type OnChange = (val?: string) => void;
 type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
@@ -66,9 +67,8 @@ export const DatePickerInput = ({
     return !flexBox ? (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             {label && (
-                <Label htmlFor={htmlFor}>
+                <Label className={classNames({ required })} htmlFor={htmlFor}>
                     {label}
-                    <span className="text-red">{required && ' *'}</span>
                 </Label>
             )}
             <ErrorMessage id={`${error}-message`}>{errorMessage}</ErrorMessage>
@@ -99,9 +99,8 @@ export const DatePickerInput = ({
         <Grid row className={`date-picker-input ${error === true ? 'error' : ''}`}>
             <Grid col={6}>
                 {label && (
-                    <Label htmlFor={htmlFor}>
+                    <Label className={classNames({ required })} htmlFor={htmlFor}>
                         {label}
-                        <span className="text-red">{required && ' *'}</span>
                     </Label>
                 )}
             </Grid>

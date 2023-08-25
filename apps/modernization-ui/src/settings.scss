@@ -42,3 +42,10 @@ p.no-data {
 td span {
     word-break: break-word;
 }
+
+.required {
+    &::after {
+        content: ' *';
+        color: $color-red;
+    }
+}
