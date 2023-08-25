@@ -22,12 +22,12 @@ export default function EthnicityFields({ id, title, coded }: Props) {
                                 key={key}
                                 control={control}
                                 name="ethnicity"
-                                render={({ field: { onChange } }) => (
+                                render={({ field: { onChange, name } }) => (
                                     <Radio
                                         onChange={onChange}
                                         value={ethnicity.value}
                                         id={ethnicity.value}
-                                        name={'ethnicity'}
+                                        name={name}
                                         label={ethnicity.name}
                                     />
                                 )}

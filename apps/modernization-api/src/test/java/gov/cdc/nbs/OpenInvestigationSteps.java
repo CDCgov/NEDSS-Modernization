@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.event.search.investigation.InvestigationResolver;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.investigation.InvestigationResolver;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
 import gov.cdc.nbs.support.EventMother;
