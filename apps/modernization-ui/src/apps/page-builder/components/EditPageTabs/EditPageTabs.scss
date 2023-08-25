@@ -14,21 +14,6 @@
             font-weight: 300;
             margin: 0;
         }
-        &:nth-of-type(1) {
-            width: 3.4rem;
-        }
-        &:nth-of-type(2) {
-            width: 3.75rem;
-        }
-        &:nth-of-type(3) {
-            width: 5.4rem;
-        }
-        &:nth-of-type(4) {
-            width: 16.4rem;
-        }
-        &:nth-of-type(5) {
-            width: 9.5rem;
-        }
         &.active {
             border-bottom: 6px solid $color-primary-dark;
             h4 {
