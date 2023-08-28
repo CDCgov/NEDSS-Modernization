@@ -27,7 +27,6 @@ import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.UserProfileRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.exception.BadRequestException;
 import gov.cdc.nbs.questionbank.exception.QueryException;
 import gov.cdc.nbs.questionbank.page.PageDownloader;
 

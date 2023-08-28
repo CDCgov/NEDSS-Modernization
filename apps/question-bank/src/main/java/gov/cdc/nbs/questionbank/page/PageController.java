@@ -28,7 +28,6 @@ import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.response.PageDetailResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.services.PageSummaryFinder;
-import gov.cdc.nbs.questionbank.page.PageDownloader;
 import gov.cdc.nbs.questionbank.page.services.PageUpdater;
 import lombok.extern.slf4j.Slf4j;
 

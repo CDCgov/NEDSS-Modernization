@@ -15,7 +15,7 @@ jobs:
     uses: ./.github/workflows/sonar.yaml
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      PASSED_GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}  
   call-build-microservice-container-workflow:
     needs: sonar_scan
