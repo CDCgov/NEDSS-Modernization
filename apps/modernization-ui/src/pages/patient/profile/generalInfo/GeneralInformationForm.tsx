@@ -105,7 +105,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                         defaultValue={entry?.maternalMaidenName}
                         render={({ field: { onChange, value } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
@@ -128,7 +128,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                         rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 type="number"
@@ -153,7 +153,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                         rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 type="number"
@@ -257,7 +257,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                         defaultValue={entry?.stateHIVCase}
                         render={({ field: { onChange, value } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}

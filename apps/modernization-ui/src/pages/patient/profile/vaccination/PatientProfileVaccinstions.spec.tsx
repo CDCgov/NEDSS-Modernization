@@ -27,7 +27,7 @@ describe('when the patient has not been vaccinated', () => {
         }
     };
 
-    it('should display No data', async () => {
+    it('should display No Data', async () => {
         const { findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
                 <ClassicModalProvider>
@@ -36,7 +36,7 @@ describe('when the patient has not been vaccinated', () => {
             </MockedProvider>
         );
 
-        expect(await findByText('No data')).toBeInTheDocument();
+        expect(await findByText('No Data')).toBeInTheDocument();
     });
 });
 
@@ -152,6 +152,6 @@ describe('when the patient has been vaccinated without an association', () => {
 
         const tableData = container.getElementsByClassName('table-data');
 
-        await waitFor(() => expect(tableData[4]).toHaveTextContent('No data'));
+        await waitFor(() => expect(tableData[4]).toHaveTextContent('No Data'));
     });
 });

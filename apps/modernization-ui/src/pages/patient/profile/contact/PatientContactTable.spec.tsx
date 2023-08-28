@@ -51,8 +51,8 @@ describe('when rendered', () => {
     });
 });
 
-describe('when contacts are No data for a patient', () => {
-    it('should display No data', async () => {
+describe('when contacts are No Data for a patient', () => {
+    it('should display No Data', async () => {
         const { findByText } = render(
             <ClassicModalProvider>
                 <PageProvider>
@@ -65,7 +65,7 @@ describe('when contacts are No data for a patient', () => {
             </ClassicModalProvider>
         );
 
-        expect(await findByText('No data')).toBeInTheDocument();
+        expect(await findByText('No Data')).toBeInTheDocument();
     });
 });
 

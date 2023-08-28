@@ -23,6 +23,7 @@ import { NameEntryForm } from './NameEntryForm';
 import { NameEntry } from './NameEntry';
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
 import { useAlert } from 'alert/useAlert';
+import { NoData } from 'components/NoData';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -271,22 +272,14 @@ export const NamesTable = ({ patient }: Props) => {
                                     {format(new Date(name?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <NoData />
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {name?.use ? (
-                                <span>{name?.use.description}</span>
-                            ) : (
-                                <span className="no-data">No data</span>
-                            )}
+                            {name?.use ? <span>{name?.use.description}</span> : <NoData />}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {name?.prefix ? (
-                                <span>{name?.prefix.description}</span>
-                            ) : (
-                                <span className="no-data">No data</span>
-                            )}
+                            {name?.prefix ? <span>{name?.prefix.description}</span> : <NoData />}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                             {name?.last || name?.first ? (
@@ -294,22 +287,14 @@ export const NamesTable = ({ patient }: Props) => {
                                     name?.middle || ''
                                 }`}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <NoData />
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                            {name?.suffix ? (
-                                <span>{name?.suffix.description}</span>
-                            ) : (
-                                <span className="no-data">No data</span>
-                            )}
+                            {name?.suffix ? <span>{name?.suffix.description}</span> : <NoData />}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                            {name?.degree ? (
-                                <span>{name?.degree.description}</span>
-                            ) : (
-                                <span className="no-data">No data</span>
-                            )}
+                            {name?.degree ? <span>{name?.degree.description}</span> : <NoData />}
                         </td>
                         <td>
                             <div className="table-span">

@@ -3,6 +3,7 @@ import './style.scss';
 import { Grid } from '@trussworks/react-uswds';
 import { Patient } from 'pages/patient/profile';
 import { Address, Email, Name, PatientSummary, Phone } from './PatientSummary';
+import { NoData } from 'components/NoData';
 
 type Props = {
     patient: Patient;
@@ -10,7 +11,7 @@ type Props = {
 };
 
 const display = (value: string) => <p>{value}</p>;
-const noData = <p className="no-data">No Data</p>;
+const noData = <NoData />;
 
 const formattedPhones = (items: Phone[]) => display(items.map((items) => items.number).join('\n'));
 
@@ -38,7 +39,7 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
                 <Grid col={3}>
                     <Grid col={12} className=" summary-value">
                         <h5 className="margin-right-1">SEX</h5>
-                        <p>{summary.gender}</p>
+                        <p>{summary.gender || noData}</p>
                     </Grid>
                 </Grid>
 
@@ -66,9 +67,7 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
                 <Grid col={3}>
                     <Grid col={12} className="margin-top-3 summary-value">
                         <h5 className="margin-right-1">DATE OF BIRTH</h5>
-                        <p>
-                            {summary.birthday} ({summary.age})
-                        </p>
+                        <p>{summary.birthday ? `${summary.birthday} (${summary.age})` : noData}</p>
                     </Grid>
                 </Grid>
 

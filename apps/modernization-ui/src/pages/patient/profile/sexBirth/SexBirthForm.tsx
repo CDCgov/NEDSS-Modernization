@@ -208,7 +208,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         name="additionalGender"
                         render={({ field: { onChange, value } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
@@ -273,7 +273,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         rules={{ min: { value: 0, message: 'Must be a positive number' } }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 type="number"
@@ -297,7 +297,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         defaultValue={entry.birth.city}
                         render={({ field: { onChange, value } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
