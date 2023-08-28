@@ -3,8 +3,14 @@ package gov.cdc.nbs.questionbank.page.content.subsection;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.AddSubSectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +27,7 @@ public class SubSectionCreator {
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
+    private static final String UPDATE_MESSAGE = "SubSection Updated Successfully";
     @Autowired
     private EntityManager entityManager;
 
@@ -36,6 +43,44 @@ public class SubSectionCreator {
             throw new AddSubSectionException("Failed to add SubSection");
         }
     }
+
+    private static final long TAB = 1010L;
+    private static final long SECTION = 1015L;
+    private static final long SUBSECTION = 1016L;
+
+    public DeleteSubSectionResponse deleteSubSection(DeleteSubSectionRequest request) {
+        try {
+            log.info("Deleting sub section");
+            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
+            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.subSectionId());
+            Long nbsComponentUid = waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
+            if(nbsComponentUid == TAB || nbsComponentUid == SECTION || nbsComponentUid == null || nbsComponentUid == SUBSECTION) {
+                waUiMetaDataRepository.deleteById(request.subSectionId());
+                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.subSectionId());
+                return new DeleteSubSectionResponse(request.subSectionId(), "Sub Section Deleted Successfully");
+            } else {
+                throw new DeleteSubSectionException("Conditions not satisfied");
+            }
+        } catch(Exception exception) {
+            throw new DeleteSubSectionException("Delete Sub Section exception");
+        }
+
+    }
+
+    public UpdateSubSectionResponse updateSubSection(UpdateSubSectionRequest request) {
+        try {
+            log.info("Updating subsection");
+            if (request.questionLabel() == null || request.visible() == null) {
+                throw new UpdateSubSectionException("Label and visibility fields are required");
+            }
+            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.subSectionId());
+            return new UpdateSubSectionResponse(request.subSectionId(), UPDATE_MESSAGE);
+        } catch(Exception exception) {
+            throw new UpdateSubSectionException(exception.toString());
+        }
+
+    }
+
 
     private WaUiMetadata createWaUiMetadata(long pageId, Long uid, CreateSubSectionRequest request) {
         Instant now = Instant.now();
