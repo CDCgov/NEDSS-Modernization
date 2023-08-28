@@ -24,7 +24,11 @@ export type MortalityEntry = {
 };
 
 export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
-    const { handleSubmit, control } = useForm();
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm();
 
     const selectedState = useWatch({ control, name: 'state', defaultValue: entry.state });
     const selectedDeceased = useWatch({ control, name: 'deceased', defaultValue: entry.deceased });
@@ -48,7 +52,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
     return (
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
+                <Grid col={6} className="margin-top-1 required">
                     As of:
                 </Grid>
                 <Grid col={6}>
@@ -203,7 +207,8 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                     <Button
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
-                        className="padding-105 text-center margin-top-0">
+                        className="padding-105 text-center margin-top-0"
+                        disabled={!isValid}>
                         Save
                     </Button>
                 </ButtonGroup>

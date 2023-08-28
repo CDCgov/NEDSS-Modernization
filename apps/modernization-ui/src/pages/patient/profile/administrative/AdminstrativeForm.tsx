@@ -44,6 +44,7 @@ export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
                                     htmlFor={'asOf'}
                                     label="Administrative as of"
                                     errorMessage={error?.message}
+                                    required
                                 />
                             )}
                         />
@@ -57,7 +58,9 @@ export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
                             render={({ field: { onBlur, onChange }, fieldState: { error } }) => (
                                 <Grid>
                                     <Grid className="flex-align-self-center">
-                                        <Label htmlFor={'comment'}>Additional comments:</Label>
+                                        <Label className="required" htmlFor={'comment'}>
+                                            Additional comments:
+                                        </Label>
                                     </Grid>
                                     <Grid>
                                         <Textarea
