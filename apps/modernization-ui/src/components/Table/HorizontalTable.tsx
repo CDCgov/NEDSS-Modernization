@@ -2,6 +2,7 @@ import { Button, Grid, Icon } from '@trussworks/react-uswds';
 import { ReactNode, useState } from 'react';
 import './style.scss';
 import { PatientBirth, PatientGeneral, PatientMortality } from 'generated/graphql/schema';
+import NoData from 'components/NoData/NoData';
 
 export type TableProps = {
     tableHeader?: string;
@@ -35,7 +36,7 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData, type }: Table
                             {item.text && <Grid col={6}>{item.text}</Grid>}
                             {!item.text && (
                                 <Grid col={6} className="font-sans-md no-data">
-                                    No Data
+                                    <NoData />
                                 </Grid>
                             )}
                         </Grid>

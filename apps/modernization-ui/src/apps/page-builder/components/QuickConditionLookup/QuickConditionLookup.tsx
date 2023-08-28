@@ -16,6 +16,7 @@ import { ConditionControllerService, ReadConditionRequest } from 'apps/page-buil
 import { UserContext } from 'user';
 import { NavLink } from 'react-router-dom';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
+import NoData from 'components/NoData/NoData';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -185,7 +186,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         handleSelected={handleSelectConditions}
                     />
                 ) : (
-                    <div>No Data </div>
+                    <NoData />
                 )}
             </div>
             <ModalFooter className="padding-2 margin-left-auto footer">

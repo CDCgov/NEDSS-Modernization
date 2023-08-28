@@ -1,4 +1,5 @@
 import { Button, Icon, Table, Pagination } from '@trussworks/react-uswds';
+import NoData from 'components/NoData/NoData';
 
 type TableContentProps = {
     tableHeader?: string;
@@ -51,11 +52,8 @@ export const TableComponent = ({
                                 td.title ? (
                                     <td key={ind}>{td.title}</td>
                                 ) : (
-                                    <td
-                                        key={ind}
-                                        style={{ color: '#747474', fontStyle: 'italic' }}
-                                        className="font-sans-md">
-                                        No Data
+                                    <td key={ind} className="font-sans-md">
+                                        <NoData />
                                     </td>
                                 )
                             )}

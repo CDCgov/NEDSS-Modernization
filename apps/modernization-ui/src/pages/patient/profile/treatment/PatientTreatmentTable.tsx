@@ -5,6 +5,7 @@ import { FindTreatmentsForPatientQuery, useFindTreatmentsForPatientLazyQuery } f
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { SortableTable } from 'components/Table/SortableTable';
 import { ClassicLink } from 'classic';
+import NoData from 'components/NoData/NoData';
 
 export type PatientTreatments = FindTreatmentsForPatientQuery['findTreatmentsForPatient'];
 
@@ -154,18 +155,10 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                     return (
                         <tr key={index}>
                             <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                                {patient && treatment?.createdOn ? (
-                                    displayCreatedOn(patient, treatment)
-                                ) : (
-                                    <span className="no-data">No Data</span>
-                                )}
+                                {patient && treatment?.createdOn ? displayCreatedOn(patient, treatment) : <NoData />}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                                {treatment?.provider ? (
-                                    <span>{treatment.provider}</span>
-                                ) : (
-                                    <span className="no-data">No Data</span>
-                                )}
+                                {treatment?.provider ? <span>{treatment.provider}</span> : <NoData />}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                                 {treatment?.treatedOn ? (
@@ -174,29 +167,21 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                                         {format(new Date(treatment?.treatedOn), 'hh:mm a')}
                                     </span>
                                 ) : (
-                                    <span className="no-data">No Data</span>
+                                    <NoData />
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                                {treatment?.description ? (
-                                    <span>{treatment?.description}</span>
-                                ) : (
-                                    <span className="no-data">No Data</span>
-                                )}
+                                {treatment?.description ? <span>{treatment?.description}</span> : <NoData />}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                 {patient && treatment?.associatedWith ? (
                                     displayAssociation(patient, treatment.associatedWith)
                                 ) : (
-                                    <span className="no-data">No Data</span>
+                                    <NoData />
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                                {treatment?.event ? (
-                                    <span>{treatment?.event}</span>
-                                ) : (
-                                    <span className="no-data">No Data</span>
-                                )}
+                                {treatment?.event ? <span>{treatment?.event}</span> : <NoData />}
                             </td>
                         </tr>
                     );

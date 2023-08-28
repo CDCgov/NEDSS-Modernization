@@ -1,4 +1,5 @@
 import { Button, Grid, Icon } from '@trussworks/react-uswds';
+import NoData from 'components/NoData/NoData';
 
 export const CompareInvestigations = () => {
     return (
@@ -49,7 +50,9 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Investigatior:</Grid>
-                                <Grid col={6}>No Data</Grid>
+                                <Grid col={6}>
+                                    <NoData />
+                                </Grid>
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Created:</Grid>
@@ -57,7 +60,9 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Last updated:</Grid>
-                                <Grid col={6}>No Data</Grid>
+                                <Grid col={6}>
+                                    <NoData />
+                                </Grid>
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>By:</Grid>
@@ -65,7 +70,9 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Notificatoin status::</Grid>
-                                <Grid col={6}>No Data</Grid>
+                                <Grid col={6}>
+                                    <NoData />
+                                </Grid>
                             </Grid>
                         </div>
                     </Grid>
@@ -97,7 +104,9 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Investigatior:</Grid>
-                                <Grid col={6}>No Data</Grid>
+                                <Grid col={6}>
+                                    <NoData />
+                                </Grid>
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Created:</Grid>
@@ -105,7 +114,9 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Last updated:</Grid>
-                                <Grid col={6}>No Data</Grid>
+                                <Grid col={6}>
+                                    <NoData />
+                                </Grid>
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>By:</Grid>
@@ -113,7 +124,9 @@ export const CompareInvestigations = () => {
                             </Grid>
                             <Grid row className="border-top padding-y-2 padding-x-2 font-sans-sm">
                                 <Grid col={6}>Notificatoin status::</Grid>
-                                <Grid col={6}>No Data</Grid>
+                                <Grid col={6}>
+                                    <NoData />
+                                </Grid>
                             </Grid>
                         </div>
                     </Grid>

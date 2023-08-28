@@ -5,6 +5,7 @@ import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
+import NoData from 'components/NoData/NoData';
 
 type InvestigationResultsProps = {
     data: [Investigation];
@@ -106,20 +107,18 @@ export const InvestigationResults = ({
                         </h5>
                         <p className="margin-0 font-sans-2xs text-normal">
                             <>
-                                {birthDate ? birthDate : <span className="font-sans-2xs">No Data</span>}
+                                {birthDate ? birthDate : <NoData />}
                                 <span className="font-sans-2xs"> {age ? `(${age})` : ''}</span>
                             </>
                         </p>
                     </div>
                     <div className="grid-row flex-align-center">
                         <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">SEX</h5>
-                        <p className="margin-0 font-sans-2xs text-normal">
-                            {sex ? sex : <span className="font-sans-2xs">No Data</span>}
-                        </p>
+                        <p className="margin-0 font-sans-2xs text-normal">{sex ? sex : <NoData />}</p>
                     </div>
                     <div className="grid-row flex-align-center">
                         <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">PATIENT ID</h5>
-                        <p className="margin-0 font-sans-2xs text-normal">{patient?.shortId || 'No Data'}</p>
+                        <p className="margin-0 font-sans-2xs text-normal">{patient?.shortId || <NoData />}</p>
                     </div>
                 </Grid>
             </Grid>
@@ -172,7 +171,7 @@ export const InvestigationResults = ({
                                                 START DATE
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {formatDate(item.addTime) || 'No Data'}
+                                                {formatDate(item.addTime) || <NoData />}
                                             </p>
                                         </Grid>
                                     </Grid>
@@ -182,7 +181,7 @@ export const InvestigationResults = ({
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">JURISDICTION</h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.jurisdictionCodeDescTxt || 'No Data'}
+                                                {item.jurisdictionCodeDescTxt || <NoData />}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
@@ -190,7 +189,7 @@ export const InvestigationResults = ({
                                                 INVESTIGATOR
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {getInvestigatorName(item) ?? 'No Data'}
+                                                {getInvestigatorName(item) ?? <NoData />}
                                             </p>
                                         </Grid>
                                     </Grid>
@@ -199,19 +198,27 @@ export const InvestigationResults = ({
                                     <Grid row gap={3} className="fill-height">
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">STATUS</h5>
-                                            <p
-                                                className="margin-0 font-sans-1xs text-normal status"
-                                                style={{ backgroundColor: '#2cb844' }}>
-                                                {getInvestigationStatusString(item)}
-                                            </p>
+                                            {getInvestigationStatusString(item) === 'No Data' ? (
+                                                <NoData />
+                                            ) : (
+                                                <p
+                                                    className="margin-0 font-sans-1xs text-normal status"
+                                                    style={{ backgroundColor: '#2cb844' }}>
+                                                    {getInvestigationStatusString(item)}
+                                                </p>
+                                            )}
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
                                                 NOTIFICATION
                                             </h5>
-                                            <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.notificationRecordStatusCd ?? 'No Data'}
-                                            </p>
+                                            {item.notificationRecordStatusCd ? (
+                                                <p className="margin-0 font-sans-1xs text-normal">
+                                                    {item.notificationRecordStatusCd ?? <NoData />}
+                                                </p>
+                                            ) : (
+                                                <NoData />
+                                            )}
                                         </Grid>
                                     </Grid>
                                 </Grid>

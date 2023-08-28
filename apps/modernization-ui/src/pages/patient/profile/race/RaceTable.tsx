@@ -21,6 +21,7 @@ import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPa
 import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
 import { useAlert } from 'alert/useAlert';
+import NoData from 'components/NoData/NoData';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -225,18 +226,14 @@ export const RacesTable = ({ patient }: Props) => {
                                     {format(new Date(race?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No Data</span>
+                                <NoData />
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {race?.category?.description ? (
-                                <span>{race?.category?.description}</span>
-                            ) : (
-                                <span className="no-data">No Data</span>
-                            )}
+                            {race?.category?.description ? <span>{race?.category?.description}</span> : <NoData />}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {maybeDescriptions(race.detailed).join(' | ') || <span className="no-data">No Data</span>}
+                            {maybeDescriptions(race.detailed).join(' | ') || <NoData />}
                         </td>
                         <td>
                             <div className="table-span">

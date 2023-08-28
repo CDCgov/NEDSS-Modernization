@@ -3,6 +3,7 @@ import './style.scss';
 import { Grid } from '@trussworks/react-uswds';
 import { Patient } from 'pages/patient/profile';
 import { Address, Email, Name, PatientSummary, Phone } from './PatientSummary';
+import NoData from 'components/NoData/NoData';
 
 type Props = {
     patient: Patient;
@@ -10,7 +11,7 @@ type Props = {
 };
 
 const display = (value: string) => <p>{value}</p>;
-const noData = <p className="no-data">No Data</p>;
+const noData = <NoData />;
 
 const formattedPhones = (items: Phone[]) => display(items.map((items) => items.number).join('\n'));
 

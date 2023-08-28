@@ -18,6 +18,7 @@ import EntryModal from 'pages/patient/profile/entry';
 import { AdministrativeForm } from './AdminstrativeForm';
 import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert/useAlert';
+import NoData from 'components/NoData/NoData';
 
 const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(addministrative?.asOf),
@@ -150,15 +151,11 @@ export const AdministrativeTable = ({ patient }: Props) => {
                                     {format(new Date(administrative?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No Data</span>
+                                <NoData />
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {administrative?.comment ? (
-                                <span>{administrative?.comment}</span>
-                            ) : (
-                                <span className="no-data">No Data</span>
-                            )}
+                            {administrative?.comment ? <span>{administrative?.comment}</span> : <NoData />}
                         </td>
                         <td>
                             <div className="table-span">
