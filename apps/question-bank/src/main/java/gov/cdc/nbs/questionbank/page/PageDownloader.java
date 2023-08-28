@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVFormat.Builder;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,10 +59,11 @@ public class PageDownloader {
 				List<ConditionCode> pageConditions = new ArrayList<>();
 
 				mappings.stream().filter(p -> p.getWaTemplateUid().equals(page)).collect(Collectors.toList())
-						.forEach((v) -> {
-							conditionCodes.stream().filter(c -> c.getId().equals(v.getConditionCd()))
-									.forEach(pageConditions::add);
-						});
+						.forEach(v -> 
+							conditionCodes.stream()
+                                    .filter(c -> c.getId().equals(v.getConditionCd()))
+									.forEach(pageConditions::add)
+						);
 				
 				List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
 						formatttedRelatedConditions(pageConditions), page.getLastChgTime().toString(),
@@ -81,19 +81,9 @@ public class PageDownloader {
 	}
 
 	public String formatttedRelatedConditions(List<ConditionCode> conditions) {
-		StringBuilder data = new StringBuilder();
-
-		for (int i = 0; i < conditions.size(); i++) {
-			ConditionCode curr = conditions.get(i);
-			if (i == conditions.size() - 1) {
-
-				data.append(curr.getConditionDescTxt() + "(" + curr.getId() + ")");
-			} else {
-				data.append(curr.getConditionDescTxt() + "(" + curr.getId() + "),");
-			}
-
-		}
-		return data.toString();
+        return conditions.stream()
+                .map(c -> c.getConditionDescTxt() + "(" + c.getId() + ")")
+                .collect(Collectors.joining(","));
 	}
 
 	public String getLastUpdatedUser(Long lastChgUserId) {

@@ -8,14 +8,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.UserProfileRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
@@ -30,16 +28,7 @@ public class PageMother {
     private WaTemplateRepository repository;
 
     @Autowired
-    private WaUiMetadataRepository waUiMetadataRepository;
-    
-    @Autowired
-    private PageCondMappingRepository pageConMappingRepository;
-    
-    @Autowired
-	private ConditionCodeRepository conditionCodeRepository;
-
-	@Autowired
-	private UserProfileRepository userProfileRepository;
+    private PageCondMappingRepository pageConMappingRepository;    
 	
 	@Autowired
 	private WaUiMetadataRepository waUiMetadatumRepository;
