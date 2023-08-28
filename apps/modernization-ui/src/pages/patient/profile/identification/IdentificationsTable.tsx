@@ -21,6 +21,7 @@ import { IdentificationEntryForm } from './IdentificationEntryForm';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { useAlert } from 'alert/useAlert';
+import { NoData } from 'components/NoData';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -229,29 +230,21 @@ export const IdentificationsTable = ({ patient }: Props) => {
                                     {format(new Date(identification?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <NoData />
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {identification?.type ? (
-                                <span>{identification?.type.description}</span>
-                            ) : (
-                                <span className="no-data">No data</span>
-                            )}
+                            {identification?.type ? <span>{identification?.type.description}</span> : <NoData />}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                             {identification?.authority ? (
                                 <span>{identification?.authority.description}</span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <NoData />
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {identification?.value ? (
-                                <span>{identification?.value}</span>
-                            ) : (
-                                <span className="no-data">No data</span>
-                            )}
+                            {identification?.value ? <span>{identification?.value}</span> : <NoData />}
                         </td>
                         <td>
                             <div className="table-span">

@@ -25,15 +25,15 @@ describe('when rendered', () => {
     });
 });
 
-describe('when documents are No data for a patient', () => {
-    it('should display No data', async () => {
+describe('when documents are No Data for a patient', () => {
+    it('should display No Data', async () => {
         const { findByText } = render(
             <PageProvider>
                 <PatientDocumentTable patient={'patient'} documents={[]}></PatientDocumentTable>
             </PageProvider>
         );
 
-        expect(await findByText('No data')).toBeInTheDocument();
+        expect(await findByText('No Data')).toBeInTheDocument();
     });
 });
 

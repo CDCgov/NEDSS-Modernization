@@ -5,6 +5,7 @@ import { calculateAge } from '../../..//utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
+import { NoData } from 'components/NoData';
 
 type LabReportResultsProps = {
     data: [LabReport];
@@ -65,7 +66,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         if (observation) {
             return `${observation.cdDescTxt} = ${observation.displayName}`;
         } else {
-            return '--';
+            return 'No Data';
         }
     };
 
@@ -76,7 +77,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         let age: string | undefined;
         let sex: string | undefined;
         if (patient) {
-            name = !patient.lastName && !patient.firstName ? `No data` : `${patient.lastName}, ${patient.firstName}`;
+            name = !patient.lastName && !patient.firstName ? `No Data` : `${patient.lastName}, ${patient.firstName}`;
             if (patient.birthTime) {
                 birthDate = formatDate(patient.birthTime);
                 age = calculateAge(new Date(patient.birthTime));
@@ -92,12 +93,16 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
             <Grid row gap={3}>
                 <Grid col={12} className="margin-bottom-2">
                     <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
-                    <a
-                        onClick={redirectPatientProfile}
-                        className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
-                        style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
-                        {name}
-                    </a>
+                    {name ? (
+                        <a
+                            onClick={redirectPatientProfile}
+                            className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
+                            style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
+                            {name}
+                        </a>
+                    ) : (
+                        <NoData />
+                    )}
                 </Grid>
                 <Grid col={12} className="margin-bottom-2">
                     <div className="grid-row flex-align-center">
@@ -106,16 +111,14 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                         </h5>
                         <p className="margin-0 font-sans-1xs text-normal">
                             <>
-                                {birthDate ? birthDate : <span className="font-sans-2xs">--</span>}
+                                {birthDate ? birthDate : <NoData />}
                                 <span className="font-sans-2xs"> {age ? `(${age})` : ''}</span>
                             </>
                         </p>
                     </div>
                     <div className="grid-row flex-align-center">
                         <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">SEX</h5>
-                        <p className="margin-0 font-sans-1xs text-normal">
-                            {sex ? sex : <span className="font-sans-2xs">--</span>}
-                        </p>
+                        <p className="margin-0 font-sans-1xs text-normal">{sex ? sex : <NoData />}</p>
                     </div>
                     <div className="grid-row flex-align-center">
                         <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">PATIENT ID</h5>
@@ -170,14 +173,20 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                                 DATE RECEIVED
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {formatDate(item.addTime)}
+                                                {formatDate(item.addTime) || 'No Data'}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                                 DESCRIPTION
                                             </h5>
-                                            <p className="margin-0 font-sans-1xs text-normal">{getDescription(item)}</p>
+                                            {getDescription(item) === 'No Data' ? (
+                                                <NoData />
+                                            ) : (
+                                                <p className="margin-0 font-sans-1xs text-normal">
+                                                    {getDescription(item)}
+                                                </p>
+                                            )}
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -188,7 +197,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                                 REPORTING FACILITY
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {getReportingFacility(item)?.name ?? '--'}
+                                                {getReportingFacility(item)?.name ?? <NoData />}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
@@ -196,13 +205,13 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                                 ORDERING PROVIDOR
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {getOrderingProvidorName(item) ?? '--'}
+                                                {getOrderingProvidorName(item) ?? <NoData />}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">JURISDICTION</h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.jurisdictionCodeDescTxt}
+                                                {item.jurisdictionCodeDescTxt || <NoData />}
                                             </p>
                                         </Grid>
                                     </Grid>
@@ -215,8 +224,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                             </h5>
                                             <div className="margin-0 font-sans-1xs text-normal">
                                                 {(!item.associatedInvestigations ||
-                                                    item.associatedInvestigations.length == 0) &&
-                                                    '--'}
+                                                    item.associatedInvestigations.length == 0) && <NoData />}
                                                 {item.associatedInvestigations &&
                                                     item.associatedInvestigations?.length > 0 &&
                                                     item.associatedInvestigations?.map((i, index) => (
@@ -235,7 +243,9 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                             <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                                 LOCAL ID
                                             </h5>
-                                            <p className="margin-0 font-sans-1xs text-normal">{item.localId}</p>
+                                            <p className="margin-0 font-sans-1xs text-normal">
+                                                {item.localId || <NoData />}
+                                            </p>
                                         </Grid>
                                     </Grid>
                                 </Grid>
