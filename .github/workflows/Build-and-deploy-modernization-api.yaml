@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - sgz-fix-variable-conflict-sonar
     paths-ignore:
       - "cdc-sandbox/**"
       - "docker-compose.yml"
