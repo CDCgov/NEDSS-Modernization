@@ -81,6 +81,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                     htmlFor={'asOf'}
                                     label="As of"
                                     errorMessage={error?.message}
+                                    required
                                 />
                             )}
                         />
@@ -101,6 +102,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                     label="Type"
                                     options={coded.types}
                                     error={error?.message}
+                                    required
                                 />
                             )}
                         />
@@ -121,6 +123,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                     label="Use"
                                     options={coded.uses}
                                     error={error?.message}
+                                    required
                                 />
                             )}
                         />

@@ -157,4 +157,23 @@ describe('DatePickerInput component tests', () => {
             expect(component).toHaveClass('error');
         });
     });
+
+    describe('when required is provided', () => {
+        it('should render DatePicker which has a label as Test DP Label*', () => {
+            const { container, getByTestId } = render(
+                <DatePickerInput
+                    id="test-dp-id"
+                    name="test-dp-name"
+                    label="Test DP Label"
+                    className="test-dp-class-name"
+                    htmlFor="test-dp-id"
+                    defaultValue="12/31/2022"
+                    required
+                />
+            );
+            const label = getByTestId('label');
+            expect(label).toHaveTextContent('Test DP Label');
+            expect(label).toHaveClass('required');
+        });
+    });
 });

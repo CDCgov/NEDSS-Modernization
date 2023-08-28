@@ -340,7 +340,7 @@ export const AddressesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-address-modal">
+                <EntryModal onClose={actions.reset} modal={modal} id="add-patient-address-modal" title="Add - Address">
                     <AddressEntryForm action={'Add'} entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}

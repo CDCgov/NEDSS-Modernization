@@ -42,3 +42,10 @@ $theme-hero-image: '~uswds/src/img/hero.png';
 td span {
     word-break: break-word;
 }
+
+.required {
+    &::after {
+        content: ' *';
+        color: $color-red;
+    }
+}
