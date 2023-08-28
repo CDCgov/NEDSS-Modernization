@@ -8,7 +8,7 @@ on:
       - "cdc-sandbox/**"
       - "docker-compose.yml"
       - "**.md"
-      - ".github/workflows/**"
+      # - ".github/workflows/**"
       - "apps/nbs-gateway/**"
 
 jobs:
