@@ -30,4 +30,7 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
     
     @Query("SELECT MAX(id) from WaTemplate")
     Long getMaxTemplateID();
+    
+    @Query("SELECT v from WaTemplate v WHERE v.formCd LIKE '%PG_%'  order by v.templateNm asc")
+    List<WaTemplate> getAllPagesOrderedByName();
 }

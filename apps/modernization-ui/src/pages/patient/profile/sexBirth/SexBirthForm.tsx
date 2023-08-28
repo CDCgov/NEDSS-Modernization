@@ -42,7 +42,11 @@ type Props = {
 };
 
 export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
-    const { handleSubmit, control } = useForm({ mode: 'onBlur' });
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
 
     const currentBirthday = useWatch({ control, name: 'bornOn', defaultValue: entry.birth.bornOn });
 
@@ -81,7 +85,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
     return (
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
+                <Grid col={6} className="margin-top-1 required">
                     As of:
                 </Grid>
                 <Grid col={6}>
@@ -372,7 +376,8 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                     <Button
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
-                        className="padding-105 text-center margin-top-0">
+                        className="padding-105 text-center margin-top-0"
+                        disabled={!isValid}>
                         Save
                     </Button>
                 </ButtonGroup>

@@ -3,6 +3,7 @@ import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
 import './MultiSelectInput.scss';
 import { mapNonNull } from 'utils';
 import { Label, ErrorMessage } from '@trussworks/react-uswds';
+import classNames from 'classnames';
 
 const CheckedOption = (props: any) => {
     return (
@@ -75,9 +76,8 @@ export const MultiSelectInput = ({
     return (
         <div className={`multi-select-input ${required ? 'required' : ''}`}>
             {label && (
-                <Label htmlFor={label}>
+                <Label className={classNames({ required })} htmlFor={label}>
                     {label}
-                    <small className="text-red">{required && ' *'}</small>
                 </Label>
             )}
             <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>

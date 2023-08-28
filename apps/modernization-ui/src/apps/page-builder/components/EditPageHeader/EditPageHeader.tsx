@@ -1,21 +1,17 @@
 import { Button } from '@trussworks/react-uswds';
 import './EditPageHeader.scss';
-
-type Page = {
-    name?: string;
-    description?: string;
-};
+import { PageDetails } from 'apps/page-builder/generated/models/PageDetails';
 
 type PageProps = {
-    page: Page;
+    page: PageDetails;
 };
 
 export const EditPageHeader = ({ page }: PageProps) => {
     return (
         <div className="edit-page-header">
             <div className="edit-page-header__left">
-                <h2>{page.name}</h2>
-                <h4>{page.description}</h4>
+                <h2>{page.Name}</h2>
+                <h4>{page.pageDescription}</h4>
             </div>
             <div className="edit-page-header__right">
                 <Button type="button" outline>

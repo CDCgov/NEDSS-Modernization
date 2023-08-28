@@ -71,3 +71,4 @@ Feature: Patient Profile Investigations
     And the patient is a subject of 2 investigations
     When the investigations are compared from a Patient Profile
     Then I am not allowed to compare Classic NBS Investigations
+

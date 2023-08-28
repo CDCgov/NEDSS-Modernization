@@ -57,6 +57,7 @@ export const RaceEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                     htmlFor={'asOf'}
                                     label="As of"
                                     errorMessage={error?.message}
+                                    required
                                 />
                             )}
                         />
@@ -77,6 +78,7 @@ export const RaceEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                     label="Race"
                                     options={categories}
                                     error={error?.message}
+                                    required
                                 />
                             )}
                         />
