@@ -45,7 +45,7 @@ export const useSubGroupAPI = () => {
     const fetchFamilyOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: `Bearer ${state.getToken()}`,
-            codeSetNm: 'CONDITION_FAMILY'
+            codeSetNm: 'NBS_QUES_SUBGROUP'
         }).then((response: any) => {
             const data = response || [];
             console.log('data....', data);
