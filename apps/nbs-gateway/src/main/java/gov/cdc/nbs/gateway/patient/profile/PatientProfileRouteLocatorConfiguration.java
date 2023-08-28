@@ -7,7 +7,6 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 
 /**
  * Configures the Patient Profile routes with a ContextAction of {@code ViewFile} or {@code FileSummary} to the
@@ -32,8 +31,7 @@ class PatientProfileRouteLocatorConfiguration {
         return builder.routes()
             .route(
                 "patient-profile",
-                route -> route.order(Ordered.HIGHEST_PRECEDENCE)
-                    .query("ContextAction", "ViewFile|FileSummary")
+                route -> route.query("ContextAction", "ViewFile|FileSummary")
                     .filters(
                         filter -> filter.setPath("/nbs/redirect/patientProfile")
                             .filter(globalFilter)
