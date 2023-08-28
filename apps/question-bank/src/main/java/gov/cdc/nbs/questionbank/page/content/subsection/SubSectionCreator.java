@@ -44,6 +44,9 @@ public class SubSectionCreator {
         }
     }
 
+    private static final long TAB = 1010L;
+    private static final long SECTION = 1015L;
+    private static final long SUBSECTION = 1016L;
 
     public DeleteSubSectionResponse deleteSubSection(DeleteSubSectionRequest request) {
         try {
@@ -51,7 +54,7 @@ public class SubSectionCreator {
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
             Long pageNumber = waUiMetaDataRepository.findPageNumber(request.subSectionId());
             Long nbsComponentUid = waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
-            if(nbsComponentUid == 1010L || nbsComponentUid == 1015L || nbsComponentUid == null || nbsComponentUid == 1016L) {
+            if(nbsComponentUid == TAB || nbsComponentUid == SECTION || nbsComponentUid == null || nbsComponentUid == SUBSECTION) {
                 waUiMetaDataRepository.deleteById(request.subSectionId());
                 waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.subSectionId());
                 return new DeleteSubSectionResponse(request.subSectionId(), "Sub Section Deleted Successfully");

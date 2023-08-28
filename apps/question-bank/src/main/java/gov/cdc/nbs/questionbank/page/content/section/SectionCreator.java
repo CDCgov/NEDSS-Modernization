@@ -46,6 +46,8 @@ public class SectionCreator {
 
     }
 
+    private static final long TAB = 1010L;
+    private static final long SECTION = 1015L;
 
     public DeleteSectionResponse deleteSection(DeleteSectionRequest request) {
         try {
@@ -53,7 +55,7 @@ public class SectionCreator {
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.sectionId());
             Long pageNumber = waUiMetaDataRepository.findPageNumber(request.sectionId());
             Long nbsComponentUid = waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
-            if(nbsComponentUid == 1010L || nbsComponentUid == 1015L || nbsComponentUid == null ) {
+            if(nbsComponentUid == TAB || nbsComponentUid == SECTION || nbsComponentUid == null ) {
                 waUiMetaDataRepository.deleteById(request.sectionId());
                 waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.sectionId());
                 return new DeleteSectionResponse(request.sectionId(), "Section Deleted Successfully");
