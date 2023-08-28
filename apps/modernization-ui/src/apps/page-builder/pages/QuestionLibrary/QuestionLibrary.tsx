@@ -5,7 +5,7 @@ import { QuestionsContext } from '../../context/QuestionsContext';
 import { fetchQuestion } from './useQuestionAPI';
 import { QuestionLibraryTable } from './QuestionLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
-export const QuestionLibrary = ({ hideTabs }: any) => {
+export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
     // const [activeTab] = useState(types || 'recent');
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(QuestionsContext);
     const [summaries, setSummaries] = useState([]);
@@ -41,7 +41,11 @@ export const QuestionLibrary = ({ hideTabs }: any) => {
             </div>
             <div className="question-local-library__container">
                 <div className="question-local-library__table">
-                    <QuestionLibraryTable summaries={summaries} pages={{ currentPage, pageSize, totalElements }} />
+                    <QuestionLibraryTable
+                        summaries={summaries}
+                        qtnModalRef={modalRef}
+                        pages={{ currentPage, pageSize, totalElements }}
+                    />
                 </div>
             </div>
         </div>

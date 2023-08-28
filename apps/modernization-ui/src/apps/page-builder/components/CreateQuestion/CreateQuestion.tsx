@@ -46,6 +46,22 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         displayControl: 0,
         allowFutureDates: true
     };
+    const validation = {
+        label: { required: true, error: false, fb: false },
+        description: { required: false, error: false, fb: false },
+        subgroup: { required: true, error: false, fb: false },
+        uniqueId: { required: true, error: false, fb: false },
+        uniqueName: { required: true, error: false, fb: false },
+        defaultLabelInReport: { required: true, error: false, fb: false },
+        defaultRdbTableName: { required: true, error: false, fb: false },
+        rdbColumnName: { required: true, error: false, fb: false },
+        dataMartColumnName: { required: false, error: false, fb: false },
+        messageVariableId: { required: true, error: false, fb: false },
+        labelInMessage: { required: true, error: false, fb: false },
+        codeSystem: { required: true, error: false, fb: false },
+        hl7DataType: { required: true, error: false, fb: false }
+    };
+
     // Fields
     const [questionData, setQuestionData] = useState(init);
     const { state } = useContext(UserContext);
@@ -53,11 +69,8 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     // DropDown Options
     const [familyOptions, setFamilyOptions] = useState([]);
     const [groupOptions, setGroupOptions] = useState([]);
-    const [isValid, setIsValid] = useState({});
+    const [isValid, setIsValid] = useState(validation);
     const [codeSystemOptionList, setCodeSystemOptionList] = useState([]);
-    const [isQuestionLabelNotValid, setIsQuestionLabelNotValid] = useState(false);
-    const [isQuestionNotValid, setIsQuestionNotValid] = useState(false);
-    const [isValidationFailure, setIsValidationFailure] = useState(false);
     const authorization = `Bearer ${state.getToken()}`;
 
     useEffect(() => {
@@ -192,30 +205,48 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             [target.name]: target?.type === 'checkbox' ? target?.checked : target.value
         });
     };
-    const handleValidation = ({ target }: any) => {
-        const pattern = /^[a-zA-Z0-9_]*$/;
-        setIsValid({ ...isValid, [target?.name]: { error: target?.value?.match(pattern) } });
+    const handleValidation = ({ target }: React.ChangeEvent<HTMLInputElement>, unique = true) => {
+        const pattern = unique ? /^[a-zA-Z0-9_]*$/ : /^[a-zA-Z0-9\s?!,-_]*$/;
+        setIsValid({
+            ...isValid,
+            [target?.name]: { error: !pattern.test(target?.value) || target?.value === '', fb: true }
+        });
     };
 
     const resetInput = () => {
         setQuestionData(init);
     };
-
-    const validateQuestionLabel = (name: any) => {
-        const pattern = /^[a-zA-Z0-9_]*$/;
-        if (name.match(pattern)) {
-            setIsQuestionLabelNotValid(false);
-            setIsValidationFailure(false);
-            setIsQuestionNotValid(false);
-        } else {
-            // setIsQuestionLabelNotValid(true);
-            setIsValidationFailure(true);
-            // setIsQuestionNotValid(true);
+    const isDisableBtnFun = () => {
+        let disabled = false;
+        for (const keys in isValid) {
+            if (keys && isValid[keys as keyof typeof validation].error) disabled = true;
         }
+        return disabled;
     };
 
-    const { label, uniqueName, labelInMessage } = questionData || {};
-    const isDisableBtn = label || uniqueName || labelInMessage;
+    const {
+        label,
+        uniqueName,
+        labelInMessage,
+        subgroup,
+        uniqueId,
+        defaultLabelInReport,
+        defaultRdbTableName,
+        rdbColumnName,
+        messageVariableId,
+        codeSystem
+    } = questionData || {};
+    const isDisableBtn =
+        label ||
+        uniqueName ||
+        labelInMessage ||
+        subgroup ||
+        uniqueId ||
+        defaultLabelInReport ||
+        defaultRdbTableName ||
+        rdbColumnName ||
+        messageVariableId ||
+        codeSystem;
 
     const formatOptionLabel = ({ value, label }: any) => (
         <div key={value} style={{ display: 'flex', alignItems: 'center', lineHeight: '12px' }}>
@@ -260,7 +291,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             <div className="multi-select select-indicator margin-top-neg-1" />
         </components.DropdownIndicator>
     );
-    console.log('ques', question);
     const renderIconFieldType = (type: string): JSX.Element => {
         const size = 3;
         switch (type) {
@@ -295,20 +325,19 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     </label>
                 </div>
                 <p className="fields-info margin-bottom-2em">These fields will be displayed to your users</p>
-                <div className={isQuestionLabelNotValid ? 'error-border' : ''}>
+                <div className={isValid['label'].error ? 'error-border' : ''}>
                     <label>
                         Question Label<span className="mandatory-indicator">*</span>
                     </label>
-                    {isQuestionLabelNotValid && <label className="error-text">Question Label Not Valid</label>}
+                    {isValid['label'].error && <label className="error-text">Question Label Not Valid</label>}
                     <TextInput
                         className="field-space"
                         type="text"
                         id="questionLabel"
                         data-testid="questionLabel"
-                        // onBlur={handleValidation}
-                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
+                        onBlur={(e: any) => handleValidation(e, false)}
                         name="label"
-                        style={{ border: isQuestionLabelNotValid ? '1px solid #dc3545' : '1px solid black' }}
+                        style={{ border: isValid['label'].error ? '1px solid #dc3545' : '1px solid black' }}
                         value={questionData.label}
                         onChange={handleQuestionInput}
                     />
@@ -354,6 +383,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     className="field-space"
                     name="subgroup"
                     id="subgroup"
+                    onBlur={(value) => handleQuestionInput({ target: { value, name: 'subgroup' } })}
                     defaultValue={questionData.subgroup}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
@@ -379,39 +409,38 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         label="PHIN"
                     />
                 </div>
-
                 <br></br>
-                <div className={isQuestionNotValid ? 'error-border' : ''}>
+                <div className={isValid['uniqueId'].error ? 'error-border' : ''}>
                     <label>
                         Unique ID<span className="mandatory-indicator">*</span>
                     </label>
-                    {isQuestionNotValid && <label className="error-text">Unique ID Not Valid</label>}
+                    {isValid['uniqueId'].error && <label className="error-text">Unique ID Not Valid</label>}
                     <TextInput
                         className="field-space"
                         type="text"
                         id="uniqueId"
                         data-testid="uniqueId"
                         name="uniqueId"
-                        style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
+                        onBlur={handleValidation}
+                        style={{ border: isValid['uniqueId'].error ? '1px solid #dc3545' : '1px solid black' }}
                         value={questionData.uniqueId}
                         onChange={handleQuestionInput}
                     />
                 </div>
-                <div className={isQuestionNotValid ? 'error-border' : ''}>
+                <div className={isValid['uniqueName'].error ? 'error-border' : ''}>
                     <label>
                         Unique name<span className="mandatory-indicator">*</span>
                     </label>
-                    {isQuestionNotValid && <label className="error-text">Unique name Not Valid</label>}
+                    {isValid['uniqueName'].error && <label className="error-text">Unique name Not Valid</label>}
                     <TextInput
                         className="field-space"
                         type="text"
                         id="uniqueName"
                         data-testid="uniqueName"
                         name="uniqueName"
-                        style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        value={questionData.uniqueName}
                         onBlur={handleValidation}
+                        style={{ border: isValid['uniqueName'].error ? '1px solid #dc3545' : '1px solid black' }}
+                        value={questionData.uniqueName}
                         onChange={handleQuestionInput}
                     />
                 </div>
@@ -420,51 +449,62 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 <hr className="divider" />
                 <p className="fields-info">Data mart - these fields will not be displayed to your users</p>
                 <br></br>
-                <div className={isQuestionNotValid ? 'error-border' : ''}>
+                <div className={isValid['defaultLabelInReport'].error ? 'error-border' : ''}>
                     <label>
                         Default Label in report<span className="mandatory-indicator">*</span>
                     </label>
-                    {isQuestionNotValid && <label className="error-text">Default Label in report Not Valid</label>}
+                    {isValid['defaultLabelInReport'].error && (
+                        <label className="error-text">Default Label in report Not Valid</label>
+                    )}
                     <TextInput
                         className="field-space"
                         type="text"
                         id="defaultLabelInReport"
                         data-testid="defaultLabelInReport"
                         name="defaultLabelInReport"
-                        style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
+                        style={{
+                            border: isValid['defaultLabelInReport'].error ? '1px solid #dc3545' : '1px solid black'
+                        }}
                         value={questionData.defaultLabelInReport}
+                        onBlur={handleValidation}
                         onChange={handleQuestionInput}
                     />
                 </div>
-                <div className={isQuestionNotValid ? 'error-border' : ''}>
+                <div className={isValid['defaultRdbTableName'].error ? 'error-border' : ''}>
                     <label>
                         Default RDB table name<span className="mandatory-indicator">*</span>
                     </label>
-                    {isQuestionNotValid && <label className="error-text">Default RDB table name Not Valid</label>}
+                    {isValid['defaultRdbTableName'].error && (
+                        <label className="error-text">Default RDB table name Not Valid</label>
+                    )}
                     <TextInput
                         className="field-space"
                         type="text"
                         id="defaultRDBTable"
                         data-testid="defaultRDBTable"
                         name="defaultRdbTableName"
-                        style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
+                        style={{
+                            border: isValid['defaultRdbTableName'].error ? '1px solid #dc3545' : '1px solid black'
+                        }}
+                        onBlur={handleValidation}
                         value={questionData.defaultRdbTableName}
                         onChange={handleQuestionInput}
                     />
                 </div>
-                <div className={isQuestionNotValid ? 'error-border' : ''}>
+                <div className={isValid['rdbColumnName'].error ? 'error-border' : ''}>
                     <label>
                         RDB column name<span className="mandatory-indicator">*</span>
                     </label>
-                    {isQuestionNotValid && <label className="error-text">RDB column name Not Valid</label>}
+                    {isValid['rdbColumnName'].error && <label className="error-text">RDB column name Not Valid</label>}
                     <TextInput
                         className="field-space"
                         type="text"
                         id="rdbColumnName"
                         data-testid="rdbColumnName"
                         name="rdbColumnName"
-                        style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
+                        style={{ border: isValid['rdbColumnName'].error ? '1px solid #dc3545' : '1px solid black' }}
                         value={questionData.rdbColumnName}
+                        onBlur={handleValidation}
                         onChange={handleQuestionInput}
                     />
                 </div>
@@ -488,39 +528,40 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     name="includedInMessage"
                     onChange={handleQuestionInput}
                 />
-                <div className={isQuestionNotValid ? 'error-border' : ''}>
+                <div className={isValid['messageVariableId'].error ? 'error-border' : ''}>
                     <label>
                         Message ID<span className="mandatory-indicator">*</span>
                     </label>
-                    {isQuestionNotValid && <label className="error-text">Message ID Not Valid</label>}
+                    {isValid['messageVariableId'].error && <label className="error-text">Message ID Not Valid</label>}
                     <TextInput
                         className="field-space"
                         type="text"
                         id="messageId"
                         data-testid="messageId"
                         name="messageVariableId"
-                        style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
-                        onBlur={(e: any) => validateQuestionLabel(e.target.value)}
+                        style={{ border: isValid['messageVariableId'].error ? '1px solid #dc3545' : '1px solid black' }}
                         value={questionData.messageVariableId}
                         disabled={!questionData.includedInMessage}
                         onChange={handleQuestionInput}
+                        onBlur={handleValidation}
                     />
                 </div>
-                <div className={isQuestionNotValid ? 'error-border' : ''}>
+                <div className={isValid['labelInMessage'].error ? 'error-border' : ''}>
                     <label>
                         Message label<span className="mandatory-indicator">*</span>
                     </label>
-                    {isQuestionNotValid && <label className="error-text">Message label Not Valid</label>}
+                    {isValid['labelInMessage'].error && <label className="error-text">Message label Not Valid</label>}
                     <TextInput
                         className="field-space"
                         type="text"
                         id="messageLabel"
                         data-testid="messageLabel"
                         name="labelInMessage"
-                        style={{ border: isQuestionNotValid ? '1px solid #dc3545' : '1px solid black' }}
+                        style={{ border: isValid['labelInMessage'].error ? '1px solid #dc3545' : '1px solid black' }}
                         value={questionData.labelInMessage}
                         disabled={!questionData.includedInMessage}
                         onChange={handleQuestionInput}
+                        onBlur={(e: any) => handleValidation(e, false)}
                     />
                 </div>
                 <label>
@@ -533,6 +574,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     name="codeSystem"
                     disabled={!questionData.includedInMessage}
                     value={questionData.codeSystem}
+                    onBlur={(value) => handleQuestionInput({ target: { value, name: 'codeSystem' } })}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildCodeOptions(codeSystemOptionList)}
@@ -554,6 +596,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     id="hl7DataType"
                     defaultValue={questionData.hl7DataType}
                     disabled={!questionData.includedInMessage}
+                    onBlur={(value) => handleQuestionInput({ target: { value, name: 'hl7DataType' } })}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
@@ -579,7 +622,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 type="button"
                 modalRef={modalRef}
                 onClick={handleSubmit}
-                disabled={isValidationFailure || !isDisableBtn}>
+                disabled={!isDisableBtn || isDisableBtnFun()}>
                 {question?.id ? 'Save' : 'Create and add to page'}
             </ModalToggleButton>
             <ModalToggleButton className="cancel-btn" modalRef={modalRef} onClick={() => resetInput()} type="button">

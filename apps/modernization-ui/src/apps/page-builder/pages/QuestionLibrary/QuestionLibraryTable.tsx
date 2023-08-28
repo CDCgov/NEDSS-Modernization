@@ -39,8 +39,9 @@ type Question = TextQuestion | DateQuestion | NumericQuestion | CodedQuestion;
 type Props = {
     summaries: Question[];
     pages?: any;
+    qtnModalRef?: any;
 };
-export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
+export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
@@ -141,16 +142,22 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
 
     const footerActionBtn = (
         <div className="question-action-btn">
-            <Button className="cancel-btn" type="button" onClick={() => setSelectedQuestion({})}>
+            <ModalToggleButton
+                closer
+                className="cancel-btn"
+                type="button"
+                modalRef={qtnModalRef}
+                onClick={() => setSelectedQuestion({})}>
                 Cancel
-            </Button>
-            <Button
+            </ModalToggleButton>
+            <ModalToggleButton
                 className="submit-btn"
+                modalRef={qtnModalRef}
                 type="button"
                 onClick={handleAddQsntoPage}
                 disabled={!Object.keys(selectedQuestion).length}>
                 Add to page
-            </Button>
+            </ModalToggleButton>
         </div>
     );
     const modalRef = useRef<ModalRef>(null);
