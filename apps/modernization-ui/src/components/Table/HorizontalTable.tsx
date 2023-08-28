@@ -2,7 +2,7 @@ import { Button, Grid, Icon } from '@trussworks/react-uswds';
 import { ReactNode, useState } from 'react';
 import './style.scss';
 import { PatientBirth, PatientGeneral, PatientMortality } from 'generated/graphql/schema';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 export type TableProps = {
     tableHeader?: string;

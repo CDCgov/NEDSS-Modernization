@@ -1,5 +1,5 @@
 import { Button, Icon, Table, Pagination } from '@trussworks/react-uswds';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 type TableContentProps = {
     tableHeader?: string;

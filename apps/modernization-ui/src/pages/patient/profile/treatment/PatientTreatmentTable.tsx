@@ -5,7 +5,7 @@ import { FindTreatmentsForPatientQuery, useFindTreatmentsForPatientLazyQuery } f
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { SortableTable } from 'components/Table/SortableTable';
 import { ClassicLink } from 'classic';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 export type PatientTreatments = FindTreatmentsForPatientQuery['findTreatmentsForPatient'];
 

@@ -4,7 +4,7 @@ import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { Direction } from 'sorting';
 import { Spinner } from '@cmsgov/design-system';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 export type TableDetail = {
     id: string | number;

@@ -3,7 +3,7 @@ import './style.scss';
 import { Grid } from '@trussworks/react-uswds';
 import { Patient } from 'pages/patient/profile';
 import { Address, Email, Name, PatientSummary, Phone } from './PatientSummary';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 type Props = {
     patient: Patient;

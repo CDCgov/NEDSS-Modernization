@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Direction } from 'sorting/Sort';
 import { Sort } from './DocumentsRequiringReview';
 import { ClassicLink } from 'classic';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 enum Headers {
     DocumentType = 'Document type',

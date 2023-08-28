@@ -1,7 +1,7 @@
 import { Button, Grid, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
 import './DetailsModal.scss';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 export type Detail = {
     name: string;

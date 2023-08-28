@@ -23,7 +23,7 @@ import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from '.
 import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
 import { useAlert } from 'alert/useAlert';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },

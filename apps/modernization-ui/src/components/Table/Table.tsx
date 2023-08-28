@@ -6,7 +6,7 @@ import { Actions } from './Actions';
 import { Direction } from 'sorting';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { Spinner } from '@cmsgov/design-system';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 type SortState = {
     [key: string]: Direction;

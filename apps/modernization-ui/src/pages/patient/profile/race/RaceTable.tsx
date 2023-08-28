@@ -21,7 +21,7 @@ import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPa
 import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
 import { useAlert } from 'alert/useAlert';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },

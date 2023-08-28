@@ -1,5 +1,5 @@
 import { Button, Grid, Icon } from '@trussworks/react-uswds';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 export const CompareInvestigations = () => {
     return (

@@ -4,7 +4,7 @@ import { Maybe, Person, PersonName } from '../../../generated/graphql/schema';
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 type SearchItemsProps = {
     data: Person[];

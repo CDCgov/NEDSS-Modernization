@@ -25,7 +25,7 @@ import {
 import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
 import { useAlert } from 'alert/useAlert';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },

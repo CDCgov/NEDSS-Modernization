@@ -18,7 +18,7 @@ import EntryModal from 'pages/patient/profile/entry';
 import { AdministrativeForm } from './AdminstrativeForm';
 import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert/useAlert';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(addministrative?.asOf),

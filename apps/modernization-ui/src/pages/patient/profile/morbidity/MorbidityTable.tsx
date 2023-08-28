@@ -9,7 +9,7 @@ import {
 import { SortableTable } from 'components/Table/SortableTable';
 
 import { ClassicButton, ClassicLink } from 'classic';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 export type PatientMorbidities = FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'];
 

@@ -21,7 +21,7 @@ import { IdentificationEntryForm } from './IdentificationEntryForm';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { useAlert } from 'alert/useAlert';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,

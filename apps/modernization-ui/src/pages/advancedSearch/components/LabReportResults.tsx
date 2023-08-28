@@ -5,7 +5,7 @@ import { calculateAge } from '../../..//utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 type LabReportResultsProps = {
     data: [LabReport];

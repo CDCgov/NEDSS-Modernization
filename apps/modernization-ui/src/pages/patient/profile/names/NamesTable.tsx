@@ -23,7 +23,7 @@ import { NameEntryForm } from './NameEntryForm';
 import { NameEntry } from './NameEntry';
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
 import { useAlert } from 'alert/useAlert';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },

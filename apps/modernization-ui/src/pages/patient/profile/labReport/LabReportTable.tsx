@@ -11,7 +11,7 @@ import {
 
 import { SortableTable } from 'components/Table/SortableTable';
 import { ClassicButton, ClassicLink } from 'classic';
-import NoData from 'components/NoData/NoData';
+import { NoData } from 'components/NoData';
 
 type PatientLabReportTableProps = {
     patient?: string;
