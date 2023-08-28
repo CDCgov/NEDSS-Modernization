@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
@@ -37,10 +37,10 @@ class MergedInvestigationLocatorConfigurationTest {
 
     @Test
     void should_route_to_service_when_Merge_Investigation_is_completed() {
-        service.stubFor(get(urlPathMatching("/nbs/redirect/patientProfile/events/return\\\\?.*")).willReturn(ok()));
+        service.stubFor(post(urlPathMatching("/nbs/redirect/patient/investigation/merge\\\\?.*")).willReturn(ok()));
 
         webClient
-            .get().uri(
+            .post().uri(
                 builder -> builder
                     .path("/nbs/PageAction.do")
                     .queryParam("ContextAction", "Submit")
