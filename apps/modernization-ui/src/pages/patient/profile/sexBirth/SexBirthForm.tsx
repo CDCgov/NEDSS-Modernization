@@ -60,6 +60,13 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
 
     const byState = useCountyCodedValues(selectedState);
 
+    const getCurrentLocalDate = () => {
+        let currentDate = new Date();
+        const offset = currentDate.getTimezoneOffset() * 60 * 1000;
+        currentDate = new Date(currentDate.getTime() - offset);
+        return currentDate.toISOString();
+    };
+
     const onSubmit = (entered: FieldValues) => {
         onChanged({
             asOf: externalizeDateTime(entered.asOf),
@@ -121,6 +128,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                                 defaultValue={value}
                                 onChange={onChange}
                                 name="bornOn"
+                                maxDate={getCurrentLocalDate()}
                                 htmlFor={'bornOn'}
                             />
                         )}

@@ -29,6 +29,13 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         reset
     } = methods;
 
+    const getCurrentLocalDate = () => {
+        let currentDate = new Date();
+        const offset = currentDate.getTimezoneOffset() * 60 * 1000;
+        currentDate = new Date(currentDate.getTime() - offset);
+        return currentDate.toISOString();
+    };
+
     useEffect(() => {
         if (data) {
             methods.reset({
@@ -110,6 +117,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                     htmlFor={name}
                                     label="Date of birth"
                                     id={name}
+                                    maxDate={getCurrentLocalDate()}
                                 />
                             )}
                         />
