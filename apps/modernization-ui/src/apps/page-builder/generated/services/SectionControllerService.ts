@@ -9,7 +9,6 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class SectionControllerService {
-
     /**
      * createSection
      * @returns CreateSectionResponse OK
@@ -18,35 +17,35 @@ export class SectionControllerService {
      */
     public static createSectionUsingPost({
         authorization,
-        page,
-        request,
+        pageId,
+        request
     }: {
-        authorization: any,
+        authorization: any;
         /**
-         * page
+         * pageId
          */
-        page: number,
+        pageId: string;
         /**
          * request
          */
-        request: CreateSectionRequest,
+        request: CreateSectionRequest;
     }): CancelablePromise<CreateSectionResponse | any> {
+        console.log('request', request);
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/pages/{page}/sections/',
+            url: `/page-builder/api/v1/pages/${pageId}/sections/`,
             path: {
-                'page': page,
+                page: pageId
             },
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
-
 }
