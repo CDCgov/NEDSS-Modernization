@@ -14,6 +14,13 @@ export default function GeneralInformation({
     control?: any;
     errors?: any;
 }) {
+    const getCurrentLocalDate = () => {
+        let currentDate = new Date();
+        const offset = currentDate.getTimezoneOffset() * 60 * 1000;
+        currentDate = new Date(currentDate.getTime() - offset);
+        return currentDate.toISOString();
+    };
+
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
@@ -38,6 +45,7 @@ export default function GeneralInformation({
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
+                                    maxDate={getCurrentLocalDate()}
                                     errorMessage={errors?.asOf?.message || ''}
                                 />
                             )}
