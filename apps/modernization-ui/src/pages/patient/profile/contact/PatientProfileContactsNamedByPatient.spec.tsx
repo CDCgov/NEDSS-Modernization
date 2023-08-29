@@ -29,7 +29,7 @@ describe('when the patient has not been named by a contact', () => {
         }
     };
 
-    it('should display No data', async () => {
+    it('should display No Data', async () => {
         const { findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
@@ -42,7 +42,7 @@ describe('when the patient has not been named by a contact', () => {
             </MemoryRouter>
         );
 
-        expect(await findByText('No data')).toBeInTheDocument();
+        expect(await findByText('No Data')).toBeInTheDocument();
     });
 });
 
@@ -194,7 +194,7 @@ describe('when the patient has been named by a contact without an association', 
 
         const tableData = container.getElementsByClassName('table-data');
 
-        expect(tableData[4]).toHaveTextContent('No data');
+        expect(tableData[4]).toHaveTextContent('No Data');
     });
 });
 

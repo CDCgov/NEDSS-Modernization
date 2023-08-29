@@ -1,4 +1,5 @@
 import { Dropdown, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
+import classNames from 'classnames';
 
 type SelectProps = {
     htmlFor?: string;
@@ -57,9 +58,8 @@ export const SelectInput = ({
                     <Grid col={6}>
                         {label && (
                             <>
-                                <Label htmlFor={htmlFor || ''}>
+                                <Label className={classNames({ required })} htmlFor={htmlFor || ''}>
                                     {label}
-                                    <small className="text-red">{required && ' *'}</small>
                                 </Label>
                                 <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
                             </>
@@ -74,9 +74,8 @@ export const SelectInput = ({
                 <>
                     {label && (
                         <>
-                            <Label htmlFor={htmlFor || ''}>
+                            <Label className={classNames({ required })} htmlFor={htmlFor || ''}>
                                 {label}
-                                <small className="text-red">{required && ' *'}</small>
                             </Label>
                             <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
                         </>

@@ -8,7 +8,7 @@ on:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID:
         description: "Secret named CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID where ECR resides."
         required: true
-      GITHUB_TOKEN:
+      PASSED_GITHUB_TOKEN:
         description: "Secret named GITHUB_TOKEN that references the github token for this repository."
         required: true
       SONAR_TOKEN:
@@ -22,7 +22,7 @@ on:
 env:
   deployment_env: dev
   accountid: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-  github_token: ${{secrets.GITHUB_TOKEN}}
+  passed_github_token: ${{secrets.PASSED_GITHUB_TOKEN}}
   sonar_token: ${{secrets.SONAR_TOKEN}}
 
 jobs:
@@ -90,7 +90,7 @@ jobs:
       - name: Build and analyze
         working-directory: ./
         env:
-          GITHUB_TOKEN: ${{ env.github_token }} # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ env.passed_github_token }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ env.sonar_token }}
         run: ./gradlew build jacocoTestReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.f1ef4c0
 

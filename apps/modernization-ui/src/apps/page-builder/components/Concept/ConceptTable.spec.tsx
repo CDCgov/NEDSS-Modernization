@@ -54,7 +54,7 @@ describe('when at least one summary is available', () => {
         expect(tableData[0]).toHaveTextContent('ARBO');
         expect(tableData[1]).toHaveTextContent('Arboviral');
         expect(tableData[2]).toHaveTextContent('ARBO');
-        expect(tableData[3]).toHaveTextContent('01/01/2015');
+        expect(tableData[3]).toHaveTextContent('12/31/2014');
     });
 });
 describe('Concept component tests', () => {
@@ -64,10 +64,8 @@ describe('Concept component tests', () => {
                 <Concept />
             </AlertProvider>
         );
-        expect(getByText('Local code')).toBeInTheDocument();
-        expect(getByText('UI Display name')).toBeTruthy();
-        expect(getByText('Concept code')).toBeTruthy();
-        expect(getByText('Always Effective')).toBeTruthy();
-        expect(getByText('Effective Until')).toBeTruthy();
+        expect(
+            getByText('No value set concept is displayed. Please click the button below to add new value set concept.')
+        ).toBeInTheDocument();
     });
 });

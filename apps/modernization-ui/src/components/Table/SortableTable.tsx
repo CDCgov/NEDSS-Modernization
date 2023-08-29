@@ -4,6 +4,7 @@ import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { Direction } from 'sorting';
 import { Spinner } from '@cmsgov/design-system';
+import { NoData } from 'components/NoData';
 
 export type TableDetail = {
     id: string | number;
@@ -117,7 +118,9 @@ export const SortableTable = ({
                         tableBody
                     ) : (
                         <tr className="text-center no-data not-available">
-                            <td colSpan={tableHead.length}>No data</td>
+                            <td colSpan={tableHead.length}>
+                                <NoData />
+                            </td>
                         </tr>
                     )}
                 </tbody>
