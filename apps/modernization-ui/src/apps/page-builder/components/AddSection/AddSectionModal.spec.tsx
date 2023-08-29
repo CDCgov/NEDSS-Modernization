@@ -1,13 +1,17 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import React from 'react';
 import AddSectionModal from './AddSectionModal';
+import { SectionControllerService } from 'apps/page-builder/generated';
 
 const props = {
     modalRef: { current: null },
     tabId: 5,
     pageId: '10056'
 };
+
+const addSections = jest.fn();
+const mockAddSectionUsingPost = jest.spyOn(SectionControllerService, 'createSectionUsingPost');
 
 describe('AddSectionModal', () => {
     it('should render successfully', () => {
@@ -53,5 +57,38 @@ describe('AddSectionModal', () => {
     it('should have a button with the text "Add section"', () => {
         const { getByText } = render(<AddSectionModal {...props} />);
         expect(getByText('Add Section')).toBeTruthy();
+    });
+
+    describe('when the add section button is clicked', () => {
+        it('should call the handleSubmit function', () => {
+            const { getByText } = render(<AddSectionModal {...props} />);
+            const button = getByText('Add Section');
+
+            fireEvent.click(button);
+
+            expect(mockAddSectionUsingPost).toHaveBeenCalled();
+        });
+
+        describe('when the name is changed', () => {
+            it('should call handleSubmit with the correct name', () => {
+                const { getByLabelText, getByText } = render(<AddSectionModal {...props} />);
+                const input = getByLabelText('section name');
+                const button = getByText('Add Section');
+
+                fireEvent.change(input, { target: { value: 'Test Section' } });
+                fireEvent.click(button);
+
+                expect(mockAddSectionUsingPost).toHaveBeenCalledWith({
+                    authorization: 'Bearer undefined',
+                    pageId: '10056',
+                    request: {
+                        name: 'Test Section',
+                        description: '',
+                        visible: true,
+                        tabId: 5
+                    }
+                });
+            });
+        });
     });
 });
