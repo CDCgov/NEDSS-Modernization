@@ -13,6 +13,11 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
     @Query(value = "SELECT MAX(w.orderNbr) FROM WaUiMetadata w WHERE w.waTemplateUid.id =:page")
     Long findMaxOrderNumberByTemplateUid(@Param("page") Long page);
 
+    @Query(value = "select w.waTemplateUid from WaUiMetadata w where waUiMetadataUid = :waUiMetadataUid")
+    Long findPageNumber(@Param("waUiMetadataUid") Long waUiMetadataUid);
+
+    @Query(value = "select top 1 nbs_ui_component_uid from WA_UI_metadata where order_nbr = ?1  and wa_template_uid = ?2", nativeQuery = true)
+    Long findNextNbsUiComponentUid(Integer orderNbr, Long page);
     @Query(value = "SELECT" +
             "    COALESCE((SELECT" +
             "            MIN(order_nbr)" +
@@ -73,4 +78,16 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
             @Param("orderNbr") Integer orderNbr,
             @Param("page") long page);
 
+    @Modifying
+    @Query(value = "update WaUiMetadata w set w.questionLabel = :questionLabel, w.displayInd = :displayInd  where waUiMetadataUid= :waUiMetadataUid")
+    void updateQuestionLabelAndVisibility(@Param("questionLabel") String questionLabel, @Param("displayInd")String visibility, @Param("waUiMetadataUid") Long waUiMetadataUid);
+
+    @Modifying
+    @Query(value = "update WaUiMetadata w set w.orderNbr = w.orderNbr - 1 where w.orderNbr >= :orderNbr and w.id != :waUiMetadataUid")
+    void updateOrderNumberByDecreasing(@Param("orderNbr") Integer orderNbr, @Param("waUiMetadataUid")  Long waUiMetadataUid);
+
+    @Query(value = "SELECT w.orderNbr FROM WaUiMetadata w WHERE waUiMetadataUid = :waUiMetadataUid")
+    Integer getOrderNumber(@Param("waUiMetadataUid") Long waUiMetadataUid);
+
 }
+
