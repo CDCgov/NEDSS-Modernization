@@ -1,5 +1,12 @@
 @import '../../../../settings.scss';
 
-.required {
-    color: $color-red-40;
+.visible-container {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.toggle-visible {
+    margin: 0 16px;
 }

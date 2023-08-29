@@ -5,6 +5,7 @@ import { RefObject, useContext, useState } from 'react';
 import { UserContext } from 'user';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import './AddSectionModal.scss';
+import { ToggleButton } from '../ToggleButton';
 
 type AddSectionModalProps = {
     modalRef: RefObject<ModalRef>;
@@ -15,6 +16,7 @@ type AddSectionModalProps = {
 const AddSectionModal = ({ modalRef, pageId, tabId }: AddSectionModalProps) => {
     const [sectionName, setSectionName] = useState('');
     const [sectionDescription, setSectionDescription] = useState('');
+    const [visible, setVisible] = useState(true);
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
 
@@ -31,7 +33,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId }: AddSectionModalProps) => {
             await SectionControllerService.createSectionUsingPost({
                 authorization: token,
                 pageId: pageId,
-                request: { name: sectionName, tabId, visible: true }
+                request: { name: sectionName, tabId, visible, description: sectionDescription }
             });
         } catch (e) {
             console.error(e);
@@ -50,6 +52,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId }: AddSectionModalProps) => {
                             Section name<span className="required"></span>
                         </Label>
                         <TextInput
+                            aria-label="section name"
                             type="text"
                             name="sectionName"
                             value={sectionName}
@@ -65,6 +68,17 @@ const AddSectionModal = ({ modalRef, pageId, tabId }: AddSectionModalProps) => {
                             id={'add-section-description'}
                             onChange={handleSectionDescriptionChange}
                         />
+                        <div className="visible-container">
+                            <span>Not Visible</span>
+                            <ToggleButton
+                                aria-label="visible"
+                                className="toggle-visible"
+                                checked={visible}
+                                name="visible"
+                                onChange={() => setVisible(!visible)}
+                            />
+                            <span>Visible</span>
+                        </div>
                     </div>
                     <ModalFooter className="padding-2 margin-left-auto footer">
                         <ButtonGroup className="flex-justify-end">

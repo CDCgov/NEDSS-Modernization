@@ -30,6 +30,21 @@ describe('AddSectionModal', () => {
         expect(getByText('Section description')).toBeTruthy();
     });
 
+    it('should have a text input with the label "section name"', () => {
+        const { getByLabelText } = render(<AddSectionModal {...props} />);
+        expect(getByLabelText('section name')).toBeTruthy();
+    });
+
+    it('should have a text input with the label "section description"', () => {
+        const { getByLabelText } = render(<AddSectionModal {...props} />);
+        expect(getByLabelText('section description')).toBeTruthy();
+    });
+
+    it('should have a toggle button with the label "Visible"', () => {
+        const { getByLabelText } = render(<AddSectionModal {...props} />);
+        expect(getByLabelText('visible')).toBeTruthy();
+    });
+
     it('should have a button with the text "Cancel"', () => {
         const { getByText } = render(<AddSectionModal {...props} />);
         expect(getByText('Cancel')).toBeTruthy();
