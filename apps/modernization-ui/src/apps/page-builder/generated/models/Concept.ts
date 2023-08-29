@@ -13,5 +13,6 @@ export type Concept = {
     longName?: string;
     messagingConceptName?: string;
     status?: string;
+    value?: string;
 };
 
