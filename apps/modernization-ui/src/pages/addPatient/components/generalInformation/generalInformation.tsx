@@ -23,9 +23,8 @@ export default function GeneralInformation({
                         <span className="text-red">*</span> are required
                     </Grid>
                     <Grid col={6}>
-                        <Label htmlFor="asOf">
+                        <Label className="required" htmlFor="asOf">
                             <span data-testid="date-lable">Information as of Date</span>{' '}
-                            <span className="text-red">*</span>
                         </Label>
                         <Controller
                             rules={{
@@ -33,12 +32,12 @@ export default function GeneralInformation({
                             }}
                             control={control}
                             name="asOf"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <DatePickerInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="asOf"
-                                    htmlFor={'asOf'}
+                                    name={name}
+                                    htmlFor={name}
                                     errorMessage={errors?.asOf?.message || ''}
                                 />
                             )}
@@ -49,11 +48,11 @@ export default function GeneralInformation({
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="additionalComments"
-                            render={({ field: { onChange } }) => (
+                            name="comments"
+                            render={({ field: { onChange, name } }) => (
                                 <>
-                                    <Label htmlFor={'additionalComments'}>Comments</Label>
-                                    <Textarea onChange={onChange} name="additionalComments" id={'additionalComments'} />
+                                    <Label htmlFor={name}>Comments</Label>
+                                    <Textarea onChange={onChange} name={name} id={name} />
                                 </>
                             )}
                         />

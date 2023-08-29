@@ -21,6 +21,8 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
     
     public Optional<WaTemplate> findFirstByTemplateNm(String templateNm);
     
+    public WaTemplate findByTemplateNmAndTemplateType(String templateNm, String templateType);
+    
     public Optional<WaTemplate> findFirstByDatamartNm(String dataMartNm);
     
     @Query("SELECT v from WaTemplate v WHERE v.id=:id OR v.templateNm LIKE %:templateNm% OR v.conditionCd LIKE %:conditionCd% OR v.datamartNm LIKE %:dataMartNm% OR v.recordStatusCd LIKE %:recordStatusCd% OR v.templateType IN :templateType")
@@ -28,4 +30,7 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
     
     @Query("SELECT MAX(id) from WaTemplate")
     Long getMaxTemplateID();
+    
+    @Query("SELECT v from WaTemplate v WHERE v.formCd LIKE '%PG_%'  order by v.templateNm asc")
+    List<WaTemplate> getAllPagesOrderedByName();
 }

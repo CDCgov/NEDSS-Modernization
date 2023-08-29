@@ -1,11 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { RefObject, useContext, useEffect, useState } from 'react';
 import './CreateCondition.scss';
-import { Button } from '@trussworks/react-uswds';
-import { ProgramAreaControllerService, ConditionControllerService, ValueSetControllerService } from '../../generated';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import {
+    ProgramAreaControllerService,
+    ConditionControllerService,
+    ValueSetControllerService,
+    Condition,
+    CreateConditionRequest
+} from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
+import { Concept } from '../../generated/models/Concept';
 
-export const CreateCondition = () => {
+type Props = {
+    modal?: RefObject<ModalRef>;
+    conditionCreated?: (condition: Condition) => void;
+};
+
+export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     // Fields
     const [name, setName] = useState('');
     const [system, setSystem] = useState('');
@@ -21,10 +33,10 @@ export const CreateCondition = () => {
     const { showAlert } = useAlert();
 
     // DropDown Options
-    const [familyOptions, setFamilyOptions] = useState([]);
-    const [groupOptions, setGroupOptions] = useState([]);
-    const [programAreaOptions, setProgramAreaOptions] = useState([]);
-    const [systemOptions, setSystemOptions] = useState([]);
+    const [familyOptions, setFamilyOptions] = useState([] as Concept[]);
+    const [groupOptions, setGroupOptions] = useState([] as Concept[]);
+    const [programAreaOptions, setProgramAreaOptions] = useState([] as Concept[]);
+    const [systemOptions, setSystemOptions] = useState([] as Concept[]);
 
     const [isConditionNotValid, setIsConditionNotValid] = useState(false);
     const [isConditionCodeNotValid, setIsConditionCodeNotValid] = useState(false);
@@ -34,26 +46,16 @@ export const CreateCondition = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: `Bearer ${state.getToken()}`,
             codeSetNm: 'CODE_SYSTEM'
-        }).then((response: any) => {
-            const data = response || [];
-            const codingSystemList: never[] = [];
-            data.map((each: { value: never }) => {
-                codingSystemList.push(each.value);
-            });
-            setSystemOptions(codingSystemList);
+        }).then((response: Concept[]) => {
+            setSystemOptions(response);
         });
     };
 
     const fetchProgramAreaOptions = () => {
         ProgramAreaControllerService.getProgramAreasUsingGet({
             authorization: `Bearer ${state.getToken()}`
-        }).then((response: any) => {
-            const data = response || [];
-            const programAreaList: never[] = [];
-            data.map((each: { value: never }) => {
-                programAreaList.push(each.value);
-            });
-            setProgramAreaOptions(programAreaList);
+        }).then((response: Concept[]) => {
+            setProgramAreaOptions(response);
         });
     };
 
@@ -61,28 +63,17 @@ export const CreateCondition = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: `Bearer ${state.getToken()}`,
             codeSetNm: 'CONDITION_FAMILY'
-        }).then((response: any) => {
-            const data = response || [];
-            const familyList: never[] = [];
-            data.map((each: { value: never }) => {
-                familyList.push(each.value);
-            });
-            setFamilyOptions(familyList);
+        }).then((response: Concept[]) => {
+            setFamilyOptions(response);
         });
     };
 
     const fetchGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: `Bearer ${state.getToken()}`,
-            // authorization: `Bearer ${token}`,
             codeSetNm: 'COINFECTION_GROUP'
-        }).then((response: any) => {
-            const data = response || [];
-            const coinfectionGroupList: never[] = [];
-            data.map((each: { value: never }) => {
-                coinfectionGroupList.push(each.value);
-            });
-            setGroupOptions(coinfectionGroupList);
+        }).then((response: Concept[]) => {
+            setGroupOptions(response);
         });
     };
 
@@ -93,18 +84,18 @@ export const CreateCondition = () => {
         fetchCodingSystemOptions();
     }, []);
 
-    const buildOptions = (optionsToBuild: any[]) =>
-        optionsToBuild.map((opt: string) => (
-            <option value={opt} key={opt}>
-                {opt}
+    const buildOptions = (optionsToBuild: Concept[]) =>
+        optionsToBuild.map((o, i) => (
+            <option key={i} value={o.conceptCode}>
+                {o.display}
             </option>
         ));
     const handleSubmit = () => {
         const authorization = `Bearer ${state.getToken()}`;
-        const request = {
+        const request: CreateConditionRequest = {
             codeSystemDescTxt: system,
             conditionShortNm: name,
-            id: code,
+            code,
             progAreaCd: area,
             nndInd: isReportable,
             reportableMorbidityInd: isMorbidity,
@@ -117,20 +108,30 @@ export const CreateCondition = () => {
         ConditionControllerService.createConditionUsingPost({
             authorization,
             request
-        }).then((response: any) => {
-            showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
-            resetInput();
-            return response;
-        });
+        })
+            .then((response: Condition) => {
+                showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
+                resetInput();
+                if (conditionCreated) {
+                    conditionCreated(response);
+                }
+                modal?.current?.toggleModal(undefined, false);
+            })
+            .catch((error: any) => {
+                console.log(error.body);
+                showAlert({ type: 'error', header: 'Error', message: error.body.message });
+            });
     };
     const resetInput = () => {
         setName('');
         setSystem('');
         setCode('');
         setArea('');
+        setFamily('');
+        setGroup('');
     };
     const validateConditionName = (name: any) => {
-        const pattern = /^[a-zA-Z0-9_]*$/;
+        const pattern = /^\w*$/;
         if (name.match(pattern)) {
             setIsConditionNotValid(false);
             setIsValidationFailure(false);
@@ -141,7 +142,7 @@ export const CreateCondition = () => {
     };
 
     const validateConditionCode = (code: any) => {
-        const pattern = /^[a-zA-Z0-9_]*$/;
+        const pattern = /^\w*$/;
         if (code.match(pattern)) {
             setIsConditionCodeNotValid(false);
             setIsValidationFailure(false);
@@ -246,7 +247,7 @@ export const CreateCondition = () => {
                     name="reportableCondition"
                     value="N"
                     className="right-radio"
-                    checked={isReportable === 'Y'}
+                    checked={isReportable === 'N'}
                     onChange={(e: any) => setIsReportable(e.target.value)}
                 />
                 <span className="radio-label">No</span>
@@ -356,9 +357,16 @@ export const CreateCondition = () => {
                 disabled={isValidationFailure || isDisableBtn}>
                 Create & add condition
             </Button>
-            <Button className="cancel-btn" type="submit" onClick={() => resetInput()}>
-                Cancel
-            </Button>
+
+            {modal ? (
+                <ModalToggleButton modalRef={modal} closer className="cancel-btn" onClick={() => resetInput()}>
+                    Cancel
+                </ModalToggleButton>
+            ) : (
+                <Button className="cancel-btn" type="submit" onClick={() => resetInput()}>
+                    Cancel
+                </Button>
+            )}
         </div>
     );
 };

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
-import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
+import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ public class CodedQuestionEntity extends WaQuestion {
     private Long codeSetGroupId;
 
     public void setCodeSetGroupId(Long valueSet) {
-        this.codeSetGroupId = requireNonNull(valueSet, "ValueSet must not be null");
+        this.codeSetGroupId = requireNonNull(valueSet, "ValueSet");
     }
 
     @Column(name = "default_value", length = 300)

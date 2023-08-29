@@ -23,6 +23,7 @@ import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from '.
 import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
 import { useAlert } from 'alert/useAlert';
+import { NoData } from 'components/NoData';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -104,7 +105,6 @@ export const AddressesTable = ({ patient }: Props) => {
     }, [selected]);
 
     const [addresses, setAddresses] = useState<PatientAddress[]>([]);
-    const [modalContext, setModalContext] = useState<string>('add-address-modal');
 
     const handleComplete = (data: PatientProfileAddressesResult) => {
         setTotal(data?.findPatientProfile?.addresses?.total ?? 0);
@@ -128,10 +128,6 @@ export const AddressesTable = ({ patient }: Props) => {
             }
         });
     }, [currentPage]);
-
-    const onModalContextChange = (modalContext: string) => {
-        setModalContext(modalContext);
-    };
 
     const onAdded = (entry: AddressEntry) => {
         if (isAdd(entry) && entry.use && entry.type) {
@@ -291,7 +287,7 @@ export const AddressesTable = ({ patient }: Props) => {
                                     {format(new Date(name?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <NoData />
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
@@ -301,28 +297,20 @@ export const AddressesTable = ({ patient }: Props) => {
                                     {name.use?.description ? `/${name.use?.description}` : ''}
                                 </span>
                             ) : (
-                                <span className="no-data">No data</span>
+                                <NoData />
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {name?.address1 || name?.address2 ? (
-                                <span>{getAddress(name)}</span>
-                            ) : (
-                                <span className="no-data">No data</span>
-                            )}
+                            {name?.address1 || name?.address2 ? <span>{getAddress(name)}</span> : <NoData />}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {name?.city ? <span>{name?.city}</span> : <span className="no-data">No data</span>}
+                            {name?.city ? <span>{name?.city}</span> : <NoData />}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                            {name?.state ? (
-                                <span>{name?.state?.description}</span>
-                            ) : (
-                                <span className="no-data">No data</span>
-                            )}
+                            {name?.state ? <span>{name?.state?.description}</span> : <NoData />}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                            {name?.zipcode ? <span>{name?.zipcode}</span> : <span className="no-data">No data</span>}
+                            {name?.zipcode ? <span>{name?.zipcode}</span> : <NoData />}
                         </td>
                         <td>
                             <div className="table-span">
@@ -352,18 +340,8 @@ export const AddressesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal
-                    onClose={actions.reset}
-                    title="Add - Address"
-                    modal={modal}
-                    id="add-patient-address-modal"
-                    className={modalContext}>
-                    <AddressEntryForm
-                        action={'Add'}
-                        entry={initial}
-                        onChange={onAdded}
-                        onModalContextChange={onModalContextChange}
-                    />
+                <EntryModal onClose={actions.reset} modal={modal} id="add-patient-address-modal" title="Add - Address">
+                    <AddressEntryForm action={'Add'} entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (

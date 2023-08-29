@@ -1,5 +1,7 @@
 package gov.cdc.nbs.controller;
 
+import gov.cdc.nbs.event.search.InvestigationFilter;
+import gov.cdc.nbs.redirect.search.EventFilterResolver;
 import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
 import gov.cdc.nbs.service.EncryptionService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -28,6 +30,9 @@ public class RedirectController {
     PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver;
 
     @Autowired
+    EventFilterResolver eventFilterResolver;
+
+    @Autowired
     private EncryptionService encryptionService;
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -41,15 +46,22 @@ public class RedirectController {
     @ApiIgnore
     @PostMapping("/nbs/redirect/simpleSearch")
     public RedirectView redirectSimpleSearch(
-        final RedirectAttributes attributes,
-        @RequestParam final Map<String, String> incomingParams
-    ) {
+            final RedirectAttributes attributes,
+            @RequestParam final Map<String, String> incomingParams) {
         var redirect = new RedirectView(ADVANCED_SEARCH);
         var redirectedUrl = redirect.getUrl();
         if (redirectedUrl != null && redirectedUrl.equals(ADVANCED_SEARCH) && incomingParams.size() > 0) {
-            var patientFilter = patientFilterFromRequestParamResolver.resolve(incomingParams);
-            var encryptedFilter = encryptionService.handleEncryption(patientFilter);
-            attributes.addAttribute("q", encryptedFilter);
+
+            // Event filter takes precedence
+            var eventFilter = eventFilterResolver.resolve(incomingParams);
+            if (eventFilter != null) {
+                attributes.addAttribute("q", encryptionService.handleEncryption(eventFilter));
+                String type = eventFilter instanceof InvestigationFilter ? "investigation" : "labReport";
+                attributes.addAttribute("type", type);
+            } else {
+                var patientFilter = patientFilterFromRequestParamResolver.resolve(incomingParams);
+                attributes.addAttribute("q", encryptionService.handleEncryption(patientFilter));
+            }
         }
         return redirect;
     }
@@ -65,17 +77,15 @@ public class RedirectController {
     }
 
     /**
-     * Sends a GET request to
-     * <WildFly_URL>/nbs/HomePage.do?method=patientSearchSubmit
-     * to set up the session variables so that we can navigate directly to Add Patient or Patient Details pages
+     * Sends a GET request to <WildFly_URL>/nbs/HomePage.do?method=patientSearchSubmit to set up the session variables
+     * so that we can navigate directly to Add Patient or Patient Details pages
      */
     @GetMapping("/preparePatientDetails")
     @ApiImplicitParam(
-        name = "Authorization",
-        required = true,
-        paramType = "header",
-        dataTypeClass = String.class
-    )
+            name = "Authorization",
+            required = true,
+            paramType = "header",
+            dataTypeClass = String.class)
     public void preparePatientDetails(HttpServletRequest request) {
         String url = wildFlyUrl + "/nbs/HomePage.do?method=patientSearchSubmit";
         // copy cookie header that contains the JSESSIONID from the original request

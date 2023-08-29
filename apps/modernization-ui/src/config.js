@@ -4,14 +4,21 @@ const prod = {
         : `${window.location.protocol}//${window.location.host}/nbs`,
     modernizationUrl: `${window.location.protocol}//${window.location.host}`,
     pageBuilderUrl: `${window.location.protocol}//${window.location.host}`,
-    enableLogin: false
+    enableLogin: false,
+    features: {}
 };
 
 const dev = {
     nbsUrl: `${window.location.protocol}//${window.location.host}/nbs`,
     modernizationUrl: `${window.location.protocol}//${window.location.host}`,
     pageBuilderUrl: `${window.location.protocol}//${window.location.host}`,
-    enableLogin: true
+    enableLogin: true,
+    features: {
+        address: {
+            autocomplete: true,
+            verification: true
+        }
+    }
 };
 
 // eslint-disable-next-line no-undef

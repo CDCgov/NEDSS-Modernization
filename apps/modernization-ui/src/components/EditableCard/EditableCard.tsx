@@ -34,7 +34,7 @@ export const EditableCard = ({ title, data, children, editing = false, onEdit }:
                             {item.text && <Grid col={6}>{item.text}</Grid>}
                             {!item.text && (
                                 <Grid col={6} className="font-sans-md no-data">
-                                    No data
+                                    No Data
                                 </Grid>
                             )}
                         </Grid>

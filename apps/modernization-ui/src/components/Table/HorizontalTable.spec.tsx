@@ -10,6 +10,6 @@ describe('Table component', () => {
         const tableHeader = container.getElementsByClassName('table-header');
         const noData = container.getElementsByClassName('no-data');
         expect(tableHeader[0].innerHTML).toBe('Test Table Header');
-        noData[0] && expect(noData[0].innerHTML).toBe('No data');
+        noData[0] && expect(noData[0].innerHTML).toBe('No Data');
     });
 });

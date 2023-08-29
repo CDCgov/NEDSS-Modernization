@@ -2,18 +2,20 @@ package gov.cdc.nbs.questionbank.entity.condition;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import javax.persistence.*;
-
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
-import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -128,22 +130,56 @@ public class ConditionCode implements Serializable {
     @Column(name = "rhap_action_value")
     private String rhapActionValue;
 
-    @OneToMany(mappedBy = "conditionCd")
-    private Set<LdfPageSet> ldfPageSets = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "conditionCd", cascade = CascadeType.ALL)
+    private List<LdfPageSet> ldfPageSets = new ArrayList<>();
 
-    public ConditionCode(final ConditionCommand.AddCondition request) {
-        this.id = request.id();
-        this.codeSystemDescTxt = request.codeSystemDescTxt();
-        this.conditionShortNm = request.conditionShortNm();
-        this.nndInd = request.nndInd();
-        this.progAreaCd = request.progAreaCd();
-        this.reportableMorbidityInd = request.reportableMorbidityInd();
-        this.reportableSummaryInd = request.reportableSummaryInd();
-        this.contactTracingEnableInd = request.contactTracingEnableInd();
-        this.familyCd = request.familyCd();
-        this.coinfectionGrpCd = request.coinfectionGrpCd();
+    public ConditionCode(final ConditionCommand.AddCondition command) {
+        Instant now = Instant.now();
+        this.id = command.id();
+        this.codeSystemDescTxt = command.codeSystemDescTxt();
+        this.conditionShortNm = command.conditionShortNm();
+        this.conditionDescTxt = command.conditionShortNm();
+        this.nndInd = command.nndInd();
+        this.progAreaCd = command.progAreaCd();
+        this.reportableMorbidityInd = command.reportableMorbidityInd();
+        this.reportableSummaryInd = command.reportableSummaryInd();
+        this.contactTracingEnableInd = command.contactTracingEnableInd();
+        this.familyCd = command.familyCd();
+        this.coinfectionGrpCd = command.coinfectionGrpCd();
 
-       this.ldfPageSets = new LinkedHashSet<>();
+        this.nndInd = command.nndInd();
+        this.reportableMorbidityInd = command.reportableMorbidityInd();
+        this.reportableSummaryInd = command.reportableSummaryInd();
+        this.contactTracingEnableInd = command.contactTracingEnableInd();
+        this.isModifiableInd = 'N';
+
+        // Defaults
+        this.indentLevelNbr = 1;
+        this.conditionCodesetNm = "PHC_TYPE";
+        this.conditionSeqNum = 1;
+        this.assigningAuthorityCd = "2.16.840.1.114222";
+        this.assigningAuthorityDescTxt = "Centers for Disease Control";
+
+        this.effectiveFromTime = now;
+        this.statusCd = 'A';
+        this.statusTime = now;
+
+        this.vaccineEnableInd = 'N';
+        this.treatmentEnableInd = 'Y';
+        this.labReportEnableInd = 'N';
+        this.morbReportEnableInd = 'Y';
+        this.portReqIndCd = 'F';
+
+        //code system
+        if (codeSystemDescTxt.equalsIgnoreCase("Local")) {
+            this.codeSystemCd = "L";
+        } else if (codeSystemDescTxt.equalsIgnoreCase("SNOMED-CT")) {
+            this.codeSystemCd = "2.16.840.1.113883.6.96";
+        } else {
+            this.codeSystemCd = "2.16.840.1.114222.4.5.277";
+        }
+
+        this.ldfPageSets = new ArrayList<>();
     }
 
     public void setLdf(LdfPageSet... ldf) {

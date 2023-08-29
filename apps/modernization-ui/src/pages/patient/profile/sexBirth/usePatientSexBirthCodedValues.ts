@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
-import { CodedValue, GroupedCodedValue, indicators } from 'coded';
-import { useLocationCodedValues } from 'location';
+import { CodedValue, indicators } from 'coded';
+import { LocationCodedValues, useLocationCodedValues, initial as initialLocations } from 'location';
 import { useEffect, useState } from 'react';
 
 const Query = gql`
@@ -40,9 +40,7 @@ const initial = {
     preferredGenders: [],
     genderUnknownReasons: [],
     multipleBirth: indicators,
-    countries: [],
-    states: [],
-    counties: []
+    ...initialLocations
 };
 
 type PatientSexBirthCodedValue = {
@@ -50,10 +48,7 @@ type PatientSexBirthCodedValue = {
     preferredGenders: CodedValue[];
     genderUnknownReasons: CodedValue[];
     multipleBirth: CodedValue[];
-    countries: CodedValue[];
-    states: CodedValue[];
-    counties: GroupedCodedValue[];
-};
+} & LocationCodedValues;
 
 const usePatientSexBirthCodedValues = () => {
     const [coded, setCoded] = useState<PatientSexBirthCodedValue>(initial);

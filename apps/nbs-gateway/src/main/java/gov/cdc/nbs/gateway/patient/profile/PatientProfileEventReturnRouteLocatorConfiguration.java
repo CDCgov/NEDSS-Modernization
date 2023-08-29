@@ -7,7 +7,6 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 
 /**
  * Configures the Patient Profile routes to the {@code /nbs/redirect/patientProfile/events/return} path of the
@@ -31,8 +30,7 @@ class PatientProfileEventReturnRouteLocatorConfiguration {
         return builder.routes()
             .route(
                 "patient-profile-event-return",
-                route -> route.order(Ordered.HIGHEST_PRECEDENCE)
-                    .query("ContextAction", "ReturnToFileEvents")
+                route -> route.query("ContextAction", "ReturnToFileEvents")
                     .filters(
                         filter -> filter.setPath("/nbs/redirect/patientProfile/events/return")
                             .filter(globalFilter)

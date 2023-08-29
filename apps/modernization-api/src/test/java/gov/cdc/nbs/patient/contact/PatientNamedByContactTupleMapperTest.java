@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.contact;
 
 import com.querydsl.core.Tuple;
-import gov.cdc.nbs.investigation.association.AssociatedWith;
+import gov.cdc.nbs.patient.profile.association.AssociatedWith;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -42,20 +42,19 @@ class PatientNamedByContactTupleMapperTest {
         assertThat(actual.createdOn()).isEqualTo("2023-01-17T22:54:43Z");
 
         assertThat(actual.condition())
-            .returns("condition-id", PatientContacts.Condition::id)
-            .returns("condition-description", PatientContacts.Condition::description);
+                .returns("condition-id", PatientContacts.Condition::id)
+                .returns("condition-description", PatientContacts.Condition::description);
 
         assertThat(actual.contact())
-            .returns("local", PatientContacts.NamedContact::local);
+                .returns("local", PatientContacts.NamedContact::local);
 
         assertThat(actual.namedOn()).isEqualTo("2023-01-17T22:54:43Z");
         assertThat(actual.event()).isEqualTo("event");
 
         assertThat(actual.associatedWith())
-            .returns(227L, AssociatedWith::id)
-            .returns("investigation-local", AssociatedWith::local)
-            .returns("condition-description", AssociatedWith::condition)
-        ;
+                .returns(227L, AssociatedWith::id)
+                .returns("investigation-local", AssociatedWith::local)
+                .returns("condition-description", AssociatedWith::condition);
 
     }
 
@@ -69,6 +68,6 @@ class PatientNamedByContactTupleMapperTest {
         PatientNamedByContactTupleMapper mapper = new PatientNamedByContactTupleMapper(tables);
 
         assertThatThrownBy(() -> mapper.map(tuple))
-            .hasMessageContaining("identifier is required");
+                .hasMessageContaining("identifier is required");
     }
 }

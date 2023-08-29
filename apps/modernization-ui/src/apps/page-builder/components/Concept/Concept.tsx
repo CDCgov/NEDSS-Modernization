@@ -5,7 +5,7 @@ import { useConceptPI } from './useConceptAPI';
 import { ConceptTable } from './ConceptTable';
 import { UserContext } from '../../../../providers/UserContext';
 import { Button, DatePicker, FormGroup, Grid, Icon, TextInput, Radio } from '@trussworks/react-uswds';
-import { ValueSetControllerService } from '../../generated';
+import { UpdateConceptRequest, ValueSetControllerService } from '../../generated';
 
 const initConcept = {
     localCode: '',
@@ -18,7 +18,7 @@ const initConcept = {
     effectiveFromTime: new Date().toLocaleString(),
     effectiveToTime: new Date().toLocaleString(),
     duration: 'always',
-    status: ''
+    status: true
 };
 
 export const Concept = () => {
@@ -55,13 +55,12 @@ export const Concept = () => {
         setShowForm(!isShowFrom);
     };
     const handleSaveConceptFrom = () => {
-        const request = {
+        const request: UpdateConceptRequest = {
             active: concept.status,
             displayName: concept.display,
             effectiveFromTime: concept.effectiveFromTime,
-            localCode: concept.localCode,
             effectiveToTime: concept.effectiveToTime,
-            name: concept.codesetName
+            longName: concept.codesetName
         };
         ValueSetControllerService.updateConceptUsingPut({
             authorization,

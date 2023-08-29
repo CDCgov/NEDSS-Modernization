@@ -1,5 +1,9 @@
 import './EditPageContent.scss';
 
-export const EditPageContent = () => {
-    return <div className="edit-page-content">EDIT PAGE HERE</div>;
+type Props = {
+    content: string;
+};
+
+export const EditPageContent = ({ content }: Props) => {
+    return <div className="edit-page-content">{content} Content</div>;
 };

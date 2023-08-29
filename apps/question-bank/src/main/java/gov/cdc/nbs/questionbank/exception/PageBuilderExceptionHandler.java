@@ -27,16 +27,14 @@ public class PageBuilderExceptionHandler {
                 HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({InternalServerException.class})
-    public ResponseEntity<ExceptionMessage> handleInternalServerError(Exception e) {
-        return new ResponseEntity<>(
-                new ExceptionMessage(
-                        e.getMessage(),
-                        HttpStatus.INTERNAL_SERVER_ERROR.value()),
-                HttpStatus.INTERNAL_SERVER_ERROR);
 
+    @ExceptionHandler({
+            InternalServerException.class})
+    public ResponseEntity<ExceptionMessage> handleInternalException(Exception e) {
+        return new ResponseEntity<>(new ExceptionMessage(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    record ExceptionMessage(String message, Integer code) {
+    record ExceptionMessage(String message) {
+
     }
 }

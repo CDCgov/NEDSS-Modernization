@@ -11,6 +11,7 @@ import {
 
 import { SortableTable } from 'components/Table/SortableTable';
 import { ClassicButton, ClassicLink } from 'classic';
+import { NoData } from 'components/NoData';
 
 type PatientLabReportTableProps = {
     patient?: string;
@@ -69,7 +70,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                             <br />
                         </div>
                     )
-            ) || <span className="no-data">No data</span>
+            ) || <NoData />
         );
     };
 
@@ -229,7 +230,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                         {format(new Date(report?.addTime), 'hh:mm a')}
                                     </ClassicLink>
                                 ) : (
-                                    <span className="no-data">No data</span>
+                                    <NoData />
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
@@ -260,18 +261,14 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                 </div>
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                                <span className="no-data">No data</span>
+                                <NoData />
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                                {getTestedResults(report) ? (
-                                    getTestedResults(report)
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
+                                {getTestedResults(report) ? getTestedResults(report) : <NoData />}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                 {!report.associatedInvestigations ? (
-                                    <span className="no-data">No data</span>
+                                    <NoData />
                                 ) : (
                                     <>
                                         {report.associatedInvestigations?.map(
@@ -289,25 +286,13 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                                {report?.programAreaCd ? (
-                                    <span>{report?.programAreaCd}</span>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
+                                {report?.programAreaCd ? <span>{report?.programAreaCd}</span> : <NoData />}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
-                                {report?.jurisdictionCd ? (
-                                    <span>{report?.jurisdictionCd}</span>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
+                                {report?.jurisdictionCd ? <span>{report?.jurisdictionCd}</span> : <NoData />}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[7].sort !== 'all' && 'sort-td'}`}>
-                                {report?.localId ? (
-                                    <span>{report?.localId}</span>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
+                                {report?.localId ? <span>{report?.localId}</span> : <NoData />}
                             </td>
                         </tr>
                     );

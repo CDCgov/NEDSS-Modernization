@@ -7,11 +7,17 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 
 @Component
 public class PageMother {
@@ -22,13 +28,30 @@ public class PageMother {
     private WaTemplateRepository repository;
 
     @Autowired
-    private WaUiMetadataRepository waUiMetadataRepository;
+    private PageCondMappingRepository pageConMappingRepository;    
+	
+	@Autowired
+	private WaUiMetadataRepository waUiMetadatumRepository;
+
+    @Autowired
+	private WaRuleMetaDataRepository waRuleMetaDataRepository;
+    
+    @Autowired
+    private WANNDMetadataRepository wanndMetadataRepository;
+    
+    @Autowired
+    private WARDBMetadataRepository wARDBMetadataRepository;
+    
 
     private List<WaTemplate> allPages = new ArrayList<>();
 
-    public void clean() {
-        waUiMetadataRepository.deleteAll();
+    public void clean() {   	
+    	waUiMetadatumRepository.deleteAll();
         repository.deleteAll();
+        pageConMappingRepository.deleteAll();
+        waRuleMetaDataRepository.deleteAll();
+        wanndMetadataRepository.deleteAll();
+        wARDBMetadataRepository.deleteAll();        
         allPages.clear();
     }
 
@@ -104,7 +127,8 @@ public class PageMother {
         allPages.add(page);
         return page;
     }
-
+    
+    
     private WaTemplate createAsepticMeningitisPage() {
         Instant now = Instant.now().plusSeconds(5);
         WaTemplate page = new WaTemplate();
@@ -119,6 +143,7 @@ public class PageMother {
         page.setAddUserId(1L);
         page.setLastChgTime(now);
         page.setLastChgUserId(1L);
+        
 
         PageCondMapping conditionMapping = new PageCondMapping();
         conditionMapping.setWaTemplateUid(page);
@@ -131,7 +156,76 @@ public class PageMother {
         page.setConditionMappings(Collections.singleton(conditionMapping));
 
         page = repository.save(page);
+        
+        // add page detail mappings
+        WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
+        WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
+        WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
+        WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
+        
+        waUiMetadatumRepository.save(tab);
+        waUiMetadatumRepository.save(section);
+        waUiMetadatumRepository.save(subSection);
+        waUiMetadatumRepository.save(question);
+        
         allPages.add(page);
         return page;
     }
+    
+    public WaTemplate createPageDraft(WaTemplate pageIn) {
+    	
+    	repository.save(pageIn);
+    	
+        Instant now = Instant.now().plusSeconds(15);
+        WaTemplate page = new WaTemplate();
+        page.setTemplateNm(pageIn.getTemplateNm());
+        page.setTemplateType("Draft");
+        page.setBusObjType("INV");
+        page.setNndEntityIdentifier("GEN_Case_Map_v2.0");
+
+        page.setRecordStatusCd("Active");
+        page.setRecordStatusTime(now);
+        page.setAddTime(now);
+        page.setAddUserId(1L);
+        page.setLastChgTime(now);
+        page.setLastChgUserId(1L);
+        
+
+        PageCondMapping conditionMapping = new PageCondMapping();
+        conditionMapping.setWaTemplateUid(page);
+        conditionMapping.setConditionCd(ASEPTIC_MENINGITIS_ID); // From test db condition_code table
+        conditionMapping.setAddTime(now);
+        conditionMapping.setAddUserId(1l);
+        conditionMapping.setLastChgTime(now);
+        conditionMapping.setLastChgUserId(1l);
+
+        page.setConditionMappings(Collections.singleton(conditionMapping));
+
+        page = repository.save(page);
+        
+        // add page detail mappings
+        WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
+        WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
+        WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
+        WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
+        
+        waUiMetadatumRepository.save(tab);
+        waUiMetadatumRepository.save(section);
+        waUiMetadatumRepository.save(subSection);
+        waUiMetadatumRepository.save(question);
+        
+        allPages.add(page);
+        return page;
+    }
+    
+    private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage, Long nbsUiComponentUid, Integer orderNumber) {
+		WaUiMetadata record = new WaUiMetadata();
+		record.setWaTemplateUid(aPage);
+		record.setNbsUiComponentUid(nbsUiComponentUid);
+		record.setOrderNbr(orderNumber);
+		record.setVersionCtrlNbr(0);
+		return record;
+	}
+    
+
 }
