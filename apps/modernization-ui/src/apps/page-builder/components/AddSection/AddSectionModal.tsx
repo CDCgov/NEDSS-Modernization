@@ -1,19 +1,10 @@
 import React from 'react';
-import {
-    ButtonGroup,
-    Label,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton,
-    TextInput
-} from '@trussworks/react-uswds';
+import { ButtonGroup, Label, ModalFooter, ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
 import { SectionControllerService } from 'apps/page-builder/generated';
 import { RefObject, useContext, useState } from 'react';
 import { UserContext } from 'user';
-// import './AddSectionModal.scss';
-// import { Button } from '@trussworks/react-uswds';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import './AddSectionModal.scss';
 
 type AddSectionModalProps = {
     modalRef: RefObject<ModalRef>;
@@ -48,40 +39,49 @@ const AddSectionModal = ({ modalRef, pageId, tabId }: AddSectionModalProps) => {
     };
 
     return (
-        <Modal id="add-section-modal" className="add-section-modal" ref={modalRef}>
-            <ModalHeading>Add Section</ModalHeading>
-            <div>
-                <Label htmlFor="sectionName" aria-required>
-                    Section name
-                </Label>
-                <TextInput
-                    type="text"
-                    name="sectionName"
-                    value={sectionName}
-                    id={'add-section-name'}
-                    onChange={handleSectionNameChange}
-                />
-                <Label htmlFor="sectionDescription">Section description</Label>
-                <TextInput
-                    aria-label="section description"
-                    type="text"
-                    name="sectionDescription"
-                    value={sectionDescription}
-                    id={'add-section-description'}
-                    onChange={handleSectionDescriptionChange}
-                />
-            </div>
-            <ModalFooter className="padding-2 margin-left-auto footer">
-                <ButtonGroup className="flex-justify-end">
-                    <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
-                        Cancel
-                    </ModalToggleButton>
-                    <ModalToggleButton modalRef={modalRef} closer data-testid="section-add-btn" onClick={handleSubmit}>
-                        Add Section
-                    </ModalToggleButton>
-                </ButtonGroup>
-            </ModalFooter>
-        </Modal>
+        <ModalComponent
+            modalRef={modalRef}
+            isLarge
+            modalHeading="Manage Sections"
+            modalBody={
+                <>
+                    <div style={{ padding: '0 24px' }}>
+                        <Label htmlFor="sectionName" aria-required>
+                            Section name<span className="required"></span>
+                        </Label>
+                        <TextInput
+                            type="text"
+                            name="sectionName"
+                            value={sectionName}
+                            id={'add-section-name'}
+                            onChange={handleSectionNameChange}
+                        />
+                        <Label htmlFor="sectionDescription">Section description</Label>
+                        <TextInput
+                            aria-label="section description"
+                            type="text"
+                            name="sectionDescription"
+                            value={sectionDescription}
+                            id={'add-section-description'}
+                            onChange={handleSectionDescriptionChange}
+                        />
+                    </div>
+                    <ModalFooter className="padding-2 margin-left-auto footer">
+                        <ButtonGroup className="flex-justify-end">
+                            <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
+                                Cancel
+                            </ModalToggleButton>
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                closer
+                                data-testid="section-add-btn"
+                                onClick={handleSubmit}>
+                                Add Section
+                            </ModalToggleButton>
+                        </ButtonGroup>
+                    </ModalFooter>
+                </>
+            }></ModalComponent>
     );
 };
 
