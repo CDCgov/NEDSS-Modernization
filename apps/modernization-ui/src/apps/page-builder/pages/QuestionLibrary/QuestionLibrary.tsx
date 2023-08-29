@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './QuestionLibrary.scss';
 import './QuestionTabs.scss';
 import { QuestionsContext } from '../../context/QuestionsContext';
 import { fetchQuestion } from './useQuestionAPI';
 import { QuestionLibraryTable } from './QuestionLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
-export const QuestionLibrary = ({ hideTabs }: any) => {
+export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
     // const [activeTab] = useState(types || 'recent');
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(QuestionsContext);
     const [summaries, setSummaries] = useState([]);
@@ -31,22 +30,24 @@ export const QuestionLibrary = ({ hideTabs }: any) => {
         setIsLoading(false);
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
     return (
-        <PageBuilder page="Question">
-            <div className="question-local-library">
-                {!hideTabs && (
-                    <div className="margin-left-2em">
-                        <h2>Add question</h2>
-                    </div>
-                )}
-                <div className="search-description-block">
-                    <p>You can search for an existing question or create a new one</p>
+        <div className="question-local-library">
+            {!hideTabs && (
+                <div className="margin-left-2em">
+                    <h2>Add question</h2>
                 </div>
-                <div className="question-local-library__container">
-                    <div className="question-local-library__table">
-                        <QuestionLibraryTable summaries={summaries} pages={{ currentPage, pageSize, totalElements }} />
-                    </div>
+            )}
+            <div className="search-description-block">
+                <p>You can search for an existing question or create a new one</p>
+            </div>
+            <div className="question-local-library__container">
+                <div className="question-local-library__table">
+                    <QuestionLibraryTable
+                        summaries={summaries}
+                        qtnModalRef={modalRef}
+                        pages={{ currentPage, pageSize, totalElements }}
+                    />
                 </div>
             </div>
-        </PageBuilder>
+        </div>
     );
 };

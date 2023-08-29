@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Icon } from '@trussworks/react-uswds';
+import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import './ImportTemplate.scss';
 
 export const ImportTemplate = () => {
     const [file, setFile] = useState(null);
+    const [files, setFiles] = useState<any>([]);
     const [isError, setIsError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
@@ -11,16 +12,14 @@ export const ImportTemplate = () => {
     const handleFileChange = (event: any) => {
         const selectedFile = event.target.files[0];
         setIsSuccess(false);
-
         // Checking if the file type is allowed or not
         const allowedTypes = ['xml'];
         if (!allowedTypes.includes(selectedFile?.type)) {
             setIsError(true);
             setErrorMsg('Only XML files are allowed.');
-            return;
         }
-
         setIsError(false);
+        setFiles([...files, selectedFile]);
         setFile(selectedFile);
     };
 
@@ -58,7 +57,15 @@ export const ImportTemplate = () => {
                 </div>
                 <label onChange={handleFileChange} htmlFor="importTempId">
                     <input name="" type="file" id="importTempId" accept="text/xml" hidden />
+
                     <div className="drop-area">
+                        <div className="display-flex gap-10">
+                            {files.map((fil: any, index: number) => (
+                                <div className="tag-cover" key={index}>
+                                    <Tag background="#005EA2">{fil?.name}</Tag>
+                                </div>
+                            ))}
+                        </div>
                         <Icon.Logout size={4} />
                         <label htmlFor="importTempId">
                             Drag & drop or <span>Choose file</span> to upload
