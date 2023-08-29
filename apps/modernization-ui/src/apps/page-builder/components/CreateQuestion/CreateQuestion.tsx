@@ -1,20 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './CreateQuestion.scss';
 import ReactSelect, { components } from 'react-select';
-import { ModalToggleButton, Radio, TextInput, Dropdown, Icon } from '@trussworks/react-uswds';
+import { ModalToggleButton, Radio, TextInput, Dropdown } from '@trussworks/react-uswds';
 import { ValueSetControllerService, QuestionControllerService } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
-import {
-    singleSelect,
-    multiSelect,
-    expandIcon,
-    textBox,
-    textArea,
-    multiSelectList,
-    calender
-} from '../../constant/svg';
+
 import { fieldType } from '../../constant/constant';
 
 export const CreateQuestion = ({ modalRef, question }: any) => {
@@ -250,7 +242,9 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
 
     const formatOptionLabel = ({ value, label }: any) => (
         <div key={value} style={{ display: 'flex', alignItems: 'center', lineHeight: '12px' }}>
-            <div style={{ marginRight: '16px' }}>{renderIconFieldType(value)}</div>
+            <div style={{ marginRight: '16px' }}>
+                <img src={renderIconFieldType(value)} />
+            </div>
             <div>{label}</div>
         </div>
     );
@@ -291,25 +285,24 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             <div className="multi-select select-indicator margin-top-neg-1" />
         </components.DropdownIndicator>
     );
-    const renderIconFieldType = (type: string): JSX.Element => {
-        const size = 3;
+    const renderIconFieldType = (type: string): string => {
         switch (type) {
             case 'radio':
-                return singleSelect;
+                return '/single-select.svg';
             case 'check':
-                return multiSelect;
+                return '/multi-select.svg';
             case 'dropdown':
-                return expandIcon;
+                return '/expand.svg';
             case 'TEXT':
-                return textBox;
+                return '/textbox.svg';
             case 'area':
-                return textArea;
+                return '/textarea.svg';
             case 'multi-select':
-                return multiSelectList;
+                return '/multi-drop.svg';
             case 'date-time':
-                return calender;
+                return '/calender.svg';
             default:
-                return <Icon.List size={size} />;
+                return '/single-select.svg';
         }
     };
 
