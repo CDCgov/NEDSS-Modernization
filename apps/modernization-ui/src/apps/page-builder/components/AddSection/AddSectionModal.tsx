@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonGroup, Label, ModalFooter, ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
-import { SectionControllerService } from 'apps/page-builder/generated';
+import { SectionControllerService, SubSectionControllerService } from 'apps/page-builder/generated';
 import { RefObject, useContext, useState } from 'react';
 import { UserContext } from 'user';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
@@ -40,6 +40,11 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection }: A
     const handleSubmit = async () => {
         try {
             if (isSubSection && sectionId) {
+                await SubSectionControllerService.createSubSectionUsingPost({
+                    authorization: token,
+                    pageId: pageId,
+                    request: { name: sectionName, sectionId, visible, description: sectionDescription }
+                });
             } else {
                 await SectionControllerService.createSectionUsingPost({
                     authorization: token,
@@ -56,7 +61,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection }: A
         <ModalComponent
             modalRef={modalRef}
             isLarge
-            modalHeading={isSubSection ? `'Add Subsection'${sectionId}` : 'Manage Sections'}
+            modalHeading={isSubSection ? `'Add Subsection` : 'Manage Sections'}
             modalBody={
                 <>
                     <div style={{ padding: '0 24px' }}>

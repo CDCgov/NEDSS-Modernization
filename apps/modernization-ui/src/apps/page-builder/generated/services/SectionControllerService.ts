@@ -30,7 +30,6 @@ export class SectionControllerService {
          */
         request: CreateSectionRequest;
     }): CancelablePromise<CreateSectionResponse | any> {
-        console.log('request', request);
         return __request(OpenAPI, {
             method: 'POST',
             url: `/page-builder/api/v1/pages/${pageId}/sections/`,

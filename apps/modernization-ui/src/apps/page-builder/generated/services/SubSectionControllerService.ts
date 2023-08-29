@@ -34,7 +34,7 @@ export class SubSectionControllerService {
             method: 'POST',
             url: `/page-builder/api/v1/pages/${pageId}/subsections/`,
             path: {
-                page: page
+                page: pageId
             },
             headers: {
                 Authorization: authorization
