@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.investigation;
+package gov.cdc.nbs.patient.profile.investigation.compare;
 
 import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfileRedirector;
 import org.springframework.http.ResponseEntity;
