@@ -100,16 +100,16 @@ const AddPatient = () => {
         setEntryState({ step: 'entry' });
     };
 
-    function isValidForm(obj: any) {
-        if (!obj?.identification?.find((identification: any) => identification)?.value) {
-            obj.identification = null;
-        }
-        !obj?.deceasedTime && delete obj.deceasedTime;
-        obj.emailAddresses?.length === 0 && delete obj.emailAddresses;
-        obj.phoneNumbers?.lenght === 0 && delete obj.phoneNumbers;
-        for (const key in obj) {
-            if (Object.hasOwn(obj, key)) {
-                if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+    function isMissingFields(entry: NewPatientEntry) {
+        for (const key in entry) {
+            if (Object.hasOwnProperty.call(entry, key)) {
+                const value = entry[key as keyof NewPatientEntry];
+                if (
+                    value === null ||
+                    value === undefined ||
+                    (typeof value === 'string' && value === '') ||
+                    (Array.isArray(value) && value.length === 0)
+                ) {
                     return false; // At least one property has no value
                 }
             }
@@ -118,8 +118,7 @@ const AddPatient = () => {
     }
 
     const evaluateMissingFields = (entry: NewPatientEntry) => {
-        console.log('entry:', entry);
-        setEntryState({ step: isValidForm(entry) ? 'create' : 'verify-missing-fields', entry });
+        setEntryState({ step: isMissingFields(entry) ? 'create' : 'verify-missing-fields', entry });
     };
 
     const evaluateAddress = () => {
