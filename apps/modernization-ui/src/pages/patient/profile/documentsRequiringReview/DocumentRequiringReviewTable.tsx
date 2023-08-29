@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Direction } from 'sorting/Sort';
 import { Sort } from './DocumentsRequiringReview';
 import { ClassicLink } from 'classic';
+import { NoData } from 'components/NoData';
 
 enum Headers {
     DocumentType = 'Document type',
@@ -96,9 +97,7 @@ const renderReportingFacility = (document: DocumentRequiringReview) => {
             ) : null}
             {document.facilityProviders.orderingProvider === undefined &&
             document.facilityProviders.reportingFacility === undefined ? (
-                <>
-                    <span className="no-data">No data</span>
-                </>
+                <NoData />
             ) : null}
         </>
     );
@@ -123,9 +122,7 @@ const renderDescriptions = (document: DocumentRequiringReview) => {
     return (
         <>
             {document.descriptions.length === 0 ? (
-                <>
-                    <span className="no-data">No data</span>
-                </>
+                <NoData />
             ) : (
                 <>
                     {document.descriptions.map((d, key) => (

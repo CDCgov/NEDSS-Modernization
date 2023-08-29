@@ -27,7 +27,7 @@ describe('when rendered', () => {
     });
 });
 
-describe('when documents are No data for a patient', () => {
+describe('when documents are No Data for a patient', () => {
     const response = {
         request: {
             query: FindDocumentsForPatientDocument,
@@ -50,14 +50,14 @@ describe('when documents are No data for a patient', () => {
         }
     };
 
-    it('should display No data', async () => {
+    it('should display No Data', async () => {
         const { findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
                 <PatientProfileDocuments patient={'73'} pageSize={10}></PatientProfileDocuments>
             </MockedProvider>
         );
 
-        expect(await findByText('No data')).toBeInTheDocument();
+        expect(await findByText('No Data')).toBeInTheDocument();
     });
 });
 

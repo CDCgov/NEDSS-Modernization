@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
@@ -27,11 +28,11 @@ public class PageMother {
     private WaTemplateRepository repository;
 
     @Autowired
+    private PageCondMappingRepository pageConMappingRepository;    
+	
+	@Autowired
 	private WaUiMetadataRepository waUiMetadatumRepository;
-    
-    @Autowired
-	private PageCondMappingRepository pageConMappingRepository;
-    
+
     @Autowired
 	private WaRuleMetaDataRepository waRuleMetaDataRepository;
     

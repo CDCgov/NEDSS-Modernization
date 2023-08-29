@@ -4,6 +4,7 @@ import { Maybe, Person, PersonName } from '../../../generated/graphql/schema';
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
+import { NoData } from 'components/NoData';
 
 type SearchItemsProps = {
     data: Person[];
@@ -87,7 +88,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                             </p>
                         ))
                     ) : (
-                        <p className="text-italic margin-0 text-gray-30">No Data</p>
+                        <NoData />
                     )}
                 </div>
             </Grid>
@@ -195,9 +196,11 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                     wordBreak: 'break-word',
                                                     cursor: 'pointer'
                                                 }}>
-                                                {!item.lastNm && !item.firstNm
-                                                    ? `No data`
-                                                    : `${item.lastNm}, ${item.firstNm}`}
+                                                {!item.lastNm && !item.firstNm ? (
+                                                    <NoData />
+                                                ) : (
+                                                    `${item.lastNm}, ${item.firstNm}`
+                                                )}
                                             </a>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
@@ -217,7 +220,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                             </span>
                                                         </>
                                                     )}
-                                                    {!item.birthTime && <span className="font-sans-2xs">--</span>}
+                                                    {!item.birthTime && <NoData />}
                                                 </p>
                                             </div>
                                             <div className="grid-row flex-align-center">
@@ -236,6 +239,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 <p className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
                                                     PATIENT ID
                                                 </p>
+
                                                 <p className="margin-0 font-sans-2xs text-normal">{item.shortId}</p>
                                             </div>
                                         </Grid>
@@ -250,15 +254,11 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                             <p className="margin-0 text-normal font-sans-3xs text-gray-50">
                                                 OTHER NAMES
                                             </p>
-                                            {getOtherNames(item, item.names) ? (
-                                                <p
-                                                    className="margin-0 font-sans-1xs text-normal margin-top-05"
-                                                    style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                                    {getOtherNames(item, item.names)}
-                                                </p>
-                                            ) : (
-                                                <p className="text-italic margin-0 text-gray-30">No Data</p>
-                                            )}
+                                            <p
+                                                className="margin-0 font-sans-1xs text-normal margin-top-05"
+                                                style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                                {getOtherNames(item, item.names) || <NoData />}
+                                            </p>
                                         </Grid>
                                         {newOrderAddress(item?.nbsEntity?.entityLocatorParticipations)}
                                     </Grid>
@@ -293,11 +293,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 <p className="margin-0 text-normal font-sans-3xs text-gray-50 text-uppercase">
                                                     Id Types
                                                 </p>
-                                                <p
-                                                    className="margin-0 font-sans-2xs margin-top-05 text-italic margin-0 text-gray-30"
-                                                    style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                                    No Data
-                                                </p>
+                                                <NoData className="margin-top-05" />
                                             </Grid>
                                         ))}
                                 </Grid>

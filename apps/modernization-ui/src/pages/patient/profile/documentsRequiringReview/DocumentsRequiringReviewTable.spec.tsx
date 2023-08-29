@@ -27,7 +27,7 @@ describe('when rendered', () => {
 });
 
 describe('when no documents are available for a patient', () => {
-    it('should display No data', async () => {
+    it('should display No Data', async () => {
         const { findByText } = render(
             <PageProvider>
                 <DocumentsRequiringReviewTable
@@ -37,7 +37,7 @@ describe('when no documents are available for a patient', () => {
             </PageProvider>
         );
 
-        expect(await findByText('No data')).toBeInTheDocument();
+        expect(await findByText('No Data')).toBeInTheDocument();
     });
 });
 

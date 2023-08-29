@@ -87,7 +87,7 @@ describe('Table component', () => {
         );
 
         const notAvailable = container.getElementsByClassName('no-data');
-        expect(notAvailable[0].innerHTML).toBe('No data');
+        expect(notAvailable[0].innerHTML).toBe('No Data');
     });
 });
 

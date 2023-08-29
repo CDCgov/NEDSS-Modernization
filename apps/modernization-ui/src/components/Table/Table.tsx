@@ -6,6 +6,7 @@ import { Actions } from './Actions';
 import { Direction } from 'sorting';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { Spinner } from '@cmsgov/design-system';
+import { NoData } from 'components/NoData';
 
 type SortState = {
     [key: string]: Direction;
@@ -174,14 +175,12 @@ export const TableComponent = ({
 
     const dataNotAvailalbe = (
         <tr className="text-center no-data not-available">
-            <td colSpan={tableHead.length}>{dataNotAvailableElement ? dataNotAvailableElement : 'No data'}</td>
+            <td colSpan={tableHead.length}>{dataNotAvailableElement ? dataNotAvailableElement : <NoData />}</td>
         </tr>
     );
 
     const renderNoDataDetail = (detail: TableDetail, column: number, isCheckbox?: boolean) => (
-        <span key={column} className={`no-data ${resolveDetailStyle(detail, column)} ${isCheckbox && 'margin-left-4'}`}>
-            No data
-        </span>
+        <NoData key={column} className={`${resolveDetailStyle(detail, column)} ${isCheckbox && 'margin-left-4'}`} />
     );
 
     return (

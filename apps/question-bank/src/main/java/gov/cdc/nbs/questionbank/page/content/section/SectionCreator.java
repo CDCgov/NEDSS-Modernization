@@ -2,6 +2,13 @@ package gov.cdc.nbs.questionbank.page.content.section;
 
 import java.time.Instant;
 import javax.persistence.EntityManager;
+
+import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
+import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
+import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +28,8 @@ public class SectionCreator {
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
+    private static final String UPDATE_MESSAGE = "Section updated successfully";
+
     @Autowired
     private EntityManager entityManager;
 
@@ -36,6 +45,43 @@ public class SectionCreator {
         }
 
     }
+
+    private static final long TAB = 1010L;
+    private static final long SECTION = 1015L;
+
+    public DeleteSectionResponse deleteSection(DeleteSectionRequest request) {
+        try {
+            log.info("Deleting section");
+            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.sectionId());
+            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.sectionId());
+            Long nbsComponentUid = waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
+            if(nbsComponentUid == TAB || nbsComponentUid == SECTION || nbsComponentUid == null ) {
+                waUiMetaDataRepository.deleteById(request.sectionId());
+                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.sectionId());
+                return new DeleteSectionResponse(request.sectionId(), "Section Deleted Successfully");
+            } else {
+                throw new DeleteSectionException("Conditions not satisfied");
+            }
+        } catch(Exception exception) {
+            throw new DeleteSectionException(exception.toString());
+        }
+
+    }
+
+    public UpdateSectionResponse updateSection(UpdateSectionRequest request) {
+        try {
+            log.info("Updating section");
+            if (request.questionLabel() == null || request.visible() == null) {
+                throw new UpdateSectionException("Label and visibility fields are required");
+            }
+            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.sectionId());
+            return new UpdateSectionResponse(request.sectionId(), UPDATE_MESSAGE);
+        } catch(Exception exception) {
+            throw new UpdateSectionException(exception.toString());
+        }
+
+    }
+
 
     private WaUiMetadata createWaUiMetadata(long pageId, Long uid, CreateSectionRequest request) {
         WaTemplate page = entityManager.getReference(WaTemplate.class, pageId);
