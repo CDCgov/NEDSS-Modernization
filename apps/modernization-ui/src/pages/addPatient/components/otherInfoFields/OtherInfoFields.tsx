@@ -40,7 +40,7 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                                     name="dob"
                                     htmlFor={'dob'}
                                     label="Date of birth"
-                                    errorMessage={errors?.asOf?.message || ''}
+                                    errorMessage={errors?.dob?.message || ''}
                                 />
                             )}
                         />
