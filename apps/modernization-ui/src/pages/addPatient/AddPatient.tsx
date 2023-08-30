@@ -23,6 +23,7 @@ import './AddPatient.scss';
 import { VerifiableAdddress, AddressVerificationModal } from 'address/verification';
 import { orNull } from 'utils';
 import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'pages/patient/add';
+import { isMissingFields } from './isMissingFields';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -100,25 +101,8 @@ const AddPatient = () => {
         setEntryState({ step: 'entry' });
     };
 
-    function isMissingFields(entry: NewPatientEntry) {
-        for (const key in entry) {
-            if (Object.hasOwnProperty.call(entry, key)) {
-                const value = entry[key as keyof NewPatientEntry];
-                if (
-                    value === null ||
-                    value === undefined ||
-                    (typeof value === 'string' && value === '') ||
-                    (Array.isArray(value) && value.length === 0)
-                ) {
-                    return false; // At least one property has no value
-                }
-            }
-        }
-        return true;
-    }
-
     const evaluateMissingFields = (entry: NewPatientEntry) => {
-        setEntryState({ step: isMissingFields(entry) ? 'create' : 'verify-missing-fields', entry });
+        setEntryState({ step: isMissingFields(entry) ? 'verify-missing-fields' : 'verify-address', entry });
     };
 
     const evaluateAddress = () => {
