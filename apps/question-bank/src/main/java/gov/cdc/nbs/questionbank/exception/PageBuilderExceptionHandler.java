@@ -10,23 +10,14 @@ public class PageBuilderExceptionHandler {
 
     @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<ExceptionMessage> handleBadRequestExceptions(Exception e) {
-        return new ResponseEntity<>(
-                new ExceptionMessage(
-                        e.getMessage(),
-                        HttpStatus.BAD_REQUEST.value()),
-                HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ExceptionMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({
             NotFoundException.class})
     public ResponseEntity<ExceptionMessage> handleNotFound(Exception e) {
-        return new ResponseEntity<>(
-                new ExceptionMessage(
-                        e.getMessage(),
-                        HttpStatus.NOT_FOUND.value()),
-                HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ExceptionMessage(e.getMessage()), HttpStatus.NOT_FOUND);
     }
-
 
     @ExceptionHandler({
             InternalServerException.class})
@@ -35,6 +26,5 @@ public class PageBuilderExceptionHandler {
     }
 
     record ExceptionMessage(String message) {
-
     }
 }

@@ -38,7 +38,7 @@ class ConditionStatusTest {
         assertEquals(id, response.getId());
     }
 
-    
+
 
     @Test
     void inactivateConditionTest() {

@@ -2,7 +2,6 @@ package gov.cdc.nbs.questionbank.condition;
 
 import gov.cdc.nbs.questionbank.condition.request.ReadConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.ConditionStatusResponse;
-import gov.cdc.nbs.questionbank.condition.response.ReadConditionResponse;
 
 import java.util.List;
 
