@@ -27,8 +27,6 @@ The following routes should be proxied to the `modernization-api` service.
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------|----------------------------------------------------------------------------------|
 | Path is exactly `/nbs/HomePage.do` containing the Query Parameter `method` with a value of `mergeSubmit` and the Query Parameter `ContextAction` with a value of `Submit`                  | `/nbs/redirect/simpleSearch`   | Transforms a classic simple search request into a modernized search request URL. |
 | Path is exactly `/nbs/MyTaskList.do` containing the Query Parameter `ContextAction` with a value of `GlobalPatient`                                                                        | `/nbs/redirect/advancedSearch` | Routes the Classic Advanced search to the Modernized UI                          |
-| Path is exactly `/nbs/MyTaskList.do` containing the Query Parameter `ContextAction` with a value of `GlobalMP_ManualSearch` and the Query Parameter `Model1` with a value of `ManualMerge` | `/nbs/redirect/advancedSearch` | Routes the Classic Advanced search to the Modernized UI                          |
-
 ### Patient Profile Routes
 
 Transforms requests to a Classic Patient Profile into an authenticated request that redirects to the Modernized Patient
