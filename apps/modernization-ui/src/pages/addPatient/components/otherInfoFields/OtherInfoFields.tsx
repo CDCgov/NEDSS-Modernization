@@ -32,15 +32,14 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                                 required: { value: true, message: 'This field is required' }
                             }}
                             control={control}
-                            name="dob"
-                            render={({ field: { onChange, value } }) => (
+                            name="dateOfBirth"
+                            render={({ field: { onChange, value, name } }) => (
                                 <DatePickerInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="dob"
-                                    htmlFor={'dob'}
+                                    name={name}
+                                    htmlFor={name}
                                     label="Date of birth"
-                                    errorMessage={errors?.dob?.message || ''}
                                 />
                             )}
                         />
@@ -58,13 +57,13 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="gender"
-                            render={({ field: { onChange, value } }) => (
+                            name="currentGender"
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="gender"
-                                    htmlFor={'gender'}
+                                    name={name}
+                                    htmlFor={name}
                                     label="Current sex"
                                     options={coded.genders}
                                 />
@@ -76,13 +75,13 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="birthSex"
-                            render={({ field: { onChange, value } }) => (
+                            name="birthGender"
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="birthSex"
-                                    htmlFor={'birthSex'}
+                                    name={name}
+                                    htmlFor={name}
                                     label="Birth sex"
                                     options={coded.genders}
                                 />
@@ -95,12 +94,12 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                         <Controller
                             control={control}
                             name="deceased"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="deceased"
-                                    htmlFor={'deceased'}
+                                    name={name}
+                                    htmlFor={name}
                                     label="Is this patient deceased?"
                                     options={coded.deceased}
                                 />
@@ -112,13 +111,13 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="dod"
-                            render={({ field: { onChange, value } }) => (
+                            name="deceasedTime"
+                            render={({ field: { onChange, value, name } }) => (
                                 <DatePickerInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="dod"
-                                    htmlFor={'dod'}
+                                    name={name}
+                                    htmlFor={name}
                                     label="Date of death"
                                     disabled={selectedDeceased !== Indicator.Yes}
                                 />
@@ -131,12 +130,12 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                         <Controller
                             control={control}
                             name="maritalStatus"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="maritalStatus"
-                                    htmlFor={'maritalStatus'}
+                                    name={name}
+                                    htmlFor={name}
                                     label="Marital Status"
                                     options={coded.maritalStatuses}
                                 />
@@ -148,15 +147,15 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="hivId"
-                            render={({ field: { onChange, value } }) => (
+                            name="stateHIVCase"
+                            render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     label="State HIV case ID"
                                     onChange={onChange}
                                     type="text"
                                     defaultValue={value}
-                                    htmlFor="hivId"
-                                    id="hivId"
+                                    htmlFor={name}
+                                    id={name}
                                 />
                             )}
                         />
