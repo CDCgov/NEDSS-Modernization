@@ -1,0 +1,32 @@
+@import 'settings.scss';
+
+.question {
+    display: flex;
+    background-color: $color-white;
+    border-radius: 0.25rem;
+    border: 1px solid $color-base-lighter;
+    padding: 0.8rem 1.6rem;
+    gap: 1.4rem;
+    &__name {
+        font-size: 0.9rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        width: 14rem;
+        span {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.25rem;
+        }
+    }
+    &__field {
+        display: flex;
+        align-items: center;
+        .usa-select, .usa-date-picker__external-input, button {
+            margin: 0;
+        }
+        .date-picker-input {
+            margin-top: -0.65rem;
+        }
+    }
+}
