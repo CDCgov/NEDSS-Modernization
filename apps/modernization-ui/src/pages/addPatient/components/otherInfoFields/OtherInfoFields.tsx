@@ -14,9 +14,9 @@ type CodedValues = {
     maritalStatuses: CodedValue[];
 };
 
-type Props = { id: string; title: string; control: any; coded: CodedValues };
+type Props = { id: string; title: string; control: any; coded: CodedValues, errors: any; };
 
-export default function OtherInfoFields({ id, title, control, coded }: Props) {
+export default function OtherInfoFields({ id, title, control, coded, errors }: Props) {
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
     const currentBirthday = useWatch({ control, name: 'dob' });
@@ -28,15 +28,19 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                 <Grid row>
                     <Grid col={6}>
                         <Controller
+                            rules={{
+                                required: { value: true, message: 'This field is required' }
+                            }}
                             control={control}
-                            name="dateOfBirth"
-                            render={({ field: { onChange, value, name } }) => (
+                            name="dob"
+                            render={({ field: { onChange, value } }) => (
                                 <DatePickerInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name={name}
-                                    htmlFor={name}
+                                    name="dob"
+                                    htmlFor={'dob'}
                                     label="Date of birth"
+                                    errorMessage={errors?.dob?.message || ''}
                                 />
                             )}
                         />
@@ -54,13 +58,13 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="currentGender"
-                            render={({ field: { onChange, value, name } }) => (
+                            name="gender"
+                            render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name={name}
-                                    htmlFor={name}
+                                    name="gender"
+                                    htmlFor={'gender'}
                                     label="Current sex"
                                     options={coded.genders}
                                 />
@@ -72,13 +76,13 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="birthGender"
-                            render={({ field: { onChange, value, name } }) => (
+                            name="birthSex"
+                            render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name={name}
-                                    htmlFor={name}
+                                    name="birthSex"
+                                    htmlFor={'birthSex'}
                                     label="Birth sex"
                                     options={coded.genders}
                                 />
@@ -91,12 +95,12 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                         <Controller
                             control={control}
                             name="deceased"
-                            render={({ field: { onChange, value, name } }) => (
+                            render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name={name}
-                                    htmlFor={name}
+                                    name="deceased"
+                                    htmlFor={'deceased'}
                                     label="Is this patient deceased?"
                                     options={coded.deceased}
                                 />
@@ -108,13 +112,13 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="deceasedTime"
-                            render={({ field: { onChange, value, name } }) => (
+                            name="dod"
+                            render={({ field: { onChange, value } }) => (
                                 <DatePickerInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name={name}
-                                    htmlFor={name}
+                                    name="dod"
+                                    htmlFor={'dod'}
                                     label="Date of death"
                                     disabled={selectedDeceased !== Indicator.Yes}
                                 />
@@ -127,12 +131,12 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                         <Controller
                             control={control}
                             name="maritalStatus"
-                            render={({ field: { onChange, value, name } }) => (
+                            render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name={name}
-                                    htmlFor={name}
+                                    name="maritalStatus"
+                                    htmlFor={'maritalStatus'}
                                     label="Marital Status"
                                     options={coded.maritalStatuses}
                                 />
@@ -144,15 +148,15 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="stateHIVCase"
-                            render={({ field: { onChange, value, name } }) => (
+                            name="hivId"
+                            render={({ field: { onChange, value } }) => (
                                 <Input
                                     label="State HIV case ID"
                                     onChange={onChange}
                                     type="text"
                                     defaultValue={value}
-                                    htmlFor={name}
-                                    id={name}
+                                    htmlFor="hivId"
+                                    id="hivId"
                                 />
                             )}
                         />
