@@ -62,6 +62,16 @@ export const Concept = () => {
             effectiveToTime: concept.effectiveToTime,
             longName: concept.codesetName
         };
+        if (concept?.status) return handleUpdateConcept(request);
+        ValueSetControllerService.createValueSetUsingPost({
+            authorization,
+            request
+        }).then((response: any) => {
+            setShowForm(!isShowFrom);
+            return response;
+        });
+    };
+    const handleUpdateConcept = (request: any) => {
         ValueSetControllerService.updateConceptUsingPut({
             authorization,
             codeSetNm: concept.codesetName,
