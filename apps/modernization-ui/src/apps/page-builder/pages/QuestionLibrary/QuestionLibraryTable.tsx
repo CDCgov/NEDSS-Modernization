@@ -15,6 +15,7 @@ import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { UserContext } from '../../../../providers/UserContext';
 import { QuestionsContext } from '../../context/QuestionsContext';
+import { CreateQuestion } from '../../components/CreateQuestion/CreateQuestion';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
 
@@ -38,8 +39,9 @@ type Question = TextQuestion | DateQuestion | NumericQuestion | CodedQuestion;
 type Props = {
     summaries: Question[];
     pages?: any;
+    qtnModalRef?: any;
 };
-export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
+export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
@@ -140,16 +142,22 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
 
     const footerActionBtn = (
         <div className="question-action-btn">
-            <Button className="cancel-btn" type="button" onClick={() => setSelectedQuestion({})}>
+            <ModalToggleButton
+                closer
+                className="cancel-btn"
+                type="button"
+                modalRef={qtnModalRef}
+                onClick={() => setSelectedQuestion({})}>
                 Cancel
-            </Button>
-            <Button
+            </ModalToggleButton>
+            <ModalToggleButton
                 className="submit-btn"
+                modalRef={qtnModalRef}
                 type="button"
                 onClick={handleAddQsntoPage}
                 disabled={!Object.keys(selectedQuestion).length}>
                 Add to page
-            </Button>
+            </ModalToggleButton>
         </div>
     );
     const modalRef = useRef<ModalRef>(null);
@@ -165,7 +173,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
                 isLarge
                 modalRef={modalRef}
                 modalHeading={'Add question'}
-                modalBody={<div> Add page </div>}
+                modalBody={<CreateQuestion modalRef={modalRef} />}
             />
         </div>
     );
@@ -187,7 +195,7 @@ export const QuestionLibraryTable = ({ summaries, pages }: Props) => {
                 isLarge
                 modalRef={modalRef}
                 modalHeading={'Add question'}
-                modalBody={<div> Add page </div>}
+                modalBody={<CreateQuestion modalRef={modalRef} />}
             />
         </div>
     );
