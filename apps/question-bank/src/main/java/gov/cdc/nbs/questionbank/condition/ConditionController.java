@@ -25,6 +25,7 @@ public class ConditionController {
     private final ConditionCreator conditionCreator;
     private final ConditionReader conditionReader;
     private final UserDetailsProvider userDetailsProvider;
+    private final ConditionUpdater conditionUpdater;
 
     @PostMapping
     public Condition createCondition(@RequestBody CreateConditionRequest request) {
@@ -46,6 +47,11 @@ public class ConditionController {
     public Page<Condition> searchConditions(@RequestBody ReadConditionRequest search,
             @PageableDefault(size = 20) Pageable pageable) {
         return conditionReader.searchCondition(search, pageable);
+    }
+
+    @PostMapping("/update")
+    public Condition updateCondition(@RequestBody UpdateConditionRequest request) {
+        return conditionUpdater.updateCondition(request);
     }
 
 }
