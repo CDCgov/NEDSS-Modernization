@@ -62,9 +62,10 @@ export const DatePickerInput = ({
         const currentVal = (event.target as HTMLInputElement).value;
         const valid = isValid(currentVal);
         const validYear = isValidYear(currentVal.substr(currentVal.length - 4));
+
         setError(!valid);
         setError(!validYear);
-        
+
         onBlur && onBlur(event);
     };
 
