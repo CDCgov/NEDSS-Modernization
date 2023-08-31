@@ -3016,7 +3016,11 @@ FROM
                   act_uid AS [id], 
                   act_id_seq AS [act_id_seq], 
                   record_status_cd AS [record_status], 
+<<<<<<< Updated upstream
                   root_extension_txt AS [root_extension_txt], 
+=======
+                  STRING_ESCAPE(root_extension_txt, 'json') AS [root_extension_txt], 
+>>>>>>> Stashed changes
                   type_cd AS [type_cd], 
                   type_desc_txt AS [type_desc_txt], 
                   last_chg_time AS [last_change_time] 
@@ -3830,5 +3834,9 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
+<<<<<<< Updated upstream
     <timestamp>08/31/2023 18:07:53 UTC</timestamp>
+=======
+    <timestamp>08/31/2023 18:35:33 UTC</timestamp>
+>>>>>>> Stashed changes
 </template>
