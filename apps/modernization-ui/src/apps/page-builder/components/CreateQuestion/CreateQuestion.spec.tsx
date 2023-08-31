@@ -69,7 +69,7 @@ describe('Question component tests', () => {
 
         const options = container.getElementsByTagName('option');
 
-        expect(options[0]).toHaveTextContent('- Select -');
+        expect(options[0]).toHaveTextContent('-Select-');
 
         for (let i = 1; i < options.length; i++) {
             expect(options[i].value).toBe(options[i].textContent);
