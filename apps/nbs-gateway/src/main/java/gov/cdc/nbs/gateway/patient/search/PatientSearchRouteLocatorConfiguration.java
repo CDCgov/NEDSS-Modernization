@@ -11,7 +11,8 @@ import org.springframework.core.Ordered;
 
 /**
  * Configures the NBS Home Page to route searches and the advanced search link to the patient-search service.  The
- * routes are only enabled when the {@code routes.patient.search.enabled} property is {@code true} and any of the following criteria is satisfied.
+ * routes are only enabled when the {@code routes.patient.search.enabled} property is {@code true} and any of the
+ * following criteria is satisfied.
  *
  * <ul>
  *     <li>Path equal to {@code /nbs/MyTaskList1.do}</li>
@@ -19,16 +20,9 @@ import org.springframework.core.Ordered;
  * </ul>
  *
  * <ul>
- *     <li>Path equal to {@code /nbs/MyTaskList1.do}</li>
- *     <li>Query Parameter {@code ContextAction} equal to {@code GlobalMP_ManualSearch}</li>
- *     <li>Query Parameter {@code Mode1} equal to {@code ManualMerge}</li>
- * </ul>
- *
- * <ul>
  *     <li>Path equal to {@code /nbs/HomePage.do}</li>
  *     <li>Query Parameter {@code method} equal to {@code patientSearchSubmit}</li>
  * </ul>
- *
  */
 @Configuration
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.search", name = "enabled", havingValue = "true")
@@ -48,21 +42,6 @@ class PatientSearchRouteLocatorConfiguration {
                     .path("/nbs/MyTaskList1.do")
                     .and()
                     .query("ContextAction", "GlobalPatient")
-                    .filters(
-                        filter -> filter.setPath("/nbs/redirect/advancedSearch")
-                            .filter(globalFilter)
-                    )
-                    .uri(parameters.uri())
-            )
-            .route(
-                "merge-patient-manual-search",
-                route -> route
-                    .order(Ordered.HIGHEST_PRECEDENCE)
-                    .path("/nbs/MyTaskList1.do")
-                    .and()
-                    .query("ContextAction", "GlobalMP_ManualSearch")
-                    .and()
-                    .query("Mode1", "ManualMerge")
                     .filters(
                         filter -> filter.setPath("/nbs/redirect/advancedSearch")
                             .filter(globalFilter)
