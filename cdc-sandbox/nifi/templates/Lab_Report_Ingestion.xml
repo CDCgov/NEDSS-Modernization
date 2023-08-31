@@ -2999,7 +2999,7 @@ FROM
                   p.record_status_cd AS [record_status], 
                   p.type_desc_txt AS [type_desc_txt], 
                   p.last_chg_time AS [last_change_time], 
-                  m.cd AS [material_cd], 
+                  STRING_ESCAPE(m.cd, 'json') AS [material_cd], 
                   m.cd_desc_txt AS [material_cd_desc_txt] 
                 FROM 
                   participation p WITH (NOLOCK)
@@ -3830,5 +3830,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>08/31/2023 17:33:13 UTC</timestamp>
+    <timestamp>08/31/2023 18:07:53 UTC</timestamp>
 </template>
