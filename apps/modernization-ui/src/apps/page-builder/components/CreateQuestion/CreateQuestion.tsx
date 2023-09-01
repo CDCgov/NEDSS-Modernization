@@ -310,7 +310,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         <div className="create-question">
             <div className="create-question__container">
                 <div className="ds-u-text-align--center margin-bottom-2em">
-                    <h3 className="header-title margin-bottom-2px">
+                    <h3 className="header-title margin-bottom-2px" data-testid="header-title">
                         {question?.id ? `Edit question` : `Let's create a new question`}
                     </h3>
                     <label className="fields-info">
