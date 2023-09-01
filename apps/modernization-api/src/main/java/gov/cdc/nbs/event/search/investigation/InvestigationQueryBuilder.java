@@ -107,7 +107,7 @@ public class InvestigationQueryBuilder {
                 case STATE_CASE_ID:
                     var stateCountryCaseId = QueryBuilders.boolQuery()
                             .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ,
-                                    2))
+                                    1))
                             .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
                                     "STATE"))
                             .must(QueryBuilders.matchQuery(
@@ -260,7 +260,7 @@ public class InvestigationQueryBuilder {
             var statusStrings = filter.getCaseStatuses()
                     .stream()
                     .filter(s -> !s.equals(CaseStatus.UNASSIGNED))
-                    .map(status -> status.toString().toUpperCase())
+                    .map(this::getCaseStatusValue)
                     .toList();
             var includeUnassigned = filter.getCaseStatuses().contains(CaseStatus.UNASSIGNED);
             if (includeUnassigned) {
@@ -321,6 +321,17 @@ public class InvestigationQueryBuilder {
                 .withSorts(buildSort(pageable))
                 .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
+    }
+
+    private String getCaseStatusValue(CaseStatus caseStatus) {
+        return switch (caseStatus) {
+            case CONFIRMED -> "C";
+            case NOT_A_CASE -> "N";
+            case PROBABLE -> "P";
+            case SUSPECT -> "S";
+            case UNKNOWN -> "U";
+            default -> null;
+        };
     }
 
 

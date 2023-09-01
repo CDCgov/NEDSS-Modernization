@@ -3,8 +3,8 @@ import './EditPageTabs.scss';
 import { Icon } from '@trussworks/react-uswds';
 
 type Props = {
-    tabs?: { name: string; id: number }[];
-    active?: number | undefined;
+    tabs?: { name: string }[];
+    active: number;
     setActive: SetStateAction<any>;
 };
 
@@ -16,8 +16,8 @@ export const EditPageTabs = ({ tabs, active, setActive }: Props) => {
                     return (
                         <div
                             key={i}
-                            className={`edit-page-tabs__tab ${active === tab.id ? 'active' : ''}`}
-                            onClick={() => setActive(tab.id)}>
+                            className={`edit-page-tabs__tab ${active === i ? 'active' : ''}`}
+                            onClick={() => setActive(i)}>
                             <h4>{tab.name}</h4>
                         </div>
                     );

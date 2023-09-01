@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { PageTabs } from './PageTabs';
+import { Tabs } from './Tabs';
 
 export type PageDetails = {
     id: number;
     Name: string;
     pageDescription: string;
-    pageTabs: PageTabs[];
+    pageTabs: Tabs[];
     pageRules: [];
 };

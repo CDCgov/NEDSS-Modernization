@@ -372,7 +372,7 @@ class InvestigationQueryBuilderTest {
 
         var clause1 =
                 findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ, nestedBuilders);
-        assertEquals(2, clause1.value());
+        assertEquals(1, clause1.value());
 
         var clause2 =
                 findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
@@ -654,7 +654,7 @@ class InvestigationQueryBuilderTest {
         var clause = findMatchQueryBuilder(Investigation.CASE_CLASS_CD, nestedShould);
         findExistsQueryBuilder(Investigation.CASE_CLASS_CD, mustNot);
 
-        assertEquals(CaseStatus.CONFIRMED.toString(), clause.value());
+        assertEquals("C", clause.value());
     }
 
     @Test

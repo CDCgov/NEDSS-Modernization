@@ -70,7 +70,7 @@ public class InvestigationSearchSteps {
                 setNotificationStatus(investigation, status);
                 break;
             case "caseStatus":
-                setCaseStatus(investigation, status);
+                setCaseStatus(investigation, status.substring(0, 1));
                 break;
             default:
                 throw new IllegalArgumentException("Invalid field specified: " + field);
@@ -79,8 +79,7 @@ public class InvestigationSearchSteps {
     }
 
     private void setCaseStatus(Investigation investigation, String statusString) {
-        var status = CaseStatus.valueOf(statusString);
-        investigation.setCaseClassCd(status.toString());
+        investigation.setCaseClassCd(statusString);
     }
 
     private void setNotificationStatus(Investigation investigation, String statusString) {
@@ -149,7 +148,7 @@ public class InvestigationSearchSteps {
                 break;
             case "caseStatus":
                 investigationSearchResults.forEach(sr -> {
-                    assertEquals(statusString, sr.getCaseClassCd());
+                    assertEquals(statusString.substring(0, 1), sr.getCaseClassCd());
                 });
                 break;
             default:

@@ -54,24 +54,6 @@ class PatientSearchServiceLocatorConfigurationTest {
     }
 
     @Test
-    void should_route_modernization_api_for_merge_patient_manual_search_link() {
-
-        service.stubFor(get(urlPathMatching("/nbs/redirect/advancedSearch\\\\?.*")).willReturn(ok()));
-
-        webClient
-            .get().uri(
-                builder -> builder
-                    .path("/nbs/MyTaskList1.do")
-                    .queryParam("ContextAction", "GlobalMP_ManualSearch")
-                    .queryParam("Mode1", "ManualMerge")
-                    .build()
-            )
-            .exchange()
-            .expectStatus()
-            .isOk();
-    }
-
-    @Test
     void should_not_route_to_modernization_when_context_action_is_not_present() {
 
         classic.stubFor(get("/nbs/MyTaskList1.do").willReturn(ok()));

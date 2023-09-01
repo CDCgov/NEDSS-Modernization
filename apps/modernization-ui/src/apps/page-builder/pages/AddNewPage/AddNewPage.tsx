@@ -68,6 +68,10 @@ export const AddNewPage = () => {
         });
     }, [token]);
 
+    // useEffect(() => {
+    //     console.log('COND',)
+    // });
+
     const handleAddConditions = (conditions: string[]) => {
         setValue('conditionIds', conditions.concat(getValues('conditionIds')));
     };

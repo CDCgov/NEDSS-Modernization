@@ -87,11 +87,6 @@ export enum CaseStatus {
   Unknown = 'UNKNOWN'
 }
 
-export type CaseStatuses = {
-  includeUnassigned: Scalars['Boolean'];
-  statusList: Array<CaseStatus>;
-};
-
 export type CodeValueGeneralId = {
   __typename?: 'CodeValueGeneralId';
   code: Scalars['ID'];
@@ -384,7 +379,7 @@ export enum InvestigationEventIdType {
 }
 
 export type InvestigationFilter = {
-  caseStatuses?: InputMaybe<CaseStatuses>;
+  caseStatuses?: InputMaybe<Array<CaseStatus>>;
   conditions?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   createdBy?: InputMaybe<Scalars['String']>;
   eventDate?: InputMaybe<InvestigationEventDateSearch>;
