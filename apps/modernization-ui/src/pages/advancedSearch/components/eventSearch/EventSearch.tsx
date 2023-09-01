@@ -311,10 +311,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                 : undefined;
 
             if (body.statusList && body.statusList !== '- Select -') {
-                filterData.caseStatuses = {
-                    statusList: body.statusList,
-                    includeUnassigned: body.case || false
-                };
+                filterData.caseStatuses = body.statusList;
             }
 
             if (body.processingStatus && body.processingStatus !== '- Select -') {

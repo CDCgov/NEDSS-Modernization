@@ -1,4 +1,4 @@
-import { Alert, Button, Grid } from '@trussworks/react-uswds';
+import { Alert, Button, Grid, Icon } from '@trussworks/react-uswds';
 import { externalize, internalize } from 'pages/patient/search';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
@@ -36,7 +36,6 @@ import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
-import { Icon } from '@trussworks/react-uswds';
 import { SearchCriteria, SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 
 export enum SEARCH_TYPE {
