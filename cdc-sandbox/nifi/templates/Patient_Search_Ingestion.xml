@@ -482,6 +482,7 @@
                 <group>org.apache.nifi</group>
                 <version>1.19.0</version>
             </bundle>
+            <comments></comments>
             <descriptors>
                 <entry>
                     <key>Schema Write Strategy</key>
@@ -2252,7 +2253,7 @@ WHERE
 <name>success</name>
 <retry>false</retry>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.GenerateTableFetch</type>
                         </processors>
@@ -7104,5 +7105,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/01/2023 14:30:52 UTC</timestamp>
+    <timestamp>09/01/2023 17:02:58 UTC</timestamp>
 </template>
