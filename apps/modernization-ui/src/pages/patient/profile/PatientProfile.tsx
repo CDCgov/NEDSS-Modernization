@@ -22,6 +22,7 @@ import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graph
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 import { resolveDeleteMessage } from './resolveDeleteMessage';
 import { MessageModal, MessageModalContent } from 'messageModal';
+import { usePatientProfilePermissions } from './permission';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -47,6 +48,8 @@ export const PatientProfile = () => {
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
     );
+
+    const permissions = usePatientProfilePermissions();
 
     const profile = usePatientProfile(id);
 

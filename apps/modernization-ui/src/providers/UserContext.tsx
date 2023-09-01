@@ -1,5 +1,5 @@
-import React, { useEffect, useReducer } from 'react';
-import { ApiError, UserService } from '../generated';
+import React, { ReactNode, useEffect, useReducer } from 'react';
+import { ApiError, Me, UserService } from '../generated';
 import { UserControllerService } from '../generated/services/UserControllerService';
 import { Config } from 'config';
 import { useNavigate } from 'react-router-dom';
@@ -16,17 +16,29 @@ type User = {
     permissions: string[];
 };
 
+type TokenProvider = () => string | undefined;
+
+type InternalState = {
+    status: 'idle' | 'pending' | 'logged-in' | 'ready' | 'error';
+    isLoggedIn: boolean;
+    isLoginPending: boolean;
+    error?: string | undefined;
+    username?: string | undefined;
+    user?: User;
+    getToken: TokenProvider;
+};
+
 type LoginState = {
     isLoggedIn: boolean;
     isLoginPending: boolean;
-    loginError: string | undefined;
-    userId: string | undefined;
+    error?: string | undefined;
+    username?: string | undefined;
     user?: User;
-    getToken: () => string | undefined;
+    getToken: TokenProvider;
 };
 
 // Grab token from cookie as it is updated on every request
-const getToken = (): string | undefined => {
+const getToken: TokenProvider = () => {
     if (document.cookie.includes(TOKEN)) {
         const tokenStart = document.cookie.indexOf(TOKEN) + TOKEN.length;
         const tokenEnd = document.cookie.indexOf(';', tokenStart);
@@ -37,7 +49,7 @@ const getToken = (): string | undefined => {
 };
 
 // proxied requests set the USER_ID cookie. use it on initialization to log in
-const getUserIdFromCookie = (): string | undefined => {
+const getUserNameFromCookie = (): string | undefined => {
     if (document.cookie.includes(USER_ID)) {
         const userIdStart = document.cookie.indexOf(USER_ID) + USER_ID.length;
         const userIdEnd = document.cookie.indexOf(';', userIdStart);
@@ -47,28 +59,32 @@ const getUserIdFromCookie = (): string | undefined => {
     }
 };
 
-const initialState: LoginState = {
+const initialState: InternalState = {
+    status: 'idle',
     isLoggedIn: false,
     isLoginPending: false,
-    loginError: undefined,
-    userId: undefined,
+    error: undefined,
+    username: undefined,
     getToken
 };
 
 type Action =
     | { type: 'login'; name: string }
+    | { type: 'initialize'; name?: string }
     | { type: 'error'; error: string }
-    | { type: 'success'; user: User }
+    | { type: 'ready'; user: User }
     | { type: 'logout' };
 
-const reducer = (state: LoginState, action: Action) => {
+const reducer = (state: InternalState, action: Action): InternalState => {
     switch (action.type) {
         case 'login':
-            return { ...initialState, isLoginPending: true, userId: action.name };
+            return { ...initialState, status: 'pending', isLoginPending: true, username: action.name };
+        case 'initialize':
+            return { ...state, status: 'logged-in' };
         case 'error':
-            return { ...state, isLoginPending: false, loginError: action.error };
-        case 'success':
-            return { ...state, isLoginPending: false, isLoggedIn: true, user: action.user };
+            return { ...state, status: 'error', isLoginPending: false, error: action.error };
+        case 'ready':
+            return { ...state, status: 'ready', isLoginPending: false, isLoggedIn: true, user: action.user };
         case 'logout':
             return { ...initialState };
     }
@@ -84,24 +100,29 @@ export const UserContext = React.createContext<{
     logout: () => {}
 });
 
-const UserContextProvider = (props: any) => {
-    const nav = useNavigate();
+type Props = {
+    children: ReactNode;
+};
+
+const UserContextProvider = ({ children }: Props) => {
+    const navigateTo = useNavigate();
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const login = (username: string) => {
-        dispatch({ type: 'login', name: username });
+        if (Config.enableLogin) {
+            dispatch({ type: 'login', name: username });
+        }
     };
 
     const logout = () => {
         // delete cookies
         document.cookie = USER_ID + '=; Max-Age=0; path=/;';
-        document.cookie = TOKEN + '=; Max-Age=0; path=/;';
         // load appropriate page
         if (Config.enableLogin) {
             // reset state
             dispatch({ type: 'logout' });
-            nav('/dev/login');
+            navigateTo('/dev/login');
         } else {
             // loading external page will clear state
             window.location.href = `${Config.nbsUrl}/logOut`;
@@ -110,43 +131,56 @@ const UserContextProvider = (props: any) => {
 
     // on init attempt to login using USER_ID cookie
     useEffect(() => {
-        const resolved = getUserIdFromCookie();
+        const resolved = getUserNameFromCookie();
         if (resolved) {
-            login(resolved);
+            dispatch({ type: 'initialize', name: resolved });
         }
     }, []);
 
-    useEffect(() => {
-        if (state.userId && state.isLoginPending) {
-            UserControllerService.loginUsingPost({
-                request: { username: state.userId, password: '' }
-            })
-                .then(() => UserService.meUsingGet({ authorization: `Bearer ${state.getToken()}` }))
-                .then(({ identifier, firstName, lastName, permissions }) => {
-                    const user = {
-                        identifier,
-                        name: {
-                            first: firstName,
-                            last: lastName,
-                            display: firstName + ' ' + lastName
-                        },
-                        permissions
-                    };
-                    dispatch({ type: 'success', user });
-                })
-                .catch((ex: ApiError) => {
-                    if (ex.status === 401) {
-                        dispatch({ type: 'error', error: 'Incorrect username or password' });
-                    } else {
-                        dispatch({ type: 'error', error: 'Login failed' });
-                    }
-                });
+    const handleMeSuccess = ({ identifier, firstName, lastName, permissions }: Me) => {
+        const user = {
+            identifier,
+            name: {
+                first: firstName,
+                last: lastName,
+                display: firstName + ' ' + lastName
+            },
+            permissions
+        };
+        dispatch({ type: 'ready', user });
+    };
+
+    const handleError = (error: ApiError) => {
+        if (error.status === 401) {
+            dispatch({ type: 'error', error: 'Incorrect username or password' });
+        } else {
+            dispatch({ type: 'error', error: 'Login failed' });
         }
-    }, [state.isLoginPending, state.userId]);
+    };
+
+    useEffect(() => {
+        if (state.status === 'logged-in' && Config.enableLogin) {
+            document.cookie = `nbs_user=${state.username}`;
+        }
+
+        if (state.status === 'pending' && state.username) {
+            UserControllerService.loginUsingPost({
+                request: { username: state.username, password: '' }
+            })
+                .then(() => dispatch({ type: 'initialize' }))
+                .catch(handleError);
+        }
+
+        if (state.status === 'logged-in') {
+            UserService.meUsingGet({ authorization: `Bearer ${state.getToken()}` })
+                .then(handleMeSuccess)
+                .catch(handleError);
+        }
+    }, [state.status, state.username]);
 
     const value = { state, login, logout };
 
-    return <UserContext.Provider value={value}>{props.children}</UserContext.Provider>;
+    return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export { UserContextProvider };

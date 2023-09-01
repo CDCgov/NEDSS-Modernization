@@ -19,16 +19,15 @@ export const Login = () => {
 
     useEffect(() => {
         if (state.isLoggedIn) {
-            document.cookie = `nbs_user=${state.userId}`;
             navigate('/advanced-search');
         }
-    }, [state.isLoggedIn, state.userId]);
+    }, [state.isLoggedIn]);
 
     return (
         <div className="sign-in-wrapper">
             <Form onSubmit={mockSubmit} large className="sign-in-form">
                 <Fieldset legend="Sign In" legendStyle="large">
-                    <FormGroup error={state.loginError !== undefined}>
+                    <FormGroup error={state.error !== undefined}>
                         <Label htmlFor="username">Username or email address</Label>
                         <TextInput
                             onChange={(e) => setUsername(e.target.value)}
@@ -46,7 +45,7 @@ export const Login = () => {
                             type={showPassword ? 'text' : 'password'}
                             disabled={state.isLoginPending}
                         />
-                        {state.loginError ? <ErrorMessage>{state.loginError}</ErrorMessage> : ''}
+                        {state.error && <ErrorMessage>{state.error}</ErrorMessage>}
                     </FormGroup>
 
                     <p className="usa-form__note">

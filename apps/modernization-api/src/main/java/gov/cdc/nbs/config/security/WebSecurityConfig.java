@@ -33,7 +33,7 @@ public class WebSecurityConfig {
     private final JWTFilter jwtFilter;
     private final ObjectMapper mapper;
 
-    @Value("${spring.graphql.path: graphql}")
+    @Value("${spring.graphql.path:/graphql}")
     private String graphQLEndpoint;
 
     @Bean
@@ -42,7 +42,8 @@ public class WebSecurityConfig {
                 .antMatchers(
                         graphQLEndpoint,
                         "/encryption/*",
-                        "/preparePatientDetails")
+                        "/nbs/api/**"
+                )
                 .authenticated()
                 .anyRequest().permitAll()
                 .and()
