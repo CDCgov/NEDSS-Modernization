@@ -379,7 +379,7 @@ export enum InvestigationEventIdType {
 }
 
 export type InvestigationFilter = {
-  caseStatuses?: InputMaybe<Array<InputMaybe<CaseStatus>>>;
+  caseStatuses?: InputMaybe<Array<CaseStatus>>;
   conditions?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   createdBy?: InputMaybe<Scalars['String']>;
   eventDate?: InputMaybe<InvestigationEventDateSearch>;
