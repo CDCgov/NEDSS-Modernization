@@ -1,0 +1,36 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'jvm-test-suite'
+
+    alias libs.plugins.springBoot apply false
+    alias libs.plugins.springDependencies
+}
+
+
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation libs.bundles.testing
+            }
+        }
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom SpringBootPlugin.BOM_COORDINATES
+    }
+}
+dependencies {
+    implementation project(':authentication')
+
+    implementation libs.springBoot.web
+    implementation libs.bundles.security
+
+}
+

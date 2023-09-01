@@ -28,6 +28,9 @@ dependencies {
     implementation project(':authentication')
     implementation project(':id-generator')
 
+    //  feature modules
+    implementation project(':me-api')
+
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
     // core

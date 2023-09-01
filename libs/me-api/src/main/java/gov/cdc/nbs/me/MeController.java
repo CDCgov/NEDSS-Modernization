@@ -1,6 +1,5 @@
 package gov.cdc.nbs.me;
 
-import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authorization.permission.PermissionFinder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,8 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class MeController {
-
+class MeController {
 
     private final PermissionFinder finder;
 
@@ -22,17 +20,11 @@ public class MeController {
     @GetMapping("nbs/api/me")
     Me me(@AuthenticationPrincipal final NbsUserDetails details) {
 
-        List<String> authorities =
+        List<String> permissions =
             this.finder.find(details.getId())
                 .stream()
                 .map(p -> p.operation() + '-' + p.object())
                 .toList();
-
-        List<String> permissions = details.getAuthorities()
-            .stream()
-            .map(NbsAuthority::getAuthority)
-            .distinct()
-            .toList();
 
         return new Me(
             details.getId(),
