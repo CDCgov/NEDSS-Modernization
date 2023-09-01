@@ -813,6 +813,34 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
+                    <id>214c93dc-8b04-3aa3-0000-000000000000</id>
+                    <parentGroupId>9a3eaaea-9143-346b-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>200</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>9a3eaaea-9143-346b-0000-000000000000</groupId>
+                        <id>54c34680-4543-3040-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>errors</selectedRelationships>
+                    <selectedRelationships>failure</selectedRelationships>
+                    <selectedRelationships>retry</selectedRelationships>
+                    <source>
+                        <groupId>9a3eaaea-9143-346b-0000-000000000000</groupId>
+                        <id>02083ace-51b4-358c-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>3b7672b5-1ffe-362a-9652-192dd14f6ee2</versionedComponentId>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>25316665-a430-39cb-0000-000000000000</id>
                     <parentGroupId>9a3eaaea-9143-346b-0000-000000000000</parentGroupId>
                     <versionedComponentId>25316665-a430-39cb-a63d-9d11ba16be57</versionedComponentId>
@@ -893,6 +921,36 @@
                         <id>bdb349d2-3219-3c23-0000-000000000000</id>
                         <type>PROCESSOR</type>
                         <versionedComponentId>bdb349d2-3219-3c23-bfb7-44f957907701</versionedComponentId>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>60af1f99-d1dd-336e-0000-000000000000</id>
+                    <parentGroupId>9a3eaaea-9143-346b-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>200</backPressureObjectThreshold>
+                    <bends>
+                        <x>5960.0</x>
+                        <y>-159.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>9a3eaaea-9143-346b-0000-000000000000</groupId>
+                        <id>02083ace-51b4-358c-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>3b7672b5-1ffe-362a-9652-192dd14f6ee2</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>retry</selectedRelationships>
+                    <source>
+                        <groupId>9a3eaaea-9143-346b-0000-000000000000</groupId>
+                        <id>54c34680-4543-3040-0000-000000000000</id>
+                        <type>PROCESSOR</type>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -1183,6 +1241,33 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
+                    <id>d765ba28-5d79-3ef9-0000-000000000000</id>
+                    <parentGroupId>9a3eaaea-9143-346b-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>200</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>9a3eaaea-9143-346b-0000-000000000000</groupId>
+                        <id>9346f29d-5f7a-3e40-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>3134fd63-7cce-311b-a7d2-24b408f68ec7</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>failure</selectedRelationships>
+                    <selectedRelationships>retries_exceeded</selectedRelationships>
+                    <source>
+                        <groupId>9a3eaaea-9143-346b-0000-000000000000</groupId>
+                        <id>54c34680-4543-3040-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>e123a96d-49db-326c-0000-000000000000</id>
                     <parentGroupId>9a3eaaea-9143-346b-0000-000000000000</parentGroupId>
                     <versionedComponentId>cdf9ed44-c552-3388-8287-70400f2d1097</versionedComponentId>
@@ -1267,35 +1352,6 @@
                         <id>d85fc294-e5fe-37c2-0000-000000000000</id>
                         <type>PROCESSOR</type>
                         <versionedComponentId>5ec005af-09e5-3dee-87ad-3722f31bb473</versionedComponentId>
-                    </source>
-                    <zIndex>0</zIndex>
-                </connections>
-                <connections>
-                    <id>f7c35598-e2d3-3725-0000-000000000000</id>
-                    <parentGroupId>9a3eaaea-9143-346b-0000-000000000000</parentGroupId>
-                    <versionedComponentId>da38c2d4-894b-380b-8494-eaa408f38bcf</versionedComponentId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                    <destination>
-                        <groupId>9a3eaaea-9143-346b-0000-000000000000</groupId>
-                        <id>9346f29d-5f7a-3e40-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>3134fd63-7cce-311b-a7d2-24b408f68ec7</versionedComponentId>
-                    </destination>
-                    <flowFileExpiration>0 sec</flowFileExpiration>
-                    <labelIndex>1</labelIndex>
-                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                    <name></name>
-                    <selectedRelationships>errors</selectedRelationships>
-                    <selectedRelationships>failure</selectedRelationships>
-                    <source>
-                        <groupId>9a3eaaea-9143-346b-0000-000000000000</groupId>
-                        <id>02083ace-51b4-358c-0000-000000000000</id>
-                        <type>PROCESSOR</type>
-                        <versionedComponentId>3b7672b5-1ffe-362a-9652-192dd14f6ee2</versionedComponentId>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -1567,7 +1623,7 @@ split into chunks of 100
                         <retry>false</retry>
                     </relationships>
                     <relationships>
-                        <autoTerminate>true</autoTerminate>
+                        <autoTerminate>false</autoTerminate>
                         <name>retry</name>
                         <retry>false</retry>
                     </relationships>
@@ -2012,6 +2068,108 @@ split into chunks of 100
                     <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
+                </processors>
+                <processors>
+                    <id>54c34680-4543-3040-0000-000000000000</id>
+                    <parentGroupId>9a3eaaea-9143-346b-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>6112.0</x>
+                        <y>-152.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.19.0</version>
+                    </bundle>
+                    <config>
+                        <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>retry-attribute</key>
+<value>
+    <name>retry-attribute</name>
+</value>
+                            </entry>
+                            <entry>
+<key>maximum-retries</key>
+<value>
+    <name>maximum-retries</name>
+</value>
+                            </entry>
+                            <entry>
+<key>penalize-retries</key>
+<value>
+    <name>penalize-retries</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Fail on Non-numerical Overwrite</key>
+<value>
+    <name>Fail on Non-numerical Overwrite</name>
+</value>
+                            </entry>
+                            <entry>
+<key>reuse-mode</key>
+<value>
+    <name>reuse-mode</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>retry-attribute</key>
+<value>flowfile.retries</value>
+                            </entry>
+                            <entry>
+<key>maximum-retries</key>
+<value>3</value>
+                            </entry>
+                            <entry>
+<key>penalize-retries</key>
+<value>true</value>
+                            </entry>
+                            <entry>
+<key>Fail on Non-numerical Overwrite</key>
+<value>false</value>
+                            </entry>
+                            <entry>
+<key>reuse-mode</key>
+<value>fail</value>
+                            </entry>
+                        </properties>
+                        <retryCount>10</retryCount>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>RetryFlowFile</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>failure</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>retries_exceeded</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>retry</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <state>RUNNING</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.RetryFlowFile</type>
                 </processors>
                 <processors>
                     <id>5770bd29-d21d-3085-0000-000000000000</id>
@@ -2514,8 +2672,8 @@ split into chunks of 100
                     <id>9346f29d-5f7a-3e40-0000-000000000000</id>
                     <parentGroupId>9a3eaaea-9143-346b-0000-000000000000</parentGroupId>
                     <position>
-                        <x>5464.0</x>
-                        <y>128.0</y>
+                        <x>6784.0</x>
+                        <y>-152.0</y>
                     </position>
                     <versionedComponentId>3134fd63-7cce-311b-a7d2-24b408f68ec7</versionedComponentId>
                     <bundle>
@@ -2563,7 +2721,7 @@ split into chunks of 100
                             </entry>
                             <entry>
 <key>log-message</key>
-<value>Failed to insert into Elasticsearch</value>
+<value>Failed to insert lab report into Elasticsearch: ${_id}</value>
                             </entry>
                         </properties>
                         <retryCount>10</retryCount>
@@ -2910,7 +3068,7 @@ FROM
                   o2.obs_domain_cd_st_1 AS [domain_cd_st_1], 
                   o2.status_cd AS [status_cd], 
                   o2.alt_cd AS [alt_cd], 
-                  o2.alt_cd_desc_txt AS [alt_cd_desc_txt], 
+                  STRING_ESCAPE(o2.alt_cd_desc_txt, 'json') AS [alt_cd_desc_txt], 
                   o2.alt_cd_system_cd AS [alt_cd_system_cd], 
                   STRING_ESCAPE(ovc.display_name, 'json') AS [display_name], 
                   ovc.code AS [ovc_code], 
@@ -3016,11 +3174,7 @@ FROM
                   act_uid AS [id], 
                   act_id_seq AS [act_id_seq], 
                   record_status_cd AS [record_status], 
-<<<<<<< Updated upstream
-                  root_extension_txt AS [root_extension_txt], 
-=======
                   STRING_ESCAPE(root_extension_txt, 'json') AS [root_extension_txt], 
->>>>>>> Stashed changes
                   type_cd AS [type_cd], 
                   type_desc_txt AS [type_desc_txt], 
                   last_chg_time AS [last_change_time] 
@@ -3834,9 +3988,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-<<<<<<< Updated upstream
-    <timestamp>08/31/2023 18:07:53 UTC</timestamp>
-=======
-    <timestamp>08/31/2023 18:35:33 UTC</timestamp>
->>>>>>> Stashed changes
+    <timestamp>09/01/2023 14:30:58 UTC</timestamp>
 </template>
