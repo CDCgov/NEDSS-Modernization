@@ -107,7 +107,7 @@ public class InvestigationQueryBuilder {
                 case STATE_CASE_ID:
                     var stateCountryCaseId = QueryBuilders.boolQuery()
                             .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ,
-                                    2))
+                                    1))
                             .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
                                     "STATE"))
                             .must(QueryBuilders.matchQuery(
