@@ -64,7 +64,7 @@ class AccumulatorTest {
     }
 
     @Test
-    void should_collect_instances_with_same_id_into_one_instance_in_parallel() {
+    void should_collect_instances_with_same_id_into_one_instance_by_id_in_parallel() {
 
         List<Thing> accumulated = Stream.of(
                 new Thing(
@@ -98,7 +98,7 @@ class AccumulatorTest {
     }
 
     @Test
-    void should_collect_instances_with_differing_id_into_multiple_instances() {
+    void should_collect_instances_with_differing_id_into_multiple_instances_by_id() {
 
         List<Thing> accumulated = Stream.of(
             new Thing(
@@ -136,7 +136,7 @@ class AccumulatorTest {
     }
 
     @Test
-    void should_accumulate_instances_with_same_id_into_one_instance() {
+    void should_accumulate_instances_with_same_id_into_one_instance_by_id() {
 
         Optional<Thing> accumulated = Stream.of(
             new Thing(
@@ -168,7 +168,7 @@ class AccumulatorTest {
     }
 
     @Test
-    void should_not_be_present_when_accumulating_zero_instance() {
+    void should_not_be_present_when_accumulating_zero_instances_by_id() {
 
         Optional<Thing> accumulated =
             Stream.<Thing>empty().collect(Accumulator.accumulating(Thing::identifier, Thing::merge));
@@ -177,4 +177,32 @@ class AccumulatorTest {
 
     }
 
+    @Test
+    void should_accumulate_multiple_instances_into_one() {
+
+        Optional<String> accumulated = Stream.of("O", "N", "E")
+            .collect(Accumulator.accumulating(String::concat));
+
+        assertThat(accumulated).contains("ONE");
+
+    }
+
+    @Test
+    void should_accumulate_multiple_instances_into_one_in_parallel() {
+
+        Optional<String> accumulated = Stream.of("P", "A", "R", "A", "L", "L", "E", "L")
+            .parallel()
+            .collect(Accumulator.accumulating(String::concat));
+
+        assertThat(accumulated).contains("PARALLEL");
+
+    }
+
+    @Test
+    void should_not_be_present_when_accumulating_zero_instances() {
+        Optional<String> accumulated = Stream.<String>empty()
+            .collect(Accumulator.accumulating(String::concat));
+
+        assertThat(accumulated).isNotPresent();
+    }
 }
