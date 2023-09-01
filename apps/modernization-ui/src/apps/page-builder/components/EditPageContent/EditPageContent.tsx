@@ -1,9 +1,15 @@
+import { SectionComponent } from '../Section/Section';
 import './EditPageContent.scss';
+import { EditPageContent } from 'apps/page-builder/generated/models/EditPageContent';
 
-type Props = {
-    content: string;
-};
-
-export const EditPageContent = ({ content }: Props) => {
-    return <div className="edit-page-content">{content} Content</div>;
+export const EditPageContentComponent = ({ content }: { content: EditPageContent }) => {
+    return (
+        <div className="edit-page-content">
+            <div className="edit-page-content__sections">
+                {content.tabSections.map((section: any, i: number) => {
+                    return <SectionComponent key={i} section={section} />;
+                })}
+            </div>
+        </div>
+    );
 };
