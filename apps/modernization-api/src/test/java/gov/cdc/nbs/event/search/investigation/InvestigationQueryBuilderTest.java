@@ -654,7 +654,7 @@ class InvestigationQueryBuilderTest {
         var clause = findMatchQueryBuilder(Investigation.CASE_CLASS_CD, nestedShould);
         findExistsQueryBuilder(Investigation.CASE_CLASS_CD, mustNot);
 
-        assertEquals(CaseStatus.CONFIRMED.toString(), clause.value());
+        assertEquals("C", clause.value());
     }
 
     @Test
