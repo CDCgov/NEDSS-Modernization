@@ -1,19 +1,29 @@
-import React, { useEffect } from 'react';
-import { ApiError } from '../generated';
+import React, { useEffect, useReducer } from 'react';
+import { ApiError, UserService } from '../generated';
 import { UserControllerService } from '../generated/services/UserControllerService';
 import { Config } from 'config';
 import { useNavigate } from 'react-router-dom';
 const USER_ID = 'nbs_user=';
 const TOKEN = 'nbs_token=';
 
-export interface UserState {
+type User = {
+    identifier: number;
+    name: {
+        first: string;
+        last: string;
+        display: string;
+    };
+    permissions: string[];
+};
+
+type LoginState = {
     isLoggedIn: boolean;
     isLoginPending: boolean;
     loginError: string | undefined;
     userId: string | undefined;
-    displayName: string | undefined;
+    user?: User;
     getToken: () => string | undefined;
-}
+};
 
 // Grab token from cookie as it is updated on every request
 const getToken = (): string | undefined => {
@@ -37,52 +47,50 @@ const getUserIdFromCookie = (): string | undefined => {
     }
 };
 
-const initialState: UserState = {
+const initialState: LoginState = {
     isLoggedIn: false,
     isLoginPending: false,
     loginError: undefined,
     userId: undefined,
-    displayName: undefined,
     getToken
 };
 
+type Action =
+    | { type: 'login'; name: string }
+    | { type: 'error'; error: string }
+    | { type: 'success'; user: User }
+    | { type: 'logout' };
+
+const reducer = (state: LoginState, action: Action) => {
+    switch (action.type) {
+        case 'login':
+            return { ...initialState, isLoginPending: true, userId: action.name };
+        case 'error':
+            return { ...state, isLoginPending: false, loginError: action.error };
+        case 'success':
+            return { ...state, isLoginPending: false, isLoggedIn: true, user: action.user };
+        case 'logout':
+            return { ...initialState };
+    }
+};
+
 export const UserContext = React.createContext<{
-    state: UserState;
-    login: (username: string, password: string) => Promise<boolean>;
+    state: LoginState;
+    login: (username: string) => void;
     logout: () => void;
 }>({
     state: initialState,
-    login: async () => {
-        return true;
-    },
+    login: () => {},
     logout: () => {}
 });
 
-export const UserContextProvider = (props: any) => {
+const UserContextProvider = (props: any) => {
     const nav = useNavigate();
-    const [state, setState] = React.useState({ ...initialState });
-    const setLoginPending = (isLoginPending: boolean) => setState({ ...state, isLoginPending, loginError: undefined });
-    const setLoginSuccess = (userId: string, displayName: string) =>
-        setState({ ...initialState, isLoginPending: false, isLoggedIn: true, userId, displayName });
-    const setLoginError = (loginError: string) => setState({ ...initialState, isLoginPending: false, loginError });
-    const login = async (username: string, password: string): Promise<boolean> => {
-        setLoginPending(true);
-        const success: boolean = await UserControllerService.loginUsingPost({
-            request: { username, password }
-        })
-            .then((response) => {
-                setLoginSuccess(response.username, response.displayName);
-                return true;
-            })
-            .catch((ex: ApiError) => {
-                if (ex.status === 401) {
-                    setLoginError('Incorrect username or password');
-                } else {
-                    setLoginError('Login failed');
-                }
-                return false;
-            });
-        return success;
+
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    const login = (username: string) => {
+        dispatch({ type: 'login', name: username });
     };
 
     const logout = () => {
@@ -92,7 +100,7 @@ export const UserContextProvider = (props: any) => {
         // load appropriate page
         if (Config.enableLogin) {
             // reset state
-            setState({ ...initialState });
+            dispatch({ type: 'logout' });
             nav('/dev/login');
         } else {
             // loading external page will clear state
@@ -102,11 +110,45 @@ export const UserContextProvider = (props: any) => {
 
     // on init attempt to login using USER_ID cookie
     useEffect(() => {
-        const userIdFromCookie = getUserIdFromCookie();
-        if (userIdFromCookie) {
-            login(userIdFromCookie, '');
+        const resolved = getUserIdFromCookie();
+        if (resolved) {
+            login(resolved);
         }
     }, []);
 
-    return <UserContext.Provider value={{ state, login, logout }}>{props.children}</UserContext.Provider>;
+    useEffect(() => {
+        if (state.userId && state.isLoginPending) {
+            UserControllerService.loginUsingPost({
+                request: { username: state.userId, password: '' }
+            })
+                .then(() => UserService.meUsingGet({ authorization: `Bearer ${state.getToken()}` }))
+                .then(({ identifier, firstName, lastName, permissions }) => {
+                    const user = {
+                        identifier,
+                        name: {
+                            first: firstName,
+                            last: lastName,
+                            display: firstName + ' ' + lastName
+                        },
+                        permissions
+                    };
+                    dispatch({ type: 'success', user });
+                })
+                .catch((ex: ApiError) => {
+                    if (ex.status === 401) {
+                        dispatch({ type: 'error', error: 'Incorrect username or password' });
+                    } else {
+                        dispatch({ type: 'error', error: 'Login failed' });
+                    }
+                });
+        }
+    }, [state.isLoginPending, state.userId]);
+
+    const value = { state, login, logout };
+
+    return <UserContext.Provider value={value}>{props.children}</UserContext.Provider>;
 };
+
+export { UserContextProvider };
+
+export type { User, LoginState };

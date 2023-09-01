@@ -2,10 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type LoginResponse = {
-    displayName: string;
+export type Me = {
+    firstName: string;
     identifier: number;
-    token: string;
-    username: string;
+    lastName: string;
+    permissions: Array<string>;
 };
 

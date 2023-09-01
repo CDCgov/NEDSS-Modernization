@@ -47,7 +47,7 @@ describe('when a ClassicButton is clicked', () => {
                 displayName: undefined,
                 getToken: () => 'token'
             },
-            login: (_username: string, _password: string) => Promise.resolve(true),
+            login: (_username: string) => {},
             logout: () => {}
         };
 

@@ -57,7 +57,7 @@ dependencies {
     implementation libs.bundles.elasticsearch
 
     // swagger
-    implementation "io.springfox:springfox-boot-starter:3.0.0"
+    implementation libs.bundles.swagger
 
     // lombok
     compileOnly libs.lombok
