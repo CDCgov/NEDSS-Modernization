@@ -15,6 +15,8 @@ table.usa-table {
         overflow-x: auto;
     }
 }
+
+// Modal styling override
 .usa-modal-wrapper.is-visible {
     max-height: 100vh;
     .usa-modal-overlay {
@@ -32,4 +34,9 @@ table.usa-table {
             }
         }
     }
+}
+
+// Default button styling
+button.usa-button {
+    font-size: 1rem;
 }

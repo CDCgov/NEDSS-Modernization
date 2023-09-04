@@ -72,7 +72,7 @@ public class EventMother {
                 .personParentUid(personId)
                 .build());
         var actIds = Arrays.asList(ElasticsearchActId.builder()
-                .actIdSeq(2)
+                .actIdSeq(1)
                 .typeCd("STATE")
                 .rootExtensionTxt("StateRootExtensionText")
                 .build());
