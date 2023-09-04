@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.addsection;
 
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.content.section.SectionCreator;
 import gov.cdc.nbs.questionbank.page.content.section.exception.AddSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
@@ -21,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class AddSectionServiceTest {
@@ -77,15 +79,18 @@ class AddSectionServiceTest {
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
 
+        WaTemplate waTemplate = new WaTemplate();
+        waTemplate.setId(1234L);
+
         Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
-                .thenReturn(1234L);
+                .thenReturn(waTemplate);
 
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
-                .thenReturn(1015L);
+                .thenReturn(Optional.of(1015L));
 
         DeleteSectionResponse deleteSectionResponse =
                 createSectionService.deleteSection( deleteSectionRequest);
-        assertEquals("Section Deleted Successfully", deleteSectionResponse.message());
+        assertEquals("Section deleted successfully", deleteSectionResponse.message());
     }
 
 
@@ -97,12 +102,16 @@ class AddSectionServiceTest {
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
+        WaTemplate waTemplate = new WaTemplate();
+        waTemplate.setId(1234L);
 
         Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
-                .thenReturn(1234L);
+                .thenReturn(waTemplate);
+
+
 
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
-                .thenReturn(10100L);
+                .thenReturn(Optional.of(10L));
 
         assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection( deleteSectionRequest));
 

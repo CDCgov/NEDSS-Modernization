@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 
 @Slf4j
@@ -28,6 +29,12 @@ public class SubSectionCreator {
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
     private static final String UPDATE_MESSAGE = "SubSection Updated Successfully";
+    private static final String DELETE_MESSAGE = "SubSection Deleted Successfully";
+
+    private static final long TAB = 1010L;
+    private static final long SECTION = 1015L;
+    private static final long SUBSECTION = 1016L;
+
     @Autowired
     private EntityManager entityManager;
 
@@ -43,26 +50,30 @@ public class SubSectionCreator {
             throw new AddSubSectionException("Failed to add SubSection");
         }
     }
-
-    private static final long TAB = 1010L;
-    private static final long SECTION = 1015L;
-    private static final long SUBSECTION = 1016L;
-
     public DeleteSubSectionResponse deleteSubSection(DeleteSubSectionRequest request) {
         try {
-            log.info("Deleting sub section");
+            log.info("Deleting Sub Section");
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
-            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.subSectionId());
-            Long nbsComponentUid = waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
-            if(nbsComponentUid == TAB || nbsComponentUid == SECTION || nbsComponentUid == null || nbsComponentUid == SUBSECTION) {
+            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.subSectionId()).getId();
+            Optional<Long> nbsComponentUidOptional =
+                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
+            if (nbsComponentUidOptional.isPresent()) {
+                Long nbsComponentUid = nbsComponentUidOptional.get();
+                if (nbsComponentUid == TAB ||nbsComponentUid == SECTION
+                        ||nbsComponentUid == SUBSECTION || nbsComponentUid == null) {
+                    waUiMetaDataRepository.deleteById(request.subSectionId());
+                    waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.subSectionId());
+                    return new DeleteSubSectionResponse(request.subSectionId(), DELETE_MESSAGE);
+                } else {
+                    throw new DeleteSubSectionException("Conditions not satisfied");
+                }
+            } else {
                 waUiMetaDataRepository.deleteById(request.subSectionId());
                 waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.subSectionId());
-                return new DeleteSubSectionResponse(request.subSectionId(), "Sub Section Deleted Successfully");
-            } else {
-                throw new DeleteSubSectionException("Conditions not satisfied");
+                return new DeleteSubSectionResponse(request.subSectionId(), DELETE_MESSAGE);
             }
         } catch(Exception exception) {
-            throw new DeleteSubSectionException("Delete Sub Section exception");
+            throw new DeleteSubSectionException(exception.toString());
         }
 
     }

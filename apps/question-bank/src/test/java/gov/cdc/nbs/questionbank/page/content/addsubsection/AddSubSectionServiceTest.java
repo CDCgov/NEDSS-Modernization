@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.addsubsection;
 
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.subsection.SubSectionCreator;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.AddSubSectionException;
@@ -83,15 +84,18 @@ class AddSubSectionServiceTest {
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
 
+        WaTemplate waTemplate = new WaTemplate();
+        waTemplate.setId(1234L);
+
         Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
-                .thenReturn(1234L);
+                .thenReturn(waTemplate);
 
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
-                .thenReturn(1015L);
+                .thenReturn(Optional.of(1015L));
 
         DeleteSubSectionResponse deleteSubSectionResponse =
                 createSubSectionService.deleteSubSection( deleteSubSectionRequest);
-        assertEquals("Sub Section Deleted Successfully", deleteSubSectionResponse.message());
+        assertEquals("SubSection Deleted Successfully", deleteSubSectionResponse.message());
     }
 
 
@@ -105,11 +109,14 @@ class AddSubSectionServiceTest {
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
 
+        WaTemplate waTemplate = new WaTemplate();
+        waTemplate.setId(1234L);
+
         Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
-                .thenReturn(1234L);
+                .thenReturn(waTemplate);
 
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
-                .thenReturn(10000L);
+                .thenReturn(Optional.of(10L));
 
         assertThrows(DeleteSubSectionException.class, () -> createSubSectionService.deleteSubSection( deleteSubSectionRequest));
 
