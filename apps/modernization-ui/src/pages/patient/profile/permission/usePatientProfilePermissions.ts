@@ -11,9 +11,8 @@ const initial: PatientProfilePermission = {
 
 const resovlePermissions = (permissions?: string[]) => {
     if (permissions) {
-        return permissions.slice(0).reduce((existing, next, _index, remaining) => {
+        return permissions.slice(0).reduce((existing, next) => {
             if (next === 'DELETE-PATIENT') {
-                remaining.splice(1);
                 return { ...existing, delete: true };
             }
             return existing;
