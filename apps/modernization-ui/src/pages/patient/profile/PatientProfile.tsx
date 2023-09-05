@@ -89,6 +89,7 @@ export const PatientProfile = () => {
                     <ModalToggleButton
                         modalRef={modalRef}
                         opener
+                        disabled={profile?.patient?.status !== 'ACTIVE'}
                         className="delete-btn display-inline-flex"
                         type={'submit'}>
                         <Icon.Delete className="margin-right-05" />
@@ -124,13 +125,12 @@ export const PatientProfile = () => {
                                     <ModalToggleButton outline modalRef={modalRef} closer>
                                         No, go back
                                     </ModalToggleButton>
-                                    <ModalToggleButton
+                                    <Button
+                                        type="button"
                                         onClick={handleDeletePatient}
-                                        modalRef={modalRef}
-                                        closer
                                         className="padding-105 text-center">
                                         Yes, delete
-                                    </ModalToggleButton>
+                                    </Button>
                                 </ButtonGroup>
                             </ModalFooter>
                         </Modal>
@@ -138,6 +138,7 @@ export const PatientProfile = () => {
                 </div>
             </div>
             <div className="main-body">
+                {profile?.patient.status != 'ACTIVE' && <p className="text-red text-right">INACTIVE</p>}
                 {profile && profile.summary && (
                     <PatientProfileSummary patient={profile.patient} summary={profile.summary} />
                 )}
