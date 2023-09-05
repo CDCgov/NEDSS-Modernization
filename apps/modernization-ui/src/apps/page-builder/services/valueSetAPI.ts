@@ -13,12 +13,7 @@ export const fetchFamilyOptions = (token: string) => {
 };
 
 export const fetchGroupOptions = (token: string) => {
-    ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-        authorization: token,
-        codeSetNm: 'COINFECTION_GROUP'
-    }).then((response: any) => {
-        return response;
-    });
+    return fetchValueSetOptions(token, 'COINFECTION_GROUP');
 };
 
 export const fetchValueSetOptions = (token: string, codeSet: string) => {

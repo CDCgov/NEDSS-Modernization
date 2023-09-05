@@ -27,7 +27,13 @@ const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/[0-9]{4}$/;
 
 const matches = (value: string) => inputFormat.test(value);
 
+const yearLength = /^(19|20)\d{2}$/;
+
 const isValid = (value?: string) => !value || matches(value);
+
+const matchesYear = (value: string) => yearLength.test(value);
+
+const isValidYear = (value?: string) => !value || matchesYear(value);
 
 const interalize = (value: string) => {
     const [month, day, year] = value.split('/');
@@ -64,8 +70,12 @@ export const DatePickerInput = ({
 
     const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
         const currentVal = (event.target as HTMLInputElement).value;
+
         const valid = isValid(currentVal) && (!disableFutureDates || !isFuture(new Date(currentVal)));
+        const validYear = isValidYear(currentVal.substr(currentVal.length - 4));
+
         setError(!valid);
+        setError(!validYear);
         onBlur && onBlur(event);
     };
 

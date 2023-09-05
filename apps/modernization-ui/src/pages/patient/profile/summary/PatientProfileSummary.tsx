@@ -17,10 +17,10 @@ const formattedPhones = (items: Phone[]) => display(items.map((items) => items.n
 
 const formattedEmails = (items: Email[]) => display(items.map((item) => item.address).join('\n'));
 
-const formattedAddress = ({ street, city, state, zipcode, country }: Address) => {
+const formattedAddress = ({ street, city, state, zipcode }: Address) => {
     const location = ((city && city + ' ') || '') + ((state && state + ' ') || '') + (zipcode ?? '');
-    const address =
-        ((street && street + '\n') || '') + ((location && location + '\n') || '') + ((country && country + '\n') || '');
+    const address = ((street && street + '\n') || '') + ((location && location + '\n') || '');
+
     return display(address);
 };
 
@@ -33,7 +33,10 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
         <div className="margin-y-2 flex-row common-card">
             <div className="grid-row flex-align-center flex-justify padding-2 border-bottom border-base-lighter">
                 <p className="font-sans-xl text-bold margin-0">{`${formattedName(summary.legalName)}`}</p>
-                <h5 className="font-sans-md text-medium margin-0">Patient ID: {patient.shortId}</h5>
+                <h5 className="font-sans-md text-medium margin-0">
+                    Patient ID: {patient.shortId}
+                    {patient.status != 'ACTIVE' && <span className="text-red text-right margin-left-2">INACTIVE</span>}
+                </h5>
             </div>
             <Grid row gap={3} className="padding-3">
                 <Grid col={3}>

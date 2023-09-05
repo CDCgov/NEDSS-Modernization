@@ -11,7 +11,7 @@ export const fetchQuestion = (
     pageSize: number,
     filter: any
 ) => {
-    if (filter?.newestToOldest || (!search && !filter?.questionType)) {
+    if (filter?.newestToOldest || (!search && !filter?.questionType && !filter?.questionSubGroup)) {
         return QuestionControllerService.findAllQuestionsUsingGet({
             authorization,
             page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
@@ -45,12 +45,13 @@ export const useSubGroupAPI = () => {
     const fetchFamilyOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: `Bearer ${state.getToken()}`,
-            codeSetNm: 'CONDITION_FAMILY'
+            codeSetNm: 'NBS_QUES_SUBGROUP'
         }).then((response: any) => {
             const data = response || [];
+            console.log('data....', data);
             const familyList: any = [];
-            data.map((each: { value: never }) => {
-                familyList.push({ name: each.value, value: each.value });
+            data.map((each: { localCode: never }) => {
+                familyList.push({ name: each.localCode, value: each.localCode });
             });
             setFamilyOptions(familyList);
         });
