@@ -28,8 +28,12 @@ export const EventSearchA = ({ investigationFilter, onSearch }: EventSearchProps
     };
 
     const handleSubmit = (investigationFilter: InvestigationFilter) => {
-        console.log('onSubmit', investigationFilter);
-        console.log('onSubmit', investigationForm);
+        if (
+            !investigationFilter.eventDate ||
+            (investigationFilter.eventDate.from === undefined && investigationFilter.eventDate.to === undefined)
+        ) {
+            investigationFilter.eventDate = undefined;
+        }
         onSearch(investigationFilter, SEARCH_TYPE.INVESTIGATION);
     };
 

@@ -2,7 +2,15 @@ import { Label } from '@trussworks/react-uswds';
 import { Maybe } from 'generated/graphql/schema';
 import { JSXElementConstructor, ReactElement } from 'react';
 import { Control, Controller, Path } from 'react-hook-form';
-import Select, { CSSObjectWithLabel, ControlProps, components } from 'react-select';
+import Select, {
+    CSSObjectWithLabel,
+    ControlProps,
+    DropdownIndicatorProps,
+    GroupBase,
+    MultiValueProps,
+    OptionProps,
+    components
+} from 'react-select';
 import './MultiSelectControl.scss';
 
 const customStyles = {
@@ -44,29 +52,27 @@ const customStyles = {
     })
 };
 
-const OptionComponent = (props: any) => (
+const OptionComponent = (props: OptionProps<Option, true, GroupBase<Option>>) => (
     <components.Option {...props}>
         <input type="checkbox" checked={props.isSelected} onChange={() => null} /> <label>{props.label}</label>
     </components.Option>
 );
 
-const MultiValue = (props: any) => (
+const MultiValue = (props: MultiValueProps<Option, true, GroupBase<Option>>) => (
     <components.MultiValue {...props}>
         <span> {props.data.label}</span>
     </components.MultiValue>
 );
 
-const DropdownIndicator = (props: any) => (
-    // Remove arrow indicator from react-select
+const DropdownIndicator = (props: DropdownIndicatorProps<Option, true, GroupBase<Option>>) => (
     <components.DropdownIndicator {...props}>
         <span></span>
     </components.DropdownIndicator>
 );
 
-type MultiSelectProps<
-    TFieldValues extends Record<string, any> = Record<string, any>,
-    TName extends Path<TFieldValues> = Path<TFieldValues>
-> = {
+type Field = Record<string, any>;
+
+type MultiSelectProps<TFieldValues extends Field = Field, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
     name: TName;
     control?: Control<TFieldValues>;
     label: string;
@@ -79,7 +85,7 @@ type Option = {
 };
 
 export const MultiSelectControlA: <
-    TFieldValues extends Record<string, any> = Record<string, any>,
+    TFieldValues extends Field = Field,
     TName extends Path<TFieldValues> = Path<TFieldValues>
 >(
     props: MultiSelectProps<TFieldValues, TName>
@@ -101,7 +107,7 @@ export const MultiSelectControlA: <
                         hideSelectedOptions={false}
                         closeMenuOnSelect={false}
                         closeMenuOnScroll={false}
-                        onChange={onChange}
+                        onChange={(e) => onChange(e.map((e) => e.value))}
                         options={options}
                         styles={customStyles}
                         components={{ Option: OptionComponent, DropdownIndicator, MultiValue }}
