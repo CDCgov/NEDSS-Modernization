@@ -17,7 +17,7 @@ const formattedPhones = (items: Phone[]) => display(items.map((items) => items.n
 
 const formattedEmails = (items: Email[]) => display(items.map((item) => item.address).join('\n'));
 
-const formattedAddress = ({ street, city, state, zipcode, country }: Address) => {
+const formattedAddress = ({ street, city, state, zipcode }: Address) => {
     const location = ((city && city + ' ') || '') + ((state && state + ' ') || '') + (zipcode ?? '');
     const address =
         ((street && street + '\n') || '') + ((location && location + '\n') || '');
