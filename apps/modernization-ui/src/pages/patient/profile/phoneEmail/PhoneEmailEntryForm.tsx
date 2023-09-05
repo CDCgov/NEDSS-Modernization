@@ -47,6 +47,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     onBlur={onBlur}
                                     onChange={onChange}
                                     name="asOf"
+                                    disableFutureDates
                                     htmlFor={'asOf'}
                                     label="As of"
                                     errorMessage={error?.message}

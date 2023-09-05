@@ -80,6 +80,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                     name="asOf"
                                     htmlFor={'asOf'}
                                     label="As of"
+                                    disableFutureDates
                                     errorMessage={error?.message}
                                     required
                                 />

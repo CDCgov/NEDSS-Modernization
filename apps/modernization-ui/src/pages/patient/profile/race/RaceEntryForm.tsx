@@ -54,6 +54,7 @@ export const RaceEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                     defaultValue={value}
                                     onChange={onChange}
                                     name="asOf"
+                                    disableFutureDates
                                     htmlFor={'asOf'}
                                     label="As of"
                                     errorMessage={error?.message}

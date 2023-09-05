@@ -36,6 +36,7 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
+                                    disableFutureDates
                                     label="Date of birth"
                                     errorMessage={errors?.dateOfBirth?.message || ''}
                                 />
@@ -117,6 +118,7 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                                     name={name}
                                     htmlFor={name}
                                     label="Date of death"
+                                    disableFutureDates
                                     disabled={selectedDeceased !== Indicator.Yes}
                                 />
                             )}
