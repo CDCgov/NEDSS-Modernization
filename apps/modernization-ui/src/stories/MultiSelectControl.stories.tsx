@@ -19,8 +19,8 @@ BasicMultiSelect.args = {
     name: 'case',
     label: 'Multi Select',
     options: [
-        { name: 'option 1', value: 'option 1' },
-        { name: 'option 2', value: 'option 2' },
-        { name: 'option 3', value: 'option 3' }
+        { label: 'option 1', value: 'option 1' },
+        { label: 'option 2', value: 'option 2' },
+        { label: 'option 3', value: 'option 3' }
     ]
 };

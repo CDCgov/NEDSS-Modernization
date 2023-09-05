@@ -5,7 +5,7 @@ import { GeneralSearch } from './GeneralSearch';
 import { SearchCriteria } from './SearchCriteria';
 
 type InvestigationAccordionProps = {
-    formControl: Control<FieldValues, any>;
+    formControl: Control<FieldValues>;
 };
 export const InvestigationAccordion = ({ formControl }: InvestigationAccordionProps) => {
     const investigationSearchFilteredItem: AccordionItemProps[] = [

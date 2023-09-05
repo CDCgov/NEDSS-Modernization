@@ -1,37 +1,48 @@
+import { MultiSelectControlA } from 'components/FormInputs/MultiSelectControlA';
 import { useState } from 'react';
-import { Control, Controller, FieldValues, useWatch } from 'react-hook-form';
+import { Control, Controller, useWatch } from 'react-hook-form';
+import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
+import { Input } from '../../../../components/FormInputs/Input';
+import { MultiSelectControl } from '../../../../components/FormInputs/MultiSelectControl';
+import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 import {
+    EventId,
+    InputMaybe,
     InvestigationEventDateType,
     InvestigationEventIdType,
     InvestigationFilter,
+    LabReportEventId,
+    LabReportFilter,
     PregnancyStatus,
     ReportingEntityType
 } from '../../../../generated/graphql/schema';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 import { formatInterfaceString } from '../../../../utils/util';
-import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
-import { Input } from '../../../../components/FormInputs/Input';
-import { MultiSelectControl } from '../../../../components/FormInputs/MultiSelectControl';
-import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 
 type GeneralSearchProps = {
-    control: Control<FieldValues, any>;
+    control: Control<InvestigationFilter | LabReportFilter>;
     filter?: InvestigationFilter;
 };
 
 export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
     const [facilityType, setFacilityType] = useState(false);
-    const selectedEventDateType = useWatch({ control, name: 'eventDateType' });
+    const selectedEventDateType = useWatch({ control });
+
+    function getEventIdDefaultValue(value: InputMaybe<EventId> | LabReportEventId | undefined): string | undefined {
+        if (value === undefined) {
+            return value;
+        }
+        return (value as EventId).id ?? (value as LabReportEventId).labEventId;
+    }
 
     return (
         <>
             <SearchCriteriaContext.Consumer>
                 {({ searchCriteria }) => (
                     <>
-                        <MultiSelectControl
-                            defaultValue={filter?.conditions}
+                        <MultiSelectControlA
                             control={control}
-                            name="condition"
+                            name="conditions"
                             label="Condition"
                             options={searchCriteria.conditions.map((c) => {
                                 return {
@@ -99,7 +110,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 render={({ field: { onChange, value } }) => (
                     <Input
                         onChange={onChange}
-                        defaultValue={value}
+                        defaultValue={getEventIdDefaultValue(value)}
                         type="text"
                         label="Event id"
                         htmlFor="eventId"
@@ -122,7 +133,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
             <Controller
                 control={control}
-                name="from"
+                name="eventDate.from"
                 render={({ field: { onChange, value } }) => (
                     <DatePickerInput
                         disabled={!selectedEventDateType}
@@ -136,7 +147,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
             <Controller
                 control={control}
-                name="to"
+                name="eventDate.to"
                 render={({ field: { onChange, value } }) => (
                     <DatePickerInput
                         disabled={!selectedEventDateType}
@@ -194,7 +205,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             {facilityType && (
                 <Controller
                     control={control}
-                    name="id"
+                    name="providerFacilitySearch.id"
                     render={({ field: { onChange, value } }) => (
                         <Input onChange={onChange} defaultValue={value} type="text" label="ID:" htmlFor="id" id="id" />
                     )}

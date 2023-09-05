@@ -822,7 +822,7 @@ export const AdvancedSearch = () => {
                                 //     labReportFilter={labReportFilter}
                                 //     clearAll={handleClearAll}
                                 // />
-                                <EventSearchA investigationFilter={investigationFilter} />
+                                <EventSearchA onSearch={handleSubmit} investigationFilter={investigationFilter} />
                             )}
                         </div>
                     </Grid>
