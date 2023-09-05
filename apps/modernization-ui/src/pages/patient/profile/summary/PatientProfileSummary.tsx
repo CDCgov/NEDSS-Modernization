@@ -21,7 +21,7 @@ const formattedAddress = ({ street, city, state, zipcode, country }: Address) =>
     const location = ((city && city + ' ') || '') + ((state && state + ' ') || '') + (zipcode ?? '');
     let address;
 
-    if (country !== "United States") {
+    if (country != 'United States') {
          address = ((street && street + '\n') || '') + ((location && location + '\n') || '') + ((country && country + '\n') || '');
     } else {
          address = ((street && street + '\n') || '') + ((location && location + '\n') || '');
