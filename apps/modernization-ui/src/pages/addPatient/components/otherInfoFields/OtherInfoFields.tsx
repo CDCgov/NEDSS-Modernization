@@ -22,13 +22,6 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
     const currentBirthday = useWatch({ control, name: 'dob' });
     const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
 
-    const getCurrentLocalDate = () => {
-        let currentDate = new Date();
-        const offset = currentDate.getTimezoneOffset() * 60 * 1000;
-        currentDate = new Date(currentDate.getTime() - offset);
-        return currentDate.toISOString();
-    };
-
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
@@ -43,7 +36,7 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
-                                    maxDate={getCurrentLocalDate()}
+                                    disableFutureDates
                                     label="Date of birth"
                                 />
                             )}
@@ -124,7 +117,7 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                                     name={name}
                                     htmlFor={name}
                                     label="Date of death"
-                                    maxDate={getCurrentLocalDate()}
+                                    disableFutureDates
                                     disabled={selectedDeceased !== Indicator.Yes}
                                 />
                             )}

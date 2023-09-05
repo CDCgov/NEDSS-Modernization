@@ -64,6 +64,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 name="asOf"
+                                disableFutureDates
                                 htmlFor={'asOf'}
                                 errorMessage={error?.message}
                             />

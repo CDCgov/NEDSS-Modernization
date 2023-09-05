@@ -37,13 +37,6 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
 
     const byState = useCountyCodedValues(selectedState);
 
-    const getCurrentLocalDate = () => {
-        let currentDate = new Date();
-        const offset = currentDate.getTimezoneOffset() * 60 * 1000;
-        currentDate = new Date(currentDate.getTime() - offset);
-        return currentDate.toISOString();
-    };
-
     const onSubmit = (entered: FieldValues) => {
         onChanged({
             asOf: entered.asOf,
@@ -74,6 +67,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 name="asOf"
+                                disableFutureDates
                                 htmlFor={'asOf'}
                                 errorMessage={error?.message}
                             />
@@ -117,7 +111,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                                         defaultValue={value}
                                         onChange={onChange}
                                         name="deceasedOn"
-                                        maxDate={getCurrentLocalDate()}
+                                        disableFutureDates
                                         htmlFor={'deceasedOn'}
                                     />
                                 )}

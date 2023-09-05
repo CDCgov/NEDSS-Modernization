@@ -20,7 +20,7 @@ type DatePickerProps = {
     flexBox?: boolean;
     required?: boolean;
     disabled?: boolean;
-    maxDate?: string;
+    disableFutureDates?: boolean;
 };
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/[0-9]{4}$/;
@@ -47,7 +47,7 @@ export const DatePickerInput = ({
     errorMessage,
     required,
     disabled = false,
-    maxDate = ''
+    disableFutureDates = false
 }: DatePickerProps) => {
     const emptyDefaultValue = !defaultValue || defaultValue.length === 0;
     const validDefaultValue = !emptyDefaultValue && matches(defaultValue);
@@ -55,9 +55,16 @@ export const DatePickerInput = ({
 
     const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue));
 
+    const getCurrentLocalDate = () => {
+        let currentDate = new Date();
+        const offset = currentDate.getTimezoneOffset() * 60 * 1000;
+        currentDate = new Date(currentDate.getTime() - offset);
+        return currentDate.toISOString();
+    };
+
     const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
         const currentVal = (event.target as HTMLInputElement).value;
-        const valid = isValid(currentVal) && !isFuture(new Date(currentVal));
+        const valid = isValid(currentVal) && (!disableFutureDates || !isFuture(new Date(currentVal)));
         setError(!valid);
         onBlur && onBlur(event);
     };
@@ -85,7 +92,7 @@ export const DatePickerInput = ({
                     className={className}
                     disabled={disabled}
                     name={name}
-                    maxDate={maxDate}
+                    maxDate={disableFutureDates ? getCurrentLocalDate() : ''}
                 />
             )}
             {intialDefault && (
@@ -98,7 +105,7 @@ export const DatePickerInput = ({
                     name={name}
                     disabled={disabled}
                     defaultValue={intialDefault}
-                    maxDate={maxDate}
+                    maxDate={disableFutureDates ? getCurrentLocalDate() : ''}
                 />
             )}
         </div>
@@ -122,7 +129,7 @@ export const DatePickerInput = ({
                         className={className}
                         disabled={disabled}
                         name={name}
-                        maxDate={maxDate}
+                        maxDate={disableFutureDates ? getCurrentLocalDate() : ''}
                     />
                 )}
                 {intialDefault && (
@@ -135,7 +142,7 @@ export const DatePickerInput = ({
                         name={name}
                         disabled={disabled}
                         defaultValue={intialDefault}
-                        maxDate={maxDate}
+                        maxDate={disableFutureDates ? getCurrentLocalDate() : ''}
                     />
                 )}
             </Grid>
