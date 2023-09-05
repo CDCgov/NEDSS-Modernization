@@ -37,6 +37,7 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                                     name={name}
                                     htmlFor={name}
                                     label="Date of birth"
+                                    errorMessage={errors?.dateOfBirth?.message || ''}
                                 />
                             )}
                         />
