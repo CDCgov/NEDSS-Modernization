@@ -35,9 +35,16 @@ export const EditPage = () => {
     useEffect(() => {
         if (page) {
             setTabs(page.pageTabs);
-            setActive(page.pageTabs[0].id);
         }
     }, [page]);
+
+    const handleAddSection = () => {
+        if (pageId) {
+            fetchPageDetails(token, Number(pageId)).then((data: any) => {
+                setPage(data);
+            });
+        }
+    };
 
     return (
         <PageBuilder page="edit-page">
@@ -49,12 +56,22 @@ export const EditPage = () => {
                         <EditPageTabs tabs={tabs} active={active} setActive={setActive} />
                     </div>
                     <div className="edit-page__container">
-                        <EditPageContentComponent content={page.pageTabs[active]} />
+                        {page.pageTabs[active] ? (
+                            <EditPageContentComponent content={page.pageTabs[active]} onAddSection={handleAddSection} />
+                        ) : null}
+
                         <EditPageSidebar modalRef={addSectionModalRef} />
                     </div>
                 </div>
             ) : null}
-            {pageId && active ? <AddSectionModal modalRef={addSectionModalRef} pageId={pageId} tabId={active} /> : null}
+            {page && pageId ? (
+                <AddSectionModal
+                    modalRef={addSectionModalRef}
+                    pageId={pageId}
+                    tabId={page.pageTabs[active].id}
+                    onAddSection={handleAddSection}
+                />
+            ) : null}
         </PageBuilder>
     );
 };

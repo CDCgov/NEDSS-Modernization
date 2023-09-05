@@ -10,6 +10,7 @@ import { ToggleButton } from '../ToggleButton';
 type CommonProps = {
     modalRef: RefObject<ModalRef>;
     pageId: string;
+    onAddSection: () => void;
 };
 
 type TruncatedProps =
@@ -18,11 +19,11 @@ type TruncatedProps =
           tabId?: number;
           sectionId?: never;
       }
-    | { isSubSection?: true; tabId?: never; sectionId?: string };
+    | { isSubSection?: true; tabId?: never; sectionId?: number };
 
 type AddSectionModalProps = CommonProps & TruncatedProps;
 
-const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection }: AddSectionModalProps) => {
+const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onAddSection }: AddSectionModalProps) => {
     const [sectionName, setSectionName] = useState('');
     const [sectionDescription, setSectionDescription] = useState('');
     const [visible, setVisible] = useState(true);
@@ -39,18 +40,20 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection }: A
 
     const handleSubmit = async () => {
         try {
-            if (isSubSection && sectionId) {
+            if (isSubSection) {
                 await SubSectionControllerService.createSubSectionUsingPost({
                     authorization: token,
                     pageId: pageId,
                     request: { name: sectionName, sectionId, visible, description: sectionDescription }
                 });
+                onAddSection();
             } else {
                 await SectionControllerService.createSectionUsingPost({
                     authorization: token,
                     pageId: pageId,
                     request: { name: sectionName, tabId, visible, description: sectionDescription }
                 });
+                onAddSection();
             }
         } catch (e) {
             console.error(e);

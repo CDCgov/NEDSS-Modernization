@@ -7,7 +7,8 @@ import { SectionControllerService } from 'apps/page-builder/generated';
 const props = {
     modalRef: { current: null },
     tabId: 5,
-    pageId: '10056'
+    pageId: '10056',
+    onAddSection: jest.fn
 };
 
 const addSections = jest.fn();
