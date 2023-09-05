@@ -31,12 +31,13 @@ import {
 import { convertCamelCase } from '../../utils/util';
 import './AdvancedSearch.scss';
 import Chip from './components/Chip';
-import { EventSearch } from './components/eventSearch/EventSearch';
+// import { EventSearch } from './components/eventSearch/EventSearch';
 import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
 import { SearchCriteria, SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
+import { EventSearchA } from './components/eventSearch/EventSearchA';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -815,12 +816,13 @@ export const AdvancedSearch = () => {
                                     clearAll={handleClearAll}
                                 />
                             ) : (
-                                <EventSearch
-                                    onSearch={handleSubmit}
-                                    investigationFilter={investigationFilter}
-                                    labReportFilter={labReportFilter}
-                                    clearAll={handleClearAll}
-                                />
+                                // <EventSearch
+                                //     onSearch={handleSubmit}
+                                //     investigationFilter={investigationFilter}
+                                //     labReportFilter={labReportFilter}
+                                //     clearAll={handleClearAll}
+                                // />
+                                <EventSearchA investigationFilter={investigationFilter} />
                             )}
                         </div>
                     </Grid>

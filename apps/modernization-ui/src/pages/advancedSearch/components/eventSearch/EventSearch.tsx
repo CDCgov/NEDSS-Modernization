@@ -2,7 +2,6 @@ import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-// import { useNavigate } from 'react-router-dom';
 import {
     EntryMethod,
     EventStatus,
@@ -30,7 +29,6 @@ type EventSearchProps = {
 };
 
 export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, clearAll }: EventSearchProps) => {
-    // const navigate = useNavigate();
     const methods = useForm();
     const [eventSearchType, setEventSearchType] = useState<SEARCH_TYPE | ''>();
     const [lastEventSearchType, setLastEventSearchType] = useState<SEARCH_TYPE | ''>();
