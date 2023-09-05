@@ -19,8 +19,13 @@ const formattedEmails = (items: Email[]) => display(items.map((item) => item.add
 
 const formattedAddress = ({ street, city, state, zipcode, country }: Address) => {
     const location = ((city && city + ' ') || '') + ((state && state + ' ') || '') + (zipcode ?? '');
-    const address =
-        ((street && street + '\n') || '') + ((location && location + '\n') || '') + ((country && country + '\n') || '');
+    let address;
+
+    if (country !== "United States") {
+         address = ((street && street + '\n') || '') + ((location && location + '\n') || '') + ((country && country + '\n') || '');
+    } else {
+         address = ((street && street + '\n') || '') + ((location && location + '\n') || '');
+    }
     return display(address);
 };
 
