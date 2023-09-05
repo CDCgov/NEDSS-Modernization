@@ -5,12 +5,10 @@ import gov.cdc.nbs.redirect.search.EventFilterResolver;
 import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
 import gov.cdc.nbs.service.EncryptionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import springfox.documentation.annotations.ApiIgnore;
@@ -28,11 +26,7 @@ public class RedirectController {
     EventFilterResolver eventFilterResolver;
 
     @Autowired
-    private EncryptionService encryptionService;
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    @Value("${nbs.wildfly.url:http://wildfly:7001}")
-    private String wildFlyUrl;
+    EncryptionService encryptionService;
 
     /**
      * Intercepts legacy home page search requests, pulls out the current user from the JSESSIONID, the search criteria

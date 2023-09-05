@@ -1,13 +1,5 @@
 package gov.cdc.nbs.questionbank.support;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.authentication.entity.AuthAudit;
@@ -16,7 +8,15 @@ import gov.cdc.nbs.authentication.entity.AuthProgAreaAdmin;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.authentication.entity.AuthUserRole;
-import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
 
 @Component
 @Transactional
@@ -45,13 +45,7 @@ public class UserMother {
 
     private AuthUser createEmptyUser() {
         var now = Instant.now();
-        var audit = new AuthAudit();
-        audit.setAddTime(now);
-        audit.setAddUserId(1L);
-        audit.setLastChgTime(now);
-        audit.setLastChgUserId(1L);
-        audit.setRecordStatusCd(AuthRecordStatus.ACTIVE);
-        audit.setRecordStatusTime(now);
+        var audit = new AuthAudit(1L, now);
         var user = new AuthUser();
 
         user.setUserId("empty");
@@ -70,13 +64,7 @@ public class UserMother {
 
     private AuthUser createAdminUser() {
         var now = Instant.now();
-        var audit = new AuthAudit();
-        audit.setAddTime(now);
-        audit.setAddUserId(1L);
-        audit.setLastChgTime(now);
-        audit.setLastChgUserId(1L);
-        audit.setRecordStatusCd(AuthRecordStatus.ACTIVE);
-        audit.setRecordStatusTime(now);
+        var audit = new AuthAudit(1L, now);
 
         // Test-db restore has SUPERUSER permission with id 22
         var permissionSet = permSetRepository.findById(22L)
@@ -90,15 +78,12 @@ public class UserMother {
         progAreaAdmin.setAuthUserUid(user);
         progAreaAdmin.setProgAreaCd("STD");
 
-        var role = new AuthUserRole();
-        role.setAudit(audit);
-        role.setAuthUserUid(user);
-        role.setAuthPermSetUid(permissionSet);
-        role.setProgAreaCd("STD");
-        role.setJurisdictionCd("ALL");
-        role.setRoleGuestInd('F');
-        role.setAuthRoleNm("SUPERUSER");
-
+        var role = new AuthUserRole(user, permissionSet)
+            .name("SUPERUSER")
+            .programArea("STD")
+            .jurisdiction("ALL")
+            .guest('F')
+            .audit(audit);
 
         user.setUserId("admin");
         user.setUserType("internalUser");

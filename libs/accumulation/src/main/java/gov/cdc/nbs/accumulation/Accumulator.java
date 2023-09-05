@@ -148,4 +148,6 @@ public class Accumulator {
             return List.copyOf(accumulated.values());
         }
     }
+
+    private Accumulator(){}
 }

@@ -1,5 +1,7 @@
 package gov.cdc.nbs.authentication.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -10,19 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 @Entity
-@Builder
 @Table(name = "Auth_user_role", catalog = "NBS_ODSE")
 public class AuthUserRole {
     @Id
@@ -60,4 +51,78 @@ public class AuthUserRole {
     @Embedded
     private AuthAudit audit;
 
+    public AuthUserRole() {
+        this.readOnlyInd = 'T'; //not used always "T"
+    }
+
+    public AuthUserRole(
+        final AuthUser user,
+        final AuthPermSet set
+    ) {
+        this();
+        this.authUserUid = user;
+        this.authPermSetUid = set;
+    }
+
+    public String name() {
+        return authRoleNm;
+    }
+
+    public AuthUserRole name(final String name) {
+        this.authRoleNm = name;
+        return this;
+    }
+
+    public String programArea() {
+        return progAreaCd;
+    }
+
+    public AuthUserRole programArea(final String programArea) {
+        this.progAreaCd = programArea;
+        return this;
+    }
+
+    public String jurisdiction() {
+        return jurisdictionCd;
+    }
+
+    public AuthUserRole jurisdiction(final String jurisdiction) {
+        this.jurisdictionCd = jurisdiction;
+        return this;
+    }
+
+    public AuthUser user() {
+        return authUserUid;
+    }
+
+    public AuthPermSet permissionSet() {
+        return authPermSetUid;
+    }
+
+    public Character guest() {
+        return roleGuestInd;
+    }
+
+    public AuthUserRole guest(final Character roleGuestInd) {
+        this.roleGuestInd = roleGuestInd;
+        return this;
+    }
+
+    public Integer sequence() {
+        return dispSeqNbr;
+    }
+
+    public AuthUserRole sequence(final Integer sequence) {
+        this.dispSeqNbr = sequence;
+        return this;
+    }
+
+    public AuthAudit audit() {
+        return audit;
+    }
+
+    public AuthUserRole audit(final AuthAudit audit) {
+        this.audit = audit;
+        return this;
+    }
 }
