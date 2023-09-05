@@ -2,6 +2,7 @@ import { DatePicker, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { isFuture } from 'date-fns';
 
 type OnChange = (val?: string) => void;
 type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
@@ -56,7 +57,7 @@ export const DatePickerInput = ({
 
     const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
         const currentVal = (event.target as HTMLInputElement).value;
-        const valid = isValid(currentVal);
+        const valid = isValid(currentVal) && !isFuture(new Date(currentVal));
         setError(!valid);
         onBlur && onBlur(event);
     };
@@ -79,6 +80,7 @@ export const DatePickerInput = ({
                 <DatePicker
                     id={id}
                     onBlur={checkValidity}
+                    onKeyDown={(e) => e.code === 'Enter' && e.preventDefault()}
                     onChange={handleOnChange(onChange)}
                     className={className}
                     disabled={disabled}
@@ -90,6 +92,7 @@ export const DatePickerInput = ({
                 <DatePicker
                     id={id}
                     onBlur={checkValidity}
+                    onKeyDown={(e) => e.code === 'Enter' && e.preventDefault()}
                     onChange={handleOnChange(onChange)}
                     className={className}
                     name={name}
@@ -114,6 +117,7 @@ export const DatePickerInput = ({
                     <DatePicker
                         id={id}
                         onBlur={checkValidity}
+                        onKeyDown={(e) => e.code === 'Enter' && e.preventDefault()}
                         onChange={handleOnChange(onChange)}
                         className={className}
                         disabled={disabled}
@@ -125,6 +129,7 @@ export const DatePickerInput = ({
                     <DatePicker
                         id={id}
                         onBlur={checkValidity}
+                        onKeyDown={(e) => e.code === 'Enter' && e.preventDefault()}
                         onChange={handleOnChange(onChange)}
                         className={className}
                         name={name}
