@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient.identifier;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
