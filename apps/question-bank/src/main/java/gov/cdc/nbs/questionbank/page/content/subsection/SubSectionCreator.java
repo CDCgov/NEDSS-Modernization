@@ -50,11 +50,10 @@ public class SubSectionCreator {
             throw new AddSubSectionException("Failed to add SubSection");
         }
     }
-    public DeleteSubSectionResponse deleteSubSection(DeleteSubSectionRequest request) {
+    public DeleteSubSectionResponse deleteSubSection(Long pageNumber, DeleteSubSectionRequest request) {
         try {
             log.info("Deleting Sub Section");
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
-            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.subSectionId()).getId();
             Optional<Long> nbsComponentUidOptional =
                     waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
             if (nbsComponentUidOptional.isPresent()) {
@@ -73,7 +72,7 @@ public class SubSectionCreator {
                 return new DeleteSubSectionResponse(request.subSectionId(), DELETE_MESSAGE);
             }
         } catch(Exception exception) {
-            throw new DeleteSubSectionException(exception.toString());
+            throw new DeleteSubSectionException("Delete SubSection exception");
         }
 
     }
@@ -87,7 +86,7 @@ public class SubSectionCreator {
             waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.subSectionId());
             return new UpdateSubSectionResponse(request.subSectionId(), UPDATE_MESSAGE);
         } catch(Exception exception) {
-            throw new UpdateSubSectionException(exception.toString());
+            throw new UpdateSubSectionException("Update SubSection Exception");
         }
 
     }

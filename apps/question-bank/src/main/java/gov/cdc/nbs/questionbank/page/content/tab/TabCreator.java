@@ -54,11 +54,10 @@ public class TabCreator {
         }
     }
 
-    public DeleteTabResponse deleteTab(DeleteTabRequest request) {
+    public DeleteTabResponse deleteTab(Long pageNumber, DeleteTabRequest request) {
         try {
             log.info("Deleting Tab");
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.tabId());
-            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.tabId()).getId();
             Optional<Long> nbsComponentUidOptional =
                     waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
             if (nbsComponentUidOptional.isPresent()) {
@@ -76,7 +75,7 @@ public class TabCreator {
                 return new DeleteTabResponse(request.tabId(), DELETE_MESSAGE);
             }
         }  catch(Exception exception) {
-            throw new DeleteTabException(exception.toString());
+            throw new DeleteTabException("Delete Tab Exception");
         }
 
     }
@@ -90,7 +89,7 @@ public class TabCreator {
             waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.tabId());
             return new UpdateTabResponse(request.tabId(), UPDATE_MESSAGE);
         } catch(Exception exception) {
-            throw new UpdateTabException(exception.toString());
+            throw new UpdateTabException("Update Tab Exception");
         }
 
     }

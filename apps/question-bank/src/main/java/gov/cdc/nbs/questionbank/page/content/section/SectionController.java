@@ -37,8 +37,8 @@ public class SectionController {
 
     @DeleteMapping("deletesection")
     @ResponseBody
-    public DeleteSectionResponse deleteSection(@RequestBody DeleteSectionRequest request) {
-        return creator.deleteSection(request);
+    public DeleteSectionResponse deleteSection(@PathVariable("page") Long page, @RequestBody DeleteSectionRequest request) {
+        return creator.deleteSection(page, request);
     }
 
     @PutMapping("updatesection")

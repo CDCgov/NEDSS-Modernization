@@ -69,10 +69,10 @@ class AddSubSectionControllerTest {
                 userDetailsProvider);
 
         DeleteSubSectionRequest deleteSubSectionRequest = new DeleteSubSectionRequest(123L);
-        Mockito.when(createSubSectionService.deleteSubSection( deleteSubSectionRequest))
+        Mockito.when(createSubSectionService.deleteSubSection(100L, deleteSubSectionRequest))
                 .thenReturn(new DeleteSubSectionResponse(123L, "Sub Section Deleted Successfully"));
 
-        DeleteSubSectionResponse deleteSubSectionResponse = addsubSectionController.deleteSubSection(deleteSubSectionRequest);
+        DeleteSubSectionResponse deleteSubSectionResponse = addsubSectionController.deleteSubSection(100L, deleteSubSectionRequest);
         assertEquals(123L, deleteSubSectionResponse.uid());
     }
 }

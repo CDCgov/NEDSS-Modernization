@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page.content.addtab;
 
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.DeleteTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.UpdateTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.request.DeleteTabRequest;
@@ -76,18 +75,11 @@ class AddTabServiceTest {
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
 
-
-        WaTemplate waTemplate = new WaTemplate();
-        waTemplate.setId(1234L);
-
-        Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
-                .thenReturn(waTemplate);
-
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
                 .thenReturn(Optional.of(1010L));
 
         DeleteTabResponse deleteTabResponse =
-                createTabService.deleteTab( deleteTabRequest);
+                createTabService.deleteTab(1234L, deleteTabRequest);
         assertEquals("Tab Deleted Successfully", deleteTabResponse.message());
     }
 
@@ -101,16 +93,27 @@ class AddTabServiceTest {
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
 
-        WaTemplate waTemplate = new WaTemplate();
-        waTemplate.setId(1234L);
-
-        Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
-                .thenReturn(waTemplate);
-
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
                 .thenReturn(Optional.of(10L));
-        assertThrows(DeleteTabException.class, () -> createTabService.deleteTab( deleteTabRequest));
+        assertThrows(DeleteTabException.class, () -> createTabService.deleteTab(1234L, deleteTabRequest));
 
+    }
+
+    @Test
+    void deleteTabTestInElse() {
+
+        DeleteTabRequest deleteTabRequest =
+                new DeleteTabRequest(123L);
+
+
+        Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
+                .thenReturn(1);
+
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
+                .thenReturn(Optional.empty());
+        DeleteTabResponse deleteTabResponse =
+                createTabService.deleteTab(1234L, deleteTabRequest);
+        assertEquals("Tab Deleted Successfully", deleteTabResponse.message());
     }
 
 
@@ -121,7 +124,7 @@ class AddTabServiceTest {
     }
     @Test
     void deleteTabServiceTestException() {
-        assertThrows(DeleteTabException.class, () -> createTabService.deleteTab(null));
+        assertThrows(DeleteTabException.class, () -> createTabService.deleteTab(1234L,null));
 
     }
 

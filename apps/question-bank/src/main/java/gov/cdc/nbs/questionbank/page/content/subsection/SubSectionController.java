@@ -39,8 +39,8 @@ public class SubSectionController {
 
     @DeleteMapping("deletesubsection")
     @ResponseBody
-    public DeleteSubSectionResponse deleteSubSection(@RequestBody DeleteSubSectionRequest request) {
-        return creator.deleteSubSection(request);
+    public DeleteSubSectionResponse deleteSubSection(@PathVariable("page") Long page, @RequestBody DeleteSubSectionRequest request) {
+        return creator.deleteSubSection(page, request);
     }
 
     @PutMapping("updatesubsection")

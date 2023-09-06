@@ -52,11 +52,10 @@ public class SectionCreator {
 
     }
 
-    public DeleteSectionResponse deleteSection(DeleteSectionRequest request) {
+    public DeleteSectionResponse deleteSection(Long pageNumber, DeleteSectionRequest request) {
         try {
             log.info("Deleting Section");
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.sectionId());
-            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.sectionId()).getId();
             Optional<Long> nbsComponentUidOptional =
                     waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
             if (nbsComponentUidOptional.isPresent()) {
@@ -75,7 +74,7 @@ public class SectionCreator {
                 return new DeleteSectionResponse(request.sectionId(), DELETE_MESSAGE);
             }
         } catch(Exception exception) {
-            throw new DeleteSectionException(exception.toString());
+            throw new DeleteSectionException("Delete Section Exception");
         }
 
     }
@@ -88,7 +87,7 @@ public class SectionCreator {
             waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.sectionId());
             return new UpdateSectionResponse(request.sectionId(), UPDATE_MESSAGE);
         } catch(Exception exception) {
-            throw new UpdateSectionException(exception.toString());
+            throw new UpdateSectionException("Update Section Exception");
         }
 
     }

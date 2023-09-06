@@ -37,8 +37,8 @@ public class TabController {
 
     @DeleteMapping("deletetab")
     @ResponseBody
-    public DeleteTabResponse deleteTab(@RequestBody DeleteTabRequest request) {
-        return creator.deleteTab(request);
+    public DeleteTabResponse deleteTab(@PathVariable("page") Long page, @RequestBody DeleteTabRequest request) {
+        return creator.deleteTab(page, request);
     }
 
     @PutMapping("updatetab")

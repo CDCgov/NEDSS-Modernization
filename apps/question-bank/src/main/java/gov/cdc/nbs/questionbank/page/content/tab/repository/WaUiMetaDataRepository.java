@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page.content.tab.repository;
 
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,9 +14,6 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
 
     @Query(value = "SELECT MAX(w.orderNbr) FROM WaUiMetadata w WHERE w.waTemplateUid.id =:page")
     Long findMaxOrderNumberByTemplateUid(@Param("page") Long page);
-
-    @Query(value = "select w.waTemplateUid from WaUiMetadata w where w.id = :id")
-    WaTemplate findPageNumber(@Param("id") Long id);
 
     @Query(value = "select top 1 nbs_ui_component_uid from WA_UI_metadata where order_nbr = ?1  and wa_template_uid = ?2", nativeQuery = true)
     Optional<Long> findNextNbsUiComponentUid(Integer orderNbr, Long page);

@@ -69,10 +69,10 @@ class AddSectionControllerTest {
                 userDetailsProvider);
 
         DeleteSectionRequest deleteSectionRequest = new DeleteSectionRequest(123L);
-        Mockito.when(createSectionService.deleteSection( deleteSectionRequest))
+        Mockito.when(createSectionService.deleteSection( 100L, deleteSectionRequest))
                 .thenReturn(new DeleteSectionResponse(123L, "Section Deleted Successfully"));
 
-        DeleteSectionResponse deleteSectionResponse = addsectionController.deleteSection(deleteSectionRequest);
+        DeleteSectionResponse deleteSectionResponse = addsectionController.deleteSection(100L, deleteSectionRequest);
         assertEquals(123L, deleteSectionResponse.uid());
     }
 }

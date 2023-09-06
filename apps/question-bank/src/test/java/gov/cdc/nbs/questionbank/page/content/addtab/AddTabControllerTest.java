@@ -68,10 +68,10 @@ class AddTabControllerTest {
                 userDetailsProvider);
 
         DeleteTabRequest deleteTabRequest = new DeleteTabRequest(123L);
-        Mockito.when(createTabService.deleteTab( deleteTabRequest))
+        Mockito.when(createTabService.deleteTab(100L, deleteTabRequest))
                 .thenReturn(new DeleteTabResponse(123L, "TabDeleted Successfully"));
 
-        DeleteTabResponse deleteTabResponse = tabController.deleteTab(deleteTabRequest);
+        DeleteTabResponse deleteTabResponse = tabController.deleteTab(100L, deleteTabRequest);
         assertEquals(123L, deleteTabResponse.uid());
     }
 }
