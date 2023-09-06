@@ -16,11 +16,11 @@ export const EditPageTabs = ({ tabs, active, setActive }: Props) => {
         <>
             <ModalToggleButton className="" unstyled type="button" modalRef={modalRef}>
                 <div className="edit-page-tabs__tab add">
-                    <Icon.Add />
-                    <h4>Add new tab</h4>
+                    <Icon.Edit />
+                    <h4>Manage Tabs</h4>
                 </div>
             </ModalToggleButton>
-            <ModalComponent modalRef={modalRef} modalHeading={'Add Tab'} modalBody={<AddTab />} />
+            <ModalComponent modalRef={modalRef} modalHeading={'Manage Tabs'} modalBody={<AddTab />} />
         </>
     );
     return (
