@@ -35,7 +35,9 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
                 <p className="font-sans-xl text-bold margin-0">{`${formattedName(summary.legalName)}`}</p>
                 <h5 className="font-sans-md text-medium margin-0">
                     Patient ID: {patient.shortId}
-                    {patient.status != 'ACTIVE' && <span className="text-red text-right margin-left-2">INACTIVE</span>}
+                    {patient.status != 'ACTIVE' && (
+                        <span className="text-red text-right margin-left-2">{patient.status}</span>
+                    )}
                 </h5>
             </div>
             <Grid row gap={3} className="padding-3">

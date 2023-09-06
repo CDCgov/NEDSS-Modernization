@@ -34,7 +34,6 @@ public class PatientIdentifierFinder {
             .from(this.tables.patient())
             .where(
                 this.tables.patient().cd.eq(PATIENT_CODE),
-                this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE),
                 this.tables.patient().id.eq(identifier)
             )
             .fetch()
