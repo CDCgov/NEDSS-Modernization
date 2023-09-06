@@ -138,7 +138,6 @@ export const PatientProfile = () => {
                 </div>
             </div>
             <div className="main-body">
-                {/* {profile?.patient.status != 'ACTIVE' && <p className="text-red text-right">INACTIVE</p>} */}
                 {profile && profile.summary && (
                     <PatientProfileSummary patient={profile.patient} summary={profile.summary} />
                 )}
