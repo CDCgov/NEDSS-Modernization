@@ -38,6 +38,7 @@ export default function GeneralInformation({
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
+                                    disableFutureDates
                                     errorMessage={errors?.asOf?.message || ''}
                                 />
                             )}

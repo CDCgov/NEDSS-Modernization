@@ -52,6 +52,7 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onDelete }: P
                                     defaultValue={value}
                                     onChange={onChange}
                                     name="asOf"
+                                    disableFutureDates
                                     htmlFor={'asOf'}
                                     label="As of"
                                     errorMessage={error?.message}

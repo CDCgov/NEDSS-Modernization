@@ -67,6 +67,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 name="asOf"
+                                disableFutureDates
                                 htmlFor={'asOf'}
                                 errorMessage={error?.message}
                             />
@@ -110,6 +111,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                                         defaultValue={value}
                                         onChange={onChange}
                                         name="deceasedOn"
+                                        disableFutureDates
                                         htmlFor={'deceasedOn'}
                                     />
                                 )}

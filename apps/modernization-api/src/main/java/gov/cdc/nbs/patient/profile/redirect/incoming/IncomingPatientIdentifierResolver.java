@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Component
-class IncomingPatientIdentifierResolver {
+public class IncomingPatientIdentifierResolver {
 
     private static Optional<Long> maybeLong(final String value) {
         if (value == null) {
@@ -25,12 +25,12 @@ class IncomingPatientIdentifierResolver {
     private static final String PATIENT_PARENT_ID = "MPRUid";
     private static final String PATIENT_ID = "uid";
 
-    Optional<Long> fromQueryParams(final HttpServletRequest request) {
+    public Optional<Long> fromQueryParams(final HttpServletRequest request) {
         return maybeLong(request.getParameter(PATIENT_PARENT_ID)).or(() -> maybeLong(request.getParameter(PATIENT_ID)));
 
     }
 
-    Optional<Long> fromReturningPatient(final HttpServletRequest request) {
+    public Optional<Long> fromReturningPatient(final HttpServletRequest request) {
         return ReturningPatientCookie.resolve(request.getCookies())
             .map(ReturningPatientCookie::patient)
             .flatMap(IncomingPatientIdentifierResolver::maybeLong);

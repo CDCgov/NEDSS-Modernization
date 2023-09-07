@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Subsection } from "./Subsection";
+import { Subsection } from './Subsection';
 
 export type Section = {
     id: number;

@@ -272,6 +272,7 @@ const AddPatient = () => {
                                     />
                                     <OtherInfoFields
                                         control={control}
+                                        errors={errors}
                                         id={'section-Other'}
                                         title="Other information"
                                         coded={{

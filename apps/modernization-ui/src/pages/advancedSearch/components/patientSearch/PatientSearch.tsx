@@ -108,6 +108,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
+                                    disableFutureDates
                                     label="Date of birth"
                                     id={name}
                                 />
