@@ -6,7 +6,6 @@ import gov.cdc.nbs.questionbank.page.content.tab.TabController;
 import gov.cdc.nbs.questionbank.page.content.tab.TabCreator;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.AddTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.request.DeleteTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.CreateTabResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.response.DeleteTabResponse;
@@ -52,11 +51,11 @@ class AddTabControllerTest {
         TabController tabController = new TabController(createTabService,
                 userDetailsProvider);
 
-        UpdateTabRequest updateTabRequest = new UpdateTabRequest(123L, "Question Label", "T");
-        Mockito.when(createTabService.updateTab(updateTabRequest))
+        UpdateTabRequest updateTabRequest = new UpdateTabRequest("Question Label", "T");
+        Mockito.when(createTabService.updateTab(123L, updateTabRequest))
                 .thenReturn(new UpdateTabResponse(123L, "Tab Updated Successfully"));
 
-        UpdateTabResponse updateTabResponse = tabController.updateTab(updateTabRequest);
+        UpdateTabResponse updateTabResponse = tabController.updateTab(123L, updateTabRequest);
         assertEquals(123L, updateTabResponse.uid());
     }
 
@@ -67,11 +66,10 @@ class AddTabControllerTest {
         TabController tabController = new TabController(createTabService,
                 userDetailsProvider);
 
-        DeleteTabRequest deleteTabRequest = new DeleteTabRequest(123L);
-        Mockito.when(createTabService.deleteTab(100L, deleteTabRequest))
+        Mockito.when(createTabService.deleteTab(100L, 123L))
                 .thenReturn(new DeleteTabResponse(123L, "TabDeleted Successfully"));
 
-        DeleteTabResponse deleteTabResponse = tabController.deleteTab(100L, deleteTabRequest);
+        DeleteTabResponse deleteTabResponse = tabController.deleteTab(100L, 123L);
         assertEquals(123L, deleteTabResponse.uid());
     }
 }

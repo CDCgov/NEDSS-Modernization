@@ -2,7 +2,6 @@ package gov.cdc.nbs.questionbank.page.content.addtab;
 
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.DeleteTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.UpdateTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.request.DeleteTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.DeleteTabResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.response.UpdateTabResponse;
@@ -47,10 +46,10 @@ class AddTabServiceTest {
     void updateTabServiceTest() {
 
         UpdateTabRequest updateTabRequest =
-                new UpdateTabRequest(123L,  "Local", "T");
+                new UpdateTabRequest(  "Local", "T");
 
         UpdateTabResponse updateTabResponse =
-                createTabService.updateTab( updateTabRequest);
+                createTabService.updateTab(123L, updateTabRequest);
         assertEquals(" Tab Updated Successfully", updateTabResponse.message());
     }
 
@@ -58,19 +57,15 @@ class AddTabServiceTest {
     void updateTabNoLabelOrVisibilityTest() {
 
         UpdateTabRequest updateTabRequest =
-                new UpdateTabRequest(123L,  null, null);
+                new UpdateTabRequest(  null, null);
 
 
-        assertThrows(UpdateTabException.class, () ->createTabService.updateTab(updateTabRequest));
+        assertThrows(UpdateTabException.class, () ->createTabService.updateTab(123L, updateTabRequest));
 
     }
 
     @Test
     void deleteTabTest() {
-
-        DeleteTabRequest deleteTabRequest =
-                new DeleteTabRequest(123L);
-
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
@@ -79,32 +74,24 @@ class AddTabServiceTest {
                 .thenReturn(Optional.of(1010L));
 
         DeleteTabResponse deleteTabResponse =
-                createTabService.deleteTab(1234L, deleteTabRequest);
+                createTabService.deleteTab(1234L, 123L);
         assertEquals("Tab Deleted Successfully", deleteTabResponse.message());
     }
 
     @Test
     void deleteTabTestExceptionInElse() {
 
-        DeleteTabRequest deleteTabRequest =
-                new DeleteTabRequest(123L);
-
-
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
 
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
                 .thenReturn(Optional.of(10L));
-        assertThrows(DeleteTabException.class, () -> createTabService.deleteTab(1234L, deleteTabRequest));
+        assertThrows(DeleteTabException.class, () -> createTabService.deleteTab(1234L, 123L));
 
     }
 
     @Test
     void deleteTabTestInElse() {
-
-        DeleteTabRequest deleteTabRequest =
-                new DeleteTabRequest(123L);
-
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
@@ -112,19 +99,21 @@ class AddTabServiceTest {
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
                 .thenReturn(Optional.empty());
         DeleteTabResponse deleteTabResponse =
-                createTabService.deleteTab(1234L, deleteTabRequest);
+                createTabService.deleteTab(1234L, 123L);
         assertEquals("Tab Deleted Successfully", deleteTabResponse.message());
     }
 
 
     @Test
     void updateTabServiceTestException() {
-        assertThrows(UpdateTabException.class, () -> createTabService.updateTab(null));
+        assertThrows(UpdateTabException.class, () -> createTabService.updateTab(123L, null));
 
     }
     @Test
     void deleteTabServiceTestException() {
-        assertThrows(DeleteTabException.class, () -> createTabService.deleteTab(1234L,null));
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
+                .thenThrow(new DeleteTabException(""));
+        assertThrows(DeleteTabException.class, () -> createTabService.deleteTab(1234L,123L));
 
     }
 

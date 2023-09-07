@@ -6,7 +6,6 @@ import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.section.SectionController;
 import gov.cdc.nbs.questionbank.page.content.section.SectionCreator;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
@@ -53,11 +52,11 @@ class AddSectionControllerTest {
         SectionController addsectionController = new SectionController(createSectionService,
                 userDetailsProvider);
 
-        UpdateSectionRequest updateSectionRequest = new UpdateSectionRequest(123L, "Question Label", "T");
-        Mockito.when(createSectionService.updateSection( updateSectionRequest))
+        UpdateSectionRequest updateSectionRequest = new UpdateSectionRequest( "Question Label", "T");
+        Mockito.when(createSectionService.updateSection(123L, updateSectionRequest))
                 .thenReturn(new UpdateSectionResponse(123L, "Section Updated Successfully"));
 
-        UpdateSectionResponse updateSectionResponse = addsectionController.updateSection(updateSectionRequest);
+        UpdateSectionResponse updateSectionResponse = addsectionController.updateSection(123L, updateSectionRequest);
         assertEquals(123L, updateSectionResponse.uid());
     }
 
@@ -68,11 +67,10 @@ class AddSectionControllerTest {
         SectionController addsectionController = new SectionController(createSectionService,
                 userDetailsProvider);
 
-        DeleteSectionRequest deleteSectionRequest = new DeleteSectionRequest(123L);
-        Mockito.when(createSectionService.deleteSection( 100L, deleteSectionRequest))
+        Mockito.when(createSectionService.deleteSection( 100L, 123L))
                 .thenReturn(new DeleteSectionResponse(123L, "Section Deleted Successfully"));
 
-        DeleteSectionResponse deleteSectionResponse = addsectionController.deleteSection(100L, deleteSectionRequest);
+        DeleteSectionResponse deleteSectionResponse = addsectionController.deleteSection(100L, 123L);
         assertEquals(123L, deleteSectionResponse.uid());
     }
 }

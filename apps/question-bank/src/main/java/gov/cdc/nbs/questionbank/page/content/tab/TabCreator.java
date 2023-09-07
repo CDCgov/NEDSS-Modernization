@@ -8,7 +8,6 @@ import gov.cdc.nbs.questionbank.page.content.tab.exceptions.DeleteTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.UpdateTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.request.DeleteTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.CreateTabResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.response.DeleteTabResponse;
@@ -54,25 +53,25 @@ public class TabCreator {
         }
     }
 
-    public DeleteTabResponse deleteTab(Long pageNumber, DeleteTabRequest request) {
+    public DeleteTabResponse deleteTab(Long pageNumber, Long tabId) {
         try {
             log.info("Deleting Tab");
-            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.tabId());
+            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(tabId);
             Optional<Long> nbsComponentUidOptional =
                     waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
             if (nbsComponentUidOptional.isPresent()) {
                 Long nbsComponentUid = nbsComponentUidOptional.get();
                 if (nbsComponentUid == TAB || nbsComponentUid == null) {
-                    waUiMetaDataRepository.deleteById(request.tabId());
-                    waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.tabId());
-                    return new DeleteTabResponse(request.tabId(), DELETE_MESSAGE);
+                    waUiMetaDataRepository.deleteById(tabId);
+                    waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, tabId);
+                    return new DeleteTabResponse(tabId, DELETE_MESSAGE);
                 } else {
                     throw new DeleteTabException("Conditions not satisfied");
                 }
             } else {
-                waUiMetaDataRepository.deleteById(request.tabId());
-                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.tabId());
-                return new DeleteTabResponse(request.tabId(), DELETE_MESSAGE);
+                waUiMetaDataRepository.deleteById(tabId);
+                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, tabId);
+                return new DeleteTabResponse(tabId, DELETE_MESSAGE);
             }
         }  catch(Exception exception) {
             throw new DeleteTabException("Delete Tab Exception");
@@ -80,14 +79,15 @@ public class TabCreator {
 
     }
 
-    public UpdateTabResponse updateTab(UpdateTabRequest request) {
+    public UpdateTabResponse updateTab(Long tabId, UpdateTabRequest request) {
         try {
             log.info("Updating section");
             if (request.questionLabel() == null || request.visible() == null) {
                 throw new UpdateSectionException("Label and visibility fields are required");
             }
-            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.tabId());
-            return new UpdateTabResponse(request.tabId(), UPDATE_MESSAGE);
+            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(),
+                    request.visible(), tabId);
+            return new UpdateTabResponse(tabId, UPDATE_MESSAGE);
         } catch(Exception exception) {
             throw new UpdateTabException("Update Tab Exception");
         }

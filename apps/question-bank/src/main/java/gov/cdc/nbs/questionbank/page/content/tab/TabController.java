@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
 
-import gov.cdc.nbs.questionbank.page.content.tab.request.DeleteTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.DeleteTabResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.response.UpdateTabResponse;
@@ -35,16 +34,16 @@ public class TabController {
         return creator.createTab(page, userId, request);
     }
 
-    @DeleteMapping("deletetab")
+    @DeleteMapping("deletetab/{tabId}")
     @ResponseBody
-    public DeleteTabResponse deleteTab(@PathVariable("page") Long page, @RequestBody DeleteTabRequest request) {
-        return creator.deleteTab(page, request);
+    public DeleteTabResponse deleteTab(@PathVariable("page") Long page, @PathVariable Long tabId) {
+        return creator.deleteTab(page, tabId);
     }
 
-    @PutMapping("updatetab")
+    @PutMapping("updatetab/{tabId}")
     @ResponseBody
-    public UpdateTabResponse updateTab(@RequestBody UpdateTabRequest request) {
-        return creator.updateTab(request);
+    public UpdateTabResponse updateTab(@PathVariable Long tabId, @RequestBody UpdateTabRequest request) {
+        return creator.updateTab(tabId, request);
     }
 
 }
