@@ -5,7 +5,6 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.subsection.SubSectionController;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.SubSectionCreator;
@@ -53,11 +52,11 @@ class AddSubSectionControllerTest {
         SubSectionController addsubSectionController = new SubSectionController(createSubSectionService,
                 userDetailsProvider);
 
-        UpdateSubSectionRequest updateSubSectionRequest = new UpdateSubSectionRequest(123L, "Question Label", "T");
-        Mockito.when(createSubSectionService.updateSubSection( updateSubSectionRequest))
+        UpdateSubSectionRequest updateSubSectionRequest = new UpdateSubSectionRequest("Question Label", "T");
+        Mockito.when(createSubSectionService.updateSubSection(123L, updateSubSectionRequest))
                 .thenReturn(new UpdateSubSectionResponse(123L, "SubSection Updated Successfully"));
 
-        UpdateSubSectionResponse updateSubSectionResponse = addsubSectionController.updateSubSection(updateSubSectionRequest);
+        UpdateSubSectionResponse updateSubSectionResponse = addsubSectionController.updateSubSection(123L, updateSubSectionRequest);
         assertEquals(123L, updateSubSectionResponse.uid());
     }
 
@@ -68,11 +67,10 @@ class AddSubSectionControllerTest {
         SubSectionController addsubSectionController = new SubSectionController(createSubSectionService,
                 userDetailsProvider);
 
-        DeleteSubSectionRequest deleteSubSectionRequest = new DeleteSubSectionRequest(123L);
-        Mockito.when(createSubSectionService.deleteSubSection( deleteSubSectionRequest))
+        Mockito.when(createSubSectionService.deleteSubSection(100L, 123L))
                 .thenReturn(new DeleteSubSectionResponse(123L, "Sub Section Deleted Successfully"));
 
-        DeleteSubSectionResponse deleteSubSectionResponse = addsubSectionController.deleteSubSection(deleteSubSectionRequest);
+        DeleteSubSectionResponse deleteSubSectionResponse = addsubSectionController.deleteSubSection(100L, 123L);
         assertEquals(123L, deleteSubSectionResponse.uid());
     }
 }
