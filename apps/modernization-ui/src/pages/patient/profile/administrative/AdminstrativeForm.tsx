@@ -42,6 +42,7 @@ export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
                                     onChange={onChange}
                                     name="asOf"
                                     htmlFor={'asOf'}
+                                    disableFutureDates
                                     label="Administrative as of"
                                     errorMessage={error?.message}
                                     required

@@ -1,0 +1,32 @@
+@import 'settings.scss';
+
+.subsection {
+    border-radius: 0.25rem;
+    border: 1px solid $color-base-lighter;
+    .subsection__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $color-accent-cool-lighter;
+        padding: 0 1.6rem;
+        border-bottom: 1px solid $color-base-lighter;
+        &--left, &--right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            svg {
+                color: $color-primary;
+                cursor: pointer;
+                &:first-of-type {
+                    margin-right: 0.8rem;
+                }
+            }
+        }
+    }
+    &__body {
+        padding: 1.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

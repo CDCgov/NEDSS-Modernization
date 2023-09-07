@@ -350,7 +350,7 @@ input InvestigationFilter {
   investigatorId: ID
   investigationStatus: InvestigationStatus
   outbreakNames: [String]
-  caseStatuses: CaseStatuses
+  caseStatuses: [CaseStatus!]
   notificationStatuses: NotificationStatuses
   processingStatuses: ProcessingStatuses
 }
@@ -358,11 +358,6 @@ input InvestigationFilter {
 input EventId {
   investigationEventType: InvestigationEventIdType!
   id: String!
-}
-
-input CaseStatuses {
-  includeUnassigned: Boolean!
-  statusList: [CaseStatus!]!
 }
 
 input NotificationStatuses {

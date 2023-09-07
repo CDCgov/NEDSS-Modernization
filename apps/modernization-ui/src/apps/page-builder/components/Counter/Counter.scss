@@ -1,0 +1,13 @@
+@import "settings.scss";
+
+.counter {
+    width: 1.4rem;
+    height: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-base-light;
+    color: $color-white;
+    border-radius: 0.25rem;
+    font-weight: 700;
+}

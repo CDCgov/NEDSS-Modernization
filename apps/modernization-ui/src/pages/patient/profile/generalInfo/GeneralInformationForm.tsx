@@ -67,6 +67,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 name="asOf"
+                                disableFutureDates
                                 htmlFor={'asOf'}
                                 errorMessage={error?.message}
                             />

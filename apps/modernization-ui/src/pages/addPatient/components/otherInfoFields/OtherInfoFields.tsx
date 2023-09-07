@@ -14,9 +14,9 @@ type CodedValues = {
     maritalStatuses: CodedValue[];
 };
 
-type Props = { id: string; title: string; control: any; coded: CodedValues };
+type Props = { id: string; title: string; control: any; coded: CodedValues; errors: any };
 
-export default function OtherInfoFields({ id, title, control, coded }: Props) {
+export default function OtherInfoFields({ id, title, control, coded, errors }: Props) {
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
     const currentBirthday = useWatch({ control, name: 'dob' });
@@ -36,7 +36,9 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
+                                    disableFutureDates
                                     label="Date of birth"
+                                    errorMessage={errors?.dateOfBirth?.message || ''}
                                 />
                             )}
                         />
@@ -116,6 +118,7 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                                     name={name}
                                     htmlFor={name}
                                     label="Date of death"
+                                    disableFutureDates
                                     disabled={selectedDeceased !== Indicator.Yes}
                                 />
                             )}
