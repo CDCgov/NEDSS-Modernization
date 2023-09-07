@@ -34,13 +34,13 @@ public class TabController {
         return creator.createTab(page, userId, request);
     }
 
-    @DeleteMapping("deletetab/{tabId}")
+    @DeleteMapping("{tabId}")
     @ResponseBody
     public DeleteTabResponse deleteTab(@PathVariable("page") Long page, @PathVariable Long tabId) {
         return creator.deleteTab(page, tabId);
     }
 
-    @PutMapping("updatetab/{tabId}")
+    @PutMapping("{tabId}")
     @ResponseBody
     public UpdateTabResponse updateTab(@PathVariable Long tabId, @RequestBody UpdateTabRequest request) {
         return creator.updateTab(tabId, request);

@@ -34,13 +34,13 @@ public class SectionController {
         return creator.createSection(page, userId, request);
     }
 
-    @DeleteMapping("deletesection/{sectionId}")
+    @DeleteMapping("{sectionId}")
     @ResponseBody
     public DeleteSectionResponse deleteSection(@PathVariable("page") Long page, @PathVariable("sectionId") Long sectionId) {
         return creator.deleteSection(page, sectionId);
     }
 
-    @PutMapping("updatesection/{sectionId}")
+    @PutMapping("{sectionId}")
     @ResponseBody
     public UpdateSectionResponse updateSection(@PathVariable("sectionId") Long sectionId, @RequestBody UpdateSectionRequest request) {
         return creator.updateSection(sectionId, request);

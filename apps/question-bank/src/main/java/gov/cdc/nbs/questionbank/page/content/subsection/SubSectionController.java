@@ -36,13 +36,13 @@ public class SubSectionController {
     }
 
 
-    @DeleteMapping("deletesubsection/{subSectionId}")
+    @DeleteMapping("{subSectionId}")
     @ResponseBody
     public DeleteSubSectionResponse deleteSubSection(@PathVariable("page") Long page, @PathVariable Long subSectionId) {
         return creator.deleteSubSection(page, subSectionId);
     }
 
-    @PutMapping("updatesubsection/{subSectionId}")
+    @PutMapping("{subSectionId}")
     @ResponseBody
     public UpdateSubSectionResponse updateSubSection(@PathVariable("subSectionId") Long subSectionId, @RequestBody UpdateSubSectionRequest request) {
         return creator.updateSubSection(subSectionId, request);
