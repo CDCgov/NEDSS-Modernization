@@ -4,7 +4,10 @@ package gov.cdc.nbs.questionbank.page.content.subsection;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.response.OrderSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
+import gov.cdc.nbs.questionbank.page.content.tab.response.OrderTabResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
@@ -47,6 +50,15 @@ public class SubSectionController {
     @ResponseBody
     public UpdateSubSectionResponse updateSubSection(@RequestBody UpdateSubSectionRequest request) {
         return creator.updateSubSection(request);
+    }
+
+    @PutMapping("ordersubsection")
+    @ResponseBody
+    public OrderSubSectionResponse orderSubSection(
+            @PathVariable("page") Long page,
+            @RequestBody OrderTabRequest request
+    ) {
+        return null;
     }
 
 }

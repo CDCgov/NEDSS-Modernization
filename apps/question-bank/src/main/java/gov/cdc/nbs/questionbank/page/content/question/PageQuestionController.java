@@ -1,11 +1,10 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
+import gov.cdc.nbs.questionbank.page.content.question.response.OrderQuestionResponse;
+import gov.cdc.nbs.questionbank.page.content.section.response.OrderSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
@@ -37,5 +36,14 @@ public class PageQuestionController {
         Long componentId = creator.addQuestion(pageId, request, userId);
         log.debug("COmpleted add question to page request");
         return new AddQuestionResponse(componentId);
+    }
+
+    @PutMapping("orderquestion")
+    @ResponseBody
+    public OrderQuestionResponse orderQuestion(
+            @PathVariable("page") Long page,
+            @RequestBody OrderTabRequest request
+    ) {
+        return null;
     }
 }

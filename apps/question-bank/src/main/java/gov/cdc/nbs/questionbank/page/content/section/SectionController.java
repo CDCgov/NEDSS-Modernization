@@ -7,7 +7,10 @@ import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionReques
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.section.response.OrderSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
+import gov.cdc.nbs.questionbank.page.content.tab.response.OrderTabResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,4 +50,12 @@ public class SectionController {
         return creator.updateSection(request);
     }
 
+    @PutMapping("orderquestion")
+    @ResponseBody
+    public OrderSectionResponse orderSection(
+            @PathVariable("page") Long page,
+            @RequestBody OrderTabRequest request
+    ) {
+        return null;
+    }
 }
