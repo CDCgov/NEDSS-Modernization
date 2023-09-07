@@ -204,7 +204,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         modalRef={modal}
                         closer
                         onClick={() => handleAddConditions()}
-                        data-testid="condition-add-btn">
+                        data-testid="modal-condition-add-btn">
                         Add Condition
                     </ModalToggleButton>
                 </ButtonGroup>
