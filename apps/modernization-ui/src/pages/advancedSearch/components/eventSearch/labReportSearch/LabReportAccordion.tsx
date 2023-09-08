@@ -3,6 +3,7 @@ import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accor
 import { LabReportFilter } from 'generated/graphql/schema';
 import { UseFormReturn } from 'react-hook-form';
 import { LabReportGeneralFields } from './LabReportGeneralFields';
+import { LabReportCriteria } from './LabReportCriteria';
 
 type LabReportAccordionProps = {
     form: UseFormReturn<LabReportFilter>;
@@ -11,7 +12,7 @@ export const LabReportAccordion = ({ form }: LabReportAccordionProps) => {
     const items: AccordionItemProps[] = [
         {
             title: 'General search',
-            content: <LabReportGeneralFields form={form} />, // <LabGeneralSearch control={control} filter={labReportFilter} />
+            content: <LabReportGeneralFields form={form} />,
             expanded: true,
             id: '2',
             headingLevel: 'h4',
@@ -19,17 +20,7 @@ export const LabReportAccordion = ({ form }: LabReportAccordionProps) => {
         },
         {
             title: 'Lab report criteria',
-            content: (
-                <></>
-                // <LabSearchCriteria
-                //     resultsTestOptions={resultData}
-                //     codedResults={codedResults}
-                //     codedResultsChange={handleCodedResultChange}
-                //     resultChanges={handleResultChange}
-                //     control={control}
-                //     filter={labReportFilter}
-                // />
-            ),
+            content: <LabReportCriteria form={form} />,
             expanded: false,
             id: '3',
             headingLevel: 'h4',

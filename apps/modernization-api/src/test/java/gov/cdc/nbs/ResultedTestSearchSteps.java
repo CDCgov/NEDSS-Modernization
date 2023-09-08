@@ -12,10 +12,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import gov.cdc.nbs.controller.LabTestController;
 import gov.cdc.nbs.entity.srte.LabTest;
 import gov.cdc.nbs.entity.srte.LoincCode;
+import gov.cdc.nbs.event.search.labreport.LabTestController;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.repository.LabCodingSystemRepository;
 import gov.cdc.nbs.repository.LabTestRepository;

@@ -14,10 +14,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import gov.cdc.nbs.controller.LabResultController;
 import gov.cdc.nbs.entity.srte.LabResult;
 import gov.cdc.nbs.entity.srte.SnomedCode;
+import gov.cdc.nbs.event.search.labreport.LabResultController;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.repository.LabCodingSystemRepository;
 import gov.cdc.nbs.repository.LabResultRepository;

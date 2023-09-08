@@ -1,0 +1,5 @@
+query findDistinctCodedResults($searchText: String!, $loinc: Boolean!){
+    findDistinctCodedResults(searchText: $searchText, loinc: $loinc){
+        name
+    }
+}
