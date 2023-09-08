@@ -10,7 +10,8 @@ type SelectProps = {
     flexBox?: boolean;
     error?: string;
     required?: boolean;
-} & JSX.IntrinsicElements['select'];
+    defaultValue?: string | number | string[] | undefined | null;
+} & Omit<JSX.IntrinsicElements['select'], 'defaultValue'>;
 
 export const SelectInput = ({
     name,
@@ -34,7 +35,7 @@ export const SelectInput = ({
                 onBlur={onBlur}
                 data-testid={dataTestid || 'dropdown'}
                 multiple={isMulti}
-                defaultValue={defaultValue}
+                defaultValue={defaultValue || undefined}
                 placeholder="-Select-"
                 onChange={onChange}
                 {...props}
@@ -66,8 +67,7 @@ export const SelectInput = ({
                         )}
                     </Grid>
                     <Grid col={6}>
-                        {defaultValue && <DropDown />}
-                        {!defaultValue && <DropDown />}
+                        <DropDown />
                     </Grid>
                 </Grid>
             ) : (
@@ -80,8 +80,7 @@ export const SelectInput = ({
                             <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
                         </>
                     )}
-                    {defaultValue && <DropDown />}
-                    {!defaultValue && <DropDown />}
+                    <DropDown />
                 </>
             )}
         </>

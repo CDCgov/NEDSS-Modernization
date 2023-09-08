@@ -15,7 +15,7 @@ type DatePickerProps = {
     onChange?: OnChange;
     onBlur?: OnBlur;
     className?: string;
-    defaultValue?: string;
+    defaultValue?: string | null;
     errorMessage?: string;
     flexBox?: boolean;
     required?: boolean;

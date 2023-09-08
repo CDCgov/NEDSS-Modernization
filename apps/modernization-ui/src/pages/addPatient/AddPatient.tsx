@@ -9,7 +9,7 @@ import { ConfirmationModal } from 'confirmation';
 import { useAddPatientCodedValues } from './useAddPatientCodedValues';
 import { asPersonInput } from './asPersonInput';
 
-import NameFields from './components/nameFields/NameFields';
+import { NameFields } from './components/nameFields/NameFields';
 import AddressFields from './components/addressFields/AddressFields';
 import ContactFields from './components/contactFields/ContactFields';
 import EthnicityFields from './components/ethnicityFields/EthnicityFields';
@@ -86,12 +86,12 @@ const AddPatient = () => {
     const [entryState, setEntryState] = useState<EntryState>({ step: 'entry' });
 
     const methods = useForm<NewPatientEntry, DefaultNewPatentEntry>({
-        defaultValues: initialEntry()
+        defaultValues: initialEntry(),
+        mode: 'onBlur'
     });
 
     const {
         handleSubmit,
-        control,
         formState: { errors }
     } = methods;
 
@@ -258,8 +258,6 @@ const AddPatient = () => {
                                         </div>
                                     )}
                                     <GeneralInformation
-                                        errors={errors}
-                                        control={control}
                                         title="General information"
                                         id={'section-General_information'}
                                     />
@@ -267,12 +265,9 @@ const AddPatient = () => {
                                     <NameFields
                                         id={'section-Name'}
                                         title="Name information"
-                                        control={control}
                                         coded={{ suffixes: coded.suffixes }}
                                     />
                                     <OtherInfoFields
-                                        control={control}
-                                        errors={errors}
                                         id={'section-Other'}
                                         title="Other information"
                                         coded={{

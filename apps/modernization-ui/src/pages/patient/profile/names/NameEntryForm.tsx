@@ -5,6 +5,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { NameEntry } from './NameEntry';
 import { usePatientNameCodedValues } from './usePatientNameCodedValues';
 import { Input } from 'components/FormInputs/Input';
+import { validNameRule } from 'validation/entry';
 
 type EntryProps = {
     action: string;
@@ -18,7 +19,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
         handleSubmit,
         control,
         formState: { isValid }
-    } = useForm();
+    } = useForm<NameEntry, Partial<NameEntry>>({ mode: 'onBlur' });
 
     const coded = usePatientNameCodedValues();
 
@@ -39,15 +40,15 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             name="asOf"
                             defaultValue={entry?.asOf}
                             rules={{ required: { value: true, message: 'As of date is required.' } }}
-                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     onBlur={onBlur}
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="asOf"
+                                    name={name}
                                     disableFutureDates
-                                    htmlFor={'asOf'}
+                                    htmlFor={name}
                                     label="As of"
                                     errorMessage={error?.message}
                                     required
@@ -61,12 +62,13 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             name="type"
                             defaultValue={entry.type}
                             rules={{ required: { value: true, message: 'Type is required.' } }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
-                                    htmlFor={'type'}
+                                    htmlFor={name}
                                     label="Type"
                                     options={coded.types}
                                     error={error?.message}
@@ -80,12 +82,12 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             control={control}
                             name="prefix"
                             defaultValue={entry.prefix}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
                                     onChange={onChange}
-                                    htmlFor={'prefix'}
+                                    htmlFor={name}
                                     label="Prefix"
                                     options={coded.prefixes}
                                 />
@@ -97,16 +99,19 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             control={control}
                             name="first"
                             defaultValue={entry.first}
-                            render={({ field: { onChange, value } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
                                     label="First name"
-                                    name="first"
-                                    htmlFor="first"
-                                    id="first"
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -116,16 +121,19 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             control={control}
                             name="middle"
                             defaultValue={entry.middle}
-                            render={({ field: { onChange, value } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
                                     label="Middle name"
-                                    name="middle"
-                                    htmlFor="middle"
-                                    id="middle"
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -135,16 +143,19 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             control={control}
                             name="secondMiddle"
                             defaultValue={entry.secondMiddle}
-                            render={({ field: { onChange, value } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
                                     label="Second middle"
-                                    name="secondMiddle"
-                                    htmlFor="secondMiddle"
-                                    id="secondMiddle"
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -154,16 +165,19 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             control={control}
                             name="last"
                             defaultValue={entry.last}
-                            render={({ field: { onChange, value } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
                                     label="Last name"
-                                    name="last"
-                                    htmlFor="last"
-                                    id="last"
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -173,16 +187,19 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             control={control}
                             name="secondLast"
                             defaultValue={entry.secondLast}
-                            render={({ field: { onChange, value } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
                                     label="Second last"
-                                    name="secondLast"
-                                    htmlFor="secondLast"
-                                    id="secondLast"
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -192,12 +209,12 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             control={control}
                             name="suffix"
                             defaultValue={entry.suffix}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
                                     onChange={onChange}
-                                    htmlFor={'suffix'}
+                                    htmlFor={name}
                                     label="Suffix"
                                     options={coded.suffixes}
                                 />
@@ -209,12 +226,12 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                             control={control}
                             name="degree"
                             defaultValue={entry.degree}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
                                     onChange={onChange}
-                                    htmlFor={'degree'}
+                                    htmlFor={name}
                                     label="Degree"
                                     options={coded.degrees}
                                 />

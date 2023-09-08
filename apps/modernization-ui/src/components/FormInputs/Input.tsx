@@ -12,12 +12,12 @@ type InputProps = {
     type: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
     error?: any;
     onChange?: any;
-    defaultValue?: string;
+    defaultValue?: string | null;
     placeholder?: string;
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search' | undefined;
     flexBox?: boolean;
     multiline?: boolean;
-} & JSX.IntrinsicElements['input'];
+} & Omit<JSX.IntrinsicElements['input'], 'defaultValue'>;
 
 export const Input = ({
     name,
@@ -46,7 +46,7 @@ export const Input = ({
                 )}
             </Grid>
             <Grid col={6}>
-                <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
+                {error && <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>}
                 <TextInput
                     inputMode={inputMode}
                     placeholder={placeholder}
