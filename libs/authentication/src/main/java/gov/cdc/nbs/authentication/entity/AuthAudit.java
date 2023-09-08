@@ -72,6 +72,12 @@ public class AuthAudit {
         return recordStatusCd;
     }
 
+    public AuthAudit inactivate(final Instant when) {
+        this.recordStatusCd = AuthRecordStatus.INACTIVE;
+        this.recordStatusTime = when;
+        return this;
+    }
+
     public Instant recordStatusChangedOn() {
         return recordStatusTime;
     }

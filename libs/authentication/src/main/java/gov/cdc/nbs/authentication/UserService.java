@@ -17,9 +17,8 @@ import static gov.cdc.nbs.authentication.NbsAuthorities.allowsAny;
 public class UserService implements UserDetailsService {
 
     private final AuthUserRepository authUserRepository;
-    private final UserAuthorizationVerifier verifier;
-    private final TokenCreator tokenCreator;
-    private final NBSUserDetailsResolver nbsUserDetailsResolver;
+    private final TokenCreator creator;
+    private final NBSUserDetailsResolver resolver;
 
     @Override
     public NbsUserDetails loadUserByUsername(String username) {
@@ -29,9 +28,6 @@ public class UserService implements UserDetailsService {
             .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     }
 
-    public boolean isAuthorized(final long user, final String... permissions) {
-        return this.verifier.isAuthorized(user, permissions);
-    }
 
     public boolean isAuthorized(final NbsUserDetails userDetails, final String... permissions) {
         return userDetails.getAuthorities()
@@ -51,11 +47,11 @@ public class UserService implements UserDetailsService {
     }
 
     private NbsUserDetails buildUserDetails(AuthUser authUser, String token) {
-        return nbsUserDetailsResolver.resolve(authUser, token);
+        return resolver.resolve(authUser, token);
     }
 
     private String createToken(AuthUser user) {
-        return tokenCreator.forUser(user.getUserId());
+        return creator.forUser(user.getUserId());
     }
 
 

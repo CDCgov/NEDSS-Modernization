@@ -46,8 +46,11 @@ public class AuthBusOpRt {
     public AuthBusOpRt(final AuthBusOpType type, final AuthBusObjRt right) {
         this.authBusOpTypeUid = type;
         this.authBusObjRtUid = right;
-        this.busOpGuestRt = 'T';    // TODO: what decides this value?
-        this.busOpUserRt = 'T';     // TODO: what decides this value?
+
+        //  This class is currently used only by tests.  It is not clear what the values for the following fields should be nor what decides these values.
+        this.busOpGuestRt = 'T';    // what decides this value?
+        this.busOpUserRt = 'T';     // what decides this value?
+
         this.audit = new AuthAudit(right.audit());
     }
 

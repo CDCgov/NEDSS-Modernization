@@ -45,10 +45,6 @@ public class AuthPermSet {
     @Embedded
     private AuthAudit audit;
 
-    public AuthPermSet() {
-
-    }
-
     public Long id() {
         return id;
     }

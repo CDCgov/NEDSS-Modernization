@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 @Component
 public class NBSUserDetailsResolver {
 
-    private final UserPermissionFinder permissionFinder;
+    private final UserPermissionFinder finder;
 
-    public NBSUserDetailsResolver(final UserPermissionFinder permissionFinder) {
-        this.permissionFinder = permissionFinder;
+    public NBSUserDetailsResolver(final UserPermissionFinder finder) {
+        this.finder = finder;
     }
 
     public NbsUserDetails resolve(final AuthUser authUser, final String token) {
@@ -30,7 +30,7 @@ public class NBSUserDetailsResolver {
                 .collect(Collectors.toSet()))
             .username(authUser.getUserId())
             .password(null)
-            .authorities(permissionFinder.getUserPermissions(authUser))
+            .authorities(finder.getUserPermissions(authUser))
             .isEnabled(authUser.getAudit().recordStatus().equals(AuthRecordStatus.ACTIVE))
             .token(token)
             .build();
