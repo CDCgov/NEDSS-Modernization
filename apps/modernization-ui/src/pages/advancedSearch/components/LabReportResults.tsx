@@ -70,6 +70,13 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         }
     };
 
+    const formattedName = (lastNm = '', firstNm = '') => {
+        const format = [];
+        lastNm && format.push(lastNm);
+        firstNm && format.push(firstNm);
+        return (format.length > 1 ? format.join(', ') : format.join('')) || '--';
+    };
+
     const buildPatientDetails = (labReport: LabReport) => {
         const patient = getPatient(labReport);
         let name = '';
@@ -77,7 +84,10 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         let age: string | undefined;
         let sex: string | undefined;
         if (patient) {
-            name = !patient.lastName && !patient.firstName ? `No Data` : `${patient.lastName}, ${patient.firstName}`;
+            name =
+                !patient.lastName && !patient.firstName
+                    ? `No Data`
+                    : formattedName(patient?.lastName ?? '', patient?.firstName ?? '');
             if (patient.birthTime) {
                 birthDate = formatDate(patient.birthTime);
                 age = calculateAge(new Date(patient.birthTime));

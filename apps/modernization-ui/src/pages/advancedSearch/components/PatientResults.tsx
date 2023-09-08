@@ -154,6 +154,13 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
         navigate(`/patient-profile/${item.shortId}`);
     };
 
+    const formattedName = (lastNm = '', firstNm = '') => {
+        const format = [];
+        lastNm && format.push(lastNm);
+        firstNm && format.push(firstNm);
+        return (format.length > 1 ? format.join(', ') : format.join('')) || '--';
+    };
+
     return (
         <div className="margin-x-4">
             {Boolean(totalResults && data?.length > 0) && (
@@ -197,7 +204,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 {!item.lastNm && !item.firstNm ? (
                                                     <NoData />
                                                 ) : (
-                                                    `${item.lastNm}, ${item.firstNm}`
+                                                    formattedName(item?.lastNm ?? '', item?.firstNm ?? '')
                                                 )}
                                             </a>
                                         </Grid>

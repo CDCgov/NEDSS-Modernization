@@ -25,7 +25,10 @@ const formattedAddress = ({ street, city, state, zipcode }: Address) => {
 };
 
 const formattedName = (name: Name | null | undefined) => {
-    return (name && [name.last, name.first].join(', ')) || '--';
+    const format = [];
+    name?.last && format.push(name.last);
+    name?.first && format.push(name.first);
+    return (format.length > 1 ? format.join(', ') : format.join('')) || '--';
 };
 
 export const PatientProfileSummary = ({ patient, summary }: Props) => {

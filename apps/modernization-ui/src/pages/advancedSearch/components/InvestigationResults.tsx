@@ -70,6 +70,13 @@ export const InvestigationResults = ({
         }
     };
 
+    const formattedName = (lastNm = '', firstNm = '') => {
+        const format = [];
+        lastNm && format.push(lastNm);
+        firstNm && format.push(firstNm);
+        return (format.length > 1 ? format.join(', ') : format.join('')) || '--';
+    };
+
     const buildPatientDetails = (investigation: Investigation) => {
         const patient = getPatient(investigation);
         let name = '';
@@ -77,7 +84,10 @@ export const InvestigationResults = ({
         let age: string | undefined;
         let sex: string | undefined;
         if (patient) {
-            name = !patient.lastName && !patient.firstName ? `No Data` : `${patient.lastName}, ${patient.firstName}`;
+            name =
+                !patient.lastName && !patient.firstName
+                    ? `No Data`
+                    : formattedName(patient?.lastName ?? '', patient?.firstName ?? '');
             if (patient.birthTime) {
                 birthDate = formatDate(patient.birthTime);
                 age = calculateAge(new Date(patient.birthTime));
