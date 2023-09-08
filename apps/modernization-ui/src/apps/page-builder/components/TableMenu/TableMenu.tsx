@@ -35,7 +35,7 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery }: Props) => 
                 type="search"
                 htmlFor="searchbar"
                 id="searchbar"
-                defaultValue={keywords}
+                value={keywords}
                 onChange={(e: any) => setKeywords(e.target.value)}
                 onKeyDown={handleEnter}
             />

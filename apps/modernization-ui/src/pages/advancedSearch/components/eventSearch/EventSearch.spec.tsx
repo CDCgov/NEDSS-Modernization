@@ -12,7 +12,7 @@ describe('EventSearch component tests', () => {
         const { container, getByLabelText, getByTestId, getAllByTestId } = render(
             <MockedProvider>
                 <BrowserRouter>
-                    <EventSearch onSearch={mockOnSearch} clearAll={mockClearAll} />
+                    <EventSearch onSearch={mockOnSearch} />
                 </BrowserRouter>
             </MockedProvider>
         );

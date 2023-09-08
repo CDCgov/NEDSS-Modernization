@@ -12,7 +12,7 @@ type InputProps = {
     type: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
     error?: any;
     onChange?: any;
-    defaultValue?: string;
+    value?: string;
     placeholder?: string;
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search' | undefined;
     flexBox?: boolean;
@@ -29,7 +29,7 @@ export const Input = ({
     type,
     error,
     onChange,
-    defaultValue,
+    value,
     placeholder,
     inputMode,
     flexBox,
@@ -53,7 +53,7 @@ export const Input = ({
                     {...props}
                     id={id}
                     onChange={onChange}
-                    value={defaultValue ? defaultValue : ''}
+                    value={value ? value : ''}
                     name={name || ''}
                     validationStatus={error ? 'error' : undefined}
                     aria-describedby={`${error}-message`}
@@ -77,7 +77,7 @@ export const Input = ({
                     {...props}
                     id={id}
                     onChange={onChange}
-                    value={defaultValue ? defaultValue : ''}
+                    value={value ? value : ''}
                     name={name || ''}
                     validationStatus={error ? 'error' : undefined}
                     aria-describedby={`${error}-message`}
@@ -89,7 +89,7 @@ export const Input = ({
                     placeholder={placeholder}
                     id={id}
                     onChange={onChange}
-                    value={defaultValue ? defaultValue : ''}
+                    value={value ? value : ''}
                     name={name || ''}
                     aria-describedby={`${error}-message`}
                     className={classNames(className)}

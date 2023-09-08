@@ -108,7 +108,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                                 placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
-                                defaultValue={value}
+                                value={value}
                                 htmlFor="maternalMaidenName"
                                 id="maternalMaidenName"
                             />
@@ -132,7 +132,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 type="number"
-                                defaultValue={value}
+                                value={value}
                                 htmlFor="adultsInHouse"
                                 id="adultsInHouse"
                                 error={error?.message}
@@ -157,7 +157,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 type="number"
-                                defaultValue={value}
+                                value={value}
                                 htmlFor="childrenInHouse"
                                 id="childrenInHouse"
                                 error={error?.message}
@@ -260,7 +260,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                                 placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
-                                defaultValue={value}
+                                value={value}
                                 htmlFor="stateHIVCase"
                                 id="stateHIVCase"
                             />

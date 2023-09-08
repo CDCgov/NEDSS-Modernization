@@ -92,7 +92,7 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onDelete }: P
                                     flexBox
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="ID #"
                                     name="id"

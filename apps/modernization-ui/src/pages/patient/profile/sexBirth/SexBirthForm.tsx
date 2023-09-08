@@ -211,7 +211,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                                 placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
-                                defaultValue={value}
+                                value={value}
                                 htmlFor="additionalGender"
                                 id="additionalGender"
                             />
@@ -277,7 +277,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 type="number"
-                                defaultValue={value}
+                                value={value}
                                 htmlFor="birthOrder"
                                 id="birthOrder"
                                 error={error?.message}
@@ -300,7 +300,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                                 placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
-                                defaultValue={value}
+                                value={value}
                                 htmlFor="city"
                                 id="city"
                             />

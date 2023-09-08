@@ -14,7 +14,7 @@ describe('Input component tests', () => {
                     htmlFor="test-input-id"
                     type="text"
                     onChange={onChange}
-                    defaultValue="test-input-defaultValue"
+                    value="test-input-defaultValue"
                     error="invalid input"
                 />
             );
@@ -35,7 +35,7 @@ describe('Input component tests', () => {
                     htmlFor="test-input-id"
                     type="text"
                     onChange={onChange}
-                    defaultValue="test-input-defaultValue"
+                    value="test-input-defaultValue"
                 />
             );
             expect(getByLabelText('Test Input Label')).toBeTruthy();

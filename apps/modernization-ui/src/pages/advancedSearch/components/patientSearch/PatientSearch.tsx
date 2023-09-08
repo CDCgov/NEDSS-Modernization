@@ -72,7 +72,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                     type="text"
                                     label="Last name"
                                     name={name}
-                                    defaultValue={value}
+                                    value={value}
                                     htmlFor={name}
                                     id={name}
                                     error={errors?.lastName && 'Last name is required.'}
@@ -87,7 +87,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                             render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="First name"
                                     name={name}
@@ -142,7 +142,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                             render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="Patient Id"
                                     name={name}

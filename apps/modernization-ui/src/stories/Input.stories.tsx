@@ -16,7 +16,7 @@ BasicInput.args = {
 export const InputWithDefaultValue = Template.bind({});
 InputWithDefaultValue.args = {
     label: 'Input Label',
-    defaultValue: 'This is default'
+    value: 'This is default'
 };
 
 export const InputWithError = Template.bind({});

@@ -91,7 +91,7 @@ const AddressSuggestionInput = (props: Props): ReactElement => {
                 htmlFor={props.label}
                 type="text"
                 className={props.className}
-                defaultValue={props.defaultValue}
+                value={props.defaultValue}
                 placeholder={props.placeholder}
                 autoComplete="off"
                 flexBox={props.flexBox}

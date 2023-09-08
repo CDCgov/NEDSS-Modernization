@@ -25,7 +25,7 @@ export default function NameFields({ id, title, control, coded }: Props) {
                                     onChange={onChange}
                                     type="text"
                                     label="Last"
-                                    defaultValue={value}
+                                    value={value}
                                     htmlFor={name}
                                     id={name}
                                 />
@@ -42,7 +42,7 @@ export default function NameFields({ id, title, control, coded }: Props) {
                                 <Input
                                     onChange={onChange}
                                     type="text"
-                                    defaultValue={value}
+                                    value={value}
                                     htmlFor={name}
                                     id={name}
                                     label="First"
@@ -60,7 +60,7 @@ export default function NameFields({ id, title, control, coded }: Props) {
                                 <Input
                                     onChange={onChange}
                                     type="text"
-                                    defaultValue={value}
+                                    value={value}
                                     htmlFor={name}
                                     id={name}
                                     label="Middle"

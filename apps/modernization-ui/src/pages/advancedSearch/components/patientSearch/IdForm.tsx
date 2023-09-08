@@ -38,7 +38,7 @@ export const IDForm = ({ control }: any) => {
                     render={({ field: { onChange, value } }) => (
                         <Input
                             onChange={onChange}
-                            defaultValue={value}
+                            value={value}
                             type="text"
                             label="ID number"
                             htmlFor="identificationNumber"

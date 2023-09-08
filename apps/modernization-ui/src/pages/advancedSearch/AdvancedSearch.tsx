@@ -37,7 +37,7 @@ import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
 import { SearchCriteria, SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
-import { EventSearchA } from './components/eventSearch/EventSearchA';
+import { EventSearch } from './components/eventSearch/EventSearch';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -816,13 +816,7 @@ export const AdvancedSearch = () => {
                                     clearAll={handleClearAll}
                                 />
                             ) : (
-                                // <EventSearch
-                                //     onSearch={handleSubmit}
-                                //     investigationFilter={investigationFilter}
-                                //     labReportFilter={labReportFilter}
-                                //     clearAll={handleClearAll}
-                                // />
-                                <EventSearchA onSearch={handleSubmit} investigationFilter={investigationFilter} />
+                                <EventSearch onSearch={handleSubmit} investigationFilter={investigationFilter} />
                             )}
                         </div>
                     </Grid>

@@ -100,7 +100,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="First name"
                                     name="first"
@@ -119,7 +119,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="Middle name"
                                     name="middle"
@@ -138,7 +138,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="Second middle"
                                     name="secondMiddle"
@@ -157,7 +157,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="Last name"
                                     name="last"
@@ -176,7 +176,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="Second last"
                                     name="secondLast"

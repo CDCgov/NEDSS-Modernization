@@ -86,7 +86,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 name={name}
                                 type="text"
                                 label="Condition name"
-                                defaultValue={value}
+                                value={value}
                                 error={error?.message}
                                 onChange={onChange}
                             />
@@ -121,7 +121,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <Input
                                 onChange={onChange}
-                                defaultValue={value}
+                                value={value}
                                 label="Condition code"
                                 type="text"
                                 error={error?.message}

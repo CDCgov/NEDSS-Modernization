@@ -156,7 +156,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="Street address 2"
                                     name={name}
@@ -175,7 +175,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="City"
                                     name={name}
@@ -214,7 +214,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="Zip"
                                     name="zipcode"
@@ -251,7 +251,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     type="text"
                                     label="Census tract"
                                     name={name}

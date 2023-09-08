@@ -72,7 +72,7 @@ export const IdentificationFields = ({ id, title, coded }: Props) => {
                                 name={`identification[${index}].value`}
                                 render={({ field: { onChange, value } }) => (
                                     <Input
-                                        defaultValue={value}
+                                        value={value}
                                         onChange={onChange}
                                         type="text"
                                         label="ID value"

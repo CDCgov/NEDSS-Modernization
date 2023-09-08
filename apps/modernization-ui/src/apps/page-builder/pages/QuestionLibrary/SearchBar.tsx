@@ -64,7 +64,7 @@ export const SearchBar = ({ onChange }: any) => {
                     htmlFor="searchbar"
                     onChange={handleSearch}
                     id="searchbar"
-                    defaultValue={search}
+                    value={search}
                 />
                 <Button type="submit" onClick={handleSubmit}>
                     <Icon.Search size={3} />
