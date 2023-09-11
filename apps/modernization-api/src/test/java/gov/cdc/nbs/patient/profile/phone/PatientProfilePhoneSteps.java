@@ -130,7 +130,7 @@ public class PatientProfilePhoneSteps {
 
     		}
     	}
-    	assertThat(duplicates).isEqualTo(0);
+    	assertThat(duplicates).isZero();
 
     }
 }

@@ -48,12 +48,10 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
@@ -348,7 +346,7 @@ public class PatientService {
 			for (EntityLocatorParticipation one : entityLocators) {
 				if (aPerson.getNbsEntity().isPhoneNumber(one)) {
 					TeleEntityLocatorParticipation number = (TeleEntityLocatorParticipation) one;
-					TeleLocator pl = ((TeleEntityLocatorParticipation) number).getLocator();
+					TeleLocator pl = number.getLocator();
 					if (!mapping.containsKey(pl.getPhoneNbrTxt())) {
 						results.add(number);
 						mapping.put(pl.getPhoneNbrTxt(), number);
