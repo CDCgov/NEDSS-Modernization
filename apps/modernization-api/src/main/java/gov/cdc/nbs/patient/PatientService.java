@@ -7,10 +7,13 @@ import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QOrganization;
 import gov.cdc.nbs.entity.odse.QPerson;
+import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
@@ -44,9 +47,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
@@ -328,8 +335,36 @@ public class PatientService {
             .toList();
         var persons = personRepository.findAllById(ids);
         persons.sort(Ordering.explicit(ids).onResultOf(Person::getId));
-        return new PageImpl<>(persons, pageable, elasticsearchPersonSearchHits.getTotalHits());
+        
+        
+        return new PageImpl<>(distinctNumbers(persons), pageable, elasticsearchPersonSearchHits.getTotalHits());
     }
+    
+	public List<Person> distinctNumbers(List<Person> input) {
+		input.stream().forEach(aPerson -> {
+			List<EntityLocatorParticipation> results = new ArrayList<>();
+			Map<String, TeleEntityLocatorParticipation> mapping = new HashMap<String, TeleEntityLocatorParticipation>();
+			List<EntityLocatorParticipation> entityLocators = aPerson.getNbsEntity().getEntityLocatorParticipations();
+			for (EntityLocatorParticipation one : entityLocators) {
+				if (aPerson.getNbsEntity().isPhoneNumber(one)) {
+					TeleEntityLocatorParticipation number = (TeleEntityLocatorParticipation) one;
+					TeleLocator pl = ((TeleEntityLocatorParticipation) number).getLocator();
+					if (!mapping.containsKey(pl.getPhoneNbrTxt())) {
+						results.add(number);
+						mapping.put(pl.getPhoneNbrTxt(), number);
+					}
+				} else {
+					results.add(one);
+
+				}
+
+			}
+			aPerson.getNbsEntity().getEntityLocatorParticipations().clear();
+			aPerson.getNbsEntity().getEntityLocatorParticipations().addAll(results);
+		});
+
+		return input;
+	}
 
     public Page<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
         // limit page size

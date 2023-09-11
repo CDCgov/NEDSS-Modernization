@@ -248,28 +248,19 @@ public class NBSEntity {
             .map(TeleEntityLocatorParticipation.class::cast)
             .toList();
     }
+    
+    
+    public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
+        return this.ensureLocators().stream()
+            .filter(EntityLocatorParticipation.active().and(this::isPhoneNumber))
+            .map(TeleEntityLocatorParticipation.class::cast)
+            .toList();
+    }
+    
 
-	public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
-		Set<TeleEntityLocatorParticipation> filter = new HashSet<TeleEntityLocatorParticipation>();
 
-		Map<String, TeleEntityLocatorParticipation> mapping = new HashMap<String, TeleEntityLocatorParticipation>();
-		for (EntityLocatorParticipation one : this.ensureLocators()) {
-			if (this.isPhoneNumber(one)) {
-				TeleEntityLocatorParticipation number = (TeleEntityLocatorParticipation) one;
-				TeleLocator pl = ((TeleEntityLocatorParticipation) number).getLocator();
 
-				if (!mapping.containsKey(pl.getPhoneNbrTxt())) {
-					filter.add(number);
-					mapping.put(pl.getPhoneNbrTxt(), number);
-				}
-			}
-		}
-
-		return filter;
-
-	}
-
-    private boolean isPhoneNumber(final EntityLocatorParticipation participation) {
+    public boolean isPhoneNumber(final EntityLocatorParticipation participation) {
         return participation instanceof TeleEntityLocatorParticipation && !Objects.equals(participation.cd, "NET");
     }
 
@@ -280,7 +271,7 @@ public class NBSEntity {
             .toList();
     }
 
-    private boolean isEmailAddress(final EntityLocatorParticipation participation) {
+     boolean isEmailAddress(final EntityLocatorParticipation participation) {
         return Objects.equals(participation.cd, "NET");
     }
 
