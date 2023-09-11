@@ -21,21 +21,34 @@ export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) =
         onAddSuccess();
     };
 
-    const renderAddTab = (
+    return (
         <>
-            <ModalToggleButton className="" unstyled type="button" modalRef={modalRef}>
-                <div className="edit-page-tabs__tab add">
-                    <Icon.Edit />
-                    <h4>Manage Tabs</h4>
-                </div>
-            </ModalToggleButton>
+            <div className="edit-page-tabs">
+                {tabs &&
+                    tabs.map((tab, i) => {
+                        return (
+                            <div
+                                key={i}
+                                className={`edit-page-tabs__tab ${active === i ? 'active' : ''}`}
+                                onClick={() => setActive(i)}>
+                                <h4>{tab.name}</h4>
+                            </div>
+                        );
+                    })}
+                <ModalToggleButton unstyled type="button" modalRef={modalRef} data-testid="openManageTabs">
+                    <div className="edit-page-tabs__tab add">
+                        <Icon.Edit />
+                        <h4>Manage Tabs</h4>
+                    </div>
+                </ModalToggleButton>
+            </div>
             <ModalComponent
                 modalRef={modalRef}
                 modalHeading={
                     !isAdding ? (
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <span>Manage Tabs</span>
-                            <Button className="add-tab-button" type="button" onClick={() => setIsAdding(true)}>
+                        <div className="manage-tabs-header">
+                            <div>Manage Tabs</div>
+                            <Button className="" type="button" onClick={() => setIsAdding(true)}>
                                 <Icon.Add className="margin-right-05em add-tab-icon" />
                                 <span>Add new tab</span>
                             </Button>
@@ -49,22 +62,5 @@ export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) =
                 }
             />
         </>
-    );
-
-    return (
-        <div className="edit-page-tabs">
-            {tabs &&
-                tabs.map((tab, i) => {
-                    return (
-                        <div
-                            key={i}
-                            className={`edit-page-tabs__tab ${active === i ? 'active' : ''}`}
-                            onClick={() => setActive(i)}>
-                            <h4>{tab.name}</h4>
-                        </div>
-                    );
-                })}
-            {renderAddTab}
-        </div>
     );
 };

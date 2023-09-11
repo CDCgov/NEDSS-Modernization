@@ -19,7 +19,7 @@ export const EditPage = () => {
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
     const [page, setPage] = useState<PageDetails>();
-    const [tabs, setTabs] = useState<Tabs[]>([]);
+    const [tabs, setTabs] = useState<Tabs[] | undefined>();
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
 
