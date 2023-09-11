@@ -13,12 +13,10 @@ on:
         required: true
       SONAR_TOKEN:
         description: "Secret named SONAR_TOKEN that references the sonar token secret corresponding to the project in sonarcloud."
-        required: true        
-  pull_request:
-    paths:
-      - "apps/**"
-      - "libs/**"
-      - ".github/workflows/sonar.yaml"
+        required: true
+  push:
+    branches:
+      - Foundation-Team-CNAT-72
 env:
   deployment_env: dev
   accountid: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
