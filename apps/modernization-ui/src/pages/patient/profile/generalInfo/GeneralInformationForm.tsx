@@ -26,7 +26,11 @@ export type GeneralInformationEntry = {
 };
 
 export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onCancel = () => {} }: Props) => {
-    const { handleSubmit, control } = useForm({ mode: 'onBlur' });
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
 
     const onSubmit = (entered: FieldValues) => {
         onChanged({
@@ -48,7 +52,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
     return (
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
+                <Grid col={6} className="margin-top-1 required">
                     As of:
                 </Grid>
                 <Grid col={6}>
@@ -63,6 +67,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 name="asOf"
+                                disableFutureDates
                                 htmlFor={'asOf'}
                                 errorMessage={error?.message}
                             />
@@ -101,7 +106,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                         defaultValue={entry?.maternalMaidenName}
                         render={({ field: { onChange, value } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
@@ -124,7 +129,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                         rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 type="number"
@@ -149,7 +154,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                         rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 type="number"
@@ -253,7 +258,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                         defaultValue={entry?.stateHIVCase}
                         render={({ field: { onChange, value } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
@@ -272,7 +277,8 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     <Button
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
-                        className="padding-105 text-center margin-top-0">
+                        className="padding-105 text-center margin-top-0"
+                        disabled={!isValid}>
                         Save
                     </Button>
                 </ButtonGroup>

@@ -52,9 +52,11 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onDelete }: P
                                     defaultValue={value}
                                     onChange={onChange}
                                     name="asOf"
+                                    disableFutureDates
                                     htmlFor={'asOf'}
                                     label="As of"
                                     errorMessage={error?.message}
+                                    required
                                 />
                             )}
                         />
@@ -75,6 +77,7 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onDelete }: P
                                     label="Type"
                                     options={coded.types}
                                     error={error?.message}
+                                    required
                                 />
                             )}
                         />
@@ -97,6 +100,7 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onDelete }: P
                                     htmlFor="id"
                                     id="id"
                                     error={error?.message}
+                                    required
                                 />
                             )}
                         />

@@ -3,6 +3,7 @@ import './style.scss';
 import { Grid } from '@trussworks/react-uswds';
 import { Patient } from 'pages/patient/profile';
 import { Address, Email, Name, PatientSummary, Phone } from './PatientSummary';
+import { NoData } from 'components/NoData';
 
 type Props = {
     patient: Patient;
@@ -10,16 +11,16 @@ type Props = {
 };
 
 const display = (value: string) => <p>{value}</p>;
-const noData = <p className="no-data">No Data</p>;
+const noData = <NoData />;
 
 const formattedPhones = (items: Phone[]) => display(items.map((items) => items.number).join('\n'));
 
 const formattedEmails = (items: Email[]) => display(items.map((item) => item.address).join('\n'));
 
-const formattedAddress = ({ street, city, state, zipcode, country }: Address) => {
+const formattedAddress = ({ street, city, state, zipcode }: Address) => {
     const location = ((city && city + ' ') || '') + ((state && state + ' ') || '') + (zipcode ?? '');
-    const address =
-        ((street && street + '\n') || '') + ((location && location + '\n') || '') + ((country && country + '\n') || '');
+    const address = ((street && street + '\n') || '') + ((location && location + '\n') || '');
+
     return display(address);
 };
 
@@ -32,13 +33,18 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
         <div className="margin-y-2 flex-row common-card">
             <div className="grid-row flex-align-center flex-justify padding-2 border-bottom border-base-lighter">
                 <p className="font-sans-xl text-bold margin-0">{`${formattedName(summary.legalName)}`}</p>
-                <h5 className="font-sans-md text-medium margin-0">Patient ID: {patient.shortId}</h5>
+                <h5 className="font-sans-md text-medium margin-0">
+                    Patient ID: {patient.shortId}
+                    {patient.status != 'ACTIVE' && (
+                        <span className="text-red text-right margin-left-2">{patient.status}</span>
+                    )}
+                </h5>
             </div>
             <Grid row gap={3} className="padding-3">
                 <Grid col={3}>
                     <Grid col={12} className=" summary-value">
                         <h5 className="margin-right-1">SEX</h5>
-                        <p>{summary.gender}</p>
+                        <p>{summary.gender || noData}</p>
                     </Grid>
                 </Grid>
 
@@ -66,9 +72,7 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
                 <Grid col={3}>
                     <Grid col={12} className="margin-top-3 summary-value">
                         <h5 className="margin-right-1">DATE OF BIRTH</h5>
-                        <p>
-                            {summary.birthday} ({summary.age})
-                        </p>
+                        <p>{summary.birthday ? `${summary.birthday} (${summary.age})` : noData}</p>
                     </Grid>
                 </Grid>
 

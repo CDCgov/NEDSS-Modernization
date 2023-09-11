@@ -91,6 +91,13 @@ dependencies {
     // lombok
     compileOnly libs.lombok
     annotationProcessor libs.lombok
+    
+    
+    // csv
+      implementation "org.apache.commons:commons-csv:1.9.0"
+    
+
+    
 
     // auth
     implementation project(':authentication')

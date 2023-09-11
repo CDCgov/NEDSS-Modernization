@@ -7,6 +7,7 @@ import { Direction } from 'sorting';
 import './ManagePagesTable.scss';
 import { TableMenu } from 'apps/page-builder/components/TableMenu/TableMenu';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
+import { Link } from 'react-router-dom';
 
 export enum Column {
     PageName = 'Page name',
@@ -43,7 +44,12 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
         tableDetails: [
             {
                 id: 1,
-                title: <div className="page-name">{page?.name}</div> || null
+                title:
+                    (
+                        <div className="page-name">
+                            <Link to={`/page-builder/edit/page/${page.id}`}>{page?.name}</Link>
+                        </div>
+                    ) || null
             },
             { id: 2, title: <div className="event-text">{page?.eventType?.name}</div> || null },
             {

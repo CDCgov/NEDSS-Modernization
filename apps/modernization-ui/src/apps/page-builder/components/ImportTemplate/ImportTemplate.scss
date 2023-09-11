@@ -41,6 +41,21 @@
                 transform: rotate(-90deg);
                 color: #A9AEB1;
             }
+            .gap-10 {
+                gap: 10px;
+            }
+            .tag-cover {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 4px 6px 4px 2px;
+                border-radius: 2px;
+                color: #FFFFFF;
+                background: #005EA2;
+                .usa-icon {
+                    cursor: pointer;
+                }
+            }
             label {
                 color: #000;
                 font-family: Public Sans;

@@ -23,9 +23,8 @@ export default function GeneralInformation({
                         <span className="text-red">*</span> are required
                     </Grid>
                     <Grid col={6}>
-                        <Label htmlFor="asOf">
+                        <Label className="required" htmlFor="asOf">
                             <span data-testid="date-lable">Information as of Date</span>{' '}
-                            <span className="text-red">*</span>
                         </Label>
                         <Controller
                             rules={{
@@ -39,6 +38,7 @@ export default function GeneralInformation({
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
+                                    disableFutureDates
                                     errorMessage={errors?.asOf?.message || ''}
                                 />
                             )}

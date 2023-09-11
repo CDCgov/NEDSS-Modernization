@@ -1,6 +1,7 @@
 import { Button, Grid, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
 import './DetailsModal.scss';
+import { NoData } from 'components/NoData';
 
 export type Detail = {
     name: string;
@@ -16,7 +17,7 @@ type Props = {
     onDelete?: () => void;
 };
 
-const noData = <span className="no-data">No data</span>;
+const noData = <NoData />;
 
 const renderField = (detail: Detail, index: number) => (
     <Grid key={index} col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">

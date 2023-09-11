@@ -182,7 +182,7 @@ describe('when the patient has been named by a contact without an association', 
 
         const tableData = container.getElementsByClassName('table-data');
 
-        expect(tableData[4]).toHaveTextContent('No data');
+        expect(tableData[4]).toHaveTextContent('No Data');
     });
 });
 

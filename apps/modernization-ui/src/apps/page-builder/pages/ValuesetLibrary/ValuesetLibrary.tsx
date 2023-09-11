@@ -16,7 +16,6 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     const handleTab = (tab: string) => {
         setActiveTab(tab);
     };
-
     // @ts-ignore
     useEffect(async () => {
         const token = `Bearer ${state.getToken()}`;

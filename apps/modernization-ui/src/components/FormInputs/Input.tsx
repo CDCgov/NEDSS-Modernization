@@ -40,9 +40,8 @@ export const Input = ({
         <Grid row className={`input ${error ? 'input--error' : ''}`}>
             <Grid col={6}>
                 {label && (
-                    <Label htmlFor={htmlFor}>
+                    <Label className={classNames({ required })} htmlFor={htmlFor}>
                         {label}
-                        <small className="text-red">{required && ' *'}</small>
                     </Label>
                 )}
             </Grid>
@@ -66,9 +65,8 @@ export const Input = ({
     ) : (
         <div className={`input ${error ? 'input--error' : ''}`}>
             {label && (
-                <Label htmlFor={htmlFor}>
+                <Label className={classNames({ required })} htmlFor={htmlFor}>
                     {label}
-                    <small className="text-red">{required && ' *'}</small>
                 </Label>
             )}
             {error && <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>}

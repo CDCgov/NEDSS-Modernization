@@ -12,6 +12,7 @@ import type { UpdatePageDetailsRequest } from '../models/UpdatePageDetailsReques
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+import { PageDetails } from '../models/PageDetails';
 
 export class PageControllerService {
 
@@ -181,6 +182,39 @@ export class PageControllerService {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/page-builder/api/v1/pages/{id}/draft',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * savePageDraft
+     * @returns PageDetails OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static getPageDetails({
+        authorization,
+        id,
+    }: {
+        authorization: any,
+        /**
+         * id
+         */
+        id: number,
+    }): CancelablePromise<PageDetails | any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/page-builder/api/v1/pages/{id}/details',
             path: {
                 'id': id,
             },

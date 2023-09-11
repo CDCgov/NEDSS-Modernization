@@ -14,8 +14,8 @@ import './QuickConditionLookup.scss';
 import { TableComponent, TableBody } from 'components/Table/Table';
 import { ConditionControllerService, ReadConditionRequest } from 'apps/page-builder/generated';
 import { UserContext } from 'user';
-import { NavLink } from 'react-router-dom';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
+import { NoData } from 'components/NoData';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -165,11 +165,18 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         <Icon.FilterAlt />
                         Filter
                     </Button>
-                    <NavLink to={'page-builder/add/condition'}>
+                    {/* <NavLink to={'page-builder/add/condition'}>
                         <Button type="button" style={{ height: '41px' }}>
                             Add new condition
                         </Button>
-                    </NavLink>
+                    </NavLink> */}
+                    <ModalToggleButton
+                        modalRef={modal}
+                        closer
+                        onClick={() => handleAddConditions()}
+                        data-testid="condition-add-btn">
+                        Add Condition
+                    </ModalToggleButton>
                 </div>
                 {conditions?.length ? (
                     <TableComponent
@@ -185,7 +192,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         handleSelected={handleSelectConditions}
                     />
                 ) : (
-                    <div>No data </div>
+                    <NoData />
                 )}
             </div>
             <ModalFooter className="padding-2 margin-left-auto footer">
@@ -196,8 +203,8 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                     <ModalToggleButton
                         modalRef={modal}
                         closer
-                        onClick={handleAddConditions}
-                        data-testid="condition-add-btn">
+                        onClick={() => handleAddConditions()}
+                        data-testid="modal-condition-add-btn">
                         Add Condition
                     </ModalToggleButton>
                 </ButtonGroup>

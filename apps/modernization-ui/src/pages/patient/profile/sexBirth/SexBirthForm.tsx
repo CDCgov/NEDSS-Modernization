@@ -42,7 +42,11 @@ type Props = {
 };
 
 export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
-    const { handleSubmit, control } = useForm({ mode: 'onBlur' });
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
 
     const currentBirthday = useWatch({ control, name: 'bornOn', defaultValue: entry.birth.bornOn });
 
@@ -81,7 +85,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
     return (
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
+                <Grid col={6} className="margin-top-1 required">
                     As of:
                 </Grid>
                 <Grid col={6}>
@@ -97,6 +101,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                                 onBlur={onBlur}
                                 name="asOf"
                                 htmlFor={'asOf'}
+                                disableFutureDates
                                 errorMessage={error?.message}
                             />
                         )}
@@ -117,6 +122,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                                 defaultValue={value}
                                 onChange={onChange}
                                 name="bornOn"
+                                disableFutureDates
                                 htmlFor={'bornOn'}
                             />
                         )}
@@ -204,7 +210,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         name="additionalGender"
                         render={({ field: { onChange, value } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
@@ -269,7 +275,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         rules={{ min: { value: 0, message: 'Must be a positive number' } }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 type="number"
@@ -293,7 +299,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         defaultValue={entry.birth.city}
                         render={({ field: { onChange, value } }) => (
                             <Input
-                                placeholder="No data"
+                                placeholder="No Data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
@@ -372,7 +378,8 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                     <Button
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
-                        className="padding-105 text-center margin-top-0">
+                        className="padding-105 text-center margin-top-0"
+                        disabled={!isValid}>
                         Save
                     </Button>
                 </ButtonGroup>
