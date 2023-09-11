@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Grid } from '@trussworks/react-uswds';
 import { calculateAge } from 'date';
 import { CodedValue, Indicator } from 'coded';
-import { Controller, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
@@ -14,12 +14,14 @@ type CodedValues = {
     maritalStatuses: CodedValue[];
 };
 
-type Props = { id: string; title: string; control: any; coded: CodedValues; errors: any };
+type Props = { id: string; title: string; coded: CodedValues };
 
-export default function OtherInfoFields({ id, title, control, coded, errors }: Props) {
+export default function OtherInfoFields({ id, title, coded }: Props) {
+    const { control } = useFormContext();
+
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
-    const currentBirthday = useWatch({ control, name: 'dob' });
+    const currentBirthday = useWatch({ control, name: 'dateOfBirth' });
     const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
 
     return (
@@ -38,7 +40,6 @@ export default function OtherInfoFields({ id, title, control, coded, errors }: P
                                     htmlFor={name}
                                     disableFutureDates
                                     label="Date of birth"
-                                    errorMessage={errors?.dateOfBirth?.message || ''}
                                 />
                             )}
                         />

@@ -1,5 +1,6 @@
-import { Dropdown, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
-import classNames from 'classnames';
+import { Dropdown } from '@trussworks/react-uswds';
+
+import { EntryWrapper } from 'components/Entry';
 
 type SelectProps = {
     htmlFor?: string;
@@ -10,7 +11,8 @@ type SelectProps = {
     flexBox?: boolean;
     error?: string;
     required?: boolean;
-} & JSX.IntrinsicElements['select'];
+    defaultValue?: string | number | string[] | undefined | null;
+} & Omit<JSX.IntrinsicElements['select'], 'defaultValue'>;
 
 export const SelectInput = ({
     name,
@@ -28,13 +30,20 @@ export const SelectInput = ({
     onBlur,
     ...props
 }: SelectProps) => {
-    const DropDown = () => {
-        return (
+    const orientation = flexBox ? 'horizontal' : 'vertical';
+
+    return (
+        <EntryWrapper
+            orientation={orientation}
+            label={label || ''}
+            htmlFor={htmlFor || ''}
+            required={required}
+            error={error}>
             <Dropdown
                 onBlur={onBlur}
                 data-testid={dataTestid || 'dropdown'}
                 multiple={isMulti}
-                defaultValue={defaultValue}
+                defaultValue={defaultValue || undefined}
                 placeholder="-Select-"
                 onChange={onChange}
                 {...props}
@@ -49,41 +58,6 @@ export const SelectInput = ({
                     ))}
                 </>
             </Dropdown>
-        );
-    };
-    return (
-        <>
-            {flexBox ? (
-                <Grid row>
-                    <Grid col={6}>
-                        {label && (
-                            <>
-                                <Label className={classNames({ required })} htmlFor={htmlFor || ''}>
-                                    {label}
-                                </Label>
-                                <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
-                            </>
-                        )}
-                    </Grid>
-                    <Grid col={6}>
-                        {defaultValue && <DropDown />}
-                        {!defaultValue && <DropDown />}
-                    </Grid>
-                </Grid>
-            ) : (
-                <>
-                    {label && (
-                        <>
-                            <Label className={classNames({ required })} htmlFor={htmlFor || ''}>
-                                {label}
-                            </Label>
-                            <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
-                        </>
-                    )}
-                    {defaultValue && <DropDown />}
-                    {!defaultValue && <DropDown />}
-                </>
-            )}
-        </>
+        </EntryWrapper>
     );
 };
