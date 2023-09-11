@@ -12,6 +12,7 @@ import gov.cdc.nbs.entity.odse.TeleLocator;
 
 public class PatientHelper {
 	
+	private PatientHelper() {}
 	
 	public static List<Person> distinctNumbers(List<Person> input) {
 		input.stream().forEach(aPerson -> {
