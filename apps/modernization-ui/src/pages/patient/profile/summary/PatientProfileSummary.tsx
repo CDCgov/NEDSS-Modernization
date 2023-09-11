@@ -2,8 +2,9 @@ import './style.scss';
 
 import { Grid } from '@trussworks/react-uswds';
 import { Patient } from 'pages/patient/profile';
-import { Address, Email, Name, PatientSummary, Phone } from './PatientSummary';
+import { Address, Email, PatientSummary, Phone } from './PatientSummary';
 import { NoData } from 'components/NoData';
+import formattedName from 'formattedName';
 
 type Props = {
     patient: Patient;
@@ -24,15 +25,14 @@ const formattedAddress = ({ street, city, state, zipcode }: Address) => {
     return display(address);
 };
 
-const formattedName = (name: Name | null | undefined) => {
-    return (name && [name.last, name.first].join(', ')) || '--';
-};
-
 export const PatientProfileSummary = ({ patient, summary }: Props) => {
     return (
         <div className="margin-y-2 flex-row common-card">
             <div className="grid-row flex-align-center flex-justify padding-2 border-bottom border-base-lighter">
-                <p className="font-sans-xl text-bold margin-0">{`${formattedName(summary.legalName)}`}</p>
+                <p className="font-sans-xl text-bold margin-0">{`${formattedName(
+                    summary?.legalName?.last,
+                    summary?.legalName?.first
+                )}`}</p>
                 <h5 className="font-sans-md text-medium margin-0">
                     Patient ID: {patient.shortId}
                     {patient.status != 'ACTIVE' && (

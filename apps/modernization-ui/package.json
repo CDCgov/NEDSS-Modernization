@@ -38,7 +38,7 @@
     "scripts": {
         "start-with-proxy": "cp src/setupProxy.local.js src/setupProxy.js && npm run start --backend='https://app.dev-cdc-nbs.eqsandbox.com'",
         "start": "react-scripts start",
-        "build": "react-scripts build",
+        "build": "npx react-scripts test --watchAll=false && react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "eslint .",

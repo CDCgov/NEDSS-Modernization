@@ -4029,11 +4029,11 @@ FROM
         SELECT 
           (
             SELECT 
-              STRING_ESCAPE(pn.last_nm, 'json') lastNm, 
-              pn.last_nm_sndx lastNmSndx, 
+              STRING_ESCAPE(pn.last_nm, 'json') lastNm,
+			  soundex(pn.last_nm) lastNmSndx,
               STRING_ESCAPE(pn.middle_nm, 'json') middleNm, 
               STRING_ESCAPE(pn.first_nm, 'json') firstNm, 
-              pn.first_nm_sndx firstNmSndx, 
+			  soundex(pn.first_nm) firstNmSndx,
               pn.nm_use_cd, 
               pn.nm_suffix nmSuffix, 
               pn.nm_degree nmDegree 
@@ -7105,5 +7105,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/01/2023 17:02:58 UTC</timestamp>
+    <timestamp>09/08/2023 22:02:26 UTC</timestamp>
 </template>

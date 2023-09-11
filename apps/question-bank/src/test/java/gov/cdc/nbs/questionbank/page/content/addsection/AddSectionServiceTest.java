@@ -5,7 +5,6 @@ import gov.cdc.nbs.questionbank.page.content.section.exception.AddSectionExcepti
 import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
@@ -21,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class AddSectionServiceTest {
@@ -50,10 +50,10 @@ class AddSectionServiceTest {
     void updateSectionServiceTest() {
 
         UpdateSectionRequest updateSectionRequest =
-                new UpdateSectionRequest(123L,  "Local", "T");
+                new UpdateSectionRequest(  "Local", "T");
 
         UpdateSectionResponse updateSectionResponse =
-                createSectionService.updateSection( updateSectionRequest);
+                createSectionService.updateSection(123L, updateSectionRequest);
         assertEquals("Section updated successfully", updateSectionResponse.message());
     }
 
@@ -62,66 +62,76 @@ class AddSectionServiceTest {
     void updateSectionServiceNoLabelOrVisibilityTest() {
 
         UpdateSectionRequest updateSectionRequest =
-                new UpdateSectionRequest(123L,  null, null);
+                new UpdateSectionRequest(  null, null);
 
-                assertThrows(UpdateSectionException.class, () ->createSectionService.updateSection(updateSectionRequest));
+                assertThrows(UpdateSectionException.class, () ->createSectionService.updateSection(123L, updateSectionRequest));
 
     }
 
     @Test
     void deleteSectionTest() {
 
-        DeleteSectionRequest deleteSectionRequest =
-                new DeleteSectionRequest(123L);
-
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
 
-        Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
-                .thenReturn(1234L);
-
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
-                .thenReturn(1015L);
+                .thenReturn(Optional.of(1015L));
 
         DeleteSectionResponse deleteSectionResponse =
-                createSectionService.deleteSection( deleteSectionRequest);
-        assertEquals("Section Deleted Successfully", deleteSectionResponse.message());
+                createSectionService.deleteSection(1234L, 123L);
+        assertEquals("Section deleted successfully", deleteSectionResponse.message());
     }
 
 
     @Test
     void deleteSectionTestExceptionInElse() {
 
-        DeleteSectionRequest deleteSectionRequest =
-                new DeleteSectionRequest(123L);
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
                 .thenReturn(1);
 
-        Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
-                .thenReturn(1234L);
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
+                .thenReturn(Optional.of(10L));
+
+        assertThrows(DeleteSectionException.class, () ->
+                createSectionService.deleteSection(1234L, 123L));
+
+    }
+
+    @Test
+    void deleteSectionTestInElse() {
+
+        Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
+                .thenReturn(1);
 
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
-                .thenReturn(10100L);
+                .thenReturn(Optional.empty());
 
-        assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection( deleteSectionRequest));
+        DeleteSectionResponse deleteSectionResponse =
+                createSectionService.deleteSection(1234L, 123L);
+        assertEquals("Section deleted successfully", deleteSectionResponse.message());
 
     }
 
     @Test
     void createSectionServiceTestException() {
+
         assertThrows(AddSectionException.class, () -> createSectionService.createSection(10L, 123L, null));
 
     }
 
     @Test
     void updateSectionServiceTestException() {
-        assertThrows(UpdateSectionException.class, () -> createSectionService.updateSection(null));
+        assertThrows(UpdateSectionException.class, () -> createSectionService.updateSection(123L, null));
 
     }
     @Test
     void deleteSectionServiceTestException() {
-        assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection( null));
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
+            .thenThrow(new DeleteSectionException(""));
+
+        assertThrows(DeleteSectionException.class, () ->
+                createSectionService.deleteSection(100L, 123L));
 
     }
 }

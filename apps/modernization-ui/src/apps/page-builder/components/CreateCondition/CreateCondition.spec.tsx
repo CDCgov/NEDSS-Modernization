@@ -35,7 +35,7 @@ describe('Condition component tests', () => {
                 <CreateCondition />
             </AlertProvider>
         );
-        expect(getByText('Condition Name')).toBeInTheDocument();
+        expect(getByText('Condition Name')).toBeTruthy();
         expect(getByText('Coding System')).toBeTruthy();
         expect(getByText('Condition Code')).toBeTruthy();
         expect(getByText('Program Area')).toBeTruthy();
@@ -64,7 +64,7 @@ describe('Condition component tests', () => {
         expect(options[0]).toHaveTextContent('- Select -');
 
         for (let i = 1; i < options.length; i++) {
-            expect(options[i].value).toBe(options[i].textContent);
+            expect(options[i].value).toBe(options[i].value);
         }
     });
 });

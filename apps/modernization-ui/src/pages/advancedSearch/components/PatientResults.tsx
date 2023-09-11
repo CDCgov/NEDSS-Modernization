@@ -5,6 +5,7 @@ import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { NoData } from 'components/NoData';
+import formattedName from 'formattedName';
 
 type SearchItemsProps = {
     data: Person[];
@@ -197,7 +198,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 {!item.lastNm && !item.firstNm ? (
                                                     <NoData />
                                                 ) : (
-                                                    `${item.lastNm}, ${item.firstNm}`
+                                                    formattedName(item?.lastNm ?? '', item?.firstNm ?? '')
                                                 )}
                                             </a>
                                         </Grid>
