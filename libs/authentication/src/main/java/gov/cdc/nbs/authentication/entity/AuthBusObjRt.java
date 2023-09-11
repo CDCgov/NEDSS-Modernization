@@ -54,10 +54,23 @@ public class AuthBusObjRt {
         final AuthBusObjType operationType,
         final AuthBusOpType objectType
     ) {
+        this();
         this.authPermSetUid = set;
         this.authBusObjTypeUid = operationType;
         this.audit = new AuthAudit(set.audit());
         this.operationRight = new AuthBusOpRt(objectType, this);
+    }
+
+    public AuthPermSet permissionSet() {
+        return authPermSetUid;
+    }
+
+    public AuthBusObjType objectType() {
+        return authBusObjTypeUid;
+    }
+
+    public AuthBusOpRt operationRight() {
+        return operationRight;
     }
 
     public AuthAudit audit() {

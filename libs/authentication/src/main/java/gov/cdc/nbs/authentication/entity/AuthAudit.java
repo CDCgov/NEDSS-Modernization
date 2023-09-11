@@ -30,10 +30,11 @@ public class AuthAudit {
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;
 
-    public AuthAudit() {
+    AuthAudit() {
     }
 
     public AuthAudit(final long who, final Instant when) {
+        this();
         this.addUserId = who;
         this.addTime = when;
         this.lastChgUserId = who;
@@ -44,6 +45,7 @@ public class AuthAudit {
     }
 
     public AuthAudit(final AuthAudit audit) {
+        this();
         this.addUserId = audit.addUserId;
         this.addTime = audit.addTime;
         this.lastChgUserId = audit.lastChgUserId;

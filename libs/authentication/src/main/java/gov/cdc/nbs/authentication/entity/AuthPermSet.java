@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 @Entity
@@ -47,11 +48,6 @@ public class AuthPermSet {
 
     public Long id() {
         return id;
-    }
-
-    public AuthPermSet id(final long id) {
-        this.id = id;
-        return this;
     }
 
     public String name() {
@@ -97,7 +93,7 @@ public class AuthPermSet {
         return this.rights;
     }
 
-    public AuthBusObjRt add(final AuthBusOpType operation, final AuthBusObjType object) {
+    public AuthBusObjRt addObjectRight(final AuthBusOpType operation, final AuthBusObjType object) {
         AuthBusObjRt right = new AuthBusObjRt(
             this,
             object,
@@ -107,5 +103,9 @@ public class AuthPermSet {
         ensureRights().add(right);
 
         return right;
+    }
+
+    public Collection<AuthBusObjRt> objectRights() {
+        return this.rights == null ? List.of() : List.copyOf(this.rights);
     }
 }

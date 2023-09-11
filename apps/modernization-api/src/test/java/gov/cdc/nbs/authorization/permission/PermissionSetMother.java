@@ -78,7 +78,7 @@ class PermissionSetMother {
     ) {
         AuthBusObjType objectType = this.objectFinder.find(object);
         AuthBusOpType operationType = this.operationFinder.find(operation);
-        set.add(operationType, objectType);
+        set.addObjectRight(operationType, objectType);
     }
 
 }

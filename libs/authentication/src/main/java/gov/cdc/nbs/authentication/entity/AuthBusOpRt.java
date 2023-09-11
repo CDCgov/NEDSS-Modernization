@@ -44,6 +44,7 @@ public class AuthBusOpRt {
     }
 
     public AuthBusOpRt(final AuthBusOpType type, final AuthBusObjRt right) {
+        this();
         this.authBusOpTypeUid = type;
         this.authBusObjRtUid = right;
 
@@ -54,4 +55,11 @@ public class AuthBusOpRt {
         this.audit = new AuthAudit(right.audit());
     }
 
+    public AuthBusOpType operationType() {
+        return authBusOpTypeUid;
+    }
+
+    public AuthBusObjRt objectRight() {
+        return authBusObjRtUid;
+    }
 }

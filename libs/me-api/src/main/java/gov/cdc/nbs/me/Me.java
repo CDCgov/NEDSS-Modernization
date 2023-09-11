@@ -13,9 +13,4 @@ record Me(
     String lastName,
     @ApiModelProperty(required = true)
     List<String> permissions) {
-
-    Me(long identifier, String firstName, String lastName) {
-        this(identifier, firstName, lastName, List.of());
-    }
-
 }

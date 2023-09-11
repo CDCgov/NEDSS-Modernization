@@ -51,7 +51,7 @@ public class AuthUserRole {
     @Embedded
     private AuthAudit audit;
 
-    public AuthUserRole() {
+     AuthUserRole() {
         this.readOnlyInd = 'T'; //not used always "T"
     }
 
@@ -62,6 +62,14 @@ public class AuthUserRole {
         this();
         this.authUserUid = user;
         this.authPermSetUid = set;
+    }
+
+    public Long id() {
+        return id;
+    }
+
+    public Character forReadOnly() {
+        return readOnlyInd;
     }
 
     public String name() {
