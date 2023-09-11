@@ -6,6 +6,7 @@ import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';
+import { formattedName } from '../formattedName';
 
 type LabReportResultsProps = {
     data: [LabReport];
@@ -68,13 +69,6 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         } else {
             return 'No Data';
         }
-    };
-
-    const formattedName = (lastNm = '', firstNm = '') => {
-        const format = [];
-        lastNm && format.push(lastNm);
-        firstNm && format.push(firstNm);
-        return (format.length > 1 ? format.join(', ') : format.join('')) || '--';
     };
 
     const buildPatientDetails = (labReport: LabReport) => {

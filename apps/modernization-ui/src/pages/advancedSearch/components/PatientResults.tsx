@@ -5,6 +5,7 @@ import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { NoData } from 'components/NoData';
+import { formattedName } from '../formattedName';
 
 type SearchItemsProps = {
     data: Person[];
@@ -152,13 +153,6 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
 
     const redirectPatientProfile = async (item: Person) => {
         navigate(`/patient-profile/${item.shortId}`);
-    };
-
-    const formattedName = (lastNm = '', firstNm = '') => {
-        const format = [];
-        lastNm && format.push(lastNm);
-        firstNm && format.push(firstNm);
-        return (format.length > 1 ? format.join(', ') : format.join('')) || '--';
     };
 
     return (
