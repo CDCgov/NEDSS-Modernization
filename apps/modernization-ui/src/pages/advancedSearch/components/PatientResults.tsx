@@ -5,7 +5,7 @@ import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { NoData } from 'components/NoData';
-import { formattedName } from '../formattedName';
+import formattedName from 'formattedName';
 
 type SearchItemsProps = {
     data: Person[];

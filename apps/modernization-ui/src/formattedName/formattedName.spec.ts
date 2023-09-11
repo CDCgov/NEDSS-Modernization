@@ -1,4 +1,4 @@
-import { formattedName } from './formattedName';
+import formattedName from 'formattedName';
 
 describe('formattedName', () => {
     it('should format the name correctly with both last name and first name', () => {
