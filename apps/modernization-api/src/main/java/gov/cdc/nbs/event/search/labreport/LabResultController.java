@@ -15,7 +15,7 @@ public class LabResultController {
         this.finder = finder;
     }
 
-    @QueryMapping // TODO tests
+    @QueryMapping
     public List<CodedResult> findDistinctCodedResults(@Argument String searchText, @Argument boolean loinc) {
         return finder.findDistinctCodedResults(searchText, loinc);
     }

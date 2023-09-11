@@ -16,9 +16,9 @@ public class LabTestController {
         this.resultedTestFinder = resultedTestFinder;
     }
 
-    @QueryMapping // TODO tests
+    @QueryMapping
     public List<ResultedTest> findDistinctResultedTest(@Argument String searchText, @Argument boolean loinc) {
-        return resultedTestFinder.findResultedTest(searchText, loinc);
+        return resultedTestFinder.findDistinctResultedTest(searchText, loinc);
     }
 
 }

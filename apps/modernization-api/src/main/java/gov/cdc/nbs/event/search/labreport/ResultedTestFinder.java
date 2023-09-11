@@ -2,23 +2,17 @@ package gov.cdc.nbs.event.search.labreport;
 
 import java.util.Arrays;
 import java.util.List;
-import javax.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
-import com.blazebit.persistence.CriteriaBuilderFactory;
-import com.blazebit.persistence.querydsl.BlazeJPAQuery;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.SimplePath;
-import gov.cdc.nbs.entity.srte.QLabTest;
-import gov.cdc.nbs.entity.srte.QLoincCode;
 import gov.cdc.nbs.event.search.labreport.model.ResultedTest;
+import gov.cdc.nbs.repository.LabTestRepository;
+import gov.cdc.nbs.repository.LoincCodeRepository;
 
 @Component
 public class ResultedTestFinder {
-    private static final QLabTest labTestTable = QLabTest.labTest;
-    private static final QLoincCode loincTable = QLoincCode.loincCode;
-    private static final SimplePath<String> RESULTED_TEST = Expressions.path(String.class, "resultedTest");
-
-
     // used in the query to retrieve LOINC ResultedTests - NBS: ObservationProcessor.java #697
     private static List<String> relatedClassCodes = Arrays.asList(
             "ABXBACT",
@@ -49,40 +43,32 @@ public class ResultedTestFinder {
             "UA",
             "VACCIN");
 
-    private final EntityManager entityManager;
-    private final CriteriaBuilderFactory criteriaBuilderFactory;
+
+    private final Integer maxPageSize;
+    private final LabTestRepository labTestRepository;
+    private final LoincCodeRepository loincCodeRepository;
 
     public ResultedTestFinder(
-            final EntityManager entityManager,
-            final CriteriaBuilderFactory criteriaBuilderFactory) {
-        this.entityManager = entityManager;
-        this.criteriaBuilderFactory = criteriaBuilderFactory;
+            final LabTestRepository labTestRepository,
+            final LoincCodeRepository loincCodeRepository,
+            @Value("${nbs.max-page-size: 50}") final Integer maxPageSize) {
+        this.labTestRepository = labTestRepository;
+        this.loincCodeRepository = loincCodeRepository;
+        this.maxPageSize = maxPageSize;
     }
 
-    public List<ResultedTest> findResultedTest(String searchText, boolean loinc) {
+    public List<ResultedTest> findDistinctResultedTest(String searchText, boolean loinc) {
         String searchString = "%" + searchText + "%";
         if (loinc) {
-            return new BlazeJPAQuery<String>(entityManager, criteriaBuilderFactory)
-                    .distinct()
-                    .select(loincTable.componentName.as(RESULTED_TEST))
-                    .from(loincTable)
-                    .where(loincTable.componentName.likeIgnoreCase(searchString)
-                            .and(loincTable.relatedClassCd.in(relatedClassCodes)))
-                    .limit(100)
-                    .fetch()
+            Pageable pageable = PageRequest.of(0, maxPageSize, Direction.ASC, "componentName");
+            return loincCodeRepository.findDistinctTestNames(searchString, relatedClassCodes, pageable)
                     .stream()
                     .map(ResultedTest::new)
                     .toList();
-
         } else {
-            return new BlazeJPAQuery<String>(entityManager, criteriaBuilderFactory)
-                    .distinct()
-                    .select(labTestTable.labTestDescTxt.as(RESULTED_TEST))
-                    .from(labTestTable)
-                    .where(labTestTable.labTestDescTxt.likeIgnoreCase(searchString)
-                            .or(labTestTable.id.labTestCd.likeIgnoreCase(searchString)))
-                    .limit(100)
-                    .fetch()
+            Pageable pageable = PageRequest.of(0, maxPageSize, Direction.ASC, "labTestDescTxt");
+            return labTestRepository
+                    .findDistinctTestNames(searchString, pageable)
                     .stream()
                     .map(ResultedTest::new)
                     .toList();

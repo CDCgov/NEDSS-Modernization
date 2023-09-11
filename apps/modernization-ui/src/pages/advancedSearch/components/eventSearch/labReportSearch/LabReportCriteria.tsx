@@ -19,26 +19,10 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
     const [codedResults, setCodedResults] = useState<{ label: string; value: string }[]>([]);
     const [resultData, setResultsData] = useState<{ label: string; value: string }[]>([]);
 
-    const removeDuplicates = (items: any) => {
-        const newArray: any = [];
-        const uniqueObject: any = {};
-        for (const i in items) {
-            if (items[i]['value']) {
-                uniqueObject[items[i]['value']] = items[i];
-            }
-        }
-        for (const i in uniqueObject) {
-            if (uniqueObject[i]) {
-                newArray.push(uniqueObject[i]);
-            }
-        }
-        return newArray;
-    };
-
     const debouncedCodedSearchResults = debounce(async (criteria: string) => {
         getCodedResultedTests({ variables: { searchText: criteria, loinc: false } }).then((response) => {
             const codedResults = response.data?.findDistinctCodedResults.map(codedResultToComboOption) || [];
-            setCodedResults(removeDuplicates(codedResults));
+            setCodedResults(codedResults);
         });
     }, 300);
 
@@ -49,7 +33,7 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
     const debounceResultedTestSearch = debounce(async (criteria: string) => {
         getLocalResultedTests({ variables: { searchText: criteria, loinc: false } }).then((response) => {
             const resultedTests = response.data?.findDistinctResultedTest.map(labTestToComboOption) || [];
-            setResultsData(removeDuplicates(resultedTests));
+            setResultsData(resultedTests);
         });
     }, 300);
 
