@@ -13,9 +13,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -245,12 +249,25 @@ public class NBSEntity {
             .toList();
     }
 
-    public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
-        return this.ensureLocators().stream()
-            .filter(EntityLocatorParticipation.active().and(this::isPhoneNumber))
-            .map(TeleEntityLocatorParticipation.class::cast)
-            .toList();
-    }
+	public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
+		Set<TeleEntityLocatorParticipation> filter = new HashSet<TeleEntityLocatorParticipation>();
+
+		Map<String, TeleEntityLocatorParticipation> mapping = new HashMap<String, TeleEntityLocatorParticipation>();
+		for (EntityLocatorParticipation one : this.ensureLocators()) {
+			if (this.isPhoneNumber(one)) {
+				TeleEntityLocatorParticipation number = (TeleEntityLocatorParticipation) one;
+				TeleLocator pl = ((TeleEntityLocatorParticipation) number).getLocator();
+
+				if (!mapping.containsKey(pl.getPhoneNbrTxt())) {
+					filter.add(number);
+					mapping.put(pl.getPhoneNbrTxt(), number);
+				}
+			}
+		}
+
+		return filter;
+
+	}
 
     private boolean isPhoneNumber(final EntityLocatorParticipation participation) {
         return participation instanceof TeleEntityLocatorParticipation && !Objects.equals(participation.cd, "NET");
