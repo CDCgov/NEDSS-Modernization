@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
 
-import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
@@ -37,16 +36,16 @@ public class SubSectionController {
     }
 
 
-    @DeleteMapping("deletesubsection")
+    @DeleteMapping("{subSectionId}")
     @ResponseBody
-    public DeleteSubSectionResponse deleteSubSection(@RequestBody DeleteSubSectionRequest request) {
-        return creator.deleteSubSection(request);
+    public DeleteSubSectionResponse deleteSubSection(@PathVariable("page") Long page, @PathVariable Long subSectionId) {
+        return creator.deleteSubSection(page, subSectionId);
     }
 
-    @PutMapping("updatesubsection")
+    @PutMapping("{subSectionId}")
     @ResponseBody
-    public UpdateSubSectionResponse updateSubSection(@RequestBody UpdateSubSectionRequest request) {
-        return creator.updateSubSection(request);
+    public UpdateSubSectionResponse updateSubSection(@PathVariable("subSectionId") Long subSectionId, @RequestBody UpdateSubSectionRequest request) {
+        return creator.updateSubSection(subSectionId, request);
     }
 
 }

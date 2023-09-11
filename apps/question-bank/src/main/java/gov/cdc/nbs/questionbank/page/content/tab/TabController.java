@@ -1,13 +1,11 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
 
+import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
+import gov.cdc.nbs.questionbank.page.content.tab.response.DeleteTabResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.response.UpdateTabResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.CreateTabResponse;
@@ -34,6 +32,18 @@ public class TabController {
             @RequestBody CreateTabRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return creator.createTab(page, userId, request);
+    }
+
+    @DeleteMapping("{tabId}")
+    @ResponseBody
+    public DeleteTabResponse deleteTab(@PathVariable("page") Long page, @PathVariable Long tabId) {
+        return creator.deleteTab(page, tabId);
+    }
+
+    @PutMapping("{tabId}")
+    @ResponseBody
+    public UpdateTabResponse updateTab(@PathVariable Long tabId, @RequestBody UpdateTabRequest request) {
+        return creator.updateTab(tabId, request);
     }
 
 }
