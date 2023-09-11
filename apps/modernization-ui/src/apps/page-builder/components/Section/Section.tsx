@@ -36,7 +36,11 @@ export const SectionComponent = ({ section, onAddSection }: { section: SectionPr
                 {open ? (
                     <div className="section__body">
                         {section.sectionSubSections.map((subsection: SubsectionProps, i: number) => {
-                            return <Subsection key={i} subsection={subsection} />;
+                            if (subsection.visible === 'T') {
+                                return <Subsection key={i} subsection={subsection} />;
+                            } else {
+                                return;
+                            }
                         })}
                     </div>
                 ) : null}
