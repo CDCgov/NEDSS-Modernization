@@ -19,6 +19,7 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
+import gov.cdc.nbs.patient.util.PatientHelper;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import graphql.com.google.common.collect.Ordering;
@@ -335,34 +336,9 @@ public class PatientService {
         persons.sort(Ordering.explicit(ids).onResultOf(Person::getId));
         
         
-        return new PageImpl<>(distinctNumbers(persons), pageable, elasticsearchPersonSearchHits.getTotalHits());
+        return new PageImpl<>(PatientHelper.distinctNumbers(persons), pageable, elasticsearchPersonSearchHits.getTotalHits());
     }
     
-	public List<Person> distinctNumbers(List<Person> input) {
-		input.stream().forEach(aPerson -> {
-			List<EntityLocatorParticipation> results = new ArrayList<>();
-			Map<String, TeleEntityLocatorParticipation> mapping = new HashMap<String, TeleEntityLocatorParticipation>();
-			List<EntityLocatorParticipation> entityLocators = aPerson.getNbsEntity().getEntityLocatorParticipations();
-			for (EntityLocatorParticipation one : entityLocators) {
-				if (aPerson.getNbsEntity().isPhoneNumber(one)) {
-					TeleEntityLocatorParticipation number = (TeleEntityLocatorParticipation) one;
-					TeleLocator pl = number.getLocator();
-					if (!mapping.containsKey(pl.getPhoneNbrTxt())) {
-						results.add(number);
-						mapping.put(pl.getPhoneNbrTxt(), number);
-					}
-				} else {
-					results.add(one);
-
-				}
-
-			}
-			aPerson.getNbsEntity().getEntityLocatorParticipations().clear();
-			aPerson.getNbsEntity().getEntityLocatorParticipations().addAll(results);
-		});
-
-		return input;
-	}
 
     public Page<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
         // limit page size

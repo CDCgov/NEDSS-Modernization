@@ -118,10 +118,10 @@ public class PersonMother {
                 id,
                 id + 40000L,
                 RandomUtil.getRandomDateInPast(),
-                RandomUtil.getRandomPhoneNumber(),
-                null,
                 "PH",
                 "H",
+                RandomUtil.getRandomPhoneNumber(),
+                null,
                 CREATED_BY_ID,
                 now
             )
@@ -230,5 +230,27 @@ public class PersonMother {
 
         return person;
     }
+    
+    public static Person addNumber(Person aPerson) {
+    	Instant now = Instant.now();
+    	
+    	aPerson.add(
+    	            new PatientCommand.AddPhoneNumber(
+    	                aPerson.getId(),
+    	                aPerson.getId() + 40000L,
+    	                RandomUtil.getRandomDateInPast(),
+    	                "PH",
+    	                "H",
+    	                "222-555-3333",
+    	                null,
+    	                CREATED_BY_ID,
+    	                now
+    	            )
+    	        );	
+    	
+    	return aPerson;
+    }
+    
+    
 
 }
