@@ -13,13 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Getter
 @Entity
@@ -256,8 +252,6 @@ public class NBSEntity {
             .map(TeleEntityLocatorParticipation.class::cast)
             .toList();
     }
-    
-
 
 
     public boolean isPhoneNumber(final EntityLocatorParticipation participation) {
@@ -271,7 +265,7 @@ public class NBSEntity {
             .toList();
     }
 
-     boolean isEmailAddress(final EntityLocatorParticipation participation) {
+    private boolean isEmailAddress(final EntityLocatorParticipation participation) {
         return Objects.equals(participation.cd, "NET");
     }
 
