@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { HorizontalEntryWrapper } from './HorizontalEntryWrapper';
+import { VerticalEntryWrapper } from './VerticalEntryWrapper';
 
 type Props = {
     orientation: 'horizontal' | 'vertical';
@@ -18,6 +19,12 @@ const EntryWrapper = ({ orientation = 'vertical', htmlFor, label, required, erro
             </HorizontalEntryWrapper>
         );
     }
+
+    return (
+        <VerticalEntryWrapper htmlFor={htmlFor} label={label} required={required} error={error}>
+            {children}
+        </VerticalEntryWrapper>
+    );
 };
 
 export { EntryWrapper };

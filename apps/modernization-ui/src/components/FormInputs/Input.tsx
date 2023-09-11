@@ -1,6 +1,7 @@
-import { ErrorMessage, Grid, Label, TextInput, Textarea } from '@trussworks/react-uswds';
+import { TextInput, Textarea } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import './Input.scss';
+import { EntryWrapper } from 'components/Entry';
 
 type InputProps = {
     name?: string;
@@ -36,65 +37,42 @@ export const Input = ({
     multiline,
     ...props
 }: InputProps) => {
-    return flexBox ? (
-        <Grid row className={`input ${error ? 'input--error' : ''}`}>
-            <Grid col={6}>
-                {label && (
-                    <Label className={classNames({ required })} htmlFor={htmlFor}>
-                        {label}
-                    </Label>
+    const orientation = flexBox ? 'horizontal' : 'vertical';
+
+    return (
+        <div className={classNames('input', { 'input--error': error })}>
+            <EntryWrapper
+                orientation={orientation}
+                label={label || ''}
+                htmlFor={htmlFor || ''}
+                required={required}
+                error={error}>
+                {!multiline ? (
+                    <TextInput
+                        inputMode={inputMode}
+                        placeholder={placeholder}
+                        {...props}
+                        id={id}
+                        onChange={onChange}
+                        value={defaultValue ? defaultValue : ''}
+                        name={name || ''}
+                        validationStatus={error ? 'error' : undefined}
+                        aria-describedby={`${error}-message`}
+                        className={classNames(className)}
+                        type={type}
+                    />
+                ) : (
+                    <Textarea
+                        placeholder={placeholder}
+                        id={id}
+                        onChange={onChange}
+                        value={defaultValue ? defaultValue : ''}
+                        name={name || ''}
+                        aria-describedby={`${error}-message`}
+                        className={classNames(className)}
+                    />
                 )}
-            </Grid>
-            <Grid col={6}>
-                {error && <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>}
-                <TextInput
-                    inputMode={inputMode}
-                    placeholder={placeholder}
-                    {...props}
-                    id={id}
-                    onChange={onChange}
-                    value={defaultValue ? defaultValue : ''}
-                    name={name || ''}
-                    validationStatus={error ? 'error' : undefined}
-                    aria-describedby={`${error}-message`}
-                    className={classNames(className)}
-                    type={type}
-                />
-            </Grid>
-        </Grid>
-    ) : (
-        <div className={`input ${error ? 'input--error' : ''}`}>
-            {label && (
-                <Label className={classNames({ required })} htmlFor={htmlFor}>
-                    {label}
-                </Label>
-            )}
-            {error && <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>}
-            {!multiline ? (
-                <TextInput
-                    inputMode={inputMode}
-                    placeholder={placeholder}
-                    {...props}
-                    id={id}
-                    onChange={onChange}
-                    value={defaultValue ? defaultValue : ''}
-                    name={name || ''}
-                    validationStatus={error ? 'error' : undefined}
-                    aria-describedby={`${error}-message`}
-                    className={classNames(className)}
-                    type={type}
-                />
-            ) : (
-                <Textarea
-                    placeholder={placeholder}
-                    id={id}
-                    onChange={onChange}
-                    value={defaultValue ? defaultValue : ''}
-                    name={name || ''}
-                    aria-describedby={`${error}-message`}
-                    className={classNames(className)}
-                />
-            )}
+            </EntryWrapper>
         </div>
     );
 };
