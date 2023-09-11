@@ -38,7 +38,7 @@ export const EditPage = () => {
         }
     }, [page]);
 
-    const handleAddSection = () => {
+    const handleAddSuccess = () => {
         if (pageId) {
             fetchPageDetails(token, Number(pageId)).then((data: any) => {
                 setPage(data);
@@ -53,11 +53,16 @@ export const EditPage = () => {
                     <PagesBreadcrumb currentPage={page.Name} />
                     <div className="edit-page__header">
                         <EditPageHeader page={page} />
-                        <EditPageTabs tabs={tabs} active={active} setActive={setActive} />
+                        <EditPageTabs
+                            tabs={tabs}
+                            active={active}
+                            setActive={setActive}
+                            onAddSuccess={handleAddSuccess}
+                        />
                     </div>
                     <div className="edit-page__container">
                         {page.pageTabs[active] ? (
-                            <EditPageContentComponent content={page.pageTabs[active]} onAddSection={handleAddSection} />
+                            <EditPageContentComponent content={page.pageTabs[active]} onAddSection={handleAddSuccess} />
                         ) : null}
 
                         <EditPageSidebar modalRef={addSectionModalRef} />
@@ -69,7 +74,7 @@ export const EditPage = () => {
                     modalRef={addSectionModalRef}
                     pageId={pageId}
                     tabId={page.pageTabs[active].id}
-                    onAddSection={handleAddSection}
+                    onAddSection={handleAddSuccess}
                 />
             ) : null}
         </PageBuilder>

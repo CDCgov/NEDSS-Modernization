@@ -3,11 +3,17 @@ import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router-dom';
 import { AddTab } from './index';
 
+// const modalRef = { current: null };
+const props = {
+    onAddTab: jest.fn(),
+    onCancel: jest.fn()
+};
+
 describe('When page loads', () => {
     it('Create and add to page button should be disabled', () => {
         const { container } = render(
             <BrowserRouter>
-                <AddTab />
+                <AddTab {...props} />
             </BrowserRouter>
         );
         const btn = container.getElementsByClassName('usa-button')[0];
@@ -19,7 +25,7 @@ describe('Add tabs component tests', () => {
     it('should render a grid with 3 inputs labels which are Tab Name, Tab Description, Visible', () => {
         const { getByText } = render(
             <AlertProvider>
-                <AddTab />
+                <AddTab {...props} />
             </AlertProvider>
         );
         expect(getByText('Tab Name')).toBeInTheDocument();
@@ -30,7 +36,7 @@ describe('Add tabs component tests', () => {
     it('Check validation', () => {
         const { getByTestId, queryByText } = render(
             <AlertProvider>
-                <AddTab />
+                <AddTab {...props} />
             </AlertProvider>
         );
         const nameElement = getByTestId('tab-name');

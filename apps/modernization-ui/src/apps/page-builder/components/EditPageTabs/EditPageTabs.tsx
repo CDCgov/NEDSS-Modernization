@@ -1,17 +1,26 @@
-import { SetStateAction, useRef } from 'react';
+import { SetStateAction, useRef, useState } from 'react';
 import './EditPageTabs.scss';
-import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { AddTab } from '../AddTabs';
+import ManageTabs from '../ManageTabs/ManageTabs';
 
 type Props = {
     tabs?: { name: string }[];
     active: number;
     setActive: SetStateAction<any>;
+    onAddSuccess: () => void;
 };
 
-export const EditPageTabs = ({ tabs, active, setActive }: Props) => {
+export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) => {
+    const [isAdding, setIsAdding] = useState(false);
     const modalRef = useRef<ModalRef>(null);
+
+    const handleAddTab = () => {
+        setIsAdding(!isAdding);
+        onAddSuccess();
+    };
+
     const renderAddTab = (
         <>
             <ModalToggleButton className="" unstyled type="button" modalRef={modalRef}>
@@ -20,9 +29,28 @@ export const EditPageTabs = ({ tabs, active, setActive }: Props) => {
                     <h4>Manage Tabs</h4>
                 </div>
             </ModalToggleButton>
-            <ModalComponent modalRef={modalRef} modalHeading={'Manage Tabs'} modalBody={<AddTab />} />
+            <ModalComponent
+                modalRef={modalRef}
+                modalHeading={
+                    !isAdding ? (
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <span>Manage Tabs</span>
+                            <Button className="add-tab-button" type="button" onClick={() => setIsAdding(true)}>
+                                <Icon.Add className="margin-right-05em add-tab-icon" />
+                                <span>Add new tab</span>
+                            </Button>
+                        </div>
+                    ) : (
+                        'Manage Tabs'
+                    )
+                }
+                modalBody={
+                    isAdding ? <AddTab onCancel={() => setIsAdding(false)} onAddTab={handleAddTab} /> : <ManageTabs />
+                }
+            />
         </>
     );
+
     return (
         <div className="edit-page-tabs">
             {tabs &&
