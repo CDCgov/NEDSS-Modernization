@@ -75,7 +75,7 @@ export const AddNewPage = () => {
     const onSubmit = handleSubmit(async (data) => {
         await createPage(
             token,
-            data.conditionIds,
+            data.conditionIds.filter(Boolean),
             data.eventType,
             data.messageMappingGuide,
             data.name,

@@ -1,7 +1,9 @@
-import { DatePicker, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
+import { DatePicker } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { isFuture } from 'date-fns';
+import { EntryWrapper } from 'components/Entry';
 
 type OnChange = (val?: string) => void;
 type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
@@ -14,14 +16,15 @@ type DatePickerProps = {
     onChange?: OnChange;
     onBlur?: OnBlur;
     className?: string;
-    defaultValue?: string;
+    defaultValue?: string | null;
     errorMessage?: string;
     flexBox?: boolean;
     required?: boolean;
     disabled?: boolean;
+    disableFutureDates?: boolean;
 };
 
-const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/[0-9]{4}$/;
+const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/(19|20)[0-9]{2}$/;
 
 const matches = (value: string) => inputFormat.test(value);
 
@@ -44,17 +47,27 @@ export const DatePickerInput = ({
     flexBox,
     errorMessage,
     required,
-    disabled = false
+    disabled = false,
+    disableFutureDates = false
 }: DatePickerProps) => {
     const emptyDefaultValue = !defaultValue || defaultValue.length === 0;
     const validDefaultValue = !emptyDefaultValue && matches(defaultValue);
-    const intialDefault = validDefaultValue ? interalize(defaultValue) : '';
+    const intialDefault = validDefaultValue ? interalize(defaultValue) : undefined;
 
     const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue));
 
+    const getCurrentLocalDate = () => {
+        let currentDate = new Date();
+        const offset = currentDate.getTimezoneOffset() * 60 * 1000;
+        currentDate = new Date(currentDate.getTime() - offset);
+        return currentDate.toISOString();
+    };
+
     const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
         const currentVal = (event.target as HTMLInputElement).value;
-        const valid = isValid(currentVal);
+
+        const valid = isValid(currentVal) && (!disableFutureDates || !isFuture(new Date(currentVal)));
+
         setError(!valid);
         onBlur && onBlur(event);
     };
@@ -64,73 +77,30 @@ export const DatePickerInput = ({
         valid && fn && fn(changed);
     };
 
-    return !flexBox ? (
-        <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
-            {label && (
-                <Label className={classNames({ required })} htmlFor={htmlFor}>
-                    {label}
-                </Label>
-            )}
-            <ErrorMessage id={`${error}-message`}>{errorMessage}</ErrorMessage>
-            {error && <small className="text-red">{'Not a valid date'}</small>}
-            {!intialDefault && (
+    const orientation = flexBox ? 'horizontal' : 'vertical';
+
+    const _error = error ? 'Not a valid date' : errorMessage;
+
+    return (
+        <div className={classNames('date-picker-input', { error: _error })}>
+            <EntryWrapper
+                orientation={orientation}
+                label={label || ''}
+                htmlFor={htmlFor || ''}
+                required={required}
+                error={_error}>
                 <DatePicker
                     id={id}
                     onBlur={checkValidity}
-                    onChange={handleOnChange(onChange)}
-                    className={className}
-                    disabled={disabled}
-                    name={name}
-                />
-            )}
-            {intialDefault && (
-                <DatePicker
-                    id={id}
-                    onBlur={checkValidity}
+                    onKeyDown={(e) => e.code === 'Enter' && e.preventDefault()}
                     onChange={handleOnChange(onChange)}
                     className={className}
                     name={name}
                     disabled={disabled}
                     defaultValue={intialDefault}
+                    maxDate={disableFutureDates ? getCurrentLocalDate() : undefined}
                 />
-            )}
+            </EntryWrapper>
         </div>
-    ) : (
-        <Grid row className={`date-picker-input ${error === true ? 'error' : ''}`}>
-            <Grid col={6}>
-                {label && (
-                    <Label className={classNames({ required })} htmlFor={htmlFor}>
-                        {label}
-                    </Label>
-                )}
-            </Grid>
-            <Grid col={6}>
-                {error && <small className="text-red">{'Not a valid date'}</small>}
-                {!intialDefault && (
-                    <DatePicker
-                        id={id}
-                        onBlur={checkValidity}
-                        onChange={handleOnChange(onChange)}
-                        className={className}
-                        disabled={disabled}
-                        name={name}
-                    />
-                )}
-                {intialDefault && (
-                    <DatePicker
-                        id={id}
-                        onBlur={checkValidity}
-                        onChange={handleOnChange(onChange)}
-                        className={className}
-                        name={name}
-                        disabled={disabled}
-                        defaultValue={intialDefault}
-                    />
-                )}
-            </Grid>
-            <Grid col={12}>
-                <ErrorMessage id={`${error}-message`}>{errorMessage}</ErrorMessage>
-            </Grid>
-        </Grid>
     );
 };

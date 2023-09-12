@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Grid } from '@trussworks/react-uswds';
 import { calculateAge } from 'date';
 import { CodedValue, Indicator } from 'coded';
-import { Controller, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
@@ -14,12 +14,14 @@ type CodedValues = {
     maritalStatuses: CodedValue[];
 };
 
-type Props = { id: string; title: string; control: any; coded: CodedValues };
+type Props = { id: string; title: string; coded: CodedValues };
 
-export default function OtherInfoFields({ id, title, control, coded }: Props) {
+export default function OtherInfoFields({ id, title, coded }: Props) {
+    const { control } = useFormContext();
+
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
-    const currentBirthday = useWatch({ control, name: 'dob' });
+    const currentBirthday = useWatch({ control, name: 'dateOfBirth' });
     const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
 
     return (
@@ -36,6 +38,7 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
+                                    disableFutureDates
                                     label="Date of birth"
                                 />
                             )}
@@ -104,24 +107,27 @@ export default function OtherInfoFields({ id, title, control, coded }: Props) {
                         />
                     </Grid>
                 </Grid>
-                <Grid row>
-                    <Grid col={6}>
-                        <Controller
-                            control={control}
-                            name="deceasedTime"
-                            render={({ field: { onChange, value, name } }) => (
-                                <DatePickerInput
-                                    defaultValue={value}
-                                    onChange={onChange}
-                                    name={name}
-                                    htmlFor={name}
-                                    label="Date of death"
-                                    disabled={selectedDeceased !== Indicator.Yes}
-                                />
-                            )}
-                        />
+                {selectedDeceased === Indicator.Yes && (
+                    <Grid row>
+                        <Grid col={6}>
+                            <Controller
+                                control={control}
+                                name="deceasedTime"
+                                render={({ field: { onChange, value, name } }) => (
+                                    <DatePickerInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        name={name}
+                                        htmlFor={name}
+                                        label="Date of death"
+                                        disableFutureDates
+                                        disabled={selectedDeceased !== Indicator.Yes}
+                                    />
+                                )}
+                            />
+                        </Grid>
                     </Grid>
-                </Grid>
+                )}
                 <Grid row>
                     <Grid col={6}>
                         <Controller

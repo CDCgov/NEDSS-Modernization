@@ -1,17 +1,19 @@
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Grid } from '@trussworks/react-uswds';
 import { CodedValue } from 'coded';
 import FormCard from 'components/FormCard/FormCard';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
+import { validNameRule } from 'validation/entry';
 
 type CodedValues = {
     suffixes: CodedValue[];
 };
 
-type Props = { id: string; title: string; control: any; coded: CodedValues };
+type Props = { id: string; title: string; coded: CodedValues };
 
-export default function NameFields({ id, title, control, coded }: Props) {
+const NameFields = ({ id, title, coded }: Props) => {
+    const { control } = useFormContext();
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
@@ -20,14 +22,18 @@ export default function NameFields({ id, title, control, coded }: Props) {
                         <Controller
                             control={control}
                             name="lastName"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     type="text"
                                     label="Last"
-                                    value={value}
+                                    defaultValue={value}
                                     htmlFor={name}
                                     id={name}
+                                    name={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -38,14 +44,17 @@ export default function NameFields({ id, title, control, coded }: Props) {
                         <Controller
                             control={control}
                             name="firstName"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     type="text"
-                                    value={value}
+                                    label="First"
+                                    defaultValue={value}
                                     htmlFor={name}
                                     id={name}
-                                    label="First"
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -56,14 +65,17 @@ export default function NameFields({ id, title, control, coded }: Props) {
                         <Controller
                             control={control}
                             name="middleName"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     type="text"
-                                    value={value}
+                                    label="Middle"
+                                    defaultValue={value}
                                     htmlFor={name}
                                     id={name}
-                                    label="Middle"
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -90,4 +102,6 @@ export default function NameFields({ id, title, control, coded }: Props) {
             </Grid>
         </FormCard>
     );
-}
+};
+
+export { NameFields };

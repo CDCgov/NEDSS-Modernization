@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient.identifier;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -34,7 +33,6 @@ public class PatientIdentifierFinder {
             .from(this.tables.patient())
             .where(
                 this.tables.patient().cd.eq(PATIENT_CODE),
-                this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE),
                 this.tables.patient().id.eq(identifier)
             )
             .fetch()

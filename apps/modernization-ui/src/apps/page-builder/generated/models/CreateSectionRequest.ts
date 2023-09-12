@@ -6,5 +6,5 @@ export type CreateSectionRequest = {
     name?: string;
     tabId?: number;
     visible?: boolean;
+    description?: string;
 };
-

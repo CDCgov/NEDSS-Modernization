@@ -85,8 +85,9 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 id={name}
                                 name={name}
                                 type="text"
-                                label="Condition name"
-                                value={value}
+                                data-testid="conditionName"
+                                label="Condition Name"
+                                defaultValue={value}
                                 error={error?.message}
                                 onChange={onChange}
                             />
@@ -121,8 +122,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <Input
                                 onChange={onChange}
-                                value={value}
-                                label="Condition code"
+                                defaultValue={value}
+                                label="Condition Code"
                                 type="text"
                                 error={error?.message}
                                 required
@@ -135,7 +136,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         rules={{ required: { value: true, message: 'Program area required' } }}
                         render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <SelectInput
-                                label="Program area"
+                                label="Program Area"
                                 defaultValue={value}
                                 onChange={onChange}
                                 options={programAreaOptions.map((option) => {

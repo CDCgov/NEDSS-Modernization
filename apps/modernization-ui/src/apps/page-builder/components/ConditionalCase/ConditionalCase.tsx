@@ -222,7 +222,7 @@ export const ConditionalCase = () => {
             title: (
                 <div className="main-title">
                     <div id="header-title">
-                        <h2 className="heading" data-testid="header-title">
+                        <h2 className="heading" data-testid="header-title-condition-case">
                             Jurisdictional Questions <span className={'count'}>{count}</span>
                         </h2>
                         <p className="desc">Please fill out all fields in this section</p>

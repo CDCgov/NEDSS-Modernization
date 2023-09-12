@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.page.content.section;
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
@@ -35,16 +34,16 @@ public class SectionController {
         return creator.createSection(page, userId, request);
     }
 
-    @DeleteMapping("deletesection")
+    @DeleteMapping("{sectionId}")
     @ResponseBody
-    public DeleteSectionResponse deleteSection(@RequestBody DeleteSectionRequest request) {
-        return creator.deleteSection(request);
+    public DeleteSectionResponse deleteSection(@PathVariable("page") Long page, @PathVariable("sectionId") Long sectionId) {
+        return creator.deleteSection(page, sectionId);
     }
 
-    @PutMapping("updatesection")
+    @PutMapping("{sectionId}")
     @ResponseBody
-    public UpdateSectionResponse updateSection(@RequestBody UpdateSectionRequest request) {
-        return creator.updateSection(request);
+    public UpdateSectionResponse updateSection(@PathVariable("sectionId") Long sectionId, @RequestBody UpdateSectionRequest request) {
+        return creator.updateSection(sectionId, request);
     }
 
 }

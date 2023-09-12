@@ -101,6 +101,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                                 onBlur={onBlur}
                                 name="asOf"
                                 htmlFor={'asOf'}
+                                disableFutureDates
                                 errorMessage={error?.message}
                             />
                         )}
@@ -121,6 +122,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                                 defaultValue={value}
                                 onChange={onChange}
                                 name="bornOn"
+                                disableFutureDates
                                 htmlFor={'bornOn'}
                             />
                         )}
