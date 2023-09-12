@@ -110,9 +110,9 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 render={({ field: { onChange, value, name } }) => (
                     <SelectInput
                         name={name}
-                        value={value as string | undefined}
+                        value={(value as string) ?? undefined}
                         onChange={onChange}
-                        label="Pregnancy test"
+                        label="Event id type"
                         htmlFor={name}
                         options={Object.values(LaboratoryEventIdType).map((event) => {
                             return {
@@ -376,22 +376,19 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 control={form.control}
                 name="providerSearch.providerType"
                 render={({ field: { onChange, value, name } }) => (
-                    <>
-                        Value: {value}
-                        <SelectInput
-                            name={name}
-                            value={value ?? undefined}
-                            onChange={onChange}
-                            label="Event provider/facility type"
-                            htmlFor={name}
-                            options={Object.values(ProviderType).map((type) => {
-                                return {
-                                    name: formatInterfaceString(type),
-                                    value: type
-                                };
-                            })}
-                        />
-                    </>
+                    <SelectInput
+                        name={name}
+                        value={value ?? undefined}
+                        onChange={onChange}
+                        label="Event provider/facility type"
+                        htmlFor={name}
+                        options={Object.values(ProviderType).map((type) => {
+                            return {
+                                name: formatInterfaceString(type),
+                                value: type
+                            };
+                        })}
+                    />
                 )}
             />
 

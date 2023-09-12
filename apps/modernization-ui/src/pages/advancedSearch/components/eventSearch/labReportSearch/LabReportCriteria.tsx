@@ -55,20 +55,17 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
                     control={form.control}
                     name={'resultedTest'}
                     render={({ field: { onChange, value } }) => (
-                        <>
-                            Value: {value}
-                            <ComboBox
-                                key={value}
-                                id="resultedTest"
-                                name="resultedTest"
-                                options={resultData}
-                                defaultValue={value ?? undefined}
-                                onChange={(e) => {
-                                    debounceResultedTestSearch(e ?? '');
-                                    onChange(e);
-                                }}
-                            />
-                        </>
+                        <ComboBox
+                            key={value}
+                            id="resultedTest"
+                            name="resultedTest"
+                            options={resultData}
+                            defaultValue={value ?? undefined}
+                            onChange={(e) => {
+                                debounceResultedTestSearch(e ?? '');
+                                onChange(e);
+                            }}
+                        />
                     )}
                 />
             ) : null}
@@ -79,20 +76,17 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
                     control={form.control}
                     name={'codedResult'}
                     render={({ field: { onChange, value } }) => (
-                        <>
-                            Value: {value}
-                            <ComboBox
-                                key={value}
-                                id="codedResult"
-                                name="codedResult"
-                                options={codedResults}
-                                defaultValue={value ?? undefined}
-                                onChange={(e) => {
-                                    debouncedCodedSearchResults(e ?? '');
-                                    onChange(e);
-                                }}
-                            />
-                        </>
+                        <ComboBox
+                            key={value}
+                            id="codedResult"
+                            name="codedResult"
+                            options={codedResults}
+                            defaultValue={value ?? undefined}
+                            onChange={(e) => {
+                                debouncedCodedSearchResults(e ?? '');
+                                onChange(e);
+                            }}
+                        />
                     )}
                 />
             ) : null}

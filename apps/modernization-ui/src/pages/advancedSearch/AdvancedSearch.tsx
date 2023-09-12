@@ -421,12 +421,12 @@ export const AdvancedSearch = () => {
                 break;
             case 'Lab Event Type':
             case 'Lab Event Id':
-                delete tempLabReportFilter.eventId;
+                tempLabReportFilter.eventId = undefined;
                 break;
             case 'From':
             case 'To':
             case 'Type':
-                delete tempLabReportFilter.eventDate;
+                tempLabReportFilter.eventDate = undefined;
                 break;
             case 'Created By':
                 delete tempLabReportFilter.createdBy;
@@ -446,44 +446,26 @@ export const AdvancedSearch = () => {
                 break;
             case 'Entry Methods':
                 if (tempLabReportFilter?.entryMethods) {
-                    if (tempLabReportFilter?.entryMethods?.length > 1) {
-                        tempLabReportFilter.entryMethods = tempLabReportFilter.entryMethods?.filter(
-                            (item) => item !== value
-                        );
-                    } else {
-                        delete tempLabReportFilter.entryMethods;
-                    }
+                    tempLabReportFilter.entryMethods = tempLabReportFilter.entryMethods?.filter(
+                        (item) => item !== value
+                    );
                 }
                 break;
             case 'Entered By':
                 if (tempLabReportFilter?.enteredBy) {
-                    if (tempLabReportFilter?.enteredBy?.length > 1) {
-                        tempLabReportFilter.enteredBy = tempLabReportFilter.enteredBy?.filter((item) => item !== value);
-                    } else {
-                        delete tempLabReportFilter.enteredBy;
-                    }
+                    tempLabReportFilter.enteredBy = tempLabReportFilter.enteredBy?.filter((item) => item !== value);
                 }
                 break;
             case 'Processing Status':
                 if (tempLabReportFilter?.processingStatus) {
-                    if (tempLabReportFilter?.processingStatus?.length > 1) {
-                        tempLabReportFilter.processingStatus = tempLabReportFilter.processingStatus?.filter(
-                            (item) => item !== value
-                        );
-                    } else {
-                        delete tempLabReportFilter.processingStatus;
-                    }
+                    tempLabReportFilter.processingStatus = tempLabReportFilter.processingStatus?.filter(
+                        (item) => item !== value
+                    );
                 }
                 break;
             case 'Event Status':
                 if (tempLabReportFilter?.eventStatus) {
-                    if (tempLabReportFilter?.eventStatus?.length > 1) {
-                        tempLabReportFilter.eventStatus = tempLabReportFilter.eventStatus?.filter(
-                            (item) => item !== value
-                        );
-                    } else {
-                        delete tempLabReportFilter.eventStatus;
-                    }
+                    tempLabReportFilter.eventStatus = tempLabReportFilter.eventStatus?.filter((item) => item !== value);
                 }
                 break;
             case 'Provider Id':

@@ -86,7 +86,7 @@ public class LabReportQueryBuilder {
                     var accessionNumberQuery = QueryBuilders.boolQuery()
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ACT_IDS + "."
-                                            + ElasticsearchActId.TYPE_CD,
+                                            + ElasticsearchActId.TYPE_DESC_TXT,
                                     "Filler Number"))
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ACT_IDS + "."
