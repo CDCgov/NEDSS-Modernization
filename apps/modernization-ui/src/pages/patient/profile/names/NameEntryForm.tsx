@@ -105,7 +105,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                     flexBox
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    value={value}
+                                    value={value ?? undefined}
                                     type="text"
                                     label="First name"
                                     name={name}
@@ -127,7 +127,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                     flexBox
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    value={value}
+                                    value={value ?? undefined}
                                     type="text"
                                     label="Middle name"
                                     name={name}
@@ -149,7 +149,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                     flexBox
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    value={value}
+                                    value={value ?? undefined}
                                     type="text"
                                     label="Second middle"
                                     name={name}
@@ -171,7 +171,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                     flexBox
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    value={value}
+                                    value={value ?? undefined}
                                     type="text"
                                     label="Last name"
                                     name={name}
@@ -193,7 +193,7 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                                     flexBox
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    value={value}
+                                    value={value ?? undefined}
                                     type="text"
                                     label="Second last"
                                     name={name}
