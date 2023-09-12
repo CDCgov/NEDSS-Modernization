@@ -14,7 +14,7 @@ export const LabReportAccordion = ({ form }: LabReportAccordionProps) => {
             title: 'General search',
             content: <LabReportGeneralFields form={form} />,
             expanded: true,
-            id: '2',
+            id: 'lab-general-section',
             headingLevel: 'h4',
             className: 'accordian-item'
         },
@@ -22,7 +22,7 @@ export const LabReportAccordion = ({ form }: LabReportAccordionProps) => {
             title: 'Lab report criteria',
             content: <LabReportCriteria form={form} />,
             expanded: false,
-            id: '3',
+            id: 'lab-criteria-section',
             headingLevel: 'h4',
             className: 'accordian-item'
         }

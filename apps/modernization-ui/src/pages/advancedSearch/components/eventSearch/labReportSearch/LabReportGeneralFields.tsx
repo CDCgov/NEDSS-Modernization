@@ -54,10 +54,10 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                     onChange={onChange}
                                     value={value as string[] | undefined}
                                     name={name}
-                                    options={searchCriteria.conditions.map((c) => {
+                                    options={searchCriteria.programAreas.map((p) => {
                                         return {
-                                            name: c.conditionDescTxt ?? '',
-                                            value: c.id
+                                            name: p.id ?? '',
+                                            value: p.id
                                         };
                                     })}
                                 />
@@ -376,19 +376,22 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 control={form.control}
                 name="providerSearch.providerType"
                 render={({ field: { onChange, value, name } }) => (
-                    <SelectInput
-                        name={name}
-                        value={value as string | undefined}
-                        onChange={onChange}
-                        label="Event provider/facility type"
-                        htmlFor={name}
-                        options={Object.values(ProviderType).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
-                    />
+                    <>
+                        Value: {value}
+                        <SelectInput
+                            name={name}
+                            value={value ?? undefined}
+                            onChange={onChange}
+                            label="Event provider/facility type"
+                            htmlFor={name}
+                            options={Object.values(ProviderType).map((type) => {
+                                return {
+                                    name: formatInterfaceString(type),
+                                    value: type
+                                };
+                            })}
+                        />
+                    </>
                 )}
             />
 

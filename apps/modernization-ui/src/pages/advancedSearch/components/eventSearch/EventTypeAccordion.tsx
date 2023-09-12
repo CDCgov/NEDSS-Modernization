@@ -24,7 +24,7 @@ export const EventTypeAccordion = ({ searchType, setSearchType }: EventTypeAccor
                 />
             ),
             expanded: true,
-            id: '1',
+            id: 'event-type-section',
             headingLevel: 'h4',
             className: 'accordian-item'
         }

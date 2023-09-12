@@ -14,7 +14,7 @@ export const InvestigationAccordion = ({ form }: InvestigationAccordionProps) =>
             title: 'General search',
             content: <InvestigationGeneralFields form={form} />,
             expanded: true,
-            id: '2',
+            id: 'investigation-general-section',
             headingLevel: 'h4',
             className: 'accordian-item'
         },
@@ -22,7 +22,7 @@ export const InvestigationAccordion = ({ form }: InvestigationAccordionProps) =>
             title: 'Investigation criteria',
             content: <InvestigationCriteria form={form} />,
             expanded: false,
-            id: '3',
+            id: 'investigation-criteria-section',
             headingLevel: 'h4',
             className: 'accordian-item'
         }

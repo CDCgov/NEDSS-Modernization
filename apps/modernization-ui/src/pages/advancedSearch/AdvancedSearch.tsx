@@ -1,12 +1,13 @@
 import { Alert, Button, Grid, Icon } from '@trussworks/react-uswds';
 import { externalize, internalize } from 'pages/patient/search';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Config } from '../../config';
 
 import {
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
+    FindPatientsByFilterQuery,
     Investigation,
     InvestigationFilter,
     LabReport,
@@ -17,8 +18,7 @@ import {
     SortField,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
-    useFindPatientsByFilterLazyQuery,
-    FindPatientsByFilterQuery
+    useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { UserContext } from '../../providers/UserContext';
@@ -32,12 +32,12 @@ import { convertCamelCase } from '../../utils/util';
 import './AdvancedSearch.scss';
 import Chip from './components/Chip';
 // import { EventSearch } from './components/eventSearch/EventSearch';
+import { SearchCriteria, SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
-import { PatientSearch } from './components/patientSearch/PatientSearch';
-import { SearchCriteria, SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import { EventSearch } from './components/eventSearch/EventSearch';
+import { PatientSearch } from './components/patientSearch/PatientSearch';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -436,13 +436,13 @@ export const AdvancedSearch = () => {
                 break;
             case 'Entity Type':
             case 'Id':
-                delete tempLabReportFilter.providerSearch;
+                tempLabReportFilter.providerSearch = undefined;
                 break;
             case 'Resulted Test':
-                delete tempLabReportFilter.resultedTest;
+                tempLabReportFilter.resultedTest = undefined;
                 break;
             case 'Coded Result':
-                delete tempLabReportFilter.codedResult;
+                tempLabReportFilter.codedResult = undefined;
                 break;
             case 'Entry Methods':
                 if (tempLabReportFilter?.entryMethods) {
@@ -486,6 +486,10 @@ export const AdvancedSearch = () => {
                     }
                 }
                 break;
+            case 'Provider Id':
+            case 'Provider Type':
+                tempLabReportFilter.providerSearch = undefined;
+                break;
         }
 
         handleEventTags(tempLabReportFilter);
@@ -495,6 +499,7 @@ export const AdvancedSearch = () => {
             handleClearAll();
         } else {
             handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
+            setLabReportFilter(tempLabReportFilter);
         }
     };
 
@@ -577,13 +582,13 @@ export const AdvancedSearch = () => {
                 delete tempInvestigationFilter.providerFacilitySearch;
                 break;
         }
-
         handleEventTags(tempInvestigationFilter);
         if (Object.entries(tempInvestigationFilter).length === 0) {
             setInvestigationFilter({});
             handleClearAll();
         } else {
             handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
+            setInvestigationFilter(tempInvestigationFilter);
         }
     };
 
@@ -816,7 +821,11 @@ export const AdvancedSearch = () => {
                                     clearAll={handleClearAll}
                                 />
                             ) : (
-                                <EventSearch onSearch={handleSubmit} investigationFilter={investigationFilter} />
+                                <EventSearch
+                                    onSearch={handleSubmit}
+                                    investigationFilter={investigationFilter}
+                                    labReportFilter={labReportFilter}
+                                />
                             )}
                         </div>
                     </Grid>

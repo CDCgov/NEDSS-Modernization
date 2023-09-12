@@ -17,7 +17,7 @@ type InvestigationCriteriaProps = {
 };
 export const InvestigationCriteria = ({ form }: InvestigationCriteriaProps): ReactElement => {
     return (
-        <>
+        <div id="criteria">
             <Controller
                 control={form.control}
                 name="investigationStatus"
@@ -115,6 +115,6 @@ export const InvestigationCriteria = ({ form }: InvestigationCriteriaProps): Rea
                     />
                 )}
             />
-        </>
+        </div>
     );
 };

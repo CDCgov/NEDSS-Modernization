@@ -252,7 +252,7 @@ public class LabReportQueryBuilder {
                     var reportingFacilityQuery = QueryBuilders.boolQuery()
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ORGANIZATION_PARTICIPATIONS + "."
-                                            + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
+                                            + ElasticsearchOrganizationParticipation.TYPE_CD,
                                     "AUT"))
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ORGANIZATION_PARTICIPATIONS + "."
