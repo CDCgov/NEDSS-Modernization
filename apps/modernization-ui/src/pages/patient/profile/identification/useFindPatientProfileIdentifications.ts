@@ -1,15 +1,12 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
-import { FindPatientProfileQuery, FindPatientProfileQueryVariables } from 'generated/graphql/schema';
+import { Page, PatientIdentificationResults } from 'generated/graphql/schema';
 
 export const Query = gql`
-    query findPatientProfile($page4: Page, $patient: ID, $shortId: Int) {
-        findPatientProfile(patient: $patient, shortId: $shortId) {
+    query findPatientProfile($patient: ID!, $page: Page!) {
+        findPatientProfile(patient: $patient) {
             id
-            local
-            shortId
-            version
-            identification(page: $page4) {
+            identification(page: $page) {
                 content {
                     patient
                     sequence
@@ -33,9 +30,22 @@ export const Query = gql`
     }
 `;
 
+type Variables = {
+    patient: string;
+    page: Page;
+};
+
+type PatientIdentificationResult = {
+    findPatientProfile: {
+        identification: PatientIdentificationResults;
+    };
+};
+
 export function useFindPatientProfileIdentifications(
-    baseOptions?: Apollo.QueryHookOptions<FindPatientProfileQuery, FindPatientProfileQueryVariables>
+    baseOptions?: Apollo.QueryHookOptions<PatientIdentificationResult, Variables>
 ) {
     const options = { ...baseOptions };
-    return Apollo.useLazyQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(Query, options);
+    return Apollo.useLazyQuery<PatientIdentificationResult, Variables>(Query, options);
 }
+
+export type { PatientIdentificationResult };
