@@ -87,7 +87,7 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
         return labReportFilter;
     };
 
-    const orUndefined = (object: any | undefined) => {
+    const orUndefined = (object: any) => {
         return Object.values(object).find((e) => e !== undefined) ? object : undefined;
     };
 
@@ -115,12 +115,13 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
                         {searchType === 'labReport' ? <LabReportAccordion form={labReportForm} /> : null}
                         <Grid row className="bottom-search">
                             <Grid col={12} className="padding-x-2">
-                                <Button className="width-full clear-btn" type={'submit'}>
+                                <Button data-testid="search" className="width-full clear-btn" type={'submit'}>
                                     Search
                                 </Button>
                             </Grid>
                             <Grid col={12} className="padding-x-2">
                                 <Button
+                                    data-testid="clear"
                                     className="width-full clear-btn"
                                     type={'button'}
                                     onClick={handleClearAll}
