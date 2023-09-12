@@ -8,11 +8,18 @@ export type MessageModalContent = { message: string; detail?: string };
 type Props = {
     modal: RefObject<ModalRef>;
     title: string;
-    content: MessageModalContent;
+    message: string;
+    detail?: string;
     ariaDescribedBy?: string;
 };
 
-export const MessageModal = ({ modal, title = '', content, ariaDescribedBy = 'message-description' }: Props) => {
+export const MessageModal = ({
+    modal,
+    title = '',
+    message,
+    detail,
+    ariaDescribedBy = 'message-description'
+}: Props) => {
     return (
         <Modal
             ref={modal}
@@ -30,12 +37,12 @@ export const MessageModal = ({ modal, title = '', content, ariaDescribedBy = 'me
                 </div>
                 <div className="modal-message">
                     <p className="margin-top-0" id={ariaDescribedBy}>
-                        {content.message}
+                        {message}
                     </p>
 
-                    {content.detail && (
+                    {detail && (
                         <div>
-                            <Note>{content.detail}</Note>
+                            <Note>{detail}</Note>
                         </div>
                     )}
                 </div>

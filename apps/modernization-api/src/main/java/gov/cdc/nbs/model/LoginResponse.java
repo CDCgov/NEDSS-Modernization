@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginResponse {
+
+    @ApiModelProperty(required = true)
+    private long identifier;
     @ApiModelProperty(required = true)
     private String username;
     @ApiModelProperty(required = true)
