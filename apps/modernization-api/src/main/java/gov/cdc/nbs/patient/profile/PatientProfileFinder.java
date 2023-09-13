@@ -25,17 +25,15 @@ class PatientProfileFinder {
                 this.tables.patient().personParentUid.id,
                 this.tables.patient().personParentUid.localId,
                 this.tables.patient().personParentUid.versionCtrlNbr,
-                this.tables.patient().personParentUid.recordStatusCd
-            )
-            .from(this.tables.patient())
-            .where(
-                this.tables.patient().cd.eq(PATIENT_CODE),
-                this.tables.patient().id.eq(identifier)
-            )
-            .fetch()
-            .stream()
-            .map(mapper::map)
-            .findFirst();
+                this.tables.patient().personParentUid.recordStatusCd)
+                .from(this.tables.patient())
+                .where(
+                        this.tables.patient().cd.eq(PATIENT_CODE),
+                        this.tables.patient().id.eq(identifier))
+                .fetch()
+                .stream()
+                .map(mapper::map)
+                .findFirst();
     }
 
 
@@ -44,16 +42,14 @@ class PatientProfileFinder {
                 this.tables.patient().personParentUid.id,
                 this.tables.patient().personParentUid.localId,
                 this.tables.patient().personParentUid.versionCtrlNbr,
-                this.tables.patient().personParentUid.recordStatusCd
-            )
-            .from(this.tables.patient())
-            .where(
-                this.tables.patient().cd.eq(PATIENT_CODE),
-                this.tables.patient().localId.eq(local)
-            )
-            .fetch()
-            .stream()
-            .map(mapper::map)
-            .findFirst();
+                this.tables.patient().personParentUid.recordStatusCd)
+                .from(this.tables.patient())
+                .where(
+                        this.tables.patient().cd.eq(PATIENT_CODE),
+                        this.tables.patient().localId.eq(local))
+                .fetch()
+                .stream()
+                .map(mapper::map)
+                .findFirst();
     }
 }
