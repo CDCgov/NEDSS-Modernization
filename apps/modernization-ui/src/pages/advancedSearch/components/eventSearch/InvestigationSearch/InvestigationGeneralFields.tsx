@@ -42,6 +42,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                             name="conditions"
                             render={({ field: { onChange, name, value } }) => (
                                 <MultiSelectInput
+                                    id="conditionInput"
                                     label="Condition"
                                     onChange={onChange}
                                     value={value as string[] | undefined}
@@ -104,6 +105,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                         onChange={onChange}
                         label="Pregnancy test"
                         htmlFor={name}
+                        dataTestid={name}
                         options={[
                             { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes },
                             { name: PregnancyStatus.No, value: PregnancyStatus.No },
@@ -121,6 +123,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                         value={value as string | undefined}
                         onChange={onChange}
                         label="Event id type"
+                        dataTestid={name}
                         htmlFor={name}
                         options={Object.values(InvestigationEventIdType).map((event) => {
                             return {
@@ -133,9 +136,17 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
             />
             <Controller
                 control={form.control}
-                name="eventId.id"
+                name="eventId.id" // TODO - disable / invalidate if event Id type not selected
                 render={({ field: { onChange, value, name } }) => (
-                    <Input onChange={onChange} label="Event id" value={value} type="text" htmlFor={name} id={name} />
+                    <Input
+                        onChange={onChange}
+                        data-testid={name}
+                        label="Event id"
+                        defaultValue={value}
+                        type="text"
+                        htmlFor={name}
+                        id={name}
+                    />
                 )}
             />
 
@@ -149,6 +160,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                         onChange={(e) => handleEventDateTypeChange(e, onChange)}
                         label="Event date type"
                         htmlFor={name}
+                        dataTestid={name}
                         options={Object.values(InvestigationEventDateType).map((type) => {
                             return {
                                 name: formatInterfaceString(type),
@@ -160,14 +172,15 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
             />
             <Controller
                 control={form.control}
-                name="eventDate.from"
-                render={({ field: { onChange, value } }) => (
+                name="eventDate.from" // TODO validate - to must be after from, if to specified, from must not be null
+                render={({ field: { onChange, value, name } }) => (
                     <DatePickerInput
                         disabled={!watch.eventDate?.type}
                         defaultValue={value}
                         onChange={onChange}
                         htmlFor={'from'}
                         label="From"
+                        id={name}
                     />
                 )}
             />
@@ -175,12 +188,13 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
             <Controller
                 control={form.control}
                 name="eventDate.to"
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange, value, name } }) => (
                     <DatePickerInput
                         disabled={!watch.eventDate?.type}
                         defaultValue={value}
                         onChange={onChange}
                         htmlFor={'to'}
+                        id={name}
                         label="To"
                     />
                 )}
@@ -199,6 +213,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                     onChange={onChange}
                                     label="Event created by user"
                                     htmlFor={name}
+                                    dataTestid={name}
                                     options={searchCriteria.userResults.map((user) => {
                                         return {
                                             name: `${user.userLastNm}, ${user.userFirstNm}`,
@@ -219,6 +234,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                     onChange={onChange}
                                     label="Event updated by user"
                                     htmlFor={name}
+                                    dataTestid={name}
                                     options={searchCriteria.userResults.map((user) => {
                                         return {
                                             name: `${user.userLastNm}, ${user.userFirstNm}`,
@@ -242,6 +258,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                         onChange={onChange}
                         label="Event provider/facility type"
                         htmlFor={name}
+                        dataTestid={name}
                         options={Object.values(ReportingEntityType).map((type) => {
                             return {
                                 name: formatInterfaceString(type),
@@ -259,11 +276,12 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     render={({ field: { onChange, value, name } }) => (
                         <Input
                             onChange={onChange}
-                            value={value as string | undefined}
+                            defaultValue={value as string | undefined}
                             type="text"
                             label="ID:"
                             htmlFor={name}
                             id={name}
+                            data-testid={name}
                         />
                     )}
                 />
