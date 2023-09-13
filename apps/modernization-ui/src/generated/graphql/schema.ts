@@ -393,11 +393,11 @@ export type InvestigationFilter = {
   investigatorId?: InputMaybe<Scalars['ID']>;
   jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   lastUpdatedBy?: InputMaybe<Scalars['String']>;
-  notificationStatuses?: InputMaybe<NotificationStatuses>;
+  notificationStatuses?: InputMaybe<Array<InputMaybe<NotificationStatus>>>;
   outbreakNames?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   patientId?: InputMaybe<Scalars['Int']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
-  processingStatuses?: InputMaybe<ProcessingStatuses>;
+  processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
 };
@@ -939,11 +939,6 @@ export enum NotificationStatus {
   Rejected = 'REJECTED',
   Unassigned = 'UNASSIGNED'
 }
-
-export type NotificationStatuses = {
-  includeUnassigned: Scalars['Boolean'];
-  statusList: Array<NotificationStatus>;
-};
 
 export type Observation = {
   __typename?: 'Observation';
@@ -2056,11 +2051,6 @@ export enum ProcessingStatus {
   SurveillanceFollowUp = 'SURVEILLANCE_FOLLOW_UP',
   Unassigned = 'UNASSIGNED'
 }
-
-export type ProcessingStatuses = {
-  includeUnassigned: Scalars['Boolean'];
-  statusList: Array<ProcessingStatus>;
-};
 
 export type ProgramAreaCode = {
   __typename?: 'ProgramAreaCode';

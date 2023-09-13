@@ -67,23 +67,13 @@ input InvestigationFilter {
   investigationStatus: InvestigationStatus
   outbreakNames: [String]
   caseStatuses: [CaseStatus!]
-  notificationStatuses: NotificationStatuses
-  processingStatuses: ProcessingStatuses
+  notificationStatuses: [NotificationStatus]
+  processingStatuses: [ProcessingStatus]
 }
 
 input EventId {
   investigationEventType: InvestigationEventIdType!
   id: String!
-}
-
-input NotificationStatuses {
-  includeUnassigned: Boolean!
-  statusList: [NotificationStatus!]!
-}
-
-input ProcessingStatuses {
-  includeUnassigned: Boolean!
-  statusList: [ProcessingStatus!]!
 }
 
 input InvestigationEventDateSearch {

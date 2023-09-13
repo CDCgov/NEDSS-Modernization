@@ -28,6 +28,7 @@ export const InvestigationCriteria = ({ form }: InvestigationCriteriaProps): Rea
                         onChange={onChange}
                         label="Investigation status"
                         htmlFor={name}
+                        dataTestid={name}
                         options={Object.values(InvestigationStatus).map((type) => {
                             return {
                                 name: formatInterfaceString(type),
@@ -50,6 +51,7 @@ export const InvestigationCriteria = ({ form }: InvestigationCriteriaProps): Rea
                                 onChange={onChange}
                                 label="Outbreak name"
                                 htmlFor={name}
+                                dataTestid={name}
                                 options={Object.values(searchCriteria.outbreaks).map((outbreak) => {
                                     return {
                                         name: formatInterfaceString(outbreak.codeShortDescTxt ?? ''),
