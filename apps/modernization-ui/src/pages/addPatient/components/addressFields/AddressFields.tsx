@@ -62,7 +62,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     onChange={onChange}
                                     type="text"
                                     label="Street address 2"
-                                    value={value}
+                                    defaultValue={value}
                                     htmlFor={name}
                                     id={name}
                                 />
@@ -82,7 +82,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     type="text"
                                     label="City"
                                     htmlFor={name}
-                                    value={value}
+                                    defaultValue={value}
                                     onChange={onChange}
                                 />
                             )}
@@ -118,7 +118,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     type="text"
                                     label="ZIP"
                                     htmlFor={name}
-                                    value={value}
+                                    defaultValue={value}
                                     error={error?.message}
                                     onChange={onChange}
                                 />
@@ -161,7 +161,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     onChange={onChange}
                                     type="text"
                                     label="Census Tract"
-                                    value={value}
+                                    defaultValue={value}
                                     htmlFor={name}
                                     id={name}
                                     error={error?.message}

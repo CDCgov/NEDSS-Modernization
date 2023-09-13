@@ -16,7 +16,7 @@ export const AddressForm = ({ control, errors }: any) => {
                             onChange={onChange}
                             type="text"
                             label="Street address"
-                            value={value}
+                            defaultValue={value}
                             htmlFor="address"
                             id="address"
                         />
@@ -28,7 +28,14 @@ export const AddressForm = ({ control, errors }: any) => {
                     control={control}
                     name="city"
                     render={({ field: { onChange, value } }) => (
-                        <Input onChange={onChange} value={value} type="text" label="City" htmlFor="city" id="city" />
+                        <Input
+                            onChange={onChange}
+                            defaultValue={value}
+                            type="text"
+                            label="City"
+                            htmlFor="city"
+                            id="city"
+                        />
                     )}
                 />
             </Grid>
@@ -61,7 +68,7 @@ export const AddressForm = ({ control, errors }: any) => {
                     render={({ field: { onChange, value } }) => (
                         <Input
                             onChange={onChange}
-                            value={value}
+                            defaultValue={value}
                             type="text"
                             label="Zip code"
                             htmlFor="zip"

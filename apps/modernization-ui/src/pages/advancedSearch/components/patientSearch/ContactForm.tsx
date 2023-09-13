@@ -23,7 +23,7 @@ export const ContactForm = ({ control, errors }: any) => {
                             id={'phoneNumber'}
                             onChange={onChange}
                             label="Phone number"
-                            value={value}
+                            defaultValue={value}
                             error={errors && errors.phoneNumber && 'Invalid phone number'}
                         />
                     )}
@@ -42,7 +42,7 @@ export const ContactForm = ({ control, errors }: any) => {
                     render={({ field: { onChange, value } }) => (
                         <Input
                             onChange={onChange}
-                            value={value}
+                            defaultValue={value}
                             type="text"
                             label="Email"
                             htmlFor="email"

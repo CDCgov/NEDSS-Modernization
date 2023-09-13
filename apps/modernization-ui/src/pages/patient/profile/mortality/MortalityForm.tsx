@@ -128,7 +128,13 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                                 name="city"
                                 defaultValue={entry.city}
                                 render={({ field: { onChange, value } }) => (
-                                    <Input onChange={onChange} type="text" value={value} htmlFor="city" id="city" />
+                                    <Input
+                                        onChange={onChange}
+                                        type="text"
+                                        defaultValue={value}
+                                        htmlFor="city"
+                                        id="city"
+                                    />
                                 )}
                             />
                         </Grid>

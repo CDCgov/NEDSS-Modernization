@@ -139,7 +139,7 @@ export const AddNewPage = () => {
                                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                                     <Input
                                         onChange={onChange}
-                                        value={value}
+                                        defaultValue={value}
                                         label="Page name"
                                         type="text"
                                         error={error?.message}
@@ -221,7 +221,7 @@ export const AddNewPage = () => {
                                         label="Page description"
                                         type="text"
                                         multiline
-                                        value={value}
+                                        defaultValue={value}
                                     />
                                 )}
                             />
@@ -229,7 +229,12 @@ export const AddNewPage = () => {
                                 control={control}
                                 name="dataMartName"
                                 render={({ field: { onChange, value } }) => (
-                                    <Input label="Data mart name" type="text" onChange={onChange} value={value} />
+                                    <Input
+                                        label="Data mart name"
+                                        type="text"
+                                        onChange={onChange}
+                                        defaultValue={value}
+                                    />
                                 )}
                             />
                         </div>

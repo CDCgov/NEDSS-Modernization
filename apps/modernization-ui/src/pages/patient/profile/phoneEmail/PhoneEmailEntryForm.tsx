@@ -113,7 +113,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                         flexBox
                                         onChange={onChange}
                                         onBlur={onBlur}
-                                        value={value}
+                                        defaultValue={value}
                                         type="tel"
                                         label="Country code"
                                         name="countryCode"
@@ -139,7 +139,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    value={value}
+                                    defaultValue={value}
                                     type="text"
                                     label="Phone number"
                                     name="number"
@@ -165,7 +165,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    value={value}
+                                    defaultValue={value}
                                     type="text"
                                     label="Extension"
                                     name="extension"
@@ -191,7 +191,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    value={value}
+                                    defaultValue={value}
                                     type="text"
                                     label="Email address"
                                     name="email"
@@ -211,7 +211,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                 <Input
                                     flexBox
                                     onChange={onChange}
-                                    value={value}
+                                    defaultValue={value}
                                     type="text"
                                     label="Url"
                                     name="url"

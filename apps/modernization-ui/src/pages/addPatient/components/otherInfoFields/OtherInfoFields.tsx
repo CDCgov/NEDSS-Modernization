@@ -156,7 +156,7 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                                     label="State HIV case ID"
                                     onChange={onChange}
                                     type="text"
-                                    value={value}
+                                    defaultValue={value}
                                     htmlFor={name}
                                     id={name}
                                 />

@@ -62,7 +62,7 @@ export const SearchBar = ({ onChange }: any) => {
                 <Input
                     placeholder="Search pages by keyword"
                     onChange={handleSearch}
-                    value={search}
+                    defaultValue={search}
                     type="text"
                     htmlFor="searchbar"
                     id="searchbar"

@@ -82,7 +82,7 @@ export default function ContactFields({ id, title }: Props) {
                                     onChange={onChange}
                                     type="tel"
                                     label="Ext"
-                                    value={value}
+                                    defaultValue={value}
                                     htmlFor={name}
                                     id={name}
                                 />
@@ -151,7 +151,7 @@ export default function ContactFields({ id, title }: Props) {
                                         onChange={onChange}
                                         type="text"
                                         label="Email"
-                                        value={value}
+                                        defaultValue={value}
                                         htmlFor={name}
                                         id={name}
                                         error={error?.message}
