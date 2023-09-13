@@ -95,6 +95,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                         onChange={onChange}
                         label="Pregnancy test"
                         htmlFor={name}
+                        dataTestid={name}
                         options={[
                             { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes },
                             { name: PregnancyStatus.No, value: PregnancyStatus.No },
@@ -114,6 +115,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                         onChange={onChange}
                         label="Event id type"
                         htmlFor={name}
+                        dataTestid={name}
                         options={Object.values(LaboratoryEventIdType).map((event) => {
                             return {
                                 name: formatInterfaceString(event),
@@ -128,7 +130,15 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 control={form.control}
                 name="eventId.labEventId"
                 render={({ field: { onChange, value, name } }) => (
-                    <Input onChange={onChange} label="Event id" value={value} type="text" htmlFor={name} id={name} />
+                    <Input
+                        onChange={onChange}
+                        label="Event id"
+                        defaultValue={value}
+                        type="text"
+                        htmlFor={name}
+                        id={name}
+                        data-testid={name}
+                    />
                 )}
             />
 
@@ -142,6 +152,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                         onChange={(e) => handleEventDateTypeChange(e, onChange)}
                         label="Event date type"
                         htmlFor={name}
+                        dataTestid={name}
                         options={Object.values(LaboratoryReportEventDateType).map((type) => {
                             return {
                                 name: formatInterfaceString(type),
@@ -341,6 +352,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                     onChange={onChange}
                                     label="Event created by user"
                                     htmlFor={name}
+                                    dataTestid={name}
                                     options={searchCriteria.userResults.map((user) => {
                                         return {
                                             name: `${user.userLastNm}, ${user.userFirstNm}`,
@@ -360,6 +372,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                     onChange={onChange}
                                     label="Event updated by user"
                                     htmlFor={name}
+                                    dataTestid={name}
                                     options={searchCriteria.userResults.map((user) => {
                                         return {
                                             name: `${user.userLastNm}, ${user.userFirstNm}`,
@@ -378,10 +391,11 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 render={({ field: { onChange, value, name } }) => (
                     <SelectInput
                         name={name}
-                        value={value ?? undefined}
+                        defaultValue={value ?? undefined}
                         onChange={onChange}
                         label="Event provider/facility type"
                         htmlFor={name}
+                        dataTestid={name}
                         options={Object.values(ProviderType).map((type) => {
                             return {
                                 name: formatInterfaceString(type),
@@ -396,8 +410,16 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 <Controller
                     control={form.control}
                     name="providerSearch.providerId"
-                    render={({ field: { onChange, value } }) => (
-                        <Input onChange={onChange} value={value} type="text" label="ID:" htmlFor="id" id="id" />
+                    render={({ field: { onChange, value, name } }) => (
+                        <Input
+                            onChange={onChange}
+                            data-testid={name}
+                            defaultValue={value}
+                            type="text"
+                            label="ID:"
+                            htmlFor="id"
+                            id="id"
+                        />
                     )}
                 />
             )}
