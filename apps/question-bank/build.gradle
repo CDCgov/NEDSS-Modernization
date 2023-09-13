@@ -2,6 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id 'jvm-test-suite'
+    id 'jacoco'
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
