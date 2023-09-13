@@ -25,9 +25,9 @@ public class CodedResultFinder {
         this.maxPageSize = maxPageSize;
     }
 
-    public List<CodedResult> findDistinctCodedResults(String searchText, boolean loinc) {
+    public List<CodedResult> findDistinctCodedResults(String searchText, boolean snomed) {
         String searchString = "%" + searchText + "%";
-        if (loinc) {
+        if (snomed) {
             Pageable pageable = PageRequest.of(0, maxPageSize, Direction.ASC, "snomedDescTxt");
             return snomedCodeRepository.findDistinctSnomedCodes(searchString, pageable)
                     .stream()

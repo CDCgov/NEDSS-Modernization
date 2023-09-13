@@ -2290,8 +2290,8 @@ export type QueryFindContactsNamedByPatientArgs = {
 
 
 export type QueryFindDistinctCodedResultsArgs = {
-  loinc: Scalars['Boolean'];
   searchText: Scalars['String'];
+  snomed: Scalars['Boolean'];
 };
 
 
@@ -3080,7 +3080,7 @@ export type FindContactsNamedByPatientQuery = { __typename?: 'Query', findContac
 
 export type FindDistinctCodedResultsQueryVariables = Exact<{
   searchText: Scalars['String'];
-  loinc: Scalars['Boolean'];
+  snomed: Scalars['Boolean'];
 }>;
 
 
@@ -5846,8 +5846,8 @@ export type FindContactsNamedByPatientQueryHookResult = ReturnType<typeof useFin
 export type FindContactsNamedByPatientLazyQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientLazyQuery>;
 export type FindContactsNamedByPatientQueryResult = Apollo.QueryResult<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>;
 export const FindDistinctCodedResultsDocument = gql`
-    query findDistinctCodedResults($searchText: String!, $loinc: Boolean!) {
-  findDistinctCodedResults(searchText: $searchText, loinc: $loinc) {
+    query findDistinctCodedResults($searchText: String!, $snomed: Boolean!) {
+  findDistinctCodedResults(searchText: $searchText, snomed: $snomed) {
     name
   }
 }
@@ -5866,7 +5866,7 @@ export const FindDistinctCodedResultsDocument = gql`
  * const { data, loading, error } = useFindDistinctCodedResultsQuery({
  *   variables: {
  *      searchText: // value for 'searchText'
- *      loinc: // value for 'loinc'
+ *      snomed: // value for 'snomed'
  *   },
  * });
  */

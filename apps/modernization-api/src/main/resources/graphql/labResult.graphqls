@@ -1,7 +1,7 @@
 extend type Query {
   findDistinctCodedResults(
     searchText: String!
-    loinc: Boolean!
+    snomed: Boolean!
   ): [CodedResult!]!
 }
 

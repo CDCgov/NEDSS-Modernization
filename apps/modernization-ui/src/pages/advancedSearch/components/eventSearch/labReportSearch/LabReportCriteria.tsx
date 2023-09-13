@@ -88,7 +88,7 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
     }, []);
 
     const debouncedCodedSearchResults = debounce(async (criteria: string) => {
-        getCodedResultedTests({ variables: { searchText: criteria, loinc: false } }).then((response) => {
+        getCodedResultedTests({ variables: { searchText: criteria, snomed: false } }).then((response) => {
             const codedResults = response.data?.findDistinctCodedResults.map(codedResultToComboOption) || [];
             setCodedResults(codedResults);
         });

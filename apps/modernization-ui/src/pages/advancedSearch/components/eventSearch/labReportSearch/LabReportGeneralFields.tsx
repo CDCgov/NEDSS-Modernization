@@ -128,7 +128,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
 
             <Controller
                 control={form.control}
-                name="eventId.labEventId"
+                name="eventId.labEventId" // TODO add validation or disable until event type is selected
                 render={({ field: { onChange, value, name } }) => (
                     <Input
                         onChange={onChange}
