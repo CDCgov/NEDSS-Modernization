@@ -700,7 +700,7 @@ class InvestigationQueryBuilderTest {
         var clause = findMatchQueryBuilder(Investigation.CURR_PROCESS_STATUS_CD, nestedShould);
         findExistsQueryBuilder(Investigation.CURR_PROCESS_STATUS_CD, mustNot);
 
-        assertEquals(ProcessingStatus.CLOSED_CASE.toString(), clause.value());
+        assertEquals("CC", clause.value());
     }
 
     private RangeQueryBuilder findRangeQueryBuilder(String path, List<QueryBuilder> builders) {

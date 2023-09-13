@@ -256,7 +256,7 @@ class LabReportQueryBuilderTest {
 
         // Case type clause added
         var nested = findNestedQueryBuilders(must);
-        var clause1 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.TYPE_CD, nested);
+        var clause1 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.TYPE_DESC_TXT, nested);
         assertEquals("Filler Number", clause1.value());
         var clause2 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT, nested);
         assertEquals(filter.getEventId().getLabEventId(), clause2.value());
@@ -645,7 +645,7 @@ class LabReportQueryBuilderTest {
         // Case type clause added
         var nested = findNestedQueryBuilders(must);
         var clause1 = findMatchQueryBuilder(
-                LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
+                LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.TYPE_CD,
                 nested);
         assertEquals("AUT", clause1.value());
         var clause3 = findMatchQueryBuilder(

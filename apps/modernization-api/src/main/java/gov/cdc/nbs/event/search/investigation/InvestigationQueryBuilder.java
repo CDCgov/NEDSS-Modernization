@@ -24,6 +24,7 @@ import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.event.search.InvestigationFilter.CaseStatus;
 import gov.cdc.nbs.event.search.InvestigationFilter.NotificationStatus;
+import gov.cdc.nbs.event.search.InvestigationFilter.ProcessingStatus;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.service.SecurityService;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
@@ -295,12 +296,12 @@ public class InvestigationQueryBuilder {
             }
         }
         // processing status
-        if (filter.getProcessingStatuses() != null) {
+        if (filter.getProcessingStatuses() != null && !filter.getProcessingStatuses().isEmpty()) {
             // UNASSIGNED is included in status list but is not an actual status, it represents a null value
             var statusStrings = filter.getProcessingStatuses()
                     .stream()
                     .filter(s -> !s.equals(InvestigationFilter.ProcessingStatus.UNASSIGNED))
-                    .map(status -> status.toString().toUpperCase())
+                    .map(this::getProcessingStatusValue)
                     .toList();
             var includeUnassigned = filter.getProcessingStatuses()
                     .contains(InvestigationFilter.ProcessingStatus.UNASSIGNED);
@@ -330,6 +331,18 @@ public class InvestigationQueryBuilder {
             case PROBABLE -> "P";
             case SUSPECT -> "S";
             case UNKNOWN -> "U";
+            default -> null;
+        };
+    }
+
+    private String getProcessingStatusValue(ProcessingStatus processingStatus) {
+        return switch (processingStatus) {
+            case AWAITING_INTERVIEW -> "AI";
+            case CLOSED_CASE -> "CC";
+            case FIELD_FOLLOW_UP -> "FF";
+            case NO_FOLLOW_UP -> "NF";
+            case OPEN_CASE -> "OC";
+            case SURVEILLANCE_FOLLOW_UP -> "SF";
             default -> null;
         };
     }
