@@ -1,16 +1,31 @@
-import { Dropdown, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
-import classNames from 'classnames';
+import { Dropdown } from '@trussworks/react-uswds';
+
+import { EntryWrapper } from 'components/Entry';
+import { useMemo } from 'react';
+
+type Option = { name: string; value: string };
 
 type SelectProps = {
     htmlFor?: string;
     label?: string;
-    options: { name: string; value: string }[];
-    isMulti?: boolean;
+    options: Option[];
     dataTestid?: string;
     flexBox?: boolean;
     error?: string;
     required?: boolean;
-} & JSX.IntrinsicElements['select'];
+    defaultValue?: string | number | undefined | null;
+} & Omit<JSX.IntrinsicElements['select'], 'defaultValue'>;
+
+const renderOptions = (options: Option[]) => (
+    <>
+        <option value="">- Select -</option>
+        {options?.map((item, index) => (
+            <option key={index} value={item.value}>
+                {item.name}
+            </option>
+        ))}
+    </>
+);
 
 export const SelectInput = ({
     name,
@@ -20,7 +35,6 @@ export const SelectInput = ({
     options,
     onChange,
     defaultValue,
-    isMulti,
     dataTestid,
     flexBox,
     error,
@@ -28,62 +42,32 @@ export const SelectInput = ({
     onBlur,
     ...props
 }: SelectProps) => {
-    const DropDown = () => {
-        return (
-            <Dropdown
-                onBlur={onBlur}
-                data-testid={dataTestid || 'dropdown'}
-                multiple={isMulti}
-                defaultValue={defaultValue}
-                placeholder="-Select-"
-                onChange={onChange}
-                {...props}
-                id={id || ''}
-                name={name || ''}>
-                <>
-                    <option value="">- Select -</option>
-                    {options?.map((item, index) => (
-                        <option key={index} value={item.value}>
-                            {item.name}
-                        </option>
-                    ))}
-                </>
-            </Dropdown>
-        );
-    };
+    const orientation = useMemo(() => (flexBox ? 'horizontal' : 'vertical'), [flexBox]);
+
+    //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
+    const Wrapped = () => (
+        <Dropdown
+            data-testid={dataTestid || 'dropdown'}
+            id={id || ''}
+            name={name || ''}
+            defaultValue={defaultValue || undefined}
+            placeholder="-Select-"
+            onChange={onChange}
+            onBlur={onBlur}
+            {...props}>
+            {renderOptions(options)}
+        </Dropdown>
+    );
+
     return (
-        <>
-            {flexBox ? (
-                <Grid row>
-                    <Grid col={6}>
-                        {label && (
-                            <>
-                                <Label className={classNames({ required })} htmlFor={htmlFor || ''}>
-                                    {label}
-                                </Label>
-                                <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
-                            </>
-                        )}
-                    </Grid>
-                    <Grid col={6}>
-                        {defaultValue && <DropDown />}
-                        {!defaultValue && <DropDown />}
-                    </Grid>
-                </Grid>
-            ) : (
-                <>
-                    {label && (
-                        <>
-                            <Label className={classNames({ required })} htmlFor={htmlFor || ''}>
-                                {label}
-                            </Label>
-                            <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
-                        </>
-                    )}
-                    {defaultValue && <DropDown />}
-                    {!defaultValue && <DropDown />}
-                </>
-            )}
-        </>
+        <EntryWrapper
+            orientation={orientation}
+            label={label || ''}
+            htmlFor={htmlFor || ''}
+            required={required}
+            error={error}>
+            {defaultValue && <Wrapped />}
+            {!defaultValue && <Wrapped />}
+        </EntryWrapper>
     );
 };

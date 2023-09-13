@@ -1,16 +1,14 @@
 package gov.cdc.nbs.authentication.entity;
 
-import java.time.Instant;
+import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.Instant;
 
-@Getter
-@Setter
+
 @Embeddable
 public class AuthAudit {
     @Column(name = "add_time", nullable = false)
@@ -32,4 +30,57 @@ public class AuthAudit {
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;
 
+    AuthAudit() {
+    }
+
+    public AuthAudit(final long who, final Instant when) {
+        this();
+        this.addUserId = who;
+        this.addTime = when;
+        this.lastChgUserId = who;
+        this.lastChgTime = when;
+        this.recordStatusCd = AuthRecordStatus.ACTIVE;
+        this.recordStatusTime = when;
+
+    }
+
+    public AuthAudit(final AuthAudit audit) {
+        this();
+        this.addUserId = audit.addUserId;
+        this.addTime = audit.addTime;
+        this.lastChgUserId = audit.lastChgUserId;
+        this.lastChgTime = audit.lastChgTime;
+        this.recordStatusCd = audit.recordStatusCd;
+        this.recordStatusTime = audit.recordStatusTime;
+    }
+
+    public Instant addedOn() {
+        return addTime;
+    }
+
+    public Long addedBy() {
+        return addUserId;
+    }
+
+    public Instant changedOn() {
+        return lastChgTime;
+    }
+
+    public Long changedBy() {
+        return lastChgUserId;
+    }
+
+    public AuthRecordStatus recordStatus() {
+        return recordStatusCd;
+    }
+
+    public AuthAudit inactivate(final Instant when) {
+        this.recordStatusCd = AuthRecordStatus.INACTIVE;
+        this.recordStatusTime = when;
+        return this;
+    }
+
+    public Instant recordStatusChangedOn() {
+        return recordStatusTime;
+    }
 }
