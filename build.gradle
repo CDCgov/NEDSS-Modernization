@@ -39,11 +39,6 @@ subprojects {
     }
 }
 
-// Automatically generate the code coverage report follwoing a build
-tasks.named('build') {
-   finalizedBy tasks.named('codeCoverageReport', JacocoReport)
-}
-
 gradle.buildFinished {
     def failures = rootProject.ext.testFailures
 

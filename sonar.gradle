@@ -51,3 +51,8 @@ subprojects {
         }
     }
 }
+
+// Automatically generate the code coverage report following a build
+tasks.named('build') {
+   finalizedBy tasks.named('codeCoverageReport', JacocoReport)
+}
