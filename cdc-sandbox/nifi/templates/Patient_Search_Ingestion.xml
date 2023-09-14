@@ -2800,6 +2800,7 @@ WHERE
 <groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
 <id>98da9210-ed8a-3458-0000-000000000000</id>
 <type>PROCESSOR</type>
+<versionedComponentId>98da9210-ed8a-3458-9caf-b4d440b6e1af</versionedComponentId>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
                             <labelIndex>1</labelIndex>
@@ -2820,6 +2821,7 @@ WHERE
                         <connections>
                             <id>06861871-e3cd-3558-0000-000000000000</id>
                             <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
+                            <versionedComponentId>06861871-e3cd-3558-98a1-411e39bab3f4</versionedComponentId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
@@ -2840,6 +2842,7 @@ WHERE
 <groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
 <id>98da9210-ed8a-3458-0000-000000000000</id>
 <type>PROCESSOR</type>
+<versionedComponentId>98da9210-ed8a-3458-9caf-b4d440b6e1af</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -2931,6 +2934,7 @@ WHERE
                         <connections>
                             <id>70138331-cbde-30e2-0000-000000000000</id>
                             <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
+                            <versionedComponentId>70138331-cbde-30e2-a833-209d157a3f34</versionedComponentId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
@@ -2952,18 +2956,21 @@ WHERE
 <groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
 <id>7a1170fe-2c99-36c5-0000-000000000000</id>
 <type>PROCESSOR</type>
+<versionedComponentId>7a1170fe-2c99-36c5-8bb1-c72fd14d972d</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
                             <id>8a30a567-e21a-3dae-0000-000000000000</id>
                             <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
+                            <versionedComponentId>8a30a567-e21a-3dae-bdc7-b80ec657f51e</versionedComponentId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
 <id>1d05ec5b-7946-3896-0000-000000000000</id>
 <type>PROCESSOR</type>
+<versionedComponentId>1d05ec5b-7946-3896-9c6c-b9cb2afe5e71</versionedComponentId>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
                             <labelIndex>1</labelIndex>
@@ -2977,6 +2984,7 @@ WHERE
 <groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
 <id>98da9210-ed8a-3458-0000-000000000000</id>
 <type>PROCESSOR</type>
+<versionedComponentId>98da9210-ed8a-3458-9caf-b4d440b6e1af</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -3107,6 +3115,7 @@ WHERE
 <groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
 <id>7a1170fe-2c99-36c5-0000-000000000000</id>
 <type>PROCESSOR</type>
+<versionedComponentId>7a1170fe-2c99-36c5-8bb1-c72fd14d972d</versionedComponentId>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
                             <labelIndex>0</labelIndex>
@@ -3127,6 +3136,7 @@ WHERE
                         <connections>
                             <id>a49fdaa4-f748-304d-0000-000000000000</id>
                             <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
+                            <versionedComponentId>a49fdaa4-f748-304d-9d46-6423072a18c1</versionedComponentId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
@@ -3151,6 +3161,7 @@ WHERE
 <groupId>a936bd06-061e-3eb2-0000-000000000000</groupId>
 <id>7a1170fe-2c99-36c5-0000-000000000000</id>
 <type>PROCESSOR</type>
+<versionedComponentId>7a1170fe-2c99-36c5-8bb1-c72fd14d972d</versionedComponentId>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -3495,6 +3506,7 @@ These processors extract the fields into an attribute, remove the existing field
 <x>4896.0</x>
 <y>648.0</y>
                             </position>
+                            <versionedComponentId>1d05ec5b-7946-3896-9c6c-b9cb2afe5e71</versionedComponentId>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
@@ -4087,11 +4099,11 @@ FROM
         SELECT 
           (
             SELECT 
-              STRING_ESCAPE(pn.last_nm, 'json') lastNm,
-			  soundex(pn.last_nm) lastNmSndx,
+              STRING_ESCAPE(pn.last_nm, 'json') lastNm, 
+              soundex(pn.last_nm) lastNmSndx, 
               STRING_ESCAPE(pn.middle_nm, 'json') middleNm, 
               STRING_ESCAPE(pn.first_nm, 'json') firstNm, 
-			  soundex(pn.first_nm) firstNmSndx,
+              soundex(pn.first_nm) firstNmSndx, 
               pn.nm_use_cd, 
               pn.nm_suffix nmSuffix, 
               pn.nm_degree nmDegree 
@@ -4210,6 +4222,7 @@ WHERE
 <x>4232.0</x>
 <y>672.0</y>
                             </position>
+                            <versionedComponentId>7a1170fe-2c99-36c5-8bb1-c72fd14d972d</versionedComponentId>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
@@ -4312,6 +4325,7 @@ WHERE
 <x>4896.0</x>
 <y>432.0</y>
                             </position>
+                            <versionedComponentId>98da9210-ed8a-3458-9caf-b4d440b6e1af</versionedComponentId>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
@@ -7278,5 +7292,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/08/2023 22:02:26 UTC</timestamp>
+    <timestamp>09/14/2023 14:42:44 UTC</timestamp>
 </template>
