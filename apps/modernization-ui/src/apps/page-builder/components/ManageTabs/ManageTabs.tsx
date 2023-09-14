@@ -16,7 +16,12 @@ const ManageTabs = ({ tabs }: Props) => {
                         <li key={i} className="margin-bottom-1em" style={{ listStyle: 'none' }}>
                             <div
                                 className="tab-name"
-                                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    color: '#005EA2'
+                                }}>
                                 <div>{tab.name}</div>
                                 <div>
                                     <Icon.Edit />
