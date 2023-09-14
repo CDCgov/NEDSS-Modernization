@@ -14,6 +14,7 @@ import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 import { MessageModal } from 'messageModal';
 import { usePatientProfilePermissions } from './permission';
 import { ConfirmationModal } from 'confirmation';
+import { useAlert } from 'alert';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -33,6 +34,7 @@ enum ACTIVE_TAB {
 
 export const PatientProfile = () => {
     const { id } = useParams();
+    const { showAlert } = useAlert();
 
     const modalRef = useRef<ModalRef>(null);
 
@@ -50,9 +52,18 @@ export const PatientProfile = () => {
 
     const handleComplete = (data: DeletePatientMutation) => {
         if (data.deletePatient.__typename === 'PatientDeleteSuccessful') {
+            showAlert({
+                type: 'success',
+                header: 'success',
+                message: 'Deleted patient'
+            });
             navigate('/advanced-search');
         } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
-            // display this message somewhere, data.deletePatient.reason
+            showAlert({
+                type: 'error',
+                header: 'failed',
+                message: 'Delete failed. Please try again later.'
+            });
         }
     };
 
