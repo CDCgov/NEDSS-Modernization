@@ -1,17 +1,5 @@
 package gov.cdc.nbs.controller;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserService;
@@ -21,6 +9,18 @@ import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.model.LoginRequest;
 import gov.cdc.nbs.model.LoginResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class UserController {
@@ -43,9 +43,12 @@ public class UserController {
         cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
         cookie.setPath("/");
         response.addCookie(cookie);
-        return new LoginResponse(userDetails.getUsername(),
-                userDetails.getFirstName() + " " + userDetails.getLastName(),
-                userDetails.getToken());
+        return new LoginResponse(
+            userDetails.getId(),
+            userDetails.getUsername(),
+            userDetails.getFirstName() + " " + userDetails.getLastName(),
+            userDetails.getToken()
+        );
     }
 
     /**
@@ -56,10 +59,10 @@ public class UserController {
     public Page<AuthUser> findAllUsers(@Argument GraphQLPage page) {
         var loggedInUser = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var userProgramAreas = loggedInUser.getAuthorities()
-                .stream()
-                .map(NbsAuthority::getProgramArea)
-                .distinct()
-                .toList();
+            .stream()
+            .map(NbsAuthority::getProgramArea)
+            .distinct()
+            .toList();
         return userRepository.findByProgramAreas(userProgramAreas, GraphQLPage.toPageable(page, maxPageSize));
     }
 
