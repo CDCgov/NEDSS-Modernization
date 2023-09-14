@@ -3,12 +3,7 @@
 name: "Sonar Scanner"
 
 on:
-  push:
-    paths:
-      - "apps/**"
-      - "libs/**"
-    branches:
-      - main
+  workflow_call:
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID:
         description: "Secret named CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID where ECR resides."
@@ -97,7 +92,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.passed_github_token }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ env.sonar_token }}
-        run: ./gradlew build jacocoTestReport sonar --scan -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.f1ef4c0
+        run: ./gradlew build jacocoTestReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.f1ef4c0
 
       - name: Publish Testing Reports
         uses: actions/upload-artifact@v2
