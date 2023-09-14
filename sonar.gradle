@@ -36,7 +36,7 @@ tasks.register("codeCoverageReport", JacocoReport) {
         xml.required = true
         html.required = true
         html.outputLocation = layout.buildDirectory.dir('reports/jacoco/codeCoverageReport/html')
-    }
+    }    
 }
 
 subprojects {
@@ -47,6 +47,19 @@ subprojects {
         sonar {
             properties {
                 property 'sonar.coverage.jacoco.xmlReportPaths', "$project.rootDir/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
+            }
+        }
+
+        codeCoverageReport {
+            //  Excludes files named *Application.class to exclude @SpringBootApplication entry point classes.
+            afterEvaluate {
+                classDirectories.setFrom(
+                        files(
+                                classDirectories.files.collect {
+                                    fileTree(dir: it, exclude: ['**/**Application.class'])
+                                }
+                        )
+                )
             }
         }
     }
