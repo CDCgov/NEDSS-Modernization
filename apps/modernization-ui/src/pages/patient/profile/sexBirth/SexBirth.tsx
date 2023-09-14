@@ -80,9 +80,10 @@ type BirthAndGenderState = {
 
 type Props = {
     patient: string;
+    fetchSummary: () => void;
 };
 
-export const SexBirth = ({ patient }: Props) => {
+export const SexBirth = ({ patient, fetchSummary }: Props) => {
     const { showAlert } = useAlert();
     const [editing, isEditing] = useState<boolean>(false);
 
@@ -131,6 +132,7 @@ export const SexBirth = ({ patient }: Props) => {
                     header: 'success',
                     message: `Updated sex & birth`
                 });
+                fetchSummary();
             });
     };
 

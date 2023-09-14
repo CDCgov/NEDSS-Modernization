@@ -75,9 +75,10 @@ const resolveInitialEntry = (patient: string): NewAddressEntry => ({
 
 type Props = {
     patient: string;
+    fetchSummary: () => void;
 };
 
-export const AddressesTable = ({ patient }: Props) => {
+export const AddressesTable = ({ patient, fetchSummary }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
@@ -157,6 +158,7 @@ export const AddressesTable = ({ patient }: Props) => {
                         message: `Added address`
                     });
                     refetch();
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }
@@ -192,6 +194,7 @@ export const AddressesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated address`
                     });
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }
@@ -214,6 +217,7 @@ export const AddressesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted address`
                     });
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }

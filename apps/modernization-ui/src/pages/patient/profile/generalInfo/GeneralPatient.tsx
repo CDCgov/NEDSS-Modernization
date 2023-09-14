@@ -56,9 +56,10 @@ const asEntry = (mortality?: PatientGeneral | null): GeneralInformationEntry => 
 
 type Props = {
     patient: string;
+    fetchSummary: () => void;
 };
 
-export const GeneralPatient = ({ patient }: Props) => {
+export const GeneralPatient = ({ patient, fetchSummary }: Props) => {
     const { showAlert } = useAlert();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
@@ -100,7 +101,10 @@ export const GeneralPatient = ({ patient }: Props) => {
                     asOf: externalizeDateTime(updated.asOf)
                 }
             }
-        }).then(handleUpdate);
+        }).then(() => {
+            handleUpdate();
+            fetchSummary();
+        });
     };
 
     return (

@@ -10,6 +10,7 @@ import { useAlert } from 'alert/useAlert';
 
 type Props = {
     patient: string;
+    fetchSummary: () => void;
 };
 
 const initialEntry = {
@@ -42,7 +43,7 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
     unknownReason: maybeId(ethnicity?.unknownReason),
     detailed: maybeIds(ethnicity?.detailed)
 });
-export const Ethnicity = ({ patient }: Props) => {
+export const Ethnicity = ({ patient, fetchSummary }: Props) => {
     const { showAlert } = useAlert();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
@@ -85,7 +86,10 @@ export const Ethnicity = ({ patient }: Props) => {
                     patient: patient
                 }
             }
-        }).then(handleUpdate);
+        }).then(() => {
+            handleUpdate();
+            fetchSummary();
+        });
     };
 
     return (

@@ -41,9 +41,10 @@ const asEntry = (mortality: PatientMortality): MortalityEntry => ({
 
 type Props = {
     patient: string;
+    fetchSummary: () => void;
 };
 
-export const Mortality = ({ patient }: Props) => {
+export const Mortality = ({ patient, fetchSummary }: Props) => {
     const { showAlert } = useAlert();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
@@ -92,7 +93,10 @@ export const Mortality = ({ patient }: Props) => {
                     deceasedOn: externalizeDate(updated.deceasedOn)
                 }
             }
-        }).then(handleUpdate);
+        }).then(() => {
+            handleUpdate();
+            fetchSummary();
+        });
     };
 
     return (

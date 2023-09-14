@@ -14,6 +14,7 @@ import { AlertProvider } from 'alert';
 type DemographicProps = {
     handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
     id: string;
+    fetchSummary: () => void;
 };
 
 export type AlertType = {
@@ -32,7 +33,7 @@ export type AlertType = {
     name?: string;
 } | null;
 
-export const Demographics = ({ id }: DemographicProps) => {
+export const Demographics = ({ id, fetchSummary }: DemographicProps) => {
     return (
         <AlertProvider>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
@@ -40,36 +41,36 @@ export const Demographics = ({ id }: DemographicProps) => {
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <NamesTable patient={id} />
+                <NamesTable fetchSummary={fetchSummary} patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <AddressesTable patient={id} />
+                <AddressesTable fetchSummary={fetchSummary} patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PhoneAndEmailTable patient={id} />
+                <PhoneAndEmailTable fetchSummary={fetchSummary} patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <IdentificationsTable patient={id} />
+                <IdentificationsTable fetchSummary={fetchSummary} patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <RacesTable patient={id} />
+                <RacesTable fetchSummary={fetchSummary} patient={id} />
             </div>
 
             <Grid row gap className="margin-auto">
                 <Grid col={6}>
                     <Grid row>
-                        <GeneralPatient patient={id} />
-                        <Mortality patient={id} />
+                        <GeneralPatient fetchSummary={fetchSummary} patient={id} />
+                        <Mortality fetchSummary={fetchSummary} patient={id} />
                     </Grid>
                 </Grid>
                 <Grid col={6}>
                     <Grid row>
-                        <Ethnicity patient={id} />
-                        <SexBirth patient={id} />
+                        <Ethnicity fetchSummary={fetchSummary} patient={id} />
+                        <SexBirth fetchSummary={fetchSummary} patient={id} />
                     </Grid>
                 </Grid>
             </Grid>

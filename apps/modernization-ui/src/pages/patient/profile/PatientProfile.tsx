@@ -1,6 +1,6 @@
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import 'pages/patientProfile/style.scss';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Summary } from 'pages/patientProfile/Summary';
@@ -42,7 +42,7 @@ export const PatientProfile = () => {
 
     const permissions = usePatientProfilePermissions();
 
-    const profile = usePatientProfile(id);
+    const { profile, refetch: refetchProfileSummary } = usePatientProfile(id);
 
     const deletability = resolveDeletability(profile?.patient);
 
@@ -67,6 +67,16 @@ export const PatientProfile = () => {
             });
         }
     }
+
+    const [updateDemographics, setUpdateDemographics] = useState(false);
+    useEffect(() => {
+        updateDemographics &&
+            refetchProfileSummary().then((re) => {
+                if (re?.data?.findPatientProfile) {
+                    setUpdateDemographics(false);
+                }
+            });
+    }, [updateDemographics]);
 
     return (
         <div className="height-full main-banner">
@@ -153,7 +163,9 @@ export const PatientProfile = () => {
                 {activeTab === ACTIVE_TAB.EVENT && (
                     <Events patient={profile?.patient.id} addEventsAllowed={profile?.patient.status === 'ACTIVE'} />
                 )}
-                {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics id={profile?.patient.id || ''} />}
+                {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
+                    <Demographics fetchSummary={() => setUpdateDemographics(true)} id={profile?.patient.id || ''} />
+                )}
 
                 <div className="text-center margin-y-5">
                     <Button outline type={'button'} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>

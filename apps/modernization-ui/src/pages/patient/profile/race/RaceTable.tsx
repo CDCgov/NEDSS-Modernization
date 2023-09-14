@@ -45,9 +45,10 @@ const resolveInitialEntry = (patient: string): RaceEntry => ({
 
 type Props = {
     patient: string;
+    fetchSummary: () => void;
 };
 
-export const RacesTable = ({ patient }: Props) => {
+export const RacesTable = ({ patient, fetchSummary }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
@@ -114,6 +115,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Added race`
                     });
                     refetch();
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }
@@ -138,6 +140,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Updated race`
                     });
                     refetch();
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }
@@ -160,6 +163,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Deleted race`
                     });
                     refetch();
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }

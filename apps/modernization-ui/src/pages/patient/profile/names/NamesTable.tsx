@@ -70,9 +70,10 @@ const resolveInitialEntry = (patient: string): NameEntry => ({
 
 type Props = {
     patient: string;
+    fetchSummary: () => void;
 };
 
-export const NamesTable = ({ patient }: Props) => {
+export const NamesTable = ({ patient, fetchSummary }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
@@ -149,6 +150,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Added name`
                     });
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }
@@ -181,6 +183,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated name`
                     });
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }
@@ -203,6 +206,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted name`
                     });
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }

@@ -51,9 +51,10 @@ const resolveInitialEntry = (patient: string): IdentificationEntry => ({
 
 type Props = {
     patient: string;
+    fetchSummary: () => void;
 };
 
-export const IdentificationsTable = ({ patient }: Props) => {
+export const IdentificationsTable = ({ patient, fetchSummary }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
@@ -120,6 +121,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     message: `Added Identification`
                 });
                 refetch();
+                fetchSummary();
             })
             .then(actions.reset);
     };
@@ -145,6 +147,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Updated Identification`
                     });
                     refetch();
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }
@@ -167,6 +170,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Deleted Identification`
                     });
                     refetch();
+                    fetchSummary();
                 })
                 .then(actions.reset);
         }
