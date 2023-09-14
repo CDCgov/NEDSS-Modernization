@@ -6,13 +6,15 @@ import { Actions as ActionState } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { Identification, IdentificationEntry } from './identification';
 import {
-    FindPatientProfileQuery,
     useAddPatientIdentificationMutation,
     useDeletePatientIdentificationMutation,
     useUpdatePatientIdentificationMutation
 } from 'generated/graphql/schema';
 import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
-import { useFindPatientProfileIdentifications } from './useFindPatientProfileIdentifications';
+import {
+    PatientIdentificationResult,
+    useFindPatientProfileIdentifications
+} from './useFindPatientProfileIdentifications';
 import { maybeDescription, maybeId } from '../coded';
 import { internalizeDate } from 'date';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
@@ -69,12 +71,12 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const [isActions, setIsActions] = useState<any>(null);
     const [identifications, setIdentifications] = useState<Identification[]>([]);
 
-    const handleComplete = (data: FindPatientProfileQuery) => {
-        setTotal(data?.findPatientProfile?.identification?.total ?? 0);
-        setIdentifications(data?.findPatientProfile?.identification?.content || []);
+    const handleComplete = (data: PatientIdentificationResult) => {
+        setTotal(data?.findPatientProfile.identification?.total ?? 0);
+        setIdentifications(data?.findPatientProfile.identification?.content || []);
     };
 
-    const [getProfile, { refetch, loading }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
+    const [fetch, { refetch, loading }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
 
     const [add] = useAddPatientIdentificationMutation();
     const [update] = useUpdatePatientIdentificationMutation();
@@ -88,10 +90,10 @@ export const IdentificationsTable = ({ patient }: Props) => {
     }, [selected]);
 
     useEffect(() => {
-        getProfile({
+        fetch({
             variables: {
                 patient: patient.toString(),
-                page4: {
+                page: {
                     pageNumber: currentPage - 1,
                     pageSize: TOTAL_TABLE_DATA
                 }
@@ -212,6 +214,10 @@ export const IdentificationsTable = ({ patient }: Props) => {
             <SortableTable
                 isLoading={loading}
                 isPagination={true}
+                totalResults={total}
+                currentPage={currentPage}
+                handleNext={setCurrentPage}
+                sortDirectionData={handleSort}
                 buttons={
                     <div className="grid-row">
                         <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
@@ -267,10 +273,6 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         </td>
                     </tr>
                 ))}
-                totalResults={total}
-                currentPage={currentPage}
-                handleNext={setCurrentPage}
-                sortDirectionData={handleSort}
             />
 
             {selected?.type === 'add' && (

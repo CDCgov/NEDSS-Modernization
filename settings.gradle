@@ -30,9 +30,12 @@ include ':authentication'
 project(':authentication').projectDir = new File('libs/authentication')
 include ':id-generator'
 project(':id-generator').projectDir = new File('libs/id-generator')
-
-
+include ':accumulation'
+project(':accumulation').projectDir = new File('libs/accumulation')
+include ':me-api'
+project(':me-api').projectDir = new File('libs/me-api')
 
 
 include ':coverage-report'
+
 

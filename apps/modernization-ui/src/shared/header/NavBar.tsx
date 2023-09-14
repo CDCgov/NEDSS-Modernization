@@ -8,7 +8,10 @@ import './NavBar.scss';
 const NBS_URL = Config.nbsUrl;
 
 export default function NavBar() {
-    const { state, logout } = useContext(UserContext);
+    const {
+        state: { user },
+        logout
+    } = useContext(UserContext);
     const location = useLocation();
     const logoutClick = () => {
         logout();
@@ -108,7 +111,7 @@ export default function NavBar() {
                             </td>
 
                             <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                                User : {state.displayName}
+                                User : {user?.name.display}
                             </td>
 
                             <td className="currentUser logo" style={{ paddingBottom: '0px', marginBottom: '0px' }}>

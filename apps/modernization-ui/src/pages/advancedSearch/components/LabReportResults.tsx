@@ -6,6 +6,7 @@ import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';
+import formattedName from 'formattedName';
 
 type LabReportResultsProps = {
     data: [LabReport];
@@ -77,7 +78,10 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         let age: string | undefined;
         let sex: string | undefined;
         if (patient) {
-            name = !patient.lastName && !patient.firstName ? `No Data` : `${patient.lastName}, ${patient.firstName}`;
+            name =
+                !patient.lastName && !patient.firstName
+                    ? `No Data`
+                    : formattedName(patient?.lastName ?? '', patient?.firstName ?? '');
             if (patient.birthTime) {
                 birthDate = formatDate(patient.birthTime);
                 age = calculateAge(new Date(patient.birthTime));

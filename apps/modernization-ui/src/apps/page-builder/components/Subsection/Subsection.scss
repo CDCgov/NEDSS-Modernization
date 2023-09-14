@@ -17,9 +17,7 @@
             svg {
                 color: $color-primary;
                 cursor: pointer;
-                &:first-of-type {
-                    margin-right: 0.8rem;
-                }
+                gap: 0.8rem;
             }
         }
     }

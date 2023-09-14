@@ -125,7 +125,7 @@ public class PatientMother {
                 identifier.id(),
                 RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomNumericString(8),
-                "GA",
+                RandomUtil.maybeOneFrom("GA"),
                 RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
                 this.settings.createdBy(),
                 this.settings.createdOn()
