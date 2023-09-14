@@ -1,13 +1,4 @@
-import {
-    Button,
-    ButtonGroup,
-    Icon,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton
-} from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import 'pages/patientProfile/style.scss';
 import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,8 +11,9 @@ import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
 import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
-import { resolveDeleteMessage } from './resolveDeleteMessage';
-import { MessageModal, MessageModalContent } from 'messageModal';
+import { MessageModal } from 'messageModal';
+import { usePatientProfilePermissions } from './permission';
+import { ConfirmationModal } from 'confirmation';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -47,6 +39,8 @@ export const PatientProfile = () => {
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
     );
+
+    const permissions = usePatientProfilePermissions();
 
     const profile = usePatientProfile(id);
 
@@ -86,54 +80,43 @@ export const PatientProfile = () => {
                         <Icon.Print className="margin-right-05" />
                         Print
                     </Button>
-                    <ModalToggleButton
-                        modalRef={modalRef}
-                        opener
-                        disabled={profile?.patient?.status !== 'ACTIVE'}
-                        className="delete-btn display-inline-flex"
-                        type={'submit'}>
-                        <Icon.Delete className="margin-right-05" />
-                        Delete patient
-                    </ModalToggleButton>
-                    {deletability !== DeletabilityResult.Deletable ? (
+                    {permissions.delete && (
+                        <ModalToggleButton
+                            modalRef={modalRef}
+                            opener
+                            className="delete-btn display-inline-flex"
+                            type={'submit'}>
+                            <Icon.Delete className="margin-right-05" />
+                            Delete patient
+                        </ModalToggleButton>
+                    )}
+                    {deletability === DeletabilityResult.Deletable && (
+                        <ConfirmationModal
+                            modal={modalRef}
+                            title="Permanently delete patient?"
+                            message={`Would you like to permanently delete patient record ${profile?.patient?.shortId}, ${profile?.summary?.legalName?.last}, ${profile?.summary?.legalName?.first}`}
+                            cancelText="No, go back"
+                            onCancel={() => {
+                                modalRef.current?.toggleModal(undefined, false);
+                            }}
+                            confirmText="Yes, delete"
+                            onConfirm={handleDeletePatient}
+                        />
+                    )}
+                    {deletability === DeletabilityResult.Has_Associations && (
                         <MessageModal
                             modal={modalRef}
                             title={`The patient can not be deleted`}
-                            content={resolveDeleteMessage(deletability) as MessageModalContent}
+                            message="This patient file has associated event records."
+                            detail="The file cannot be deleted until all associated event records have been deleted. If you are unable to see the associated event records due to your user permission settings, please contact your system administrator."
                         />
-                    ) : (
-                        <Modal
-                            ref={modalRef}
-                            id="example-modal-1"
-                            aria-labelledby="modal-1-heading"
-                            className="padding-0"
-                            aria-describedby="modal-1-description">
-                            <ModalHeading
-                                id="modal-1-heading"
-                                className="border-bottom border-base-lighter font-sans-lg padding-2">
-                                Permanently delete patient?
-                            </ModalHeading>
-                            <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                                <Icon.Warning className="font-sans-2xl margin-x-2" />
-                                <p id="modal-1-description">
-                                    Would you like to permanently delete patient record {profile?.patient?.shortId},{' '}
-                                    {`${profile?.summary?.legalName?.last}, ${profile?.summary?.legalName?.first}`}
-                                </p>
-                            </div>
-                            <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                                <ButtonGroup>
-                                    <ModalToggleButton outline modalRef={modalRef} closer>
-                                        No, go back
-                                    </ModalToggleButton>
-                                    <Button
-                                        type="button"
-                                        onClick={handleDeletePatient}
-                                        className="padding-105 text-center">
-                                        Yes, delete
-                                    </Button>
-                                </ButtonGroup>
-                            </ModalFooter>
-                        </Modal>
+                    )}
+                    {deletability === DeletabilityResult.Is_Inactive && (
+                        <MessageModal
+                            modal={modalRef}
+                            title={`The patient can not be deleted`}
+                            message="This patient file is inactive and cannot be deleted."
+                        />
                     )}
                 </div>
             </div>

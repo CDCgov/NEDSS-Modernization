@@ -2,16 +2,16 @@
 Feature: Find users
 
   Background:
-    Given A user exists
-    And A clerical permission set exists
-    And The "clerical" user has the "clerical" permission set for the "STD" program area
+    Given I am logged into NBS
+    And the "clerical" user exists
+    And the "clerical" user can "View" any "Patient" for "STD" within all jurisdictions
 
   Scenario: I can find users in my program area
-    Given I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
-    When I search for users
-    Then The clerical user is returned
+    Given I can "Find" any "Patient" for "STD" within all jurisdictions
+    When I retrieve the user list
+    Then The "clerical" user is returned
 
   Scenario: I can not find users in other program areas
-    Given I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "ARBO"
-    When I search for users
-    Then The clerical user is not returned
+    Given I can "Find" any "Patient" for "ARBO" within all jurisdictions
+    When I retrieve the user list
+    Then The "clerical" user is not returned

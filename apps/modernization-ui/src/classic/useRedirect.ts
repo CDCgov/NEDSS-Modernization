@@ -1,4 +1,3 @@
-import { UserState } from 'providers/UserContext';
 import { useEffect, useReducer } from 'react';
 import { useUser } from 'user';
 
@@ -28,14 +27,16 @@ const redirectReducer = (state: Redirect, action: Action) => {
     }
 };
 
-const resolveRedirect = (user: UserState, url: string) => {
-    return fetch(url, { headers: { Authorization: `Bearer ${user.getToken()}` } }).then((response) =>
+const resolveRedirect = (token: () => string | undefined, url: string) => {
+    return fetch(url, { headers: { Authorization: `Bearer ${token()}` } }).then((response) =>
         response.headers.get('Location')
     );
 };
 
 const useRedirect = () => {
-    const { state: user } = useUser();
+    const {
+        state: { getToken }
+    } = useUser();
 
     const initial = { status: Status.Idle, url: '', location: null };
 
@@ -43,7 +44,7 @@ const useRedirect = () => {
 
     useEffect(() => {
         if (redirect.url) {
-            resolveRedirect(user, redirect.url).then((location) => {
+            resolveRedirect(getToken, redirect.url).then((location) => {
                 if (location) {
                     dispatch({ type: 'redirected', location });
                 }

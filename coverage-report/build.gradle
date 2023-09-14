@@ -13,9 +13,12 @@ version = '0.0.1-SNAPSHOT'
 dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
+    jacocoAggregation project(':accumulation')
+    jacocoAggregation project(':authentication')
     jacocoAggregation project(':database-entities')
     jacocoAggregation project(':event-schema')
-    jacocoAggregation project(':authentication')
+    jacocoAggregation project(':id-generator')
+    jacocoAggregation project(':me-api')
 
     jacocoAggregation project(':modernization-api')
     jacocoAggregation project(':question-bank')

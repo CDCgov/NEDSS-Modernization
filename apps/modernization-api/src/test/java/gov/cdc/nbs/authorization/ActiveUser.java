@@ -1,4 +1,4 @@
 package gov.cdc.nbs.authorization;
 
-public record ActiveUser(long id, String username) {
+public record ActiveUser(long id, String username, String token) {
 }
