@@ -111,7 +111,7 @@
         "@typescript-eslint/eslint-plugin": "^5.32.0",
         "@typescript-eslint/parser": "^5.32.0",
         "babel-plugin-named-exports-order": "^0.0.2",
-        "cypress": "^10.11.0",
+        "cypress": "^13.2.0",
         "eslint": "^8.21.0",
         "eslint-config-google": "^0.14.0",
         "eslint-config-prettier": "^8.5.0",
