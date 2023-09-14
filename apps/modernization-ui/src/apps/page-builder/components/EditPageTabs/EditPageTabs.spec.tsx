@@ -10,18 +10,19 @@ const props = {
 };
 
 describe('EditPageTabs', () => {
-    it('should render the EditPageTabs component', () => {
+    it('should render', () => {
         render(<EditPageTabs {...props} />);
-        expect(screen.getByText('first tab')).toBeInTheDocument();
-        expect(screen.getByText('second tab')).toBeInTheDocument();
+        expect(screen.getAllByText('first tab')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('second tab')[0]).toBeInTheDocument();
     });
 
     it('it should render component with the active tab', () => {
         render(<EditPageTabs {...props} />);
-        const firstTab = screen.getByText('first tab').parentElement;
-        const secondTab = screen.getByText('second tab').parentElement;
-        expect(firstTab).toHaveClass('active');
-        expect(secondTab).not.toHaveClass('active');
+        const firstTab = screen.getAllByText('first tab');
+        const secondTab = screen.getAllByText('second tab');
+
+        expect(firstTab[0].parentElement).toHaveClass('active');
+        expect(secondTab[0].parentElement).not.toHaveClass('active');
     });
 
     it('should have the Manage Tabs button', () => {
@@ -35,8 +36,8 @@ describe('EditPageTabs', () => {
     describe('when a tab is clicked', () => {
         it('is set to active', () => {
             render(<EditPageTabs {...props} />);
-            const secondTab = screen.getByText('second tab');
-            fireEvent.click(secondTab);
+            const secondTab = screen.getAllByText('second tab');
+            fireEvent.click(secondTab[0]);
 
             expect(props.setActive).toHaveBeenCalledWith(1);
         });
