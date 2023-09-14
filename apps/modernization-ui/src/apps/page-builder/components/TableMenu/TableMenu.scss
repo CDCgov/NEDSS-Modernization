@@ -20,6 +20,9 @@
         }
     }
     .input {
+        label {
+            display: none;
+        }
         input {
             margin: 0;
             height: 2.4rem;

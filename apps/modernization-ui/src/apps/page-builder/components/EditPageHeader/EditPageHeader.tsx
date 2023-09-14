@@ -7,9 +7,10 @@ import { SaveTemplates } from '../SaveTemplate/SaveTemplate';
 
 type PageProps = {
     page: PageDetails;
+    handleSaveDraft: () => void;
 };
 
-export const EditPageHeader = ({ page }: PageProps) => {
+export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
     const [isSaveTemplate, setIsSaveTemplate] = useState(false);
     const modalRef = useRef<ModalRef>(null);
     return (
@@ -32,7 +33,7 @@ export const EditPageHeader = ({ page }: PageProps) => {
                         </Button>
                     </>
                 ) : (
-                    <Button type="button" outline>
+                    <Button type="button" outline onClick={() => handleSaveDraft()}>
                         Save draft
                     </Button>
                 )}

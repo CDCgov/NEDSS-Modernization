@@ -7,12 +7,14 @@ import './EditPage.scss';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { EditPageContentComponent } from 'apps/page-builder/components/EditPageContent/EditPageContent';
 import { EditPageSidebar } from 'apps/page-builder/components/EditPageSidebar/EditPageSidebar';
-import { fetchPageDetails } from 'apps/page-builder/services/pagesAPI';
+import { fetchPageDetails, savePageAsDraft } from 'apps/page-builder/services/pagesAPI';
 import { UserContext } from 'user';
 import { PageDetails } from 'apps/page-builder/generated/models/PageDetails';
 import AddSectionModal from 'apps/page-builder/components/AddSection/AddSectionModal';
 import { ModalRef } from '@trussworks/react-uswds';
 import { Tabs } from 'apps/page-builder/generated/models/Tabs';
+import { Spinner } from 'components/Spinner/Spinner';
+import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 
 export const EditPage = () => {
     const { pageId } = useParams();
@@ -22,6 +24,8 @@ export const EditPage = () => {
     const [tabs, setTabs] = useState<Tabs[] | undefined>();
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
+    const [alertType, setAlertType] = useState<string>('');
+    const [alertMessage, setAlertMessage] = useState<string>('');
 
     const getPageDetails = () => {
         if (pageId) {
@@ -50,13 +54,26 @@ export const EditPage = () => {
         }
     };
 
+    const handleSaveDraft = async () => {
+        await savePageAsDraft(token, Number(pageId))
+            .then((response) => {
+                console.log(response);
+                setAlertMessage('Page successfully saved as Draft');
+                setAlertType('success');
+            })
+            .catch((error) => {
+                setAlertMessage(error.body.message);
+                setAlertType('error');
+            });
+    };
+
     return (
         <PageBuilder page="edit-page">
             {page ? (
                 <div className="edit-page">
                     <PagesBreadcrumb currentPage={page.Name} />
                     <div className="edit-page__header">
-                        <EditPageHeader page={page} />
+                        <EditPageHeader page={page} handleSaveDraft={handleSaveDraft} />
                         {tabs ? (
                             <EditPageTabs
                                 tabs={tabs}
@@ -67,19 +84,28 @@ export const EditPage = () => {
                         ) : null}
                     </div>
                     <div className="edit-page__container">
-                        {page.pageTabs[active] ? (
-                            <EditPageContentComponent content={page.pageTabs[active]} onAddSection={handleAddSuccess} />
-                        ) : null}
+                        <div className="edit-page__content">
+                            {alertMessage !== '' ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
 
-                        <EditPageSidebar modalRef={addSectionModalRef} />
+                            {page.pageTabs[active] ? (
+                                <EditPageContentComponent
+                                    content={page.pageTabs[active]}
+                                    onAddSection={handleAddSuccess}
+                                />
+                            ) : null}
+
+                            <EditPageSidebar modalRef={addSectionModalRef} />
+                        </div>
                     </div>
                 </div>
-            ) : null}
+            ) : (
+                <Spinner />
+            )}
             {page && pageId && page.pageTabs[active].id ? (
                 <AddSectionModal
                     modalRef={addSectionModalRef}
                     pageId={pageId}
-                    tabId={page.pageTabs[active].id}
+                    tabId={page.pageTabs[active]?.id}
                     onAddSection={handleAddSuccess}
                 />
             ) : null}
