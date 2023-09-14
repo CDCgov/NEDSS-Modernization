@@ -11,7 +11,8 @@ public class PatientSteps {
     @Autowired
     PatientMother mother;
 
-    @Before
+    //  Make sure that patients are cleaned up after everything else
+    @Before(order = 15000)
     public void clean() {
         mother.reset();
     }
