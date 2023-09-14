@@ -79,9 +79,10 @@ describe('<AddTab />', () => {
                     loginError: undefined,
                     userId: undefined,
                     displayName: undefined,
-                    getToken: () => 'token'
+                    getToken: () => 'token',
+                    username: 'username'
                 },
-                login: (_username: string, _password: string) => Promise.resolve(true),
+                login: (username: string) => Promise.resolve(void 0),
                 logout: () => {}
             };
 

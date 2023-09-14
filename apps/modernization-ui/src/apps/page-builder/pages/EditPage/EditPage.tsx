@@ -71,7 +71,7 @@ export const EditPage = () => {
                     </div>
                 </div>
             ) : null}
-            {page && pageId ? (
+            {page && pageId && page.pageTabs[active].id ? (
                 <AddSectionModal
                     modalRef={addSectionModalRef}
                     pageId={pageId}
