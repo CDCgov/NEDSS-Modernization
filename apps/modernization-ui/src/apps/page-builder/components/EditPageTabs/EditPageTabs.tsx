@@ -4,9 +4,10 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { AddTab } from '../AddTabs';
 import ManageTabs from '../ManageTabs/ManageTabs';
+import { Tabs } from 'apps/page-builder/generated/models/Tabs';
 
 type Props = {
-    tabs?: { name: string }[];
+    tabs: Tabs[];
     active: number;
     setActive: SetStateAction<any>;
     onAddSuccess: () => void;
@@ -58,7 +59,11 @@ export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) =
                     )
                 }
                 modalBody={
-                    isAdding ? <AddTab onCancel={() => setIsAdding(false)} onAddTab={handleAddTab} /> : <ManageTabs />
+                    isAdding ? (
+                        <AddTab onCancel={() => setIsAdding(false)} onAddTab={handleAddTab} />
+                    ) : (
+                        <ManageTabs tabs={tabs} />
+                    )
                 }
             />
         </>
