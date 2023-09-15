@@ -4,7 +4,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import gov.cdc.nbs.authentication.config.SecurityProperties;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Component
-@RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
@@ -28,18 +26,33 @@ public class JWTFilter extends OncePerRequestFilter {
     private final UserService userService;
     private final JWTVerifier verifier;
     private final SecurityProperties securityProperties;
+    private final TokenCreator creator;
+
+    public JWTFilter(
+        final UserService userService,
+        final JWTVerifier verifier,
+        final SecurityProperties securityProperties,
+        final TokenCreator creator
+    ) {
+        this.userService = userService;
+        this.verifier = verifier;
+        this.securityProperties = securityProperties;
+        this.creator = creator;
+    }
 
     /**
      * On every request, validate the JWT, and load user details from the UserService.
      */
     @Override
     protected void doFilterInternal(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        FilterChain filterChain)
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        FilterChain filterChain
+    )
         throws ServletException, IOException {
         verifyAndDecodeJWT(request)
-            .map(userService::findUserByToken)
+            .map(DecodedJWT::getSubject)
+            .map(userService::loadUserByUsername)
             .map(userDetails -> {
                 response.addCookie(createJWTCookie(userDetails));
                 return buildPreAuthenticatedToken(userDetails, request);
@@ -49,7 +62,8 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     public Cookie createJWTCookie(final NbsUserDetails userDetails) {
-        Cookie cookie = userDetails.getToken().asCookie();
+        NBSToken token = this.creator.forUser(userDetails.getFirstName());
+        Cookie cookie = token.asCookie();
         cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
         return cookie;
     }
@@ -58,7 +72,7 @@ public class JWTFilter extends OncePerRequestFilter {
      * Pulls the JWT from the "Authorization" header and validates it against the
      * {@link gov.cdc.nbs.authentication.config.JWTSecurityConfig#jwtVerifier verifier}
      */
-    public Optional<DecodedJWT> verifyAndDecodeJWT(HttpServletRequest request) {
+    public Optional<DecodedJWT> verifyAndDecodeJWT(final HttpServletRequest request) {
         try {
             return Optional.ofNullable(request.getHeader(AUTHORIZATION))
                 .map(s -> !s.isBlank() ? s.substring(BEARER.length()) : s)

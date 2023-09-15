@@ -20,7 +20,6 @@ public class NbsUserDetails implements UserDetails {
     private final Set<String> adminProgramAreas;
     private final String password;
     private final Set<NbsAuthority> authorities;
-    private final NBSToken token;
     private final boolean isEnabled;
 
     @Override

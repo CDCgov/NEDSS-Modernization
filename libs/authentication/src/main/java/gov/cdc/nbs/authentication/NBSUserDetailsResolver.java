@@ -16,7 +16,7 @@ public class NBSUserDetailsResolver {
         this.finder = finder;
     }
 
-    public NbsUserDetails resolve(final AuthUser authUser, final NBSToken token) {
+    public NbsUserDetails resolve(final AuthUser authUser) {
         return NbsUserDetails
             .builder()
             .id(authUser.getNedssEntryId())
@@ -32,7 +32,6 @@ public class NBSUserDetailsResolver {
             .password(null)
             .authorities(finder.getUserPermissions(authUser))
             .isEnabled(authUser.getAudit().recordStatus().equals(AuthRecordStatus.ACTIVE))
-            .token(token)
             .build();
     }
 

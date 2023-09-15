@@ -47,13 +47,12 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
+        NbsUserDetails resolved = resolver.resolve(user);
 
         assertThat(resolved)
             .returns("first-name-value", NbsUserDetails::getFirstName)
             .returns("last-name-value", NbsUserDetails::getLastName)
             .returns("user-id-value", NbsUserDetails::getUsername)
-            .returns("token-value", details -> details.getToken().value())
             .returns(false, NbsUserDetails::isMasterSecurityAdmin)
             .returns(false, NbsUserDetails::isProgramAreaAdmin)
             .returns(true, NbsUserDetails::isEnabled)
@@ -82,7 +81,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
+        NbsUserDetails resolved = resolver.resolve(user);
 
         assertThat(resolved.isMasterSecurityAdmin()).isTrue();
 
@@ -107,7 +106,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
+        NbsUserDetails resolved = resolver.resolve(user);
 
         assertThat(resolved.isProgramAreaAdmin()).isTrue();
 
@@ -151,7 +150,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
+        NbsUserDetails resolved = resolver.resolve(user);
 
         assertThat(resolved.getAdminProgramAreas()).contains("program-area-one", "program-area-two");
 
@@ -182,7 +181,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
+        NbsUserDetails resolved = resolver.resolve(user);
 
         assertThat(resolved.isEnabled()).isFalse();
 
@@ -219,7 +218,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
+        NbsUserDetails resolved = resolver.resolve(user);
 
         assertThat(resolved.getAuthorities())
             .satisfiesExactly(

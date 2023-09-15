@@ -3,6 +3,7 @@ package gov.cdc.nbs.controller;
 import gov.cdc.nbs.authentication.NBSToken;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authentication.TokenCreator;
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.authentication.config.SecurityProperties;
 import gov.cdc.nbs.authentication.entity.AuthUser;
@@ -30,6 +31,8 @@ public class UserController {
     SecurityProperties securityProperties;
     @Autowired
     AuthUserRepository userRepository;
+    @Autowired
+    TokenCreator creator;
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -38,7 +41,9 @@ public class UserController {
     public LoginResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {
         var userDetails = userService.loadUserByUsername(request.getUsername());
 
-        userDetails.getToken().apply(
+        NBSToken token = this.creator.forUser(request.getUsername());
+
+        token.apply(
             securityProperties,
             response
         );
@@ -47,7 +52,7 @@ public class UserController {
             userDetails.getId(),
             userDetails.getUsername(),
             userDetails.getFirstName() + " " + userDetails.getLastName(),
-            userDetails.getToken().value()
+            token.value()
         );
     }
 

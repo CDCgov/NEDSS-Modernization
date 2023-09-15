@@ -1,10 +1,8 @@
 package gov.cdc.nbs.authentication;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.authentication.util.AuthObjectUtil;
-import gov.cdc.nbs.exception.BadTokenException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,9 +28,6 @@ class UserServiceTest {
     AuthUserRepository repository;
 
     @Mock
-    TokenCreator creator;
-
-    @Mock
     NBSUserDetailsResolver resolver;
 
     @InjectMocks
@@ -42,15 +37,13 @@ class UserServiceTest {
     void should_return_user_details_by_username() {
         // Mock
         AuthUser authUser = mock(AuthUser.class);
-        when(authUser.getUserId()).thenReturn("authenticated-user");
 
         when(repository.findByUserId(any())).thenReturn(Optional.of(authUser));
 
         NbsUserDetails details = mock(NbsUserDetails.class);
 
-        when(resolver.resolve(any(), any())).thenReturn(details);
+        when(resolver.resolve(any())).thenReturn(details);
 
-        when(creator.forUser(any())).thenReturn(new NBSToken("resolved-token"));
 
         // method in test
         NbsUserDetails userDetails = service.loadUserByUsername("test");
@@ -60,50 +53,7 @@ class UserServiceTest {
 
         verify(repository).findByUserId("test");
 
-        verify(resolver).resolve(authUser, new NBSToken("resolved-token"));
-
-        verify(creator).forUser("authenticated-user");
-    }
-
-    @Test
-    void should_return_user_details_by_token() {
-        // Mock
-        AuthUser authUser = mock(AuthUser.class);
-        when(authUser.getUserId()).thenReturn("authenticated-user");
-
-        when(repository.findByUserId(any())).thenReturn(Optional.of(authUser));
-
-        NbsUserDetails details = mock(NbsUserDetails.class);
-
-        when(resolver.resolve(any(), any())).thenReturn(details);
-
-        when(creator.forUser(any())).thenReturn(new NBSToken("resolved-token"));
-
-        DecodedJWT decodedJWT = mock(DecodedJWT.class);
-        when(decodedJWT.getSubject()).thenReturn("test");
-
-        // method in test
-        NbsUserDetails userDetails = service.findUserByToken(decodedJWT);
-
-        // assertions
-        assertThat(userDetails).isSameAs(details);
-
-        verify(repository).findByUserId("test");
-
-        verify(resolver).resolve(authUser, new NBSToken("resolved-token"));
-
-        verify(creator).forUser("authenticated-user");
-    }
-
-    @Test
-    void should_not_return_user_details_by_token_when_user_not_found() {
-        // Mock
-        when(repository.findByUserId("test")).thenReturn(Optional.empty());
-        DecodedJWT decodedJWT = mock(DecodedJWT.class);
-        when(decodedJWT.getSubject()).thenReturn("test");
-
-        // method in test
-        assertThrows(BadTokenException.class, () -> service.findUserByToken(decodedJWT));
+        verify(resolver).resolve(authUser);
     }
 
     @Test

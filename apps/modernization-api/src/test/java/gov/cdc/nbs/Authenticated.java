@@ -39,7 +39,7 @@ public class Authenticated {
 
         AuthUser authUser = this.entityManager.find(AuthUser.class, activeUser.id());
 
-        NbsUserDetails details = resolver.resolve(authUser, activeUser.token());
+        NbsUserDetails details = resolver.resolve(authUser);
 
         PreAuthenticatedAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(
                 details,

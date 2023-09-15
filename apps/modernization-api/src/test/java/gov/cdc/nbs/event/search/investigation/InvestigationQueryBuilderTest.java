@@ -1,17 +1,25 @@
 package gov.cdc.nbs.event.search.investigation;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import gov.cdc.nbs.authentication.NBSToken;
+import gov.cdc.nbs.authentication.NbsAuthority;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
+import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.event.search.InvestigationFilter;
+import gov.cdc.nbs.event.search.InvestigationFilter.CaseStatus;
+import gov.cdc.nbs.event.search.InvestigationFilter.EventDate;
+import gov.cdc.nbs.event.search.InvestigationFilter.EventDateType;
+import gov.cdc.nbs.event.search.InvestigationFilter.IdType;
+import gov.cdc.nbs.event.search.InvestigationFilter.InvestigationEventId;
+import gov.cdc.nbs.event.search.InvestigationFilter.InvestigationStatus;
+import gov.cdc.nbs.event.search.InvestigationFilter.NotificationStatus;
+import gov.cdc.nbs.event.search.InvestigationFilter.ProcessingStatus;
+import gov.cdc.nbs.event.search.InvestigationFilter.ReportingEntityType;
+import gov.cdc.nbs.exception.QueryException;
+import gov.cdc.nbs.message.enums.PregnancyStatus;
+import gov.cdc.nbs.service.SecurityService;
+import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -33,26 +41,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import gov.cdc.nbs.authentication.NbsAuthority;
-import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
-import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.event.search.InvestigationFilter;
-import gov.cdc.nbs.event.search.InvestigationFilter.CaseStatus;
-import gov.cdc.nbs.event.search.InvestigationFilter.EventDate;
-import gov.cdc.nbs.event.search.InvestigationFilter.EventDateType;
-import gov.cdc.nbs.event.search.InvestigationFilter.IdType;
-import gov.cdc.nbs.event.search.InvestigationFilter.InvestigationEventId;
-import gov.cdc.nbs.event.search.InvestigationFilter.InvestigationStatus;
-import gov.cdc.nbs.event.search.InvestigationFilter.NotificationStatus;
-import gov.cdc.nbs.event.search.InvestigationFilter.ProcessingStatus;
-import gov.cdc.nbs.event.search.InvestigationFilter.ReportingEntityType;
-import gov.cdc.nbs.exception.QueryException;
-import gov.cdc.nbs.message.enums.PregnancyStatus;
-import gov.cdc.nbs.service.SecurityService;
-import gov.cdc.nbs.support.util.RandomUtil;
-import gov.cdc.nbs.time.FlexibleInstantConverter;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 class InvestigationQueryBuilderTest {
 
@@ -126,13 +126,13 @@ class InvestigationQueryBuilderTest {
 
         // program_jurisdiction_oid clause was added
         var clause = must.stream()
-                .filter(m -> {
-                    if (m instanceof TermsQueryBuilder mq)
-                        return mq.fieldName().equals(Investigation.PROGRAM_JURISDICTION_OID);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (TermsQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof TermsQueryBuilder mq)
+                    return mq.fieldName().equals(Investigation.PROGRAM_JURISDICTION_OID);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (TermsQueryBuilder) m);
         assertTrue(clause.isPresent());
         assertTrue(clause.get().values().contains(123L));
         assertTrue(clause.get().values().contains(321L));
@@ -154,13 +154,13 @@ class InvestigationQueryBuilderTest {
 
         // Case type clause added
         var clause = must.stream()
-                .filter(m -> {
-                    if (m instanceof MatchQueryBuilder mq)
-                        return mq.fieldName().equals(Investigation.CASE_TYPE_CD);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (MatchQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof MatchQueryBuilder mq)
+                    return mq.fieldName().equals(Investigation.CASE_TYPE_CD);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (MatchQueryBuilder) m);
         assertTrue(clause.isPresent());
         assertEquals("I", clause.get().value());
     }
@@ -309,12 +309,12 @@ class InvestigationQueryBuilderTest {
         var nestedBuilders = findNestedQueryBuilders(must);
 
         var clause1 =
-                findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ, nestedBuilders);
+            findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ, nestedBuilders);
         assertEquals(2, clause1.value());
 
         var clause2 =
-                findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                        nestedBuilders);
+            findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                nestedBuilders);
         assertEquals(filter.getEventId().getId(), clause2.value());
     }
 
@@ -338,17 +338,17 @@ class InvestigationQueryBuilderTest {
         var nestedBuilders = findNestedQueryBuilders(must);
 
         var clause1 =
-                findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ, nestedBuilders);
+            findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ, nestedBuilders);
         assertEquals(2, clause1.value());
 
         var clause2 =
-                findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
-                        nestedBuilders);
+            findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
+                nestedBuilders);
         assertEquals("CITY", clause2.value());
 
         var clause3 =
-                findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                        nestedBuilders);
+            findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                nestedBuilders);
         assertEquals(filter.getEventId().getId(), clause3.value());
     }
 
@@ -373,17 +373,17 @@ class InvestigationQueryBuilderTest {
         var nestedBuilders = findNestedQueryBuilders(must);
 
         var clause1 =
-                findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ, nestedBuilders);
+            findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ, nestedBuilders);
         assertEquals(1, clause1.value());
 
         var clause2 =
-                findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
-                        nestedBuilders);
+            findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
+                nestedBuilders);
         assertEquals("STATE", clause2.value());
 
         var clause3 =
-                findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                        nestedBuilders);
+            findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                nestedBuilders);
         assertEquals(filter.getEventId().getId(), clause3.value());
     }
 
@@ -437,7 +437,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var eds = new EventDate(dateType, RandomUtil.dateInPast(),
-                LocalDate.now());
+            LocalDate.now());
         var filter = new InvestigationFilter();
         filter.setEventDate(eds);
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
@@ -462,7 +462,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var eds = new EventDate(EventDateType.DATE_OF_REPORT, null,
-                LocalDate.now());
+            LocalDate.now());
         var filter = new InvestigationFilter();
         filter.setEventDate(eds);
         QueryException ex = null;
@@ -543,11 +543,11 @@ class InvestigationQueryBuilderTest {
         var nested = findNestedQueryBuilders(must);
 
         var clause = findMatchQueryBuilder(
-                Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD, nested);
+            Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD, nested);
         assertEquals("SubjOfPHC", clause.value());
 
         var clause2 = findMatchQueryBuilder(Investigation.PERSON_PARTICIPATIONS + "."
-                + ElasticsearchPersonParticipation.PERSON_PARENT_UID, nested);
+            + ElasticsearchPersonParticipation.PERSON_PARENT_UID, nested);
         assertEquals(123L, clause2.value());
     }
 
@@ -569,7 +569,7 @@ class InvestigationQueryBuilderTest {
         var nested = findNestedQueryBuilders(must);
 
         var clause = findMatchQueryBuilder(
-                Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.ENTITY_ID, nested);
+            Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.ENTITY_ID, nested);
         assertEquals(123L, clause.value());
     }
 
@@ -707,52 +707,52 @@ class InvestigationQueryBuilderTest {
 
     private RangeQueryBuilder findRangeQueryBuilder(String path, List<QueryBuilder> builders) {
         var optional = builders.stream()
-                .filter(m -> {
-                    if (m instanceof RangeQueryBuilder mq)
-                        return mq.fieldName().equals(path);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (RangeQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof RangeQueryBuilder mq)
+                    return mq.fieldName().equals(path);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (RangeQueryBuilder) m);
         assertNotNull(optional);
         return optional.get();
     }
 
     private ExistsQueryBuilder findExistsQueryBuilder(String path, List<QueryBuilder> builders) {
         var optional = builders.stream()
-                .filter(m -> {
-                    if (m instanceof ExistsQueryBuilder mq)
-                        return mq.fieldName().equals(path);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (ExistsQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof ExistsQueryBuilder mq)
+                    return mq.fieldName().equals(path);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (ExistsQueryBuilder) m);
         assertNotNull(optional);
         return optional.get();
     }
 
     private MatchQueryBuilder findMatchQueryBuilder(String path, List<QueryBuilder> builders) {
         var optional = builders.stream()
-                .filter(m -> {
-                    if (m instanceof MatchQueryBuilder mq)
-                        return mq.fieldName().equals(path);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (MatchQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof MatchQueryBuilder mq)
+                    return mq.fieldName().equals(path);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (MatchQueryBuilder) m);
         assertNotNull(optional);
         return optional.get();
     }
 
     private TermsQueryBuilder findTermsQueryBuilder(String path, List<QueryBuilder> builders) {
         var optional = builders.stream()
-                .filter(m -> {
-                    if (m instanceof TermsQueryBuilder mq)
-                        return mq.fieldName().equals(path);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (TermsQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof TermsQueryBuilder mq)
+                    return mq.fieldName().equals(path);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (TermsQueryBuilder) m);
         assertNotNull(optional);
         return optional.get();
     }
@@ -770,41 +770,40 @@ class InvestigationQueryBuilderTest {
 
     private NbsUserDetails userDetails() {
         return NbsUserDetails.builder()
-                .id(1L)
-                .username("MOCK-USER")
-                .token(new NBSToken("token"))
-                .authorities(authorities())
-                .isEnabled(true)
-                .build();
+            .id(1L)
+            .username("MOCK-USER")
+            .authorities(authorities())
+            .isEnabled(true)
+            .build();
     }
 
     private Set<NbsAuthority> authorities() {
         var authorities = new HashSet<NbsAuthority>();
         authorities.add(NbsAuthority.builder()
-                .authority("FIND-PATIENT")
-                .businessObject("PATIENT")
-                .businessOperation("FIND")
-                .programArea("STD")
-                .programAreaUid(1)
-                .jurisdiction("130001")
-                .build());
+            .authority("FIND-PATIENT")
+            .businessObject("PATIENT")
+            .businessOperation("FIND")
+            .programArea("STD")
+            .programAreaUid(1)
+            .jurisdiction("130001")
+            .build());
         authorities.add(NbsAuthority.builder()
-                .authority("VIEW-INVESTIGATION")
-                .businessObject("INVESTIGATION")
-                .businessOperation("VIEW")
-                .programArea("STD")
-                .programAreaUid(2)
-                .jurisdiction("130002")
-                .build());
+            .authority("VIEW-INVESTIGATION")
+            .businessObject("INVESTIGATION")
+            .businessOperation("VIEW")
+            .programArea("STD")
+            .programAreaUid(2)
+            .jurisdiction("130002")
+            .build());
         return authorities;
     }
 
     private void setAuthentication() {
         var userDetails = userDetails();
         var authentication = new PreAuthenticatedAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities());
+            userDetails,
+            null,
+            userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

@@ -1,9 +1,7 @@
 package gov.cdc.nbs;
 
-import gov.cdc.nbs.authentication.NBSToken;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authentication.TokenCreator;
 import gov.cdc.nbs.authorization.ActiveUser;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.event.search.InvestigationFilter;
@@ -48,9 +46,6 @@ public class PermissionSteps {
 
     @Autowired
     TestActive<UserDetails> activeUserDetails;
-
-    @Autowired
-    TokenCreator tokenCreator;
 
     @Before
     public void clearAuth() {
@@ -98,7 +93,6 @@ public class PermissionSteps {
             var nbsUserDetails = NbsUserDetails.builder()
                 .id(id)
                 .username("MOCK-USER")
-                .token(createToken("MOCK-USER"))
                 .authorities(nbsAuthorities)
                 .isEnabled(true)
                 .build();
@@ -115,7 +109,6 @@ public class PermissionSteps {
             var nbsUserDetails = NbsUserDetails.builder()
                 .id(existingUserDetails.getId())
                 .username(existingUserDetails.getUsername())
-                .token(existingUserDetails.getToken())
                 .authorities(existingAuthorities)
                 .isEnabled(existingUserDetails.isEnabled())
                 .build();
@@ -169,10 +162,6 @@ public class PermissionSteps {
         } else {
             throw new RuntimeException("Invalid responseType specified: " + resultType);
         }
-    }
-
-    private NBSToken createToken(String username) {
-        return tokenCreator.forUser(username);
     }
 
 }
