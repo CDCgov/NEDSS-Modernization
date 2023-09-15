@@ -1,0 +1,18 @@
+plugins {
+    id 'jvm-test-suite'
+}
+
+group = 'gov.cdc'
+version = '1.0.0-SNAPSHOT'
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation libs.bundles.testing
+            }
+        }
+    }
+}

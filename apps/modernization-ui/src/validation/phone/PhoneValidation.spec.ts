@@ -41,12 +41,12 @@ describe('Phone Validation', () => {
     it('should not allow letters', () => {
         const actual = validatePhoneNumber('aaa');
 
-        expect(actual).toEqual('Invalid phone number');
+        expect(actual).toEqual('Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).');
     });
 
     it('should not allow a string of spaces', () => {
         const actual = validatePhoneNumber('        ');
 
-        expect(actual).toEqual('Invalid phone number');
+        expect(actual).toEqual('Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).');
     });
 });

@@ -32,12 +32,9 @@ describe('when a ClassicLink is clicked', () => {
             state: {
                 isLoggedIn: true,
                 isLoginPending: false,
-                loginError: undefined,
-                userId: undefined,
-                displayName: undefined,
                 getToken: () => 'token'
             },
-            login: (_username: string, _password: string) => Promise.resolve(true),
+            login: (_username: string) => {},
             logout: () => {}
         };
 

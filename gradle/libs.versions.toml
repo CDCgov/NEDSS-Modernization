@@ -22,6 +22,7 @@ spring-json = { module = "org.springframework.boot:spring-boot-starter-json", ve
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBoot" }
 spring-security-test = {module = 'org.springframework.security:spring-security-test'}
+springfox = {module='io.springfox:springfox-boot-starter', version='3.0.0'}
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
 queryDSL-apt = { module = "com.querydsl:querydsl-apt", version.ref = "queryDSL" }
@@ -58,6 +59,7 @@ blaze-persistence-queryDSL = [
     "blaze-persistence-queryDSL",
     "blaze-persistence-hibernate",
 ]
+swagger = ["springfox"]
 testcontainers = ["testcontainers", "testcontainers-junit"]
 testcontainers-elasticsearch = [
     "testcontainers",
