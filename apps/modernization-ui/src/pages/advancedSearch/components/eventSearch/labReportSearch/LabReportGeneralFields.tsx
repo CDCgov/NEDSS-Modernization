@@ -1,4 +1,4 @@
-import { Checkbox, Label } from '@trussworks/react-uswds';
+import { Checkbox, ErrorMessage, Label } from '@trussworks/react-uswds';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -29,17 +29,39 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
     let eventStatusArr: string[] = [];
     let processingStatusArr: string[] = [];
 
-    function handleEventDateTypeChange(
+    const handleEventDateTypeChange = (
         e: ChangeEvent<HTMLSelectElement>,
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
-    ): void {
+    ): void => {
         // Clear date fields if date type is deselected
         if (e.target.value === '') {
             form.resetField('eventDate.from');
             form.resetField('eventDate.to');
         }
         onChange(e);
-    }
+    };
+
+    const handleEventIdTypeChange = (
+        e: ChangeEvent<HTMLSelectElement>,
+        onChange: (event: ChangeEvent<HTMLSelectElement>) => void
+    ): void => {
+        // Clear event id field on deselect
+        if (e.target.value === '') {
+            form.resetField('eventId.labEventId');
+        }
+        onChange(e);
+    };
+
+    const handleFacilityTypeChange = (
+        e: ChangeEvent<HTMLSelectElement>,
+        onChange: (event: ChangeEvent<HTMLSelectElement>) => void
+    ): void => {
+        // Clear event id field on deselect
+        if (e.target.value === '') {
+            form.resetField('providerSearch.providerId');
+        }
+        onChange(e);
+    };
     return (
         <>
             <SearchCriteriaContext.Consumer>
@@ -112,7 +134,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                     <SelectInput
                         name={name}
                         value={(value as string) ?? undefined}
-                        onChange={onChange}
+                        onChange={(e) => handleEventIdTypeChange(e, onChange)}
                         label="Event id type"
                         htmlFor={name}
                         dataTestid={name}
@@ -126,21 +148,31 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 )}
             />
 
-            <Controller
-                control={form.control}
-                name="eventId.labEventId" // TODO add validation or disable until event type is selected
-                render={({ field: { onChange, value, name } }) => (
-                    <Input
-                        onChange={onChange}
-                        label="Event id"
-                        defaultValue={value}
-                        type="text"
-                        htmlFor={name}
-                        id={name}
-                        data-testid={name}
-                    />
-                )}
-            />
+            {watch.eventId?.labEventType ? (
+                <Controller
+                    control={form.control}
+                    name="eventId.labEventId"
+                    rules={{
+                        required: { value: true, message: 'Event Id is required' }
+                    }}
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <>
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                label="Event id"
+                                defaultValue={value}
+                                type="text"
+                                htmlFor={name}
+                                id={name}
+                                data-testid={name}
+                                required
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
+                    )}
+                />
+            ) : null}
 
             <Controller
                 control={form.control}
@@ -163,33 +195,49 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 )}
             />
 
-            <Controller
-                control={form.control}
-                name="eventDate.from"
-                render={({ field: { onChange, value } }) => (
-                    <DatePickerInput
-                        disabled={!watch.eventDate?.type}
-                        defaultValue={value}
-                        onChange={onChange}
-                        htmlFor={'from'}
-                        label="From"
+            {watch.eventDate?.type ? (
+                <>
+                    <Controller
+                        control={form.control}
+                        name="eventDate.from"
+                        rules={{
+                            required: { value: true, message: 'From date is required' }
+                        }}
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            <DatePickerInput
+                                disabled={!watch.eventDate?.type}
+                                defaultValue={value}
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                htmlFor={'from'}
+                                label="From"
+                                required
+                                errorMessage={error?.message}
+                            />
+                        )}
                     />
-                )}
-            />
 
-            <Controller
-                control={form.control}
-                name="eventDate.to"
-                render={({ field: { onChange, value } }) => (
-                    <DatePickerInput
-                        disabled={!watch.eventDate?.type}
-                        defaultValue={value}
-                        onChange={onChange}
-                        htmlFor={'to'}
-                        label="To"
+                    <Controller
+                        control={form.control}
+                        name="eventDate.to"
+                        rules={{
+                            required: { value: true, message: 'To date is required' }
+                        }}
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            <DatePickerInput
+                                disabled={!watch.eventDate?.type}
+                                defaultValue={value}
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                htmlFor={'to'}
+                                label="To"
+                                required
+                                errorMessage={error?.message}
+                            />
+                        )}
                     />
-                )}
-            />
+                </>
+            ) : null}
 
             <Label htmlFor={'entryMethod'}>
                 Entry method
@@ -391,8 +439,8 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 render={({ field: { onChange, value, name } }) => (
                     <SelectInput
                         name={name}
-                        defaultValue={value ?? undefined}
-                        onChange={onChange}
+                        value={value as string | undefined}
+                        onChange={(e) => handleFacilityTypeChange(e, onChange)}
                         label="Event provider/facility type"
                         htmlFor={name}
                         dataTestid={name}
@@ -406,20 +454,28 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 )}
             />
 
-            {watch.providerSearch?.providerType !== undefined && (
+            {watch.providerSearch?.providerType && (
                 <Controller
                     control={form.control}
                     name="providerSearch.providerId"
-                    render={({ field: { onChange, value, name } }) => (
-                        <Input
-                            onChange={onChange}
-                            data-testid={name}
-                            defaultValue={value}
-                            type="text"
-                            label="ID:"
-                            htmlFor="id"
-                            id="id"
-                        />
+                    rules={{
+                        required: { value: true, message: `ID is required` }
+                    }}
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <>
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                data-testid={name}
+                                defaultValue={value}
+                                type="text"
+                                label="ID:"
+                                htmlFor={name}
+                                id={name}
+                                required
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
                     )}
                 />
             )}

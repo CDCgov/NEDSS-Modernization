@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@trussworks/react-uswds';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -20,17 +21,39 @@ type InvestigationGeneralAccordionProps = {
 export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordionProps): ReactElement => {
     const watch = useWatch({ control: form.control });
 
-    function handleEventDateTypeChange(
+    const handleEventDateTypeChange = (
         e: ChangeEvent<HTMLSelectElement>,
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
-    ): void {
+    ): void => {
         // Clear date fields if date type is deselected
         if (e.target.value === '') {
             form.resetField('eventDate.from');
             form.resetField('eventDate.to');
         }
         onChange(e);
-    }
+    };
+
+    const handleEventIdTypeChange = (
+        e: ChangeEvent<HTMLSelectElement>,
+        onChange: (event: ChangeEvent<HTMLSelectElement>) => void
+    ): void => {
+        // Clear event id field on deselect
+        if (e.target.value === '') {
+            form.resetField('eventId.id');
+        }
+        onChange(e);
+    };
+
+    const handleFacilityTypeChange = (
+        e: ChangeEvent<HTMLSelectElement>,
+        onChange: (event: ChangeEvent<HTMLSelectElement>) => void
+    ): void => {
+        // Clear event id field on deselect
+        if (e.target.value === '') {
+            form.resetField('providerFacilitySearch.id');
+        }
+        onChange(e);
+    };
 
     return (
         <>
@@ -121,7 +144,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     <SelectInput
                         name={name}
                         value={value as string | undefined}
-                        onChange={onChange}
+                        onChange={(e) => handleEventIdTypeChange(e, onChange)}
                         label="Event id type"
                         dataTestid={name}
                         htmlFor={name}
@@ -134,21 +157,31 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     />
                 )}
             />
-            <Controller
-                control={form.control}
-                name="eventId.id" // TODO - disable / invalidate if event Id type not selected
-                render={({ field: { onChange, value, name } }) => (
-                    <Input
-                        onChange={onChange}
-                        data-testid={name}
-                        label="Event id"
-                        defaultValue={value}
-                        type="text"
-                        htmlFor={name}
-                        id={name}
-                    />
-                )}
-            />
+            {watch.eventId?.investigationEventType ? (
+                <Controller
+                    control={form.control}
+                    name="eventId.id"
+                    rules={{
+                        required: { value: true, message: 'Event Id is required' }
+                    }}
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <>
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                data-testid={name}
+                                label="Event id"
+                                defaultValue={value}
+                                type="text"
+                                htmlFor={name}
+                                id={name}
+                                required
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
+                    )}
+                />
+            ) : null}
 
             <Controller
                 control={form.control}
@@ -170,35 +203,52 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     />
                 )}
             />
-            <Controller
-                control={form.control}
-                name="eventDate.from" // TODO validate - to must be after from, if to specified, from must not be null
-                render={({ field: { onChange, value, name } }) => (
-                    <DatePickerInput
-                        disabled={!watch.eventDate?.type}
-                        defaultValue={value}
-                        onChange={onChange}
-                        htmlFor={'from'}
-                        label="From"
-                        id={name}
-                    />
-                )}
-            />
 
-            <Controller
-                control={form.control}
-                name="eventDate.to"
-                render={({ field: { onChange, value, name } }) => (
-                    <DatePickerInput
-                        disabled={!watch.eventDate?.type}
-                        defaultValue={value}
-                        onChange={onChange}
-                        htmlFor={'to'}
-                        id={name}
-                        label="To"
+            {watch.eventDate?.type ? (
+                <>
+                    <Controller
+                        control={form.control}
+                        name="eventDate.from"
+                        rules={{
+                            required: { value: true, message: 'From date is required' }
+                        }}
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                            <DatePickerInput
+                                disabled={!watch.eventDate?.type}
+                                defaultValue={value}
+                                onBlur={onBlur}
+                                onChange={onChange}
+                                htmlFor={'from'}
+                                label="From"
+                                required
+                                id={name}
+                                errorMessage={error?.message}
+                            />
+                        )}
                     />
-                )}
-            />
+
+                    <Controller
+                        control={form.control}
+                        name="eventDate.to"
+                        rules={{
+                            required: { value: true, message: 'To date is required' }
+                        }}
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                            <DatePickerInput
+                                disabled={!watch.eventDate?.type}
+                                defaultValue={value}
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                htmlFor={'to'}
+                                id={name}
+                                label="To"
+                                required
+                                errorMessage={error?.message}
+                            />
+                        )}
+                    />
+                </>
+            ) : null}
 
             <SearchCriteriaContext.Consumer>
                 {({ searchCriteria }) => (
@@ -255,7 +305,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     <SelectInput
                         name={name}
                         value={value as string | undefined}
-                        onChange={onChange}
+                        onChange={(e) => handleFacilityTypeChange(e, onChange)}
                         label="Event provider/facility type"
                         htmlFor={name}
                         dataTestid={name}
@@ -273,16 +323,24 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                 <Controller
                     control={form.control}
                     name="providerFacilitySearch.id"
-                    render={({ field: { onChange, value, name } }) => (
-                        <Input
-                            onChange={onChange}
-                            defaultValue={value as string | undefined}
-                            type="text"
-                            label="ID:"
-                            htmlFor={name}
-                            id={name}
-                            data-testid={name}
-                        />
+                    rules={{
+                        required: { value: true, message: `ID is required` }
+                    }}
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <>
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                data-testid={name}
+                                defaultValue={value}
+                                type="text"
+                                label="ID:"
+                                htmlFor={name}
+                                id={name}
+                                required
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
                     )}
                 />
             )}

@@ -15,9 +15,10 @@ type EventSearchProps = {
 };
 export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: EventSearchProps) => {
     const [searchType, setSearchType] = useState<SearchType>();
-    const investigationForm = useForm<InvestigationFilter>({ defaultValues: {} });
+    const investigationForm = useForm<InvestigationFilter>({ defaultValues: {}, mode: 'onBlur' });
     const labReportForm = useForm<LabReportFilter>({
-        defaultValues: initialLabForm()
+        defaultValues: initialLabForm(),
+        mode: 'onBlur'
     });
 
     // Auto scroll the 'criteria' section into view when expanding the accordion
@@ -53,7 +54,7 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
 
     const handleClearAll = () => {
         investigationForm.reset({}, { keepDefaultValues: true });
-        labReportForm.reset(initialLabForm());
+        labReportForm.reset(initialLabForm(), { keepDefaultValues: true });
         setSearchType(undefined);
     };
 
@@ -115,7 +116,15 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
                         {searchType === 'labReport' ? <LabReportAccordion form={labReportForm} /> : null}
                         <Grid row className="bottom-search">
                             <Grid col={12} className="padding-x-2">
-                                <Button data-testid="search" className="width-full clear-btn" type={'submit'}>
+                                <Button
+                                    disabled={
+                                        searchType === 'investigation'
+                                            ? !investigationForm.formState.isValid
+                                            : !labReportForm.formState.isValid
+                                    }
+                                    data-testid="search"
+                                    className="width-full clear-btn"
+                                    type={'submit'}>
                                     Search
                                 </Button>
                             </Grid>

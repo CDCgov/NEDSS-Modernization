@@ -989,14 +989,14 @@ export const AdvancedSearch = () => {
                                             // heading="You did not make a search"
                                             headingLevel="h4"
                                             className="width-full">
-                                            <div className="display-flex flex-justify flex-align-center">
+                                            <span className="display-flex flex-justify flex-align-center">
                                                 You must enter at least one item to search
                                                 <Icon.Close
                                                     onClick={() => setSubmitted(false)}
                                                     className="margin-left-05"
                                                     style={{ cursor: 'pointer' }}
                                                 />
-                                            </div>
+                                            </span>
                                         </Alert>
                                     </div>
                                 )}
