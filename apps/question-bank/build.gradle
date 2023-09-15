@@ -9,6 +9,8 @@ plugins {
 group = 'gov.cdc'
 version = '0.0.1-SNAPSHOT'
 
+apply from: "${rootDir}/gradle/cucumber-logging.gradle"
+
 test {
     // always re-run tests
     test.outputs.upToDateWhen { false }
