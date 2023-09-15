@@ -275,7 +275,7 @@ public class InvestigationQueryBuilder {
             }
         }
         // notification status
-        if (filter.getNotificationStatuses() != null && !filter.getNotificationStatuses().isEmpty()) {
+        if (filter.getNotificationStatuses() != null) {
             // UNASSIGNED is included in status list but is not an actual status, it represents a null value
             var statusStrings = filter.getNotificationStatuses()
                     .stream()
