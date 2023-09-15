@@ -24,6 +24,7 @@ import { NameEntry } from './NameEntry';
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -70,10 +71,9 @@ const resolveInitialEntry = (patient: string): NameEntry => ({
 
 type Props = {
     patient: string;
-    fetchSummary: () => void;
 };
 
-export const NamesTable = ({ patient, fetchSummary }: Props) => {
+export const NamesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
@@ -89,6 +89,7 @@ export const NamesTable = ({ patient, fetchSummary }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { refetchProfileSummary } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientName>();
 
@@ -150,7 +151,7 @@ export const NamesTable = ({ patient, fetchSummary }: Props) => {
                         header: 'success',
                         message: `Added name`
                     });
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }
@@ -183,7 +184,7 @@ export const NamesTable = ({ patient, fetchSummary }: Props) => {
                         header: 'success',
                         message: `Updated name`
                     });
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }
@@ -206,7 +207,7 @@ export const NamesTable = ({ patient, fetchSummary }: Props) => {
                         header: 'success',
                         message: `Deleted name`
                     });
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }

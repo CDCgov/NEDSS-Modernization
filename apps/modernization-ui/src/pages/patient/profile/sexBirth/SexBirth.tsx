@@ -8,6 +8,7 @@ import { maybeDescription, maybeId } from '../coded';
 import { BirthAndGenderEntry, SexBirthForm } from './SexBirthForm';
 import { maybeNumber, orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
+import { useProfileContext } from '../ProfileContext';
 
 const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
     {
@@ -80,11 +81,11 @@ type BirthAndGenderState = {
 
 type Props = {
     patient: string;
-    fetchSummary: () => void;
 };
 
-export const SexBirth = ({ patient, fetchSummary }: Props) => {
+export const SexBirth = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { refetchProfileSummary } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
 
     const [state, setState] = useState<BirthAndGenderState>(initial);
@@ -132,7 +133,7 @@ export const SexBirth = ({ patient, fetchSummary }: Props) => {
                     header: 'success',
                     message: `Updated sex & birth`
                 });
-                fetchSummary();
+                refetchProfileSummary?.();
             });
     };
 

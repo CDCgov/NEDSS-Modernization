@@ -7,10 +7,10 @@ import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
 import { useAlert } from 'alert/useAlert';
+import { useProfileContext } from '../ProfileContext';
 
 type Props = {
     patient: string;
-    fetchSummary: () => void;
 };
 
 const initialEntry = {
@@ -43,8 +43,9 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
     unknownReason: maybeId(ethnicity?.unknownReason),
     detailed: maybeIds(ethnicity?.detailed)
 });
-export const Ethnicity = ({ patient, fetchSummary }: Props) => {
+export const Ethnicity = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { refetchProfileSummary } = useProfileContext();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
@@ -88,7 +89,7 @@ export const Ethnicity = ({ patient, fetchSummary }: Props) => {
             }
         }).then(() => {
             handleUpdate();
-            fetchSummary();
+            refetchProfileSummary?.();
         });
     };
 

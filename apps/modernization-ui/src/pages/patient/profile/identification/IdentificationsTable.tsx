@@ -24,6 +24,7 @@ import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -51,10 +52,9 @@ const resolveInitialEntry = (patient: string): IdentificationEntry => ({
 
 type Props = {
     patient: string;
-    fetchSummary: () => void;
 };
 
-export const IdentificationsTable = ({ patient, fetchSummary }: Props) => {
+export const IdentificationsTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
@@ -68,6 +68,7 @@ export const IdentificationsTable = ({ patient, fetchSummary }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { refetchProfileSummary } = useProfileContext();
 
     const [isActions, setIsActions] = useState<any>(null);
     const [identifications, setIdentifications] = useState<Identification[]>([]);
@@ -121,7 +122,7 @@ export const IdentificationsTable = ({ patient, fetchSummary }: Props) => {
                     message: `Added Identification`
                 });
                 refetch();
-                fetchSummary();
+                refetchProfileSummary?.();
             })
             .then(actions.reset);
     };
@@ -147,7 +148,7 @@ export const IdentificationsTable = ({ patient, fetchSummary }: Props) => {
                         message: `Updated Identification`
                     });
                     refetch();
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }
@@ -170,7 +171,7 @@ export const IdentificationsTable = ({ patient, fetchSummary }: Props) => {
                         message: `Deleted Identification`
                     });
                     refetch();
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }

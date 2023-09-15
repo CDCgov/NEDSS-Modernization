@@ -26,6 +26,7 @@ import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -68,10 +69,9 @@ const resolveInitialEntry = (patient: string): NewPhoneEmailEntry => ({
 
 type Props = {
     patient: string;
-    fetchSummary: () => void;
 };
 
-export const PhoneAndEmailTable = ({ patient, fetchSummary }: Props) => {
+export const PhoneAndEmailTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
@@ -84,6 +84,7 @@ export const PhoneAndEmailTable = ({ patient, fetchSummary }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { refetchProfileSummary } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientPhone>();
 
@@ -140,7 +141,7 @@ export const PhoneAndEmailTable = ({ patient, fetchSummary }: Props) => {
                         header: 'success',
                         message: `Added Phone & Email`
                     });
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }
@@ -168,7 +169,7 @@ export const PhoneAndEmailTable = ({ patient, fetchSummary }: Props) => {
                         header: 'success',
                         message: `Updated Phone & Email`
                     });
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }
@@ -191,7 +192,7 @@ export const PhoneAndEmailTable = ({ patient, fetchSummary }: Props) => {
                         header: 'success',
                         message: `Deleted Phone & Email`
                     });
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }

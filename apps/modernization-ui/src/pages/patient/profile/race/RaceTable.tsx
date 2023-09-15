@@ -22,6 +22,7 @@ import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -45,10 +46,9 @@ const resolveInitialEntry = (patient: string): RaceEntry => ({
 
 type Props = {
     patient: string;
-    fetchSummary: () => void;
 };
 
-export const RacesTable = ({ patient, fetchSummary }: Props) => {
+export const RacesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
@@ -61,6 +61,7 @@ export const RacesTable = ({ patient, fetchSummary }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { refetchProfileSummary } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientRace>();
 
@@ -115,7 +116,7 @@ export const RacesTable = ({ patient, fetchSummary }: Props) => {
                         message: `Added race`
                     });
                     refetch();
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }
@@ -140,7 +141,7 @@ export const RacesTable = ({ patient, fetchSummary }: Props) => {
                         message: `Updated race`
                     });
                     refetch();
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }
@@ -163,7 +164,7 @@ export const RacesTable = ({ patient, fetchSummary }: Props) => {
                         message: `Deleted race`
                     });
                     refetch();
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }

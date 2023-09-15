@@ -8,6 +8,7 @@ import { MortalityEntry, MortalityForm } from './MortalityForm';
 import { maybeDescription, maybeId } from '../coded';
 import { orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
+import { useProfileContext } from '../ProfileContext';
 
 const initialEntry = {
     asOf: null,
@@ -41,14 +42,14 @@ const asEntry = (mortality: PatientMortality): MortalityEntry => ({
 
 type Props = {
     patient: string;
-    fetchSummary: () => void;
 };
 
-export const Mortality = ({ patient, fetchSummary }: Props) => {
+export const Mortality = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<MortalityEntry>(initialEntry);
+    const { refetchProfileSummary } = useProfileContext();
 
     const handleComplete = (data: FindPatientProfileQuery) => {
         const current = data.findPatientProfile?.mortality;
@@ -95,7 +96,7 @@ export const Mortality = ({ patient, fetchSummary }: Props) => {
             }
         }).then(() => {
             handleUpdate();
-            fetchSummary();
+            refetchProfileSummary?.();
         });
     };
 

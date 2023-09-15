@@ -24,6 +24,7 @@ import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -75,10 +76,9 @@ const resolveInitialEntry = (patient: string): NewAddressEntry => ({
 
 type Props = {
     patient: string;
-    fetchSummary: () => void;
 };
 
-export const AddressesTable = ({ patient, fetchSummary }: Props) => {
+export const AddressesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
@@ -100,6 +100,7 @@ export const AddressesTable = ({ patient, fetchSummary }: Props) => {
     const [isActions, setIsActions] = useState<number | null>(null);
 
     const modal = useRef<ModalRef>(null);
+    const { refetchProfileSummary } = useProfileContext();
 
     useEffect(() => {
         modal.current?.toggleModal(undefined, selected !== undefined);
@@ -158,7 +159,7 @@ export const AddressesTable = ({ patient, fetchSummary }: Props) => {
                         message: `Added address`
                     });
                     refetch();
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }
@@ -194,7 +195,7 @@ export const AddressesTable = ({ patient, fetchSummary }: Props) => {
                         header: 'success',
                         message: `Updated address`
                     });
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }
@@ -217,7 +218,7 @@ export const AddressesTable = ({ patient, fetchSummary }: Props) => {
                         header: 'success',
                         message: `Deleted address`
                     });
-                    fetchSummary();
+                    refetchProfileSummary?.();
                 })
                 .then(actions.reset);
         }

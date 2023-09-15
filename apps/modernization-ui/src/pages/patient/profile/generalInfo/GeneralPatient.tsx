@@ -8,6 +8,7 @@ import { Data, EditableCard } from 'components/EditableCard';
 import { GeneralInformationEntry, GeneralPatientInformationForm } from './GeneralInformationForm';
 import { orNull } from 'utils/orNull';
 import { useAlert } from 'alert/useAlert';
+import { useProfileContext } from '../ProfileContext';
 
 const initialEntry = {
     asOf: null,
@@ -56,11 +57,11 @@ const asEntry = (mortality?: PatientGeneral | null): GeneralInformationEntry => 
 
 type Props = {
     patient: string;
-    fetchSummary: () => void;
 };
 
-export const GeneralPatient = ({ patient, fetchSummary }: Props) => {
+export const GeneralPatient = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { refetchProfileSummary } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<GeneralInformationEntry>(initialEntry);
@@ -103,7 +104,7 @@ export const GeneralPatient = ({ patient, fetchSummary }: Props) => {
             }
         }).then(() => {
             handleUpdate();
-            fetchSummary();
+            refetchProfileSummary?.();
         });
     };
 
