@@ -11,8 +11,6 @@ rootProject.name = 'nbs-modernization'
 // apps
 include ':modernization-api'
 project(':modernization-api').projectDir = new File('apps/modernization-api')
-include ':modernization-ui'
-project(':modernization-ui').projectDir = new File('apps/modernization-ui')
 include ':question-bank'
 project(':question-bank').projectDir = new File('apps/question-bank')
 
