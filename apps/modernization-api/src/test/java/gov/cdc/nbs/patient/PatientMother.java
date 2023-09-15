@@ -225,7 +225,7 @@ public class PatientMother {
             new PatientCommand.AddPhone(
                 identifier.id(),
                 idGenerator.next(),
-                RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
+                RandomUtil.oneFrom("AN", "BP", "CP", "FAX", "PH"),
                 RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
                 RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomString(),
