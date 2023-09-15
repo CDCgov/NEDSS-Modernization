@@ -49,19 +49,6 @@ subprojects {
                 property 'sonar.coverage.jacoco.xmlReportPaths', "$project.rootDir/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
             }
         }
-
-        codeCoverageReport {
-            //  Excludes files named *Application.class to exclude @SpringBootApplication entry point classes.
-            afterEvaluate {
-                classDirectories.setFrom(
-                        files(
-                                classDirectories.files.collect {
-                                    fileTree(dir: it, exclude: ['**/**Application.class'])
-                                }
-                        )
-                )
-            }
-        }
     }
 }
 
