@@ -34,8 +34,3 @@ include ':accumulation'
 project(':accumulation').projectDir = new File('libs/accumulation')
 include ':me-api'
 project(':me-api').projectDir = new File('libs/me-api')
-
-
-include ':coverage-report'
-
-

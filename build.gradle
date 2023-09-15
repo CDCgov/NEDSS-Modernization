@@ -16,14 +16,16 @@ buildscript {
 }
 
 plugins {
-    id "org.sonarqube" version "3.5.0.2730"
+    id 'java'
+    id 'jacoco'
+    id "org.sonarqube" version "4.0.0.2929"
 }
 
 version = '1.0.1-SNAPSHOT'  // The plugin will assign the root project version to all its subprojects.
 apply plugin: "com.dipien.semantic-version"
+apply from: "./sonar.gradle"
 
 subprojects {
-
     repositories {
         mavenCentral()
         maven {
@@ -32,34 +34,8 @@ subprojects {
     }
 
     if (!name.contains("-ui")) {
-
-        apply plugin: 'java'
-        apply plugin: 'jacoco'
-
         // Displays cucumber test results
         apply from: "${rootDir}/gradle/cucumber-logging.gradle"
-
-        jacocoTestReport {
-            dependsOn test
-            reports {
-                xml.required = true
-            }
-            //  Excludes files named *Application.class to exclude @SpringBootApplication entry point classes.
-            afterEvaluate {
-                classDirectories.setFrom(
-                        files(
-                                classDirectories.files.collect {
-                                    fileTree(dir: it, exclude: ['**/**Application.class'])
-                                }
-                        )
-                )
-            }
-        }
-
-        tasks.named('test') {
-            finalizedBy tasks.named('jacocoTestReport', JacocoReport)
-        }
-
     }
 }
 
@@ -68,15 +44,5 @@ gradle.buildFinished {
 
     if (failures > 0) { // check if any tests failed
         throw new GradleException("The build finished but ${rootProject.ext.testFailures} tests failed! ")
-    }
-}
-
-sonarqube {
-    properties {
-        property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.projectKey", "CDCgov_NEDSS-Modernization"
-        property "sonar.organization", "cdcgov"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${rootDir}/apps/modernization-api/build/reports/jacoco/test/jacocoTestReport.xml,${rootDir}/coverage-report/build/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
     }
 }

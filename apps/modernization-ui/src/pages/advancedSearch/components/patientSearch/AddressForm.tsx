@@ -63,7 +63,10 @@ export const AddressForm = ({ control, errors }: any) => {
                     control={control}
                     name="zip"
                     rules={{
-                        pattern: { value: /^\d{5}(?:[-\s]\d{4})?$/, message: 'Invalid zip code' }
+                        pattern: {
+                            value: /^\d{5}(?:[-\s]\d{4})?$/,
+                            message: 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
+                        }
                     }}
                     render={({ field: { onChange, value } }) => (
                         <Input
