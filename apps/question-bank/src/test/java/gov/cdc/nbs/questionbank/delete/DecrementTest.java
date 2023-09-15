@@ -11,6 +11,11 @@ class DecrementTest {
     void should_show_coverage() {
         Integer output = decrement.decrement(2);
         assertEquals(1, output.intValue());
+    }
 
+    @Test
+    void should_show_coverage_on_two() {
+        Integer output = decrement.decrementByTwo(2);
+        assertEquals(0, output.intValue());
     }
 }
