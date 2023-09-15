@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import gov.cdc.nbs.authentication.NBSToken;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
@@ -786,7 +788,7 @@ class LabReportQueryBuilderTest {
         return NbsUserDetails.builder()
                 .id(1L)
                 .username("MOCK-USER")
-                .token("token")
+                .token(new NBSToken("token"))
                 .authorities(authorities())
                 .isEnabled(true)
                 .build();

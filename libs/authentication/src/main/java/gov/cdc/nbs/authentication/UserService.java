@@ -46,12 +46,12 @@ public class UserService implements UserDetailsService {
             .orElseThrow(BadTokenException::new);
     }
 
-    private NbsUserDetails buildUserDetails(AuthUser authUser, String token) {
+    private NbsUserDetails buildUserDetails(AuthUser authUser, NBSToken token) {
         return resolver.resolve(authUser, token);
     }
 
-    private String createToken(AuthUser user) {
-        return creator.forUser(user.getUserId()).value();
+    private NBSToken createToken(final AuthUser user) {
+        return creator.forUser(user.getUserId());
     }
 
 

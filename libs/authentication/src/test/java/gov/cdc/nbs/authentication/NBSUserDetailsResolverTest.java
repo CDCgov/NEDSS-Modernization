@@ -47,7 +47,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, "token-value");
+        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
 
         assertThat(resolved)
             .returns("first-name-value", NbsUserDetails::getFirstName)
@@ -82,7 +82,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, "token-value");
+        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
 
         assertThat(resolved.isMasterSecurityAdmin()).isTrue();
 
@@ -107,7 +107,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, "token-value");
+        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
 
         assertThat(resolved.isProgramAreaAdmin()).isTrue();
 
@@ -151,7 +151,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, "token-value");
+        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
 
         assertThat(resolved.getAdminProgramAreas()).contains("program-area-one", "program-area-two");
 
@@ -182,7 +182,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, "token-value");
+        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
 
         assertThat(resolved.isEnabled()).isFalse();
 
@@ -219,7 +219,7 @@ class NBSUserDetailsResolverTest {
 
         NBSUserDetailsResolver resolver = new NBSUserDetailsResolver(finder);
 
-        NbsUserDetails resolved = resolver.resolve(user, "token-value");
+        NbsUserDetails resolved = resolver.resolve(user, new NBSToken("token-value"));
 
         assertThat(resolved.getAuthorities())
             .satisfiesExactly(

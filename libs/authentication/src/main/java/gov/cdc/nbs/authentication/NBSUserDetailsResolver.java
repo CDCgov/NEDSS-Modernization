@@ -16,7 +16,7 @@ public class NBSUserDetailsResolver {
         this.finder = finder;
     }
 
-    public NbsUserDetails resolve(final AuthUser authUser, final String token) {
+    public NbsUserDetails resolve(final AuthUser authUser, final NBSToken token) {
         return NbsUserDetails
             .builder()
             .id(authUser.getNedssEntryId())

@@ -3,6 +3,8 @@ package gov.cdc.nbs.questionbank.question;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.authentication.NBSToken;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -48,16 +50,16 @@ class QuestionControllerTest {
 
     private NbsUserDetails userDetails() {
         return new NbsUserDetails(
-                1L,
-                "test",
-                "test",
-                "test",
-                false,
-                false,
-                null,
-                null,
-                null,
-                "token",
-                true);
+            1L,
+            "test",
+            "test",
+            "test",
+            false,
+            false,
+            null,
+            null,
+            null,
+            new NBSToken("token"),
+            true);
     }
 }

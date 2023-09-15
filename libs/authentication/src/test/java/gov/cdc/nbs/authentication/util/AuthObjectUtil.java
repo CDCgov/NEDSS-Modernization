@@ -1,5 +1,6 @@
 package gov.cdc.nbs.authentication.util;
 
+import gov.cdc.nbs.authentication.NBSToken;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.entity.AuthAudit;
@@ -58,8 +59,9 @@ public class AuthObjectUtil {
                 null,
                 null,
                 authorities(),
-                "token",
-                true);
+                new NBSToken("token"),
+                true
+        );
     }
 
     public static Set<NbsAuthority> authorities() {

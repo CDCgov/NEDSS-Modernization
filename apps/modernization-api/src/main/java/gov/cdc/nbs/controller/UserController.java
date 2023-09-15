@@ -38,7 +38,7 @@ public class UserController {
     public LoginResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {
         var userDetails = userService.loadUserByUsername(request.getUsername());
 
-        new NBSToken(userDetails.getToken()).apply(
+        userDetails.getToken().apply(
             securityProperties,
             response
         );
@@ -47,7 +47,7 @@ public class UserController {
             userDetails.getId(),
             userDetails.getUsername(),
             userDetails.getFirstName() + " " + userDetails.getLastName(),
-            userDetails.getToken()
+            userDetails.getToken().value()
         );
     }
 

@@ -19,6 +19,7 @@ Feature: NBS Classic Patient Profile redirects to modernized Patient Profile
     When Redirecting a Classic Revision Patient Profile
     Then I am redirected to the Modernized Patient Profile
     And the user Id is present in the redirect
+    And the token is present in the redirect
 
   Scenario: A user in NBS Classic is navigating to a Patient Profile without an active session
     Given I have a patient

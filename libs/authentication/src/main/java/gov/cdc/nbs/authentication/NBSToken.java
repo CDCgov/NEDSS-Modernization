@@ -24,6 +24,7 @@ public record NBSToken(String value) {
     public Cookie asCookie() {
         Cookie cookie = new Cookie(NBS_TOKEN_NAME, value());
         cookie.setPath("/");
+        cookie.setSecure(true);
         return cookie;
     }
 

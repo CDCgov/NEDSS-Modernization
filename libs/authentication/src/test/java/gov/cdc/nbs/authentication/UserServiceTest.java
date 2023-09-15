@@ -60,7 +60,7 @@ class UserServiceTest {
 
         verify(repository).findByUserId("test");
 
-        verify(resolver).resolve(authUser, "resolved-token");
+        verify(resolver).resolve(authUser, new NBSToken("resolved-token"));
 
         verify(creator).forUser("authenticated-user");
     }
@@ -90,7 +90,7 @@ class UserServiceTest {
 
         verify(repository).findByUserId("test");
 
-        verify(resolver).resolve(authUser, "resolved-token");
+        verify(resolver).resolve(authUser, new NBSToken("resolved-token"));
 
         verify(creator).forUser("authenticated-user");
     }
