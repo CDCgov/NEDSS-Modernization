@@ -20,7 +20,7 @@ public record NBSToken(String value) {
 
     }
 
-    @SuppressWarnings({"squid:S2092"})
+    @SuppressWarnings({"squid:S3330"})
     public Cookie asCookie() {
         Cookie cookie = new Cookie(NBS_TOKEN_NAME, value());
         cookie.setPath("/");
