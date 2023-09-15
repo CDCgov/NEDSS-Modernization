@@ -23,13 +23,17 @@ export const EditPage = () => {
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
 
-    useEffect(() => {
-        // Fetch page summary
+    const getPageDetails = () => {
         if (pageId) {
             fetchPageDetails(token, Number(pageId)).then((data: any) => {
                 setPage(data);
             });
         }
+    };
+
+    useEffect(() => {
+        // Fetch page summary
+        getPageDetails();
     }, [pageId]);
 
     useEffect(() => {
