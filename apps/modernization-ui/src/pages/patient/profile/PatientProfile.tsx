@@ -15,6 +15,7 @@ import { MessageModal } from 'messageModal';
 import { usePatientProfilePermissions } from './permission';
 import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert';
+import formattedName from 'formattedName';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -55,7 +56,10 @@ export const PatientProfile = () => {
             showAlert({
                 type: 'success',
                 header: 'success',
-                message: 'Deleted patient'
+                message: `Deleted patient ${formattedName(
+                    profile?.summary?.legalName?.last,
+                    profile?.summary?.legalName?.first
+                )}`
             });
             navigate('/advanced-search');
         } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
