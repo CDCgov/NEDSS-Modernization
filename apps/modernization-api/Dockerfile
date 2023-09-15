@@ -1,13 +1,17 @@
-FROM node:16-alpine as ui-builder
+FROM node:18 as ui-builder
+
+WORKDIR /usr/modernization-ui
+
+COPY apps/modernization-ui/package.json package.json
+
+RUN npm install
 
 # Copy required sources
-COPY apps/modernization-ui /usr/modernization-ui
+COPY apps/modernization-ui .
 
-# Install node modules
-WORKDIR /usr/modernization-ui
-RUN npm install && npm run build
+RUN npm run build
 
-FROM amazoncorretto:17-alpine as api-builder
+FROM eclipse-temurin:17 as api-builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -30,7 +34,7 @@ WORKDIR /usr/src/nbs
 # Build just the modernization-api and any required library
 RUN ./gradlew :modernization-api:buildNeeded -x test --no-daemon
 
-FROM amazoncorretto:17-alpine
+FROM eclipse-temurin:17-jre
 
 COPY --from=api-builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api*.jar api.jar 
 
