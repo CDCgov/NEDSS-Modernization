@@ -23,7 +23,7 @@ plugins {
 
 version = '1.0.1-SNAPSHOT'  // The plugin will assign the root project version to all its subprojects.
 apply plugin: "com.dipien.semantic-version"
-apply from: "./sonar.gradle"
+apply from: "${rootDir}/gradle/sonar.gradle"
 
 subprojects {
     repositories {
@@ -31,11 +31,6 @@ subprojects {
         maven {
             url "https://packages.confluent.io/maven"
         }
-    }
-
-    if (!name.contains("-ui")) {
-        // Displays cucumber test results
-        apply from: "${rootDir}/gradle/cucumber-logging.gradle"
     }
 }
 
