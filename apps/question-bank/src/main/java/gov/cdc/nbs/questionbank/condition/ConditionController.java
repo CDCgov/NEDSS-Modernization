@@ -61,7 +61,7 @@ public class ConditionController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public ConditionStatusResponse inactivateCondition(@PathVariable String id) {
-       return conditionStatus.inactivateCondition(id);
+        return conditionStatus.inactivateCondition(id);
     }
 
 

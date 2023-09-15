@@ -31,14 +31,6 @@ test {
     }
 }
 
-jacocoTestReport {
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ['gov/cdc/nbs/questionbank/QuestionBankApplication.class'])
-        }))
-    }
-}
-
 testing {
     suites {
         test {

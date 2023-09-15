@@ -145,7 +145,10 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     name="number"
                                     htmlFor="number"
                                     id="number"
-                                    error={error && 'Invalid phone number'}
+                                    error={
+                                        error &&
+                                        'Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).'
+                                    }
                                 />
                             )}
                         />
@@ -184,7 +187,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                             rules={{
                                 pattern: {
                                     value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                                    message: 'Invalid email'
+                                    message: 'Please enter a valid email address (example: youremail@website.com)'
                                 }
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -197,7 +200,9 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     name="email"
                                     htmlFor="email"
                                     id="email"
-                                    error={error && 'Invalid email address'}
+                                    error={
+                                        error && 'Please enter a valid email address (example: youremail@website.com)'
+                                    }
                                 />
                             )}
                         />

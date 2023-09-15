@@ -1,7 +1,6 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-    id 'jacoco'
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
