@@ -9,6 +9,11 @@ plugins {
 group = 'gov.cdc'
 version = '0.0.1-SNAPSHOT'
 
+test {
+    // always re-run tests
+    test.outputs.upToDateWhen { false }
+}
+
 testing {
     suites {
         test {

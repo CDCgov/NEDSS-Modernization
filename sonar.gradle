@@ -2,6 +2,7 @@ sonar {
     properties {
         property "sonar.sourceEncoding", "UTF-8"
         property "sonar.projectKey", "CDCgov_NEDSS-Modernization"
+        property "sonar.projectName", "nbs-modernization"
         property "sonar.organization", "cdcgov"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.coverage.jacoco.xmlReportPaths", "$project.rootDir/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
@@ -47,19 +48,6 @@ subprojects {
         sonar {
             properties {
                 property 'sonar.coverage.jacoco.xmlReportPaths', "$project.rootDir/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
-            }
-        }
-
-        codeCoverageReport {
-            //  Excludes files named *Application.class to exclude @SpringBootApplication entry point classes.
-            afterEvaluate {
-                classDirectories.setFrom(
-                        files(
-                                classDirectories.files.collect {
-                                    fileTree(dir: it, exclude: ['**/**Application.class'])
-                                }
-                        )
-                )
             }
         }
     }
