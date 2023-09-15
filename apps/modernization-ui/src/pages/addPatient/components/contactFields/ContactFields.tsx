@@ -142,7 +142,7 @@ export default function ContactFields({ id, title }: Props) {
                                 rules={{
                                     pattern: {
                                         value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                                        message: 'Invalid email'
+                                        message: 'Please enter a valid email address (example: youremail@website.com)'
                                     }
                                 }}
                                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
