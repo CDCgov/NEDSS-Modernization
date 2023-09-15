@@ -7,5 +7,9 @@ const valid = /^([0-9]{7,10}|(([0-9]{3}|\([0-9]{3}\))[-. ]?)[0-9]{3}[-. ][0-9]{4
  * @return {boolean | string} true when valid otherwise a string containing the error message.
  */
 export const validatePhoneNumber = (number: string): boolean | string => {
-    return !number || valid.test(number) || 'Invalid phone number';
+    return (
+        !number ||
+        valid.test(number) ||
+        'Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).'
+    );
 };
