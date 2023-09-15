@@ -1,0 +1,18 @@
+@import '../../../../settings';
+    .save-template {
+        &.form-container {
+            min-height: unset !important;
+        }
+         .cancel-btn {
+            margin-bottom: 24px;
+        }
+        .save-template-footer {
+        padding: 24px;
+            margin: 0 -29px ;
+            border-top: 1px solid #cbc9c985;
+        }
+    }
+
+.mandatory-indicator {
+    color: #D83933;
+}
