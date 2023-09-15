@@ -11,7 +11,6 @@ import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
 import { validate as validatePhoneNumber } from 'validation/search';
-import { validateZipCode } from '../../../../utils/ZipValidation';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -207,7 +206,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         },
         {
             title: 'Address',
-            content: <AddressForm control={control} errors={errors} />,
+            content: <AddressForm control={control} />,
             expanded: false,
             id: '2',
             headingLevel: 'h4',
@@ -265,7 +264,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         body.address && (rowData.address = body.address);
         body.city && (rowData.city = body.city);
         body.state !== '- Select -' && (rowData.state = body.state);
-        body.zip && validateZipCode(body.zip) && (rowData.zip = body.zip);
+        body.zip && (rowData.zip = body.zip);
         body.phoneNumber && validatePhoneNumber(body.phoneNumber) && (rowData.phoneNumber = body.phoneNumber);
         body.email && (rowData.email = body.email);
 
