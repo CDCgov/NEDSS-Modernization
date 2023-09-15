@@ -21,7 +21,8 @@ class ClassicIncomingAuthenticationFilter implements Filter {
 
     ClassicIncomingAuthenticationFilter(
             final ClassicIncomingContextResolver resolver,
-            final SecurityProperties securityProperties) {
+            final SecurityProperties securityProperties
+    ) {
         this.resolver = resolver;
         this.securityProperties = securityProperties;
     }
@@ -30,7 +31,8 @@ class ClassicIncomingAuthenticationFilter implements Filter {
     public void doFilter(
             final ServletRequest request,
             final ServletResponse response,
-            final FilterChain chain)
+            final FilterChain chain
+    )
             throws IOException, ServletException {
 
         if (request instanceof HttpServletRequest incoming

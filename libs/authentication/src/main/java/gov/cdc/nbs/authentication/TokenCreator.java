@@ -26,15 +26,16 @@ public class TokenCreator {
         this.properties = properties;
     }
 
-    public String forUser(final String username) {
+    public NBSToken forUser(final String username) {
         Instant now = Instant.now(clock);
         Instant expiry = now.plus(Duration.ofMillis(properties.getTokenExpirationMillis()));
-        return JWT
+        String token = JWT
             .create()
             .withIssuer(properties.getTokenIssuer())
             .withIssuedAt(now)
             .withExpiresAt(expiry)
             .withSubject(username)
             .sign(algorithm);
+        return new NBSToken(token);
     }
 }

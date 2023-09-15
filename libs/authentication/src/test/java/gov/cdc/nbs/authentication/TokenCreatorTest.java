@@ -38,9 +38,9 @@ class TokenCreatorTest {
             properties
         );
 
-        String actual = creator.forUser("user-value");
+        NBSToken actual = creator.forUser("user-value");
 
-        DecodedJWT decoded = JWT.decode(actual);
+        DecodedJWT decoded = JWT.decode(actual.value());
 
         assertThat(decoded)
             .returns("test-issuer", DecodedJWT::getIssuer)

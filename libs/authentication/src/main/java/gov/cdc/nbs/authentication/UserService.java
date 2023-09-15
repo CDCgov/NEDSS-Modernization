@@ -51,7 +51,7 @@ public class UserService implements UserDetailsService {
     }
 
     private String createToken(AuthUser user) {
-        return creator.forUser(user.getUserId());
+        return creator.forUser(user.getUserId()).value();
     }
 
 

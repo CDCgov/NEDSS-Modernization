@@ -50,7 +50,7 @@ class UserServiceTest {
 
         when(resolver.resolve(any(), any())).thenReturn(details);
 
-        when(creator.forUser(any())).thenReturn("resolved-token");
+        when(creator.forUser(any())).thenReturn(new NBSToken("resolved-token"));
 
         // method in test
         NbsUserDetails userDetails = service.loadUserByUsername("test");
@@ -77,7 +77,7 @@ class UserServiceTest {
 
         when(resolver.resolve(any(), any())).thenReturn(details);
 
-        when(creator.forUser(any())).thenReturn("resolved-token");
+        when(creator.forUser(any())).thenReturn(new NBSToken("resolved-token"));
 
         DecodedJWT decodedJWT = mock(DecodedJWT.class);
         when(decodedJWT.getSubject()).thenReturn("test");

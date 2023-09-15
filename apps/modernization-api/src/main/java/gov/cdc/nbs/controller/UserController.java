@@ -1,5 +1,6 @@
 package gov.cdc.nbs.controller;
 
+import gov.cdc.nbs.authentication.NBSToken;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserService;
@@ -19,19 +20,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class UserController {
-    private static final String TOKEN_COOKIE_NAME = "nbs_token";
-
     @Autowired
-    private UserService userService;
+    UserService userService;
     @Autowired
-    private SecurityProperties securityProperties;
+    SecurityProperties securityProperties;
     @Autowired
-    private AuthUserRepository userRepository;
+    AuthUserRepository userRepository;
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -39,10 +37,12 @@ public class UserController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {
         var userDetails = userService.loadUserByUsername(request.getUsername());
-        var cookie = new Cookie(TOKEN_COOKIE_NAME, userDetails.getToken());
-        cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
-        cookie.setPath("/");
-        response.addCookie(cookie);
+
+        new NBSToken(userDetails.getToken()).apply(
+            securityProperties,
+            response
+        );
+
         return new LoginResponse(
             userDetails.getId(),
             userDetails.getUsername(),

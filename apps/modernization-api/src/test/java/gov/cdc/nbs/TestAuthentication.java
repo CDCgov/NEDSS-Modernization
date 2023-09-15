@@ -42,7 +42,7 @@ public class TestAuthentication {
 
         AuthUser authUser = this.entityManager.find(AuthUser.class, activeUser.id());
 
-        NbsUserDetails details = resolver.resolve(authUser, activeUser.token());
+        NbsUserDetails details = resolver.resolve(authUser, activeUser.token().value());
 
         PreAuthenticatedAuthenticationToken authentication =
             new PreAuthenticatedAuthenticationToken(
