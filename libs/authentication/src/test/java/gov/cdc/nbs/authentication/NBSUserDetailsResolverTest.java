@@ -53,7 +53,7 @@ class NBSUserDetailsResolverTest {
             .returns("first-name-value", NbsUserDetails::getFirstName)
             .returns("last-name-value", NbsUserDetails::getLastName)
             .returns("user-id-value", NbsUserDetails::getUsername)
-            .returns("token-value", NbsUserDetails::getToken)
+            .returns("token-value", details -> details.getToken().value())
             .returns(false, NbsUserDetails::isMasterSecurityAdmin)
             .returns(false, NbsUserDetails::isProgramAreaAdmin)
             .returns(true, NbsUserDetails::isEnabled)
