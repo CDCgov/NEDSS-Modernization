@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.profile.investigation.merge;
 
 
-import gov.cdc.nbs.authorization.SessionCookie;
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.support.TestActive;
 import io.cucumber.java.Before;

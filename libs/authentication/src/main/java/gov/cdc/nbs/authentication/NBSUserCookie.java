@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authorization;
+package gov.cdc.nbs.authentication;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
