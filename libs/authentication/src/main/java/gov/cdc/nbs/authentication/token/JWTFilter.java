@@ -1,9 +1,14 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.token;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import gov.cdc.nbs.authentication.NBSToken;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authentication.TokenCreator;
+import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.authentication.config.SecurityProperties;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -17,7 +22,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Predicate;
 
+/**
+ * Resolved the authenticated principal from the JWT token found on the request.
+ */
 @Component
 public class JWTFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
@@ -27,6 +36,7 @@ public class JWTFilter extends OncePerRequestFilter {
     private final JWTVerifier verifier;
     private final SecurityProperties securityProperties;
     private final TokenCreator creator;
+
 
     public JWTFilter(
         final UserService userService,
@@ -40,6 +50,7 @@ public class JWTFilter extends OncePerRequestFilter {
         this.creator = creator;
     }
 
+
     /**
      * On every request, validate the JWT, and load user details from the UserService.
      */
@@ -47,50 +58,59 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
         final HttpServletRequest request,
         final HttpServletResponse response,
-        FilterChain filterChain
+        final FilterChain filterChain
     )
         throws ServletException, IOException {
-        verifyAndDecodeJWT(request)
+        resolveToken(request)
+            .flatMap(this::verified)
             .map(DecodedJWT::getSubject)
             .map(userService::loadUserByUsername)
             .map(userDetails -> {
                 response.addCookie(createJWTCookie(userDetails));
-                return buildPreAuthenticatedToken(userDetails, request);
+                return authenticate(userDetails, request);
             })
-            .ifPresent(preAuthToken -> SecurityContextHolder.getContext().setAuthentication(preAuthToken));
+            .ifPresent(authentication -> SecurityContextHolder.getContext().setAuthentication(authentication));
         filterChain.doFilter(request, response);
     }
 
-    public Cookie createJWTCookie(final NbsUserDetails userDetails) {
-        NBSToken token = this.creator.forUser(userDetails.getFirstName());
+    private Optional<String> resolveToken(final HttpServletRequest request) {
+        try {
+            return Optional.ofNullable(request.getHeader(AUTHORIZATION))
+                .filter(Predicate.not(String::isBlank))
+                .map(s -> s.substring(BEARER.length()));
+        } catch (StringIndexOutOfBoundsException ex) {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<DecodedJWT> verified(final String token) {
+        try {
+            DecodedJWT verified = verifier.verify(token);
+            return Optional.of(verified);
+        } catch (JWTVerificationException ex) {
+            return Optional.empty();
+        }
+    }
+
+    private Cookie createJWTCookie(final NbsUserDetails userDetails) {
+        NBSToken token = this.creator.forUser(userDetails.getUsername());
         Cookie cookie = token.asCookie();
         cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
         return cookie;
     }
 
     /**
-     * Pulls the JWT from the "Authorization" header and validates it against the
-     * {@link gov.cdc.nbs.authentication.config.JWTSecurityConfig#jwtVerifier verifier}
-     */
-    public Optional<DecodedJWT> verifyAndDecodeJWT(final HttpServletRequest request) {
-        try {
-            return Optional.ofNullable(request.getHeader(AUTHORIZATION))
-                .map(s -> !s.isBlank() ? s.substring(BEARER.length()) : s)
-                .map(verifier::verify);
-        } catch (JWTVerificationException | StringIndexOutOfBoundsException ex) {
-            return Optional.empty();
-        }
-    }
-
-    /**
      * Creates a {@link org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken}
      * that notifies Spring Security that the request has been authorized
      */
-    public PreAuthenticatedAuthenticationToken buildPreAuthenticatedToken(NbsUserDetails principal,
-        HttpServletRequest request) {
-        var pat = new PreAuthenticatedAuthenticationToken(principal, null, principal.getAuthorities());
-        pat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        return pat;
+    private Authentication authenticate(
+        final NbsUserDetails principal,
+        final HttpServletRequest request
+    ) {
+
+        var authentication = new PreAuthenticatedAuthenticationToken(principal, null, principal.getAuthorities());
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        return authentication;
     }
 
 }

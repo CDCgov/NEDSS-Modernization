@@ -1,11 +1,14 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import gov.cdc.nbs.authentication.NBSToken;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authentication.TokenCreator;
+import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.authentication.config.JWTSecurityConfig;
 import gov.cdc.nbs.authentication.config.SecurityProperties;
-import gov.cdc.nbs.authentication.util.AuthObjectUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +22,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -29,12 +31,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class JWTFilterTest {
     @Mock
-    private UserService userService;
+    UserService userService;
+
+    @Mock
+    TokenCreator creator;
 
     private Algorithm algorithm;
 
@@ -54,29 +60,32 @@ class JWTFilterTest {
         algorithm = config.jwtAlgorithm(properties);
         JWTVerifier verifier = config.jwtVerifier(algorithm, properties);
 
-        TokenCreator creator = new TokenCreator(
-            Clock.systemDefaultZone(),
-            algorithm,
-            properties
-        );
+        SecurityContextHolder.getContext().setAuthentication(null);
+
         SecurityContextHolder.getContext().setAuthentication(null);
 
         filter = new JWTFilter(userService, verifier, properties, creator);
     }
 
-
     @Test
     void should_validate() throws ServletException, IOException {
         NbsUserDetails details = mock(NbsUserDetails.class);
+
+        when(details.getUsername()).thenReturn("valid-user");
+
         // mocks
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
         FilterChain filterChain = Mockito.mock(FilterChain.class);
 
-        String token = "Bearer " + createToken(Instant.now().plus(5, ChronoUnit.HOURS));
+        String token = "Bearer " + createToken(
+            "valid-user",
+            Instant.now().plus(5, ChronoUnit.HOURS)
+        );
         when(request.getHeader("Authorization")).thenReturn(token);
 
         when(userService.loadUserByUsername(any())).thenReturn(details);
+        when(creator.forUser(any())).thenReturn(new NBSToken("token-value"));
 
         // method to test
         filter.doFilterInternal(request, response, filterChain);
@@ -88,6 +97,9 @@ class JWTFilterTest {
         assertThat(principal).isSameAs(details);
 
         verify(response).addCookie(any());
+
+        verify(userService).loadUserByUsername("valid-user");
+        verify(creator).forUser("valid-user");
     }
 
     @Test
@@ -104,7 +116,8 @@ class JWTFilterTest {
         filter.doFilterInternal(request, response, filterChain);
 
         // validate
-        verify(userService, never()).loadUserByUsername(any());
+        verifyNoInteractions(userService);
+        verifyNoInteractions(creator);
         verify(response, never()).addCookie(any());
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
@@ -123,7 +136,8 @@ class JWTFilterTest {
         filter.doFilterInternal(request, response, filterChain);
 
         // validate
-        verify(userService, never()).loadUserByUsername(any());
+        verifyNoInteractions(userService);
+        verifyNoInteractions(creator);
         verify(response, never()).addCookie(any());
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
@@ -136,27 +150,27 @@ class JWTFilterTest {
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
         FilterChain filterChain = Mockito.mock(FilterChain.class);
 
-        String token = "Bearer " + createToken(Instant.now().minus(5, ChronoUnit.HOURS));
+        String token = "Bearer " + createToken("expired", Instant.now().minus(5, ChronoUnit.HOURS));
         when(request.getHeader("Authorization")).thenReturn(token);
 
         // method to test
         filter.doFilterInternal(request, response, filterChain);
 
         // validate
-        verify(userService, never()).loadUserByUsername(any());
+        verifyNoInteractions(userService);
+        verifyNoInteractions(creator);
         verify(response, never()).addCookie(any());
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
-
-    private String createToken(final Instant expiringAt) {
+    private String createToken(final String user, final Instant expiringAt) {
         return JWT
             .create()
             .withIssuer("test-issuer")
             .withIssuedAt(Instant.now())
             .withExpiresAt(expiringAt)
-            .withSubject(AuthObjectUtil.userDetails().getUsername())
+            .withSubject(user)
             .sign(algorithm);
     }
 
