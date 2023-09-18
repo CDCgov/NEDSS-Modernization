@@ -7,6 +7,7 @@ import { EventTypeAccordion, SearchType } from './EventTypeAccordion';
 import { InvestigationAccordion } from './InvestigationSearch/InvestigationAccordion';
 import { LabReportAccordion } from './labReportSearch/LabReportAccordion';
 import { initialLabForm } from './labReportSearch/DefaultLabReportForm';
+import { orNull } from 'utils';
 
 type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;
@@ -67,9 +68,9 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
      * @return {InvestigationFilter} InvestigationFilter
      */
     const cleanInvestigationFilter = (investigationFilter: InvestigationFilter): InvestigationFilter => {
-        investigationFilter.eventId = orUndefined(investigationFilter.eventId);
-        investigationFilter.eventDate = orUndefined(investigationFilter.eventDate);
-        investigationFilter.providerFacilitySearch = orUndefined(investigationFilter.providerFacilitySearch);
+        investigationFilter.eventId = orNullObject(investigationFilter.eventId);
+        investigationFilter.eventDate = orNullObject(investigationFilter.eventDate);
+        investigationFilter.providerFacilitySearch = orNullObject(investigationFilter.providerFacilitySearch);
         return investigationFilter;
     };
 
@@ -82,13 +83,15 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
      * @return {LabReportFilter} LabReportFilter
      */
     const cleanLabFilter = (labReportFilter: LabReportFilter): LabReportFilter => {
-        labReportFilter.eventId = orUndefined(labReportFilter.eventId);
-        labReportFilter.eventDate = orUndefined(labReportFilter.eventDate);
-        labReportFilter.providerSearch = orUndefined(labReportFilter.providerSearch);
+        labReportFilter.pregnancyStatus = orNull(labReportFilter.pregnancyStatus);
+        labReportFilter.pregnancyStatus ? null : (labReportFilter.pregnancyStatus = null);
+        labReportFilter.eventId = orNullObject(labReportFilter.eventId);
+        labReportFilter.eventDate = orNullObject(labReportFilter.eventDate);
+        labReportFilter.providerSearch = orNullObject(labReportFilter.providerSearch);
         return labReportFilter;
     };
 
-    const orUndefined = (object: any) => {
+    const orNullObject = (object: any) => {
         return Object.values(object).find((e) => e !== undefined) ? object : undefined;
     };
 
