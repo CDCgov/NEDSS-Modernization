@@ -93,6 +93,11 @@ export type CodeValueGeneralId = {
   codeSetNm: Scalars['String'];
 };
 
+export type CodedResult = {
+  __typename?: 'CodedResult';
+  name: Scalars['String'];
+};
+
 export type CodedValue = {
   __typename?: 'CodedValue';
   name: Scalars['String'];
@@ -388,11 +393,11 @@ export type InvestigationFilter = {
   investigatorId?: InputMaybe<Scalars['ID']>;
   jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   lastUpdatedBy?: InputMaybe<Scalars['String']>;
-  notificationStatuses?: InputMaybe<NotificationStatuses>;
+  notificationStatuses?: InputMaybe<Array<InputMaybe<NotificationStatus>>>;
   outbreakNames?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   patientId?: InputMaybe<Scalars['Int']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
-  processingStatuses?: InputMaybe<ProcessingStatuses>;
+  processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
 };
@@ -510,32 +515,6 @@ export type LabReportResults = {
   total: Scalars['Int'];
 };
 
-export type LabResult = {
-  __typename?: 'LabResult';
-  id?: Maybe<LabResultId>;
-  labResultDescTxt?: Maybe<Scalars['String']>;
-  nbsUid?: Maybe<Scalars['ID']>;
-};
-
-export type LabResultId = {
-  __typename?: 'LabResultId';
-  labResultCd?: Maybe<Scalars['String']>;
-  laboratoryId?: Maybe<Scalars['String']>;
-};
-
-export type LabTest = {
-  __typename?: 'LabTest';
-  id?: Maybe<LabTestId>;
-  labTestDescTxt?: Maybe<Scalars['String']>;
-  organismResultTestInd?: Maybe<Scalars['String']>;
-};
-
-export type LabTestId = {
-  __typename?: 'LabTestId';
-  labTestCd?: Maybe<Scalars['String']>;
-  laboratoryId?: Maybe<Scalars['String']>;
-};
-
 export type LaboratoryEventDateSearch = {
   from: Scalars['Date'];
   to: Scalars['Date'];
@@ -559,18 +538,6 @@ export enum LaboratoryReportStatus {
   Processed = 'PROCESSED',
   Unprocessed = 'UNPROCESSED'
 }
-
-export type LocalCodedResults = {
-  __typename?: 'LocalCodedResults';
-  content: Array<Maybe<LabResult>>;
-  total: Scalars['Int'];
-};
-
-export type LocalLabTestResults = {
-  __typename?: 'LocalLabTestResults';
-  content: Array<Maybe<LabTest>>;
-  total: Scalars['Int'];
-};
 
 export type Locator = {
   __typename?: 'Locator';
@@ -604,22 +571,6 @@ export type LocatorParticipations = {
   __typename?: 'LocatorParticipations';
   classCd?: Maybe<Scalars['String']>;
   locator?: Maybe<Locator>;
-};
-
-export type LoincCode = {
-  __typename?: 'LoincCode';
-  componentName?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  methodType?: Maybe<Scalars['String']>;
-  property?: Maybe<Scalars['String']>;
-  relatedClassCd?: Maybe<Scalars['String']>;
-  systemCd?: Maybe<Scalars['String']>;
-};
-
-export type LoincLabTestResults = {
-  __typename?: 'LoincLabTestResults';
-  content: Array<Maybe<LoincCode>>;
-  total: Scalars['Int'];
 };
 
 export type MaterialParticipation = {
@@ -988,11 +939,6 @@ export enum NotificationStatus {
   Rejected = 'REJECTED',
   Unassigned = 'UNASSIGNED'
 }
-
-export type NotificationStatuses = {
-  includeUnassigned: Scalars['Boolean'];
-  statusList: Array<NotificationStatus>;
-};
 
 export type Observation = {
   __typename?: 'Observation';
@@ -2106,11 +2052,6 @@ export enum ProcessingStatus {
   Unassigned = 'UNASSIGNED'
 }
 
-export type ProcessingStatuses = {
-  includeUnassigned: Scalars['Boolean'];
-  statusList: Array<ProcessingStatus>;
-};
-
 export type ProgramAreaCode = {
   __typename?: 'ProgramAreaCode';
   codeSeq?: Maybe<Scalars['Int']>;
@@ -2171,14 +2112,13 @@ export type Query = {
   findAllStateCountyCodeValues: Array<StateCountyCodeValue>;
   findAllUsers: UserResults;
   findContactsNamedByPatient?: Maybe<ContactsNamedByPatientResults>;
+  findDistinctCodedResults: Array<CodedResult>;
+  findDistinctResultedTest: Array<ResultedTest>;
   findDocumentsForPatient?: Maybe<PatientDocumentResults>;
   findDocumentsRequiringReviewForPatient: PatientDocumentRequiringReviewResults;
   findInvestigationsByFilter: InvestigationResults;
   findInvestigationsForPatient?: Maybe<PatientInvestigationResults>;
   findLabReportsByFilter: LabReportResults;
-  findLocalCodedResults: LocalCodedResults;
-  findLocalLabTest: LocalLabTestResults;
-  findLoincLabTest: LoincLabTestResults;
   findMorbidityReportsForPatient?: Maybe<PatientMorbidityResults>;
   findNameSuffixes: KeyValuePairResults;
   findOpenInvestigationsForPatient: InvestigationResults;
@@ -2349,6 +2289,18 @@ export type QueryFindContactsNamedByPatientArgs = {
 };
 
 
+export type QueryFindDistinctCodedResultsArgs = {
+  searchText: Scalars['String'];
+  snomed: Scalars['Boolean'];
+};
+
+
+export type QueryFindDistinctResultedTestArgs = {
+  loinc: Scalars['Boolean'];
+  searchText: Scalars['String'];
+};
+
+
 export type QueryFindDocumentsForPatientArgs = {
   page?: InputMaybe<Page>;
   patient: Scalars['ID'];
@@ -2377,24 +2329,6 @@ export type QueryFindInvestigationsForPatientArgs = {
 export type QueryFindLabReportsByFilterArgs = {
   filter: LabReportFilter;
   page?: InputMaybe<SortablePage>;
-};
-
-
-export type QueryFindLocalCodedResultsArgs = {
-  page?: InputMaybe<Page>;
-  searchText: Scalars['String'];
-};
-
-
-export type QueryFindLocalLabTestArgs = {
-  page?: InputMaybe<Page>;
-  searchText: Scalars['String'];
-};
-
-
-export type QueryFindLoincLabTestArgs = {
-  page?: InputMaybe<Page>;
-  searchText: Scalars['String'];
 };
 
 
@@ -2522,6 +2456,11 @@ export enum ReportingEntityType {
 export type ReportingFacility = {
   __typename?: 'ReportingFacility';
   name?: Maybe<Scalars['String']>;
+};
+
+export type ResultedTest = {
+  __typename?: 'ResultedTest';
+  name: Scalars['String'];
 };
 
 export type SendingFacility = {
@@ -3139,6 +3078,22 @@ export type FindContactsNamedByPatientQueryVariables = Exact<{
 
 export type FindContactsNamedByPatientQuery = { __typename?: 'Query', findContactsNamedByPatient?: { __typename?: 'ContactsNamedByPatientResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, namedOn: any, priority?: string | null, disposition?: string | null, event: string, condition: { __typename?: 'TracedCondition', id?: string | null, description?: string | null }, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
 
+export type FindDistinctCodedResultsQueryVariables = Exact<{
+  searchText: Scalars['String'];
+  snomed: Scalars['Boolean'];
+}>;
+
+
+export type FindDistinctCodedResultsQuery = { __typename?: 'Query', findDistinctCodedResults: Array<{ __typename?: 'CodedResult', name: string }> };
+
+export type FindDistinctResultedTestQueryVariables = Exact<{
+  searchText: Scalars['String'];
+  loinc: Scalars['Boolean'];
+}>;
+
+
+export type FindDistinctResultedTestQuery = { __typename?: 'Query', findDistinctResultedTest: Array<{ __typename?: 'ResultedTest', name: string }> };
+
 export type FindDocumentsForPatientQueryVariables = Exact<{
   patient: Scalars['ID'];
   page?: InputMaybe<Page>;
@@ -3179,30 +3134,6 @@ export type FindLabReportsByFilterQueryVariables = Exact<{
 
 
 export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations?: Array<{ __typename?: 'AssociatedInvestigation', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> } };
-
-export type FindLocalCodedResultsQueryVariables = Exact<{
-  searchText: Scalars['String'];
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindLocalCodedResultsQuery = { __typename?: 'Query', findLocalCodedResults: { __typename?: 'LocalCodedResults', total: number, content: Array<{ __typename?: 'LabResult', nbsUid?: string | null, labResultDescTxt?: string | null, id?: { __typename?: 'LabResultId', labResultCd?: string | null, laboratoryId?: string | null } | null } | null> } };
-
-export type FindLocalLabTestQueryVariables = Exact<{
-  searchText: Scalars['String'];
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindLocalLabTestQuery = { __typename?: 'Query', findLocalLabTest: { __typename?: 'LocalLabTestResults', total: number, content: Array<{ __typename?: 'LabTest', labTestDescTxt?: string | null, organismResultTestInd?: string | null, id?: { __typename?: 'LabTestId', labTestCd?: string | null, laboratoryId?: string | null } | null } | null> } };
-
-export type FindLoincLabTestQueryVariables = Exact<{
-  searchText: Scalars['String'];
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindLoincLabTestQuery = { __typename?: 'Query', findLoincLabTest: { __typename?: 'LoincLabTestResults', total: number, content: Array<{ __typename?: 'LoincCode', id?: string | null, componentName?: string | null, methodType?: string | null, systemCd?: string | null, property?: string | null, relatedClassCd?: string | null } | null> } };
 
 export type FindMorbidityReportsForPatientQueryVariables = Exact<{
   patient: Scalars['ID'];
@@ -5914,6 +5845,78 @@ export function useFindContactsNamedByPatientLazyQuery(baseOptions?: Apollo.Lazy
 export type FindContactsNamedByPatientQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientQuery>;
 export type FindContactsNamedByPatientLazyQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientLazyQuery>;
 export type FindContactsNamedByPatientQueryResult = Apollo.QueryResult<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>;
+export const FindDistinctCodedResultsDocument = gql`
+    query findDistinctCodedResults($searchText: String!, $snomed: Boolean!) {
+  findDistinctCodedResults(searchText: $searchText, snomed: $snomed) {
+    name
+  }
+}
+    `;
+
+/**
+ * __useFindDistinctCodedResultsQuery__
+ *
+ * To run a query within a React component, call `useFindDistinctCodedResultsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindDistinctCodedResultsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindDistinctCodedResultsQuery({
+ *   variables: {
+ *      searchText: // value for 'searchText'
+ *      snomed: // value for 'snomed'
+ *   },
+ * });
+ */
+export function useFindDistinctCodedResultsQuery(baseOptions: Apollo.QueryHookOptions<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>(FindDistinctCodedResultsDocument, options);
+      }
+export function useFindDistinctCodedResultsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>(FindDistinctCodedResultsDocument, options);
+        }
+export type FindDistinctCodedResultsQueryHookResult = ReturnType<typeof useFindDistinctCodedResultsQuery>;
+export type FindDistinctCodedResultsLazyQueryHookResult = ReturnType<typeof useFindDistinctCodedResultsLazyQuery>;
+export type FindDistinctCodedResultsQueryResult = Apollo.QueryResult<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>;
+export const FindDistinctResultedTestDocument = gql`
+    query findDistinctResultedTest($searchText: String!, $loinc: Boolean!) {
+  findDistinctResultedTest(searchText: $searchText, loinc: $loinc) {
+    name
+  }
+}
+    `;
+
+/**
+ * __useFindDistinctResultedTestQuery__
+ *
+ * To run a query within a React component, call `useFindDistinctResultedTestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindDistinctResultedTestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindDistinctResultedTestQuery({
+ *   variables: {
+ *      searchText: // value for 'searchText'
+ *      loinc: // value for 'loinc'
+ *   },
+ * });
+ */
+export function useFindDistinctResultedTestQuery(baseOptions: Apollo.QueryHookOptions<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>(FindDistinctResultedTestDocument, options);
+      }
+export function useFindDistinctResultedTestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>(FindDistinctResultedTestDocument, options);
+        }
+export type FindDistinctResultedTestQueryHookResult = ReturnType<typeof useFindDistinctResultedTestQuery>;
+export type FindDistinctResultedTestLazyQueryHookResult = ReturnType<typeof useFindDistinctResultedTestLazyQuery>;
+export type FindDistinctResultedTestQueryResult = Apollo.QueryResult<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>;
 export const FindDocumentsForPatientDocument = gql`
     query findDocumentsForPatient($patient: ID!, $page: Page) {
   findDocumentsForPatient(patient: $patient, page: $page) {
@@ -6310,138 +6313,6 @@ export function useFindLabReportsByFilterLazyQuery(baseOptions?: Apollo.LazyQuer
 export type FindLabReportsByFilterQueryHookResult = ReturnType<typeof useFindLabReportsByFilterQuery>;
 export type FindLabReportsByFilterLazyQueryHookResult = ReturnType<typeof useFindLabReportsByFilterLazyQuery>;
 export type FindLabReportsByFilterQueryResult = Apollo.QueryResult<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>;
-export const FindLocalCodedResultsDocument = gql`
-    query findLocalCodedResults($searchText: String!, $page: Page) {
-  findLocalCodedResults(searchText: $searchText, page: $page) {
-    content {
-      id {
-        labResultCd
-        laboratoryId
-      }
-      nbsUid
-      labResultDescTxt
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindLocalCodedResultsQuery__
- *
- * To run a query within a React component, call `useFindLocalCodedResultsQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindLocalCodedResultsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindLocalCodedResultsQuery({
- *   variables: {
- *      searchText: // value for 'searchText'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindLocalCodedResultsQuery(baseOptions: Apollo.QueryHookOptions<FindLocalCodedResultsQuery, FindLocalCodedResultsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindLocalCodedResultsQuery, FindLocalCodedResultsQueryVariables>(FindLocalCodedResultsDocument, options);
-      }
-export function useFindLocalCodedResultsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLocalCodedResultsQuery, FindLocalCodedResultsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindLocalCodedResultsQuery, FindLocalCodedResultsQueryVariables>(FindLocalCodedResultsDocument, options);
-        }
-export type FindLocalCodedResultsQueryHookResult = ReturnType<typeof useFindLocalCodedResultsQuery>;
-export type FindLocalCodedResultsLazyQueryHookResult = ReturnType<typeof useFindLocalCodedResultsLazyQuery>;
-export type FindLocalCodedResultsQueryResult = Apollo.QueryResult<FindLocalCodedResultsQuery, FindLocalCodedResultsQueryVariables>;
-export const FindLocalLabTestDocument = gql`
-    query findLocalLabTest($searchText: String!, $page: Page) {
-  findLocalLabTest(searchText: $searchText, page: $page) {
-    content {
-      id {
-        labTestCd
-        laboratoryId
-      }
-      labTestDescTxt
-      organismResultTestInd
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindLocalLabTestQuery__
- *
- * To run a query within a React component, call `useFindLocalLabTestQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindLocalLabTestQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindLocalLabTestQuery({
- *   variables: {
- *      searchText: // value for 'searchText'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindLocalLabTestQuery(baseOptions: Apollo.QueryHookOptions<FindLocalLabTestQuery, FindLocalLabTestQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindLocalLabTestQuery, FindLocalLabTestQueryVariables>(FindLocalLabTestDocument, options);
-      }
-export function useFindLocalLabTestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLocalLabTestQuery, FindLocalLabTestQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindLocalLabTestQuery, FindLocalLabTestQueryVariables>(FindLocalLabTestDocument, options);
-        }
-export type FindLocalLabTestQueryHookResult = ReturnType<typeof useFindLocalLabTestQuery>;
-export type FindLocalLabTestLazyQueryHookResult = ReturnType<typeof useFindLocalLabTestLazyQuery>;
-export type FindLocalLabTestQueryResult = Apollo.QueryResult<FindLocalLabTestQuery, FindLocalLabTestQueryVariables>;
-export const FindLoincLabTestDocument = gql`
-    query findLoincLabTest($searchText: String!, $page: Page) {
-  findLoincLabTest(searchText: $searchText, page: $page) {
-    content {
-      id
-      componentName
-      methodType
-      systemCd
-      property
-      relatedClassCd
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindLoincLabTestQuery__
- *
- * To run a query within a React component, call `useFindLoincLabTestQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindLoincLabTestQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindLoincLabTestQuery({
- *   variables: {
- *      searchText: // value for 'searchText'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindLoincLabTestQuery(baseOptions: Apollo.QueryHookOptions<FindLoincLabTestQuery, FindLoincLabTestQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindLoincLabTestQuery, FindLoincLabTestQueryVariables>(FindLoincLabTestDocument, options);
-      }
-export function useFindLoincLabTestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLoincLabTestQuery, FindLoincLabTestQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindLoincLabTestQuery, FindLoincLabTestQueryVariables>(FindLoincLabTestDocument, options);
-        }
-export type FindLoincLabTestQueryHookResult = ReturnType<typeof useFindLoincLabTestQuery>;
-export type FindLoincLabTestLazyQueryHookResult = ReturnType<typeof useFindLoincLabTestLazyQuery>;
-export type FindLoincLabTestQueryResult = Apollo.QueryResult<FindLoincLabTestQuery, FindLoincLabTestQueryVariables>;
 export const FindMorbidityReportsForPatientDocument = gql`
     query findMorbidityReportsForPatient($patient: ID!, $page: Page) {
   findMorbidityReportsForPatient(patient: $patient, page: $page) {

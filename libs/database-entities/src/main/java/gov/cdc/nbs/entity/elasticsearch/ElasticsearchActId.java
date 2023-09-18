@@ -40,7 +40,7 @@ public class ElasticsearchActId {
     @Field(name = TYPE_CD, type = FieldType.Keyword)
     private String typeCd;
 
-    @Field(name = TYPE_CD, type = FieldType.Text)
+    @Field(name = TYPE_DESC_TXT, type = FieldType.Text)
     private String typeDescTxt;
 
     @Field(name = LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)

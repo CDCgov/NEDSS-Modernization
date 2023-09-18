@@ -1,0 +1,5 @@
+query findDistinctCodedResults($searchText: String!, $snomed: Boolean!){
+    findDistinctCodedResults(searchText: $searchText, snomed: $snomed){
+        name
+    }
+}

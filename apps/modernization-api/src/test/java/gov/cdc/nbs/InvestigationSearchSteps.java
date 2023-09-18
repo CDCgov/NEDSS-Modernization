@@ -88,8 +88,20 @@ public class InvestigationSearchSteps {
     }
 
     private void setProcessingStatus(Investigation investigation, String statusString) {
-        var status = ProcessingStatus.valueOf(statusString);
-        investigation.setCurrProcessStateCd(status.toString());
+        var status = toValue(ProcessingStatus.valueOf(statusString));
+        investigation.setCurrProcessStateCd(status);
+    }
+
+    private String toValue(ProcessingStatus status) {
+        return switch (status) {
+            case AWAITING_INTERVIEW -> "AI";
+            case CLOSED_CASE -> "CC";
+            case FIELD_FOLLOW_UP -> "FF";
+            case NO_FOLLOW_UP -> "NF";
+            case OPEN_CASE -> "OC";
+            case SURVEILLANCE_FOLLOW_UP -> "SF";
+            default -> null;
+        };
     }
 
     @When("I search for an investigation with {string} of {string}")
@@ -138,7 +150,7 @@ public class InvestigationSearchSteps {
         switch (field) {
             case "processingStatus":
                 investigationSearchResults.forEach(sr -> {
-                    assertEquals(statusString, sr.getCurrProcessStateCd());
+                    assertEquals(toValue(ProcessingStatus.valueOf(statusString)), sr.getCurrProcessStateCd());
                 });
                 break;
             case "notificationStatus":
