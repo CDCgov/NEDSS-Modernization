@@ -78,8 +78,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
         setIdentifications(data?.findPatientProfile.identification?.content || []);
     };
 
-    const [fetch, { refetch, loading }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
-
+    const [fetch, { refetch, called, loading }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
     const [add] = useAddPatientIdentificationMutation();
     const [update] = useUpdatePatientIdentificationMutation();
     const [remove] = useDeletePatientIdentificationMutation();
@@ -217,7 +216,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
-                isLoading={loading}
+                isLoading={!called || loading}
                 isPagination={true}
                 totalResults={total}
                 currentPage={currentPage}

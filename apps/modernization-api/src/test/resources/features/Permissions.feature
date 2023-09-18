@@ -14,9 +14,3 @@ Feature: User's search results are restricted by permissions
       | findInvestigation          | FIND-PATIENT                           | STD         | ALL          | AccessDeniedException |
       | findLabReport              | FIND-PATIENT,VIEW-OBSERVATIONLABREPORT | STD         | ALL          | success               |
       | findLabReport              | FIND-PATIENT                           | STD         | ALL          | AccessDeniedException |
-      | findPatientsByOrganization | FIND-PATIENT                           | STD         | ALL          | success               |
-      | findPatientsByOrganization |                                        | STD         | ALL          | AccessDeniedException |
-      | findAllPatients            | FIND-PATIENT                           | STD         | ALL          | success               |
-      | findAllPatients            |                                        | STD         | ALL          | AccessDeniedException |
-      | findPatientById            | FIND-PATIENT                           | STD         | ALL          | success               |
-      | findPatientById            |                                        | STD         | ALL          | AccessDeniedException |

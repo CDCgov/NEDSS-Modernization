@@ -75,7 +75,7 @@ export const RacesTable = ({ patient }: Props) => {
         setRaces(data?.findPatientProfile?.races?.content ?? []);
     };
 
-    const [fetch, { refetch, loading }] = useFindPatientProfileRace({ onCompleted: handleComplete });
+    const [fetch, { refetch, called, loading }] = useFindPatientProfileRace({ onCompleted: handleComplete });
 
     const [add] = useAddPatientRaceMutation();
     const [update] = useUpdatePatientRaceMutation();
@@ -211,7 +211,7 @@ export const RacesTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
-                isLoading={loading}
+                isLoading={!called || loading}
                 isPagination={true}
                 buttons={
                     <div className="grid-row">

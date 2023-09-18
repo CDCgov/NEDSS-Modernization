@@ -4,7 +4,7 @@ import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
-export const AddressForm = ({ control, errors }: any) => {
+export const AddressForm = ({ control }: any) => {
     return (
         <>
             <Grid col={12}>
@@ -64,19 +64,20 @@ export const AddressForm = ({ control, errors }: any) => {
                     name="zip"
                     rules={{
                         pattern: {
-                            value: /^\d{5}(?:[-\s]\d{4})?$/,
+                            value: /^\d{1,5}(?:[-\s]\d{1,4})?$/,
                             message: 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
                         }
                     }}
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                         <Input
+                            onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value}
                             type="text"
                             label="Zip code"
-                            htmlFor="zip"
-                            id="zip"
-                            error={errors && errors.zip && errors.zip.message}
+                            htmlFor={name}
+                            id={name}
+                            error={error?.message}
                         />
                     )}
                 />

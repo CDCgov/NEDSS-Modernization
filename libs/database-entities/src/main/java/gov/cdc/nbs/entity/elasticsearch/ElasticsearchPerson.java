@@ -1,13 +1,15 @@
 package gov.cdc.nbs.entity.elasticsearch;
 
-import static gov.cdc.nbs.util.Constants.DATE_PATTERN;
-
-import java.time.Instant;
-import java.util.List;
-
-import javax.persistence.Id;
+import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.converter.DeceasedConverter;
+import gov.cdc.nbs.entity.enums.converter.ElasticsearchInstantValueConverter;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.search.ElasticsearchGenderConverter;
 import gov.cdc.nbs.patient.search.ElasticsearchSuffixConverter;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -15,20 +17,13 @@ import org.springframework.data.elasticsearch.annotations.InnerField;
 import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.enums.converter.DeceasedConverter;
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.entity.enums.converter.ElasticsearchInstantValueConverter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.persistence.Id;
+import java.time.Instant;
+import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+import static gov.cdc.nbs.util.Constants.DATE_PATTERN;
+
+@Getter
 @Builder
 @Document(indexName = "person")
 public class ElasticsearchPerson {
@@ -294,7 +289,7 @@ public class ElasticsearchPerson {
 
     // allows sorting
     @MultiField(mainField = @Field(name = LAST_NM, type = FieldType.Text, fielddata = true), otherFields = {
-            @InnerField(suffix = TEXT, type = FieldType.Text)
+        @InnerField(suffix = TEXT, type = FieldType.Text)
     })
     private String lastNm;
 
@@ -502,4 +497,5 @@ public class ElasticsearchPerson {
 
     @Field(name = ENTITY_ID_FIELD, type = FieldType.Nested)
     private List<NestedEntityId> entityId;
+
 }
