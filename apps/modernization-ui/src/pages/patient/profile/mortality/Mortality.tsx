@@ -8,6 +8,8 @@ import { MortalityEntry, MortalityForm } from './MortalityForm';
 import { maybeDescription, maybeId } from '../coded';
 import { orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from '../usePatientProfile';
 
 const initialEntry = {
     asOf: null,
@@ -45,9 +47,11 @@ type Props = {
 
 export const Mortality = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { id } = useParams();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<MortalityEntry>(initialEntry);
+    const profile = usePatientProfile(id);
 
     const handleComplete = (data: FindPatientProfileQuery) => {
         const current = data.findPatientProfile?.mortality;
@@ -97,7 +101,12 @@ export const Mortality = ({ patient }: Props) => {
 
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
-            <EditableCard title="Mortality" data={tableData} editing={editing} onEdit={() => isEditing(true)}>
+            <EditableCard
+                disableEdit={profile?.patient?.status !== 'ACTIVE'}
+                title="Mortality"
+                data={tableData}
+                editing={editing}
+                onEdit={() => isEditing(true)}>
                 <MortalityForm entry={entry} onChanged={onUpdate} onCancel={() => isEditing(false)} />
             </EditableCard>
         </Grid>

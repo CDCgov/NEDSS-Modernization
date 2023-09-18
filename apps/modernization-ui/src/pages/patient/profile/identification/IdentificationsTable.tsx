@@ -24,6 +24,8 @@ import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from '../usePatientProfile';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -55,6 +57,8 @@ type Props = {
 
 export const IdentificationsTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { id } = useParams();
+    const profile = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -220,7 +224,11 @@ export const IdentificationsTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
                 buttons={
                     <div className="grid-row">
-                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
+                        <Button
+                            disabled={profile?.patient?.status !== 'ACTIVE'}
+                            type="button"
+                            onClick={actions.prepareForAdd}
+                            className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add identification
                         </Button>
