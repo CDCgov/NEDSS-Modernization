@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.contact;
 
-import gov.cdc.nbs.authorization.SessionCookie;
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.patient.contact.TestContactTracings;
 import gov.cdc.nbs.support.TestActive;

@@ -15,18 +15,16 @@ import javax.persistence.EntityManager;
 import java.util.function.Supplier;
 
 @Component
-public class TestAuthentication {
-
+public class Authenticated {
 
     private final TestActive<ActiveUser> active;
     private final NBSUserDetailsResolver resolver;
     private final EntityManager entityManager;
 
-    public TestAuthentication(
-        final TestActive<ActiveUser> active,
-        final NBSUserDetailsResolver resolver,
-        final EntityManager entityManager
-    ) {
+    public Authenticated(
+            final TestActive<ActiveUser> active,
+            final NBSUserDetailsResolver resolver,
+            final EntityManager entityManager) {
         this.active = active;
         this.resolver = resolver;
         this.entityManager = entityManager;
@@ -36,27 +34,25 @@ public class TestAuthentication {
         SecurityContextHolder.getContext().setAuthentication(null);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void apply() {
+    private void apply() {
         ActiveUser activeUser = this.active.active();
 
         AuthUser authUser = this.entityManager.find(AuthUser.class, activeUser.id());
 
-        NbsUserDetails details = resolver.resolve(authUser, activeUser.token());
+        NbsUserDetails details = resolver.resolve(authUser);
 
-        PreAuthenticatedAuthenticationToken authentication =
-            new PreAuthenticatedAuthenticationToken(
+        PreAuthenticatedAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(
                 details,
                 null,
-                details.getAuthorities()
-            );
+                details.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
     }
 
     /**
-     * Executes the given {@code action} ensuring that the {@link SecurityContextHolder} is configured to be
+     * Executes the given {@code action} ensuring that the
+     * {@link SecurityContextHolder} is configured to be
      * authenticated with the Active User.
      *
      * @param action The action to perform while authenticated.
@@ -64,7 +60,7 @@ public class TestAuthentication {
      * @return The result of the action
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public <T> T authenticated(final Supplier<T> action) {
+    public <T> T perform(final Supplier<T> action) {
         apply();
 
         try {

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.search;
 
-import gov.cdc.nbs.TestAuthentication;
+import gov.cdc.nbs.Authenticated;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.exception.QueryException;
@@ -52,7 +52,7 @@ public class PatientSearchSteps {
     PatientController patientController;
 
     @Autowired
-    TestAuthentication testAuthentication;
+    Authenticated authenticated;
 
     private List<Person> available;
     private QueryException exception;
@@ -275,7 +275,7 @@ public class PatientSearchSteps {
             SortCriteria criteria = this.sorting.active();
             GraphQLPage page = new GraphQLPage(15, 0, criteria.direction(), criteria.field());
 
-            Page<Person> found = testAuthentication.authenticated(() ->
+            Page<Person> found = authenticated.perform(() ->
                 patientController.findPatientsByFilter(
                     this.filter.active(),
                     page
