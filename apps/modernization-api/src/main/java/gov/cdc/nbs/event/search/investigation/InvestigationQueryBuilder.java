@@ -212,9 +212,13 @@ public class InvestigationQueryBuilder {
             switch (pfSearch.getEntityType()) {
                 case PROVIDER:
                     var providerQuery = QueryBuilders.boolQuery()
-                            .must(QueryBuilders.matchQuery(ElasticsearchPersonParticipation.ENTITY_ID,
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.PERSON_PARTICIPATIONS + "."
+                                            + ElasticsearchPersonParticipation.ENTITY_ID,
                                     pfSearch.getId()))
-                            .must(QueryBuilders.matchQuery(ElasticsearchPersonParticipation.TYPE_CD,
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.PERSON_PARTICIPATIONS + "."
+                                            + ElasticsearchPersonParticipation.TYPE_CD,
                                     "PerAsReporterOfPHC"));
 
                     var nestedProviderQuery = QueryBuilders.nestedQuery(
@@ -226,13 +230,17 @@ public class InvestigationQueryBuilder {
                     break;
                 case FACILITY:
                     var facilityQuery = QueryBuilders.boolQuery()
-                            .must(QueryBuilders.matchQuery(ElasticsearchOrganizationParticipation.ENTITY_ID,
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.ENTITY_ID,
                                     pfSearch.getId()))
-                            .must(QueryBuilders.matchQuery(ElasticsearchOrganizationParticipation.TYPE_CD,
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.TYPE_CD,
                                     "OrgAsReporterOfPHC"));
 
                     var nestedFacilityQuery = QueryBuilders.nestedQuery(
-                            Investigation.PERSON_PARTICIPATIONS,
+                            Investigation.ORGANIZATION_PARTICIPATIONS,
                             facilityQuery,
                             ScoreMode.None);
 
