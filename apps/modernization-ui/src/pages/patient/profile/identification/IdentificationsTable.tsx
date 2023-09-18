@@ -68,7 +68,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
-    const { refetchProfileSummary } = useProfileContext();
+    const { changed } = useProfileContext();
 
     const [isActions, setIsActions] = useState<any>(null);
     const [identifications, setIdentifications] = useState<Identification[]>([]);
@@ -121,7 +121,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     message: `Added Identification`
                 });
                 refetch();
-                refetchProfileSummary?.();
+                changed();
             })
             .then(actions.reset);
     };
@@ -147,7 +147,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Updated Identification`
                     });
                     refetch();
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -170,7 +170,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Deleted Identification`
                     });
                     refetch();
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }

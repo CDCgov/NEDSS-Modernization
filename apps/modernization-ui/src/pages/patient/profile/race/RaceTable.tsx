@@ -61,7 +61,7 @@ export const RacesTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
-    const { refetchProfileSummary } = useProfileContext();
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientRace>();
 
@@ -116,7 +116,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Added race`
                     });
                     refetch();
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -141,7 +141,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Updated race`
                     });
                     refetch();
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -164,7 +164,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Deleted race`
                     });
                     refetch();
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }

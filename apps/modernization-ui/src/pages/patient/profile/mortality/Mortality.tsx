@@ -49,7 +49,7 @@ export const Mortality = ({ patient }: Props) => {
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<MortalityEntry>(initialEntry);
-    const { refetchProfileSummary } = useProfileContext();
+    const { changed } = useProfileContext();
 
     const handleComplete = (data: FindPatientProfileQuery) => {
         const current = data.findPatientProfile?.mortality;
@@ -96,7 +96,7 @@ export const Mortality = ({ patient }: Props) => {
             }
         }).then(() => {
             handleUpdate();
-            refetchProfileSummary?.();
+            changed();
         });
     };
 

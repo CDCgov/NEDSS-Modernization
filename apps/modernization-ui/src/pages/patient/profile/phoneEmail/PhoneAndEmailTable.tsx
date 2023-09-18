@@ -84,7 +84,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
-    const { refetchProfileSummary } = useProfileContext();
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientPhone>();
 
@@ -141,7 +141,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Added Phone & Email`
                     });
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -169,7 +169,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated Phone & Email`
                     });
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -192,7 +192,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted Phone & Email`
                     });
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }

@@ -61,7 +61,7 @@ type Props = {
 
 export const GeneralPatient = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { refetchProfileSummary } = useProfileContext();
+    const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<GeneralInformationEntry>(initialEntry);
@@ -104,7 +104,7 @@ export const GeneralPatient = ({ patient }: Props) => {
             }
         }).then(() => {
             handleUpdate();
-            refetchProfileSummary?.();
+            changed();
         });
     };
 

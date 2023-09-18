@@ -85,7 +85,7 @@ type Props = {
 
 export const SexBirth = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { refetchProfileSummary } = useProfileContext();
+    const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
 
     const [state, setState] = useState<BirthAndGenderState>(initial);
@@ -133,7 +133,7 @@ export const SexBirth = ({ patient }: Props) => {
                     header: 'success',
                     message: `Updated sex & birth`
                 });
-                refetchProfileSummary?.();
+                changed();
             });
     };
 

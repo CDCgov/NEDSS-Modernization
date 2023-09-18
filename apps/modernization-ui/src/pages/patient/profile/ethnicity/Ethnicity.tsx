@@ -45,7 +45,7 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
 });
 export const Ethnicity = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { refetchProfileSummary } = useProfileContext();
+    const { changed } = useProfileContext();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
@@ -89,7 +89,7 @@ export const Ethnicity = ({ patient }: Props) => {
             }
         }).then(() => {
             handleUpdate();
-            refetchProfileSummary?.();
+            changed();
         });
     };
 

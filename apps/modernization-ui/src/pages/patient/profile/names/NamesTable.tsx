@@ -89,7 +89,7 @@ export const NamesTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
-    const { refetchProfileSummary } = useProfileContext();
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientName>();
 
@@ -151,7 +151,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Added name`
                     });
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -184,7 +184,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated name`
                     });
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -207,7 +207,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted name`
                     });
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }

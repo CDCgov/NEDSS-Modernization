@@ -100,7 +100,7 @@ export const AddressesTable = ({ patient }: Props) => {
     const [isActions, setIsActions] = useState<number | null>(null);
 
     const modal = useRef<ModalRef>(null);
-    const { refetchProfileSummary } = useProfileContext();
+    const { changed } = useProfileContext();
 
     useEffect(() => {
         modal.current?.toggleModal(undefined, selected !== undefined);
@@ -159,7 +159,7 @@ export const AddressesTable = ({ patient }: Props) => {
                         message: `Added address`
                     });
                     refetch();
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -195,7 +195,7 @@ export const AddressesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated address`
                     });
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -218,7 +218,7 @@ export const AddressesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted address`
                     });
-                    refetchProfileSummary?.();
+                    changed();
                 })
                 .then(actions.reset);
         }
