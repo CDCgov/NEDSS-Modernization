@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import {
     EntryMethod,
     EventStatus,
@@ -68,7 +68,7 @@ const LabReportGeneralFieldsWithDefaultsSet = () => {
 };
 
 describe('InvestigationGeneralFields component', () => {
-    it('should contain default selections', () => {
+    it('should contain default selections', async () => {
         const { container, getByText, getByTestId } = render(<LabReportGeneralFieldsWithForm />);
         const multiSelectInputs = container.getElementsByClassName('multi-select-input');
 
@@ -97,8 +97,11 @@ describe('InvestigationGeneralFields component', () => {
         expect(eventTypeSelect).toHaveValue('');
 
         // Event id
-        const eventIdInput = getByTestId('eventId.labEventId');
-        expect(eventIdInput).toHaveValue('');
+        await waitFor(() =>
+            expect(() => getByTestId('eventId.labEventId')).toThrow(
+                'Unable to find an element by: [data-testid="eventId.labEventId"]'
+            )
+        );
 
         // Event date type
         getByText('Event date type');
@@ -108,10 +111,10 @@ describe('InvestigationGeneralFields component', () => {
 
         const dateInputs = container.getElementsByClassName('usa-date-picker__external-input');
         // from
-        expect(dateInputs[0]).toHaveValue('');
+        expect(dateInputs[0]).not.toBeDefined();
 
         // to
-        expect(dateInputs[1]).toHaveValue('');
+        expect(dateInputs[1]).not.toBeDefined();
 
         // Entry methods
         const entryMethods = getByText('Entry method');

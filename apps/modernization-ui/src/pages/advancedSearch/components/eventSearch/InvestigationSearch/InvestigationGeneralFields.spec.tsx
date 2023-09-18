@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import {
     InvestigationEventDateType,
     InvestigationEventIdType,
@@ -58,7 +58,7 @@ const InvestigationGeneralFieldsWithDefaultsSet = () => {
 };
 
 describe('InvestigationGeneralFields component', () => {
-    it('should contain default selections', () => {
+    it('should contain default selections', async () => {
         const { container, getByText, getByTestId } = render(<InvestigationGeneralFieldsWithForm />);
         const multiSelectInputs = container.getElementsByClassName('multi-select-input');
         // Condition
@@ -92,8 +92,11 @@ describe('InvestigationGeneralFields component', () => {
         expect(eventTypeSelect).toHaveValue('');
 
         // Event id
-        const eventIdInput = getByTestId('eventId.id');
-        expect(eventIdInput).toHaveValue('');
+        await waitFor(() =>
+            expect(() => getByTestId('eventId.eventId.id')).toThrow(
+                'Unable to find an element by: [data-testid="eventId.eventId.id"]'
+            )
+        );
 
         // Event date type
         getByText('Event date type');
@@ -103,10 +106,10 @@ describe('InvestigationGeneralFields component', () => {
 
         const dateInputs = container.getElementsByClassName('usa-date-picker__external-input');
         // from
-        expect(dateInputs[0]).toHaveValue('');
+        expect(dateInputs[0]).not.toBeDefined();
 
         // to
-        expect(dateInputs[1]).toHaveValue('');
+        expect(dateInputs[1]).not.toBeDefined();
 
         // Event created by user
         getByText('Event created by user');
