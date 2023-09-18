@@ -29,7 +29,7 @@ public class ClientPermissionSteps {
         ActiveUser user = activeUser.active();
 
         activeResult.active(
-            mvc.perform(get("/nbs/api/me").header("Authorization", "Bearer " + user.token()))
+            mvc.perform(get("/nbs/api/me").header("Authorization", "Bearer " + user.token().value()))
                 .andExpect(status().isOk())
 
         );

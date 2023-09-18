@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.treatment;
 
-import gov.cdc.nbs.authorization.SessionCookie;
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.patient.treatment.TestTreatments;
 import gov.cdc.nbs.support.TestActive;

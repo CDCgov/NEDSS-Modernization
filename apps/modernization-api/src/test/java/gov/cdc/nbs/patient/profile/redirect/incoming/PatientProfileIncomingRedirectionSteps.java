@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
-import gov.cdc.nbs.authorization.SessionCookie;
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.TestActive;
 import gov.cdc.nbs.support.TestAvailable;

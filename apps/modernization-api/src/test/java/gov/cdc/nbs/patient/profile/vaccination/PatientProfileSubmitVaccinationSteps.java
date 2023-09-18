@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.vaccination;
 
-import gov.cdc.nbs.authorization.SessionCookie;
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.support.TestActive;
 import io.cucumber.java.Before;

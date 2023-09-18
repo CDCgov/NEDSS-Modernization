@@ -1,12 +1,11 @@
 package gov.cdc.nbs.authentication;
 
-import java.util.Set;
-
-import org.springframework.security.core.userdetails.UserDetails;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Set;
 
 @Getter
 @Builder
@@ -21,7 +20,6 @@ public class NbsUserDetails implements UserDetails {
     private final Set<String> adminProgramAreas;
     private final String password;
     private final Set<NbsAuthority> authorities;
-    private final String token;
     private final boolean isEnabled;
 
     @Override
@@ -41,8 +39,7 @@ public class NbsUserDetails implements UserDetails {
 
     /**
      * Checks if user has the specified permission
-     * 
-     * @param userDetails
+     *
      * @param businessObject
      * @param operation
      * @return
@@ -52,9 +49,9 @@ public class NbsUserDetails implements UserDetails {
             return false;
         }
         return getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getBusinessObject().equals(businessObject)
-                        && a.getBusinessOperation().equals(operation));
+            .stream()
+            .anyMatch(a -> a.getBusinessObject().equals(businessObject)
+                && a.getBusinessOperation().equals(operation));
     }
 
 }

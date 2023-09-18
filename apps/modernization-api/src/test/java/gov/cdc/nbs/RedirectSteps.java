@@ -1,7 +1,7 @@
 package gov.cdc.nbs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.authorization.SessionCookie;
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.authorization.TestActiveUser;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import javax.servlet.http.Cookie;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
@@ -202,10 +203,19 @@ public class RedirectSteps {
     @Then("the user Id is present in the redirect")
     public void the_user_id_is_present_in_the_redirect() {
         MockHttpServletResponse response = activeResponse.active();
-        var userIdCookie = response.getCookie("nbs_user");
-        assertNotNull(userIdCookie);
-        assertEquals(activeUser.active().username(), userIdCookie.getValue());
+        Cookie cookie = response.getCookie("nbs_user");
+
+        assertThat(cookie).extracting(Cookie::getValue).isEqualTo(activeUser.active().username());
+
     }
 
+    @Then("the token is present in the redirect")
+    public void the_token_is_present_in_the_redirect() {
+        MockHttpServletResponse response = activeResponse.active();
+
+        Cookie cookie = response.getCookie("nbs_token");
+
+        assertThat(cookie).extracting(Cookie::getValue).isNotNull();
+    }
 
 }
