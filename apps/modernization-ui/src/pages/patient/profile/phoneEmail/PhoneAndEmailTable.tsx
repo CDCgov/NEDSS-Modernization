@@ -105,7 +105,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
         setPhoneEmail(data?.findPatientProfile?.phones?.content ?? []);
     };
 
-    const [fetch, { refetch, loading }] = useFindPatientProfilePhoneAndEmail({ onCompleted: handleComplete });
+    const [fetch, { refetch, called, loading }] = useFindPatientProfilePhoneAndEmail({ onCompleted: handleComplete });
 
     const [add] = useAddPatientPhoneMutation();
     const [update] = useUpdatePatientPhoneMutation();
@@ -235,7 +235,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
-                isLoading={loading}
+                isLoading={!called || loading}
                 isPagination={true}
                 buttons={
                     <div className="grid-row">

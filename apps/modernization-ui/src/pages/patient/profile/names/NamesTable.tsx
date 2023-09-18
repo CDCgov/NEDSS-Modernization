@@ -105,7 +105,7 @@ export const NamesTable = ({ patient }: Props) => {
         setNames(data?.findPatientProfile?.names?.content ?? []);
     };
 
-    const [fetch, { refetch, loading }] = useFindPatientProfileNames({ onCompleted: handleComplete });
+    const [fetch, { refetch, called, loading }] = useFindPatientProfileNames({ onCompleted: handleComplete });
 
     const [add] = useAddPatientNameMutation();
     const [update] = useUpdatePatientNameMutation();
@@ -256,7 +256,7 @@ export const NamesTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
-                isLoading={loading}
+                isLoading={!called || loading}
                 isPagination={true}
                 buttons={
                     <div className="grid-row">

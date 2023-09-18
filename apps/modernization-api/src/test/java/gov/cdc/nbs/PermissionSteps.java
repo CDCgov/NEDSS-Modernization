@@ -12,7 +12,6 @@ import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.event.search.investigation.InvestigationResolver;
 import gov.cdc.nbs.event.search.labreport.LabReportResolver;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.patient.PatientController;
 import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
@@ -163,16 +162,6 @@ public class PermissionSteps {
                     break;
                 case "findLabReport":
                     response = labReportResolver.findLabReportsByFilter(new LabReportFilter(), page);
-                    break;
-                case "findPatientsByOrganization":
-                    var orgFilter = new OrganizationFilter();
-                    response = patientController.findPatientsByOrganizationFilter(orgFilter, page);
-                    break;
-                case "findAllPatients":
-                    response = patientController.findAllPatients(page);
-                    break;
-                case "findPatientById":
-                    response = patientController.findPatientById(1L);
                     break;
                 default:
                     throw new RuntimeException("Invalid searchType: " + searchType);
