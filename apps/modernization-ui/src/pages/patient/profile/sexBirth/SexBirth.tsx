@@ -8,6 +8,7 @@ import { maybeDescription, maybeId } from '../coded';
 import { BirthAndGenderEntry, SexBirthForm } from './SexBirthForm';
 import { maybeNumber, orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
+import { useProfileContext } from '../ProfileContext';
 
 const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
     {
@@ -84,6 +85,7 @@ type Props = {
 
 export const SexBirth = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
 
     const [state, setState] = useState<BirthAndGenderState>(initial);
@@ -131,6 +133,7 @@ export const SexBirth = ({ patient }: Props) => {
                     header: 'success',
                     message: `Updated sex & birth`
                 });
+                changed();
             });
     };
 

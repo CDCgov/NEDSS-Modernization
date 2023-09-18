@@ -22,6 +22,7 @@ import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -60,6 +61,7 @@ export const RacesTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientRace>();
 
@@ -114,6 +116,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Added race`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -138,6 +141,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Updated race`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -160,6 +164,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Deleted race`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }

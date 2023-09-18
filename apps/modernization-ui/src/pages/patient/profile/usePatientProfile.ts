@@ -22,7 +22,7 @@ export const usePatientProfile = (patient?: string) => {
         }
     };
 
-    const [getProfile] = useFindPatientProfileSummary({ onCompleted: handleComplete });
+    const [getProfile, { refetch }] = useFindPatientProfileSummary({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
@@ -34,5 +34,5 @@ export const usePatientProfile = (patient?: string) => {
         }
     }, [patient]);
 
-    return profile;
+    return { profile, refetch };
 };

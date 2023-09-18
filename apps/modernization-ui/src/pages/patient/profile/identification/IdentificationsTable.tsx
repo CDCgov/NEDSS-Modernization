@@ -24,6 +24,7 @@ import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -67,6 +68,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const [isActions, setIsActions] = useState<any>(null);
     const [identifications, setIdentifications] = useState<Identification[]>([]);
@@ -119,6 +121,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     message: `Added Identification`
                 });
                 refetch();
+                changed();
             })
             .then(actions.reset);
     };
@@ -144,6 +147,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Updated Identification`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -166,6 +170,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Deleted Identification`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }

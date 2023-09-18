@@ -24,6 +24,7 @@ import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -99,6 +100,7 @@ export const AddressesTable = ({ patient }: Props) => {
     const [isActions, setIsActions] = useState<number | null>(null);
 
     const modal = useRef<ModalRef>(null);
+    const { changed } = useProfileContext();
 
     useEffect(() => {
         modal.current?.toggleModal(undefined, selected !== undefined);
@@ -157,6 +159,7 @@ export const AddressesTable = ({ patient }: Props) => {
                         message: `Added address`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -192,6 +195,7 @@ export const AddressesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated address`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -214,6 +218,7 @@ export const AddressesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted address`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }

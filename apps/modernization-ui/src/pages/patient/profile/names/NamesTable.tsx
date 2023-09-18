@@ -24,6 +24,7 @@ import { NameEntry } from './NameEntry';
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -88,6 +89,7 @@ export const NamesTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientName>();
 
@@ -149,6 +151,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Added name`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -181,6 +184,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated name`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -203,6 +207,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted name`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }

@@ -7,6 +7,7 @@ import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
 import { useAlert } from 'alert/useAlert';
+import { useProfileContext } from '../ProfileContext';
 
 type Props = {
     patient: string;
@@ -44,6 +45,7 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
 });
 export const Ethnicity = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { changed } = useProfileContext();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
@@ -85,7 +87,10 @@ export const Ethnicity = ({ patient }: Props) => {
                     patient: patient
                 }
             }
-        }).then(handleUpdate);
+        }).then(() => {
+            handleUpdate();
+            changed();
+        });
     };
 
     return (

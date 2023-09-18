@@ -26,6 +26,7 @@ import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -83,6 +84,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientPhone>();
 
@@ -139,6 +141,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Added Phone & Email`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -166,6 +169,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated Phone & Email`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -188,6 +192,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted Phone & Email`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
