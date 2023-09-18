@@ -1,8 +1,10 @@
 package gov.cdc.nbs.questionbank.page;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
@@ -162,7 +165,7 @@ public class PageStateChanger {
         draftCopy.setAddUserId(oldPage.getAddUserId());
         draftCopy.setBusObjType(oldPage.getBusObjType());
         draftCopy.setConditionCd(oldPage.getConditionCd());
-        draftCopy.setConditionMappings(oldPage.getConditionMappings());
+        draftCopy.setConditionMappings(copyConditionMappings(oldPage.getConditionMappings()));
         draftCopy.setDatamartNm(oldPage.getDatamartNm());
         draftCopy.setDescTxt(oldPage.getDescTxt());
         draftCopy.setFormCd(oldPage.getFormCd());
@@ -180,6 +183,16 @@ public class PageStateChanger {
 
         return draftCopy;
 
+    }
+    
+    private Set<PageCondMapping>  copyConditionMappings(Set<PageCondMapping>  original) {
+    	Set<PageCondMapping> copy = new HashSet<PageCondMapping>();
+    	for(PageCondMapping con: original) {
+    	PageCondMapping	aCopy = new PageCondMapping();
+    	
+    		
+    	}
+    	return copy;
     }
 
 
