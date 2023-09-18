@@ -8,6 +8,7 @@ import gov.cdc.nbs.support.TestActive;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -35,7 +36,7 @@ public class TestAuthentication {
         SecurityContextHolder.getContext().setAuthentication(null);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void apply() {
         ActiveUser activeUser = this.active.active();
 
@@ -62,7 +63,7 @@ public class TestAuthentication {
      * @param <T>    The type of the return value of the {@code action}
      * @return The result of the action
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public <T> T authenticated(final Supplier<T> action) {
         apply();
 

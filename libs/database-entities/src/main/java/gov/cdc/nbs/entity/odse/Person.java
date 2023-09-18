@@ -566,7 +566,7 @@ public class Person {
         changed(address);
     }
 
-    public Collection<PostalEntityLocatorParticipation> addresses() {
+    public List<PostalEntityLocatorParticipation> addresses() {
         return this.nbsEntity.addresses();
     }
 
@@ -574,11 +574,11 @@ public class Person {
         return this.nbsEntity.phones();
     }
 
-    public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
+    public List<TeleEntityLocatorParticipation> phoneNumbers() {
         return this.nbsEntity.phoneNumbers();
     }
 
-    public Collection<TeleEntityLocatorParticipation> emailAddresses() {
+    public List<TeleEntityLocatorParticipation> emailAddresses() {
         return this.nbsEntity.emailAddress();
     }
 
