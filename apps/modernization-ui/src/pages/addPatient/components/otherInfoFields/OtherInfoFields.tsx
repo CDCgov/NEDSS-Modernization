@@ -107,25 +107,27 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                         />
                     </Grid>
                 </Grid>
-                <Grid row>
-                    <Grid col={6}>
-                        <Controller
-                            control={control}
-                            name="deceasedTime"
-                            render={({ field: { onChange, value, name } }) => (
-                                <DatePickerInput
-                                    defaultValue={value}
-                                    onChange={onChange}
-                                    name={name}
-                                    htmlFor={name}
-                                    label="Date of death"
-                                    disableFutureDates
-                                    disabled={selectedDeceased !== Indicator.Yes}
-                                />
-                            )}
-                        />
+                {selectedDeceased === Indicator.Yes && (
+                    <Grid row>
+                        <Grid col={6}>
+                            <Controller
+                                control={control}
+                                name="deceasedTime"
+                                render={({ field: { onChange, value, name } }) => (
+                                    <DatePickerInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        name={name}
+                                        htmlFor={name}
+                                        label="Date of death"
+                                        disableFutureDates
+                                        disabled={selectedDeceased !== Indicator.Yes}
+                                    />
+                                )}
+                            />
+                        </Grid>
                     </Grid>
-                </Grid>
+                )}
                 <Grid row>
                     <Grid col={6}>
                         <Controller

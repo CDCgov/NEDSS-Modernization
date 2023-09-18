@@ -1,6 +1,6 @@
 FROM maven:3.9-amazoncorretto-8
 
-ARG ant_version=1.10.12
+ARG ant_version=1.10.14
 
 # update
 RUN yum update -y

@@ -1,56 +1,50 @@
 package gov.cdc.nbs;
 
+import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.event.search.investigation.InvestigationResolver;
+import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
+import gov.cdc.nbs.support.EventMother;
+import gov.cdc.nbs.support.TestActive;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.event.search.investigation.InvestigationResolver;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
-import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
-import gov.cdc.nbs.support.EventMother;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
 @Transactional
 public class OpenInvestigationSteps {
 
     @Autowired
-    private InvestigationRepository investigationRepository;
+    InvestigationRepository investigationRepository;
 
     @Autowired
-    private ElasticsearchPersonRepository personRepository;
+    InvestigationResolver investigationResolver;
 
     @Autowired
-    private InvestigationResolver investigationResolver;
+    TestActive<PatientIdentifier> patient;
 
-    private Page<ElasticsearchPerson> personPage;
     private Page<Investigation> investigationResults;
+
+    @Before("@open_investigations")
+    public void reset() {
+        investigationRepository.deleteAll();
+    }
 
     @Given("a patient has open investigations")
     public void a_patient_has_open_investigations() {
-        setAvailablePatients();
-        var patientId = personPage.getContent().get(0).getPersonUid();
+
+        var patientId = patient.active().id();
 
         var investigation1 = EventMother.investigation_bacterialVaginosis(patientId);
         assertEquals("O", investigation1.getInvestigationStatusCd());
@@ -65,15 +59,9 @@ public class OpenInvestigationSteps {
         investigationRepository.saveAll(Arrays.asList(investigation1, investigation2, investigation3));
     }
 
-    @Given("a patient does not have open investigations")
-    public void a_patient_does_not_have_open_investigations() {
-        setAvailablePatients();
-        investigationRepository.deleteAll();
-    }
-
     @When("I search for open investigations for a patient")
     public void i_search_for_open_investigations_for_a_patient() {
-        var patientId = personPage.getContent().get(0).getPersonUid();
+        var patientId = patient.active().id();
         investigationResults = investigationResolver.findOpenInvestigationsForPatient(patientId, new GraphQLPage(10));
     }
 
@@ -90,7 +78,4 @@ public class OpenInvestigationSteps {
         assertTrue(investigationResults.isEmpty());
     }
 
-    private void setAvailablePatients() {
-        personPage = personRepository.findAll(Pageable.ofSize(2));
-    }
 }

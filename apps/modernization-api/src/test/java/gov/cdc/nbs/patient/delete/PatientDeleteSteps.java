@@ -12,15 +12,12 @@ import io.cucumber.java.en.When;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
-import javax.persistence.EntityManager;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PatientDeleteSteps {
-    @Autowired
-    EntityManager entityManager;
 
     @Autowired
     TestActiveUser activeUser;

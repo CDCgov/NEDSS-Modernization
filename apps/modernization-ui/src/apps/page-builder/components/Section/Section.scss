@@ -20,12 +20,10 @@
         &--right {
             display: flex;
             align-items: center;
+            gap: 0.8rem;
             svg {
                 cursor: pointer;
                 color: $color-primary;
-                &:first-of-type {
-                    margin-right: 0.8rem;
-                }
             }
         }
     }

@@ -41,6 +41,13 @@ public class InvestigationSteps {
         mother.investigation(revision.id());
     }
 
+    @Given("the patient is a subject of a {string} investigation in {string}")
+    public void the_patient_is_a_subject_of_an_investigation(final String programArea, final String jurisdiction) {
+        PatientIdentifier revision = patientMother.revise(patients.one());
+
+        mother.investigation(revision.id());
+    }
+
     @Given("the patient is a subject of {int} investigations")
     public void the_patient_is_a_subject_N_investigation(final int n) {
         PatientIdentifier patient = patients.one();

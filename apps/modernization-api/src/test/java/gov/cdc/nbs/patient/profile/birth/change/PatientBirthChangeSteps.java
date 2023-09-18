@@ -52,7 +52,7 @@ public class PatientBirthChangeSteps {
             new UpdateBirthAndGender.Birth(
                 RandomUtil.dateInPast(),
                 RandomUtil.maybeGender(),
-                RandomUtil.mabyeIndicator(),
+                RandomUtil.maybeIndicator(),
                 RandomUtil.getRandomInt(19),
                 faker.address().city(),
                 RandomUtil.getRandomStateCode(),

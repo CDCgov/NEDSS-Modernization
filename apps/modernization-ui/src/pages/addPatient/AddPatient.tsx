@@ -298,7 +298,7 @@ const AddPatient = () => {
                                             assigningAuthorities: coded.assigningAuthorities
                                         }}
                                     />
-                                    <div style={{ height: `calc(20%)` }} />
+                                    <div style={{ height: `calc(38%)` }} />
                                 </Grid>
 
                                 <Grid col={3} style={{ alignSelf: 'flex-start' }}>

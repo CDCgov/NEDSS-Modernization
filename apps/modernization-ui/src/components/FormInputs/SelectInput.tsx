@@ -1,18 +1,31 @@
 import { Dropdown } from '@trussworks/react-uswds';
 
 import { EntryWrapper } from 'components/Entry';
+import { useMemo } from 'react';
+
+type Option = { name: string; value: string };
 
 type SelectProps = {
     htmlFor?: string;
     label?: string;
-    options: { name: string; value: string }[];
-    isMulti?: boolean;
+    options: Option[];
     dataTestid?: string;
     flexBox?: boolean;
     error?: string;
     required?: boolean;
-    defaultValue?: string | number | string[] | undefined | null;
+    defaultValue?: string | number | undefined | null;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue'>;
+
+const renderOptions = (options: Option[]) => (
+    <>
+        <option value="">- Select -</option>
+        {options?.map((item, index) => (
+            <option key={index} value={item.value}>
+                {item.name}
+            </option>
+        ))}
+    </>
+);
 
 export const SelectInput = ({
     name,
@@ -22,7 +35,6 @@ export const SelectInput = ({
     options,
     onChange,
     defaultValue,
-    isMulti,
     dataTestid,
     flexBox,
     error,
@@ -30,7 +42,22 @@ export const SelectInput = ({
     onBlur,
     ...props
 }: SelectProps) => {
-    const orientation = flexBox ? 'horizontal' : 'vertical';
+    const orientation = useMemo(() => (flexBox ? 'horizontal' : 'vertical'), [flexBox]);
+
+    //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
+    const Wrapped = () => (
+        <Dropdown
+            data-testid={dataTestid || 'dropdown'}
+            id={id || ''}
+            name={name || ''}
+            defaultValue={defaultValue || undefined}
+            placeholder="-Select-"
+            onChange={onChange}
+            onBlur={onBlur}
+            {...props}>
+            {renderOptions(options)}
+        </Dropdown>
+    );
 
     return (
         <EntryWrapper
@@ -39,25 +66,8 @@ export const SelectInput = ({
             htmlFor={htmlFor || ''}
             required={required}
             error={error}>
-            <Dropdown
-                onBlur={onBlur}
-                data-testid={dataTestid || 'dropdown'}
-                multiple={isMulti}
-                defaultValue={defaultValue || undefined}
-                placeholder="-Select-"
-                onChange={onChange}
-                {...props}
-                id={id || ''}
-                name={name || ''}>
-                <>
-                    <option value="">- Select -</option>
-                    {options?.map((item, index) => (
-                        <option key={index} value={item.value}>
-                            {item.name}
-                        </option>
-                    ))}
-                </>
-            </Dropdown>
+            {defaultValue && <Wrapped />}
+            {!defaultValue && <Wrapped />}
         </EntryWrapper>
     );
 };

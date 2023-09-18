@@ -38,7 +38,7 @@ class PatientIdentificationFinder {
 
     private long resolveTotal(final long patient) {
         Long total = applyCriteria(
-            factory.selectDistinct(this.tables.patient().countDistinct()),
+            factory.selectDistinct(this.tables.patient().count()),
             patient
         )
             .fetchOne();
