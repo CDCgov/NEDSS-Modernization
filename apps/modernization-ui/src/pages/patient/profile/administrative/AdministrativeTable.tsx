@@ -59,7 +59,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
         setAdministratives(data?.findPatientProfile?.administrative?.content || []);
     };
 
-    const [fetch, { refetch, loading }] = useFindPatientProfileAdministrative({ onCompleted: handleComplete });
+    const [fetch, { refetch, called, loading }] = useFindPatientProfileAdministrative({ onCompleted: handleComplete });
     const [update] = useUpdatePatientAdministrativeMutation();
 
     const { selected, actions } = useTableActionState<PatientAdministrative>();
@@ -129,7 +129,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
-                isLoading={loading}
+                isLoading={!called || loading}
                 isPagination={true}
                 buttons={
                     administratives?.length < 1 && (
