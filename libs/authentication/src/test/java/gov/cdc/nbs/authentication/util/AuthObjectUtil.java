@@ -38,39 +38,39 @@ public class AuthObjectUtil {
     public static List<AuthProgAreaAdmin> progAreaAdmins(AuthUser user) {
         var adminAreas = new ArrayList<AuthProgAreaAdmin>();
         adminAreas.add(
-                new AuthProgAreaAdmin(
-                        null,
-                        "progArea",
-                        user,
-                        'T',
-                        audit()));
+            new AuthProgAreaAdmin(
+                null,
+                "progArea",
+                user,
+                'T',
+                audit()));
         return adminAreas;
     }
 
     public static NbsUserDetails userDetails() {
         return new NbsUserDetails(
-                1L,
-                "test",
-                "test",
-                "test",
-                false,
-                false,
-                null,
-                null,
-                authorities(),
-                "token",
-                true);
+            1L,
+            "test",
+            "test",
+            "test",
+            false,
+            false,
+            null,
+            null,
+            authorities(),
+            true
+        );
     }
 
     public static Set<NbsAuthority> authorities() {
         var authorities = new HashSet<NbsAuthority>();
         authorities.add(new NbsAuthority(
-                BUSINESS_OPERATION,
-                BUSINESS_OBJECT,
-                "programArea",
-                123,
-                "jurisdiction",
-                AUTHORITY));
+            BUSINESS_OPERATION,
+            BUSINESS_OBJECT,
+            "programArea",
+            123,
+            "jurisdiction",
+            AUTHORITY));
         return authorities;
     }
 }
