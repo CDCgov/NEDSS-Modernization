@@ -95,7 +95,7 @@ export const Ethnicity = ({ patient }: Props) => {
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
-                disableEdit={profile?.patient?.status !== 'ACTIVE'}
+                readOnly={profile?.patient?.status !== 'ACTIVE'}
                 title="Ethnicity"
                 data={tableData}
                 editing={editing}

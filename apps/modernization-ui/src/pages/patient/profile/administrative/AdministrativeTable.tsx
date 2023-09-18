@@ -170,6 +170,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                                 <Button
                                     type="button"
                                     unstyled
+                                    disabled={profile?.patient?.status !== 'ACTIVE'}
                                     onClick={() => setIsActions(isActions === index ? null : index)}>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
