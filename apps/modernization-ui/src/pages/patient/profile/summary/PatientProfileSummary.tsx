@@ -43,7 +43,9 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
                         <h5 className="font-sans-md text-medium margin-0">
                             Patient ID: {patient.shortId}
                             {patient.status != 'ACTIVE' && (
-                                <span className="text-red text-right margin-left-2">{patient.status}</span>
+                                <span className="text-red text-right margin-left-2">
+                                    {patient.status === 'LOG_DEL' ? 'INACTIVE' : patient.status}
+                                </span>
                             )}
                         </h5>
                     </div>

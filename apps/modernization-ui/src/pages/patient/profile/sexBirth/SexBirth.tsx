@@ -8,6 +8,8 @@ import { maybeDescription, maybeId } from '../coded';
 import { BirthAndGenderEntry, SexBirthForm } from './SexBirthForm';
 import { maybeNumber, orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
 
 const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
@@ -85,8 +87,10 @@ type Props = {
 
 export const SexBirth = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { id } = useParams();
     const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
+    const { profile } = usePatientProfile(id);
 
     const [state, setState] = useState<BirthAndGenderState>(initial);
 
@@ -139,7 +143,12 @@ export const SexBirth = ({ patient }: Props) => {
 
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
-            <EditableCard title="Sex & Birth" data={state.view} editing={editing} onEdit={() => isEditing(true)}>
+            <EditableCard
+                readOnly={profile?.patient?.status !== 'ACTIVE'}
+                title="Sex & Birth"
+                data={state.view}
+                editing={editing}
+                onEdit={() => isEditing(true)}>
                 <SexBirthForm entry={state.entry} onChanged={onUpdate} onCancel={() => isEditing(false)} />
             </EditableCard>
         </Grid>

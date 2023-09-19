@@ -79,7 +79,9 @@ export const DatePickerInput = ({
 
     const orientation = flexBox ? 'horizontal' : 'vertical';
 
-    const _error = error ? 'Not a valid date' : errorMessage;
+    const _error = error
+        ? 'Please enter a valid date (mm/dd/yyyy) using only numeric characters (0-9) or choose a date from the calendar by clicking on the calendar icon.'
+        : errorMessage;
 
     return (
         <div className={classNames('date-picker-input', { error: _error })}>
