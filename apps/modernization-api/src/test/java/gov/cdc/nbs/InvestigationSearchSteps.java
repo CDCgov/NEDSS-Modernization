@@ -1,19 +1,5 @@
 package gov.cdc.nbs;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.List;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.event.search.InvestigationFilter.CaseStatus;
@@ -31,20 +17,26 @@ import gov.cdc.nbs.support.EventMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+
+
 @Transactional
-@Rollback(false)
 public class InvestigationSearchSteps {
     @Autowired
-    private InvestigationResolver investigationResolver;
+    InvestigationResolver investigationResolver;
     @Autowired
-    private InvestigationRepository investigationRepository;
+    InvestigationRepository investigationRepository;
     @Autowired
-    private JurisdictionCodeRepository jurisdictionCodeRepository;
+    JurisdictionCodeRepository jurisdictionCodeRepository;
     private List<Investigation> investigationSearchResults;
 
     private static final Long personId = 9999999L;
@@ -58,19 +50,19 @@ public class InvestigationSearchSteps {
         investigationRepository.save(investigation2);
     }
 
-    @Given("An Investigation with {string} set to {string} exists")
-    public void an_investigation_with_field_set_to_status_exists(String field, String status) {
+    @Given("An Investigation with a {string} status of {string} exists")
+    public void an_investigation_with_field_set_to_status_exists(final String field, final String status) {
         addJurisdictionEntries();
         var investigation = EventMother.investigation_bacterialVaginosis(personId);
         switch (field) {
-            case "processingStatus":
-                setProcessingStatus(investigation, status);
+            case "processing":
+                investigation.setCurrProcessStateCd(ProcessingStatus.valueOf(status).value());
                 break;
-            case "notificationStatus":
-                setNotificationStatus(investigation, status);
+            case "notification":
+                investigation.setNotificationRecordStatusCd(NotificationStatus.valueOf(status).value());
                 break;
-            case "caseStatus":
-                setCaseStatus(investigation, status.substring(0, 1));
+            case "case":
+                investigation.setCaseClassCd(CaseStatus.valueOf(status).value());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid field specified: " + field);
@@ -78,44 +70,18 @@ public class InvestigationSearchSteps {
         investigationRepository.save(investigation);
     }
 
-    private void setCaseStatus(Investigation investigation, String statusString) {
-        investigation.setCaseClassCd(statusString);
-    }
-
-    private void setNotificationStatus(Investigation investigation, String statusString) {
-        var status = NotificationStatus.valueOf(statusString);
-        investigation.setNotificationRecordStatusCd(status.toString());
-    }
-
-    private void setProcessingStatus(Investigation investigation, String statusString) {
-        var status = toValue(ProcessingStatus.valueOf(statusString));
-        investigation.setCurrProcessStateCd(status);
-    }
-
-    private String toValue(ProcessingStatus status) {
-        return switch (status) {
-            case AWAITING_INTERVIEW -> "AI";
-            case CLOSED_CASE -> "CC";
-            case FIELD_FOLLOW_UP -> "FF";
-            case NO_FOLLOW_UP -> "NF";
-            case OPEN_CASE -> "OC";
-            case SURVEILLANCE_FOLLOW_UP -> "SF";
-            default -> null;
-        };
-    }
-
-    @When("I search for an investigation with {string} of {string}")
+    @When("I search for an investigation with a {string} status of {string}")
     public void i_search_for_an_investigation_with_field_of_status(String field, String status) {
         var filter = new InvestigationFilter();
         switch (field) {
-            case "processingStatus":
-                filter.setProcessingStatuses(Arrays.asList(ProcessingStatus.valueOf(status)));
+            case "processing":
+                filter.getProcessingStatuses().add(ProcessingStatus.valueOf(status));
                 break;
-            case "notificationStatus":
-                filter.setNotificationStatuses(Arrays.asList(NotificationStatus.valueOf(status)));
+            case "notification":
+                filter.getNotificationStatuses().add(NotificationStatus.valueOf(status));
                 break;
-            case "caseStatus":
-                filter.setCaseStatuses(Arrays.asList(CaseStatus.valueOf(status)));
+            case "case":
+                filter.getCaseStatuses().add(CaseStatus.valueOf(status));
                 break;
             default:
                 throw new IllegalArgumentException("Invalid field specified: " + field);
@@ -131,7 +97,7 @@ public class InvestigationSearchSteps {
 
     @When("I search investigation events by {string} {string} {string} {string} {string} {string}")
     public void i_search_patients_by_investigation_events(String field, String qualifier, String field2,
-            String qualifier2, String field3, String qualifier3) {
+        String qualifier2, String field3, String qualifier3) {
         InvestigationFilter filter = updateInvestigationFilter(new InvestigationFilter(), field, qualifier);
         updateInvestigationFilter(filter, field2, qualifier2);
         updateInvestigationFilter(filter, field3, qualifier3);
@@ -141,31 +107,26 @@ public class InvestigationSearchSteps {
 
     @Then("I find the investigation")
     public void i_find_the_investigation() {
-        assertTrue(investigationSearchResults.size() > 0);
+        assertThat(investigationSearchResults).isNotEmpty();
     }
 
-    @Then("I find investigations with {string} of {string}")
-    public void i_find_the_investigations_with_field_and_status(String field, String statusString) {
-        assertTrue(investigationSearchResults.size() > 0);
-        switch (field) {
-            case "processingStatus":
-                investigationSearchResults.forEach(sr -> {
-                    assertEquals(toValue(ProcessingStatus.valueOf(statusString)), sr.getCurrProcessStateCd());
-                });
-                break;
-            case "notificationStatus":
-                investigationSearchResults.forEach(sr -> {
-                    assertEquals(statusString, sr.getNotificationRecordStatusCd());
-                });
-                break;
-            case "caseStatus":
-                investigationSearchResults.forEach(sr -> {
-                    assertEquals(statusString.substring(0, 1), sr.getCaseClassCd());
-                });
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid field specified: " + field);
-        }
+    @Then("I find investigations with only a {string} status of {string}")
+    public void i_find_the_investigations_with_field_and_status(final String field, final String statusString) {
+
+        Consumer<Investigation> assertion = switch (field) {
+            case "processing" -> investigation -> assertThat(investigation.getCurrProcessStateCd())
+                .isEqualTo(ProcessingStatus.valueOf(statusString).value());
+
+            case "notification" -> investigation -> assertThat(investigation.getNotificationRecordStatusCd())
+                .isEqualTo(NotificationStatus.valueOf(statusString).value());
+
+            case "case" -> investigation -> assertThat(investigation.getCaseClassCd())
+                .isEqualTo(CaseStatus.valueOf(statusString).value());
+
+            default -> investigation -> fail();
+        };
+
+        assertThat(investigationSearchResults).allSatisfy(assertion);
     }
 
     private void addJurisdictionEntries() {
@@ -179,16 +140,16 @@ public class InvestigationSearchSteps {
         }
         switch (field) {
             case "condition":
-                filter.setConditions(Arrays.asList(qualifier));
+                filter.setConditions(Collections.singletonList(qualifier));
                 break;
             case "program area":
-                filter.setProgramAreas(Arrays.asList(qualifier));
+                filter.setProgramAreas(Collections.singletonList(qualifier));
                 break;
             case "jurisdiction":
                 if (qualifier.equals("jd1")) {
-                    filter.setJurisdictions((Arrays.asList(EventMother.DEKALB_CODE)));
+                    filter.setJurisdictions((Collections.singletonList(EventMother.DEKALB_CODE)));
                 } else {
-                    filter.setJurisdictions(Arrays.asList(EventMother.CLAYTON_CODE));
+                    filter.setJurisdictions(Collections.singletonList(EventMother.CLAYTON_CODE));
                 }
                 break;
             case "pregnancy status":
@@ -214,14 +175,14 @@ public class InvestigationSearchSteps {
                         break;
                     default:
                         throw new IllegalArgumentException("Invalid event id type specified: " +
-                                qualifier);
+                            qualifier);
                 }
                 break;
             case "event date":
                 filter.setEventDate(new EventDate(
-                        EventDateType.valueOf(qualifier),
-                        LocalDate.now().minus(5, ChronoUnit.DAYS),
-                        LocalDate.now().plusDays(2)));
+                    EventDateType.valueOf(qualifier),
+                    LocalDate.now().minusDays(5),
+                    LocalDate.now().plusDays(2)));
                 break;
             case "created by":
                 filter.setCreatedBy(EventMother.CREATED_BY);
