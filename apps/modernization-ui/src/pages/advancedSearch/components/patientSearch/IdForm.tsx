@@ -1,10 +1,14 @@
 import { Grid } from '@trussworks/react-uswds';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
-import { Controller } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { PersonFilter } from 'generated/graphql/schema';
 
-export const IDForm = ({ control }: any) => {
+type IDFormProps = {
+    control: Control<PersonFilter>;
+};
+export const IDForm = ({ control }: IDFormProps) => {
     return (
         <>
             <SearchCriteriaContext.Consumer>
@@ -12,7 +16,7 @@ export const IDForm = ({ control }: any) => {
                     <Grid col={12}>
                         <Controller
                             control={control}
-                            name="identificationType"
+                            name="identification.identificationType"
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     defaultValue={value}
@@ -34,7 +38,7 @@ export const IDForm = ({ control }: any) => {
             <Grid col={12}>
                 <Controller
                     control={control}
-                    name="identificationNumber"
+                    name="identification.identificationNumber"
                     render={({ field: { onChange, value } }) => (
                         <Input
                             onChange={onChange}
