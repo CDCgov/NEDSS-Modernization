@@ -8,9 +8,6 @@ if [[ -z "$NEDSS_HOME"  ]]; then
     exit 1
 fi
 
-#Unzip database restore files
-tar -zxf ./db/restore/restore.d/db-restore.zip -C ./db/restore/restore.d
-
 docker build -t nedssdev --force-rm -f Dockerfile-antbuild .
 
 NEDSS_DIST=$(pwd)/dist/nedss

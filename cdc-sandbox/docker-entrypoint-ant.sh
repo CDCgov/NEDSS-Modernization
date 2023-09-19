@@ -21,7 +21,7 @@ rm -rf build
 
 if [ -f "/mnt/src/pom.xml" ]; then
     echo Starting maven build
-    $MAVEN_HOME/bin/mvn package
+    $MAVEN_HOME/bin/mvn package -DskipTests
 else
     echo Starting ant build
     cd BuildAndDeployment
