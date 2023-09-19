@@ -31,13 +31,13 @@ import {
 import { convertCamelCase } from '../../utils/util';
 import './AdvancedSearch.scss';
 import Chip from './components/Chip';
-// import { EventSearch } from './components/eventSearch/EventSearch';
 import { SearchCriteria, SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { EventSearch } from './components/eventSearch/EventSearch';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
+import { Chips } from './components/Chips';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -67,7 +67,7 @@ export const AdvancedSearch = () => {
     const PAGE_SIZE = 25;
 
     // patient search variables
-    const [personFilter, setPersonFilter] = useState<PersonFilter>({ recordStatus: [RecordStatus.Active] });
+    const [personFilter, setPersonFilter] = useState<PersonFilter>();
     const addPatiendRef = useRef<any>(null);
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
@@ -707,7 +707,7 @@ export const AdvancedSearch = () => {
                 return (
                     searchCriteria.conditions.find((element) => {
                         return element.id === re.value;
-                    })?.id || ''
+                    })?.conditionDescTxt || ''
                 );
             case 'Created By':
                 return (
@@ -726,6 +726,18 @@ export const AdvancedSearch = () => {
                     searchCriteria.outbreaks.find((element) => {
                         return element.id.code === re.value;
                     })?.codeShortDescTxt || ''
+                );
+            case 'ethnicity':
+                return (
+                    searchCriteria.ethnicities.find((element) => {
+                        return element.id.code === re.value;
+                    })?.codeDescTxt || ''
+                );
+            case 'race':
+                return (
+                    searchCriteria.races.find((element) => {
+                        return element.id.code === re.value;
+                    })?.codeDescTxt || ''
                 );
             default:
                 return re.value;
@@ -799,7 +811,7 @@ export const AdvancedSearch = () => {
                             {activeTab === ACTIVE_TAB.PERSON ? (
                                 <PatientSearch
                                     handleSubmission={doSubmit}
-                                    data={personFilter}
+                                    personFilter={personFilter}
                                     clearAll={handleClearAll}
                                 />
                             ) : (
@@ -839,6 +851,15 @@ export const AdvancedSearch = () => {
                                                         />
                                                     )
                                             )}
+                                            <Chips
+                                                lastSearchType={lastSearchType}
+                                                patientFilter={personFilter}
+                                                setPersonFilter={setPersonFilter}
+                                                investigationFilter={investigationFilter}
+                                                setInvestigationFilter={setInvestigationFilter}
+                                                labReportFilter={labReportFilter}
+                                                setLabReportFilter={setLabReportFilter}
+                                            />
                                         </div>
                                     )}
                                 </SearchCriteriaContext.Consumer>

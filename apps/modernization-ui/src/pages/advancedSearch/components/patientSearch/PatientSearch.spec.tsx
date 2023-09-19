@@ -10,8 +10,12 @@ describe('PatientSearch component tests', () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
         let sampleData;
-        const { container, getByLabelText } = render(
-            <PatientSearch handleSubmission={sampleSearchFunction} data={sampleData} clearAll={sampleClearFunction} />
+        const { container } = render(
+            <PatientSearch
+                handleSubmission={sampleSearchFunction}
+                personFilter={sampleData}
+                clearAll={sampleClearFunction}
+            />
         );
         const accordionH4Elements = container.querySelectorAll('h4.accordian-item');
         expect(accordionH4Elements.length).toBe(5);
@@ -27,8 +31,12 @@ describe('PatientSearch component tests', () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
         let sampleData;
-        const { container, getByLabelText } = render(
-            <PatientSearch handleSubmission={sampleSearchFunction} data={sampleData} clearAll={sampleClearFunction} />
+        const { container } = render(
+            <PatientSearch
+                handleSubmission={sampleSearchFunction}
+                personFilter={sampleData}
+                clearAll={sampleClearFunction}
+            />
         );
         const accordionButtonElements = container.querySelectorAll('h4.accordian-item button');
         expect(accordionButtonElements[0].getAttribute('aria-expanded')).toBe('true');
@@ -42,8 +50,12 @@ describe('PatientSearch component tests', () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
         let sampleData;
-        const { container, getByLabelText } = render(
-            <PatientSearch handleSubmission={sampleSearchFunction} data={sampleData} clearAll={sampleClearFunction} />
+        const { container } = render(
+            <PatientSearch
+                handleSubmission={sampleSearchFunction}
+                personFilter={sampleData}
+                clearAll={sampleClearFunction}
+            />
         );
         const activeCheckbox = container.querySelector('#record-status-active') as HTMLInputElement;
         const deletedCheckbox = container.querySelector('#record-status-deleted') as HTMLInputElement;
@@ -57,8 +69,12 @@ describe('PatientSearch component tests', () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
         let sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
-        const { container, getByLabelText } = render(
-            <PatientSearch handleSubmission={sampleSearchFunction} data={sampleData} clearAll={sampleClearFunction} />
+        const { container } = render(
+            <PatientSearch
+                handleSubmission={sampleSearchFunction}
+                personFilter={sampleData}
+                clearAll={sampleClearFunction}
+            />
         );
         const activeCheckbox = container.querySelector('#record-status-active') as HTMLInputElement;
         const deletedCheckbox = container.querySelector('#record-status-deleted') as HTMLInputElement;
@@ -80,8 +96,12 @@ describe('PatientSearch component tests', () => {
         const sampleClearFunction = () => {};
         // Load page with Deleted and Superceded checked
         let sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
-        const { container, getByLabelText } = render(
-            <PatientSearch handleSubmission={sampleSearchFunction} data={sampleData} clearAll={sampleClearFunction} />
+        const { container } = render(
+            <PatientSearch
+                handleSubmission={sampleSearchFunction}
+                personFilter={sampleData}
+                clearAll={sampleClearFunction}
+            />
         );
         // Click on Active to select it
         const activeCheckbox = container.querySelector('#record-status-active') as HTMLInputElement;
@@ -95,8 +115,12 @@ describe('PatientSearch component tests', () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
         let sampleData: PersonFilter = { recordStatus: [RecordStatus.Active] };
-        const { container, getByLabelText } = render(
-            <PatientSearch handleSubmission={sampleSearchFunction} data={sampleData} clearAll={sampleClearFunction} />
+        const { container } = render(
+            <PatientSearch
+                handleSubmission={sampleSearchFunction}
+                personFilter={sampleData}
+                clearAll={sampleClearFunction}
+            />
         );
         // Error message should be hidden
         let errorMessage = container.querySelector('#record-status-error-message') as HTMLSpanElement;
