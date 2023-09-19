@@ -1,6 +1,7 @@
 package gov.cdc.nbs.event.search;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import lombok.AllArgsConstructor;
@@ -23,9 +24,9 @@ public final class InvestigationFilter implements EventFilter {
     private Long investigatorId;
     private InvestigationStatus investigationStatus;
     private List<String> outbreakNames;
-    private List<CaseStatus> caseStatuses;
-    private List<NotificationStatus> notificationStatuses;
-    private List<ProcessingStatus> processingStatuses;
+    private List<CaseStatus> caseStatuses = new ArrayList<>();
+    private List<NotificationStatus> notificationStatuses = new ArrayList<>();
+    private List<ProcessingStatus> processingStatuses = new ArrayList<>();
 
     @Data
     @AllArgsConstructor
@@ -66,31 +67,61 @@ public final class InvestigationFilter implements EventFilter {
     }
 
     public enum ProcessingStatus {
-        UNASSIGNED,
-        AWAITING_INTERVIEW,
-        CLOSED_CASE,
-        FIELD_FOLLOW_UP,
-        NO_FOLLOW_UP,
-        OPEN_CASE,
-        SURVEILLANCE_FOLLOW_UP
+        UNASSIGNED("UNASSIGNED"),
+        AWAITING_INTERVIEW("AI"),
+        CLOSED_CASE("CC"),
+        FIELD_FOLLOW_UP("FF"),
+        NO_FOLLOW_UP("NF"),
+        OPEN_CASE("OC"),
+        SURVEILLANCE_FOLLOW_UP("SF");
+
+        private final String value;
+
+        ProcessingStatus(String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
     }
 
     public enum NotificationStatus {
-        UNASSIGNED,
-        APPROVED,
-        COMPLETED,
-        MESSAGE_FAILED,
-        PENDING_APPROVAL,
-        REJECTED
+        UNASSIGNED("UNASSIGNED"),
+        APPROVED("APPROVED"),
+        COMPLETED("COMPLETED"),
+        MESSAGE_FAILED("MESSAGE_FAILED"),
+        PENDING_APPROVAL("PENDING_APPROVAL"),
+        REJECTED("REJECTED");
+
+        private final String value;
+
+        NotificationStatus(final String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
     }
 
     public enum CaseStatus {
-        UNASSIGNED,
-        CONFIRMED,
-        NOT_A_CASE,
-        PROBABLE,
-        SUSPECT,
-        UNKNOWN
+        UNASSIGNED("UNASSIGNED"),
+        CONFIRMED("C"),
+        NOT_A_CASE("N"),
+        PROBABLE("P"),
+        SUSPECT("S"),
+        UNKNOWN("U");
+
+        private final String value;
+
+        CaseStatus(final String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
     }
 
     public enum EventDateType {
