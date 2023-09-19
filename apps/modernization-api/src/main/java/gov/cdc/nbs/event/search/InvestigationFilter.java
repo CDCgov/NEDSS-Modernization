@@ -1,16 +1,20 @@
 package gov.cdc.nbs.event.search;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public final class InvestigationFilter implements EventFilter {
+
+    private static final String UNASSIGNED = "UNASSIGNED";
+
     private Long patientId;
     private List<String> conditions;
     private List<String> programAreas;
@@ -67,7 +71,7 @@ public final class InvestigationFilter implements EventFilter {
     }
 
     public enum ProcessingStatus {
-        UNASSIGNED("UNASSIGNED"),
+        UNASSIGNED(InvestigationFilter.UNASSIGNED),
         AWAITING_INTERVIEW("AI"),
         CLOSED_CASE("CC"),
         FIELD_FOLLOW_UP("FF"),
@@ -87,7 +91,7 @@ public final class InvestigationFilter implements EventFilter {
     }
 
     public enum NotificationStatus {
-        UNASSIGNED("UNASSIGNED"),
+        UNASSIGNED(InvestigationFilter.UNASSIGNED),
         APPROVED("APPROVED"),
         COMPLETED("COMPLETED"),
         MESSAGE_FAILED("MESSAGE_FAILED"),
@@ -106,7 +110,7 @@ public final class InvestigationFilter implements EventFilter {
     }
 
     public enum CaseStatus {
-        UNASSIGNED("UNASSIGNED"),
+        UNASSIGNED(InvestigationFilter.UNASSIGNED),
         CONFIRMED("C"),
         NOT_A_CASE("N"),
         PROBABLE("P"),
