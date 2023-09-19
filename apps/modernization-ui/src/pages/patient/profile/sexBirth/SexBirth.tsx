@@ -10,6 +10,7 @@ import { maybeNumber, orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
     {
@@ -87,8 +88,9 @@ type Props = {
 export const SexBirth = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
+    const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
-    const profile = usePatientProfile(id);
+    const { profile } = usePatientProfile(id);
 
     const [state, setState] = useState<BirthAndGenderState>(initial);
 
@@ -135,6 +137,7 @@ export const SexBirth = ({ patient }: Props) => {
                     header: 'success',
                     message: `Updated sex & birth`
                 });
+                changed();
             });
     };
 

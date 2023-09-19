@@ -9,6 +9,7 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
+import gov.cdc.nbs.patient.util.PatientHelper;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import graphql.com.google.common.collect.Ordering;
@@ -276,8 +277,11 @@ public class PatientService {
             .toList();
         var persons = personRepository.findAllById(ids);
         persons.sort(Ordering.explicit(ids).onResultOf(Person::getId));
-        return new PageImpl<>(persons, pageable, elasticsearchPersonSearchHits.getTotalHits());
+        
+        
+        return new PageImpl<>(PatientHelper.distinctNumbers(persons), pageable, elasticsearchPersonSearchHits.getTotalHits());
     }
+    
 
     /**
      * Adds the record status to the query builder. If no record status is specified, throw a QueryException.

@@ -10,6 +10,7 @@ import { orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 const initialEntry = {
     asOf: null,
@@ -51,7 +52,8 @@ export const Mortality = ({ patient }: Props) => {
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<MortalityEntry>(initialEntry);
-    const profile = usePatientProfile(id);
+    const { profile } = usePatientProfile(id);
+    const { changed } = useProfileContext();
 
     const handleComplete = (data: FindPatientProfileQuery) => {
         const current = data.findPatientProfile?.mortality;
@@ -96,7 +98,10 @@ export const Mortality = ({ patient }: Props) => {
                     deceasedOn: externalizeDate(updated.deceasedOn)
                 }
             }
-        }).then(handleUpdate);
+        }).then(() => {
+            handleUpdate();
+            changed();
+        });
     };
 
     return (

@@ -9,7 +9,6 @@ import { fireEvent, render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
 import { expect } from '@jest/globals';
-import { prettyDOM } from '@testing-library/dom';
 
 describe('AdvancedSearch component tests', () => {
     it('should render filter to do advance search', () => {});

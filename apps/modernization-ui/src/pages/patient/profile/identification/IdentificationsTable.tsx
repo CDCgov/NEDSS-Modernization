@@ -26,6 +26,7 @@ import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -58,7 +59,7 @@ type Props = {
 export const IdentificationsTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
-    const profile = usePatientProfile(id);
+    const { profile } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -71,6 +72,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const [isActions, setIsActions] = useState<any>(null);
     const [identifications, setIdentifications] = useState<Identification[]>([]);
@@ -123,6 +125,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     message: `Added Identification`
                 });
                 refetch();
+                changed();
             })
             .then(actions.reset);
     };
@@ -148,6 +151,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Updated Identification`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -170,6 +174,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Deleted Identification`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }

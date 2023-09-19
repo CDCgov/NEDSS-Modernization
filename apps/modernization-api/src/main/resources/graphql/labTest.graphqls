@@ -1,19 +1,10 @@
 extend type Query {
-    findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
+  findDistinctResultedTest(
+    searchText: String!
+    loinc: Boolean!
+  ): [ResultedTest!]!
 }
 
-type LocalLabTestResults {
-    content: [LabTest]!
-    total: Int!
-}
-
-type LabTest {
-    id: LabTestId
-    labTestDescTxt: String
-    organismResultTestInd: String
-}
-
-type LabTestId {
-    labTestCd: String
-    laboratoryId: String
+type ResultedTest {
+  name: String!
 }

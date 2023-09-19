@@ -44,7 +44,7 @@ type Props = {
 export const AdministrativeTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
-    const profile = usePatientProfile(id);
+    const { profile } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'General comment', sortable: true, sort: 'all' },

@@ -9,6 +9,7 @@ import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
 import { useAlert } from 'alert/useAlert';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 type Props = {
     patient: string;
@@ -47,10 +48,11 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
 export const Ethnicity = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
+    const { changed } = useProfileContext();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
-    const profile = usePatientProfile(id);
+    const { profile } = usePatientProfile(id);
 
     const handleComplete = (result: FindPatientProfileQuery) => {
         setData(asView(result.findPatientProfile?.ethnicity));
@@ -89,7 +91,10 @@ export const Ethnicity = ({ patient }: Props) => {
                     patient: patient
                 }
             }
-        }).then(handleUpdate);
+        }).then(() => {
+            handleUpdate();
+            changed();
+        });
     };
 
     return (

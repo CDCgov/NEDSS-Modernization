@@ -2,23 +2,20 @@ package gov.cdc.nbs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import java.text.ParseException;
-
+import java.util.List;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import gov.cdc.nbs.controller.LabResultController;
 import gov.cdc.nbs.entity.srte.LabResult;
 import gov.cdc.nbs.entity.srte.SnomedCode;
-import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.event.search.labreport.LabResultController;
+import gov.cdc.nbs.event.search.labreport.model.CodedResult;
 import gov.cdc.nbs.repository.LabCodingSystemRepository;
 import gov.cdc.nbs.repository.LabResultRepository;
 import gov.cdc.nbs.repository.SnomedCodeRepository;
@@ -44,8 +41,8 @@ public class CodedResultsSearchSteps {
     @Autowired
     private SnomedCodeRepository snomedCodeRepository;
 
-    private Page<LabResult> localResponse;
-    private Page<SnomedCode> snomedResponse;
+    private List<CodedResult> localResponse;
+    private List<CodedResult> snomedResponse;
 
     @Given("local coded results exist")
     public void local_coded_results_exist() {
@@ -61,17 +58,17 @@ public class CodedResultsSearchSteps {
 
     @When("I search for local coded results by {string}")
     public void i_search_for_local_coded_results_by_(String searchText) {
-        localResponse = labResultController.findLocalCodedResults(searchText, new GraphQLPage(10, 0));
+        localResponse = labResultController.findDistinctCodedResults(searchText, false);
     }
 
     @Then("A local coded result is {string}")
     public void a_local_coded_result_is(String expectedResult) {
         switch (expectedResult) {
             case "found":
-                assertTrue(localResponse.getTotalElements() > 0);
+                assertTrue(localResponse.size() > 0);
                 break;
             case "not found":
-                assertEquals(0, localResponse.getTotalElements());
+                assertEquals(0, localResponse.size());
                 break;
             default:
                 throw new IllegalArgumentException("Inavlid expected result type: " + expectedResult);
@@ -80,17 +77,17 @@ public class CodedResultsSearchSteps {
 
     @When("I search for snomed coded results by {string}")
     public void i_search_for_snomed_coded_results_by_(String searchText) {
-        snomedResponse = labResultController.findSnomedCodedResults(searchText, new GraphQLPage(10, 0));
+        snomedResponse = labResultController.findDistinctCodedResults(searchText, true);
     }
 
     @Then("A snomed coded results is {string}")
     public void a_snomed_coded_result_is(String expectedResult) {
         switch (expectedResult) {
             case "found":
-                assertTrue(snomedResponse.getTotalElements() > 0);
+                assertTrue(snomedResponse.size() > 0);
                 break;
             case "not found":
-                assertEquals(0, snomedResponse.getTotalElements());
+                assertEquals(0, snomedResponse.size());
                 break;
             default:
                 throw new IllegalArgumentException("Inavlid expected result type: " + expectedResult);

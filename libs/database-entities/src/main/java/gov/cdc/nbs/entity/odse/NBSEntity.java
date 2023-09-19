@@ -252,7 +252,8 @@ public class NBSEntity {
             .toList();
     }
 
-    private boolean isPhoneNumber(final EntityLocatorParticipation participation) {
+
+    public boolean isPhoneNumber(final EntityLocatorParticipation participation) {
         return participation instanceof TeleEntityLocatorParticipation && !Objects.equals(participation.cd, "NET");
     }
 

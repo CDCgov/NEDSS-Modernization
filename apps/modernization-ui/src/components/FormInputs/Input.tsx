@@ -15,7 +15,7 @@ type InputProps = {
     onChange?: any;
     defaultValue?: string | null;
     placeholder?: string;
-    inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search' | undefined;
+    inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
     flexBox?: boolean;
     multiline?: boolean;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue'>;
@@ -43,8 +43,8 @@ export const Input = ({
         <div className={classNames('input', { 'input--error': error })}>
             <EntryWrapper
                 orientation={orientation}
-                label={label || ''}
-                htmlFor={htmlFor || ''}
+                label={label ?? ''}
+                htmlFor={htmlFor ?? ''}
                 required={required}
                 error={error}>
                 {!multiline ? (
@@ -54,8 +54,8 @@ export const Input = ({
                         {...props}
                         id={id}
                         onChange={onChange}
-                        value={defaultValue ? defaultValue : ''}
-                        name={name || ''}
+                        value={defaultValue ?? ''}
+                        name={name ?? ''}
                         validationStatus={error ? 'error' : undefined}
                         aria-describedby={`${error}-message`}
                         className={classNames(className)}
@@ -66,8 +66,8 @@ export const Input = ({
                         placeholder={placeholder}
                         id={id}
                         onChange={onChange}
-                        value={defaultValue ? defaultValue : ''}
-                        name={name || ''}
+                        value={defaultValue ?? ''}
+                        name={name ?? ''}
                         aria-describedby={`${error}-message`}
                         className={classNames(className)}
                     />

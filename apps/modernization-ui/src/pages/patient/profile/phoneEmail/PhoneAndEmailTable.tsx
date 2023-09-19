@@ -28,6 +28,7 @@ import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -75,7 +76,7 @@ type Props = {
 export const PhoneAndEmailTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
-    const profile = usePatientProfile(id);
+    const { profile } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -87,6 +88,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientPhone>();
 
@@ -143,6 +145,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Added Phone & Email`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -170,6 +173,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated Phone & Email`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -192,6 +196,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted Phone & Email`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
