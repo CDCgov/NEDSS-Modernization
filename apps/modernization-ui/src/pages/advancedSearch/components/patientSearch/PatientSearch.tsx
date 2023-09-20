@@ -40,6 +40,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
         } else {
             onChange(value.filter((s) => s !== status));
         }
+        form.trigger('recordStatus'); // Trigger validation
     };
 
     const handleSubmit = (filter: PersonFilter) => {
@@ -163,15 +164,14 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                                                 <Grid col={6}>
                                                     <Checkbox
                                                         id={'record-status-active'}
-                                                        onChange={(v) => {
+                                                        onChange={(v) =>
                                                             handleRecordStatusChange(
                                                                 value,
                                                                 RecordStatus.Active,
                                                                 v.target.checked,
                                                                 onChange
-                                                            );
-                                                            form.trigger('recordStatus');
-                                                        }}
+                                                            )
+                                                        }
                                                         name={'name'}
                                                         label={'Active'}
                                                         checked={form

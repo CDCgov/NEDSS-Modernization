@@ -43,7 +43,7 @@ export const PatientChips = ({ filter, handlePersonFilterChange }: PatientChipsP
                         ) : null}
                         {filter.id ? (
                             <Chip
-                                name="SEX"
+                                name="ID"
                                 value={filter.id}
                                 handleClose={() => handlePersonFilterChange({ ...filter, id: undefined })}
                             />

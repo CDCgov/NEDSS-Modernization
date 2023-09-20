@@ -62,6 +62,27 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             handleClose={() => handleLabReportFilterChange({ ...filter, eventId: undefined })}
                         />
                     ) : null}
+                    {filter.eventDate?.type ? (
+                        <Chip
+                            name="DATE TYPE"
+                            value={filter.eventDate.type}
+                            handleClose={() => handleLabReportFilterChange({ ...filter, eventDate: undefined })}
+                        />
+                    ) : null}
+                    {filter.eventDate?.from ? (
+                        <Chip
+                            name="FROM"
+                            value={filter.eventDate.from}
+                            handleClose={() => handleLabReportFilterChange({ ...filter, eventDate: undefined })}
+                        />
+                    ) : null}
+                    {filter.eventDate?.to ? (
+                        <Chip
+                            name="TO"
+                            value={filter.eventDate.to}
+                            handleClose={() => handleLabReportFilterChange({ ...filter, eventDate: undefined })}
+                        />
+                    ) : null}
                     {filter.entryMethods?.map((e, index) => (
                         <Chip
                             name="ENTRY METHOD"

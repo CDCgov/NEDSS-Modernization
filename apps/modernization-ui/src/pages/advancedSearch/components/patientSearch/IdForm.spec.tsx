@@ -6,8 +6,17 @@ import { IdentificationType, PersonFilter } from '../../../../generated/graphql/
 import { SearchCriteria, SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 describe('IDForm component tests', () => {
-    it('should render 2 Labels for ID Type and ID Number', () => {
+    it('should render 1 Label for ID Type', () => {
         const { result } = renderHook(() => useForm<PersonFilter>());
+        const { container } = render(<IDForm control={result.current} />);
+        expect(container.querySelectorAll('.usa-label')[0].textContent).toBe('ID type');
+        expect(container.querySelector('#identificationNumber')).not.toBeTruthy();
+    });
+
+    it('should render 2 Labels when ID Type is selected', () => {
+        const { result } = renderHook(() =>
+            useForm<PersonFilter>({ defaultValues: { identification: { identificationType: 'someType' } } })
+        );
         const { container, getByLabelText } = render(<IDForm control={result.current} />);
         expect(container.querySelectorAll('.usa-label')[0].textContent).toBe('ID type');
         expect(getByLabelText('ID number')).toBeTruthy();

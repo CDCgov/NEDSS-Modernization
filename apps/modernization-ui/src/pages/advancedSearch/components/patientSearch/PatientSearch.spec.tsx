@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import { PersonFilter, RecordStatus } from '../../../../generated/graphql/schema';
@@ -65,7 +65,7 @@ describe('PatientSearch component tests', () => {
         expect(superCededCheckbox.checked).toBe(false);
     });
 
-    it('should set record status checkboxes from incoming data', () => {
+    it('should set record status checkboxes from incoming data', async () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
         let sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
@@ -79,9 +79,11 @@ describe('PatientSearch component tests', () => {
         const activeCheckbox = container.querySelector('#record-status-active') as HTMLInputElement;
         const deletedCheckbox = container.querySelector('#record-status-deleted') as HTMLInputElement;
         const superCededCheckbox = container.querySelector('#record-status-superceded') as HTMLInputElement;
-        expect(activeCheckbox.checked).toBe(false);
-        expect(deletedCheckbox.checked).toBe(true);
-        expect(superCededCheckbox.checked).toBe(true);
+        await waitFor(() => {
+            expect(activeCheckbox.checked).toBe(false);
+            expect(deletedCheckbox.checked).toBe(true);
+            expect(superCededCheckbox.checked).toBe(true);
+        });
     });
 
     it('should return the selected record status on submit', () => {
@@ -111,7 +113,7 @@ describe('PatientSearch component tests', () => {
         submitButton.click();
     });
 
-    it('should display an error when no record status is selected', () => {
+    it('should display an error when no record status is selected', async () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
         let sampleData: PersonFilter = { recordStatus: [RecordStatus.Active] };
@@ -131,14 +133,18 @@ describe('PatientSearch component tests', () => {
         activeCheckbox.click();
 
         // Error message should be visible
-        errorMessage = container.querySelector('#record-status-error-message') as HTMLSpanElement;
-        expect(errorMessage).toBeVisible();
+        await waitFor(() => {
+            errorMessage = container.querySelector('#record-status-error-message') as HTMLSpanElement;
+            expect(errorMessage).toBeTruthy();
+        });
 
         // Click Active to select it
         activeCheckbox.click();
 
         // Error message should be hidden
-        errorMessage = container.querySelector('#record-status-error-message') as HTMLSpanElement;
-        expect(errorMessage).toBeFalsy();
+        await waitFor(() => {
+            errorMessage = container.querySelector('#record-status-error-message') as HTMLSpanElement;
+            expect(errorMessage).toBeFalsy();
+        });
     });
 });

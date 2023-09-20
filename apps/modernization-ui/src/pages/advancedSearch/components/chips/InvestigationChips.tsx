@@ -80,7 +80,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                     ) : null}
                     {filter.eventDate?.type ? (
                         <Chip
-                            name="TYPE"
+                            name="DATE TYPE"
                             value={filter.eventDate.type}
                             handleClose={() => handleInvestigationFilterChange({ ...filter, eventDate: undefined })}
                         />
