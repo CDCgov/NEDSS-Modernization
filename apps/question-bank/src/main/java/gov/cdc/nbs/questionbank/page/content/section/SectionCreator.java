@@ -1,13 +1,17 @@
 package gov.cdc.nbs.questionbank.page.content.section;
 
 import java.time.Instant;
+import java.util.List;
 import javax.persistence.EntityManager;
 
 import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
+import gov.cdc.nbs.questionbank.page.content.section.exception.OrderSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.section.request.OrderSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.section.response.OrderSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -124,4 +128,102 @@ public class SectionCreator {
         return waUiMetadata;
 
     }
+
+
+    public OrderSectionResponse orderSection(Long page, OrderSectionRequest request) {
+        Long sectionId = request.sectionId();
+        Integer currentPosition = request.currentPosition();
+        Integer desiredPosition = request.desiredPosition();
+
+        Integer maxOrderNumber = waUiMetaDataRepository.getMaxOrderNumber(page);
+
+        List<Integer> tabOrderNumberList = waUiMetaDataRepository.getOrderNumberList(page);
+        Integer orderNumber;
+        if (tabOrderNumberList.size() == request.tabPosition()) {
+            orderNumber = maxOrderNumber;
+        } else {
+            orderNumber = tabOrderNumberList.get(request.tabPosition());
+        }
+        List<Integer> orderNumberList = waUiMetaDataRepository.getSectionOrderNumberList(page,
+                tabOrderNumberList.get(request.tabPosition() - 1),
+                orderNumber);
+
+        if (currentPosition <= 0 || desiredPosition <=0
+        ||currentPosition > orderNumberList.size() || desiredPosition >= orderNumberList.size() ||
+        request.tabPosition() <= 0 || request.tabPosition() > tabOrderNumberList.size()) {
+            throw new OrderSectionException("Invalid Positions");
+        }
+
+        try {
+            if(currentPosition < desiredPosition) {
+                //Forward re ordering
+                //Moving to last by adding max(order_number) to current order number of desired tab
+                waUiMetaDataRepository.updateOrderNumber(maxOrderNumber,
+                        orderNumberList.get(currentPosition - 1),
+                        orderNumberList.get(currentPosition),
+                        page);
+
+                //Moving the tab to desired position
+
+
+
+                    //Moving next tabs till the desired tab position to backwards to create space in between
+                    waUiMetaDataRepository.updateOrderNumber(
+                            (orderNumberList.get(currentPosition - 1) -
+                                    orderNumberList.get(currentPosition)),
+                            orderNumberList.get(currentPosition),
+                            orderNumberList.get(desiredPosition),
+                            page);
+
+
+                    waUiMetaDataRepository.updateOrderNumber(
+                            orderNumberList.get(desiredPosition) -
+                                    orderNumberList.get(currentPosition)
+                                    - maxOrderNumber,
+                            (orderNumberList.get(currentPosition - 1) + maxOrderNumber),
+                            10000,
+                            page);
+
+                return new OrderSectionResponse(sectionId, "The section is moved from "+currentPosition+ " to "
+                        +desiredPosition+" successfully");
+            } else if (currentPosition > desiredPosition) {
+
+                if(currentPosition == orderNumberList.size()) {
+                    try {
+                        orderNumberList.add(tabOrderNumberList.get(request.tabPosition()));
+                    } catch (Exception exception) {
+                        orderNumberList.add(maxOrderNumber);
+                    }
+                }
+                //Forward re ordering
+                //Moving to last by adding max(order_number) to current order number of desired tab
+                waUiMetaDataRepository.updateOrderNumber(maxOrderNumber,
+                        orderNumberList.get(currentPosition - 1),
+                        orderNumberList.get(currentPosition),
+                        page);
+
+                //Moving next tabs till the desired tab position to backwards to create space in between
+                waUiMetaDataRepository.updateOrderNumber(
+                        (orderNumberList.get(currentPosition) -
+                                orderNumberList.get(currentPosition - 1)),
+                        orderNumberList.get(desiredPosition - 1),
+                        orderNumberList.get(currentPosition),
+                        page);
+
+                //Moving the tab to desired position
+                waUiMetaDataRepository.updateOrderNumber((orderNumberList.get(currentPosition - 1) + maxOrderNumber -
+                                orderNumberList.get(desiredPosition - 1)) * -1,
+                        (orderNumberList.get(currentPosition - 1) + maxOrderNumber),
+                        10000,
+                        page);
+
+                return new OrderSectionResponse(sectionId, "The section is moved from "+currentPosition+ " to "+desiredPosition+" successfully");
+            } else {
+                throw new OrderSectionException("The Current position and Desired position is same");
+            }
+        } catch (Exception exception) {
+            throw new OrderSectionException("Something unknown occurred re ordering moving section");
+        }
+    }
 }
+

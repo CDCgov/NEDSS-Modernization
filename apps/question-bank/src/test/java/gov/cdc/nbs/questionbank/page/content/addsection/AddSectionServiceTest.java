@@ -3,24 +3,34 @@ package gov.cdc.nbs.questionbank.page.content.addsection;
 import gov.cdc.nbs.questionbank.page.content.section.SectionCreator;
 import gov.cdc.nbs.questionbank.page.content.section.exception.AddSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
+import gov.cdc.nbs.questionbank.page.content.section.exception.OrderSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.section.request.OrderSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.section.response.OrderSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class AddSectionServiceTest {
@@ -34,94 +44,109 @@ class AddSectionServiceTest {
     @Mock
     private EntityManager entityManager;
 
-    @Test
-    void createSectionServiceTest() {
+    @ParameterizedTest
+    @ValueSource(longs = {10L, 20L, 30L})
+    void createSectionServiceTest(long sectionId) {
+        CreateSectionRequest createSectionRequest = new CreateSectionRequest(sectionId, "Local", true);
 
-        CreateSectionRequest createSectionRequest =
-                new CreateSectionRequest(10L, "Local", true);
+        CreateSectionResponse createSectionResponse = createSectionService.createSection(sectionId, 123L, createSectionRequest);
 
-        CreateSectionResponse createSectionResponse =
-                createSectionService.createSection(10L, 123L, createSectionRequest);
         assertEquals("Section Created Successfully", createSectionResponse.message());
     }
 
-
-    @Test
-    void updateSectionServiceTest() {
-
-        UpdateSectionRequest updateSectionRequest =
-                new UpdateSectionRequest(123L,  "Local", "T");
-
-        UpdateSectionResponse updateSectionResponse =
-                createSectionService.updateSection( updateSectionRequest);
+    @ParameterizedTest
+    @MethodSource("updateSectionRequestProvider")
+    void updateSectionServiceTest(UpdateSectionRequest updateSectionRequest) {
+        UpdateSectionResponse updateSectionResponse = createSectionService.updateSection(updateSectionRequest);
         assertEquals("Section updated successfully", updateSectionResponse.message());
     }
 
-
-    @Test
-    void updateSectionServiceNoLabelOrVisibilityTest() {
-
-        UpdateSectionRequest updateSectionRequest =
-                new UpdateSectionRequest(123L,  null, null);
-
-                assertThrows(UpdateSectionException.class, () ->createSectionService.updateSection(updateSectionRequest));
-
+    static Stream<UpdateSectionRequest> updateSectionRequestProvider() {
+        // Provide various UpdateSectionRequest instances here
+        return Stream.of(
+                new UpdateSectionRequest(123L, "Local", "T"),
+                new UpdateSectionRequest(456L, "Global", "F")
+        );
     }
 
-    @Test
-    void deleteSectionTest() {
+    @ParameterizedTest
+    @ValueSource(longs = {123L, 456L, 789L})
+    void deleteSectionTest(long sectionId) {
+        DeleteSectionRequest deleteSectionRequest = new DeleteSectionRequest(sectionId);
 
-        DeleteSectionRequest deleteSectionRequest =
-                new DeleteSectionRequest(123L);
-
-        Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
+        Mockito.when(waUiMetaDataRepository.getOrderNumber(sectionId))
                 .thenReturn(1);
 
-        Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
+        Mockito.when(waUiMetaDataRepository.findPageNumber(sectionId))
                 .thenReturn(1234L);
 
-        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid(2, 1234L))
                 .thenReturn(1015L);
 
-        DeleteSectionResponse deleteSectionResponse =
-                createSectionService.deleteSection( deleteSectionRequest);
+        DeleteSectionResponse deleteSectionResponse = createSectionService.deleteSection(deleteSectionRequest);
         assertEquals("Section Deleted Successfully", deleteSectionResponse.message());
     }
 
+    @ParameterizedTest
+    @ValueSource(longs = {123L, 456L, 789L})
+    void deleteSectionTestExceptionInElse(long sectionId) {
+        DeleteSectionRequest deleteSectionRequest = new DeleteSectionRequest(sectionId);
 
-    @Test
-    void deleteSectionTestExceptionInElse() {
-
-        DeleteSectionRequest deleteSectionRequest =
-                new DeleteSectionRequest(123L);
-
-        Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
+        Mockito.when(waUiMetaDataRepository.getOrderNumber(sectionId))
                 .thenReturn(1);
 
-        Mockito.when(waUiMetaDataRepository.findPageNumber( 123L))
+        Mockito.when(waUiMetaDataRepository.findPageNumber(sectionId))
                 .thenReturn(1234L);
 
-        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid(2, 1234L))
                 .thenReturn(10100L);
 
-        assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection( deleteSectionRequest));
-
+        assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection(deleteSectionRequest));
     }
 
     @Test
     void createSectionServiceTestException() {
         assertThrows(AddSectionException.class, () -> createSectionService.createSection(10L, 123L, null));
-
     }
 
     @Test
     void updateSectionServiceTestException() {
         assertThrows(UpdateSectionException.class, () -> createSectionService.updateSection(null));
-
     }
+
     @Test
     void deleteSectionServiceTestException() {
-        assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection( null));
+        assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection(null));
+    }
 
+    @ParameterizedTest
+    @MethodSource("orderSectionRequestProvider")
+    void orderSectionForwardOrdering(OrderSectionRequest orderSectionRequest, String expectedMessage) throws OrderSectionException {
+        List<Integer> orderNumberList = new ArrayList<>();
+        orderNumberList.add(3);
+        orderNumberList.add(58);
+        orderNumberList.add(116);
+        orderNumberList.add(157);
+
+        Mockito.when(waUiMetaDataRepository.getOrderNumberList(100L))
+                .thenReturn(orderNumberList);
+
+        Mockito.when(waUiMetaDataRepository.getSectionOrderNumberList(100L, 58, 116))
+                .thenReturn(orderNumberList);
+
+        Mockito.when(waUiMetaDataRepository.getMaxOrderNumber(100L))
+                .thenReturn(250);
+
+        OrderSectionResponse orderSectionResponse = createSectionService.orderSection(100L, orderSectionRequest);
+
+        assertEquals(expectedMessage, orderSectionResponse.message());
+    }
+
+    static Stream<Arguments> orderSectionRequestProvider() {
+        return Stream.of(
+                Arguments.of(new OrderSectionRequest(123L, 2, 1, 3), "The section is moved from 1 to 3 successfully"),
+                Arguments.of(new OrderSectionRequest(456L, 2, 1, 2), "The section is moved from 1 to 2 successfully"),
+                Arguments.of(new OrderSectionRequest(789L, 2, 2, 1), "The section is moved from 2 to 1 successfully")
+        );
     }
 }

@@ -4,13 +4,12 @@ package gov.cdc.nbs.questionbank.page.content.section;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.section.request.OrderSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.OrderSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.response.OrderTabResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,12 +49,12 @@ public class SectionController {
         return creator.updateSection(request);
     }
 
-    @PutMapping("orderquestion")
+    @PutMapping("ordersection")
     @ResponseBody
     public OrderSectionResponse orderSection(
             @PathVariable("page") Long page,
-            @RequestBody OrderTabRequest request
+            @RequestBody OrderSectionRequest request
     ) {
-        return null;
+        return creator.orderSection(page, request);
     }
 }

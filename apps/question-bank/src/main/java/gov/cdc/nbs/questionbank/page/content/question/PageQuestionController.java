@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
+import gov.cdc.nbs.questionbank.page.content.question.request.OrderQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.OrderQuestionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.OrderSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
@@ -42,8 +43,8 @@ public class PageQuestionController {
     @ResponseBody
     public OrderQuestionResponse orderQuestion(
             @PathVariable("page") Long page,
-            @RequestBody OrderTabRequest request
+            @RequestBody OrderQuestionRequest request
     ) {
-        return null;
+        return creator.orderQuestion(page, request);
     }
 }

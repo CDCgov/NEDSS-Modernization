@@ -7,10 +7,16 @@ import gov.cdc.nbs.questionbank.page.content.section.SectionController;
 import gov.cdc.nbs.questionbank.page.content.section.SectionCreator;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.section.request.OrderSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.section.response.OrderSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.TabController;
+import gov.cdc.nbs.questionbank.page.content.tab.exceptions.OrderTabException;
+import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
+import gov.cdc.nbs.questionbank.page.content.tab.response.OrderTabResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -74,5 +80,20 @@ class AddSectionControllerTest {
 
         DeleteSectionResponse deleteSectionResponse = addsectionController.deleteSection(deleteSectionRequest);
         assertEquals(123L, deleteSectionResponse.uid());
+    }
+
+    @Test
+    void orderSectionTest() throws OrderTabException {
+
+        SectionController addsectionController = new SectionController(createSectionService,
+                userDetailsProvider);
+
+        OrderSectionRequest orderSectionRequest = new OrderSectionRequest(123L, 2,1, 3);
+
+        Mockito.when(createSectionService.orderSection(100L, orderSectionRequest))
+                .thenReturn(new OrderSectionResponse(123L, "The section is moved from 1 to 3 successfully"));
+
+        OrderSectionResponse orderSectionResponse = addsectionController.orderSection(100L, orderSectionRequest);
+        assertEquals(123L, orderSectionResponse.uid());
     }
 }

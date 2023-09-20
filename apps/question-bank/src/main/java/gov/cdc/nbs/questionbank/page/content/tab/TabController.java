@@ -39,7 +39,6 @@ public class TabController {
             @PathVariable("page") Long page,
             @RequestBody OrderTabRequest request
     ) {
-        return null;
+        return creator.orderTab(page, request);
     }
-
 }

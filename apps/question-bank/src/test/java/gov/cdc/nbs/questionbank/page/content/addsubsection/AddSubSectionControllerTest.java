@@ -4,13 +4,20 @@ package gov.cdc.nbs.questionbank.page.content.addsubsection;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.subsection.SubSectionController;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.OrderSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.OrderSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.SubSectionCreator;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.response.OrderSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.TabController;
+import gov.cdc.nbs.questionbank.page.content.tab.exceptions.OrderTabException;
+import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
+import gov.cdc.nbs.questionbank.page.content.tab.response.OrderTabResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -74,5 +81,22 @@ class AddSubSectionControllerTest {
 
         DeleteSubSectionResponse deleteSubSectionResponse = addsubSectionController.deleteSubSection(deleteSubSectionRequest);
         assertEquals(123L, deleteSubSectionResponse.uid());
+    }
+
+
+    @Test
+    void orderSubSectionTest() throws OrderSubSectionException {
+
+        SubSectionController subSectionController = new SubSectionController(createSubSectionService,
+                userDetailsProvider);
+
+        OrderSubSectionRequest orderSubSectionRequest = new OrderSubSectionRequest(
+                123L, 1, 1, 3, 1);
+
+        Mockito.when(subSectionController.orderSubSection(100L, orderSubSectionRequest))
+                .thenReturn(new OrderSubSectionResponse(123L, "The sub section is moved from 1 to 3 successfully"));
+
+        OrderSubSectionResponse orderSubSectionResponse = subSectionController.orderSubSection(100L, orderSubSectionRequest);
+        assertEquals(123L, orderSubSectionResponse.uid());
     }
 }

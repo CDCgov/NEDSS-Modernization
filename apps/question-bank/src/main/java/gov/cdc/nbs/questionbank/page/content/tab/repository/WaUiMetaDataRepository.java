@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 
+import java.util.List;
+
 @Repository
 public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long> {
 
@@ -89,5 +91,34 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
     @Query(value = "SELECT w.orderNbr FROM WaUiMetadata w WHERE waUiMetadataUid = :waUiMetadataUid")
     Integer getOrderNumber(@Param("waUiMetadataUid") Long waUiMetadataUid);
 
+    @Query (value = "select max(order_nbr) from WA_UI_metadata where wa_template_uid = ?1", nativeQuery = true)
+    Integer getMaxOrderNumber(Long pageNumber);
+
+    @Modifying
+    @Query(value = "update WA_UI_metadata set order_nbr = order_nbr + ?1 where order_nbr >= ?2 and order_nbr < ?3 and wa_template_uid = ?4", nativeQuery = true)
+    void updateOrderNumber(Integer numberToBeAddedOrSubtracted,
+                           Integer startOrderNumber,
+                           Integer lastOrderNumber,
+                           Long pageNumber);
+
+    @Query(value = "select order_nbr from WA_UI_metadata where nbs_ui_component_uid = 1010 and wa_template_uid = ?1 order by order_nbr", nativeQuery = true)
+    List<Integer> getOrderNumberList(Long pageNumber);
+
+
+    @Query(value = "select order_nbr from WA_UI_metadata where nbs_ui_component_uid = 1015 and wa_template_uid = ?1 AND order_nbr > ?2 AND order_nbr < ?3 order by order_nbr", nativeQuery = true)
+    List<Integer> getSectionOrderNumberList(Long pageNumber, Integer currentTabOrderNumber, Integer nextTabOrderNumber);
+
+    @Query(value = "select order_nbr from WA_UI_metadata where nbs_ui_component_uid = 1016 and wa_template_uid = ?1 AND order_nbr > ?2 AND order_nbr < ?3 order by order_nbr", nativeQuery = true)
+    List<Integer> getSubSectionOrderNumberList(Long pageNumber, Integer currentSectionOrderNumber, Integer nextSubSectionOrderNumber);
+
+    @Query(value = "select order_nbr from WA_UI_metadata where wa_template_uid = ?1 AND order_nbr > ?2 AND order_nbr < ?3 order by order_nbr", nativeQuery = true)
+    List<Integer> getQuestionOrderNumberList(Long pageNumber, Integer currentSubSectionOrderNumber,
+                                             Integer nextSubSectionOrderNumber);
+
+    @Modifying
+    @Query(value = "update WA_UI_metadata set order_nbr = order_nbr + ?1 where order_nbr = ?2 and wa_template_uid = ?3", nativeQuery = true)
+    void updateQuestionOrderNumber(Integer numberToBeAddedOrSubtracted,
+                           Integer questionOrderNumber,
+                           Long pageNumber);
 }
 

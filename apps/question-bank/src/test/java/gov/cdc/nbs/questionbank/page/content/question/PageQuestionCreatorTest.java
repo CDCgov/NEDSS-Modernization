@@ -6,8 +6,17 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
+
+import gov.cdc.nbs.questionbank.page.content.question.exception.OrderQuestionException;
+import gov.cdc.nbs.questionbank.page.content.question.request.OrderQuestionRequest;
+import gov.cdc.nbs.questionbank.page.content.question.response.OrderQuestionResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -36,6 +45,9 @@ class PageQuestionCreatorTest {
 
     @Mock
     private EntityManager entityManager;
+
+    @Mock
+    private WaUiMetaDataRepository waUiMetaDataRepository;
 
     @InjectMocks
     private PageQuestionCreator contentManager;
@@ -204,4 +216,298 @@ class PageQuestionCreatorTest {
         assertNotNull(newId);
         assertEquals(99, captor.getValue().getOrderNbr().intValue());
     }
+
+
+
+    @Test
+    void orderQuestionForwardOrdering() throws OrderQuestionException {
+        // Create the OrderQuestionRequest
+        OrderQuestionRequest orderQuestionRequest = new OrderQuestionRequest(
+                123L, 2, 1, 1, 1, 3);
+
+        // Create a list for order numbers
+        List<Integer> orderNumberList = new ArrayList<>();
+        orderNumberList.add(3);
+        orderNumberList.add(58);
+        orderNumberList.add(116);
+        orderNumberList.add(157);
+
+        // Mock the behavior of waUiMetaDataRepository methods
+        when(waUiMetaDataRepository.getOrderNumberList(100L))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSectionOrderNumberList(100L, 58, 116))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSubSectionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getQuestionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getMaxOrderNumber(100L))
+                .thenReturn(250);
+
+        // Initialize the contentManager
+        PageQuestionCreator contentManager = new PageQuestionCreator(
+                questionRepository,
+                uiMetadatumRepository,
+                entityManager,
+                 waUiMetaDataRepository
+        );
+
+        // Call the method under test
+        OrderQuestionResponse orderQuestionResponse =
+                contentManager.orderQuestion(100L, orderQuestionRequest);
+
+        // Assertions
+        Assertions.assertEquals("The question moved from 1 to 3 successfully", orderQuestionResponse.message());
+    }
+
+
+    @Test
+    void orderQuestionReverseOrdering() throws OrderQuestionException {
+        // Create the OrderQuestionRequest
+        OrderQuestionRequest orderQuestionRequest = new OrderQuestionRequest(
+                123L, 2, 1, 1, 3, 1);
+
+        // Create a list for order numbers
+        List<Integer> orderNumberList = new ArrayList<>();
+        orderNumberList.add(3);
+        orderNumberList.add(58);
+        orderNumberList.add(116);
+        orderNumberList.add(157);
+
+        // Mock the behavior of waUiMetaDataRepository methods
+        when(waUiMetaDataRepository.getOrderNumberList(100L))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSectionOrderNumberList(100L, 58, 116))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSubSectionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getQuestionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getMaxOrderNumber(100L))
+                .thenReturn(250);
+
+        // Initialize the contentManager
+        PageQuestionCreator contentManager = new PageQuestionCreator(
+                questionRepository,
+                uiMetadatumRepository,
+                entityManager,
+                waUiMetaDataRepository
+        );
+
+        // Call the method under test
+        OrderQuestionResponse orderQuestionResponse =
+                contentManager.orderQuestion(100L, orderQuestionRequest);
+
+        // Assertions
+        Assertions.assertEquals("The question moved from 3 to 1 successfully", orderQuestionResponse.message());
+    }
+
+
+    @Test
+    void orderQuestionEqualException() throws OrderQuestionException {
+        // Create the OrderQuestionRequest
+        OrderQuestionRequest orderQuestionRequest = new OrderQuestionRequest(
+                123L, 2, 1, 1, 3, 3);
+
+        // Create a list for order numbers
+        List<Integer> orderNumberList = new ArrayList<>();
+        orderNumberList.add(3);
+        orderNumberList.add(58);
+        orderNumberList.add(116);
+        orderNumberList.add(157);
+
+        // Mock the behavior of waUiMetaDataRepository methods
+        when(waUiMetaDataRepository.getOrderNumberList(100L))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSectionOrderNumberList(100L, 58, 116))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSubSectionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getQuestionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getMaxOrderNumber(100L))
+                .thenReturn(250);
+
+        // Initialize the contentManager
+        PageQuestionCreator contentManager = new PageQuestionCreator(
+                questionRepository,
+                uiMetadatumRepository,
+                entityManager,
+                waUiMetaDataRepository
+        );
+
+        Assertions.assertThrows(OrderQuestionException.class, () -> contentManager.orderQuestion(100L,
+                orderQuestionRequest));
+
+    }
+
+
+    @Test
+    void orderQuestionInvalidQuestionException() throws OrderQuestionException {
+        // Create the OrderQuestionRequest
+        OrderQuestionRequest orderQuestionRequest = new OrderQuestionRequest(
+                123L, 2, 1, 1, 53, 3);
+
+        // Create a list for order numbers
+        List<Integer> orderNumberList = new ArrayList<>();
+        orderNumberList.add(3);
+        orderNumberList.add(58);
+        orderNumberList.add(116);
+        orderNumberList.add(157);
+
+        // Mock the behavior of waUiMetaDataRepository methods
+        when(waUiMetaDataRepository.getOrderNumberList(100L))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSectionOrderNumberList(100L, 58, 116))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSubSectionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getQuestionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getMaxOrderNumber(100L))
+                .thenReturn(250);
+
+        // Initialize the contentManager
+        PageQuestionCreator contentManager = new PageQuestionCreator(
+                questionRepository,
+                uiMetadatumRepository,
+                entityManager,
+                waUiMetaDataRepository
+        );
+
+        Assertions.assertThrows(OrderQuestionException.class, () -> contentManager.orderQuestion(100L,
+                orderQuestionRequest));
+
+    }
+
+
+
+    @Test
+    void orderQuestionInvalidSubSectionException() throws OrderQuestionException {
+        // Create the OrderQuestionRequest
+        OrderQuestionRequest orderQuestionRequest = new OrderQuestionRequest(
+                123L, 2, 1, 5, 3, 3);
+
+        // Create a list for order numbers
+        List<Integer> orderNumberList = new ArrayList<>();
+        orderNumberList.add(3);
+        orderNumberList.add(58);
+        orderNumberList.add(116);
+        orderNumberList.add(157);
+
+        // Mock the behavior of waUiMetaDataRepository methods
+        when(waUiMetaDataRepository.getOrderNumberList(100L))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSectionOrderNumberList(100L, 58, 116))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSubSectionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getMaxOrderNumber(100L))
+                .thenReturn(250);
+
+        // Initialize the contentManager
+        PageQuestionCreator contentManager = new PageQuestionCreator(
+                questionRepository,
+                uiMetadatumRepository,
+                entityManager,
+                waUiMetaDataRepository
+        );
+
+        Assertions.assertThrows(OrderQuestionException.class, () -> contentManager.orderQuestion(100L,
+                orderQuestionRequest));
+
+    }
+
+
+    @Test
+    void orderQuestionSectionPositionException() throws OrderQuestionException {
+        // Create the OrderQuestionRequest
+        OrderQuestionRequest orderQuestionRequest = new OrderQuestionRequest(
+                123L, 2, 5, 1, 3, 3);
+
+        // Create a list for order numbers
+        List<Integer> orderNumberList = new ArrayList<>();
+        orderNumberList.add(3);
+        orderNumberList.add(58);
+        orderNumberList.add(116);
+        orderNumberList.add(157);
+
+        // Mock the behavior of waUiMetaDataRepository methods
+        when(waUiMetaDataRepository.getOrderNumberList(100L))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getSectionOrderNumberList(100L, 58, 116))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getMaxOrderNumber(100L))
+                .thenReturn(250);
+
+        // Initialize the contentManager
+        PageQuestionCreator contentManager = new PageQuestionCreator(
+                questionRepository,
+                uiMetadatumRepository,
+                entityManager,
+                waUiMetaDataRepository
+        );
+
+        Assertions.assertThrows(OrderQuestionException.class, () -> contentManager.orderQuestion(100L,
+                orderQuestionRequest));
+
+    }
+
+    @Test
+    void orderQuestionInvalidTabPosition() throws OrderQuestionException {
+        // Create the OrderQuestionRequest
+        OrderQuestionRequest orderQuestionRequest = new OrderQuestionRequest(
+                123L, 5, 1, 1, 3, 3);
+
+        // Create a list for order numbers
+        List<Integer> orderNumberList = new ArrayList<>();
+        orderNumberList.add(3);
+        orderNumberList.add(58);
+        orderNumberList.add(116);
+        orderNumberList.add(157);
+
+        // Mock the behavior of waUiMetaDataRepository methods
+        when(waUiMetaDataRepository.getOrderNumberList(100L))
+                .thenReturn(orderNumberList);
+
+        when(waUiMetaDataRepository.getMaxOrderNumber(100L))
+                .thenReturn(250);
+
+        // Initialize the contentManager
+        PageQuestionCreator contentManager = new PageQuestionCreator(
+                questionRepository,
+                uiMetadatumRepository,
+                entityManager,
+                waUiMetaDataRepository
+        );
+
+        Assertions.assertThrows(OrderQuestionException.class, () -> contentManager.orderQuestion(100L,
+                orderQuestionRequest));
+
+    }
+
+
+
 }
+

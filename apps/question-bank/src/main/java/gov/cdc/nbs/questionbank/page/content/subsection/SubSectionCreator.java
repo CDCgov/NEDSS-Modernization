@@ -4,12 +4,15 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.AddSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.OrderSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.OrderSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.response.OrderSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
+import java.util.List;
 import javax.persistence.EntityManager;
 
 @Slf4j
@@ -126,4 +130,146 @@ public class SubSectionCreator {
         return waUiMetadata;
 
     }
+
+    public OrderSubSectionResponse orderSubSection(Long page, OrderSubSectionRequest request) {
+        Long sectionId = request.subSectionId();
+        Integer currentPosition = request.currentPosition();
+        Integer desiredPosition = request.desiredPosition();
+
+        try {
+            // Validate the positions and get order lists
+            List<Integer> orderNumberList = validateSubSectionOrder(page, request);
+
+            // Perform the subsection ordering
+            performSubSectionOrder(page, currentPosition, desiredPosition, orderNumberList, request);
+
+            return new OrderSubSectionResponse(sectionId, "The sub section is moved from " + currentPosition + " to " + desiredPosition + " successfully");
+        } catch (Exception exception) {
+            throw new OrderSubSectionException(exception.toString());
+        }
+    }
+
+    private List<Integer> validateSubSectionOrder(Long page, OrderSubSectionRequest request) {
+        Integer maxOrderNumber = waUiMetaDataRepository.getMaxOrderNumber(page);
+
+        Integer currentPosition = request.currentPosition();
+        Integer desiredPosition = request.desiredPosition();
+
+        List<Integer> tabOrderNumberList = waUiMetaDataRepository.getOrderNumberList(page);
+        Integer tabOrderNumber;
+        if (tabOrderNumberList.size() == request.tabPosition()) {
+            tabOrderNumber = maxOrderNumber;
+        } else {
+            tabOrderNumber = tabOrderNumberList.get(request.tabPosition());
+        }
+
+        List<Integer> sectionOrderNumberList = waUiMetaDataRepository.getSectionOrderNumberList(page,
+                tabOrderNumberList.get(request.tabPosition() - 1),
+                tabOrderNumber);
+
+        Integer orderNumber;
+        if ((sectionOrderNumberList.size() == request.sectionPosition()) && (tabOrderNumberList.size() == request.tabPosition())) {
+            orderNumber = maxOrderNumber;
+        } else if ((sectionOrderNumberList.size() == request.sectionPosition()) && (tabOrderNumberList.size() > request.tabPosition())) {
+            orderNumber = tabOrderNumberList.get(request.tabPosition());
+        } else {
+            orderNumber = sectionOrderNumberList.get(request.sectionPosition());
+        }
+
+        List<Integer> orderNumberList = waUiMetaDataRepository.getSubSectionOrderNumberList(page,
+                sectionOrderNumberList.get(request.sectionPosition() - 1),
+                orderNumber);
+
+        if (currentPosition <= 0 || desiredPosition <= 0
+                || currentPosition > orderNumberList.size() || desiredPosition > orderNumberList.size()
+                || request.tabPosition() <= 0 || request.tabPosition() > tabOrderNumberList.size()
+                || request.sectionPosition() <= 0 || request.sectionPosition() > sectionOrderNumberList.size()) {
+            throw new OrderSubSectionException("Invalid positions");
+        }
+
+        return orderNumberList;
+    }
+
+    private void performSubSectionOrder(Long page, Integer currentPosition, Integer desiredPosition, List<Integer> orderNumberList, OrderSubSectionRequest request) {
+        Integer maxOrderNumber = waUiMetaDataRepository.getMaxOrderNumber(page);
+
+        try {
+            List<Integer> tabOrderNumberList = waUiMetaDataRepository.getOrderNumberList(page);
+            List<Integer> sectionOrderNumberList = waUiMetaDataRepository.getSectionOrderNumberList(page,
+                    tabOrderNumberList.get(request.tabPosition() - 1),
+                    tabOrderNumberList.get(request.tabPosition()));
+
+            if (currentPosition < desiredPosition) {
+                // Forward reordering
+                // Moving to last by adding max(order_number) to the current order number of the desired tab
+                waUiMetaDataRepository.updateOrderNumber(maxOrderNumber,
+                        orderNumberList.get(currentPosition - 1),
+                        orderNumberList.get(currentPosition),
+                        page);
+
+                // Moving the tab to the desired position
+
+                // Moving next tabs until the desired tab position backward to create space in between
+                waUiMetaDataRepository.updateOrderNumber(
+                        (orderNumberList.get(currentPosition - 1) -
+                                orderNumberList.get(currentPosition)),
+                        orderNumberList.get(currentPosition),
+                        orderNumberList.get(desiredPosition),
+                        page);
+
+                waUiMetaDataRepository.updateOrderNumber(
+                        orderNumberList.get(desiredPosition) -
+                                orderNumberList.get(currentPosition)
+                                - maxOrderNumber,
+                        (orderNumberList.get(currentPosition - 1) + maxOrderNumber),
+                        10000,
+                        page);
+            } else if (currentPosition > desiredPosition) {
+
+                if (currentPosition == orderNumberList.size()) {
+                    try {
+                        orderNumberList.add(waUiMetaDataRepository.getSubSectionOrderNumberList(page,
+                                sectionOrderNumberList.get(request.sectionPosition() - 1),
+                                sectionOrderNumberList.get(request.sectionPosition())).get(request.currentPosition() - 1));
+                    } catch (Exception exception) {
+                        try {
+                            orderNumberList.add(waUiMetaDataRepository.getSubSectionOrderNumberList(page,
+                                    sectionOrderNumberList.get(request.sectionPosition() - 1),
+                                    sectionOrderNumberList.get(request.sectionPosition())).get(request.desiredPosition() - 1));
+                        } catch (Exception exceptionInCatch) {
+                            orderNumberList.add(maxOrderNumber);
+                        }
+                    }
+                }
+
+                // Forward reordering
+                // Moving to last by adding max(order_number) to the current order number of the desired tab
+                waUiMetaDataRepository.updateOrderNumber(maxOrderNumber,
+                        orderNumberList.get(currentPosition - 1),
+                        orderNumberList.get(currentPosition),
+                        page);
+
+                // Moving next tabs until the desired tab position backward to create space in between
+                waUiMetaDataRepository.updateOrderNumber(
+                        (orderNumberList.get(currentPosition) -
+                                orderNumberList.get(currentPosition - 1)),
+                        orderNumberList.get(desiredPosition - 1),
+                        orderNumberList.get(currentPosition),
+                        page);
+
+                // Moving the tab to the desired position
+                waUiMetaDataRepository.updateOrderNumber((orderNumberList.get(currentPosition - 1) + maxOrderNumber -
+                                orderNumberList.get(desiredPosition - 1)) * -1,
+                        (orderNumberList.get(currentPosition - 1) + maxOrderNumber),
+                        10000,
+                        page);
+            } else {
+                throw new OrderSubSectionException("The Current position and Desired position are the same");
+            }
+        } catch (Exception exception) {
+            throw new OrderSubSectionException("Something unknown occurred while reordering the section");
+        }
+    }
+
 }
+

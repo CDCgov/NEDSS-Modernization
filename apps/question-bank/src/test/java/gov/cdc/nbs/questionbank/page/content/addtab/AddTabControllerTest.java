@@ -5,8 +5,11 @@ import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.tab.TabController;
 import gov.cdc.nbs.questionbank.page.content.tab.TabCreator;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.AddTabException;
+import gov.cdc.nbs.questionbank.page.content.tab.exceptions.OrderTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
+import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.CreateTabResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.response.OrderTabResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -40,5 +43,20 @@ class AddTabControllerTest {
 
         CreateTabResponse createUiResponse = addTabController.createTab(1000376L, createTabRequest);
         assertEquals(123L, createUiResponse.uid());
+    }
+
+    @Test
+    void orderTabTest() throws OrderTabException {
+
+        TabController addTabController = new TabController(createTabService,
+                userDetailsProvider);
+
+        OrderTabRequest orderTabRequest = new OrderTabRequest(123L, 1, 3);
+
+        Mockito.when(createTabService.orderTab(100L, orderTabRequest))
+                .thenReturn(new OrderTabResponse(123L, "The tab is moved from 1 to 3 successfully"));
+
+        OrderTabResponse orderTabResponse = addTabController.orderTab(100L, orderTabRequest);
+        assertEquals(123L, orderTabResponse.uid());
     }
 }
