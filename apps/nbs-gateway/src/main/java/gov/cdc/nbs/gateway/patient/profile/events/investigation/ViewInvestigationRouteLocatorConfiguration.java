@@ -45,7 +45,7 @@ class ViewInvestigationRouteLocatorConfiguration {
                                                         new RequestParameterToCookieGatewayFilterFactory()
                                                                 .apply(
                                                                         new Config(
-                                                                                "publicHealthCaseUID",
+                                                                            IDENTIFIER_PARAMETER,
                                                                                 "Patient-Action"
                                                                         )
                                                                 )

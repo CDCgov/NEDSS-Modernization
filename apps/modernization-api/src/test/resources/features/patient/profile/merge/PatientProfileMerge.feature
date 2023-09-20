@@ -1,4 +1,4 @@
-@patient-profile-merge-investigation
+@patient-profile-merge-investigation @web-interaction
 Feature: Patient Profile Investigation Merge
 
   Background:

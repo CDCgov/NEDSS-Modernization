@@ -19,7 +19,7 @@ class PatientProfileIncomingRedirector {
 
     /**
      * Receives proxied View Patient Profile requests from Classic NBS.  POST requests from Patient Profile typically
-     * include the patient identifier in tas a query parameter.
+     * include the identifier identifier in tas a query parameter.
      *
      * @param request The {@link HttpServletRequest} from Classic NBS
      * @return A {@link ResponseEntity} redirecting to the Modernized Patient Profile

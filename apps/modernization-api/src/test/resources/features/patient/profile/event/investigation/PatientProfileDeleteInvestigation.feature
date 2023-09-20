@@ -1,4 +1,4 @@
-@patient-profile-delete-investigation
+@patient-profile-delete-investigation @web-interaction
 Feature: Patient Profile Investigation Removal
 
   Background:
