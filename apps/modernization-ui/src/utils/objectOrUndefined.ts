@@ -5,7 +5,7 @@ function objectOrUndefined(object: any) {
     if (object === undefined) {
         return undefined;
     }
-    return Object.values(object).find((e) => e !== undefined) ? object : undefined;
+    return Object.values(object).some((e) => e !== undefined) ? object : undefined;
 }
 
 export { objectOrUndefined };
