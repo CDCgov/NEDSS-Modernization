@@ -14,7 +14,7 @@ const Chip = ({ name, value, handleClose }: ChipProps) => {
             style={{ backgroundColor: '#005EA2', color: 'white', borderRadius: '2px' }}>
             <span style={{ textTransform: 'uppercase' }}>{name}</span>
             <span>: </span>
-            <span>{value.toString().replaceAll('_', ' ')}</span>
+            <span>{value}</span>
             <Icon.Close onClick={() => handleClose()} className="margin-left-05" style={{ cursor: 'pointer' }} />
         </div>
     );

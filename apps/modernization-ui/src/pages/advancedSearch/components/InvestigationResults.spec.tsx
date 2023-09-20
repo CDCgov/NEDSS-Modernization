@@ -1,7 +1,7 @@
+import { render } from '@testing-library/react';
 import { Investigation } from 'generated/graphql/schema';
+import { BrowserRouter } from 'react-router-dom';
 import { InvestigationResults } from './InvestigationResults';
-import { getByText, render } from '@testing-library/react';
-import { BrowserRouter, Router } from 'react-router-dom';
 
 const investigations: [Investigation] = [
     {

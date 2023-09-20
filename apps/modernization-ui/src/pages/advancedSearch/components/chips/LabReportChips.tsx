@@ -4,9 +4,9 @@ import Chip from './Chip';
 
 type LabReportChipsProps = {
     filter: LabReportFilter;
-    handleLabReportFilterChange: (labReportFilter: LabReportFilter) => void;
+    onChange: (labReportFilter: LabReportFilter) => void;
 };
-export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabReportChipsProps) => {
+export const LabReportChips = ({ filter, onChange }: LabReportChipsProps) => {
     function lookupUserName(searchCriteria: SearchCriteria, createdBy: string): string {
         const user = searchCriteria.userResults.find((u) => u.nedssEntryId === createdBy);
         return user ? `${user.userLastNm}, ${user.userFirstNm}` : '';
@@ -21,7 +21,7 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             value={searchCriteria.programAreas.find((p) => p.id === programArea)?.progAreaDescTxt ?? ''}
                             key={`programArea-${index}`}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     programAreas: filter.programAreas?.filter((p) => p !== programArea) ?? []
                                 })
@@ -34,7 +34,7 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             value={searchCriteria.jurisdictions.find((j) => j.id === jurisdiction)?.codeDescTxt ?? ''}
                             key={`jurisdiction-${index}`}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     jurisdictions: filter.jurisdictions?.filter((j) => j !== jurisdiction) ?? []
                                 })
@@ -45,42 +45,42 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                         <Chip
                             name="PREGNANCY STATUS"
                             value={filter.pregnancyStatus}
-                            handleClose={() => handleLabReportFilterChange({ ...filter, pregnancyStatus: undefined })}
+                            handleClose={() => onChange({ ...filter, pregnancyStatus: undefined })}
                         />
                     ) : null}
                     {filter.eventId?.labEventType ? (
                         <Chip
                             name="INVESTIGATION EVENT TYPE"
-                            value={filter.eventId.labEventType}
-                            handleClose={() => handleLabReportFilterChange({ ...filter, eventId: undefined })}
+                            value={filter.eventId.labEventType.replaceAll('_', ' ')}
+                            handleClose={() => onChange({ ...filter, eventId: undefined })}
                         />
                     ) : null}
                     {filter.eventId?.labEventId ? (
                         <Chip
                             name="EVENT ID"
                             value={filter.eventId.labEventId}
-                            handleClose={() => handleLabReportFilterChange({ ...filter, eventId: undefined })}
+                            handleClose={() => onChange({ ...filter, eventId: undefined })}
                         />
                     ) : null}
                     {filter.eventDate?.type ? (
                         <Chip
                             name="DATE TYPE"
-                            value={filter.eventDate.type}
-                            handleClose={() => handleLabReportFilterChange({ ...filter, eventDate: undefined })}
+                            value={filter.eventDate.type.replaceAll('_', ' ')}
+                            handleClose={() => onChange({ ...filter, eventDate: undefined })}
                         />
                     ) : null}
                     {filter.eventDate?.from ? (
                         <Chip
                             name="FROM"
                             value={filter.eventDate.from}
-                            handleClose={() => handleLabReportFilterChange({ ...filter, eventDate: undefined })}
+                            handleClose={() => onChange({ ...filter, eventDate: undefined })}
                         />
                     ) : null}
                     {filter.eventDate?.to ? (
                         <Chip
                             name="TO"
                             value={filter.eventDate.to}
-                            handleClose={() => handleLabReportFilterChange({ ...filter, eventDate: undefined })}
+                            handleClose={() => onChange({ ...filter, eventDate: undefined })}
                         />
                     ) : null}
                     {filter.entryMethods?.map((e, index) => (
@@ -89,7 +89,7 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             key={index}
                             value={e ?? ''}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     entryMethods: filter.entryMethods?.filter((entry) => entry !== e)
                                 })
@@ -102,7 +102,7 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             key={index}
                             value={e ?? ''}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     enteredBy: filter.enteredBy?.filter((enteredBy) => enteredBy !== e)
                                 })
@@ -115,7 +115,7 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             key={index}
                             value={e ?? ''}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     eventStatus: filter.eventStatus?.filter((status) => status !== e)
                                 })
@@ -126,9 +126,9 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                         <Chip
                             name="PROCESSING STATUS"
                             key={index}
-                            value={e ?? ''}
+                            value={(e ?? '').replaceAll('_', ' ')}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     processingStatus: filter.processingStatus?.filter((status) => status !== e)
                                 })
@@ -139,14 +139,14 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                         <Chip
                             name="CREATED BY"
                             value={lookupUserName(searchCriteria, filter.createdBy)}
-                            handleClose={() => handleLabReportFilterChange({ ...filter, createdBy: undefined })}
+                            handleClose={() => onChange({ ...filter, createdBy: undefined })}
                         />
                     ) : null}
                     {filter.lastUpdatedBy ? (
                         <Chip
                             name="LAST UPDATED BY"
                             value={lookupUserName(searchCriteria, filter.lastUpdatedBy)}
-                            handleClose={() => handleLabReportFilterChange({ ...filter, lastUpdatedBy: undefined })}
+                            handleClose={() => onChange({ ...filter, lastUpdatedBy: undefined })}
                         />
                     ) : null}
                     {filter.providerSearch?.providerType ? (
@@ -154,7 +154,7 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             name="ENTITY TYPE"
                             value={filter.providerSearch.providerType}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     providerSearch: undefined
                                 })
@@ -166,7 +166,7 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             name="ENTITY ID"
                             value={filter.providerSearch.providerId}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     providerSearch: undefined
                                 })
@@ -178,7 +178,7 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             name="RESULTED TEST"
                             value={filter.resultedTest}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     resultedTest: undefined
                                 })
@@ -190,7 +190,7 @@ export const LabReportChips = ({ filter, handleLabReportFilterChange }: LabRepor
                             name="CODED RESULT"
                             value={filter.codedResult}
                             handleClose={() =>
-                                handleLabReportFilterChange({
+                                onChange({
                                     ...filter,
                                     codedResult: undefined
                                 })

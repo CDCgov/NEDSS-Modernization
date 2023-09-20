@@ -34,7 +34,7 @@ describe('LabReportChips component tests', () => {
                 }}>
                 <LabReportChips
                     filter={filter}
-                    handleLabReportFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -67,7 +67,7 @@ describe('LabReportChips component tests', () => {
                 }}>
                 <LabReportChips
                     filter={filter}
-                    handleLabReportFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -86,7 +86,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -106,7 +106,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -126,7 +126,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -146,7 +146,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -166,7 +166,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -186,7 +186,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -206,7 +206,7 @@ describe('LabReportChips component tests', () => {
         const { getAllByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -226,7 +226,7 @@ describe('LabReportChips component tests', () => {
         const { getAllByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -246,7 +246,7 @@ describe('LabReportChips component tests', () => {
         const { getAllByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -266,7 +266,7 @@ describe('LabReportChips component tests', () => {
         const { getAllByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -300,7 +300,7 @@ describe('LabReportChips component tests', () => {
                 }}>
                 <LabReportChips
                     filter={filter}
-                    handleLabReportFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -335,7 +335,7 @@ describe('LabReportChips component tests', () => {
                 }}>
                 <LabReportChips
                     filter={filter}
-                    handleLabReportFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -356,7 +356,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -376,7 +376,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -396,7 +396,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -416,7 +416,7 @@ describe('LabReportChips component tests', () => {
         const { getByTestId } = render(
             <LabReportChips
                 filter={filter}
-                handleLabReportFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />

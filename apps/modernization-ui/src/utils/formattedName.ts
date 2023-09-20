@@ -5,4 +5,4 @@ const formattedName = (lastNm: string | undefined | null, firstNm: string | unde
     return (format.length > 1 ? format.join(', ') : format.join('')) || '--';
 };
 
-export default formattedName;
+export { formattedName };

@@ -456,11 +456,11 @@ export const AdvancedSearch = () => {
                                     <AdvancedSearchChips
                                         lastSearchType={lastSearchType}
                                         personFilter={personFilter}
-                                        handlePersonFilterChange={handlePersonChipClosed}
+                                        onPersonFilterChange={handlePersonChipClosed}
                                         investigationFilter={investigationFilter}
-                                        handleInvestigationFilterChange={handleInvestigationChipClosed}
+                                        onInvestigationFilterChange={handleInvestigationChipClosed}
                                         labReportFilter={labReportFilter}
-                                        handleLabReportFilterChange={handleLabReportChipClosed}
+                                        onLabReportFilterChange={handleLabReportChipClosed}
                                     />
                                 </div>
                             ) : (

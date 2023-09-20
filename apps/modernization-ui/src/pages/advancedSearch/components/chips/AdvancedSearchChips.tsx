@@ -8,34 +8,31 @@ import { LabReportChips } from './LabReportChips';
 type ChipProps = {
     lastSearchType: SEARCH_TYPE | undefined;
     personFilter?: PersonFilter;
-    handlePersonFilterChange: (personFilter: PersonFilter) => void;
+    onPersonFilterChange: (personFilter: PersonFilter) => void;
     investigationFilter?: InvestigationFilter;
-    handleInvestigationFilterChange: (investigationFilter: InvestigationFilter) => void;
+    onInvestigationFilterChange: (investigationFilter: InvestigationFilter) => void;
     labReportFilter?: LabReportFilter;
-    handleLabReportFilterChange: (labReportFilter: LabReportFilter) => void;
+    onLabReportFilterChange: (labReportFilter: LabReportFilter) => void;
 };
 export const AdvancedSearchChips = ({
     lastSearchType,
     personFilter,
-    handlePersonFilterChange,
+    onPersonFilterChange,
     investigationFilter,
-    handleInvestigationFilterChange,
+    onInvestigationFilterChange,
     labReportFilter,
-    handleLabReportFilterChange
+    onLabReportFilterChange
 }: ChipProps) => {
     return (
         <>
             {lastSearchType === SEARCH_TYPE.PERSON && personFilter ? (
-                <PatientChips filter={personFilter} handlePersonFilterChange={handlePersonFilterChange} />
+                <PatientChips filter={personFilter} onChange={onPersonFilterChange} />
             ) : null}
             {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationFilter ? (
-                <InvestigationChips
-                    filter={investigationFilter}
-                    handleInvestigationFilterChange={handleInvestigationFilterChange}
-                />
+                <InvestigationChips filter={investigationFilter} onChange={onInvestigationFilterChange} />
             ) : null}
             {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportFilter ? (
-                <LabReportChips filter={labReportFilter} handleLabReportFilterChange={handleLabReportFilterChange} />
+                <LabReportChips filter={labReportFilter} onChange={onLabReportFilterChange} />
             ) : null}
         </>
     );

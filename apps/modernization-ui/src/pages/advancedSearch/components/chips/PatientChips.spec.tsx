@@ -10,7 +10,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -28,7 +28,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -46,7 +46,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -64,7 +64,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -82,7 +82,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -100,7 +100,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -118,7 +118,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -150,7 +150,7 @@ describe('PatientChips component tests', () => {
                 }}>
                 <PatientChips
                     filter={filter}
-                    handlePersonFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -169,7 +169,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -187,7 +187,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -205,7 +205,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -240,7 +240,7 @@ describe('PatientChips component tests', () => {
                 }}>
                 <PatientChips
                     filter={filter}
-                    handlePersonFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -262,7 +262,7 @@ describe('PatientChips component tests', () => {
         const { getByTestId } = render(
             <PatientChips
                 filter={filter}
-                handlePersonFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -297,7 +297,7 @@ describe('PatientChips component tests', () => {
                 }}>
                 <PatientChips
                     filter={filter}
-                    handlePersonFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -333,7 +333,7 @@ describe('PatientChips component tests', () => {
                 }}>
                 <PatientChips
                     filter={filter}
-                    handlePersonFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />

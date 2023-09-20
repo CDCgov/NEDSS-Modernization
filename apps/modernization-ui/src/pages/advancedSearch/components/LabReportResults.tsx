@@ -6,7 +6,7 @@ import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';
-import formattedName from 'formattedName';
+import { formattedName } from 'utils';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 type LabReportResultsProps = {

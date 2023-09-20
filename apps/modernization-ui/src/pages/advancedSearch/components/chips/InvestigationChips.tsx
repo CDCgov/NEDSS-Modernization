@@ -4,9 +4,9 @@ import Chip from './Chip';
 
 type InvestigationChipsProps = {
     filter: InvestigationFilter;
-    handleInvestigationFilterChange: (investigationFilter: InvestigationFilter) => void;
+    onChange: (investigationFilter: InvestigationFilter) => void;
 };
-export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: InvestigationChipsProps) => {
+export const InvestigationChips = ({ filter, onChange }: InvestigationChipsProps) => {
     function lookupUserName(searchCriteria: SearchCriteria, createdBy: string): string {
         const user = searchCriteria.userResults.find((u) => u.nedssEntryId === createdBy);
         return user ? `${user.userLastNm}, ${user.userFirstNm}` : '';
@@ -22,7 +22,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                             value={searchCriteria.conditions.find((c) => c.id === condition)?.conditionDescTxt ?? ''}
                             key={`condition-${index}`}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     conditions: filter.conditions?.filter((c) => c !== condition) ?? []
                                 })
@@ -35,7 +35,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                             value={searchCriteria.programAreas.find((p) => p.id === programArea)?.progAreaDescTxt ?? ''}
                             key={`programArea-${index}`}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     programAreas: filter.programAreas?.filter((p) => p !== programArea) ?? []
                                 })
@@ -48,7 +48,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                             value={searchCriteria.jurisdictions.find((j) => j.id === jurisdiction)?.codeDescTxt ?? ''}
                             key={`jurisdiction${index}`}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     jurisdictions: filter.jurisdictions?.filter((j) => j !== jurisdiction) ?? []
                                 })
@@ -59,58 +59,56 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                         <Chip
                             name="PREGNANCY STATUS"
                             value={filter.pregnancyStatus}
-                            handleClose={() =>
-                                handleInvestigationFilterChange({ ...filter, pregnancyStatus: undefined })
-                            }
+                            handleClose={() => onChange({ ...filter, pregnancyStatus: undefined })}
                         />
                     ) : null}
                     {filter.eventId?.investigationEventType ? (
                         <Chip
                             name="INVESTIGATION EVENT TYPE"
-                            value={filter.eventId.investigationEventType}
-                            handleClose={() => handleInvestigationFilterChange({ ...filter, eventId: undefined })}
+                            value={filter.eventId.investigationEventType.replaceAll('_', ' ')}
+                            handleClose={() => onChange({ ...filter, eventId: undefined })}
                         />
                     ) : null}
                     {filter.eventId?.id ? (
                         <Chip
                             name="EVENT ID"
                             value={filter.eventId.id}
-                            handleClose={() => handleInvestigationFilterChange({ ...filter, eventId: undefined })}
+                            handleClose={() => onChange({ ...filter, eventId: undefined })}
                         />
                     ) : null}
                     {filter.eventDate?.type ? (
                         <Chip
                             name="DATE TYPE"
-                            value={filter.eventDate.type}
-                            handleClose={() => handleInvestigationFilterChange({ ...filter, eventDate: undefined })}
+                            value={filter.eventDate.type.replaceAll('_', ' ')}
+                            handleClose={() => onChange({ ...filter, eventDate: undefined })}
                         />
                     ) : null}
                     {filter.eventDate?.from ? (
                         <Chip
                             name="FROM"
                             value={filter.eventDate.from}
-                            handleClose={() => handleInvestigationFilterChange({ ...filter, eventDate: undefined })}
+                            handleClose={() => onChange({ ...filter, eventDate: undefined })}
                         />
                     ) : null}
                     {filter.eventDate?.to ? (
                         <Chip
                             name="TO"
                             value={filter.eventDate.to}
-                            handleClose={() => handleInvestigationFilterChange({ ...filter, eventDate: undefined })}
+                            handleClose={() => onChange({ ...filter, eventDate: undefined })}
                         />
                     ) : null}
                     {filter.createdBy ? (
                         <Chip
                             name="CREATED BY"
                             value={lookupUserName(searchCriteria, filter.createdBy)}
-                            handleClose={() => handleInvestigationFilterChange({ ...filter, createdBy: undefined })}
+                            handleClose={() => onChange({ ...filter, createdBy: undefined })}
                         />
                     ) : null}
                     {filter.lastUpdatedBy ? (
                         <Chip
                             name="LAST UPDATED BY"
                             value={lookupUserName(searchCriteria, filter.lastUpdatedBy)}
-                            handleClose={() => handleInvestigationFilterChange({ ...filter, lastUpdatedBy: undefined })}
+                            handleClose={() => onChange({ ...filter, lastUpdatedBy: undefined })}
                         />
                     ) : null}
                     {filter.providerFacilitySearch?.entityType ? (
@@ -118,7 +116,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                             name="ENTITY TYPE"
                             value={filter.providerFacilitySearch.entityType}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     providerFacilitySearch: undefined
                                 })
@@ -130,7 +128,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                             name="ENTITY ID"
                             value={filter.providerFacilitySearch.id}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     providerFacilitySearch: undefined
                                 })
@@ -142,7 +140,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                             name="INVESTIGATION STATUS"
                             value={filter.investigationStatus}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     investigationStatus: undefined
                                 })
@@ -155,7 +153,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                             value={searchCriteria.outbreaks.find((o) => o.id.code === outbreak)?.codeShortDescTxt ?? ''}
                             key={`outbreak-${index}`}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     outbreakNames: filter.outbreakNames?.filter((c) => c !== outbreak) ?? []
                                 })
@@ -168,7 +166,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                             value={caseStatus}
                             key={`case-status-${index}`}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     caseStatuses: filter.caseStatuses?.filter((c) => c !== caseStatus) ?? []
                                 })
@@ -178,10 +176,10 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                     {filter.processingStatuses?.map((processingStatus, index) => (
                         <Chip
                             name="PROCESSING STATUS"
-                            value={processingStatus ?? ''}
+                            value={(processingStatus ?? '').replaceAll('_', ' ')}
                             key={`processing-status-${index}`}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     processingStatuses:
                                         filter.processingStatuses?.filter((c) => c !== processingStatus) ?? []
@@ -195,7 +193,7 @@ export const InvestigationChips = ({ filter, handleInvestigationFilterChange }: 
                             value={notificationStatus ?? ''}
                             key={`notification-status-${index}`}
                             handleClose={() =>
-                                handleInvestigationFilterChange({
+                                onChange({
                                     ...filter,
                                     notificationStatuses:
                                         filter.notificationStatuses?.filter((c) => c !== notificationStatus) ?? []

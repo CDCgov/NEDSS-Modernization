@@ -10,7 +10,7 @@ import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
-import { objectOrUndefined } from 'utils';
+import { objectOrUndefined } from 'utils/objectOrUndefined';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -45,6 +45,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
 
     const handleSubmit = (filter: PersonFilter) => {
         // Clean up any empty filter objects
+        Object.values(filter.identification ?? {}).length > 0;
         filter.identification = objectOrUndefined(filter.identification);
         handleSubmission(filter);
     };

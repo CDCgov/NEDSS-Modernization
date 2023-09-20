@@ -35,7 +35,7 @@ describe('InvestigationChips component tests', () => {
                 }}>
                 <InvestigationChips
                     filter={filter}
-                    handleInvestigationFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -68,7 +68,7 @@ describe('InvestigationChips component tests', () => {
                 }}>
                 <InvestigationChips
                     filter={filter}
-                    handleInvestigationFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -101,7 +101,7 @@ describe('InvestigationChips component tests', () => {
                 }}>
                 <InvestigationChips
                     filter={filter}
-                    handleInvestigationFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -120,7 +120,7 @@ describe('InvestigationChips component tests', () => {
         const { getByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -140,7 +140,7 @@ describe('InvestigationChips component tests', () => {
         const { getByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -160,7 +160,7 @@ describe('InvestigationChips component tests', () => {
         const { getByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -180,7 +180,7 @@ describe('InvestigationChips component tests', () => {
         const { getByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -200,7 +200,7 @@ describe('InvestigationChips component tests', () => {
         const { getByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -220,7 +220,7 @@ describe('InvestigationChips component tests', () => {
         const { getByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -254,7 +254,7 @@ describe('InvestigationChips component tests', () => {
                 }}>
                 <InvestigationChips
                     filter={filter}
-                    handleInvestigationFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -289,7 +289,7 @@ describe('InvestigationChips component tests', () => {
                 }}>
                 <InvestigationChips
                     filter={filter}
-                    handleInvestigationFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -310,7 +310,7 @@ describe('InvestigationChips component tests', () => {
         const { getByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -330,7 +330,7 @@ describe('InvestigationChips component tests', () => {
         const { getByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -350,7 +350,7 @@ describe('InvestigationChips component tests', () => {
         const { getByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -384,7 +384,7 @@ describe('InvestigationChips component tests', () => {
                 }}>
                 <InvestigationChips
                     filter={filter}
-                    handleInvestigationFilterChange={(e) => {
+                    onChange={(e) => {
                         updatedFilter = e;
                     }}
                 />
@@ -405,7 +405,7 @@ describe('InvestigationChips component tests', () => {
         const { getAllByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -425,7 +425,7 @@ describe('InvestigationChips component tests', () => {
         const { getAllByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />
@@ -445,7 +445,7 @@ describe('InvestigationChips component tests', () => {
         const { getAllByTestId } = render(
             <InvestigationChips
                 filter={filter}
-                handleInvestigationFilterChange={(e) => {
+                onChange={(e) => {
                     updatedFilter = e;
                 }}
             />

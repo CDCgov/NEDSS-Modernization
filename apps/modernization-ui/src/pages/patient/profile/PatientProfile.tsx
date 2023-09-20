@@ -15,7 +15,7 @@ import { MessageModal } from 'messageModal';
 import { usePatientProfilePermissions } from './permission';
 import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert';
-import formattedName from 'formattedName';
+import { formattedName } from 'utils';
 import { ProfileProvider } from './ProfileContext';
 
 const openPrintableView = (patient: string | undefined) => () => {
