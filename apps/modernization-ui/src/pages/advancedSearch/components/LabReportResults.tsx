@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';
 import formattedName from 'formattedName';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 type LabReportResultsProps = {
     data: [LabReport];
@@ -212,12 +213,22 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                                 {getOrderingProvidorName(item) ?? <NoData />}
                                             </p>
                                         </Grid>
-                                        <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50">JURISDICTION</h5>
-                                            <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.jurisdictionCodeDescTxt || <NoData />}
-                                            </p>
-                                        </Grid>
+                                        <SearchCriteriaContext.Consumer>
+                                            {({ searchCriteria }) => (
+                                                <Grid col={12} className="margin-bottom-2">
+                                                    <h5 className="margin-0 text-normal text-gray-50">JURISDICTION</h5>
+                                                    <p className="margin-0 font-sans-1xs text-normal">
+                                                        {item.jurisdictionCd ? (
+                                                            searchCriteria.jurisdictions.find(
+                                                                (j) => j.id === item.jurisdictionCd?.toString()
+                                                            )?.codeDescTxt
+                                                        ) : (
+                                                            <NoData />
+                                                        )}
+                                                    </p>
+                                                </Grid>
+                                            )}
+                                        </SearchCriteriaContext.Consumer>
                                     </Grid>
                                 </Grid>
                                 <Grid col={2}>

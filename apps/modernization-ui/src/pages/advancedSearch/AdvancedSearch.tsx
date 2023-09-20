@@ -30,7 +30,7 @@ import {
     downloadLabReportSearchResultPdf
 } from '../../utils/ExportUtil';
 import './AdvancedSearch.scss';
-import { Chips } from './components/Chips';
+import { AdvancedSearchChips } from './components/chips/AdvancedSearchChips';
 import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
@@ -445,7 +445,7 @@ export const AdvancedSearch = () => {
                                         {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
                                     </strong>{' '}
                                     Results for
-                                    <Chips
+                                    <AdvancedSearchChips
                                         lastSearchType={lastSearchType}
                                         personFilter={personFilter}
                                         handlePersonFilterChange={handlePersonChipClosed}

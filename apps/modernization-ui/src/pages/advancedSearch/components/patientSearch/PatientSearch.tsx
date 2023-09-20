@@ -10,6 +10,7 @@ import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
+import { objectOrUndefined } from 'utils';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -39,6 +40,12 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
         } else {
             onChange(value.filter((s) => s !== status));
         }
+    };
+
+    const handleSubmit = (filter: PersonFilter) => {
+        // Clean up any empty filter objects
+        filter.identification = objectOrUndefined(filter.identification);
+        handleSubmission(filter);
     };
 
     const simpleSearchItems: AccordionItemProps[] = [
@@ -257,7 +264,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
     ];
 
     return (
-        <Form onSubmit={form.handleSubmit(handleSubmission)} className="width-full maxw-full">
+        <Form onSubmit={form.handleSubmit(handleSubmit)} className="width-full maxw-full">
             <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>
                 <Accordion items={simpleSearchItems} multiselectable={true} />
             </div>
