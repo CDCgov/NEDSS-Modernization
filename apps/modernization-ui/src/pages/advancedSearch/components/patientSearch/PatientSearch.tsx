@@ -247,7 +247,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
         },
         {
             title: 'ID',
-            content: <IDForm control={form.control} />,
+            content: <IDForm control={form} />,
             expanded: false,
             id: '4',
             headingLevel: 'h4',

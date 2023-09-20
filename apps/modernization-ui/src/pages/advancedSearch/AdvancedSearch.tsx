@@ -237,11 +237,19 @@ export const AdvancedSearch = () => {
 
     const handleInvestigationChipClosed = (filter: InvestigationFilter): void => {
         setInvestigationFilter(filter);
-        handleSubmit(filter, SEARCH_TYPE.INVESTIGATION);
+        if (isEmpty(filter)) {
+            handleClearAll();
+        } else {
+            handleSubmit(filter, SEARCH_TYPE.INVESTIGATION);
+        }
     };
     const handleLabReportChipClosed = (filter: LabReportFilter): void => {
         setLabReportFilter(filter);
-        handleSubmit(filter, SEARCH_TYPE.LAB_REPORT);
+        if (isEmpty(filter)) {
+            handleClearAll();
+        } else {
+            handleSubmit(filter, SEARCH_TYPE.LAB_REPORT);
+        }
     };
 
     // handles submit from Person Search and Event Search,

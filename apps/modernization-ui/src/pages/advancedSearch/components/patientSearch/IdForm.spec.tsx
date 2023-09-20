@@ -8,7 +8,7 @@ import { SearchCriteria, SearchCriteriaContext } from '../../../../providers/Sea
 describe('IDForm component tests', () => {
     it('should render 2 Labels for ID Type and ID Number', () => {
         const { result } = renderHook(() => useForm<PersonFilter>());
-        const { container, getByLabelText } = render(<IDForm control={result.current.control} />);
+        const { container, getByLabelText } = render(<IDForm control={result.current} />);
         expect(container.querySelectorAll('.usa-label')[0].textContent).toBe('ID type');
         expect(getByLabelText('ID number')).toBeTruthy();
     });
@@ -32,7 +32,7 @@ describe('IDForm component tests', () => {
 
         const { container } = render(
             <SearchCriteriaContext.Provider value={{ searchCriteria }}>
-                <IDForm control={result.current.control} />
+                <IDForm control={result.current} />
             </SearchCriteriaContext.Provider>
         );
         const options = container.querySelectorAll('div select')[0].childNodes;
