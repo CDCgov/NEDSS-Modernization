@@ -67,6 +67,7 @@ public class RequestParameterToCookieGatewayFilterFactory extends AbstractGatewa
         return ResponseCookie.from(name, value)
                 .httpOnly(true)
                 .secure(true)
+                .sameSite("Strict")
                 .build();
     }
 
