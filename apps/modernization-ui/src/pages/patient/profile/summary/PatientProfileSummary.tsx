@@ -4,8 +4,9 @@ import { Grid } from '@trussworks/react-uswds';
 import { Patient } from 'pages/patient/profile';
 import { Address, Email, PatientSummary, Phone } from './PatientSummary';
 import { NoData } from 'components/NoData';
-import formattedName from 'formattedName';
+
 import { Spinner } from '@cmsgov/design-system';
+import { formattedName } from 'utils';
 
 type Props = {
     patient?: Patient;

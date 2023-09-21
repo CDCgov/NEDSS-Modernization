@@ -2,10 +2,7 @@ dist
 .DS_Store
 
 db-restore.zip
-db/restore/restore.d/*.sql
-db/restore/restore.d/*.bak
-db/restore/restore.d/*.ldf
-db/restore/restore.d/*.mdf
+db/restore/restore.d/**
 
 nifi/repo
 nifi/nifi_conf/conf/flow.json.gz

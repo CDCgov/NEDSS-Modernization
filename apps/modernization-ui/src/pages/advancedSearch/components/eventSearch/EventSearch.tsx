@@ -3,11 +3,11 @@ import { InvestigationFilter, LabReportFilter } from 'generated/graphql/schema';
 import { SEARCH_TYPE } from 'pages/advancedSearch/AdvancedSearch';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { objectOrUndefined } from 'utils';
 import { EventTypeAccordion, SearchType } from './EventTypeAccordion';
 import { InvestigationAccordion } from './InvestigationSearch/InvestigationAccordion';
-import { LabReportAccordion } from './labReportSearch/LabReportAccordion';
 import { initialLabForm } from './labReportSearch/DefaultLabReportForm';
-import { orNull } from 'utils';
+import { LabReportAccordion } from './labReportSearch/LabReportAccordion';
 
 type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;
@@ -68,9 +68,9 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
      * @return {InvestigationFilter} InvestigationFilter
      */
     const cleanInvestigationFilter = (investigationFilter: InvestigationFilter): InvestigationFilter => {
-        investigationFilter.eventId = orNullObject(investigationFilter.eventId);
-        investigationFilter.eventDate = orNullObject(investigationFilter.eventDate);
-        investigationFilter.providerFacilitySearch = orNullObject(investigationFilter.providerFacilitySearch);
+        investigationFilter.eventId = objectOrUndefined(investigationFilter.eventId);
+        investigationFilter.eventDate = objectOrUndefined(investigationFilter.eventDate);
+        investigationFilter.providerFacilitySearch = objectOrUndefined(investigationFilter.providerFacilitySearch);
         return investigationFilter;
     };
 
@@ -83,16 +83,10 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
      * @return {LabReportFilter} LabReportFilter
      */
     const cleanLabFilter = (labReportFilter: LabReportFilter): LabReportFilter => {
-        labReportFilter.pregnancyStatus = orNull(labReportFilter.pregnancyStatus);
-        labReportFilter.pregnancyStatus ? null : (labReportFilter.pregnancyStatus = null);
-        labReportFilter.eventId = orNullObject(labReportFilter.eventId);
-        labReportFilter.eventDate = orNullObject(labReportFilter.eventDate);
-        labReportFilter.providerSearch = orNullObject(labReportFilter.providerSearch);
+        labReportFilter.eventId = objectOrUndefined(labReportFilter.eventId);
+        labReportFilter.eventDate = objectOrUndefined(labReportFilter.eventDate);
+        labReportFilter.providerSearch = objectOrUndefined(labReportFilter.providerSearch);
         return labReportFilter;
-    };
-
-    const orNullObject = (object: any) => {
-        return Object.values(object).find((e) => e !== undefined) ? object : undefined;
     };
 
     const handleSubmitInvestigation = (investigationFilter: InvestigationFilter) => {

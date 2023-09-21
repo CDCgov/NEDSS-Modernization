@@ -45,13 +45,11 @@ export const InvestigationCriteria = ({ form }: InvestigationCriteriaProps): Rea
                         control={form.control}
                         name="outbreakNames"
                         render={({ field: { onChange, value, name } }) => (
-                            <SelectInput
-                                name={name}
-                                value={value as string | undefined}
-                                onChange={onChange}
+                            <MultiSelectInput
                                 label="Outbreak name"
-                                htmlFor={name}
-                                dataTestid={name}
+                                onChange={onChange}
+                                value={value as string[] | undefined}
+                                name={name}
                                 options={Object.values(searchCriteria.outbreaks).map((outbreak) => {
                                     return {
                                         name: formatInterfaceString(outbreak.codeShortDescTxt ?? ''),
