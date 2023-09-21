@@ -1,33 +1,45 @@
-import { render } from '@testing-library/react';
-import { PageDetails } from 'apps/page-builder/generated/models/PageDetails';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { EditPageTabs } from './EditPageTabs';
+import { Tabs } from 'apps/page-builder/generated/models/Tabs';
 
-describe('when EditPageTabs renders', () => {
-    const page: PageDetails = {
-        id: 123456,
-        Name: 'Test Page',
-        pageDescription: 'Test Page description',
-        pageTabs: [{
-            id: 1119232,
-            name: "Patient",
-            tabSections: [],
-            visible: "T"
-        },{
-            id: 1119225,
-            name: "Vaccination",
-            tabSections: [],
-            visible: "T"
-        }],
-        pageRules: []
-    };
-    const mockFunction = jest.fn();
+const props = {
+    tabs: [{ name: 'first tab' }, { name: 'second tab' }] as Tabs[],
+    active: 0,
+    setActive: jest.fn(),
+    onAddSuccess: jest.fn()
+};
 
-    it('should display two tabs', () => {
-        const { container } = render(
-            <EditPageTabs tabs={page.pageTabs} active={1} setActive={mockFunction} />
-        );
-        const tabs = container.getElementsByClassName('edit-page-tabs__tab');
-        
-        expect(tabs.length).toEqual(3); // Includes 'Add new tab' tab
+describe('EditPageTabs', () => {
+    it('should render', () => {
+        render(<EditPageTabs {...props} />);
+        expect(screen.getAllByText('first tab')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('second tab')[0]).toBeInTheDocument();
+    });
+
+    it('it should render component with the active tab', () => {
+        render(<EditPageTabs {...props} />);
+        const firstTab = screen.getAllByText('first tab');
+        const secondTab = screen.getAllByText('second tab');
+
+        expect(firstTab[0].parentElement).toHaveClass('active');
+        expect(secondTab[0].parentElement).not.toHaveClass('active');
+    });
+
+    it('should have the Manage Tabs button', () => {
+        render(<EditPageTabs {...props} />);
+        const manageButton = screen.getByTestId('openManageTabs');
+
+        expect(manageButton).toBeInTheDocument();
+        expect(manageButton).toHaveTextContent('Manage Tabs');
+    });
+
+    describe('when a tab is clicked', () => {
+        it('is set to active', () => {
+            render(<EditPageTabs {...props} />);
+            const secondTab = screen.getAllByText('second tab');
+            fireEvent.click(secondTab[0]);
+
+            expect(props.setActive).toHaveBeenCalledWith(1);
+        });
     });
 });

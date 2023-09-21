@@ -1,0 +1,13 @@
+.visible-toggle-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 64px;
+
+    label:first-of-type {
+        margin-right: 16px;
+    }
+
+    label:last-of-type {
+        margin-left: 16px;
+    }
+}
