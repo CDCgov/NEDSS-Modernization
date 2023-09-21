@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.authentication.JWTFilter;
+import gov.cdc.nbs.authentication.token.JWTFilter;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class WebSecurityConfig {
     private final JWTFilter jwtFilter;
     private final ObjectMapper mapper;
 
-    @Value("${spring.graphql.path: graphql}")
+    @Value("${spring.graphql.path:/graphql}")
     private String graphQLEndpoint;
 
     @Bean
@@ -42,7 +42,8 @@ public class WebSecurityConfig {
                 .antMatchers(
                         graphQLEndpoint,
                         "/encryption/*",
-                        "/preparePatientDetails")
+                        "/nbs/api/**"
+                )
                 .authenticated()
                 .anyRequest().permitAll()
                 .and()

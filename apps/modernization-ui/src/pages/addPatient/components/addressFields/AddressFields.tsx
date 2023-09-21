@@ -110,7 +110,13 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="zip"
-                            rules={{ pattern: { value: /[\d]{5}(-[\d]{4})?/, message: 'Invalid zip' } }}
+                            rules={{
+                                pattern: {
+                                    value: /[\d]{5}(-[\d]{4})?/,
+                                    message:
+                                        'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
+                                }
+                            }}
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     id={name}

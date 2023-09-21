@@ -3,6 +3,9 @@ package gov.cdc.nbs.questionbank.page.content.tab;
 
 import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.OrderTabResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
+import gov.cdc.nbs.questionbank.page.content.tab.response.DeleteTabResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.response.UpdateTabResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
@@ -41,4 +44,16 @@ public class TabController {
     ) {
         return creator.orderTab(page, request);
     }
+    @DeleteMapping("{tabId}")
+    @ResponseBody
+    public DeleteTabResponse deleteTab(@PathVariable("page") Long page, @PathVariable Long tabId) {
+        return creator.deleteTab(page, tabId);
+    }
+
+    @PutMapping("{tabId}")
+    @ResponseBody
+    public UpdateTabResponse updateTab(@PathVariable Long tabId, @RequestBody UpdateTabRequest request) {
+        return creator.updateTab(tabId, request);
+    }
+
 }

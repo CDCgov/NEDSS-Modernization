@@ -1,13 +1,12 @@
 import { Button, ErrorMessage, Fieldset, Form, FormGroup, Label, TextInput } from '@trussworks/react-uswds';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../providers/UserContext';
+import { UserContext } from 'providers/UserContext';
 import './Login.scss';
 
 export const Login = () => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
     const navigate = useNavigate();
     const { state, login } = useContext(UserContext);
 
@@ -15,18 +14,20 @@ export const Login = () => {
         // Do not append params to URL, do not refresh page
         event.preventDefault();
 
-        const response = await login(username, password);
-        if (response) {
-            document.cookie = `nbs_user=${username}`;
+        login(username);
+    };
+
+    useEffect(() => {
+        if (state.isLoggedIn) {
             navigate('/advanced-search');
         }
-    };
+    }, [state.isLoggedIn]);
 
     return (
         <div className="sign-in-wrapper">
             <Form onSubmit={mockSubmit} large className="sign-in-form">
                 <Fieldset legend="Sign In" legendStyle="large">
-                    <FormGroup error={state.loginError !== undefined}>
+                    <FormGroup error={state.error !== undefined}>
                         <Label htmlFor="username">Username or email address</Label>
                         <TextInput
                             onChange={(e) => setUsername(e.target.value)}
@@ -39,13 +40,12 @@ export const Login = () => {
                         />
                         <Label htmlFor="password-sign-in">Password</Label>
                         <TextInput
-                            onChange={(e) => setPassword(e.target.value)}
                             id="password-sign-in"
                             name="password-sign-in"
                             type={showPassword ? 'text' : 'password'}
                             disabled={state.isLoginPending}
                         />
-                        {state.loginError ? <ErrorMessage>{state.loginError}</ErrorMessage> : ''}
+                        {state.error && <ErrorMessage>{state.error}</ErrorMessage>}
                     </FormGroup>
 
                     <p className="usa-form__note">

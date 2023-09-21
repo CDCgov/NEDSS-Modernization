@@ -1,12 +1,14 @@
 import { Alert, Button, Grid, Icon } from '@trussworks/react-uswds';
 import { externalize, internalize } from 'pages/patient/search';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Config } from '../../config';
 
+import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import {
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
+    FindPatientsByFilterQuery,
     Investigation,
     InvestigationFilter,
     LabReport,
@@ -17,8 +19,7 @@ import {
     SortField,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
-    useFindPatientsByFilterLazyQuery,
-    FindPatientsByFilterQuery
+    useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { UserContext } from '../../providers/UserContext';
@@ -28,15 +29,13 @@ import {
     downloadLabReportSearchResultCsv,
     downloadLabReportSearchResultPdf
 } from '../../utils/ExportUtil';
-import { convertCamelCase } from '../../utils/util';
 import './AdvancedSearch.scss';
-import Chip from './components/Chip';
-import { EventSearch } from './components/eventSearch/EventSearch';
+import { AdvancedSearchChips } from './components/chips/AdvancedSearchChips';
 import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
+import { EventSearch } from './components/eventSearch/EventSearch';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
-import { SearchCriteria, SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -66,9 +65,8 @@ export const AdvancedSearch = () => {
     const PAGE_SIZE = 25;
 
     // patient search variables
-    const [personFilter, setPersonFilter] = useState<PersonFilter>({ recordStatus: [RecordStatus.Active] });
+    const [personFilter, setPersonFilter] = useState<PersonFilter>();
     const addPatiendRef = useRef<any>(null);
-    const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
@@ -141,7 +139,6 @@ export const AdvancedSearch = () => {
         if (!queryParam) {
             // no query parameters specified or user is not logged in
             // setActiveTab('person');
-            setResultsChip([]);
             return;
         }
 
@@ -152,7 +149,6 @@ export const AdvancedSearch = () => {
         }).then(async (filter: any) => {
             if (isEmpty(filter)) {
                 // empty filter, clear content
-                setResultsChip([]);
                 setSubmitted(true);
             }
             // perform the search based on the 'type' parameter
@@ -170,78 +166,6 @@ export const AdvancedSearch = () => {
         });
     }, [searchParams, state.isLoggedIn, sort, currentPage]);
 
-    const handleEventTags = (filter: any) => {
-        const chips: any = [];
-        if (filter) {
-            Object.entries(filter as any).map((re: any) => {
-                if (Array.isArray(re[1])) {
-                    re[1].map((item: any) => {
-                        chips.push({ name: convertCamelCase(re[0]), value: item });
-                    });
-                } else if (re[1] && typeof re[1] === 'object' && re[1].constructor === Object) {
-                    Object.entries(re[1] as any).map((obj: any) => {
-                        if (obj[0] !== 'includeUnassigned') {
-                            if (obj[0] === 'statusList') {
-                                chips.push({ name: convertCamelCase(re[0]), value: obj[1] });
-                            } else {
-                                chips.push({ name: convertCamelCase(obj[0]), value: obj[1] });
-                            }
-                        }
-                    });
-                } else {
-                    chips.push({ name: convertCamelCase(re[0]), value: re[1] });
-                }
-            });
-            setResultsChip(chips);
-        }
-    };
-
-    const handlePersonTags = (filter: PersonFilter) => {
-        const chips: any = [];
-        if (filter) {
-            Object.entries(filter).map((re: any) => {
-                // Do not display record status chip, as indicated in Figma design
-                if (re[0] === 'recordStatus') {
-                    return;
-                }
-                if (re[0] !== 'identification') {
-                    let name = re[0];
-                    switch (re[0]) {
-                        case 'lastName':
-                            name = 'last';
-                            break;
-                        case 'firstName':
-                            name = 'first';
-                            break;
-                        case 'gender':
-                            name = 'sex';
-                            break;
-                        case 'dateOfBirth':
-                            name = 'dob';
-                            break;
-                    }
-                    chips.push({
-                        name: name,
-                        value: re[1]
-                    });
-                }
-                if (re[0] === 'identification') {
-                    chips.push(
-                        {
-                            name: 'ID Type',
-                            value: re[1]?.identificationType
-                        },
-                        {
-                            name: 'ID Number',
-                            value: re[1]?.identificationNumber
-                        }
-                    );
-                }
-            });
-        }
-        setResultsChip(chips);
-    };
-
     const performPatientSearch = (filter: PersonFilter) => {
         findPatients({
             variables: {
@@ -258,7 +182,6 @@ export const AdvancedSearch = () => {
 
         const internalized = internalize(filter);
 
-        handlePersonTags(internalized);
         setPersonFilter(internalized);
     };
 
@@ -275,7 +198,6 @@ export const AdvancedSearch = () => {
         });
         setLastSearchType(SEARCH_TYPE.INVESTIGATION);
         setActiveTab(ACTIVE_TAB.EVENT);
-        handleEventTags(filter);
         setLabReportFilter(undefined);
         setInvestigationFilter(filter);
     };
@@ -293,7 +215,6 @@ export const AdvancedSearch = () => {
         });
         setLastSearchType(SEARCH_TYPE.LAB_REPORT);
         setActiveTab(ACTIVE_TAB.EVENT);
-        handleEventTags(filter);
         setInvestigationFilter(undefined);
         setLabReportFilter(filter);
     };
@@ -304,6 +225,32 @@ export const AdvancedSearch = () => {
         }
         return true;
     }
+
+    const handlePersonChipClosed = (filter: PersonFilter): void => {
+        setPersonFilter(filter);
+        if (isEmpty(filter)) {
+            handleClearAll();
+        } else {
+            handleSubmit(filter, SEARCH_TYPE.PERSON);
+        }
+    };
+
+    const handleInvestigationChipClosed = (filter: InvestigationFilter): void => {
+        setInvestigationFilter(filter);
+        if (isEmpty(filter)) {
+            handleClearAll();
+        } else {
+            handleSubmit(filter, SEARCH_TYPE.INVESTIGATION);
+        }
+    };
+    const handleLabReportChipClosed = (filter: LabReportFilter): void => {
+        setLabReportFilter(filter);
+        if (isEmpty(filter)) {
+            handleClearAll();
+        } else {
+            handleSubmit(filter, SEARCH_TYPE.LAB_REPORT);
+        }
+    };
 
     // handles submit from Person Search and Event Search,
     // it simply encrypts the filter object and sets it as the query parameter
@@ -372,290 +319,6 @@ export const AdvancedSearch = () => {
         navigate(`/advanced-search${activeTab ? '/' + activeTab : ''}`);
     };
 
-    const handleChipClose = (name: string, value: string) => {
-        switch (lastSearchType) {
-            case SEARCH_TYPE.PERSON:
-                handlePersonChipClose(name, value);
-                return;
-            case SEARCH_TYPE.INVESTIGATION:
-                handleInvestigationChipClose(name, value);
-                return;
-            case SEARCH_TYPE.LAB_REPORT:
-                handleLabReportChipClose(name, value);
-                return;
-        }
-    };
-
-    const handleLabReportChipClose = (name: string, value: string) => {
-        let tempLabReportFilter = labReportFilter as LabReportFilter;
-
-        // remove the filter criteria associated with closed chip and resubmit search
-        switch (name.trim()) {
-            case 'Program Areas': {
-                const newProgramAreas = tempLabReportFilter?.programAreas?.filter((pa) => pa !== value);
-                if (newProgramAreas?.length === 0) {
-                    delete tempLabReportFilter.programAreas;
-                } else {
-                    tempLabReportFilter = {
-                        ...tempLabReportFilter,
-                        programAreas: newProgramAreas
-                    };
-                }
-                break;
-            }
-            case 'Jurisdictions': {
-                const newJurisdictions = tempLabReportFilter?.jurisdictions?.filter((j) => j !== value);
-                if (newJurisdictions?.length === 0) {
-                    delete tempLabReportFilter.jurisdictions;
-                } else {
-                    tempLabReportFilter = {
-                        ...tempLabReportFilter,
-                        programAreas: newJurisdictions
-                    };
-                }
-                break;
-            }
-            case 'Pregnancy Status':
-                delete tempLabReportFilter.pregnancyStatus;
-                break;
-            case 'Lab Event Type':
-            case 'Lab Event Id':
-                delete tempLabReportFilter.eventId;
-                break;
-            case 'From':
-            case 'To':
-            case 'Type':
-                delete tempLabReportFilter.eventDate;
-                break;
-            case 'Created By':
-                delete tempLabReportFilter.createdBy;
-                break;
-            case 'Last Updated By':
-                delete tempLabReportFilter.lastUpdatedBy;
-                break;
-            case 'Entity Type':
-            case 'Id':
-                delete tempLabReportFilter.providerSearch;
-                break;
-            case 'Resulted Test':
-                delete tempLabReportFilter.resultedTest;
-                break;
-            case 'Coded Result':
-                delete tempLabReportFilter.codedResult;
-                break;
-            case 'Entry Methods':
-                if (tempLabReportFilter?.entryMethods) {
-                    if (tempLabReportFilter?.entryMethods?.length > 1) {
-                        tempLabReportFilter.entryMethods = tempLabReportFilter.entryMethods?.filter(
-                            (item) => item !== value
-                        );
-                    } else {
-                        delete tempLabReportFilter.entryMethods;
-                    }
-                }
-                break;
-            case 'Entered By':
-                if (tempLabReportFilter?.enteredBy) {
-                    if (tempLabReportFilter?.enteredBy?.length > 1) {
-                        tempLabReportFilter.enteredBy = tempLabReportFilter.enteredBy?.filter((item) => item !== value);
-                    } else {
-                        delete tempLabReportFilter.enteredBy;
-                    }
-                }
-                break;
-            case 'Processing Status':
-                if (tempLabReportFilter?.processingStatus) {
-                    if (tempLabReportFilter?.processingStatus?.length > 1) {
-                        tempLabReportFilter.processingStatus = tempLabReportFilter.processingStatus?.filter(
-                            (item) => item !== value
-                        );
-                    } else {
-                        delete tempLabReportFilter.processingStatus;
-                    }
-                }
-                break;
-            case 'Event Status':
-                if (tempLabReportFilter?.eventStatus) {
-                    if (tempLabReportFilter?.eventStatus?.length > 1) {
-                        tempLabReportFilter.eventStatus = tempLabReportFilter.eventStatus?.filter(
-                            (item) => item !== value
-                        );
-                    } else {
-                        delete tempLabReportFilter.eventStatus;
-                    }
-                }
-                break;
-        }
-
-        handleEventTags(tempLabReportFilter);
-
-        if (Object.entries(tempLabReportFilter).length === 0) {
-            setLabReportFilter({});
-            handleClearAll();
-        } else {
-            handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
-        }
-    };
-
-    const handleInvestigationChipClose = (name: string, value: string) => {
-        let tempInvestigationFilter = investigationFilter as InvestigationFilter;
-
-        // remove the filter criteria associated with closed chip and resubmit search
-        switch (name) {
-            case 'Conditions': {
-                const newConditions = tempInvestigationFilter?.conditions?.filter((c) => c !== value);
-                if (newConditions?.length === 0) {
-                    delete tempInvestigationFilter.conditions;
-                } else {
-                    tempInvestigationFilter = {
-                        ...tempInvestigationFilter,
-                        conditions: newConditions
-                    };
-                }
-                break;
-            }
-            case 'Program Areas': {
-                const newProgramAreas = tempInvestigationFilter?.programAreas?.filter((pa) => pa !== value);
-                if (newProgramAreas?.length === 0) {
-                    delete tempInvestigationFilter.programAreas;
-                } else {
-                    tempInvestigationFilter = {
-                        ...tempInvestigationFilter,
-                        programAreas: newProgramAreas
-                    };
-                }
-                break;
-            }
-            case 'Jurisdictions': {
-                const newJurisdictions = tempInvestigationFilter?.jurisdictions?.filter((j) => j !== value);
-                if (newJurisdictions?.length === 0) {
-                    delete tempInvestigationFilter.jurisdictions;
-                } else {
-                    tempInvestigationFilter = {
-                        ...tempInvestigationFilter,
-                        jurisdictions: newJurisdictions
-                    };
-                }
-                break;
-            }
-            case 'Investigation Status':
-                delete tempInvestigationFilter.investigationStatus;
-                break;
-            case 'Outbreak Names':
-                delete tempInvestigationFilter.outbreakNames;
-                break;
-            case 'Case Statuses':
-                delete tempInvestigationFilter.caseStatuses;
-                break;
-            case 'Processing Statuses':
-                delete tempInvestigationFilter.processingStatuses;
-                break;
-            case 'Notification Statuses':
-                delete tempInvestigationFilter.notificationStatuses;
-                break;
-            case 'Pregnancy Status':
-                delete tempInvestigationFilter.pregnancyStatus;
-                break;
-            case 'Investigation Event Type':
-            case 'Id':
-                delete tempInvestigationFilter.eventId;
-                break;
-            case 'Type':
-            case 'From':
-            case 'To':
-            case 'Event Date Type':
-                delete tempInvestigationFilter.eventDate;
-                break;
-            case 'Created By':
-                delete tempInvestigationFilter.createdBy;
-                break;
-            case 'Last Updated By':
-                delete tempInvestigationFilter.lastUpdatedBy;
-                break;
-            case 'Entity Type' || 'Id':
-                delete tempInvestigationFilter.providerFacilitySearch;
-                break;
-        }
-
-        handleEventTags(tempInvestigationFilter);
-        if (Object.entries(tempInvestigationFilter).length === 0) {
-            setInvestigationFilter({});
-            handleClearAll();
-        } else {
-            handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
-        }
-    };
-
-    const handlePersonChipClose = (name: string, value: string) => {
-        let tempPersonFilter = personFilter as PersonFilter;
-        // remove the closed chip from the display
-        let newChips = resultsChip.filter((c) => c.name != name && c.value != value);
-
-        // ID Number and ID Type are separate chips but invalid if not together
-        if (name === 'ID Number' || name === 'ID Type') {
-            newChips = newChips.filter((c) => c.name != 'ID Number' && c.name != 'ID Type');
-        }
-        setResultsChip(newChips);
-
-        // if the last chip was removed, reset search
-        if (newChips.length === 0) {
-            handleClearAll();
-            return;
-        }
-
-        // remove the filter criteria associated with closed chip and resubmit search
-        if (personFilter) {
-            switch (name) {
-                case 'last':
-                    tempPersonFilter = { ...tempPersonFilter, lastName: undefined };
-                    break;
-                case 'first':
-                    tempPersonFilter = { ...tempPersonFilter, firstName: undefined };
-                    break;
-                case 'sex':
-                    tempPersonFilter = { ...tempPersonFilter, gender: undefined };
-                    break;
-                case 'id':
-                    tempPersonFilter = { ...tempPersonFilter, id: undefined };
-                    break;
-                case 'dob':
-                    tempPersonFilter = { ...tempPersonFilter, dateOfBirth: undefined };
-                    break;
-                case 'address':
-                    tempPersonFilter = { ...tempPersonFilter, address: undefined };
-                    break;
-                case 'city':
-                    tempPersonFilter = { ...tempPersonFilter, city: undefined };
-                    break;
-                case 'state':
-                    tempPersonFilter = { ...tempPersonFilter, state: undefined };
-                    break;
-                case 'zip':
-                    tempPersonFilter = { ...tempPersonFilter, zip: undefined };
-                    break;
-                case 'phoneNumber':
-                    tempPersonFilter = { ...tempPersonFilter, phoneNumber: undefined };
-                    break;
-                case 'email':
-                    tempPersonFilter = { ...tempPersonFilter, email: undefined };
-                    break;
-                case 'race':
-                    tempPersonFilter = { ...tempPersonFilter, race: undefined };
-                    break;
-                case 'ethnicity':
-                    tempPersonFilter = { ...tempPersonFilter, ethnicity: undefined };
-                    break;
-                case 'ID Number':
-                    tempPersonFilter = { ...tempPersonFilter, identification: undefined };
-                    break;
-                case 'ID Type':
-                    tempPersonFilter = { ...tempPersonFilter, identification: undefined };
-                    break;
-            }
-            handleSubmit(tempPersonFilter, SEARCH_TYPE.PERSON);
-        }
-    };
-
     function handleAddNewPatientClick(): void {
         setShowAddNewDropDown(false);
         navigate('/add-patient');
@@ -695,53 +358,6 @@ export const AdvancedSearch = () => {
 
     const doSubmit = (data: PersonFilter) => {
         handleSubmit(externalize(data), SEARCH_TYPE.PERSON);
-    };
-
-    const getChipValues = (
-        re: {
-            name: string;
-            value: string;
-        },
-        searchCriteria: SearchCriteria
-    ) => {
-        switch (re.name) {
-            case 'state':
-                return searchCriteria.states.find((element) => {
-                    return element.value === re.value;
-                })?.name!;
-            case 'Jurisdictions':
-                return (
-                    searchCriteria.jurisdictions.find((element) => {
-                        return element.id === re.value;
-                    })?.codeDescTxt || ''
-                );
-            case 'Conditions':
-                return (
-                    searchCriteria.conditions.find((element) => {
-                        return element.id === re.value;
-                    })?.id || ''
-                );
-            case 'Created By':
-                return (
-                    searchCriteria.userResults.find((element) => {
-                        return element.nedssEntryId === re.value;
-                    })?.userLastNm || ''
-                );
-            case 'Last Updated By':
-                return (
-                    searchCriteria.userResults.find((element) => {
-                        return element.nedssEntryId === re.value;
-                    })?.userLastNm || ''
-                );
-            case 'Outbreak Names':
-                return (
-                    searchCriteria.outbreaks.find((element) => {
-                        return element.id.code === re.value;
-                    })?.codeShortDescTxt || ''
-                );
-            default:
-                return re.value;
-        }
     };
 
     return (
@@ -811,7 +427,7 @@ export const AdvancedSearch = () => {
                             {activeTab === ACTIVE_TAB.PERSON ? (
                                 <PatientSearch
                                     handleSubmission={doSubmit}
-                                    data={personFilter}
+                                    personFilter={personFilter}
                                     clearAll={handleClearAll}
                                 />
                             ) : (
@@ -819,7 +435,6 @@ export const AdvancedSearch = () => {
                                     onSearch={handleSubmit}
                                     investigationFilter={investigationFilter}
                                     labReportFilter={labReportFilter}
-                                    clearAll={handleClearAll}
                                 />
                             )}
                         </div>
@@ -829,32 +444,25 @@ export const AdvancedSearch = () => {
                             row
                             className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                             {submitted && !isError() ? (
-                                <SearchCriteriaContext.Consumer>
-                                    {({ searchCriteria }) => (
-                                        <div
-                                            className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
-                                            style={{ maxWidth: '55%' }}>
-                                            <strong className="margin-right-1">
-                                                {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
-                                                {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
-                                                    investigationData?.total}
-                                                {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
-                                            </strong>{' '}
-                                            Results for
-                                            {resultsChip.map(
-                                                (re, index) =>
-                                                    re.value && (
-                                                        <Chip
-                                                            key={index}
-                                                            name={re.name}
-                                                            value={getChipValues(re, searchCriteria)}
-                                                            handleClose={handleChipClose}
-                                                        />
-                                                    )
-                                            )}
-                                        </div>
-                                    )}
-                                </SearchCriteriaContext.Consumer>
+                                <div
+                                    className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
+                                    style={{ maxWidth: '55%' }}>
+                                    <strong className="margin-right-1">
+                                        {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
+                                        {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
+                                        {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
+                                    </strong>{' '}
+                                    Results for
+                                    <AdvancedSearchChips
+                                        lastSearchType={lastSearchType}
+                                        personFilter={personFilter}
+                                        onPersonFilterChange={handlePersonChipClosed}
+                                        investigationFilter={investigationFilter}
+                                        onInvestigationFilterChange={handleInvestigationChipClosed}
+                                        labReportFilter={labReportFilter}
+                                        onLabReportFilterChange={handleLabReportChipClosed}
+                                    />
+                                </div>
                             ) : (
                                 <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
                             )}
@@ -1002,14 +610,14 @@ export const AdvancedSearch = () => {
                                             // heading="You did not make a search"
                                             headingLevel="h4"
                                             className="width-full">
-                                            <div className="display-flex flex-justify flex-align-center">
+                                            <span className="display-flex flex-justify flex-align-center">
                                                 You must enter at least one item to search
                                                 <Icon.Close
                                                     onClick={() => setSubmitted(false)}
                                                     className="margin-left-05"
                                                     style={{ cursor: 'pointer' }}
                                                 />
-                                            </div>
+                                            </span>
                                         </Alert>
                                     </div>
                                 )}

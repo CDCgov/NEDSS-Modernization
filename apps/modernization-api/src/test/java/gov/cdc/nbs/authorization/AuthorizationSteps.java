@@ -1,5 +1,9 @@
 package gov.cdc.nbs.authorization;
 
+import gov.cdc.nbs.authentication.NBSToken;
+import gov.cdc.nbs.authentication.SessionCookie;
+import gov.cdc.nbs.authentication.TokenCreator;
+import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.SecurityLog;
 import gov.cdc.nbs.authentication.enums.SecurityEventType;
 import gov.cdc.nbs.authentication.repository.SecurityLogRepository;
@@ -14,6 +18,9 @@ import java.time.Instant;
 
 @Transactional
 public class AuthorizationSteps {
+
+    @Autowired
+    TokenCreator tokenCreator;
 
     @Autowired
     SecurityLogRepository securityLogRepository;
@@ -37,7 +44,8 @@ public class AuthorizationSteps {
     @Given("I am logged into NBS and a security log entry exists")
     public void i_am_logged_into_nbs_and_a_security_log_entry_exists() {
         // make sure user exists
-        var user = mother.create();
+        AuthUser user = mother.create();
+
         // insert security_log event with sessionId
         String session = RandomUtil.getRandomString(40);
 
@@ -51,7 +59,10 @@ public class AuthorizationSteps {
         log.setLastNm(user.getUserLastNm());
         securityLogRepository.save(log);
 
-        activeUser.active(new ActiveUser(user.getId(), user.getUserId()));
+        NBSToken token = this.tokenCreator.forUser(user.getUserId());
+
+        ActiveUser currentUser = new ActiveUser(user.getId(), user.getUserId(), token);
+        activeUser.active(currentUser);
         activeSession.active(new SessionCookie(session));
     }
 

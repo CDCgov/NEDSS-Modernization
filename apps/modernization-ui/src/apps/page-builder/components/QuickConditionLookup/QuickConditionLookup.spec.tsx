@@ -280,7 +280,7 @@ describe('QuickConditionLookup', () => {
                 </BrowserRouter>
             );
 
-            const addBtn = getByTestId('condition-add-btn');
+            const addBtn = getByTestId('modal-condition-add-btn');
             act(() => {
                 addBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             });

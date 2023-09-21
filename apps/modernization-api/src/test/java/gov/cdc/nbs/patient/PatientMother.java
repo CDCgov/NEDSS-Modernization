@@ -4,57 +4,67 @@ import com.github.javafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import gov.cdc.nbs.support.IdentificationMother;
 import gov.cdc.nbs.support.RaceMother;
+import gov.cdc.nbs.support.TestActive;
 import gov.cdc.nbs.support.TestAvailable;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.Locale;
 
 @Component
+@Transactional
 public class PatientMother {
 
     private final Faker faker;
     private final MotherSettings settings;
     private final TestUniqueIdGenerator idGenerator;
     private final PatientLocalIdentifierGenerator localIdentifierGenerator;
-
+    private final AddressIdentifierGenerator addressIdentifierGenerator;
     private final PatientShortIdentifierResolver resolver;
     private final EntityManager entityManager;
-    private final TestAvailable<PatientIdentifier> identifiers;
+    private final TestAvailable<PatientIdentifier> available;
+    private final TestActive<PatientIdentifier> active;
     private final TestPatientCleaner cleaner;
 
-    public PatientMother(
+    PatientMother(
         final MotherSettings settings,
         final TestUniqueIdGenerator idGenerator,
         final PatientLocalIdentifierGenerator localIdentifierGenerator,
+        final AddressIdentifierGenerator addressIdentifierGenerator,
         final PatientShortIdentifierResolver resolver,
         final EntityManager entityManager,
-        final TestAvailable<PatientIdentifier> patients,
+        final TestAvailable<PatientIdentifier> available,
+        final TestActive<PatientIdentifier> active,
         final TestPatientCleaner cleaner
     ) {
         this.settings = settings;
         this.idGenerator = idGenerator;
         this.localIdentifierGenerator = localIdentifierGenerator;
+        this.addressIdentifierGenerator = addressIdentifierGenerator;
         this.resolver = resolver;
         this.entityManager = entityManager;
-        this.identifiers = patients;
+        this.available = available;
+        this.active = active;
         this.cleaner = cleaner;
         this.faker = new Faker(new Locale("en-us"));
     }
 
     void reset() {
         this.cleaner.clean(settings.starting());
-        this.identifiers.reset();
+        this.available.reset();
     }
 
-    public Person create() {
+    public PatientIdentifier create() {
 
         long identifier = idGenerator.next();
         String local = localIdentifierGenerator.generate();
@@ -65,15 +75,16 @@ public class PatientMother {
 
         long shortId = this.resolver.resolve(local).orElse(0L);
 
-        identifiers.available(new PatientIdentifier(patient.getId(), shortId, local));
-        return patient;
+        PatientIdentifier patientIdentifier = new PatientIdentifier(patient.getId(), shortId, local);
+        available.available(patientIdentifier);
+        active.active(patientIdentifier);
+        return patientIdentifier;
     }
 
     private Person managed(final PatientIdentifier identifier) {
         return this.entityManager.find(Person.class, identifier.id());
     }
 
-    @Transactional
     public PatientIdentifier revise(final PatientIdentifier identifier) {
         Person parent = managed(identifier);
 
@@ -93,7 +104,19 @@ public class PatientMother {
         return new PatientIdentifier(id, identifier.shortId(), identifier.local());
     }
 
-    @Transactional
+    public void deleted(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.delete(
+            new PatientCommand.Delete(
+                identifier.id(),
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            ),
+            id -> 0
+        );
+    }
+
     public void withAddress(final PatientIdentifier identifier) {
         Person patient = managed(identifier);
 
@@ -116,7 +139,6 @@ public class PatientMother {
         );
     }
 
-    @Transactional
     public void withIdentification(final PatientIdentifier identifier) {
         Person patient = managed(identifier);
 
@@ -125,7 +147,7 @@ public class PatientMother {
                 identifier.id(),
                 RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomNumericString(8),
-                "GA",
+                RandomUtil.maybeOneFrom("GA"),
                 RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
                 this.settings.createdBy(),
                 this.settings.createdOn()
@@ -133,7 +155,6 @@ public class PatientMother {
         );
     }
 
-    @Transactional
     public void withRace(final PatientIdentifier identifier) {
         Person patient = managed(identifier);
 
@@ -148,7 +169,6 @@ public class PatientMother {
         );
     }
 
-    @Transactional
     public void withName(final PatientIdentifier identifier) {
         Person patient = managed(identifier);
 
@@ -171,7 +191,33 @@ public class PatientMother {
         );
     }
 
-    @Transactional
+    public void withName(
+        final PatientIdentifier identifier,
+        final String type,
+        final String first,
+        final String last
+    ) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddName(
+                identifier.id(),
+                RandomUtil.getRandomDateInPast(),
+                null,
+                first,
+                null,
+                null,
+                last,
+                null,
+                null,
+                null,
+                type,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
     public void withPhone(final PatientIdentifier identifier) {
         Person patient = managed(identifier);
 
@@ -179,8 +225,8 @@ public class PatientMother {
             new PatientCommand.AddPhone(
                 identifier.id(),
                 idGenerator.next(),
-                RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
-                RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP","TMP"),
+                RandomUtil.oneFrom("AN", "BP", "CP", "FAX", "PH"),
+                RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
                 RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomString(),
                 faker.phoneNumber().cellPhone(),
@@ -188,6 +234,108 @@ public class PatientMother {
                 faker.internet().emailAddress(),
                 faker.internet().url(),
                 RandomUtil.getRandomString(),
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
+    public void withEmail(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddPhone(
+                identifier.id(),
+                idGenerator.next(),
+                "NET",
+                RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
+                RandomUtil.getRandomDateInPast(),
+                null,
+                null,
+                null,
+                faker.internet().emailAddress(),
+                null,
+                RandomUtil.getRandomString(),
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
+    public void withBirthInformation(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.update(
+            new PatientCommand.UpdateBirth(
+                identifier.id(),
+                RandomUtil.getRandomDateInPast(),
+                RandomUtil.dateInPast(),
+                RandomUtil.maybeGender(),
+                RandomUtil.maybeIndicator(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            ),
+            this.addressIdentifierGenerator
+        );
+    }
+
+    public void withGender(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.update(
+            new PatientCommand.UpdateGender(
+                identifier.id(),
+                RandomUtil.getRandomDateInPast(),
+                RandomUtil.gender().value(),
+                null,
+                null,
+                null,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
+    public void withMortality(final PatientIdentifier identifier) {
+
+        Person patient = managed(identifier);
+
+        Deceased indicator = RandomUtil.deceased();
+
+        LocalDate deceasedOn = indicator == Deceased.Y ? RandomUtil.dateInPast() : null;
+
+        patient.update(
+            new PatientCommand.UpdateMortality(
+                identifier.id(),
+                RandomUtil.getRandomDateInPast(),
+                indicator.value(),
+                deceasedOn,
+                null,
+                null,
+                null,
+                null,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            ),
+            this.addressIdentifierGenerator
+        );
+
+    }
+
+    public void withEthnicity(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.update(
+            new PatientCommand.UpdateEthnicityInfo(
+                identifier.id(),
+                RandomUtil.getRandomDateInPast(),
+                RandomUtil.ethnicity(),
+                null,
                 this.settings.createdBy(),
                 this.settings.createdOn()
             )

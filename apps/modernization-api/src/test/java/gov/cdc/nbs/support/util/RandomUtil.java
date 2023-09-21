@@ -11,11 +11,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class RandomUtil {
     private static final Random RANDOM = new Random();
@@ -63,10 +60,6 @@ public class RandomUtil {
         return getRandomNumericString(10);
     }
 
-    public static String getRandomPhoneNumber() {
-        return getRandomNumericString(10);
-    }
-
     public static String getRandomNumericString(int length) {
         int leftLimit = 48; // 0
         int rightLimit = 57; // 9
@@ -91,17 +84,17 @@ public class RandomUtil {
         if (len <= 1) {
             return data;
         }
-        return data.substring(0, new Random().nextInt(len - 1) + 1);
+        return data.substring(0, RANDOM.nextInt(len - 1));
     }
 
     @SafeVarargs
-    public static <T> T oneFrom(T...values) {
+    public static <T> T oneFrom(T... values) {
         var index = RANDOM.nextInt(values.length);
         return values[index];
     }
 
     @SafeVarargs
-    public static <T> T maybeOneFrom(T...values) {
+    public static <T> T maybeOneFrom(T... values) {
         int flip = RANDOM.nextInt(2);
 
         return (flip == 0)
@@ -109,20 +102,16 @@ public class RandomUtil {
             : null;
     }
 
-    @SafeVarargs
-    public static <T> Collection<T> multiFrom(T...values) {
-        var size = RANDOM.nextInt(values.length);
-        Set<T> randomized = new HashSet<>(size);
-
-        for (int index = 0; index < size; index++) {
-            randomized.add(values[index]);
-        }
-
-        return randomized;
+    public static Deceased deceased() {
+        return RandomUtil.oneFrom(Deceased.Y, Deceased.N, Deceased.UNK);
     }
 
-    public static Deceased deceased() {
-        return getRandomFromArray(Deceased.values());
+    public static String ethnicity() {
+        return RandomUtil.oneFrom(
+            "2135-2",   // Hispanic
+            "2186-5",           // Non-Hispanic
+            "UNK"               // Unknown
+        );
     }
 
     public static Gender gender() {
@@ -133,7 +122,11 @@ public class RandomUtil {
         return maybeOneFrom(Gender.U.value(), Gender.F.value(), Gender.M.value());
     }
 
-    public static String mabyeIndicator() {
+    public static String indicator() {
+        return oneFrom(Indicator.NO.getId(), Indicator.YES.getId(), Indicator.UNKNOWN.getId());
+    }
+
+    public static String maybeIndicator() {
         return maybeOneFrom(Indicator.NO.getId(), Indicator.YES.getId(), Indicator.UNKNOWN.getId());
     }
 

@@ -8,8 +8,11 @@ import gov.cdc.nbs.questionbank.page.content.tab.exceptions.AddTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.OrderTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
+import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.CreateTabResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.response.OrderTabResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.response.DeleteTabResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.response.UpdateTabResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -58,5 +61,33 @@ class AddTabControllerTest {
 
         OrderTabResponse orderTabResponse = addTabController.orderTab(100L, orderTabRequest);
         assertEquals(123L, orderTabResponse.uid());
+    }
+
+    @Test
+    void updateTabTest() {
+
+        TabController tabController = new TabController(createTabService,
+                userDetailsProvider);
+
+        UpdateTabRequest updateTabRequest = new UpdateTabRequest("Question Label", "T");
+        Mockito.when(createTabService.updateTab(123L, updateTabRequest))
+                .thenReturn(new UpdateTabResponse(123L, "Tab Updated Successfully"));
+
+        UpdateTabResponse updateTabResponse = tabController.updateTab(123L, updateTabRequest);
+        assertEquals(123L, updateTabResponse.uid());
+    }
+
+
+    @Test
+    void deleteTabTest() {
+
+        TabController tabController = new TabController(createTabService,
+                userDetailsProvider);
+
+        Mockito.when(createTabService.deleteTab(100L, 123L))
+                .thenReturn(new DeleteTabResponse(123L, "TabDeleted Successfully"));
+
+        DeleteTabResponse deleteTabResponse = tabController.deleteTab(100L, 123L);
+        assertEquals(123L, deleteTabResponse.uid());
     }
 }

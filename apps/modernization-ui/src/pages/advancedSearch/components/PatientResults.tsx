@@ -5,6 +5,7 @@ import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { NoData } from 'components/NoData';
+import { formattedName } from 'utils';
 
 type SearchItemsProps = {
     data: Person[];
@@ -108,17 +109,18 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
     };
 
     const newOrderAddress = (data: any) => {
-        const address: any = [];
-        data?.map(
-            (item: any) =>
-                item.classCd === 'PST' &&
-                address.push(
-                    `${item.locator.streetAddr1 ?? ''} ${item.locator.cityCd ?? ''} ${
-                        item.locator.stateCode ? item.locator.stateCode.stateNm : ''
-                    } ${item.locator.zipCd ?? ''}`
-                )
-        );
-        return <OrderedData data={address} type="ADDRESS" />;
+        const addresses: any = [];
+        data?.map((item: any) => {
+            const location =
+                ((item.locator.cityCd && item.locator.cityCd + ' ') || '') +
+                ((item?.locator?.stateCode?.stateNm && item.locator.stateCode.stateNm + ' ') || '') +
+                (item.locator.zipCd ?? '');
+            const address =
+                ((item.locator.streetAddr1 && item.locator.streetAddr1 + '\n') || '') +
+                ((location && location + '\n') || '');
+            item.classCd === 'PST' && address && addresses.push(address || []);
+        });
+        return <OrderedData data={addresses} type="ADDRESS" />;
     };
 
     const styleObjHeight = (index: number) => {
@@ -197,7 +199,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 {!item.lastNm && !item.firstNm ? (
                                                     <NoData />
                                                 ) : (
-                                                    `${item.lastNm}, ${item.firstNm}`
+                                                    formattedName(item?.lastNm ?? '', item?.firstNm ?? '')
                                                 )}
                                             </a>
                                         </Grid>

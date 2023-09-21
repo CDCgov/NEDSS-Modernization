@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 
 @Slf4j
@@ -32,6 +33,12 @@ public class SubSectionCreator {
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
     private static final String UPDATE_MESSAGE = "SubSection Updated Successfully";
+    private static final String DELETE_MESSAGE = "SubSection Deleted Successfully";
+
+    private static final long TAB = 1010L;
+    private static final long SECTION = 1015L;
+    private static final long SUBSECTION = 1016L;
+
     @Autowired
     private EntityManager entityManager;
 
@@ -47,40 +54,44 @@ public class SubSectionCreator {
             throw new AddSubSectionException("Failed to add SubSection");
         }
     }
-
-    private static final long TAB = 1010L;
-    private static final long SECTION = 1015L;
-    private static final long SUBSECTION = 1016L;
-
-    public DeleteSubSectionResponse deleteSubSection(DeleteSubSectionRequest request) {
+    public DeleteSubSectionResponse deleteSubSection(Long pageNumber, Long subSectionId) {
         try {
-            log.info("Deleting sub section");
-            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(request.subSectionId());
-            Long pageNumber = waUiMetaDataRepository.findPageNumber(request.subSectionId());
-            Long nbsComponentUid = waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
-            if(nbsComponentUid == TAB || nbsComponentUid == SECTION || nbsComponentUid == null || nbsComponentUid == SUBSECTION) {
-                waUiMetaDataRepository.deleteById(request.subSectionId());
-                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, request.subSectionId());
-                return new DeleteSubSectionResponse(request.subSectionId(), "Sub Section Deleted Successfully");
+            log.info("Deleting Sub Section");
+            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(subSectionId);
+            Optional<Long> nbsComponentUidOptional =
+                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
+            if (nbsComponentUidOptional.isPresent()) {
+                Long nbsComponentUid = nbsComponentUidOptional.get();
+                if (nbsComponentUid == TAB ||nbsComponentUid == SECTION
+                        ||nbsComponentUid == SUBSECTION || nbsComponentUid == null) {
+                    waUiMetaDataRepository.deleteById(subSectionId);
+                    waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, subSectionId);
+                    return new DeleteSubSectionResponse(subSectionId, DELETE_MESSAGE);
+                } else {
+                    throw new DeleteSubSectionException("Conditions not satisfied");
+                }
             } else {
-                throw new DeleteSubSectionException("Conditions not satisfied");
+                waUiMetaDataRepository.deleteById(subSectionId);
+                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, subSectionId);
+                return new DeleteSubSectionResponse(subSectionId, DELETE_MESSAGE);
             }
         } catch(Exception exception) {
-            throw new DeleteSubSectionException("Delete Sub Section exception");
+            throw new DeleteSubSectionException("Delete SubSection exception");
         }
 
     }
 
-    public UpdateSubSectionResponse updateSubSection(UpdateSubSectionRequest request) {
+    public UpdateSubSectionResponse updateSubSection(Long subSectionId, UpdateSubSectionRequest request) {
         try {
             log.info("Updating subsection");
             if (request.questionLabel() == null || request.visible() == null) {
                 throw new UpdateSubSectionException("Label and visibility fields are required");
             }
-            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(), request.visible(), request.subSectionId());
-            return new UpdateSubSectionResponse(request.subSectionId(), UPDATE_MESSAGE);
+            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(),
+                    request.visible(), subSectionId);
+            return new UpdateSubSectionResponse(subSectionId, UPDATE_MESSAGE);
         } catch(Exception exception) {
-            throw new UpdateSubSectionException(exception.toString());
+            throw new UpdateSubSectionException("Update SubSection Exception");
         }
 
     }

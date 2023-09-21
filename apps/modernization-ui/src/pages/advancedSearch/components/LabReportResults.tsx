@@ -6,6 +6,8 @@ import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';
+import { formattedName } from 'utils';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 type LabReportResultsProps = {
     data: [LabReport];
@@ -77,7 +79,10 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         let age: string | undefined;
         let sex: string | undefined;
         if (patient) {
-            name = !patient.lastName && !patient.firstName ? `No Data` : `${patient.lastName}, ${patient.firstName}`;
+            name =
+                !patient.lastName && !patient.firstName
+                    ? `No Data`
+                    : formattedName(patient?.lastName ?? '', patient?.firstName ?? '');
             if (patient.birthTime) {
                 birthDate = formatDate(patient.birthTime);
                 age = calculateAge(new Date(patient.birthTime));
@@ -208,12 +213,22 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                                 {getOrderingProvidorName(item) ?? <NoData />}
                                             </p>
                                         </Grid>
-                                        <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50">JURISDICTION</h5>
-                                            <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.jurisdictionCodeDescTxt || <NoData />}
-                                            </p>
-                                        </Grid>
+                                        <SearchCriteriaContext.Consumer>
+                                            {({ searchCriteria }) => (
+                                                <Grid col={12} className="margin-bottom-2">
+                                                    <h5 className="margin-0 text-normal text-gray-50">JURISDICTION</h5>
+                                                    <p className="margin-0 font-sans-1xs text-normal">
+                                                        {item.jurisdictionCd ? (
+                                                            searchCriteria.jurisdictions.find(
+                                                                (j) => j.id === item.jurisdictionCd?.toString()
+                                                            )?.codeDescTxt
+                                                        ) : (
+                                                            <NoData />
+                                                        )}
+                                                    </p>
+                                                </Grid>
+                                            )}
+                                        </SearchCriteriaContext.Consumer>
                                     </Grid>
                                 </Grid>
                                 <Grid col={2}>

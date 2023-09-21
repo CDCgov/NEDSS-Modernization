@@ -1,8 +1,8 @@
 package gov.cdc.nbs.redirect.incoming;
 
 import gov.cdc.nbs.authentication.config.SecurityProperties;
-import gov.cdc.nbs.authorization.NBSUserCookie;
-import gov.cdc.nbs.authorization.SessionCookie;
+import gov.cdc.nbs.authentication.NBSUserCookie;
+import gov.cdc.nbs.authentication.SessionCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 

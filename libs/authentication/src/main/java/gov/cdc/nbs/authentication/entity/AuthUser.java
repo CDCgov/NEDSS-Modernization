@@ -1,6 +1,10 @@
 package gov.cdc.nbs.authentication.entity;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -9,13 +13,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,16 +29,28 @@ public class AuthUser {
     @Column(name = "auth_user_uid", nullable = false)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {
+    @OneToMany(
+        mappedBy = "authUserUid",
+        fetch = FetchType.LAZY,
+        cascade = {
             CascadeType.MERGE,
             CascadeType.REMOVE,
             CascadeType.PERSIST
-    })
-    @JoinColumn(name = "auth_user_uid")
+        },
+        orphanRemoval = true
+    )
     private List<AuthUserRole> authUserRoles;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "auth_user_uid")
+    @OneToMany(
+        mappedBy = "authUserUid",
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.MERGE,
+            CascadeType.REMOVE,
+            CascadeType.PERSIST
+        },
+        orphanRemoval = true
+    )
     private List<AuthProgAreaAdmin> adminProgramAreas;
 
     @Column(name = "user_id", length = 256)

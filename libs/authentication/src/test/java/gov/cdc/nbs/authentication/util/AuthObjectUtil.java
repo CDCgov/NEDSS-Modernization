@@ -1,16 +1,16 @@
 package gov.cdc.nbs.authentication.util;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.entity.AuthAudit;
 import gov.cdc.nbs.authentication.entity.AuthProgAreaAdmin;
 import gov.cdc.nbs.authentication.entity.AuthUser;
-import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class AuthObjectUtil {
     public static final String BUSINESS_OBJECT = "OBJECT";
@@ -32,52 +32,45 @@ public class AuthObjectUtil {
 
     public static AuthAudit audit() {
         var now = Instant.now();
-        var audit = new AuthAudit();
-        audit.setAddTime(now);
-        audit.setAddUserId(999L);
-        audit.setLastChgTime(now);
-        audit.setLastChgUserId(999L);
-        audit.setRecordStatusCd(AuthRecordStatus.ACTIVE);
-        audit.setRecordStatusTime(now);
-        return audit;
+        return new AuthAudit(999L, now);
     }
 
     public static List<AuthProgAreaAdmin> progAreaAdmins(AuthUser user) {
         var adminAreas = new ArrayList<AuthProgAreaAdmin>();
         adminAreas.add(
-                new AuthProgAreaAdmin(
-                        null,
-                        "progArea",
-                        user,
-                        'T',
-                        audit()));
+            new AuthProgAreaAdmin(
+                null,
+                "progArea",
+                user,
+                'T',
+                audit()));
         return adminAreas;
     }
 
     public static NbsUserDetails userDetails() {
         return new NbsUserDetails(
-                1L,
-                "test",
-                "test",
-                "test",
-                false,
-                false,
-                null,
-                null,
-                authorities(),
-                "token",
-                true);
+            1L,
+            "test",
+            "test",
+            "test",
+            false,
+            false,
+            null,
+            null,
+            authorities(),
+            true
+        );
     }
 
     public static Set<NbsAuthority> authorities() {
         var authorities = new HashSet<NbsAuthority>();
         authorities.add(new NbsAuthority(
-                BUSINESS_OPERATION,
-                BUSINESS_OBJECT,
-                "programArea",
-                123,
-                "jurisdiction",
-                AUTHORITY));
+            BUSINESS_OPERATION,
+            BUSINESS_OBJECT,
+            "programArea",
+            123,
+            "jurisdiction",
+            AUTHORITY));
         return authorities;
     }
 }

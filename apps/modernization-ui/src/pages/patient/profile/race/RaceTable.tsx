@@ -22,6 +22,9 @@ import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -49,6 +52,8 @@ type Props = {
 
 export const RacesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { id } = useParams();
+    const { profile } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Race', sortable: true, sort: 'all' },
@@ -60,6 +65,7 @@ export const RacesTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientRace>();
 
@@ -73,7 +79,7 @@ export const RacesTable = ({ patient }: Props) => {
         setRaces(data?.findPatientProfile?.races?.content ?? []);
     };
 
-    const [fetch, { refetch, loading }] = useFindPatientProfileRace({ onCompleted: handleComplete });
+    const [fetch, { refetch, called, loading }] = useFindPatientProfileRace({ onCompleted: handleComplete });
 
     const [add] = useAddPatientRaceMutation();
     const [update] = useUpdatePatientRaceMutation();
@@ -114,6 +120,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Added race`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -138,6 +145,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Updated race`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -160,6 +168,7 @@ export const RacesTable = ({ patient }: Props) => {
                         message: `Deleted race`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -206,11 +215,15 @@ export const RacesTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
-                isLoading={loading}
+                isLoading={!called || loading}
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
-                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
+                        <Button
+                            disabled={profile?.patient?.status !== 'ACTIVE'}
+                            type="button"
+                            onClick={actions.prepareForAdd}
+                            className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add race
                         </Button>
@@ -240,6 +253,7 @@ export const RacesTable = ({ patient }: Props) => {
                                 <Button
                                     type="button"
                                     unstyled
+                                    disabled={profile?.patient?.status !== 'ACTIVE'}
                                     onClick={() => setIsActions(isActions === index ? null : index)}>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>

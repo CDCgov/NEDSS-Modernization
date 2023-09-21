@@ -1,34 +1,33 @@
-import { render } from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
+import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { InvestigationFilter, LabReportFilter } from '../../../../generated/graphql/schema';
-import { SEARCH_TYPE } from '../../AdvancedSearch';
 import { EventSearch } from './EventSearch';
+import userEvent from '@testing-library/user-event';
 
 describe('EventSearch component tests', () => {
     it('should render event search form', () => {
-        const mockOnSearch = (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {};
-        const mockClearAll = () => {};
-        const { container, getByLabelText, getByTestId, getAllByTestId } = render(
+        const { getByTestId } = render(
             <MockedProvider>
                 <BrowserRouter>
-                    <EventSearch onSearch={mockOnSearch} clearAll={mockClearAll} />
+                    <EventSearch onSearch={() => {}} />
                 </BrowserRouter>
             </MockedProvider>
         );
         const formEle = getByTestId('form');
+        const searchButton = getByTestId('search');
+        const clearButton = getByTestId('clear');
         const accordionEle = getByTestId('accordion');
-        const eventTypeButtonEle = getByTestId('accordionButton_1');
-        const accordionItemOneEle = getByTestId('accordionItem_1');
+        const eventTypeButtonEle = getByTestId('label');
+        const accordionItemOneEle = getByTestId('accordionItem_event-type-section');
         const labelEle = getByTestId('label');
         const dropdownEle = getByTestId('dropdown');
         const dropdownOptionEles = dropdownEle.querySelectorAll('option');
-        const gridEle = getAllByTestId('grid')[0];
-        const buttonEles = getAllByTestId('button');
 
-        // Form element should contain an accordion and grid
-        expect(formEle).toContainElement(accordionEle);
-        expect(formEle).toContainElement(gridEle);
+        // Form should contain Search and Clear All buttons
+        expect(formEle).toContainElement(searchButton);
+        expect(formEle).toContainElement(clearButton);
+        expect(searchButton).toHaveTextContent('Search');
+        expect(clearButton).toHaveTextContent('Clear all');
 
         // Accordion element should contain a wrapper element child
         expect(accordionEle).toContainElement(accordionItemOneEle);
@@ -41,11 +40,56 @@ describe('EventSearch component tests', () => {
         expect(eventTypeButtonEle).toHaveTextContent('Event type');
         expect(dropdownOptionEles[1]).toHaveTextContent('Investigation');
         expect(dropdownOptionEles[2]).toHaveTextContent('Laboratory report');
+        expect(dropdownEle).toHaveAttribute('placeholder', '- Select -');
+    });
 
-        // Grid element should contain buttons for Search and Clear all
-        expect(gridEle).toContainElement(buttonEles[0]);
-        expect(gridEle).toContainElement(buttonEles[1]);
-        expect(buttonEles[0]).toHaveTextContent('Search');
-        expect(buttonEles[1]).toHaveTextContent('Clear all');
+    it('should render investigation form', () => {
+        const { getByTestId } = render(
+            <MockedProvider>
+                <BrowserRouter>
+                    <EventSearch onSearch={() => {}} />
+                </BrowserRouter>
+            </MockedProvider>
+        );
+        // Select Investigation
+        userEvent.selectOptions(getByTestId('dropdown'), 'investigation');
+
+        // Form should now contain `General search` and `Investigation criteria`
+        const formEle = getByTestId('form');
+
+        // General search
+        const investigationGeneralSection = getByTestId('accordionButton_investigation-general-section');
+        expect(formEle).toContainElement(investigationGeneralSection);
+        expect(investigationGeneralSection).toHaveTextContent('General search');
+
+        // Investigation criteria
+        const investigationCriteriaSection = getByTestId('accordionButton_investigation-criteria-section');
+        expect(formEle).toContainElement(investigationCriteriaSection);
+        expect(investigationCriteriaSection).toHaveTextContent('Investigation criteria');
+    });
+
+    it('should render lab report form', () => {
+        const { getByTestId } = render(
+            <MockedProvider>
+                <BrowserRouter>
+                    <EventSearch onSearch={() => {}} />
+                </BrowserRouter>
+            </MockedProvider>
+        );
+        // Select Investigation
+        userEvent.selectOptions(getByTestId('dropdown'), 'labReport');
+
+        // Form should now contain `General search` and `Investigation criteria`
+        const formEle = getByTestId('form');
+
+        // General search
+        const investigationGeneralSection = getByTestId('accordionButton_lab-general-section');
+        expect(formEle).toContainElement(investigationGeneralSection);
+        expect(investigationGeneralSection).toHaveTextContent('General search');
+
+        // Investigation criteria
+        const investigationCriteriaSection = getByTestId('accordionButton_lab-criteria-section');
+        expect(formEle).toContainElement(investigationCriteriaSection);
+        expect(investigationCriteriaSection).toHaveTextContent('Lab report criteria');
     });
 });

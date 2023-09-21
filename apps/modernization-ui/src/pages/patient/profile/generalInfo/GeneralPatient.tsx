@@ -8,6 +8,9 @@ import { Data, EditableCard } from 'components/EditableCard';
 import { GeneralInformationEntry, GeneralPatientInformationForm } from './GeneralInformationForm';
 import { orNull } from 'utils/orNull';
 import { useAlert } from 'alert/useAlert';
+import { usePatientProfile } from '../usePatientProfile';
+import { useParams } from 'react-router-dom';
+import { useProfileContext } from '../ProfileContext';
 
 const initialEntry = {
     asOf: null,
@@ -60,9 +63,12 @@ type Props = {
 
 export const GeneralPatient = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { id } = useParams();
+    const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<GeneralInformationEntry>(initialEntry);
+    const { profile } = usePatientProfile(id);
 
     const handleComplete = (data: PatientProfileGeneralResult) => {
         setData(asView(data.findPatientProfile?.general));
@@ -100,12 +106,16 @@ export const GeneralPatient = ({ patient }: Props) => {
                     asOf: externalizeDateTime(updated.asOf)
                 }
             }
-        }).then(handleUpdate);
+        }).then(() => {
+            handleUpdate();
+            changed();
+        });
     };
 
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
+                readOnly={profile?.patient?.status !== 'ACTIVE'}
                 title="General Patient Information"
                 data={tableData}
                 editing={editing}

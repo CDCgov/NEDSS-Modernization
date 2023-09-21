@@ -26,6 +26,9 @@ import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -72,6 +75,8 @@ type Props = {
 
 export const PhoneAndEmailTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { id } = useParams();
+    const { profile } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -83,6 +88,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientPhone>();
 
@@ -101,7 +107,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
         setPhoneEmail(data?.findPatientProfile?.phones?.content ?? []);
     };
 
-    const [fetch, { refetch, loading }] = useFindPatientProfilePhoneAndEmail({ onCompleted: handleComplete });
+    const [fetch, { refetch, called, loading }] = useFindPatientProfilePhoneAndEmail({ onCompleted: handleComplete });
 
     const [add] = useAddPatientPhoneMutation();
     const [update] = useUpdatePatientPhoneMutation();
@@ -139,6 +145,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Added Phone & Email`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -166,6 +173,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated Phone & Email`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -188,6 +196,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted Phone & Email`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -231,11 +240,15 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
-                isLoading={loading}
+                isLoading={!called || loading}
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
-                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
+                        <Button
+                            disabled={profile?.patient?.status !== 'ACTIVE'}
+                            type="button"
+                            onClick={actions.prepareForAdd}
+                            className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add phone & email
                         </Button>
@@ -275,6 +288,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                                 <Button
                                     type="button"
                                     unstyled
+                                    disabled={profile?.patient?.status !== 'ACTIVE'}
                                     onClick={() => setIsActions(isActions === index ? null : index)}>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>

@@ -86,7 +86,7 @@ public class LabReportQueryBuilder {
                     var accessionNumberQuery = QueryBuilders.boolQuery()
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ACT_IDS + "."
-                                            + ElasticsearchActId.TYPE_CD,
+                                            + ElasticsearchActId.TYPE_DESC_TXT,
                                     "Filler Number"))
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ACT_IDS + "."
@@ -252,7 +252,7 @@ public class LabReportQueryBuilder {
                     var reportingFacilityQuery = QueryBuilders.boolQuery()
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ORGANIZATION_PARTICIPATIONS + "."
-                                            + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
+                                            + ElasticsearchOrganizationParticipation.TYPE_CD,
                                     "AUT"))
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ORGANIZATION_PARTICIPATIONS + "."

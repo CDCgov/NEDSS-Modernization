@@ -155,8 +155,8 @@ class SecurityServiceTest {
                 null,
                 null,
                 authorities,
-                null,
-                false);
+                false
+        );
     }
 
 

@@ -209,7 +209,11 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                             name="zipcode"
                             defaultValue={entry.zipcode}
                             rules={{
-                                pattern: { value: /^\d{5}(?:[-\s]\d{4})?$/, message: 'Invalid zip code' }
+                                pattern: {
+                                    value: /^\d{5}(?:[-\s]\d{4})?$/,
+                                    message:
+                                        'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
+                                }
                             }}
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <Input

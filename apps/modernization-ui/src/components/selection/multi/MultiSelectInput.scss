@@ -8,7 +8,8 @@
 }
 
 .multi-select__control {
-    height: 40px;
+    min-height: 40px;
+    height: unset;
     border-radius: 0 !important;
     border-color: #565c65 !important;
 }
