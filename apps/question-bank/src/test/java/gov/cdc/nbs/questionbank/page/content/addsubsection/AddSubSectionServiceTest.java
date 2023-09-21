@@ -6,7 +6,6 @@ import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSecti
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.OrderSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.OrderSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
@@ -70,76 +69,59 @@ class AddSubSectionServiceTest {
     @ParameterizedTest
     @MethodSource("updateSubSectionTestParams")
     void updateSubSectionServiceTest(UpdateSubSectionRequest updateSubSectionRequest, String expectedMessage) {
-        UpdateSubSectionResponse updateSubSectionResponse = createSubSectionService.updateSubSection(updateSubSectionRequest);
+        UpdateSubSectionResponse updateSubSectionResponse = createSubSectionService.updateSubSection(123L, updateSubSectionRequest);
         assertEquals(expectedMessage, updateSubSectionResponse.message());
     }
 
     static Stream<Arguments> updateSubSectionTestParams() {
         return Stream.of(
-                Arguments.of(new UpdateSubSectionRequest(123L, "Local", "T"), "SubSection Updated Successfully"),
-                Arguments.of(new UpdateSubSectionRequest(456L, "Global", "F"), "SubSection Updated Successfully")
+                Arguments.of(new UpdateSubSectionRequest( "Local", "T"), "SubSection Updated Successfully"),
+                Arguments.of(new UpdateSubSectionRequest( "Global", "F"), "SubSection Updated Successfully")
         );
     }
 
     @ParameterizedTest
     @MethodSource("updateSubSectionNoLabelOrVisibilityTestParams")
     void updateSubSectionServiceNoLabelOrVisibilityTest(UpdateSubSectionRequest updateSubSectionRequest) {
-        assertThrows(UpdateSubSectionException.class, () -> createSubSectionService.updateSubSection(updateSubSectionRequest));
+        assertThrows(UpdateSubSectionException.class, () -> createSubSectionService.updateSubSection(123L,updateSubSectionRequest));
     }
 
     static Stream<UpdateSubSectionRequest> updateSubSectionNoLabelOrVisibilityTestParams() {
         return Stream.of(
-                new UpdateSubSectionRequest(123L, null, null),
-                new UpdateSubSectionRequest(456L, null, "T"),
-                new UpdateSubSectionRequest(789L, "Local", null)
+                new UpdateSubSectionRequest( null, null),
+                new UpdateSubSectionRequest( null, "T"),
+                new UpdateSubSectionRequest( "Local", null)
         );
     }
 
     @ParameterizedTest
     @MethodSource("deleteSubSectionTestParams")
     void deleteSubSectionTest(long sectionId, String expectedMessage) {
-        DeleteSubSectionRequest deleteSubSectionRequest = new DeleteSubSectionRequest(sectionId);
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(sectionId))
                 .thenReturn(1);
 
-        Mockito.when(waUiMetaDataRepository.findPageNumber(sectionId))
-                .thenReturn(1234L);
-
-        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid(2, 1234L))
-                .thenReturn(1015L);
-
-        DeleteSubSectionResponse deleteSubSectionResponse = createSubSectionService.deleteSubSection(deleteSubSectionRequest);
+        DeleteSubSectionResponse deleteSubSectionResponse = createSubSectionService.deleteSubSection(123L, 123L);
         assertEquals(expectedMessage, deleteSubSectionResponse.message());
     }
 
     static Stream<Arguments> deleteSubSectionTestParams() {
         return Stream.of(
-                Arguments.of(123L, "Sub Section Deleted Successfully"),
-                Arguments.of(456L, "Sub Section Deleted Successfully"),
-                Arguments.of(789L, "Sub Section Deleted Successfully")
-        );
+                Arguments.of(123L, "SubSection Deleted Successfully"));
     }
 
     @ParameterizedTest
     @MethodSource("deleteSubSectionTestExceptionInElseParams")
     void deleteSubSectionTestExceptionInElse(long sectionId) {
-        DeleteSubSectionRequest deleteSubSectionRequest = new DeleteSubSectionRequest(sectionId);
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(sectionId))
                 .thenReturn(1);
 
-        Mockito.when(waUiMetaDataRepository.findPageNumber(sectionId))
-                .thenReturn(1234L);
-
-        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid(2, 1234L))
-                .thenReturn(10000L);
-
-        assertThrows(DeleteSubSectionException.class, () -> createSubSectionService.deleteSubSection(deleteSubSectionRequest));
+        assertThrows(DeleteSubSectionException.class, () -> createSubSectionService.deleteSubSection(123L, 123L));
     }
 
     static Stream<Long> deleteSubSectionTestExceptionInElseParams() {
-        return Stream.of(123L, 456L, 789L);
+        return Stream.of( 456L, 789L);
     }
 
     @ParameterizedTest

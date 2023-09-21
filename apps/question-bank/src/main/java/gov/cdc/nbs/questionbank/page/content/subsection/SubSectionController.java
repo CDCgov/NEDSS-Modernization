@@ -1,7 +1,5 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
-
-import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.OrderSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;

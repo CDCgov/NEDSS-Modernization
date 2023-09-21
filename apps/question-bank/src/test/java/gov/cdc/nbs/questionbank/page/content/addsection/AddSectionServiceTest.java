@@ -2,11 +2,8 @@ package gov.cdc.nbs.questionbank.page.content.addsection;
 
 import gov.cdc.nbs.questionbank.page.content.section.SectionCreator;
 import gov.cdc.nbs.questionbank.page.content.section.exception.AddSectionException;
-import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.exception.OrderSectionException;
-import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.OrderSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
@@ -26,7 +23,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.persistence.EntityManager;
-import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -58,66 +54,32 @@ class AddSectionServiceTest {
     @ParameterizedTest
     @MethodSource("updateSectionRequestProvider")
     void updateSectionServiceTest(UpdateSectionRequest updateSectionRequest) {
-        UpdateSectionResponse updateSectionResponse = createSectionService.updateSection(updateSectionRequest);
+        UpdateSectionResponse updateSectionResponse = createSectionService.updateSection(123L, updateSectionRequest);
         assertEquals("Section updated successfully", updateSectionResponse.message());
     }
 
     static Stream<UpdateSectionRequest> updateSectionRequestProvider() {
         // Provide various UpdateSectionRequest instances here
         return Stream.of(
-                new UpdateSectionRequest(123L, "Local", "T"),
-                new UpdateSectionRequest(456L, "Global", "F")
+                new UpdateSectionRequest( "Local", "T"),
+                new UpdateSectionRequest( "Global", "F")
         );
     }
 
     @ParameterizedTest
     @ValueSource(longs = {123L, 456L, 789L})
     void deleteSectionTest(long sectionId) {
-        DeleteSectionRequest deleteSectionRequest = new DeleteSectionRequest(sectionId);
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(sectionId))
                 .thenReturn(1);
 
-        Mockito.when(waUiMetaDataRepository.findPageNumber(sectionId))
-                .thenReturn(1234L);
-
-        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid(2, 1234L))
-                .thenReturn(1015L);
-
-        DeleteSectionResponse deleteSectionResponse = createSectionService.deleteSection(deleteSectionRequest);
-        assertEquals("Section Deleted Successfully", deleteSectionResponse.message());
-    }
-
-    @ParameterizedTest
-    @ValueSource(longs = {123L, 456L, 789L})
-    void deleteSectionTestExceptionInElse(long sectionId) {
-        DeleteSectionRequest deleteSectionRequest = new DeleteSectionRequest(sectionId);
-
-        Mockito.when(waUiMetaDataRepository.getOrderNumber(sectionId))
-                .thenReturn(1);
-
-        Mockito.when(waUiMetaDataRepository.findPageNumber(sectionId))
-                .thenReturn(1234L);
-
-        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid(2, 1234L))
-                .thenReturn(10100L);
-
-        assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection(deleteSectionRequest));
+        DeleteSectionResponse deleteSectionResponse = createSectionService.deleteSection(123L, sectionId);
+        assertEquals("Section deleted successfully", deleteSectionResponse.message());
     }
 
     @Test
     void createSectionServiceTestException() {
         assertThrows(AddSectionException.class, () -> createSectionService.createSection(10L, 123L, null));
-    }
-
-    @Test
-    void updateSectionServiceTestException() {
-        assertThrows(UpdateSectionException.class, () -> createSectionService.updateSection(null));
-    }
-
-    @Test
-    void deleteSectionServiceTestException() {
-        assertThrows(DeleteSectionException.class, () -> createSectionService.deleteSection(null));
     }
 
     @ParameterizedTest

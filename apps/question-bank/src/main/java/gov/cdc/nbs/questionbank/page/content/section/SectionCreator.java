@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.exception.OrderSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
-import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.OrderSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
@@ -63,9 +62,8 @@ public class SectionCreator {
             Optional<Long> nbsComponentUidOptional =
                     waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
             if (nbsComponentUidOptional.isPresent()) {
-                Long nbsComponentUid = nbsComponentUidOptional.get();
-                if (nbsComponentUid == TAB ||nbsComponentUid == SECTION
-                       || nbsComponentUid == null) {
+                long nbsComponentUid = nbsComponentUidOptional.get();
+                if (nbsComponentUid == TAB ||nbsComponentUid == SECTION) {
                     waUiMetaDataRepository.deleteById(sectionId);
                     waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, sectionId);
                     return new DeleteSectionResponse(sectionId, DELETE_MESSAGE);
@@ -103,7 +101,6 @@ public class SectionCreator {
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         waUiMetadata.setAddUserId(uid);
         waUiMetadata.setNbsUiComponentUid(1015L);
-        waUiMetadata.getNbsUiComponentUid();
         waUiMetadata.setWaTemplateUid(page);
         Long nextOrderNumber = waUiMetaDataRepository.findOrderNbr(
                 request.tabId(),
@@ -200,10 +197,12 @@ public class SectionCreator {
             } else if (currentPosition > desiredPosition) {
 
                 if(currentPosition == orderNumberList.size()) {
-                    try {
+                    if (request.tabPosition() < tabOrderNumberList.size()) {
                         orderNumberList.add(tabOrderNumberList.get(request.tabPosition()));
-                    } catch (Exception exception) {
+                    } else if (request.tabPosition() == tabOrderNumberList.size()){
                         orderNumberList.add(maxOrderNumber);
+                    } else {
+                        throw new OrderSectionException("Invalid Tab position");
                     }
                 }
                 //Forward re ordering

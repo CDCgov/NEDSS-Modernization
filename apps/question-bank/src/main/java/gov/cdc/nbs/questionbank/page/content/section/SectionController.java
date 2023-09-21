@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.page.content.section;
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.section.request.DeleteSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.OrderSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;

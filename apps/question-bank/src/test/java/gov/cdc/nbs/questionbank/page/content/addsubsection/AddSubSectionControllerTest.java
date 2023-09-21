@@ -6,7 +6,6 @@ import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.subsection.SubSectionController;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.OrderSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.DeleteSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.OrderSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
@@ -14,10 +13,6 @@ import gov.cdc.nbs.questionbank.page.content.subsection.SubSectionCreator;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.OrderSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.tab.TabController;
-import gov.cdc.nbs.questionbank.page.content.tab.exceptions.OrderTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.request.OrderTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.response.OrderTabResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -60,11 +55,11 @@ class AddSubSectionControllerTest {
         SubSectionController addsubSectionController = new SubSectionController(createSubSectionService,
                 userDetailsProvider);
 
-        UpdateSubSectionRequest updateSubSectionRequest = new UpdateSubSectionRequest(123L, "Question Label", "T");
-        Mockito.when(createSubSectionService.updateSubSection( updateSubSectionRequest))
+        UpdateSubSectionRequest updateSubSectionRequest = new UpdateSubSectionRequest( "Question Label", "T");
+        Mockito.when(createSubSectionService.updateSubSection(123L, updateSubSectionRequest))
                 .thenReturn(new UpdateSubSectionResponse(123L, "SubSection Updated Successfully"));
 
-        UpdateSubSectionResponse updateSubSectionResponse = addsubSectionController.updateSubSection(updateSubSectionRequest);
+        UpdateSubSectionResponse updateSubSectionResponse = addsubSectionController.updateSubSection(123L, updateSubSectionRequest);
         assertEquals(123L, updateSubSectionResponse.uid());
     }
 
@@ -75,11 +70,10 @@ class AddSubSectionControllerTest {
         SubSectionController addsubSectionController = new SubSectionController(createSubSectionService,
                 userDetailsProvider);
 
-        DeleteSubSectionRequest deleteSubSectionRequest = new DeleteSubSectionRequest(123L);
-        Mockito.when(createSubSectionService.deleteSubSection( deleteSubSectionRequest))
+        Mockito.when(createSubSectionService.deleteSubSection( 123L, 123L))
                 .thenReturn(new DeleteSubSectionResponse(123L, "Sub Section Deleted Successfully"));
 
-        DeleteSubSectionResponse deleteSubSectionResponse = addsubSectionController.deleteSubSection(deleteSubSectionRequest);
+        DeleteSubSectionResponse deleteSubSectionResponse = addsubSectionController.deleteSubSection(123L, 123L);
         assertEquals(123L, deleteSubSectionResponse.uid());
     }
 
