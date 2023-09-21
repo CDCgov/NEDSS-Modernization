@@ -15,7 +15,6 @@
         "@types/react": "^18.0.15",
         "@types/react-dom": "^18.0.6",
         "classnames": "^2.3.2",
-        "cypress-cucumber-preprocessor": "^4.3.1",
         "date-fns": "^2.29.3",
         "graphql": "^16.6.0",
         "lodash.debounce": "^4.0.8",
@@ -43,9 +42,6 @@
         "eject": "react-scripts eject",
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
-        "cy:headless": "./node_modules/.bin/cypress run",
-        "cy:browser": "./node_modules/.bin/cypress run --headed --no-exit",
-        "cy:browser:open": "./node_modules/.bin/cypress open",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
         "generate": "npm run consolidate-graphqls && npm run graphql:gql && npm run graphql:codegen && npm run openapi:codegen",
         "consolidate-graphqls": "rm -f src/generated/schema.graphqls && for f in ../modernization-api/src/main/resources/graphql/*.graphqls; do cat $f >> src/generated/schema.graphqls; done",
@@ -104,14 +100,12 @@
         "@storybook/react": "^7.0.10",
         "@storybook/react-webpack5": "^7.0.10",
         "@storybook/testing-library": "^0.1.0",
-        "@testing-library/cypress": "^8.0.3",
         "@testing-library/react-hooks": "^7.0.2",
         "@types/lodash.debounce": "^4.0.7",
         "@types/node": "^18.11.5",
         "@typescript-eslint/eslint-plugin": "^5.32.0",
         "@typescript-eslint/parser": "^5.32.0",
         "babel-plugin-named-exports-order": "^0.0.2",
-        "cypress": "^10.11.0",
         "eslint": "^8.21.0",
         "eslint-config-google": "^0.14.0",
         "eslint-config-prettier": "^8.5.0",
@@ -124,9 +118,5 @@
         "prop-types": "^15.8.1",
         "sass": "^1.54.0",
         "webpack": "^5.76.0"
-    },
-    "cypress-cucumber-preprocessor": {
-        "nonGlobalStepDefinitions": false,
-        "stepDefinitions": "cypress/support/step_definitions"
     }
 }
