@@ -10,7 +10,7 @@ export const Navigation = ({ active }: Props) => {
     const goBack = (string: string) => {
         navigate(`/page-builder/manage/${string}`);
     };
-    console.log(status);
+
     return (
         <div className="navigation">
             <div className="navigation__heading">
