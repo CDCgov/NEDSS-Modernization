@@ -199,7 +199,7 @@ public class PageStateChanger {
 	private Set<PageCondMapping> copyConditionMappings(Set<PageCondMapping> original, WaTemplate page) {
 		if (original == null)
 			return original;
-		Set<PageCondMapping> copy = new HashSet<PageCondMapping>();
+		Set<PageCondMapping> copy = new HashSet<>();
 		for (PageCondMapping con : original) {
 			PageCondMapping aCopy = new PageCondMapping();
 			aCopy.setAddTime(con.getAddTime());
