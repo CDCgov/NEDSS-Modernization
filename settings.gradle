@@ -15,8 +15,6 @@ include ':modernization-ui'
 project(':modernization-ui').projectDir = new File('apps/modernization-ui')
 include ':question-bank'
 project(':question-bank').projectDir = new File('apps/question-bank')
-include ':geocoding-api'
-project(':geocoding-api').projectDir = new File('apps/geocoding-api')
 
 include ':nbs-gateway'
 project(':nbs-gateway').projectDir = new File('apps/nbs-gateway')
@@ -34,8 +32,3 @@ include ':accumulation'
 project(':accumulation').projectDir = new File('libs/accumulation')
 include ':me-api'
 project(':me-api').projectDir = new File('libs/me-api')
-
-
-include ':coverage-report'
-
-

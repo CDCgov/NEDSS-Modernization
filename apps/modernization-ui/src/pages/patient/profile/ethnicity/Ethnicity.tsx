@@ -7,6 +7,9 @@ import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
 import { useAlert } from 'alert/useAlert';
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 type Props = {
     patient: string;
@@ -44,9 +47,12 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
 });
 export const Ethnicity = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { id } = useParams();
+    const { changed } = useProfileContext();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
+    const { profile } = usePatientProfile(id);
 
     const handleComplete = (result: FindPatientProfileQuery) => {
         setData(asView(result.findPatientProfile?.ethnicity));
@@ -85,12 +91,20 @@ export const Ethnicity = ({ patient }: Props) => {
                     patient: patient
                 }
             }
-        }).then(handleUpdate);
+        }).then(() => {
+            handleUpdate();
+            changed();
+        });
     };
 
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
-            <EditableCard title="Ethnicity" data={tableData} editing={editing} onEdit={() => isEditing(true)}>
+            <EditableCard
+                readOnly={profile?.patient?.status !== 'ACTIVE'}
+                title="Ethnicity"
+                data={tableData}
+                editing={editing}
+                onEdit={() => isEditing(true)}>
                 <EthnicityForm entry={entry} onChanged={onUpdate} onCancel={() => isEditing(false)} />
             </EditableCard>
         </Grid>

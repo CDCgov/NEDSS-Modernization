@@ -24,6 +24,9 @@ import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -55,6 +58,8 @@ type Props = {
 
 export const IdentificationsTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { id } = useParams();
+    const { profile } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -67,6 +72,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const [isActions, setIsActions] = useState<any>(null);
     const [identifications, setIdentifications] = useState<Identification[]>([]);
@@ -76,8 +82,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
         setIdentifications(data?.findPatientProfile.identification?.content || []);
     };
 
-    const [fetch, { refetch, loading }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
-
+    const [fetch, { refetch, called, loading }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
     const [add] = useAddPatientIdentificationMutation();
     const [update] = useUpdatePatientIdentificationMutation();
     const [remove] = useDeletePatientIdentificationMutation();
@@ -120,6 +125,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     message: `Added Identification`
                 });
                 refetch();
+                changed();
             })
             .then(actions.reset);
     };
@@ -145,6 +151,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Updated Identification`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -167,6 +174,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         message: `Deleted Identification`
                     });
                     refetch();
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -212,7 +220,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
-                isLoading={loading}
+                isLoading={!called || loading}
                 isPagination={true}
                 totalResults={total}
                 currentPage={currentPage}
@@ -220,7 +228,11 @@ export const IdentificationsTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
                 buttons={
                     <div className="grid-row">
-                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
+                        <Button
+                            disabled={profile?.patient?.status !== 'ACTIVE'}
+                            type="button"
+                            onClick={actions.prepareForAdd}
+                            className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add identification
                         </Button>
@@ -257,6 +269,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                                 <Button
                                     type="button"
                                     unstyled
+                                    disabled={profile?.patient?.status !== 'ACTIVE'}
                                     onClick={() => setIsActions(isActions === index ? null : index)}>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>

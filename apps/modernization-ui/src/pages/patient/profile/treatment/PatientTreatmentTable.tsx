@@ -53,7 +53,7 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
         setTreatmentData(data.findTreatmentsForPatient?.content);
     };
 
-    const [getTreatments, { loading }] = useFindTreatmentsForPatientLazyQuery({ onCompleted: handleComplete });
+    const [getTreatments, { called, loading }] = useFindTreatmentsForPatientLazyQuery({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
@@ -145,7 +145,7 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
 
     return (
         <SortableTable
-            isLoading={loading}
+            isLoading={!called || loading}
             isPagination={true}
             tableHeader={'Treatments'}
             tableHead={tableHead}

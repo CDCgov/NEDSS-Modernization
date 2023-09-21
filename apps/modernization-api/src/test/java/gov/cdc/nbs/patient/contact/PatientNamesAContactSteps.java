@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.contact;
 
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.event.search.investigation.TestInvestigations;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.PatientMother;
@@ -46,9 +45,9 @@ public class PatientNamesAContactSteps {
 
         long investigation = investigations.one();
 
-        Person other = patientMother.create();
+        PatientIdentifier other = patientMother.create();
 
-        mother.namedByPatient(investigation, revision.id(), other.getId());
+        mother.namedByPatient(investigation, revision.id(), other.id());
 
     }
 

@@ -13,7 +13,7 @@ on:
         required: true
       SONAR_TOKEN:
         description: "Secret named SONAR_TOKEN that references the sonar token secret corresponding to the project in sonarcloud."
-        required: true        
+        required: true
   pull_request:
     paths:
       - "apps/**"
@@ -43,13 +43,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 18
-
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
 
       - name: Cache Gradle packages
         uses: actions/cache@v1
@@ -92,10 +85,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.passed_github_token }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ env.sonar_token }}
-        run: ./gradlew build jacocoTestReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.f1ef4c0
+        run: ./gradlew clean build sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.f1ef4c0
 
       - name: Publish Testing Reports
         uses: actions/upload-artifact@v2
         with:
           name: testing
-          path: ./**/build/reports
+          path: ./build/reports

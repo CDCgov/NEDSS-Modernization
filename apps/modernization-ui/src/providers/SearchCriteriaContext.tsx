@@ -1,34 +1,34 @@
+import { StateCodedValue } from 'location';
 import React, { useContext, useEffect } from 'react';
 import {
     ConditionCode,
+    Ethnicity,
     FindAllConditionCodesQuery,
+    FindAllEthnicityValuesQuery,
     FindAllJurisdictionsQuery,
+    FindAllOutbreaksQuery,
+    FindAllPatientIdentificationTypesQuery,
     FindAllProgramAreasQuery,
+    FindAllRaceValuesQuery,
     FindAllUsersQuery,
+    IdentificationType,
     Jurisdiction,
+    Outbreak,
     ProgramAreaCode,
+    Race,
+    StatesQuery,
     User,
     useFindAllConditionCodesLazyQuery,
-    useFindAllJurisdictionsLazyQuery,
-    useFindAllProgramAreasLazyQuery,
-    useFindAllUsersLazyQuery,
-    useFindAllOutbreaksLazyQuery,
-    FindAllOutbreaksQuery,
-    Outbreak,
     useFindAllEthnicityValuesLazyQuery,
-    FindAllEthnicityValuesQuery,
-    Ethnicity,
-    useFindAllRaceValuesLazyQuery,
-    Race,
-    FindAllRaceValuesQuery,
-    IdentificationType,
+    useFindAllJurisdictionsLazyQuery,
+    useFindAllOutbreaksLazyQuery,
     useFindAllPatientIdentificationTypesLazyQuery,
-    FindAllPatientIdentificationTypesQuery,
-    useStatesLazyQuery,
-    StatesQuery
+    useFindAllProgramAreasLazyQuery,
+    useFindAllRaceValuesLazyQuery,
+    useFindAllUsersLazyQuery,
+    useStatesLazyQuery
 } from '../generated/graphql/schema';
 import { UserContext } from './UserContext';
-import { StateCodedValue } from 'location';
 
 export interface SearchCriteria {
     programAreas: ProgramAreaCode[];

@@ -231,7 +231,7 @@ public class NBSEntity {
             .ifPresent(existing -> existing.delete(deleted));
     }
 
-    public Collection<PostalEntityLocatorParticipation> addresses() {
+    public List<PostalEntityLocatorParticipation> addresses() {
         return this.ensureLocators().stream()
             .filter(EntityLocatorParticipation.active().and(PostalEntityLocatorParticipation.class::isInstance))
             .map(PostalEntityLocatorParticipation.class::cast)
@@ -245,18 +245,19 @@ public class NBSEntity {
             .toList();
     }
 
-    public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
+    public List<TeleEntityLocatorParticipation> phoneNumbers() {
         return this.ensureLocators().stream()
             .filter(EntityLocatorParticipation.active().and(this::isPhoneNumber))
             .map(TeleEntityLocatorParticipation.class::cast)
             .toList();
     }
 
-    private boolean isPhoneNumber(final EntityLocatorParticipation participation) {
+
+    public boolean isPhoneNumber(final EntityLocatorParticipation participation) {
         return participation instanceof TeleEntityLocatorParticipation && !Objects.equals(participation.cd, "NET");
     }
 
-    public Collection<TeleEntityLocatorParticipation> emailAddress() {
+    public List<TeleEntityLocatorParticipation> emailAddress() {
         return this.ensureLocators().stream()
             .filter(this::isEmailAddress)
             .map(TeleEntityLocatorParticipation.class::cast)

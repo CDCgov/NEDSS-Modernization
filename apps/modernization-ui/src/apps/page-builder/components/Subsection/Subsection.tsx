@@ -40,7 +40,11 @@ export const SubsectionComponent = ({ subsection }: { subsection: Subsection }) 
             {open ? (
                 <div className="subsection__body">
                     {subsection.pageQuestions.map((question: any, i: number) => {
-                        return <Question key={i} question={question} />;
+                        if (question.visible === 'T') {
+                            return <Question key={i} question={question} />;
+                        } else {
+                            return;
+                        }
                     })}
                 </div>
             ) : null}

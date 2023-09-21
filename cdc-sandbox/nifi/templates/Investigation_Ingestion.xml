@@ -856,6 +856,7 @@
                         <groupId>11aa7286-efe2-3e16-0000-000000000000</groupId>
                         <id>202fc035-c932-39f3-0000-000000000000</id>
                         <type>PROCESSOR</type>
+                        <versionedComponentId>202fc035-c932-39f3-a728-90cbb4679e29</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
                     <labelIndex>0</labelIndex>
@@ -1102,6 +1103,7 @@
                 <connections>
                     <id>7b9fb3f9-fa4f-3c4c-0000-000000000000</id>
                     <parentGroupId>11aa7286-efe2-3e16-0000-000000000000</parentGroupId>
+                    <versionedComponentId>7b9fb3f9-fa4f-3c4c-a78e-a9a448a6ec2e</versionedComponentId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>500</backPressureObjectThreshold>
                     <bends>
@@ -1126,12 +1128,14 @@
                         <groupId>11aa7286-efe2-3e16-0000-000000000000</groupId>
                         <id>ed6e1693-bf1d-3802-0000-000000000000</id>
                         <type>PROCESSOR</type>
+                        <versionedComponentId>ed6e1693-bf1d-3802-9d0a-48c66e02f528</versionedComponentId>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
                     <id>871e6a52-76b6-318d-0000-000000000000</id>
                     <parentGroupId>11aa7286-efe2-3e16-0000-000000000000</parentGroupId>
+                    <versionedComponentId>871e6a52-76b6-318d-9f14-6d77ec8a5b0f</versionedComponentId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>500</backPressureObjectThreshold>
                     <bends>
@@ -1156,6 +1160,7 @@
                         <groupId>11aa7286-efe2-3e16-0000-000000000000</groupId>
                         <id>202fc035-c932-39f3-0000-000000000000</id>
                         <type>PROCESSOR</type>
+                        <versionedComponentId>202fc035-c932-39f3-a728-90cbb4679e29</versionedComponentId>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -1173,6 +1178,7 @@
                         <groupId>11aa7286-efe2-3e16-0000-000000000000</groupId>
                         <id>ed6e1693-bf1d-3802-0000-000000000000</id>
                         <type>PROCESSOR</type>
+                        <versionedComponentId>ed6e1693-bf1d-3802-9d0a-48c66e02f528</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
                     <labelIndex>0</labelIndex>
@@ -1337,6 +1343,7 @@
                 <connections>
                     <id>d96c5d6d-f19b-333f-0000-000000000000</id>
                     <parentGroupId>11aa7286-efe2-3e16-0000-000000000000</parentGroupId>
+                    <versionedComponentId>d96c5d6d-f19b-333f-8fd3-d145fdc29fd7</versionedComponentId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>500</backPressureObjectThreshold>
                     <destination>
@@ -1358,12 +1365,14 @@
                         <groupId>11aa7286-efe2-3e16-0000-000000000000</groupId>
                         <id>ed6e1693-bf1d-3802-0000-000000000000</id>
                         <type>PROCESSOR</type>
+                        <versionedComponentId>ed6e1693-bf1d-3802-9d0a-48c66e02f528</versionedComponentId>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
                     <id>e36241a6-7965-3782-0000-000000000000</id>
                     <parentGroupId>11aa7286-efe2-3e16-0000-000000000000</parentGroupId>
+                    <versionedComponentId>e36241a6-7965-3782-90b7-049784f70498</versionedComponentId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>500</backPressureObjectThreshold>
                     <destination>
@@ -1385,6 +1394,7 @@
                         <groupId>11aa7286-efe2-3e16-0000-000000000000</groupId>
                         <id>202fc035-c932-39f3-0000-000000000000</id>
                         <type>PROCESSOR</type>
+                        <versionedComponentId>202fc035-c932-39f3-a728-90cbb4679e29</versionedComponentId>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -1842,6 +1852,7 @@ Offset: ${generatetablefetch.offset}</value>
                         <x>-408.0</x>
                         <y>136.0</y>
                     </position>
+                    <versionedComponentId>202fc035-c932-39f3-a728-90cbb4679e29</versionedComponentId>
                     <bundle>
                         <artifact>nifi-standard-nar</artifact>
                         <group>org.apache.nifi</group>
@@ -3062,10 +3073,10 @@ Ids: ${investigation_ids}</value>
 SELECT 
   jc.code_desc_txt jurisdiction_code_desc_txt, 
   act.mood_cd, 
-  notification.local_id notification_local_id, 
-  notification.add_time notification_add_time, 
-  notification.record_status_cd notification_record_status_cd, 
-  notification.last_chg_time notification_last_chg_time, 
+  [notification].local_id notification_local_id, 
+  [notification].add_time notification_add_time, 
+  coalesce([notification].record_status_cd,'UNASSIGNED') notification_record_status_cd, 
+  [notification].last_chg_time notification_last_chg_time, 
   results.* 
 FROM 
   (
@@ -3074,7 +3085,7 @@ FROM
       phc.public_health_case_uid, 
       phc.program_jurisdiction_oid program_jurisdiction_oid, 
       phc.case_type_cd case_type_cd, 
-      phc.case_class_cd, 
+      coalesce(phc.case_class_cd,'UNASSIGNED') case_class_cd, 
       phc.outbreak_name, 
       phc.cd_desc_txt cd_desc_txt,
       phc.cd condition, 
@@ -3089,7 +3100,7 @@ FROM
       phc.last_chg_time public_health_case_last_chg_time, 
       phc.add_user_id add_user_id, 
       phc.last_chg_user_id last_chg_user_id, 
-      phc.curr_process_state_cd curr_process_state_cd, 
+      coalesce(phc.curr_process_state_cd,'UNASSIGNED') curr_process_state_cd, 
       phc.investigation_status_cd, 
       phc.record_status_cd, 
       nesteddata.act_ids, 
@@ -3177,7 +3188,16 @@ FROM
     WHERE 
       phc.public_health_case_uid in (${investigation_ids})
   ) AS results 
-  LEFT JOIN notification WITH (NOLOCK) ON results.public_health_case_uid = notification.notification_uid 
+    left join Act_relationship [notified] with (nolock) on
+            [notified].[target_act_uid] = [results].[public_health_case_uid]
+        and [notified].type_cd = 'Notification'
+        and [notified].[target_class_cd] = 'CASE'
+        and [notified].[source_class_cd] = 'NOTF'
+        and [notified].record_status_cd = 'ACTIVE'
+
+    left join [Notification] [notification] with (nolock) on
+            [notification].[notification_uid] = [notified].[source_act_uid]
+
   LEFT JOIN nbs_srte.dbo.jurisdiction_code jc WITH (NOLOCK) ON (
     results.jurisdiction_cd = jc.code
   ) 
@@ -4078,6 +4098,7 @@ FROM
                         <x>2344.0</x>
                         <y>144.0</y>
                     </position>
+                    <versionedComponentId>ed6e1693-bf1d-3802-9d0a-48c66e02f528</versionedComponentId>
                     <bundle>
                         <artifact>nifi-standard-nar</artifact>
                         <group>org.apache.nifi</group>
@@ -4183,5 +4204,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>09/08/2023 14:16:11 UTC</timestamp>
+    <timestamp>09/19/2023 16:12:28 UTC</timestamp>
 </template>

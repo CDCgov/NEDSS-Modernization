@@ -1,12 +1,13 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-    id 'jacoco'
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
+
+apply from: "${rootDir}/gradle/cucumber-logging.gradle"
 
 bootJar {
     manifest {

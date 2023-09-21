@@ -1,18 +1,23 @@
 import { Grid } from '@trussworks/react-uswds';
+import { PersonFilter } from 'generated/graphql/schema';
+import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
-import { Controller } from 'react-hook-form';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
-export const IDForm = ({ control }: any) => {
+type IDFormProps = {
+    control: UseFormReturn<PersonFilter>;
+};
+export const IDForm = ({ control: form }: IDFormProps) => {
+    const identificationType = useWatch({ control: form.control, name: 'identification.identificationType' });
     return (
         <>
             <SearchCriteriaContext.Consumer>
                 {({ searchCriteria }) => (
                     <Grid col={12}>
                         <Controller
-                            control={control}
-                            name="identificationType"
+                            control={form.control}
+                            name="identification.identificationType"
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     defaultValue={value}
@@ -32,20 +37,26 @@ export const IDForm = ({ control }: any) => {
                 )}
             </SearchCriteriaContext.Consumer>
             <Grid col={12}>
-                <Controller
-                    control={control}
-                    name="identificationNumber"
-                    render={({ field: { onChange, value } }) => (
-                        <Input
-                            onChange={onChange}
-                            defaultValue={value}
-                            type="text"
-                            label="ID number"
-                            htmlFor="identificationNumber"
-                            id="identificationNumber"
+                {identificationType ? (
+                    <>
+                        <Controller
+                            control={form.control}
+                            name="identification.identificationNumber"
+                            rules={{ required: true }}
+                            render={({ field: { onChange, value } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    type="text"
+                                    label="ID number"
+                                    required
+                                    htmlFor="identificationNumber"
+                                    id="identificationNumber"
+                                />
+                            )}
                         />
-                    )}
-                />
+                    </>
+                ) : null}
             </Grid>
         </>
     );

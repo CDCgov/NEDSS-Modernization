@@ -24,6 +24,9 @@ import { NameEntry } from './NameEntry';
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from '../usePatientProfile';
+import { useProfileContext } from '../ProfileContext';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -74,6 +77,8 @@ type Props = {
 
 export const NamesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
+    const { id } = useParams();
+    const { profile } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -88,6 +93,7 @@ export const NamesTable = ({ patient }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initial = resolveInitialEntry(patient);
+    const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientName>();
 
@@ -101,7 +107,7 @@ export const NamesTable = ({ patient }: Props) => {
         setNames(data?.findPatientProfile?.names?.content ?? []);
     };
 
-    const [fetch, { refetch, loading }] = useFindPatientProfileNames({ onCompleted: handleComplete });
+    const [fetch, { refetch, called, loading }] = useFindPatientProfileNames({ onCompleted: handleComplete });
 
     const [add] = useAddPatientNameMutation();
     const [update] = useUpdatePatientNameMutation();
@@ -149,6 +155,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Added name`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -181,6 +188,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Updated name`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -203,6 +211,7 @@ export const NamesTable = ({ patient }: Props) => {
                         header: 'success',
                         message: `Deleted name`
                     });
+                    changed();
                 })
                 .then(actions.reset);
         }
@@ -252,11 +261,15 @@ export const NamesTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
-                isLoading={loading}
+                isLoading={!called || loading}
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
-                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
+                        <Button
+                            disabled={profile?.patient?.status !== 'ACTIVE'}
+                            type="button"
+                            onClick={actions.prepareForAdd}
+                            className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add name
                         </Button>
@@ -301,6 +314,7 @@ export const NamesTable = ({ patient }: Props) => {
                                 <Button
                                     type="button"
                                     unstyled
+                                    disabled={profile?.patient?.status !== 'ACTIVE'}
                                     onClick={() => setIsActions(isActions === index ? null : index)}>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>

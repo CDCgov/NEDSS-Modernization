@@ -13,4 +13,7 @@ public interface SnomedCodeRepository extends JpaRepository<SnomedCode, String> 
     @Query("SELECT sc FROM SnomedCode sc WHERE sc.snomedDescTxt LIKE %:searchString% OR sc.id LIKE %:searchString%")
     Page<SnomedCode> findSnomedCodes(@Param("searchString") String searchString, Pageable pageable);
 
+    @Query("SELECT DISTINCT sc.snomedDescTxt FROM SnomedCode sc WHERE sc.snomedDescTxt LIKE %:searchString% OR sc.id LIKE %:searchString%")
+    Page<String> findDistinctSnomedCodes(@Param("searchString") String searchString, Pageable pageable);
+
 }

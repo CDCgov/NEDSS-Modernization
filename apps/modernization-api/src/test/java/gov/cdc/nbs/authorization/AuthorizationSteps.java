@@ -1,5 +1,7 @@
 package gov.cdc.nbs.authorization;
 
+import gov.cdc.nbs.authentication.NBSToken;
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.authentication.TokenCreator;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.SecurityLog;
@@ -57,7 +59,7 @@ public class AuthorizationSteps {
         log.setLastNm(user.getUserLastNm());
         securityLogRepository.save(log);
 
-        String token = this.tokenCreator.forUser(user.getUserId());
+        NBSToken token = this.tokenCreator.forUser(user.getUserId());
 
         ActiveUser currentUser = new ActiveUser(user.getId(), user.getUserId(), token);
         activeUser.active(currentUser);

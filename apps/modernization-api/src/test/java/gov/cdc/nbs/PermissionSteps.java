@@ -1,10 +1,7 @@
 package gov.cdc.nbs;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
 import gov.cdc.nbs.authorization.ActiveUser;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.event.search.InvestigationFilter;
@@ -12,7 +9,6 @@ import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.event.search.investigation.InvestigationResolver;
 import gov.cdc.nbs.event.search.labreport.LabReportResolver;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.patient.PatientController;
 import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
@@ -21,39 +17,24 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
 @Transactional
 public class PermissionSteps {
 
     @Autowired
     TestActive<ActiveUser> activeUser;
 
-    @Autowired
-    SecurityProperties properties;
-    @Autowired
-    Algorithm algorithm;
     @Autowired
     PatientController patientController;
     @Autowired
@@ -81,20 +62,20 @@ public class PermissionSteps {
         var nbsAuthorities = new HashSet<NbsAuthority>();
         var programAreas = programAreaCodeRepository.findAll();
         var programAreaEntry = programAreas.stream().filter(f -> f.getId().equals(programArea)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unable to find program area: " + programArea));
+            .orElseThrow(() -> new IllegalArgumentException("Unable to find program area: " + programArea));
         for (var authority : authorities) {
             // Create a NbsAuthority object based on provided input
             var operationObject = authority.trim().split("-");
             var operation = operationObject.length > 0 ? operationObject[0] : null;
             var object = operationObject.length > 1 ? operationObject[1] : null;
             nbsAuthorities.add(NbsAuthority.builder()
-                    .businessOperation(operation)
-                    .businessObject(object)
-                    .authority(authority.trim())
-                    .jurisdiction(jurisdiction)
-                    .programArea(programArea)
-                    .programAreaUid(programAreaEntry.getNbsUid())
-                    .build());
+                .businessOperation(operation)
+                .businessObject(object)
+                .authority(authority.trim())
+                .jurisdiction(jurisdiction)
+                .programArea(programArea)
+                .programAreaUid(programAreaEntry.getNbsUid())
+                .build());
         }
 
         var currentAuth = SecurityContextHolder.getContext().getAuthentication();
@@ -106,16 +87,15 @@ public class PermissionSteps {
             //  always called in a feature.  When a user is not active then just give the ID of 1.  Will fix the features
             //  to always activate a user.
             long id = activeUser.maybeActive()
-                    .map(ActiveUser::id)
-                    .orElse(1L);
+                .map(ActiveUser::id)
+                .orElse(1L);
 
             var nbsUserDetails = NbsUserDetails.builder()
-                    .id(id)
-                    .username("MOCK-USER")
-                    .token(createToken("MOCK-USER"))
-                    .authorities(nbsAuthorities)
-                    .isEnabled(true)
-                    .build();
+                .id(id)
+                .username("MOCK-USER")
+                .authorities(nbsAuthorities)
+                .isEnabled(true)
+                .build();
             applyUserDetails(nbsUserDetails);
 
         } else {
@@ -127,12 +107,11 @@ public class PermissionSteps {
             }
             existingAuthorities.addAll(nbsAuthorities);
             var nbsUserDetails = NbsUserDetails.builder()
-                    .id(existingUserDetails.getId())
-                    .username(existingUserDetails.getUsername())
-                    .token(existingUserDetails.getToken())
-                    .authorities(existingAuthorities)
-                    .isEnabled(existingUserDetails.isEnabled())
-                    .build();
+                .id(existingUserDetails.getId())
+                .username(existingUserDetails.getUsername())
+                .authorities(existingAuthorities)
+                .isEnabled(existingUserDetails.isEnabled())
+                .build();
 
             applyUserDetails(nbsUserDetails);
         }
@@ -142,9 +121,9 @@ public class PermissionSteps {
         activeUserDetails.active(userDetails);
 
         var pat = new PreAuthenticatedAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities());
+            userDetails,
+            null,
+            userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(pat);
     }
 
@@ -163,16 +142,6 @@ public class PermissionSteps {
                     break;
                 case "findLabReport":
                     response = labReportResolver.findLabReportsByFilter(new LabReportFilter(), page);
-                    break;
-                case "findPatientsByOrganization":
-                    var orgFilter = new OrganizationFilter();
-                    response = patientController.findPatientsByOrganizationFilter(orgFilter, page);
-                    break;
-                case "findAllPatients":
-                    response = patientController.findAllPatients(page);
-                    break;
-                case "findPatientById":
-                    response = patientController.findPatientById(1L);
                     break;
                 default:
                     throw new RuntimeException("Invalid searchType: " + searchType);
@@ -193,17 +162,6 @@ public class PermissionSteps {
         } else {
             throw new RuntimeException("Invalid responseType specified: " + resultType);
         }
-    }
-
-    private String createToken(String username) {
-        Instant now = Instant.now();
-        Instant expiry = Instant.now().plus(Duration.ofMillis(properties.getTokenExpirationMillis()));
-        return JWT.create()
-                .withIssuer(properties.getTokenIssuer())
-                .withIssuedAt(now)
-                .withExpiresAt(expiry)
-                .withSubject(username)
-                .sign(algorithm);
     }
 
 }
