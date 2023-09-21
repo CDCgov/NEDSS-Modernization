@@ -8,7 +8,7 @@ const props = {
     modalRef: { current: null },
     tabId: 5,
     pageId: '10056',
-    onAddSection: jest.fn
+    onAddSection: jest.fn()
 };
 
 const addSections = jest.fn();
