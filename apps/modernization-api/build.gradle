@@ -22,7 +22,6 @@ jar {
 
 dependencies {
 
-    implementation project(':modernization-ui')
     implementation project(':accumulation')
     implementation project(':database-entities')
     implementation project(':event-schema')
@@ -129,7 +128,6 @@ processResources {
     }
 }
 
-compileJava.mustRunAfter(":modernization-ui:build")
 compileJava.mustRunAfter(":database-entities:build")
 compileJava.mustRunAfter(":event-schema:build")
 compileJava.mustRunAfter(":authentication:build")

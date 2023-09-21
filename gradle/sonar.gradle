@@ -40,14 +40,12 @@ tasks.register("codeCoverageReport", JacocoReport) {
 }
 
 subprojects {
-    if (!name.contains("-ui")) { 
-        apply plugin: 'org.sonarqube'
-        apply plugin: 'java'       
-        apply plugin: 'jacoco'
-        sonar {
-            properties {
-                property 'sonar.coverage.jacoco.xmlReportPaths', "$project.rootDir/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
-            }
+    apply plugin: 'org.sonarqube'
+    apply plugin: 'java'       
+    apply plugin: 'jacoco'
+    sonar {
+        properties {
+            property 'sonar.coverage.jacoco.xmlReportPaths', "$project.rootDir/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
         }
     }
 }

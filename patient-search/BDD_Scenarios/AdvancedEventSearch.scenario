@@ -1,6 +1,0 @@
-Background:
-Given I have logged in
-And that I have permissions to search
-And I am ready to search
-
-  Scenario: I can search for patients by events
