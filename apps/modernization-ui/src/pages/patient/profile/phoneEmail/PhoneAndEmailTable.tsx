@@ -29,6 +29,7 @@ import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { sortingByDate } from '../sortingByDate';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -104,7 +105,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
 
     const handleComplete = (data: PatientProfilePhoneEmailResult) => {
         setTotal(data?.findPatientProfile?.phones?.total ?? 0);
-        setPhoneEmail(data?.findPatientProfile?.phones?.content ?? []);
+        setPhoneEmail(sortingByDate(data?.findPatientProfile?.phones?.content || []) as Array<PatientPhone>);
     };
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfilePhoneAndEmail({ onCompleted: handleComplete });
