@@ -58,9 +58,8 @@ public class PageStateChanger {
             Optional<WaTemplate> result = templateRepository.findById(id);
             if (result.isPresent()) {
                 WaTemplate page = result.get();
-                if(page.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT))  {
-                response.setMessage(PageConstants.SAVE_DRAFT_NOCHANGE);
-                response.setTemplateId(page.getId());	
+                if(page.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT))  {	
+                throw new PageUpdateException(PageConstants.SAVE_DRAFT_NOCHANGE);
                 }
                 WaTemplate draftPage = createDraftCopy(page);
                 page.setTemplateType(PageConstants.PUBLISHED_WITH_DRAFT);
