@@ -85,5 +85,5 @@ export const AddTab = ({ onAddTab, onCancel }: Props) => {
         </div>
     );
 
-    return <div className="add-valueset">{renderTabForm}</div>;
+    return <div className="add-valueset add-tab">{renderTabForm}</div>;
 };

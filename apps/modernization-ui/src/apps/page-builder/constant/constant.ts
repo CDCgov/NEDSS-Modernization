@@ -76,4 +76,134 @@ const text = [
     }
 ];
 
-export { coded, text, dateOrNumeric, fieldType };
+const statusOptions = [
+    { label: 'Published', value: 'published' },
+    {
+        label: 'Draft',
+        value: 'Draft'
+    },
+    {
+        label: 'Published with draft',
+        value: 'PublishedWithDraft'
+    }
+];
+
+const eventYpeOption = [
+    { label: 'Investigation', value: 'Investigation' },
+    {
+        label: 'Contact record',
+        value: 'Contact record'
+    },
+    {
+        label: 'Interview',
+        value: 'Interview'
+    },
+    {
+        label: 'Lab isolate tracking',
+        value: 'Lab isolate tracking'
+    },
+    {
+        label: 'Lab report',
+        value: 'Lab report'
+    },
+    {
+        label: 'Lab susceptibility',
+        value: 'Lab susceptibility'
+    },
+    {
+        label: 'Lab susceptibility',
+        value: 'Vaccination'
+    }
+];
+
+const pageFieldList = [
+    {
+        name: 'Page Name',
+        value: 'PageName'
+    },
+    {
+        name: 'Event Type',
+        value: 'eventType'
+    },
+    {
+        name: 'Related Condition(s)',
+        value: 'relatedCondition'
+    },
+    {
+        name: 'Status',
+        value: 'status'
+    },
+    {
+        name: 'Last updated',
+        value: 'lastUpdated'
+    },
+    {
+        name: 'Last updated by',
+        value: 'lastUpdatedBy'
+    }
+];
+const initOperator = [
+    {
+        name: 'Starts with',
+        value: 'startsWith'
+    },
+    {
+        name: 'Contains',
+        value: 'contains'
+    },
+    {
+        name: 'Equals',
+        value: 'Equals'
+    },
+    {
+        name: 'Not equal to',
+        value: 'net'
+    }
+];
+
+const arithOperator = [
+    {
+        name: 'Equals',
+        value: 'Equals'
+    },
+    {
+        name: 'Not equal to',
+        value: 'net'
+    }
+];
+
+const dateOperator = [
+    {
+        name: 'Between',
+        value: 'btw'
+    },
+    {
+        name: 'Today',
+        value: 'today'
+    },
+    {
+        name: 'Yesterday',
+        value: 'yesterday'
+    },
+    {
+        name: 'Past 7 days ',
+        value: 'past 7 days '
+    },
+    {
+        name: 'Past 30 days ',
+        value: 'past 30 days '
+    }
+];
+
+export {
+    coded,
+    text,
+    dateOrNumeric,
+    fieldType,
+    statusOptions,
+    eventYpeOption,
+    pageFieldList,
+    arithOperator,
+    dateOperator,
+    initOperator
+};

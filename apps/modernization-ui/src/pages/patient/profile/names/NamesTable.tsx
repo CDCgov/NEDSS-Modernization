@@ -27,6 +27,7 @@ import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { sortingByDate } from 'sorting/sortingByDate';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -104,7 +105,7 @@ export const NamesTable = ({ patient }: Props) => {
 
     const handleComplete = (data: FindPatientProfileQuery) => {
         setTotal(data?.findPatientProfile?.names?.total ?? 0);
-        setNames(data?.findPatientProfile?.names?.content ?? []);
+        setNames(sortingByDate(data?.findPatientProfile?.names?.content || []) as Array<PatientName>);
     };
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfileNames({ onCompleted: handleComplete });

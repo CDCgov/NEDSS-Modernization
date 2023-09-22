@@ -25,6 +25,7 @@ import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { sortingByDate } from 'sorting/sortingByDate';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -76,7 +77,7 @@ export const RacesTable = ({ patient }: Props) => {
 
     const handleComplete = (data: PatientProfileRaceResult) => {
         setTotal(data?.findPatientProfile?.races?.total ?? 0);
-        setRaces(data?.findPatientProfile?.races?.content ?? []);
+        setRaces(sortingByDate(data?.findPatientProfile?.races?.content || []) as Array<PatientRace>);
     };
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfileRace({ onCompleted: handleComplete });

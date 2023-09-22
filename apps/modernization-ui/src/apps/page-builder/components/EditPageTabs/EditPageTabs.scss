@@ -37,6 +37,19 @@
         }
     }
 }
+.add-valueset.add-tab {
+    .form-container {
+        min-height: unset;
+    }
+    .add-tab-footer {
+        .cancel-btn {
+            margin-bottom: 24px;
+        }
+        padding: 24px;
+        margin: 20px -29px ;
+        border-top: 1px solid #cbc9c985;
+    }
+}
 
 .manage-tabs-header {
     display: flex;
