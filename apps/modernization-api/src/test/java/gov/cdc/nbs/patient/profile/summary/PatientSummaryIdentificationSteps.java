@@ -55,14 +55,18 @@ public class PatientSummaryIdentificationSteps {
         assertThat(this.exception).isInstanceOf(AccessDeniedException.class);
     }
 
-    @Then("the expected identifications are returned")
-    public void the_expected_identifications_are_returned() {
+    @Then("the summary identifications are in the correct order")
+    public void the_summary_identifications_are_in_the_correct_order() {
         Person person = this.entityManager.find(Person.class, summary.active().patient());
         List<EntityId> sortedList = new ArrayList<>();
         sortedList.addAll(person.identifications());
         sortedList.sort((a, b) -> a.getAsOfDate().isAfter(b.getAsOfDate()) ? -1 : 1);
         assertEquals(sortedList.get(0).getRootExtensionTxt(), summaryIdentifications.get(0).value());
         assertEquals(sortedList.get(1).getRootExtensionTxt(), summaryIdentifications.get(1).value());
+    }
+
+    @Then("only two summary identifications are returned")
+    public void only_two_summary_identifications_are_returned() {
         assertEquals(2, summaryIdentifications.size());
     }
 
