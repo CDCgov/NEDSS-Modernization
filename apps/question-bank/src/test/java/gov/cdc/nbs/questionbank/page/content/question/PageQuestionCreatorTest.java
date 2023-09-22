@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.question.exception.OrderQuestionException;
 import gov.cdc.nbs.questionbank.page.content.question.request.OrderQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.OrderQuestionResponse;
@@ -47,10 +48,27 @@ class PageQuestionCreatorTest {
     private EntityManager entityManager;
 
     @Mock
+    private UserDetailsProvider userDetailsProvider;
+
+    @Mock
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
     @InjectMocks
     private PageQuestionCreator contentManager;
+
+
+    @InjectMocks
+    private PageQuestionController pageQuestionController;
+
+    @Test
+    void orderQuestionTest() throws OrderQuestionException {
+
+
+        OrderQuestionRequest orderQuestionRequest = new OrderQuestionRequest(
+                123L, 2, 1,1, 3, 1);
+
+        assertThrows(NullPointerException.class, () -> pageQuestionController.orderQuestion(123L, orderQuestionRequest));
+    }
 
     @Test
     void should_add_question_to_page() {
