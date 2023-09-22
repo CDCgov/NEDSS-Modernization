@@ -1,14 +1,15 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# NBS Modernization Frontend
 
 ## Running
 
-1. In the `ui` directory, execute
+1. From the `apps/modernization-ui` directory, execute
+
     ```bash
     npm install
     ```
-1. Then execute to start the application. Default url is [http://localhost:3000](http://localhost:3000)
+
+2. Then execute to start the application. Default url is [http://localhost:3000](http://localhost:3000)
+
     ```bash
     npm run start
     ```
@@ -20,18 +21,26 @@ The UI code utilizes [gql-typescript-generator](https://github.com/TheBrainFamil
 Workflow:
 
 1. Update the API `.graphqls` schema files
-1. Run the following command in the `ui` folder while the [API](../api/README.md) is running
+2. Run the following command in the `modernization-ui` folder while the [API](../modernization-api/README.md) is running
     ```
     npm run generate
     ```
-1. Use the newly generated methods to make API calls from typescript
+3. Use the newly generated methods to make API calls from typescript
 
 ## Storybook
 
-Storybook is a component library thats gives inforation on how to use the reusable react components like button,checkbox, table and so on. Run storybook locally to see what components are already available.
+Storybook is a component library that gives information on how to use the reusable react components like button,checkbox, table and so on. Run storybook locally to see what components are already available.
 
 ```sh
 npm run storybook.
 ```
 
 The no lint option is to ensure there aren't any lint errors as of now. This could be an effort going forward.
+
+## Containerizing
+
+The frontend application can be packaged as a Docker container by executing the following command from the `apps/moderniztion-ui` directory
+
+```shell
+docker build .
+```
