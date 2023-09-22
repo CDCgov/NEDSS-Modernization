@@ -38,6 +38,10 @@ export const Query = gql`
                     zipcode
                     country
                 }
+                identification {
+                    type
+                    value
+                }
             }
         }
     }
@@ -65,6 +69,12 @@ type PatientSummaryPhone = { __typename: 'PatientSummaryPhone'; use: string; num
 
 type PatientSummaryEmail = { __typename: 'PatientSummaryEmail'; use: string; address: string };
 
+type PatientSummaryIdentification = {
+    __typename: 'PatientSummaryIdentification';
+    type: string;
+    value: string;
+};
+
 type PatientSummary = {
     __typename: 'PatientSummary';
     birthday: any | null;
@@ -75,6 +85,7 @@ type PatientSummary = {
     legalName: PatientLegalName | null;
     phone: PatientSummaryPhone[];
     email: PatientSummaryEmail[];
+    identification: PatientSummaryIdentification[];
     address: PatientSummaryAddress | null;
 };
 

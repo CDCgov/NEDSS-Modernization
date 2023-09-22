@@ -99,6 +99,14 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
                                 {summary.ethnicity ? display(summary.ethnicity) : noData}
                             </Grid>
                         </Grid>
+                        {summary.identification.map((id, key) => (
+                            <Grid key={key} col={3}>
+                                <Grid col={12} className="summary-value margin-top-3">
+                                    <h5 className="margin-right-1">{id.type}</h5>
+                                    {id.value}
+                                </Grid>
+                            </Grid>
+                        ))}
                     </Grid>
                 </div>
             )}
