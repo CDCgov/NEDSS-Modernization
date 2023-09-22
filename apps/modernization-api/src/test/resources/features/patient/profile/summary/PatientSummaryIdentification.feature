@@ -15,3 +15,12 @@ Feature: Patient Summary Identification
         Given I have the authorities: "NOTHING" for the jurisdiction: "ALL" and program area: "STD"
         When patient summary identifications are requested by patient summary
         Then the patient summary identifications are not accessible
+
+    Scenario: Patient summary identifications are limited to two entries and ordered by as of date
+        Given I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
+        And the patient has identification
+        And the patient has identification
+        And the patient has identification
+        When a patient summary is requested by patient identifier
+        And patient summary identifications are requested by patient summary
+        Then the expected identifications are returned
