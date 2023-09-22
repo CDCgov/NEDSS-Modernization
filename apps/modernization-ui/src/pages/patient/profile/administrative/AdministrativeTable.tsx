@@ -21,7 +21,7 @@ import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
-import { sortingByDate } from '../sortingByDate';
+import { sortingByDate } from 'sorting/sortingByDate';
 
 const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(addministrative?.asOf),

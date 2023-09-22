@@ -29,7 +29,7 @@ import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
-import { sortingByDate } from '../sortingByDate';
+import { sortingByDate } from 'sorting/sortingByDate';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
