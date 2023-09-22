@@ -7,6 +7,14 @@ on:
       - "apps/question-bank/**"
       - "libs/authentication/**"
       - "libs/id-generator/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/question-bank/**"
+      - "libs/authentication/**"
+      - "libs/id-generator/**"
+      - ".github/workflows/Build-and-deploy-page-builder-api.yaml"
 
 jobs:
   sonar_scan:
