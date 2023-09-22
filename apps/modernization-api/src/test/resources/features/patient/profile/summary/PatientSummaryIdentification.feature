@@ -16,20 +16,11 @@ Feature: Patient Summary Identification
         When patient summary identifications are requested by patient summary
         Then the patient summary identifications are not accessible
 
-    Scenario: Patient summary identifications are ordered by as of date
+    Scenario: Patient summary identifications are limited to two entries and ordered by as of date
         Given I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
         And the patient has identification
         And the patient has identification
         And the patient has identification
         When a patient summary is requested by patient identifier
         And patient summary identifications are requested by patient summary
-        Then the summary identifications are in the correct order
-
-    Scenario: Patient summary identifications are limited to two entries
-        Given I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
-        And the patient has identification
-        And the patient has identification
-        And the patient has identification
-        When a patient summary is requested by patient identifier
-        And patient summary identifications are requested by patient summary
-        Then only two summary identifications are returned
+        Then the expected identifications are returned
