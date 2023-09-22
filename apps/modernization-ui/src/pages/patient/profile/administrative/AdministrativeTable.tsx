@@ -21,6 +21,7 @@ import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
+import { sortingByDate } from 'sorting/sortingByDate';
 
 const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(addministrative?.asOf),
@@ -60,7 +61,9 @@ export const AdministrativeTable = ({ patient }: Props) => {
 
     const handleComplete = (data: PatientProfileAdministrativeResult) => {
         setTotal(data?.findPatientProfile?.administrative?.total ?? 0);
-        setAdministratives(data?.findPatientProfile?.administrative?.content || []);
+        setAdministratives(
+            sortingByDate(data?.findPatientProfile?.administrative?.content || []) as Array<PatientAdministrative>
+        );
     };
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfileAdministrative({ onCompleted: handleComplete });

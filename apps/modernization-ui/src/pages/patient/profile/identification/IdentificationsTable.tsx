@@ -6,6 +6,7 @@ import { Actions as ActionState } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { Identification, IdentificationEntry } from './identification';
 import {
+    PatientIdentification,
     useAddPatientIdentificationMutation,
     useDeletePatientIdentificationMutation,
     useUpdatePatientIdentificationMutation
@@ -27,6 +28,7 @@ import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { sortingByDate } from 'sorting/sortingByDate';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -79,7 +81,9 @@ export const IdentificationsTable = ({ patient }: Props) => {
 
     const handleComplete = (data: PatientIdentificationResult) => {
         setTotal(data?.findPatientProfile.identification?.total ?? 0);
-        setIdentifications(data?.findPatientProfile.identification?.content || []);
+        setIdentifications(
+            sortingByDate(data?.findPatientProfile?.identification?.content || []) as Array<PatientIdentification>
+        );
     };
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
