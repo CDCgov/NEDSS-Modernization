@@ -376,7 +376,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     className="field-space"
                     name="subgroup"
                     id="subgroup"
-                    onBlur={(value) => handleQuestionInput({ target: { value, name: 'subgroup' } })}
                     defaultValue={questionData.subgroup}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
@@ -567,7 +566,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     name="codeSystem"
                     disabled={!questionData.includedInMessage}
                     value={questionData.codeSystem}
-                    onBlur={(value) => handleQuestionInput({ target: { value, name: 'codeSystem' } })}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildCodeOptions(codeSystemOptionList)}
@@ -589,7 +587,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     id="hl7DataType"
                     defaultValue={questionData.hl7DataType}
                     disabled={!questionData.includedInMessage}
-                    onBlur={(value) => handleQuestionInput({ target: { value, name: 'hl7DataType' } })}
                     onChange={handleQuestionInput}>
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}

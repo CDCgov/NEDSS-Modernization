@@ -13,9 +13,11 @@ type Props = {
 const HorizontalEntryWrapper = ({ htmlFor, label, required, error, children }: Props) => (
     <Grid row>
         <Grid col={6}>
-            <Label className={classNames({ required })} htmlFor={htmlFor}>
-                {label}
-            </Label>
+            {label && (
+                <Label className={classNames({ required })} htmlFor={htmlFor}>
+                    {label}
+                </Label>
+            )}
             {error && <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>}
         </Grid>
         <Grid col={6}>{children}</Grid>

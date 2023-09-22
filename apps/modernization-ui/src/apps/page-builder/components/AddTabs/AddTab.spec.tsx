@@ -27,7 +27,9 @@ describe('<AddTab />', () => {
     it('Add button should initially be disabled', () => {
         const { container } = render(
             <BrowserRouter>
-                <AddTab {...props} />
+                <AlertProvider>
+                    <AddTab {...props} />
+                </AlertProvider>
             </BrowserRouter>
         );
         const btn = container.getElementsByClassName('usa-button')[0];
@@ -40,15 +42,16 @@ describe('<AddTab />', () => {
                 <AddTab {...props} />
             </AlertProvider>
         );
-
         expect(getByText('Cancel')).toBeInTheDocument();
     });
 
     it('should render a grid with 3 inputs labels which are Tab Name, Tab Description, Visible', () => {
         const { getByText } = render(
-            <AlertProvider>
-                <AddTab {...props} />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <AddTab {...props} />
+                </AlertProvider>
+            </BrowserRouter>
         );
         expect(getByText('Tab Name')).toBeInTheDocument();
         expect(getByText('Tab Description')).toBeInTheDocument();
@@ -110,14 +113,14 @@ describe('<AddTab />', () => {
     describe('when the cancel button is clicked', () => {
         it('should call onCancel', () => {
             const { getByText } = render(
-                <AlertProvider>
-                    <AddTab {...props} />
-                </AlertProvider>
+                <BrowserRouter>
+                    <AlertProvider>
+                       <AddTab {...props} />
+                    </AlertProvider>
+                </BrowserRouter>
             );
-
             const btn = getByText('Cancel');
             fireEvent.click(btn);
-
             expect(props.onCancel).toHaveBeenCalled();
         });
     });
