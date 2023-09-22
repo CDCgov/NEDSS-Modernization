@@ -9,9 +9,11 @@ type Props = {
     tableType: string;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
+    onDownloadIconClick?: () => void;
+    onPrintIconClick?: () => void;
 };
 
-export const TableMenu = ({ tableType, searchQuery, setSearchQuery }: Props) => {
+export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIconClick }: Props) => {
     const navigate = useNavigate();
     const [keywords, setKeywords] = useState<string>('');
     const addNew = () => {
@@ -45,7 +47,7 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery }: Props) => 
             <Button type="button" outline>
                 <Icon.Print size={3} />
             </Button>
-            <Button type="button" outline>
+            <Button type="button" outline onClick={onDownloadIconClick}>
                 <Icon.FileDownload size={3} />
             </Button>
             <Button type="button" onClick={addNew}>

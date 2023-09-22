@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { PageSummary } from 'apps/page-builder/generated';
+import { PageControllerService, PageSummary } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { asLocalDate } from 'date';
 import { useContext, useEffect, useState } from 'react';
@@ -109,6 +109,11 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
         }
         toSortString(name);
         setSortDirection(direction);
+    };
+
+    const handleDownloadCSV = (): void => {
+        console.log('Download CSV');
+        PageControllerService.downloadPagesCsv({ authorization: 'Bearer ' + localStorage.getItem('token') });
     };
 
     return (
