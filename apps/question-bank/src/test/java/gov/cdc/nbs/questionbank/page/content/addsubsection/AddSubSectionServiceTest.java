@@ -14,6 +14,7 @@ import gov.cdc.nbs.questionbank.page.content.subsection.response.OrderSubSection
 import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -150,6 +151,34 @@ class AddSubSectionServiceTest {
         assertEquals(expectedMessage, orderSubSectionResponse.message());
     }
 
+
+    @Test
+    void orderSubSectionSamePosition() throws OrderSubSectionException {
+
+        OrderSubSectionRequest orderSubSectionRequest = new OrderSubSectionRequest(100L, 1, 1, 2, 2);
+        List<Integer> orderNumberList = new ArrayList<>();
+        orderNumberList.add(3);
+        orderNumberList.add(58);
+        orderNumberList.add(116);
+        orderNumberList.add(157);
+
+        Mockito.when(waUiMetaDataRepository.getOrderNumberList(100L))
+                .thenReturn(orderNumberList);
+
+        Mockito.when(waUiMetaDataRepository.getSectionOrderNumberList(100L, 58, 116))
+                .thenReturn(orderNumberList);
+
+        Mockito.when(waUiMetaDataRepository.getSubSectionOrderNumberList(100L, 3, 58))
+                .thenReturn(orderNumberList);
+
+        Mockito.when(waUiMetaDataRepository.getMaxOrderNumber(100L))
+                .thenReturn(250);
+
+        assertThrows(OrderSubSectionException.class, () -> createSubSectionService.orderSubSection(
+                100L, orderSubSectionRequest));
+
+    }
+
     static Stream<Arguments> orderSubSectionTestParams() {
         return Stream.of(
                 Arguments.of(new OrderSubSectionRequest(123L, 2, 1, 1, 3), "The sub section is moved from 1 to 3 successfully"),
@@ -256,5 +285,34 @@ class AddSubSectionServiceTest {
                 Arguments.of(new OrderSubSectionRequest(456L, 2, 1, 3, 1), "The sub section is moved from 3 to 1 successfully"),
                 Arguments.of(new OrderSubSectionRequest(789L, 2, 1, 4, 1), "The sub section is moved from 4 to 1 successfully")
         );
+    }
+
+    @Test
+    void deleteSubSectionWithNbsUidTest() {
+
+        Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
+                .thenReturn(1);
+
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid(2, 123L))
+                .thenReturn(Optional.of(1010L));
+
+        DeleteSubSectionResponse deleteSubSectionResponse = createSubSectionService.deleteSubSection(123L, 123L);
+        assertEquals("SubSection Deleted Successfully", deleteSubSectionResponse.message());
+
+
+    }
+
+    @Test
+    void deleteSubSectionExceptionTest() {
+
+        Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
+                .thenReturn(1);
+
+        Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid(2, 123L))
+                .thenReturn(Optional.of(100L));
+
+
+        assertThrows(DeleteSubSectionException.class, () -> createSubSectionService.deleteSubSection(123L, 123L));
+
     }
 }
