@@ -7,7 +7,7 @@ on:
       - "apps/question-bank/**"
       - "libs/authentication/**"
       - "libs/id-generator/**"
-  push:
+  pull_request:
     branches:
       - main
     paths:
