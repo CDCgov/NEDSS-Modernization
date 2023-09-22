@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.content.addsubsection;
 
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.subsection.SubSectionCreator;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.AddSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.OrderSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
@@ -177,6 +178,11 @@ class AddSubSectionServiceTest {
         assertThrows(OrderSubSectionException.class, () -> createSubSectionService.orderSubSection(
                 100L, orderSubSectionRequest));
 
+    }
+
+    @Test
+    void createSubSectionServiceTestException() {
+        assertThrows(AddSubSectionException.class, () -> createSubSectionService.createSubSection(10L, 123L, null));
     }
 
     static Stream<Arguments> orderSubSectionTestParams() {
