@@ -5,11 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString
 @JsonInclude(Include.NON_NULL)
 public class PatientFilter {
 
@@ -26,6 +23,7 @@ public class PatientFilter {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @EqualsAndHashCode
     public static class Identification {
         private String identificationNumber;
         private String assigningAuthority;
@@ -68,4 +66,10 @@ public class PatientFilter {
         }
     }
 
+    public Identification getIdentification() {
+        if(this.identification == null) {
+            this.identification = new Identification();
+        }
+        return identification;
+    }
 }

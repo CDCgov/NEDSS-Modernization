@@ -49,7 +49,7 @@ class SearchablePatientConverterTest {
 
         assertThat(searchable.getEntityId()).satisfiesExactlyInAnyOrder(
             actual -> assertThat(actual)
-                .returns("identification-value", NestedEntityId::getRootExtensionTxt)
+                .returns("identificationvalue", NestedEntityId::getRootExtensionTxt)
                 .returns("identification-type", NestedEntityId::getTypeCd)
                 .returns("ACTIVE", NestedEntityId::getRecordStatusCd)
         );

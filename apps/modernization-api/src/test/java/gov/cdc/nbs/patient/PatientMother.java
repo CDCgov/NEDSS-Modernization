@@ -117,6 +117,34 @@ public class PatientMother {
         );
     }
 
+    public void withAddress(
+        final PatientIdentifier identifier,
+        final String address,
+        final String city,
+        final String state,
+        final String zip
+    ) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddAddress(
+                patient.getId(),
+                idGenerator.next(),
+                RandomUtil.getRandomDateInPast(),
+                address,
+                null,
+                city,
+                state,
+                zip,
+                null,
+                "840",
+                null,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
     public void withAddress(final PatientIdentifier identifier) {
         Person patient = managed(identifier);
 
@@ -140,18 +168,30 @@ public class PatientMother {
     }
 
     public void withIdentification(final PatientIdentifier identifier) {
+        withIdentification(
+                identifier,
+                RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
+                RandomUtil.getRandomNumericString(8)
+        );
+    }
+
+    public void withIdentification(
+            final PatientIdentifier identifier,
+            final String type,
+            final String value
+    ) {
         Person patient = managed(identifier);
 
         patient.add(
-            new PatientCommand.AddIdentification(
-                identifier.id(),
-                RandomUtil.getRandomDateInPast(),
-                RandomUtil.getRandomNumericString(8),
-                RandomUtil.maybeOneFrom("GA"),
-                RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
-                this.settings.createdBy(),
-                this.settings.createdOn()
-            )
+                new PatientCommand.AddIdentification(
+                        identifier.id(),
+                        RandomUtil.getRandomDateInPast(),
+                        value,
+                        RandomUtil.maybeOneFrom("GA"),
+                        type,
+                        this.settings.createdBy(),
+                        this.settings.createdOn()
+                )
         );
     }
 
@@ -231,9 +271,34 @@ public class PatientMother {
                 RandomUtil.getRandomString(),
                 faker.phoneNumber().cellPhone(),
                 faker.phoneNumber().extension(),
-                faker.internet().emailAddress(),
-                faker.internet().url(),
+                null,
+                null,
                 RandomUtil.getRandomString(),
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
+    public void withPhone(
+        final PatientIdentifier identifier,
+        final String number
+    ) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddPhone(
+                identifier.id(),
+                idGenerator.next(),
+                "PH",
+                "H",
+                RandomUtil.getRandomDateInPast(),
+                null,
+                number,
+                null,
+                null,
+                null,
+                null,
                 this.settings.createdBy(),
                 this.settings.createdOn()
             )
@@ -259,6 +324,31 @@ public class PatientMother {
                 this.settings.createdBy(),
                 this.settings.createdOn()
             )
+        );
+    }
+
+    public void withBirthday(
+        final PatientIdentifier identifier,
+        final LocalDate birthday
+    ) {
+        Person patient = managed(identifier);
+
+        patient.update(
+            new PatientCommand.UpdateBirth(
+                identifier.id(),
+                RandomUtil.getRandomDateInPast(),
+                birthday,
+                null,
+                RandomUtil.maybeIndicator(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            ),
+            this.addressIdentifierGenerator
         );
     }
 
