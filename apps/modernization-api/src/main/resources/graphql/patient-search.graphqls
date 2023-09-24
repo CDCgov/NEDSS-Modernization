@@ -58,14 +58,6 @@ type PatientSearchResultIdentification {
     value: String!
 }
 
-type PersonIdentification {
-    typeDescTxt: String
-    typeCd: String
-    rootExtensionTxt: String
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-}
-
 type PersonName {
     firstNm: String
     middleNm: String
@@ -116,7 +108,6 @@ type Person {
     id: ID
     identification: [PatientSearchResultIdentification!]!
     nbsEntity: NBSEntity!
-    entityIds: [PersonIdentification]
     names: [PersonName]
     addReasonCd: String
     addTime: DateTime
