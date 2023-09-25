@@ -45,10 +45,8 @@ public class DeleteInvestigationSteps {
     @Qualifier("classic")
     MockRestServiceServer server;
 
-
     @Before
     public void reset() {
-        activeResponse.reset();
         server.reset();
     }
 
@@ -56,43 +54,35 @@ public class DeleteInvestigationSteps {
     public void an_investigation_is_deleted_from_classic_nbs() throws Exception {
 
         server.expect(
-                requestTo(classicUrl + "/nbs/PageAction.do")
-            )
-            .andExpect(method(HttpMethod.POST))
-            .andExpect(
-                content().formDataContains(
-                    Map.of(
-                        "ContextAction", "FileSummary",
-                        "method", "deleteSubmit",
-                        "other-data", "value"
-                    )
-                )
-            )
-            .andRespond(withSuccess())
-        ;
+                requestTo(classicUrl + "/nbs/PageAction.do"))
+                .andExpect(method(HttpMethod.POST))
+                .andExpect(
+                        content().formDataContains(
+                                Map.of(
+                                        "ContextAction", "FileSummary",
+                                        "method", "deleteSubmit",
+                                        "other-data", "value")))
+                .andRespond(withSuccess());
 
         long patient = patients.one();
 
         SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
 
-
         activeResponse.active(
-            mvc
-                .perform(
-                    MockMvcRequestBuilders.post("/nbs/redirect/patient/investigation/delete")
-                        .param("ContextAction", "FileSummary")
-                        .param("method", "deleteSubmit")
-                        .param("other-data", "value")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .cookie(session.asCookie())
-                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient)))
+                mvc
+                        .perform(
+                                MockMvcRequestBuilders.post("/nbs/redirect/patient/investigation/delete")
+                                        .param("ContextAction", "FileSummary")
+                                        .param("method", "deleteSubmit")
+                                        .param("other-data", "value")
+                                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                        .cookie(session.asCookie())
+                                        .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
 
-                )
-                .andReturn()
-                .getResponse()
-        );
+                        )
+                        .andReturn()
+                        .getResponse());
     }
-
 
     @Then("the investigation delete is submitted to Classic NBS")
     public void the_investigation_delete_is_submitted_to_classic_nbs() {

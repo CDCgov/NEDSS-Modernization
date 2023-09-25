@@ -157,7 +157,6 @@ export const TableComponent = ({
             </th>
         );
     };
-
     const isSorting = (header: string) => sortState[header] !== Direction.None;
 
     const resolveDetailStyle = (detail: TableDetail, index: number) => {

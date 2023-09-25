@@ -926,6 +926,11 @@ type PatientSummaryEmail {
     address: String
 }
 
+type PatientSummaryIdentification {
+    type: String!
+    value: String!
+}
+
 type PatientSummary {
     legalName: PatientLegalName
     birthday: Date
@@ -933,9 +938,10 @@ type PatientSummary {
     gender: String
     ethnicity: String
     race: String
+    identification: [PatientSummaryIdentification!]
     phone: [PatientSummaryPhone!]
     email: [PatientSummaryEmail!]
-    address: PatientSummaryAddress
+    address: PatientSummaryAddress    
 }
 
 type PatientLegalName {
@@ -1127,6 +1133,8 @@ type PatientGender {
     preferred: PatientPreferredGender
     additional: String
 }
+
+
 
 type PatientIdentificationType {
     id: String!
