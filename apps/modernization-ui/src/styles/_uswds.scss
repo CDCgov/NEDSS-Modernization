@@ -38,7 +38,11 @@ table.usa-table {
                 .usa-modal__main {
                     .usa-modal__footer {
                         margin-top: 0;
+<<<<<<< HEAD
                         border-top: $border-medium;
+=======
+                        border-top: 1px solid $color-base-lighter;
+>>>>>>> 211b1262 (CNFT2-1164 Reorder button and sections modal)
                     }
                 }
             }

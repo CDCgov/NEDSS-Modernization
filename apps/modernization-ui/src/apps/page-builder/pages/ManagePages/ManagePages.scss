@@ -3,7 +3,11 @@
 .manage-pages {
     position: relative;
     border-radius: 5px;
+<<<<<<< HEAD
     border: $border-medium;
+=======
+    border: 1px solid $color-base-lighter;
+>>>>>>> 211b1262 (CNFT2-1164 Reorder button and sections modal)
     .manage-pages__container {
         display: flex;
         flex-direction: row;
