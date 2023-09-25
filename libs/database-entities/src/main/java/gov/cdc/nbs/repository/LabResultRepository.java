@@ -15,7 +15,7 @@ public interface LabResultRepository extends JpaRepository<LabResult, LabResultI
     @Query("SELECT lr FROM LabResult lr WHERE lr.organismNameInd = 'N' AND (lr.labResultDescTxt like %:searchString% OR lr.id.labResultCd like %:searchString%)")
     Page<LabResult> findLabResults(@Param("searchString") String searchString, Pageable pageable);
 
-    @Query("SELECT DISTINCT lr.labResultDescTxt FROM LabResult lr WHERE lr.organismNameInd = 'N' AND (lr.labResultDescTxt like %:searchString% OR lr.id.labResultCd like %:searchString%)")
+    @Query("SELECT DISTINCT lr.labResultDescTxt FROM LabResult lr WHERE lr.organismNameInd = 'N' AND (lr.labResultDescTxt like :searchString% OR lr.id.labResultCd like :searchString%)")
     Page<String> findDistinctLabResults(@Param("searchString") String searchString, Pageable pageable);
 
 }
