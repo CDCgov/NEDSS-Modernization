@@ -58,12 +58,13 @@ public class PageDownloader {
 			for (WaTemplate page : pages) {
 				List<ConditionCode> pageConditions = new ArrayList<>();
 
-				mappings.stream().filter(p -> p.getWaTemplateUid().equals(page)).collect(Collectors.toList())
-						.forEach(v -> 
-							conditionCodes.stream()
-                                    .filter(c -> c.getId().equals(v.getConditionCd()))
-									.forEach(pageConditions::add)
-						);
+				mappings.stream()
+                .filter(p -> p.getWaTemplateUid().equals(page))
+                .forEach(v -> 
+                    conditionCodes.stream()
+                            .filter(c -> c.getId().equals(v.getConditionCd()))
+                            .forEach(pageConditions::add)
+                );
 				
 				List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
 						formatttedRelatedConditions(pageConditions), page.getLastChgTime().toString(),
