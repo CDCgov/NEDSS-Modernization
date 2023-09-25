@@ -21,7 +21,6 @@ import gov.cdc.nbs.service.SecurityService;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -664,24 +663,10 @@ class InvestigationQueryBuilderTest {
                 .filter(field -> Objects.equals(field.fieldName(), name))
                 .findFirst();
 
-            assertThat(first).hasValueSatisfying(terms -> assertThat(terms.values()).contains(values));
+            assertThat(first).hasValueSatisfying(terms -> assertThat(terms.values()).contains((Object[]) values));
         } else {
             Assertions.fail();
         }
-    }
-
-
-    private ExistsQueryBuilder findExistsQueryBuilder(String path, List<QueryBuilder> builders) {
-        var optional = builders.stream()
-            .filter(m -> {
-                if (m instanceof ExistsQueryBuilder mq)
-                    return mq.fieldName().equals(path);
-                return false;
-            })
-            .findFirst()
-            .map(m -> (ExistsQueryBuilder) m);
-        assertNotNull(optional);
-        return optional.get();
     }
 
     @Test
