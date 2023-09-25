@@ -1,36 +1,46 @@
 package gov.cdc.nbs.patient.profile.redirect;
 
+import gov.cdc.nbs.web.AddCookie;
+import gov.cdc.nbs.web.FindCookie;
+import gov.cdc.nbs.web.RemoveCookie;
 import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.Cookie;
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public record ReturningPatientCookie(String patient) {
+public record ReturningPatientCookie(String name, String patient) {
 
-    private static final String RETURNING_PATIENT_COOKIE = "Returning-Patient";
-
-    public static ReturningPatientCookie empty() {
-        return new ReturningPatientCookie("");
-    }
+    private static final String COOKIE_NAME = "Return-Patient";
+    private static final ReturningPatientCookie EMPTY = new ReturningPatientCookie("");
 
     public static Optional<ReturningPatientCookie> resolve(final Cookie[] cookies) {
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(RETURNING_PATIENT_COOKIE)) {
-                    String identifier = cookie.getValue();
-                    return Optional.of(new ReturningPatientCookie(identifier));
-                }
-            }
-        }
-        return Optional.empty();
+        return FindCookie.in(COOKIE_NAME, cookies)
+                .map(cookie -> new ReturningPatientCookie(COOKIE_NAME, cookie.getValue()));
     }
+
+    public static ReturningPatientCookie empty() {
+        return EMPTY;
+    }
+
+
+    public ReturningPatientCookie(String patient) {
+        this(COOKIE_NAME, patient);
+    }
+
 
     public ReturningPatientCookie(final long patient) {
         this(String.valueOf(patient));
     }
 
-    public void apply(final HttpHeaders headers) {
-        String value = RETURNING_PATIENT_COOKIE + "=" + patient + "; Path=/nbs/; SameSite=Strict; HttpOnly";
-        headers.add(HttpHeaders.SET_COOKIE, value);
+    public Consumer<HttpHeaders> apply() {
+        return headers -> {
+            if (patient().isBlank()) {
+                RemoveCookie.from(name(), headers);
+            } else {
+                AddCookie.to(name(), patient(), headers);
+            }
+        };
     }
+
 }

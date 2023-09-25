@@ -1,4 +1,4 @@
-@patient-profile-incoming-redirect
+@patient-profile-incoming-redirect @web-interaction
 Feature: NBS Classic Patient Profile redirects to modernized Patient Profile
 
   Scenario: A user in NBS Classic is navigating to a Master Patient Profile
