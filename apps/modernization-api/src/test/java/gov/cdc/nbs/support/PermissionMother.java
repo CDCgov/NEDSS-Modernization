@@ -2,7 +2,6 @@ package gov.cdc.nbs.support;
 
 import gov.cdc.nbs.authentication.entity.AuthAudit;
 import gov.cdc.nbs.authentication.entity.AuthPermSet;
-import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 
 import java.time.Instant;
 
