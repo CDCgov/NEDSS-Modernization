@@ -4,7 +4,7 @@
  * @param {string} fileName
  * @return {void}
  */
-export const downloadAsCsv = ({ data, fileName }: { data: BlobPart; fileName: string }) => {
+export const downloadAsCsv = ({ data, fileName }: { data: any; fileName: string }) => {
     const blob = new Blob([data], { type: 'text/csv' });
     const a = document.createElement('a');
     a.download = fileName;
