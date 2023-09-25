@@ -13,10 +13,7 @@
     justify-content: center;
     .page-builder__content {
         height: 100%;
-        // width: calc(100% - 252px);
         position: relative;
         width: 100%;
-        border-radius: 5px;
-        border: 1px solid $color-base-lighter;
     }
 }

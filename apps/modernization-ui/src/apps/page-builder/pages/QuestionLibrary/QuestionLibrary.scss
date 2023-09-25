@@ -2,6 +2,8 @@
 
 .question-local-library {
   background-color: $color-white;
+  border-radius: 5px;
+  border: 1px solid $color-base-lighter;
   h2 {
     margin: 0;
   }

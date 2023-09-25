@@ -12,5 +12,5 @@ export const SampleBannerIcon = Template.bind({});
 SampleBannerIcon.args = {
     className: 'custom-class',
     alt: 'img',
-    src: '/icon-dot-gov.svg'
+    src: '/icons/icon-dot-gov.svg'
 };

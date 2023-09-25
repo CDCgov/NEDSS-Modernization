@@ -5,6 +5,7 @@ import './Subsection.scss';
 import { Question } from '../Question/Question';
 import { PageSubSection } from 'apps/page-builder/generated';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
+import { Icon as IconComponent } from 'components/Icon/Icon';
 
 export const SubsectionComponent = ({ subsection }: { subsection: PageSubSection }) => {
     const [open, setOpen] = useState(true);
@@ -24,7 +25,7 @@ export const SubsectionComponent = ({ subsection }: { subsection: PageSubSection
                             <Icon.Edit size={3} /> Edit Subsection
                         </Button>
                         <Button type="button" onClick={() => console.log('BLAH')}>
-                            <img src="/group.svg" /> Group Subsection
+                            <IconComponent name={'group'} size={'s'} /> Group Subsection
                         </Button>
                         <Button type="button" onClick={() => console.log('BLAH')}>
                             <Icon.Delete size={3} /> Delete

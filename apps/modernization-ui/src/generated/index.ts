@@ -22,7 +22,6 @@ export type { LoginResponse } from './models/LoginResponse';
 export type { Me } from './models/Me';
 export type { PageBuilder } from './models/PageBuilder';
 export { ProviderFacilitySearch } from './models/ProviderFacilitySearch';
-export type { Ui } from './models/Ui';
 
 export { ConfigurationControllerService } from './services/ConfigurationControllerService';
 export { EncryptionControllerService } from './services/EncryptionControllerService';

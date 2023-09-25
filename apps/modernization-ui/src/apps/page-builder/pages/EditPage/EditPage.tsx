@@ -14,6 +14,7 @@ import AddSectionModal from 'apps/page-builder/components/AddSection/AddSectionM
 import { ModalRef } from '@trussworks/react-uswds';
 import { Spinner } from 'components/Spinner/Spinner';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+import { ReorderModal } from './ReorderModal/ReorderModal';
 
 export const EditPage = () => {
     const { pageId } = useParams();
@@ -23,6 +24,7 @@ export const EditPage = () => {
     const [tabs, setTabs] = useState<PageTab[] | undefined>();
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
+    const reorderModalRef = useRef<ModalRef>(null);
     const [alertType, setAlertType] = useState<string>('');
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
@@ -92,7 +94,8 @@ export const EditPage = () => {
                                     onAddSection={handleAddSuccess}
                                 />
                             ) : null}
-                            <EditPageSidebar modalRef={addSectionModalRef} />
+
+                            <EditPageSidebar modalRef1={addSectionModalRef} modalRef2={reorderModalRef} />
                         </div>
                     </div>
                 </div>
@@ -106,6 +109,9 @@ export const EditPage = () => {
                     tabId={page.pageTabs[active]?.id}
                     onAddSection={handleAddSuccess}
                 />
+            ) : null}
+            {page && page.Name && page.pageTabs?.[active] ? (
+                <ReorderModal modalRef={reorderModalRef} pageName={page.Name} content={page.pageTabs[active]} />
             ) : null}
         </PageBuilder>
     );

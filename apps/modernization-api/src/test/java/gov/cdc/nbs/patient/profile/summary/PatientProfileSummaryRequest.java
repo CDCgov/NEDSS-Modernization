@@ -30,8 +30,19 @@ class PatientProfileSummaryRequest {
             gender
             ethnicity
             races
+            home {
+              use
+              address
+              address2
+              city
+              state
+              zipcode
+              country
+            }
             address {
-              street
+              use
+              address
+              address2
               city
               state
               zipcode

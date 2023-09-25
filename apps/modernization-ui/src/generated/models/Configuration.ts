@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Ui } from './Ui';
+import type { Features } from './Features';
 
 export type Configuration = {
-    ui?: Ui;
+    features?: Features;
 };
 

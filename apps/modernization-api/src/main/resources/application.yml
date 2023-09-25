@@ -20,6 +20,10 @@ nbs:
   datasource:
     server: localhost
     port: 1433
+  search:
+    patient:
+      results:
+        max: 25
 
 logging:
   file.path: ./log/

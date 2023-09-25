@@ -380,7 +380,7 @@ export const AdvancedSearch = () => {
                                 type={'button'}
                                 onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
                                 Add new
-                                <img src={'/down-arrow-white.svg'} />
+                                <img src={'/icons/down-arrow-white.svg'} />
                             </Button>
                             {showAddNewDropDown && (
                                 <ul
@@ -486,8 +486,8 @@ export const AdvancedSearch = () => {
                                                     investigationData?.content?.length === 0) &&
                                                 (!labReportData?.content || labReportData?.content?.length === 0) &&
                                                 (!patientData?.content || patientData?.content?.length === 0)
-                                                    ? '/down-arrow-white.svg'
-                                                    : '/down-arrow-blue.svg'
+                                                    ? '/icons/down-arrow-white.svg'
+                                                    : '/icons/down-arrow-blue.svg'
                                             }
                                         />
                                     </Button>

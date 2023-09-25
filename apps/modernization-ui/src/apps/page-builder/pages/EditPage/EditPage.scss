@@ -17,9 +17,10 @@
         align-items: center;
         position: relative;
         .edit-page__content {
+            display: flex;
+            justify-content: center;
             margin-top: 1.2rem;
             width: 100%;
-            max-width: 960px;
             height: 100%;
         }
     }

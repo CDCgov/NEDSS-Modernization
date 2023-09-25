@@ -2,6 +2,8 @@
 
 .manage-pages {
     position: relative;
+    border-radius: 5px;
+    border: 1px solid $color-base-lighter;
     .manage-pages__container {
         display: flex;
         flex-direction: row;

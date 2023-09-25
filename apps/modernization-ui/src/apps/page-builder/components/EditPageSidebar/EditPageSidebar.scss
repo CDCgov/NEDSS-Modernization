@@ -7,16 +7,10 @@
     position: absolute;
     top: 1.2rem;
     right: 0;
-    width: 10rem;
-    min-height: 15rem;
-
-    .item {
-        text-decoration: none;
-    }
-
-    .item-text {
+    width: 12rem;
+    .edit-page-sidebar__button {
         margin: 0;
-        padding: 24px 16px;
+        padding: 1rem 1.2rem;
         color: #000;
         text-decoration: none;
         font-size: 16px;
@@ -27,7 +21,7 @@
         display: flex;
         align-items: center;
 
-        .item-label {
+        .edit-page-sidebar__button--label {
             margin-left: 16px;
         }
     }
