@@ -1,8 +1,20 @@
 package gov.cdc.nbs.patient.search;
 
 
-import gov.cdc.nbs.entity.elasticsearch.*;
-import gov.cdc.nbs.entity.odse.*;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
+import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
+import gov.cdc.nbs.entity.elasticsearch.NestedEntityId;
+import gov.cdc.nbs.entity.elasticsearch.NestedName;
+import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
+import gov.cdc.nbs.entity.elasticsearch.NestedRace;
+import gov.cdc.nbs.entity.odse.EntityId;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonName;
+import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.PostalLocator;
+import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.TeleLocator;
 import org.apache.commons.codec.language.Soundex;
 
 import java.util.ArrayList;
