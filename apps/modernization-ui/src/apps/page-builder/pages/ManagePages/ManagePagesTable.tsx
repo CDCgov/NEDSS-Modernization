@@ -8,6 +8,8 @@ import './ManagePagesTable.scss';
 import { TableMenu } from 'apps/page-builder/components/TableMenu/TableMenu';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { Link } from 'react-router-dom';
+import { UserContext } from 'user';
+import { downloadAsCsv } from 'utils/downloadAsCsv';
 
 export enum Column {
     PageName = 'Page name',
@@ -36,6 +38,8 @@ type Props = {
 export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElements }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
+    const { state } = useContext(UserContext);
+    const token = `Bearer ${state.getToken()}`;
 
     const asTableRow = (page: PageSummary): TableBody => ({
         id: page.name,
@@ -111,9 +115,9 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
         setSortDirection(direction);
     };
 
-    const handleDownloadCSV = (): void => {
-        console.log('Download CSV');
-        PageControllerService.downloadPagesCsv({ authorization: 'Bearer ' + localStorage.getItem('token') });
+    const handleDownloadCSV = async () => {
+        const file = await PageControllerService.downloadPagesCsv({ authorization: token });
+        downloadAsCsv({ data: file, fileName: 'PageLibrary.csv' });
     };
 
     return (
@@ -127,7 +131,14 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
             currentPage={currentPage}
             handleNext={setCurrentPage}
             sortData={handleSort}
-            buttons={<TableMenu tableType="page" searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}
+            buttons={
+                <TableMenu
+                    tableType="page"
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    onDownloadIconClick={handleDownloadCSV}
+                />
+            }
             rangeSelector={true}
         />
     );

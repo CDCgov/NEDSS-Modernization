@@ -47,7 +47,7 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
             <Button type="button" outline>
                 <Icon.Print size={3} />
             </Button>
-            <Button type="button" outline onClick={onDownloadIconClick}>
+            <Button type="button" outline onClick={onDownloadIconClick} data-testid="file-download">
                 <Icon.FileDownload size={3} />
             </Button>
             <Button type="button" onClick={addNew}>
