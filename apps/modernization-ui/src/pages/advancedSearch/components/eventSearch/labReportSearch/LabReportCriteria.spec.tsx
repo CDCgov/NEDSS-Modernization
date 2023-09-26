@@ -1,8 +1,7 @@
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { LabReportFilter } from 'generated/graphql/schema';
 import { useForm } from 'react-hook-form';
 import { LabReportCriteriaFields } from './LabReportCriteria';
-import userEvent from '@testing-library/user-event';
 
 const LabCriteriaFieldsWithForm = () => {
     const labReportForm = useForm<LabReportFilter>({ defaultValues: {} });
