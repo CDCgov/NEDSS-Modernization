@@ -1,4 +1,5 @@
 import { Checkbox, ErrorMessage, Label } from '@trussworks/react-uswds';
+import { AutoCompleteInput } from 'components/AutoCompleteInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -394,13 +395,11 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                             control={form.control}
                             name="createdBy"
                             render={({ field: { onChange, value, name } }) => (
-                                <SelectInput
+                                <AutoCompleteInput
                                     name={name}
-                                    value={value as string | undefined}
+                                    value={value}
                                     onChange={onChange}
                                     label="Event created by user"
-                                    htmlFor={name}
-                                    dataTestid={name}
                                     options={searchCriteria.userResults.map((user) => {
                                         return {
                                             name: `${user.userLastNm}, ${user.userFirstNm}`,
@@ -414,13 +413,11 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                             control={form.control}
                             name="lastUpdatedBy"
                             render={({ field: { onChange, value, name } }) => (
-                                <SelectInput
+                                <AutoCompleteInput
                                     name={name}
                                     value={value as string | undefined}
                                     onChange={onChange}
                                     label="Event updated by user"
-                                    htmlFor={name}
-                                    dataTestid={name}
                                     options={searchCriteria.userResults.map((user) => {
                                         return {
                                             name: `${user.userLastNm}, ${user.userFirstNm}`,
