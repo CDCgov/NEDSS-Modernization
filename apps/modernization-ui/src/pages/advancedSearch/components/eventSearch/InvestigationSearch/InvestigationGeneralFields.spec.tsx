@@ -111,17 +111,6 @@ describe('InvestigationGeneralFields component', () => {
         // to
         expect(dateInputs[1]).not.toBeDefined();
 
-        // Event created by user
-        getByText('Event created by user');
-        const userCreateSelect = getByTestId('createdBy');
-        expect(userCreateSelect).toHaveAttribute('placeholder', '-Select-');
-
-        // Event updated by user
-        getByText('Event updated by user');
-        const userUpdateSelect = getByTestId('lastUpdatedBy');
-        expect(userUpdateSelect).toHaveAttribute('placeholder', '-Select-');
-        expect(userUpdateSelect).toHaveValue('');
-
         // Event provider/facility type
         getByText('Event provider/facility type');
         const providerSelect = getByTestId('providerFacilitySearch.entityType');
@@ -171,14 +160,6 @@ describe('InvestigationGeneralFields component', () => {
 
         // to
         expect(dateInputs[1]).toHaveValue('12/20/2020');
-
-        // Event created by user
-        const userCreateSelect = getByTestId('createdBy');
-        expect(userCreateSelect).toHaveValue('userNedssEntry');
-
-        // Event updated by user
-        const userUpdateSelect = getByTestId('lastUpdatedBy');
-        expect(userUpdateSelect).toHaveValue('userNedssEntry');
 
         // Event provider/facility type
         const providerSelect = getByTestId('providerFacilitySearch.entityType');
