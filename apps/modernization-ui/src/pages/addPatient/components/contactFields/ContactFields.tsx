@@ -44,6 +44,8 @@ export default function ContactFields({ id, title }: Props) {
                                     defaultValue={value}
                                     id="homePhone"
                                     error={error?.message}
+                                    mask="___-___-____"
+                                    pattern="\d{3}-\d{3}-\d{4}"
                                 />
                             )}
                         />
@@ -67,6 +69,8 @@ export default function ContactFields({ id, title }: Props) {
                                     defaultValue={value}
                                     id="workPhone"
                                     error={error?.message}
+                                    mask="___-___-____"
+                                    pattern="\d{3}-\d{3}-\d{4}"
                                 />
                             )}
                         />
@@ -109,6 +113,8 @@ export default function ContactFields({ id, title }: Props) {
                                         defaultValue={value}
                                         id={name}
                                         error={error?.message}
+                                        mask="___-___-____"
+                                        pattern="\d{3}-\d{3}-\d{4}"
                                     />
                                 )}
                             />

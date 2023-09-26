@@ -4,6 +4,15 @@
     border-left: 2px solid $color-secondary-dark;
     padding-left: 1rem;
 }
-input.usa-input--error:focus{
+input.usa-input--error:focus {
     outline: none;
+}
+.usa-input-mask {
+    .usa-input-mask--content {
+        display: none;
+    }
+    .masked-input {
+        background-color: white;
+        cursor: text;
+    }
 }
