@@ -12,7 +12,7 @@ Prior to creating a pull request:
    - All tests should pass
    - The [Jacoco report](../build/reports/jacoco/codeCoverageReport/html/index.html) should show proper test coverage
 
-It is recommended to create all new pull requests as a `Draft` and perform a self review prior to notifying a reviewer. Once the self review is complete, verify the sonar scans completed successfully. At this point the PR should be marked as `ready for review` and the appropriate reviewer be notified.
+It is recommended to create all new pull requests as a `Draft` and perform a self review prior to notifying a reviewer. Once the self review is complete, verify the sonar scans completed successfully. At this point the PR should be marked as `ready for review` and the appropriate reviewer notified.
 
 ## Reviewing a Pull Request
 
