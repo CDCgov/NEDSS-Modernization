@@ -25,6 +25,7 @@ jobs:
       microservice_name: modernization-api
       dockerfile_relative_path: -f ./apps/modernization-api/Dockerfile .
       environment_classifier: SNAPSHOT
+      java_version: "17"
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
       ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}

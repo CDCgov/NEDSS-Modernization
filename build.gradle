@@ -15,8 +15,9 @@ buildscript {
     }
 }
 
+
 plugins {
-    id 'java'
+    id 'java-library'
     id 'jacoco'
     id "org.sonarqube" version "4.0.0.2929"
 }
@@ -30,6 +31,15 @@ subprojects {
         mavenCentral()
         maven {
             url "https://packages.confluent.io/maven"
+        }
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
         }
     }
 }
