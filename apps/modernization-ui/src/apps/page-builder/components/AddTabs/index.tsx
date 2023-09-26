@@ -32,7 +32,7 @@ export const AddTab = ({ onAddTab, onCancel }: Props) => {
                     authorization: token,
                     request: {
                         name: tabDetails.name,
-                        description: tabDetails.desc,
+                        // description: tabDetails.desc,
                         visible: tabDetails.visible
                     }
                 });

@@ -81,10 +81,9 @@ describe('AddSectionModal', () => {
 
                 expect(mockAddSectionUsingPost).toHaveBeenCalledWith({
                     authorization: 'Bearer undefined',
-                    pageId: '10056',
+                    page: 10056,
                     request: {
                         name: 'Test Section',
-                        description: '',
                         visible: true,
                         tabId: 5
                     }

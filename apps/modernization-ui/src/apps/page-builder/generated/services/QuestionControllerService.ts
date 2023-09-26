@@ -174,7 +174,7 @@ export class QuestionControllerService {
         /**
          * request
          */
-        request: UpdateQuestionRequest | any,
+        request: UpdateQuestionRequest,
     }): CancelablePromise<Question | any> {
         return __request(OpenAPI, {
             method: 'PUT',
