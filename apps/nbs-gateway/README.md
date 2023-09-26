@@ -1,10 +1,11 @@
-# NEDSS-Modernization NBS Gateway
+# National Electronic Disease Surveillance System (NEDSS) Modernization NBS Gateway
 
 An entry point for the Classic NBS Application that allows a Strangler Fig approach to piecemeal modernization.
 
 ## Running
 
-The NBS Gateway is a Spring Cloud Gateway application that runs on port `8000` by default. It can be started from the root directory by executing;
+The NBS Gateway is a Spring Cloud Gateway application that runs on port `8000` by default. It can be started from the
+root directory by executing;
 
 ```bash
 ./gradlew nbs-gateway:bootRun
@@ -42,16 +43,18 @@ docker compose build nbs-gateway
 ## Configuration
 
 Spring Config allows configuration values to be overwritten at runtime. Values can be set through Java System Variables,
-Environment Variable,and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference/html/features.html#features.external-config). The default profile contains the following properties configuration most likely to change.
+Environment
+Variable,and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference/html/features.html#features.external-config).
+The default profile contains the following properties configuration most likely to change.
 
-| Name                                 | Default                 | Description                                                                          |
-|--------------------------------------|-------------------------|--------------------------------------------------------------------------------------|
-| nbs.gateway.defaults.protocol        | `http`                  | The default protocol used to connect to services.  Intra-pod communication is `http` |
-| nbs.gateway.classic                  | `http://localhost:7001` | The URI location of the classic NBS Application                                      |
-| nbs.gateway.patient.search.enabled   | `true`                  | Enables the Patient Search routing                                                   |
-| nbs.gateway.patient.search.service   | `localhost:8080`        | The host name of the Patient Search service                                          |
-| nbs.gateway.patient.profile.enabled  | `true`                  | Enables the Patient Profile routing                                                  |
-| nbs.gateway.patient.profile.service  | `localhost:8080`        | The host name of the Patient Profile service                                         |
+| Name                                | Default                 | Description                                                                          |
+|-------------------------------------|-------------------------|--------------------------------------------------------------------------------------|
+| nbs.gateway.defaults.protocol       | `http`                  | The default protocol used to connect to services.  Intra-pod communication is `http` |
+| nbs.gateway.classic                 | `http://localhost:7001` | The URI location of the classic NBS Application                                      |
+| nbs.gateway.patient.search.enabled  | `true`                  | Enables the Patient Search routing                                                   |
+| nbs.gateway.patient.search.service  | `localhost:8080`        | The host name of the Patient Search service                                          |
+| nbs.gateway.patient.profile.enabled | `true`                  | Enables the Patient Profile routing                                                  |
+| nbs.gateway.patient.profile.service | `localhost:8080`        | The host name of the Patient Profile service                                         |
 
 ### Configuring the Reverse Proxy to use local nbs-gateway
 
