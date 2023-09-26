@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,8 @@ public class PageDownloaderSteps {
 	    private ExceptionHolder exceptionHolder;
 	    
 	    private ResponseEntity<Resource> download;
+	private ResponseEntity<byte[]> downloadPdf;
+
 	    
 	    @Given("I am an admin user make an download page library request")
 	    public  void i_am_an_admin_user_make_an_download_page_library_request() {
@@ -67,7 +70,30 @@ public class PageDownloaderSteps {
 	    	assertTrue(download.getHeaders().getContentType().toString().contains("application/csv"));
 	    	
 	    }
-	    
+
+	@When("I make a request to download page library as pdf")
+	public void i_make_a_request_to_download_page_library_pdf() {
+		try {
+			downloadPdf = pageController.downloadPageLibraryPDF();
+		} catch (AccessDeniedException e) {
+			exceptionHolder.setException(e);
+		} catch (AuthenticationCredentialsNotFoundException e) {
+			exceptionHolder.setException(e);
+		} catch (IOException e) {
+			exceptionHolder.setException(e);
+		} catch (DocumentException e) {
+			exceptionHolder.setException(e);
+		}
+
+	}
+	@Then("Page library is downloaded file as pdf")
+	public void  page_library_is_downloadedpdf() {
+		assertNotNull( downloadPdf);
+		assertEquals(HttpStatus.OK, download.getStatusCode());
+		assertTrue(download.getHeaders().getContentDisposition().toString().contains("attachment; filename="));
+		assertTrue(download.getHeaders().getContentType().toString().contains("application/pdf"));
+
+	}
 	    
 
 }

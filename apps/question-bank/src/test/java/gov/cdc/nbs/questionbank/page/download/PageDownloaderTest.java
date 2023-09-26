@@ -10,9 +10,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.itextpdf.text.DocumentException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -50,7 +54,12 @@ import gov.cdc.nbs.questionbank.page.PageDownloader;
 	public PageDownloaderTest() {
 		MockitoAnnotations.openMocks(this);
 	}
-	
+	 private static final DateTimeFormatter dateFormatter = DateTimeFormatter
+			 .ofPattern("dd/MM/yyyy")
+			 .withZone(ZoneId.of("UTC"));
+	 private static final List<String> PAGE_LIBRARY_HEADERS = Arrays.asList("Event Type",
+			 "Page Name", "Page State", "Related Conditions(s)", "Last Updated", "Last Updated By ");
+	 Instant now = Instant.now();
 	@Test
 	void downloadLibrary() throws IOException {
 		when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
@@ -136,5 +145,26 @@ import gov.cdc.nbs.questionbank.page.PageDownloader;
 	        template.setBusObjType("INV");
 	        return template;
 	    }
-	    
+
+	 @Test
+	 void downloadLibraryPdf() throws IOException, DocumentException {
+		 when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
+		 when(pageConMappingRepository.findByWaTemplateUidIn(Mockito.any())).thenReturn(List.of(getMapping()));
+		 when(conditionCodeRepository.findByIdIn(Mockito.anyList())).thenReturn(List.of(conditionCode()));
+		 byte[] content = pageDownloader.downloadLibraryPDF();
+		 assertNotNull(content);
+
+		 String output = new String(content, StandardCharsets.UTF_8);
+		 assertNotNull(output);
+
+	 }
+
+	 @Test
+	 void downloadLibraryPdfException() {
+		 when(templateRepository.getAllPagesOrderedByName()).thenThrow(new QueryException("Error downloading Page Library"));
+		 var exception = assertThrows(RuntimeException.class, () -> pageDownloader.downloadLibraryPDF());
+		 assertTrue(exception.getMessage().contains("Error downloading Page Library"));
+
+	 }
+
 }
