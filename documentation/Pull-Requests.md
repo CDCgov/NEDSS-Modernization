@@ -2,17 +2,21 @@
 
 ## Creating a Pull Request
 
-To merge a branch into `main`, a pull request must first be created. All pull requests should follow the provided [template](../.github/pull_request_template.md). A pull requests should correspond to a single Jira ticket except in the case of duplicate tickets. The smaller the pull request the better.
+To merge a branch into `main`, a pull request must first be created. All pull requests should follow the provided [template](../.github/pull_request_template.md) and have the corresponding Jira ticket number in the title.
 
-Prior to creating a pull request:
+A pull requests should correspond to a single Jira ticket, except in the case of duplicate tickets. The smaller the pull request the better.
 
-1. Confirm acceptance criteria in the Jira issue have been met
-1. Code builds and runs without error
-1. All tests have been executed locally
-   - All tests should pass
-   - The [Jacoco report](../build/reports/jacoco/codeCoverageReport/html/index.html) should show proper test coverage
+**Prior to creating a pull request:**
 
-It is recommended to create all new pull requests as a `Draft` and perform a self review prior to notifying a reviewer. Once the self review is complete, verify the sonar scans completed successfully. At this point the PR should be marked as `ready for review` and the appropriate reviewer notified.
+1. Verify acceptance criteria in the Jira issue have been met
+1. Verify code will build and run without errors
+1. Run all tests locally
+   - To verify frontend tests run `npm run test - --watchAll=false` from the `apps/modernization-ui` folder
+   - To verify backend tests, run `./gradlew test` from the root folder
+1. Verify all tests pass
+1. Verify the [Jacoco report](../build/reports/jacoco/codeCoverageReport/html/index.html) shows proper test coverage
+
+It is recommended to create all new pull requests as a `Draft` and perform a self review prior to notifying a reviewer. Once the self review is complete, verify the sonar scans have completed successfully. At this point the PR should be marked as `ready for review` and the appropriate reviewer notified.
 
 ## Reviewing a Pull Request
 
