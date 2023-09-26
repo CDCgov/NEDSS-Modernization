@@ -25,7 +25,7 @@ export const EditPage = () => {
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
     const [alertType, setAlertType] = useState<string>('');
-    const [alertMessage, setAlertMessage] = useState<string>('');
+    const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
     const getPageDetails = () => {
         if (pageId) {
@@ -54,8 +54,8 @@ export const EditPage = () => {
         }
     };
 
-    const handleSaveDraft = async () => {
-        await savePageAsDraft(token, Number(pageId))
+    const handleSaveDraft = () => {
+        savePageAsDraft(token, Number(pageId))
             .then((response) => {
                 console.log(response);
                 setAlertMessage('Page successfully saved as Draft');
@@ -85,7 +85,7 @@ export const EditPage = () => {
                     </div>
                     <div className="edit-page__container">
                         <div className="edit-page__content">
-                            {alertMessage !== '' ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
+                            {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
 
                             {page.pageTabs[active] ? (
                                 <EditPageContentComponent
