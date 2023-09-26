@@ -10,7 +10,7 @@ import {
     useFindDistinctResultedTestLazyQuery
 } from 'generated/graphql/schema';
 import debounce from 'lodash.debounce';
-import { ReactNode, useEffect, useState } from 'react';
+import { FocusEvent, ReactNode, useRef, useState } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { Suggestions } from 'suggestion/Suggestions';
 
@@ -18,18 +18,49 @@ type LabReportCriteriaFieldsProps = {
     form: UseFormReturn<LabReportFilter>;
     resultedTestOptions: { label: string; value: string }[];
     codedResultOptions: { label: string; value: string }[];
-    resultedTestSearch: (search: string) => void;
-    codedResultSearch: (search: string) => void;
+    onResultedTestSearch: (search: string) => void;
+    onCodedResultSearch: (search: string) => void;
 };
 export const LabReportCriteriaFields = ({
     form,
     resultedTestOptions,
     codedResultOptions,
-    resultedTestSearch,
-    codedResultSearch
+    onResultedTestSearch,
+    onCodedResultSearch
 }: LabReportCriteriaFieldsProps) => {
+    const resultedTestRef = useRef<HTMLInputElement>(null);
+    const codedResultRef = useRef<HTMLInputElement>(null);
     const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
         return <>{suggestion.label}</>;
+    };
+
+    const onResultedTestChange = (value: string, onChange: any) => {
+        onResultedTestSearch(value);
+        if (value === '') {
+            // resets to undefined instead of empty string
+            form.resetField('resultedTest');
+        } else {
+            onChange(value);
+        }
+    };
+    const onCodedResultChange = (value: string, onChange: any) => {
+        onCodedResultSearch(value);
+        if (value === '') {
+            form.resetField('codedResult');
+        } else {
+            onChange(value);
+        }
+    };
+    // Lists are not populated on load, await user focus to initialize
+    const onResultedTestFocus = (event: FocusEvent<HTMLInputElement>) => {
+        if (resultedTestOptions.length === 0) {
+            onResultedTestSearch(event.target.value);
+        }
+    };
+    const onCodedResultFocus = (event: FocusEvent<HTMLInputElement>) => {
+        if (codedResultOptions.length === 0) {
+            onCodedResultSearch(event.target.value);
+        }
     };
 
     return (
@@ -44,20 +75,24 @@ export const LabReportCriteriaFields = ({
                             <Input
                                 id={name}
                                 htmlFor={name}
+                                data-testid={name}
                                 type="text"
+                                textInputRef={resultedTestRef}
                                 defaultValue={value}
                                 autoComplete="off"
+                                onFocus={onResultedTestFocus}
                                 onChange={(e: any) => {
-                                    resultedTestSearch(e.target.value);
-                                    onChange(e.target.value === '' ? undefined : e.target.value);
+                                    onResultedTestChange(e.target.value, onChange);
                                 }}
                             />
-                            <Suggestions
-                                id={`${name}-suggestions`}
-                                suggestions={resultedTestOptions}
-                                renderSuggestion={renderSuggestion}
-                                onSelection={(e) => onChange(e.value)}
-                            />
+                            {document.activeElement === resultedTestRef.current ? (
+                                <Suggestions
+                                    id={`${name}-suggestions`}
+                                    suggestions={resultedTestOptions}
+                                    renderSuggestion={renderSuggestion}
+                                    onSelection={(e) => onChange(e.value)}
+                                />
+                            ) : null}
                         </>
                     )}
                 />
@@ -73,20 +108,24 @@ export const LabReportCriteriaFields = ({
                             <Input
                                 id={name}
                                 htmlFor={name}
+                                data-testid={name}
                                 type="text"
+                                textInputRef={codedResultRef}
                                 defaultValue={value}
                                 autoComplete="off"
+                                onFocus={onCodedResultFocus}
                                 onChange={(e: any) => {
-                                    codedResultSearch(e.target.value);
-                                    onChange(e.target.value === '' ? undefined : e.target.value);
+                                    onCodedResultChange(e.target.value, onChange);
                                 }}
                             />
-                            <Suggestions
-                                id={`${name}-suggestions`}
-                                suggestions={codedResultOptions}
-                                renderSuggestion={renderSuggestion}
-                                onSelection={(e) => onChange(e.value)}
-                            />
+                            {document.activeElement === codedResultRef.current ? (
+                                <Suggestions
+                                    id={`${name}-suggestions`}
+                                    suggestions={codedResultOptions}
+                                    renderSuggestion={renderSuggestion}
+                                    onSelection={(e) => onChange(e.value)}
+                                />
+                            ) : null}
                         </>
                     )}
                 />
@@ -112,12 +151,6 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
     const [codedResultOptions, setCodedResultOptions] = useState<{ label: string; value: string }[]>();
     const [resultedTestOptions, setResultedTestOptions] = useState<{ label: string; value: string }[]>();
 
-    // Initialize values for dropdowns
-    useEffect(() => {
-        debounceResultedTestSearch(form.getValues('resultedTest') ?? '');
-        debouncedCodedSearchResults(form.getValues('codedResult') ?? '');
-    }, []);
-
     const debouncedCodedSearchResults = debounce(async (criteria: string) => {
         getCodedResultedTests({ variables: { searchText: criteria, snomed: false } });
     }, 300);
@@ -140,8 +173,8 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
                 form={form}
                 codedResultOptions={codedResultOptions ?? []}
                 resultedTestOptions={resultedTestOptions ?? []}
-                resultedTestSearch={debounceResultedTestSearch}
-                codedResultSearch={debouncedCodedSearchResults}
+                onResultedTestSearch={debounceResultedTestSearch}
+                onCodedResultSearch={debouncedCodedSearchResults}
             />
         </div>
     );

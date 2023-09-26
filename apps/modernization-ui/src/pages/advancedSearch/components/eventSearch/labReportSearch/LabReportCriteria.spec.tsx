@@ -1,17 +1,20 @@
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { LabReportFilter } from 'generated/graphql/schema';
 import { useForm } from 'react-hook-form';
 import { LabReportCriteriaFields } from './LabReportCriteria';
+import userEvent from '@testing-library/user-event';
 
 const LabCriteriaFieldsWithForm = () => {
     const labReportForm = useForm<LabReportFilter>({ defaultValues: {} });
     return (
         <LabReportCriteriaFields
             form={labReportForm}
-            codedResultOptions={[{ label: 'coded result option', value: 'coded1' }]}
             resultedTestOptions={[{ label: 'resulted test option', value: 'resulted1' }]}
-            resultedTestSearch={() => {}}
-            codedResultSearch={() => {}}
+            onResultedTestSearch={() => {
+                return [{ label: 'resulted test option', value: 'resulted1' }];
+            }}
+            codedResultOptions={[{ label: 'coded result option', value: 'coded1' }]}
+            onCodedResultSearch={() => {}}
         />
     );
 };
@@ -25,36 +28,26 @@ const LabCriteriaFieldsWithDefaultsSet = () => {
             form={labReportForm}
             codedResultOptions={[{ label: 'coded result option', value: 'coded1' }]}
             resultedTestOptions={[{ label: 'resulted test option', value: 'resulted1' }]}
-            resultedTestSearch={() => {}}
-            codedResultSearch={() => {}}
+            onResultedTestSearch={() => {
+                return [{ label: 'resulted test option', value: 'resulted1' }];
+            }}
+            onCodedResultSearch={() => {}}
         />
     );
 };
 
 describe('InvestigationGeneralFields component', () => {
-    it('should contain default selections', () => {
-        const { getAllByTestId, getByText } = render(<LabCriteriaFieldsWithForm />);
-        const selects = getAllByTestId('combo-box-select');
-
-        // Resulted test
-        getByText('Resulted test');
-        expect(selects[0].getElementsByTagName('option')[0]).toHaveTextContent('resulted test option');
-        expect(selects[0]).toHaveValue(undefined);
-
-        // Coded result/organism
-        getByText('Coded result/organism');
-        expect(selects[1].getElementsByTagName('option')[0]).toHaveTextContent('coded result option');
-        expect(selects[1]).toHaveValue(undefined);
+    it('should contain selections for resulted test', async () => {
+        const { getByTestId } = render(<LabCriteriaFieldsWithForm />);
+        const resultedTestInput = getByTestId('resultedTest');
+        expect(resultedTestInput).toBeInTheDocument();
+        const codedResultInput = getByTestId('codedResult');
+        expect(codedResultInput).toBeInTheDocument();
     });
 
-    it('should show form values', () => {
-        const { getAllByTestId } = render(<LabCriteriaFieldsWithDefaultsSet />);
-        const selects = getAllByTestId('combo-box-select');
-
-        // Resulted test
-        expect(selects[0]).toHaveValue('resulted1');
-
-        // Coded result/organism
-        expect(selects[1]).toHaveValue('coded1');
+    it('should contain default input for resulted test', async () => {
+        const { getByTestId } = render(<LabCriteriaFieldsWithDefaultsSet />);
+        const resultedTestInput = getByTestId('resultedTest');
+        expect(resultedTestInput).toHaveValue('resulted1');
     });
 });

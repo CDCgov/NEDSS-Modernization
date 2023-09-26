@@ -2,6 +2,7 @@ import { TextInput, Textarea } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import './Input.scss';
 import { EntryWrapper } from 'components/Entry';
+import { RefObject } from 'react';
 
 type InputProps = {
     name?: string;
@@ -18,6 +19,8 @@ type InputProps = {
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
     flexBox?: boolean;
     multiline?: boolean;
+    textInputRef?: RefObject<HTMLInputElement>;
+    textAreaRef?: RefObject<HTMLTextAreaElement>;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue'>;
 
 export const Input = ({
@@ -35,6 +38,8 @@ export const Input = ({
     inputMode,
     flexBox,
     multiline,
+    textInputRef,
+    textAreaRef,
     ...props
 }: InputProps) => {
     const orientation = flexBox ? 'horizontal' : 'vertical';
@@ -56,6 +61,7 @@ export const Input = ({
                         onChange={onChange}
                         value={defaultValue ?? ''}
                         name={name ?? ''}
+                        inputRef={textInputRef}
                         validationStatus={error ? 'error' : undefined}
                         aria-describedby={`${error}-message`}
                         className={classNames(className)}
@@ -68,6 +74,7 @@ export const Input = ({
                         onChange={onChange}
                         value={defaultValue ?? ''}
                         name={name ?? ''}
+                        inputRef={textAreaRef}
                         aria-describedby={`${error}-message`}
                         className={classNames(className)}
                     />
