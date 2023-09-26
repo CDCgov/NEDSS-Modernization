@@ -26,16 +26,15 @@ public class CodedResultFinder {
     }
 
     public List<CodedResult> findDistinctCodedResults(String searchText, boolean snomed) {
-        String searchString = "%" + searchText + "%";
         if (snomed) {
             Pageable pageable = PageRequest.of(0, maxPageSize, Direction.ASC, "snomedDescTxt");
-            return snomedCodeRepository.findDistinctSnomedCodes(searchString, pageable)
+            return snomedCodeRepository.findDistinctSnomedCodes(searchText, pageable)
                     .stream()
                     .map(CodedResult::new)
                     .toList();
         } else {
             Pageable pageable = PageRequest.of(0, maxPageSize, Direction.ASC, "labResultDescTxt");
-            return labResultRepository.findDistinctLabResults(searchString, pageable)
+            return labResultRepository.findDistinctLabResults(searchText, pageable)
                     .stream()
                     .map(CodedResult::new)
                     .toList();
