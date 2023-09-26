@@ -7,6 +7,7 @@ To merge a branch into `main`, a pull request must first be created. All pull re
 Prior to creating a pull request:
 
 1. Confirm acceptance criteria in the Jira issue have been met
+1. Code builds and runs without error
 1. All tests have been executed locally
    - All tests should pass
    - The [Jacoco report](../build/reports/jacoco/codeCoverageReport/html/index.html) should show proper test coverage
