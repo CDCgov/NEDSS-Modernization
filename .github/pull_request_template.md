@@ -1,6 +1,6 @@
 ## Description
 
-Please include a summary of the changes and a link to the related issue.
+Please include a summary of the changes and any key information a reviewer may need.
 
 ## Issues
 
