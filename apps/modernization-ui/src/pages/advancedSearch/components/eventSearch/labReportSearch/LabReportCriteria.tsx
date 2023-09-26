@@ -34,23 +34,6 @@ export const LabReportCriteriaFields = ({
         return <>{suggestion.label}</>;
     };
 
-    const onResultedTestChange = (value: string, onChange: any) => {
-        onResultedTestSearch(value);
-        if (value === '') {
-            // resets to undefined instead of empty string
-            form.resetField('resultedTest');
-        } else {
-            onChange(value);
-        }
-    };
-    const onCodedResultChange = (value: string, onChange: any) => {
-        onCodedResultSearch(value);
-        if (value === '') {
-            form.resetField('codedResult');
-        } else {
-            onChange(value);
-        }
-    };
     // Lists are not populated on load, await user focus to initialize
     const onResultedTestFocus = (event: FocusEvent<HTMLInputElement>) => {
         if (resultedTestOptions.length === 0) {
@@ -66,70 +49,68 @@ export const LabReportCriteriaFields = ({
     return (
         <>
             <Label htmlFor={'resultedTest'}>Resulted test</Label>
-            {resultedTestOptions ? (
-                <Controller
-                    control={form.control}
-                    name={'resultedTest'}
-                    render={({ field: { onChange, value, name } }) => (
-                        <>
-                            <Input
-                                id={name}
-                                htmlFor={name}
-                                data-testid={name}
-                                type="text"
-                                textInputRef={resultedTestRef}
-                                defaultValue={value}
-                                autoComplete="off"
-                                onFocus={onResultedTestFocus}
-                                onChange={(e: any) => {
-                                    onResultedTestChange(e.target.value, onChange);
-                                }}
+            <Controller
+                control={form.control}
+                name={'resultedTest'}
+                render={({ field: { onChange, value, name } }) => (
+                    <>
+                        <Input
+                            id={name}
+                            htmlFor={name}
+                            data-testid={name}
+                            type="text"
+                            textInputRef={resultedTestRef}
+                            defaultValue={value}
+                            autoComplete="off"
+                            onFocus={onResultedTestFocus}
+                            onChange={(e: any) => {
+                                onResultedTestSearch(e.target.value);
+                                onChange(e);
+                            }}
+                        />
+                        {document.activeElement === resultedTestRef.current ? (
+                            <Suggestions
+                                id={`${name}-suggestions`}
+                                suggestions={resultedTestOptions}
+                                renderSuggestion={renderSuggestion}
+                                onSelection={(e) => onChange(e.value)}
                             />
-                            {document.activeElement === resultedTestRef.current ? (
-                                <Suggestions
-                                    id={`${name}-suggestions`}
-                                    suggestions={resultedTestOptions}
-                                    renderSuggestion={renderSuggestion}
-                                    onSelection={(e) => onChange(e.value)}
-                                />
-                            ) : null}
-                        </>
-                    )}
-                />
-            ) : null}
+                        ) : null}
+                    </>
+                )}
+            />
 
             <Label htmlFor={'codedResult'}>Coded result/organism</Label>
-            {codedResultOptions ? (
-                <Controller
-                    control={form.control}
-                    name={'codedResult'}
-                    render={({ field: { onChange, value, name } }) => (
-                        <>
-                            <Input
-                                id={name}
-                                htmlFor={name}
-                                data-testid={name}
-                                type="text"
-                                textInputRef={codedResultRef}
-                                defaultValue={value}
-                                autoComplete="off"
-                                onFocus={onCodedResultFocus}
-                                onChange={(e: any) => {
-                                    onCodedResultChange(e.target.value, onChange);
-                                }}
+            <Controller
+                control={form.control}
+                name={'codedResult'}
+                render={({ field: { onChange, value, name } }) => (
+                    <>
+                        <Input
+                            id={name}
+                            htmlFor={name}
+                            data-testid={name}
+                            type="text"
+                            textInputRef={codedResultRef}
+                            defaultValue={value}
+                            autoComplete="off"
+                            onFocus={onCodedResultFocus}
+                            onChange={(e: any) => {
+                                onCodedResultSearch(e.target.value);
+                                onChange(e);
+                            }}
+                        />
+                        {document.activeElement === codedResultRef.current ? (
+                            <Suggestions
+                                id={`${name}-suggestions`}
+                                suggestions={codedResultOptions}
+                                renderSuggestion={renderSuggestion}
+                                onSelection={(e) => onChange(e.value)}
                             />
-                            {document.activeElement === codedResultRef.current ? (
-                                <Suggestions
-                                    id={`${name}-suggestions`}
-                                    suggestions={codedResultOptions}
-                                    renderSuggestion={renderSuggestion}
-                                    onSelection={(e) => onChange(e.value)}
-                                />
-                            ) : null}
-                        </>
-                    )}
-                />
-            ) : null}
+                        ) : null}
+                    </>
+                )}
+            />
         </>
     );
 };
