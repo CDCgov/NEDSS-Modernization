@@ -60,10 +60,6 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
         reset();
     };
 
-    console.log('PROGRAM', programAreaOptions);
-    console.log('FAMILY', familyOptions);
-    console.log('GROUP', groupOptions);
-
     return (
         <div className="create-condition">
             <Form onSubmit={onSubmit}>
