@@ -1,4 +1,4 @@
-import { TextInput, Textarea } from '@trussworks/react-uswds';
+import { Textarea, TextInput, TextInputMask } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import './Input.scss';
 import { EntryWrapper } from 'components/Entry';
@@ -18,6 +18,8 @@ type InputProps = {
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
     flexBox?: boolean;
     multiline?: boolean;
+    mask?: string;
+    pattern?: string;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue'>;
 
 export const Input = ({
@@ -35,6 +37,8 @@ export const Input = ({
     inputMode,
     flexBox,
     multiline,
+    mask,
+    pattern,
     ...props
 }: InputProps) => {
     const orientation = flexBox ? 'horizontal' : 'vertical';
@@ -48,19 +52,37 @@ export const Input = ({
                 required={required}
                 error={error}>
                 {!multiline ? (
-                    <TextInput
-                        inputMode={inputMode}
-                        placeholder={placeholder}
-                        {...props}
-                        id={id}
-                        onChange={onChange}
-                        value={defaultValue ?? ''}
-                        name={name ?? ''}
-                        validationStatus={error ? 'error' : undefined}
-                        aria-describedby={`${error}-message`}
-                        className={classNames(className)}
-                        type={type}
-                    />
+                    mask ? (
+                        <TextInputMask
+                            inputMode={inputMode}
+                            placeholder={placeholder}
+                            {...props}
+                            id={id}
+                            onChange={onChange}
+                            value={defaultValue ?? ''}
+                            name={name ?? ''}
+                            validationStatus={error ? 'error' : undefined}
+                            aria-describedby={`${error}-message`}
+                            className={`${classNames(className)} masked-input`}
+                            type={type}
+                            mask={mask}
+                            pattern={pattern}
+                        />
+                    ) : (
+                        <TextInput
+                            inputMode={inputMode}
+                            placeholder={placeholder}
+                            {...props}
+                            id={id}
+                            onChange={onChange}
+                            value={defaultValue ?? ''}
+                            name={name ?? ''}
+                            validationStatus={error ? 'error' : undefined}
+                            aria-describedby={`${error}-message`}
+                            className={classNames(className)}
+                            type={type}
+                        />
+                    )
                 ) : (
                     <Textarea
                         placeholder={placeholder}
