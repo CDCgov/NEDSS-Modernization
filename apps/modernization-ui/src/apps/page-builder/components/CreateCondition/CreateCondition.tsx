@@ -1,7 +1,7 @@
 import { RefObject, useContext, useEffect, useState } from 'react';
 import './CreateCondition.scss';
 import { Form, Button, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
-import { Condition, CreateConditionRequest } from '../../generated';
+import { Condition, CreateConditionRequest, ProgramArea } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { Concept } from '../../generated/models/Concept';
@@ -30,7 +30,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     // DropDown Options
     const [familyOptions, setFamilyOptions] = useState([] as Concept[]);
     const [groupOptions, setGroupOptions] = useState([] as Concept[]);
-    const [programAreaOptions, setProgramAreaOptions] = useState([] as Concept[]);
+    const [programAreaOptions, setProgramAreaOptions] = useState([] as ProgramArea[]);
     const [systemOptions, setSystemOptions] = useState([] as Concept[]);
 
     useEffect(() => {
@@ -279,7 +279,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 options={familyOptions.map((option) => {
                                     return {
                                         name: option.display!,
-                                        value: option.value!
+                                        value: option.localCode!
                                     };
                                 })}></SelectInput>
                         )}
@@ -295,7 +295,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 options={groupOptions.map((option) => {
                                     return {
                                         name: option.display!,
-                                        value: option.value!
+                                        value: option.localCode!
                                     };
                                 })}></SelectInput>
                         )}
