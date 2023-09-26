@@ -23,7 +23,6 @@ class PatientSummaryMergerTest {
                 17,
                 "left-gender",
                 "left-ethnicity",
-                "left-race",
                 List.of(),
                 List.of(),
                 new PatientSummary.Address("left-street", "left-city", "left-state", "left-zipcode", "left-country")
@@ -35,7 +34,6 @@ class PatientSummaryMergerTest {
                 23,
                 "right-gender",
                 "right-ethnicity",
-                "right-race",
                 List.of(),
                 List.of(),
                 new PatientSummary.Address("right-street", "right-city", "right-state", "right-zipcode", "right-country")
@@ -54,7 +52,6 @@ class PatientSummaryMergerTest {
         assertThat(actual.age()).isEqualTo(17);
         assertThat(actual.gender()).isEqualTo("left-gender");
         assertThat(actual.ethnicity()).isEqualTo("left-ethnicity");
-        assertThat(actual.race()).isEqualTo("left-race");
 
         assertThat(actual.phone()).isEmpty();
         assertThat(actual.email()).isEmpty();
@@ -80,7 +77,6 @@ class PatientSummaryMergerTest {
                 17,
                 "left-gender",
                 "left-ethnicity",
-                "left-race",
                 List.of(),
                 List.of(),
                 new PatientSummary.Address("left-street", "left-city", "left-state", "left-zipcode", "left-country")
@@ -92,7 +88,6 @@ class PatientSummaryMergerTest {
                 23,
                 "right-gender",
                 "right-ethnicity",
-                "right-race",
                 List.of(),
                 List.of(),
                 null
@@ -120,7 +115,6 @@ class PatientSummaryMergerTest {
                 17,
                 "left-gender",
                 "left-ethnicity",
-                "left-race",
                 List.of(),
                 List.of(),
                 null
@@ -132,7 +126,6 @@ class PatientSummaryMergerTest {
                 23,
                 "right-gender",
                 "right-ethnicity",
-                "right-race",
                 List.of(),
                 List.of(),
                 new PatientSummary.Address("right-street", "right-city", "right-state", "right-zipcode", "right-country")
@@ -151,7 +144,6 @@ class PatientSummaryMergerTest {
         assertThat(actual.age()).isEqualTo(17);
         assertThat(actual.gender()).isEqualTo("left-gender");
         assertThat(actual.ethnicity()).isEqualTo("left-ethnicity");
-        assertThat(actual.race()).isEqualTo("left-race");
 
         assertThat(actual.phone()).isEmpty();
         assertThat(actual.email()).isEmpty();
@@ -178,7 +170,6 @@ class PatientSummaryMergerTest {
                 17,
                 "left-gender",
                 "left-ethnicity",
-                "left-race",
                 List.of(
                     new PatientSummary.Phone("phone-use-one", "phone-number-one"),
                     new PatientSummary.Phone("phone-use-three", "phone-number-three")
@@ -193,7 +184,6 @@ class PatientSummaryMergerTest {
                 23,
                 "right-gender",
                 "right-ethnicity",
-                "right-race",
                 List.of(
                     new PatientSummary.Phone("phone-use-two", "phone-number-two")
                 ),
@@ -224,7 +214,6 @@ class PatientSummaryMergerTest {
                 17,
                 "left-gender",
                 "left-ethnicity",
-                "left-race",
                 List.of(),
                 List.of(
                     new PatientSummary.Email("email-use-one", "email-number-one"),
@@ -239,7 +228,6 @@ class PatientSummaryMergerTest {
                 23,
                 "right-gender",
                 "right-ethnicity",
-                "right-race",
                 List.of(),
                 List.of(
                     new PatientSummary.Email("email-use-two", "email-number-two")

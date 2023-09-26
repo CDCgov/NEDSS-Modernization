@@ -42,7 +42,6 @@ class PatientSummaryTupleMapperTest {
         assertThat(actual.birthday()).isEqualTo("2001-07-07");
 
         assertThat(actual.ethnicity()).isEqualTo("summary-value");
-        assertThat(actual.race()).isNull();
 
         assertThat(actual.phone()).isEmpty();
         assertThat(actual.email()).isEmpty();
@@ -179,24 +178,6 @@ class PatientSummaryTupleMapperTest {
         PatientSummary actual = mapper.map(tuple);
 
         assertThat(actual.gender()).isEqualTo("Male");
-    }
-
-    @Test
-    void should_map_patient_summary_from_tuple_with_race() {
-
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
-
-        Tuple tuple = mock(Tuple.class);
-
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
-
-        when(tuple.get(tables.race().codeShortDescTxt)).thenReturn("race-value");
-
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
-
-        PatientSummary actual = mapper.map(tuple);
-
-        assertThat(actual.race()).isEqualTo("race-value");
     }
 
     @Test
