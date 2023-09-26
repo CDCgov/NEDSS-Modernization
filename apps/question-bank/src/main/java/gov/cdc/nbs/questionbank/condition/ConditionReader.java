@@ -47,35 +47,6 @@ public class ConditionReader {
 
     }
 
-    //    private Predicate buildFilterPredicate(ReadConditionRequest request) {
-    //        QConditionCode conditionCode = QConditionCode.conditionCode;
-    //        String filterField = request.getFilterField();
-    //        String filterValue = request.getFilterValue();
-    //        String singleCharFilterField = request.getSingleCharFilterField();
-    //        Character singleCharValueField = request.getSingleCharValueField();
-    //
-    //        BooleanBuilder filterPredicate = new BooleanBuilder();
-    //
-    //        if (filterField != null && filterValue != null) {
-    //            if ("progAreaCd".equalsIgnoreCase(filterField)) {
-    //                filterPredicate.and(conditionCode.progAreaCd.eq(filterValue));
-    //            } else if ("familyCd".equalsIgnoreCase(filterField)) {
-    //                filterPredicate.and(conditionCode.familyCd.eq(filterValue));
-    //            } else if ("coinfectionGrpCd".equalsIgnoreCase(filterField)) {
-    //                filterPredicate.and(conditionCode.coinfectionGrpCd.eq(filterValue));
-    //            } else if ("investigationFormCd".equalsIgnoreCase(filterField)) {
-    //                filterPredicate.and(conditionCode.investigationFormCd.eq(filterValue));
-    //            }
-    //        }
-    //            if (singleCharFilterField != null && singleCharValueField != null) {
-    //                if ("nndInd".equalsIgnoreCase(singleCharFilterField)) {
-    //                    filterPredicate.and(conditionCode.nndInd.eq(singleCharValueField));
-    //                } else if ("statusCd".equalsIgnoreCase(singleCharFilterField)) {
-    //                    filterPredicate.and(conditionCode.statusCd.eq(singleCharValueField));
-    //                }
-    //            }
-    //        return filterPredicate;
-    //    }
 
     public List<Condition> readCondition(Page<ConditionCode> result) {
         List<Condition> results = new ArrayList<>();

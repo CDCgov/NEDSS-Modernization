@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: request-parameter-to-cookie-test
+          uri: ${test.destination.uri}
+          predicates:
+            - Path=/request-parameter-to-cookie-test
+          filters:
+            - RequestParameterToCookie=Parameter, Cookie

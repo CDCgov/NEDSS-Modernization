@@ -1,10 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports.findPatientById = fs.readFileSync(path.join(__dirname, 'findPatientById.gql'), 'utf8');
-module.exports.findAllPatients = fs.readFileSync(path.join(__dirname, 'findAllPatients.gql'), 'utf8');
-module.exports.findPatientsByFilter = fs.readFileSync(path.join(__dirname, 'findPatientsByFilter.gql'), 'utf8');
-module.exports.findPatientsByOrganizationFilter = fs.readFileSync(path.join(__dirname, 'findPatientsByOrganizationFilter.gql'), 'utf8');
 module.exports.findOpenInvestigationsForPatient = fs.readFileSync(path.join(__dirname, 'findOpenInvestigationsForPatient.gql'), 'utf8');
 module.exports.findNameSuffixes = fs.readFileSync(path.join(__dirname, 'findNameSuffixes.gql'), 'utf8');
 module.exports.findAllNameTypes = fs.readFileSync(path.join(__dirname, 'findAllNameTypes.gql'), 'utf8');
@@ -63,6 +59,7 @@ module.exports.findDocumentsForPatient = fs.readFileSync(path.join(__dirname, 'f
 module.exports.findInvestigationsForPatient = fs.readFileSync(path.join(__dirname, 'findInvestigationsForPatient.gql'), 'utf8');
 module.exports.findMorbidityReportsForPatient = fs.readFileSync(path.join(__dirname, 'findMorbidityReportsForPatient.gql'), 'utf8');
 module.exports.findPatientProfile = fs.readFileSync(path.join(__dirname, 'findPatientProfile.gql'), 'utf8');
+module.exports.findPatientsByFilter = fs.readFileSync(path.join(__dirname, 'findPatientsByFilter.gql'), 'utf8');
 module.exports.findTreatmentsForPatient = fs.readFileSync(path.join(__dirname, 'findTreatmentsForPatient.gql'), 'utf8');
 module.exports.findVaccinationsForPatient = fs.readFileSync(path.join(__dirname, 'findVaccinationsForPatient.gql'), 'utf8');
 module.exports.findPlaceById = fs.readFileSync(path.join(__dirname, 'findPlaceById.gql'), 'utf8');

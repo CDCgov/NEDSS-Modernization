@@ -2,7 +2,6 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
-import lombok.Getter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Getter
 @Entity
 @Table(name = "Entity")
 public class NBSEntity {
@@ -63,6 +61,10 @@ public class NBSEntity {
 
     public NBSEntity(final PatientCommand.AddPatient patient) {
         this(patient.person(), "PSN");
+    }
+
+    public List<EntityLocatorParticipation> getEntityLocatorParticipations() {
+        return entityLocatorParticipations;
     }
 
     public void update(
@@ -184,8 +186,8 @@ public class NBSEntity {
             .ifPresent(identification -> identification.delete(deleted));
     }
 
-    public List<EntityId> getEntityIds() {
-        return this.entityIds == null ? List.of() : this.entityIds.stream().filter(EntityId.active()).toList();
+    public List<EntityId> identifications() {
+        return this.entityIds == null ? List.of() : List.copyOf(this.entityIds);
     }
 
     private List<EntityLocatorParticipation> ensureLocators() {
