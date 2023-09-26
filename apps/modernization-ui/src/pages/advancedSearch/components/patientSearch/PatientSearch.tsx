@@ -11,6 +11,7 @@ import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
 import { objectOrUndefined } from 'utils/objectOrUndefined';
+import { validNameRule } from 'validation/entry';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -59,8 +60,10 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                         <Controller
                             control={form.control}
                             name="lastName"
-                            render={({ field: { onChange, value, name }, formState: { errors } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     type="text"
                                     label="Last name"
@@ -68,7 +71,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                                     defaultValue={value}
                                     htmlFor={name}
                                     id={name}
-                                    error={errors?.lastName && 'Last name is required.'}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -77,8 +80,10 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                         <Controller
                             control={form.control}
                             name="firstName"
-                            render={({ field: { onChange, value, name }, formState: { errors } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -86,7 +91,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                                     name={name}
                                     htmlFor={name}
                                     id={name}
-                                    error={errors?.firstName && 'First name is required.'}
+                                    error={error?.message}
                                 />
                             )}
                         />

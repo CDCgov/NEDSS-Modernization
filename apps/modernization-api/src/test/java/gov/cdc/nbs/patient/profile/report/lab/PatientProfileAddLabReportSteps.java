@@ -23,7 +23,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-
 public class PatientProfileAddLabReportSteps {
 
     @Value("${nbs.wildfly.url:http://wildfly:7001}")
@@ -46,12 +45,6 @@ public class PatientProfileAddLabReportSteps {
     @Autowired
     @Qualifier("classic")
     MockRestServiceServer server;
-
-    @Before
-    public void clearResponse() {
-        activeResponse.reset();
-    }
-
     @Before
     public void clearServer() {
         server.reset();
@@ -62,28 +55,23 @@ public class PatientProfileAddLabReportSteps {
         long patient = patients.one();
 
         server.expect(
-                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit")
-            )
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         String request = String.format("/nbs/api/profile/%d/report/lab", patient);
 
         activeResponse.active(
-            mvc.perform(
-                    MockMvcRequestBuilders.get(request)
-                        .with(user(activeUserDetails.active()))
-                        .cookie(activeSession.active().asCookie())
-                )
-                .andReturn()
-                .getResponse()
-        );
+                mvc.perform(
+                        MockMvcRequestBuilders.get(request)
+                                .with(user(activeUserDetails.active()))
+                                .cookie(activeSession.active().asCookie()))
+                        .andReturn()
+                        .getResponse());
     }
 
     @Then("the classic profile is prepared to add a lab report")
@@ -102,11 +90,10 @@ public class PatientProfileAddLabReportSteps {
         assertThat(response.getRedirectedUrl()).contains(expected);
 
         assertThat(response.getCookies())
-            .satisfiesOnlyOnce(cookie -> {
-                    assertThat(cookie.getName()).isEqualTo("Returning-Patient");
+                .satisfiesOnlyOnce(cookie -> {
+                    assertThat(cookie.getName()).isEqualTo("Return-Patient");
                     assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-                }
-            );
+                });
     }
 
     @Then("I am not allowed to add a Classic NBS lab report")

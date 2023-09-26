@@ -1,4 +1,4 @@
-@patient-profile-lab-reports
+@patient-profile-lab-reports @web-interaction
 Feature: Patient Profile Lab Reports
 
   Background:
