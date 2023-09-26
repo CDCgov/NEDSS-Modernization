@@ -22,7 +22,7 @@ plugins {
     id "org.sonarqube" version "4.0.0.2929"
 }
 
-version = '7.0.0-SNAPSHOT'  // The plugin will assign the root project version to all its subprojects.
+version = '1.0.1-SNAPSHOT'  // The plugin will assign the root project version to all its subprojects.
 apply plugin: "com.dipien.semantic-version"
 apply from: "${rootDir}/gradle/sonar.gradle"
 
