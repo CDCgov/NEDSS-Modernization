@@ -25,7 +25,7 @@
 
 1. Install [Java 17](docs/InstallJava.md)
 2. Install Node / NPM
-3. Clone [NBS 6.0.12](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.12)
+3. Clone [NBS 6.0.15](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.15)
 4. Set `NEDSS_HOME` environment variable to the Classic NBS directory created by step 3
 
    ```sh
@@ -44,40 +44,33 @@
    ```sh
    ./build.sh
    ```
-7. Download the [database restore file](https://enquizit.sharepoint.com/:u:/s/CDCNBSProject/EQtb-5WSO9xGrocNofv_eMgBH1WX30TNV0wTlZ84E5coYg?e=uNtem1)
-8. Unzip the restore file contents to `cdc-sandbox/db/restore/restore.d/`
-
-   ```sh
-   unzip -j db-restore.zip -d <path-to-cdc-sandbox/db/restore/restore.d/>
-   ```
-
-9. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
+7. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
    ```sh
    ./run.sh
    ```
-10. Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
+8.  Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
 
     ```sh
     docker-compose up elasticsearch kibana reverse-proxy -d
     ```
 
-11. Start the `modernization` containers `modernization-api` and `nbs-gateway`
+9.  Start the `modernization` containers `modernization-api` and `nbs-gateway`
     ```sh
     docker-compose up -d
     ```
-12. CD into the `cdc-sandbox` directory and Start NiFi
+10. CD into the `cdc-sandbox` directory and Start NiFi
     ```sh
     cd ../cdc-sandbox
     docker-compose up nifi -d
     ```
-13. Visit http://localhost:8080/nbs/login
+11. Visit http://localhost:8080/nbs/login
 
     ```
     username: msa
     password:
     ```
 
-14. To create your own user account visit site (line 15):
+12. To create your own user account visit site (line 15):
 
 - Navigate to System Management
 - Expand Security Management
