@@ -1,10 +1,10 @@
 // import { Button, Icon } from '@trussworks/react-uswds';
-import { Tabs } from 'apps/page-builder/generated/models/Tabs';
+import { PageTab } from 'apps/page-builder/generated';
 import './ManageTabs.scss';
 import { Icon } from '@trussworks/react-uswds';
 
 type Props = {
-    tabs: Tabs[];
+    tabs: PageTab[];
 };
 
 const ManageTabs = ({ tabs }: Props) => {
@@ -35,4 +35,5 @@ const ManageTabs = ({ tabs }: Props) => {
         </div>
     );
 };
+
 export default ManageTabs;

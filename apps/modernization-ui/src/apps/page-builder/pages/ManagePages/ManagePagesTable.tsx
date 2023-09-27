@@ -116,7 +116,7 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
     };
 
     const handleDownloadCSV = async () => {
-        const file = await PageControllerService.downloadPagesCsv({ authorization: token });
+        const file = await PageControllerService.downloadPageLibraryUsingGet({ authorization: token });
         downloadAsCsv({ data: file, fileName: 'PageLibrary.csv' });
     };
 

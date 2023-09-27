@@ -4,10 +4,10 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { AddTab } from '../AddTabs';
 import ManageTabs from '../ManageTabs/ManageTabs';
-import { Tabs } from 'apps/page-builder/generated/models/Tabs';
+import { PageTab } from 'apps/page-builder/generated';
 
 type Props = {
-    tabs: Tabs[];
+    tabs: PageTab[];
     active: number;
     setActive: SetStateAction<any>;
     onAddSuccess: () => void;

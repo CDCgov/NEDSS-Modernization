@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import './CreateQuestion.scss';
 import ReactSelect, { components } from 'react-select';
 import { ModalToggleButton, Radio, TextInput, Dropdown } from '@trussworks/react-uswds';
-import { ValueSetControllerService, QuestionControllerService } from '../../generated';
+import { ValueSetControllerService, QuestionControllerService, UpdateQuestionRequest } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
@@ -13,7 +13,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const init = {
         label: '',
         description: '',
-        type: 'TEXT',
+        type: UpdateQuestionRequest.type.TEXT,
         subgroup: '',
         uniqueId: '',
         uniqueName: '',

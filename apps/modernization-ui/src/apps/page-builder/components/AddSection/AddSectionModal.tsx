@@ -43,15 +43,15 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
             if (isSubSection) {
                 await SubSectionControllerService.createSubSectionUsingPost({
                     authorization: token,
-                    pageId: pageId,
-                    request: { name: sectionName, sectionId, visible, description: sectionDescription }
+                    page: parseInt(pageId),
+                    request: { name: sectionName, sectionId, visible }
                 });
                 onAddSection();
             } else {
                 await SectionControllerService.createSectionUsingPost({
                     authorization: token,
-                    pageId: pageId,
-                    request: { name: sectionName, tabId, visible, description: sectionDescription }
+                    page: parseInt(pageId),
+                    request: { name: sectionName, tabId, visible }
                 });
                 onAddSection();
             }

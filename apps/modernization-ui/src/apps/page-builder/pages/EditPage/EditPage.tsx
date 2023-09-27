@@ -9,17 +9,17 @@ import { EditPageContentComponent } from 'apps/page-builder/components/EditPageC
 import { EditPageSidebar } from 'apps/page-builder/components/EditPageSidebar/EditPageSidebar';
 import { fetchPageDetails } from 'apps/page-builder/services/pagesAPI';
 import { UserContext } from 'user';
-import { PageDetails } from 'apps/page-builder/generated/models/PageDetails';
+import { PagedDetail } from 'apps/page-builder/generated';
 import AddSectionModal from 'apps/page-builder/components/AddSection/AddSectionModal';
 import { ModalRef } from '@trussworks/react-uswds';
-import { Tabs } from 'apps/page-builder/generated/models/Tabs';
+import { PageTab } from 'apps/page-builder/generated';
 
 export const EditPage = () => {
     const { pageId } = useParams();
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
-    const [page, setPage] = useState<PageDetails>();
-    const [tabs, setTabs] = useState<Tabs[] | undefined>();
+    const [page, setPage] = useState<PagedDetail>();
+    const [tabs, setTabs] = useState<PageTab[] | undefined>();
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
 
@@ -67,7 +67,7 @@ export const EditPage = () => {
                         ) : null}
                     </div>
                     <div className="edit-page__container">
-                        {page.pageTabs[active] ? (
+                        {page.pageTabs?.[active] ? (
                             <EditPageContentComponent content={page.pageTabs[active]} onAddSection={handleAddSuccess} />
                         ) : null}
 
@@ -75,7 +75,7 @@ export const EditPage = () => {
                     </div>
                 </div>
             ) : null}
-            {page && pageId && page.pageTabs[active].id ? (
+            {page && pageId && page.pageTabs?.[active].id ? (
                 <AddSectionModal
                     modalRef={addSectionModalRef}
                     pageId={pageId}
