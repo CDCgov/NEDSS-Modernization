@@ -150,7 +150,7 @@ import gov.cdc.nbs.questionbank.page.PageDownloader;
 	 void downloadLibraryPdf() throws IOException, DocumentException {
 		 when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
 		 when(pageConMappingRepository.findByWaTemplateUidIn(Mockito.any())).thenReturn(List.of(getMapping()));
-		 when(conditionCodeRepository.findByIdIn(Mockito.anyList())).thenReturn(List.of(conditionCode()));
+		 when(conditionCodeRepository.findByIdIn(Mockito.any())).thenReturn(List.of(conditionCode()));
 		 byte[] content = pageDownloader.downloadLibraryPDF();
 		 assertNotNull(content);
 
