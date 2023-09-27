@@ -3,6 +3,10 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
         content{
             shortId
             id
+            identification{
+                type
+                value
+            }
             nbsEntity{
                 entityLocatorParticipations{
                     classCd
@@ -75,13 +79,6 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
                         }
                     }
                 }
-            }
-            entityIds{
-                typeDescTxt
-                typeCd
-                rootExtensionTxt
-                assigningAuthorityCd
-                assigningAuthorityDescTxt
             }
             names{
                 firstNm

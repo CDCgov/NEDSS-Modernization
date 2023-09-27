@@ -1,4 +1,4 @@
-FROM amazoncorretto:17-alpine-jdk as builder
+FROM eclipse-temurin:17 as builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -13,7 +13,7 @@ WORKDIR /usr/src/nbs
 
 RUN ./gradlew :nbs-gateway:build -x test --no-daemon
 
-FROM amazoncorretto:17-alpine-jdk
+FROM eclipse-temurin:17-jre
 
 COPY --from=builder /usr/src/nbs/apps/nbs-gateway/build/libs/nbs-gateway*.jar api.jar
 

@@ -7,8 +7,6 @@ rem =====================================================================
 
 @if not "%ECHO%" == ""  echo %ECHO%
 
-tar -zxf .\db\restore\restore.d\db-restore.zip -C .\db\restore\restore.d
-
 setlocal
 set "%OS%" == "Windows_NT" setlocal
 

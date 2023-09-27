@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
-import gov.cdc.nbs.authentication.JWTFilter;
+import gov.cdc.nbs.authentication.token.JWTFilter;
 import lombok.RequiredArgsConstructor;
 
 

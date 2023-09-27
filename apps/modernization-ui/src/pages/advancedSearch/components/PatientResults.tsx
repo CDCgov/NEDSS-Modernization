@@ -1,11 +1,11 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
-import { Maybe, Person, PersonName } from '../../../generated/graphql/schema';
+import { Maybe, PatientSearchResultIdentification, Person, PersonName } from '../../../generated/graphql/schema';
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { NoData } from 'components/NoData';
-import formattedName from 'formattedName';
+import { formattedName } from 'utils';
 
 type SearchItemsProps = {
     data: Person[];
@@ -141,17 +141,6 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
         };
     };
 
-    const filteredEnitityIds = (entity: any) => {
-        const driverLicence = entity.filter((item: any) => item.typeCd === 'DRIVERS_LICENSE_NUMBER')[0];
-        const socialSecurity = entity.filter((item: any) => item.typeCd === 'SOCIAL_SECURITY')[0];
-        const newen = entity
-            .filter((item: any) => item.typeCd !== 'DRIVERS_LICENSE_NUMBER')
-            .filter((item: any) => item.typeCd !== 'SOCIAL_SECURITY');
-        socialSecurity && newen.unshift(socialSecurity);
-        driverLicence && newen.unshift(driverLicence);
-        return newen;
-    };
-
     const redirectPatientProfile = async (item: Person) => {
         navigate(`/patient-profile/${item.shortId}`);
     };
@@ -264,38 +253,30 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                     </Grid>
                                 </Grid>
                                 <Grid col={3}>
-                                    {/* Identifications */}
-                                    {filteredEnitityIds(item.entityIds).map(
-                                        (
-                                            id: { typeDescTxt: String; rootExtensionTxt: String; typeCd: String },
-                                            idIndex: number
-                                        ) =>
-                                            id.typeDescTxt && (
-                                                <Grid
-                                                    style={styleObjHeight(idIndex)}
-                                                    key={idIndex}
-                                                    col={12}
-                                                    className="margin-bottom-2">
-                                                    <p className="margin-0 text-normal font-sans-2xs text-gray-50 text-uppercase">
-                                                        {id.typeDescTxt}
-                                                    </p>
-                                                    <p
-                                                        className="margin-0 font-sans-2xs text-normal margin-top-05"
-                                                        style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                                        {id.rootExtensionTxt || '-'}
-                                                    </p>
-                                                </Grid>
-                                            )
+                                    {item.identification.map((id: PatientSearchResultIdentification, index: number) => (
+                                        <Grid
+                                            style={styleObjHeight(index)}
+                                            key={index}
+                                            col={12}
+                                            className="margin-bottom-2">
+                                            <p className="margin-0 text-normal font-sans-2xs text-gray-50 text-uppercase">
+                                                {id.type}
+                                            </p>
+                                            <p
+                                                className="margin-0 font-sans-2xs text-normal margin-top-05"
+                                                style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                                {id.value}
+                                            </p>
+                                        </Grid>
+                                    ))}
+                                    {item.identification.length === 0 && (
+                                        <Grid col={12} className="margin-bottom-2">
+                                            <p className="margin-0 text-normal font-sans-3xs text-gray-50 text-uppercase">
+                                                Id Types
+                                            </p>
+                                            <NoData className="margin-top-05" />
+                                        </Grid>
                                     )}
-                                    {!item.entityIds ||
-                                        (item.entityIds?.filter((ent) => ent?.typeDescTxt).length === 0 && (
-                                            <Grid col={12} className="margin-bottom-2">
-                                                <p className="margin-0 text-normal font-sans-3xs text-gray-50 text-uppercase">
-                                                    Id Types
-                                                </p>
-                                                <NoData className="margin-top-05" />
-                                            </Grid>
-                                        ))}
                                 </Grid>
                             </Grid>
                         </div>

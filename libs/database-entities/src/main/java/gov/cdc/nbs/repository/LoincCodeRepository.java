@@ -18,4 +18,10 @@ public interface LoincCodeRepository extends JpaRepository<LoincCode, String> {
             @Param("searchString") String searchString,
             @Param("relatedClassCodes") List<String> relatedClassCodes,
             Pageable pageable);
+
+    @Query("SELECT DISTINCT lc.componentName FROM LoincCode lc WHERE lc.relatedClassCd IN (:relatedClassCodes) AND (UPPER(lc.componentName) like %:searchString% OR UPPER(lc.id) like %:searchString%)")
+    Page<String> findDistinctTestNames(
+            @Param("searchString") String searchString,
+            @Param("relatedClassCodes") List<String> relatedClassCodes,
+            Pageable pageable);
 }

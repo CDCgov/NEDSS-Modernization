@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
-import gov.cdc.nbs.authorization.SessionCookie;
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.event.search.investigation.TestInvestigations;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.support.TestActive;
@@ -23,7 +23,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-
 
 public class PatientProfileViewInvestigationSteps {
 
@@ -51,11 +50,6 @@ public class PatientProfileViewInvestigationSteps {
     @Autowired
     @Qualifier("classic")
     MockRestServiceServer server;
-
-    @Before
-    public void clearResponse() {
-        activeResponse.reset();
-    }
 
     @Before
     public void clearServer() {
@@ -101,8 +95,8 @@ public class PatientProfileViewInvestigationSteps {
         long patient = patients.one();
         long investigation = investigations.one();
 
-        String expected =
-                "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID=" + investigation;
+        String expected = "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID="
+                + investigation;
 
         MockHttpServletResponse response = activeResponse.active();
 
@@ -110,7 +104,7 @@ public class PatientProfileViewInvestigationSteps {
 
         assertThat(response.getCookies())
                 .satisfiesOnlyOnce(cookie -> {
-                    assertThat(cookie.getName()).isEqualTo("Returning-Patient");
+                    assertThat(cookie.getName()).isEqualTo("Return-Patient");
                     assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
                 });
     }

@@ -33,19 +33,14 @@ The steps outlined in this README should get the system up and running quickly f
 2. The pagemanagement directory is unzipped **incorrectly** within the Linux container. This is temporarily remedied
    by manually unzipping the files and adding them to this repository. The directory called pagemanagement should be
    placed within the wildfly server directory with the relative path wildfly-10.0.0.Final/nedssdomain/Nedss/pagemanagement.
-3. Database restore files are taken from a point-in-time backup from provided the dev server on date 9-20-2022 and zipped in [db-restore.zip](db/restore/restore.d/db-restore.zip). They contain updates from 6.0.12-GA release and
-   should only be used until a proper solution is implemented. The build scripts automatically unzip contents into the correct directory.
-   a) If database container is not successful when running, put contents of the db-restore.zip into the path .../NEDSS-Modernization/cdc-sandbox/db/restore/restore.d, make sure to only put the contents of the unzipped folder and not the folder itself.
-   ```
-   $ unzip -j ~/Downloads/db-restore.zip -d {location}/NEDSS-Modernization/cdc-sandbox/db/restore/restore.d
-   ```
+3. Database restore files from a point-in-time backup that was provided. The corresponding upgrade scripts found [here](https://github.com/cdcent/NEDSSDB/tree/master/NBS_DB/db/Disk_Database/WINDOWS/DB%20Setup%20Scripts-Release%20Upgrade/MS%20SQL) have been applied to migrate the database to version `6.0.15`.
 
 ## Build
 
 A convenience script has been provided to automate the build of the container images.
 There are however a few prerequisites to build the images.
 
-- Download or clone the NBS_6.0.12 branch from the [NEDSSDev github](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.12)
+- Download or clone the NBS_6.0.15 branch from the [NEDSSDev github](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.15)
 - Set NEDSS_HOME environment variable to the directory path of the NEDSSDev source tree
 - Run the provided build script
 
@@ -76,16 +71,6 @@ For more information on the build process click here for the [Build README](doc/
 ## Run
 
 After docker images have been created we can use the run script to start the containers.
-First you must download and place the database restore scripts in this project (cdc-sandbox)
-directory root.
-
-- Database restore files can be found at [db-restore.zip](db/restore/restore.d/db-restore.zip).
-
-- Contents should automatically be unzipped into the proper folder. If this **fails** unzip the contents of db-restore.zip into db/restore/restore.d found in this project (cdc-sandbox).
-- Run the provided run script
-
-**Note** that the typically database restore scripts are provided in the [Development Package Rel6.0.11.zip](https://cdcnbscentral.com/attachments/24435), a REL6.0.12 does not currently exist.  
-under db/SQLSERVER. Due to missing pages this is currently unused within this build.
 
 (Linux/MacOS)
 

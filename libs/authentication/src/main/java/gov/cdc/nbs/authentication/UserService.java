@@ -1,10 +1,7 @@
 package gov.cdc.nbs.authentication;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.AuthUserRepository;
-import gov.cdc.nbs.exception.BadTokenException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,18 +10,25 @@ import org.springframework.transaction.annotation.Transactional;
 import static gov.cdc.nbs.authentication.NbsAuthorities.allowsAny;
 
 @Service
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final AuthUserRepository authUserRepository;
-    private final TokenCreator creator;
     private final NBSUserDetailsResolver resolver;
 
+    public UserService(
+        final AuthUserRepository authUserRepository,
+        final NBSUserDetailsResolver resolver
+    ) {
+        this.authUserRepository = authUserRepository;
+        this.resolver = resolver;
+    }
+
     @Override
+    @Transactional
     public NbsUserDetails loadUserByUsername(String username) {
         return authUserRepository
             .findByUserId(username)
-            .map(authUser -> buildUserDetails(authUser, createToken(authUser)))
+            .map(this::buildUserDetails)
             .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     }
 
@@ -35,25 +39,9 @@ public class UserService implements UserDetailsService {
             .anyMatch(allowsAny(permissions));
     }
 
-    /**
-     * Lookup AuthUser in database using the JWT subject. Convert database entity to a new JWTUserDetails and return
-     */
-    @Transactional
-    public NbsUserDetails findUserByToken(DecodedJWT jwt) {
-        return authUserRepository
-            .findByUserId(jwt.getSubject())
-            .map(authUser -> buildUserDetails(authUser, createToken(authUser)))
-            .orElseThrow(BadTokenException::new);
+    private NbsUserDetails buildUserDetails(AuthUser authUser) {
+        return resolver.resolve(authUser);
     }
-
-    private NbsUserDetails buildUserDetails(AuthUser authUser, String token) {
-        return resolver.resolve(authUser, token);
-    }
-
-    private String createToken(AuthUser user) {
-        return creator.forUser(user.getUserId());
-    }
-
 
 
 }

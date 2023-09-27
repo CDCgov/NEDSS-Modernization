@@ -1,21 +1,5 @@
 package gov.cdc.nbs.questionbank.page.services;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import java.time.Instant;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
@@ -24,6 +8,24 @@ import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.Instant;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PageUpdaterTest {
@@ -55,7 +57,7 @@ class PageUpdaterTest {
 
         // given a page exists
         when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
-                .thenReturn(Optional.of(template("Published", null)));
+            .thenReturn(Optional.of(template("Published", null)));
 
         // when an update request is sent
         UpdatePageDetailsRequest request = updateRequest();
@@ -74,7 +76,7 @@ class PageUpdaterTest {
 
         // given a page exists
         when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
-                .thenReturn(Optional.of(template("Draft", null)));
+            .thenReturn(Optional.of(template("Draft", null)));
 
         // when an update request is sent
         UpdatePageDetailsRequest request = updateRequest();
@@ -94,7 +96,7 @@ class PageUpdaterTest {
 
         // given a page exists
         when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
-                .thenReturn(Optional.of(template("Published", null)));
+            .thenReturn(Optional.of(template("Published", null)));
 
         // when an update request is sent
         UpdatePageDetailsRequest request = updateRequest();
@@ -113,7 +115,7 @@ class PageUpdaterTest {
 
         // given a page exists
         when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
-                .thenReturn(Optional.of(template("Draft", 1)));
+            .thenReturn(Optional.of(template("Draft", 1)));
 
         // when an update request is sent
         UpdatePageDetailsRequest request = updateRequest();
@@ -132,7 +134,7 @@ class PageUpdaterTest {
 
         // given a page exists with templateType of "Draft" and null publishVersionNbr
         when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
-                .thenReturn(Optional.of(template("Draft", null)));
+            .thenReturn(Optional.of(template("Draft", null)));
 
         // when an update request is sent
         UpdatePageDetailsRequest request = updateRequest();
@@ -151,15 +153,15 @@ class PageUpdaterTest {
 
         // given a page exists with templateType of "Draft" and null publishVersionNbr
         when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
-                .thenReturn(Optional.of(template("Draft", null)));
+            .thenReturn(Optional.of(template("Draft", null)));
 
         // when an update request is sent
         UpdatePageDetailsRequest request = new UpdatePageDetailsRequest(
-                "updated name",
-                "updated mmg",
-                "updated datamart",
-                "updated description",
-                Collections.singleton("conditionCd"));
+            "updated name",
+            "updated mmg",
+            "updated datamart",
+            "updated description",
+            Collections.singleton("conditionCd"));
         WaTemplate updatedTemplate = updater.update(1L, request);
 
         // then the condition is not changed
@@ -173,7 +175,7 @@ class PageUpdaterTest {
     void should_throw_bad_request_duplicate_name() {
         // given a page exists with templateType of "Draft" and null publishVersionNbr
         when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
-                .thenReturn(Optional.of(template("Draft", null)));
+            .thenReturn(Optional.of(template("Draft", null)));
 
         // the datamart name doesn't exist
         when(repository.existsByDatamartNmAndIdNot("updated datamart", 1L)).thenReturn(false);
@@ -183,12 +185,12 @@ class PageUpdaterTest {
 
         // when an update request is sent
         UpdatePageDetailsRequest request = new UpdatePageDetailsRequest(
-                "updated name",
-                "updated mmg",
-                "updated datamart",
-                "updated description",
-                Collections.singleton("conditionCd"));
-        PageUpdateException ex = assertThrows( PageUpdateException.class, () ->updater.update(1L, request));
+            "updated name",
+            "updated mmg",
+            "updated datamart",
+            "updated description",
+            Collections.singleton("conditionCd"));
+        PageUpdateException ex = assertThrows(PageUpdateException.class, () -> updater.update(1L, request));
         assertEquals("The specified Page Name already exists", ex.getMessage());
     }
 
@@ -196,19 +198,19 @@ class PageUpdaterTest {
     void should_throw_bad_request_duplicate_data_mart_name() {
         // given a page exists with templateType of "Draft" and null publishVersionNbr
         when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
-                .thenReturn(Optional.of(template("Draft", null)));
+            .thenReturn(Optional.of(template("Draft", null)));
 
         // and a page with the updated name already exists
         when(repository.existsByDatamartNmAndIdNot("updated datamart", 1L)).thenReturn(true);
 
         // when an update request is sent
         UpdatePageDetailsRequest request = new UpdatePageDetailsRequest(
-                "updated name",
-                "updated mmg",
-                "updated datamart",
-                "updated description",
-                Collections.singleton("conditionCd"));
-        PageUpdateException ex = assertThrows( PageUpdateException.class, () ->updater.update(1L, request));
+            "updated name",
+            "updated mmg",
+            "updated datamart",
+            "updated description",
+            Collections.singleton("conditionCd"));
+        PageUpdateException ex = assertThrows(PageUpdateException.class, () -> updater.update(1L, request));
         assertEquals("The specified Data Mart Name already exists", ex.getMessage());
 
     }
@@ -232,38 +234,37 @@ class PageUpdaterTest {
         Instant now = Instant.now();
         Set<PageCondMapping> mappings = new HashSet<>();
         mappings.add(
-                new PageCondMapping(
-                        2L,
-                        template,
-                        "conditionCd",
-                        now,
-                        100L,
-                        now,
-                        100L));
+            new PageCondMapping(
+                2L,
+                template,
+                "conditionCd",
+                now,
+                100L,
+                now,
+                100L));
         return mappings;
     }
 
     private UpdatePageDetailsRequest updateRequest() {
         return new UpdatePageDetailsRequest(
-                "updated name",
-                "updated mmg",
-                "updated datamart",
-                "updated description",
-                Collections.singleton("new condition"));
+            "updated name",
+            "updated mmg",
+            "updated datamart",
+            "updated description",
+            Collections.singleton("new condition"));
     }
 
     private NbsUserDetails userDetails() {
         return new NbsUserDetails(
-                23L,
-                "test",
-                "test",
-                "test",
-                false,
-                false,
-                null,
-                null,
-                null,
-                "token",
-                true);
+            23L,
+            "test",
+            "test",
+            "test",
+            false,
+            false,
+            null,
+            null,
+            null,
+            true);
     }
 }

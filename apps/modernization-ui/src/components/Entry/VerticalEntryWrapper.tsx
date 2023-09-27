@@ -12,9 +12,11 @@ type Props = {
 
 const VerticalEntryWrapper = ({ htmlFor, label, required, error, children }: Props) => (
     <>
-        <Label className={classNames({ required })} htmlFor={htmlFor}>
-            {label}
-        </Label>
+        {label && (
+            <Label className={classNames({ required })} htmlFor={htmlFor}>
+                {label}
+            </Label>
+        )}
         {error && <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>}
         {children}
     </>

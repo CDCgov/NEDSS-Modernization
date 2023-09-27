@@ -16,6 +16,11 @@ export type Email = {
     address: string;
 };
 
+export type PatientSummaryIdentification = {
+    type: string;
+    value: string;
+};
+
 export type Address = {
     street: string | null;
     city: string | null;
@@ -33,5 +38,6 @@ export type PatientSummary = {
     race: string | null;
     phone: Phone[];
     email: Email[];
+    identification: PatientSummaryIdentification[];
     address: Address | null;
 };

@@ -1,0 +1,54 @@
+sonar {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.projectKey", "CDCgov_NEDSS-Modernization"
+        property "sonar.organization", "cdcgov"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.coverage.jacoco.xmlReportPaths", "$project.rootDir/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
+    }
+}
+
+// See here for more info: https://docs.gradle.org/6.4-rc-1/samples/sample_jvm_multi_project_with_code_coverage.html
+//
+// task to gather code coverage from multiple subprojects
+// NOTE: the `JacocoReport` tasks do *not* depend on the `test` task by default. Meaning you have to ensure
+// that `test` (or other tasks generating code coverage) run before generating the report.
+// You can achieve this by calling the `test` lifecycle task manually
+// $ ./gradlew test codeCoverageReport
+tasks.register("codeCoverageReport", JacocoReport) {
+    // If a subproject applies the 'jacoco' plugin, add the results from it to the report
+    subprojects { subproject ->
+        subproject.plugins.withType(JacocoPlugin).configureEach {
+            subproject.tasks.matching({ t -> t.extensions.findByType(JacocoTaskExtension) }).configureEach { testTask ->
+                //the jacoco extension may be disabled for some projects
+                if (testTask.extensions.getByType(JacocoTaskExtension).isEnabled()) {
+                    sourceSets subproject.sourceSets.main
+                    executionData(testTask)
+                } else {
+                    logger.warn('Jacoco extension is disabled for test task \'{}\' in project \'{}\'. this test task will be excluded from jacoco report.',testTask.getName(),subproject.getName())
+                }
+            }
+        }
+    }
+
+    // enable the different report types (html, xml, csv)
+    reports {
+        xml.required = true
+        html.required = true
+        html.outputLocation = layout.buildDirectory.dir('reports/jacoco/codeCoverageReport/html')
+    }    
+}
+
+subprojects {
+    apply plugin: 'org.sonarqube'
+    sonar {
+        properties {
+            property 'sonar.coverage.jacoco.xmlReportPaths', "$project.rootDir/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
+        }
+    }
+}
+
+// Automatically generate the code coverage report following a build
+tasks.named('test') {
+   finalizedBy tasks.named('codeCoverageReport', JacocoReport)
+}

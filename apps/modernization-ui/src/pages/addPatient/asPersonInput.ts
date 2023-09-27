@@ -33,7 +33,7 @@ export const asPersonInput = (data: NewPatientEntry) => {
     const emailAddresses = data.emailAddresses.filter((item) => item.email).map((item) => item.email);
 
     const identifications = data.identification
-        .filter((item) => Object.values(item).every((value) => value))
+        .filter((item) => item.type && item.value)
         .map((item) => item as NewPatientIdentification);
 
     const address = {

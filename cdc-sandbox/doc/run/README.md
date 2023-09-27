@@ -1,6 +1,6 @@
 # Run
 
-This solution makes use of the database backup files provided in "Development Package Rel6.0.11.zip". 
+This solution makes use of database backups that were created by updating the "Development Package Rel6.0.11.zip" database to `6.0.15`. 
 It allows for the deployment of the NBS application with connectivity to a local database.
 To access the NBS application locally, once deployed, visit **localhost:7001/nbs/login**.
 
@@ -20,10 +20,7 @@ These changes are found in the root level DockerFile under the "FILE Modificatio
 
 ## Database Container
 
-The dev package must be unzipped this project directory to restore database files on first run.
-
 ```shell
-$ export NEDSS_DEVPKG=./Development Package Rel6.0.11/NBS_6.0.11
 $ docker-compose up nbs-mssql
 ```
 

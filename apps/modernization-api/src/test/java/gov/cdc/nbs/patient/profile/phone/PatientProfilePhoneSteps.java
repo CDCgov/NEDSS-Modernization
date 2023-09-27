@@ -12,8 +12,10 @@ import gov.cdc.nbs.support.TestActive;
 import gov.cdc.nbs.support.TestAvailable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Collection;
 
@@ -34,12 +36,14 @@ public class PatientProfilePhoneSteps {
 
     @Autowired
     TestPatient patient;
+    
 
     @Given("the patient has a phone")
     public void the_patient_has_a_phone() {
         mother.withPhone(patients.one());
+       
     }
-
+    
     @Given("the new patient's phone number is entered")
     public void the_new_patient_phone_number_is_entered() {
 
@@ -50,7 +54,10 @@ public class PatientProfilePhoneSteps {
         phoneNumber.setExtension(faker.phoneNumber().extension());
 
         this.input.active().getPhoneNumbers().add(phoneNumber);
+        
+        
     }
+    
 
     @Then("the new patient has the entered phone number")
     @Transactional
@@ -68,4 +75,5 @@ public class PatientProfilePhoneSteps {
         }
 
     }
+    
 }

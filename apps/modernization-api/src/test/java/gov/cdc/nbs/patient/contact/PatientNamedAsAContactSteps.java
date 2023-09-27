@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.contact;
 
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import gov.cdc.nbs.event.search.investigation.InvestigationMother;
 import gov.cdc.nbs.graphql.GraphQLPage;
@@ -39,21 +38,21 @@ public class PatientNamedAsAContactSteps {
     public void the_patient_is_named_as_a_contact() {
         PatientIdentifier revision = patientMother.revise(patients.one());
 
-        Person other = patientMother.create();
+        PatientIdentifier other = patientMother.create();
 
-        PublicHealthCase investigation = investigationMother.investigation(other.getId());
+        PublicHealthCase investigation = investigationMother.investigation(other.id());
 
         mother.namedByPatient(
-                investigation.getId(),
-                other.getId(),
-                revision.id());
+            investigation.getId(),
+            other.id(),
+            revision.id());
     }
 
     @Then("the profile has a contact that named the patient")
     public void the_profile_has_a_contact_that_named_the_patient() {
         Page<PatientContacts.NamedByContact> actual = resolver.find(
-                patients.one().id(),
-                new GraphQLPage(5));
+            patients.one().id(),
+            new GraphQLPage(5));
 
         assertThat(actual).isNotEmpty();
     }
@@ -65,7 +64,7 @@ public class PatientNamedAsAContactSteps {
         GraphQLPage page = new GraphQLPage(5);
 
         assertThatThrownBy(() -> this.resolver.find(patient, page))
-                .isInstanceOf(AccessDeniedException.class);
+            .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("the profile has no associated contacts that named the patient")

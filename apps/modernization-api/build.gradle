@@ -1,12 +1,13 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-    id 'jacoco'
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
+
+apply from: "${rootDir}/gradle/cucumber-logging.gradle"
 
 bootJar {
     manifest {
@@ -21,7 +22,6 @@ jar {
 
 dependencies {
 
-    implementation project(':modernization-ui')
     implementation project(':accumulation')
     implementation project(':database-entities')
     implementation project(':event-schema')
@@ -128,7 +128,6 @@ processResources {
     }
 }
 
-compileJava.mustRunAfter(":modernization-ui:build")
 compileJava.mustRunAfter(":database-entities:build")
 compileJava.mustRunAfter(":event-schema:build")
 compileJava.mustRunAfter(":authentication:build")

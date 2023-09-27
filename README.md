@@ -16,14 +16,13 @@
 
 ## Guidelines
 
-- [Package by Feature](docs/Package-By-Feature.md) to make code easier to find.
-- [Code Formatting](docs/Code-Formatting.md)
+- [Package by Feature](documentation/Package-By-Feature.md) to make code easier to find.
+- [Code Formatting](documentation/Code-Formatting.md)
+- [Pull requests](documentation/Pull-Requests.md)
 
-## TLDR: Running everything inside docker
+## Running everything inside docker
 
-### Mac ARM system (M1/M2)
-
-1. Install [Java 17](docs/InstallJava.md)
+1. Install [Java 17](documentation/InstallJava.md)
 2. Install Node / NPM
 3. Clone [NBS 6.0.15](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.15)
 4. Set `NEDSS_HOME` environment variable to the Classic NBS directory created by step 3
@@ -95,7 +94,7 @@ Version: 1.0.0-SNAPSHOT
 By default, the reverse proxy will route to the containerized services. Routing to a local services can be achieved by altering the configuration to point to the local instances.
 
 | Name                     | Default             | Description                                                     |
-|--------------------------|---------------------|-----------------------------------------------------------------|
+| ------------------------ | ------------------- | --------------------------------------------------------------- |
 | MODERNIZATION_UI_SERVER  | `modernization-ui`  | The host name of the server that provides the frontend UI.      |
 | MODERNIZATION_UI_PORT    | `80`                | The port the frontend UI is served from.                        |
 | MODERNIZATION_API_SERVER | `modernization-api` | The host name of the server that provides the backend API.      |

@@ -1,44 +1,44 @@
 @investigation_search
 Feature: Investigation search
 
-  Background: 
+  Background:
     Given I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
     And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "ARBO"
 
   @investigation_status_field
-  Scenario: I can find an investigation by different status fields
-    Given An Investigation with "<field>" set to "<status>" exists
-    When I search for an investigation with "<field>" of "<status>"
-    Then I find investigations with "<field>" of "<status>"
+  Scenario Outline: I can find an investigation by different status fields
+    Given An Investigation with a "<status>" status of "<value>" exists
+    When I search for an investigation with a "<status>" status of "<value>"
+    Then I find investigations with only a "<status>" status of "<value>"
 
-    Examples: 
-      | field              | status                 |
-      | processingStatus   | UNASSIGNED             |
-      | processingStatus   | AWAITING_INTERVIEW     |
-      | processingStatus   | FIELD_FOLLOW_UP        |
-      | processingStatus   | NO_FOLLOW_UP           |
-      | processingStatus   | OPEN_CASE              |
-      | processingStatus   | SURVEILLANCE_FOLLOW_UP |
-      | notificationStatus | UNASSIGNED             |
-      | notificationStatus | APPROVED               |
-      | notificationStatus | COMPLETED              |
-      | notificationStatus | MESSAGE_FAILED         |
-      | notificationStatus | PENDING_APPROVAL       |
-      | notificationStatus | REJECTED               |
-      | caseStatus         | UNASSIGNED             |
-      | caseStatus         | CONFIRMED              |
-      | caseStatus         | NOT_A_CASE             |
-      | caseStatus         | PROBABLE               |
-      | caseStatus         | SUSPECT                |
-      | caseStatus         | UNKNOWN                |
+    Examples:
+      | status       | value                  |
+      | processing   | UNASSIGNED             |
+      | processing   | AWAITING_INTERVIEW     |
+      | processing   | FIELD_FOLLOW_UP        |
+      | processing   | NO_FOLLOW_UP           |
+      | processing   | OPEN_CASE              |
+      | processing   | SURVEILLANCE_FOLLOW_UP |
+      | notification | UNASSIGNED             |
+      | notification | APPROVED               |
+      | notification | COMPLETED              |
+      | notification | MESSAGE_FAILED         |
+      | notification | PENDING_APPROVAL       |
+      | notification | REJECTED               |
+      | case         | UNASSIGNED             |
+      | case         | CONFIRMED              |
+      | case         | NOT_A_CASE             |
+      | case         | PROBABLE               |
+      | case         | SUSPECT                |
+      | case         | UNKNOWN                |
 
   @investigation_search_single_field
-  Scenario: I can find an investigation by one field in the investigation data
+  Scenario Outline: I can find an investigation by one field in the investigation data
     Given Investigations exist
     When I search investigation events by "<field>" "<qualifier>"
     Then I find the investigation
 
-    Examples: 
+    Examples:
       | field            | qualifier                 |
       | condition        | Bacterial VaginosisId     |
       | condition        | TrichomoniasisId          |
@@ -63,12 +63,12 @@ Feature: Investigation search
       | event date       | NOTIFICATION_CREATE_DATE  |
 
   @investigation_search_multi_field
-  Scenario: I can find an investigation using multiple fields in the investigation data
+  Scenario Outline: I can find an investigation using multiple fields in the investigation data
     Given Investigations exist
     When I search investigation events by "<field>" "<qualifier>" "<field2>" "<qualifier2>" "<field3>" "<qualifier3>"
     Then I find the investigation
 
-    Examples: 
+    Examples:
       | field            | qualifier             | field2       | qualifier2      | field3       | qualifier3   |
       | condition        | Bacterial VaginosisId | jurisdiction | jd2             | program area | STD          |
       | condition        | TrichomoniasisId      | jurisdiction | jd1             | program area | ARBO         |

@@ -1,0 +1,5 @@
+query findDistinctResultedTest($searchText: String!, $loinc: Boolean!){
+    findDistinctResultedTest(searchText: $searchText, loinc: $loinc){
+        name
+    }
+}

@@ -15,7 +15,6 @@ import { request as __request } from '../core/request';
 import { PageDetails } from '../models/PageDetails';
 
 export class PageControllerService {
-
     /**
      * getAllPageSummary
      * @returns Page_PageSummary_ OK
@@ -25,29 +24,29 @@ export class PageControllerService {
         authorization,
         page,
         size,
-        sort,
+        sort
     }: {
-        authorization: any,
-        page?: number,
-        size?: number,
-        sort?: string,
+        authorization: any;
+        page?: number;
+        size?: number;
+        sort?: string;
     }): CancelablePromise<Page_PageSummary_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/page-builder/api/v1/pages',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -59,26 +58,26 @@ export class PageControllerService {
      */
     public static createPageUsingPost({
         authorization,
-        request,
+        request
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * request
          */
-        request: PageCreateRequest,
+        request: PageCreateRequest;
     }): CancelablePromise<PageCreateResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/page-builder/api/v1/pages',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -93,34 +92,34 @@ export class PageControllerService {
         request,
         page,
         size,
-        sort,
+        sort
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * request
          */
-        request: PageSummaryRequest,
-        page?: number,
-        size?: number,
-        sort?: string,
+        request: PageSummaryRequest;
+        page?: number;
+        size?: number;
+        sort?: string;
     }): CancelablePromise<Page_PageSummary_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/page-builder/api/v1/pages/search',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -133,33 +132,33 @@ export class PageControllerService {
     public static updatePageDetailsUsingPut({
         authorization,
         id,
-        request,
+        request
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * id
          */
-        id: number,
+        id: number;
         /**
          * request
          */
-        request: UpdatePageDetailsRequest,
+        request: UpdatePageDetailsRequest;
     }): CancelablePromise<PageSummary | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/page-builder/api/v1/pages/{id}/details',
             path: {
-                'id': id,
+                id: id
             },
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -171,28 +170,28 @@ export class PageControllerService {
      */
     public static savePageDraftUsingPut({
         authorization,
-        id,
+        id
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * id
          */
-        id: number,
+        id: number;
     }): CancelablePromise<PageStateResponse | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/page-builder/api/v1/pages/{id}/draft',
             path: {
-                'id': id,
+                id: id
             },
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -204,29 +203,49 @@ export class PageControllerService {
      */
     public static getPageDetails({
         authorization,
-        id,
+        id
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * id
          */
-        id: number,
+        id: number;
     }): CancelablePromise<PageDetails | any> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/page-builder/api/v1/pages/{id}/details',
             path: {
-                'id': id,
+                id: id
             },
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
+    /**
+     * downloadPagesCsv
+     * @returns  OK
+     * @throws ApiError
+     */
+    public static downloadPagesCsv({ authorization }: { authorization: string }): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/page-builder/api/v1/pages/download',
+
+            headers: {
+                Authorization: authorization
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`
+            }
+        });
+    }
 }

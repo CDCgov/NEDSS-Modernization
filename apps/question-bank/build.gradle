@@ -9,6 +9,8 @@ plugins {
 group = 'gov.cdc'
 version = '0.0.1-SNAPSHOT'
 
+apply from: "${rootDir}/gradle/cucumber-logging.gradle"
+
 test {
     // always re-run tests
     test.outputs.upToDateWhen { false }
@@ -28,14 +30,6 @@ test {
                 .map(Object::toString)
                 .map(Integer::parseInt)
                 .orElse(5105)
-    }
-}
-
-jacocoTestReport {
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ['gov/cdc/nbs/questionbank/QuestionBankApplication.class'])
-        }))
     }
 }
 

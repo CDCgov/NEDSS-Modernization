@@ -21,6 +21,5 @@ export { ProviderFacilitySearch } from './models/ProviderFacilitySearch';
 
 export { EncryptionControllerService } from './services/EncryptionControllerService';
 export { ExportControllerService } from './services/ExportControllerService';
-export { RedirectControllerService } from './services/RedirectControllerService';
 export { UserService } from './services/UserService';
 export { UserControllerService } from './services/UserControllerService';

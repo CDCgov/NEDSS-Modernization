@@ -9,7 +9,6 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class TabControllerService {
-
     /**
      * createTab
      * @returns CreateTabResponse OK
@@ -19,34 +18,33 @@ export class TabControllerService {
     public static createTabUsingPost({
         authorization,
         page,
-        request,
+        request
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * page
          */
-        page: number,
+        page: number;
         /**
          * request
          */
-        request: CreateTabRequest,
+        request: CreateTabRequest;
     }): CancelablePromise<CreateTabResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/page-builder/api/v1/pages/{page}/tabs/',
             path: {
-                'page': page,
+                page: page
             },
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
-
 }

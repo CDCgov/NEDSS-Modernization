@@ -4,11 +4,13 @@ import { Grid } from '@trussworks/react-uswds';
 import { Patient } from 'pages/patient/profile';
 import { Address, Email, PatientSummary, Phone } from './PatientSummary';
 import { NoData } from 'components/NoData';
-import formattedName from 'formattedName';
+
+import { Spinner } from '@cmsgov/design-system';
+import { formattedName } from 'utils';
 
 type Props = {
-    patient: Patient;
-    summary: PatientSummary;
+    patient?: Patient;
+    summary?: PatientSummary;
 };
 
 const display = (value: string) => <p>{value}</p>;
@@ -28,68 +30,80 @@ const formattedAddress = ({ street, city, state, zipcode }: Address) => {
 export const PatientProfileSummary = ({ patient, summary }: Props) => {
     return (
         <div className="margin-y-2 flex-row common-card">
-            <div className="grid-row flex-align-center flex-justify padding-2 border-bottom border-base-lighter">
-                <p className="font-sans-xl text-bold margin-0">{`${formattedName(
-                    summary?.legalName?.last,
-                    summary?.legalName?.first
-                )}`}</p>
-                <h5 className="font-sans-md text-medium margin-0">
-                    Patient ID: {patient.shortId}
-                    {patient.status != 'ACTIVE' && (
-                        <span className="text-red text-right margin-left-2">{patient.status}</span>
-                    )}
-                </h5>
-            </div>
-            <Grid row gap={3} className="padding-3">
-                <Grid col={3}>
-                    <Grid col={12} className=" summary-value">
-                        <h5 className="margin-right-1">SEX</h5>
-                        <p>{summary.gender || noData}</p>
+            {!patient || !summary ? (
+                <div className="text-center margin-y-6">
+                    <Spinner className="sortable-table-spinner" />
+                </div>
+            ) : (
+                <div>
+                    <div className="grid-row flex-align-center flex-justify padding-2 border-bottom border-base-lighter">
+                        <p className="font-sans-xl text-bold margin-0">{`${formattedName(
+                            summary?.legalName?.last,
+                            summary?.legalName?.first
+                        )}`}</p>
+                        <h5 className="font-sans-md text-medium margin-0">
+                            Patient ID: {patient.shortId}
+                            {patient.status != 'ACTIVE' && (
+                                <span className="text-red text-right margin-left-2">
+                                    {patient.status === 'LOG_DEL' ? 'INACTIVE' : patient.status}
+                                </span>
+                            )}
+                        </h5>
+                    </div>
+                    <Grid row gap={3} className="padding-3">
+                        <Grid col={3}>
+                            <Grid col={12} className=" summary-value">
+                                <h5 className="margin-right-1">SEX</h5>
+                                <p>{summary.gender || noData}</p>
+                            </Grid>
+                        </Grid>
+                        <Grid col={3}>
+                            <Grid col={12} className="summary-value">
+                                <h5>PHONE NUMBER</h5>
+                                {summary.phone && summary.phone.length > 0 ? formattedPhones(summary.phone) : noData}
+                            </Grid>
+                        </Grid>
+                        <Grid col={3}>
+                            <Grid col={12} className="summary-value">
+                                <h5>ADDRESS</h5>
+                                {summary.address ? formattedAddress(summary.address) : noData}
+                            </Grid>
+                        </Grid>
+                        <Grid col={3}>
+                            <Grid col={12} className="summary-value">
+                                <h5 className="margin-right-1">RACE</h5>
+                                {summary.race ? display(summary.race) : noData}
+                            </Grid>
+                        </Grid>
+                        <Grid col={3}>
+                            <Grid col={12} className="margin-top-3 summary-value">
+                                <h5 className="margin-right-1">DATE OF BIRTH</h5>
+                                <p>{summary.birthday ? `${summary.birthday} (${summary.age})` : noData}</p>
+                            </Grid>
+                        </Grid>
+                        <Grid col={3}>
+                            <Grid col={12} className="margin-top-3 summary-value">
+                                <h5>EMAIL</h5>
+                                {summary.email && summary.email.length > 0 ? formattedEmails(summary.email) : noData}
+                            </Grid>
+                        </Grid>
+                        <Grid col={3}>
+                            <Grid col={12} className="summary-value margin-top-3">
+                                <h5 className="margin-right-1">ETHNICITY</h5>
+                                {summary.ethnicity ? display(summary.ethnicity) : noData}
+                            </Grid>
+                        </Grid>
+                        <Grid col={3}>
+                            {summary.identification.map((id, key) => (
+                                <Grid key={key} col={12} className="summary-value margin-top-3">
+                                    <h5 className="margin-right-1">{id.type}</h5>
+                                    {id.value}
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Grid>
-                </Grid>
-
-                <Grid col={3}>
-                    <Grid col={12} className="summary-value">
-                        <h5>PHONE NUMBER</h5>
-                        {summary.phone && summary.phone.length > 0 ? formattedPhones(summary.phone) : noData}
-                    </Grid>
-                </Grid>
-
-                <Grid col={3}>
-                    <Grid col={12} className="summary-value">
-                        <h5>ADDRESS</h5>
-                        {summary.address ? formattedAddress(summary.address) : noData}
-                    </Grid>
-                </Grid>
-
-                <Grid col={3}>
-                    <Grid col={12} className="summary-value">
-                        <h5 className="margin-right-1">RACE</h5>
-                        {summary.race ? display(summary.race) : noData}
-                    </Grid>
-                </Grid>
-
-                <Grid col={3}>
-                    <Grid col={12} className="margin-top-3 summary-value">
-                        <h5 className="margin-right-1">DATE OF BIRTH</h5>
-                        <p>{summary.birthday ? `${summary.birthday} (${summary.age})` : noData}</p>
-                    </Grid>
-                </Grid>
-
-                <Grid col={3}>
-                    <Grid col={12} className="margin-top-3 summary-value">
-                        <h5>EMAIL</h5>
-                        {summary.email && summary.email.length > 0 ? formattedEmails(summary.email) : noData}
-                    </Grid>
-                </Grid>
-
-                <Grid col={3}>
-                    <Grid col={12} className="summary-value margin-top-3">
-                        <h5 className="margin-right-1">ETHNICITY</h5>
-                        {summary.ethnicity ? display(summary.ethnicity) : noData}
-                    </Grid>
-                </Grid>
-            </Grid>
+                </div>
+            )}
         </div>
     );
 };

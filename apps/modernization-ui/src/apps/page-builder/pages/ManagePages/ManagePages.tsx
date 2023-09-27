@@ -26,21 +26,19 @@ export const ManagePages = () => {
     }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
 
     return (
-        <>
-            <PageBuilder page="manage-pages">
-                <div className="manage-pages">
-                    <div className="manage-pages__container">
-                        <div className="manage-pages__table">
-                            <ManagePagesTable
-                                summaries={pages}
-                                currentPage={currentPage}
-                                pageSize={pageSize}
-                                totalElements={totalElements}
-                            />
-                        </div>
+        <PageBuilder page="manage-pages" menu={true}>
+            <div className="manage-pages">
+                <div className="manage-pages__container">
+                    <div className="manage-pages__table">
+                        <ManagePagesTable
+                            summaries={pages}
+                            currentPage={currentPage}
+                            pageSize={pageSize}
+                            totalElements={totalElements}
+                        />
                     </div>
                 </div>
-            </PageBuilder>
-        </>
+            </div>
+        </PageBuilder>
     );
 };

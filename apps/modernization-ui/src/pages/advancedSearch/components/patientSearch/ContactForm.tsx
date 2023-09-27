@@ -24,7 +24,13 @@ export const ContactForm = ({ control, errors }: any) => {
                             onChange={onChange}
                             label="Phone number"
                             defaultValue={value}
-                            error={errors && errors.phoneNumber && 'Invalid phone number'}
+                            mask="___-___-____"
+                            pattern="\d{3}-\d{3}-\d{4}"
+                            error={
+                                errors &&
+                                errors.phoneNumber &&
+                                'Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).'
+                            }
                         />
                     )}
                 />
@@ -36,7 +42,7 @@ export const ContactForm = ({ control, errors }: any) => {
                     rules={{
                         pattern: {
                             value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                            message: 'Invalid email'
+                            message: 'Please enter a valid email address (example: youremail@website.com)'
                         }
                     }}
                     render={({ field: { onChange, value } }) => (

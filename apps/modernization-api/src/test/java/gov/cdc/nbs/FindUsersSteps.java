@@ -1,20 +1,7 @@
 package gov.cdc.nbs;
 
-import gov.cdc.nbs.authentication.entity.AuthAudit;
-import gov.cdc.nbs.authentication.entity.AuthPermSet;
-import gov.cdc.nbs.authentication.entity.AuthPermSetRepository;
-import gov.cdc.nbs.authentication.entity.AuthUser;
-import gov.cdc.nbs.authentication.entity.AuthUserRepository;
-import gov.cdc.nbs.authentication.entity.AuthUserRole;
-import gov.cdc.nbs.authentication.entity.AuthUserRoleRepository;
-import gov.cdc.nbs.authorization.TestAuthorizedUser;
-import gov.cdc.nbs.controller.UserController;
-import gov.cdc.nbs.support.PermissionMother;
-import gov.cdc.nbs.support.TestAvailable;
-import gov.cdc.nbs.support.UserMother;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Objects;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,11 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.Instant;
-import java.util.Objects;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import gov.cdc.nbs.authentication.entity.AuthUser;
+import gov.cdc.nbs.authorization.TestAuthorizedUser;
+import gov.cdc.nbs.controller.UserController;
+import gov.cdc.nbs.support.TestAvailable;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -35,25 +23,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FindUsersSteps {
 
     @Autowired
-    private AuthPermSetRepository permSetRepository;
-    @Autowired
-    private AuthUserRoleRepository roleRepository;
-    @Autowired
     private UserController userController;
-    @Autowired
-    private AuthUserRepository userRepository;
 
     @Autowired
     TestAvailable<TestAuthorizedUser> availableUsers;
 
     @Autowired
-    TestAuthentication testAuthentication;
+    Authenticated authenticated;
 
     private Page<AuthUser> users;
 
     @When("I retrieve the user list")
     public void i_search_for_users() {
-        users = testAuthentication.authenticated(() -> userController.findAllUsers(null));
+        users = authenticated.perform(() -> userController.findAllUsers(null));
     }
 
     @Then("The {string} user is returned")

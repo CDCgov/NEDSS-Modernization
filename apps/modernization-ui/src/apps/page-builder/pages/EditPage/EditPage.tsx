@@ -19,17 +19,21 @@ export const EditPage = () => {
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
     const [page, setPage] = useState<PageDetails>();
-    const [tabs, setTabs] = useState<Tabs[]>([]);
+    const [tabs, setTabs] = useState<Tabs[] | undefined>();
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
 
-    useEffect(() => {
-        // Fetch page summary
+    const getPageDetails = () => {
         if (pageId) {
             fetchPageDetails(token, Number(pageId)).then((data: any) => {
                 setPage(data);
             });
         }
+    };
+
+    useEffect(() => {
+        // Fetch page summary
+        getPageDetails();
     }, [pageId]);
 
     useEffect(() => {
@@ -38,9 +42,9 @@ export const EditPage = () => {
         }
     }, [page]);
 
-    const handleAddSection = () => {
+    const handleAddSuccess = async () => {
         if (pageId) {
-            fetchPageDetails(token, Number(pageId)).then((data: any) => {
+            await fetchPageDetails(token, Number(pageId)).then((data: any) => {
                 setPage(data);
             });
         }
@@ -53,23 +57,30 @@ export const EditPage = () => {
                     <PagesBreadcrumb currentPage={page.Name} />
                     <div className="edit-page__header">
                         <EditPageHeader page={page} />
-                        <EditPageTabs tabs={tabs} active={active} setActive={setActive} />
+                        {tabs ? (
+                            <EditPageTabs
+                                tabs={tabs}
+                                active={active}
+                                setActive={setActive}
+                                onAddSuccess={handleAddSuccess}
+                            />
+                        ) : null}
                     </div>
                     <div className="edit-page__container">
                         {page.pageTabs[active] ? (
-                            <EditPageContentComponent content={page.pageTabs[active]} onAddSection={handleAddSection} />
+                            <EditPageContentComponent content={page.pageTabs[active]} onAddSection={handleAddSuccess} />
                         ) : null}
 
                         <EditPageSidebar modalRef={addSectionModalRef} />
                     </div>
                 </div>
             ) : null}
-            {page && pageId ? (
+            {page && pageId && page.pageTabs[active].id ? (
                 <AddSectionModal
                     modalRef={addSectionModalRef}
                     pageId={pageId}
                     tabId={page.pageTabs[active].id}
-                    onAddSection={handleAddSection}
+                    onAddSection={handleAddSuccess}
                 />
             ) : null}
         </PageBuilder>

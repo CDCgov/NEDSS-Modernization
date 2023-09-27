@@ -25,10 +25,12 @@ describe('PhoneNumberInput component tests', () => {
                     label="test-phone-input-false"
                     defaultValue="&X}5"
                     onChange={onchange}
-                    error="Invalid phone number"
+                    error="Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9)."
                 />
             );
-            expect(getByTestId('errorMessage').innerHTML).toBe('Invalid phone number');
+            expect(getByTestId('errorMessage').innerHTML).toBe(
+                'Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).'
+            );
         });
     });
 });

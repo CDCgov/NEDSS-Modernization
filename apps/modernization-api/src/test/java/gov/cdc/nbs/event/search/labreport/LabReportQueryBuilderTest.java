@@ -1,37 +1,5 @@
 package gov.cdc.nbs.event.search.labreport;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.NestedQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.index.query.TermsQueryBuilder;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
@@ -53,6 +21,40 @@ import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.service.SecurityService;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.NestedQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.TermsQueryBuilder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 class LabReportQueryBuilderTest {
     @Mock
@@ -125,13 +127,13 @@ class LabReportQueryBuilderTest {
 
         // program_jurisdiction_oid clause was added
         var clause = must.stream()
-                .filter(m -> {
-                    if (m instanceof TermsQueryBuilder mq)
-                        return mq.fieldName().equals(LabReport.PROGRAM_JURISDICTION_OID);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (TermsQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof TermsQueryBuilder mq)
+                    return mq.fieldName().equals(LabReport.PROGRAM_JURISDICTION_OID);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (TermsQueryBuilder) m);
         assertTrue(clause.isPresent());
         var oids = programAreaJurisdictionOids();
         oids.forEach(oid -> assertTrue(clause.get().values().contains(oid)));
@@ -256,7 +258,7 @@ class LabReportQueryBuilderTest {
 
         // Case type clause added
         var nested = findNestedQueryBuilders(must);
-        var clause1 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.TYPE_CD, nested);
+        var clause1 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.TYPE_DESC_TXT, nested);
         assertEquals("Filler Number", clause1.value());
         var clause2 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT, nested);
         assertEquals(filter.getEventId().getLabEventId(), clause2.value());
@@ -293,7 +295,7 @@ class LabReportQueryBuilderTest {
 
         // method call
         var eds = new LabReportFilter.LaboratoryEventDateSearch(dateType, RandomUtil.dateInPast(),
-                LocalDate.now());
+            LocalDate.now());
         var filter = new LabReportFilter();
         filter.setEventDate(eds);
         var query = queryBuilder.buildLabReportQuery(filter, pageable);
@@ -328,7 +330,7 @@ class LabReportQueryBuilderTest {
 
         // method call
         var eds =
-                new LabReportFilter.LaboratoryEventDateSearch(LabReportDateType.DATE_OF_REPORT, null, LocalDate.now());
+            new LabReportFilter.LaboratoryEventDateSearch(LabReportDateType.DATE_OF_REPORT, null, LocalDate.now());
         var filter = new LabReportFilter();
         filter.setEventDate(eds);
         assertThrows(QueryException.class, () -> queryBuilder.buildLabReportQuery(filter, pageable));
@@ -488,7 +490,7 @@ class LabReportQueryBuilderTest {
         // Case type clause added
         var clause = findTermsQueryBuilder(LabReport.RECORD_STATUS_CD, must);
         Arrays.asList(ProcessingStatus.values()).stream()
-                .forEach(status -> assertTrue(clause.values().contains(status.toString())));
+            .forEach(status -> assertTrue(clause.values().contains(status.toString())));
     }
 
     @Test
@@ -552,10 +554,10 @@ class LabReportQueryBuilderTest {
         // Case type clause added
         var nested = findNestedQueryBuilders(must);
         var clause1 = findMatchQueryBuilder(
-                LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD, nested);
+            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD, nested);
         assertEquals("PATSBJ", clause1.value());
         var clause2 = findMatchQueryBuilder(
-                LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.PERSON_PARENT_UID, nested);
+            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.PERSON_PARENT_UID, nested);
         assertEquals(filter.getPatientId(), clause2.value());
     }
 
@@ -579,16 +581,16 @@ class LabReportQueryBuilderTest {
         // Case type clause added
         var nested = findNestedQueryBuilders(must);
         var clause1 = findMatchQueryBuilder(
-                LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.TYPE_CD,
-                nested);
+            LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.TYPE_CD,
+            nested);
         assertEquals("ORD", clause1.value());
         var clause2 = findMatchQueryBuilder(
-                LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
-                nested);
+            LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
+            nested);
         assertEquals("ORG", clause2.value());
         var clause3 = findMatchQueryBuilder(
-                LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.ENTITY_ID,
-                nested);
+            LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.ENTITY_ID,
+            nested);
         assertEquals(filter.getProviderSearch().getProviderId(), clause3.value());
     }
 
@@ -612,16 +614,16 @@ class LabReportQueryBuilderTest {
         // Case type clause added
         var nested = findNestedQueryBuilders(must);
         var clause1 = findMatchQueryBuilder(
-                LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.TYPE_CD,
-                nested);
+            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.TYPE_CD,
+            nested);
         assertEquals("ORD", clause1.value());
         var clause2 = findMatchQueryBuilder(
-                LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
-                nested);
+            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
+            nested);
         assertEquals("PSN", clause2.value());
         var clause3 = findMatchQueryBuilder(
-                LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.ENTITY_ID,
-                nested);
+            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.ENTITY_ID,
+            nested);
         assertEquals(filter.getProviderSearch().getProviderId(), clause3.value());
     }
 
@@ -645,12 +647,12 @@ class LabReportQueryBuilderTest {
         // Case type clause added
         var nested = findNestedQueryBuilders(must);
         var clause1 = findMatchQueryBuilder(
-                LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
-                nested);
+            LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.TYPE_CD,
+            nested);
         assertEquals("AUT", clause1.value());
         var clause3 = findMatchQueryBuilder(
-                LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.ENTITY_ID,
-                nested);
+            LabReport.ORGANIZATION_PARTICIPATIONS + "." + ElasticsearchOrganizationParticipation.ENTITY_ID,
+            nested);
         assertEquals(filter.getProviderSearch().getProviderId(), clause3.value());
     }
 
@@ -673,7 +675,7 @@ class LabReportQueryBuilderTest {
         // Case type clause added
         var nested = findNestedQueryBuilders(must);
         var clause = findMatchQueryBuilder(LabReport.OBSERVATIONS_FIELD + "." + ElasticsearchObservation.CD_DESC_TXT,
-                nested);
+            nested);
         assertEquals(filter.getResultedTest(), clause.value());
     }
 
@@ -696,45 +698,45 @@ class LabReportQueryBuilderTest {
         // Case type clause added
         var nested = findNestedQueryBuilders(must);
         var clause = findMatchQueryBuilder(LabReport.OBSERVATIONS_FIELD + "." + ElasticsearchObservation.DISPLAY_NAME,
-                nested);
+            nested);
         assertEquals(filter.getCodedResult(), clause.value());
     }
 
     private RangeQueryBuilder findRangeQueryBuilder(String path, List<QueryBuilder> builders) {
         var optional = builders.stream()
-                .filter(m -> {
-                    if (m instanceof RangeQueryBuilder mq)
-                        return mq.fieldName().equals(path);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (RangeQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof RangeQueryBuilder mq)
+                    return mq.fieldName().equals(path);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (RangeQueryBuilder) m);
         assertNotNull(optional);
         return optional.get();
     }
 
     private MatchQueryBuilder findMatchQueryBuilder(String path, List<QueryBuilder> builders) {
         var optional = builders.stream()
-                .filter(m -> {
-                    if (m instanceof MatchQueryBuilder mq)
-                        return mq.fieldName().equals(path);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (MatchQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof MatchQueryBuilder mq)
+                    return mq.fieldName().equals(path);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (MatchQueryBuilder) m);
         assertNotNull(optional);
         return optional.get();
     }
 
     private TermsQueryBuilder findTermsQueryBuilder(String path, List<QueryBuilder> builders) {
         var optional = builders.stream()
-                .filter(m -> {
-                    if (m instanceof TermsQueryBuilder mq)
-                        return mq.fieldName().equals(path);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (TermsQueryBuilder) m);
+            .filter(m -> {
+                if (m instanceof TermsQueryBuilder mq)
+                    return mq.fieldName().equals(path);
+                return false;
+            })
+            .findFirst()
+            .map(m -> (TermsQueryBuilder) m);
         assertNotNull(optional);
         return optional.get();
     }
@@ -755,40 +757,39 @@ class LabReportQueryBuilderTest {
     private Set<NbsAuthority> authorities() {
         var authorities = new HashSet<NbsAuthority>();
         authorities.add(NbsAuthority.builder()
-                .authority("FIND-PATIENT")
-                .businessObject("PATIENT")
-                .businessOperation("FIND")
-                .programArea("STD")
-                .programAreaUid(1)
-                .jurisdiction("130001")
-                .build());
+            .authority("FIND-PATIENT")
+            .businessObject("PATIENT")
+            .businessOperation("FIND")
+            .programArea("STD")
+            .programAreaUid(1)
+            .jurisdiction("130001")
+            .build());
         authorities.add(NbsAuthority.builder()
-                .authority("VIEW-OBSERVATIONLABREPORT")
-                .businessObject("OBSERVATIONLABREPORT")
-                .businessOperation("VIEW")
-                .programArea("STD")
-                .programAreaUid(2)
-                .jurisdiction("130002")
-                .build());
+            .authority("VIEW-OBSERVATIONLABREPORT")
+            .businessObject("OBSERVATIONLABREPORT")
+            .businessOperation("VIEW")
+            .programArea("STD")
+            .programAreaUid(2)
+            .jurisdiction("130002")
+            .build());
         return authorities;
     }
 
     private void setAuthentication() {
         var userDetails = userDetails();
         var authentication = new PreAuthenticatedAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities());
+            userDetails,
+            null,
+            userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private NbsUserDetails userDetails() {
         return NbsUserDetails.builder()
-                .id(1L)
-                .username("MOCK-USER")
-                .token("token")
-                .authorities(authorities())
-                .isEnabled(true)
-                .build();
+            .id(1L)
+            .username("MOCK-USER")
+            .authorities(authorities())
+            .isEnabled(true)
+            .build();
     }
 }

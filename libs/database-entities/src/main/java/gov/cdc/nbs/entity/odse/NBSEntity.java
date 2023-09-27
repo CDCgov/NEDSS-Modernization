@@ -2,7 +2,6 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
-import lombok.Getter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Getter
 @Entity
 @Table(name = "Entity")
 public class NBSEntity {
@@ -63,6 +61,10 @@ public class NBSEntity {
 
     public NBSEntity(final PatientCommand.AddPatient patient) {
         this(patient.person(), "PSN");
+    }
+
+    public List<EntityLocatorParticipation> getEntityLocatorParticipations() {
+        return entityLocatorParticipations;
     }
 
     public void update(
@@ -184,8 +186,8 @@ public class NBSEntity {
             .ifPresent(identification -> identification.delete(deleted));
     }
 
-    public List<EntityId> getEntityIds() {
-        return this.entityIds == null ? List.of() : this.entityIds.stream().filter(EntityId.active()).toList();
+    public List<EntityId> identifications() {
+        return this.entityIds == null ? List.of() : List.copyOf(this.entityIds);
     }
 
     private List<EntityLocatorParticipation> ensureLocators() {
@@ -231,7 +233,7 @@ public class NBSEntity {
             .ifPresent(existing -> existing.delete(deleted));
     }
 
-    public Collection<PostalEntityLocatorParticipation> addresses() {
+    public List<PostalEntityLocatorParticipation> addresses() {
         return this.ensureLocators().stream()
             .filter(EntityLocatorParticipation.active().and(PostalEntityLocatorParticipation.class::isInstance))
             .map(PostalEntityLocatorParticipation.class::cast)
@@ -245,18 +247,19 @@ public class NBSEntity {
             .toList();
     }
 
-    public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
+    public List<TeleEntityLocatorParticipation> phoneNumbers() {
         return this.ensureLocators().stream()
             .filter(EntityLocatorParticipation.active().and(this::isPhoneNumber))
             .map(TeleEntityLocatorParticipation.class::cast)
             .toList();
     }
 
-    private boolean isPhoneNumber(final EntityLocatorParticipation participation) {
+
+    public boolean isPhoneNumber(final EntityLocatorParticipation participation) {
         return participation instanceof TeleEntityLocatorParticipation && !Objects.equals(participation.cd, "NET");
     }
 
-    public Collection<TeleEntityLocatorParticipation> emailAddress() {
+    public List<TeleEntityLocatorParticipation> emailAddress() {
         return this.ensureLocators().stream()
             .filter(this::isEmailAddress)
             .map(TeleEntityLocatorParticipation.class::cast)

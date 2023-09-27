@@ -351,23 +351,13 @@ input InvestigationFilter {
   investigationStatus: InvestigationStatus
   outbreakNames: [String]
   caseStatuses: [CaseStatus!]
-  notificationStatuses: NotificationStatuses
-  processingStatuses: ProcessingStatuses
+  notificationStatuses: [NotificationStatus]
+  processingStatuses: [ProcessingStatus]
 }
 
 input EventId {
   investigationEventType: InvestigationEventIdType!
   id: String!
-}
-
-input NotificationStatuses {
-  includeUnassigned: Boolean!
-  statusList: [NotificationStatus!]!
-}
-
-input ProcessingStatuses {
-  includeUnassigned: Boolean!
-  statusList: [ProcessingStatus!]!
 }
 
 input InvestigationEventDateSearch {
@@ -612,58 +602,24 @@ enum LaboratoryReportStatus {
   UNPROCESSED
 }
 extend type Query {
-    findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
+  findDistinctCodedResults(
+    searchText: String!
+    snomed: Boolean!
+  ): [CodedResult!]!
 }
 
-type LocalCodedResults {
-    content: [LabResult]!
-    total: Int!
-}
-type LabResult {
-    id: LabResultId
-    nbsUid: ID
-    labResultDescTxt: String
-}
-
-type LabResultId {
-    labResultCd: String
-    laboratoryId: String
+type CodedResult {
+  name: String!
 }
 extend type Query {
-    findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
+  findDistinctResultedTest(
+    searchText: String!
+    loinc: Boolean!
+  ): [ResultedTest!]!
 }
 
-type LocalLabTestResults {
-    content: [LabTest]!
-    total: Int!
-}
-
-type LabTest {
-    id: LabTestId
-    labTestDescTxt: String
-    organismResultTestInd: String
-}
-
-type LabTestId {
-    labTestCd: String
-    laboratoryId: String
-}
-extend type Query {
-    findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
-}
-
-type LoincLabTestResults {
-    content: [LoincCode]!
-    total: Int!
-}
-
-type LoincCode {
-    id: String
-    componentName: String
-    methodType: String
-    systemCd: String
-    property: String
-    relatedClassCd: String
+type ResultedTest {
+  name: String!
 }
 extend type Query {
   findOrganizationById(id: ID!): Organization
@@ -970,6 +926,11 @@ type PatientSummaryEmail {
     address: String
 }
 
+type PatientSummaryIdentification {
+    type: String!
+    value: String!
+}
+
 type PatientSummary {
     legalName: PatientLegalName
     birthday: Date
@@ -977,9 +938,10 @@ type PatientSummary {
     gender: String
     ethnicity: String
     race: String
+    identification: [PatientSummaryIdentification!]
     phone: [PatientSummaryPhone!]
     email: [PatientSummaryEmail!]
-    address: PatientSummaryAddress
+    address: PatientSummaryAddress    
 }
 
 type PatientLegalName {
@@ -1172,6 +1134,8 @@ type PatientGender {
     additional: String
 }
 
+
+
 type PatientIdentificationType {
     id: String!
     description: String!
@@ -1323,123 +1287,6 @@ type PatientProfile {
 extend type Query {
     findPatientProfile(patient: ID, shortId: Int): PatientProfile
 }
-type PatientTreatment {
-  treatment: ID!
-  createdOn: DateTime!
-  provider: String
-  treatedOn: DateTime!
-  description: String!
-  event: String!
-  associatedWith: PatientTreatmentInvestigation!
-}
-
-type PatientTreatmentInvestigation {
-  id: ID!
-  local: String!
-  condition: String!
-}
-
-type PatientTreatmentResults {
-  content: [PatientTreatment]!
-  total: Int!
-  number: Int!
-}
-
-extend type Query {
-  findTreatmentsForPatient(patient: ID!, page: Page): PatientTreatmentResults
-}
-type PatientVaccination {
-    vaccination: ID!
-    createdOn: DateTime!
-    provider: String
-    administeredOn: DateTime
-    administered: String!
-    event: String!
-    associatedWith: PatientVaccinationInvestigation
-}
-
-type PatientVaccinationInvestigation {
-    id: ID!
-    local: String!
-    condition: String!
-}
-
-type PatientVaccinationResults {
-    content: [PatientVaccination]!
-    total: Int!
-    number: Int!
-}
-
-extend type Query {
-    findVaccinationsForPatient(patient: ID!, page: Page): PatientVaccinationResults
-}
-type Query {
-    findPatientById(id: ID!): Person
-    findAllPatients(page: SortablePage): PersonResults!
-    findPatientsByFilter(
-        filter: PersonFilter!
-        page: SortablePage
-    ): PersonResults!
-    findPatientsByOrganizationFilter(
-        filter: OrganizationFilter!
-        page: SortablePage
-    ): PersonResults!
-    findOpenInvestigationsForPatient(
-        patientId: Int!
-        page: Page
-    ): InvestigationResults!
-}
-
-type PatientDeleteSuccessful {
-    patient: Int!
-}
-
-type PatientDeleteFailed {
-    patient: Int!
-    reason: String!
-}
-
-union PatientDeleteResult = PatientDeleteSuccessful | PatientDeleteFailed
-
-type Mutation {
-    createPatient(patient: PersonInput!): PatientCreatedResponse!
-    deletePatient(patient: ID!): PatientDeleteResult!
-    updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
-    updatePatientBirthAndGender(input: UpdateBirthAndGenderInput!): PatientBirthAndGenderChangeResult!
-    updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
-    updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
-    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
-    updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
-    addPatientRace(input: RaceInput!): PatientRaceChangeResult!
-    updatePatientRace(input: RaceInput!): PatientRaceChangeResult!
-    deletePatientRace(input: DeletePatientRace!): PatientRaceChangeResult!
-    addPatientName(input: NewPatientNameInput!): PatientNameChangeResult!
-    updatePatientName(input: UpdatePatientNameInput!): PatientNameChangeResult!
-    deletePatientName(input: DeletePatientNameInput!): PatientNameChangeResult!
-    addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
-    updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
-    deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
-    addPatientPhone(input: NewPatientPhoneInput!): PatientPhoneChangeResult!
-    updatePatientPhone(input: UpdatePatientPhoneInput!): PatientPhoneChangeResult!
-    deletePatientPhone(input: DeletePatientPhoneInput): PatientPhoneChangeResult!
-    addPatientIdentification(input: NewPatientIdentificationInput!): PatientIdentificationChangeResult!
-    updatePatientIdentification(input: UpdatePatientIdentificationInput!): PatientIdentificationChangeResult!
-    deletePatientIdentification(input: DeletePatientIdentificationInput): PatientIdentificationChangeResult!
-}
-
-type PatientCreatedResponse {
-    id: Int!
-    shortId: Int!
-}
-
-type PatientUpdateResponse {
-    patientId: ID!
-}
-
-type PersonResults {
-    content: [Person!]!
-    total: Int!
-}
 
 input IdentificationCriteria {
     identificationNumber: String!
@@ -1472,11 +1319,84 @@ input PersonFilter {
     recordStatus: [RecordStatus!]!
 }
 
+enum Gender {
+    M
+    F
+    U
+}
+
+enum Deceased {
+    Y
+    N
+    UNK
+}
+
+enum Operator {
+    EQUAL
+    BEFORE
+    AFTER
+}
+
+enum SortDirection {
+    ASC
+    DESC
+}
+
+type PatientSearchResultIdentification {
+    type: String!
+    value: String!
+}
+
+type PersonName {
+    firstNm: String
+    middleNm: String
+    lastNm: String
+    nmSuffix: String
+    nmPrefix: String
+}
+
+type Locator {
+    emailAddress: String
+    extenstionTxt: String
+    phoneNbrTxt: String
+    urlAddress: String
+    censusBlockCd: String
+    censusMinorCivilDivisionCd: String
+    censusTrackCd: String
+    cityCd: String
+    cityDescTxt: String
+    cntryCd: String
+    cntryDescTxt: String
+    cntyCd: String
+    cntyDescTxt: String
+    msaCongressDistrictCd: String
+    regionDistrictCd: String
+    stateCd: String
+    streetAddr1: String
+    streetAddr2: String
+    zipCd: String
+    geocodeMatchInd: String
+    withinCityLimitsInd: String
+    censusTract: String
+    stateCode: StateCode
+    countryCode: CountryCode
+}
+
+type LocatorParticipations {
+    classCd: String
+    locator: Locator
+}
+
+type NBSEntity {
+    entityLocatorParticipations: [LocatorParticipations]
+}
+
+
 type Person {
     shortId: Int
     id: ID
+    identification: [PatientSearchResultIdentification!]!
     nbsEntity: NBSEntity!
-    entityIds: [PersonIdentification]
     names: [PersonName]
     addReasonCd: String
     addTime: DateTime
@@ -1587,6 +1507,147 @@ type Person {
 
 type personParentUid {
     id: ID
+}
+
+
+type PersonResults {
+    content: [Person!]!
+    total: Int!
+}
+
+extend type Query {
+    findPatientsByFilter(
+        filter: PersonFilter!
+        page: SortablePage
+    ): PersonResults!
+}
+type PatientTreatment {
+  treatment: ID!
+  createdOn: DateTime!
+  provider: String
+  treatedOn: DateTime!
+  description: String!
+  event: String!
+  associatedWith: PatientTreatmentInvestigation!
+}
+
+type PatientTreatmentInvestigation {
+  id: ID!
+  local: String!
+  condition: String!
+}
+
+type PatientTreatmentResults {
+  content: [PatientTreatment]!
+  total: Int!
+  number: Int!
+}
+
+extend type Query {
+  findTreatmentsForPatient(patient: ID!, page: Page): PatientTreatmentResults
+}
+type PatientVaccination {
+    vaccination: ID!
+    createdOn: DateTime!
+    provider: String
+    administeredOn: DateTime
+    administered: String!
+    event: String!
+    associatedWith: PatientVaccinationInvestigation
+}
+
+type PatientVaccinationInvestigation {
+    id: ID!
+    local: String!
+    condition: String!
+}
+
+type PatientVaccinationResults {
+    content: [PatientVaccination]!
+    total: Int!
+    number: Int!
+}
+
+extend type Query {
+    findVaccinationsForPatient(patient: ID!, page: Page): PatientVaccinationResults
+}
+type Query {
+    findOpenInvestigationsForPatient(
+        patientId: Int!
+        page: Page
+    ): InvestigationResults!
+}
+
+type PatientDeleteSuccessful {
+    patient: Int!
+}
+
+type PatientDeleteFailed {
+    patient: Int!
+    reason: String!
+}
+
+union PatientDeleteResult = PatientDeleteSuccessful | PatientDeleteFailed
+
+type Mutation {
+    createPatient(patient: PersonInput!): PatientCreatedResponse!
+    deletePatient(patient: ID!): PatientDeleteResult!
+    updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
+    updatePatientBirthAndGender(input: UpdateBirthAndGenderInput!): PatientBirthAndGenderChangeResult!
+    updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
+    updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
+    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
+    updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
+    addPatientRace(input: RaceInput!): PatientRaceChangeResult!
+    updatePatientRace(input: RaceInput!): PatientRaceChangeResult!
+    deletePatientRace(input: DeletePatientRace!): PatientRaceChangeResult!
+    addPatientName(input: NewPatientNameInput!): PatientNameChangeResult!
+    updatePatientName(input: UpdatePatientNameInput!): PatientNameChangeResult!
+    deletePatientName(input: DeletePatientNameInput!): PatientNameChangeResult!
+    addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
+    updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
+    deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
+    addPatientPhone(input: NewPatientPhoneInput!): PatientPhoneChangeResult!
+    updatePatientPhone(input: UpdatePatientPhoneInput!): PatientPhoneChangeResult!
+    deletePatientPhone(input: DeletePatientPhoneInput): PatientPhoneChangeResult!
+    addPatientIdentification(input: NewPatientIdentificationInput!): PatientIdentificationChangeResult!
+    updatePatientIdentification(input: UpdatePatientIdentificationInput!): PatientIdentificationChangeResult!
+    deletePatientIdentification(input: DeletePatientIdentificationInput): PatientIdentificationChangeResult!
+}
+
+type PatientCreatedResponse {
+    id: Int!
+    shortId: Int!
+}
+
+type PatientUpdateResponse {
+    patientId: ID!
+}
+
+enum Suffix {
+    ESQ
+    II
+    III
+    IV
+    JR
+    SR
+    V
+}
+
+enum NameUseCd {
+    AD # Adopted Name
+    AL # Alias Name
+    A # Artist/Stage Name
+    S # Coded Pseudo
+    I # Indigenous/Tribal
+    L # Legal
+    C # License
+    M # Maiden Name
+    MO # Mother's Name
+    BR # Name at Birth
+    P # Name of Partner/Spouse
+    R # Religious
+    U
 }
 
 input NewPatientName {
@@ -1885,113 +1946,6 @@ input UpdateGenderInput {
 
 type PatientBirthAndGenderChangeResult {
     patient: Int!
-}
-
-enum NameUseCd {
-    AD # Adopted Name
-    AL # Alias Name
-    A # Artist/Stage Name
-    S # Coded Pseudo
-    I # Indigenous/Tribal
-    L # Legal
-    C # License
-    M # Maiden Name
-    MO # Mother's Name
-    BR # Name at Birth
-    P # Name of Partner/Spouse
-    R # Religious
-    U
-}
-
-enum Suffix {
-    ESQ
-    II
-    III
-    IV
-    JR
-    SR
-    V
-}
-
-enum PhoneType {
-    HOME
-    CELL
-    WORK
-}
-
-enum Gender {
-    M
-    F
-    U
-}
-
-enum Deceased {
-    Y
-    N
-    UNK
-}
-
-enum Operator {
-    EQUAL
-    BEFORE
-    AFTER
-}
-
-enum SortDirection {
-    ASC
-    DESC
-}
-
-type PersonIdentification {
-    typeDescTxt: String
-    typeCd: String
-    rootExtensionTxt: String
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-}
-
-type PersonName {
-    firstNm: String
-    middleNm: String
-    lastNm: String
-    nmSuffix: String
-    nmPrefix: String
-}
-
-type Locator {
-    emailAddress: String
-    extenstionTxt: String
-    phoneNbrTxt: String
-    urlAddress: String
-    censusBlockCd: String
-    censusMinorCivilDivisionCd: String
-    censusTrackCd: String
-    cityCd: String
-    cityDescTxt: String
-    cntryCd: String
-    cntryDescTxt: String
-    cntyCd: String
-    cntyDescTxt: String
-    msaCongressDistrictCd: String
-    regionDistrictCd: String
-    stateCd: String
-    streetAddr1: String
-    streetAddr2: String
-    zipCd: String
-    geocodeMatchInd: String
-    withinCityLimitsInd: String
-    censusTract: String
-    stateCode: StateCode
-    countryCode: CountryCode
-}
-
-type LocatorParticipations {
-    classCd: String
-    locator: Locator
-}
-
-type NBSEntity {
-    entityLocatorParticipations: [LocatorParticipations]
 }
 extend type Query {
   findPlaceById(id: ID!): Place

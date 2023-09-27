@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.authentication.JWTFilter;
+import gov.cdc.nbs.authentication.token.JWTFilter;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import lombok.RequiredArgsConstructor;
