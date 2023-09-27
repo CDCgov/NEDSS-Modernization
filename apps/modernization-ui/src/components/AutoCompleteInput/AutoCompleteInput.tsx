@@ -1,18 +1,18 @@
-import { ComboBox, Label } from '@trussworks/react-uswds';
-import { InputMaybe } from 'generated/graphql/schema';
+import { ComboBox } from '@trussworks/react-uswds';
+import { EntryWrapper } from 'components/Entry';
 
 type AutoCompleteProps = {
     label: string;
     name: string;
-    value: InputMaybe<string> | undefined;
+    value: string | null | undefined;
     onChange: (event: any) => void;
-    options: any;
+    options: { value: string; label: string }[];
+    orientation?: 'vertical' | 'horizontal';
 };
 
-export const AutoCompleteInput = ({ label, name, value, onChange, options }: AutoCompleteProps) => {
+export const AutoCompleteInput = ({ label, name, value, onChange, options, orientation }: AutoCompleteProps) => {
     return (
-        <>
-            <Label htmlFor={name}>{label}</Label>
+        <EntryWrapper label={label || ''} htmlFor={name || ''} orientation={orientation || 'vertical'}>
             <ComboBox
                 data-testid={name || 'combo-box'}
                 id={name}
@@ -21,6 +21,6 @@ export const AutoCompleteInput = ({ label, name, value, onChange, options }: Aut
                 onChange={onChange}
                 options={options}
             />
-        </>
+        </EntryWrapper>
     );
 };

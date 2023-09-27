@@ -402,7 +402,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                     label="Event created by user"
                                     options={searchCriteria.userResults.map((user) => {
                                         return {
-                                            name: `${user.userLastNm}, ${user.userFirstNm}`,
+                                            label: `${user.userLastNm}, ${user.userFirstNm}`,
                                             value: user.nedssEntryId
                                         };
                                     })}
@@ -420,7 +420,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                     label="Event updated by user"
                                     options={searchCriteria.userResults.map((user) => {
                                         return {
-                                            name: `${user.userLastNm}, ${user.userFirstNm}`,
+                                            label: `${user.userLastNm}, ${user.userFirstNm}`,
                                             value: user.nedssEntryId
                                         };
                                     })}

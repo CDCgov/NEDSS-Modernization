@@ -284,7 +284,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                     label="Event updated by user"
                                     options={searchCriteria.userResults.map((user) => {
                                         return {
-                                            name: `${user.userLastNm}, ${user.userFirstNm}`,
+                                            label: `${user.userLastNm}, ${user.userFirstNm}`,
                                             value: user.nedssEntryId
                                         };
                                     })}

@@ -111,6 +111,16 @@ describe('InvestigationGeneralFields component', () => {
         // to
         expect(dateInputs[1]).not.toBeDefined();
 
+        // Event created by user
+        const userCreateSelect = getByText('Event created by user');
+        expect(userCreateSelect).toBeInTheDocument();
+        expect(userCreateSelect).not.toHaveValue();
+
+        // Event updated by user
+        const userUpdateSelect = getByText('Event updated by user');
+        expect(userUpdateSelect).toBeInTheDocument();
+        expect(userUpdateSelect).not.toHaveValue();
+
         // Event provider/facility type
         getByText('Event provider/facility type');
         const providerSelect = getByTestId('providerFacilitySearch.entityType');
