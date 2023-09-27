@@ -33,7 +33,7 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                         </Button>
                     </>
                 ) : (
-                    <Button type="button" outline onClick={() => handleSaveDraft()}>
+                    <Button type="button" outline onClick={handleSaveDraft}>
                         Save draft
                     </Button>
                 )}
