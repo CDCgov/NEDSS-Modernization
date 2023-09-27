@@ -13,6 +13,9 @@ RUN tar -zxvf apache-ant-$ant_version-bin.tar.gz
 RUN rm apache-ant-$ant_version*.gz
 ENV ANT_HOME=/home/apache-ant-$ant_version
 
+# copy updated pom with xalan and xerces provided dependencies
+ADD pom-jar.xml .
+
 # run build
 ENV JBOSS_HOME=build
 ENV JAVA_TOOL_OPTIONS=-Dfile.encoding=ISO-8859-1

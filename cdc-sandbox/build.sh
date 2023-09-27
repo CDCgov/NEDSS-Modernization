@@ -1,3 +1,5 @@
+set -e
+
 #
 # NEDSS_HOME env variable must be set to the full path of the
 # NEDSSDev source tree downloaded from https://github.com/cdcent/NEDSSDev

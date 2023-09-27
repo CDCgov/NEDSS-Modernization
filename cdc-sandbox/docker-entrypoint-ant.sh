@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 NEDSS_HOME=/home/NEDSSDev
 
@@ -13,6 +14,7 @@ cp -r /mnt/src/* $NEDSS_HOME
 sed -i 's/PhcMartEtl.bat/PHCMartETL.bat/g' $NEDSS_HOME/BuildAndDeployment/build.report.xml
 sed -i 's/PhcMartEtl.bat/PHCMartETL.bat/g' $NEDSS_HOME/pom.xml
 cp $NEDSS_HOME/source/gov/cdc/nedss/webapp/nbs/resource/javascript/Globals.js $NEDSS_HOME/source/gov/cdc/nedss/webapp/nbs/resource/javascript/globals.js
+cp /home/pom-jar.xml $NEDSS_HOME/pom-jar.xml
 
 cd $NEDSS_HOME
 
@@ -27,8 +29,6 @@ else
     cd BuildAndDeployment
     $ANT_HOME/bin/ant
 fi
-
-# TODO: check build return code and send failure status to docker context
 
 # Clean output dist directory and copy artifacts after a successful build
 rm -rf /mnt/dist/*
