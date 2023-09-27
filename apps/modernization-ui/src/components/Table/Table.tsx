@@ -134,6 +134,7 @@ export const TableComponent = ({
         const direction = sortState[head.name];
         const ariaSort = resolveSortAria(direction);
         const style = resolveHeaderStyle(direction);
+
         return (
             <th
                 key={index}
