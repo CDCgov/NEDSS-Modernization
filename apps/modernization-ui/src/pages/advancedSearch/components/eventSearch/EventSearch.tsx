@@ -46,7 +46,7 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
             investigationForm.reset(investigationFilter, { keepDefaultValues: true });
         } else if (labReportFilter) {
             setSearchType('labReport');
-            labReportForm.reset({ ...initialLabForm(), ...labReportFilter }, { keepDefaultValues: true });
+            labReportForm.reset({ ...labReportFilter }, { keepDefaultValues: true });
         } else {
             investigationForm.reset({}, { keepDefaultValues: true });
             labReportForm.reset(initialLabForm(), { keepDefaultValues: true });
@@ -86,6 +86,8 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
         labReportFilter.eventId = objectOrUndefined(labReportFilter.eventId);
         labReportFilter.eventDate = objectOrUndefined(labReportFilter.eventDate);
         labReportFilter.providerSearch = objectOrUndefined(labReportFilter.providerSearch);
+        labReportFilter.resultedTest = labReportFilter.resultedTest ? labReportFilter.resultedTest : undefined;
+        labReportFilter.codedResult = labReportFilter.codedResult ? labReportFilter.codedResult : undefined;
         return labReportFilter;
     };
 

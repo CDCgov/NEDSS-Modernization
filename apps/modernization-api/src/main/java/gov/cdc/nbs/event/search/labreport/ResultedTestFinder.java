@@ -58,17 +58,16 @@ public class ResultedTestFinder {
     }
 
     public List<ResultedTest> findDistinctResultedTest(String searchText, boolean loinc) {
-        String searchString = "%" + searchText + "%";
         if (loinc) {
             Pageable pageable = PageRequest.of(0, maxPageSize, Direction.ASC, "componentName");
-            return loincCodeRepository.findDistinctTestNames(searchString, relatedClassCodes, pageable)
+            return loincCodeRepository.findDistinctTestNames(searchText, relatedClassCodes, pageable)
                     .stream()
                     .map(ResultedTest::new)
                     .toList();
         } else {
             Pageable pageable = PageRequest.of(0, maxPageSize, Direction.ASC, "labTestDescTxt");
             return labTestRepository
-                    .findDistinctTestNames(searchString, pageable)
+                    .findDistinctTestNames(searchText, pageable)
                     .stream()
                     .map(ResultedTest::new)
                     .toList();

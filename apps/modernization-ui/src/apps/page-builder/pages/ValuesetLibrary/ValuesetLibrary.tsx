@@ -5,6 +5,7 @@ import './ValuesetLibrary.scss';
 import { ValuesetLibraryTable } from './ValuesetLibraryTable';
 import './ValuesetTabs.scss';
 import { fetchValueSet } from './useValuesetAPI';
+import { PageBuilder } from '../PageBuilder/PageBuilder';
 
 export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     const [activeTab, setActiveTab] = useState(types || 'local');
@@ -35,7 +36,7 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
 
     return (
-        <>
+        <PageBuilder page="valueset-library" menu={true}>
             <div className="valueset-local-library">
                 {!hideTabs && (
                     <div className="margin-left-2em">
@@ -65,6 +66,6 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
                     </div>
                 </div>
             </div>
-        </>
+        </PageBuilder>
     );
 };
