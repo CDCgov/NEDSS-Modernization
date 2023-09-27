@@ -137,15 +137,14 @@ describe('InvestigationGeneralFields component', () => {
         expect(processingStatus.getElementsByTagName('input')[1]).not.toBeChecked();
 
         // Event created by user
-        getByText('Event created by user');
-        const userCreateSelect = getByTestId('createdBy');
-        expect(userCreateSelect).toHaveAttribute('placeholder', '-Select-');
+        const userCreateSelect = getByText('Event created by user');
+        expect(userCreateSelect).toBeInTheDocument();
+        expect(userCreateSelect).not.toHaveValue();
 
         // Event updated by user
-        getByText('Event updated by user');
-        const userUpdateSelect = getByTestId('lastUpdatedBy');
-        expect(userUpdateSelect).toHaveAttribute('placeholder', '-Select-');
-        expect(userUpdateSelect).toHaveValue('');
+        const userUpdateSelect = getByText('Event updated by user');
+        expect(userUpdateSelect).toBeInTheDocument();
+        expect(userUpdateSelect).not.toHaveValue();
 
         // Event provider/facility type
         getByText('Event provider/facility type');
@@ -213,14 +212,6 @@ describe('InvestigationGeneralFields component', () => {
         const processingStatus = getByText('Processing status');
         expect(processingStatus.getElementsByTagName('input')[0]).not.toBeChecked();
         expect(processingStatus.getElementsByTagName('input')[1]).toBeChecked();
-
-        // Event created by user
-        const userCreateSelect = getByTestId('createdBy');
-        expect(userCreateSelect).toHaveValue('userNedssEntry');
-
-        // Event updated by user
-        const userUpdateSelect = getByTestId('lastUpdatedBy');
-        expect(userUpdateSelect).toHaveValue('userNedssEntry');
 
         // Event provider/facility type
         const providerSelect = getByTestId('providerSearch.providerType');

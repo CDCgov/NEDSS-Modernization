@@ -1,6 +1,15 @@
 .phone-number-input {
     &.error {
-        border-left: 2px solid #B51D09;
+        border-left: 2px solid #b51d09;
         padding-left: 1em;
+    }
+    .usa-input-mask {
+        .usa-input-mask--content {
+            display: none;
+        }
+        .masked-input {
+            background-color: white;
+            cursor: text;
+        }
     }
 }

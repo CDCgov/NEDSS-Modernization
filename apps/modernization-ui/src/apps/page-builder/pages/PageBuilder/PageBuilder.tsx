@@ -7,10 +7,12 @@ type Props = {
     menu?: boolean;
 };
 
-export const PageBuilder = ({ page, children, menu }: Props) => {
+export const PageBuilder = ({ page, children }: Props) => {
     return (
         <div className="page-builder">
-            <Navigation status={page} menu={menu}></Navigation>
+            <div className="page-builder__navigation">
+                <Navigation active={page}></Navigation>
+            </div>
             <div className="page-builder__content">{children}</div>
         </div>
     );

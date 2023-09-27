@@ -34,7 +34,7 @@ const asDetail = (data: PatientAdministrative): Detail[] => [
 ];
 
 const initial: AdministrativeEntry = {
-    asOf: null,
+    asOf: internalizeDate(new Date()),
     comment: null
 };
 

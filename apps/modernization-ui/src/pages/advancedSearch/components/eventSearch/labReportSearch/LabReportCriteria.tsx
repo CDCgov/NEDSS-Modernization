@@ -1,73 +1,116 @@
-import { ComboBox, ComboBoxOption, Label } from '@trussworks/react-uswds';
+import { ComboBoxOption, Label } from '@trussworks/react-uswds';
+import { Input } from 'components/FormInputs/Input';
 import {
     CodedResult,
+    FindDistinctCodedResultsQuery,
+    FindDistinctResultedTestQuery,
     LabReportFilter,
     ResultedTest,
     useFindDistinctCodedResultsLazyQuery,
     useFindDistinctResultedTestLazyQuery
 } from 'generated/graphql/schema';
 import debounce from 'lodash.debounce';
-import { useEffect, useState } from 'react';
+import { FocusEvent, ReactNode, useRef, useState } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form';
+import { Suggestions } from 'suggestion/Suggestions';
 
 type LabReportCriteriaFieldsProps = {
     form: UseFormReturn<LabReportFilter>;
     resultedTestOptions: { label: string; value: string }[];
     codedResultOptions: { label: string; value: string }[];
-    resultedTestSearch: (search: string) => void;
-    codedResultSearch: (search: string) => void;
+    onResultedTestSearch: (search: string) => void;
+    onCodedResultSearch: (search: string) => void;
 };
 export const LabReportCriteriaFields = ({
     form,
     resultedTestOptions,
     codedResultOptions,
-    resultedTestSearch,
-    codedResultSearch
+    onResultedTestSearch,
+    onCodedResultSearch
 }: LabReportCriteriaFieldsProps) => {
+    const resultedTestRef = useRef<HTMLInputElement>(null);
+    const codedResultRef = useRef<HTMLInputElement>(null);
+    const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
+        return <>{suggestion.label}</>;
+    };
+
+    // Lists are not populated on load, await user focus to initialize
+    const onResultedTestFocus = (event: FocusEvent<HTMLInputElement>) => {
+        if (resultedTestOptions.length === 0) {
+            onResultedTestSearch(event.target.value);
+        }
+    };
+    const onCodedResultFocus = (event: FocusEvent<HTMLInputElement>) => {
+        if (codedResultOptions.length === 0) {
+            onCodedResultSearch(event.target.value);
+        }
+    };
+
     return (
         <>
             <Label htmlFor={'resultedTest'}>Resulted test</Label>
-            {resultedTestOptions ? (
-                <Controller
-                    control={form.control}
-                    name={'resultedTest'}
-                    render={({ field: { onChange, value, name } }) => (
-                        <ComboBox
-                            key={value}
-                            id="resultedTest"
-                            name="resultedTest"
-                            options={resultedTestOptions}
-                            defaultValue={value ?? undefined}
+            <Controller
+                control={form.control}
+                name={'resultedTest'}
+                render={({ field: { onChange, value, name } }) => (
+                    <>
+                        <Input
+                            id={name}
+                            htmlFor={name}
                             data-testid={name}
-                            onChange={(e) => {
+                            type="text"
+                            textInputRef={resultedTestRef}
+                            defaultValue={value}
+                            autoComplete="off"
+                            onFocus={onResultedTestFocus}
+                            onChange={(e: any) => {
+                                onResultedTestSearch(e.target.value);
                                 onChange(e);
-                                resultedTestSearch(e ?? '');
                             }}
                         />
-                    )}
-                />
-            ) : null}
+                        {document.activeElement === resultedTestRef.current ? (
+                            <Suggestions
+                                id={`${name}-suggestions`}
+                                suggestions={resultedTestOptions}
+                                renderSuggestion={renderSuggestion}
+                                onSelection={(e) => onChange(e.value)}
+                            />
+                        ) : null}
+                    </>
+                )}
+            />
 
             <Label htmlFor={'codedResult'}>Coded result/organism</Label>
-            {codedResultOptions ? (
-                <Controller
-                    control={form.control}
-                    name={'codedResult'}
-                    render={({ field: { onChange, value } }) => (
-                        <ComboBox
-                            key={value}
-                            id="codedResult"
-                            name="codedResult"
-                            options={codedResultOptions}
-                            defaultValue={value ?? undefined}
-                            onChange={(e) => {
+            <Controller
+                control={form.control}
+                name={'codedResult'}
+                render={({ field: { onChange, value, name } }) => (
+                    <>
+                        <Input
+                            id={name}
+                            htmlFor={name}
+                            data-testid={name}
+                            type="text"
+                            textInputRef={codedResultRef}
+                            defaultValue={value}
+                            autoComplete="off"
+                            onFocus={onCodedResultFocus}
+                            onChange={(e: any) => {
+                                onCodedResultSearch(e.target.value);
                                 onChange(e);
-                                codedResultSearch(e ?? '');
                             }}
                         />
-                    )}
-                />
-            ) : null}
+                        {document.activeElement === codedResultRef.current ? (
+                            <Suggestions
+                                id={`${name}-suggestions`}
+                                suggestions={codedResultOptions}
+                                renderSuggestion={renderSuggestion}
+                                onSelection={(e) => onChange(e.value)}
+                            />
+                        ) : null}
+                    </>
+                )}
+            />
         </>
     );
 };
@@ -76,22 +119,21 @@ type LabReportCriteriaProps = {
     form: UseFormReturn<LabReportFilter>;
 };
 export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
-    const [getLocalResultedTests] = useFindDistinctResultedTestLazyQuery();
-    const [getCodedResultedTests] = useFindDistinctCodedResultsLazyQuery();
-    const [codedResults, setCodedResults] = useState<{ label: string; value: string }[]>();
-    const [resultData, setResultsData] = useState<{ label: string; value: string }[]>();
-
-    // Initialize values for dropdowns
-    useEffect(() => {
-        debounceResultedTestSearch(form.getValues('resultedTest') ?? '');
-        debouncedCodedSearchResults(form.getValues('codedResult') ?? '');
-    }, []);
+    const onCompleteResultedTests = (response: FindDistinctResultedTestQuery) => {
+        const resultedTests = response.findDistinctResultedTest.map(labTestToComboOption) || [];
+        setResultedTestOptions(resultedTests);
+    };
+    const onCompleteCodedResults = (response: FindDistinctCodedResultsQuery): void => {
+        const codedResults = response.findDistinctCodedResults.map(codedResultToComboOption) || [];
+        setCodedResultOptions(codedResults);
+    };
+    const [getLocalResultedTests] = useFindDistinctResultedTestLazyQuery({ onCompleted: onCompleteResultedTests });
+    const [getCodedResultedTests] = useFindDistinctCodedResultsLazyQuery({ onCompleted: onCompleteCodedResults });
+    const [codedResultOptions, setCodedResultOptions] = useState<{ label: string; value: string }[]>();
+    const [resultedTestOptions, setResultedTestOptions] = useState<{ label: string; value: string }[]>();
 
     const debouncedCodedSearchResults = debounce(async (criteria: string) => {
-        getCodedResultedTests({ variables: { searchText: criteria, snomed: false } }).then((response) => {
-            const codedResults = response.data?.findDistinctCodedResults.map(codedResultToComboOption) || [];
-            setCodedResults(codedResults);
-        });
+        getCodedResultedTests({ variables: { searchText: criteria, snomed: false } });
     }, 300);
 
     const codedResultToComboOption = (codedResult: CodedResult): ComboBoxOption => {
@@ -99,10 +141,7 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
     };
 
     const debounceResultedTestSearch = debounce(async (criteria: string) => {
-        getLocalResultedTests({ variables: { searchText: criteria, loinc: false } }).then((response) => {
-            const resultedTests = response.data?.findDistinctResultedTest.map(labTestToComboOption) || [];
-            setResultsData(resultedTests);
-        });
+        getLocalResultedTests({ variables: { searchText: criteria, loinc: false } });
     }, 300);
 
     const labTestToComboOption = (resultedTest: ResultedTest): ComboBoxOption => {
@@ -113,10 +152,10 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
         <div id="criteria">
             <LabReportCriteriaFields
                 form={form}
-                codedResultOptions={codedResults ?? []}
-                resultedTestOptions={resultData ?? []}
-                resultedTestSearch={debounceResultedTestSearch}
-                codedResultSearch={debouncedCodedSearchResults}
+                codedResultOptions={codedResultOptions ?? []}
+                resultedTestOptions={resultedTestOptions ?? []}
+                onResultedTestSearch={debounceResultedTestSearch}
+                onCodedResultSearch={debouncedCodedSearchResults}
             />
         </div>
     );

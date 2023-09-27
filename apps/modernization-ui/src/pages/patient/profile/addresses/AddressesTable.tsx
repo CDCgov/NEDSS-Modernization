@@ -63,7 +63,7 @@ const asEntry = (address: PatientAddress): UpdateAddressEntry => ({
 
 const resolveInitialEntry = (patient: string): NewAddressEntry => ({
     patient: +patient,
-    asOf: null,
+    asOf: internalizeDate(new Date()),
     type: null,
     use: null,
     address1: null,

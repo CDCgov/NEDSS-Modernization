@@ -1,4 +1,4 @@
-# NEDSS-Modernization API
+# National Electronic Disease Surveillance System (NEDSS) Modernization API
 
 ## Running
 

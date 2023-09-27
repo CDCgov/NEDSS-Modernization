@@ -73,6 +73,7 @@ const Suggestions = <T,>({
         <ul
             ref={listRef}
             id={id}
+            data-testid="suggestions-list"
             className="suggestions use-combo-box__list"
             tabIndex={-1}
             role="listbox"
