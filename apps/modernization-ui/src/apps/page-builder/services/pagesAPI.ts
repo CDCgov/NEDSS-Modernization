@@ -38,7 +38,7 @@ export const createPage = (
 };
 
 export const fetchPageDetails = (token: string, id: number) => {
-    return PageControllerService.getPageDetails({
+    return PageControllerService.getPageDetailsUsingGet({
         authorization: token,
         id: id
     }).then((response: any) => {

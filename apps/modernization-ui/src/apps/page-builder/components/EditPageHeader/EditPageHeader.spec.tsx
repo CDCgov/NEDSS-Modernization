@@ -1,23 +1,26 @@
 import { render } from '@testing-library/react';
-import { PageDetails } from "apps/page-builder/generated/models/PageDetails";
-import { EditPageHeader } from "./EditPageHeader";
+import { PagedDetail } from 'apps/page-builder/generated';
+import { EditPageHeader } from './EditPageHeader';
 
 describe('when EditPageHeader renders', () => {
-    const page: PageDetails = {
+    const page: PagedDetail = {
         id: 123456,
         Name: 'Test Page',
         pageDescription: 'Test Page description',
-        pageTabs: [{
-            id: 1119232,
-            name: "Patient",
-            tabSections: [],
-            visible: "T"
-        },{
-            id: 1119225,
-            name: "Vaccination",
-            tabSections: [],
-            visible: "T"
-        }],
+        pageTabs: [
+            {
+                id: 1119232,
+                name: 'Patient',
+                tabSections: [],
+                visible: 'T'
+            },
+            {
+                id: 1119225,
+                name: 'Vaccination',
+                tabSections: [],
+                visible: 'T'
+            }
+        ],
         pageRules: []
     };
     const mockFunction = jest.fn();

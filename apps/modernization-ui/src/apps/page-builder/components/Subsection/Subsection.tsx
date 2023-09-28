@@ -3,17 +3,17 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import { useState } from 'react';
 import './Subsection.scss';
 import { Question } from '../Question/Question';
-import { Subsection } from 'apps/page-builder/generated/models/Subsection';
+import { PageSubSection } from 'apps/page-builder/generated';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
 
-export const SubsectionComponent = ({ subsection }: { subsection: Subsection }) => {
+export const SubsectionComponent = ({ subsection }: { subsection: PageSubSection }) => {
     const [open, setOpen] = useState(true);
     return (
         <div className="subsection">
             <div className="subsection__header">
                 <div className="subsection__header--left">
                     <h2>{subsection.name}</h2>
-                    <Counter count={subsection.pageQuestions.length} />
+                    <Counter count={subsection.pageQuestions?.length || 0} />
                 </div>
                 <div className="subsection__header--right">
                     <Button type="button" outline>
@@ -39,7 +39,7 @@ export const SubsectionComponent = ({ subsection }: { subsection: Subsection }) 
             </div>
             {open ? (
                 <div className="subsection__body">
-                    {subsection.pageQuestions.map((question: any, i: number) => {
+                    {subsection.pageQuestions?.map((question: any, i: number) => {
                         if (question.visible === 'T') {
                             return <Question key={i} question={question} />;
                         } else {

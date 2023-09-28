@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { EditPageTabs } from './EditPageTabs';
-import { Tabs } from 'apps/page-builder/generated/models/Tabs';
+import { PageTab } from 'apps/page-builder/generated';
 
 const props = {
-    tabs: [{ name: 'first tab' }, { name: 'second tab' }] as Tabs[],
+    tabs: [{ name: 'first tab' }, { name: 'second tab' }] as PageTab[],
     active: 0,
     setActive: jest.fn(),
     onAddSuccess: jest.fn()

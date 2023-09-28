@@ -9,9 +9,10 @@ import { EditPageContentComponent } from 'apps/page-builder/components/EditPageC
 import { EditPageSidebar } from 'apps/page-builder/components/EditPageSidebar/EditPageSidebar';
 import { fetchPageDetails, savePageAsDraft } from 'apps/page-builder/services/pagesAPI';
 import { UserContext } from 'user';
-import { PageDetails } from 'apps/page-builder/generated/models/PageDetails';
+import { PagedDetail } from 'apps/page-builder/generated';
 import AddSectionModal from 'apps/page-builder/components/AddSection/AddSectionModal';
 import { ModalRef } from '@trussworks/react-uswds';
+import { PageTab } from 'apps/page-builder/generated';
 import { Tabs } from 'apps/page-builder/generated/models/Tabs';
 import { Spinner } from 'components/Spinner/Spinner';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
@@ -20,8 +21,8 @@ export const EditPage = () => {
     const { pageId } = useParams();
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
-    const [page, setPage] = useState<PageDetails>();
-    const [tabs, setTabs] = useState<Tabs[] | undefined>();
+    const [page, setPage] = useState<PagedDetail>();
+    const [tabs, setTabs] = useState<PageTab[] | undefined>();
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
     const [alertType, setAlertType] = useState<string>('');
@@ -93,7 +94,6 @@ export const EditPage = () => {
                                     onAddSection={handleAddSuccess}
                                 />
                             ) : null}
-
                             <EditPageSidebar modalRef={addSectionModalRef} />
                         </div>
                     </div>
