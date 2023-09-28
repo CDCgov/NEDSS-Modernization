@@ -5,7 +5,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { usePatientEthnicityCodedValues } from 'pages/patient/profile/ethnicity';
 import { MultiSelectInput } from 'components/selection/multi';
 import { orNull } from 'utils';
-import { externalizeDateTime } from 'date';
+import { externalizeDateTime, internalizeDate } from 'date';
 
 const UNKNOWN = 'UNK';
 const HISPANIC = '2135-2';
@@ -56,7 +56,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                         control={control}
                         name="asOf"
                         rules={{ required: { value: true, message: 'As of date is required.' } }}
-                        defaultValue={entry?.asOf}
+                        defaultValue={entry?.asOf ?? internalizeDate(new Date())}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <DatePickerInput
                                 id="asOf"
