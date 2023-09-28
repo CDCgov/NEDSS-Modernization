@@ -2,7 +2,7 @@
 
 Please include a summary of the changes and any key information a reviewer may need.
 
-## Issues
+## Tickets
 
 [Jira Ticket](url)
 
