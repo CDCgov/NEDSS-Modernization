@@ -16,5 +16,3 @@ NEDSS_DIST=$(pwd)/dist/nedss
 mkdir -p "${NEDSS_DIST}"
 docker run --rm -v "${NEDSS_HOME}":/mnt/src:ro -v "${NEDSS_DIST}":/mnt/dist -v m2:/root/.m2 nedssdev
 
-docker-compose build nbs-mssql
-docker-compose build wildfly

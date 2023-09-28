@@ -35,41 +35,44 @@
 
    ```
 
-5. CD into the `cdc-sandbox` directory
+5. CD into the `cdc-sandbox/nbs-classic` directory
    ```sh
-   cd cdc-sandbox
+   cd cdc-sandbox/nbs-classic
    ```
 6. Run the NBS [build script](cdc-sandbox/build.sh) to build the image
    ```sh
    ./build.sh
    ```
-7. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
+7. CD into the `cdc-sandbox` directory
    ```sh
-   ./run.sh
+   cd ..
    ```
-8.  Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
+8.  Start `nbs-mssql`, `wildfly` `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
 
     ```sh
-    docker-compose up elasticsearch kibana reverse-proxy -d
+    docker-compose up nbs-mssql wildfly elasticsearch kibana reverse-proxy -d
     ```
-
-9.  Start the `modernization` containers `modernization-api` and `nbs-gateway`
+9. CD into the root project directory
+   ```sh
+   cd ..
+   ```
+10. Start the `modernized` application containers
     ```sh
     docker-compose up -d
     ```
-10. CD into the `cdc-sandbox` directory and Start NiFi
+11. CD into the `cdc-sandbox` directory and Start NiFi
     ```sh
-    cd ../cdc-sandbox
+    cd cdc-sandbox
     docker-compose up nifi -d
     ```
-11. Visit http://localhost:8080/nbs/login
+12. Visit http://localhost:8080/nbs/login
 
     ```
     username: msa
     password:
     ```
 
-12. To create your own user account visit site (line 15):
+13. To create your own user account:
 
 - Navigate to System Management
 - Expand Security Management
