@@ -23,62 +23,50 @@
 ## Running everything inside docker
 
 1. Install [Java 17](documentation/InstallJava.md)
-2. Install Node / NPM
-3. Clone [NBS 6.0.15](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.15)
-4. Set `NEDSS_HOME` environment variable to the Classic NBS directory created by step 3
-
+1. Install Node / NPM
+1. CD into the `cdc-sandbox/nbs-classic/builder` directory
    ```sh
-   export NEDSS_HOME="/Users/michaelpeels/Projects/NBS/NEDSSDev"
-
-   # can verify that the variable is set
-   echo $NEDSS_HOME
-
+   cd cdc-sandbox/nbs-classic/builder
    ```
-
-5. CD into the `cdc-sandbox/nbs-classic` directory
+1. Clone [NBS 6.0.15](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.15)
    ```sh
-   cd cdc-sandbox/nbs-classic
+   git clone -b NBS_6.0.15 git@github.com:cdcent/NEDSSDev.git
    ```
-6. Run the NBS [build script](cdc-sandbox/build.sh) to build the image
+1. CD into the `cdc-sandbox` directory
    ```sh
-   ./build.sh
+   cd ../..
    ```
-7. CD into the `cdc-sandbox` directory
-   ```sh
-   cd ..
-   ```
-8.  Start `nbs-mssql`, `wildfly` `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
+1.  Start `nbs-mssql`, `wildfly` `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
 
     ```sh
     docker-compose up nbs-mssql wildfly elasticsearch kibana reverse-proxy -d
     ```
-9. CD into the root project directory
+1. CD into the root project directory
    ```sh
    cd ..
    ```
-10. Start the `modernized` application containers
+1.  Start the `modernized` application containers
     ```sh
     docker-compose up -d
     ```
-11. CD into the `cdc-sandbox` directory and Start NiFi
+1.  CD into the `cdc-sandbox` directory and Start NiFi
     ```sh
     cd cdc-sandbox
     docker-compose up nifi -d
     ```
-12. Visit http://localhost:8080/nbs/login
+1.  Visit http://localhost:8080/nbs/login
 
     ```
     username: msa
     password:
     ```
 
-13. To create your own user account:
-
-- Navigate to System Management
-- Expand Security Management
-- Click Manage Users & click add
-- Enter userId, First Name and Last Name
-- Add a Role & click submit
+1.  To create your own user account:
+    - Navigate to System Management
+    - Expand Security Management
+    - Click Manage Users & click add
+    - Enter userId, First Name and Last Name
+    - Add a Role & click submit
 
 ## Code Formatting
 

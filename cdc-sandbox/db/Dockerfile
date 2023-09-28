@@ -11,11 +11,6 @@ USER mssql
 
 ADD ./restore /var/opt/db-restore/
 
-# Set default passwords
-ENV ACCEPT_EULA=1
-ENV SQLCMDPASSWORD=fake.fake.fake.1234
-ENV SA_PASSWORD=fake.fake.fake.1234
-
 # Start the database and execute restore scripts
 RUN /opt/mssql/bin/sqlservr & /var/opt/db-restore/restore.sh
 

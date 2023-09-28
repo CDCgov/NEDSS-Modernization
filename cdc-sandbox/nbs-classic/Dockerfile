@@ -1,3 +1,38 @@
+FROM maven:3.9-amazoncorretto-8 AS nbs-source
+
+ARG ant_version=1.10.14
+
+# update
+RUN yum update -y
+RUN yum install -y tar gzip hostname
+
+# install ant
+WORKDIR /home
+ADD https://dlcdn.apache.org/ant/binaries/apache-ant-$ant_version-bin.tar.gz .
+RUN tar -zxvf apache-ant-$ant_version-bin.tar.gz
+RUN rm apache-ant-$ant_version*.gz
+ENV ANT_HOME=/home/apache-ant-$ant_version
+
+# copy NBS source code
+ADD builder/NEDSSDev ./NEDSSDev/
+
+# Massage NEDSS source code
+ENV NEDSS_HOME=/home/NEDSSDev
+ADD builder/dependencies.xml .
+RUN sed -i 's/PhcMartEtl.bat/PHCMartETL.bat/g' $NEDSS_HOME/BuildAndDeployment/build.report.xml
+RUN sed -i 's/PhcMartEtl.bat/PHCMartETL.bat/g' $NEDSS_HOME/pom.xml
+RUN sed -i "s#</dependencies>#$(cat dependencies.xml)</dependencies>#g" $NEDSS_HOME/pom-jar.xml
+RUN cp $NEDSS_HOME/source/gov/cdc/nedss/webapp/nbs/resource/javascript/Globals.js $NEDSS_HOME/source/gov/cdc/nedss/webapp/nbs/resource/javascript/globals.js
+
+WORKDIR $NEDSS_HOME
+
+# Clean container dist directory
+RUN rm -rf build
+
+ENV JBOSS_HOME=build
+ENV JAVA_TOOL_OPTIONS=-Dfile.encoding=ISO-8859-1
+RUN /usr/share/maven/bin/mvn package -DskipTests
+
 #Open JDK build from amazon https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/docker-install.html
 FROM amazoncorretto:8
 # FROM ubuntu:latest
@@ -70,7 +105,7 @@ COPY "./config/wildfly" "${JBOSS_HOME}/nedssdomain/configuration"
 # Copy web application from build dist to wildfly
 #===============================================================================================================
 
-COPY "./dist/nedss/" "${JBOSS_HOME}"
+COPY --from=nbs-source /home/NEDSSDev/build/ ${JBOSS_HOME}
 COPY "./pagemanagement/" "${JBOSS_HOME}/nedssdomain/Nedss/pagemanagement"
 # COPY NEDSSDev-NBS_6.0.11/BuildAndDeployment/build/deploy/nedssdomain/ /opt/jboss/wildfly/nedssdomain/
 # COPY NEDSSDev-NBS_6.0.11/BuildAndDeployment/build/deploy/modules/. /opt/jboss/wildfly/modules/
