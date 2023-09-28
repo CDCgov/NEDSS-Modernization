@@ -9,11 +9,9 @@ import { EditPageContentComponent } from 'apps/page-builder/components/EditPageC
 import { EditPageSidebar } from 'apps/page-builder/components/EditPageSidebar/EditPageSidebar';
 import { fetchPageDetails, savePageAsDraft } from 'apps/page-builder/services/pagesAPI';
 import { UserContext } from 'user';
-import { PagedDetail } from 'apps/page-builder/generated';
+import { PageTab, PagedDetail } from 'apps/page-builder/generated';
 import AddSectionModal from 'apps/page-builder/components/AddSection/AddSectionModal';
 import { ModalRef } from '@trussworks/react-uswds';
-import { PageTab } from 'apps/page-builder/generated';
-import { Tabs } from 'apps/page-builder/generated/models/Tabs';
 import { Spinner } from 'components/Spinner/Spinner';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 
@@ -88,7 +86,7 @@ export const EditPage = () => {
                         <div className="edit-page__content">
                             {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
 
-                            {page.pageTabs[active] ? (
+                            {page.pageTabs?.[active] ? (
                                 <EditPageContentComponent
                                     content={page.pageTabs[active]}
                                     onAddSection={handleAddSuccess}
@@ -101,7 +99,7 @@ export const EditPage = () => {
             ) : (
                 <Spinner />
             )}
-            {page && pageId && page.pageTabs[active].id ? (
+            {page && pageId && page.pageTabs?.[active].id ? (
                 <AddSectionModal
                     modalRef={addSectionModalRef}
                     pageId={pageId}

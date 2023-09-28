@@ -73,3 +73,24 @@ export const downloadLabReportSearchResultPdf = (labReportFilter: LabReportFilte
             a.click();
         });
 };
+
+export const downloadPageLibraryPdf = (token: string) => {
+    // auto generated methods dont allow direct conversion to blob
+    fetch(`${OpenAPI.BASE}/page-builder/api/v1/pages/downloadPDF`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/pdf',
+            'Content-Type': 'blob',
+            Authorization: token
+        }
+    })
+        .then((response) => response.blob())
+        .then((blob) => {
+            console.log(blob);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PageLibrary.pdf';
+            a.click();
+        });
+};

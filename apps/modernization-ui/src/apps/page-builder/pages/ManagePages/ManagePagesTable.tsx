@@ -10,6 +10,7 @@ import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { Link } from 'react-router-dom';
 import { UserContext } from 'user';
 import { downloadAsCsv } from 'utils/downloadAsCsv';
+import { downloadPageLibraryPdf } from 'utils/ExportUtil';
 
 export enum Column {
     PageName = 'Page name',
@@ -35,6 +36,7 @@ type Props = {
     pageSize: number;
     totalElements: number;
 };
+
 export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElements }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
@@ -116,8 +118,20 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
     };
 
     const handleDownloadCSV = async () => {
-        const file = await PageControllerService.downloadPageLibraryUsingGet({ authorization: token });
-        downloadAsCsv({ data: file, fileName: 'PageLibrary.csv' });
+        try {
+            const file = await PageControllerService.downloadPageLibraryUsingGet({ authorization: token });
+            downloadAsCsv({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleDownloadPDF = () => {
+        try {
+            downloadPageLibraryPdf(token);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -137,6 +151,7 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
                     onDownloadIconClick={handleDownloadCSV}
+                    onPrintIconClick={handleDownloadPDF}
                 />
             }
             rangeSelector={true}

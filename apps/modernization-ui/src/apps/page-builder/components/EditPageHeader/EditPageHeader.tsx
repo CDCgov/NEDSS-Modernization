@@ -6,13 +6,14 @@ import { ModalComponent } from '../../../../components/ModalComponent/ModalCompo
 import { SaveTemplates } from '../SaveTemplate/SaveTemplate';
 
 type PageProps = {
-    page: PageDetails;
+    page: PagedDetail;
     handleSaveDraft: () => void;
 };
 
 export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
     const [isSaveTemplate, setIsSaveTemplate] = useState(false);
     const modalRef = useRef<ModalRef>(null);
+
     return (
         <div className="edit-page-header">
             <div className="edit-page-header__left">
