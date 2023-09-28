@@ -85,7 +85,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.passed_github_token }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ env.sonar_token }}
-        run: ./gradlew clean build sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.f1ef4c0
+        run: ./gradlew clean build sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:latest-SNAPSHOT.e914c35
 
       - name: Publish Testing Reports
         uses: actions/upload-artifact@v2
