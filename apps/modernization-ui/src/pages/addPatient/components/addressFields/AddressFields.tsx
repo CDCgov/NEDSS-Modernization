@@ -7,6 +7,7 @@ import FormCard from 'components/FormCard/FormCard';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 
 import { Input } from 'components/FormInputs/Input';
+import { maxLengthRule } from 'validation/entry';
 
 type Props = {
     id: string;
@@ -57,7 +58,8 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="streetAddress2"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule()}
+                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
                                     type="text"
@@ -65,6 +67,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     defaultValue={value}
                                     htmlFor={name}
                                     id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -75,7 +78,8 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="city"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule()}
+                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     id={name}
                                     name={name}
@@ -84,6 +88,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     htmlFor={name}
                                     defaultValue={value}
                                     onChange={onChange}
+                                    error={error?.message}
                                 />
                             )}
                         />

@@ -4,6 +4,7 @@ import FormCard from 'components/FormCard/FormCard';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
 import { CodedValue } from 'coded';
+import { maxLengthRule } from 'validation/entry';
 
 type CodedValues = {
     identificationTypes: CodedValue[];
@@ -69,14 +70,16 @@ export const IdentificationFields = ({ id, title, coded }: Props) => {
                         <Grid col={6}>
                             <Controller
                                 control={control}
+                                rules={maxLengthRule()}
                                 name={`identification[${index}].value`}
-                                render={({ field: { onChange, value } }) => (
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
                                     <Input
                                         defaultValue={value}
                                         onChange={onChange}
                                         type="text"
                                         label="ID value"
                                         htmlFor={`identification[${index}].value`}
+                                        error={error?.message}
                                     />
                                 )}
                             />

@@ -4,6 +4,7 @@ import FormCard from 'components/FormCard/FormCard';
 import { validatePhoneNumber } from 'validation/phone';
 import { Input } from 'components/FormInputs/Input';
 import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
+import { maxLengthRule } from 'validation/entry';
 
 type Props = {
     id: string;
@@ -149,7 +150,8 @@ export default function ContactFields({ id, title }: Props) {
                                     pattern: {
                                         value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                                         message: 'Please enter a valid email address (example: youremail@website.com)'
-                                    }
+                                    },
+                                    ...maxLengthRule()
                                 }}
                                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                     <Input
