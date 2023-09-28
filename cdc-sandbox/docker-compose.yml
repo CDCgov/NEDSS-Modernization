@@ -17,7 +17,6 @@ services:
       - ACCEPT_EULA=1
       - SQLCMDPASSWORD=fake.fake.fake.1234
       - SA_PASSWORD=fake.fake.fake.1234
-      - FORCE_RESTORE
     networks:
       - nbs
   wildfly:
