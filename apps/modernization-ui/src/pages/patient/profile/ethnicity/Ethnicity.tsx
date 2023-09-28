@@ -38,14 +38,6 @@ const asView = (ethnicity?: PatientEthnicity | null): Data[] => [
     }
 ];
 
-const newEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
-    ...initialEntry,
-    asOf: internalizeDate(new Date()),
-    ethnicGroup: maybeId(ethnicity?.ethnicGroup),
-    unknownReason: maybeId(ethnicity?.unknownReason),
-    detailed: maybeIds(ethnicity?.detailed)
-});
-
 const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
     ...initialEntry,
     asOf: internalizeDate(ethnicity?.asOf),
@@ -64,12 +56,9 @@ export const Ethnicity = ({ patient }: Props) => {
 
     const handleComplete = (result: FindPatientProfileQuery) => {
         const current = result.findPatientProfile?.ethnicity;
-        if (!current) {
-            setEntry(newEntry(current));
-        } else {
-            setData(asView(current));
-            setEntry(asEntry(current));
-        }
+
+        setData(asView(current));
+        setEntry(asEntry(current));
     };
 
     const handleUpdate = () => {
