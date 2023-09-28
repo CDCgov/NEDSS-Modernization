@@ -90,7 +90,7 @@ export const downloadPageLibraryPdf = (token: string) => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'pagesLibrary.pdf';
+            a.download = 'PageLibrary.pdf';
             a.click();
         });
 };
