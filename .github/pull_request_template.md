@@ -4,7 +4,7 @@ Please include a summary of the changes and any key information a reviewer may n
 
 ## Tickets
 
-[Jira Ticket](url)
+* [Jira Ticket](url)
 
 ## Steps to verify
 

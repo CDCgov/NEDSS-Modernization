@@ -43,7 +43,7 @@ const asEntry = (race: PatientRace): RaceEntry => ({
 const resolveInitialEntry = (patient: string): RaceEntry => ({
     patient: +patient,
     category: null,
-    asOf: null,
+    asOf: internalizeDate(new Date()),
     detailed: []
 });
 
