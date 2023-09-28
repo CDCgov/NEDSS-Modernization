@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - CNFT1-1517-6.0.15-dev
     paths:
       - "cdc-sandbox/db/**"
 jobs:
