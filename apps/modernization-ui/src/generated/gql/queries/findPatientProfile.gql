@@ -18,7 +18,7 @@ query findPatientProfile($asOf: DateTime, $page: Page, $page1: Page, $page2: Pag
             age
             gender
             ethnicity
-            race
+            races
             identification{
                 type
                 value

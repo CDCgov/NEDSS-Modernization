@@ -937,7 +937,7 @@ type PatientSummary {
     age: Int
     gender: String
     ethnicity: String
-    race: String
+    races: [String!]
     identification: [PatientSummaryIdentification!]
     phone: [PatientSummaryPhone!]
     email: [PatientSummaryEmail!]
@@ -1289,8 +1289,8 @@ extend type Query {
 }
 
 input IdentificationCriteria {
-    identificationNumber: String!
-    identificationType: String!
+    identificationNumber: String
+    identificationType: String
     assigningAuthority: String
 }
 
