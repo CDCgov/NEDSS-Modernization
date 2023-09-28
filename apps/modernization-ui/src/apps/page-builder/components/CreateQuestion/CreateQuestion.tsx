@@ -437,7 +437,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     />
                 </div>
                 <p className="description">Is this question required?</p>
-                <ToggleButton checked={true} name="requiredMessage" />
+                <ToggleButton defaultChecked={true} onChange={handleQuestionInput} name="requiredMessage" />
                 <hr className="divider" />
                 <p className="fields-info">Data mart - these fields will not be displayed to your users</p>
                 <br></br>

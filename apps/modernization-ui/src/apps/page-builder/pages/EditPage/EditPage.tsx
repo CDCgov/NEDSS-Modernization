@@ -92,7 +92,6 @@ export const EditPage = () => {
                                     onAddSection={handleAddSuccess}
                                 />
                             ) : null}
-
                             <EditPageSidebar modalRef={addSectionModalRef} />
                         </div>
                     </div>

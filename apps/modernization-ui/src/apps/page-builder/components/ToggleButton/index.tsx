@@ -3,6 +3,7 @@ import './ToggleBtn.scss';
 
 type Props = {
     checked?: boolean;
+    defaultChecked?: boolean;
     name?: string;
     className?: string;
     id?: string;
