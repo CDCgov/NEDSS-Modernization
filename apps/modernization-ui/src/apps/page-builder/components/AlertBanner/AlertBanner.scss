@@ -1,0 +1,29 @@
+@import 'settings.scss';
+
+.alert-banner {
+    width: 100%;
+    padding: 0.3rem 1.0rem 1.0rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-bottom: 1.0rem;
+    &.success {
+        background-color: $color-bg-alert-success;
+        border-left: 8px solid $color-alert-success;
+    }
+    &.warning {
+        background-color: $color-bg-alert-warning;
+        border-left: 8px solid $color-alert-warning;
+    }
+    &.prompt {
+        background-color: $color-bg-alert-prompt;
+        border-left: 8px solid $color-alert-prompt;
+    }
+    &.error {
+        background-color: $color-bg-alert-error;
+        border-left: 8px solid $color-alert-error;
+    }
+    &__right {
+        padding-top: 0.4rem;
+    }
+}

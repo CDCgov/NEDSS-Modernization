@@ -23,14 +23,17 @@ describe('when EditPageHeader renders', () => {
         ],
         pageRules: []
     };
+    const mockFunction = jest.fn();
+
     it('should display Page name', () => {
-        const { container } = render(<EditPageHeader page={page} />);
+        const { container } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
         const header = container.getElementsByTagName('h2');
 
         expect(header[0].innerHTML).toEqual('Test Page');
     });
+
     it('should display Page description', () => {
-        const { container } = render(<EditPageHeader page={page} />);
+        const { container } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
         const header = container.getElementsByTagName('h4');
 
         expect(header[0].innerHTML).toEqual('Test Page description');
