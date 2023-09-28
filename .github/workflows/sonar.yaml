@@ -88,10 +88,10 @@ jobs:
         run: ./gradlew clean build sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:latest-SNAPSHOT.e914c35
 
       - name: Zip test report
-        run: zip -r report.zip build/reports/*
+        run: zip -r test-report.zip ./build/reports/*
 
       - name: Publish Testing Reports
         uses: actions/upload-artifact@v2
         with:
           name: testing
-          path: ./report.zip
+          path: ./test-report.zip

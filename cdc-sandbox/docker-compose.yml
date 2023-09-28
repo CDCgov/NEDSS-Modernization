@@ -12,7 +12,6 @@ services:
     ports:
       - 1433:1433
     volumes:
-      - ./db/restore:/var/opt/db-restore
       - nbs-mssql-data:/var/opt/mssql
     environment:
       - ACCEPT_EULA=1
