@@ -145,6 +145,8 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     name="number"
                                     htmlFor="number"
                                     id="number"
+                                    mask="___-___-____"
+                                    pattern="\d{3}-\d{3}-\d{4}"
                                     error={
                                         error &&
                                         'Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).'

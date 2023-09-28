@@ -59,7 +59,7 @@ const asEntry = (data: PatientPhone): UpdatePhoneEmailEntry => ({
 
 const resolveInitialEntry = (patient: string): NewPhoneEmailEntry => ({
     patient: +patient,
-    asOf: null,
+    asOf: internalizeDate(new Date()),
     type: null,
     use: null,
     countryCode: null,

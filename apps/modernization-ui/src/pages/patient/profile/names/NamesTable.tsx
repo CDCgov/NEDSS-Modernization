@@ -60,7 +60,7 @@ const asEntry = (name: PatientName): NameEntry => ({
 const resolveInitialEntry = (patient: string): NameEntry => ({
     patient: +patient,
     sequence: null,
-    asOf: null,
+    asOf: internalizeDate(new Date()),
     type: null,
     prefix: null,
     first: null,

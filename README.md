@@ -18,10 +18,9 @@
 
 - [Package by Feature](documentation/Package-By-Feature.md) to make code easier to find.
 - [Code Formatting](documentation/Code-Formatting.md)
+- [Pull requests](documentation/Pull-Requests.md)
 
-## TLDR: Running everything inside docker
-
-### Mac ARM system (M1/M2)
+## Running everything inside docker
 
 1. Install [Java 17](documentation/InstallJava.md)
 2. Install Node / NPM

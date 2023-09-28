@@ -48,7 +48,7 @@ const asDetail = (data: Identification): Detail[] => [
 
 const resolveInitialEntry = (patient: string): IdentificationEntry => ({
     patient: +patient,
-    asOf: null,
+    asOf: internalizeDate(new Date()),
     type: null,
     value: null,
     state: null
