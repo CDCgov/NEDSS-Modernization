@@ -14,17 +14,20 @@ type Props = {
     onPrintIconClick?: () => void;
 };
 
-export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIconClick }: Props) => {
+export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIconClick, onPrintIconClick }: Props) => {
     const navigate = useNavigate();
     const [keywords, setKeywords] = useState<string>('');
+
     const addNew = () => {
         navigate(`/page-builder/add/${tableType}`);
     };
+
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key == 'Enter') {
             setSearchQuery(keywords);
         }
     };
+
     useEffect(() => {
         if (searchQuery && searchQuery !== '') {
             setKeywords(searchQuery);
@@ -46,7 +49,7 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
                 <Icon.Search size={3} />
             </Button>
             <Button type="button" outline>
-                <Icon.Print size={3} />
+                <Icon.Print size={3} onClick={onPrintIconClick} data-testid="print-icon" />
             </Button>
             <FilterButton />
             <Button type="button" outline onClick={onDownloadIconClick} data-testid="file-download">

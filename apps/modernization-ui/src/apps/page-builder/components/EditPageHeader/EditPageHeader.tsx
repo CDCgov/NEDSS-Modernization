@@ -12,6 +12,7 @@ type PageProps = {
 export const EditPageHeader = ({ page }: PageProps) => {
     const [isSaveTemplate, setIsSaveTemplate] = useState(false);
     const modalRef = useRef<ModalRef>(null);
+
     return (
         <div className="edit-page-header">
             <div className="edit-page-header__left">
