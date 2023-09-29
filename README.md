@@ -46,6 +46,37 @@
 
 To learn more about the build process view the cdc-sandbox [README](cdc-sandbox/README.md)
 
+## Running the Modernization API and UI in development mode 
+1. CD into the `cdc-sandbox` directory
+   ```sh
+   cd cdc-sandbox
+   ```
+1. Start `nbs-mssql` database
+    ```sh
+    docker-compose up nbs-mssql -d
+    ```
+2. Start the `reverse-proxy` configured to point to non-docker API and UI. For more details see [Running with local servers](#running-with-local-servers).
+    ```sh
+    MODERNIZATION_UI_SERVER=host.docker.internal MODERNIZATION_UI_PORT=3000 MODERNIZATION_API_SERVER=host.docker.internal MODERNIZATION_API_PORT=9080 docker-compose up reverse-proxy -d
+    ```
+3. CD into the root directory
+   ```sh
+   cd ..
+   ```
+4. Start the modernized api on port 9080. Port `5005` will be open for debugger attachment.
+    ```sh
+    ./gradlew :modernization-api:bootRun --args='--server.port=9080'
+    ```
+5. CD into the modernization-ui folder
+    ```sh
+    cd apps/modernization-ui/    
+    ```
+6. Launch the ui application
+    ```sh
+    npm run start
+    ```
+7. Access the UI [localhost:3000](http://localhost:3000)
+
 ## Code Formatting
 
 ## Print Artifact Version

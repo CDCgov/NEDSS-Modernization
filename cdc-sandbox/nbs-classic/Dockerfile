@@ -106,10 +106,9 @@ COPY "./config/wildfly" "${JBOSS_HOME}/nedssdomain/configuration"
 #===============================================================================================================
 
 COPY --from=nbs-source /home/NEDSSDev/build/ ${JBOSS_HOME}
-COPY "./pagemanagement/" "${JBOSS_HOME}/nedssdomain/Nedss/pagemanagement"
-# COPY NEDSSDev-NBS_6.0.11/BuildAndDeployment/build/deploy/nedssdomain/ /opt/jboss/wildfly/nedssdomain/
-# COPY NEDSSDev-NBS_6.0.11/BuildAndDeployment/build/deploy/modules/. /opt/jboss/wildfly/modules/
-# COPY NEDSSDev-NBS_6.0.11/BuildAndDeployment/build/deploy/bin/standalone.sh /opt/jboss/wildfly/bin/standalone.sh
+ADD ./pagemanagement.zip ${NEDSS_DIR}/pagemanagement.zip 
+RUN mkdir -p ${JBOSS_HOME}/nedssdomain/Nedss/
+RUN unzip "${NEDSS_DIR}/pagemanagement.zip" -d "${JBOSS_HOME}/nedssdomain/Nedss/"
 
 
 #===============================================================================================================

@@ -16,13 +16,12 @@ The builder docker in this project addresses these concerns automatically.
 
 ## Contents
 
-- Build NBS with Docker
-- Build MSSQL Database Container Image
-- Build Wildfly Application Server Container Image
-- Elasicsearch with Kibana
-- Traefik Reverse Proxy
-- NiFi
-- Kafka
+- [Build NBS with Docker](#build-nbs-with-docker)
+- [Build MSSQL Database Container Image](#build-mssql-database-container-image)
+- [Elasicsearch with Kibana](#elasicsearch-with-kibana)
+- [Traefik Reverse Proxy](#traefik-reverse-proxy)
+- [NiFi](#nifi)
+- [Kafka](#kafka)
 
 ## Build NBS with Docker
 
