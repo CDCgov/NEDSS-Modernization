@@ -21,39 +21,15 @@
 - [Pull requests](documentation/Pull-Requests.md)
 
 ## Running everything inside docker
-
-1. Install [Java 17](documentation/InstallJava.md)
-1. Install Node / NPM
-1. CD into the `cdc-sandbox/nbs-classic/builder` directory
-   ```sh
-   cd cdc-sandbox/nbs-classic/builder
-   ```
-1. Clone [NBS 6.0.15](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.15)
-   ```sh
-   git clone -b NBS_6.0.15 git@github.com:cdcent/NEDSSDev.git
-   ```
+1. Gain access to the [NBS source code repository](https://github.com/cdcent/NEDSSDev)
 1. CD into the `cdc-sandbox` directory
    ```sh
-   cd ../..
+   cd cdc-sandbox
    ```
-1.  Start `nbs-mssql`, `wildfly` `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
-
-    ```sh
-    docker-compose up nbs-mssql wildfly elasticsearch kibana reverse-proxy -d
-    ```
-1. CD into the root project directory
+1. Run the `build_all.sh` script
    ```sh
-   cd ..
+   ./build_all.sh
    ```
-1.  Start the `modernized` application containers
-    ```sh
-    docker-compose up -d
-    ```
-1.  CD into the `cdc-sandbox` directory and Start NiFi
-    ```sh
-    cd cdc-sandbox
-    docker-compose up nifi -d
-    ```
 1.  Visit http://localhost:8080/nbs/login
 
     ```
@@ -64,9 +40,11 @@
 1.  To create your own user account:
     - Navigate to System Management
     - Expand Security Management
-    - Click Manage Users & click add
+    - Click Manage Users & click Add
     - Enter userId, First Name and Last Name
-    - Add a Role & click submit
+    - Add a Role(s) & click submit
+
+To learn more about the build process view the cdc-sandbox [README](cdc-sandbox/README.md)
 
 ## Code Formatting
 
