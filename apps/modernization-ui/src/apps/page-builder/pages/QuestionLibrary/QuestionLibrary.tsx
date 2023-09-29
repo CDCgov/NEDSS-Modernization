@@ -30,6 +30,20 @@ export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
         setTotalElements(totalElements);
         setIsLoading(false);
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
+
+    const renderQuestionList = (
+        <div className="question-local-library__container">
+            <div className="question-local-library__table">
+                <QuestionLibraryTable
+                    summaries={summaries}
+                    qtnModalRef={modalRef}
+                    pages={{ currentPage, pageSize, totalElements }}
+                />
+            </div>
+        </div>
+    );
+
+    if (hideTabs) return <div className="question-local-library">{renderQuestionList}</div>;
     return (
         <PageBuilder page="question-library" menu={true}>
             <div className="question-local-library">
@@ -41,15 +55,7 @@ export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
                 <div className="search-description-block">
                     <p>You can search for an existing question or create a new one</p>
                 </div>
-                <div className="question-local-library__container">
-                    <div className="question-local-library__table">
-                        <QuestionLibraryTable
-                            summaries={summaries}
-                            qtnModalRef={modalRef}
-                            pages={{ currentPage, pageSize, totalElements }}
-                        />
-                    </div>
-                </div>
+                {renderQuestionList}
             </div>
         </PageBuilder>
     );
