@@ -15,6 +15,10 @@ import java.util.Objects;
 
 class PatientInvestigationTupleMapper {
 
+
+    private static final String PAGE_BUILDER_PREFIX = "PG_";
+
+
     record Tables(
         QPublicHealthCase investigation,
         QConditionCode condition,
@@ -63,6 +67,8 @@ class PatientInvestigationTupleMapper {
 
         String investigator = mapInvestigator(tuple);
 
+        boolean comparable = resolveComparable(tuple);
+
         return new PatientInvestigation(
             identifier,
             startedOn,
@@ -73,7 +79,8 @@ class PatientInvestigationTupleMapper {
             event,
             coInfection,
             notification,
-            investigator
+            investigator,
+            comparable
         );
     }
 
@@ -92,5 +99,10 @@ class PatientInvestigationTupleMapper {
         String last = tuple.get(tables.investigator().lastNm);
 
         return NameRenderer.render(first, last);
+    }
+
+    private boolean resolveComparable(final Tuple tuple) {
+        String form = tuple.get(tables.condition().investigationFormCd);
+        return form != null && form.toUpperCase().startsWith(PAGE_BUILDER_PREFIX);
     }
 }
