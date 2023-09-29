@@ -52,7 +52,6 @@ td {
     min-width: 130px;
     z-index: 1;
     left: 0;
-    // transform: translate(50%, 0);
 
     button:hover {
         border-bottom: 1px solid #dfe1e2;
@@ -71,6 +70,14 @@ td {
 
 .sort-td {
     background-color: #e1f3f8 !important;
+}
+
+th.selection {
+    width: 3rem;
+}
+
+td.selection {
+    vertical-align: baseline;
 }
 
 table.usa-table thead tr {

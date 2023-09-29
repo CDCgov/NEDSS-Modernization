@@ -11,6 +11,7 @@ query findInvestigationsForPatient($patient: ID!, $page: Page, $openOnly: Boolea
             coInfection
             notification
             investigator
+            comparable
         }
         total
         number

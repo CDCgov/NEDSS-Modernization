@@ -72,7 +72,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     };
     const asTableRow = (page: Rules): TableBody => ({
         id: page.templateUid,
-        checkbox: false,
         tableDetails: [
             {
                 id: 1,
