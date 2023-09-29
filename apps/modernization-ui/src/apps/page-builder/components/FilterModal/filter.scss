@@ -99,6 +99,11 @@
       margin-bottom: 16px;
       margin-top: 16px;
   }
+    .multi-select{
+      &.select-indicator {
+        display: none;
+      }
+    }
     .header-block {
       border-bottom: 1px solid var(--base-lighter, #DCDEE0);
       padding: 20px 18px;
