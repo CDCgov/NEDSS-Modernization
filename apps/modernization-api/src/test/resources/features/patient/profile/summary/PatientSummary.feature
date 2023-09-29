@@ -37,7 +37,15 @@ Feature: Patient Profile Summary
       | "Black"         |
       | "Asian"         |
 
-  Scenario Outline: A
+  Scenario: Each patient race is in the Patient Profile Summary
+    Given I can "find" any "patient"
+    And the patient has a "race" of "Alaska Native"
+    And the patient has a "race" of "Black"
+    When I view the Patient Profile Summary
+    Then the Patient Profile Summary has a "race" of "Alaska Native"
+    Then the Patient Profile Summary has a "race" of "Black"
+
+  Scenario Outline: Null-flavor races are not displyed in the Patient Profile Summary
     Given I can "find" any "patient"
     And the patient has a "race" of <race>
     When I view the Patient Profile Summary
@@ -49,10 +57,12 @@ Feature: Patient Profile Summary
       | "Refused"    |
       | "Multi-Race" |
 
-  Scenario: Each patient race is in the Patient Profile Summary
+
+
+  Scenario: A patient race takes precedence over Unknown in the Patient Profile Summary
     Given I can "find" any "patient"
     And the patient has a "race" of "Alaska Native"
-    And the patient has a "race" of "Black"
+    And the patient has a "race" of "Unknown"
     When I view the Patient Profile Summary
     Then the Patient Profile Summary has a "race" of "Alaska Native"
-    Then the Patient Profile Summary has a "race" of "Black"
+    And the Patient Profile Summary does not have a "race" of "Unknown"

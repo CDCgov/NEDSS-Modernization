@@ -6,6 +6,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
@@ -68,16 +69,19 @@ public class PatientSummarySteps {
       final String value
   ) throws Exception {
 
-    JsonPathResultMatchers pathMatcher = switch (field.toLowerCase()) {
+    JsonPathResultMatchers pathMatcher = resolveForField(field);
+
+    this.response.active()
+        .andExpect(pathMatcher.value(matchingValue(field, value)));
+  }
+
+  private JsonPathResultMatchers resolveForField(final String field) {
+    return switch (field.toLowerCase()) {
       case "race" -> jsonPath("$.data.findPatientProfile.summary.races");
       case "identification type" -> jsonPath("$.data.findPatientProfile.summary.identification[*].type");
       case "identification value" -> jsonPath("$.data.findPatientProfile.summary.identification[*].value");
-      default -> throw new AssertionError(String.format("Unexpected property check %s is %s", field, value));
+      default -> throw new AssertionError(String.format("Unexpected property check %s", field));
     };
-
-    this.response.active()
-        .andDo(print())
-        .andExpect(pathMatcher.value(matchingValue(field, value)));
   }
 
   private Matcher<?> matchingValue(final String field, final String value) {
@@ -88,17 +92,23 @@ public class PatientSummarySteps {
     };
   }
 
-  @Then("the Patient Profile Summary does not contain a(n) {string}")
-  public void the_patient_summary_does_not_contain(final String field) throws Exception {
-    JsonPathResultMatchers pathMatcher = switch (field.toLowerCase()) {
-      case "race" -> jsonPath("$.data.findPatientProfile.summary.races");
-      case "identification type" -> jsonPath("$.data.findPatientProfile.summary.identification[*].type");
-      case "identification value" -> jsonPath("$.data.findPatientProfile.summary.identification[*].value");
-      default -> throw new AssertionError(String.format("Unexpected property check %s", field));
-    };
+  @Then("the Patient Profile Summary does not have a(n) {string} of {string}")
+  public void the_patient_summary_does_not_have_a_value_of(
+      final String field,
+      final String value
+  ) throws Exception {
+
+    JsonPathResultMatchers pathMatcher = resolveForField(field);
 
     this.response.active()
-        .andDo(print())
+        .andExpect(pathMatcher.value(Matchers.not(matchingValue(field, value))));
+  }
+
+  @Then("the Patient Profile Summary does not contain a(n) {string}")
+  public void the_patient_summary_does_not_contain(final String field) throws Exception {
+    JsonPathResultMatchers pathMatcher = resolveForField(field);
+
+    this.response.active()
         .andExpect(pathMatcher.isEmpty());
   }
 
