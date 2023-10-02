@@ -128,7 +128,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                                 control={control}
                                 name="city"
                                 defaultValue={entry.city}
-                                rules={maxLengthRule(10)}
+                                rules={maxLengthRule(100)}
                                 render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                     <Input
                                         onChange={onChange}
