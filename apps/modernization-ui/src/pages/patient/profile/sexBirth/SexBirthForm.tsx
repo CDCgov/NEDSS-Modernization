@@ -8,6 +8,7 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { maybeNumber, orNull } from 'utils';
 import { calculateAge, externalizeDate, externalizeDateTime } from 'date';
 import { useMemo } from 'react';
+import { maxLengthRule } from 'validation/entry';
 
 const UNKNOWN_GENDER = 'U';
 
@@ -297,14 +298,17 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         control={control}
                         name="city"
                         defaultValue={entry.birth.city}
-                        render={({ field: { onChange, value } }) => (
+                        rules={maxLengthRule(100)}
+                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                             <Input
                                 placeholder="No Data"
                                 onChange={onChange}
+                                onBlur={onBlur}
                                 type="text"
                                 defaultValue={value}
                                 htmlFor="city"
                                 id="city"
+                                error={error?.message}
                             />
                         )}
                     />
