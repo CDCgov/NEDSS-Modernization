@@ -54,28 +54,8 @@ public class ResultedTestFinder {
                 [NBS_SRTE].[dbo].[LOINC_code] lc
             WHERE
                 lc.related_class_cd in (:relatedClassCodes)
-                AND(lc.component_name LIKE '%:searchText%'
-                    OR lc.loinc_cd LIKE '%:searchText%')
-            UNION
-            SELECT
-                lt.lab_test_desc_txt
-            FROM
-                [NBS_SRTE].[dbo].[Lab_test] lt
-            WHERE
-                lt.test_type_cd = 'R'
-                AND(lt.lab_test_desc_txt LIKE '%:searchText%'
-                    OR lt.lab_test_cd LIKE '%:searchText%')
-            ORDER BY
-                resulted_test
-                                    """;
-    private static final String TEST = """
-            SELECT TOP (:maxPageSize)
-                lc.component_name resulted_test
-            FROM
-                [NBS_SRTE].[dbo].[LOINC_code] lc
-            WHERE
-                lc.component_name LIKE :searchText
-                    OR lc.loinc_cd LIKE :searchText
+                AND(lc.component_name LIKE :searchText
+                    OR lc.loinc_cd LIKE :searchText)
             UNION
             SELECT TOP (:maxPageSize)
                 lt.lab_test_desc_txt
@@ -104,7 +84,7 @@ public class ResultedTestFinder {
                 Map.of("maxPageSize", maxPageSize, "relatedClassCodes", relatedClassCodes, "searchText",
                         "%" + searchText + "%"));
 
-        return namedTemplate.query(TEST, namedParameters, new RowMapper<ResultedTest>() {
+        return namedTemplate.query(QUERY, namedParameters, new RowMapper<ResultedTest>() {
 
             @Override
             public ResultedTest mapRow(ResultSet rs, int rowNum) throws SQLException {
