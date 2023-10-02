@@ -16,5 +16,11 @@
         flex-direction: column;
         align-items: center;
         position: relative;
+        .edit-page__content {
+            margin-top: 1.2rem;
+            width: 100%;
+            max-width: 960px;
+            height: 100%;
+        }
     }
 }

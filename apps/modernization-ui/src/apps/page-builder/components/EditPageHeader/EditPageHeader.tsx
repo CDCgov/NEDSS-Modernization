@@ -1,17 +1,19 @@
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import './EditPageHeader.scss';
-import { PageDetails } from 'apps/page-builder/generated/models/PageDetails';
+import { PagedDetail } from 'apps/page-builder/generated';
 import { useRef, useState } from 'react';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { SaveTemplates } from '../SaveTemplate/SaveTemplate';
 
 type PageProps = {
-    page: PageDetails;
+    page: PagedDetail;
+    handleSaveDraft: () => void;
 };
 
-export const EditPageHeader = ({ page }: PageProps) => {
+export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
     const [isSaveTemplate, setIsSaveTemplate] = useState(false);
     const modalRef = useRef<ModalRef>(null);
+
     return (
         <div className="edit-page-header">
             <div className="edit-page-header__left">
@@ -32,7 +34,7 @@ export const EditPageHeader = ({ page }: PageProps) => {
                         </Button>
                     </>
                 ) : (
-                    <Button type="button" outline>
+                    <Button type="button" outline onClick={handleSaveDraft}>
                         Save draft
                     </Button>
                 )}

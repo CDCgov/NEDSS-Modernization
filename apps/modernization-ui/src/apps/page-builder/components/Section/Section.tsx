@@ -2,9 +2,9 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { Counter } from '../Counter/Counter';
 import './Section.scss';
 import { useRef, useState } from 'react';
-import { Subsection as SubsectionProps } from 'apps/page-builder/generated/models/Subsection';
+import { PageSubSection as SubsectionProps } from '../../generated';
 import { SubsectionComponent as Subsection } from '../Subsection/Subsection';
-import { Section as SectionProps } from 'apps/page-builder/generated/models/Section';
+import { PageSection as SectionProps } from '../../generated';
 import AddSectionModal from '../AddSection/AddSectionModal';
 import { useParams } from 'react-router-dom';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
@@ -20,7 +20,7 @@ export const SectionComponent = ({ section, onAddSection }: { section: SectionPr
                 <div className="section__header">
                     <div className="section__header--left">
                         <h2>{section.name}</h2>
-                        <Counter count={section.sectionSubSections.length} />
+                        <Counter count={section.sectionSubSections?.length || 0} />
                     </div>
                     <div className="section__header--right">
                         <ModalToggleButton type="button" outline modalRef={addSectionModalRef} opener>
@@ -43,7 +43,7 @@ export const SectionComponent = ({ section, onAddSection }: { section: SectionPr
                 </div>
                 {open ? (
                     <div className="section__body">
-                        {section.sectionSubSections.map((subsection: SubsectionProps, i: number) => {
+                        {section.sectionSubSections?.map((subsection: SubsectionProps, i: number) => {
                             if (subsection.visible === 'T') {
                                 return <Subsection key={i} subsection={subsection} />;
                             } else {
