@@ -48,26 +48,27 @@ public class ResultedTestFinder {
 
 
     private static final String QUERY = """
-                SELECT TOP (:maxPageSize)
-                lc.component_name resulted_test
-            FROM
-                [NBS_SRTE].[dbo].[LOINC_code] lc
-            WHERE
-                lc.related_class_cd in (:relatedClassCodes)
-                AND(lc.component_name LIKE :searchText
-                    OR lc.loinc_cd LIKE :searchText)
-            UNION
-            SELECT TOP (:maxPageSize)
-                lt.lab_test_desc_txt
-            FROM
-                [NBS_SRTE].[dbo].[Lab_test] lt
-            WHERE
-                lt.test_type_cd = 'R'
-                AND(lt.lab_test_desc_txt LIKE :searchText
-                    OR lt.lab_test_cd LIKE :searchText)
+                SELECT TOP (:maxPageSize) search.resulted_test
+            FROM ( SELECT DISTINCT
+                    lt.lab_test_desc_txt resulted_test
+                FROM
+                    [NBS_SRTE].[dbo].[Lab_test] lt
+                WHERE
+                    lt.test_type_cd = 'R'
+                    AND(lt.lab_test_desc_txt LIKE :searchText
+                        OR lt.lab_test_cd LIKE :searchText)
+                UNION
+                SELECT DISTINCT
+                    lc.component_name resulted_test
+                FROM
+                    [NBS_SRTE].[dbo].[LOINC_code] lc
+                WHERE
+                    lc.related_class_cd in(:relatedClassCodes)
+                    AND(lc.component_name LIKE :searchText
+                        OR lc.loinc_cd LIKE :searchText)) AS search
             ORDER BY
-                resulted_test
-                                    """;
+                search.resulted_test
+                                            """;
 
     private final Integer maxPageSize;
     private final NamedParameterJdbcTemplate namedTemplate;
@@ -79,6 +80,12 @@ public class ResultedTestFinder {
         this.maxPageSize = maxPageSize;
     }
 
+    /**
+     * Query both resulted_test and loinc_code tables for resulted tests.
+     * 
+     * @param searchText
+     * @return
+     */
     public List<ResultedTest> findDistinctResultedTests(String searchText) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(
                 Map.of("maxPageSize", maxPageSize, "relatedClassCodes", relatedClassCodes, "searchText",
