@@ -1,15 +1,18 @@
 package gov.cdc.nbs.event.search.labreport;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import org.elasticsearch.core.Map;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.event.search.labreport.model.ResultedTest;
-import gov.cdc.nbs.repository.LabTestRepository;
-import gov.cdc.nbs.repository.LoincCodeRepository;
 
 @Component
 public class ResultedTestFinder {
@@ -44,34 +47,71 @@ public class ResultedTestFinder {
             "VACCIN");
 
 
+    private static final String QUERY = """
+                SELECT TOP (:maxPageSize)
+                lc.component_name resulted_test
+            FROM
+                [NBS_SRTE].[dbo].[LOINC_code] lc
+            WHERE
+                lc.related_class_cd in (:relatedClassCodes)
+                AND(lc.component_name LIKE '%:searchText%'
+                    OR lc.loinc_cd LIKE '%:searchText%')
+            UNION
+            SELECT
+                lt.lab_test_desc_txt
+            FROM
+                [NBS_SRTE].[dbo].[Lab_test] lt
+            WHERE
+                lt.test_type_cd = 'R'
+                AND(lt.lab_test_desc_txt LIKE '%:searchText%'
+                    OR lt.lab_test_cd LIKE '%:searchText%')
+            ORDER BY
+                resulted_test
+                                    """;
+    private static final String TEST = """
+            SELECT TOP (:maxPageSize)
+                lc.component_name resulted_test
+            FROM
+                [NBS_SRTE].[dbo].[LOINC_code] lc
+            WHERE
+                lc.component_name LIKE :searchText
+                    OR lc.loinc_cd LIKE :searchText
+            UNION
+            SELECT TOP (:maxPageSize)
+                lt.lab_test_desc_txt
+            FROM
+                [NBS_SRTE].[dbo].[Lab_test] lt
+            WHERE
+                lt.test_type_cd = 'R'
+                AND(lt.lab_test_desc_txt LIKE :searchText
+                    OR lt.lab_test_cd LIKE :searchText)
+            ORDER BY
+                resulted_test
+                                    """;
+
     private final Integer maxPageSize;
-    private final LabTestRepository labTestRepository;
-    private final LoincCodeRepository loincCodeRepository;
+    private final NamedParameterJdbcTemplate namedTemplate;
 
     public ResultedTestFinder(
-            final LabTestRepository labTestRepository,
-            final LoincCodeRepository loincCodeRepository,
+            JdbcTemplate template,
             @Value("${nbs.max-page-size: 50}") final Integer maxPageSize) {
-        this.labTestRepository = labTestRepository;
-        this.loincCodeRepository = loincCodeRepository;
+        this.namedTemplate = new NamedParameterJdbcTemplate(template);
         this.maxPageSize = maxPageSize;
     }
 
-    public List<ResultedTest> findDistinctResultedTest(String searchText, boolean loinc) {
-        if (loinc) {
-            Pageable pageable = PageRequest.of(0, maxPageSize, Direction.ASC, "componentName");
-            return loincCodeRepository.findDistinctTestNames(searchText, relatedClassCodes, pageable)
-                    .stream()
-                    .map(ResultedTest::new)
-                    .toList();
-        } else {
-            Pageable pageable = PageRequest.of(0, maxPageSize, Direction.ASC, "labTestDescTxt");
-            return labTestRepository
-                    .findDistinctTestNames(searchText, pageable)
-                    .stream()
-                    .map(ResultedTest::new)
-                    .toList();
-        }
+    public List<ResultedTest> findDistinctResultedTests(String searchText) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource(
+                Map.of("maxPageSize", maxPageSize, "relatedClassCodes", relatedClassCodes, "searchText",
+                        "%" + searchText + "%"));
+
+        return namedTemplate.query(TEST, namedParameters, new RowMapper<ResultedTest>() {
+
+            @Override
+            public ResultedTest mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new ResultedTest(rs.getString(1));
+            }
+
+        });
     }
 
 }
