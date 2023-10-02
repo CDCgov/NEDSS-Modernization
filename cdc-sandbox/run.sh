@@ -1,7 +1,0 @@
-docker-compose up -d nbs-mssql
-
-# THIS LINE IS BAD PRACTICE AND IS ONLY USED FOR TESTING
-# ENSURE DATABASE CONNECTION ARE PROPERLY SET UP INSTEAD OF WAITING 60s
-sleep 60
-
-docker-compose up -d wildfly

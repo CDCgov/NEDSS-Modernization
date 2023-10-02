@@ -12,17 +12,16 @@ services:
     ports:
       - 1433:1433
     volumes:
-      - ./db/restore:/var/opt/db-restore
       - nbs-mssql-data:/var/opt/mssql
     environment:
       - ACCEPT_EULA=1
       - SQLCMDPASSWORD=fake.fake.fake.1234
       - SA_PASSWORD=fake.fake.fake.1234
-      - FORCE_RESTORE
     networks:
       - nbs
   wildfly:
-    build: ./
+    build: ./nbs-classic
+    image: nbs-classic:6.0.15
     container_name: wildfly
     depends_on:
       - nbs-mssql
