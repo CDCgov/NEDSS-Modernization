@@ -299,8 +299,8 @@ export type GroupedCodedValue = {
 
 export type IdentificationCriteria = {
   assigningAuthority?: InputMaybe<Scalars['String']>;
-  identificationNumber: Scalars['String'];
-  identificationType: Scalars['String'];
+  identificationNumber?: InputMaybe<Scalars['String']>;
+  identificationType?: InputMaybe<Scalars['String']>;
 };
 
 export type IdentificationType = {
@@ -2281,12 +2281,10 @@ export type QueryFindContactsNamedByPatientArgs = {
 
 export type QueryFindDistinctCodedResultsArgs = {
   searchText: Scalars['String'];
-  snomed: Scalars['Boolean'];
 };
 
 
 export type QueryFindDistinctResultedTestArgs = {
-  loinc: Scalars['Boolean'];
   searchText: Scalars['String'];
 };
 
@@ -3052,7 +3050,6 @@ export type FindContactsNamedByPatientQuery = { __typename?: 'Query', findContac
 
 export type FindDistinctCodedResultsQueryVariables = Exact<{
   searchText: Scalars['String'];
-  snomed: Scalars['Boolean'];
 }>;
 
 
@@ -3060,7 +3057,6 @@ export type FindDistinctCodedResultsQuery = { __typename?: 'Query', findDistinct
 
 export type FindDistinctResultedTestQueryVariables = Exact<{
   searchText: Scalars['String'];
-  loinc: Scalars['Boolean'];
 }>;
 
 
@@ -5570,8 +5566,8 @@ export type FindContactsNamedByPatientQueryHookResult = ReturnType<typeof useFin
 export type FindContactsNamedByPatientLazyQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientLazyQuery>;
 export type FindContactsNamedByPatientQueryResult = Apollo.QueryResult<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>;
 export const FindDistinctCodedResultsDocument = gql`
-    query findDistinctCodedResults($searchText: String!, $snomed: Boolean!) {
-  findDistinctCodedResults(searchText: $searchText, snomed: $snomed) {
+    query findDistinctCodedResults($searchText: String!) {
+  findDistinctCodedResults(searchText: $searchText) {
     name
   }
 }
@@ -5590,7 +5586,6 @@ export const FindDistinctCodedResultsDocument = gql`
  * const { data, loading, error } = useFindDistinctCodedResultsQuery({
  *   variables: {
  *      searchText: // value for 'searchText'
- *      snomed: // value for 'snomed'
  *   },
  * });
  */
@@ -5606,8 +5601,8 @@ export type FindDistinctCodedResultsQueryHookResult = ReturnType<typeof useFindD
 export type FindDistinctCodedResultsLazyQueryHookResult = ReturnType<typeof useFindDistinctCodedResultsLazyQuery>;
 export type FindDistinctCodedResultsQueryResult = Apollo.QueryResult<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>;
 export const FindDistinctResultedTestDocument = gql`
-    query findDistinctResultedTest($searchText: String!, $loinc: Boolean!) {
-  findDistinctResultedTest(searchText: $searchText, loinc: $loinc) {
+    query findDistinctResultedTest($searchText: String!) {
+  findDistinctResultedTest(searchText: $searchText) {
     name
   }
 }
@@ -5626,7 +5621,6 @@ export const FindDistinctResultedTestDocument = gql`
  * const { data, loading, error } = useFindDistinctResultedTestQuery({
  *   variables: {
  *      searchText: // value for 'searchText'
- *      loinc: // value for 'loinc'
  *   },
  * });
  */
