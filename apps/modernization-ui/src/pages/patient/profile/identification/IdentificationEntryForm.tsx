@@ -7,6 +7,7 @@ import { IdentificationEntry } from './identification';
 import { usePatientIdentificationCodedValues } from './usePatientIdentificationCodedValues';
 import { externalizeDateTime } from 'date';
 import { orNull } from 'utils';
+import { maxLengthRule } from 'validation/entry';
 
 type Props = {
     action: string;
@@ -87,7 +88,7 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onDelete }: P
                             control={control}
                             name="id"
                             defaultValue={entry.value}
-                            rules={{ required: { value: true, message: 'ID # is required.' } }}
+                            rules={{ required: { value: true, message: 'ID # is required.' }, ...maxLengthRule(100) }}
                             render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox

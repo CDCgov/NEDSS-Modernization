@@ -39,34 +39,17 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="streetAddress1"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule(100)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <AddressSuggestionInput
                                     id={name}
+                                    onBlur={onBlur}
                                     locations={coded}
                                     criteria={{ zip: enteredZip, city: enteredCity, state: selectedState }}
                                     label="Street address 1"
                                     defaultValue={value}
                                     onChange={onChange}
                                     onSelection={handleSuggestionSelection}
-                                />
-                            )}
-                        />
-                    </Grid>
-                </Grid>
-                <Grid row>
-                    <Grid col={6}>
-                        <Controller
-                            control={control}
-                            name="streetAddress2"
-                            rules={maxLengthRule()}
-                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                                <Input
-                                    onChange={onChange}
-                                    type="text"
-                                    label="Street address 2"
-                                    defaultValue={value}
-                                    htmlFor={name}
-                                    id={name}
                                     error={error?.message}
                                 />
                             )}
@@ -77,9 +60,29 @@ export default function AddressFields({ id, title, coded }: Props) {
                     <Grid col={6}>
                         <Controller
                             control={control}
+                            name="streetAddress2"
+                            rules={maxLengthRule(100)}
+                            render={({ field: { onChange, onBlur, value, name } }) => (
+                                <Input
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                    type="text"
+                                    label="Street address 2"
+                                    defaultValue={value}
+                                    htmlFor={name}
+                                    id={name}
+                                />
+                            )}
+                        />
+                    </Grid>
+                </Grid>
+                <Grid row>
+                    <Grid col={6}>
+                        <Controller
+                            control={control}
                             name="city"
-                            rules={maxLengthRule()}
-                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                            rules={maxLengthRule(100)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     id={name}
                                     name={name}
@@ -88,6 +91,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     htmlFor={name}
                                     defaultValue={value}
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     error={error?.message}
                                 />
                             )}
@@ -120,9 +124,10 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     value: /[\d]{5}(-[\d]{4})?/,
                                     message:
                                         'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
-                                }
+                                },
+                                ...maxLengthRule(20)
                             }}
-                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     id={name}
                                     name={name}
@@ -131,6 +136,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     htmlFor={name}
                                     defaultValue={value}
                                     error={error?.message}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                 />
                             )}
@@ -165,11 +171,13 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     value: /[0-9]{4}(.(([0-8][0-9])|([9][0-8])))?/,
                                     message:
                                         ' Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
-                                }
+                                },
+                                ...maxLengthRule(10)
                             }}
-                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     type="text"
                                     label="Census Tract"
                                     defaultValue={value}

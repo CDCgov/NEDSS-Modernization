@@ -152,11 +152,12 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="stateHIVCase"
-                            rules={maxLengthRule()}
-                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                            rules={maxLengthRule(20)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     label="State HIV case ID"
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     type="text"
                                     defaultValue={value}
                                     htmlFor={name}

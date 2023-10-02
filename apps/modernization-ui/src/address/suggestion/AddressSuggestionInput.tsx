@@ -29,6 +29,7 @@ type Props = {
     flexBox?: boolean;
     error?: string;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
     onSelection?: (suggestion: AddressSuggestion) => void;
 };
 
@@ -97,6 +98,7 @@ const AddressSuggestionInput = (props: Props): ReactElement => {
                 flexBox={props.flexBox}
                 error={props.error}
                 onChange={handleOnChange}
+                onBlur={props.onBlur}
                 onKeyDown={handleKeyDown}
             />
             <Suggestions

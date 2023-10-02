@@ -2,6 +2,7 @@ import { ErrorMessage, Grid, Label, Textarea } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
 import { Controller, useFormContext } from 'react-hook-form';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { maxLengthRule } from 'validation/entry';
 
 export default function GeneralInformation({ id, title }: { id?: string; title?: string }) {
     const { control } = useFormContext();
@@ -41,13 +42,13 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
                         <Controller
                             control={control}
                             name="comments"
-                            rules={{ maxLength: { value: 500, message: `Only allows 500 characters` } }}
-                            render={({ field: { onChange, name }, fieldState: { error } }) => (
+                            rules={maxLengthRule(20)}
+                            render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
                                 <>
                                     <Label htmlFor={name}>Comments</Label>
-                                    <Textarea onChange={onChange} name={name} id={name} />
+                                    <Textarea onChange={onChange} onBlur={onBlur} name={name} id={name} />
                                     {error?.message && (
-                                        <ErrorMessage id={`${error?.message}-message`}>{error?.message}</ErrorMessage>
+                                        <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>
                                     )}
                                 </>
                             )}

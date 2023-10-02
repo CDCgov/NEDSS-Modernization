@@ -70,16 +70,17 @@ export const IdentificationFields = ({ id, title, coded }: Props) => {
                         <Grid col={6}>
                             <Controller
                                 control={control}
-                                rules={maxLengthRule()}
                                 name={`identification[${index}].value`}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                rules={maxLengthRule(100)}
+                                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                     <Input
                                         defaultValue={value}
                                         onChange={onChange}
+                                        onBlur={onBlur}
                                         type="text"
                                         label="ID value"
-                                        htmlFor={`identification[${index}].value`}
                                         error={error?.message}
+                                        htmlFor={`identification[${index}].value`}
                                     />
                                 )}
                             />

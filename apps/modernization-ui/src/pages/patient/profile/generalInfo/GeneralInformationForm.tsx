@@ -5,6 +5,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
 import { orNull, maybeNumber } from 'utils';
+import { maxLengthRule } from 'validation/entry';
 
 type Props = {
     entry?: GeneralInformationEntry | null;
@@ -103,15 +104,18 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     <Controller
                         control={control}
                         name="maternalMaidenName"
+                        rules={maxLengthRule(50)}
                         defaultValue={entry?.maternalMaidenName}
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                             <Input
                                 placeholder="No Data"
+                                onBlur={onBlur}
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
                                 htmlFor="maternalMaidenName"
                                 id="maternalMaidenName"
+                                error={error?.message}
                             />
                         )}
                     />
@@ -255,15 +259,18 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     <Controller
                         control={control}
                         name="stateHIVCase"
+                        rules={maxLengthRule(20)}
                         defaultValue={entry?.stateHIVCase}
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                             <Input
                                 placeholder="No Data"
+                                onBlur={onBlur}
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
                                 htmlFor="stateHIVCase"
                                 id="stateHIVCase"
+                                error={error?.message}
                             />
                         )}
                     />
