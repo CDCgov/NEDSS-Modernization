@@ -15,7 +15,4 @@ public interface LabTestRepository extends JpaRepository<LabTest, LabTestId> {
     @Query("SELECT lt FROM LabTest lt WHERE lt.testTypeCd = 'R' AND (UPPER(lt.labTestDescTxt) like %:searchString% OR UPPER(lt.id.labTestCd) like %:searchString%)")
     Page<LabTest> findTests(@Param("searchString") String searchString, Pageable pageable);
 
-    @Query("SELECT DISTINCT lt.labTestDescTxt FROM LabTest lt WHERE lt.testTypeCd = 'R' AND (UPPER(lt.labTestDescTxt) like %:searchString% OR UPPER(lt.id.labTestCd) like %:searchString%)")
-    Page<String> findDistinctTestNames(@Param("searchString") String searchString, Pageable pageable);
-
 }
