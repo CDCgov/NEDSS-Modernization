@@ -94,7 +94,20 @@ export const DatePickerInput = ({
                 <DatePicker
                     id={id}
                     onBlur={checkValidity}
-                    onKeyDown={(e) => e.code === 'Enter' && e.preventDefault()}
+                    onKeyDown={(e) => {
+                        if (!isNaN(parseInt(e.key))) {
+                            // Keydown is triggered even before input's value is updated.
+                            // Hence the manual addition of the new key is required.
+                            let inputValue = `${(e.target as HTMLInputElement).value}${e.key}`;
+                            if (inputValue && (inputValue.length === 2 || inputValue.length === 5)) {
+                                inputValue += '/';
+                                (e.target as HTMLInputElement).value = inputValue;
+                                // This prevent default ensures the manually entered key is not re-entered.
+                                e.preventDefault();
+                            }
+                        }
+                        e.code === 'Enter' && e.preventDefault();
+                    }}
                     onChange={handleOnChange(onChange)}
                     className={className}
                     name={name}
