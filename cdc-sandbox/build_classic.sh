@@ -1,23 +1,26 @@
 #!/bin/sh
 set -e
 
+BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+CLASSIC_PATH=$BASE/nbs-classic/builder/NEDSSDev
+CLASSIC_VERSION=NBS_6.0.15
+
 # Clone NEDSSDev
-cd nbs-classic/builder
-rm -rf NEDSSDEV
-git clone -b NBS_6.0.15 git@github.com:cdcent/NEDSSDev.git
-cd ../..
+rm -rf $CLASSIC_PATH
+git clone -b $CLASSIC_VERSION git@github.com:cdcent/NEDSSDev.git $CLASSIC_PATH
 
 # Build and deploy database and wildfly containers
 echo "Building SQL Server database and WildFly"
-docker-compose up nbs-mssql wildfly --build -d
+docker-compose -f $BASE/docker-compose.yml up nbs-mssql wildfly --build -d
 
 # Cleanup 
-rm -rf nbs-classic/builder/NEDSSDEV
+rm -rf $CLASSIC_PATH
 
 echo "**** Classic build complete ****"
 echo "http://localhost:7001/nbs/login"
 echo ""
 echo "**** Available users ****"
-echo "msa"
-echo "superuser"
+echo "*\tmsa"
+echo "*\tsuperuser"
 echo ""
