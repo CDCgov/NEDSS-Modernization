@@ -134,6 +134,24 @@ describe('DatePickerInput component tests', () => {
 
             expect(component).not.toHaveClass('error');
         });
+
+        it('should add slashes automatically while user types', async () => {
+            const { getByTestId, container } = render(
+                <DatePickerInput
+                    id="test-dp-id"
+                    name="test-dp-name"
+                    label="Test DP Label"
+                    className="test-dp-class-name"
+                    htmlFor="test-dp-id"
+                    defaultValue="invalid"
+                />
+            );
+
+            const input = getByTestId('date-picker-external-input');
+            await userEvent.type(input, '02012022');
+            input.blur();
+            expect(input).toHaveAttribute('value', '02/01/2022');
+        });
     });
 
     describe('when an invalid date value is entered', () => {

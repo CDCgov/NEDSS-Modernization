@@ -99,7 +99,12 @@ export const DatePickerInput = ({
                             // Keydown is triggered even before input's value is updated.
                             // Hence the manual addition of the new key is required.
                             let inputValue = `${(e.target as HTMLInputElement).value}${e.key}`;
-                            if (inputValue && (inputValue.length === 2 || inputValue.length === 5)) {
+                            if (
+                                inputValue &&
+                                (inputValue.length === 2 ||
+                                    (inputValue.length === 5 &&
+                                        (inputValue.match(new RegExp('/', 'g')) || '').length < 2))
+                            ) {
                                 inputValue += '/';
                                 (e.target as HTMLInputElement).value = inputValue;
                                 // This prevent default ensures the manually entered key is not re-entered.
