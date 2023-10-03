@@ -6,6 +6,7 @@ import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
 import { useCountyCodedValues, useLocationCodedValues } from 'location';
 import { Indicator, indicators } from 'coded';
 import { orNull } from 'utils';
+import { maxLengthRule } from 'validation/entry';
 
 type Props = {
     entry: MortalityEntry;
@@ -127,13 +128,16 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                                 control={control}
                                 name="city"
                                 defaultValue={entry.city}
-                                render={({ field: { onChange, value } }) => (
+                                rules={maxLengthRule(100)}
+                                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                     <Input
                                         onChange={onChange}
+                                        onBlur={onBlur}
                                         type="text"
                                         defaultValue={value}
                                         htmlFor="city"
                                         id="city"
+                                        error={error?.message}
                                     />
                                 )}
                             />

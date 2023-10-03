@@ -602,20 +602,14 @@ enum LaboratoryReportStatus {
   UNPROCESSED
 }
 extend type Query {
-  findDistinctCodedResults(
-    searchText: String!
-    snomed: Boolean!
-  ): [CodedResult!]!
+  findDistinctCodedResults(searchText: String!): [CodedResult!]!
 }
 
 type CodedResult {
   name: String!
 }
 extend type Query {
-  findDistinctResultedTest(
-    searchText: String!
-    loinc: Boolean!
-  ): [ResultedTest!]!
+  findDistinctResultedTest(searchText: String!): [ResultedTest!]!
 }
 
 type ResultedTest {
@@ -937,7 +931,7 @@ type PatientSummary {
     age: Int
     gender: String
     ethnicity: String
-    race: String
+    races: [String!]
     identification: [PatientSummaryIdentification!]
     phone: [PatientSummaryPhone!]
     email: [PatientSummaryEmail!]
@@ -1289,8 +1283,8 @@ extend type Query {
 }
 
 input IdentificationCriteria {
-    identificationNumber: String!
-    identificationType: String!
+    identificationNumber: String
+    identificationType: String
     assigningAuthority: String
 }
 

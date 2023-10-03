@@ -133,7 +133,7 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
     const [resultedTestOptions, setResultedTestOptions] = useState<{ label: string; value: string }[]>();
 
     const debouncedCodedSearchResults = debounce(async (criteria: string) => {
-        getCodedResultedTests({ variables: { searchText: criteria, snomed: false } });
+        getCodedResultedTests({ variables: { searchText: criteria } });
     }, 300);
 
     const codedResultToComboOption = (codedResult: CodedResult): ComboBoxOption => {
@@ -141,7 +141,7 @@ export const LabReportCriteria = ({ form }: LabReportCriteriaProps) => {
     };
 
     const debounceResultedTestSearch = debounce(async (criteria: string) => {
-        getLocalResultedTests({ variables: { searchText: criteria, loinc: false } });
+        getLocalResultedTests({ variables: { searchText: criteria } });
     }, 300);
 
     const labTestToComboOption = (resultedTest: ResultedTest): ComboBoxOption => {

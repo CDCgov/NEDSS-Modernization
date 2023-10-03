@@ -27,7 +27,6 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @Transactional
@@ -342,7 +341,6 @@ public class PatientSearchSteps {
     };
 
     this.results.active()
-        .andDo(print())
         .andExpect(pathMatcher.value(matchingValue(field, value)));
 
   }

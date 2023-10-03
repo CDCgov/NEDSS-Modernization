@@ -9,7 +9,6 @@ import gov.cdc.nbs.entity.odse.QTeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.QTeleLocator;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.entity.srte.QCountryCode;
-import gov.cdc.nbs.entity.srte.QRaceCode;
 import gov.cdc.nbs.entity.srte.QStateCode;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
@@ -33,7 +32,6 @@ class PatientSummaryTupleMapper {
         QCodeValueGeneral prefix,
 
         QCodeValueGeneral ethnicity,
-        QRaceCode race,
         QTeleEntityLocatorParticipation phone,
         QTeleLocator phoneNumber,
         QCodeValueGeneral phoneUse,
@@ -52,7 +50,6 @@ class PatientSummaryTupleMapper {
                 QPersonName.personName,
                 new QCodeValueGeneral("prefix"),
                 new QCodeValueGeneral("ethnicity"),
-                QRaceCode.raceCode,
                 new QTeleEntityLocatorParticipation("phone"),
                 new QTeleLocator("phone_number"),
                 new QCodeValueGeneral("phone_use"),
@@ -95,8 +92,6 @@ class PatientSummaryTupleMapper {
 
         Integer age = resolveAge(birthday);
 
-        String race = tuple.get(tables.race().codeShortDescTxt);
-
         String ethnicity = tuple.get(tables.ethnicity().codeShortDescTxt);
 
         Collection<PatientSummary.Phone> phone = maybeMapPhone(tuple);
@@ -110,7 +105,6 @@ class PatientSummaryTupleMapper {
             age,
             gender,
             ethnicity,
-            race,
             phone,
             email,
             home

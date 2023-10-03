@@ -7,6 +7,7 @@ import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { maxLengthRule } from 'validation/entry';
 
 type CodedValues = {
     deceased: CodedValue[];
@@ -151,14 +152,17 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="stateHIVCase"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule(20)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     label="State HIV case ID"
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     type="text"
                                     defaultValue={value}
                                     htmlFor={name}
                                     id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />

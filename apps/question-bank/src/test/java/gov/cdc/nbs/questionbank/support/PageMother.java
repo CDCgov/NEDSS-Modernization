@@ -28,30 +28,30 @@ public class PageMother {
     private WaTemplateRepository repository;
 
     @Autowired
-    private PageCondMappingRepository pageConMappingRepository;    
-	
-	@Autowired
-	private WaUiMetadataRepository waUiMetadatumRepository;
+    private PageCondMappingRepository pageConMappingRepository;
 
     @Autowired
-	private WaRuleMetaDataRepository waRuleMetaDataRepository;
-    
+    private WaUiMetadataRepository waUiMetadatumRepository;
+
+    @Autowired
+    private WaRuleMetaDataRepository waRuleMetaDataRepository;
+
     @Autowired
     private WANNDMetadataRepository wanndMetadataRepository;
-    
+
     @Autowired
     private WARDBMetadataRepository wARDBMetadataRepository;
-    
+
 
     private List<WaTemplate> allPages = new ArrayList<>();
 
-    public void clean() {   	
-    	waUiMetadatumRepository.deleteAll();
-        repository.deleteAll();
+    public void clean() {
+        wanndMetadataRepository.deleteAll();
+        waUiMetadatumRepository.deleteAll();
+        wARDBMetadataRepository.deleteAll();
         pageConMappingRepository.deleteAll();
         waRuleMetaDataRepository.deleteAll();
-        wanndMetadataRepository.deleteAll();
-        wARDBMetadataRepository.deleteAll();        
+        repository.deleteAll();
         allPages.clear();
     }
 
@@ -127,8 +127,8 @@ public class PageMother {
         allPages.add(page);
         return page;
     }
-    
-    
+
+
     private WaTemplate createAsepticMeningitisPage() {
         Instant now = Instant.now().plusSeconds(5);
         WaTemplate page = new WaTemplate();
@@ -143,7 +143,7 @@ public class PageMother {
         page.setAddUserId(1L);
         page.setLastChgTime(now);
         page.setLastChgUserId(1L);
-        
+
 
         PageCondMapping conditionMapping = new PageCondMapping();
         conditionMapping.setWaTemplateUid(page);
@@ -156,26 +156,26 @@ public class PageMother {
         page.setConditionMappings(Collections.singleton(conditionMapping));
 
         page = repository.save(page);
-        
+
         // add page detail mappings
         WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
         WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
         WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
         WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
-        
+
         waUiMetadatumRepository.save(tab);
         waUiMetadatumRepository.save(section);
         waUiMetadatumRepository.save(subSection);
         waUiMetadatumRepository.save(question);
-        
+
         allPages.add(page);
         return page;
     }
-    
+
     public WaTemplate createPageDraft(WaTemplate pageIn) {
-    	
-    	repository.save(pageIn);
-    	
+
+        repository.save(pageIn);
+
         Instant now = Instant.now().plusSeconds(15);
         WaTemplate page = new WaTemplate();
         page.setTemplateNm(pageIn.getTemplateNm());
@@ -189,7 +189,7 @@ public class PageMother {
         page.setAddUserId(1L);
         page.setLastChgTime(now);
         page.setLastChgUserId(1L);
-        
+
 
         PageCondMapping conditionMapping = new PageCondMapping();
         conditionMapping.setWaTemplateUid(page);
@@ -202,30 +202,30 @@ public class PageMother {
         page.setConditionMappings(Collections.singleton(conditionMapping));
 
         page = repository.save(page);
-        
+
         // add page detail mappings
         WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
         WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
         WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
         WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
-        
+
         waUiMetadatumRepository.save(tab);
         waUiMetadatumRepository.save(section);
         waUiMetadatumRepository.save(subSection);
         waUiMetadatumRepository.save(question);
-        
+
         allPages.add(page);
         return page;
     }
-    
+
     private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage, Long nbsUiComponentUid, Integer orderNumber) {
-		WaUiMetadata record = new WaUiMetadata();
-		record.setWaTemplateUid(aPage);
-		record.setNbsUiComponentUid(nbsUiComponentUid);
-		record.setOrderNbr(orderNumber);
-		record.setVersionCtrlNbr(0);
-		return record;
-	}
-    
+        WaUiMetadata record = new WaUiMetadata();
+        record.setWaTemplateUid(aPage);
+        record.setNbsUiComponentUid(nbsUiComponentUid);
+        record.setOrderNbr(orderNumber);
+        record.setVersionCtrlNbr(0);
+        return record;
+    }
+
 
 }

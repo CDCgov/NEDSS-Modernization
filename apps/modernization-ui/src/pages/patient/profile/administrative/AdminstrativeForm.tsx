@@ -2,6 +2,7 @@ import { Button, Grid, Label, ModalFooter, Textarea, ErrorMessage } from '@truss
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { AdministrativeEntry } from './AdminstrativeEntry';
+import { maxLengthRule } from 'validation/entry';
 
 type EntryProps = {
     action: string;
@@ -55,7 +56,10 @@ export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
                             control={control}
                             defaultValue={entry.comment}
                             name="comment"
-                            rules={{ required: { value: true, message: 'Comments are required.' } }}
+                            rules={{
+                                required: { value: true, message: 'Comments are required.' },
+                                ...maxLengthRule(2000)
+                            }}
                             render={({ field: { onBlur, onChange }, fieldState: { error } }) => (
                                 <Grid>
                                     <Grid className="flex-align-self-center">

@@ -10,6 +10,7 @@ type PhoneNumberInputProps = {
     id?: string;
     mask?: string;
     pattern?: string;
+    onBlur?: any;
 };
 export const PhoneNumberInput = ({
     label,
@@ -20,6 +21,7 @@ export const PhoneNumberInput = ({
     id,
     mask,
     pattern,
+    onBlur,
     ...props
 }: PhoneNumberInputProps) => {
     return (
@@ -31,6 +33,7 @@ export const PhoneNumberInput = ({
                     {...props}
                     id={id || 'phoneNumber'}
                     onChange={onChange}
+                    onBlur={onBlur}
                     defaultValue={defaultValue ? defaultValue : ''}
                     name={id || 'phoneNumber'}
                     validationStatus={error ? 'error' : undefined}
@@ -42,6 +45,7 @@ export const PhoneNumberInput = ({
                 />
             ) : (
                 <TextInput
+                    onBlur={onBlur}
                     {...props}
                     id={id || 'phoneNumber'}
                     onChange={onChange}

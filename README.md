@@ -21,68 +21,61 @@
 - [Pull requests](documentation/Pull-Requests.md)
 
 ## Running everything inside docker
-
-1. Install [Java 17](documentation/InstallJava.md)
-2. Install Node / NPM
-3. Clone [NBS 6.0.12](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.12)
-4. Set `NEDSS_HOME` environment variable to the Classic NBS directory created by step 3
-
-   ```sh
-   export NEDSS_HOME="/Users/michaelpeels/Projects/NBS/NEDSSDev"
-
-   # can verify that the variable is set
-   echo $NEDSS_HOME
-
-   ```
-
-5. CD into the `cdc-sandbox` directory
+1. Gain access to the [NBS source code repository](https://github.com/cdcent/NEDSSDev)
+1. CD into the `cdc-sandbox` directory
    ```sh
    cd cdc-sandbox
    ```
-6. Run the NBS [build script](cdc-sandbox/build.sh) to build the image
+1. Run the `build_all.sh` script
    ```sh
-   ./build.sh
+   ./build_all.sh
    ```
-7. Download the [database restore file](https://enquizit.sharepoint.com/:u:/s/CDCNBSProject/EQtb-5WSO9xGrocNofv_eMgBH1WX30TNV0wTlZ84E5coYg?e=uNtem1)
-8. Unzip the restore file contents to `cdc-sandbox/db/restore/restore.d/`
-
-   ```sh
-   unzip -j db-restore.zip -d <path-to-cdc-sandbox/db/restore/restore.d/>
-   ```
-
-9. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
-   ```sh
-   ./run.sh
-   ```
-10. Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
-
-    ```sh
-    docker-compose up elasticsearch kibana reverse-proxy -d
-    ```
-
-11. Start the `modernization` containers `modernization-api` and `nbs-gateway`
-    ```sh
-    docker-compose up -d
-    ```
-12. CD into the `cdc-sandbox` directory and Start NiFi
-    ```sh
-    cd ../cdc-sandbox
-    docker-compose up nifi -d
-    ```
-13. Visit http://localhost:8080/nbs/login
+1.  Visit http://localhost:8080/nbs/login
 
     ```
     username: msa
     password:
     ```
 
-14. To create your own user account visit site (line 15):
+1.  To create your own user account:
+    - Navigate to System Management
+    - Expand Security Management
+    - Click Manage Users & click Add
+    - Enter userId, First Name and Last Name
+    - Add a Role(s) & click submit
 
-- Navigate to System Management
-- Expand Security Management
-- Click Manage Users & click add
-- Enter userId, First Name and Last Name
-- Add a Role & click submit
+To learn more about the build process view the cdc-sandbox [README](cdc-sandbox/README.md)
+
+## Running the Modernization API and UI in development mode 
+1. CD into the `cdc-sandbox` directory
+   ```sh
+   cd cdc-sandbox
+   ```
+1. Start `nbs-mssql` database
+    ```sh
+    docker-compose up nbs-mssql -d
+    ```
+2. Start the `reverse-proxy` configured to point to non-docker API and UI. For more details see [Running with local servers](#running-with-local-servers).
+    ```sh
+    MODERNIZATION_UI_SERVER=host.docker.internal MODERNIZATION_UI_PORT=3000 MODERNIZATION_API_SERVER=host.docker.internal MODERNIZATION_API_PORT=9080 docker-compose up reverse-proxy -d
+    ```
+3. CD into the root directory
+   ```sh
+   cd ..
+   ```
+4. Start the modernized api on port 9080. Port `5005` will be open for debugger attachment.
+    ```sh
+    ./gradlew :modernization-api:bootRun --args='--server.port=9080'
+    ```
+5. CD into the modernization-ui folder
+    ```sh
+    cd apps/modernization-ui/    
+    ```
+6. Launch the ui application
+    ```sh
+    npm run start
+    ```
+7. Access the UI [localhost:3000](http://localhost:3000)
 
 ## Code Formatting
 
