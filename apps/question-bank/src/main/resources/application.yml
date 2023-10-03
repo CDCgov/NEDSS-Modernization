@@ -9,7 +9,7 @@ nbs:
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
 
-server.servlet.context-path: /page-builder
+server.servlet.context-path: /nbs/page-builder
 
 spring:
   mvc.pathmatch.matching-strategy: ant_path_matcher # swagger

@@ -16,6 +16,7 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class PageControllerService {
+
     /**
      * getAllPageSummary
      * @returns Page_PageSummary_ OK
@@ -25,29 +26,29 @@ export class PageControllerService {
         authorization,
         page,
         size,
-        sort
+        sort,
     }: {
-        authorization: any;
-        page?: number;
-        size?: number;
-        sort?: string;
+        authorization: any,
+        page?: number,
+        size?: number,
+        sort?: string,
     }): CancelablePromise<Page_PageSummary_> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/pages',
+            url: '/nbs/page-builder/api/v1/pages',
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             query: {
-                page: page,
-                size: size,
-                sort: sort
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -59,26 +60,26 @@ export class PageControllerService {
      */
     public static createPageUsingPost({
         authorization,
-        request
+        request,
     }: {
-        authorization: any;
+        authorization: any,
         /**
          * request
          */
-        request: PageCreateRequest;
+        request: PageCreateRequest,
     }): CancelablePromise<PageCreateResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/pages',
+            url: '/nbs/page-builder/api/v1/pages',
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -87,18 +88,22 @@ export class PageControllerService {
      * @returns Resource OK
      * @throws ApiError
      */
-    public static downloadPageLibraryUsingGet({ authorization }: { authorization: any }): CancelablePromise<Resource> {
+    public static downloadPageLibraryUsingGet({
+        authorization,
+    }: {
+        authorization: any,
+    }): CancelablePromise<Resource> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/pages/download',
+            url: '/nbs/page-builder/api/v1/pages/download',
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -107,24 +112,22 @@ export class PageControllerService {
      * @returns string OK
      * @throws ApiError
      */
-    //Does not work correctly, alternatively use "../../utils/ExportUtil.ts" for downloading pdf's
-    public static downloadPageLibraryPdfUsingGet({ authorization }: { authorization: any }): CancelablePromise<Blob> {
+    public static downloadPageLibraryPdfUsingGet({
+        authorization,
+    }: {
+        authorization: any,
+    }): CancelablePromise<string> {
         return __request(OpenAPI, {
             method: 'GET',
-            mediaType: 'blob',
-            responseHeader: 'blob',
-            url: '/page-builder/api/v1/pages/downloadPDF',
+            url: '/nbs/page-builder/api/v1/pages/downloadPDF',
             headers: {
-                'Response-Type': 'blob',
-                Authorization: authorization,
-                Accept: 'application/json',
-                'Content-Type': 'application/octet-stream'
+                'Authorization': authorization,
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -139,34 +142,34 @@ export class PageControllerService {
         request,
         page,
         size,
-        sort
+        sort,
     }: {
-        authorization: any;
+        authorization: any,
         /**
          * request
          */
-        request: PageSummaryRequest;
-        page?: number;
-        size?: number;
-        sort?: string;
+        request: PageSummaryRequest,
+        page?: number,
+        size?: number,
+        sort?: string,
     }): CancelablePromise<Page_PageSummary_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/pages/search',
+            url: '/nbs/page-builder/api/v1/pages/search',
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             query: {
-                page: page,
-                size: size,
-                sort: sort
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -177,27 +180,27 @@ export class PageControllerService {
      */
     public static deletePageDraftUsingDelete({
         authorization,
-        id
+        id,
     }: {
-        authorization: any;
+        authorization: any,
         /**
          * id
          */
-        id: number;
+        id: number,
     }): CancelablePromise<PageStateResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/page-builder/api/v1/pages/{id}/delete-draft',
+            url: '/nbs/page-builder/api/v1/pages/{id}/delete-draft',
             path: {
-                id: id
+                'id': id,
             },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             errors: {
                 401: `Unauthorized`,
-                403: `Forbidden`
-            }
+                403: `Forbidden`,
+            },
         });
     }
 
@@ -208,28 +211,28 @@ export class PageControllerService {
      */
     public static getPageDetailsUsingGet({
         authorization,
-        id
+        id,
     }: {
-        authorization: any;
+        authorization: any,
         /**
          * id
          */
-        id: number;
+        id: number,
     }): CancelablePromise<PagedDetail> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/pages/{id}/details',
+            url: '/nbs/page-builder/api/v1/pages/{id}/details',
             path: {
-                id: id
+                'id': id,
             },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -242,33 +245,33 @@ export class PageControllerService {
     public static updatePageDetailsUsingPut({
         authorization,
         id,
-        request
+        request,
     }: {
-        authorization: any;
+        authorization: any,
         /**
          * id
          */
-        id: number;
+        id: number,
         /**
          * request
          */
-        request: UpdatePageDetailsRequest;
+        request: UpdatePageDetailsRequest,
     }): CancelablePromise<PageSummary | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/page-builder/api/v1/pages/{id}/details',
+            url: '/nbs/page-builder/api/v1/pages/{id}/details',
             path: {
-                id: id
+                'id': id,
             },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -280,28 +283,29 @@ export class PageControllerService {
      */
     public static savePageDraftUsingPut({
         authorization,
-        id
+        id,
     }: {
-        authorization: any;
+        authorization: any,
         /**
          * id
          */
-        id: number;
+        id: number,
     }): CancelablePromise<PageStateResponse | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/page-builder/api/v1/pages/{id}/draft',
+            url: '/nbs/page-builder/api/v1/pages/{id}/draft',
             path: {
-                id: id
+                'id': id,
             },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
+
 }

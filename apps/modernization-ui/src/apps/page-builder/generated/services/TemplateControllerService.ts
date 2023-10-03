@@ -28,7 +28,7 @@ export class TemplateControllerService {
     }): CancelablePromise<Page_Template_> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/template/',
+            url: '/nbs/page-builder/api/v1/template/',
             headers: {
                 'Authorization': authorization,
             },
@@ -69,7 +69,7 @@ export class TemplateControllerService {
     }): CancelablePromise<Page_Template_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/template/search',
+            url: '/nbs/page-builder/api/v1/template/search',
             headers: {
                 'Authorization': authorization,
             },
