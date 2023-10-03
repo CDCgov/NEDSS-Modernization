@@ -3328,7 +3328,7 @@ WHERE
     </entry>
     <entry>
         <key>log-message</key>
-        <value>${elastic_person_count} / ${database_person_count} Persons</value>
+        <value>${elastic_person_count} / ${database_person_count} Persons (Status Check Every 5 Minutes)</value>
     </entry>
 </properties>
 <retryCount>10</retryCount>
@@ -8149,5 +8149,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>10/03/2023 14:02:00 UTC</timestamp>
+    <timestamp>10/03/2023 14:27:53 UTC</timestamp>
 </template>
