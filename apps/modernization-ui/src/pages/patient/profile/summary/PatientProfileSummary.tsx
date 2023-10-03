@@ -86,7 +86,12 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
             ) : (
                 <>
                     <div className="border-bottom border-base-lighter patient-summary-title">
-                        <h2>{`${formattedName(summary?.legalName?.last, summary?.legalName?.first)}`}</h2>
+                        <h2>{`${formattedName(
+                            `${summary?.legalName?.first || ''} ${summary?.legalName?.middle || ''}  ${
+                                summary?.legalName?.last || ''
+                            }`,
+                            summary?.legalName?.suffix
+                        )}`}</h2>
                         <span>
                             Patient ID: {patient.shortId}
                             {patient.status != 'ACTIVE' && (
