@@ -2,6 +2,36 @@
 
 .value_set_concept_container {
   min-height: 486px;
+  .list-details {
+    border-radius: 5px;
+    list-style: none;
+    border: 1px solid var(--base-lighter, #DCDEE0);
+    padding: 24px;
+    display: flex;
+    gap: 48px;
+    .title {
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+    .details {
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+  .instruction {
+    font-size: 14px;
+  }
+  .add-new-concept-container {
+    display: flex;
+    justify-content: space-around;
+  }
+  .add-new-concept {
+    margin-right: 20px;
+    border: 2px solid #005EA2;
+    background: #fff;
+    color: #005EA2;
+    border-radius: 4px;
+  }
 }
 .concept-local-library {
   background-color: $color-white;

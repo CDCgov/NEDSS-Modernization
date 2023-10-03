@@ -18,7 +18,8 @@ const initConcept = {
     effectiveFromTime: new Date().toLocaleString(),
     effectiveToTime: new Date().toLocaleString(),
     duration: 'always',
-    status: true
+    status: true,
+    cstatus: 'inactive'
 };
 
 export const Concept = () => {
@@ -121,113 +122,159 @@ export const Concept = () => {
                     </div>
                 </div>
             )}
-            <div>
-                <label>
-                    UI Display name <span className="mandatory-indicator">*</span>
+            <p className="instruction">Please fill out the forms to add new value set concept.</p>
+            <div className="margin-left-15">
+                <label className="fields-info">
+                    All fields with <span className="mandatory-indicator">*</span> are required
                 </label>
-                <TextInput
-                    className="field-space"
-                    type="text"
-                    name="display"
-                    id="iUdisplay"
-                    style={{ border: '1px solid black' }}
-                    value={concept.display}
-                    onChange={handleConcept}
-                />
-            </div>
-            <Grid row className="inline-field">
-                <Grid tablet={{ col: true }}>
-                    <div className="margin-right-2">
-                        <label>
-                            Local code <span className="mandatory-indicator">*</span>
-                        </label>
-                        <TextInput
-                            className="field-space"
-                            type="text"
-                            name="localCode"
-                            id="localCode"
-                            style={{ border: '1px solid black' }}
-                            value={concept.localCode}
-                            onChange={handleConcept}
-                        />
-                    </div>
-                </Grid>
-                <Grid tablet={{ col: true }}>
-                    <div className="width-48-p">
-                        <label>
-                            Concept code <span className="mandatory-indicator">*</span>
-                        </label>
-                        <TextInput
-                            onChange={handleConcept}
-                            className="field-space"
-                            type="text"
-                            id="conceptCode"
-                            value={concept.conceptCode}
-                            name="conceptCode"
-                            style={{ border: '1px solid black' }}
-                        />
-                    </div>
-                </Grid>
-            </Grid>
-            <Grid row className="effective-date-field">
-                <Grid col={6} className="effective-radio">
-                    <Radio
-                        type="radio"
-                        name="duration"
-                        value="always"
-                        id="eAlways"
-                        checked={concept.duration === 'always'}
+                <div className="margin-top-2">
+                    <label>
+                        UI Display name <span className="mandatory-indicator">*</span>
+                    </label>
+                    <TextInput
+                        className="field-space"
+                        type="text"
+                        name="display"
+                        id="iUdisplay"
+                        style={{ border: '1px solid black' }}
+                        value={concept.display}
                         onChange={handleConcept}
-                        label="Always Effective"
                     />
-                    <Radio
-                        id="eUntil"
-                        name="duration"
-                        value="until"
-                        checked={concept.duration === 'until'}
-                        onChange={handleConcept}
-                        label="Effective Until"
-                    />
+                </div>
+                <Grid row className="inline-field">
+                    <Grid tablet={{ col: true }}>
+                        <div className="margin-right-2">
+                            <label>
+                                Local code <span className="mandatory-indicator">*</span>
+                            </label>
+                            <TextInput
+                                className="field-space"
+                                type="text"
+                                name="localCode"
+                                id="localCode"
+                                style={{ border: '1px solid black' }}
+                                value={concept.localCode}
+                                onChange={handleConcept}
+                            />
+                        </div>
+                    </Grid>
+                    <Grid tablet={{ col: true }}>
+                        <div className="width-48-p">
+                            <label>
+                                Concept code <span className="mandatory-indicator">*</span>
+                            </label>
+                            <TextInput
+                                onChange={handleConcept}
+                                className="field-space"
+                                type="text"
+                                id="conceptCode"
+                                value={concept.conceptCode}
+                                name="conceptCode"
+                                style={{ border: '1px solid black' }}
+                            />
+                        </div>
+                    </Grid>
                 </Grid>
-                <Grid col={5}>
-                    <FormGroup error={false}>
-                        <DatePicker
-                            id="effectivDate"
-                            name="effectivDate"
-                            defaultValue={effectiveDate}
-                            maxDate={new Date().toISOString()}
+                <Grid row className="effective-date-field">
+                    <Grid col={6} className="effective-radio">
+                        <Radio
+                            type="radio"
+                            name="duration"
+                            value="always"
+                            id="eAlways"
+                            checked={concept.duration === 'always'}
+                            onChange={handleConcept}
+                            label="Always Effective"
                         />
-                    </FormGroup>
+                        <Radio
+                            id="eUntil"
+                            name="duration"
+                            value="until"
+                            checked={concept.duration === 'until'}
+                            onChange={handleConcept}
+                            label="Effective Until"
+                        />
+                    </Grid>
+                    <Grid col={5}>
+                        <FormGroup error={false}>
+                            <DatePicker
+                                id="effectivDate"
+                                name="effectivDate"
+                                defaultValue={effectiveDate}
+                                maxDate={new Date().toISOString()}
+                            />
+                        </FormGroup>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <div className=" ds-u-text-align--right footer-line-btn-block margin-bottom-1em">
-                {!isDelete && concept?.status ? (
-                    <Button
-                        type="submit"
-                        className="margin-right-2 line-btn delete-ln-btn"
-                        unstyled
-                        onClick={() => setIsDelete(true)}>
-                        <Icon.Delete className="margin-right-2px" />
-                        <span> Delete</span>
-                    </Button>
-                ) : (
+                <Grid row className="effective-date-field">
+                    <Grid col={6} className="effective-radio">
+                        <Radio
+                            name="cstatus"
+                            value="active"
+                            id="cstatus"
+                            checked={concept.cstatus === 'active'}
+                            onChange={handleConcept}
+                            label="Active"
+                        />
+                        <Radio
+                            id="incstatus"
+                            name="cstatus"
+                            value="inactive"
+                            checked={concept.cstatus === 'inactive'}
+                            onChange={handleConcept}
+                            label="In active"
+                        />
+                    </Grid>
+                </Grid>
+                <div className=" ds-u-text-align--right footer-line-btn-block margin-bottom-1em">
+                    {!isDelete && concept?.status ? (
+                        <Button
+                            type="submit"
+                            className="margin-right-2 line-btn delete-ln-btn display-none"
+                            unstyled
+                            onClick={() => setIsDelete(true)}>
+                            <Icon.Delete className="margin-right-2px" />
+                            <span> Delete</span>
+                        </Button>
+                    ) : (
+                        <div />
+                    )}
                     <div />
-                )}
-                <div>
-                    <Button type="submit" className="margin-right-2 line-btn" unstyled onClick={handleCancelFrom}>
-                        <Icon.Cancel className="margin-right-2px" />
-                        <span> Cancel</span>
-                    </Button>
-                    <Button type="submit" className="line-btn" unstyled onClick={handleSaveConceptFrom}>
-                        <Icon.Check className="margin-right-2px" />
-                        <span> Add concept</span>
-                    </Button>
+                    <div>
+                        <Button type="submit" className="cancel-btn margin-right-2" onClick={handleCancelFrom}>
+                            {/* <Icon.Cancel className="margin-right-2px" />*/}
+                            <span> Cancel</span>
+                        </Button>
+                        <Button type="submit" className="submit-btn" onClick={handleSaveConceptFrom}>
+                            {/* <Icon.Check className="margin-right-2px" />*/}
+                            <span> Add concept</span>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
     );
+    const list = [
+        { name: 'Value Set Type', value: 'Value set' },
+        { name: 'Value Set code', value: 'Value set' },
+        { name: 'Value Set name', value: 'Value set' },
+        { name: 'Value Set description', value: 'Value set' }
+    ];
     return (
         <div className="value_set_concept_container">
+            <div>
+                <ul className="list-details">
+                    {list.map((ls, index) => (
+                        <li key={index}>
+                            <div className="title">{ls.name}</div>
+                            <div className="details">{ls.value}</div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <h3 className="main-header-title" data-testid="header-title">
+                Value set concepts
+            </h3>
             {isShowFrom ? (
                 renderConceptForm
             ) : (
@@ -249,10 +296,12 @@ export const Concept = () => {
                             </div>
                         </div>
                     )}
-                    <Button type="submit" className="line-btn" unstyled onClick={handleAddConceptFrom}>
-                        <Icon.Add className="margin" />
-                        <span>Add value set concept</span>
-                    </Button>
+                    <div className="add-new-concept-container">
+                        <Button type="submit" className="add-new-concept line-btn" onClick={handleAddConceptFrom}>
+                            {/* <Icon.Add className="margin" />*/}
+                            <span>Add New concept</span>
+                        </Button>
+                    </div>
                 </div>
             )}
         </div>

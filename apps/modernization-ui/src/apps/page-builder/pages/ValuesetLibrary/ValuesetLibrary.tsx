@@ -35,6 +35,25 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
         setSummaries(content);
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
 
+    const renderValueSetList = (
+        <>
+            <div className="search-description-block">
+                <p>Let’s find the right value set for your single choice question</p>
+            </div>
+            <div className="valueset-local-library__container">
+                <div className="valueset-local-library__table">
+                    <ValuesetLibraryTable
+                        summaries={summaries}
+                        pages={{ currentPage, pageSize, totalElements }}
+                        labModalRef={modalRef}
+                    />
+                </div>
+            </div>
+        </>
+    );
+
+    if (hideTabs) return <div className="valueset-local-library">{renderValueSetList}</div>;
+
     return (
         <PageBuilder page="valueset-library" menu={true}>
             <div className="valueset-local-library">
@@ -53,18 +72,7 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
                         </li>
                     </ul>
                 )}
-                <div className="search-description-block">
-                    <p>Let’s find the right value set for your single choice question</p>
-                </div>
-                <div className="valueset-local-library__container">
-                    <div className="valueset-local-library__table">
-                        <ValuesetLibraryTable
-                            summaries={summaries}
-                            pages={{ currentPage, pageSize, totalElements }}
-                            labModalRef={modalRef}
-                        />
-                    </div>
-                </div>
+                {renderValueSetList}
             </div>
         </PageBuilder>
     );

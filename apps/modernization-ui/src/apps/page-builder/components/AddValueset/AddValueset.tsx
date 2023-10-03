@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { GetQuestionResponse, QuestionControllerService } from 'apps/page-builder/generated';
-import { Button, Icon, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalToggleButton } from '@trussworks/react-uswds';
 import './AddValueset.scss';
 import { ValueSetControllerService } from '../../generated';
 import '../../pages/ValuesetLibrary/ValuesetTabs.scss';
@@ -8,7 +8,7 @@ import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
 import { Concept } from '../Concept/Concept';
 
-export const AddValueset = ({ hideHeader, modalRef }: any) => {
+export const AddValueset = ({ modalRef }: any) => {
     const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
     // Fields
@@ -94,12 +94,6 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
             return response;
         });
     };
-    const handleClose = () => {
-        window.close();
-    };
-    const handleBack = () => {
-        history.go(-1);
-    };
     const validateValuesetName = (name: string) => {
         const pattern = /^[a-zA-Z0-9]*$/;
         if (name.match(pattern)) {
@@ -129,40 +123,22 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
     };
 
     const disableBtn = isValidationFailure || !name || !code;
-    const renderTabs = (
-        <ul className="tabs">
-            <li className={activeTab == 'details' ? 'active' : ''} onClick={() => setActiveTab('details')}>
-                Value set details
-            </li>
-            <li className={activeTab == 'concepts' ? 'active' : ''} onClick={() => setActiveTab('concepts')}>
-                Value set concepts
-            </li>
-        </ul>
-    );
 
     return (
         <div className="add-valueset">
-            {!hideHeader && (
-                <Button className="usa-button--unstyled close-btn" type={'button'} onClick={handleClose}>
-                    <Icon.Close />
-                </Button>
-            )}
-            {!hideHeader && (
-                <h3 className="main-header-title" data-testid="header-title">
-                    <Button className="usa-button--unstyled back-btn" type={'button'} onClick={handleBack}>
-                        <Icon.ArrowBack />
-                    </Button>
-                    Add value set
-                </h3>
-            )}
-            <div className="add-valueset__container">
-                {renderTabs}
+            <h3 className="main-header-title" data-testid="header-title">
+                Value set details
+            </h3>
+            <p className="description">
+                These fields will not be displayed to your users, it only makes it easier for others to search for
+                search for this question in the Value set library
+            </p>
+            <div className={`add-valueset__container ${activeTab !== 'details' ? 'concept-container' : ''}`}>
                 {activeTab === 'details' ? (
                     <>
-                        <p className="description">
-                            These fields will not be displayed to your users, it only makes it easier for others to
-                            search for search for this question in the Value set library
-                        </p>
+                        <label>
+                            All fields with <span className="mandatory-indicator">*</span> are required
+                        </label>
                         <br></br>
                         <input
                             type="radio"
@@ -235,12 +211,7 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
                                 onInput={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
                             />
                             <div className="value-set-line-action-footer">
-                                <Button
-                                    type="submit"
-                                    className="line-btn"
-                                    unstyled
-                                    onClick={() => setActiveTab('concepts')}>
-                                    <Icon.ArrowForward className="margin" />
+                                <Button type="submit" onClick={() => setActiveTab('concepts')}>
                                     <span>Continue to value set concept</span>
                                 </Button>
                             </div>
@@ -250,17 +221,19 @@ export const AddValueset = ({ hideHeader, modalRef }: any) => {
                     <Concept />
                 )}
             </div>
-            <ModalToggleButton
-                className="submit-btn"
-                type="button"
-                modalRef={modalRef}
-                onClick={handleSubmit}
-                disabled={disableBtn}>
-                Create and Add to question
-            </ModalToggleButton>
-            <ModalToggleButton className="cancel-btn" modalRef={modalRef} type="button">
-                Cancel
-            </ModalToggleButton>
+            <div className="padding-bottom-8">
+                <ModalToggleButton
+                    className="submit-btn"
+                    type="button"
+                    modalRef={modalRef}
+                    onClick={handleSubmit}
+                    disabled={disableBtn}>
+                    Create and Add to question
+                </ModalToggleButton>
+                <ModalToggleButton className="cancel-btn" modalRef={modalRef} type="button">
+                    Cancel
+                </ModalToggleButton>
+            </div>
         </div>
     );
 };

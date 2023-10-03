@@ -12,6 +12,9 @@
     .main-header-title {
         font-size: 22px;
     }
+    .description {
+        font-weight: normal;
+    }
     input {
         width: 100%;
         height: 40px;
@@ -38,7 +41,10 @@
         margin-left: 45px;
     }
     .add-valueset__container {
-        width: 680px;
+        width: 600px;
+        &.concept-container {
+            width: unset;
+        }
         margin: 32px auto;
         .header-title {
             font-size: 16px;
@@ -71,7 +77,6 @@
     .cancel-btn {
         float: right;
         margin-right: 20px;
-        margin-bottom: 80px;
         border: 2px solid #005EA2;
         background: #fff;
         color: #005EA2;
@@ -81,13 +86,11 @@
     .error-text {
         display: none;
     }
-
     .error-border {
         border-left: 2px solid #dc3545;
         padding-left: 10px;
         margin-bottom: 30px;
         padding-bottom: 0;
-
         .error-text {
             font-weight: 700;
             color: #dc3545;
@@ -161,6 +164,7 @@
     text-decoration: none;
     &.delete-ln-btn {
        color: var(--error-error, #D54309);
+        display:  none;
     }
 }
 .footer-line-btn-block {
@@ -177,4 +181,25 @@
 .value-set-line-action-footer {
     display: flex;
     justify-content: flex-end;
+}
+
+.usa-modal {
+    border-radius: 20px;
+    .usa-modal__content {
+        //border-top: solid 5px #1d67c3;
+        border-radius: 20px;
+    };
+}
+
+.usa-modal-wrapper.is-visible {
+    max-height: 80vh;
+    .usa-modal-overlay {
+        max-height: 100vh;
+        .usa-modal--lg {
+            max-height: unset;
+            .usa-modal__content {
+                max-height: unset;
+            }
+        }
+    }
 }
