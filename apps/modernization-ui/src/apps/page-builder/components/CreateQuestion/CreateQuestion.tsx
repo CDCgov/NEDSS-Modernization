@@ -110,7 +110,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setFamilyOptions(familyList);
         });
     };
-    console.log('questionData...', questionData.allowFutureDates);
     const fetchGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization,
