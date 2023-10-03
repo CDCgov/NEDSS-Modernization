@@ -1,5 +1,5 @@
 @patient @patient-search
-Feature: Patient Search!
+Feature: Patient Search
 
   Background:
     Given I am logged into NBS
@@ -84,6 +84,28 @@ Feature: Patient Search!
     And search result 2 has a "first name" of "Albert"
     And search result 2 has a "last name" of "Smyth"
 
+  Scenario: I can search for a Patient and find them by their legal name
+    Given the patient has the "legal" name "Something" "Other" as of "2022-01-01"
+    And the patient has the "legal" name "This" "One" "Here", "Junior" as of "2022-11-13"
+    And the patient has the "alias" name "Al" "Lias"
+    When I search for patients
+    Then the search results have a patient with a "legal first name" equal to "This"
+    And the search results have a patient with a "legal middle name" equal to "One"
+    And the search results have a patient with a "legal last name" equal to "Here"
+    And the search results have a patient with a "legal name suffix" equal to "Junior"
+    And the search results have a patient with a "first name" equal to "Something"
+    And the search results have a patient with a "last name" equal to "Other"
+
+  Scenario: I can search for a Patient and find them by their legal name
+    Given the patient has the "alias" name "Al" "Lias"
+    When I search for patients
+    Then the search results have a patient without a "legal first name"
+    And the search results have a patient without a "legal middle name"
+    And the search results have a patient without a "legal last name"
+    And the search results have a patient without a "legal name suffix"
+    And the search results have a patient with a "first name" equal to "Al"
+    And the search results have a patient with a "last name" equal to "Lias"
+
   Scenario: I can search for a Patient using a partial phone number
     Given the patient has a "phone number" of "888-240-2200"
     And I have another patient
@@ -91,6 +113,14 @@ Feature: Patient Search!
     And I add the patient criteria for an "phone number" equal to "613-240-2200"
     When I search for patients
     Then the search results have a patient with an "phone number" equal to "613-240-2200"
+
+  Scenario: I can search for a Patient using an email address
+    Given the patient has an "email address" of "emailaddress@mail.com"
+    And I have another patient
+    And the patient has an "email address" of "other@mail.com"
+    And I add the patient criteria for an "email address" equal to "emailaddress@mail.com"
+    When I search for patients
+    Then the search results have a patient with an "email address" equal to "emailaddress@mail.com"
 
   Scenario: I can search for a Patient using an Identification
     Given the patient can be identified with an "other" of "888-88-8888"

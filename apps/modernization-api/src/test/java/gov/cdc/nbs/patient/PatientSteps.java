@@ -72,6 +72,11 @@ public class PatientSteps {
           value
       );
 
+      case "email", "email address" -> mother.withEmail(
+          identifier,
+          value
+      );
+
       case "address" -> mother.withAddress(
           identifier,
           value,

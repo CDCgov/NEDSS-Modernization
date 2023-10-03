@@ -7,7 +7,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.patient.PatientService;
+import gov.cdc.nbs.patient.search.PatientSearcher;
 import gov.cdc.nbs.service.EncryptionService;
 import gov.cdc.nbs.support.TestActive;
 import io.cucumber.java.Before;
@@ -40,9 +40,9 @@ public class RedirectSteps {
     @Autowired
     ObjectMapper mapper;
     @Autowired
-    PatientService patientService;
+    PatientSearcher patientService;
 
-    private Page<Person> searchResponse;
+    private Page<?> searchResponse;
 
     private MultiValueMap<String, String> criteria;
 
@@ -141,7 +141,7 @@ public class RedirectSteps {
 
     @When("I submit the search filter to the patient search API")
     public void i_submit_the_search_filter_to_the_patient_search_API() {
-        searchResponse = patientService.findPatientsByFilter(this.patientFilter, new GraphQLPage(25));
+        searchResponse = patientService.search(this.patientFilter, new GraphQLPage(25));
     }
 
     @Then("The search is executed successfully")

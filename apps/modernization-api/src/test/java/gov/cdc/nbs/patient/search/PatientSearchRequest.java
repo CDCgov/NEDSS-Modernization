@@ -9,32 +9,42 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.ResultActions;
 
 @Component
-class TestPatientSearchRequest {
+class PatientSearchRequest {
   private static final String QUERY = """
       query search($filter: PersonFilter!, $page: SortablePage) {
         findPatientsByFilter(filter: $filter, page: $page) {
           content {
-            id
+            patient
             shortId
-            recordStatusCd
-            birthTime
+            status
+            birthday
+            age
+            gender
+            legalName {
+              first
+              middle
+              last
+              suffix
+            }
             names {
-              firstNm
-              middleNm
-              lastNm
-              nmSuffix
-              nmPrefix
+              first
+              middle
+              last
+              suffix
             }
             identification {
               type
               value
             }
-            nbsEntity {
-              entityLocatorParticipations {
-                locator {
-                  phoneNbrTxt
-                }
-              }
+            emails
+            phones
+            addresses {
+                use
+                address
+                address2
+                city
+                state
+                zipcode                
             }
           }
           total
@@ -45,7 +55,7 @@ class TestPatientSearchRequest {
 
   private final GraphQLRequest graphql;
 
-  public TestPatientSearchRequest(
+  public PatientSearchRequest(
       final ObjectMapper mapper,
       final GraphQLRequest graphql
   ) {
@@ -53,7 +63,7 @@ class TestPatientSearchRequest {
     this.graphql = graphql;
   }
 
-  ResultActions search(final PatientFilter filter, final SortCriteria sorting) throws Exception {
+  ResultActions search(final PatientFilter filter, final SortCriteria sorting) {
     return graphql.query(
         QUERY,
         mapper.createObjectNode()
@@ -71,5 +81,5 @@ class TestPatientSearchRequest {
             )
     );
   }
-  
+
 }

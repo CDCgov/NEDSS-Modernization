@@ -49,7 +49,7 @@ const asEmails = (items: PatientSummaryEmail[]) => asText(items.map((item) => it
 
 const asAddress = ({ street, city, state, zipcode }: PatientSummaryAddress) => {
     const location = [city, state, zipcode].filter((i) => i).join(' ');
-    const address = [location, street].filter((i) => i).join('\n');
+    const address = [street, location].filter((i) => i).join('\n');
     return maybeRender(address, asText);
 };
 
