@@ -20,7 +20,6 @@ class PatientSummaryMerger {
             left.age(),
             left.gender(),
             left.ethnicity(),
-            left.race(),
             phones,
             emails,
             address

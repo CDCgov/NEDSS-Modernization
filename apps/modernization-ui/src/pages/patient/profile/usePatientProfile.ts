@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Patient } from './Patient';
-import { PatientSummary } from 'pages/patient/profile/summary';
 import { PatientProfileResult, useFindPatientProfileSummary } from './useFindPatientProfileSummary';
+import { PatientSummary } from 'generated/graphql/schema';
 
 export type Profile = {
     patient: Patient;

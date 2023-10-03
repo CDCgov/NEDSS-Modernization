@@ -1,21 +1,72 @@
 @import 'styles/colors';
 
-.summary-value {
-    h5 {
-        margin: 0 0 0.25rem 0;
-        color: $color-gray-50;
-        text-transform: uppercase;
-        font-weight: normal;
-    }
-    p {
-        margin: 0;
-        word-break: break-word;
-        padding-right: 1rem;
-        max-width: auto;
-        white-space: pre-wrap;
+.patient-summary {
+    .patient-summary-title {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-self: center;
+        justify-content: space-between;
+        font-weight: 700;
 
-        .email {
-            max-width: 3rem;
+        h2 {
+            font-weight: 700;
+        }
+
+        span {
+            display: block;
+            font-size: 1.5rem;
+            margin-block-start: 0.83em;
+            margin-block-end: 0.83em;
+        }
+    }
+
+    .patient-summary-items {
+        padding: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+
+        .patient-summary-item {
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+
+            .patient-summary-item-label {
+                display: block;
+                color: $color-gray-50;
+                text-transform: uppercase;
+                font-weight: normal;
+                margin-bottom: 0.25rem;
+            }
+            p {
+                margin-top: 0;
+                word-break: break-word;
+                max-width: auto;
+                white-space: pre-wrap;
+                font-weight: 400;
+
+                &.email {
+                    max-width: 3rem;
+                }
+            }
+        }
+    }
+
+    .grouped {
+        display: flex;
+        flex-grow: 1;
+        flex-wrap: wrap;
+
+        .patient-summary-item {
+            width: 25%;
+        }
+    }
+
+    .stacked {
+        flex-grow: 0;
+
+        .patient-summary-item {
+            width: 100%;
         }
     }
 }

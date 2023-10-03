@@ -1,55 +1,115 @@
 package gov.cdc.nbs.patient.profile.summary;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.support.TestActive;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
+
+import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
+import static org.hamcrest.Matchers.containsStringIgnoringCase;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientSummarySteps {
 
-    @Autowired
-    private TestActive<PatientIdentifier> patient;
+  @Autowired
+  TestActive<PatientIdentifier> patient;
 
-    @Autowired
-    private PatientSummaryResolver summaryResolver;
+  @Autowired
+  PatientProfileSummaryRequest request;
 
-    @Autowired
-    private TestActive<PatientSummary> summary;
+  private final TestActive<ResultActions> response = new TestActive<>();
 
-    private Exception exception;
+  @Before("@patient-summary")
+  public void clear() {
+    response.reset();
+  }
 
-    @Before
-    public void clear() {
-        this.patient.reset();
-        this.summary.reset();
-        this.exception = null;
-    }
+  @When("I view the Patient Profile Summary")
+  @When("a patient summary is requested by patient identifier")
+  public void a_patient_summary_is_requested_by_patient_identifier() {
+    response.active(
+        this.request.summary(patient.active())
+    );
+  }
 
-    @When("a patient summary is requested by patient identifier")
-    public void a_patient_summary_is_requested_by_patient_identifier() {
-        var profile = new PatientProfile(patient.active().id(), patient.active().local(), (short) 0);
-        try {
-            summary.active(summaryResolver.resolve(profile, null).orElse(null));
-        } catch (Exception e) {
-            this.exception = e;
-        }
-    }
+  @Then("the Patient Profile Summary is found")
+  public void the_summary_is_found() throws Exception {
+    this.response.active()
+        .andDo(print())
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.id")
+                .value((int) this.patient.active().id())
+        )
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.local")
+                .value(this.patient.active().local())
+        )
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.shortId")
+                .value((int) this.patient.active().shortId())
+        );
+  }
 
-    @Then("the summary is found")
-    public void the_summary_is_found() {
-        assertNotNull(summary.active());
-    }
+  @Then("the Patient Profile Summary is not accessible")
+  public void the_summary_is_not_accessible() throws Exception {
+    this.response.active().andExpect(accessDenied());
+  }
 
-    @Then("the summary is not accessible")
-    public void the_summary_is_not_accessible() {
-        assertTrue(summary.maybeActive().isEmpty());
-        assertThat(this.exception).isInstanceOf(AccessDeniedException.class);
-    }
+  @Then("the Patient Profile Summary has a(n) {string} of {string}")
+  public void the_patient_summary_has_a_value_of(
+      final String field,
+      final String value
+  ) throws Exception {
+
+    JsonPathResultMatchers pathMatcher = resolveForField(field);
+
+    this.response.active()
+        .andExpect(pathMatcher.value(matchingValue(field, value)));
+  }
+
+  private JsonPathResultMatchers resolveForField(final String field) {
+    return switch (field.toLowerCase()) {
+      case "race" -> jsonPath("$.data.findPatientProfile.summary.races");
+      case "identification type" -> jsonPath("$.data.findPatientProfile.summary.identification[*].type");
+      case "identification value" -> jsonPath("$.data.findPatientProfile.summary.identification[*].value");
+      default -> throw new AssertionError(String.format("Unexpected property check %s", field));
+    };
+  }
+
+  private Matcher<?> matchingValue(final String field, final String value) {
+    return switch (field.toLowerCase()) {
+      case "race", "identification value" -> hasItem(containsStringIgnoringCase(value));
+      case "identification type" -> hasItem(value);
+      default -> containsStringIgnoringCase(value);
+    };
+  }
+
+  @Then("the Patient Profile Summary does not have a(n) {string} of {string}")
+  public void the_patient_summary_does_not_have_a_value_of(
+      final String field,
+      final String value
+  ) throws Exception {
+
+    JsonPathResultMatchers pathMatcher = resolveForField(field);
+
+    this.response.active()
+        .andExpect(pathMatcher.value(Matchers.not(matchingValue(field, value))));
+  }
+
+  @Then("the Patient Profile Summary does not contain a(n) {string}")
+  public void the_patient_summary_does_not_contain(final String field) throws Exception {
+    JsonPathResultMatchers pathMatcher = resolveForField(field);
+
+    this.response.active()
+        .andExpect(pathMatcher.isEmpty());
+  }
+
 }
