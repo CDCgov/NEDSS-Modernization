@@ -28,5 +28,8 @@ class ConfigurationControllerTest {
         Configuration config = controller.getConfiguration();
 
         assertEquals(config, configuration);
+        assertEquals(config.features().address().autocomplete(), configuration.features().address().autocomplete());
+        assertEquals(config.features().address().verification(), configuration.features().address().verification());
+        assertEquals(config.features().pageBuilder().enabled(), configuration.features().pageBuilder().enabled());
     }
 }
