@@ -78,4 +78,5 @@ nbs.ui:
       address:
           autocomplete: false
           verification: false
-      pageBuilder.enabled: false
+      pageBuilder:
+        enabled: false

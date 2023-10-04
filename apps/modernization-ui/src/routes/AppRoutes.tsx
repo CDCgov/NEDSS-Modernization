@@ -19,7 +19,7 @@ import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase
 import { ImportTemplate } from '../apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
-import { Configuration, ConfigurationControllerService } from 'generated';
+import { useConfiguration } from 'configuration';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -35,23 +35,15 @@ export const AppRoutes = () => {
     const location = useLocation();
     const [loading, setLoading] = useState(location.pathname !== '/dev/login'); // allow login page to load immediately
     const [initializing, setInitializing] = useState(true);
-    const [config, setConfig] = useState<Configuration>();
-
-    const fetchConfiguration = async () => {
-        const configuration = await ConfigurationControllerService.getConfigurationUsingGet({
-            authorization: `Bearer ${state.getToken()}`
-        });
-        setConfig(configuration);
-        setLoading(false);
-    };
+    const config = useConfiguration();
 
     useEffect(() => {
         if (state) {
-            if (state.isLoggedIn) {
-                fetchConfiguration();
+            if (state.isLoggedIn && !config.loading) {
+                setLoading(false);
             }
         }
-    }, [state]);
+    }, [state, config]);
 
     useEffect(() => {
         // After initialization timeout, if the login isn't at least pending, send to the login page
@@ -78,7 +70,7 @@ export const AppRoutes = () => {
                             <Route path="/add-patient" element={<AddPatient />} />
                             <Route path="/add-patient/patient-added" element={<AddedPatient />} />
 
-                            {config?.ui?.features?.pageBuilder?.enabled ? (
+                            {config.features.pageBuilder.enabled ? (
                                 <Route path="/page-builder" element={<PageBuilderContextProvider />}>
                                     <Route path="manage">
                                         <Route path="pages" element={<ManagePages />} />
@@ -97,7 +89,7 @@ export const AppRoutes = () => {
                                     </Route>
                                 </Route>
                             ) : null}
-                            {!loading && (
+                            {!loading && !config.loading && (
                                 <>
                                     <Route path="*" element={<Navigate to="/advanced-search" />} />
                                     <Route path="/" element={<Navigate to="/advanced-search" />} />

@@ -6,20 +6,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.configuration.Configuration.Ui;
-import gov.cdc.nbs.configuration.Configuration.Ui.Features;
-import gov.cdc.nbs.configuration.Configuration.Ui.Features.Address;
-import gov.cdc.nbs.configuration.Configuration.Ui.Features.PageBuilder;
+import gov.cdc.nbs.configuration.Configuration.Features;
+import gov.cdc.nbs.configuration.Configuration.Features.Address;
+import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder;
 
 @ExtendWith(MockitoExtension.class)
 class ConfigurationControllerTest {
 
     @Spy
     Configuration configuration =
-            new Configuration(new Ui(
+            new Configuration(
                     new Features(
                             new Address(true, true),
-                            new PageBuilder(true))));
+                            new PageBuilder(true)));
 
     @InjectMocks
     ConfigurationController controller;
