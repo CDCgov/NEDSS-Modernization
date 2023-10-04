@@ -89,7 +89,7 @@ export const AppRoutes = () => {
                                     </Route>
                                 </Route>
                             ) : null}
-                            {!loading && !config.loading && (
+                            {!config.loading && (
                                 <>
                                     <Route path="*" element={<Navigate to="/advanced-search" />} />
                                     <Route path="/" element={<Navigate to="/advanced-search" />} />
