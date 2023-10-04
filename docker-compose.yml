@@ -8,6 +8,9 @@ services:
       - NBS_DATASOURCE_SERVER=nbs-mssql
       - NBS_ELASTICSEARCH_SERVER=elasticsearch
       - NBS_WILDFLY_SERVER=wildfly:7001
+      - NBS_UI_FEATURES_ADDRESS_AUTOCOMPLETE=false
+      - NBS_UI_FEATURES_ADDRESS_VERIFICATION=false
+      - NBS_UI_FEATURES_PAGEBUILDER_ENABLED=true
     networks:
       - nbs
 

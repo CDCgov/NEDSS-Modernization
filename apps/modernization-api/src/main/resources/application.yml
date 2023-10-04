@@ -72,3 +72,10 @@ kafkadef:
     patient:
       request: patient
       status: patient-status
+
+nbs.ui:
+    features:
+      address:
+          autocomplete: false
+          verification: false
+      pageBuilder.enabled: false

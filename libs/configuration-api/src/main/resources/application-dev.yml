@@ -1,0 +1,8 @@
+nbs.configuration:
+  ui:
+    features:
+      address:
+        verification:
+          autocomplete: false
+          verification: false
+      pageBuilder.enabled: false

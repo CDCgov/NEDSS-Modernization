@@ -19,6 +19,7 @@ import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase
 import { ImportTemplate } from '../apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
+import { Configuration, ConfigurationControllerService } from 'generated';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -34,11 +35,20 @@ export const AppRoutes = () => {
     const location = useLocation();
     const [loading, setLoading] = useState(location.pathname !== '/dev/login'); // allow login page to load immediately
     const [initializing, setInitializing] = useState(true);
+    const [config, setConfig] = useState<Configuration>();
+
+    const fetchConfiguration = async () => {
+        const configuration = await ConfigurationControllerService.getConfigurationUsingGet({
+            authorization: `Bearer ${state.getToken()}`
+        });
+        setConfig(configuration);
+        setLoading(false);
+    };
 
     useEffect(() => {
         if (state) {
             if (state.isLoggedIn) {
-                setLoading(false);
+                fetchConfiguration();
             }
         }
     }, [state]);
@@ -60,15 +70,16 @@ export const AppRoutes = () => {
             {loading && <Spinner />}
             <ScrollToTop>
                 <Routes>
-                    {state.isLoggedIn && (
+                    {state.isLoggedIn && !loading && (
                         <>
                             <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
                             <Route path="/patient-profile/:id" element={<PatientProfile />} />
                             <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
                             <Route path="/add-patient" element={<AddPatient />} />
                             <Route path="/add-patient/patient-added" element={<AddedPatient />} />
-                            <Route element={<PageBuilderContextProvider />}>
-                                <Route path="/page-builder">
+
+                            {config?.ui?.features?.pageBuilder?.enabled ? (
+                                <Route path="/page-builder" element={<PageBuilderContextProvider />}>
                                     <Route path="manage">
                                         <Route path="pages" element={<ManagePages />} />
                                         <Route path="valueset-library" element={<ValuesetLibrary />} />
@@ -85,9 +96,13 @@ export const AppRoutes = () => {
                                         <Route path="page/:pageId?" element={<EditPage />} />
                                     </Route>
                                 </Route>
-                            </Route>
-                            <Route path="*" element={<Navigate to="/advanced-search" />} />
-                            <Route path="/" element={<Navigate to="/advanced-search" />} />
+                            ) : null}
+                            {!loading && (
+                                <>
+                                    <Route path="*" element={<Navigate to="/advanced-search" />} />
+                                    <Route path="/" element={<Navigate to="/advanced-search" />} />
+                                </>
+                            )}
                         </>
                     )}
 
