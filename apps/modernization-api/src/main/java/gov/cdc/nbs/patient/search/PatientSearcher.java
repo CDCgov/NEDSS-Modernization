@@ -1,19 +1,15 @@
-package gov.cdc.nbs.patient;
+package gov.cdc.nbs.patient.search;
 
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
-import gov.cdc.nbs.patient.util.PatientHelper;
-import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import graphql.com.google.common.collect.Ordering;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -44,8 +40,7 @@ import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
 import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
 
 @Service
-@RequiredArgsConstructor
-public class PatientService {
+public class PatientSearcher {
   private static final float FIRST_NAME_PRIMARY_BOOST = 10.0f;
   private static final float FIRST_NAME_NON_PRIMARY_BOOST = 1.0f;
   private static final float FIRST_NAME_SOUNDEX_BOOST = 0.0f;
@@ -53,18 +48,30 @@ public class PatientService {
   private static final float LAST_NAME_NON_PRIMARY_BOOST = 1.0f;
   private static final float LAST_NAME_SOUNDEX_BOOST = 0.0f;
 
-  @Value("${nbs.max-page-size: 50}")
-  private Integer maxPageSize;
-
-  private final PersonRepository personRepository;
+  private final int maxPageSize;
   private final ElasticsearchOperations operations;
   private final UserService userService;
   private final PatientLocalIdentifierResolver resolver;
+  private final PatientSearchResultFinder finder;
 
-  @SuppressWarnings("squid:S3776")
+  public PatientSearcher(
+      @Value("${nbs.search.patient.results.max}") final int maxResults,
+      final ElasticsearchOperations operations,
+      final UserService userService,
+      final PatientLocalIdentifierResolver resolver,
+      final PatientSearchResultFinder finder
+  ) {
+    this.maxPageSize = maxResults;
+    this.operations = operations;
+    this.userService = userService;
+    this.resolver = resolver;
+    this.finder = finder;
+  }
+
+  @SuppressWarnings({"squid:S3776", "squid:S6541"})
   // ignore high cognitive complexity as the method is simply going through the
   // passed in parameters, checking if null, and appending to the query
-  public Page<Person> findPatientsByFilter(PatientFilter filter, GraphQLPage page) {
+  public Page<PatientSearchResult> search(final PatientFilter filter, final GraphQLPage page) {
     var pageable = GraphQLPage.toPageable(page, maxPageSize);
 
     BoolQueryBuilder builder = QueryBuilders.boolQuery();
@@ -260,12 +267,17 @@ public class PatientService {
         .map(SearchHit::getContent)
         .map(ElasticsearchPerson::getPersonUid)
         .toList();
-    var persons = personRepository.findAllById(ids);
-    persons.sort(Ordering.explicit(ids).onResultOf(Person::getId));
 
+    List<PatientSearchResult> results = finder.find(ids)
+        .stream()
+        .sorted(Ordering.explicit(ids).onResultOf(PatientSearchResult::patient))
+        .toList();
 
-    return new PageImpl<>(PatientHelper.distinctNumbers(persons), pageable,
-        elasticsearchPersonSearchHits.getTotalHits());
+    return new PageImpl<>(
+        results,
+        pageable,
+        elasticsearchPersonSearchHits.getTotalHits()
+    );
   }
 
   private Optional<QueryBuilder> identificationCriteria(final PatientFilter filter) {

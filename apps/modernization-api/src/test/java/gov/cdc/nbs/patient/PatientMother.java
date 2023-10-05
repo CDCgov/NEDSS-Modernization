@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Locale;
 
@@ -217,24 +218,14 @@ public class PatientMother {
   }
 
   public void withName(final PatientIdentifier identifier) {
-    Person patient = managed(identifier);
-
-    patient.add(
-        new PatientCommand.AddName(
-            identifier.id(),
-            RandomUtil.getRandomDateInPast(),
-            null,
-            faker.name().firstName(),
-            faker.name().firstName(),
-            faker.name().lastName(),
-            faker.name().lastName(),
-            faker.name().lastName(),
-            null,
-            null,
-            "L",
-            this.settings.createdBy(),
-            this.settings.createdOn()
-        )
+    withName(
+        identifier,
+        RandomUtil.getRandomDateInPast(),
+        "L",
+        faker.name().firstName(),
+        faker.name().firstName(),
+        faker.name().lastName(),
+        null
     );
   }
 
@@ -244,19 +235,55 @@ public class PatientMother {
       final String first,
       final String last
   ) {
+    withName(
+        identifier,
+        RandomUtil.getRandomDateInPast(),
+        type,
+        first,
+        last
+    );
+  }
+
+  public void withName(
+      final PatientIdentifier identifier,
+      final Instant asOf,
+      final String type,
+      final String first,
+      final String last
+  ) {
+    withName(
+        identifier,
+        asOf,
+        type,
+        first,
+        null,
+        last,
+        null
+    );
+  }
+
+  public void withName(
+      final PatientIdentifier identifier,
+      final Instant asOf,
+      final String type,
+      final String first,
+      final String middle,
+      final String last,
+      final String suffix
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
         new PatientCommand.AddName(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
+            asOf,
             null,
             first,
-            null,
+            middle,
             null,
             last,
             null,
-            null,
+            suffix,
             null,
             type,
             this.settings.createdBy(),
@@ -313,6 +340,13 @@ public class PatientMother {
   }
 
   public void withEmail(final PatientIdentifier identifier) {
+    withEmail(
+        identifier,
+        faker.internet().emailAddress()
+    );
+  }
+
+  public void withEmail(final PatientIdentifier identifier, final String email) {
     Person patient = managed(identifier);
 
     patient.add(
@@ -325,9 +359,9 @@ public class PatientMother {
             null,
             null,
             null,
-            faker.internet().emailAddress(),
+            email,
             null,
-            RandomUtil.getRandomString(),
+            null,
             this.settings.createdBy(),
             this.settings.createdOn()
         )

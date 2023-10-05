@@ -539,40 +539,6 @@ export enum LaboratoryReportStatus {
   Unprocessed = 'UNPROCESSED'
 }
 
-export type Locator = {
-  __typename?: 'Locator';
-  censusBlockCd?: Maybe<Scalars['String']>;
-  censusMinorCivilDivisionCd?: Maybe<Scalars['String']>;
-  censusTrackCd?: Maybe<Scalars['String']>;
-  censusTract?: Maybe<Scalars['String']>;
-  cityCd?: Maybe<Scalars['String']>;
-  cityDescTxt?: Maybe<Scalars['String']>;
-  cntryCd?: Maybe<Scalars['String']>;
-  cntryDescTxt?: Maybe<Scalars['String']>;
-  cntyCd?: Maybe<Scalars['String']>;
-  cntyDescTxt?: Maybe<Scalars['String']>;
-  countryCode?: Maybe<CountryCode>;
-  emailAddress?: Maybe<Scalars['String']>;
-  extenstionTxt?: Maybe<Scalars['String']>;
-  geocodeMatchInd?: Maybe<Scalars['String']>;
-  msaCongressDistrictCd?: Maybe<Scalars['String']>;
-  phoneNbrTxt?: Maybe<Scalars['String']>;
-  regionDistrictCd?: Maybe<Scalars['String']>;
-  stateCd?: Maybe<Scalars['String']>;
-  stateCode?: Maybe<StateCode>;
-  streetAddr1?: Maybe<Scalars['String']>;
-  streetAddr2?: Maybe<Scalars['String']>;
-  urlAddress?: Maybe<Scalars['String']>;
-  withinCityLimitsInd?: Maybe<Scalars['String']>;
-  zipCd?: Maybe<Scalars['String']>;
-};
-
-export type LocatorParticipations = {
-  __typename?: 'LocatorParticipations';
-  classCd?: Maybe<Scalars['String']>;
-  locator?: Maybe<Locator>;
-};
-
 export type MaterialParticipation = {
   __typename?: 'MaterialParticipation';
   actUid?: Maybe<Scalars['Int']>;
@@ -738,11 +704,6 @@ export type MutationUpdatePatientPhoneArgs = {
 
 export type MutationUpdatePatientRaceArgs = {
   input: RaceInput;
-};
-
-export type NbsEntity = {
-  __typename?: 'NBSEntity';
-  entityLocatorParticipations?: Maybe<Array<Maybe<LocatorParticipations>>>;
 };
 
 export type NaicsIndustryCode = {
@@ -1660,10 +1621,50 @@ export type PatientRaceResults = {
   total: Scalars['Int'];
 };
 
+export type PatientSearchResult = {
+  __typename?: 'PatientSearchResult';
+  addresses: Array<PatientSearchResultAddress>;
+  age?: Maybe<Scalars['Int']>;
+  birthday?: Maybe<Scalars['Date']>;
+  emails: Array<Scalars['String']>;
+  gender?: Maybe<Scalars['String']>;
+  identification: Array<PatientSearchResultIdentification>;
+  legalName?: Maybe<PatientSearchResultName>;
+  names: Array<PatientSearchResultName>;
+  patient: Scalars['Int'];
+  phones: Array<Scalars['String']>;
+  shortId: Scalars['Int'];
+  status: Scalars['String'];
+};
+
+export type PatientSearchResultAddress = {
+  __typename?: 'PatientSearchResultAddress';
+  address?: Maybe<Scalars['String']>;
+  address2?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+  use: Scalars['String'];
+  zipcode?: Maybe<Scalars['String']>;
+};
+
 export type PatientSearchResultIdentification = {
   __typename?: 'PatientSearchResultIdentification';
   type: Scalars['String'];
   value: Scalars['String'];
+};
+
+export type PatientSearchResultName = {
+  __typename?: 'PatientSearchResultName';
+  first?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['String']>;
+  middle?: Maybe<Scalars['String']>;
+  suffix?: Maybe<Scalars['String']>;
+};
+
+export type PatientSearchResults = {
+  __typename?: 'PatientSearchResults';
+  content: Array<PatientSearchResult>;
+  total: Scalars['Int'];
 };
 
 export type PatientState = {
@@ -1768,120 +1769,6 @@ export type PatientVaccinationResults = {
   total: Scalars['Int'];
 };
 
-export type Person = {
-  __typename?: 'Person';
-  addReasonCd?: Maybe<Scalars['String']>;
-  addTime?: Maybe<Scalars['DateTime']>;
-  addUserId?: Maybe<Scalars['ID']>;
-  additionalGenderCd?: Maybe<Scalars['String']>;
-  administrativeGenderCd?: Maybe<Scalars['String']>;
-  adultsInHouseNbr?: Maybe<Scalars['Int']>;
-  ageCalc?: Maybe<Scalars['Int']>;
-  ageCalcTime?: Maybe<Scalars['DateTime']>;
-  ageCalcUnitCd?: Maybe<Scalars['String']>;
-  ageCategoryCd?: Maybe<Scalars['String']>;
-  ageReported?: Maybe<Scalars['String']>;
-  ageReportedTime?: Maybe<Scalars['DateTime']>;
-  ageReportedUnitCd?: Maybe<Scalars['String']>;
-  asOfDateAdmin?: Maybe<Scalars['DateTime']>;
-  asOfDateEthnicity?: Maybe<Scalars['DateTime']>;
-  asOfDateGeneral?: Maybe<Scalars['DateTime']>;
-  asOfDateMorbidity?: Maybe<Scalars['DateTime']>;
-  asOfDateSex?: Maybe<Scalars['DateTime']>;
-  birthCityCd?: Maybe<Scalars['String']>;
-  birthCityDescTxt?: Maybe<Scalars['String']>;
-  birthCntryCd?: Maybe<Scalars['String']>;
-  birthGenderCd?: Maybe<Gender>;
-  birthOrderNbr?: Maybe<Scalars['Int']>;
-  birthStateCd?: Maybe<Scalars['String']>;
-  birthTime?: Maybe<Scalars['DateTime']>;
-  birthTimeCalc?: Maybe<Scalars['DateTime']>;
-  cd?: Maybe<Scalars['String']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  cellPhoneNbr?: Maybe<Scalars['String']>;
-  childrenInHouseNbr?: Maybe<Scalars['Int']>;
-  currSexCd?: Maybe<Scalars['String']>;
-  deceasedIndCd?: Maybe<Scalars['String']>;
-  deceasedTime?: Maybe<Scalars['DateTime']>;
-  dedupMatchInd?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  dlNum?: Maybe<Scalars['String']>;
-  dlStateCd?: Maybe<Scalars['String']>;
-  educationLevelCd?: Maybe<Scalars['String']>;
-  educationLevelDescTxt?: Maybe<Scalars['String']>;
-  edxInd?: Maybe<Scalars['String']>;
-  eharsId?: Maybe<Scalars['String']>;
-  electronicInd?: Maybe<Scalars['String']>;
-  ethnicGroupDescTxt?: Maybe<Scalars['String']>;
-  ethnicGroupInd?: Maybe<Scalars['String']>;
-  ethnicGroupSeqNbr?: Maybe<Scalars['Int']>;
-  ethnicUnkReasonCd?: Maybe<Scalars['String']>;
-  ethnicityGroupCd?: Maybe<Scalars['String']>;
-  firstNm?: Maybe<Scalars['String']>;
-  groupNbr?: Maybe<Scalars['Int']>;
-  groupTime?: Maybe<Scalars['DateTime']>;
-  hmCityCd?: Maybe<Scalars['String']>;
-  hmCityDescTxt?: Maybe<Scalars['String']>;
-  hmCntryCd?: Maybe<Scalars['String']>;
-  hmCntyCd?: Maybe<Scalars['String']>;
-  hmEmailAddr?: Maybe<Scalars['String']>;
-  hmPhoneCntryCd?: Maybe<Scalars['String']>;
-  hmPhoneNbr?: Maybe<Scalars['String']>;
-  hmStateCd?: Maybe<Scalars['String']>;
-  hmStreetAddr1?: Maybe<Scalars['String']>;
-  hmStreetAddr2?: Maybe<Scalars['String']>;
-  hmZipCd?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  identification: Array<PatientSearchResultIdentification>;
-  lastChgReasonCd?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['DateTime']>;
-  lastChgUserId?: Maybe<Scalars['ID']>;
-  lastNm?: Maybe<Scalars['String']>;
-  localId?: Maybe<Scalars['String']>;
-  maritalStatusCd?: Maybe<Scalars['String']>;
-  maritalStatusDescTxt?: Maybe<Scalars['String']>;
-  medicaidNum?: Maybe<Scalars['String']>;
-  middleNm?: Maybe<Scalars['String']>;
-  mothersMaidenNm?: Maybe<Scalars['String']>;
-  multipleBirthInd?: Maybe<Scalars['String']>;
-  names?: Maybe<Array<Maybe<PersonName>>>;
-  nbsEntity: NbsEntity;
-  nmPrefix?: Maybe<Scalars['String']>;
-  nmSuffix?: Maybe<Scalars['String']>;
-  occupationCd?: Maybe<Scalars['String']>;
-  personParentUid?: Maybe<PersonParentUid>;
-  preferredGenderCd?: Maybe<Scalars['String']>;
-  preferredNm?: Maybe<Scalars['String']>;
-  primLangCd?: Maybe<Scalars['String']>;
-  primLangDescTxt?: Maybe<Scalars['String']>;
-  raceCategoryCd?: Maybe<Scalars['String']>;
-  raceCd?: Maybe<Scalars['String']>;
-  raceDescTxt?: Maybe<Scalars['String']>;
-  raceSeqNbr?: Maybe<Scalars['Int']>;
-  recordStatusCd?: Maybe<RecordStatus>;
-  recordStatusTime?: Maybe<Scalars['DateTime']>;
-  sexUnkReasonCd?: Maybe<Scalars['String']>;
-  shortId?: Maybe<Scalars['Int']>;
-  speaksEnglishCd?: Maybe<Scalars['String']>;
-  ssn?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['DateTime']>;
-  survivedIndCd?: Maybe<Scalars['String']>;
-  userAffiliationTxt?: Maybe<Scalars['String']>;
-  versionCtrlNbr?: Maybe<Scalars['Int']>;
-  wkCityCd?: Maybe<Scalars['String']>;
-  wkCityDescTxt?: Maybe<Scalars['String']>;
-  wkCntryCd?: Maybe<Scalars['String']>;
-  wkCntyCd?: Maybe<Scalars['String']>;
-  wkEmailAddr?: Maybe<Scalars['String']>;
-  wkPhoneCntryCd?: Maybe<Scalars['String']>;
-  wkPhoneNbr?: Maybe<Scalars['String']>;
-  wkStateCd?: Maybe<Scalars['String']>;
-  wkStreetAddr1?: Maybe<Scalars['String']>;
-  wkStreetAddr2?: Maybe<Scalars['String']>;
-  wkZipCd?: Maybe<Scalars['String']>;
-};
-
 export type PersonFilter = {
   address?: InputMaybe<Scalars['String']>;
   city?: InputMaybe<Scalars['String']>;
@@ -1926,15 +1813,6 @@ export type PersonInput = {
   stateHIVCase?: InputMaybe<Scalars['String']>;
 };
 
-export type PersonName = {
-  __typename?: 'PersonName';
-  firstNm?: Maybe<Scalars['String']>;
-  lastNm?: Maybe<Scalars['String']>;
-  middleNm?: Maybe<Scalars['String']>;
-  nmPrefix?: Maybe<Scalars['String']>;
-  nmSuffix?: Maybe<Scalars['String']>;
-};
-
 export type PersonParticipation = {
   __typename?: 'PersonParticipation';
   actUid: Scalars['Int'];
@@ -1954,12 +1832,6 @@ export type PersonParticipation = {
   subjectClassCd?: Maybe<Scalars['String']>;
   typeCd?: Maybe<Scalars['String']>;
   typeDescTxt?: Maybe<Scalars['String']>;
-};
-
-export type PersonResults = {
-  __typename?: 'PersonResults';
-  content: Array<Person>;
-  total: Scalars['Int'];
 };
 
 export type PhoneAndEmailType = {
@@ -2123,7 +1995,7 @@ export type Query = {
   findOrganizationsByFilter: OrganizationResults;
   findPatientNamedByContact?: Maybe<PatientNamedByContactResults>;
   findPatientProfile?: Maybe<PatientProfile>;
-  findPatientsByFilter: PersonResults;
+  findPatientsByFilter: PatientSearchResults;
   findPlaceById?: Maybe<Place>;
   findPlacesByFilter: Array<Maybe<Place>>;
   findSnomedCodedResults: SnomedCodedResults;
@@ -2651,11 +2523,6 @@ export enum UserType {
   Internal = 'INTERNAL'
 }
 
-export type PersonParentUid = {
-  __typename?: 'personParentUid';
-  id?: Maybe<Scalars['ID']>;
-};
-
 export type AddPatientAddressMutationVariables = Exact<{
   input: NewPatientAddressInput;
 }>;
@@ -3170,7 +3037,7 @@ export type FindPatientsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PersonResults', total: number, content: Array<{ __typename?: 'Person', shortId?: number | null, id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: string | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: string | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: string | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, nbsEntity: { __typename?: 'NBSEntity', entityLocatorParticipations?: Array<{ __typename?: 'LocatorParticipations', classCd?: string | null, locator?: { __typename?: 'Locator', emailAddress?: string | null, extenstionTxt?: string | null, phoneNbrTxt?: string | null, urlAddress?: string | null, censusBlockCd?: string | null, censusMinorCivilDivisionCd?: string | null, censusTrackCd?: string | null, cityCd?: string | null, cityDescTxt?: string | null, cntryCd?: string | null, cntryDescTxt?: string | null, cntyCd?: string | null, cntyDescTxt?: string | null, msaCongressDistrictCd?: string | null, regionDistrictCd?: string | null, stateCd?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, zipCd?: string | null, geocodeMatchInd?: string | null, withinCityLimitsInd?: string | null, censusTract?: string | null, stateCode?: { __typename?: 'StateCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, stateNm?: string | null, codeDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, keyInfoTxt?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null, countryCode?: { __typename?: 'CountryCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, keyInfoTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null } | null } | null> | null }, names?: Array<{ __typename?: 'PersonName', firstNm?: string | null, middleNm?: string | null, lastNm?: string | null, nmSuffix?: string | null, nmPrefix?: string | null } | null> | null, personParentUid?: { __typename?: 'personParentUid', id?: string | null } | null }> } };
+export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, state?: string | null, zipcode?: string | null }> }> } };
 
 export type FindPlaceByIdQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6769,199 +6636,38 @@ export const FindPatientsByFilterDocument = gql`
     query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage) {
   findPatientsByFilter(filter: $filter, page: $page) {
     content {
+      patient
+      birthday
+      age
+      gender
+      status
       shortId
-      id
+      legalName {
+        first
+        middle
+        last
+        suffix
+      }
+      names {
+        first
+        middle
+        last
+        suffix
+      }
       identification {
         type
         value
       }
-      nbsEntity {
-        entityLocatorParticipations {
-          classCd
-          locator {
-            emailAddress
-            extenstionTxt
-            phoneNbrTxt
-            urlAddress
-            censusBlockCd
-            censusMinorCivilDivisionCd
-            censusTrackCd
-            cityCd
-            cityDescTxt
-            cntryCd
-            cntryDescTxt
-            cntyCd
-            cntyDescTxt
-            msaCongressDistrictCd
-            regionDistrictCd
-            stateCd
-            streetAddr1
-            streetAddr2
-            zipCd
-            geocodeMatchInd
-            withinCityLimitsInd
-            censusTract
-            stateCode {
-              id
-              assigningAuthorityCd
-              assigningAuthorityDescTxt
-              stateNm
-              codeDescTxt
-              effectiveFromTime
-              effectiveToTime
-              excludedTxt
-              indentLevelNbr
-              isModifiableInd
-              keyInfoTxt
-              parentIsCd
-              statusCd
-              statusTime
-              codeSetNm
-              seqNum
-              nbsUid
-              sourceConceptId
-              codeSystemCd
-              codeSystemDescTxt
-            }
-            countryCode {
-              id
-              assigningAuthorityCd
-              assigningAuthorityDescTxt
-              codeDescTxt
-              codeShortDescTxt
-              effectiveFromTime
-              effectiveToTime
-              excludedTxt
-              keyInfoTxt
-              indentLevelNbr
-              isModifiableInd
-              parentIsCd
-              statusCd
-              statusTime
-              codeSetNm
-              seqNum
-              nbsUid
-              sourceConceptId
-              codeSystemCd
-              codeSystemDescTxt
-            }
-          }
-        }
+      addresses {
+        use
+        address
+        address2
+        city
+        state
+        zipcode
       }
-      names {
-        firstNm
-        middleNm
-        lastNm
-        nmSuffix
-        nmPrefix
-      }
-      addReasonCd
-      addTime
-      addUserId
-      administrativeGenderCd
-      ageCalc
-      ageCalcTime
-      ageCalcUnitCd
-      ageCategoryCd
-      ageReported
-      ageReportedTime
-      ageReportedUnitCd
-      birthGenderCd
-      birthOrderNbr
-      birthTime
-      birthTimeCalc
-      cd
-      cdDescTxt
-      currSexCd
-      deceasedIndCd
-      deceasedTime
-      description
-      educationLevelCd
-      educationLevelDescTxt
-      ethnicGroupInd
-      lastChgReasonCd
-      lastChgTime
-      lastChgUserId
-      localId
-      maritalStatusCd
-      maritalStatusDescTxt
-      mothersMaidenNm
-      multipleBirthInd
-      occupationCd
-      preferredGenderCd
-      primLangCd
-      primLangDescTxt
-      recordStatusCd
-      recordStatusTime
-      statusCd
-      statusTime
-      survivedIndCd
-      userAffiliationTxt
-      firstNm
-      lastNm
-      middleNm
-      nmPrefix
-      nmSuffix
-      preferredNm
-      hmStreetAddr1
-      hmStreetAddr2
-      hmCityCd
-      hmCityDescTxt
-      hmStateCd
-      hmZipCd
-      hmCntyCd
-      hmCntryCd
-      hmPhoneNbr
-      hmPhoneCntryCd
-      hmEmailAddr
-      cellPhoneNbr
-      wkStreetAddr1
-      wkStreetAddr2
-      wkCityCd
-      wkCityDescTxt
-      wkStateCd
-      wkZipCd
-      wkCntyCd
-      wkCntryCd
-      wkPhoneNbr
-      wkPhoneCntryCd
-      wkEmailAddr
-      ssn
-      medicaidNum
-      dlNum
-      dlStateCd
-      raceCd
-      raceSeqNbr
-      raceCategoryCd
-      ethnicityGroupCd
-      ethnicGroupSeqNbr
-      adultsInHouseNbr
-      childrenInHouseNbr
-      birthCityCd
-      birthCityDescTxt
-      birthCntryCd
-      birthStateCd
-      raceDescTxt
-      ethnicGroupDescTxt
-      versionCtrlNbr
-      asOfDateAdmin
-      asOfDateEthnicity
-      asOfDateGeneral
-      asOfDateMorbidity
-      asOfDateSex
-      electronicInd
-      personParentUid {
-        id
-      }
-      dedupMatchInd
-      groupNbr
-      groupTime
-      edxInd
-      speaksEnglishCd
-      additionalGenderCd
-      eharsId
-      ethnicUnkReasonCd
-      sexUnkReasonCd
+      phones
+      emails
     }
     total
   }

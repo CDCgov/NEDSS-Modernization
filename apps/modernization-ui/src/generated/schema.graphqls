@@ -1341,171 +1341,39 @@ type PatientSearchResultIdentification {
     value: String!
 }
 
-type PersonName {
-    firstNm: String
-    middleNm: String
-    lastNm: String
-    nmSuffix: String
-    nmPrefix: String
+type PatientSearchResultName {
+    first: String
+    middle: String
+    last: String
+    suffix: String
 }
 
-type Locator {
-    emailAddress: String
-    extenstionTxt: String
-    phoneNbrTxt: String
-    urlAddress: String
-    censusBlockCd: String
-    censusMinorCivilDivisionCd: String
-    censusTrackCd: String
-    cityCd: String
-    cityDescTxt: String
-    cntryCd: String
-    cntryDescTxt: String
-    cntyCd: String
-    cntyDescTxt: String
-    msaCongressDistrictCd: String
-    regionDistrictCd: String
-    stateCd: String
-    streetAddr1: String
-    streetAddr2: String
-    zipCd: String
-    geocodeMatchInd: String
-    withinCityLimitsInd: String
-    censusTract: String
-    stateCode: StateCode
-    countryCode: CountryCode
+type PatientSearchResultAddress {
+    use: String!
+    address: String
+    address2: String
+    city: String
+    state: String
+    zipcode: String
 }
 
-type LocatorParticipations {
-    classCd: String
-    locator: Locator
-}
-
-type NBSEntity {
-    entityLocatorParticipations: [LocatorParticipations]
-}
-
-
-type Person {
-    shortId: Int
-    id: ID
+type PatientSearchResult {
+    patient: Int!
+    birthday: Date
+    age: Int
+    gender: String
+    status: String!
+    shortId: Int!
+    legalName: PatientSearchResultName
+    names: [PatientSearchResultName!]!
     identification: [PatientSearchResultIdentification!]!
-    nbsEntity: NBSEntity!
-    names: [PersonName]
-    addReasonCd: String
-    addTime: DateTime
-    addUserId: ID
-    administrativeGenderCd: String
-    ageCalc: Int
-    ageCalcTime: DateTime
-    ageCalcUnitCd: String
-    ageCategoryCd: String
-    ageReported: String
-    ageReportedTime: DateTime
-    ageReportedUnitCd: String
-    birthGenderCd: Gender
-    birthOrderNbr: Int
-    birthTime: DateTime
-    birthTimeCalc: DateTime
-    cd: String
-    cdDescTxt: String
-    currSexCd: String
-    deceasedIndCd: String
-    deceasedTime: DateTime
-    description: String
-    educationLevelCd: String
-    educationLevelDescTxt: String
-    ethnicGroupInd: String
-    lastChgReasonCd: String
-    lastChgTime: DateTime
-    lastChgUserId: ID
-    localId: String
-    maritalStatusCd: String
-    maritalStatusDescTxt: String
-    mothersMaidenNm: String
-    multipleBirthInd: String
-    occupationCd: String
-    preferredGenderCd: String
-    primLangCd: String
-    primLangDescTxt: String
-    recordStatusCd: RecordStatus
-    recordStatusTime: DateTime
-    statusCd: String
-    statusTime: DateTime
-    survivedIndCd: String
-    userAffiliationTxt: String
-    firstNm: String
-    lastNm: String
-    middleNm: String
-    nmPrefix: String
-    nmSuffix: String
-    preferredNm: String
-    hmStreetAddr1: String
-    hmStreetAddr2: String
-    hmCityCd: String
-    hmCityDescTxt: String
-    hmStateCd: String
-    hmZipCd: String
-    hmCntyCd: String
-    hmCntryCd: String
-    hmPhoneNbr: String
-    hmPhoneCntryCd: String
-    hmEmailAddr: String
-    cellPhoneNbr: String
-    wkStreetAddr1: String
-    wkStreetAddr2: String
-    wkCityCd: String
-    wkCityDescTxt: String
-    wkStateCd: String
-    wkZipCd: String
-    wkCntyCd: String
-    wkCntryCd: String
-    wkPhoneNbr: String
-    wkPhoneCntryCd: String
-    wkEmailAddr: String
-    ssn: String
-    medicaidNum: String
-    dlNum: String
-    dlStateCd: String
-    raceCd: String
-    raceSeqNbr: Int
-    raceCategoryCd: String
-    ethnicityGroupCd: String
-    ethnicGroupSeqNbr: Int
-    adultsInHouseNbr: Int
-    childrenInHouseNbr: Int
-    birthCityCd: String
-    birthCityDescTxt: String
-    birthCntryCd: String
-    birthStateCd: String
-    raceDescTxt: String
-    ethnicGroupDescTxt: String
-    versionCtrlNbr: Int
-    asOfDateAdmin: DateTime
-    asOfDateEthnicity: DateTime
-    asOfDateGeneral: DateTime
-    asOfDateMorbidity: DateTime
-    asOfDateSex: DateTime
-    electronicInd: String
-    personParentUid: personParentUid
-    dedupMatchInd: String
-    groupNbr: Int
-    groupTime: DateTime
-    edxInd: String
-    speaksEnglishCd: String
-    additionalGenderCd: String
-    eharsId: String
-    ethnicUnkReasonCd: String
-    sexUnkReasonCd: String
+    addresses: [PatientSearchResultAddress!]!
+    phones: [String!]!
+    emails: [String!]!
 }
 
-type personParentUid {
-    id: ID
-}
-
-
-type PersonResults {
-    content: [Person!]!
+type PatientSearchResults {
+    content: [PatientSearchResult!]!
     total: Int!
 }
 
@@ -1513,7 +1381,7 @@ extend type Query {
     findPatientsByFilter(
         filter: PersonFilter!
         page: SortablePage
-    ): PersonResults!
+    ): PatientSearchResults!
 }
 type PatientTreatment {
   treatment: ID!

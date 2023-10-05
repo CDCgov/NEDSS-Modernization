@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.search.identification;
 
-import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.patient.search.PatientSearchResult;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,9 +16,9 @@ class PatientSearchResultIdentificationResolver {
     this.finder = finder;
   }
 
-  @SchemaMapping(typeName = "Person" ,field = "identification")
+  @SchemaMapping(typeName = "PatientSearchResult", field = "identification")
   @PreAuthorize("hasAuthority('FIND-PATIENT')")
-  Collection<PatientSearchResultIdentification> resolve(final Person patient) {
-    return this.finder.find(patient.getId());
+  Collection<PatientSearchResultIdentification> resolve(final PatientSearchResult patient) {
+    return this.finder.find(patient.patient());
   }
 }
