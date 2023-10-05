@@ -3,7 +3,6 @@ package gov.cdc.nbs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.authorization.TestActiveUser;
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.enums.Gender;
