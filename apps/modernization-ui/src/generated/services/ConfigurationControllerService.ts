@@ -1,35 +1,27 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ValueSetByOIDResponse } from '../models/ValueSetByOIDResponse';
+import type { Configuration } from '../models/Configuration';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class VocabSearchControllerService {
+export class ConfigurationControllerService {
 
     /**
-     * fetchValueSetInfoByOID
-     * @returns ValueSetByOIDResponse OK
+     * getConfiguration
+     * @returns Configuration OK
      * @throws ApiError
      */
-    public static fetchValueSetInfoByOidUsingGet({
+    public static getConfigurationUsingGet({
         authorization,
-        oid,
     }: {
-        authorization: any,
-        /**
-         * oid
-         */
-        oid: string,
-    }): CancelablePromise<ValueSetByOIDResponse> {
+        authorization: string,
+    }): CancelablePromise<Configuration> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/phin/oid/{oid}',
-            path: {
-                'oid': oid,
-            },
+            url: '/nbs/api/configuration',
             headers: {
                 'Authorization': authorization,
             },

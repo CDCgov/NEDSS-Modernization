@@ -36,7 +36,7 @@ export class SectionControllerService {
     }): CancelablePromise<CreateSectionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/pages/{page}/sections/',
+            url: '/nbs/page-builder/api/v1/pages/{page}/sections/',
             path: {
                 'page': page,
             },
@@ -75,7 +75,7 @@ export class SectionControllerService {
     }): CancelablePromise<UpdateSectionResponse | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/page-builder/api/v1/pages/{page}/sections/{sectionId}',
+            url: '/nbs/page-builder/api/v1/pages/{page}/sections/{sectionId}',
             path: {
                 'sectionId': sectionId,
             },
@@ -113,7 +113,7 @@ export class SectionControllerService {
     }): CancelablePromise<DeleteSectionResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/page-builder/api/v1/pages/{page}/sections/{sectionId}',
+            url: '/nbs/page-builder/api/v1/pages/{page}/sections/{sectionId}',
             path: {
                 'page': page,
                 'sectionId': sectionId,

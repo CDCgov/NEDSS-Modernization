@@ -58,3 +58,11 @@ testing:
     starting: -20000000 # a negative id should reduce conflicts of ids in a live system
   database:
     image: cdc-sandbox-nbs-mssql
+
+nbs.ui:
+    features:
+      address:
+          autocomplete: true
+          verification: false
+      pageBuilder:
+        enabled: true

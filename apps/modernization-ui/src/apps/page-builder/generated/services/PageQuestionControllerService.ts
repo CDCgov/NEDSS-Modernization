@@ -33,7 +33,7 @@ export class PageQuestionControllerService {
     }): CancelablePromise<AddQuestionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/pages/{page}/questions/',
+            url: '/nbs/page-builder/api/v1/pages/{page}/questions/',
             path: {
                 'page': page,
             },

@@ -36,7 +36,7 @@ export class TabControllerService {
     }): CancelablePromise<CreateTabResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/pages/{page}/tabs/',
+            url: '/nbs/page-builder/api/v1/pages/{page}/tabs/',
             path: {
                 'page': page,
             },
@@ -75,7 +75,7 @@ export class TabControllerService {
     }): CancelablePromise<UpdateTabResponse | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/page-builder/api/v1/pages/{page}/tabs/{tabId}',
+            url: '/nbs/page-builder/api/v1/pages/{page}/tabs/{tabId}',
             path: {
                 'tabId': tabId,
             },
@@ -113,7 +113,7 @@ export class TabControllerService {
     }): CancelablePromise<DeleteTabResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/page-builder/api/v1/pages/{page}/tabs/{tabId}',
+            url: '/nbs/page-builder/api/v1/pages/{page}/tabs/{tabId}',
             path: {
                 'page': page,
                 'tabId': tabId,

@@ -28,7 +28,7 @@ export class PageRuleControllerService {
     }): CancelablePromise<CreateRuleResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/rule',
+            url: '/nbs/page-builder/api/v1/rule',
             headers: {
                 'Authorization': authorization,
             },
@@ -58,7 +58,7 @@ export class PageRuleControllerService {
     }): CancelablePromise<ViewRuleResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/rule/{ruleId}',
+            url: '/nbs/page-builder/api/v1/rule/{ruleId}',
             path: {
                 'ruleId': ruleId,
             },
@@ -96,7 +96,7 @@ export class PageRuleControllerService {
     }): CancelablePromise<CreateRuleResponse | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/page-builder/api/v1/rule/{ruleId}',
+            url: '/nbs/page-builder/api/v1/rule/{ruleId}',
             path: {
                 'ruleId': ruleId,
             },
@@ -129,7 +129,7 @@ export class PageRuleControllerService {
     }): CancelablePromise<CreateRuleResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/page-builder/api/v1/rule/{ruleId}',
+            url: '/nbs/page-builder/api/v1/rule/{ruleId}',
             path: {
                 'ruleId': ruleId,
             },

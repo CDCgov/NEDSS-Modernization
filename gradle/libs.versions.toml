@@ -21,8 +21,8 @@ spring-elasticsearch = { module = "org.springframework.data:spring-data-elastics
 spring-json = { module = "org.springframework.boot:spring-boot-starter-json", version.ref = "springBoot" }
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBoot" }
-spring-security-test = {module = 'org.springframework.security:spring-security-test'}
-springfox = {module='io.springfox:springfox-boot-starter', version='3.0.0'}
+spring-security-test = { module = 'org.springframework.security:spring-security-test' }
+springfox = { module = 'io.springfox:springfox-boot-starter', version = '3.0.0' }
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
 queryDSL-apt = { module = "com.querydsl:querydsl-apt", version.ref = "queryDSL" }
@@ -44,7 +44,7 @@ cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumbe
 cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform-engine", version.ref = "cucumber" }
 junit = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-suite" }
-awaitility = {module = "org.awaitility:awaitility"}
+awaitility = { module = "org.awaitility:awaitility" }
 
 [bundles]
 security = ["java-jwt", "spring-security"]
@@ -53,6 +53,7 @@ jpa = ["springBoot", "springBoot-jpa"]
 elasticsearch = ["spring-elasticsearch"]
 kafka = ["spring-kafka"]
 testing = ["assertj-core", "mockito-inline"]
+springtesting = ["spring-test", "junit"]
 queryDSL = ["queryDSL-apt", "queryDSL-jpa"]
 blaze-persistence-queryDSL = [
     "blaze-persistence-core",
