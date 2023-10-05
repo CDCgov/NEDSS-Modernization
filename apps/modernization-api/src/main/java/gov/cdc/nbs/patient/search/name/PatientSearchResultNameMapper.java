@@ -7,13 +7,13 @@ import java.sql.SQLException;
 
 class PatientSearchResultNameMapper implements RowMapper<PatientSearchResultName> {
 
-  record Index(int first, int middle, int last, int suffix) {
+  record Columns(int first, int middle, int last, int suffix) {
   }
 
-  private final Index columns;
+  private final Columns columns;
 
 
-  PatientSearchResultNameMapper(final Index columns) {
+  PatientSearchResultNameMapper(final Columns columns) {
     this.columns = columns;
   }
 

@@ -37,7 +37,7 @@ class PatientSearchResultFinder {
   PatientSearchResultFinder(final JdbcTemplate template) {
     this.template = new NamedParameterJdbcTemplate(template);
     this.mapper = new PatientSearchResultMapper(
-        new PatientSearchResultMapper.Index(
+        new PatientSearchResultMapper.Columns(
             1, 2, 3, 4, 5
         )
     );

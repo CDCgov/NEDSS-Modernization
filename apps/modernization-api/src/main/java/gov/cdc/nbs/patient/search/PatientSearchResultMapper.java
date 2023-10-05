@@ -11,19 +11,19 @@ import java.time.temporal.ChronoUnit;
 
 class PatientSearchResultMapper implements RowMapper<PatientSearchResult> {
 
-  record Index(int patient, int local, int birthday, int gender, int status) {
+  record Columns(int patient, int local, int birthday, int gender, int status) {
   }
 
 
   private final Clock clock;
-  private final Index columns;
+  private final Columns columns;
 
-  public PatientSearchResultMapper(final Clock clock, final Index columns) {
+  public PatientSearchResultMapper(final Clock clock, final Columns columns) {
     this.clock = clock;
     this.columns = columns;
   }
 
-  PatientSearchResultMapper(final Index columns) {
+  PatientSearchResultMapper(final Columns columns) {
     this(Clock.systemDefaultZone(), columns);
   }
 

@@ -7,14 +7,14 @@ import java.sql.SQLException;
 
 class PatientSearchResultAddressMapper implements RowMapper<PatientSearchResultAddress> {
 
-  record Index(int use, int address, int address2, int city, int state, int zipcode) {
+  record Columns(int use, int address, int address2, int city, int state, int zipcode) {
   }
 
 
-  private final Index columns;
+  private final Columns columns;
 
 
-  PatientSearchResultAddressMapper(final Index columns) {
+  PatientSearchResultAddressMapper(final Columns columns) {
     this.columns = columns;
   }
 

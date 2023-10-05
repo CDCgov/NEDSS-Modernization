@@ -43,7 +43,7 @@ class PatientSearchResultAddressFinder {
   PatientSearchResultAddressFinder(final JdbcTemplate template) {
     this.template = template;
     this.mapper = new PatientSearchResultAddressMapper(
-        new PatientSearchResultAddressMapper.Index(
+        new PatientSearchResultAddressMapper.Columns(
             1, 2, 3, 4, 5, 6
         )
     );
