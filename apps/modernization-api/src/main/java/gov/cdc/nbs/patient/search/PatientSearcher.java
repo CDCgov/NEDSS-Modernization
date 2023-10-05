@@ -68,7 +68,7 @@ public class PatientSearcher {
     this.finder = finder;
   }
 
-  @SuppressWarnings("squid:S3776")
+  @SuppressWarnings({"squid:S3776", "squid:S6541"})
   // ignore high cognitive complexity as the method is simply going through the
   // passed in parameters, checking if null, and appending to the query
   public Page<PatientSearchResult> search(final PatientFilter filter, final GraphQLPage page) {
