@@ -1,39 +1,44 @@
-package gov.cdc.nbs.patient.search.address;
+package gov.cdc.nbs.address;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-class PatientSearchResultAddressMapper implements RowMapper<PatientSearchResultAddress> {
+public class AddressRowMapper implements RowMapper<Address> {
 
-  record Columns(int use, int address, int address2, int city, int state, int zipcode) {
+  public record Columns(int use, int address, int address2, int city, int state, int zipcode, int country) {
+    public Columns() {
+      this(1, 2, 3, 4, 5, 6, 7);
+    }
   }
 
 
   private final Columns columns;
 
 
-  PatientSearchResultAddressMapper(final Columns columns) {
+  public AddressRowMapper(final Columns columns) {
     this.columns = columns;
   }
 
   @Override
-  public PatientSearchResultAddress mapRow(final ResultSet resultSet, final int row) throws SQLException {
+  public Address mapRow(final ResultSet resultSet, final int row) throws SQLException {
     String use = resultSet.getString(columns.use());
     String address = resultSet.getString(columns.address());
     String address2 = resultSet.getString(columns.address2());
     String city = resultSet.getString(columns.city());
     String state = resultSet.getString(columns.state());
     String zipcode = resultSet.getString(columns.zipcode());
+    String country = resultSet.getString(columns.country());
 
-    return new PatientSearchResultAddress(
+    return new Address(
         use,
         address,
         address2,
         city,
         state,
-        zipcode
+        zipcode,
+        country
     );
   }
 }

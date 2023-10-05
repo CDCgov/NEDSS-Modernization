@@ -117,37 +117,6 @@ export type ContactsNamedByPatientResults = {
   total: Scalars['Int'];
 };
 
-export type CountryCode = {
-  __typename?: 'CountryCode';
-  assigningAuthorityCd?: Maybe<Scalars['String']>;
-  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
-  codeDescTxt?: Maybe<Scalars['String']>;
-  codeSetNm?: Maybe<Scalars['String']>;
-  codeShortDescTxt?: Maybe<Scalars['String']>;
-  codeSystemCd?: Maybe<Scalars['String']>;
-  codeSystemDescTxt?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['DateTime']>;
-  effectiveToTime?: Maybe<Scalars['DateTime']>;
-  excludedTxt?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  indentLevelNbr?: Maybe<Scalars['Int']>;
-  isModifiableInd?: Maybe<Scalars['String']>;
-  keyInfoTxt?: Maybe<Scalars['String']>;
-  nbsUid?: Maybe<Scalars['Int']>;
-  parentIsCd?: Maybe<Scalars['String']>;
-  seqNum?: Maybe<Scalars['Int']>;
-  sourceConceptId?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['DateTime']>;
-};
-
-export type CountyCode = {
-  __typename?: 'CountyCode';
-  codeDescTxt?: Maybe<Scalars['String']>;
-  codeShortDescTxt?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-};
-
 export enum Deceased {
   N = 'N',
   Unk = 'UNK',
@@ -1675,12 +1644,13 @@ export type PatientState = {
 
 export type PatientSummary = {
   __typename?: 'PatientSummary';
-  address?: Maybe<PatientSummaryAddress>;
+  address: Array<PatientSummaryAddress>;
   age?: Maybe<Scalars['Int']>;
   birthday?: Maybe<Scalars['Date']>;
   email?: Maybe<Array<PatientSummaryEmail>>;
   ethnicity?: Maybe<Scalars['String']>;
   gender?: Maybe<Scalars['String']>;
+  home?: Maybe<PatientSummaryAddress>;
   identification?: Maybe<Array<PatientSummaryIdentification>>;
   legalName?: Maybe<PatientLegalName>;
   phone?: Maybe<Array<PatientSummaryPhone>>;
@@ -1689,10 +1659,12 @@ export type PatientSummary = {
 
 export type PatientSummaryAddress = {
   __typename?: 'PatientSummaryAddress';
+  address?: Maybe<Scalars['String']>;
+  address2?: Maybe<Scalars['String']>;
   city?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   state?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
+  use: Scalars['String'];
   zipcode?: Maybe<Scalars['String']>;
 };
 
@@ -1961,8 +1933,6 @@ export type Query = {
   findAllAddressUses: AddressUseResults;
   findAllAssigningAuthorities: AssigningAuthorResults;
   findAllConditionCodes: Array<Maybe<ConditionCode>>;
-  findAllCountryCodes: Array<Maybe<CountryCode>>;
-  findAllCountyCodesForState: Array<Maybe<CountyCode>>;
   findAllDegrees: DegreeResults;
   findAllEthnicityValues: EthnicityResults;
   findAllIdentificationTypes: IdentificationTypesResults;
@@ -1977,7 +1947,6 @@ export type Query = {
   findAllPlaces: Array<Maybe<Place>>;
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
   findAllRaceValues: RaceResults;
-  findAllStateCodes: Array<Maybe<StateCode>>;
   findAllStateCountyCodeValues: Array<StateCountyCodeValue>;
   findAllUsers: UserResults;
   findContactsNamedByPatient?: Maybe<ContactsNamedByPatientResults>;
@@ -2048,17 +2017,6 @@ export type QueryFindAllConditionCodesArgs = {
 };
 
 
-export type QueryFindAllCountryCodesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllCountyCodesForStateArgs = {
-  page?: InputMaybe<Page>;
-  stateCode: Scalars['String'];
-};
-
-
 export type QueryFindAllDegreesArgs = {
   page?: InputMaybe<Page>;
 };
@@ -2125,11 +2083,6 @@ export type QueryFindAllProgramAreasArgs = {
 
 
 export type QueryFindAllRaceValuesArgs = {
-  page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllStateCodesArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -2345,30 +2298,6 @@ export type SortablePage = {
   pageSize?: InputMaybe<Scalars['Int']>;
   sortDirection?: InputMaybe<SortDirection>;
   sortField?: InputMaybe<SortField>;
-};
-
-export type StateCode = {
-  __typename?: 'StateCode';
-  assigningAuthorityCd?: Maybe<Scalars['String']>;
-  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
-  codeDescTxt?: Maybe<Scalars['String']>;
-  codeSetNm?: Maybe<Scalars['String']>;
-  codeSystemCd?: Maybe<Scalars['String']>;
-  codeSystemDescTxt?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['DateTime']>;
-  effectiveToTime?: Maybe<Scalars['DateTime']>;
-  excludedTxt?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  indentLevelNbr?: Maybe<Scalars['Int']>;
-  isModifiableInd?: Maybe<Scalars['String']>;
-  keyInfoTxt?: Maybe<Scalars['String']>;
-  nbsUid?: Maybe<Scalars['Int']>;
-  parentIsCd?: Maybe<Scalars['String']>;
-  seqNum?: Maybe<Scalars['Int']>;
-  sourceConceptId?: Maybe<Scalars['String']>;
-  stateNm?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['DateTime']>;
 };
 
 export type StateCodedValue = {
@@ -2772,21 +2701,6 @@ export type FindAllConditionCodesQueryVariables = Exact<{
 
 export type FindAllConditionCodesQuery = { __typename?: 'Query', findAllConditionCodes: Array<{ __typename?: 'ConditionCode', id: string, conditionDescTxt?: string | null } | null> };
 
-export type FindAllCountryCodesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllCountryCodesQuery = { __typename?: 'Query', findAllCountryCodes: Array<{ __typename?: 'CountryCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, keyInfoTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null> };
-
-export type FindAllCountyCodesForStateQueryVariables = Exact<{
-  stateCode: Scalars['String'];
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllCountyCodesForStateQuery = { __typename?: 'Query', findAllCountyCodesForState: Array<{ __typename?: 'CountyCode', id: string, codeDescTxt?: string | null, codeShortDescTxt?: string | null } | null> };
-
 export type FindAllDegreesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
@@ -2884,13 +2798,6 @@ export type FindAllRaceValuesQueryVariables = Exact<{
 
 
 export type FindAllRaceValuesQuery = { __typename?: 'Query', findAllRaceValues: { __typename?: 'RaceResults', total: number, content: Array<{ __typename?: 'Race', codeDescTxt: string, id: { __typename?: 'RaceId', code: string } } | null> } };
-
-export type FindAllStateCodesQueryVariables = Exact<{
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindAllStateCodesQuery = { __typename?: 'Query', findAllStateCodes: Array<{ __typename?: 'StateCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, stateNm?: string | null, codeDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, keyInfoTxt?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null> };
 
 export type FindAllStateCountyCodeValuesQueryVariables = Exact<{
   stateCode?: InputMaybe<Scalars['String']>;
@@ -3029,7 +2936,7 @@ export type FindPatientProfileQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId: number, version: number, status: string, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, races?: Array<string> | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, identification?: Array<{ __typename?: 'PatientSummaryIdentification', type: string, value: string }> | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null }> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null }> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: number, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientNameUse', id: string, description: string }, prefix?: { __typename?: 'PatientNamePrefix', id: string, description: string } | null, suffix?: { __typename?: 'PatientNameSuffix', id: string, description: string } | null, degree?: { __typename?: 'PatientNameDegree', id: string, description: string } | null }> }, administrative: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null }> }, addresses: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type: { __typename?: 'PatientAddressType', id: string, description: string }, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null }> }, phones: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null }> }, identification: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientIdentificationAuthority', id: string, description: string } | null }> }, races: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: number, version: number, asOf: any, category: { __typename?: 'PatientRaceCategory', id: string, description: string }, detailed: Array<{ __typename?: 'PatientRaceDetail', id: string, description: string }> }> }, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientGenderUnknownReason', id: string, description: string } | null, preferred?: { __typename?: 'PatientPreferredGender', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientMaritalStatus', id: string, description: string } | null, occupation?: { __typename?: 'PatientOccupation', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientEducationLevel', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientPrimaryLanguage', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientEthnicGroup', id: string, description: string }, unknownReason?: { __typename?: 'PatientEthnicityUnknownReason', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientDetailedEthnicity', id: string, description: string }> } | null } | null };
+export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId: number, version: number, status: string, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, races?: Array<string> | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, home?: { __typename?: 'PatientSummaryAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null, address: Array<{ __typename?: 'PatientSummaryAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null }>, identification?: Array<{ __typename?: 'PatientSummaryIdentification', type: string, value: string }> | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null }> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null }> | null } | null, names: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: number, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientNameUse', id: string, description: string }, prefix?: { __typename?: 'PatientNamePrefix', id: string, description: string } | null, suffix?: { __typename?: 'PatientNameSuffix', id: string, description: string } | null, degree?: { __typename?: 'PatientNameDegree', id: string, description: string } | null }> }, administrative: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null }> }, addresses: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type: { __typename?: 'PatientAddressType', id: string, description: string }, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null }> }, phones: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null }> }, identification: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientIdentificationAuthority', id: string, description: string } | null }> }, races: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: number, version: number, asOf: any, category: { __typename?: 'PatientRaceCategory', id: string, description: string }, detailed: Array<{ __typename?: 'PatientRaceDetail', id: string, description: string }> }> }, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientGenderUnknownReason', id: string, description: string } | null, preferred?: { __typename?: 'PatientPreferredGender', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientMaritalStatus', id: string, description: string } | null, occupation?: { __typename?: 'PatientOccupation', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientEducationLevel', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientPrimaryLanguage', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientEthnicGroup', id: string, description: string }, unknownReason?: { __typename?: 'PatientEthnicityUnknownReason', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientDetailedEthnicity', id: string, description: string }> } | null } | null };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
@@ -4480,98 +4387,6 @@ export function useFindAllConditionCodesLazyQuery(baseOptions?: Apollo.LazyQuery
 export type FindAllConditionCodesQueryHookResult = ReturnType<typeof useFindAllConditionCodesQuery>;
 export type FindAllConditionCodesLazyQueryHookResult = ReturnType<typeof useFindAllConditionCodesLazyQuery>;
 export type FindAllConditionCodesQueryResult = Apollo.QueryResult<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>;
-export const FindAllCountryCodesDocument = gql`
-    query findAllCountryCodes($page: Page) {
-  findAllCountryCodes(page: $page) {
-    id
-    assigningAuthorityCd
-    assigningAuthorityDescTxt
-    codeDescTxt
-    codeShortDescTxt
-    effectiveFromTime
-    effectiveToTime
-    excludedTxt
-    keyInfoTxt
-    indentLevelNbr
-    isModifiableInd
-    parentIsCd
-    statusCd
-    statusTime
-    codeSetNm
-    seqNum
-    nbsUid
-    sourceConceptId
-    codeSystemCd
-    codeSystemDescTxt
-  }
-}
-    `;
-
-/**
- * __useFindAllCountryCodesQuery__
- *
- * To run a query within a React component, call `useFindAllCountryCodesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllCountryCodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllCountryCodesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllCountryCodesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>(FindAllCountryCodesDocument, options);
-      }
-export function useFindAllCountryCodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>(FindAllCountryCodesDocument, options);
-        }
-export type FindAllCountryCodesQueryHookResult = ReturnType<typeof useFindAllCountryCodesQuery>;
-export type FindAllCountryCodesLazyQueryHookResult = ReturnType<typeof useFindAllCountryCodesLazyQuery>;
-export type FindAllCountryCodesQueryResult = Apollo.QueryResult<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>;
-export const FindAllCountyCodesForStateDocument = gql`
-    query findAllCountyCodesForState($stateCode: String!, $page: Page) {
-  findAllCountyCodesForState(stateCode: $stateCode, page: $page) {
-    id
-    codeDescTxt
-    codeShortDescTxt
-  }
-}
-    `;
-
-/**
- * __useFindAllCountyCodesForStateQuery__
- *
- * To run a query within a React component, call `useFindAllCountyCodesForStateQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllCountyCodesForStateQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllCountyCodesForStateQuery({
- *   variables: {
- *      stateCode: // value for 'stateCode'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllCountyCodesForStateQuery(baseOptions: Apollo.QueryHookOptions<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>(FindAllCountyCodesForStateDocument, options);
-      }
-export function useFindAllCountyCodesForStateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>(FindAllCountyCodesForStateDocument, options);
-        }
-export type FindAllCountyCodesForStateQueryHookResult = ReturnType<typeof useFindAllCountyCodesForStateQuery>;
-export type FindAllCountyCodesForStateLazyQueryHookResult = ReturnType<typeof useFindAllCountyCodesForStateLazyQuery>;
-export type FindAllCountyCodesForStateQueryResult = Apollo.QueryResult<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>;
 export const FindAllDegreesDocument = gql`
     query findAllDegrees($page: Page) {
   findAllDegrees(page: $page) {
@@ -5224,60 +5039,6 @@ export function useFindAllRaceValuesLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type FindAllRaceValuesQueryHookResult = ReturnType<typeof useFindAllRaceValuesQuery>;
 export type FindAllRaceValuesLazyQueryHookResult = ReturnType<typeof useFindAllRaceValuesLazyQuery>;
 export type FindAllRaceValuesQueryResult = Apollo.QueryResult<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>;
-export const FindAllStateCodesDocument = gql`
-    query findAllStateCodes($page: Page) {
-  findAllStateCodes(page: $page) {
-    id
-    assigningAuthorityCd
-    assigningAuthorityDescTxt
-    stateNm
-    codeDescTxt
-    effectiveFromTime
-    effectiveToTime
-    excludedTxt
-    indentLevelNbr
-    isModifiableInd
-    keyInfoTxt
-    parentIsCd
-    statusCd
-    statusTime
-    codeSetNm
-    seqNum
-    nbsUid
-    sourceConceptId
-    codeSystemCd
-    codeSystemDescTxt
-  }
-}
-    `;
-
-/**
- * __useFindAllStateCodesQuery__
- *
- * To run a query within a React component, call `useFindAllStateCodesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllStateCodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllStateCodesQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindAllStateCodesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>(FindAllStateCodesDocument, options);
-      }
-export function useFindAllStateCodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>(FindAllStateCodesDocument, options);
-        }
-export type FindAllStateCodesQueryHookResult = ReturnType<typeof useFindAllStateCodesQuery>;
-export type FindAllStateCodesLazyQueryHookResult = ReturnType<typeof useFindAllStateCodesLazyQuery>;
-export type FindAllStateCodesQueryResult = Apollo.QueryResult<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>;
 export const FindAllStateCountyCodeValuesDocument = gql`
     query findAllStateCountyCodeValues($stateCode: String, $page: Page) {
   findAllStateCountyCodeValues(stateCode: $stateCode, page: $page) {
@@ -6323,6 +6084,24 @@ export const FindPatientProfileDocument = gql`
       gender
       ethnicity
       races
+      home {
+        use
+        address
+        address2
+        city
+        state
+        zipcode
+        country
+      }
+      address {
+        use
+        address
+        address2
+        city
+        state
+        zipcode
+        country
+      }
       identification {
         type
         value
@@ -6334,13 +6113,6 @@ export const FindPatientProfileDocument = gql`
       email {
         use
         address
-      }
-      address {
-        street
-        city
-        state
-        zipcode
-        country
       }
     }
     names(page: $page) {

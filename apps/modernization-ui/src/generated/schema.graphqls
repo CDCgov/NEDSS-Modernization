@@ -214,41 +214,6 @@ type ConditionCode {
     conditionDescTxt: String
 }
 extend type Query {
-  findAllCountryCodes(page: Page): [CountryCode]!
-}
-
-type CountryCode {
-  id: ID
-  assigningAuthorityCd: String
-  assigningAuthorityDescTxt: String
-  codeDescTxt: String
-  codeShortDescTxt: String
-  effectiveFromTime: DateTime
-  effectiveToTime: DateTime
-  excludedTxt: String
-  keyInfoTxt: String
-  indentLevelNbr: Int
-  isModifiableInd: String
-  parentIsCd: String
-  statusCd: String
-  statusTime: DateTime
-  codeSetNm: String
-  seqNum: Int
-  nbsUid: Int
-  sourceConceptId: String
-  codeSystemCd: String
-  codeSystemDescTxt: String
-}
-extend type Query {
-    findAllCountyCodesForState(stateCode: String!, page: Page): [CountyCode]!
-}
-
-type CountyCode {
-    id: String!
-    codeDescTxt: String
-    codeShortDescTxt: String
-}
-extend type Query {
     findAllEthnicityValues(page: Page): EthnicityResults!
 }
 
@@ -903,7 +868,9 @@ type PatientIndicatorCodedValue {
 }
 
 type PatientSummaryAddress {
-    street: String
+    use: String!
+    address: String
+    address2: String
     city: String
     state: String
     zipcode: String
@@ -932,10 +899,11 @@ type PatientSummary {
     gender: String
     ethnicity: String
     races: [String!]
+    home: PatientSummaryAddress
+    address: [PatientSummaryAddress!]!
     identification: [PatientSummaryIdentification!]
     phone: [PatientSummaryPhone!]
     email: [PatientSummaryEmail!]
-    address: PatientSummaryAddress    
 }
 
 type PatientLegalName {
@@ -1968,32 +1936,6 @@ type SnomedCodedResults {
 type SnomedCode {
     id: String
     snomedDescTxt: String
-}
-extend type Query {
-  findAllStateCodes(page: Page): [StateCode]!
-}
-
-type StateCode {
-  id: String
-  assigningAuthorityCd: String
-  assigningAuthorityDescTxt: String
-  stateNm: String
-  codeDescTxt: String
-  effectiveFromTime: DateTime
-  effectiveToTime: DateTime
-  excludedTxt: String
-  indentLevelNbr: Int
-  isModifiableInd: String
-  keyInfoTxt: String
-  parentIsCd: String
-  statusCd: String
-  statusTime: DateTime
-  codeSetNm: String
-  seqNum: Int
-  nbsUid: Int
-  sourceConceptId: String
-  codeSystemCd: String
-  codeSystemDescTxt: String
 }
 extend type Query {
     findAllUsers(page: Page): UserResults!

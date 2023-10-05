@@ -32,8 +32,19 @@ export const Query = gql`
                     use
                     address
                 }
+                home {
+                    use
+                    address
+                    address2
+                    city
+                    state
+                    zipcode
+                    country
+                }
                 address {
-                    street
+                    use
+                    address
+                    address2
                     city
                     state
                     zipcode

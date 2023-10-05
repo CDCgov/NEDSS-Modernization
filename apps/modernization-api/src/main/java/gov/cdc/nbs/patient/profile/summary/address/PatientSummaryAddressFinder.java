@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.search.address;
+package gov.cdc.nbs.patient.profile.summary.address;
 
 import gov.cdc.nbs.address.Address;
 import gov.cdc.nbs.address.AddressRowMapper;
@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 @Component
-class PatientSearchResultAddressFinder {
-
+class PatientSummaryAddressFinder {
   private static final String QUERY = """
       select
           [use].[code_short_desc_txt]     as [use],
@@ -38,17 +37,17 @@ class PatientSearchResultAddressFinder {
 
       where   [locators].entity_uid = ?
           and [locators].[class_cd] = 'PST'
-          and [locators].[use_cd] not in ('BIR', 'DTH')
+          and [locators].[use_cd] not in ('BIR', 'DTH', 'H')
           and [locators].[record_status_cd] = 'ACTIVE'
-                   """;
+      """;
   private static final int PATIENT_PARAMETER = 1;
 
   private final JdbcTemplate template;
   private final RowMapper<Address> mapper;
 
-  PatientSearchResultAddressFinder(final JdbcTemplate template) {
+  PatientSummaryAddressFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new AddressRowMapper(        new AddressRowMapper.Columns()    );
+    this.mapper = new AddressRowMapper(new AddressRowMapper.Columns());
   }
 
   Collection<Address> find(final long patient) {
@@ -58,4 +57,5 @@ class PatientSearchResultAddressFinder {
         this.mapper
     );
   }
+
 }

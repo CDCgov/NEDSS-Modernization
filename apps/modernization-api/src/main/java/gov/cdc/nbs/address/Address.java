@@ -1,11 +1,13 @@
-package gov.cdc.nbs.patient.search.address;
+package gov.cdc.nbs.address;
 
-record PatientSearchResultAddress(
+public record Address(
     String use,
     String address,
     String address2,
     String city,
     String state,
-    String zipcode
+    String zipcode,
+
+    String country
 ) {
 }

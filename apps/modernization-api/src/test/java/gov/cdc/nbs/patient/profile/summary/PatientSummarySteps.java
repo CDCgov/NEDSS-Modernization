@@ -72,6 +72,7 @@ public class PatientSummarySteps {
     JsonPathResultMatchers pathMatcher = resolveForField(field);
 
     this.response.active()
+        .andDo(print())
         .andExpect(pathMatcher.value(matchingValue(field, value)));
   }
 
@@ -80,7 +81,13 @@ public class PatientSummarySteps {
       case "race" -> jsonPath("$.data.findPatientProfile.summary.races");
       case "identification type" -> jsonPath("$.data.findPatientProfile.summary.identification[*].type");
       case "identification value" -> jsonPath("$.data.findPatientProfile.summary.identification[*].value");
-      default -> throw new AssertionError(String.format("Unexpected property check %s", field));
+      case "home address" -> jsonPath("$.data.findPatientProfile.summary.home.address");
+      case "home city" -> jsonPath("$.data.findPatientProfile.summary.home.city");
+      case "home zipcode" -> jsonPath("$.data.findPatientProfile.summary.home.zipcode");
+      case "address" -> jsonPath("$.data.findPatientProfile.summary.address[*].address");
+      case "city" -> jsonPath("$.data.findPatientProfile.summary.address[*].city");
+      case "zipcode", "zip" -> jsonPath("$.data.findPatientProfile.summary.address[*].zipcode");
+      default -> throw new AssertionError(String.format("Unexpected Patient Summary property %s", field));
     };
   }
 

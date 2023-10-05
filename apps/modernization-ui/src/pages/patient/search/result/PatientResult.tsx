@@ -1,3 +1,7 @@
+import './PatientResult.scss';
+
+import { ReactNode } from 'react';
+import classNames from 'classnames';
 import { Grid } from '@trussworks/react-uswds';
 import {
     PatientSearchResultIdentification,
@@ -7,11 +11,9 @@ import {
 } from 'generated/graphql/schema';
 import { formattedName } from 'utils';
 import { internalizeDate } from 'date';
+import { displayName } from 'name';
+import { displayAddress } from 'address/display';
 import { NoData } from 'components/NoData';
-import { displayAddress } from 'address/displayAddress';
-import { ReactNode } from 'react';
-import './PatientResult.scss';
-import classNames from 'classnames';
 
 type PatientResultProps = {
     result: PatientSearchResult;
@@ -19,7 +21,6 @@ type PatientResultProps = {
 };
 
 const PatientResult = ({ result, onSelected }: PatientResultProps) => {
-    console.log(result);
     return (
         <Grid row gap={3}>
             <Grid col={4}>
@@ -85,14 +86,9 @@ const PatientResult = ({ result, onSelected }: PatientResultProps) => {
 const displayNames = (result: PatientSearchResult, names: PatientSearchResultName[]): string => {
     const legalName = result.legalName;
     return names
-        .filter((n) => n?.first != legalName?.first || n?.last != legalName?.last)
-        .map(displayName)
+        .filter((name) => name?.first != legalName?.first || name?.last != legalName?.last)
+        .map(displayName())
         .join('\n');
-};
-
-const displayName = ({ first, middle, last, suffix }: PatientSearchResultName) => {
-    const name = [first, middle, last].filter((i) => i).join(' ');
-    return [name, suffix].filter((i) => i).join(', ');
 };
 
 const renderAddresses = (addresses: PatientSearchResultAddress[]) => {

@@ -1,5 +1,6 @@
-import './style.scss';
+import './PatientProfileSummary.scss';
 
+import { ReactNode, Key } from 'react';
 import {
     PatientSummary,
     PatientSummaryAddress,
@@ -7,13 +8,12 @@ import {
     PatientSummaryIdentification,
     PatientSummaryPhone
 } from 'generated/graphql/schema';
-import { Patient } from 'pages/patient/profile';
-import { NoData } from 'components/NoData';
-
 import { Spinner } from '@cmsgov/design-system';
 import { formattedName } from 'utils';
-import { ReactNode, Key } from 'react';
 import { internalizeDate } from 'date';
+import { Patient } from 'pages/patient/profile';
+import { displayAddress } from 'address/display/displayAddress';
+import { NoData } from 'components/NoData';
 
 type Props = {
     patient?: Patient;
@@ -47,10 +47,9 @@ const asPhones = (items: PatientSummaryPhone[]) => asText(items.map((items) => i
 
 const asEmails = (items: PatientSummaryEmail[]) => asText(items.map((item) => item.address).join('\n'));
 
-const asAddress = ({ street, city, state, zipcode }: PatientSummaryAddress) => {
-    const location = [city, state, zipcode].filter((i) => i).join(' ');
-    const address = [street, location].filter((i) => i).join('\n');
-    return maybeRender(address, asText);
+const asAddress = (address: PatientSummaryAddress) => {
+    const value = displayAddress(address);
+    return maybeRender(value, asText);
 };
 
 const asIdentifications = (identifications: PatientSummaryIdentification[]) => (
@@ -105,7 +104,9 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
                         <div className="grouped">
                             <SummaryItem label="Sex">{maybeRender(summary.gender, asText)}</SummaryItem>
                             <SummaryItem label="Phone"> {maybeRender(summary.phone, asPhones)}</SummaryItem>
-                            <SummaryItem label="Address">{maybeRender(summary.address, asAddress)}</SummaryItem>
+                            <SummaryItem label={addressLabel(summary.home)}>
+                                {maybeRender(summary.home, asAddress)}
+                            </SummaryItem>
                             <SummaryItem label="Race">{maybeRender(summary.races, allAsText)}</SummaryItem>
                             <SummaryItem label="Date of birth">{asBirthday(summary)}</SummaryItem>
                             <SummaryItem label="Email">{maybeRender(summary.email, asEmails)}</SummaryItem>
@@ -119,3 +120,5 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
         </div>
     );
 };
+
+const addressLabel = (address?: PatientSummaryAddress | null) => (address ? `Address (${address.use})` : 'Address');

@@ -1,7 +1,0 @@
-query findAllCountyCodesForState($stateCode: String!, $page: Page){
-    findAllCountyCodesForState(stateCode: $stateCode, page: $page){
-        id
-        codeDescTxt
-        codeShortDescTxt
-    }
-}
