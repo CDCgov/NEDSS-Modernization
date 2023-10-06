@@ -55,11 +55,11 @@ const useConfiguration = (): { settings: Settings; features: Features; loading: 
             ConfigurationControllerService.getConfigurationUsingGet({
                 authorization: `Bearer ${state.getToken()}`
             }).then((response) => {
-                setConfig({ ...config, ...response });
+                setConfig((existing) => ({ ...existing, ...(response as Configuration) }));
                 setLoading(false);
             });
         }
-    }, [state]);
+    }, [state.isLoggedIn]);
 
     return { ...config, loading };
 };

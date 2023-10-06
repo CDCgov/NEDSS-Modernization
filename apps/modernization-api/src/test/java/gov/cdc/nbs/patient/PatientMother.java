@@ -125,6 +125,24 @@ public class PatientMother {
       final String state,
       final String zip
   ) {
+   withAddress(
+       identifier,
+       "H",
+       address,
+       city,
+       state,
+       zip
+   );
+  }
+
+  public void withAddress(
+      final PatientIdentifier identifier,
+      final String use,
+      final String address,
+      final String city,
+      final String state,
+      final String zip
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
@@ -132,6 +150,8 @@ public class PatientMother {
             patient.getId(),
             idGenerator.next(),
             RandomUtil.getRandomDateInPast(),
+            "H",
+            use,
             address,
             null,
             city,
@@ -139,6 +159,7 @@ public class PatientMother {
             zip,
             null,
             "840",
+            null,
             null,
             this.settings.createdBy(),
             this.settings.createdOn()

@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.accumulation.Accumulator;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPersonName;
-import gov.cdc.nbs.entity.odse.QPostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.QTeleEntityLocatorParticipation;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,6 @@ class PatientSummaryFinder {
   private static final QPersonName EFF_NAME = new QPersonName("eff_name");
   private static final QPersonName SEQ_NAME = new QPersonName("seq_name");
 
-  private static final QPostalEntityLocatorParticipation EFF_HOME = new QPostalEntityLocatorParticipation("eff_home");
   private static final QTeleEntityLocatorParticipation EFF_PHONE = new QTeleEntityLocatorParticipation("eff_phone");
 
   private static final QPerson EFF_PHONE_CHILD = new QPerson("eff_phone_child");
@@ -31,7 +29,6 @@ class PatientSummaryFinder {
   private static final String NAME_PREFIX_CODE_SET = "P_NM_PFX";
   private static final String ETHNIC_GROUP_CODE_SET = "P_ETHN_GRP";
   private static final String PATIENT_CODE = "PAT";
-  private static final String HOME_ADDRESS_CODE = "H";
   private static final String EMAIL_CODE = "NET";
 
   private final JPAQueryFactory factory;
@@ -60,12 +57,7 @@ class PatientSummaryFinder {
             this.tables.phoneNumber().phoneNbrTxt,
             this.tables.phoneUse().codeShortDescTxt,
             this.tables.email().emailAddress,
-            this.tables.emailUse().codeShortDescTxt,
-            this.tables.address().streetAddr1,
-            this.tables.address().cityDescTxt,
-            this.tables.state().stateNm,
-            this.tables.address().zipCd,
-            this.tables.country().codeDescTxt
+            this.tables.emailUse().codeShortDescTxt
         ).from(this.tables.patient())
         //  Most effective Legal name for the as of
         .leftJoin(this.tables.name()).on(
@@ -101,30 +93,6 @@ class PatientSummaryFinder {
         .leftJoin(this.tables.ethnicity()).on(
             this.tables.ethnicity().id.codeSetNm.eq(ETHNIC_GROUP_CODE_SET),
             this.tables.ethnicity().id.code.eq(this.tables.patient().ethnicity.ethnicGroupInd)
-        )
-        //  Most effective Home Address for the as of
-        .leftJoin(this.tables.home()).on(
-            this.tables.home().id.entityUid.eq(this.tables.patient().id),
-            this.tables.home().recordStatusCd.eq(ACTIVE_CODE),
-            this.tables.home().useCd.eq(HOME_ADDRESS_CODE),
-            this.tables.home().asOfDate.eq(
-                JPAExpressions.select(EFF_HOME.asOfDate.max())
-                    .from(EFF_HOME)
-                    .where(
-                        EFF_HOME.id.entityUid.eq(this.tables.patient().id),
-                        EFF_HOME.useCd.eq(this.tables.home().useCd),
-                        EFF_HOME.asOfDate.loe(asOf)
-                    )
-            )
-        )
-        .leftJoin(this.tables.address()).on(
-            this.tables.address().id.eq(this.tables.home().id.locatorUid)
-        )
-        .leftJoin(this.tables.state()).on(
-            this.tables.state().id.eq(this.tables.address().stateCd)
-        )
-        .leftJoin(this.tables.country()).on(
-            this.tables.country().id.eq(this.tables.address().cntryCd)
         )
         //  Most effective Phone number for the as of
         .leftJoin(this.tables.phone()).on(
@@ -184,7 +152,7 @@ class PatientSummaryFinder {
         .where(this.tables.patient().id.eq(identifier), this.tables.patient().cd.eq(PATIENT_CODE))
         .fetch()
         .stream()
-        .map(mapper::map)
+        .map(tuple -> this.mapper.map(asOf, tuple))
         .collect(Accumulator.accumulating(PatientSummary::patient, this.merger::merge))
         ;
   }

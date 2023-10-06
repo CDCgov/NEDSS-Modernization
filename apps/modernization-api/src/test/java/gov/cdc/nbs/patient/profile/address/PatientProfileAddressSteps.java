@@ -14,7 +14,6 @@ import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.UpdatePatientAddressInput;
 import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -31,158 +30,194 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PatientProfileAddressSteps {
 
-    private final Faker faker = new Faker(new Locale("en-us"));
+  private final Faker faker = new Faker(new Locale("en-us"));
 
-    @Autowired
-    PatientMother mother;
+  @Autowired
+  PatientMother mother;
 
-    @Autowired
-    TestAvailable<PatientIdentifier> patients;
+  @Autowired
+  TestActive<PatientIdentifier> activePatient;
 
-    @Autowired
-    PatientAddressResolver resolver;
+  @Autowired
+  PatientAddressResolver resolver;
 
-    @Autowired
-    TestActive<PatientInput> input;
+  @Autowired
+  TestActive<PatientInput> input;
 
-    @Autowired
-    TestPatient patient;
+  @Autowired
+  TestPatient patient;
 
-    @Autowired
-    TestActive<NewPatientAddressInput> newRequest;
+  @Autowired
+  TestActive<NewPatientAddressInput> newRequest;
 
-    @Autowired
-    TestActive<UpdatePatientAddressInput> updateRequest;
+  @Autowired
+  TestActive<UpdatePatientAddressInput> updateRequest;
 
-    @Given("the patient has an address")
-    public void the_patient_has_an_address() {
-        mother.withAddress(patients.one());
+  @Given("the patient has an address")
+  public void the_patient_has_an_address() {
+    mother.withAddress(activePatient.active());
+  }
+
+  @Given("the patient has a {string} address at {string} {string} {string}")
+  public void the_patient_has_an_address_at(
+      final String use,
+      final String address,
+      final String city,
+      final String zip
+  ) {
+
+    PatientIdentifier identifier = activePatient.active();
+
+    String resolvedUse = resolveUse(use);
+
+    mother.withAddress(
+        identifier,
+        resolvedUse,
+        address,
+        city,
+        null,
+        zip
+    );
+
+  }
+
+  private String resolveUse(final String use) {
+    return switch (use.toLowerCase()) {
+      case "birth delivery address" -> "BDL";
+      case "birth place" -> "BIR";
+      case "death place" -> "DTH";
+      case "home" -> "H";
+      case "primary business" -> "PB";
+      case "secondary business" -> "SB";
+      case "temporary" -> "TMP";
+      default -> throw new IllegalStateException("Unexpected address use: " + use.toLowerCase());
+    };
+  }
+
+  @Given("the new patient's address is entered")
+  public void the_new_patient_address_is_entered() {
+
+    PatientInput.PostalAddress address = new PatientInput.PostalAddress(
+        faker.address().streetAddress(),
+        null,
+        faker.address().city(),
+        RandomUtil.getRandomStateCode(),
+        RandomUtil.getRandomString(),
+        RandomUtil.country(),
+        RandomUtil.getRandomNumericString(15),
+        null
+    );
+
+    this.input.active().getAddresses().add(address);
+  }
+
+  @Then("the new patient has the entered address")
+  @Transactional
+  public void the_new_patient_has_the_entered_address() {
+    Person actual = patient.managed();
+
+    Collection<PostalEntityLocatorParticipation> addresses = actual.addresses();
+
+    if (!addresses.isEmpty()) {
+
+      assertThat(addresses)
+          .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsAddresses(input.active().getAddresses()));
     }
 
-    @Given("the new patient's address is entered")
-    public void the_new_patient_address_is_entered() {
+  }
 
-        PatientInput.PostalAddress address = new PatientInput.PostalAddress(
-            faker.address().streetAddress(),
-            null,
-            faker.address().city(),
-            RandomUtil.getRandomStateCode(),
-            RandomUtil.getRandomString(),
-            RandomUtil.country(),
-            RandomUtil.getRandomNumericString(15),
-            null
-        );
+  @Then("the profile has associated addresses")
+  public void the_profile_has_associated_addresses() {
+    long patient = this.activePatient.active().id();
 
-        this.input.active().getAddresses().add(address);
-    }
+    PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
-    @Then("the new patient has the entered address")
-    @Transactional
-    public void the_new_patient_has_the_entered_address() {
-        Person actual = patient.managed();
+    GraphQLPage page = new GraphQLPage(5);
 
-        Collection<PostalEntityLocatorParticipation> addresses = actual.addresses();
+    Page<PatientAddress> actual = this.resolver.resolve(profile, page);
+    assertThat(actual).isNotEmpty();
+  }
 
-        if (!addresses.isEmpty()) {
+  @Then("the patient profile has the new address")
+  public void the_patient_profile_has_the_new_address() {
+    PatientIdentifier patient = this.activePatient.active();
 
-            assertThat(addresses)
-                .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsAddresses(input.active().getAddresses()));
-        }
-        
-    }
+    PatientProfile profile = new PatientProfile(patient.id(), patient.local(), (short) patient.shortId());
 
-    @Then("the profile has associated addresses")
-    public void the_profile_has_associated_addresses() {
-        long patient = this.patients.one().id();
+    GraphQLPage page = new GraphQLPage(5);
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
+    NewPatientAddressInput input = newRequest.active();
 
-        GraphQLPage page = new GraphQLPage(5);
+    Page<PatientAddress> found = this.resolver.resolve(profile, page);
 
-        Page<PatientAddress> actual = this.resolver.resolve(profile, page);
-        assertThat(actual).isNotEmpty();
-    }
+    assertThat(found).anySatisfy(
+        actual -> assertThat(actual)
+            .returns(input.type(), i -> i.type().id())
+            .returns(input.use(), i -> i.use().id())
+            .returns(input.asOf(), PatientAddress::asOf)
+            .returns(input.address1(), PatientAddress::address1)
+            .returns(input.address2(), PatientAddress::address2)
+            .returns(input.city(), PatientAddress::city)
+            .returns(input.state(), i -> i.state().id())
+            .returns(input.county(), i -> i.county().id())
+            .returns(input.zipcode(), PatientAddress::zipcode)
+            .returns(input.country(), i -> i.country().id())
+            .returns(input.censusTract(), PatientAddress::censusTract)
+    );
+  }
 
-    @Then("the patient profile has the new address")
-    public void the_patient_profile_has_the_new_address() {
-        PatientIdentifier patient = this.patients.one();
+  @Then("the patient profile has the expected address")
+  public void the_patient_profile_has_the_expected_address() {
+    PatientIdentifier patient = this.activePatient.active();
 
-        PatientProfile profile = new PatientProfile(patient.id(), patient.local(), (short) patient.shortId());
+    PatientProfile profile = new PatientProfile(patient.id(), patient.local(), (short) patient.shortId());
 
-        GraphQLPage page = new GraphQLPage(5);
+    GraphQLPage page = new GraphQLPage(5);
 
-        NewPatientAddressInput input = newRequest.active();
+    UpdatePatientAddressInput input = updateRequest.active();
 
-        Page<PatientAddress> found = this.resolver.resolve(profile, page);
+    Page<PatientAddress> found = this.resolver.resolve(profile, page);
 
-        assertThat(found).anySatisfy(
-            actual -> assertThat(actual)
-                .returns(input.type(), i -> i.type().id())
-                .returns(input.use(), i -> i.use().id())
-                .returns(input.asOf(), PatientAddress::asOf)
-                .returns(input.address1(), PatientAddress::address1)
-                .returns(input.address2(), PatientAddress::address2)
-                .returns(input.city(), PatientAddress::city)
-                .returns(input.state(), i -> i.state().id())
-                .returns(input.county(), i -> i.county().id())
-                .returns(input.zipcode(), PatientAddress::zipcode)
-                .returns(input.country(), i -> i.country().id())
-                .returns(input.censusTract(), PatientAddress::censusTract)
-        );
-    }
+    assertThat(found).anySatisfy(
+        actual -> assertThat(actual)
+            .returns(input.type(), i -> i.type().id())
+            .returns(input.use(), i -> i.use().id())
+            .returns(input.asOf(), PatientAddress::asOf)
+            .returns(input.address1(), PatientAddress::address1)
+            .returns(input.address2(), PatientAddress::address2)
+            .returns(input.city(), PatientAddress::city)
+            .returns(input.state(), i -> i.state().id())
+            .returns(input.county(), i -> i.county().id())
+            .returns(input.zipcode(), PatientAddress::zipcode)
+            .returns(input.country(), i -> i.country().id())
+            .returns(input.censusTract(), PatientAddress::censusTract)
+    );
+  }
 
-    @Then("the patient profile has the expected address")
-    public void the_patient_profile_has_the_expected_address() {
-        PatientIdentifier patient = this.patients.one();
+  @Then("the profile has no associated addresses")
+  public void the_profile_has_no_associated_addresses() {
+    long patient = this.activePatient.active().id();
 
-        PatientProfile profile = new PatientProfile(patient.id(), patient.local(), (short) patient.shortId());
+    PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
-        GraphQLPage page = new GraphQLPage(5);
+    GraphQLPage page = new GraphQLPage(5);
 
-        UpdatePatientAddressInput input = updateRequest.active();
+    Page<PatientAddress> actual = this.resolver.resolve(profile, page);
+    assertThat(actual).isEmpty();
+  }
 
-        Page<PatientAddress> found = this.resolver.resolve(profile, page);
-
-        assertThat(found).anySatisfy(
-            actual -> assertThat(actual)
-                .returns(input.type(), i -> i.type().id())
-                .returns(input.use(), i -> i.use().id())
-                .returns(input.asOf(), PatientAddress::asOf)
-                .returns(input.address1(), PatientAddress::address1)
-                .returns(input.address2(), PatientAddress::address2)
-                .returns(input.city(), PatientAddress::city)
-                .returns(input.state(), i -> i.state().id())
-                .returns(input.county(), i -> i.county().id())
-                .returns(input.zipcode(), PatientAddress::zipcode)
-                .returns(input.country(), i -> i.country().id())
-                .returns(input.censusTract(), PatientAddress::censusTract)
-        );
-    }
-
-    @Then("the profile has no associated addresses")
-    public void the_profile_has_no_associated_addresses() {
-        long patient = this.patients.one().id();
-
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
-
-        GraphQLPage page = new GraphQLPage(5);
-
-        Page<PatientAddress> actual = this.resolver.resolve(profile, page);
-        assertThat(actual).isEmpty();
-    }
-
-    @Then("the profile addresses are not accessible")
-    public void the_profile_address_is_not_accessible() {
-        long patient = this.patients.one().id();
+  @Then("the profile addresses are not accessible")
+  public void the_profile_address_is_not_accessible() {
+    long patient = this.activePatient.active().id();
 
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
+    PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
-        GraphQLPage page = new GraphQLPage(5);
+    GraphQLPage page = new GraphQLPage(5);
 
-        assertThatThrownBy(
-            () -> this.resolver.resolve(profile, page)
-        )
-            .isInstanceOf(AccessDeniedException.class);
-    }
+    assertThatThrownBy(
+        () -> this.resolver.resolve(profile, page)
+    )
+        .isInstanceOf(AccessDeniedException.class);
+  }
 }

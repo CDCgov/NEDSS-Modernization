@@ -1,3 +1,5 @@
+import { exists } from 'utils';
+
 type DisplayableAddress = {
     address?: string | null;
     address2?: string | null;
@@ -7,8 +9,9 @@ type DisplayableAddress = {
 };
 
 const displayAddress = ({ address, address2, city, state, zipcode }: DisplayableAddress) => {
-    const location = [city, state, zipcode].filter((i) => i).join(' ');
-    return [address, address2, location].filter((i) => i).join('\n');
+    const street = [address, address2].filter(exists).join(', ');
+    const location = [city, state, zipcode].filter(exists).join(', ');
+    return [street, location].filter(exists).join('\n');
 };
 
 export { displayAddress };
