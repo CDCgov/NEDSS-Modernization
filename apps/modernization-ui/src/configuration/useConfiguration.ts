@@ -55,7 +55,7 @@ const useConfiguration = (): { settings: Settings; features: Features; loading: 
             ConfigurationControllerService.getConfigurationUsingGet({
                 authorization: `Bearer ${state.getToken()}`
             }).then((response) => {
-                setConfig((existing) => ({ ...existing, ...response.features }));
+                setConfig((existing) => ({ ...existing, ...(response as Configuration) }));
                 setLoading(false);
             });
         }
