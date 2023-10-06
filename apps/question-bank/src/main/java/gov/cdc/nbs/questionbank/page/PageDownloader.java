@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page;
 
 import java.io.*;
-import java.sql.Date;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -164,7 +163,7 @@ public class PageDownloader {
 		for (WaTemplate page : pages) {
 			List<ConditionCode> pageConditions = new ArrayList<>();
 
-			mappings.stream().filter(p -> p.getWaTemplateUid().equals(page)).collect(Collectors.toList())
+			mappings.stream().filter(p -> p.getWaTemplateUid().equals(page)).toList()
 					.forEach(v ->
 							conditionCodes.stream()
 									.filter(c -> c.getId().equals(v.getConditionCd()))
@@ -172,7 +171,7 @@ public class PageDownloader {
 					);
 
 			List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
-					formatttedRelatedConditions(pageConditions), null != page.getLastChgTime()? dateFormatter.format(page.getLastChgTime()).toString():"",
+					formatttedRelatedConditions(pageConditions), null != page.getLastChgTime()? dateFormatter.format(page.getLastChgTime()):"",
 					getLastUpdatedUser(page.getLastChgUserId()));
 			addRows(table,data);
 
