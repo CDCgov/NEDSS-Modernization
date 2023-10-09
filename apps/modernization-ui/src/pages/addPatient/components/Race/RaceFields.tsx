@@ -2,14 +2,15 @@ import { Checkbox, Fieldset, Grid } from '@trussworks/react-uswds';
 import { Controller, useFormContext } from 'react-hook-form';
 import FormCard from 'components/FormCard/FormCard';
 import { CodedValue } from 'coded';
+import { InitalEntryType } from 'pages/addPatient/AddPatient';
 
 type CodedValues = {
     raceCategories: CodedValue[];
 };
 
-type Props = { id: string; title: string; coded: CodedValues };
+type Props = { id: string; title: string; coded: CodedValues; initalEntry?: InitalEntryType };
 
-export default function RaceFields({ id, title, coded }: Props) {
+export default function RaceFields({ id, title, coded, initalEntry }: Props) {
     const { control } = useFormContext();
 
     const tempArr: any = [];
@@ -53,9 +54,7 @@ export default function RaceFields({ id, title, coded }: Props) {
                                                             }
                                                         }
                                                     }}
-                                                    defaultChecked={
-                                                        value?.find((it: any) => it === race.value) || false
-                                                    }
+                                                    defaultChecked={initalEntry?.race?.includes(race.value)}
                                                     value={value?.find((it: any) => it === race.value) || race.value}
                                                     id={race.value}
                                                     name={'race'}

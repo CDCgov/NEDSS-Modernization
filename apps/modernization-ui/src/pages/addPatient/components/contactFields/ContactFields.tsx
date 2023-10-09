@@ -5,13 +5,15 @@ import { validatePhoneNumber } from 'validation/phone';
 import { Input } from 'components/FormInputs/Input';
 import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
 import { maxLengthRule } from 'validation/entry';
+import { InitalEntryType } from 'pages/addPatient/AddPatient';
 
 type Props = {
     id: string;
     title: string;
+    initialEntry?: InitalEntryType;
 };
 
-export default function ContactFields({ id, title }: Props) {
+export default function ContactFields({ id, title, initialEntry }: Props) {
     const { control } = useFormContext();
 
     const { fields: phoneNumberFields, append: phoneNumberAppend } = useFieldArray({
@@ -38,13 +40,13 @@ export default function ContactFields({ id, title }: Props) {
                                 },
                                 ...maxLengthRule(20)
                             }}
-                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur }, fieldState: { error } }) => (
                                 <PhoneNumberInput
                                     placeholder="333-444-555"
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     label="Home phone"
-                                    defaultValue={value}
+                                    value={initialEntry?.homePhone}
                                     id="homePhone"
                                     error={error?.message}
                                     mask="___-___-____"
@@ -154,6 +156,7 @@ export default function ContactFields({ id, title }: Props) {
                         <Grid col={6}>
                             <Controller
                                 control={control}
+                                defaultValue={initialEntry?.emailAddresses?.[index].email}
                                 name={`emailAddresses[${index}].email`}
                                 rules={{
                                     pattern: {
@@ -162,14 +165,14 @@ export default function ContactFields({ id, title }: Props) {
                                     },
                                     ...maxLengthRule(100)
                                 }}
-                                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                                render={({ field: { onChange, onBlur, name }, fieldState: { error } }) => (
                                     <Input
                                         placeholder="jdoe@gmail.com"
                                         onChange={onChange}
                                         onBlur={onBlur}
                                         type="text"
                                         label="Email"
-                                        defaultValue={value}
+                                        defaultValue={initialEntry?.emailAddresses?.[index].email}
                                         htmlFor={name}
                                         id={name}
                                         error={error?.message}
