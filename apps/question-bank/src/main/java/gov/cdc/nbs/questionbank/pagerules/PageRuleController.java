@@ -7,6 +7,9 @@ import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +67,11 @@ public class PageRuleController {
     @ResponseBody
     public ViewRuleResponse viewRuleResponse(@PathVariable Long ruleId) {
         return pageRuleService.getRuleResponse(ruleId);
+    }
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    @GetMapping("rule")
+    @ResponseBody
+    public Page<ViewRuleResponse> getAllPageRule(@PageableDefault(size = 25) Pageable pageable){
+        return pageRuleService.getAllPageRule(pageable);
     }
 }

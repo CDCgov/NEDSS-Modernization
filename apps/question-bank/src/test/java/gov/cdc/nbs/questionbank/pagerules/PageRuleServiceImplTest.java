@@ -9,7 +9,9 @@ import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -454,4 +457,33 @@ class PageRuleServiceImplTest {
         Assert.assertEquals(jsonString, jsFunctionNameHelper.jsFunction());
     }
 
+    @Test
+    void getAllPageRuleTest() {
+        Pageable pageable= null;
+        Page<WaRuleMetadata> ruleMetadataPage= new PageImpl<>(Collections.singletonList(morbWaRuleMetadata()));
+        Mockito.when(waRuleMetaDataRepository.findAll(pageable)).thenReturn(ruleMetadataPage);
+        Page<ViewRuleResponse> ruleResponse = pageRuleServiceImpl.getAllPageRule(pageable);
+        assertNotNull(ruleResponse);
+
+        WaRuleMetadata data = morbWaRuleMetadata();
+        data.setSourceValues("Test Source values");
+        data.setTargetQuestionIdentifier("Test target questions identifier");
+        ruleMetadataPage= new PageImpl<>(Collections.singletonList(data));
+        Mockito.when(waRuleMetaDataRepository.findAll(pageable)).thenReturn(ruleMetadataPage);
+        ruleResponse = pageRuleServiceImpl.getAllPageRule(pageable);
+        assertNotNull(ruleResponse);
+    }
+
+    private WaRuleMetadata morbWaRuleMetadata() {
+        WaRuleMetadata ruleMetadata = new WaRuleMetadata();
+        ruleMetadata.setId(99L);
+        ruleMetadata.setRuleCd("Hide");
+        ruleMetadata.setRuleExpression("testRuleExpression");
+        ruleMetadata.setErrormsgText("testErrorMsg");
+        ruleMetadata.setLogic(">=");
+        ruleMetadata.setSourceValues(null);
+        ruleMetadata.setTargetType("Question");
+        ruleMetadata.setTargetQuestionIdentifier(null);
+        return ruleMetadata;
+    }
 }

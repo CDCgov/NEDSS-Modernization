@@ -10,10 +10,14 @@ import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -816,5 +820,43 @@ public class PageRuleServiceImpl implements PageRuleService {
         return new ViewRuleResponse(ruleId, ruleMetadata.getWaTemplateUid(), ruleMetadata.getRuleCd(),
                 ruleMetadata.getRuleDescText(), ruleMetadata.getSourceQuestionIdentifier(), sourceValues,
                 ruleMetadata.getLogic(), ruleMetadata.getTargetType(), ruleMetadata.getErrormsgText(), targetValues);
+    }
+
+    @Override
+    public Page<ViewRuleResponse> getAllPageRule(Pageable pageRequest) {
+        Page<WaRuleMetadata> ruleMetadataPage =waRuleMetaDataRepository.findAll(pageRequest);
+
+        List<ViewRuleResponse> ruleMetadata =
+                ruleMetadataPage.getContent().stream().map((rule) ->new ViewRuleResponse(rule.getId(), rule.getWaTemplateUid(), rule.getRuleCd(),
+                rule.getRuleDescText(), rule.getSourceQuestionIdentifier(), buildSourceTargetValues(rule,true),
+                rule.getLogic(), rule.getTargetType(), rule.getErrormsgText(),
+                buildSourceTargetValues(rule,false))).collect(Collectors.toList());
+        return new PageImpl<>(ruleMetadata,ruleMetadataPage.getPageable(),ruleMetadata.size());
+
+    }
+
+    private List<String> buildSourceTargetValues(WaRuleMetadata ruleMetadata, Boolean isSource) {
+
+        List<String> sourceValues = new ArrayList<>();
+        List<String> targetValues = new ArrayList<>();
+        if(isSource){
+            if (ruleMetadata.getSourceValues() == null || ruleMetadata.getTargetQuestionIdentifier() == null) {
+                sourceValues.add(null);
+                return  sourceValues;
+            } else {
+                String[] sourceValue = ruleMetadata.getSourceValues().split(",");
+                return  Arrays.asList(sourceValue);
+            }
+        }else{
+            if (ruleMetadata.getSourceValues() == null || ruleMetadata.getTargetQuestionIdentifier() == null) {
+                targetValues.add(null);
+                return targetValues;
+            } else {
+                String[] targetValue = ruleMetadata.getTargetQuestionIdentifier().split(",");
+                return Arrays.asList(targetValue);
+            }
+
+        }
+
     }
 }
