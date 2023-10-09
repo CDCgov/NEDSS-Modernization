@@ -5,6 +5,8 @@ import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +17,6 @@ public interface WaRuleMetaDataRepository extends JpaRepository<WaRuleMetadata, 
 	
 	public List<WaRuleMetadata> findByWaTemplateUid(Long pageId);
 
-	
+	public Page<WaRuleMetadata> findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase(String sourceValue,String targetValue,Pageable pageable);
+
 }

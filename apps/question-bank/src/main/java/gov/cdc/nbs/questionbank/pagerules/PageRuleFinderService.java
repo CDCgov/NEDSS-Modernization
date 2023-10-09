@@ -7,12 +7,11 @@ import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface PageRuleService {
+public interface PageRuleFinderService {
 
-    CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request) throws RuleException;
+    ViewRuleResponse getRuleResponse(Long ruleId);
 
-    CreateRuleResponse deletePageRule(Long ruleId);
+    Page<ViewRuleResponse> getAllPageRule(Pageable pageRequest);
 
-    CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest request, Long userId) throws RuleException;
-
+    Page<ViewRuleResponse> findPageRule(SearchPageRuleRequest request, Pageable pageable);
 }

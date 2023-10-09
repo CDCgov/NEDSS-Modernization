@@ -10,10 +10,14 @@ import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -51,8 +55,10 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     @Override
     public CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request) {
+        log.info("request.templateUid()::"+request.templateUid());
         WaRuleMetadata waRuleMetadata = setRuleDataValues(userId, request);
         log.info("Saving Rule to DB");
+        log.info("waRuleMetadata.templateUid()::"+waRuleMetadata.getWaTemplateUid());
         waRuleMetaDataRepository.save(waRuleMetadata);
         sendRuleEvent(request);
         return new CreateRuleResponse(waRuleMetadata.getId(), "Rule Created Successfully");
@@ -797,24 +803,5 @@ public class PageRuleServiceImpl implements PageRuleService {
         ruleMetadata.setId(ruleMetadata.getId());
 
         return ruleMetadata;
-    }
-
-    @Override
-    public ViewRuleResponse getRuleResponse(Long ruleId) {
-        WaRuleMetadata ruleMetadata = waRuleMetaDataRepository.getReferenceById(ruleId);
-        List<String> sourceValues = new ArrayList<>();
-        List<String> targetValues = new ArrayList<>();
-        if (ruleMetadata.getSourceValues() == null || ruleMetadata.getTargetQuestionIdentifier() == null) {
-            sourceValues.add(null);
-            targetValues.add(null);
-        } else {
-            String[] sourceValue = ruleMetadata.getSourceValues().split(",");
-            sourceValues = Arrays.asList(sourceValue);
-            String[] targetValue = ruleMetadata.getTargetQuestionIdentifier().split(",");
-            targetValues = Arrays.asList(targetValue);
-        }
-        return new ViewRuleResponse(ruleId, ruleMetadata.getWaTemplateUid(), ruleMetadata.getRuleCd(),
-                ruleMetadata.getRuleDescText(), ruleMetadata.getSourceQuestionIdentifier(), sourceValues,
-                ruleMetadata.getLogic(), ruleMetadata.getTargetType(), ruleMetadata.getErrormsgText(), targetValues);
     }
 }

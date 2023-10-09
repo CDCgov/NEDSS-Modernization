@@ -9,7 +9,7 @@ import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
-
+import org.springframework.data.domain.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +21,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,6 +37,9 @@ class PageRuleServiceImplTest {
 
     @Mock
     private RuleCreatedEventProducer.EnabledProducer ruleCreatedEventProducer;
+
+    @InjectMocks
+    private PageRuleFinderServiceImpl pageRuleFinderServiceImpl;
 
     @BeforeEach
     void setup() {
@@ -289,7 +293,7 @@ class PageRuleServiceImplTest {
         ruleMetadata.setTargetType("Question");
         ruleMetadata.setTargetQuestionIdentifier("test456,test789");
         Mockito.when(waRuleMetaDataRepository.getReferenceById(ruleId)).thenReturn(ruleMetadata);
-        ViewRuleResponse ruleresponse = pageRuleServiceImpl.getRuleResponse(ruleId);
+        ViewRuleResponse ruleresponse = pageRuleFinderServiceImpl.getRuleResponse(ruleId);
         assertNotNull(ruleresponse);
     }
 
@@ -306,7 +310,7 @@ class PageRuleServiceImplTest {
         ruleMetadata.setTargetType("Question");
         ruleMetadata.setTargetQuestionIdentifier(null);
         Mockito.when(waRuleMetaDataRepository.getReferenceById(ruleId)).thenReturn(ruleMetadata);
-        ViewRuleResponse ruleresponse = pageRuleServiceImpl.getRuleResponse(ruleId);
+        ViewRuleResponse ruleresponse = pageRuleFinderServiceImpl.getRuleResponse(ruleId);
         assertNotNull(ruleresponse);
     }
 
@@ -452,6 +456,60 @@ class PageRuleServiceImplTest {
                 " }\n" +
                 "}";
         Assert.assertEquals(jsonString, jsFunctionNameHelper.jsFunction());
+    }
+
+    @Test
+    void getAllPageRuleTest() {
+        Pageable pageable= null;
+        Page<WaRuleMetadata> ruleMetadataPage= new PageImpl<>(Collections.singletonList(morbWaRuleMetadata()));
+        Mockito.when(waRuleMetaDataRepository.findAll(pageable)).thenReturn(ruleMetadataPage);
+        Page<ViewRuleResponse> ruleResponse = pageRuleFinderServiceImpl.getAllPageRule(pageable);
+        assertNotNull(ruleResponse);
+        List<ViewRuleResponse> actualResponse = ruleResponse.stream().toList();
+        assertNotNull(actualResponse);
+        assertEquals(1,actualResponse.size());
+        assertEquals(99,actualResponse.get(0).ruleId());
+        assertEquals("Question",actualResponse.get(0).targetType());
+
+        WaRuleMetadata data = morbWaRuleMetadata();
+        data.setSourceValues("Test Source values");
+        data.setTargetQuestionIdentifier("Test target questions identifier");
+        ruleMetadataPage= new PageImpl<>(Collections.singletonList(data));
+        Mockito.when(waRuleMetaDataRepository.findAll(pageable)).thenReturn(ruleMetadataPage);
+        ruleResponse = pageRuleFinderServiceImpl.getAllPageRule(pageable);
+        assertNotNull(ruleResponse);
+        actualResponse = ruleResponse.stream().toList();
+        assertNotNull(actualResponse);
+        assertEquals(1,actualResponse.size());
+        assertEquals(99,actualResponse.get(0).ruleId());
+    }
+
+    private WaRuleMetadata morbWaRuleMetadata() {
+        WaRuleMetadata ruleMetadata = new WaRuleMetadata();
+        ruleMetadata.setId(99L);
+        ruleMetadata.setRuleCd("Hide");
+        ruleMetadata.setRuleExpression("testRuleExpression");
+        ruleMetadata.setErrormsgText("testErrorMsg");
+        ruleMetadata.setLogic(">=");
+        ruleMetadata.setSourceValues(null);
+        ruleMetadata.setTargetType("Question");
+        ruleMetadata.setTargetQuestionIdentifier(null);
+        return ruleMetadata;
+    }
+
+    @Test
+    void findPageRuleTest() {
+        int page = 0;
+        int size =1;
+        String sort ="id";
+        Pageable pageRequest = PageRequest.of(page,size, Sort.by(sort));
+        SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
+        Page<WaRuleMetadata> ruleMetadataPage= new PageImpl<>(Collections.singletonList(morbWaRuleMetadata()));
+        Mockito.when(waRuleMetaDataRepository.
+                findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase
+                        (request.searchValue(),request.searchValue(),pageRequest)).thenReturn(ruleMetadataPage);
+        Page<ViewRuleResponse> ruleResponse = pageRuleFinderServiceImpl.findPageRule(request,pageRequest);
+        assertNotNull(ruleResponse);
     }
 
 }
