@@ -89,6 +89,7 @@ services:
     environment:
       - NIFI_JVM_HEAP_INIT=1g
       - NIFI_JVM_HEAP_MAX=2g
+      - ENV SINGLE_USER_CREDENTIALS_PASSWORD=fake.fake.fake.1234
     # volumes:
     #   - ./nifi/nifi_drivers:/var/opt/nifi_drivers:ro
     #   - ./nifi/nifi_conf/conf:/opt/nifi/nifi-current/conf:rw
