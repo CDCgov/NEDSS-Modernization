@@ -21,7 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PageRuleControllerTest {
+class PageRuleControllerTest {
 
     @InjectMocks
     private PageRuleController pageRuleController;
