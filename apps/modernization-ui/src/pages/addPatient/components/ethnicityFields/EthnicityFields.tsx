@@ -2,15 +2,14 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Grid, Radio } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
 import { CodedValue } from 'coded';
-import { InitalEntryType } from 'pages/addPatient/AddPatient';
 
 type CodedValues = {
     ethnicGroups: CodedValue[];
 };
 
-type Props = { id: string; title: string; coded: CodedValues; initalEntry?: InitalEntryType };
+type Props = { id: string; title: string; coded: CodedValues };
 
-export default function EthnicityFields({ id, title, coded, initalEntry }: Props) {
+export default function EthnicityFields({ id, title, coded }: Props) {
     const { control } = useFormContext();
 
     return (
@@ -23,10 +22,10 @@ export default function EthnicityFields({ id, title, coded, initalEntry }: Props
                                 key={key}
                                 control={control}
                                 name="ethnicity"
-                                render={({ field: { onChange, name } }) => (
+                                render={({ field: { onChange, name, value } }) => (
                                     <Radio
                                         onChange={onChange}
-                                        defaultChecked={initalEntry?.ethnicity === ethnicity.value}
+                                        defaultChecked={value === ethnicity.value}
                                         value={ethnicity.value}
                                         id={ethnicity.value}
                                         name={name}

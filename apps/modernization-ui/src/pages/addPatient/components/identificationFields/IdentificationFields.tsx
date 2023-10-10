@@ -5,33 +5,21 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
 import { CodedValue } from 'coded';
 import { maxLengthRule } from 'validation/entry';
-import { useEffect } from 'react';
-import { InitalEntryType } from 'pages/addPatient/AddPatient';
 
 type CodedValues = {
     identificationTypes: CodedValue[];
     assigningAuthorities: CodedValue[];
 };
 
-type Props = { id: string; title: string; coded: CodedValues; initalEntry?: InitalEntryType };
+type Props = { id: string; title: string; coded: CodedValues };
 
-export const IdentificationFields = ({ id, title, coded, initalEntry }: Props) => {
+export const IdentificationFields = ({ id, title, coded }: Props) => {
     const { control } = useFormContext();
 
-    const { fields, append, replace } = useFieldArray({
+    const { fields, append } = useFieldArray({
         control,
         name: 'identification'
     });
-
-    useEffect(() => {
-        if (initalEntry && initalEntry.identification && initalEntry.identification?.length > 0) {
-            replace({
-                type: initalEntry.identification[0].type,
-                authority: null,
-                value: initalEntry.identification[0].value
-            });
-        }
-    }, [initalEntry]);
 
     const handleAddAnotherId = () => {
         append({ type: null, authority: null, value: null });

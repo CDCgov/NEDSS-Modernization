@@ -8,16 +8,14 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
-import { InitalEntryType } from 'pages/addPatient/AddPatient';
 
 type Props = {
     id: string;
     title: string;
     coded: LocationCodedValues;
-    initialEntry?: InitalEntryType;
 };
 
-export default function AddressFields({ id, title, coded, initialEntry }: Props) {
+export default function AddressFields({ id, title, coded }: Props) {
     const { control, setValue } = useFormContext();
 
     const selectedState = useWatch({ control, name: 'state' });
@@ -42,14 +40,14 @@ export default function AddressFields({ id, title, coded, initialEntry }: Props)
                             control={control}
                             name="streetAddress1"
                             rules={maxLengthRule(100)}
-                            render={({ field: { onChange, onBlur, name }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <AddressSuggestionInput
                                     id={name}
                                     onBlur={onBlur}
                                     locations={coded}
                                     criteria={{ zip: enteredZip, city: enteredCity, state: selectedState }}
                                     label="Street address 1"
-                                    defaultValue={initialEntry?.streetAddress1}
+                                    defaultValue={value}
                                     onChange={onChange}
                                     onSelection={handleSuggestionSelection}
                                     error={error?.message}
@@ -84,14 +82,14 @@ export default function AddressFields({ id, title, coded, initialEntry }: Props)
                             control={control}
                             name="city"
                             rules={maxLengthRule(100)}
-                            render={({ field: { onChange, onBlur, name }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     id={name}
                                     name={name}
                                     type="text"
                                     label="City"
                                     htmlFor={name}
-                                    defaultValue={initialEntry?.city}
+                                    defaultValue={value}
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     error={error?.message}
@@ -105,10 +103,10 @@ export default function AddressFields({ id, title, coded, initialEntry }: Props)
                         <Controller
                             control={control}
                             name="state"
-                            render={({ field: { onChange, name } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     onChange={onChange}
-                                    defaultValue={initialEntry?.state}
+                                    defaultValue={value}
                                     name={name}
                                     htmlFor={name}
                                     label="State"
@@ -129,14 +127,14 @@ export default function AddressFields({ id, title, coded, initialEntry }: Props)
                                 },
                                 ...maxLengthRule(20)
                             }}
-                            render={({ field: { onChange, onBlur, name }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     id={name}
                                     name={name}
                                     type="text"
                                     label="ZIP"
                                     htmlFor={name}
-                                    defaultValue={initialEntry?.zip}
+                                    defaultValue={value}
                                     error={error?.message}
                                     onBlur={onBlur}
                                     onChange={onChange}

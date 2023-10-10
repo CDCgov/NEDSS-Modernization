@@ -26,6 +26,7 @@ import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'pages/pati
 import { isMissingFields } from './isMissingFields';
 import { EncryptionControllerService } from 'generated/services/EncryptionControllerService';
 import { UserContext } from 'user';
+import { internalizeDate } from 'date';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -69,21 +70,6 @@ type EntryState =
       }
     | { step: 'created'; id: number; name: string };
 
-export type InitalEntryType = {
-    firstName?: string;
-    lastName?: string;
-    birthGender?: string;
-    streetAddress1?: string;
-    city?: string;
-    state?: string;
-    zip?: string;
-    ethnicity?: string;
-    homePhone?: string;
-    race?: string[];
-    identification?: [{ type: string; value: string }];
-    emailAddresses?: [{ email: string }];
-};
-
 const resolveName = (input: PersonInput): string => {
     const name = input?.names && input?.names[0];
 
@@ -94,7 +80,6 @@ const AddPatient = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const { state } = useContext(UserContext);
-    const [initalEntry, setInitialEntry] = useState<InitalEntryType>();
 
     const locations = useLocationCodedValues();
 
@@ -105,6 +90,39 @@ const AddPatient = () => {
 
     const [entryState, setEntryState] = useState<EntryState>({ step: 'entry' });
 
+    const initialEntries = async () => {
+        try {
+            const filter = await EncryptionControllerService.decryptUsingPost({
+                encryptedString: searchParams.get('q') || '',
+                authorization: `Bearer ${state.getToken()}`
+            });
+
+            return {
+                firstName: filter?.firstName ?? '',
+                lastName: filter?.lastName ?? '',
+                dateOfBirth: internalizeDate(filter.dateOfBirth) ?? '',
+                currentGender: filter?.gender ?? '',
+                streetAddress1: filter?.address ?? '',
+                city: filter?.city ?? '',
+                state: filter?.state ?? '',
+                zip: filter?.zip ?? '',
+                ethnicity: filter?.ethnicity ?? '',
+                homePhone: filter?.phoneNumber ?? '',
+                race: filter?.race ? [filter.race] : [],
+                identification: [
+                    {
+                        type: filter?.identification?.identificationType,
+                        value: filter?.identification?.identificationNumber
+                    }
+                ],
+                emailAddresses: [{ email: filter?.email ?? '' }]
+            };
+        } catch (error) {
+            console.error('Error decrypting data', error);
+            return null;
+        }
+    };
+
     const methods = useForm<NewPatientEntry, DefaultNewPatentEntry>({
         defaultValues: initialEntry(),
         mode: 'onBlur'
@@ -112,35 +130,22 @@ const AddPatient = () => {
 
     const {
         handleSubmit,
+        reset,
         formState: { errors }
     } = methods;
 
     useEffect(() => {
-        EncryptionControllerService.decryptUsingPost({
-            encryptedString: searchParams.get('q') || '',
-            authorization: `Bearer ${state.getToken()}`
-        }).then(async (filter) => {
-            setInitialEntry({
-                firstName: filter?.firstName ?? '',
-                lastName: filter?.lastName ?? '',
-                birthGender: filter?.gender ?? '',
-                streetAddress1: filter?.address ?? '',
-                city: filter?.city ?? '',
-                state: filter?.state ?? '',
-                zip: filter?.zip ?? '',
-                ethnicity: filter?.ethnicity ?? '',
-                homePhone: filter?.phoneNumber ?? '',
-                race: filter?.race ? [filter?.race] : [],
-                identification: [
-                    {
-                        type: filter?.identification?.identificationType,
-                        value: filter?.identification?.identificationNumber
-                    }
-                ],
-                emailAddresses: [{ email: filter?.email }]
-            });
-        });
-    }, [searchParams.get('q')]);
+        const fetchEntries = async () => {
+            try {
+                const data: any = await initialEntries();
+                reset({ ...initialEntry(), ...data });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        searchParams.get('q') && fetchEntries();
+    }, []);
 
     const formHasErrors = Object.keys(errors).length > 0;
 
@@ -310,13 +315,11 @@ const AddPatient = () => {
                                     />
 
                                     <NameFields
-                                        initalEntry={initalEntry}
                                         id={'section-Name'}
                                         title="Name information"
                                         coded={{ suffixes: coded.suffixes }}
                                     />
                                     <OtherInfoFields
-                                        initialEntry={initalEntry}
                                         id={'section-Other'}
                                         title="Other information"
                                         coded={{
@@ -325,19 +328,9 @@ const AddPatient = () => {
                                             maritalStatuses: coded.maritalStatuses
                                         }}
                                     />
-                                    <AddressFields
-                                        initialEntry={initalEntry}
-                                        id={'section-Address'}
-                                        title="Address"
-                                        coded={locations}
-                                    />
-                                    <ContactFields
-                                        initialEntry={initalEntry}
-                                        id={'section-Telephone'}
-                                        title="Telephone"
-                                    />
+                                    <AddressFields id={'section-Address'} title="Address" coded={locations} />
+                                    <ContactFields id={'section-Telephone'} title="Telephone" />
                                     <EthnicityFields
-                                        initalEntry={initalEntry}
                                         id={'section-Ethnicity'}
                                         title="Ethnicity"
                                         coded={{
@@ -345,13 +338,11 @@ const AddPatient = () => {
                                         }}
                                     />
                                     <RaceFields
-                                        initalEntry={initalEntry}
                                         id={'section-Race'}
                                         title={'Race'}
                                         coded={{ raceCategories: coded.raceCategories }}
                                     />
                                     <IdentificationFields
-                                        initalEntry={initalEntry}
                                         id={'section-Identification'}
                                         title="Identification"
                                         coded={{

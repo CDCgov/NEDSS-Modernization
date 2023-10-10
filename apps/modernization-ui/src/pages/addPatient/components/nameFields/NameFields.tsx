@@ -5,15 +5,14 @@ import FormCard from 'components/FormCard/FormCard';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
 import { validNameRule } from 'validation/entry';
-import { InitalEntryType } from 'pages/addPatient/AddPatient';
 
 type CodedValues = {
     suffixes: CodedValue[];
 };
 
-type Props = { id: string; title: string; coded: CodedValues; initalEntry?: InitalEntryType };
+type Props = { id: string; title: string; coded: CodedValues };
 
-const NameFields = ({ id, title, coded, initalEntry }: Props) => {
+const NameFields = ({ id, title, coded }: Props) => {
     const { control } = useFormContext();
     return (
         <FormCard id={id} title={title}>
@@ -24,13 +23,13 @@ const NameFields = ({ id, title, coded, initalEntry }: Props) => {
                             control={control}
                             name="lastName"
                             rules={validNameRule}
-                            render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     onBlur={onBlur}
                                     onChange={onChange}
                                     type="text"
                                     label="Last"
-                                    defaultValue={initalEntry?.lastName}
+                                    defaultValue={value}
                                     htmlFor={name}
                                     id={name}
                                     name={name}
@@ -46,13 +45,13 @@ const NameFields = ({ id, title, coded, initalEntry }: Props) => {
                             control={control}
                             name="firstName"
                             rules={validNameRule}
-                            render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
                                     onBlur={onBlur}
                                     onChange={onChange}
                                     type="text"
                                     label="First"
-                                    defaultValue={initalEntry?.firstName}
+                                    defaultValue={value}
                                     htmlFor={name}
                                     id={name}
                                     error={error?.message}

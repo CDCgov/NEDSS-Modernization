@@ -8,7 +8,6 @@ import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { maxLengthRule } from 'validation/entry';
-import { InitalEntryType } from 'pages/addPatient/AddPatient';
 
 type CodedValues = {
     deceased: CodedValue[];
@@ -16,9 +15,9 @@ type CodedValues = {
     maritalStatuses: CodedValue[];
 };
 
-type Props = { id: string; title: string; coded: CodedValues; initialEntry?: InitalEntryType };
+type Props = { id: string; title: string; coded: CodedValues };
 
-export default function OtherInfoFields({ id, title, coded, initialEntry }: Props) {
+export default function OtherInfoFields({ id, title, coded }: Props) {
     const { control } = useFormContext();
 
     const selectedDeceased = useWatch({ control, name: 'deceased' });
@@ -60,9 +59,9 @@ export default function OtherInfoFields({ id, title, coded, initialEntry }: Prop
                         <Controller
                             control={control}
                             name="currentGender"
-                            render={({ field: { onChange, name } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
-                                    defaultValue={initialEntry?.birthGender}
+                                    defaultValue={value}
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
