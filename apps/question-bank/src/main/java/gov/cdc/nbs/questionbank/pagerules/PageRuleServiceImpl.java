@@ -827,7 +827,7 @@ public class PageRuleServiceImpl implements PageRuleService {
         Page<WaRuleMetadata> ruleMetadataPage =waRuleMetaDataRepository.findAll(pageRequest);
 
         List<ViewRuleResponse> ruleMetadata =
-                ruleMetadataPage.getContent().stream().map((rule) ->new ViewRuleResponse(rule.getId(), rule.getWaTemplateUid(), rule.getRuleCd(),
+                ruleMetadataPage.getContent().stream().map(rule ->new ViewRuleResponse(rule.getId(), rule.getWaTemplateUid(), rule.getRuleCd(),
                 rule.getRuleDescText(), rule.getSourceQuestionIdentifier(), buildSourceTargetValues(rule,true),
                 rule.getLogic(), rule.getTargetType(), rule.getErrormsgText(),
                 buildSourceTargetValues(rule,false))).collect(Collectors.toList());
@@ -835,25 +835,21 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     }
 
-    private List<String> buildSourceTargetValues(WaRuleMetadata ruleMetadata, Boolean isSource) {
+    private List<String> buildSourceTargetValues(WaRuleMetadata ruleMetadata, boolean isSource) {
 
         List<String> sourceValues = new ArrayList<>();
         List<String> targetValues = new ArrayList<>();
         if(isSource){
             if (ruleMetadata.getSourceValues() == null || ruleMetadata.getTargetQuestionIdentifier() == null) {
-                sourceValues.add(null);
                 return  sourceValues;
             } else {
-                String[] sourceValue = ruleMetadata.getSourceValues().split(",");
-                return  Arrays.asList(sourceValue);
+               return Arrays.stream(ruleMetadata.getSourceValues().split(",")).toList();
             }
         }else{
             if (ruleMetadata.getSourceValues() == null || ruleMetadata.getTargetQuestionIdentifier() == null) {
-                targetValues.add(null);
                 return targetValues;
             } else {
-                String[] targetValue = ruleMetadata.getTargetQuestionIdentifier().split(",");
-                return Arrays.asList(targetValue);
+                return Arrays.stream(ruleMetadata.getTargetQuestionIdentifier().split(",")).toList();
             }
 
         }

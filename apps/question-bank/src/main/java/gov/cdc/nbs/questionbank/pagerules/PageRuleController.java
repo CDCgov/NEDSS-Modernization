@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/")
+@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+@RequestMapping("/api/v1/rules")
 public class PageRuleController {
 
     private final PageRuleService pageRuleService;
@@ -30,8 +31,7 @@ public class PageRuleController {
         this.pageRuleService = pageRuleService;
     }
 
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @PostMapping("rule")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public CreateRuleResponse createBusinessRule(@RequestBody CreateRuleRequest request) {
@@ -46,30 +46,26 @@ public class PageRuleController {
         }
     }
 
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @DeleteMapping("rule/{ruleId}")
+    @DeleteMapping("/{ruleId}")
     @ResponseBody
     public CreateRuleResponse deletePageRule(@PathVariable Long ruleId) {
         return pageRuleService.deletePageRule(ruleId);
     }
 
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @PutMapping("rule/{ruleId}")
+    @PutMapping("/{ruleId}")
     @ResponseBody
     public CreateRuleResponse updatePageRule(@PathVariable Long ruleId,
-            @RequestBody CreateRuleRequest request) throws RuleException {
+                                             @RequestBody CreateRuleRequest request) throws RuleException {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return pageRuleService.updatePageRule(ruleId, request, userId);
     }
 
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @GetMapping("rule/{ruleId}")
+    @GetMapping("/{ruleId}")
     @ResponseBody
     public ViewRuleResponse viewRuleResponse(@PathVariable Long ruleId) {
         return pageRuleService.getRuleResponse(ruleId);
     }
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @GetMapping("rule")
+    @GetMapping
     @ResponseBody
     public Page<ViewRuleResponse> getAllPageRule(@PageableDefault(size = 25) Pageable pageable){
         return pageRuleService.getAllPageRule(pageable);

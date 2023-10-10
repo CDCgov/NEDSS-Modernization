@@ -32,7 +32,7 @@ public class PageRuleControllerTest {
     private UserDetailsProvider userDetailsProvider;
 
     @Test
-    public void shouldReturnCreateRuleResponse() throws Exception {
+    void shouldReturnCreateRuleResponse() throws Exception {
         CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
         NbsUserDetails nbsUserDetails =
                 NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
@@ -51,7 +51,7 @@ public class PageRuleControllerTest {
 
 
     @Test
-    public void shouldDeleteRuleId() {
+    void shouldDeleteRuleId() {
         Long ruleId = 99L;
         NbsUserDetails nbsUserDetails =
                 NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
@@ -62,7 +62,7 @@ public class PageRuleControllerTest {
     }
 
     @Test
-    public void shouldUpdateRule() throws RuleException {
+    void shouldUpdateRule() throws RuleException {
         Long ruleId = 99L;
         Long userId = 123L;
         CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
@@ -76,7 +76,7 @@ public class PageRuleControllerTest {
     }
 
     @Test
-    public void shouldReadRule() {
+    void shouldReadRule() {
         Long ruleId = 99L;
         List<String> sourceValues = new ArrayList<>();
         List<String> targetValues = new ArrayList<>();
@@ -87,7 +87,7 @@ public class PageRuleControllerTest {
         assertNotNull(ruleResponse);
     }
     @Test
-    public void shouldReadAllRule() throws Exception {
+    void shouldReadAllRule() throws Exception {
         int page = 0;
         int size =1;
         String sort ="id";
@@ -105,7 +105,7 @@ public class PageRuleControllerTest {
     }
 
     @Test
-    public void getAllPageRuleTest() throws Exception {
+   void getAllPageRuleTest() throws Exception {
         int page = 0;
         int size =1;
         String sort ="id";
