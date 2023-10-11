@@ -1,5 +1,5 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PersonInput, useCreatePatientMutation } from 'generated/graphql/schema';
 import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
@@ -24,9 +24,7 @@ import { VerifiableAdddress, AddressVerificationModal } from 'address/verificati
 import { orNull } from 'utils';
 import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'pages/patient/add';
 import { isMissingFields } from './isMissingFields';
-import { EncryptionControllerService } from 'generated/services/EncryptionControllerService';
-import { UserContext } from 'user';
-import { internalizeDate } from 'date';
+import { usePreFilled } from './usePreFilled';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -78,11 +76,8 @@ const resolveName = (input: PersonInput): string => {
 
 const AddPatient = () => {
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const { state } = useContext(UserContext);
 
     const locations = useLocationCodedValues();
-
     const coded = useAddPatientCodedValues();
 
     const [handleSavePatient] = useCreatePatientMutation();
@@ -90,38 +85,11 @@ const AddPatient = () => {
 
     const [entryState, setEntryState] = useState<EntryState>({ step: 'entry' });
 
-    const initialEntries = async () => {
-        try {
-            const filter = await EncryptionControllerService.decryptUsingPost({
-                encryptedString: searchParams.get('q') || '',
-                authorization: `Bearer ${state.getToken()}`
-            });
+    const prefillled = usePreFilled(initialEntry());
 
-            return {
-                firstName: filter?.firstName ?? '',
-                lastName: filter?.lastName ?? '',
-                dateOfBirth: internalizeDate(filter.dateOfBirth) ?? '',
-                currentGender: filter?.gender ?? '',
-                streetAddress1: filter?.address ?? '',
-                city: filter?.city ?? '',
-                state: filter?.state ?? '',
-                zip: filter?.zip ?? '',
-                ethnicity: filter?.ethnicity ?? '',
-                homePhone: filter?.phoneNumber ?? '',
-                race: filter?.race ? [filter.race] : [],
-                identification: [
-                    {
-                        type: filter?.identification?.identificationType,
-                        value: filter?.identification?.identificationNumber
-                    }
-                ],
-                emailAddresses: [{ email: filter?.email ?? '' }]
-            };
-        } catch (error) {
-            console.error('Error decrypting data', error);
-            return null;
-        }
-    };
+    useEffect(() => {
+        reset(prefillled);
+    }, [prefillled]);
 
     const methods = useForm<NewPatientEntry, DefaultNewPatentEntry>({
         defaultValues: initialEntry(),
@@ -133,19 +101,6 @@ const AddPatient = () => {
         reset,
         formState: { errors }
     } = methods;
-
-    useEffect(() => {
-        const fetchEntries = async () => {
-            try {
-                const data: any = await initialEntries();
-                reset({ ...initialEntry(), ...data });
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        };
-
-        searchParams.get('q') && fetchEntries();
-    }, []);
 
     const formHasErrors = Object.keys(errors).length > 0;
 

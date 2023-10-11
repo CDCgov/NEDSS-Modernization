@@ -254,7 +254,7 @@ export const AdvancedSearch = () => {
 
     // handles submit from Person Search and Event Search,
     // it simply encrypts the filter object and sets it as the query parameter
-    const [searchCriteria, setSearchCriteria] = useState('');
+
     const handleSubmit = async (filter: PersonFilter | InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {
         let search = '';
         if (!isEmpty(filter)) {
@@ -266,7 +266,6 @@ export const AdvancedSearch = () => {
 
             // URI encode encrypted filter
             search = `?q=${encodeURIComponent(encryptedFilter.value)}&type=${type}`;
-            setSearchCriteria(`?q=${encodeURIComponent(encryptedFilter.value)}`);
             navigate({
                 pathname: '/advanced-search',
                 search
@@ -323,7 +322,13 @@ export const AdvancedSearch = () => {
 
     function handleAddNewPatientClick(): void {
         setShowAddNewDropDown(false);
-        navigate({ pathname: '/add-patient', search: searchCriteria });
+        const criteria = searchParams.get('q');
+
+        if (criteria) {
+            navigate('/add-patient', { state: { criteria } });
+        } else {
+            navigate('/add-patient');
+        }
     }
 
     function handleAddNewLabReportClick(): void {

@@ -3,7 +3,7 @@ import { INTERNAL_DATE_FORMAT } from './Dates';
 
 const externalized = (input: Date) => input.toISOString();
 
-export const externalizeDateTime = (input: string | Date | null) => {
+export const externalizeDateTime = (input: string | Date | null | undefined) => {
     if (input) {
         if (typeof input === 'string') {
             return externalized(parse(new Date(), INTERNAL_DATE_FORMAT)(input));
