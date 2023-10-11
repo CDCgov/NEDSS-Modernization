@@ -16,6 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 
@@ -51,7 +55,7 @@ public class PageRuleSteps {
     @Given("I make a request to add page rule request")
     public void i_create_page_rule_request() {
         try {
-            ruleRequest = RuleRequestMother.ruleRequest();
+            ruleRequest = ruleRequest();
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -77,8 +81,8 @@ public class PageRuleSteps {
     @Given("I make a request to update page rule request")
     public void i_update_page_rule() {
         try {
-            Long ruleId = 99L;
-            ruleRequest = RuleRequestMother.ruleRequest();
+            Long ruleId = ruleResponse.ruleId();
+            ruleRequest = ruleRequest();
 
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -121,7 +125,7 @@ public class PageRuleSteps {
     @Given("I make a request to delete page rule request")
     public void i_delete_page_rule() {
         try {
-            ruleId = 99L;
+            ruleId = ruleResponse.ruleId();
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -218,4 +222,31 @@ public class PageRuleSteps {
         }
     }
 
+    private static CreateRuleRequest ruleRequest() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Admission Date");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("404400");
+
+        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
+        List<String> sourceIds = new ArrayList<>();
+        sourceIds.add("Test Id");
+
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueText.add("Dengue virus");
+        CreateRuleRequest.SourceValues sourceValue = new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
+        sourceValues.add(sourceValue);
+        return new CreateRuleRequest(
+                1000274L,
+                "Enable",
+                "Rule Desc",
+                "testSource",
+                "ARB001",
+                sourceValues,
+                true,
+                "=",
+                "QUESTION",
+                targetValuesList,
+                targetIdentifiers);
+    }
 }
