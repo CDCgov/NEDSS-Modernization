@@ -99,6 +99,7 @@ export const PatientProfile = () => {
                         </Button>
                         {permissions.delete && (
                             <ModalToggleButton
+                                disabled={profile?.patient?.status !== 'ACTIVE'}
                                 modalRef={modalRef}
                                 opener
                                 className="delete-btn display-inline-flex"
