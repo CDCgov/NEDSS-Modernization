@@ -124,7 +124,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
                     <div className="grid-row">
                         <ClassicButton
                             disabled={
-                                permissions &&
+                                permissions.compareInvestigation &&
                                 (checkedItems.length !== 2 || checkedItems?.[0]?.value !== checkedItems?.[1]?.value)
                             }
                             type="button"
