@@ -9,6 +9,7 @@ import { sort } from './PatientInvestigationSorter';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { Direction } from 'sorting';
 import { ClassicButton, ClassicLink } from 'classic';
+import { usePatientProfilePermissions } from '../permission';
 
 const asTableBody =
     (patient?: string) =>
@@ -64,6 +65,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
     const [total, setTotal] = useState<number>(0);
     const [items, setItems] = useState<any>([]);
     const [bodies, setBodies] = useState<TableBody[]>([]);
+    const permissions = usePatientProfilePermissions();
 
     const handleComplete = (data: FindInvestigationsForPatientQuery) => {
         setTotal(data?.findInvestigationsForPatient?.total || 0);
@@ -122,7 +124,8 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
                     <div className="grid-row">
                         <ClassicButton
                             disabled={
-                                checkedItems.length !== 2 || checkedItems?.[0]?.value !== checkedItems?.[1]?.value
+                                permissions &&
+                                (checkedItems.length !== 2 || checkedItems?.[0]?.value !== checkedItems?.[1]?.value)
                             }
                             type="button"
                             className="grid-row"
