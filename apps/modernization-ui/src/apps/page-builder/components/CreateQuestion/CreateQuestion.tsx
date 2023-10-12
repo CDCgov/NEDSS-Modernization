@@ -1,13 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import './CreateQuestion.scss';
 import ReactSelect, { components } from 'react-select';
-import { ModalToggleButton, Radio, TextInput, Dropdown } from '@trussworks/react-uswds';
+import {
+    ModalToggleButton,
+    Radio,
+    TextInput,
+    Dropdown,
+    ButtonGroup,
+    Button,
+    ModalRef,
+    Textarea
+} from '@trussworks/react-uswds';
 import { ValueSetControllerService, QuestionControllerService, UpdateQuestionRequest } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
-
-import { fieldType } from '../../constant/constant';
+import { fieldType, text as textOption } from '../../constant/constant';
+import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
+import { ValuesetLibrary } from '../../pages/ValuesetLibrary/ValuesetLibrary';
 
 export const CreateQuestion = ({ modalRef, question }: any) => {
     const init = {
@@ -25,10 +35,14 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         labelInMessage: '',
         codeSystem: '',
         hl7DataType: ',',
+        HL7Segment: ',',
         requiredInMessage: false,
         dataMartColumnName: '',
         adminComments: '',
         codeSet: 'PHIN',
+        relatedUnits: 'No',
+        futureDates: 'No',
+        displayType: '',
         reportLabel: '',
         defaultValue: 'test@gmai.com',
         fieldLength: '50',
@@ -36,7 +50,10 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         fieldSize: '50',
         tooltip: '',
         displayControl: 0,
-        allowFutureDates: true
+        minValue: 0,
+        maxValue: 0,
+        allowFutureDates: false,
+        dateFormat: ''
     };
     const validation = {
         label: { required: true, error: false, fb: false },
@@ -51,7 +68,13 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         messageVariableId: { required: true, error: false, fb: false },
         labelInMessage: { required: true, error: false, fb: false },
         codeSystem: { required: true, error: false, fb: false },
-        hl7DataType: { required: true, error: false, fb: false }
+        hl7DataType: { required: true, error: false, fb: false },
+        tooltip: { required: true, error: false, fb: false },
+        displayType: { required: true, error: false, fb: false },
+        fieldLength: { required: true, error: false, fb: false },
+        minValue: { required: true, error: false, fb: false },
+        maxValue: { required: true, error: false, fb: false },
+        dateFormat: { required: true, error: false, fb: false }
     };
 
     // Fields
@@ -62,6 +85,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const [familyOptions, setFamilyOptions] = useState([]);
     const [groupOptions, setGroupOptions] = useState([]);
     const [isValid, setIsValid] = useState(validation);
+    const [selectedFieldType, setSelectedFieldType] = useState('');
     const [codeSystemOptionList, setCodeSystemOptionList] = useState([]);
     const authorization = `Bearer ${state.getToken()}`;
 
@@ -73,7 +97,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setQuestionData(updatedQuestion);
         }
     }, [question]);
-
     const fetchFamilyOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization,
@@ -87,7 +110,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setFamilyOptions(familyList);
         });
     };
-
     const fetchGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization,
@@ -192,9 +214,12 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         });
     };
     const handleQuestionInput = ({ target }: any) => {
+        const { type, value, checked, name } = target;
+        const newValue =
+            type === 'radio' && name !== 'codeSet' ? value === 'Yes' : type === 'checkbox' ? checked : value;
         setQuestionData({
             ...questionData,
-            [target.name]: target?.type === 'checkbox' ? target?.checked : target.value
+            [target.name]: newValue
         });
     };
     const handleValidation = ({ target }: React.ChangeEvent<HTMLInputElement>, unique = true) => {
@@ -305,6 +330,84 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 return '/icons/single-select.svg';
         }
     };
+    const fieldTypeTab = [
+        { name: 'Value set' },
+        { name: 'Numerics entry' },
+        { name: 'Text only' },
+        { name: 'Date picker' }
+    ];
+
+    const valueSetmodalRef = useRef<ModalRef>(null);
+    const renderValueSet = (
+        <div className="">
+            <label>Value set</label>
+            <ModalToggleButton modalRef={valueSetmodalRef} className="width-full margin-top-1em" type="submit" outline>
+                Search Value set
+            </ModalToggleButton>
+            <ModalComponent
+                isLarge
+                modalRef={valueSetmodalRef}
+                modalHeading={'Add value set'}
+                modalBody={<ValuesetLibrary modalRef={modalRef} hideTabs types="recent" />}
+            />
+            <br></br>
+        </div>
+    );
+    const renderUserInterface = (
+        <>
+            <h4>User Interface</h4>
+            <div className={isValid['label'].error ? 'error-border' : ''}>
+                <label>
+                    Question Label<span className="mandatory-indicator">*</span>
+                </label>
+                {isValid['label'].error && <label className="error-text">Question Label Not Valid</label>}
+                <TextInput
+                    className="field-space"
+                    type="text"
+                    id="questionLabel"
+                    maxLength={50}
+                    data-testid="questionLabel"
+                    onBlur={(e: any) => handleValidation(e, false)}
+                    name="label"
+                    style={{ border: isValid['label'].error ? '1px solid #dc3545' : '1px solid black' }}
+                    value={questionData.label}
+                    onChange={handleQuestionInput}
+                />
+            </div>
+            <div className={isValid['tooltip'].error ? 'error-border' : ''}>
+                <label>
+                    Tooltip <span className="mandatory-indicator">*</span>
+                </label>
+                {isValid['tooltip'].error && <label className="error-text">Tooltip Not Valid</label>}
+                <Textarea
+                    className="field-space"
+                    id="tooltip"
+                    maxLength={2000}
+                    data-testid="tooltip"
+                    rows={2}
+                    onBlur={(e: any) => handleValidation(e, false)}
+                    name="tooltip"
+                    style={{ border: isValid['tooltip'].error ? '1px solid #dc3545' : '1px solid black' }}
+                    value={questionData.tooltip}
+                    onChange={handleQuestionInput}
+                />
+            </div>
+            <label>
+                Display Type <span className="mandatory-indicator">*</span>
+            </label>
+            <br></br>
+            <Dropdown
+                className="field-space"
+                id="displayType"
+                name="displayType"
+                value={questionData.displayType}
+                onChange={handleQuestionInput}>
+                <option>-Select-</option>
+                {buildCodeOptions(textOption)}
+            </Dropdown>
+            <hr className="divider" />
+        </>
+    );
 
     return (
         <div className="create-question">
@@ -317,71 +420,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         All fields with <span className="mandatory-indicator">*</span> are required
                     </label>
                 </div>
-                <p className="fields-info margin-bottom-2em">These fields will be displayed to your users</p>
-                <div className={isValid['label'].error ? 'error-border' : ''}>
-                    <label>
-                        Question Label<span className="mandatory-indicator">*</span>
-                    </label>
-                    {isValid['label'].error && <label className="error-text">Question Label Not Valid</label>}
-                    <TextInput
-                        className="field-space"
-                        type="text"
-                        id="questionLabel"
-                        data-testid="questionLabel"
-                        onBlur={(e: any) => handleValidation(e, false)}
-                        name="label"
-                        style={{ border: isValid['label'].error ? '1px solid #dc3545' : '1px solid black' }}
-                        value={questionData.label}
-                        onChange={handleQuestionInput}
-                    />
-                </div>
-                <label>Description</label>
-                <br></br>
-                <TextInput
-                    className="field-space"
-                    type="text"
-                    id="questionDesc"
-                    data-testid="questionDesc"
-                    name="description"
-                    style={{ border: '1px solid black' }}
-                    value={questionData.description}
-                    onChange={handleQuestionInput}
-                />
-                <br></br>
-                <label>Field Type</label>
-                <br></br>
-                <ReactSelect
-                    className="field-space"
-                    options={fieldType}
-                    name="programArea"
-                    defaultValue={setFieldType(questionData.type)}
-                    placeholder="- Select -"
-                    formatOptionLabel={formatOptionLabel}
-                    styles={{
-                        ...customStyles
-                    }}
-                    isSearchable={false}
-                    components={{ DropdownIndicator: USWDSDropdownIndicator }}></ReactSelect>
-                <hr className="divider" />
-                <p className="fields-info">
-                    These fields will not be displayed to your users, it only makes it easier for others to search for
-                    this question in the Question library
-                </p>
-                <br></br>
-                <label>
-                    Subgroup <span className="mandatory-indicator">*</span>
-                </label>
-                <br></br>
-                <Dropdown
-                    className="field-space"
-                    name="subgroup"
-                    id="subgroup"
-                    defaultValue={questionData.subgroup}
-                    onChange={handleQuestionInput}>
-                    <option>-Select-</option>
-                    {buildOptions(familyOptions)}
-                </Dropdown>
-                <br></br>
+                <h4>Basic information</h4>
                 <div className={'display-flex'}>
                     <Radio
                         name="codeSet"
@@ -408,9 +447,10 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     </label>
                     {isValid['uniqueId'].error && <label className="error-text">Unique ID Not Valid</label>}
                     <TextInput
-                        className="field-space"
+                        className="field-spac margin-bottom-0"
                         type="text"
                         id="uniqueId"
+                        maxLength={50}
                         data-testid="uniqueId"
                         name="uniqueId"
                         onBlur={handleValidation}
@@ -418,6 +458,9 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         value={questionData.uniqueId}
                         onChange={handleQuestionInput}
                     />
+                    <p className="fields-help-text margin-bottom-1em margin-top-0">
+                        If you decide not to provide a UNIQUE ID the system will generate one for you.
+                    </p>
                 </div>
                 <div className={isValid['uniqueName'].error ? 'error-border' : ''}>
                     <label>
@@ -428,6 +471,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         className="field-space"
                         type="text"
                         id="uniqueName"
+                        maxLength={50}
                         data-testid="uniqueName"
                         name="uniqueName"
                         onBlur={handleValidation}
@@ -436,9 +480,200 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         onChange={handleQuestionInput}
                     />
                 </div>
-                <p className="description">Is this question required?</p>
-                <ToggleButton defaultChecked={true} onChange={handleQuestionInput} name="requiredMessage" />
+                <label>
+                    Subgroup <span className="mandatory-indicator">*</span>
+                </label>
+                <br></br>
+                <Dropdown
+                    className="field-space"
+                    name="subgroup"
+                    id="subgroup"
+                    defaultValue={questionData.subgroup}
+                    onChange={handleQuestionInput}>
+                    <option>-Select-</option>
+                    {buildOptions(familyOptions)}
+                </Dropdown>
+                <label>Description</label>
+                <br></br>
+                <Textarea
+                    className="field-space"
+                    id="questionDesc"
+                    data-testid="questionDesc"
+                    name="description"
+                    rows={1}
+                    maxLength={50}
+                    style={{ border: '1px solid black' }}
+                    value={questionData.description}
+                    onChange={handleQuestionInput}
+                />
+                <label>Field Type</label>
+                <ReactSelect
+                    className="field-space display-none"
+                    options={fieldType}
+                    name="programArea"
+                    defaultValue={setFieldType(questionData.type)}
+                    placeholder="- Select -"
+                    formatOptionLabel={formatOptionLabel}
+                    styles={{
+                        ...customStyles
+                    }}
+                    isSearchable={false}
+                    components={{ DropdownIndicator: USWDSDropdownIndicator }}></ReactSelect>
+                <br></br>
+                <ButtonGroup type="segmented">
+                    {fieldTypeTab.map((field, index) => (
+                        <Button
+                            key={index}
+                            type="button"
+                            outline={field.name !== selectedFieldType}
+                            onClick={() => setSelectedFieldType(field.name)}>
+                            {field.name}
+                        </Button>
+                    ))}
+                </ButtonGroup>
+                <br></br>
+                {selectedFieldType === 'Value set' && renderValueSet}
+                {(selectedFieldType === 'Numerics entry' || selectedFieldType === 'Text only') && (
+                    <>
+                        <label>
+                            Mask <span className="mandatory-indicator">*</span>
+                        </label>
+                        <br></br>
+                        <Dropdown
+                            className="field-space"
+                            id="inputMask"
+                            name="mask"
+                            value={questionData.mask}
+                            onChange={handleQuestionInput}>
+                            <option>-Select-</option>
+                            {buildCodeOptions(codeSystemOptionList)}
+                        </Dropdown>
+                        <div className={isValid['fieldLength'].error ? 'error-border' : ''}>
+                            <label>
+                                Field length<span className="mandatory-indicator">*</span>
+                            </label>
+                            {isValid['fieldLength'].error && (
+                                <label className="error-text">Field Length Not Valid</label>
+                            )}
+                            <TextInput
+                                className="field-space"
+                                type="number"
+                                id="fieldLength"
+                                maxLength={50}
+                                data-testid="fieldLength"
+                                onBlur={(e: any) => handleValidation(e, false)}
+                                name="fieldLength"
+                                style={{
+                                    border: isValid['fieldLength'].error ? '1px solid #dc3545' : '1px solid black'
+                                }}
+                                value={questionData.fieldLength}
+                                onChange={handleQuestionInput}
+                            />
+                        </div>
+                    </>
+                )}
+                {selectedFieldType === 'Numerics entry' && (
+                    <>
+                        <div className={isValid['minValue'].error ? 'error-border' : ''}>
+                            <label>Minimum Value</label>
+                            <TextInput
+                                className="field-space"
+                                type="number"
+                                id="minValue"
+                                maxLength={50}
+                                data-testid="minValue"
+                                onBlur={(e: any) => handleValidation(e, false)}
+                                name="minValue"
+                                style={{ border: isValid['minValue'].error ? '1px solid #dc3545' : '1px solid black' }}
+                                value={questionData.minValue}
+                                onChange={handleQuestionInput}
+                            />
+                        </div>
+                        <div className={isValid['maxValue'].error ? 'error-border' : ''}>
+                            <label>Maximum value</label>
+                            {/* {isValid['maxValue'].error && <label className="error-text">Maximum Value Not Valid</label>}*/}
+                            <TextInput
+                                className="field-space"
+                                type="number"
+                                id="maxValue"
+                                maxLength={50}
+                                data-testid="maxValue"
+                                onBlur={(e: any) => handleValidation(e, false)}
+                                name="maxValue"
+                                style={{ border: isValid['maxValue'].error ? '1px solid #dc3545' : '1px solid black' }}
+                                value={questionData.maxValue}
+                                onChange={handleQuestionInput}
+                            />
+                        </div>
+                        <label>
+                            Related units <span className="mandatory-indicator">*</span>
+                        </label>
+                        <div className={'display-flex'}>
+                            <Radio
+                                name="relatedUnits"
+                                id="relatedUnits"
+                                value="Yes"
+                                className="margin-right-1em"
+                                checked={questionData.relatedUnits === 'Yes'}
+                                onChange={handleQuestionInput}
+                                label="Yes"
+                            />
+                            <Radio
+                                name="relatedUnits"
+                                id="relatedUnits"
+                                value="No"
+                                checked={questionData.relatedUnits === 'No'}
+                                onChange={handleQuestionInput}
+                                label="No"
+                            />
+                        </div>
+                    </>
+                )}
+                {selectedFieldType === 'Date picker' && (
+                    <>
+                        <div className={isValid['dateFormat'].error ? 'error-border' : ''}>
+                            <label>
+                                Date format<span className="mandatory-indicator">*</span>
+                            </label>
+                            {isValid['dateFormat'].error && <label className="error-text">Date format Not Valid</label>}
+                            <Dropdown
+                                className="field-space"
+                                id="inputMask"
+                                name="dateFormat"
+                                value={questionData.dateFormat}
+                                onChange={handleQuestionInput}>
+                                <option value="MM/DD/yyyy">Generic date (MM/DD/YYYY)</option>
+                                {buildCodeOptions(codeSystemOptionList)}
+                            </Dropdown>
+                        </div>
+                        <br></br>
+                        <label className="margin-top-1em">
+                            Allow for future dates <span className="mandatory-indicator">*</span>
+                        </label>
+                        <div className={'display-flex'}>
+                            <Radio
+                                name="allowFutureDates"
+                                id="futureDates"
+                                value="Yes"
+                                className="margin-right-1em"
+                                checked={questionData.allowFutureDates}
+                                onChange={handleQuestionInput}
+                                label="Yes"
+                            />
+                            <Radio
+                                name="allowFutureDates"
+                                id="futureDatesNo"
+                                value="No"
+                                checked={!questionData.allowFutureDates}
+                                onChange={handleQuestionInput}
+                                label="No"
+                            />
+                        </div>
+                    </>
+                )}
                 <hr className="divider" />
+                {renderUserInterface}
+                <h4>Data mart</h4>
                 <p className="fields-info">Data mart - these fields will not be displayed to your users</p>
                 <br></br>
                 <div className={isValid['defaultLabelInReport'].error ? 'error-border' : ''}>
@@ -452,6 +687,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         className="field-space"
                         type="text"
                         id="defaultLabelInReport"
+                        maxLength={50}
                         data-testid="defaultLabelInReport"
                         name="defaultLabelInReport"
                         style={{
@@ -473,6 +709,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         className="field-space"
                         type="text"
                         id="defaultRDBTable"
+                        maxLength={50}
                         data-testid="defaultRDBTable"
                         name="defaultRdbTableName"
                         style={{
@@ -493,6 +730,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         type="text"
                         id="rdbColumnName"
                         data-testid="rdbColumnName"
+                        maxLength={50}
                         name="rdbColumnName"
                         style={{ border: isValid['rdbColumnName'].error ? '1px solid #dc3545' : '1px solid black' }}
                         value={questionData.rdbColumnName}
@@ -507,19 +745,25 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     type="text"
                     id="datamartColName"
                     data-testid="datamartColName"
+                    maxLength={50}
                     name="dataMartColumnName"
                     style={{ border: '1px solid black' }}
                     value={questionData.dataMartColumnName}
                     onChange={handleQuestionInput}
                 />
+                <h4>Messaging</h4>
                 <p className="fields-info">Messaging - these fields will not be displayed to your users</p>
                 <p className="fields-info">Included in message?</p>
-                <ToggleButton
-                    className="margin-bottom-1em"
-                    checked={questionData.includedInMessage}
-                    name="includedInMessage"
-                    onChange={handleQuestionInput}
-                />
+                <div className="msg-toggle-container">
+                    {/* <label>No</label>*/}
+                    <ToggleButton
+                        className="margin-bottom-1em"
+                        checked={questionData.includedInMessage}
+                        name="includedInMessage"
+                        onChange={handleQuestionInput}
+                    />
+                    {/* <label>Yes</label>*/}
+                </div>
                 <div className={isValid['messageVariableId'].error ? 'error-border' : ''}>
                     <label>
                         Message ID<span className="mandatory-indicator">*</span>
@@ -540,7 +784,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 </div>
                 <div className={isValid['labelInMessage'].error ? 'error-border' : ''}>
                     <label>
-                        Message label<span className="mandatory-indicator">*</span>
+                        Message label <span className="mandatory-indicator">*</span>
                     </label>
                     {isValid['labelInMessage'].error && <label className="error-text">Message label Not Valid</label>}
                     <TextInput
@@ -557,7 +801,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     />
                 </div>
                 <label>
-                    Code system name<span className="mandatory-indicator">*</span>
+                    Code system name <span className="mandatory-indicator">*</span>
                 </label>
                 <br></br>
                 <Dropdown
@@ -571,11 +815,15 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     {buildCodeOptions(codeSystemOptionList)}
                 </Dropdown>
                 <p className="fields-info">Required in message?</p>
-                <ToggleButton
-                    checked={questionData.requiredInMessage}
-                    name="requiredInMessage"
-                    onChange={handleQuestionInput}
-                />
+                <div className="msg-toggle-container">
+                    {/* <label>No</label>*/}
+                    <ToggleButton
+                        checked={questionData.requiredInMessage}
+                        name="requiredInMessage"
+                        onChange={handleQuestionInput}
+                    />{' '}
+                    {/* <label>Yes</label>*/}
+                </div>
                 <br></br>
                 <label>
                     HL7 data type <span className="mandatory-indicator">*</span>
@@ -591,11 +839,25 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
                 </Dropdown>
+                <label>
+                    HL7 Segment <span className="mandatory-indicator">*</span>
+                </label>
+                <br></br>
+                <Dropdown
+                    className="field-space"
+                    name="hl7DataType"
+                    id="hl7DataType"
+                    defaultValue={questionData.HL7Segment}
+                    disabled={!questionData.includedInMessage}
+                    onChange={handleQuestionInput}>
+                    <option>-Select-</option>
+                    {buildOptions(groupOptions)}
+                </Dropdown>
                 <hr className="divider" />
+                <h4>Administrative</h4>
                 <p className="fields-info">Administrative - these fields will not be displayed to your users</p>
                 <br></br>
                 <label>Administrative comments</label>
-                <br></br>
                 <TextInput
                     className="field-space"
                     type="text"
