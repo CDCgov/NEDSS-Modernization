@@ -1,0 +1,29 @@
+@import 'settings.scss';
+
+.reorder-modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 2.8rem;
+    h3 {
+        margin: 0;
+    }
+    button {
+        height: 2.4rem;
+    }
+}
+.reorder-modal {
+    height: 18rem;
+    overflow: hidden;
+    overflow-y: auto;
+    .reorder-modal__content {
+        p {
+            margin: 0;
+        }
+        .reorder-modal__top {
+            display: flex;
+            gap: 1rem;
+            padding: 0.9rem 1.5rem;
+        }
+    }
+}

@@ -33,7 +33,7 @@ export const TopBanner = (): ReactElement => {
             <BannerContent id="custom-banner" isOpen={isOpen}>
                 <div className="grid-row grid-gap-lg">
                     <BannerGuidance className="tablet:grid-col-6">
-                        <BannerIcon src="/icon-dot-gov.svg" alt="" />
+                        <BannerIcon src="/icons/icon-dot-gov.svg" alt="" />
                         <MediaBlockBody>
                             <p>
                                 <strong>Official websites use .gov</strong>
@@ -43,7 +43,7 @@ export const TopBanner = (): ReactElement => {
                         </MediaBlockBody>
                     </BannerGuidance>
                     <BannerGuidance className="tablet:grid-col-6">
-                        <BannerIcon src="/icon-https.svg" alt="" />
+                        <BannerIcon src="/icons/icon-https.svg" alt="" />
                         <MediaBlockBody>
                             <p>
                                 <strong>Secure .gov websites use HTTPS</strong>

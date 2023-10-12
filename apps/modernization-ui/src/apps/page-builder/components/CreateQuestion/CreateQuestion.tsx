@@ -288,21 +288,21 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const renderIconFieldType = (type: string): string => {
         switch (type) {
             case 'radio':
-                return '/single-select.svg';
+                return '/icons/single-select.svg';
             case 'check':
-                return '/multi-select.svg';
+                return '/icons/multi-select.svg';
             case 'dropdown':
-                return '/expand.svg';
+                return '/icons/expand.svg';
             case 'TEXT':
-                return '/textbox.svg';
+                return '/icons/textbox.svg';
             case 'area':
-                return '/textarea.svg';
+                return '/icons/textarea.svg';
             case 'multi-select':
-                return '/multi-drop.svg';
+                return '/icons/multi-drop.svg';
             case 'date-time':
-                return '/calender.svg';
+                return '/icons/calender.svg';
             default:
-                return '/single-select.svg';
+                return '/icons/single-select.svg';
         }
     };
 

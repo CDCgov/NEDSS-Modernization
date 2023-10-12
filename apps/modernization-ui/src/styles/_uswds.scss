@@ -33,6 +33,16 @@ table.usa-table {
                 }
             }
         }
+        .usa-modal {
+            .usa-modal__content {
+                .usa-modal__main {
+                    .usa-modal__footer {
+                        margin-top: 0;
+                        border-top: $border-medium;
+                    }
+                }
+            }
+        }
     }
 }
 
