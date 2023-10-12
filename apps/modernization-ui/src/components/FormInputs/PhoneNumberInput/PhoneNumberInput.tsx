@@ -4,6 +4,7 @@ import './PhoneNumberInput.scss';
 type PhoneNumberInputProps = {
     label?: string;
     defaultValue?: string;
+    value?: string;
     onChange?: any;
     error?: any;
     placeholder?: string;
@@ -22,6 +23,7 @@ export const PhoneNumberInput = ({
     mask,
     pattern,
     onBlur,
+    value,
     ...props
 }: PhoneNumberInputProps) => {
     return (
@@ -42,6 +44,7 @@ export const PhoneNumberInput = ({
                     mask={mask}
                     pattern={pattern}
                     className={'masked-input'}
+                    value={value}
                 />
             ) : (
                 <TextInput
@@ -53,6 +56,7 @@ export const PhoneNumberInput = ({
                     name={id || 'phoneNumber'}
                     validationStatus={error ? 'error' : undefined}
                     type="tel"
+                    value={value}
                     placeholder={placeholder || ''}
                 />
             )}
