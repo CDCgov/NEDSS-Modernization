@@ -11,7 +11,7 @@ import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.Active;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -35,18 +35,18 @@ public class PatientProfileIdentificationSteps {
   PatientMother mother;
 
   @Autowired
-  TestActive<PatientIdentifier> activePatient;
+  Active<PatientIdentifier> activePatient;
 
   @Autowired
   PatientIdentificationResolver resolver;
 
   @Autowired
-  TestActive<PatientInput> input;
+  Active<PatientInput> input;
 
   @Autowired
   TestPatient patient;
 
-  private final TestActive<Page<PatientIdentification>> results = new TestActive<>();
+  private final Active<Page<PatientIdentification>> results = new Active<>();
 
   @Given("the new patient's Social Security Number is entered")
   public void the_new_patient_ssn_is_entered() {

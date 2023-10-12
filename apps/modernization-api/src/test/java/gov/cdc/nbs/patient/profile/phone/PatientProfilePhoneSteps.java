@@ -8,8 +8,8 @@ import gov.cdc.nbs.patient.PatientCreateAssertions;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.support.Available;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
@@ -29,10 +29,10 @@ public class PatientProfilePhoneSteps {
     PatientMother mother;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
-    TestActive<PatientInput> input;
+    Active<PatientInput> input;
 
     @Autowired
     TestPatient patient;

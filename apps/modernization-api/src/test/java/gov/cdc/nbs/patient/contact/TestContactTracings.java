@@ -1,10 +1,10 @@
 package gov.cdc.nbs.patient.contact;
 
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestContactTracings extends TestAvailable<Long> {
+public class TestContactTracings extends Available<Long> {
 
 
 }

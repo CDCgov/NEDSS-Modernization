@@ -5,7 +5,7 @@ import gov.cdc.nbs.authorization.TestActiveUser;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.kafka.PatientKafkaTestConsumer;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class PatientEventSteps {
     TestActiveUser activeUser;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     PatientKafkaTestConsumer consumer;

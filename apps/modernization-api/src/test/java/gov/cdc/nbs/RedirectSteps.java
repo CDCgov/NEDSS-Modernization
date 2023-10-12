@@ -8,7 +8,7 @@ import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.patient.search.PatientSearcher;
 import gov.cdc.nbs.service.EncryptionService;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -48,13 +48,13 @@ public class RedirectSteps {
     private PatientFilter patientFilter;
 
     @Autowired
-    TestActive<SessionCookie> activeSession;
+    Active<SessionCookie> activeSession;
 
     @Autowired
     TestActiveUser activeUser;
 
     @Autowired
-    TestActive<MockHttpServletResponse> activeResponse;
+    Active<MockHttpServletResponse> activeResponse;
 
     @Before
     public void clearCriteria() {

@@ -5,7 +5,7 @@ import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.RaceMother;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientProfileRaceChangeSteps {
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     PatientRaceChangeController controller;

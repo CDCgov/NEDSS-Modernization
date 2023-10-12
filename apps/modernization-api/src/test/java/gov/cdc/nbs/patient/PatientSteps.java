@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class PatientSteps {
 
   @Autowired
-  TestActive<PatientIdentifier> patient;
+  Active<PatientIdentifier> patient;
 
   @Autowired
   PatientMother mother;

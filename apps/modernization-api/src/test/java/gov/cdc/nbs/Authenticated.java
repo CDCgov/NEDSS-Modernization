@@ -4,7 +4,7 @@ import gov.cdc.nbs.authentication.NBSUserDetailsResolver;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authorization.ActiveUser;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.Active;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,12 +20,12 @@ import java.util.function.Supplier;
 @Component
 public class Authenticated {
 
-  private final TestActive<ActiveUser> active;
+  private final Active<ActiveUser> active;
   private final NBSUserDetailsResolver resolver;
   private final EntityManager entityManager;
 
   public Authenticated(
-      final TestActive<ActiveUser> active,
+      final Active<ActiveUser> active,
       final NBSUserDetailsResolver resolver,
       final EntityManager entityManager) {
     this.active = active;

@@ -5,7 +5,7 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -26,7 +26,7 @@ public class PatientDeleteSteps {
     PersonRepository repository;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     PatientDeleteController controller;

@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.report.morbidity;
 
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatients;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -39,10 +39,10 @@ public class SubmitMorbidityReportSteps {
     MockMvc mvc;
 
     @Autowired
-    TestActive<SessionCookie> activeSession;
+    Active<SessionCookie> activeSession;
 
     @Autowired
-    TestActive<MockHttpServletResponse> activeResponse;
+    Active<MockHttpServletResponse> activeResponse;
 
     @Autowired
     @Qualifier("classic")

@@ -4,7 +4,7 @@ import gov.cdc.nbs.authentication.entity.AuthAudit;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -17,7 +17,7 @@ public class AuthUserMother {
     private final TestUniqueIdGenerator idGenerator;
     private final EntityManager entityManager;
     private final TestAuthUserCleaner cleaner;
-    private final TestAvailable<TestAuthorizedUser> users;
+    private final Available<TestAuthorizedUser> users;
 
 
     AuthUserMother(
@@ -25,7 +25,7 @@ public class AuthUserMother {
         final TestUniqueIdGenerator idGenerator,
         final EntityManager entityManager,
         final TestAuthUserCleaner cleaner,
-        final TestAvailable<TestAuthorizedUser> users
+        final Available<TestAuthorizedUser> users
     ) {
         this.settings = settings;
         this.idGenerator = idGenerator;

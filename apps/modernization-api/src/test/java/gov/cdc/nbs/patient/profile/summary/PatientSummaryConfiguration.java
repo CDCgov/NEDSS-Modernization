@@ -2,13 +2,13 @@ package gov.cdc.nbs.patient.profile.summary;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.Active;
 
 @Configuration
 class PatientSummaryConfiguration {
 
     @Bean
-    TestActive<PatientSummary> activePatientSummary() {
-        return new TestActive<>();
+    Active<PatientSummary> activePatientSummary() {
+        return new Active<>();
     }
 }

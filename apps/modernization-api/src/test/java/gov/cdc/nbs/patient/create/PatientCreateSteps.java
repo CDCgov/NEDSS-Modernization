@@ -6,8 +6,8 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -32,13 +32,13 @@ public class PatientCreateSteps {
     TestActiveUser activeUser;
 
     @Autowired
-    TestActive<Person> patient;
+    Active<Person> patient;
 
     @Autowired
-    TestActive<PatientInput> input;
+    Active<PatientInput> input;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     private AccessDeniedException accessDeniedException;
 

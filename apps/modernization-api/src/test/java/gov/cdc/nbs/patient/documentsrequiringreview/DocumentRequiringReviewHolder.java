@@ -1,9 +1,9 @@
 package gov.cdc.nbs.patient.documentsrequiringreview;
 
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 
 @Component
-public class DocumentRequiringReviewHolder extends TestAvailable<DocumentRequiringReview> {
+public class DocumentRequiringReviewHolder extends Available<DocumentRequiringReview> {
 
 }

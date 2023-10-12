@@ -6,7 +6,7 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -28,7 +28,7 @@ public class PatientMortalityChangeSteps {
     private final Faker faker = new Faker(new Locale("en-us"));
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     PatientMortalityController controller;

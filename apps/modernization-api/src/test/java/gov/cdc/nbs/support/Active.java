@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class TestActive<I> {
+public class Active<I> {
 
     private I active;
 

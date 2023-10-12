@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-public class TestAvailable<V> {
+public class Available<V> {
 
     public record Indexed<V>(int index, V item) {
     }
@@ -14,7 +14,7 @@ public class TestAvailable<V> {
 
     private final Collection<V> items;
 
-    public TestAvailable() {
+    public Available() {
         items = new ArrayList<>();
     }
 
@@ -39,9 +39,9 @@ public class TestAvailable<V> {
         return this.items.stream();
     }
 
-    public Stream<TestAvailable.Indexed<V>> indexed() {
+    public Stream<Available.Indexed<V>> indexed() {
         AtomicInteger index = new AtomicInteger();
-        return this.items.stream().map(v -> new TestAvailable.Indexed<>(index.getAndIncrement(), v));
+        return this.items.stream().map(v -> new Available.Indexed<>(index.getAndIncrement(), v));
     }
 
 }

@@ -4,7 +4,7 @@ import gov.cdc.nbs.authorization.ActiveUser;
 import gov.cdc.nbs.authorization.AuthUserMother;
 import gov.cdc.nbs.authorization.TestActiveUser;
 import gov.cdc.nbs.authorization.TestAuthorizedUser;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class UserPermissionScopeSteps {
     TestActiveUser activeUser;
 
     @Autowired
-    TestAvailable<TestAuthorizedUser> users;
+    Available<TestAuthorizedUser> users;
 
     @Autowired
     PermissionSetMother setMother;

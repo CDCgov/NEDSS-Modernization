@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -9,9 +9,9 @@ import java.util.Optional;
 @Component
 public class TestPatients {
 
-    private final TestAvailable<PatientIdentifier> patients;
+    private final Available<PatientIdentifier> patients;
 
-    public TestPatients(final TestAvailable<PatientIdentifier> patients) {
+    public TestPatients(final Available<PatientIdentifier> patients) {
         this.patients = patients;
     }
 

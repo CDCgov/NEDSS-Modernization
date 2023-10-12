@@ -5,7 +5,7 @@ import gov.cdc.nbs.authentication.entity.AuthBusObjType;
 import gov.cdc.nbs.authentication.entity.AuthBusOpType;
 import gov.cdc.nbs.authentication.entity.AuthPermSet;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -16,7 +16,7 @@ class PermissionSetMother {
     private final MotherSettings settings;
     private final EntityManager entityManager;
     private final TestPermissionSetCleaner cleaner;
-    private final TestAvailable<Long> available;
+    private final Available<Long> available;
 
     private final AuthObjectTypeFinder objectFinder;
     private final AuthOperationTypeFinder operationFinder;
@@ -33,7 +33,7 @@ class PermissionSetMother {
         this.cleaner = cleaner;
         this.objectFinder = objectFinder;
         this.operationFinder = operationFinder;
-        this.available = new TestAvailable<>();
+        this.available = new Available<>();
     }
 
     void reset() {

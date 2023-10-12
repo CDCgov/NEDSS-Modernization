@@ -13,7 +13,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.UpdatePatientAddressInput;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.Active;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -36,22 +36,22 @@ public class PatientProfileAddressSteps {
   PatientMother mother;
 
   @Autowired
-  TestActive<PatientIdentifier> activePatient;
+  Active<PatientIdentifier> activePatient;
 
   @Autowired
   PatientAddressResolver resolver;
 
   @Autowired
-  TestActive<PatientInput> input;
+  Active<PatientInput> input;
 
   @Autowired
   TestPatient patient;
 
   @Autowired
-  TestActive<NewPatientAddressInput> newRequest;
+  Active<NewPatientAddressInput> newRequest;
 
   @Autowired
-  TestActive<UpdatePatientAddressInput> updateRequest;
+  Active<UpdatePatientAddressInput> updateRequest;
 
   @Given("the patient has an address")
   public void the_patient_has_an_address() {

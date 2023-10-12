@@ -6,8 +6,8 @@ import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -24,10 +24,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientProfileMortalitySteps {
 
     @Autowired
-    TestActive<PatientInput> input;
+    Active<PatientInput> input;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     PersonRepository repository;

@@ -5,7 +5,7 @@ import gov.cdc.nbs.authentication.entity.AuthPermSet;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.AuthUserRole;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.Available;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -16,7 +16,7 @@ class AuthorizationRoleMother {
     private final MotherSettings settings;
     private final EntityManager entityManager;
     private final TestAuthorizationRoleCleaner cleaner;
-    private final TestAvailable<Long> available;
+    private final Available<Long> available;
 
     AuthorizationRoleMother(
         final MotherSettings settings,
@@ -26,7 +26,7 @@ class AuthorizationRoleMother {
         this.settings = settings;
         this.entityManager = entityManager;
         this.cleaner = cleaner;
-        this.available = new TestAvailable<>();
+        this.available = new Available<>();
     }
 
     void reset() {
