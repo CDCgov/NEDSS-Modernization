@@ -1,7 +1,7 @@
 import { Input } from 'components/FormInputs/Input';
 import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import { useState } from 'react';
-
+import { FilterButton } from './FilterButton/Filter';
 export const SearchBar = ({ onChange }: any) => {
     const [searchTags, setSearchTags] = useState<any>([]);
     const [search, setSearch] = useState<string>('');
@@ -41,6 +41,7 @@ export const SearchBar = ({ onChange }: any) => {
                 <Button type="submit" onClick={handleSubmit}>
                     <Icon.Search size={3} />
                 </Button>
+                <FilterButton />
             </div>
         </div>
     );
