@@ -831,7 +831,7 @@ public class PageRuleServiceImpl implements PageRuleService {
                 rule.getRuleDescText(), rule.getSourceQuestionIdentifier(), buildSourceTargetValues(rule,true),
                 rule.getLogic(), rule.getTargetType(), rule.getErrormsgText(),
                         buildSourceTargetValues(rule,false))).toList();
-        return new PageImpl<>(ruleMetadata,ruleMetadataPage.getPageable(),ruleMetadata.size());
+        return new PageImpl<>(ruleMetadata,ruleMetadataPage.getPageable(),ruleMetadataPage.getTotalElements());
 
     }
 
