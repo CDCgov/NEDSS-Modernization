@@ -7,10 +7,15 @@ import java.util.Optional;
 import gov.cdc.nbs.questionbank.page.content.reorder.ReorderException;
 
 public class ReorderablePage {
-    private List<Tab> tabs;
+    private long id;
+    private List<Tab> tabs = new ArrayList<>();
 
-    public ReorderablePage(List<Tab> tabs) {
-        this.tabs = tabs;
+    public ReorderablePage(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public List<Tab> getTabs() {
@@ -22,14 +27,20 @@ public class ReorderablePage {
                 .filter(t -> t.getId() == tabId)
                 .findFirst()
                 .orElseThrow(() -> new ReorderException("Failed to find tab"));
-        Tab after = tabs.stream()
-                .filter(t -> t.getId() == afterId)
-                .findFirst()
-                .orElse(null);
-
         tabs.remove(toMove);
-        int index = tabs.indexOf(after) + 1;
-        tabs.add(index, toMove);
+
+        if (id == afterId) {
+            tabs.add(0, toMove);
+        } else {
+            Tab after = tabs.stream()
+                    .filter(t -> t.getId() == afterId)
+                    .findFirst()
+                    .orElseThrow(() -> new ReorderException("Failed to insert tab"));
+
+            int index = tabs.indexOf(after) + 1;
+            tabs.add(index, toMove);
+        }
+
     }
 
     public void moveSection(long sectionId, long afterId) {
@@ -43,6 +54,7 @@ public class ReorderablePage {
     private Section findAndRemoveSection(long id) {
         return tabs.stream()
                 .map(t -> t.findAndRemoveSection(id))
+                .filter(Objects::nonNull)
                 .findFirst()
                 .orElseThrow(() -> new ReorderException("Failed to find section"));
     }

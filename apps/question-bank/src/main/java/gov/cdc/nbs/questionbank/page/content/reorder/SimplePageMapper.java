@@ -21,9 +21,11 @@ public class SimplePageMapper {
     private Subsection currentSubsection = null;
 
     public ReorderablePage toPage(List<PageEntry> entries) {
+        ReorderablePage page = null;
         for (PageEntry e : entries) {
             switch (e.component()) {
                 case PAGE_TYPE:
+                    page = new ReorderablePage(e.id());
                     break;
                 case TAB: {
                     rollUpTab();
@@ -57,8 +59,11 @@ public class SimplePageMapper {
             }
             tabs.add(currentTab);
         }
-
-        return new ReorderablePage(tabs);
+        if (page == null) {
+            throw new ReorderException("Failed to build page. Invalid page content");
+        }
+        page.getTabs().addAll(tabs);
+        return page;
     }
 
     private void rollUpTab() {

@@ -114,10 +114,16 @@ class ReordererTest {
     @CsvSource({
             "50,30",  // Cannot place question into section
             "50,130", // Cannot place question in tab
-            "50,10"  // Cannot place question outside content
+            "50,10",  // Cannot place question outside content
+            "160, 100", // cannot insert section after subsection
+            "160, 110", // cannot insert section after question
+            "160, 10", // cannot insert section at root
+            "20, 30", // cannot insert tab into section
+            "20, 40", // cannot insert tab into subsection
+            "20, 50", // cannot insert tab after question
     })
     @SuppressWarnings("unchecked")
-    void should_throw_reorder_exception_for_question(Long id, Long afterId) {
+    void should_throw_reorder_exception(Long id, Long afterId) {
         // Given a page with content
         when(template.query(
                 Mockito.anyString(),
@@ -132,10 +138,17 @@ class ReordererTest {
 
     @ParameterizedTest
     @CsvSource({
-            "40,70,6",
+            "40,70,6", // can insert subsection after non empty subsection
+            "150,90,10", // can insert subsection after section
+            "40,140,12", // can insert subsection into empty section
+            "40,70,6", // can insert section after non empty subsection
+            "150,90,10", // can insert section after section
+            "40,140,12", // can insert section into empty section
+            "20, 130, 6", // can insert tab after another tab
+            "130, 10, 2" // can insert tab at root
     })
     @SuppressWarnings("unchecked")
-    void should_reorder_subsection(Long id, Long afterId, Integer expectedPosition) {
+    void should_reorder(Long id, Long afterId, Integer expectedPosition) {
         ArgumentCaptor<Integer> orderCaptor = ArgumentCaptor.forClass(Integer.class);
         ArgumentCaptor<Long> idCaptor = ArgumentCaptor.forClass(Long.class);
         when(template.update(Mockito.anyString(), orderCaptor.capture(), idCaptor.capture())).thenReturn(1);
@@ -151,12 +164,10 @@ class ReordererTest {
         ReorderRequest request = new ReorderRequest(id, afterId);
         reorderer.apply(1, request);
 
-        // Then the subsection should be reordered
+        // Then entry should be reordered
         Map<Long, Integer> orderMap = buildOrderMap(orderCaptor.getAllValues(), idCaptor.getAllValues());
         assertEquals(expectedPosition, orderMap.get(id));
-
     }
-
 
     private Map<Long, Integer> buildOrderMap(List<Integer> orders, List<Long> ids) {
         Map<Long, Integer> orderMap = new HashMap<>();
