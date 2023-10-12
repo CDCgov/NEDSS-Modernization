@@ -1,8 +1,6 @@
 package gov.cdc.nbs.testing.authorization.permission;
 
 import gov.cdc.nbs.testing.authorization.ActiveUser;
-import gov.cdc.nbs.testing.authorization.permission.AuthorizationRoleMother;
-import gov.cdc.nbs.testing.authorization.permission.PermissionSetMother;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;

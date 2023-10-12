@@ -7,6 +7,7 @@ import gov.cdc.nbs.authentication.entity.AuthPermSet;
 import gov.cdc.nbs.testing.authorization.AuthenticationSupportSettings;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
@@ -36,6 +37,7 @@ public class PermissionSetMother {
         this.available = new Available<>();
     }
 
+    @Transactional
     public void reset() {
         this.available.all().forEach(this.cleaner::clean);
         this.available.reset();

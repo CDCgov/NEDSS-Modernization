@@ -1,7 +1,5 @@
 package gov.cdc.nbs.testing.authorization;
 
-import gov.cdc.nbs.testing.authorization.ActiveUser;
-import gov.cdc.nbs.testing.authorization.ActiveUserMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;

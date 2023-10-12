@@ -163,7 +163,7 @@ class AvailableTest {
         .satisfiesExactly(
           indexed -> assertThat(indexed)
               .satisfies(
-                  index -> assertThat(index.index()).isEqualTo(0)
+                  index -> assertThat(index.index()).isZero()
               )
               .satisfies(
                   index -> assertThat(index.item()).isSameAs(one)
