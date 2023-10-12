@@ -65,7 +65,12 @@ type OptionalFields = {
     race: string[];
 };
 
-type NewPatientEntry = RequiredFields & OptionalFields & AddressEntry & ContactEntry & NameEntry & FormRequired;
+type NewPatientEntry = RequiredFields &
+    Partial<OptionalFields> &
+    Partial<AddressEntry> &
+    Partial<ContactEntry> &
+    Partial<NameEntry> &
+    FormRequired;
 
 type DefaultNewPatentEntry = RequiredFields & FormRequired;
 
