@@ -32,7 +32,7 @@ export const ReorderModal = ({ modalRef, pageName, content, alertMessage }: Reor
                                 <Icon name="folder" />
                                 <p>{pageName}</p>
                             </div>
-                            {content && content.tabSections
+                            {content?.tabSections
                                 ? content.tabSections.map((section: any, i: number) => {
                                       if (section.visible === 'T') {
                                           return <ReorderSection key={i} section={section} />;

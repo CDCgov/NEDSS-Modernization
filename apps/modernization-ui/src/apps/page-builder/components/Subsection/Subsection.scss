@@ -2,14 +2,14 @@
 
 .subsection {
     border-radius: 0.25rem;
-    border: 1px solid $color-base-lighter;
+    border: $border-medium;
     .subsection__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         background-color: $color-accent-cool-lighter;
         padding: 0 1.6rem;
-        border-bottom: 1px solid $color-base-lighter;
+        border-bottom: $border-medium;
         &--left, &--right {
             display: flex;
             align-items: center;

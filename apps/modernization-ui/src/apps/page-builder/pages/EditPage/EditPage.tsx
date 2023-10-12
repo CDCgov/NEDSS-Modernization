@@ -95,7 +95,7 @@ export const EditPage = () => {
                                 />
                             ) : null}
 
-                            <EditPageSidebar modalRef1={addSectionModalRef} modalRef2={reorderModalRef} />
+                            <EditPageSidebar addSectionModalRef={addSectionModalRef} reorderModalRef={reorderModalRef} />
                         </div>
                     </div>
                 </div>
