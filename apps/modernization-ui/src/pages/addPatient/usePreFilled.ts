@@ -26,23 +26,23 @@ const withCriteria =
         ...initial,
         firstName: orNull(filter?.firstName),
         lastName: orNull(filter?.lastName),
-        dateOfBirth: internalizeDate(filter.dateOfBirth)
-        // currentGender: filter?.gender ?? '',
-        // streetAddress1: filter?.address ?? '',
-        // city: filter?.city ?? '',
-        // state: filter?.state ?? '',
-        // zip: filter?.zip ?? '',
-        // ethnicity: filter?.ethnicity ?? '',
-        // homePhone: filter?.phoneNumber ?? '',
-        // race: filter?.race ? [filter.race] : [],
-        // identification: [
-        //     {
-        //         type: filter?.identification?.identificationType,
-        //         value: filter?.identification?.identificationNumber,
-        //         authority: null
-        //     }
-        // ],
-        // emailAddresses: [{ email: filter?.email ?? '' }]
+        dateOfBirth: internalizeDate(filter.dateOfBirth),
+        currentGender: orNull(filter?.gender),
+        streetAddress1: orNull(filter?.address),
+        city: orNull(filter?.city),
+        state: orNull(filter?.state),
+        zip: orNull(filter?.zip),
+        ethnicity: orNull(filter?.ethnicity),
+        homePhone: orNull(filter?.phoneNumber),
+        race: filter?.race ? [filter.race] : [],
+        identification: [
+            {
+                type: filter?.identification?.identificationType,
+                value: filter?.identification?.identificationNumber,
+                authority: null
+            }
+        ],
+        emailAddresses: [{ email: orNull(filter?.email) }]
     });
 
 const decrypt = (criteria: string, token: () => string | undefined) =>
