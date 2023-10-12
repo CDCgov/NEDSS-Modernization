@@ -2,7 +2,7 @@ package gov.cdc.nbs;
 
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authorization.ActiveUser;
+import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.event.search.investigation.InvestigationResolver;

@@ -6,7 +6,7 @@ import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ public class LabReportMother {
     private static final String LAB_REPORT_DOMAIN = "Order";
 
     private final MotherSettings settings;
-    private final TestUniqueIdGenerator idGenerator;
+    private final SequentialIdentityGenerator idGenerator;
     private final EntityManager entityManager;
     private final TestLabReportCleaner cleaner;
 
@@ -34,7 +34,7 @@ public class LabReportMother {
 
     LabReportMother(
             final MotherSettings settings,
-            final TestUniqueIdGenerator idGenerator,
+            final SequentialIdentityGenerator idGenerator,
             final EntityManager entityManager,
             final TestLabReportCleaner cleaner,
             final TestLabReports reports) {

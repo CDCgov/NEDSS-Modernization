@@ -17,6 +17,14 @@ project(':question-bank').projectDir = new File('apps/question-bank')
 include ':nbs-gateway'
 project(':nbs-gateway').projectDir = new File('apps/nbs-gateway')
 
+// feature modules
+
+include ':me-api'
+project(':me-api').projectDir = new File('libs/me-api')
+
+include ':configuration-api'
+project(':configuration-api').projectDir = new File('libs/configuration-api')
+
 // libs
 include ':database-entities'
 project(':database-entities').projectDir = new File('libs/database-entities')
@@ -28,7 +36,20 @@ include ':id-generator'
 project(':id-generator').projectDir = new File('libs/id-generator')
 include ':accumulation'
 project(':accumulation').projectDir = new File('libs/accumulation')
-include ':me-api'
-project(':me-api').projectDir = new File('libs/me-api')
-include ':configuration-api'
-project(':configuration-api').projectDir = new File('libs/configuration-api')
+
+
+//  testing libraries
+include ':testing:support'
+project(':testing:support').projectDir = new File('libs/testing/support')
+
+include ':testing:identity'
+project(':testing:identity').projectDir = new File('libs/testing/identity')
+
+include ':testing:auth'
+project(':testing:auth').projectDir = new File('libs/testing/auth')
+
+include ':testing:auth-cucumber'
+project(':testing:auth-cucumber').projectDir = new File('libs/testing/auth-cucumber')
+
+include ':testing:http-interaction'
+project(':testing:http-interaction').projectDir = new File('libs/testing/http-interaction')

@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient;
 import com.github.javafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -28,7 +28,7 @@ public class PatientMother {
 
   private final Faker faker;
   private final MotherSettings settings;
-  private final TestUniqueIdGenerator idGenerator;
+  private final SequentialIdentityGenerator idGenerator;
   private final PatientLocalIdentifierGenerator localIdentifierGenerator;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
   private final PatientShortIdentifierResolver resolver;
@@ -39,7 +39,7 @@ public class PatientMother {
 
   PatientMother(
       final MotherSettings settings,
-      final TestUniqueIdGenerator idGenerator,
+      final SequentialIdentityGenerator idGenerator,
       final PatientLocalIdentifierGenerator localIdentifierGenerator,
       final AddressIdentifierGenerator addressIdentifierGenerator,
       final PatientShortIdentifierResolver resolver,

@@ -1,62 +1,56 @@
 package gov.cdc.nbs;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import java.util.Objects;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import gov.cdc.nbs.authentication.entity.AuthUser;
-import gov.cdc.nbs.authorization.TestAuthorizedUser;
+import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.controller.UserController;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
+import java.util.Objects;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class FindUsersSteps {
 
-    @Autowired
-    private UserController userController;
+  @Autowired
+  private UserController userController;
 
-    @Autowired
-    Available<TestAuthorizedUser> availableUsers;
+  @Autowired
+  Available<ActiveUser> availableUsers;
 
-    @Autowired
-    Authenticated authenticated;
+  @Autowired
+  Authenticated authenticated;
 
-    private Page<AuthUser> users;
+  private Page<AuthUser> users;
 
-    @When("I retrieve the user list")
-    public void i_search_for_users() {
-        users = authenticated.perform(() -> userController.findAllUsers(null));
-    }
+  @When("I retrieve the user list")
+  public void i_search_for_users() {
+    users = authenticated.perform(() -> userController.findAllUsers(null));
+  }
 
-    @Then("The {string} user is returned")
-    public void a_user_is_returned(final String expected) {
+  @Then("The {string} user is returned")
+  public void a_user_is_returned(final String expected) {
 
-        TestAuthorizedUser authorizedUser = this.availableUsers.all().filter(u -> Objects.equals(expected, u.name()))
-            .findFirst()
-            .orElseThrow();
+    ActiveUser authorizedUser = this.availableUsers.all().filter(u -> Objects.equals(expected, u.username()))
+        .findFirst()
+        .orElseThrow();
 
-        assertThat(users.getContent())
-            .anySatisfy(actual -> assertThat(actual).returns(authorizedUser.id(), AuthUser::getId));
-    }
+    assertThat(users.getContent())
+        .anySatisfy(actual -> assertThat(actual).returns(authorizedUser.id(), AuthUser::getId));
+  }
 
-    @Then("The {string} user is not returned")
-    public void a_user_is_not_returned(final String expected) {
-        TestAuthorizedUser authorizedUser = this.availableUsers.all().filter(u -> Objects.equals(expected, u.name()))
-            .findFirst()
-            .orElseThrow();
+  @Then("The {string} user is not returned")
+  public void a_user_is_not_returned(final String expected) {
+    ActiveUser authorizedUser = this.availableUsers.all().filter(u -> Objects.equals(expected, u.username()))
+        .findFirst()
+        .orElseThrow();
 
-        assertThat(users.getContent())
-            .noneSatisfy(actual -> assertThat(actual).returns(authorizedUser.id(), AuthUser::getId));
-    }
+    assertThat(users.getContent())
+        .noneSatisfy(actual -> assertThat(actual).returns(authorizedUser.id(), AuthUser::getId));
+  }
 
 }
