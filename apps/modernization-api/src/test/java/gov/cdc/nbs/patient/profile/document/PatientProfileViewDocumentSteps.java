@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.document;
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.patient.document.TestDocuments;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

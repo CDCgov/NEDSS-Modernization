@@ -15,7 +15,7 @@ import gov.cdc.nbs.patient.morbidity.MorbidityReportMother;
 import gov.cdc.nbs.patient.morbidity.TestMorbidityReports;
 import gov.cdc.nbs.patient.profile.report.lab.LabReportMother;
 import gov.cdc.nbs.patient.profile.report.lab.TestLabReports;
-import gov.cdc.nbs.support.Available;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

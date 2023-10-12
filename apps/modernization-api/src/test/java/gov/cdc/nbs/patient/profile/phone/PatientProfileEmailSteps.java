@@ -6,7 +6,7 @@ import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCreateAssertions;
 import gov.cdc.nbs.patient.TestPatient;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;

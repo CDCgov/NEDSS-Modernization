@@ -1,7 +1,7 @@
 package gov.cdc.nbs.authorization.permission;
 
 import gov.cdc.nbs.authorization.ActiveUser;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.hamcrest.Matchers;

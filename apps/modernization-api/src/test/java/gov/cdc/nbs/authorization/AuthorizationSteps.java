@@ -7,7 +7,7 @@ import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.SecurityLog;
 import gov.cdc.nbs.authentication.enums.SecurityEventType;
 import gov.cdc.nbs.authentication.repository.SecurityLogRepository;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;

@@ -4,7 +4,7 @@ import gov.cdc.nbs.authorization.ActiveUser;
 import gov.cdc.nbs.authorization.AuthUserMother;
 import gov.cdc.nbs.authorization.TestActiveUser;
 import gov.cdc.nbs.authorization.TestAuthorizedUser;
-import gov.cdc.nbs.support.Available;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import org.springframework.beans.factory.annotation.Autowired;

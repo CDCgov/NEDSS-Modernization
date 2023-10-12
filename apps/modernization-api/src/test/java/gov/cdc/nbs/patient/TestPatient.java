@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;

@@ -9,7 +9,7 @@ import gov.cdc.nbs.event.search.investigation.InvestigationResolver;
 import gov.cdc.nbs.event.search.labreport.LabReportResolver;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

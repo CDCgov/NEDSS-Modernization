@@ -8,7 +8,7 @@ import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.patient.search.PatientSearcher;
 import gov.cdc.nbs.service.EncryptionService;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

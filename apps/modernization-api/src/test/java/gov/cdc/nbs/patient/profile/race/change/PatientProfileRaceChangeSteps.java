@@ -5,7 +5,7 @@ import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.RaceMother;
-import gov.cdc.nbs.support.Available;
+import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;

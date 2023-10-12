@@ -13,7 +13,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.UpdatePatientAddressInput;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

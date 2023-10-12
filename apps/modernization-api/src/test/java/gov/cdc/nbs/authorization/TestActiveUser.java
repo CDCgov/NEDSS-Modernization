@@ -1,6 +1,6 @@
 package gov.cdc.nbs.authorization;
 
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import org.springframework.stereotype.Component;
 
 @Component

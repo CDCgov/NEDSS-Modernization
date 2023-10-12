@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authorization.TestAuthorizedUser;
 import gov.cdc.nbs.controller.UserController;
-import gov.cdc.nbs.support.Available;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 

@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.general;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

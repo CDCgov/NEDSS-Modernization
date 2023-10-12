@@ -1,4 +1,4 @@
-package gov.cdc.nbs.support;
+package gov.cdc.nbs.testing.support;
 
 import java.util.ArrayList;
 import java.util.Collection;

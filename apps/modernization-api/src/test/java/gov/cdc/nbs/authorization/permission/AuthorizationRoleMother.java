@@ -5,7 +5,7 @@ import gov.cdc.nbs.authentication.entity.AuthPermSet;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.AuthUserRole;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.support.Available;
+import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;

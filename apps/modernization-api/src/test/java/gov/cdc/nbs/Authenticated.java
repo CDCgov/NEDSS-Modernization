@@ -4,7 +4,7 @@ import gov.cdc.nbs.authentication.NBSUserDetailsResolver;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authorization.ActiveUser;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

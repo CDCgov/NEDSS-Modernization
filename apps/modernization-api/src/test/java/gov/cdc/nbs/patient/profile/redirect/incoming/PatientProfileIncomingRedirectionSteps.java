@@ -2,8 +2,8 @@ package gov.cdc.nbs.patient.profile.redirect.incoming;
 
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.Active;
-import gov.cdc.nbs.support.Available;
+import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;

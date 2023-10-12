@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.redirect.incoming;
 
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.event.search.investigation.TestInvestigations;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletResponse;

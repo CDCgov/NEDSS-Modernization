@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.Available;
+import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

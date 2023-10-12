@@ -5,7 +5,7 @@ import gov.cdc.nbs.authentication.entity.AuthBusObjType;
 import gov.cdc.nbs.authentication.entity.AuthBusOpType;
 import gov.cdc.nbs.authentication.entity.AuthPermSet;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.support.Available;
+import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;

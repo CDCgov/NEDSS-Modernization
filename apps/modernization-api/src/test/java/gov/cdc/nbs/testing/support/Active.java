@@ -1,4 +1,4 @@
-package gov.cdc.nbs.support;
+package gov.cdc.nbs.testing.support;
 
 import org.springframework.stereotype.Component;
 

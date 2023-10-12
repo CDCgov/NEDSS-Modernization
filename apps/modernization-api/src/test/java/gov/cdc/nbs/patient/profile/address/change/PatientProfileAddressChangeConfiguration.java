@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.address.change;
 
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.summary;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import gov.cdc.nbs.support.Active;
+import gov.cdc.nbs.testing.support.Active;
 
 @Configuration
 class PatientSummaryConfiguration {
