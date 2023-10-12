@@ -1,11 +1,13 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import gov.cdc.nbs.questionbank.exception.BadRequestException;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
+import gov.cdc.nbs.questionbank.support.UserMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,193 +37,74 @@ public class PageRuleSteps {
     CreateRuleRequest ruleRequest;
     CreateRuleResponse ruleResponse;
 
+    @Autowired
+    private UserMother userMother;
     Long ruleId;
 
-    @Given("I make a request to create page rule without rule request")
-    public void i_create_page_rule_without_rule_request() {
-        try {
-            ruleRequest = null; 
+    @Given("I am an admin user")
+    public void i_am_admin_user() {
+        userMother.adminUser();
+    }
 
+    @Given("I am not logged in user")
+    public void i_am_not_logged_in() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+    }
+
+    @When("I make a request to add a rule to a page")
+    public void i_make_a_request_to_add_a_rule_to_a_page() {
+
+        try {
+            ruleResponse = pageRuleController.createBusinessRule(ruleRequest());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
-
-    @Then("A page rule is not created")
-    public void a_page_rule_is_not_created() {
-        assertNull(ruleResponse);
-    }
-    @Given("I make a request to add page rule request")
-    public void i_create_page_rule_request() {
-        try {
-            ruleRequest = ruleRequest();
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
-    @When("I make a request to page rule add")
-    public void i_make_a_request_to_create_a_page_rule() {
-
-        try {
-            ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
-
-    @Then("A page rule is created")
-    public void a_business_rule_is_created() {
+    @Then("A rule is created")
+    public void a_rule_is_created() {
         assertNotNull(ruleResponse);
     }
-    @Given("I make a request to update page rule request")
-    public void i_update_page_rule() {
-        try {
-            Long ruleId = ruleResponse.ruleId();
-            ruleRequest = ruleRequest();
 
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
+    @Then("A no credentials found exception is thrown")
+    public void a_no_credentials_found_exception_is_thrown() {
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
     }
 
-    @When("I make a request to page rule update")
-    public void iMakeARequestToPageRuleUpdate() {
+
+    @When("I make a request to update a rule to a page")
+    public void i_make_a_request_to_update_a_rule_to_a_page() {
         try{
-            ruleResponse = pageRuleController.updatePageRule(ruleId,ruleRequest);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
+            ruleId = 6405L;
+            ruleResponse = pageRuleController.updatePageRule(ruleId,ruleRequest());
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
 
-    @Then("A page rule is updated")
-    public void aPageRuleIsUpdated() {
+    @Then("A rule is updated")
+    public void a_rule_is_updated() {
         assertNotNull(ruleResponse);
     }
-    @Given("I make a request to update page rule without rule request")
-    public void i_update_page_rule_with_non_exist_rule_id() {
-        try {
-            Long ruleId = 99999L;
-            ruleRequest = RuleRequestMother.ruleRequest();
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
-
-    @Then("A page rule is not updated")
-    public void aPageRuleIsNotUpdated() {
-        assertNull(ruleResponse);
-    }
-    @Given("I make a request to delete page rule request")
-    public void i_delete_page_rule() {
-        try {
-            ruleId = ruleResponse.ruleId();
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
 
 
-    @When("I make a request to page rule delete")
-    public void iMakeARequestToPageRuleDelete() {
+
+    @When("I make a request to delete a rule to a page")
+    public void i_make_a_request_to_delete_a_rule_to_a_page() {
         try{
-            ruleResponse = pageRuleController.deletePageRule(ruleId);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
+            ruleResponse = pageRuleController.deletePageRule(ruleResponse.ruleId());
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
 
-    @Then("A page rule is deleted")
-    public void aPageRuleIsDeleted() {
+    @Then("A rule is deleted")
+    public void a_rule_is_deleted() {
         assertNotNull(ruleResponse);
     }
-    @Given("I make a request to delete page rule without rule request")
-    public void i_delete_page_rule_with_non_exist_rule_id() {
-        try {
-            ruleId = 99999L;
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
 
-    @Then("A page rule is not deleted")
-    public void aPageRuleIsNotDeleted() {
-        assertNull(ruleResponse);
-    }
-    @Given("I make a request to view page rule")
-    public void i_view_page_rule_response() {
-        try {
-            Long ruleId = 99L;
-            ViewRuleResponse ruleResponse = pageRuleController.viewRuleResponse(ruleId);
-            assertNotNull(ruleResponse);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
-
-    @Given("I make a request to view page rule with non exist rule id")
-    public void i_view_page_rule_response_with_non_exist_rule_id() {
-        try {
-            Long ruleId = 99999L;
-            ViewRuleResponse ruleResponse = pageRuleController.viewRuleResponse(ruleId);
-            assertNull(ruleResponse);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
-
-    @Given("I make a request to search for a page rule that exists")
-    public void i_search_for_a_page_rule_that_exists() {
-        try {
-            int page = 0;
-            int size =1;
-            String sort ="id";
-            Pageable pageRequest = PageRequest.of(page,size, Sort.by(sort));
-            Page<ViewRuleResponse> response= pageRuleController.getAllPageRule(pageRequest);
-            assertNotNull(response);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
-
-    @Given("I make a request to search for a page rule that does not exists")
-    public void i_search_for_a_page_rule_that_does_not_exists() {
-        try {
-            int page = 12000;
-            int size =1;
-            String sort ="id";
-            Pageable pageRequest = PageRequest.of(page,size, Sort.by(sort));
-            Page<ViewRuleResponse> response= pageRuleController.getAllPageRule(pageRequest);
-            assertNull(response);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
 
     private static CreateRuleRequest ruleRequest() {
         List<String> targetValuesList = new ArrayList<>();

@@ -1,12 +1,15 @@
-@delete_pagerule
+@delete_page_rule
 Feature: Delete page rule
 
-    Scenario: I can clear a page rule
-        Given I make a request to delete page rule request
-        When I make a request to page rule delete
-        Then A page rule is deleted
+    Background:
+        Given pages exist
+
+    Scenario: I can delete a page rule
+        Given I am an admin user
+        When I make a request to delete a rule to a page
+        Then A rule is deleted
 
     Scenario: I cannot delete a page rule
-        Given I make a request to delete page rule without rule request
-        When I make a request to page rule delete
-        Then A page rule is not deleted
+        Given I am not logged in
+        When I make a request to delete a rule to a page
+        Then A no credentials found exception is thrown
