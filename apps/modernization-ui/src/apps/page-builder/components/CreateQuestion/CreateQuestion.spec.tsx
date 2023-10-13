@@ -1,4 +1,5 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router-dom';
 import { CreateQuestion } from './CreateQuestion';
@@ -55,24 +56,52 @@ describe('Question component tests', () => {
         expect(getByText('Administrative comments')).toBeTruthy();
     });
 
-    it('should render a dropdown to select Program Area from the provided options', () => {
-        const { getByTestId, queryByText, container } = render(
+    it('should allow valid input', () => {
+        const { getByLabelText, queryByText } = render(
             <AlertProvider>
                 <CreateQuestion />
             </AlertProvider>
         );
-        const nameElement = getByTestId('questionLabel');
-        fireEvent.change(nameElement, { target: { value: 'question Label' } });
+        const nameElement = getByLabelText(/Question Label/);
+
+        userEvent.type(nameElement, 'question Label');
+
         fireEvent.blur(nameElement);
         const nameErrorText = queryByText('Question Name Not Valid');
         expect(nameErrorText).not.toBeInTheDocument();
+    });
 
-        const options = container.getElementsByTagName('option');
+    it('should allow selection of Display Type', () => {
+        const { getByLabelText } = render(
+            <AlertProvider>
+                <CreateQuestion />
+            </AlertProvider>
+        );
 
-        expect(options[0]).toHaveTextContent('-Select-');
+        const select = getByLabelText(/Display Type/);
 
-        for (let i = 1; i < options.length; i++) {
-            expect(options[i].value).toBe(options[i].textContent);
-        }
+        const placeholder = within(select).getByText('-Select-');
+
+        expect(placeholder).toBeInTheDocument();
+
+        const text = within(select).getByText('User entered text, number or date');
+
+        expect(text).toHaveValue('1008');
+
+        const multiLineText = within(select).getByText('Multi-line user-entered text');
+
+        expect(multiLineText).toHaveValue('1009');
+
+        const notes = within(select).getByText('Multi-line Notes with User/Date Stamp');
+
+        expect(notes).toHaveValue('1019');
+
+        const readOnly = within(select).getByText('Readonly User entered text, number, or date');
+
+        expect(readOnly).toHaveValue('1026');
+
+        const readOnlyAlternative = within(select).getByText('Readonly User text, number, or date no save');
+
+        expect(readOnlyAlternative).toHaveValue('1029');
     });
 });

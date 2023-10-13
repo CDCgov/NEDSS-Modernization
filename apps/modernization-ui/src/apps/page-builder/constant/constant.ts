@@ -72,7 +72,7 @@ const text = [
     },
     {
         value: 1029,
-        label: 'Readonly User  text, number, or date no save'
+        label: 'Readonly User text, number, or date no save'
     }
 ];
 

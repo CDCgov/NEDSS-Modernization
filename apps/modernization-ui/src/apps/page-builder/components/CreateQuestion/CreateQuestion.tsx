@@ -357,7 +357,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         <>
             <h4>User Interface</h4>
             <div className={isValid['label'].error ? 'error-border' : ''}>
-                <label>
+                <label htmlFor="questionLabel">
                     Question Label<span className="mandatory-indicator">*</span>
                 </label>
                 {isValid['label'].error && <label className="error-text">Question Label Not Valid</label>}
@@ -392,7 +392,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     onChange={handleQuestionInput}
                 />
             </div>
-            <label>
+            <label htmlFor="displayType">
                 Display Type <span className="mandatory-indicator">*</span>
             </label>
             <br></br>
