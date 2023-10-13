@@ -22,14 +22,16 @@ public class ReorderablePage {
         return tabs;
     }
 
-    public void moveTab(long tabId, long afterId) {
+    // Find and remove tab from its current location, insert into specified location
+    public void moveTab(long tabId, Long afterId) {
         Tab toMove = tabs.stream()
                 .filter(t -> t.getId() == tabId)
                 .findFirst()
                 .orElseThrow(() -> new ReorderException("Failed to find tab"));
         tabs.remove(toMove);
 
-        if (id == afterId) {
+        // If afterId is null, move tab to beginning of list
+        if (null == afterId) {
             tabs.add(0, toMove);
         } else {
             Tab after = tabs.stream()
@@ -43,6 +45,7 @@ public class ReorderablePage {
 
     }
 
+    // Find and remove section from its current location, insert into specified location
     public void moveSection(long sectionId, long afterId) {
         Section toMove = findAndRemoveSection(sectionId);
         boolean inserted = insertSectionAfter(toMove, afterId);

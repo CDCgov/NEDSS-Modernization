@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -53,6 +54,26 @@ class ReordererTest {
         list.add(new PageEntry(150, SUBSECTION, 15));
         list.add(new PageEntry(160, SECTION, 16));
         return list;
+    }
+
+    @Test
+    void should_throw_error_no_page() {
+        // When a request is processed to reorder with no page
+        ReorderRequest request = new ReorderRequest(1l, 3l);
+        assertThrows(ReorderException.class, () -> reorderer.apply(1, request));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void should_throw_error_no_page_content() {
+        // When a request is processed to reorder with no page conent
+          when(template.query(
+                Mockito.anyString(),
+                Mockito.any(PreparedStatementSetter.class),
+                Mockito.any(RowMapper.class)))
+                        .thenReturn(new ArrayList<>());
+        ReorderRequest request = new ReorderRequest(1l, 3l);
+        assertThrows(ReorderException.class, () -> reorderer.apply(1, request));
     }
 
 
@@ -145,7 +166,7 @@ class ReordererTest {
             "150,90,10", // can insert section after section
             "40,140,12", // can insert section into empty section
             "20, 130, 6", // can insert tab after another tab
-            "130, 10, 2" // can insert tab at root
+            "130, , 2" // can insert tab at root (null)
     })
     @SuppressWarnings("unchecked")
     void should_reorder(Long id, Long afterId, Integer expectedPosition) {

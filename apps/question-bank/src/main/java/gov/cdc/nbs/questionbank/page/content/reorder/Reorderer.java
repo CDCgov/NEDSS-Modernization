@@ -22,16 +22,19 @@ public class Reorderer {
 
     private static final String SELECT = """
             SELECT
-              wa_ui_metadata_uid,
-              nbs_ui_component_uid,
-              order_nbr
+                wa_ui_metadata_uid,
+                nbs_ui_component_uid,
+                question_label,
+                order_nbr
             FROM
-              WA_UI_metadata
+                wa_template
+                JOIN WA_UI_metadata ON wa_template.wa_template_uid = WA_UI_metadata.wa_template_uid
             WHERE
-              order_nbr > 0
-              AND wa_template_uid = ?
+                    wa_template.wa_template_uid = ?
+                    AND wa_template.template_type = 'Draft'
+                    AND order_nbr > 0
             ORDER BY
-              order_nbr ASC
+                order_nbr ASC;
                         """;
 
     private static final String UPDATE = """
@@ -57,6 +60,10 @@ public class Reorderer {
     public void apply(long pageId, ReorderRequest request) {
         // Get page content from db
         List<PageEntry> entries = fetchEntries(pageId);
+
+        if (entries == null || entries.isEmpty()) {
+            throw new ReorderException("Failed to find draft page with id: " + pageId);
+        }
 
         // Construct objects from content
         SimplePageMapper mapper = new SimplePageMapper();
