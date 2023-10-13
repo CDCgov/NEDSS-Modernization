@@ -108,6 +108,7 @@ export const AdvancedSearch = () => {
 
     const handleActiveTab = (searchType: string) => {
         setActiveTab(searchType);
+        handleClearAll();
         navigate(`/advanced-search/${searchType}`, { replace: true });
     };
 
