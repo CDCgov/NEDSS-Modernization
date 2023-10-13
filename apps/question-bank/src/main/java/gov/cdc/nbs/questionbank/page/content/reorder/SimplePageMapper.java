@@ -63,19 +63,14 @@ public class SimplePageMapper {
             throw new ReorderException("Failed to build page. Invalid page content");
         }
         page.getTabs().addAll(tabs);
+        reset();
         return page;
     }
 
     private void rollUpTab() {
         if (currentTab != null) {
-            if (currentSubsection != null) {
-                currentSection.getSubsections().add(currentSubsection);
-                currentSubsection = null;
-            }
-            if (currentSection != null) {
-                currentTab.getSections().add(currentSection);
-                currentSection = null;
-            }
+            rollUpSubsection();
+            rollUpSection();
             tabs.add(currentTab);
             currentTab = null;
         }
@@ -86,10 +81,7 @@ public class SimplePageMapper {
             throw new ReorderException("Section not included in tab");
         }
         if (currentSection != null) {
-            if (currentSubsection != null) {
-                currentSection.getSubsections().add(currentSubsection);
-                currentSubsection = null;
-            }
+            rollUpSubsection();
             currentTab.getSections().add(currentSection);
             currentSection = null;
         }
@@ -103,5 +95,12 @@ public class SimplePageMapper {
             currentSection.getSubsections().add(currentSubsection);
             currentSubsection = null;
         }
+    }
+
+    private void reset() {
+        tabs = new ArrayList<>();
+        currentTab = null;
+        currentSection = null;
+        currentSubsection = null;
     }
 }

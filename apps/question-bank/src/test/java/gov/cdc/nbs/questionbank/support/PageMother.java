@@ -59,6 +59,7 @@ public class PageMother {
     public void cleanCreated() {
         allPages.forEach(p -> {
             waUiMetadatumRepository.deleteAllByWaTemplateUid(p);
+            pageConMappingRepository.deleteAllByWaTemplateUid(p);
             repository.delete(p);
         });
         allPages.clear();
