@@ -21,11 +21,11 @@ public class StatusAudit {
         this.statusTime = statusTime;
     }
 
-    public Character getStatusCd() {
+    public Character status() {
         return statusCd;
     }
 
-    public Instant getStatusTime() {
+    public Instant appliedOn() {
         return statusTime;
     }
 

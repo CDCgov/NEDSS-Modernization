@@ -35,11 +35,11 @@ public class Audit {
         this.changed = new Changed(who, when, why);
     }
 
-    public Added getAdded() {
+    public Added added() {
         return added;
     }
 
-    public Changed getChanged() {
+    public Changed changed() {
         return changed;
     }
 }

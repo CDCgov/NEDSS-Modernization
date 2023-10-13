@@ -23,11 +23,11 @@ public class RecordStatusAudit {
         this.recordStatusTime = when;
     }
 
-    public String getRecordStatusCd() {
+    public String status() {
         return recordStatusCd;
     }
 
-    public Instant getRecordStatusTime() {
+    public Instant appliedOn() {
         return recordStatusTime;
     }
 
