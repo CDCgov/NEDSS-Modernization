@@ -89,6 +89,7 @@ public class PageRuleSteps {
     @When("I make a request to delete a rule to a page")
     public void i_make_a_request_to_delete_a_rule_to_a_page() {
         try{
+            ruleResponse = pageRuleController.createBusinessRule(ruleRequest());
             ruleResponse = pageRuleController.deletePageRule(ruleResponse.ruleId());
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
@@ -105,18 +106,18 @@ public class PageRuleSteps {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("404400");
+        targetIdentifiers.add("NBS272");
 
         List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         List<String> sourceIds = new ArrayList<>();
-        sourceIds.add("Test Id");
+        sourceIds.add("DEM113");
 
         List<String> sourceValueText = new ArrayList<>();
         sourceValueText.add("Dengue virus");
         CreateRuleRequest.SourceValues sourceValue = new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
         sourceValues.add(sourceValue);
         return new CreateRuleRequest(
-                1000274L,
+                1000272L,
                 "Enable",
                 "Rule Desc",
                 "testSource",
