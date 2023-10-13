@@ -88,7 +88,10 @@ public class SimplePageMapper {
             throw new ReorderException("Section not included in tab");
         }
         if (currentSection != null) {
-            rollUpSubsection();
+            if (currentSubsection != null) {
+                currentSection.getSubsections().add(currentSubsection);
+                currentSubsection = null;
+            }
             currentTab.getSections().add(currentSection);
             currentSection = null;
         }
