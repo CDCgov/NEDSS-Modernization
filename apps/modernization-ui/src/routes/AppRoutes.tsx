@@ -19,6 +19,7 @@ import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase
 import { ImportTemplate } from '../apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
+import { BusinessRulesLibrary } from '../apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import { useConfiguration } from 'configuration';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
@@ -76,6 +77,7 @@ export const AppRoutes = () => {
                                         <Route path="pages" element={<ManagePages />} />
                                         <Route path="valueset-library" element={<ValuesetLibrary />} />
                                         <Route path="question-library" element={<QuestionLibrary />} />
+                                        <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
                                     </Route>
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />

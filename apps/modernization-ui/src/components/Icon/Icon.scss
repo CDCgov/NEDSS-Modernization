@@ -1,0 +1,16 @@
+@import 'settings.scss';
+
+img.icon {
+    &.xs {
+        height: 0.5rem;
+        width: 0.5rem;
+    }
+    &.s {
+        height: 0.75rem;
+        width: 0.75rem;
+    }
+    &.m {
+        height: 1.2rem;
+        width: 1.2rem;
+    }
+}

@@ -1,0 +1,28 @@
+@import 'settings.scss';
+
+.reorder-subsection {
+    .reorder-subsection__toggle {
+        cursor: pointer;
+    }
+    .reorder-subsection__tile {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.9rem 1.5rem;
+        p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+    .reorder-subsection__questions {
+        max-height: 400vh;
+        margin-left: 2.4rem;
+        transition: $transition-1;
+        &.closed {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+    }
+}

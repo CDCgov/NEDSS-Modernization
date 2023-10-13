@@ -3,11 +3,11 @@
 .section {
     background-color: $color-white;
     border-radius: 0.25rem;
-    border: 1px solid $color-base-lighter;
+    border: $border-medium;
     &__header {
         width: 100%;
         height: 5rem;
-        border-bottom: 1px solid $color-base-lighter;
+        border-bottom: $border-medium;
         display: flex;
         align-items: center;
         justify-content: space-between;
