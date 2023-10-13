@@ -41,11 +41,6 @@ public class PageRuleSteps {
     private UserMother userMother;
     Long ruleId;
 
-    @Given("I am an admin user")
-    public void i_am_admin_user() {
-        userMother.adminUser();
-    }
-
     @Given("I am not logged in user")
     public void i_am_not_logged_in() {
         SecurityContextHolder.getContext().setAuthentication(null);
