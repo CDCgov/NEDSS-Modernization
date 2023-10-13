@@ -44,7 +44,6 @@ public class TabCreator {
     public CreateTabResponse createTab(long page, Long userId, CreateTabRequest request) throws AddTabException {
         try {
             WaUiMetadata waUiMetadata = createWaUiMetadata(page, userId, request);
-            log.info("Saving Rule to DB");
             waUiMetaDataRepository.save(waUiMetadata);
             waUiMetaDataRepository.incrementOrderNumbers(waUiMetadata.getOrderNbr(), waUiMetadata.getId());
             return new CreateTabResponse(waUiMetadata.getId(), "Tab Created Successfully");
@@ -58,7 +57,7 @@ public class TabCreator {
             log.info("Deleting Tab");
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(tabId);
             Optional<Long> nbsComponentUidOptional =
-                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
+                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr + 1, pageNumber);
             if (nbsComponentUidOptional.isPresent()) {
                 Long nbsComponentUid = nbsComponentUidOptional.get();
                 if (nbsComponentUid == TAB || nbsComponentUid == null) {
@@ -73,7 +72,7 @@ public class TabCreator {
                 waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, tabId);
                 return new DeleteTabResponse(tabId, DELETE_MESSAGE);
             }
-        }  catch(Exception exception) {
+        } catch (Exception exception) {
             throw new DeleteTabException("Delete Tab Exception");
         }
 
@@ -88,7 +87,7 @@ public class TabCreator {
             waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(),
                     request.visible(), tabId);
             return new UpdateTabResponse(tabId, UPDATE_MESSAGE);
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             throw new UpdateTabException("Update Tab Exception");
         }
 
@@ -96,22 +95,25 @@ public class TabCreator {
 
     private WaUiMetadata createWaUiMetadata(long pageId, Long uid, CreateTabRequest request) {
         WaTemplate page = entityManager.getReference(WaTemplate.class, pageId);
+        Instant now = Instant.now();
+        Long nextOrderNumber = getCurrentHighestOrderNumber(pageId) + 1;
+
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         waUiMetadata.setAddUserId(uid);
         waUiMetadata.setNbsUiComponentUid(1010L);
-        waUiMetadata.getNbsUiComponentUid();
         waUiMetadata.setWaTemplateUid(page);
-        Long nextOrderNumber = getCurrentHighestOrderNumber(pageId);
-
+        waUiMetadata.setQuestionLabel(request.name());
         waUiMetadata.setDisplayInd(request.visible() ? "T" : "F");
-        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
+
+        // Defaults
+        waUiMetadata.setOrderNbr(nextOrderNumber.intValue());
         waUiMetadata.setRequiredInd("F");
         waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setAddTime(Instant.now());
-        waUiMetadata.setLastChgTime(Instant.now());
+        waUiMetadata.setAddTime(now);
+        waUiMetadata.setLastChgTime(now);
         waUiMetadata.setLastChgUserId(uid);
         waUiMetadata.setRecordStatusCd("Active");
-        waUiMetadata.setRecordStatusTime(Instant.now());
+        waUiMetadata.setRecordStatusTime(now);
         waUiMetadata.setVersionCtrlNbr(1);
         waUiMetadata.setStandardNndIndCd('F');
         waUiMetadata.setLocalId("NBS_1_14");
@@ -120,7 +122,6 @@ public class TabCreator {
         waUiMetadata.setFutureDateIndCd('F');
         waUiMetadata.setStandardQuestionIndCd('F');
         waUiMetadata.setPublishIndCd('T');
-        waUiMetadata.setQuestionLabel(request.name());
         waUiMetadata.setEnableInd("T");
 
         return waUiMetadata;
