@@ -3,6 +3,9 @@ name: Verify Modernization UI
 
 on:
   workflow_dispatch:
+  push:
+    branch:
+      - "pipeline/verifiy-ui"
   pull_request:
     paths:
       - "apps/modernization-ui/**"
@@ -16,12 +19,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/checkout@v3
 
       - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
