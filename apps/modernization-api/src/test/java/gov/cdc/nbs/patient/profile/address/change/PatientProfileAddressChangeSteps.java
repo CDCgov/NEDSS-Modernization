@@ -5,8 +5,8 @@ import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -26,7 +26,7 @@ public class PatientProfileAddressChangeSteps {
     private final Faker faker = new Faker(new Locale("en-us"));
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     PatientAddressChangeController controller;
@@ -35,12 +35,12 @@ public class PatientProfileAddressChangeSteps {
     EntityManager entityManager;
 
     @Autowired
-    TestActive<NewPatientAddressInput> newRequest;
+    Active<NewPatientAddressInput> newRequest;
 
     @Autowired
-    TestActive<UpdatePatientAddressInput> updateRequest;
+    Active<UpdatePatientAddressInput> updateRequest;
     @Autowired
-    TestActive<DeletePatientAddressInput> deleteRequest;
+    Active<DeletePatientAddressInput> deleteRequest;
 
     @Before("@patient-profile-address-change")
     public void reset() {

@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.investigation;
 
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatients;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -34,13 +34,13 @@ public class PatientProfileAddInvestigationSteps {
     MockMvc mvc;
 
     @Autowired
-    TestActive<SessionCookie> activeSession;
+    Active<SessionCookie> activeSession;
 
     @Autowired
-    TestActive<MockHttpServletResponse> activeResponse;
+    Active<MockHttpServletResponse> activeResponse;
 
     @Autowired
-    TestActive<UserDetails> activeUserDetails;
+    Active<UserDetails> activeUserDetails;
 
     @Autowired
     @Qualifier("classic")

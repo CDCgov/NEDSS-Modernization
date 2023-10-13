@@ -9,8 +9,8 @@ import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -28,13 +28,13 @@ public class PatientProfileRaceSteps {
     PatientMother mother;
 
     @Autowired
-    TestActive<PatientInput> input;
+    Active<PatientInput> input;
 
     @Autowired
     TestPatient patient;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     PatientRaceResolver resolver;

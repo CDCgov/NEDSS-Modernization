@@ -6,7 +6,7 @@ import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -17,7 +17,7 @@ public class InvestigationMother {
     private static final String INVESTIGATION_CODE = "CAS";
     private static final String PERSON_CODE = "PSN";
     private static final String INVESTIGATION_CLASS = "CASE";
-    private final TestUniqueIdGenerator idGenerator;
+    private final SequentialIdentityGenerator idGenerator;
 
     private final MotherSettings settings;
     private final EntityManager entityManager;
@@ -26,7 +26,7 @@ public class InvestigationMother {
 
     public InvestigationMother(
             final MotherSettings settings,
-            final TestUniqueIdGenerator idGenerator,
+            final SequentialIdentityGenerator idGenerator,
             final EntityManager entityManager,
             final TestInvestigations investigations,
             final TestInvestigationCleaner cleaner) {

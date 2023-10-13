@@ -6,8 +6,8 @@ import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter.Identification;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -35,10 +35,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PatientSearchSteps {
 
   @Autowired
-  TestAvailable<PatientIdentifier> patients;
+  Available<PatientIdentifier> patients;
 
   @Autowired
-  TestActive<PatientIdentifier> patient;
+  Active<PatientIdentifier> patient;
 
   @Autowired
   SearchablePatientMother mother;
@@ -50,10 +50,10 @@ public class PatientSearchSteps {
   PatientSearchRequest request;
 
   private final List<Person> available = new ArrayList<>();
-  private final TestActive<Person> target = new TestActive<>();
-  private final TestActive<PatientFilter> criteria = new TestActive<>();
-  private final TestActive<SortCriteria> sorting = new TestActive<>();
-  private final TestActive<ResultActions> results = new TestActive<>();
+  private final Active<Person> target = new Active<>();
+  private final Active<PatientFilter> criteria = new Active<>();
+  private final Active<SortCriteria> sorting = new Active<>();
+  private final Active<ResultActions> results = new Active<>();
 
   @Before("@patient-search")
   public void reset() {
