@@ -29,15 +29,15 @@ public class Added {
         this.addUserId = who;
     }
 
-    public String getAddReasonCd() {
+    public String reason() {
         return addReasonCd;
     }
 
-    public Instant getAddTime() {
+    public Instant addedOn() {
         return addTime;
     }
 
-    public Long getAddUserId() {
+    public Long addedBy() {
         return addUserId;
     }
 

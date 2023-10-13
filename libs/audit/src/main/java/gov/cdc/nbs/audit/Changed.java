@@ -29,15 +29,15 @@ public class Changed {
         this(who, when, null);
     }
 
-    public String getLastChgReasonCd() {
+    public String reason() {
         return lastChgReasonCd;
     }
 
-    public Instant getLastChgTime() {
+    public Instant changedOn() {
         return lastChgTime;
     }
 
-    public Long getLastChgUserId() {
+    public Long changedBy() {
         return lastChgUserId;
     }
 

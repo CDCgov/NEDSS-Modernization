@@ -1,5 +1,6 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+
 plugins {
     id 'jvm-test-suite'
 
@@ -7,7 +8,7 @@ plugins {
     alias libs.plugins.springDependencies
 }
 
-
+group = 'gov.cdc.nbs.audit'
 
 testing {
     suites {
@@ -16,8 +17,6 @@ testing {
 
             dependencies {
                 implementation libs.bundles.testing
-                implementation libs.spring.test
-                implementation libs.spring.kafka.test
             }
         }
     }
@@ -25,32 +24,12 @@ testing {
 
 dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
 
-    implementation project(':accumulation')
-
-    // core
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
 
-    implementation libs.springBoot.web
-    implementation libs.bundles.security
-
-    // database
-    implementation libs.mssql.jdbc
-
-    // querydsl
     implementation libs.bundles.queryDSL
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
-
-    // blazebit for querydsl paging
-    implementation libs.bundles.blaze.persistence.queryDSL
-    implementation libs.bundles.jackson
-
-    // lombok
-    compileOnly libs.lombok
-    annotationProcessor libs.lombok
-
+    annotationProcessor(variantOf(libs.queryDSL.apt) {classifier('jpa')})
 }
 
 compileJava {
