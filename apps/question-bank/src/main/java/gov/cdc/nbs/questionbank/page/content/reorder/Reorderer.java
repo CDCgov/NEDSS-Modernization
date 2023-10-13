@@ -24,7 +24,6 @@ public class Reorderer {
             SELECT
                 wa_ui_metadata_uid,
                 nbs_ui_component_uid,
-                question_label,
                 order_nbr
             FROM
                 wa_template
@@ -34,7 +33,7 @@ public class Reorderer {
                     AND wa_template.template_type = 'Draft'
                     AND order_nbr > 0
             ORDER BY
-                order_nbr ASC;
+                order_nbr ASC
                         """;
 
     private static final String UPDATE = """
