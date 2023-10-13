@@ -13,7 +13,7 @@ import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderRequest;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ReorderController {
 
-    final Reorderer reorderer;
+    private final Reorderer reorderer;
 
     public ReorderController(final Reorderer reorderer) {
         this.reorderer = reorderer;

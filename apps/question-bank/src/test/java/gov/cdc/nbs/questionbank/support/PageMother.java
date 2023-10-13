@@ -7,19 +7,20 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 
 @Component
+@Transactional
 public class PageMother {
     private static final String ASEPTIC_MENINGITIS_ID = "10010";
     private static final String BRUCELLOSIS_ID = "10020";
@@ -52,6 +53,14 @@ public class PageMother {
         pageConMappingRepository.deleteAll();
         waRuleMetaDataRepository.deleteAll();
         repository.deleteAll();
+        allPages.clear();
+    }
+
+    public void cleanCreated() {
+        allPages.forEach(p -> {
+            waUiMetadatumRepository.deleteAllByWaTemplateUid(p);
+            repository.delete(p);
+        });
         allPages.clear();
     }
 
@@ -107,22 +116,87 @@ public class PageMother {
 
         page.setConditionMappings(Collections.singleton(conditionMapping));
 
+        WaUiMetadata pageType = new WaUiMetadata();
+        pageType.setWaTemplateUid(page);
+        pageType.setNbsUiComponentUid(1002L);
+        pageType.setOrderNbr(1);
+        pageType.setDisplayInd("T");
+        pageType.setVersionCtrlNbr(1);
 
         WaUiMetadata tab = new WaUiMetadata();
         tab.setWaTemplateUid(page);
         tab.setNbsUiComponentUid(1010L);
-        tab.setOrderNbr(1);
+        tab.setOrderNbr(2);
         tab.setDisplayInd("T");
         tab.setVersionCtrlNbr(1);
+        tab.setQuestionLabel("First tab");
 
         WaUiMetadata section = new WaUiMetadata();
         section.setWaTemplateUid(page);
         section.setNbsUiComponentUid(1015L);
-        section.setOrderNbr(2);
+        section.setOrderNbr(3);
         section.setDisplayInd("T");
         section.setVersionCtrlNbr(1);
+        section.setQuestionLabel("First section");
 
-        page.setUiMetadata(Arrays.asList(tab, section));
+        WaUiMetadata subsection = new WaUiMetadata();
+        subsection.setWaTemplateUid(page);
+        subsection.setNbsUiComponentUid(1016L);
+        subsection.setOrderNbr(4);
+        subsection.setDisplayInd("T");
+        subsection.setVersionCtrlNbr(1);
+        subsection.setQuestionLabel("First subsection");
+
+        WaUiMetadata question = new WaUiMetadata();
+        question.setWaTemplateUid(page);
+        question.setNbsUiComponentUid(1009L);
+        question.setOrderNbr(5);
+        question.setDisplayInd("T");
+        question.setVersionCtrlNbr(1);
+        question.setQuestionLabel("First question");
+
+        WaUiMetadata tab2 = new WaUiMetadata();
+        tab2.setWaTemplateUid(page);
+        tab2.setNbsUiComponentUid(1010L);
+        tab2.setOrderNbr(6);
+        tab2.setDisplayInd("T");
+        tab2.setVersionCtrlNbr(1);
+        tab2.setQuestionLabel("Second tab");
+
+        WaUiMetadata section2 = new WaUiMetadata();
+        section2.setWaTemplateUid(page);
+        section2.setNbsUiComponentUid(1015L);
+        section2.setOrderNbr(7);
+        section2.setDisplayInd("T");
+        section2.setVersionCtrlNbr(1);
+        section2.setQuestionLabel("Second section");
+
+        WaUiMetadata subsection2 = new WaUiMetadata();
+        subsection2.setWaTemplateUid(page);
+        subsection2.setNbsUiComponentUid(1016L);
+        subsection2.setOrderNbr(8);
+        subsection2.setDisplayInd("T");
+        subsection2.setVersionCtrlNbr(1);
+        subsection2.setQuestionLabel("Second subsection");
+
+        WaUiMetadata question2 = new WaUiMetadata();
+        question2.setWaTemplateUid(page);
+        question2.setNbsUiComponentUid(1009L);
+        question2.setOrderNbr(9);
+        question2.setDisplayInd("T");
+        question2.setVersionCtrlNbr(1);
+        question2.setQuestionLabel("Second question");
+
+        page.setUiMetadata(Arrays.asList(
+                pageType,
+                tab,
+                section,
+                subsection,
+                question,
+                tab2,
+                section2,
+                subsection2,
+                question2));
         page = repository.save(page);
         allPages.add(page);
         return page;

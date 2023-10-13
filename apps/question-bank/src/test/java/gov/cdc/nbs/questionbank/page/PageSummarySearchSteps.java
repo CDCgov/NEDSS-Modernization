@@ -33,6 +33,7 @@ public class PageSummarySearchSteps {
 
     @Given("pages exist")
     public void pages_exist() {
+        pageMother.cleanCreated();
         pageMother.brucellosis();
         pageMother.asepticMeningitis();
     }
