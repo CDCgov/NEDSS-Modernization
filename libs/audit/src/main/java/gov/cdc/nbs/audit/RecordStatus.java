@@ -5,7 +5,7 @@ import javax.persistence.Embeddable;
 import java.time.Instant;
 
 @Embeddable
-public class RecordStatusAudit {
+public class RecordStatus {
 
 
     @Column(name = "record_status_cd", length = 20)
@@ -15,10 +15,10 @@ public class RecordStatusAudit {
     private Instant recordStatusTime;
 
 
-    protected RecordStatusAudit() {
+    protected RecordStatus() {
     }
 
-    public RecordStatusAudit(final Instant when) {
+    public RecordStatus(final Instant when) {
         this.recordStatusCd = "ACTIVE";
         this.recordStatusTime = when;
     }
