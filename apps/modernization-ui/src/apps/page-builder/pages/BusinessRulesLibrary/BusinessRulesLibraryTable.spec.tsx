@@ -21,5 +21,38 @@ describe('when rendered', () => {
         expect(tableHeads[1]?.textContent).toBe('Logic');
         expect(tableHeads[2].textContent).toBe('Values');
         expect(tableHeads[3].textContent).toBe('Function');
+        expect(tableHeads[4].textContent).toBe('Target Fields');
+        expect(tableHeads[5].textContent).toBe('ID');
+    });
+});
+describe('when at least one summary is available', () => {
+    const rulesSummary: any = {
+        ruleId: 6376,
+        templateUid: 1000272,
+        ruleFunction: 'Enable',
+        ruleDescription: null,
+        sourceIdentifier: 'ARB001',
+        sourceValue: ['Dengue virus'],
+        comparator: '=',
+        targetType: 'QUESTION',
+        errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
+        targetValueIdentifier: ['404400']
+    };
+    const summaries = [rulesSummary];
+
+    it('should display the Business rules summaries', async () => {
+        const { container } = render(
+            <AlertProvider>
+                <BusinessRulesLibraryTable summaries={summaries} />
+            </AlertProvider>
+        );
+
+        const tableData = container.getElementsByClassName('table-data');
+        expect(tableData[0]).toHaveTextContent('ARB001');
+        expect(tableData[1]).toHaveTextContent('Equal to');
+        expect(tableData[2]).toHaveTextContent('Dengue virus');
+        expect(tableData[3]).toHaveTextContent('Enable');
+        expect(tableData[4]).toHaveTextContent('404400');
+        expect(tableData[5]).toHaveTextContent('6376');
     });
 });
