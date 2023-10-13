@@ -69,8 +69,15 @@ public class SimplePageMapper {
 
     private void rollUpTab() {
         if (currentTab != null) {
-            rollUpSubsection();
-            rollUpSection();
+            if (currentSubsection != null) {
+                currentSection.getSubsections().add(currentSubsection);
+                currentSubsection = null;
+            }
+            if (currentSection != null) {
+                rollUpSubsection();
+                currentTab.getSections().add(currentSection);
+                currentSection = null;
+            }
             tabs.add(currentTab);
             currentTab = null;
         }
