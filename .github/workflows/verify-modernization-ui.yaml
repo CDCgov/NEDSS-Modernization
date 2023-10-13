@@ -7,9 +7,6 @@ on:
     paths:
       - "apps/modernization-ui/**"
 
-env:
-  passed_github_token: ${{secrets.PASSED_GITHUB_TOKEN}}
-
 jobs:
   pipeline:
     name: Verify
