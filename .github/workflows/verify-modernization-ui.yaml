@@ -3,9 +3,6 @@ name: Verify Modernization UI
 
 on:
   workflow_dispatch:
-  push:
-    branch:
-      - "pipeline/verifiy-ui"
   pull_request:
     paths:
       - "apps/modernization-ui/**"
@@ -15,7 +12,7 @@ env:
 
 jobs:
   pipeline:
-    name: Build and verify
+    name: Verify
     runs-on: ubuntu-latest
 
     steps:
