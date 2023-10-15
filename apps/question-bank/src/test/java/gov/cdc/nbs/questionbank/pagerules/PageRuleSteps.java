@@ -1,21 +1,13 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import gov.cdc.nbs.questionbank.exception.BadRequestException;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
-import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.support.RuleRequestMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -104,28 +96,28 @@ public class PageRuleSteps {
 
     private static CreateRuleRequest ruleRequest() {
         List<String> targetValuesList = new ArrayList<>();
-        targetValuesList.add("Admission Date");
+        targetValuesList.add("string");
         List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("NBS272");
+        targetIdentifiers.add("string");
 
         List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         List<String> sourceIds = new ArrayList<>();
-        sourceIds.add("DEM113");
+        sourceIds.add("string");
 
         List<String> sourceValueText = new ArrayList<>();
-        sourceValueText.add("Dengue virus");
+        sourceValueText.add("string");
         CreateRuleRequest.SourceValues sourceValue = new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
         sourceValues.add(sourceValue);
         return new CreateRuleRequest(
-                1000272L,
+                1000273L,
                 "Enable",
-                "Rule Desc",
-                "testSource",
-                "ARB001",
+                "string",
+                "string",
+                "string",
                 sourceValues,
                 true,
-                "=",
-                "QUESTION",
+                "string",
+                "string",
                 targetValuesList,
                 targetIdentifiers);
     }
