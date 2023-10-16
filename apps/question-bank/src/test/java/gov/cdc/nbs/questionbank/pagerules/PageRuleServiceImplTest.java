@@ -9,9 +9,7 @@ import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -486,4 +484,20 @@ class PageRuleServiceImplTest {
         ruleMetadata.setTargetQuestionIdentifier(null);
         return ruleMetadata;
     }
+
+    @Test
+    void findPageRuleTest() {
+        int page = 0;
+        int size =1;
+        String sort ="id";
+        Pageable pageRequest = PageRequest.of(page,size, Sort.by(sort));
+        SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
+        Page<WaRuleMetadata> ruleMetadataPage= new PageImpl<>(Collections.singletonList(morbWaRuleMetadata()));
+        Mockito.when(waRuleMetaDataRepository.
+                findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase
+                        (request.searchValue(),request.searchValue(),pageRequest)).thenReturn(ruleMetadataPage);
+        Page<ViewRuleResponse> ruleResponse = pageRuleServiceImpl.findPageRule(request,pageRequest);
+        assertNotNull(ruleResponse);
+    }
+
 }

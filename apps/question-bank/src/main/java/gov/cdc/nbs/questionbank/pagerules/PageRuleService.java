@@ -18,4 +18,6 @@ public interface PageRuleService {
     ViewRuleResponse getRuleResponse(Long ruleId);
 
     Page<ViewRuleResponse> getAllPageRule(Pageable pageRequest);
+
+    Page<ViewRuleResponse> findPageRule(SearchPageRuleRequest request, Pageable pageable);
 }

@@ -837,6 +837,18 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     }
 
+    @Override
+    public Page<ViewRuleResponse> findPageRule(SearchPageRuleRequest request, Pageable pageable) {
+        Page<WaRuleMetadata> ruleMetadataPage =waRuleMetaDataRepository.findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase(request.searchValue(),request.searchValue(),pageable);
+
+        List<ViewRuleResponse> ruleMetadata =
+                ruleMetadataPage.getContent().stream().map(rule ->new ViewRuleResponse(rule.getId(), rule.getWaTemplateUid(), rule.getRuleCd(),
+                        rule.getRuleDescText(), rule.getSourceQuestionIdentifier(), buildSourceTargetValues(rule,true),
+                        rule.getLogic(), rule.getTargetType(), rule.getErrormsgText(),
+                        buildSourceTargetValues(rule,false))).toList();
+        return new PageImpl<>(ruleMetadata,ruleMetadataPage.getPageable(),ruleMetadataPage.getTotalElements());
+    }
+
     private List<String> buildSourceTargetValues(WaRuleMetadata ruleMetadata, boolean isSource) {
 
         List<String> sourceValues = new ArrayList<>();

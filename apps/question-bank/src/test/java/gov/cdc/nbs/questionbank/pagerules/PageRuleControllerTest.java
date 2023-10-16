@@ -121,4 +121,23 @@ class PageRuleControllerTest {
         Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest);
         assertNotNull(ruleResponse);
     }
+
+    @Test
+    void findPageRuleTest() throws Exception {
+        int page = 0;
+        int size =1;
+        String sort ="id";
+        Pageable pageRequest = PageRequest.of(page,size,Sort.by(sort));
+        SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
+        List<String> sourceValues = new ArrayList<>();
+        List<String> targetValues = new ArrayList<>();
+        List<ViewRuleResponse> content = new ArrayList<>();
+        content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
+                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+
+        Mockito.when(pageRuleService.findPageRule(request,pageRequest)).
+                thenReturn(new PageImpl<>(content,pageRequest,content.size()));
+        Page<ViewRuleResponse> ruleResponse = pageRuleController.findPageRule(request,pageRequest);
+        assertNotNull(ruleResponse);
+    }
 }

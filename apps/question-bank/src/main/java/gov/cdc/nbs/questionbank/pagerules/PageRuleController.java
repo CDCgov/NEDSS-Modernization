@@ -42,7 +42,7 @@ public class PageRuleController {
             log.debug("Successfully added business rule with Id: {}", ruleResponse.ruleId());
             return ruleResponse;
         } catch (RuleException e) {
-            return new CreateRuleResponse(null, "Error in Creating a Rule");
+            return new CreateRuleResponse(null, "Error in Creating a Rules");
         }
     }
 
@@ -69,5 +69,11 @@ public class PageRuleController {
     @ResponseBody
     public Page<ViewRuleResponse> getAllPageRule(@PageableDefault(size = 25) Pageable pageable){
         return pageRuleService.getAllPageRule(pageable);
+    }
+
+    @GetMapping("/search")
+    @ResponseBody
+    public Page<ViewRuleResponse> findPageRule(@RequestBody SearchPageRuleRequest request,@PageableDefault(size = 25) Pageable pageable){
+        return pageRuleService.findPageRule(request,pageable);
     }
 }

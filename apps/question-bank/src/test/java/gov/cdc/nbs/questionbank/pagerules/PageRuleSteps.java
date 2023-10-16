@@ -8,6 +8,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -120,5 +123,26 @@ public class PageRuleSteps {
                 "string",
                 targetValuesList,
                 targetIdentifiers);
+    }
+
+    @When("I search for page rule")
+    public void iSearchForPageRule() {
+        try{
+            SearchPageRuleRequest request = new SearchPageRuleRequest("string");
+            ruleResponse = pageRuleController.findPageRule(request,null));
+        } catch (AuthenticationCredentialsNotFoundException e) {
+            exceptionHolder.setException(e);
+        }
+    }
+
+    @Then("an access denied exception is thrown")
+    public void a_access_denied_exception_is_thrown() {
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof AccessDeniedException);
+    }
+
+    @Then("page rule is returned")
+    public void pageRuleIsReturned() {
+        assertNotNull(ruleResponse);
     }
 }
