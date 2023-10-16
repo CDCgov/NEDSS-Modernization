@@ -11,6 +11,7 @@ describe('when sorting investigations', () => {
                 status: 'status',
                 jurisdiction: 'jurisdiction',
                 event: 'event',
+                comparable: true,
                 startedOn: new Date('2023-03-27T00:00:00Z')
             },
             {
@@ -18,7 +19,8 @@ describe('when sorting investigations', () => {
                 condition: 'condition',
                 status: 'status',
                 jurisdiction: 'jurisdiction',
-                event: 'event'
+                event: 'event',
+                comparable: true
             },
             {
                 investigation: '727',
@@ -26,6 +28,7 @@ describe('when sorting investigations', () => {
                 status: 'status',
                 jurisdiction: 'jurisdiction',
                 event: 'event',
+                comparable: true,
                 startedOn: new Date('2023-01-27T00:00:00Z')
             }
         ];
@@ -48,6 +51,7 @@ describe('when sorting investigations by Start date', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             startedOn: new Date('2023-03-27T00:00:00Z')
         },
         {
@@ -55,7 +59,8 @@ describe('when sorting investigations by Start date', () => {
             condition: 'condition',
             status: 'status',
             jurisdiction: 'jurisdiction',
-            event: 'event'
+            event: 'event',
+            comparable: true
         },
         {
             investigation: '727',
@@ -63,6 +68,7 @@ describe('when sorting investigations by Start date', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             startedOn: new Date('2023-01-27T00:00:00Z')
         }
     ];
@@ -95,21 +101,24 @@ describe('when sorting investigations by Condition', () => {
             condition: 'C',
             status: 'status',
             jurisdiction: 'jurisdiction',
-            event: 'event'
+            event: 'event',
+            comparable: true
         },
         {
             investigation: '617',
             condition: 'A',
             status: 'status',
             jurisdiction: 'jurisdiction',
-            event: 'event'
+            event: 'event',
+            comparable: true
         },
         {
             investigation: '727',
             condition: 'B',
             status: 'status',
             jurisdiction: 'jurisdiction',
-            event: 'event'
+            event: 'event',
+            comparable: true
         }
     ];
 
@@ -141,21 +150,24 @@ describe('when sorting investigations by Status', () => {
             condition: 'condition',
             status: 'C',
             jurisdiction: 'jurisdiction',
-            event: 'event'
+            event: 'event',
+            comparable: true
         },
         {
             investigation: '617',
             condition: 'condition',
             status: 'A',
             jurisdiction: 'jurisdiction',
-            event: 'event'
+            event: 'event',
+            comparable: true
         },
         {
             investigation: '727',
             condition: 'condition',
             status: 'B',
             jurisdiction: 'jurisdiction',
-            event: 'event'
+            event: 'event',
+            comparable: true
         }
     ];
 
@@ -188,6 +200,7 @@ describe('when sorting investigations by Case status', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             caseStatus: 'C'
         },
         {
@@ -196,6 +209,7 @@ describe('when sorting investigations by Case status', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             caseStatus: 'A'
         },
         {
@@ -204,6 +218,7 @@ describe('when sorting investigations by Case status', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             caseStatus: 'B'
         }
     ];
@@ -236,21 +251,24 @@ describe('when sorting investigations by Jurisdiction', () => {
             condition: 'condition',
             status: 'status',
             jurisdiction: 'C',
-            event: 'event'
+            event: 'event',
+            comparable: true
         },
         {
             investigation: '617',
             condition: 'condition',
             status: 'status',
             jurisdiction: 'A',
-            event: 'event'
+            event: 'event',
+            comparable: true
         },
         {
             investigation: '727',
             condition: 'condition',
             status: 'status',
             jurisdiction: 'B',
-            event: 'event'
+            event: 'event',
+            comparable: true
         }
     ];
 
@@ -283,6 +301,7 @@ describe('when sorting investigations by Investigator', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             investigator: 'C'
         },
         {
@@ -291,6 +310,7 @@ describe('when sorting investigations by Investigator', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             investigator: 'A'
         },
         {
@@ -299,6 +319,7 @@ describe('when sorting investigations by Investigator', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             investigator: 'B'
         }
     ];
@@ -331,21 +352,24 @@ describe('when sorting investigations by Investigation', () => {
             condition: 'condition',
             status: 'status',
             jurisdiction: 'jurisdiction',
-            event: 'C'
+            event: 'C',
+            comparable: true
         },
         {
             investigation: '617',
             condition: 'condition',
             status: 'status',
             jurisdiction: 'jurisdiction',
-            event: '1'
+            event: '1',
+            comparable: true
         },
         {
             investigation: '727',
             condition: 'condition',
             status: 'status',
             jurisdiction: 'jurisdiction',
-            event: 'B'
+            event: 'B',
+            comparable: true
         }
     ];
 
@@ -378,6 +402,7 @@ describe('when sorting investigations by Co-infection', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             coInfection: 'C'
         },
         {
@@ -386,6 +411,7 @@ describe('when sorting investigations by Co-infection', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             coninfection: '1'
         },
         {
@@ -394,6 +420,7 @@ describe('when sorting investigations by Co-infection', () => {
             status: 'status',
             jurisdiction: 'jurisdiction',
             event: 'event',
+            comparable: true,
             coInfection: 'B'
         }
     ];

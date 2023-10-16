@@ -90,7 +90,6 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
 
     const asTableRow = (condition: any): TableBody => ({
         id: condition.id,
-        checkbox: true,
         expanded: true,
         tableDetails: [
             {
@@ -189,6 +188,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         totalResults={totalConditions}
                         currentPage={currentPage}
                         handleNext={setCurrentPage}
+                        selectable
                         handleSelected={handleSelectConditions}
                     />
                 ) : (

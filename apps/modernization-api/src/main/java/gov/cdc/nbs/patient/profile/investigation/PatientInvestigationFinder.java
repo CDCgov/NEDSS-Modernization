@@ -161,6 +161,7 @@ class PatientInvestigationFinder {
                         this.tables.investigation().id,
                         this.tables.investigation().activityFromTime,
                         this.tables.condition().conditionShortNm,
+                        this.tables.condition().investigationFormCd,
                         this.tables.status().codeShortDescTxt,
                         this.tables.caseStatus().codeShortDescTxt,
                         this.tables.jurisdiction().codeShortDescTxt,
@@ -168,7 +169,8 @@ class PatientInvestigationFinder {
                         this.tables.notificationStatus().codeShortDescTxt,
                         this.tables.investigation().coinfectionId,
                         this.tables.investigator().firstNm,
-                        this.tables.investigator().lastNm),
+                        this.tables.investigator().lastNm
+                ),
                 criteria)
                         .join(this.tables.status()).on(
                                 this.tables.status().id.codeSetNm.eq(INVESTIGATION_STATUS_CODE_SET),

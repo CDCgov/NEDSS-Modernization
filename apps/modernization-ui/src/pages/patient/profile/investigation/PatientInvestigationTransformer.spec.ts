@@ -28,7 +28,8 @@ describe('when the result has content', () => {
                     event: 'event-691',
                     coInfection: null,
                     notification: null,
-                    investigator: 'Nvesti Gator'
+                    investigator: 'Nvesti Gator',
+                    comparable: false
                 },
                 {
                     investigation: '829',
@@ -40,7 +41,8 @@ describe('when the result has content', () => {
                     event: 'event-829',
                     coInfection: 'co-infection-829',
                     notification: 'notification-829',
-                    investigator: 'investigator-829'
+                    investigator: 'investigator-829',
+                    comparable: true
                 }
             ],
             total: 1,
@@ -61,7 +63,8 @@ describe('when the result has content', () => {
                     event: 'event-691',
                     coInfection: null,
                     notification: null,
-                    investigator: 'Nvesti Gator'
+                    investigator: 'Nvesti Gator',
+                    comparable: false
                 }),
                 expect.objectContaining({
                     investigation: '829',
@@ -73,7 +76,8 @@ describe('when the result has content', () => {
                     event: 'event-829',
                     coInfection: 'co-infection-829',
                     notification: 'notification-829',
-                    investigator: 'investigator-829'
+                    investigator: 'investigator-829',
+                    comparable: true
                 })
             ])
         );
