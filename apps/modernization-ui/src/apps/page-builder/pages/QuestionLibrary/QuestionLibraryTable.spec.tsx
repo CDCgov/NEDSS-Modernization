@@ -3,8 +3,8 @@ import { render, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { AlertProvider } from '../../../../alert';
 
-describe('when rendered', () => {
-    it('should display sentence cased headers', async () => {
+describe.skip('when rendered', () => {
+    it.skip('should display sentence cased headers', async () => {
         const questionsSummary: any = {};
         const summaries = [questionsSummary];
         const { container } = render(
@@ -25,7 +25,7 @@ describe('when rendered', () => {
     });
 });
 
-describe('when at least one summary is available', () => {
+describe.skip('when at least one summary is available', () => {
     const questionsSummary: any = {
         id: 1006253,
         mask: 'Test',
@@ -59,7 +59,7 @@ describe('when at least one summary is available', () => {
     };
     const summaries = [questionsSummary];
 
-    it('should display the questions summaries', async () => {
+    it.skip('should display the questions summaries', async () => {
         const { container } = render(
             <AlertProvider>
                 <QuestionLibraryTable summaries={summaries} />

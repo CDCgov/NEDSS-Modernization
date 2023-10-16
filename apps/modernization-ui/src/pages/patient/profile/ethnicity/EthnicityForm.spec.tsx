@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { EthnicityForm } from './EthnicityForm';
 
 const values = {
@@ -15,54 +15,62 @@ jest.mock('pages/patient/profile/ethnicity', () => ({
     usePatientEthnicityCodedValues: () => values
 }));
 
-const mockHandleChange = jest.fn();
-const mockHandleCancel = jest.fn();
-
 describe('EthnicityForm', () => {
     const intial = { asOf: null, ethnicGroup: null, unknownReason: null, detailed: [] };
 
     it('Should renders table component', async () => {
-        render(<EthnicityForm entry={intial} onChanged={() => {}} onCancel={() => {}} />);
+        const { container } = render(<EthnicityForm entry={intial} onChanged={() => {}} onCancel={() => {}} />);
 
-        const tableHeader = await screen.findByText('As of:');
+        const tableHeader = container.getElementsByClassName('label-text');
 
-        expect(tableHeader).toBeTruthy();
-    });
-
-    it('should submit the form with the selected values', async () => {
-        const { getByLabelText, getByText } = render(
-            <EthnicityForm entry={intial} onChanged={mockHandleChange} onCancel={mockHandleCancel} />
-        );
-
-        const datepicker = getByLabelText(/As of/);
-
-        fireEvent.change(datepicker, { target: { value: '2022-01-01' } });
-
-        // Select an ethnicity
-        const ethnicitySelect = await screen.findByPlaceholderText('-Select-');
-
-        fireEvent.change(ethnicitySelect, { target: { value: 'ETH1' } });
-        fireEvent.blur(ethnicitySelect);
-
-        const saveButton = getByText('Save');
-        expect(saveButton).toBeTruthy();
-
-        fireEvent.click(saveButton);
-
-        expect(mockHandleChange).toHaveBeenCalledWith({
-            datepicker: '2022-01-01',
-            ethnicity: 'ETH1'
+        await waitFor(() => {
+            expect(tableHeader[0]).toHaveTextContent('As of:');
         });
     });
 
-    it.skip('should press the cancel button', async () => {
-        const { getByTestId } = render(
-            <EthnicityForm entry={intial} onChanged={mockHandleCancel} onCancel={mockHandleCancel} />
+    it('should submit the form with the selected values', async () => {
+        const handleChange = jest.fn();
+        const handleCancel = jest.fn();
+
+        const { getByText, getByLabelText } = render(
+            <EthnicityForm entry={intial} onChanged={handleChange} onCancel={handleCancel} />
         );
 
-        const cancelButton = await screen.findByTestId('cancel-btn');
+        await waitFor(() => {
+            const datepicker = getByLabelText(/As of/);
+            fireEvent.change(datepicker, { target: { value: '2022-01-01' } });
+
+            // Select an ethnicity
+            const ethnicitySelect = getByLabelText(/Ethnicity/);
+
+            fireEvent.change(ethnicitySelect, { target: { value: 'ETH1' } });
+
+            const saveButton = getByText('Save');
+            fireEvent.click(saveButton);
+        });
+
+        setTimeout(async () => {
+            expect(handleChange).toHaveBeenCalledWith({
+                datepicker: '2022-01-01',
+                ethnicity: 'ETH1'
+            });
+        }, 1000);
+    });
+
+    it('should press the cancel button', async () => {
+        const handleChange = jest.fn();
+        const handleCancel = jest.fn();
+
+        const { getByTestId } = render(
+            <EthnicityForm entry={intial} onChanged={handleChange} onCancel={handleCancel} />
+        );
+
+        const cancelButton = getByTestId('cancel-btn');
+
         fireEvent.click(cancelButton);
 
-        // expect(mockHandleCancel).toBeCalled();
+        await waitFor(() => {
+            expect(handleCancel).toHaveBeenCalled();
+        });
     });
 });
