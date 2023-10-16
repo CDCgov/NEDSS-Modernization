@@ -72,7 +72,7 @@ const text = [
     },
     {
         value: 1029,
-        label: 'Readonly User  text, number, or date no save'
+        label: 'Readonly User text, number, or date no save'
     }
 ];
 
@@ -142,6 +142,32 @@ const pageFieldList = [
         value: 'lastUpdatedBy'
     }
 ];
+const businessRuleFieldList = [
+    {
+        name: 'Source Fields',
+        value: 'sourceFields'
+    },
+    {
+        name: 'Logic',
+        value: 'logic'
+    },
+    {
+        name: 'Values',
+        value: 'values'
+    },
+    {
+        name: 'Function',
+        value: 'function'
+    },
+    {
+        name: 'Target Fields',
+        value: 'targetFields'
+    },
+    {
+        name: 'Id',
+        value: 'id'
+    }
+];
 const initOperator = [
     {
         name: 'Starts with',
@@ -205,5 +231,6 @@ export {
     pageFieldList,
     arithOperator,
     dateOperator,
-    initOperator
+    initOperator,
+    businessRuleFieldList
 };

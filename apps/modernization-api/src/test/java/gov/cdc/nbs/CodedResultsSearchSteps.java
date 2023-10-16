@@ -41,8 +41,7 @@ public class CodedResultsSearchSteps {
     @Autowired
     private SnomedCodeRepository snomedCodeRepository;
 
-    private List<CodedResult> localResponse;
-    private List<CodedResult> snomedResponse;
+    private List<CodedResult> response;
 
     @Given("local coded results exist")
     public void local_coded_results_exist() {
@@ -56,38 +55,19 @@ public class CodedResultsSearchSteps {
         createSnomedResultIfNotExists(LabResultMother.snomedNoGrowth());
     }
 
-    @When("I search for local coded results by {string}")
+    @When("I search for coded results by {string}")
     public void i_search_for_local_coded_results_by_(String searchText) {
-        localResponse = labResultController.findDistinctCodedResults(searchText, false);
+        response = labResultController.findDistinctCodedResults(searchText);
     }
 
-    @Then("A local coded result is {string}")
+    @Then("A coded result is {string}")
     public void a_local_coded_result_is(String expectedResult) {
         switch (expectedResult) {
             case "found":
-                assertTrue(localResponse.size() > 0);
+                assertTrue(response.size() > 0);
                 break;
             case "not found":
-                assertEquals(0, localResponse.size());
-                break;
-            default:
-                throw new IllegalArgumentException("Inavlid expected result type: " + expectedResult);
-        }
-    }
-
-    @When("I search for snomed coded results by {string}")
-    public void i_search_for_snomed_coded_results_by_(String searchText) {
-        snomedResponse = labResultController.findDistinctCodedResults(searchText, true);
-    }
-
-    @Then("A snomed coded results is {string}")
-    public void a_snomed_coded_result_is(String expectedResult) {
-        switch (expectedResult) {
-            case "found":
-                assertTrue(snomedResponse.size() > 0);
-                break;
-            case "not found":
-                assertEquals(0, snomedResponse.size());
+                assertEquals(0, response.size());
                 break;
             default:
                 throw new IllegalArgumentException("Inavlid expected result type: " + expectedResult);

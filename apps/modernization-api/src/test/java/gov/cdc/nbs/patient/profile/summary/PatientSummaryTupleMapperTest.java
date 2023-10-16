@@ -5,9 +5,7 @@ import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
 import java.time.Instant;
-import java.time.ZoneId;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,410 +15,278 @@ import static org.mockito.Mockito.when;
 
 class PatientSummaryTupleMapperTest {
 
-    @Test
-    void should_map_patient_summary_from_tuple() {
+  @Test
+  void should_map_patient_summary_from_tuple() {
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        Tuple tuple = mock(Tuple.class);
+    Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        when(tuple.get(tables.patient().birthTime)).thenReturn(Instant.parse("2001-07-07T00:00:00Z"));
+    when(tuple.get(tables.patient().birthTime)).thenReturn(Instant.parse("2001-07-07T00:00:00Z"));
 
-        when(tuple.get(tables.ethnicity().codeShortDescTxt)).thenReturn("summary-value");
+    when(tuple.get(tables.ethnicity().codeShortDescTxt)).thenReturn("summary-value");
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        PatientSummary actual = mapper.map(tuple);
+    PatientSummary actual = mapper.map(Instant.now(), tuple);
 
-        assertThat(actual.patient()).isEqualTo(113L);
+    assertThat(actual.patient()).isEqualTo(113L);
 
-        assertThat(actual.legalName()).isNull();
-        assertThat(actual.gender()).isNull();
+    assertThat(actual.legalName()).isNull();
+    assertThat(actual.gender()).isNull();
 
-        assertThat(actual.birthday()).isEqualTo("2001-07-07");
+    assertThat(actual.birthday()).isEqualTo("2001-07-07");
 
-        assertThat(actual.ethnicity()).isEqualTo("summary-value");
-        assertThat(actual.race()).isNull();
+    assertThat(actual.ethnicity()).isEqualTo("summary-value");
 
-        assertThat(actual.phone()).isEmpty();
-        assertThat(actual.email()).isEmpty();
-        assertThat(actual.address()).isNull();
-    }
+    assertThat(actual.phone()).isEmpty();
+    assertThat(actual.email()).isEmpty();
+  }
 
-    @Test
-    void should_map_patient_summary_from_tuple_with_name() {
+  @Test
+  void should_map_patient_summary_from_tuple_with_name() {
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        Tuple tuple = mock(Tuple.class);
+    Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        when(tuple.get(tables.prefix().codeShortDescTxt)).thenReturn("prefix-name-value");
-        when(tuple.get(tables.name().firstNm)).thenReturn("first-name-value");
-        when(tuple.get(tables.name().middleNm)).thenReturn("middle-name-value");
-        when(tuple.get(tables.name().lastNm)).thenReturn("last-name-value");
+    when(tuple.get(tables.prefix().codeShortDescTxt)).thenReturn("prefix-name-value");
+    when(tuple.get(tables.name().firstNm)).thenReturn("first-name-value");
+    when(tuple.get(tables.name().middleNm)).thenReturn("middle-name-value");
+    when(tuple.get(tables.name().lastNm)).thenReturn("last-name-value");
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        PatientSummary.Name actual = mapper.map(tuple).legalName();
 
-        assertThat(actual.prefix()).isEqualTo("prefix-name-value");
-        assertThat(actual.first()).isEqualTo("first-name-value");
-        assertThat(actual.middle()).isEqualTo("middle-name-value");
-        assertThat(actual.last()).isEqualTo("last-name-value");
-        assertThat(actual.suffix()).isNull();
-    }
 
-    @Test
-    void should_map_patient_summary_name_from_tuple_with_at_least_prefix() {
+    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    assertThat(actual.prefix()).isEqualTo("prefix-name-value");
+    assertThat(actual.first()).isEqualTo("first-name-value");
+    assertThat(actual.middle()).isEqualTo("middle-name-value");
+    assertThat(actual.last()).isEqualTo("last-name-value");
+    assertThat(actual.suffix()).isNull();
+  }
 
-        Tuple tuple = mock(Tuple.class);
+  @Test
+  void should_map_patient_summary_name_from_tuple_with_at_least_prefix() {
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        when(tuple.get(tables.prefix().codeShortDescTxt)).thenReturn("prefix-name-value");
+    Tuple tuple = mock(Tuple.class);
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        PatientSummary.Name actual = mapper.map(tuple).legalName();
+    when(tuple.get(tables.prefix().codeShortDescTxt)).thenReturn("prefix-name-value");
 
-        assertThat(actual.prefix()).isEqualTo("prefix-name-value");
-    }
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-    @Test
-    void should_map_patient_summary_name_from_tuple_with_at_least_first() {
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        Tuple tuple = mock(Tuple.class);
+    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    assertThat(actual.prefix()).isEqualTo("prefix-name-value");
+  }
 
-        when(tuple.get(tables.name().firstNm)).thenReturn("first-name-value");
+  @Test
+  void should_map_patient_summary_name_from_tuple_with_at_least_first() {
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        PatientSummary.Name actual = mapper.map(tuple).legalName();
+    Tuple tuple = mock(Tuple.class);
 
-        assertThat(actual.first()).isEqualTo("first-name-value");
-    }
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-    @Test
-    void should_map_patient_summary_name_from_tuple_with_at_least_middle() {
+    when(tuple.get(tables.name().firstNm)).thenReturn("first-name-value");
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        when(tuple.get(tables.name().middleNm)).thenReturn("middle-name-value");
+    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    assertThat(actual.first()).isEqualTo("first-name-value");
+  }
 
-        PatientSummary.Name actual = mapper.map(tuple).legalName();
+  @Test
+  void should_map_patient_summary_name_from_tuple_with_at_least_middle() {
 
-        assertThat(actual.middle()).isEqualTo("middle-name-value");
-    }
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-    @Test
-    void should_map_patient_summary_name_from_tuple_with_at_least_last() {
+    Tuple tuple = mock(Tuple.class);
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        Tuple tuple = mock(Tuple.class);
+    when(tuple.get(tables.name().middleNm)).thenReturn("middle-name-value");
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        when(tuple.get(tables.name().lastNm)).thenReturn("last-name-value");
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        PatientSummary.Name actual = mapper.map(tuple).legalName();
+    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
 
-        assertThat(actual.last()).isEqualTo("last-name-value");
-    }
+    assertThat(actual.middle()).isEqualTo("middle-name-value");
+  }
 
-    @Test
-    void should_map_patient_summary_name_from_tuple_with_at_least_suffix() {
+  @Test
+  void should_map_patient_summary_name_from_tuple_with_at_least_last() {
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        Tuple tuple = mock(Tuple.class);
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.name().nmSuffix)).thenReturn(Suffix.ESQ);
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    when(tuple.get(tables.name().lastNm)).thenReturn("last-name-value");
 
-        PatientSummary actual = mapper.map(tuple);
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        assertThat(actual.legalName().suffix()).isEqualTo("Esquire");
-    }
 
-    @Test
-    void should_map_patient_summary_from_tuple_with_gender() {
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    PatientSummary.Name actual = mapper.map(Instant.now(), tuple).legalName();
 
-        Tuple tuple = mock(Tuple.class);
+    assertThat(actual.last()).isEqualTo("last-name-value");
+  }
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+  @Test
+  void should_map_patient_summary_name_from_tuple_with_at_least_suffix() {
 
-        when(tuple.get(tables.patient().currSexCd)).thenReturn(Gender.M);
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    Tuple tuple = mock(Tuple.class);
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        PatientSummary actual = mapper.map(tuple);
+    when(tuple.get(tables.name().nmSuffix)).thenReturn(Suffix.ESQ);
 
-        assertThat(actual.gender()).isEqualTo("Male");
-    }
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-    @Test
-    void should_map_patient_summary_from_tuple_with_race() {
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        Tuple tuple = mock(Tuple.class);
+    PatientSummary actual = mapper.map(Instant.now(), tuple);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    assertThat(actual.legalName().suffix()).isEqualTo("Esquire");
+  }
 
-        when(tuple.get(tables.race().codeShortDescTxt)).thenReturn("race-value");
+  @Test
+  void should_map_patient_summary_from_tuple_with_gender() {
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        PatientSummary actual = mapper.map(tuple);
+    Tuple tuple = mock(Tuple.class);
 
-        assertThat(actual.race()).isEqualTo("race-value");
-    }
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-    @Test
-    void should_map_patient_summary_with_age_calculated_from_birthday() {
+    when(tuple.get(tables.patient().currSexCd)).thenReturn(Gender.M);
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        when(tuple.get(tables.patient().birthTime)).thenReturn(Instant.parse("2001-07-07T00:00:00Z"));
+    PatientSummary actual = mapper.map(Instant.now(), tuple);
 
-        Clock clock = Clock.fixed(
-            Instant.parse("2023-06-07T10:15:20Z"),
-            ZoneId.of("UTC")
-        );
+    assertThat(actual.gender()).isEqualTo("Male");
+  }
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(clock, tables);
+  @Test
+  void should_map_patient_summary_with_age_calculated_from_birthday() {
 
-        PatientSummary actual = mapper.map(tuple);
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        assertThat(actual.birthday()).isEqualTo("2001-07-07");
+    Tuple tuple = mock(Tuple.class);
 
-        assertThat(actual.age()).isEqualTo(21);
-    }
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-    @Test
-    void should_map_patient_summary_with_age_when_birthday_not_present() {
+    when(tuple.get(tables.patient().birthTime)).thenReturn(Instant.parse("2001-07-07T00:00:00Z"));
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        Tuple tuple = mock(Tuple.class);
+    PatientSummary actual = mapper.map(Instant.parse("2023-06-07T10:15:20Z"), tuple);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    assertThat(actual.birthday()).isEqualTo("2001-07-07");
 
-        Clock clock = Clock.fixed(
-            Instant.parse("2023-06-07T10:15:20Z"),
-            ZoneId.of("UTC")
-        );
+    assertThat(actual.age()).isEqualTo(21);
+  }
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(clock, tables);
+  @Test
+  void should_map_patient_summary_with_age_when_birthday_not_present() {
 
-        PatientSummary actual = mapper.map(tuple);
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        assertThat(actual.age()).isNull();
-    }
+    Tuple tuple = mock(Tuple.class);
 
-    @Test
-    void should_map_patient_summary_from_tuple_with_phone() {
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        Tuple tuple = mock(Tuple.class);
+    PatientSummary actual = mapper.map(Instant.parse("2023-06-07T10:15:20Z"), tuple);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    assertThat(actual.age()).isNull();
+  }
 
-        when(tuple.get(tables.phoneUse().codeShortDescTxt)).thenReturn("phone-use");
-        when(tuple.get(tables.phoneNumber().phoneNbrTxt)).thenReturn("phone-number");
+  @Test
+  void should_map_patient_summary_from_tuple_with_phone() {
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        PatientSummary summary = mapper.map(tuple);
+    Tuple tuple = mock(Tuple.class);
 
-        assertThat(summary.phone()).satisfiesExactly(
-            actual -> assertAll(
-                () -> assertThat(actual.use()).isEqualTo("phone-use"),
-                () -> assertThat(actual.number()).isEqualTo("phone-number")
-            )
-        );
-    }
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-    @Test
-    void should_map_patient_summary_from_tuple_with_email() {
+    when(tuple.get(tables.phoneUse().codeShortDescTxt)).thenReturn("phone-use");
+    when(tuple.get(tables.phoneNumber().phoneNbrTxt)).thenReturn("phone-number");
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        Tuple tuple = mock(Tuple.class);
+    PatientSummary summary = mapper.map(Instant.now(), tuple);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+    assertThat(summary.phone()).satisfiesExactly(
+        actual -> assertAll(
+            () -> assertThat(actual.use()).isEqualTo("phone-use"),
+            () -> assertThat(actual.number()).isEqualTo("phone-number")
+        )
+    );
+  }
 
-        when(tuple.get(tables.emailUse().codeShortDescTxt)).thenReturn("email-use");
-        when(tuple.get(tables.email().emailAddress)).thenReturn("email-address");
+  @Test
+  void should_map_patient_summary_from_tuple_with_email() {
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        PatientSummary summary = mapper.map(tuple);
+    Tuple tuple = mock(Tuple.class);
 
-        assertThat(summary.email()).satisfiesExactly(
-            actual -> assertAll(
-                () -> assertThat(actual.use()).isEqualTo("email-use"),
-                () -> assertThat(actual.address()).isEqualTo("email-address")
-            )
-        );
+    when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
+    when(tuple.get(tables.emailUse().codeShortDescTxt)).thenReturn("email-use");
+    when(tuple.get(tables.email().emailAddress)).thenReturn("email-address");
 
-    }
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-    @Test
-    void should_map_patient_summary_from_tuple_with_address() {
+    PatientSummary summary = mapper.map(Instant.now(), tuple);
 
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
+    assertThat(summary.email()).satisfiesExactly(
+        actual -> assertAll(
+            () -> assertThat(actual.use()).isEqualTo("email-use"),
+            () -> assertThat(actual.address()).isEqualTo("email-address")
+        )
+    );
 
-        Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
+  }
 
-        when(tuple.get(tables.address().streetAddr1)).thenReturn("street");
-        when(tuple.get(tables.address().cityDescTxt)).thenReturn("city");
-        when(tuple.get(tables.state().stateNm)).thenReturn("state");
-        when(tuple.get(tables.address().zipCd)).thenReturn("zip");
-        when(tuple.get(tables.country().codeDescTxt)).thenReturn("country");
+  @Test
+  void should_not_map_summary_from_tuple_without_patient() {
+    PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
 
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
+    Tuple tuple = mock(Tuple.class);
 
-        PatientSummary actual = mapper.map(tuple);
+    PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
-        assertThat(actual.address().street()).isEqualTo("street");
-        assertThat(actual.address().city()).isEqualTo("city");
-        assertThat(actual.address().state()).isEqualTo("state");
-        assertThat(actual.address().zipcode()).isEqualTo("zip");
-        assertThat(actual.address().country()).isEqualTo("country");
-    }
+    assertThatThrownBy(() -> mapper.map(Instant.now(), tuple))
+        .hasMessageContaining("patient is required");
 
-    @Test
-    void should_map_patient_summary_address_from_tuple_with_at_least_street_address() {
-
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
-
-        Tuple tuple = mock(Tuple.class);
-
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
-
-        when(tuple.get(tables.address().streetAddr1)).thenReturn("street");
-
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
-
-        PatientSummary actual = mapper.map(tuple);
-
-        assertThat(actual.address().street()).isEqualTo("street");
-    }
-
-    @Test
-    void should_map_patient_summary_address_from_tuple_with_at_least_city() {
-
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
-
-        Tuple tuple = mock(Tuple.class);
-
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
-
-        when(tuple.get(tables.address().cityDescTxt)).thenReturn("city");
-
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
-
-        PatientSummary actual = mapper.map(tuple);
-
-        assertThat(actual.address().city()).isEqualTo("city");
-    }
-
-    @Test
-    void should_map_patient_summary_address_from_tuple_with_at_least_state() {
-
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
-
-        Tuple tuple = mock(Tuple.class);
-
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
-
-        when(tuple.get(tables.state().stateNm)).thenReturn("state");
-
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
-
-        PatientSummary actual = mapper.map(tuple);
-
-        assertThat(actual.address().state()).isEqualTo("state");
-    }
-
-    @Test
-    void should_map_patient_summary_address_from_tuple_with_at_least_zip() {
-
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
-
-        Tuple tuple = mock(Tuple.class);
-
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
-
-        when(tuple.get(tables.address().zipCd)).thenReturn("zip");
-
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
-
-        PatientSummary actual = mapper.map(tuple);
-
-        assertThat(actual.address().zipcode()).isEqualTo("zip");
-    }
-
-    @Test
-    void should_map_patient_summary_address_from_tuple_with_at_least_country() {
-
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
-
-        Tuple tuple = mock(Tuple.class);
-
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
-
-        when(tuple.get(tables.country().codeDescTxt)).thenReturn("country");
-
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
-
-        PatientSummary actual = mapper.map(tuple);
-
-        assertThat(actual.address().country()).isEqualTo("country");
-    }
-
-    @Test
-    void should_not_map_summary_from_tuple_without_patient() {
-        PatientSummaryTupleMapper.Tables tables = new PatientSummaryTupleMapper.Tables();
-
-        Tuple tuple = mock(Tuple.class);
-
-        PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
-
-        assertThatThrownBy(() -> mapper.map(tuple))
-            .hasMessageContaining("patient is required");
-
-    }
+  }
 }

@@ -17,10 +17,10 @@ describe('when rendered', () => {
         );
 
         const tableHeader = container.getElementsByClassName('table-head');
-        expect(tableHeader[0].textContent).toBe('Type');
-        expect(tableHeader[1].textContent).toBe('Value set name');
-        expect(tableHeader[2].textContent).toBe('Value set description');
-        expect(tableHeader[3].textContent).toBe('');
+        expect(tableHeader[1].textContent).toBe('Type');
+        expect(tableHeader[2].textContent).toBe('Value set name');
+        expect(tableHeader[3].textContent).toBe('Value set description');
+        expect(tableHeader[4].textContent).toBe('');
     });
 });
 
@@ -65,9 +65,9 @@ describe('when at least one summary is available', () => {
         );
 
         const tableData = container.getElementsByClassName('table-data');
-        expect(tableData[0]).toHaveTextContent('PHIN');
-        expect(tableData[1]).toHaveTextContent('Act Encounter Code');
-        expect(tableData[2]).toHaveTextContent('Act Encounter Code that is used to define patient encounter');
+        expect(tableData[1]).toHaveTextContent('PHIN');
+        expect(tableData[2]).toHaveTextContent('Act Encounter Code');
+        expect(tableData[3]).toHaveTextContent('Act Encounter Code that is used to define patient encounter');
     });
 
     it('has a button to expand the row', async () => {

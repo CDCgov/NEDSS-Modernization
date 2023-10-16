@@ -21,7 +21,7 @@ export class ProgramAreaControllerService {
     }): CancelablePromise<Array<ProgramArea>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/program-area',
+            url: '/nbs/page-builder/api/v1/program-area',
             headers: {
                 'Authorization': authorization,
             },

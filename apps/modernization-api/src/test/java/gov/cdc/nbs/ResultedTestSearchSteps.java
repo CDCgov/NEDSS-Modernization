@@ -40,8 +40,7 @@ public class ResultedTestSearchSteps {
     @Autowired
     private LabTestController labTestController;
 
-    private List<ResultedTest> localTestResponse;
-    private List<ResultedTest> loincTestResponse;
+    private List<ResultedTest> response;
 
     @Given("local resulted tests exist")
     public void resulted_tests_exist() {
@@ -55,38 +54,19 @@ public class ResultedTestSearchSteps {
         createLoincTestIfNotExists(LabTestMother.loincTestAmdinocillin());
     }
 
-    @When("I search for local resulted tests by {string}")
+    @When("I search for resulted tests by {string}")
     public void i_search_for_resulted_test(String searchText) {
-        localTestResponse = labTestController.findDistinctResultedTest(searchText, false);
+        response = labTestController.findDistinctResultedTest(searchText);
     }
 
-    @When("I search for loinc resulted tests by {string}")
-    public void i_search_for_loinc_test(String searchText) {
-        loincTestResponse = labTestController.findDistinctResultedTest(searchText, true);
-    }
-
-    @Then("A local test is {string}")
+    @Then("A test is {string}")
     public void a_local_test_is(String expectedResult) {
         switch (expectedResult) {
             case "found":
-                assertTrue(localTestResponse.size() > 0);
+                assertTrue(response.size() > 0);
                 break;
             case "not found":
-                assertEquals(0, localTestResponse.size());
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid expected result: " + expectedResult);
-        }
-    }
-
-    @Then("A loinc test is {string}")
-    public void a_loinc_test_is(String expectedResult) {
-        switch (expectedResult) {
-            case "found":
-                assertTrue(loincTestResponse.size() > 0);
-                break;
-            case "not found":
-                assertEquals(0, loincTestResponse.size());
+                assertEquals(0, response.size());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid expected result: " + expectedResult);

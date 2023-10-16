@@ -56,7 +56,6 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
     const handleClearAll = () => {
         investigationForm.reset({}, { keepDefaultValues: true });
         labReportForm.reset(initialLabForm(), { keepDefaultValues: true });
-        setSearchType(undefined);
     };
 
     /**

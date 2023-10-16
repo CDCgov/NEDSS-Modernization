@@ -43,7 +43,6 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     // @ts-ignore
     const asTableRow = (valueSet: ValueSet): TableBody => ({
         id: valueSet.nbsUid,
-        checkbox: true,
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
         expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         tableDetails: [
@@ -294,6 +293,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     currentPage={pages?.current || 0}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
+                    selectable
                     handleSelected={handleSelected}
                     rangeSelector={true}
                     isLoading={isLoading}

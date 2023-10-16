@@ -8,6 +8,7 @@ import type { ViewRuleResponse } from '../models/ViewRuleResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+import {Page_Question_} from "../models/Page_Question_";
 
 export class PageRuleControllerService {
 
@@ -28,11 +29,45 @@ export class PageRuleControllerService {
     }): CancelablePromise<CreateRuleResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/rule',
+            url: '/nbs/page-builder/api/v1/rule',
             headers: {
                 'Authorization': authorization,
             },
             body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
+     * findAllRuleResponse
+     * @returns ViewRuleResponse OK
+     * @throws ApiError
+     */
+    public static findAllRuleResponseUsingGet({
+          authorization,
+          page,
+          size,
+          sort,
+      }: {
+        authorization: any,
+        page?: number,
+        size?: number,
+        sort?: string,
+    }): CancelablePromise<ViewRuleResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/rules',
+            headers: {
+                'Authorization': authorization,
+            },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -58,7 +93,7 @@ export class PageRuleControllerService {
     }): CancelablePromise<ViewRuleResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/rule/{ruleId}',
+            url: '/nbs/page-builder/api/v1/rule/{ruleId}',
             path: {
                 'ruleId': ruleId,
             },
@@ -96,7 +131,7 @@ export class PageRuleControllerService {
     }): CancelablePromise<CreateRuleResponse | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/page-builder/api/v1/rule/{ruleId}',
+            url: '/nbs/page-builder/api/v1/rule/{ruleId}',
             path: {
                 'ruleId': ruleId,
             },
@@ -129,7 +164,7 @@ export class PageRuleControllerService {
     }): CancelablePromise<CreateRuleResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/page-builder/api/v1/rule/{ruleId}',
+            url: '/nbs/page-builder/api/v1/rule/{ruleId}',
             path: {
                 'ruleId': ruleId,
             },

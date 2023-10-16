@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
+import { PatientSummary } from 'generated/graphql/schema';
 
 export const Query = gql`
     query findPatientProfile($asOf: DateTime, $patient: ID, $shortId: Int) {
@@ -22,7 +23,7 @@ export const Query = gql`
                 age
                 gender
                 ethnicity
-                race
+                races
                 phone {
                     use
                     number
@@ -31,8 +32,19 @@ export const Query = gql`
                     use
                     address
                 }
+                home {
+                    use
+                    address
+                    address2
+                    city
+                    state
+                    zipcode
+                    country
+                }
                 address {
-                    street
+                    use
+                    address
+                    address2
                     city
                     state
                     zipcode
@@ -46,48 +58,6 @@ export const Query = gql`
         }
     }
 `;
-
-type PatientLegalName = {
-    __typename: 'PatientLegalName';
-    prefix: string | null;
-    first: string | null;
-    middle: string | null;
-    last: string | null;
-    suffix: string | null;
-};
-
-type PatientSummaryAddress = {
-    __typename: 'PatientSummaryAddress';
-    street: string | null;
-    city: string | null;
-    state: string | null;
-    zipcode: string | null;
-    country: string | null;
-};
-
-type PatientSummaryPhone = { __typename: 'PatientSummaryPhone'; use: string; number: string };
-
-type PatientSummaryEmail = { __typename: 'PatientSummaryEmail'; use: string; address: string };
-
-type PatientSummaryIdentification = {
-    __typename: 'PatientSummaryIdentification';
-    type: string;
-    value: string;
-};
-
-type PatientSummary = {
-    __typename: 'PatientSummary';
-    birthday: any | null;
-    age: number | null;
-    gender: string | null;
-    ethnicity: string | null;
-    race: string | null;
-    legalName: PatientLegalName | null;
-    phone: PatientSummaryPhone[];
-    email: PatientSummaryEmail[];
-    identification: PatientSummaryIdentification[];
-    address: PatientSummaryAddress | null;
-};
 
 type WithPatientSummary = {
     summary: PatientSummary;

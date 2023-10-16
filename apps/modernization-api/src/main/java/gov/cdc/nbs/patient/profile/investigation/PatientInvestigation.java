@@ -12,6 +12,7 @@ record PatientInvestigation(
     String event,
     String coInfection,
     String notification,
-    String investigator
+    String investigator,
+    boolean comparable
 ) {
 }

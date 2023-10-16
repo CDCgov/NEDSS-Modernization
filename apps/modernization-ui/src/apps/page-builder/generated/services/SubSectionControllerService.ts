@@ -36,7 +36,7 @@ export class SubSectionControllerService {
     }): CancelablePromise<CreateSubSectionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/pages/{page}/subsections/',
+            url: '/nbs/page-builder/api/v1/pages/{page}/subsections/',
             path: {
                 'page': page,
             },
@@ -75,7 +75,7 @@ export class SubSectionControllerService {
     }): CancelablePromise<UpdateSubSectionResponse | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/page-builder/api/v1/pages/{page}/subsections/{subSectionId}',
+            url: '/nbs/page-builder/api/v1/pages/{page}/subsections/{subSectionId}',
             path: {
                 'subSectionId': subSectionId,
             },
@@ -113,7 +113,7 @@ export class SubSectionControllerService {
     }): CancelablePromise<DeleteSubSectionResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/page-builder/api/v1/pages/{page}/subsections/{subSectionId}',
+            url: '/nbs/page-builder/api/v1/pages/{page}/subsections/{subSectionId}',
             path: {
                 'page': page,
                 'subSectionId': subSectionId,

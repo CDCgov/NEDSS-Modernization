@@ -1,1 +1,1 @@
-export type { PatientSummary } from './PatientSummary';
+export * from './PatientProfileSummary';

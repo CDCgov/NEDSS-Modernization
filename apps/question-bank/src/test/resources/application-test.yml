@@ -3,7 +3,7 @@ spring:
     bootstrap-servers: localhost:19092
 testing:
   database:
-    image: cdc-sandbox-test-db 
+    image: cdc-sandbox-nbs-mssql
 
 kafka:
   enabled: true

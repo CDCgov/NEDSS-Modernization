@@ -9,6 +9,7 @@ type PatientInvestigation {
     coInfection: String
     notification: String
     investigator: String
+    comparable: Boolean!
 }
 
 type PatientInvestigationResults {

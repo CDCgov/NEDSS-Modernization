@@ -56,6 +56,40 @@ class PatientInvestigationTupleMapperTest {
     }
 
     @Test
+    void should_resolve_a_page_builder_investigation_as_comparable() {
+        PatientInvestigationTupleMapper.Tables tables = new PatientInvestigationTupleMapper.Tables();
+
+        Tuple tuple = mock(Tuple.class);
+
+        when(tuple.get(tables.investigation().id)).thenReturn(1787L);
+
+        when(tuple.get(tables.condition().investigationFormCd)).thenReturn("pg_builder");
+
+        PatientInvestigationTupleMapper mapper = new PatientInvestigationTupleMapper(tables);
+
+        PatientInvestigation actual = mapper.map(tuple);
+
+        assertThat(actual.comparable()).isTrue();
+    }
+
+    @Test
+    void should_resolve_a_non_page_builder_investigation_as_not_comparable() {
+        PatientInvestigationTupleMapper.Tables tables = new PatientInvestigationTupleMapper.Tables();
+
+        Tuple tuple = mock(Tuple.class);
+
+        when(tuple.get(tables.investigation().id)).thenReturn(1787L);
+
+        when(tuple.get(tables.condition().investigationFormCd)).thenReturn("inv_builder");
+
+        PatientInvestigationTupleMapper mapper = new PatientInvestigationTupleMapper(tables);
+
+        PatientInvestigation actual = mapper.map(tuple);
+
+        assertThat(actual.comparable()).isFalse();
+    }
+
+    @Test
     void should_not_map_address_from_tuple_without_identifier() {
         PatientInvestigationTupleMapper.Tables tables = new PatientInvestigationTupleMapper.Tables();
 

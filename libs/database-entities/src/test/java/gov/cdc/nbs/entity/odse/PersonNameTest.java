@@ -47,9 +47,9 @@ class PersonNameTest {
                 removed -> assertThat(removed.getAudit())
                     .describedAs("expected name audit state")
                     .satisfies(
-                        audit -> assertThat(audit.getChanged())
-                            .returns(171L, Changed::getLastChgUserId)
-                            .returns(Instant.parse("2021-03-03T10:15:30.00Z"), Changed::getLastChgTime)
+                        audit -> assertThat(audit.changed())
+                            .returns(171L, Changed::changedBy)
+                            .returns(Instant.parse("2021-03-03T10:15:30.00Z"), Changed::changedOn)
                     )
             )
             .satisfies(

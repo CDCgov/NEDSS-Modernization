@@ -31,6 +31,9 @@ dependencies {
     //  feature modules
     implementation project(':me-api')
 
+    // configuration module
+    implementation project(':configuration-api')
+
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
     // core
@@ -72,6 +75,13 @@ dependencies {
 
     // Kafka
     implementation libs.spring.kafka
+
+    // testing
+    testImplementation project(':testing:support')
+    testImplementation project(':testing:identity')
+    testImplementation project(':testing:auth')
+    testImplementation project(':testing:auth-cucumber')
+    testImplementation project(':testing:http-interaction')
 
     testImplementation libs.bundles.cucumber
 

@@ -1,109 +1,124 @@
-import './style.scss';
+import './PatientProfileSummary.scss';
 
-import { Grid } from '@trussworks/react-uswds';
-import { Patient } from 'pages/patient/profile';
-import { Address, Email, PatientSummary, Phone } from './PatientSummary';
-import { NoData } from 'components/NoData';
-
+import { ReactNode, Key } from 'react';
+import {
+    PatientSummary,
+    PatientSummaryAddress,
+    PatientSummaryEmail,
+    PatientSummaryIdentification,
+    PatientSummaryPhone
+} from 'generated/graphql/schema';
 import { Spinner } from '@cmsgov/design-system';
 import { formattedName } from 'utils';
+import { internalizeDate } from 'date';
+import { Patient } from 'pages/patient/profile';
+import { displayAddress } from 'address/display/displayAddress';
+import { NoData } from 'components/NoData';
 
 type Props = {
     patient?: Patient;
     summary?: PatientSummary;
 };
 
-const display = (value: string) => <p>{value}</p>;
-const noData = <NoData />;
+type Renderer<T> = (value: T) => ReactNode;
 
-const formattedPhones = (items: Phone[]) => display(items.map((items) => items.number).join('\n'));
+const asNothing = () => undefined;
+const asNoData = () => <NoData />;
 
-const formattedEmails = (items: Email[]) => display(items.map((item) => item.address).join('\n'));
-
-const formattedAddress = ({ street, city, state, zipcode }: Address) => {
-    const location = ((city && city + ' ') || '') + ((state && state + ' ') || '') + (zipcode ?? '');
-    const address = ((street && street + '\n') || '') + ((location && location + '\n') || '');
-
-    return display(address);
+const maybeRender = <T,>(value: T | null | undefined, renderer: Renderer<T>, fallback: () => ReactNode = asNoData) => {
+    if (Array.isArray(value) && value.length > 0) {
+        return renderer(value);
+    } else if (value && !Array.isArray(value)) {
+        return renderer(value);
+    } else {
+        return fallback();
+    }
 };
+
+const asText = (value: string) => <p className="patient-summary-item-value">{value}</p>;
+const allAsText = (items: string[]) => asText(items.join('\n'));
+
+const asBirthday = (summary: PatientSummary) => {
+    const value = summary.birthday && `${internalizeDate(summary.birthday)} (${summary.age} years)`;
+    return maybeRender(value, asText);
+};
+
+const asPhones = (items: PatientSummaryPhone[]) => asText(items.map((items) => items.number).join('\n'));
+
+const asEmails = (items: PatientSummaryEmail[]) => asText(items.map((item) => item.address).join('\n'));
+
+const asAddress = (address: PatientSummaryAddress) => {
+    const value = displayAddress(address);
+    return maybeRender(value, asText);
+};
+
+const asIdentifications = (identifications: PatientSummaryIdentification[]) => (
+    <div className="stacked">
+        {identifications.map((id, key) => (
+            <SummaryItem key={key} label={id.type}>
+                {asText(id.value)}
+            </SummaryItem>
+        ))}
+    </div>
+);
+
+type SummaryItemProps = {
+    index?: Key;
+    label: string;
+    children: ReactNode;
+};
+
+const SummaryItem = ({ index, label, children }: SummaryItemProps) => (
+    <div key={index} className="patient-summary-item">
+        <span className="patient-summary-item-label">{label}</span>
+        {children}
+    </div>
+);
 
 export const PatientProfileSummary = ({ patient, summary }: Props) => {
     return (
-        <div className="margin-y-2 flex-row common-card">
+        <div className="common-card patient-summary">
             {!patient || !summary ? (
                 <div className="text-center margin-y-6">
                     <Spinner className="sortable-table-spinner" />
                 </div>
             ) : (
-                <div>
-                    <div className="grid-row flex-align-center flex-justify padding-2 border-bottom border-base-lighter">
-                        <p className="font-sans-xl text-bold margin-0">{`${formattedName(
-                            summary?.legalName?.last,
-                            summary?.legalName?.first
-                        )}`}</p>
-                        <h5 className="font-sans-md text-medium margin-0">
+                <>
+                    <div className="border-bottom border-base-lighter patient-summary-title">
+                        <h2>{`${formattedName(
+                            `${summary?.legalName?.first || ''} ${summary?.legalName?.middle || ''}  ${
+                                summary?.legalName?.last || ''
+                            }`,
+                            summary?.legalName?.suffix
+                        )}`}</h2>
+                        <span>
                             Patient ID: {patient.shortId}
                             {patient.status != 'ACTIVE' && (
                                 <span className="text-red text-right margin-left-2">
                                     {patient.status === 'LOG_DEL' ? 'INACTIVE' : patient.status}
                                 </span>
                             )}
-                        </h5>
+                        </span>
                     </div>
-                    <Grid row gap={3} className="padding-3">
-                        <Grid col={3}>
-                            <Grid col={12} className=" summary-value">
-                                <h5 className="margin-right-1">SEX</h5>
-                                <p>{summary.gender || noData}</p>
-                            </Grid>
-                        </Grid>
-                        <Grid col={3}>
-                            <Grid col={12} className="summary-value">
-                                <h5>PHONE NUMBER</h5>
-                                {summary.phone && summary.phone.length > 0 ? formattedPhones(summary.phone) : noData}
-                            </Grid>
-                        </Grid>
-                        <Grid col={3}>
-                            <Grid col={12} className="summary-value">
-                                <h5>ADDRESS</h5>
-                                {summary.address ? formattedAddress(summary.address) : noData}
-                            </Grid>
-                        </Grid>
-                        <Grid col={3}>
-                            <Grid col={12} className="summary-value">
-                                <h5 className="margin-right-1">RACE</h5>
-                                {summary.race ? display(summary.race) : noData}
-                            </Grid>
-                        </Grid>
-                        <Grid col={3}>
-                            <Grid col={12} className="margin-top-3 summary-value">
-                                <h5 className="margin-right-1">DATE OF BIRTH</h5>
-                                <p>{summary.birthday ? `${summary.birthday} (${summary.age})` : noData}</p>
-                            </Grid>
-                        </Grid>
-                        <Grid col={3}>
-                            <Grid col={12} className="margin-top-3 summary-value">
-                                <h5>EMAIL</h5>
-                                {summary.email && summary.email.length > 0 ? formattedEmails(summary.email) : noData}
-                            </Grid>
-                        </Grid>
-                        <Grid col={3}>
-                            <Grid col={12} className="summary-value margin-top-3">
-                                <h5 className="margin-right-1">ETHNICITY</h5>
-                                {summary.ethnicity ? display(summary.ethnicity) : noData}
-                            </Grid>
-                        </Grid>
-                        <Grid col={3}>
-                            {summary.identification.map((id, key) => (
-                                <Grid key={key} col={12} className="summary-value margin-top-3">
-                                    <h5 className="margin-right-1">{id.type}</h5>
-                                    {id.value}
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Grid>
-                </div>
+                    <div className="patient-summary-items">
+                        <div className="grouped">
+                            <SummaryItem label="Sex">{maybeRender(summary.gender, asText)}</SummaryItem>
+                            <SummaryItem label="Phone"> {maybeRender(summary.phone, asPhones)}</SummaryItem>
+                            <SummaryItem label={addressLabel(summary.home)}>
+                                {maybeRender(summary.home, asAddress)}
+                            </SummaryItem>
+                            <SummaryItem label="Race">{maybeRender(summary.races, allAsText)}</SummaryItem>
+                            <SummaryItem label="Date of birth">{asBirthday(summary)}</SummaryItem>
+                            <SummaryItem label="Email">{maybeRender(summary.email, asEmails)}</SummaryItem>
+                            <div className="patient-summary-item" />
+                            <SummaryItem label="Ethnicity">{maybeRender(summary.ethnicity, asText)}</SummaryItem>
+                        </div>
+                        {maybeRender(summary.identification, asIdentifications, asNothing)}
+                    </div>
+                </>
             )}
         </div>
     );
 };
+
+const addressLabel = (address?: PatientSummaryAddress | null) => (address ? `Address (${address.use})` : 'Address');

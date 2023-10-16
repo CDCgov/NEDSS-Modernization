@@ -12,17 +12,16 @@ services:
     ports:
       - 1433:1433
     volumes:
-      - ./db/restore:/var/opt/db-restore
       - nbs-mssql-data:/var/opt/mssql
     environment:
       - ACCEPT_EULA=1
       - SQLCMDPASSWORD=fake.fake.fake.1234
       - SA_PASSWORD=fake.fake.fake.1234
-      - FORCE_RESTORE
     networks:
       - nbs
   wildfly:
-    build: ./
+    build: ./nbs-classic
+    image: nbs-classic:6.0.15
     container_name: wildfly
     depends_on:
       - nbs-mssql
@@ -90,6 +89,12 @@ services:
     environment:
       - NIFI_JVM_HEAP_INIT=1g
       - NIFI_JVM_HEAP_MAX=2g
+      - SINGLE_USER_CREDENTIALS_USERNAME=admin
+      - SINGLE_USER_CREDENTIALS_PASSWORD=fake.fake.fake.1234
+      - NIFI_SENSITIVE_PROPS_KEY=12345678901234567890A
+      - JDBC_CONNECTION_STRING=jdbc:sqlserver://nbs-mssql:1433;integratedSecurity=false;encrypt=false;databaseName=NBS_ODSE;user=sa;password=fake.fake.fake.1234;authenticationScheme=nativeAuthentication;
+      - JDBC_DRIVER=/var/opt/nifi_drivers/mssql-jdbc-11.2.0.jre8.jar
+      - ELASTICSEARCH_HTTP_HOSTS=http://elasticsearch:9200
     # volumes:
     #   - ./nifi/nifi_drivers:/var/opt/nifi_drivers:ro
     #   - ./nifi/nifi_conf/conf:/opt/nifi/nifi-current/conf:rw

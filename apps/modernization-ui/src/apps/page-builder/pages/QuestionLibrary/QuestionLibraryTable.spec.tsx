@@ -18,9 +18,9 @@ describe('when rendered', () => {
         const tableHeads = container.getElementsByClassName('table-head');
 
         await waitFor(() => {
-            expect(tableHeads[0].textContent).toBe('Type');
-            expect(tableHeads[1].textContent).toBe('Unique ID');
-            expect(tableHeads[2].textContent).toBe('Unique name');
+            expect(tableHeads[1].textContent).toBe('Type');
+            expect(tableHeads[2].textContent).toBe('Unique ID');
+            expect(tableHeads[3].textContent).toBe('Unique name');
         });
     });
 });
@@ -69,10 +69,10 @@ describe('when at least one summary is available', () => {
         const tableData = container.getElementsByClassName('table-data');
 
         await waitFor(() => {
-            expect(tableData[0]).toHaveTextContent('TEXT');
-            expect(tableData[1]).toHaveTextContent('INV118');
-            expect(tableData[2]).toHaveTextContent('Reporting Source Zip');
-            expect(tableData[3]).toHaveTextContent('INV');
+            expect(tableData[1]).toHaveTextContent('TEXT');
+            expect(tableData[2]).toHaveTextContent('INV118');
+            expect(tableData[3]).toHaveTextContent('Reporting Source Zip');
+            expect(tableData[4]).toHaveTextContent('INV');
         });
     });
 });

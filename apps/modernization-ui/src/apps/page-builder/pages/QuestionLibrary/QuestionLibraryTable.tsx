@@ -51,8 +51,11 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
     const authorization = `Bearer ${state.getToken()}`;
     const asTableRow = (page: Question): TableBody => ({
         id: page.id,
+<<<<<<< HEAD
         key: page.id,
         checkbox: true,
+=======
+>>>>>>> main
         tableDetails: [
             {
                 id: 1,
@@ -215,6 +218,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
                     currentPage={pages?.current || 0}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
+                    selectable
                     handleSelected={handleSelected}
                     rangeSelector={true}
                     isLoading={isLoading}

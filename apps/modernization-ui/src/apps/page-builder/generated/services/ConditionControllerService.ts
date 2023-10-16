@@ -31,7 +31,7 @@ export class ConditionControllerService {
     }): CancelablePromise<Page_Condition_> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/conditions/',
+            url: '/nbs/page-builder/api/v1/conditions/',
             headers: {
                 'Authorization': authorization,
             },
@@ -66,7 +66,7 @@ export class ConditionControllerService {
     }): CancelablePromise<Condition | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/conditions/',
+            url: '/nbs/page-builder/api/v1/conditions/',
             headers: {
                 'Authorization': authorization,
             },
@@ -91,7 +91,7 @@ export class ConditionControllerService {
     }): CancelablePromise<Array<Condition>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/conditions/all',
+            url: '/nbs/page-builder/api/v1/conditions/all',
             headers: {
                 'Authorization': authorization,
             },
@@ -127,7 +127,7 @@ export class ConditionControllerService {
     }): CancelablePromise<Page_Condition_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/page-builder/api/v1/conditions/search',
+            url: '/nbs/page-builder/api/v1/conditions/search',
             headers: {
                 'Authorization': authorization,
             },
@@ -162,7 +162,7 @@ export class ConditionControllerService {
     }): CancelablePromise<ConditionStatusResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/page-builder/api/v1/conditions/{id}',
+            url: '/nbs/page-builder/api/v1/conditions/{id}',
             path: {
                 'id': id,
             },
@@ -193,7 +193,7 @@ export class ConditionControllerService {
     }): CancelablePromise<ConditionStatusResponse> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/page-builder/api/v1/conditions/{id}',
+            url: '/nbs/page-builder/api/v1/conditions/{id}',
             path: {
                 'id': id,
             },
