@@ -27,6 +27,7 @@ type Header = {
 };
 
 export type TableBody = {
+    key: number | string | undefined;
     id: number | string | undefined | null;
     checkbox?: boolean;
     tableDetails: TableDetail[];

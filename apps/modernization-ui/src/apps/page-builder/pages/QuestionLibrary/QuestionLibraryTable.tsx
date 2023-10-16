@@ -51,6 +51,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
     const authorization = `Bearer ${state.getToken()}`;
     const asTableRow = (page: Question): TableBody => ({
         id: page.id,
+        key: page.id,
         checkbox: true,
         tableDetails: [
             {

@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 import { EditPageSidebar } from './EditPageSidebar';
 
-const modal = { current: null, isShowing: false };
+const modal = { current: { modalId: 'modalid', modalIsOpen: false, toggleModal: jest.fn() }, isShowing: false };
+
 describe('EditPageSidebar', () => {
     it('should render successfully', () => {
         const { baseElement } = render(<EditPageSidebar modalRef={modal} />);
