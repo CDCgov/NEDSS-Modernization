@@ -55,8 +55,10 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     @Override
     public CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request) {
+        log.info("request.templateUid()::"+request.templateUid());
         WaRuleMetadata waRuleMetadata = setRuleDataValues(userId, request);
         log.info("Saving Rule to DB");
+        log.info("waRuleMetadata.templateUid()::"+waRuleMetadata.getWaTemplateUid());
         waRuleMetaDataRepository.save(waRuleMetadata);
         sendRuleEvent(request);
         return new CreateRuleResponse(waRuleMetadata.getId(), "Rule Created Successfully");
