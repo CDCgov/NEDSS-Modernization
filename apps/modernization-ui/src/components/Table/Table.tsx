@@ -28,6 +28,7 @@ export type Header = {
 
 export type TableBody = {
     key: number | string | undefined;
+    checkbox?: boolean;
     id: number | string | undefined | null;
     tableDetails: Cell[];
     data?: any;
