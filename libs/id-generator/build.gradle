@@ -35,8 +35,6 @@ dependencies {
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
 
-    implementation libs.bundles.elasticsearch
-
     // lombok
     compileOnly libs.lombok
     annotationProcessor libs.lombok
