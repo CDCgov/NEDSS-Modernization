@@ -22,14 +22,24 @@ table.usa-table {
     .usa-modal-overlay {
         max-height: 100vh;
         .usa-modal--lg {
-            max-height: 60vh;
+            max-height: 85vh;
             overflow-x: hidden;
             overflow-y: hidden;
             .usa-modal__content {
                 overflow: hidden;
-                max-height: 60vh;
+                max-height: 85vh;
                 .usa-modal__main {
                     overflow-y: auto;
+                }
+            }
+        }
+        .usa-modal {
+            .usa-modal__content {
+                .usa-modal__main {
+                    .usa-modal__footer {
+                        margin-top: 0;
+                        border-top: $border-medium;
+                    }
                 }
             }
         }

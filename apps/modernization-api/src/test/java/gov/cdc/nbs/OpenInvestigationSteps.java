@@ -6,7 +6,7 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
 import gov.cdc.nbs.support.EventMother;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -32,7 +32,7 @@ public class OpenInvestigationSteps {
     InvestigationResolver investigationResolver;
 
     @Autowired
-    TestActive<PatientIdentifier> patient;
+    Active<PatientIdentifier> patient;
 
     private Page<Investigation> investigationResults;
 

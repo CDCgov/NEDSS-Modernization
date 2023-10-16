@@ -15,7 +15,7 @@ import gov.cdc.nbs.patient.morbidity.MorbidityReportMother;
 import gov.cdc.nbs.patient.morbidity.TestMorbidityReports;
 import gov.cdc.nbs.patient.profile.report.lab.LabReportMother;
 import gov.cdc.nbs.patient.profile.report.lab.TestLabReports;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -27,7 +27,7 @@ public class DocumentsRequiringReviewSteps {
     private DocumentRequiringReviewHolder holder;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     private DocumentsRequiringReviewResolver resolver;

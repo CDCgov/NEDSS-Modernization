@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.profile.summary;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,12 +20,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PatientSummarySteps {
 
   @Autowired
-  TestActive<PatientIdentifier> patient;
+  Active<PatientIdentifier> patient;
 
   @Autowired
   PatientProfileSummaryRequest request;
 
-  private final TestActive<ResultActions> response = new TestActive<>();
+  private final Active<ResultActions> response = new Active<>();
 
   @Before("@patient-summary")
   public void clear() {

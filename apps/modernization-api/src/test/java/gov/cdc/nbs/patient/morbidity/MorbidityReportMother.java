@@ -6,7 +6,7 @@ import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +25,7 @@ public class MorbidityReportMother {
     private static final String ORGANIZATION_CLASS = "ORG";
 
     private final MotherSettings settings;
-    private final TestUniqueIdGenerator idGenerator;
+    private final SequentialIdentityGenerator idGenerator;
     private final EntityManager entityManager;
     private final TestMorbidityCleaner cleaner;
 
@@ -33,7 +33,7 @@ public class MorbidityReportMother {
 
     MorbidityReportMother(
             final MotherSettings settings,
-            final TestUniqueIdGenerator idGenerator,
+            final SequentialIdentityGenerator idGenerator,
             final EntityManager entityManager,
             final TestMorbidityCleaner cleaner,
             final TestMorbidityReports reports) {

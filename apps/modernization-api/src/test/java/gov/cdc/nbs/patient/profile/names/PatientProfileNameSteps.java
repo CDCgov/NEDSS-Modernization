@@ -6,7 +6,7 @@ import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCreateAssertions;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,13 @@ public class PatientProfileNameSteps {
   PatientMother mother;
 
   @Autowired
-  TestActive<PatientIdentifier> patient;
+  Active<PatientIdentifier> patient;
 
   @Autowired
-  TestActive<PatientInput> input;
+  Active<PatientInput> input;
 
   @Autowired
-  TestActive<Person> created;
+  Active<Person> created;
 
   @Given("the patient has a name")
   public void the_patient_has_a_name() {
