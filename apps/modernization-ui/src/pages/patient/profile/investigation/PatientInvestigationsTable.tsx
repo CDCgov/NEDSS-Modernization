@@ -122,17 +122,18 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
             buttons={
                 allowAdd && (
                     <div className="grid-row">
-                        <ClassicButton
-                            disabled={
-                                permissions.compareInvestigation &&
-                                (checkedItems.length !== 2 || checkedItems?.[0]?.value !== checkedItems?.[1]?.value)
-                            }
-                            type="button"
-                            className="grid-row"
-                            url={`/nbs/api/profile/${patient}/investigation/${checkedItems?.[0]?.id}/compare/${checkedItems?.[1]?.id}`}>
-                            <Icon.Topic className="margin-right-05" />
-                            Compare investigations
-                        </ClassicButton>
+                        {permissions.compareInvestigation && (
+                            <ClassicButton
+                                disabled={
+                                    checkedItems.length !== 2 || checkedItems?.[0]?.value !== checkedItems?.[1]?.value
+                                }
+                                type="button"
+                                className="grid-row"
+                                url={`/nbs/api/profile/${patient}/investigation/${checkedItems?.[0]?.id}/compare/${checkedItems?.[1]?.id}`}>
+                                <Icon.Topic className="margin-right-05" />
+                                Compare investigations
+                            </ClassicButton>
+                        )}
                         <ClassicButton url={`/nbs/api/profile/${patient}/investigation`}>
                             <Icon.Add className="margin-right-05" />
                             Add investigation
