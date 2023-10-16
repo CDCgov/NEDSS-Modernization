@@ -5632,7 +5632,7 @@ FROM
         SELECT 
           (
             SELECT
-              tl.phone_nbr_txt telephoneNbr, 
+			  REPLACE(REPLACE(tl.phone_nbr_txt,'-',''),' ','') telephoneNbr,
               tl.extension_txt extensionTxt 
             FROM 
               Entity_locator_participation elp WITH (NOLOCK)
@@ -5667,7 +5667,7 @@ FROM
         SELECT 
           (
             SELECT 
-              STRING_ESCAPE(pn.last_nm, 'json') lastNm, 
+			  STRING_ESCAPE(REPLACE(pn.last_nm,'-',' '), 'json') lastNm,
               soundex(pn.last_nm) lastNmSndx, 
               STRING_ESCAPE(pn.middle_nm, 'json') middleNm, 
               STRING_ESCAPE(pn.first_nm, 'json') firstNm, 
@@ -5704,7 +5704,7 @@ FROM
             SELECT 
               ei.type_cd typeCd, 
               ei.record_status_cd recordStatusCd, 
-              STRING_ESCAPE(ei.root_extension_txt, 'json') rootExtensionTxt 
+			  STRING_ESCAPE(REPLACE(REPLACE(ei.root_extension_txt,'-',''),' ',''), 'json') rootExtensionTxt
             FROM 
               entity_id ei WITH (NOLOCK)
             WHERE 
@@ -8860,5 +8860,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>10/03/2023 20:06:04 UTC</timestamp>
+    <timestamp>10/16/2023 07:32:52 UTC</timestamp>
 </template>
