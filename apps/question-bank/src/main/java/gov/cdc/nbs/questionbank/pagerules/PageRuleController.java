@@ -71,7 +71,7 @@ public class PageRuleController {
         return pageRuleService.getAllPageRule(pageable);
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     @ResponseBody
     public Page<ViewRuleResponse> findPageRule(@RequestBody SearchPageRuleRequest request,@PageableDefault(size = 25) Pageable pageable){
         return pageRuleService.findPageRule(request,pageable);
