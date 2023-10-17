@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Then;
@@ -39,11 +38,10 @@ public class ReorderSteps {
                 .toList();
         try {
             // Reorder first tab to after second tab
-            controller.reorderItem(
+            controller.orderComponentAfter(
                     page.getId(),
-                    new ReorderRequest(
-                            tabs.get(0).getId(),
-                            tabs.get(1).getId()));
+                    tabs.get(0).getId(),
+                    tabs.get(1).getId());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -77,11 +75,10 @@ public class ReorderSteps {
 
         try {
             // Reorder first section to after second section
-            controller.reorderItem(
+            controller.orderComponentAfter(
                     page.getId(),
-                    new ReorderRequest(
-                            sections.get(0).getId(),
-                            sections.get(1).getId()));
+                    sections.get(0).getId(),
+                    sections.get(1).getId());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -114,11 +111,10 @@ public class ReorderSteps {
                 .toList();
         try {
             // Reorder first section to after second section
-            controller.reorderItem(
+            controller.orderComponentAfter(
                     page.getId(),
-                    new ReorderRequest(
-                            subsections.get(0).getId(),
-                            subsections.get(1).getId()));
+                    subsections.get(0).getId(),
+                    subsections.get(1).getId());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -151,11 +147,10 @@ public class ReorderSteps {
                 .toList();
         try {
             // Reorder first section to after second section
-            controller.reorderItem(
+            controller.orderComponentAfter(
                     page.getId(),
-                    new ReorderRequest(
-                            questions.get(0).getId(),
-                            questions.get(1).getId()));
+                    questions.get(0).getId(),
+                    questions.get(1).getId());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

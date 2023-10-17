@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page.content.reorder;
+package gov.cdc.nbs.questionbank.page.content.reorder.models;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -6,8 +6,7 @@ import static org.junit.Assert.assertThrows;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import gov.cdc.nbs.questionbank.page.content.reorder.models.PageEntry;
-import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage;
+import gov.cdc.nbs.questionbank.page.content.reorder.ReorderException;
 import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage.Element;
 import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage.Section;
 import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage.Subsection;

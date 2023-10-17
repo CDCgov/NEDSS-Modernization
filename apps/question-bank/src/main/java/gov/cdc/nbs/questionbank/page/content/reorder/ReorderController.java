@@ -2,14 +2,12 @@ package gov.cdc.nbs.questionbank.page.content.reorder;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderRequest;
 
 @RestController
-@RequestMapping("/api/v1/pages/{page}/reorder/")
+@RequestMapping("/api/v1/pages/{page}/component/{component}")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ReorderController {
 
@@ -19,10 +17,11 @@ public class ReorderController {
         this.reorderer = reorderer;
     }
 
-    @PostMapping
-    public void reorderItem(
+    @PutMapping("/after/{after}")
+    public void orderComponentAfter(
             @PathVariable("page") Long pageId,
-            @RequestBody ReorderRequest request) {
-        reorderer.apply(pageId, request);
+            @PathVariable("component") Long component,
+            @PathVariable("after") Long after) {
+        reorderer.apply(pageId, component, after);
     }
 }

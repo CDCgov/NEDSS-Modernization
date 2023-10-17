@@ -1,19 +1,18 @@
-package gov.cdc.nbs.questionbank.page.content.reorder;
+package gov.cdc.nbs.questionbank.page.content.reorder.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import gov.cdc.nbs.questionbank.page.content.reorder.models.PageEntry;
-import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage;
+import gov.cdc.nbs.questionbank.page.content.reorder.ReorderException;
 import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage.Element;
 import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage.Section;
 import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage.Subsection;
 import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage.Tab;
 
 public class SimplePageMapper {
-    private static final int PAGE_TYPE = 1002;
-    private static final int TAB = 1010;
-    private static final int SECTION = 1015;
-    private static final int SUBSECTION = 1016;
+    public static final int PAGE_TYPE = 1002;
+    public static final int TAB = 1010;
+    public static final int SECTION = 1015;
+    public static final int SUBSECTION = 1016;
 
     private List<Tab> tabs = new ArrayList<>();
     private Tab currentTab = null;
@@ -46,7 +45,7 @@ public class SimplePageMapper {
                     if (currentSubsection == null) {
                         throw new ReorderException("Element not included in subsection");
                     }
-                    currentSubsection.getElements().add(new Element(e.id()));
+                    currentSubsection.getElements().add(new Element(e.id(), e.component()));
                 }
             }
         }
