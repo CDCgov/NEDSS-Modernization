@@ -2248,7 +2248,7 @@ export enum RecordStatus {
   Active = 'ACTIVE',
   Inactive = 'INACTIVE',
   LogDel = 'LOG_DEL',
-  Superceded = 'SUPERCEDED'
+  Superseded = 'SUPERSEDED'
 }
 
 export enum ReportingEntityType {

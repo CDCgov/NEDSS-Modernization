@@ -219,7 +219,7 @@ public class PatientSearchSteps {
   private static RecordStatus resolveStatus(final String status) {
     return switch (status.toLowerCase()) {
       case "deleted", "inactive" -> RecordStatus.LOG_DEL;
-      case "superceded" -> RecordStatus.SUPERCEDED;
+      case "superseded" -> RecordStatus.SUPERSEDED;
       default -> RecordStatus.ACTIVE;
     };
   }

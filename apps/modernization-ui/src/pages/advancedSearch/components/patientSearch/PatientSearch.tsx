@@ -205,11 +205,11 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                                                 </Grid>
                                                 <Grid col={6}>
                                                     <Checkbox
-                                                        id={'record-status-superceded'}
+                                                        id={'record-status-superseded'}
                                                         onChange={(v) =>
                                                             handleRecordStatusChange(
                                                                 value,
-                                                                RecordStatus.Superceded,
+                                                                RecordStatus.Superseded,
                                                                 v.target.checked,
                                                                 onChange
                                                             )
@@ -218,7 +218,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                                                         label={'Superseded'}
                                                         checked={form
                                                             .getValues('recordStatus')
-                                                            .includes(RecordStatus.Superceded)}
+                                                            .includes(RecordStatus.Superseded)}
                                                     />
                                                 </Grid>
                                             </Grid>
