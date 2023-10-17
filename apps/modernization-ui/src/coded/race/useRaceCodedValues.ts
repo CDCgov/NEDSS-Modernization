@@ -28,7 +28,8 @@ const useRaceCodedValues = () => {
     const [coded, setCoded] = useState<CodedValue[]>([]);
 
     const handleComplete = (data: Result) => {
-        setCoded(data.raceCategories);
+        const raceCategories = (data.raceCategories || []).filter((category) => category.value !== 'M');
+        setCoded(raceCategories);
     };
 
     const [getCodedValues] = useCodedValueQuery({ onCompleted: handleComplete });
