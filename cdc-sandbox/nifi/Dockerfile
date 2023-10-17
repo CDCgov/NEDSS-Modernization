@@ -9,4 +9,6 @@ USER root
 RUN chown -R nifi:nifi /var/opt/nifi_drivers/
 RUN chown -R nifi:nifi /opt/nifi/
 
+ENV JDBC_DRIVER=/var/opt/nifi_drivers/mssql-jdbc-11.2.0.jre8.jar
+
 USER nifi

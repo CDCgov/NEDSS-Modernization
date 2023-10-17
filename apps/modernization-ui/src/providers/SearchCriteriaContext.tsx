@@ -139,7 +139,7 @@ export const SearchCriteriaProvider = (props: any) => {
     function setRaces(results: FindAllRaceValuesQuery): void {
         if (results.findAllRaceValues) {
             const races: Race[] = [];
-            results.findAllRaceValues.content.forEach((r) => r && races.push(r));
+            results.findAllRaceValues.content.forEach((r) => r && r.id?.code !== 'M' && races.push(r));
             races.sort((a, b) => {
                 if (a.codeDescTxt && b.codeDescTxt) {
                     return a.codeDescTxt?.localeCompare(b.codeDescTxt);
