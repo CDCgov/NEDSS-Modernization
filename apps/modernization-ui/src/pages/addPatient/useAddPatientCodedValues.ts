@@ -81,8 +81,10 @@ const useAddPatientCodedValues = () => {
     const [coded, setCoded] = useState<PatietnAddCodedValues>(initialCoded);
 
     const handleComplete = (data: Result) => {
+        const updatedData = { ...data };
+        updatedData.raceCategories = updatedData.raceCategories.filter((category) => category.value != 'M');
         setCoded({
-            ...data,
+            ...updatedData,
             deceased: indicators
         });
     };

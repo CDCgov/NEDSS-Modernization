@@ -63,13 +63,13 @@ const asIdentifications = (identifications: PatientSummaryIdentification[]) => (
 );
 
 type SummaryItemProps = {
-    key?: Key;
+    index?: Key;
     label: string;
     children: ReactNode;
 };
 
-const SummaryItem = ({ key, label, children }: SummaryItemProps) => (
-    <div key={key} className="patient-summary-item">
+const SummaryItem = ({ index, label, children }: SummaryItemProps) => (
+    <div key={index} className="patient-summary-item">
         <span className="patient-summary-item-label">{label}</span>
         {children}
     </div>

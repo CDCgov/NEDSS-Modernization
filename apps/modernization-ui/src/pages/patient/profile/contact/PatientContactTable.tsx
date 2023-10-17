@@ -66,7 +66,6 @@ export const PatientContactTable = ({ patient, tracings, title, headings }: Prop
 
     const asTableBody = (contact: Tracing): TableBody => ({
         id: contact?.event,
-        checkbox: false,
         tableDetails: [
             {
                 id: 1,

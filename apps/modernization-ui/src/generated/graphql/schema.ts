@@ -1288,6 +1288,7 @@ export type PatientInvestigation = {
   __typename?: 'PatientInvestigation';
   caseStatus?: Maybe<Scalars['String']>;
   coInfection?: Maybe<Scalars['String']>;
+  comparable: Scalars['Boolean'];
   condition: Scalars['String'];
   event: Scalars['String'];
   investigation: Scalars['ID'];
@@ -2867,7 +2868,7 @@ export type FindInvestigationsForPatientQueryVariables = Exact<{
 }>;
 
 
-export type FindInvestigationsForPatientQuery = { __typename?: 'Query', findInvestigationsForPatient?: { __typename?: 'PatientInvestigationResults', total: number, number: number, content: Array<{ __typename?: 'PatientInvestigation', investigation: string, startedOn?: any | null, condition: string, status: string, caseStatus?: string | null, jurisdiction: string, event: string, coInfection?: string | null, notification?: string | null, investigator?: string | null } | null> } | null };
+export type FindInvestigationsForPatientQuery = { __typename?: 'Query', findInvestigationsForPatient?: { __typename?: 'PatientInvestigationResults', total: number, number: number, content: Array<{ __typename?: 'PatientInvestigation', investigation: string, startedOn?: any | null, condition: string, status: string, caseStatus?: string | null, jurisdiction: string, event: string, coInfection?: string | null, notification?: string | null, investigator?: string | null, comparable: boolean } | null> } | null };
 
 export type FindLabReportsByFilterQueryVariables = Exact<{
   filter: LabReportFilter;
@@ -5494,6 +5495,7 @@ export const FindInvestigationsForPatientDocument = gql`
       coInfection
       notification
       investigator
+      comparable
     }
     total
     number

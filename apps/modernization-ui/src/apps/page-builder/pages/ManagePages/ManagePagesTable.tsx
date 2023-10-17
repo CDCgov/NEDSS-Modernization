@@ -45,7 +45,6 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
 
     const asTableRow = (page: PageSummary): TableBody => ({
         id: page.name,
-        checkbox: false,
         expanded: false,
         tableDetails: [
             {

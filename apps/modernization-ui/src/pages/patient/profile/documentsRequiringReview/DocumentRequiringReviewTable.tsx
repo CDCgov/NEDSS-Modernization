@@ -148,7 +148,6 @@ const renderIdLink = (document: DocumentRequiringReview) => {
 
 const asTableBody = (document: DocumentRequiringReview, patient: string): TableBody => ({
     id: document.id,
-    checkbox: false,
     tableDetails: [
         {
             id: 1,
