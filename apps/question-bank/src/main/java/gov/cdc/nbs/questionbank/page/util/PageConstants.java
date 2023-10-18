@@ -6,6 +6,7 @@ public class PageConstants {
 	
 	// Page State Change
 	public static final String SAVE_DRAFT_SUCCESS = "Draft was saved successfully.";
+	public static final String SAVE_DRAFT_NOCHANGE = "Page already has draft.";
 	public static final String SAVE_DRAFT_FAIL = " Failed to update to draft status: ";
 	public static final String DELETE_DRAFT_FAIL = " Failed to delete page draft. ";
 	public static final String PAGE_NOT_FOUND = " Could not find page with given id.";

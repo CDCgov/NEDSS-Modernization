@@ -5,15 +5,21 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
@@ -40,6 +46,9 @@ class PageStateChangeTest {
     
     @Mock
     private WaRuleMetaDataRepository waRuleMetaDataRepository;
+    
+    @Mock
+    private PageCondMappingRepository pageConMappingRepository;
 
     @InjectMocks
     PageStateChanger pageStateChanger;
@@ -105,6 +114,7 @@ class PageStateChangeTest {
         Long requestId = 1l;
         WaTemplate before = getTemplate(requestId,"TestPage", "Pblished");
         when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(before));
+        when(templateRepository.save(Mockito.any())).thenReturn(before);
         PageStateResponse response = pageStateChanger.savePageAsDraft(requestId);
         assertEquals(requestId, response.getTemplateId());
         assertEquals(PageConstants.SAVE_DRAFT_SUCCESS, response.getMessage());
@@ -157,12 +167,23 @@ class PageStateChangeTest {
 
 
     private WaTemplate getTemplate(Long id, String templateName, String templateType ) {
+    	PageCondMapping	one = new PageCondMapping();
+    	
         WaTemplate template = new WaTemplate();
         template.setId(id);
         template.setTemplateNm(templateName);
         template.setTemplateType(templateType);
         template.setPublishVersionNbr(1);
         template.setPublishIndCd('T');
+        
+        one.setAddTime(Instant.now());
+    	one.setAddUserId(2l);
+    	one.setLastChgTime(Instant.now());
+    	one.setLastChgUserId(2l);
+    	one.setWaTemplateUid(template);
+    	
+        template.setConditionMappings(Set.of(one));
+        
         return template;
     }
 
