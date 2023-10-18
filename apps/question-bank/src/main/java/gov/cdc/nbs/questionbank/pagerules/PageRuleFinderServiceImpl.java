@@ -1,42 +1,21 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
-import gov.cdc.nbs.questionbank.kafka.message.rule.RuleCreatedEvent;
-import gov.cdc.nbs.questionbank.kafka.producer.RuleCreatedEventProducer;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
-import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
-import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.*;
 
 @Slf4j
 @Service
 public class PageRuleFinderServiceImpl implements PageRuleFinderService {
-    private static final String DATE_COMPARE = "Date Compare";
-    private static final String ELSE = " } else { \n";
-    private static final String IF = "\n if(";
-    private static final String ARRAY = "($j.inArray('";
-    private static final String DISABLE = "Disable";
-    private static final String ENABLE = "Enable";
-    private static final String REQUIRE_IF = "Require If";
-    private static final String HIDE = "Hide";
-    private static final String ANY_SOURCE_VALUE = "( Any Source Value )";
-    private static final String PG_ENABLE_ELEMENT = "pgEnableElement('";
-    private static final String PG_DISABLE_ELEMENT = "pgDisableElement('";
-    private static final String SELECTED = " :selected').each(function(i, selected){";
-    private static final String FUNCTION = "function ";
-    private static final String ACTION_1 = "()\n{";
 
     private final WaRuleMetaDataRepository waRuleMetaDataRepository;
-
 
     public PageRuleFinderServiceImpl(
             WaRuleMetaDataRepository waRuleMetaDataRepository) {
