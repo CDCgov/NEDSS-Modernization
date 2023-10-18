@@ -61,7 +61,12 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     (
                         <div className="ds-u-text-align--right">
                             {expandedRows.some((id) => id === valueSet.nbsUid) ? (
-                                <Button type="button" unstyled aria-label="expand-less">
+                                <Button
+                                    type="button"
+                                    unstyled
+                                    aria-label="expand-less"
+                                    key={valueSet.nbsUid}
+                                    data-testid="expand-less">
                                     <Icon.ExpandLess
                                         style={{ cursor: 'pointer' }}
                                         size={4}
@@ -70,7 +75,12 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                                     />
                                 </Button>
                             ) : (
-                                <Button type="button" unstyled aria-label="expand-more">
+                                <Button
+                                    data-testid="expand-more"
+                                    type="button"
+                                    unstyled
+                                    aria-label="expand-more"
+                                    key={valueSet.nbsUid}>
                                     <Icon.ExpandMore
                                         style={{ cursor: 'pointer' }}
                                         size={4}
@@ -268,6 +278,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             />
         </div>
     );
+
     return (
         <div>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>

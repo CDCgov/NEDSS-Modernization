@@ -6,15 +6,18 @@ import { Race, Ethnicity } from '../../../../generated/graphql/schema';
 import { SearchCriteria, SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 describe('EthnicityForm component tests', () => {
-    it('should render 2 dropdown Labels Ethnicity and Race', () => {
-        const { result } = renderHook(() => useForm());
+    it('should render 2 dropdown Labels Ethnicity and Race', async () => {
+        const { result, waitFor } = renderHook(() => useForm());
+
         const { container } = render(<EthnicityForm control={result.current.control} />);
-        expect(container.querySelectorAll('.usa-label')[0].textContent).toBe('Ethnicity');
-        expect(container.querySelectorAll('.usa-label')[1].textContent).toBe('Race');
+        await waitFor(() => {
+            expect(container.querySelectorAll('.usa-label')[0].textContent).toBe('Ethnicity');
+            expect(container.querySelectorAll('.usa-label')[1].textContent).toBe('Race');
+        });
     });
 
-    it('should render Ethnicity dropdown with correct options', () => {
-        const { result } = renderHook(() => useForm());
+    it('should render Ethnicity dropdown with correct options', async () => {
+        const { result, waitFor } = renderHook(() => useForm());
         const ethnicities: Ethnicity[] = [];
         ethnicities.push({ codeDescTxt: 'Not Hispanic or Latino', id: { code: '2186-5' } });
         ethnicities.push({ codeDescTxt: 'Hispanic or Latino', id: { code: '2135-2' } });
@@ -29,19 +32,24 @@ describe('EthnicityForm component tests', () => {
             identificationTypes: [],
             states: []
         };
+
         const { container } = render(
             <SearchCriteriaContext.Provider value={{ searchCriteria }}>
                 <EthnicityForm control={result.current.control} />
             </SearchCriteriaContext.Provider>
         );
+
         const options = container.querySelectorAll('div select')[0].childNodes;
-        Object.values(ethnicities).forEach((value, idx) => {
-            expect(value.codeDescTxt).toBe(options[idx + 1].textContent);
+
+        await waitFor(() => {
+            Object.values(ethnicities).forEach((value, idx) => {
+                expect(value.codeDescTxt).toBe(options[idx + 1].textContent);
+            });
         });
     });
 
-    it('should render Race dropdown with correct options', () => {
-        const { result } = renderHook(() => useForm());
+    it('should render Race dropdown with correct options', async () => {
+        const { result, waitFor } = renderHook(() => useForm());
         const races: Race[] = [];
         races.push({ codeDescTxt: 'Asian', id: { code: '2028-9' } });
         races.push({ codeDescTxt: 'White', id: { code: '2106-3' } });
@@ -61,9 +69,12 @@ describe('EthnicityForm component tests', () => {
                 <EthnicityForm control={result.current.control} />
             </SearchCriteriaContext.Provider>
         );
+
         const options = container.querySelectorAll('div select')[1].childNodes;
-        Object.values(races).forEach((value, idx) => {
-            expect(value.codeDescTxt).toBe(options[idx + 1].textContent);
+        await waitFor(() => {
+            Object.values(races).forEach((value, idx) => {
+                expect(value.codeDescTxt).toBe(options[idx + 1].textContent);
+            });
         });
     });
 });

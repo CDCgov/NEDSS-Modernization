@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { findByTestId, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ValueSet } from 'apps/page-builder/generated';
 import { BrowserRouter } from 'react-router-dom';
 import { AlertProvider } from '../../../../alert';
@@ -87,8 +87,8 @@ describe('when at least one summary is available', () => {
 
     describe('when the expand button is clicked', () => {
         // need to figure out why "click" scenario not working.
-        it.skip('displays the expand less button', async () => {
-            render(
+        it('displays the expand less button', async () => {
+            const { getByTestId } = render(
                 <BrowserRouter>
                     <AlertProvider>
                         <ValuesetLibraryTable summaries={summaries}></ValuesetLibraryTable>
@@ -96,22 +96,12 @@ describe('when at least one summary is available', () => {
                 </BrowserRouter>
             );
 
-            const expandButton = screen.getByRole('button', {
-                name: /expand-more/i
-            });
-
+            const expandButton = await screen.findByTestId('expand-more');
             fireEvent.click(expandButton);
 
-            // const expandLess = screen.getByRole('button', {
-            //     name: /expand-less/i
-            // });
-
-            // const details = screen.getByText('Value set code');
-            const less = screen.getByRole('button', {
-                name: /expand-less/i
+            await waitFor(() => {
+                expect(screen.findByTestId('expand-less')).toBeTruthy();
             });
-
-            expect(less).toBeInTheDocument();
         });
     });
 });

@@ -20,4 +20,3 @@ export type PageQuestion = {
     required?: string;
     subGroup?: string;
 };
-

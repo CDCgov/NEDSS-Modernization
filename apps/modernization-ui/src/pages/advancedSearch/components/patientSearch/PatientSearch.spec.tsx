@@ -27,7 +27,6 @@ describe('PatientSearch component tests', () => {
     });
 
     it('should have the basic information accorgion expanded by default and rest all closed', () => {
-        const { result } = renderHook(() => useForm());
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
         let sampleData;
@@ -68,7 +67,7 @@ describe('PatientSearch component tests', () => {
     it('should set record status checkboxes from incoming data', async () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
-        let sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
+        const sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
         const { container } = render(
             <PatientSearch
                 handleSubmission={sampleSearchFunction}
@@ -86,18 +85,20 @@ describe('PatientSearch component tests', () => {
         });
     });
 
-    it('should return the selected record status on submit', () => {
+    it('should return the selected record status on submit', async () => {
         const sampleSearchFunction = (data: PersonFilter) => {
             // Verify all 3 record status returned
+
             expect(data.recordStatus).toMatchObject([
                 RecordStatus.LogDel,
                 RecordStatus.Superceded,
                 RecordStatus.Active
             ]);
         };
+
         const sampleClearFunction = () => {};
         // Load page with Deleted and Superceded checked
-        let sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
+        const sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
         const { container } = render(
             <PatientSearch
                 handleSubmission={sampleSearchFunction}
@@ -106,17 +107,19 @@ describe('PatientSearch component tests', () => {
             />
         );
         // Click on Active to select it
-        const activeCheckbox = container.querySelector('#record-status-active') as HTMLInputElement;
-        activeCheckbox.click();
-        // Click submit
-        const submitButton = container.querySelector('button[type="submit"]') as HTMLButtonElement;
-        submitButton.click();
+        await waitFor(() => {
+            const activeCheckbox = container.querySelector('#record-status-active') as HTMLInputElement;
+            activeCheckbox.click();
+            // Click submit
+            const submitButton = container.querySelector('button[type="submit"]') as HTMLButtonElement;
+            submitButton.click();
+        });
     });
 
     it('should display an error when no record status is selected', async () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
-        let sampleData: PersonFilter = { recordStatus: [RecordStatus.Active] };
+        const sampleData: PersonFilter = { recordStatus: [RecordStatus.Active] };
         const { container } = render(
             <PatientSearch
                 handleSubmission={sampleSearchFunction}

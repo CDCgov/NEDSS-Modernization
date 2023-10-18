@@ -74,19 +74,24 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getRaces] = useFindAllRaceValuesLazyQuery({ onCompleted: setRaces });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
     const [getStates] = useStatesLazyQuery({ onCompleted: setStates });
+    const [error, setError] = React.useState('');
 
     // on init, load search data from API
     useEffect(() => {
-        if (state.isLoggedIn) {
-            getProgramAreas();
-            getConditions();
-            getJurisdictions();
-            getAllUsers();
-            getOutbreaks();
-            getEthnicities();
-            getRaces();
-            getIdentificationTypes();
-            getStates();
+        try {
+            if (state.isLoggedIn) {
+                getProgramAreas();
+                getConditions();
+                getJurisdictions();
+                getAllUsers();
+                getOutbreaks();
+                getEthnicities();
+                getRaces();
+                getIdentificationTypes();
+                getStates();
+            }
+        } catch (error: string | any) {
+            setError(error);
         }
     }, [state.isLoggedIn]);
 
