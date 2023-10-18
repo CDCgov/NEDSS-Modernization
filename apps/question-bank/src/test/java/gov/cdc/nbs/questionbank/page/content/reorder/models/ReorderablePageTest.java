@@ -4,6 +4,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import gov.cdc.nbs.questionbank.page.content.reorder.ReorderException;
@@ -68,10 +69,13 @@ class ReorderablePageTest {
     @CsvSource({
             "50,30", // Cannot place question into section
             "50,130", // Cannot place question in tab
-            "50,10", // Cannot place question outside content
+            "50,10", // Cannot place question at root
             "160, 100", // cannot insert section after subsection
             "160, 110", // cannot insert section after question
             "160, 10", // cannot insert section at root
+            "70, 20", // cannot insert subsection into tab
+            "70, 110", // cannot insert subsection after question
+            "70, 10", // cannot insert subsection at root
             "20, 30", // cannot insert tab into section
             "20, 40", // cannot insert tab into subsection
             "20, 50", // cannot insert tab after question
@@ -109,5 +113,104 @@ class ReorderablePageTest {
                 .findFirst()
                 .orElseThrow();
         assertEquals(expectedPosition, movedEntry.orderNumber());
+    }
+
+    @Test
+    void shoud_move_tab_to_end() {
+        // Given a reorderable page
+        ReorderablePage page = testPage();
+
+        // When a tab is moved to the end
+        page.move(20, 130);
+
+        // Then all contents are ordered as expected
+        List<PageEntry> expectedList = new ArrayList<>();
+        expectedList.add(new PageEntry(10, PAGE_TYPE, 1));
+        expectedList.add(new PageEntry(130, TAB, 2));
+        expectedList.add(new PageEntry(140, SECTION, 3));
+        expectedList.add(new PageEntry(150, SUBSECTION, 4));
+        expectedList.add(new PageEntry(160, SECTION, 5));
+        expectedList.add(new PageEntry(20, TAB, 6));
+        expectedList.add(new PageEntry(30, SECTION, 7));
+        expectedList.add(new PageEntry(40, SUBSECTION, 8));
+        expectedList.add(new PageEntry(50, 1008, 9));
+        expectedList.add(new PageEntry(60, 1009, 10));
+        expectedList.add(new PageEntry(70, SUBSECTION, 11));
+        expectedList.add(new PageEntry(80, 1008, 12));
+        expectedList.add(new PageEntry(90, SECTION, 13));
+        expectedList.add(new PageEntry(100, SUBSECTION, 14));
+        expectedList.add(new PageEntry(110, 1008, 15));
+        expectedList.add(new PageEntry(120, 1009, 16));
+
+        List<PageEntry> actuals = page.toPageEntries();
+        for (int i = 0; i < actuals.size(); i++) {
+            assertEquals(expectedList.get(i), actuals.get(i));
+        }
+    }
+
+    @Test
+    void should_move_section_to_another_tab() {
+        // Given a reorderable page
+        ReorderablePage page = testPage();
+
+        // When a tab is moved to the end
+        page.move(140, 20);
+
+        // Then all contents are ordered as expected
+        List<PageEntry> expectedList = new ArrayList<>();
+        expectedList.add(new PageEntry(10, PAGE_TYPE, 1));
+        expectedList.add(new PageEntry(20, TAB, 2));
+        expectedList.add(new PageEntry(140, SECTION, 3));
+        expectedList.add(new PageEntry(150, SUBSECTION, 4));
+        expectedList.add(new PageEntry(30, SECTION, 5));
+        expectedList.add(new PageEntry(40, SUBSECTION, 6));
+        expectedList.add(new PageEntry(50, 1008, 7));
+        expectedList.add(new PageEntry(60, 1009, 8));
+        expectedList.add(new PageEntry(70, SUBSECTION, 9));
+        expectedList.add(new PageEntry(80, 1008, 10));
+        expectedList.add(new PageEntry(90, SECTION, 11));
+        expectedList.add(new PageEntry(100, SUBSECTION, 12));
+        expectedList.add(new PageEntry(110, 1008, 13));
+        expectedList.add(new PageEntry(120, 1009, 14));
+        expectedList.add(new PageEntry(130, TAB, 15));
+        expectedList.add(new PageEntry(160, SECTION, 16));
+
+        List<PageEntry> actuals = page.toPageEntries();
+        for (int i = 0; i < actuals.size(); i++) {
+            assertEquals(expectedList.get(i), actuals.get(i));
+        }
+    }
+
+    @Test
+    void should_move_subsection_to_another_section() {
+        // Given a reorderable page
+        ReorderablePage page = testPage();
+
+        // When a tab is moved to the end
+        page.move(150, 100);
+
+        // Then all contents are ordered as expected
+        List<PageEntry> expectedList = new ArrayList<>();
+        expectedList.add(new PageEntry(10, PAGE_TYPE, 1));
+        expectedList.add(new PageEntry(20, TAB, 2));
+        expectedList.add(new PageEntry(30, SECTION, 3));
+        expectedList.add(new PageEntry(40, SUBSECTION, 4));
+        expectedList.add(new PageEntry(50, 1008, 5));
+        expectedList.add(new PageEntry(60, 1009, 6));
+        expectedList.add(new PageEntry(70, SUBSECTION, 7));
+        expectedList.add(new PageEntry(80, 1008, 8));
+        expectedList.add(new PageEntry(90, SECTION, 9));
+        expectedList.add(new PageEntry(100, SUBSECTION, 10));
+        expectedList.add(new PageEntry(110, 1008, 11));
+        expectedList.add(new PageEntry(120, 1009, 12));
+        expectedList.add(new PageEntry(150, SUBSECTION, 13));
+        expectedList.add(new PageEntry(130, TAB, 14));
+        expectedList.add(new PageEntry(140, SECTION, 15));
+        expectedList.add(new PageEntry(160, SECTION, 16));
+
+        List<PageEntry> actuals = page.toPageEntries();
+        for (int i = 0; i < actuals.size(); i++) {
+            assertEquals(expectedList.get(i), actuals.get(i));
+        }
     }
 }
