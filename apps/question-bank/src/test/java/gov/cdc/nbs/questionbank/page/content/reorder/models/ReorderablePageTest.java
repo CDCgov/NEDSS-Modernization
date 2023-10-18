@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.reorder.models;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ class ReorderablePageTest {
         // Given a reorderable page
         ReorderablePage page = testPage();
 
-        // When a tab is moved to the end
+        // When a component is moved 
         page.move(20, 130);
 
         // Then all contents are ordered as expected
@@ -142,10 +143,36 @@ class ReorderablePageTest {
         expectedList.add(new PageEntry(110, 1008, 15));
         expectedList.add(new PageEntry(120, 1009, 16));
 
-        List<PageEntry> actuals = page.toPageEntries();
-        for (int i = 0; i < actuals.size(); i++) {
-            assertEquals(expectedList.get(i), actuals.get(i));
-        }
+        assertArrayEquals(expectedList.toArray(), page.toPageEntries().toArray());
+    }
+
+    @Test
+    void should_move_tab_to_beginning() {
+        // Given a reorderable page
+        ReorderablePage page = testPage();
+
+        // When a component is moved     
+        page.move(130, 10);
+
+        List<PageEntry> expectedList = new ArrayList<>();
+        expectedList.add(new PageEntry(10, PAGE_TYPE, 1));
+        expectedList.add(new PageEntry(130, TAB, 2));
+        expectedList.add(new PageEntry(140, SECTION, 3));
+        expectedList.add(new PageEntry(150, SUBSECTION, 4));
+        expectedList.add(new PageEntry(160, SECTION, 5));
+        expectedList.add(new PageEntry(20, TAB, 6));
+        expectedList.add(new PageEntry(30, SECTION, 7));
+        expectedList.add(new PageEntry(40, SUBSECTION, 8));
+        expectedList.add(new PageEntry(50, 1008, 9));
+        expectedList.add(new PageEntry(60, 1009, 10));
+        expectedList.add(new PageEntry(70, SUBSECTION, 11));
+        expectedList.add(new PageEntry(80, 1008, 12));
+        expectedList.add(new PageEntry(90, SECTION, 13));
+        expectedList.add(new PageEntry(100, SUBSECTION, 14));
+        expectedList.add(new PageEntry(110, 1008, 15));
+        expectedList.add(new PageEntry(120, 1009, 16));
+
+        assertArrayEquals(expectedList.toArray(), page.toPageEntries().toArray());
     }
 
     @Test
@@ -153,7 +180,7 @@ class ReorderablePageTest {
         // Given a reorderable page
         ReorderablePage page = testPage();
 
-        // When a tab is moved to the end
+        // When a component is moved 
         page.move(140, 20);
 
         // Then all contents are ordered as expected
@@ -175,10 +202,37 @@ class ReorderablePageTest {
         expectedList.add(new PageEntry(130, TAB, 15));
         expectedList.add(new PageEntry(160, SECTION, 16));
 
-        List<PageEntry> actuals = page.toPageEntries();
-        for (int i = 0; i < actuals.size(); i++) {
-            assertEquals(expectedList.get(i), actuals.get(i));
-        }
+        assertArrayEquals(expectedList.toArray(), page.toPageEntries().toArray());
+    }
+
+    @Test
+    void should_move_section_to_another_section() {
+        // Given a reorderable page
+        ReorderablePage page = testPage();
+
+        // When a component is moved 
+        page.move(30, 90);
+
+        // Then all contents are ordered as expected
+        List<PageEntry> expectedList = new ArrayList<>();
+        expectedList.add(new PageEntry(10, PAGE_TYPE, 1));
+        expectedList.add(new PageEntry(20, TAB, 2));
+        expectedList.add(new PageEntry(90, SECTION, 3));
+        expectedList.add(new PageEntry(100, SUBSECTION, 4));
+        expectedList.add(new PageEntry(110, 1008, 5));
+        expectedList.add(new PageEntry(120, 1009, 6));
+        expectedList.add(new PageEntry(30, SECTION, 7));
+        expectedList.add(new PageEntry(40, SUBSECTION, 8));
+        expectedList.add(new PageEntry(50, 1008, 9));
+        expectedList.add(new PageEntry(60, 1009, 10));
+        expectedList.add(new PageEntry(70, SUBSECTION, 11));
+        expectedList.add(new PageEntry(80, 1008, 12));
+        expectedList.add(new PageEntry(130, TAB, 13));
+        expectedList.add(new PageEntry(140, SECTION, 14));
+        expectedList.add(new PageEntry(150, SUBSECTION, 15));
+        expectedList.add(new PageEntry(160, SECTION, 16));
+
+        assertArrayEquals(expectedList.toArray(), page.toPageEntries().toArray());
     }
 
     @Test
@@ -186,7 +240,7 @@ class ReorderablePageTest {
         // Given a reorderable page
         ReorderablePage page = testPage();
 
-        // When a tab is moved to the end
+        // When a component is moved 
         page.move(150, 100);
 
         // Then all contents are ordered as expected
@@ -208,9 +262,66 @@ class ReorderablePageTest {
         expectedList.add(new PageEntry(140, SECTION, 15));
         expectedList.add(new PageEntry(160, SECTION, 16));
 
-        List<PageEntry> actuals = page.toPageEntries();
-        for (int i = 0; i < actuals.size(); i++) {
-            assertEquals(expectedList.get(i), actuals.get(i));
-        }
+        assertArrayEquals(expectedList.toArray(), page.toPageEntries().toArray());
+    }
+
+    @Test
+    void should_move_subsection_to_after_subsection() {
+        // Given a reorderable page
+        ReorderablePage page = testPage();
+
+        // When a component is moved 
+        page.move(40, 70);
+
+        // Then all contents are ordered as expected
+        List<PageEntry> expectedList = new ArrayList<>();
+        expectedList.add(new PageEntry(10, PAGE_TYPE, 1));
+        expectedList.add(new PageEntry(20, TAB, 2));
+        expectedList.add(new PageEntry(30, SECTION, 3));
+        expectedList.add(new PageEntry(70, SUBSECTION, 4));
+        expectedList.add(new PageEntry(80, 1008, 5));
+        expectedList.add(new PageEntry(40, SUBSECTION, 6));
+        expectedList.add(new PageEntry(50, 1008, 7));
+        expectedList.add(new PageEntry(60, 1009, 8));
+        expectedList.add(new PageEntry(90, SECTION, 9));
+        expectedList.add(new PageEntry(100, SUBSECTION, 10));
+        expectedList.add(new PageEntry(110, 1008, 11));
+        expectedList.add(new PageEntry(120, 1009, 12));
+        expectedList.add(new PageEntry(130, TAB, 13));
+        expectedList.add(new PageEntry(140, SECTION, 14));
+        expectedList.add(new PageEntry(150, SUBSECTION, 15));
+        expectedList.add(new PageEntry(160, SECTION, 16));
+
+        assertArrayEquals(expectedList.toArray(), page.toPageEntries().toArray());
+    }
+
+    @Test
+    void should_move_question_to_another_subsection() {
+        // Given a reorderable page
+        ReorderablePage page = testPage();
+
+        // When a component is moved 
+        page.move(120, 50);
+
+        // Then all contents are ordered as expected
+        List<PageEntry> expectedList = new ArrayList<>();
+        expectedList.add(new PageEntry(10, PAGE_TYPE, 1));
+        expectedList.add(new PageEntry(20, TAB, 2));
+        expectedList.add(new PageEntry(30, SECTION, 3));
+        expectedList.add(new PageEntry(40, SUBSECTION, 4));
+        expectedList.add(new PageEntry(50, 1008, 5));
+        expectedList.add(new PageEntry(120, 1009, 6));
+        expectedList.add(new PageEntry(60, 1009, 7));
+        expectedList.add(new PageEntry(70, SUBSECTION, 8));
+        expectedList.add(new PageEntry(80, 1008, 9));
+        expectedList.add(new PageEntry(90, SECTION, 10));
+        expectedList.add(new PageEntry(100, SUBSECTION, 11));
+        expectedList.add(new PageEntry(110, 1008, 12));
+        expectedList.add(new PageEntry(130, TAB, 13));
+        expectedList.add(new PageEntry(140, SECTION, 14));
+        expectedList.add(new PageEntry(150, SUBSECTION, 15));
+        expectedList.add(new PageEntry(160, SECTION, 16));
+
+        assertArrayEquals(expectedList.toArray(), page.toPageEntries().toArray());
     }
 }
