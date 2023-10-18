@@ -49,7 +49,8 @@ public class TabController {
             @PathVariable("page") Long page,
             @PathVariable Long tabId,
             @RequestBody UpdateTabRequest request) {
-        return updater.update(page, tabId, request);
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return updater.update(page, tabId, request, userId);
     }
 
 }

@@ -26,4 +26,11 @@ public sealed interface PageContentCommand {
             long userId,
             Instant requestedOn) implements PageContentCommand {
     }
+
+    public record UpdateTab(
+            String label,
+            boolean visible,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
 }

@@ -208,6 +208,28 @@ class WaUiMetadataTest {
         assertEquals(command.requestedOn(), tabMetadata.getRecordStatusTime());
     }
 
+    @Test
+    void should_update_tab() {
+        PageContentCommand.AddTab command = addTab();
+        WaUiMetadata tabMetadata = new WaUiMetadata(command);
+
+        PageContentCommand.UpdateTab updateCommand = updateTab();
+        tabMetadata.update(updateCommand);
+
+        assertEquals(updateCommand.label(), tabMetadata.getQuestionLabel());
+        assertEquals(updateCommand.visible() ? "T" : "F", tabMetadata.getDisplayInd());
+        assertEquals(updateCommand.userId(), tabMetadata.getLastChgUserId().longValue());
+        assertEquals(updateCommand.requestedOn(), tabMetadata.getLastChgTime());
+    }
+
+    private PageContentCommand.UpdateTab updateTab() {
+        return new PageContentCommand.UpdateTab(
+                "updated label",
+                true,
+                444,
+                Instant.now());
+    }
+
     private PageContentCommand.AddTab addTab() {
         WaTemplate page = new WaTemplate();
         page.setId(123l);

@@ -38,7 +38,7 @@ class TabUpdaterTest {
         when(repository.save(captor.capture())).then(a -> a.getArgument(0));
 
         // When a tab is updated
-        updater.update(1l, 2L, new UpdateTabRequest("test name", false));
+        updater.update(1l, 2L, new UpdateTabRequest("test name", false), 3l);
         
         // Then the tab is changed
         WaUiMetadata actual = captor.getValue();
@@ -53,7 +53,7 @@ class TabUpdaterTest {
 
         // When a request is made to update a tab
         // Then an exception is thrown
-        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l , null));
+        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l , null, 3l));
     }
 
     @Test
@@ -64,7 +64,7 @@ class TabUpdaterTest {
         // When a request is made to update a tab with a null label
         // Then an exception is thrown
         UpdateTabRequest request = new UpdateTabRequest(null, false);
-        assertThrows(UpdateTabException.class, () -> updater.update(1l,2l,request));
+        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, request, 3l));
     }
 
     @Test
@@ -74,7 +74,7 @@ class TabUpdaterTest {
 
         // When a request is made to update a tab with a null request
         // Then an exception is thrown
-        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, null));
+        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, null, 3l));
     }
 
 }
