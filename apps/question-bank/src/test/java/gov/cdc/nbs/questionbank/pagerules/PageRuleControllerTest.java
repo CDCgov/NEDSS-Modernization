@@ -31,8 +31,8 @@ class PageRuleControllerTest {
     @Mock
     private UserDetailsProvider userDetailsProvider;
 
-    @InjectMocks
-    private PageRuleFinderServiceImpl pageRuleFinderServiceImpl;
+    @Mock
+    private PageRuleFinderService pageRuleFinderServiceImpl;
 
     @Test
     void shouldReturnCreateRuleResponse() throws Exception {
