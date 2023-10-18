@@ -158,15 +158,24 @@ public class PageMother {
         page = repository.save(page);
 
         // add page detail mappings
-        WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
-        WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
-        WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
-        WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
+        WaUiMetadata tab = createUiMetadata(page, PageConstants.TAB_COMPONENT, 2);
+        WaUiMetadata section = createUiMetadata(page, PageConstants.SECTION_COMPONENT, 3);
+        WaUiMetadata subSection = createUiMetadata(page, PageConstants.SUB_SECTION_COMPONENT, 4);
+        WaUiMetadata question = createUiMetadata(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
+        WaUiMetadata tab2 = createUiMetadata(page, PageConstants.TAB_COMPONENT, 6);
 
         waUiMetadatumRepository.save(tab);
         waUiMetadatumRepository.save(section);
         waUiMetadatumRepository.save(subSection);
         waUiMetadatumRepository.save(question);
+        waUiMetadatumRepository.save(tab2);
+
+        page.setUiMetadata(Arrays.asList(
+                tab,
+                section,
+                subSection,
+                question,
+                tab2));
 
         allPages.add(page);
         return page;
@@ -204,10 +213,10 @@ public class PageMother {
         page = repository.save(page);
 
         // add page detail mappings
-        WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
-        WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
-        WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
-        WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
+        WaUiMetadata tab = createUiMetadata(page, PageConstants.TAB_COMPONENT, 2);
+        WaUiMetadata section = createUiMetadata(page, PageConstants.SECTION_COMPONENT, 3);
+        WaUiMetadata subSection = createUiMetadata(page, PageConstants.SUB_SECTION_COMPONENT, 4);
+        WaUiMetadata question = createUiMetadata(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
 
         waUiMetadatumRepository.save(tab);
         waUiMetadatumRepository.save(section);
@@ -218,7 +227,7 @@ public class PageMother {
         return page;
     }
 
-    private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage, Long nbsUiComponentUid, Integer orderNumber) {
+    private WaUiMetadata createUiMetadata(WaTemplate aPage, Long nbsUiComponentUid, Integer orderNumber) {
         WaUiMetadata record = new WaUiMetadata();
         record.setWaTemplateUid(aPage);
         record.setNbsUiComponentUid(nbsUiComponentUid);
