@@ -17,10 +17,6 @@ public class ReorderablePage {
         return tabs;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public void move(long toMove, long afterId) {
         PageComponent componentToMove = findAndRemoveComponent(toMove);
         if (componentToMove instanceof Tab t) {
