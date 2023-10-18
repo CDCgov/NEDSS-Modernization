@@ -88,7 +88,7 @@ public class PageStateChanger {
 					wanndMetadataRepository.flush();
 					wARDBMetadataRepository.deleteByWaTemplateUid(draft);
 					wARDBMetadataRepository.flush();
-					waUiMetadataRepository.deleteByWaTemplateUid(draft);
+					waUiMetadataRepository.deleteAllByWaTemplateUid(draft);
 					waUiMetadataRepository.flush();
 					waRuleMetaDataRepository.deleteByWaTemplateUid(draft.getId());
 					waRuleMetaDataRepository.flush();
@@ -107,7 +107,7 @@ public class PageStateChanger {
 					wanndMetadataRepository.flush();
 					wARDBMetadataRepository.deleteByWaTemplateUid(page);
 					wARDBMetadataRepository.flush();
-					waUiMetadataRepository.deleteByWaTemplateUid(page);
+					waUiMetadataRepository.deleteAllByWaTemplateUid(page);
 					waUiMetadataRepository.flush();
 					waRuleMetaDataRepository.deleteByWaTemplateUid(page.getId());
 					waRuleMetaDataRepository.flush();

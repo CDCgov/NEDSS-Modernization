@@ -33,10 +33,10 @@ public class PageSummarySearchSteps {
 
     @Given("pages exist")
     public void pages_exist() {
+        pageMother.cleanCreated();
         pageMother.brucellosis();
         pageMother.asepticMeningitis();
     }
-
 
     @When("I get all page summaries")
     public void i_get_all_page_summaries() {

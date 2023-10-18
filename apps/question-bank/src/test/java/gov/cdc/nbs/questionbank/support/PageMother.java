@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
@@ -20,6 +20,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 
 @Component
+@Transactional
 public class PageMother {
     private static final String ASEPTIC_MENINGITIS_ID = "10010";
     private static final String BRUCELLOSIS_ID = "10020";
@@ -52,6 +53,15 @@ public class PageMother {
         pageConMappingRepository.deleteAll();
         waRuleMetaDataRepository.deleteAll();
         repository.deleteAll();
+        allPages.clear();
+    }
+
+    public void cleanCreated() {
+        allPages.forEach(p -> {
+            waUiMetadatumRepository.deleteAllByWaTemplateUid(p);
+            pageConMappingRepository.deleteAllByWaTemplateUid(p);
+            repository.delete(p);
+        });
         allPages.clear();
     }
 
