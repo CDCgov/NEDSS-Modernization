@@ -43,7 +43,7 @@ public class TabDeleter {
         this.template = template;
     }
 
-    public void deleteTab(Long page, Long tab) {
+    public void delete(Long page, Long tab) {
         if (!templateRepository.isPageDraft(page)) {
             throw new DeleteTabException("Unable to delete tab on a published page");
         }

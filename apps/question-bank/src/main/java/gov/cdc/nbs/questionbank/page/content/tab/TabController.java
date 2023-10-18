@@ -41,7 +41,7 @@ public class TabController {
 
     @DeleteMapping("{tabId}")
     public void deleteTab(@PathVariable("page") Long page, @PathVariable Long tabId) {
-        deleter.deleteTab(page, tabId);
+        deleter.delete(page, tabId);
     }
 
     @PutMapping("{tabId}")

@@ -48,7 +48,7 @@ class TabDeleterTest {
         when(repository.getOrderNumber(2L)).thenReturn(2);
 
         // When a delete is processed
-        deleter.deleteTab(1l, 2l);
+        deleter.delete(1l, 2l);
 
         // Then the entry should be deleted
         verify(repository).deleteById(2L);
@@ -64,7 +64,7 @@ class TabDeleterTest {
 
         // When a delete is processed
         // Then an exception is thrown
-        assertThrows(DeleteTabException.class, () ->deleter.deleteTab(1l, 2l));
+        assertThrows(DeleteTabException.class, () ->deleter.delete(1l, 2l));
     }
 
     @Test
@@ -83,6 +83,6 @@ class TabDeleterTest {
 
         // When a delete is processed
         // Then an exception is thrown
-        assertThrows(DeleteTabException.class, () ->deleter.deleteTab(1l, 2l));
+        assertThrows(DeleteTabException.class, () ->deleter.delete(1l, 2l));
     }
 }
