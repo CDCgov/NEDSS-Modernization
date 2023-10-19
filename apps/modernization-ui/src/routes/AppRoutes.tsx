@@ -78,6 +78,7 @@ export const AppRoutes = () => {
                                         <Route path="valueset-library" element={<ValuesetLibrary />} />
                                         <Route path="question-library" element={<QuestionLibrary />} />
                                         <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
+                                        <Route path="condition-library" element={<div>Condition page</div>} />
                                     </Route>
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />
