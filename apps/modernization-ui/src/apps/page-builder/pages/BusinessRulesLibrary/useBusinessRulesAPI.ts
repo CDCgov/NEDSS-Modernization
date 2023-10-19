@@ -3,17 +3,40 @@ import { PageRuleControllerService } from 'apps/page-builder/generated';
 
 export const fetchBusinessRules = (
     authorization: string,
-    search: any,
+    searchValue: string,
     sort: any,
     currentPage: number,
     pageSize: number
 ) => {
-    return PageRuleControllerService.findAllRuleResponseUsingGet({
-        authorization,
-        page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
-        size: pageSize,
-        sort
-    }).then((response: any) => {
-        return response || [];
-    });
+    if (!searchValue) {
+        return PageRuleControllerService.getAllPageRuleUsingGet({
+            authorization,
+            page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
+            size: pageSize,
+            sort
+        })
+            .then((response: any) => {
+                return response || [];
+            })
+            .catch((error: any) => {
+                console.log(error.body);
+            });
+    } else {
+        const request = {
+            searchValue
+        };
+        return PageRuleControllerService.findRuleResponseUsingPost({
+            authorization,
+            request,
+            page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
+            size: pageSize,
+            sort
+        })
+            .then((response: any) => {
+                return response || [];
+            })
+            .catch((error: any) => {
+                console.log(error.body);
+            });
+    }
 };
