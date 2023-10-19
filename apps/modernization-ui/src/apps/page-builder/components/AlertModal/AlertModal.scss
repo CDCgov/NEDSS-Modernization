@@ -1,0 +1,81 @@
+@use 'styles/colors';
+@mixin indicator($background, $stripe) {
+    background-color: $background;
+    border-left: 8px solid $stripe;
+}
+@mixin indicatorIcon( $color) {
+    background-color: $color;
+    svg {
+    color: $color;
+  }
+}
+
+
+.alert-Modal {
+    width: 100%;
+    padding: 0.3rem 1.0rem 1.0rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-bottom: 1.0rem;
+    &.success {
+        @include indicator(colors.$success-lighter, colors.$success);
+    }
+    &.warning {
+        @include indicator(colors.$warning-lighter, colors.$warning);
+    }
+    &.prompt {
+        @include indicator(colors.$info-lighter, colors.$success);
+    }
+    &.info {
+        @include indicator(colors.$info-lighter, colors.$info);
+    }
+    &.error {
+        @include indicator(colors.$error-lighter, colors.$error);
+    }
+    &__right {
+        padding-top: 0.4rem;
+    }
+}
+.usa-alert_body {
+    margin: 24px;
+    svg {
+        margin: 0 12px;
+    } &.info {
+              @include indicatorIcon(colors.$primary);
+              .msg-container {
+                  .header {
+                      margin: 0;
+                      padding: 0;
+                  }
+                  margin-left: 16px;
+                  flex-direction: column;
+              }
+
+      }
+    &.warning {
+        border-left: 8px solid colors.$warning;
+        svg {
+            color: colors.$warning;
+        }
+    }
+    &.error {
+        border-left: 8px solid colors.$error;
+        svg {
+            color: colors.$error;
+        }
+    }
+    .msg-container {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        .msg-text {
+            color: var(--base-black, #000);
+            font-family: Public Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 162%;
+        }
+    }
+}

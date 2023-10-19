@@ -7,7 +7,7 @@ import { usePageMaybe } from 'page';
 import { Select } from '@trussworks/react-uswds';
 import styles from './range-toggle.module.scss';
 
-type SupportedContext = 'pages' | 'conditions' | 'questions' | 'valuesets';
+type SupportedContext = 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates' | 'businessRules';
 
 type RangeToggleProps = {
     contextName?: SupportedContext;
@@ -21,7 +21,6 @@ export const RangeToggle = ({ contextName, initial = 10 }: RangeToggleProps) => 
 
     const pagination = usePageMaybe();
     const [range, setRange] = useState(Number(initial));
-
     useEffect(() => {
         if (!('type' in fromContext)) {
             if (fromContext.currentPage > 1 && fromContext.setCurrentPage) {

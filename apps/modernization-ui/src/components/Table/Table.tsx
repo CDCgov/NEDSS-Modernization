@@ -56,7 +56,7 @@ export type Props = {
     selectable?: boolean;
     handleSelected?: OldSelectionHandler;
     isLoading?: boolean;
-    contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets';
+    contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates' | 'businessRules';
 };
 
 export const TableComponent = ({

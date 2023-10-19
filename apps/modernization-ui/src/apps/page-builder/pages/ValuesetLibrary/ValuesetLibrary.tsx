@@ -21,7 +21,6 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     useEffect(async () => {
         const token = `Bearer ${state.getToken()}`;
         setIsLoading(true);
-        setSummaries([]);
         const { content, totalElements }: any = await fetchValueSet(
             token,
             searchQuery,

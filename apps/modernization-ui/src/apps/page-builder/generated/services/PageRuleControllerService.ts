@@ -20,21 +20,20 @@ export class PageRuleControllerService {
      */
     public static getAllPageRuleUsingGet({
         authorization,
+        pageId,
         page,
         size,
         sort,
     }: {
         authorization: string,
-        /**
-         * page
-         */
-        page: number,
+        pageId?: string,
+        page?: number,
         size?: number,
         sort?: string,
     }): CancelablePromise<Page_ViewRuleResponse_> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{page}/rules',
+            url: `/nbs/page-builder/api/v1/pages/${pageId}/rules`,
             path: {
                 'page': page,
             },
@@ -42,6 +41,7 @@ export class PageRuleControllerService {
                 'Authorization': authorization,
             },
             query: {
+                'page': page,
                 'size': size,
                 'sort': sort,
             },
@@ -125,6 +125,46 @@ export class PageRuleControllerService {
                 'sort': sort,
             },
             body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
+     * findRule
+     * @returns Page_Rules_ OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static findRuleResponseUsingPost({
+       authorization,
+       request,
+        pageId,
+       page,
+       size,
+       sort,
+   } : {
+    authorization: any,
+            request: any,
+    pageId?: string,
+    page?: number,
+    size?: number,
+    sort?: string,
+    }): CancelablePromise<ViewRuleResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: `/nbs/page-builder/api/v1/pages/${pageId}/rules/search`,
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

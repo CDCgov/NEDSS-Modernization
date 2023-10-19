@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { createContext, useState, Dispatch, SetStateAction } from 'react';
+import { ContextData } from './contextData';
 
 interface BusinessRuleContextData {
     filter: any;
@@ -35,7 +36,7 @@ const businessRuleContextDefaultValue: BusinessRuleContextData = {
     setIsLoading: () => {}
 };
 
-export const BusinessRuleContext = createContext<BusinessRuleContextData>(businessRuleContextDefaultValue);
+export const BusinessRuleContext = createContext<ContextData>(businessRuleContextDefaultValue as ContextData);
 
 export const BusinessRuleProvider = ({ children }: any) => {
     const [searchQuery, setSearchQuery] = useState(businessRuleContextDefaultValue.searchQuery);

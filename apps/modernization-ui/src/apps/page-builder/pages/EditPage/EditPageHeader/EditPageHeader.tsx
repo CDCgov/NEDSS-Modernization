@@ -4,6 +4,8 @@ import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { PagesResponse } from 'apps/page-builder/generated';
 import { SaveTemplates } from 'apps/page-builder/components/SaveTemplate/SaveTemplate';
 import { LinkButton } from 'components/button';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import './EditPageHeader.scss';
 
 type PageProps = {
@@ -14,6 +16,8 @@ type PageProps = {
 export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
     const [isSaveTemplate, setIsSaveTemplate] = useState(false);
     const modalRef = useRef<ModalRef>(null);
+    const { pageId } = useParams();
+    const navigate = useNavigate();
 
     return (
         <div className="edit-page-header">
@@ -24,7 +28,12 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
             <div className="actions">
                 {isSaveTemplate ? (
                     <>
-                        <Button type="button" outline>
+                        <Button
+                            type="button"
+                            outline
+                            onClick={() => {
+                                navigate(`/page-builder/edit/page/${pageId}/business-rules-library`);
+                            }}>
                             Business Rules
                         </Button>
                         <ModalToggleButton className="" outline type="button" modalRef={modalRef}>
