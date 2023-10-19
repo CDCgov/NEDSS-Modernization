@@ -1,27 +1,25 @@
-import { Button, DatePicker, Icon, Tag } from '@trussworks/react-uswds';
+import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import React, { useContext, useEffect, useState } from 'react';
 import { SelectControl } from 'components/FormInputs/SelectControl';
 import { useForm } from 'react-hook-form';
-import './filter.scss';
 import { MultiSelectInput } from 'components/selection/multi';
-import { fetchConditions } from '../../services/conditionAPI';
-import { Condition } from '../../generated';
-import { UserContext } from '../../../../providers/UserContext';
-import { FilterWrapper } from './FilterWrapper';
-import { FilterPanel } from './FilterPanel';
-import { SaveFilter } from './SaveFitlter/SaveFilter';
-import { DeleteWarning } from './DeleteWarn/DeleteWarning';
-import { PagesContext } from '../../context/PagesContext';
+import { fetchConditions } from '../../../services/conditionAPI';
+import { Condition } from '../../../generated';
+import { UserContext } from '../../../../../providers/UserContext';
+import { FilterPanel } from '../../../components/FilterModal/FilterPanel';
+import { FilterWrapper } from '../../../components/FilterModal/FilterWrapper';
+
 import {
     statusOptions,
     eventYpeOption,
-    pageFieldList,
+    valueSetFieldList,
     arithOperator,
     dateOperator,
     initOperator
-} from '../../constant/constant';
+} from '../../../constant/constant';
+import { ValueSetsContext } from '../../../context/ValueSetContext';
 
-export const FilterButton = () => {
+export const QuestionLibraryFilterModal = () => {
     const methods = useForm();
     const { control } = methods;
     const initial = { operator: '', selectedField: '', fieldName: '' };
@@ -33,12 +31,10 @@ export const FilterButton = () => {
     const [showFilter, setShowFilter] = useState<any>(false);
     const [saveFilter, setSaveFilter] = useState<any>(false);
     const [conditions, setConditions] = useState<any>([{}]);
-    const [endDate, setEndDate] = useState<any>('');
-    const [startDate, setStartDate] = useState<any>('');
     const [selectedConditions, setSelectedConditions] = useState<any>(['condi1']);
     const [operatorOptions, setOperatorOptions] = useState<any>(initOperator);
     const authorization = `Bearer ${state.getToken()}`;
-    const { setSearchQuery } = useContext(PagesContext);
+    const { setFilter } = useContext(ValueSetsContext);
 
     const toggleModal = () => {
         setIsModalHidden(!isModalHidden);
@@ -46,7 +42,7 @@ export const FilterButton = () => {
         setIsDelete(false);
     };
     const applyFilter = () => {
-        setSearchQuery(queryList.join(','));
+        setFilter(queryList.join(','));
         setIsModalHidden(true);
     };
 
@@ -58,14 +54,7 @@ export const FilterButton = () => {
     };
 
     const handleSubmit = () => {
-        setQueryList([
-            ...queryList,
-            `${selectedField} ${operator} ${
-                selectedField !== 'lastUpdated'
-                    ? selectedConditions.join(' ')
-                    : (startDate || '') + ' ' + (endDate || '')
-            }`
-        ]);
+        setQueryList([...queryList, `${selectedField} ${operator} ${selectedConditions.join(' ')}`]);
         setShowFilter(!showFilter);
     };
     useEffect(() => {
@@ -81,7 +70,7 @@ export const FilterButton = () => {
     }, []);
     const handleRemove = (removeTag: string) => {
         setQueryList((preTag: string[]) => preTag.filter((tag) => tag !== removeTag));
-        setSearchQuery(queryList.join(','));
+        setFilter(queryList.join(','));
     };
     const renderAction = (
         <>
@@ -138,7 +127,7 @@ export const FilterButton = () => {
         <FilterPanel footerAction={renderAction} header="Filter">
             <label className="sub-title">Show the Following</label>
             <div className="tag-base">
-                <label>All Pages</label>
+                <label>All Value Set</label>
             </div>
             {queryList.length > 0 && (
                 <div>
@@ -160,7 +149,7 @@ export const FilterButton = () => {
                         name="selectedField"
                         label="Selected Field"
                         onChangeMethod={handleOnChange}
-                        options={pageFieldList}
+                        options={valueSetFieldList}
                     />
                     <SelectControl
                         control={control}
@@ -169,32 +158,13 @@ export const FilterButton = () => {
                         onChangeMethod={handleOnChange}
                         options={operatorOptions}
                     />
-                    {selectedField === 'lastUpdated' ? (
-                        <div className="date-container">
-                            {operator === 'btw' && (
-                                <div className="date-input">
-                                    <label>From</label>
-                                    <DatePicker id="startDate" name="startDate" onChange={setStartDate} />
-                                </div>
-                            )}
-                            <div className="date-input">
-                                <label> {operator === 'btw' ? 'To' : 'Date'}</label>
-                                <DatePicker
-                                    id="endDate"
-                                    name="endDate"
-                                    disabled={operator !== 'btw'}
-                                    onChange={setEndDate}
-                                />
-                            </div>
-                        </div>
-                    ) : (
-                        <MultiSelectInput
-                            onChange={handleSelect}
-                            name="condition"
-                            label="Type a Value (multiple allowed)"
-                            options={getConditionOption(selectedField)}
-                        />
-                    )}
+                    <MultiSelectInput
+                        onChange={handleSelect}
+                        name="condition"
+                        placeholder=""
+                        label="Type a Value (multiple allowed)"
+                        options={getConditionOption(selectedField)}
+                    />
                     <div className="ds-u-justify-content--end display-flex margin-top-1em">
                         <Button type="submit" className="filter-btn" onClick={() => setShowFilter(!showFilter)} outline>
                             Cancel
@@ -212,11 +182,9 @@ export const FilterButton = () => {
         </FilterPanel>
     );
 
-    const renderSavePanel = <SaveFilter handleAction={() => setSaveFilter(!saveFilter)} />;
-    const deleteWarning = <DeleteWarning handleAction={() => setIsDelete(!isDelete)} />;
     return (
         <FilterWrapper toggleModal={toggleModal} isModalHidden={isModalHidden} name="Filter">
-            {!isDelete ? (saveFilter ? renderSavePanel : renderPanel) : deleteWarning}
+            {renderPanel}
         </FilterWrapper>
     );
 };

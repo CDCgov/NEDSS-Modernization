@@ -8,11 +8,17 @@ import { Condition } from '../../../generated';
 import { UserContext } from '../../../../../providers/UserContext';
 import { FilterWrapper } from '../../../components/FilterModal/FilterWrapper';
 import { FilterPanel } from '../../../components/FilterModal/FilterPanel';
+import {
+    statusOptions,
+    eventYpeOption,
+    questionFieldList,
+    arithOperator,
+    dateOperator,
+    initOperator
+} from '../../../constant/constant';
+import { QuestionsContext } from '../../../context/QuestionsContext';
 
-import { statusOptions, businessRuleFieldList, initOperator } from '../../../constant/constant';
-import { BusinessRuleContext } from '../../../context/BusinessContext';
-
-export const FilterButton = () => {
+export const QuestionLibraryFilterModal = () => {
     const methods = useForm();
     const { control } = methods;
     const initial = { operator: '', selectedField: '', fieldName: '' };
@@ -25,9 +31,9 @@ export const FilterButton = () => {
     const [saveFilter, setSaveFilter] = useState<any>(false);
     const [conditions, setConditions] = useState<any>([{}]);
     const [selectedConditions, setSelectedConditions] = useState<any>(['condi1']);
-
+    const [operatorOptions, setOperatorOptions] = useState<any>(initOperator);
     const authorization = `Bearer ${state.getToken()}`;
-    const { setFilter } = useContext(BusinessRuleContext);
+    const { setFilter } = useContext(QuestionsContext);
 
     const toggleModal = () => {
         setIsModalHidden(!isModalHidden);
@@ -96,8 +102,20 @@ export const FilterButton = () => {
 
     const { selectedField, operator } = filterData;
 
+    useEffect(() => {
+        if (selectedField === 'lastUpdated') {
+            setOperatorOptions(dateOperator);
+        } else if (selectedField === 'eventType' || selectedField === 'status') {
+            setOperatorOptions(arithOperator);
+        } else {
+            setOperatorOptions(initOperator);
+        }
+    }, [selectedField]);
+
     const getConditionOption = (field: string) => {
         switch (field) {
+            case 'eventType':
+                return eventYpeOption;
             case 'status':
                 return statusOptions;
             default:
@@ -108,7 +126,7 @@ export const FilterButton = () => {
         <FilterPanel footerAction={renderAction} header="Filter">
             <label className="sub-title">Show the Following</label>
             <div className="tag-base">
-                <label>All Business rules</label>
+                <label>All Questions</label>
             </div>
             {queryList.length > 0 && (
                 <div>
@@ -130,18 +148,19 @@ export const FilterButton = () => {
                         name="selectedField"
                         label="Selected Field"
                         onChangeMethod={handleOnChange}
-                        options={businessRuleFieldList}
+                        options={questionFieldList}
                     />
                     <SelectControl
                         control={control}
                         name="operator"
                         label="Operator"
                         onChangeMethod={handleOnChange}
-                        options={initOperator}
+                        options={operatorOptions}
                     />
                     <MultiSelectInput
                         onChange={handleSelect}
                         name="condition"
+                        placeholder=""
                         label="Type a Value (multiple allowed)"
                         options={getConditionOption(selectedField)}
                     />
