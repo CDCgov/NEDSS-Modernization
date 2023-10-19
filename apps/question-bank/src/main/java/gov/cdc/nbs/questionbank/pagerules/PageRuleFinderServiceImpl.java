@@ -27,10 +27,7 @@ public class PageRuleFinderServiceImpl implements PageRuleFinderService {
         WaRuleMetadata ruleMetadata = waRuleMetaDataRepository.getReferenceById(ruleId);
         List<String> sourceValues = new ArrayList<>();
         List<String> targetValues = new ArrayList<>();
-        if (ruleMetadata.getSourceValues() == null || ruleMetadata.getTargetQuestionIdentifier() == null) {
-            sourceValues.add(null);
-            targetValues.add(null);
-        } else {
+        if (ruleMetadata.getSourceValues() != null && ruleMetadata.getTargetQuestionIdentifier() != null) {
             String[] sourceValue = ruleMetadata.getSourceValues().split(",");
             sourceValues = Arrays.asList(sourceValue);
             String[] targetValue = ruleMetadata.getTargetQuestionIdentifier().split(",");

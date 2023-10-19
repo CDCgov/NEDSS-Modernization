@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
@@ -10,14 +9,10 @@ import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -55,10 +50,7 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     @Override
     public CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request) {
-        log.info("request.templateUid()::"+request.templateUid());
         WaRuleMetadata waRuleMetadata = setRuleDataValues(userId, request);
-        log.info("Saving Rule to DB");
-        log.info("waRuleMetadata.templateUid()::"+waRuleMetadata.getWaTemplateUid());
         waRuleMetaDataRepository.save(waRuleMetadata);
         sendRuleEvent(request);
         return new CreateRuleResponse(waRuleMetadata.getId(), "Rule Created Successfully");

@@ -510,6 +510,12 @@ class PageRuleServiceImplTest {
                         (request.searchValue(),request.searchValue(),pageRequest)).thenReturn(ruleMetadataPage);
         Page<ViewRuleResponse> ruleResponse = pageRuleFinderServiceImpl.findPageRule(request,pageRequest);
         assertNotNull(ruleResponse);
+
+        List<ViewRuleResponse> actualResponse = ruleResponse.stream().toList();
+        assertNotNull(actualResponse);
+        assertEquals(1,actualResponse.size());
+        assertEquals(99,actualResponse.get(0).ruleId());
+        assertEquals("Question",actualResponse.get(0).targetType());
     }
 
 }

@@ -132,7 +132,7 @@ public class PageRuleSteps {
     @When("I search for page rule")
     public void iSearchForPageRule() {
         try{
-            SearchPageRuleRequest request = new SearchPageRuleRequest("string");
+            SearchPageRuleRequest request = new SearchPageRuleRequest("Dengue virus");
             viewRuleResponses = pageRuleController.findPageRule(request,null);
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
@@ -143,16 +143,6 @@ public class PageRuleSteps {
     public void a_access_denied_exception_is_thrown() {
         assertNotNull(exceptionHolder.getException());
         assertTrue(exceptionHolder.getException() instanceof AccessDeniedException);
-    }
-
-    @Then("page rule is returned")
-    public void pageRuleIsReturned() {
-        assertNotNull(ruleResponse);
-    }
-
-    @Then("search page rule is returned")
-    public void searchPageRuleIsReturned() {
-        assertNotNull(viewRuleResponses);
     }
 
     @When("I get all page rules")
@@ -171,5 +161,10 @@ public class PageRuleSteps {
     @Then("page rules are returned")
     public void pageRulesAreReturned() {
         assertNotNull(viewRuleResponses);
+        if(viewRuleResponses.get().findFirst().isPresent()){
+            ViewRuleResponse resp =  viewRuleResponses.get().findFirst().get();
+            assertEquals("ARB001",resp.sourceIdentifier());
+            assertEquals("QUESTION",resp.targetType());
+        }
     }
 }

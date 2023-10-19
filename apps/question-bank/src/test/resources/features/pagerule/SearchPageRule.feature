@@ -7,5 +7,5 @@ Feature: search page rule
     Scenario: I can search for page rule
         Given I am an admin user
         When I search for page rule
-        Then search page rule is returned
+        Then page rules are returned
 
