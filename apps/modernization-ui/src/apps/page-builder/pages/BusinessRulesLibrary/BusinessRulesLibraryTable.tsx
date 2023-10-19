@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { PageSummary } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -57,9 +57,9 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 case '<=':
                     return 'Less or equal to';
                 case '>=':
-                    return 'Greater than';
-                default:
                     return 'Greater or equal to';
+                default:
+                    return 'Greater than';
             }
         } else {
             switch (comparator) {
@@ -178,9 +178,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
                     Create New
                 </ModalToggleButton>
-                <Button className="submit-btn" type="button">
-                    Search Local
-                </Button>
             </div>
             <ModalComponent
                 isLarge
@@ -196,6 +193,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
             {summaries?.length ? (
                 <TableComponent
+                    contextName="businessRules"
                     tableHeader=""
                     tableHead={tableColumns}
                     tableBody={tableRows}

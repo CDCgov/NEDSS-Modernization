@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { PagesSection } from 'apps/page-builder/generated';
 import { SectionComponent } from './Section';
+import { BrowserRouter } from 'react-router-dom';
 
 describe('when Section renders', () => {
     const section: PagesSection = {
@@ -24,7 +25,11 @@ describe('when Section renders', () => {
     };
     const mockFunction = jest.fn();
 
-    const { container } = render(<SectionComponent section={section} onAddSection={mockFunction} />);
+    const { container } = render(
+        <BrowserRouter>
+            <SectionComponent section={section} onAddSection={mockFunction} />
+        </BrowserRouter>
+    );
 
     it('should display the Section name', () => {
         const name = container.getElementsByTagName('h2');

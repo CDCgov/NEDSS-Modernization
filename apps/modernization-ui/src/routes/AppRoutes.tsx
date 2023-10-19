@@ -1,6 +1,5 @@
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { Config } from 'config';
 import { useConfiguration } from 'configuration';
 import { UserContext } from 'providers/UserContext';
 import { Spinner } from 'components/Spinner';
@@ -15,12 +14,14 @@ import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
 import ConditionLibrary from 'apps/page-builder/pages/ConditionLibrary/ConditionLibrary';
 import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
 import { PageLibrary } from 'apps/page-builder/page/library/PageLibrary';
-import { ConditionalCase } from 'apps/page-builder/components/ConditionalCase/ConditionalCase';
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/CreateQuestion';
-import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
+import { AddValueset } from 'apps/page-builder/components/AddValueset/AddValueset';
+import { Config } from 'config';
 import { ValuesetLibrary } from 'apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
+import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase/ConditionalCase';
+import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
+import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -83,11 +84,16 @@ export const AppRoutes = () => {
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />
                                         <Route path="condition" element={<CreateCondition />} />
+                                        <Route path="valueset" element={<AddValueset />} />
                                         <Route path="conditional-case" element={<ConditionalCase />} />
                                         <Route path="question" element={<CreateQuestion />} />
                                     </Route>
                                     <Route path="edit">
                                         <Route path="page/:pageId?" element={<EditPage />} />
+                                        <Route
+                                            path="page/:pageId/business-rules-library"
+                                            element={<BusinessRulesLibrary />}
+                                        />
                                     </Route>
                                 </Route>
                             ) : null}

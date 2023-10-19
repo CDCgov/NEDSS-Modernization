@@ -80,7 +80,6 @@ export const EditPage = () => {
                                         onAddSection={handleAddSuccess}
                                     />
                                 ) : null}
-
                                 <EditPageSidebar
                                     addSectionModalRef={addSectionModalRef}
                                     reorderModalRef={reorderModalRef}

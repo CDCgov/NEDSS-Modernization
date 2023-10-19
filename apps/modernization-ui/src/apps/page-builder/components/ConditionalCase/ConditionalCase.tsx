@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ConditionalCase.scss';
 import { ValuesetLibrary } from '../../pages/ValuesetLibrary/ValuesetLibrary';
 import { Accordion, Button, ButtonGroup, Icon, ModalToggleButton, ModalRef } from '@trussworks/react-uswds';
@@ -8,6 +9,7 @@ import { UserContext } from '../../../../providers/UserContext';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { CreateQuestion } from '../CreateQuestion/CreateQuestion';
 import { QuestionLibrary } from '../../pages/QuestionLibrary/QuestionLibrary';
+import { PageBuilder } from '../../pages/PageBuilder/PageBuilder';
 
 export const ConditionalCase = () => {
     const { state } = useContext(UserContext);
@@ -22,6 +24,7 @@ export const ConditionalCase = () => {
     const [isEditQtn, setEditQtn] = useState(false);
     const [qtnId, setQtnId] = useState(0);
     const [questions, setQuestions] = useState([]);
+    const navigateTo = useNavigate();
 
     useEffect(() => {
         QuestionControllerService.findAllQuestionsUsingGet({
@@ -35,9 +38,10 @@ export const ConditionalCase = () => {
         setQtnId(id);
         setEditQtn(!isEditQtn);
     };
+    const singleSelect = '';
 
-    const handleAddQuestion = (e: any) => {
-        e.stopPropagation();
+    const handleAddQuestion = () => {
+        navigateTo('/page-builder/manage/question-library');
     };
 
     const renderEditQuestionModal = (que: any) => (
@@ -55,7 +59,10 @@ export const ConditionalCase = () => {
     );
     const renderQuestionListModal = () => (
         <>
-            <ModalToggleButton className="add-btn" onClick={handleAddQuestion} modalRef={queListModalRef}>
+            <Button className="add-btn" type="button" onClick={handleAddQuestion}>
+                Add Questions
+            </Button>
+            <ModalToggleButton className="add-btn display-none" onClick={handleAddQuestion} modalRef={queListModalRef}>
                 Add Questions
             </ModalToggleButton>
             <ModalComponent
@@ -65,28 +72,6 @@ export const ConditionalCase = () => {
                 modalBody={<QuestionLibrary hideTabs modalRef={queListModalRef} />}
             />
         </>
-    );
-
-    const singleSelect = (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="18"
-            viewBox="0 0 22 18"
-            className="margin-right-2"
-            fill="none">
-            <path d="M7.42188 1.22363H20.9995" stroke="#3D4551" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M2.48438 1.23637L2.49672 1.22266" stroke="#3D4551" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M2.48438 8.64261L2.49672 8.62891" stroke="#3D4551" strokeLinecap="round" strokeLinejoin="round" />
-            <path
-                d="M1 15.7898L1.98746 16.7773L4.45611 14.3086"
-                stroke="#3D4551"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-            <path d="M7.42188 8.62988H20.9995" stroke="#3D4551" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M7.42188 16.0352H20.9995" stroke="#3D4551" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
     );
 
     const content = questions.map((que: any, index: number) => (
@@ -139,7 +124,6 @@ export const ConditionalCase = () => {
                             <li className="label">Required</li>
                             <li>
                                 <label className="switch">
-                                    <input type="checkbox" checked />
                                     <span className="slider round"></span>
                                 </label>
                             </li>
@@ -156,15 +140,15 @@ export const ConditionalCase = () => {
                                 {singleSelect}
                                 Radio boxes (single select)
                             </div>
-                            <ModalToggleButton
+                            <Button
                                 className="add-btn"
-                                modalRef={modalRef}
                                 type="button"
                                 onClick={() => {
                                     localStorage.setItem('selectedQuestion', que.id);
+                                    navigateTo('/page-builder/manage/valueset-library');
                                 }}>
                                 Add value set
-                            </ModalToggleButton>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -223,14 +207,16 @@ export const ConditionalCase = () => {
         }
     ];
     return (
-        <div className="question-container">
-            <Accordion bordered={false} items={Items} />
-            <ModalComponent
-                isLarge
-                modalRef={modalRef}
-                modalHeading={'Add value set'}
-                modalBody={<ValuesetLibrary modalRef={modalRef} hideTabs types="recent" />}
-            />
-        </div>
+        <PageBuilder page="">
+            <div className="question-container">
+                <Accordion bordered={false} items={Items} />
+                <ModalComponent
+                    isLarge
+                    modalRef={modalRef}
+                    modalHeading={'Add value set'}
+                    modalBody={<ValuesetLibrary modalRef={modalRef} hideTabs types="recent" />}
+                />
+            </div>
+        </PageBuilder>
     );
 };

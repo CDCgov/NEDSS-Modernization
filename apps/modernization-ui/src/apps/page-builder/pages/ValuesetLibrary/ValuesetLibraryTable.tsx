@@ -12,6 +12,7 @@ import { SearchBar } from './SearchBar';
 import './ValuesetLibraryTable.scss';
 import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
 import { ValueSetsContext } from '../../context/ValueSetContext';
+import { useNavigate } from 'react-router-dom';
 
 export enum Column {
     Type = 'Type',
@@ -33,6 +34,7 @@ type Props = {
 };
 export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) => {
     const { showAlert } = useAlert();
+    const navigateTo = useNavigate();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -237,7 +239,16 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             <label className="margin-bottom-1em no-text">
                 {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+            <Button
+                className="submit-btn"
+                type="button"
+                onClick={() => {
+                    navigateTo('/page-builder/add/valueset');
+                }}
+                outline>
+                Add value set
+            </Button>
+            <ModalToggleButton className="submit-btn display-none" type="button" modalRef={modalRef} outline>
                 Add value set
             </ModalToggleButton>
             <ModalComponent
@@ -289,9 +300,9 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={pages?.pageSize || 0}
-                    totalResults={pages?.totalElements || 0}
-                    currentPage={pages?.currentPage || 0}
+                    pageSize={pages?.pageSize}
+                    totalResults={pages?.totalElements}
+                    currentPage={pages?.currentPage}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     selectable

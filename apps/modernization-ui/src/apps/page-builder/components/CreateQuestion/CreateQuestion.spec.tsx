@@ -6,9 +6,11 @@ import { CreateQuestion } from './CreateQuestion';
 describe('General information component tests', () => {
     it('should display create question form', () => {
         const { getByTestId } = render(
-            <AlertProvider>
-                <CreateQuestion />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <CreateQuestion />
+                </AlertProvider>
+            </BrowserRouter>
         );
         expect(getByTestId('header-title').innerHTML).toBe("Let's create a new question");
     });
@@ -43,9 +45,11 @@ describe('When page loads', () => {
 describe('Question component tests', () => {
     it('should render a grid with 10 inputs labels which are Question Name, Coding System, Question Code, Others', () => {
         const { getByText } = render(
-            <AlertProvider>
-                <CreateQuestion />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <CreateQuestion />
+                </AlertProvider>
+            </BrowserRouter>
         );
         expect(getByText('Question label')).toBeInTheDocument();
         expect(getByText('Description')).toBeInTheDocument();
@@ -70,9 +74,11 @@ describe('Question component tests', () => {
 
     it('should allow valid input', () => {
         const { getByTestId, queryByText } = render(
-            <AlertProvider>
-                <CreateQuestion />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <CreateQuestion />
+                </AlertProvider>
+            </BrowserRouter>
         );
         const nameElement = getByTestId('questionLabel');
         fireEvent.change(nameElement, { target: { value: 'question Label' } });
@@ -83,9 +89,11 @@ describe('Question component tests', () => {
 
     it('should allow selection of Display Type', () => {
         const { container } = render(
-            <AlertProvider>
-                <CreateQuestion />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <CreateQuestion />
+                </AlertProvider>
+            </BrowserRouter>
         );
 
         const options = container.getElementsByTagName('option');

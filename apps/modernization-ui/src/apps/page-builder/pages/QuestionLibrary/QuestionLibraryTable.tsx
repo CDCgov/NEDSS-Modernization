@@ -18,6 +18,7 @@ import { QuestionsContext } from '../../context/QuestionsContext';
 import { CreateQuestion } from '../../components/CreateQuestion/CreateQuestion';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
+import { useNavigate } from 'react-router-dom';
 
 export enum Column {
     Type = 'Type',
@@ -44,6 +45,7 @@ type Props = {
 
 export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
     const { showAlert } = useAlert();
+    const navigateTo = useNavigate();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(QuestionsContext);
@@ -171,7 +173,16 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             <label className="margin-bottom-1em no-text">
                 {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+            <Button
+                className="submit-btn"
+                type="button"
+                onClick={() => {
+                    navigateTo('/page-builder/add/question');
+                }}
+                outline>
+                Create New
+            </Button>
+            <ModalToggleButton className="submit-btn display-none" type="button" modalRef={modalRef} outline>
                 Create New
             </ModalToggleButton>
             <ModalComponent

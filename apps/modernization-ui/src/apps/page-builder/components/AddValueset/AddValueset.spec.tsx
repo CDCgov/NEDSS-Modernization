@@ -1,13 +1,16 @@
 import { render } from '@testing-library/react';
 import { AddValueset } from './AddValueset';
 import { AlertProvider } from 'alert';
+import { BrowserRouter } from 'react-router-dom';
 
 describe('General information component tests', () => {
     it('should display Add Valueset form', () => {
         const { getByTestId } = render(
-            <AlertProvider>
-                <AddValueset />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <AddValueset />
+                </AlertProvider>
+            </BrowserRouter>
         );
         expect(getByTestId('error-text').innerHTML).toBe('Value set code Not Valid');
     });
@@ -15,9 +18,11 @@ describe('General information component tests', () => {
 describe('When page loads', () => {
     it('Add to question button should be disabled', () => {
         const { container } = render(
-            <AlertProvider>
-                <AddValueset />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <AddValueset />
+                </AlertProvider>
+            </BrowserRouter>
         );
         const btn = container.getElementsByClassName('usa-button')[0];
         expect(btn.hasAttribute('disabled'));
@@ -27,9 +32,11 @@ describe('When page loads', () => {
 describe('Add valueset component tests', () => {
     it('should render a grid with 4 inputs labels which are Value set name, description and Code', () => {
         const { getByText } = render(
-            <AlertProvider>
-                <AddValueset />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <AddValueset />
+                </AlertProvider>
+            </BrowserRouter>
         );
         expect(getByText('Value set name')).toBeInTheDocument();
         expect(getByText('Value set description')).toBeTruthy();
