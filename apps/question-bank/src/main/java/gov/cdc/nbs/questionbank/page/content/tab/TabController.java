@@ -10,7 +10,7 @@ import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
 
 
 @RestController
-@RequestMapping("/api/v1/pages/{page}/tabs/")
+@RequestMapping("/api/v1/pages/{page}/tabs")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class TabController {
 
