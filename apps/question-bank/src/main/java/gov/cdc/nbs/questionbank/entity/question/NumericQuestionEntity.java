@@ -80,8 +80,8 @@ public class NumericQuestionEntity extends WaQuestion {
         setMaxValue(command.maxValue());
         if (command.relatedUnitsValueSet() != null) {
             setUnitTypeCd(UnitType.CODED.toString());
-            setUnitValue(command.relatedUnitsValueSet());
-        } else if (command.relatedUnitsLiteral() != null) {
+            setUnitValue(command.relatedUnitsValueSet().toString());
+        } else if (command.relatedUnitsLiteral() != null && !command.relatedUnitsLiteral().isBlank()) {
             setUnitTypeCd(UnitType.LITERAL.toString());
             setUnitValue(command.relatedUnitsLiteral());
         }

@@ -103,6 +103,7 @@ export { PageQuestionControllerService } from './services/PageQuestionController
 export { PageRuleControllerService } from './services/PageRuleControllerService';
 export { ProgramAreaControllerService } from './services/ProgramAreaControllerService';
 export { QuestionControllerService } from './services/QuestionControllerService';
+export { ReorderControllerService } from './services/ReorderControllerService';
 export { SectionControllerService } from './services/SectionControllerService';
 export { SubSectionControllerService } from './services/SubSectionControllerService';
 export { TabControllerService } from './services/TabControllerService';

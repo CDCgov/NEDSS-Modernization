@@ -85,7 +85,7 @@ public sealed interface QuestionCommand {
 
             // Related units
             String relatedUnitsLiteral,
-            String relatedUnitsValueSet,
+            Long relatedUnitsValueSet,
 
             // General Question fields
             QuestionData questionData,

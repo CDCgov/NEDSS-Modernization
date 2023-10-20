@@ -104,7 +104,7 @@ public sealed interface CreateQuestionRequest {
             Long minValue,
             Long maxValue,
             String relatedUnitsLiteral,
-            String relatedUnitsValueSet) implements CreateQuestionRequest {
+            Long relatedUnitsValueSet) implements CreateQuestionRequest {
 
     }
     record Coded(

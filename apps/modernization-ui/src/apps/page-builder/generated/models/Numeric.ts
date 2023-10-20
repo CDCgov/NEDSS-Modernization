@@ -19,13 +19,13 @@ export type Numeric = (CreateQuestionRequest & {
     maxValue?: number;
     messagingInfo?: MessagingInfo;
     minValue?: number;
+    relatedUnitsLiteral?: string;
+    relatedUnitsValueSet?: number;
     subgroup?: string;
     tooltip?: string;
     type?: Numeric.type;
     uniqueId?: string;
     uniqueName?: string;
-    unitTypeCd?: Numeric.unitTypeCd;
-    unitValue?: string;
 });
 
 export namespace Numeric {
@@ -35,11 +35,6 @@ export namespace Numeric {
         DATE = 'DATE',
         NUMERIC = 'NUMERIC',
         TEXT = 'TEXT',
-    }
-
-    export enum unitTypeCd {
-        CODED = 'CODED',
-        LITERAL = 'LITERAL',
     }
 
 
