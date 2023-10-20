@@ -1,29 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import './BusinessRulesLibrary.scss';
+import { useContext, useEffect, useState } from 'react';
 import { BusinessRuleContext } from '../../context/BusinessContext';
-import { fetchBusinessRules } from './useBusinessRulesAPI';
+import './BusinessRulesLibrary.scss';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
-import { UserContext } from '../../../../providers/UserContext';
 export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(BusinessRuleContext);
     const [summaries, setSummaries] = useState([]);
-    const [totalElements, setTotalElements] = useState(0);
-    const { state } = useContext(UserContext);
+    const [totalElements] = useState(0);
 
-    // @ts-ignore
-    useEffect(async () => {
-        const token = `Bearer ${state.getToken()}`;
+    useEffect(() => {
         setIsLoading(true);
         setSummaries([]);
-        const { content, totalElements }: any = await fetchBusinessRules(
-            token,
-            searchQuery,
-            sortBy,
-            currentPage,
-            pageSize
-        );
-        setSummaries(content);
-        setTotalElements(totalElements);
         setIsLoading(false);
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
     return (
