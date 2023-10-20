@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/pages/{page}/component/{component}")
+@RequestMapping("/api/v1/pages/{page}/components/{component}")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ReorderController {
 
