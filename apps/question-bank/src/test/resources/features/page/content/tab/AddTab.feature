@@ -1,5 +1,5 @@
-@add_tab_steps
-Feature: Create Tab Service
+@add_tab
+Feature: Create Tab
 
     Background:
         Given pages exist

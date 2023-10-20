@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page.content.addtab;
+package gov.cdc.nbs.questionbank.page.content.tab;
 
 import static org.junit.Assert.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,10 +6,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.tab.TabController;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.response.CreateTabResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
@@ -26,7 +25,7 @@ public class AddTabSteps {
     @Autowired
     private PageMother pageMother;
 
-    private CreateTabResponse response;
+    private Tab response;
 
     @Autowired
     private ExceptionHolder exceptionHolder;
@@ -46,7 +45,7 @@ public class AddTabSteps {
 
     @Then("the tab is created with {string}")
     public void the_tab_created_successfully(String visibility) {
-        WaUiMetadata metadata = waUiMetadataRepository.findById(response.uid()).orElseThrow();
+        WaUiMetadata metadata = waUiMetadataRepository.findById(response.id()).orElseThrow();
         assertEquals(1010L, metadata.getNbsUiComponentUid().longValue());
         assertEquals("Local Tab", metadata.getQuestionLabel());
         assertEquals(visibility, metadata.getDisplayInd());

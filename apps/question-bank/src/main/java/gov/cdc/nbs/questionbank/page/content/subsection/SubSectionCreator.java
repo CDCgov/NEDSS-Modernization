@@ -49,28 +49,29 @@ public class SubSectionCreator {
             throw new AddSubSectionException("Failed to add SubSection");
         }
     }
+
     public DeleteSubSectionResponse deleteSubSection(Long pageNumber, Long subSectionId) {
         try {
             log.info("Deleting Sub Section");
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(subSectionId);
             Optional<Long> nbsComponentUidOptional =
-                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
+                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr + 1, pageNumber);
             if (nbsComponentUidOptional.isPresent()) {
                 Long nbsComponentUid = nbsComponentUidOptional.get();
-                if (nbsComponentUid == TAB ||nbsComponentUid == SECTION
-                        ||nbsComponentUid == SUBSECTION || nbsComponentUid == null) {
+                if (nbsComponentUid == TAB || nbsComponentUid == SECTION
+                        || nbsComponentUid == SUBSECTION || nbsComponentUid == null) {
                     waUiMetaDataRepository.deleteById(subSectionId);
-                    waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, subSectionId);
+                    waUiMetaDataRepository.decrementOrderNumbers(orderNbr, subSectionId);
                     return new DeleteSubSectionResponse(subSectionId, DELETE_MESSAGE);
                 } else {
                     throw new DeleteSubSectionException("Conditions not satisfied");
                 }
             } else {
                 waUiMetaDataRepository.deleteById(subSectionId);
-                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, subSectionId);
+                waUiMetaDataRepository.decrementOrderNumbers(orderNbr, subSectionId);
                 return new DeleteSubSectionResponse(subSectionId, DELETE_MESSAGE);
             }
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             throw new DeleteSubSectionException("Delete SubSection exception");
         }
 
@@ -82,10 +83,10 @@ public class SubSectionCreator {
             if (request.questionLabel() == null || request.visible() == null) {
                 throw new UpdateSubSectionException("Label and visibility fields are required");
             }
-            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(),
+            waUiMetaDataRepository.setLabelAndVisibility(request.questionLabel(),
                     request.visible(), subSectionId);
             return new UpdateSubSectionResponse(subSectionId, UPDATE_MESSAGE);
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             throw new UpdateSubSectionException("Update SubSection Exception");
         }
 
@@ -105,16 +106,17 @@ public class SubSectionCreator {
                 () -> new AddSubSectionException("Failed to find section with id: " + request.sectionId()));
 
         // Find the orderNbr for the next section within a tab
-        Long orderNbr = waUiMetaDataRepository.findOrderNbrOfNextSectionOrTab(section.getOrderNbr(), pageId);
+        Integer orderNbr = waUiMetaDataRepository.findOrderNbrOfNextSectionOrTab(section.getOrderNbr(), pageId);
 
         // If there are no more sections or tabs after the given orderNbr, find the max
         if (orderNbr == null) {
-            orderNbr = waUiMetaDataRepository.findMaxOrderNumberByTemplateUid(pageId) + 1;
+            orderNbr = waUiMetaDataRepository.findMaxOrderNumberByTemplateUid(pageId)
+                    .orElseThrow(() -> new AddSubSectionException("Failed to find max order for page")) + 1;
         }
 
         waUiMetadata.setQuestionLabel(request.name());
         waUiMetadata.setDisplayInd(request.visible() ? "T" : "F");
-        waUiMetadata.setOrderNbr(orderNbr.intValue());
+        waUiMetadata.setOrderNbr(orderNbr);
         waUiMetadata.setRequiredInd("F");
         waUiMetadata.setCoinfectionIndCd('F');
         waUiMetadata.setFutureDateIndCd('F');
