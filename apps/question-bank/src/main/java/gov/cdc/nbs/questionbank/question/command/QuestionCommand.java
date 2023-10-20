@@ -82,8 +82,10 @@ public sealed interface QuestionCommand {
             String defaultValue,
             Long minValue,
             Long maxValue,
-            String unitTypeCd, // Coded or Literal
-            String unitValue, // Id of Value set, or literal value
+
+            // Related units
+            String relatedUnitsLiteral,
+            String relatedUnitsValueSet,
 
             // General Question fields
             QuestionData questionData,

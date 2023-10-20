@@ -103,9 +103,8 @@ public sealed interface CreateQuestionRequest {
             String defaultValue,
             Long minValue,
             Long maxValue,
-            UnitType unitTypeCd,
-            String unitValue // Id of Value set, or literal value
-    ) implements CreateQuestionRequest {
+            String relatedUnitsLiteral,
+            String relatedUnitsValueSet) implements CreateQuestionRequest {
 
     }
     record Coded(

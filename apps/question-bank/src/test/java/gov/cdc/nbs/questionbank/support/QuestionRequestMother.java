@@ -44,10 +44,10 @@ public class QuestionRequestMother {
     }
 
     public static CreateQuestionRequest.Numeric numericRequest() {
-        return numericRequest(UnitType.LITERAL, "Some literal value");
+        return numericRequest(null, "Some literal value");
     }
 
-    public static CreateQuestionRequest.Numeric numericRequest(UnitType unitType, String unitValue) {
+    public static CreateQuestionRequest.Numeric numericRequest(String codedValue, String unitValue) {
         return new CreateQuestionRequest.Numeric(
                 "PHIN",
                 "Test unique Id",
@@ -66,7 +66,7 @@ public class QuestionRequestMother {
                 "1",
                 0L,
                 100L,
-                unitType,
+                codedValue,
                 unitValue);
     }
 

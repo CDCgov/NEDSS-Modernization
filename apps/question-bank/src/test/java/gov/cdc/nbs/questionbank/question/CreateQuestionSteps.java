@@ -18,6 +18,7 @@ import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionType;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
@@ -188,8 +189,8 @@ public class CreateQuestionSteps {
 
     private void validateNumericQuestion() {
         assertNotNull(response);
-        NumericQuestionEntity question =
-                (NumericQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+        NumericQuestionEntity question = (NumericQuestionEntity) questionRepository.findById(response.questionId())
+                .orElseThrow();
         CreateQuestionRequest.Numeric numericRequest = (CreateQuestionRequest.Numeric) request;
         assertEquals(question.getId().longValue(), response.questionId());
         assertEquals(numericRequest.mask(), question.getMask());
@@ -197,8 +198,13 @@ public class CreateQuestionSteps {
         assertEquals(numericRequest.defaultValue(), question.getDefaultValue());
         assertEquals(numericRequest.minValue(), question.getMinValue());
         assertEquals(numericRequest.maxValue(), question.getMaxValue());
-        assertEquals(numericRequest.unitTypeCd().toString(), question.getUnitTypeCd());
-        assertEquals(numericRequest.unitValue(), question.getUnitValue());
+        if (numericRequest.relatedUnitsLiteral() != null) {
+            assertEquals(UnitType.LITERAL.toString(), question.getUnitTypeCd());
+            assertEquals(numericRequest.relatedUnitsLiteral(), question.getUnitValue());
+        } else if (numericRequest.relatedUnitsValueSet() != null) {
+            assertEquals(UnitType.CODED.toString(), question.getUnitTypeCd());
+            assertEquals(numericRequest.relatedUnitsValueSet(), question.getUnitValue());
+        }
         assertEquals(QuestionType.NUMERIC, numericRequest.type());
     }
 
