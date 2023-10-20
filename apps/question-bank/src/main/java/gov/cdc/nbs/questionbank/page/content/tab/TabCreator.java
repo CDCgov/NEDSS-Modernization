@@ -35,7 +35,7 @@ public class TabCreator {
         this.configRepository = configRepository;
     }
 
-    public Tab create(long page, Long userId, CreateTabRequest request) throws CreateTabException {
+    public Tab create(long page, Long userId, CreateTabRequest request) {
         if (!templateRepository.isPageDraft(page)) {
             throw new CreateTabException("Unable to add tab to published page");
         }
