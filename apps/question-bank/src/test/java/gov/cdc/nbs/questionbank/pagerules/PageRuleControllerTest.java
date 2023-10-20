@@ -39,15 +39,15 @@ class PageRuleControllerTest {
         CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
         NbsUserDetails nbsUserDetails =
                 NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
-        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest))
+        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest,123456L))
                 .thenReturn(new CreateRuleResponse(999L, "Rule Created Successfully"));
         Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
-        CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
+        CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest,123456L);
         assertEquals(999L, ruleResponse.ruleId());
 
-        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest))
+        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest,123456L))
                 .thenThrow(new RuleException("",0));
-        ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
+        ruleResponse = pageRuleController.createBusinessRule(ruleRequest,123456L);
         assertNull(ruleResponse.ruleId());
 
     }
@@ -71,10 +71,10 @@ class PageRuleControllerTest {
         CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
         NbsUserDetails nbsUserDetails =
                 NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
-        Mockito.when(pageRuleService.updatePageRule(ruleId, ruleRequest, userId))
+        Mockito.when(pageRuleService.updatePageRule(ruleId, ruleRequest, userId,123456L))
                 .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Updated"));
         Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
-        CreateRuleResponse ruleResponse = pageRuleController.updatePageRule(ruleId, ruleRequest);
+        CreateRuleResponse ruleResponse = pageRuleController.updatePageRule(ruleId, ruleRequest,123456L);
         assertNotNull(ruleResponse);
     }
 
@@ -101,9 +101,9 @@ class PageRuleControllerTest {
         content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
                 sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
 
-        Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest)).
+        Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest,123456L)).
         thenReturn(new PageImpl<>(content,pageRequest,content.size()));
-        Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest);
+        Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest,123456L);
         assertNotNull(ruleResponse);
     }
 
@@ -119,9 +119,9 @@ class PageRuleControllerTest {
         content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
                 sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
 
-        Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest)).
+        Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest,123456L)).
                 thenReturn(new PageImpl<>(content,pageRequest,content.size()));
-        Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest);
+        Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest,123456L);
         assertNotNull(ruleResponse);
     }
 

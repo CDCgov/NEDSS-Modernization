@@ -17,6 +17,8 @@ public interface WaRuleMetaDataRepository extends JpaRepository<WaRuleMetadata, 
 	
 	public List<WaRuleMetadata> findByWaTemplateUid(Long pageId);
 
+	public Page<WaRuleMetadata> findByWaTemplateUid(Long pageId,Pageable pageable);
+
 	public Page<WaRuleMetadata> findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase(String sourceValue,String targetValue,Pageable pageable);
 
 }

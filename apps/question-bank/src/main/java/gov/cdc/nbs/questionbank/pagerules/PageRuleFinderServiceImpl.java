@@ -39,8 +39,8 @@ public class PageRuleFinderServiceImpl implements PageRuleFinderService {
     }
 
     @Override
-    public Page<ViewRuleResponse> getAllPageRule(Pageable pageRequest) {
-        Page<WaRuleMetadata> ruleMetadataPage =waRuleMetaDataRepository.findAll(pageRequest);
+    public Page<ViewRuleResponse> getAllPageRule(Pageable pageRequest,Long page) {
+        Page<WaRuleMetadata> ruleMetadataPage =waRuleMetaDataRepository.findByWaTemplateUid(page,pageRequest);
         return buildViewRuleResponse(ruleMetadataPage);
     }
 

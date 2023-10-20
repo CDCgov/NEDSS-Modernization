@@ -4,7 +4,6 @@ import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.support.UserMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -31,13 +30,10 @@ public class PageRuleSteps {
     @Autowired
     private ExceptionHolder exceptionHolder;
 
-    CreateRuleRequest ruleRequest;
     CreateRuleResponse ruleResponse;
 
     Page<ViewRuleResponse> viewRuleResponses;
 
-    @Autowired
-    private UserMother userMother;
     Long ruleId;
 
     @Given("I am not logged in user")
@@ -49,7 +45,7 @@ public class PageRuleSteps {
     public void i_make_a_request_to_add_a_rule_to_a_page() {
 
         try {
-            ruleResponse = pageRuleController.createBusinessRule(ruleRequest());
+            ruleResponse = pageRuleController.createBusinessRule(ruleRequest(),123456L);
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -72,7 +68,7 @@ public class PageRuleSteps {
     public void i_make_a_request_to_update_a_rule_to_a_page() {
         try{
             ruleId = 6405L;
-            ruleResponse = pageRuleController.updatePageRule(ruleId,ruleRequest());
+            ruleResponse = pageRuleController.updatePageRule(ruleId,ruleRequest(),123456L);
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
@@ -88,7 +84,7 @@ public class PageRuleSteps {
     @When("I make a request to delete a rule to a page")
     public void i_make_a_request_to_delete_a_rule_to_a_page() {
         try{
-            ruleResponse = pageRuleController.createBusinessRule(ruleRequest());
+            ruleResponse = pageRuleController.createBusinessRule(ruleRequest(),123456L);
             ruleResponse = pageRuleController.deletePageRule(ruleResponse.ruleId());
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
@@ -116,7 +112,6 @@ public class PageRuleSteps {
         CreateRuleRequest.SourceValues sourceValue = new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
         sourceValues.add(sourceValue);
         return new CreateRuleRequest(
-                1000273L,
                 "Enable",
                 "string",
                 "string",
@@ -152,7 +147,7 @@ public class PageRuleSteps {
             int size =1;
             String sort ="id";
             Pageable pageRequest = PageRequest.of(page,size,Sort.by(sort));
-            viewRuleResponses = pageRuleController.getAllPageRule(pageRequest);
+            viewRuleResponses = pageRuleController.getAllPageRule(pageRequest,1000272L);
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }

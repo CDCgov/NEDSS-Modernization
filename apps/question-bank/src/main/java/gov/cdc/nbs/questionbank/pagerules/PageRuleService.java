@@ -6,10 +6,10 @@ import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 
 public interface PageRuleService {
 
-    CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request) throws RuleException;
+    CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request,Long page) throws RuleException;
 
     CreateRuleResponse deletePageRule(Long ruleId);
 
-    CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest request, Long userId) throws RuleException;
+    CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest request, Long userId,Long page) throws RuleException;
 
 }

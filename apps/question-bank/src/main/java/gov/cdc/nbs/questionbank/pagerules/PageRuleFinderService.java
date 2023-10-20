@@ -8,7 +8,7 @@ public interface PageRuleFinderService {
 
     ViewRuleResponse getRuleResponse(Long ruleId);
 
-    Page<ViewRuleResponse> getAllPageRule(Pageable pageRequest);
+    Page<ViewRuleResponse> getAllPageRule(Pageable pageRequest,Long page);
 
     Page<ViewRuleResponse> findPageRule(SearchPageRuleRequest request, Pageable pageable);
 }
