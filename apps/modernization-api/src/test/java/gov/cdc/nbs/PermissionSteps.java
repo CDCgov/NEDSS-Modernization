@@ -2,14 +2,14 @@ package gov.cdc.nbs;
 
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authorization.ActiveUser;
+import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.event.search.investigation.InvestigationResolver;
 import gov.cdc.nbs.event.search.labreport.LabReportResolver;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -30,7 +30,7 @@ import static org.junit.Assert.assertNull;
 public class PermissionSteps {
 
   @Autowired
-  TestActive<ActiveUser> activeUser;
+  Active<ActiveUser> activeUser;
 
   @Autowired
   ProgramAreaCodeRepository programAreaCodeRepository;
@@ -40,7 +40,7 @@ public class PermissionSteps {
   InvestigationResolver investigationResolver;
 
   @Autowired
-  TestActive<UserDetails> activeUserDetails;
+  Active<UserDetails> activeUserDetails;
 
   @Before
   public void clearAuth() {

@@ -21,4 +21,5 @@ export type Investigation = {
     coInfection?: string | null;
     notification?: string | null;
     investigator?: string | null;
+    comparable: boolean;
 };

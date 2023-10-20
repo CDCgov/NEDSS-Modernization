@@ -1,22 +1,10 @@
 import { asLocalDate } from 'date';
 import { Investigation } from './PatientInvestigation';
-import { FindInvestigationsForPatientQuery } from 'generated/graphql/schema';
+import { FindInvestigationsForPatientQuery, PatientInvestigation } from 'generated/graphql/schema';
 
 type Result = FindInvestigationsForPatientQuery['findInvestigationsForPatient'];
 
-type Content = {
-    __typename?: 'PatientInvestigation';
-    investigation: string;
-    startedOn?: any | null;
-    condition: string;
-    status: string;
-    caseStatus?: string | null;
-    jurisdiction: string;
-    event: string;
-    coInfection?: string | null;
-    notification?: string | null;
-    investigator?: string | null;
-} | null;
+type Content = PatientInvestigation;
 
 const internalized = (content: Content): Investigation | null => {
     return (

@@ -44,4 +44,5 @@ public interface WaUiMetadataRepository extends JpaRepository<WaUiMetadata, Long
     Integer findMaxOrderNbrForPage(@Param("pageId") Long pageId);
 
     public void deleteAllByWaTemplateUid(WaTemplate template);
+
 }

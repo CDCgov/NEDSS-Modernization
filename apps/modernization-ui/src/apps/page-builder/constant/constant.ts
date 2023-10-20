@@ -72,7 +72,7 @@ const text = [
     },
     {
         value: 1029,
-        label: 'Readonly User  text, number, or date no save'
+        label: 'Readonly User text, number, or date no save'
     }
 ];
 
@@ -142,6 +142,110 @@ const pageFieldList = [
         value: 'lastUpdatedBy'
     }
 ];
+const businessRuleFieldList = [
+    {
+        name: 'Source Fields',
+        value: 'sourceFields'
+    },
+    {
+        name: 'Logic',
+        value: 'logic'
+    },
+    {
+        name: 'Values',
+        value: 'values'
+    },
+    {
+        name: 'Function',
+        value: 'function'
+    },
+    {
+        name: 'Target Fields',
+        value: 'targetFields'
+    },
+    {
+        name: 'Id',
+        value: 'id'
+    }
+];
+const questionFieldList = [
+    {
+        name: 'Unique Name',
+        value: 'UniqueName'
+    },
+    {
+        name: 'Unique ID',
+        value: 'UniqueId'
+    },
+    {
+        name: 'Subgroup',
+        value: 'Subgroup'
+    },
+    {
+        name: 'Type',
+        value: 'Type'
+    },
+    {
+        name: 'Label',
+        value: 'Label'
+    },
+    {
+        name: 'Status',
+        value: 'Status'
+    }
+];
+const valueSetFieldList = [
+    {
+        name: 'Value set name',
+        value: 'ValueSetName'
+    },
+    {
+        name: 'Value set description',
+        value: 'ValueSetDescription'
+    },
+    {
+        name: 'Type',
+        value: 'Type'
+    },
+    {
+        name: 'Value set code',
+        value: 'ValueSetCode'
+    },
+    {
+        name: 'Status',
+        value: 'Status'
+    }
+];
+const conditionFieldList = [
+    {
+        name: 'Condition',
+        value: 'Condition'
+    },
+    {
+        name: 'Code',
+        value: 'Code'
+    },
+    {
+        name: 'Program area',
+        value: 'ProgramArea'
+    },
+    {
+        name: 'Condition Family',
+        value: 'ConditionFamily'
+    },
+    {
+        name: 'Coinfection group',
+        value: 'CoinfectionGroup'
+    },
+    {
+        name: 'NND',
+        value: 'NND'
+    },
+    {
+        name: 'Status',
+        value: 'Status'
+    }
+];
 const initOperator = [
     {
         name: 'Starts with',
@@ -205,5 +309,9 @@ export {
     pageFieldList,
     arithOperator,
     dateOperator,
-    initOperator
+    initOperator,
+    businessRuleFieldList,
+    questionFieldList,
+    valueSetFieldList,
+    conditionFieldList
 };

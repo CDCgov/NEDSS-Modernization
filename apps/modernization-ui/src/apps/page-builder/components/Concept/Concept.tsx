@@ -26,7 +26,7 @@ export const Concept = () => {
     const { selectedConcept } = useContext(ConceptsContext);
     const authorization = `Bearer ${state.getToken()}`;
 
-    const { searchQuery, sortBy, sortDirection, currentPage, pageSize } = useContext(ConceptsContext);
+    const { searchQuery, sortDirection, currentPage, pageSize } = useContext(ConceptsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const [isShowFrom, setShowForm] = useState(false);
@@ -36,11 +36,10 @@ export const Concept = () => {
     // @ts-ignore
     useEffect(async () => {
         setSummaries([]);
-        const sort = sortBy ? sortBy.toLowerCase() + ',' + sortDirection : '';
-        const content: any = await useConceptPI(authorization, '', sort);
+        const content: any = await useConceptPI(authorization, '');
         setSummaries(content);
         setTotalElements(content?.length);
-    }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
+    }, [searchQuery, currentPage, pageSize, sortDirection]);
 
     useEffect(() => {
         setConcept(selectedConcept);

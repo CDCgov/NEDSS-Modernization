@@ -1,7 +1,7 @@
 package gov.cdc.nbs.authorization.permission;
 
-import gov.cdc.nbs.authorization.ActiveUser;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.authorization.ActiveUser;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.hamcrest.Matchers;
@@ -16,12 +16,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ClientPermissionSteps {
 
     @Autowired
-    TestActive<ActiveUser> activeUser;
+    Active<ActiveUser> activeUser;
 
     @Autowired
     MockMvc mvc;
 
-    private final TestActive<ResultActions> activeResult = new TestActive<>();
+    private final Active<ResultActions> activeResult = new Active<>();
 
     @When("I access NBS from the client")
     public void the_user_accesses_NBS_from_the_client() throws Exception {

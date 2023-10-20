@@ -4,7 +4,7 @@ import { Icon } from '@trussworks/react-uswds';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './TableMenu.scss';
-import { FilterButton } from '../../pages/FilterModal/Filter';
+import { PageFilterModal } from '../../pages/FilterModal/PageFilterModal';
 
 type Props = {
     tableType: string;
@@ -51,7 +51,7 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
             <Button type="button" outline>
                 <Icon.Print size={3} onClick={onPrintIconClick} data-testid="print-icon" />
             </Button>
-            <FilterButton />
+            <PageFilterModal />
             <Button type="button" outline onClick={onDownloadIconClick} data-testid="file-download">
                 <Icon.FileDownload size={3} />
             </Button>

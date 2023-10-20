@@ -1,6 +1,6 @@
 package gov.cdc.nbs;
 
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -8,7 +8,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 public class WebInteractionSteps {
 
     @Autowired
-    TestActive<MockHttpServletResponse> activeResponse;
+    Active<MockHttpServletResponse> activeResponse;
 
     @Before("@web-interaction")
     public void reset() {

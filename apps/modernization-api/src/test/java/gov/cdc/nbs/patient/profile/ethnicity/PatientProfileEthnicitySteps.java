@@ -5,8 +5,8 @@ import gov.cdc.nbs.message.patient.input.EthnicityInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -26,16 +26,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientProfileEthnicitySteps {
 
     @Autowired
-    TestActive<PatientInput> input;
+    Active<PatientInput> input;
 
     @Autowired
-    TestActive<Person> patient;
+    Active<Person> patient;
 
     @Autowired
     EntityManager entityManager;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     PatientEthnicityController controller;

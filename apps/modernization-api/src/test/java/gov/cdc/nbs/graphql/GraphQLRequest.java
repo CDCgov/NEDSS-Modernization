@@ -3,7 +3,7 @@ package gov.cdc.nbs.graphql;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import gov.cdc.nbs.Authenticated;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;

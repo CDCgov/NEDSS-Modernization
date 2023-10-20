@@ -44,9 +44,9 @@ class EntityIdTest {
             .returns("INACTIVE", EntityId::getRecordStatusCd)
             .returns(Instant.parse("2020-03-13T13:15:30Z"), EntityId::getRecordStatusTime)
             .extracting(EntityId::getAudit)
-            .extracting(Audit::getChanged)
-            .returns(191L, Changed::getLastChgUserId)
-            .returns(Instant.parse("2020-03-13T13:15:30Z"), Changed::getLastChgTime)
+            .extracting(Audit::changed)
+            .returns(191L, Changed::changedBy)
+            .returns(Instant.parse("2020-03-13T13:15:30Z"), Changed::changedOn)
 ;
     }
 }

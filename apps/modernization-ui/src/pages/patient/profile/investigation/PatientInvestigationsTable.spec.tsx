@@ -35,19 +35,19 @@ describe('when rendered', () => {
         );
 
         const tableHeader = container.getElementsByClassName('table-header');
-        expect(tableHeader[0].innerHTML).toBe('Investigations');
+        expect(tableHeader[0]).toHaveTextContent('Investigations');
 
         const tableHeads = container.getElementsByClassName('head-name');
 
-        expect(tableHeads[0].innerHTML).toBe('Start date');
-        expect(tableHeads[1].innerHTML).toBe('Condition');
-        expect(tableHeads[2].innerHTML).toBe('Status');
-        expect(tableHeads[3].innerHTML).toBe('Case status');
-        expect(tableHeads[4].innerHTML).toBe('Notification');
-        expect(tableHeads[5].innerHTML).toBe('Jurisdiction');
-        expect(tableHeads[6].innerHTML).toBe('Investigator');
-        expect(tableHeads[7].innerHTML).toBe('Investigation #');
-        expect(tableHeads[8].innerHTML).toBe('Co-infection #');
+        expect(tableHeads[1]).toHaveTextContent('Start date');
+        expect(tableHeads[2]).toHaveTextContent('Condition');
+        expect(tableHeads[3]).toHaveTextContent('Status');
+        expect(tableHeads[4]).toHaveTextContent('Case status');
+        expect(tableHeads[5]).toHaveTextContent('Notification');
+        expect(tableHeads[6]).toHaveTextContent('Jurisdiction');
+        expect(tableHeads[7]).toHaveTextContent('Investigator');
+        expect(tableHeads[8]).toHaveTextContent('Investigation #');
+        expect(tableHeads[9]).toHaveTextContent('Co-infection #');
     });
 });
 
@@ -113,7 +113,8 @@ describe('when at least one investigation is available for a patient', () => {
                             event: 'event',
                             coInfection: 'co-infection',
                             notification: 'notification',
-                            investigator: 'investigator'
+                            investigator: 'investigator',
+                            comparable: true
                         }
                     ],
                     total: 1,
@@ -136,14 +137,14 @@ describe('when at least one investigation is available for a patient', () => {
 
         const tableData = container.getElementsByClassName('table-data');
 
-        expect(tableData[0]).toContainElement(await findByText('03/27/2023'));
-        expect(tableData[1]).toHaveTextContent('condition');
-        expect(tableData[2]).toHaveTextContent('status');
-        expect(tableData[3]).toHaveTextContent('case-status');
-        expect(tableData[4]).toHaveTextContent('notification');
-        expect(tableData[5]).toHaveTextContent('jurisdiction');
-        expect(tableData[6]).toHaveTextContent('investigator');
-        expect(tableData[7]).toContainElement(event);
-        expect(tableData[8]).toHaveTextContent('co-infection');
+        expect(tableData[1]).toContainElement(await findByText('03/27/2023'));
+        expect(tableData[2]).toHaveTextContent('condition');
+        expect(tableData[3]).toHaveTextContent('status');
+        expect(tableData[4]).toHaveTextContent('case-status');
+        expect(tableData[5]).toHaveTextContent('notification');
+        expect(tableData[6]).toHaveTextContent('jurisdiction');
+        expect(tableData[7]).toHaveTextContent('investigator');
+        expect(tableData[8]).toContainElement(event);
+        expect(tableData[9]).toHaveTextContent('co-infection');
     });
 });

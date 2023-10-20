@@ -31,9 +31,10 @@ type MultiSelectInputProps = {
     label?: string;
     id?: string;
     name?: string;
+    placeholder?: string;
     options?: Options[];
     value?: string[];
-    onChange?: (value: string[]) => void;
+    onChange?: (value: any) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
     required?: boolean;
     error?: string;
@@ -50,7 +51,8 @@ export const MultiSelectInput = ({
     onBlur,
     value = [],
     required,
-    error
+    error,
+    placeholder = '- Select -'
 }: MultiSelectInputProps) => {
     const selectableOptions = useMemo(
         () => options.map((item) => ({ value: item.value, label: item.name })),
@@ -86,7 +88,7 @@ export const MultiSelectInput = ({
                 id={id}
                 name={name}
                 value={selectedOptions}
-                placeholder="- Select -"
+                placeholder={placeholder}
                 classNamePrefix="multi-select"
                 hideSelectedOptions={false}
                 closeMenuOnSelect={false}

@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.administrative;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -15,10 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PatientProfileAdministrativeSteps {
 
     @Autowired
-    TestActive<PatientInput> input;
+    Active<PatientInput> input;
 
     @Autowired
-    TestActive<Person> patient;
+    Active<Person> patient;
 
     @Autowired
     PatientAdministrativeResolver resolver;

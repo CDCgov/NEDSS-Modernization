@@ -115,7 +115,7 @@ describe('<AddTab />', () => {
             const { getByText } = render(
                 <BrowserRouter>
                     <AlertProvider>
-                       <AddTab {...props} />
+                        <AddTab {...props} />
                     </AlertProvider>
                 </BrowserRouter>
             );

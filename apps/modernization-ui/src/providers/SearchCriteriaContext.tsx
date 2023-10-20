@@ -77,16 +77,20 @@ export const SearchCriteriaProvider = (props: any) => {
 
     // on init, load search data from API
     useEffect(() => {
-        if (state.isLoggedIn) {
-            getProgramAreas();
-            getConditions();
-            getJurisdictions();
-            getAllUsers();
-            getOutbreaks();
-            getEthnicities();
-            getRaces();
-            getIdentificationTypes();
-            getStates();
+        try {
+            if (state.isLoggedIn) {
+                getProgramAreas();
+                getConditions();
+                getJurisdictions();
+                getAllUsers();
+                getOutbreaks();
+                getEthnicities();
+                getRaces();
+                getIdentificationTypes();
+                getStates();
+            }
+        } catch (error: string | any) {
+            console.log('error load search data', error);
         }
     }, [state.isLoggedIn]);
 
@@ -134,7 +138,7 @@ export const SearchCriteriaProvider = (props: any) => {
     function setRaces(results: FindAllRaceValuesQuery): void {
         if (results.findAllRaceValues) {
             const races: Race[] = [];
-            results.findAllRaceValues.content.forEach((r) => r && races.push(r));
+            results.findAllRaceValues.content.forEach((r) => r && r.id?.code !== 'M' && races.push(r));
             races.sort((a, b) => {
                 if (a.codeDescTxt && b.codeDescTxt) {
                     return a.codeDescTxt?.localeCompare(b.codeDescTxt);

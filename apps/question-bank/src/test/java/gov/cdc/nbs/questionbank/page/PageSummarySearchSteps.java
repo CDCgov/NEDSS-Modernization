@@ -38,7 +38,6 @@ public class PageSummarySearchSteps {
         pageMother.asepticMeningitis();
     }
 
-
     @When("I get all page summaries")
     public void i_get_all_page_summaries() {
         try {

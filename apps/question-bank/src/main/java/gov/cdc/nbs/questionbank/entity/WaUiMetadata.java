@@ -15,6 +15,7 @@ import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -214,7 +215,6 @@ public class WaUiMetadata {
         this.displayInd = "T";
         this.requiredInd = "F";
         this.entryMethod = "USER";
-        this.recordStatusCd = ACTIVE;
         this.versionCtrlNbr = 1;
 
         // User specified
@@ -264,12 +264,43 @@ public class WaUiMetadata {
         this.added(command);
     }
 
-    private void added(PageContentCommand.AddQuestion command) {
+    public WaUiMetadata(PageContentCommand.AddTab command) {
+        this.nbsUiComponentUid = 1010L;
+        this.waTemplateUid = command.page();
+        this.questionLabel = command.label();
+        this.displayInd = command.visible() ? "T" : "F";
+        this.questionIdentifier = command.identifier();
+        this.orderNbr = command.orderNumber();
+
+        // Defaults
+        this.requiredInd = "F";
+        this.versionCtrlNbr = 1;
+        this.standardNndIndCd = 'F';
+        this.publishIndCd = 'T';
+        this.enableInd = "T";
+
+        // Audit
+        added(command);
+    }
+
+    public void update(UpdateTab command) {
+        this.displayInd = command.visible() ? "T" : "F";
+        this.questionLabel = command.label();
+        updated(command);
+    }
+
+    private void added(PageContentCommand command) {
         this.addTime = command.requestedOn();
         this.addUserId = command.userId();
         this.lastChgTime = command.requestedOn();
         this.lastChgUserId = command.userId();
+        this.recordStatusCd = ACTIVE;
         this.recordStatusTime = command.requestedOn();
+    }
+
+    private void updated(PageContentCommand command) {
+        this.lastChgTime = command.requestedOn();
+        this.lastChgUserId = command.userId();
     }
 
     public static WaUiMetadata clone(WaUiMetadata original) {
@@ -332,5 +363,4 @@ public class WaUiMetadata {
                 original.getCoinfectionIndCd(),
                 original.getBlockNm());
     }
-
 }

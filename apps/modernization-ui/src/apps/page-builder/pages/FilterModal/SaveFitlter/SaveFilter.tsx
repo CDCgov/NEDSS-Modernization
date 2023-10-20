@@ -1,6 +1,6 @@
 import { Button, TextInput, Radio } from '@trussworks/react-uswds';
 import React from 'react';
-import { FilterPanel } from '../FilterPanel';
+import { FilterPanel } from '../../../components/FilterModal/FilterPanel';
 // import { TextArea } from 'components/FormInputs/TextArea';
 
 export const SaveFilter = ({ handleAction }: any) => {

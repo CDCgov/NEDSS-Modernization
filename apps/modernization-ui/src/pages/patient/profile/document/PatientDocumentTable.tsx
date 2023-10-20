@@ -33,7 +33,6 @@ const asTableBody =
     (patient: string) =>
     (document: Document): TableBody => ({
         id: document?.event,
-        checkbox: false,
         tableDetails: [
             {
                 id: 1,

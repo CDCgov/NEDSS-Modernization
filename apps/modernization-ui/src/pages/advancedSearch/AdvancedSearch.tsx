@@ -108,6 +108,7 @@ export const AdvancedSearch = () => {
 
     const handleActiveTab = (searchType: string) => {
         setActiveTab(searchType);
+        handleClearAll();
         navigate(`/advanced-search/${searchType}`, { replace: true });
     };
 
@@ -254,6 +255,7 @@ export const AdvancedSearch = () => {
 
     // handles submit from Person Search and Event Search,
     // it simply encrypts the filter object and sets it as the query parameter
+
     const handleSubmit = async (filter: PersonFilter | InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {
         let search = '';
         if (!isEmpty(filter)) {
@@ -321,7 +323,13 @@ export const AdvancedSearch = () => {
 
     function handleAddNewPatientClick(): void {
         setShowAddNewDropDown(false);
-        navigate('/add-patient');
+        const criteria = searchParams.get('q');
+
+        if (criteria) {
+            navigate('/add-patient', { state: { criteria } });
+        } else {
+            navigate('/add-patient');
+        }
     }
 
     function handleAddNewLabReportClick(): void {
@@ -380,7 +388,7 @@ export const AdvancedSearch = () => {
                                 type={'button'}
                                 onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
                                 Add new
-                                <img src={'/down-arrow-white.svg'} />
+                                <img src={'/icons/down-arrow-white.svg'} />
                             </Button>
                             {showAddNewDropDown && (
                                 <ul
@@ -486,8 +494,8 @@ export const AdvancedSearch = () => {
                                                     investigationData?.content?.length === 0) &&
                                                 (!labReportData?.content || labReportData?.content?.length === 0) &&
                                                 (!patientData?.content || patientData?.content?.length === 0)
-                                                    ? '/down-arrow-white.svg'
-                                                    : '/down-arrow-blue.svg'
+                                                    ? '/icons/down-arrow-white.svg'
+                                                    : '/icons/down-arrow-blue.svg'
                                             }
                                         />
                                     </Button>

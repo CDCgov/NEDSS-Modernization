@@ -6,7 +6,7 @@ import gov.cdc.nbs.entity.odse.Intervention;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
@@ -19,14 +19,14 @@ class VaccinationMother {
     private static final String PERSON_CLASS = "PAT";
 
     private final MotherSettings settings;
-    private final TestUniqueIdGenerator idGenerator;
+    private final SequentialIdentityGenerator idGenerator;
     private final EntityManager entityManager;
     private final TestVaccinationCleaner cleaner;
     private final TestVaccinations vaccinations;
 
     VaccinationMother(
         final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
+        final SequentialIdentityGenerator idGenerator,
         final EntityManager entityManager,
         final TestVaccinationCleaner cleaner,
         final TestVaccinations vaccinations

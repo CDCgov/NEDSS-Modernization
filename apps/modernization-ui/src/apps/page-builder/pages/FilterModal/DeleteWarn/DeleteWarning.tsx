@@ -1,6 +1,6 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import React from 'react';
-import { FilterPanel } from '../FilterPanel';
+import { FilterPanel } from '../../../components/FilterModal/FilterPanel';
 
 export const DeleteWarning = ({ handleAction }: any) => {
     const renderAction = (

@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.redirect.incoming;
 
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.event.search.investigation.TestInvestigations;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -20,10 +20,10 @@ public class PatientProfileFromActionStep {
     MockMvc mvc;
 
     @Autowired
-    TestActive<SessionCookie> activeSession;
+    Active<SessionCookie> activeSession;
 
     @Autowired
-    TestActive<MockHttpServletResponse> activeResponse;
+    Active<MockHttpServletResponse> activeResponse;
 
     @When("Navigating to a Patient Profile from a {string}")
     @When("Navigating to a Patient Profile from an {string}")

@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient;
 import com.github.javafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -11,8 +11,8 @@ import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import gov.cdc.nbs.support.IdentificationMother;
 import gov.cdc.nbs.support.RaceMother;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,24 +28,24 @@ public class PatientMother {
 
   private final Faker faker;
   private final MotherSettings settings;
-  private final TestUniqueIdGenerator idGenerator;
+  private final SequentialIdentityGenerator idGenerator;
   private final PatientLocalIdentifierGenerator localIdentifierGenerator;
   private final AddressIdentifierGenerator addressIdentifierGenerator;
   private final PatientShortIdentifierResolver resolver;
   private final EntityManager entityManager;
-  private final TestAvailable<PatientIdentifier> available;
-  private final TestActive<PatientIdentifier> active;
+  private final Available<PatientIdentifier> available;
+  private final Active<PatientIdentifier> active;
   private final TestPatientCleaner cleaner;
 
   PatientMother(
       final MotherSettings settings,
-      final TestUniqueIdGenerator idGenerator,
+      final SequentialIdentityGenerator idGenerator,
       final PatientLocalIdentifierGenerator localIdentifierGenerator,
       final AddressIdentifierGenerator addressIdentifierGenerator,
       final PatientShortIdentifierResolver resolver,
       final EntityManager entityManager,
-      final TestAvailable<PatientIdentifier> available,
-      final TestActive<PatientIdentifier> active,
+      final Available<PatientIdentifier> available,
+      final Active<PatientIdentifier> active,
       final TestPatientCleaner cleaner
   ) {
     this.settings = settings;

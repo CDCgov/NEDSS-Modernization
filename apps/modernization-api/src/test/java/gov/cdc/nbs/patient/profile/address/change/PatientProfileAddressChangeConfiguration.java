@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.address.change;
 
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,17 +9,17 @@ import org.springframework.context.annotation.Configuration;
 class PatientProfileAddressChangeConfiguration {
 
     @Bean
-    TestActive<NewPatientAddressInput> activeNewPatientAddressInput() {
-        return new TestActive<>();
+    Active<NewPatientAddressInput> activeNewPatientAddressInput() {
+        return new Active<>();
     }
 
     @Bean
-    TestActive<UpdatePatientAddressInput> activeUpdatePatientAddressInput() {
-        return new TestActive<>();
+    Active<UpdatePatientAddressInput> activeUpdatePatientAddressInput() {
+        return new Active<>();
     }
 
     @Bean
-    TestActive<DeletePatientAddressInput> activeDeletePatientAddressInput() {
-        return new TestActive<>();
+    Active<DeletePatientAddressInput> activeDeletePatientAddressInput() {
+        return new Active<>();
     }
 }
