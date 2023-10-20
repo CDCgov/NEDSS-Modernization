@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.entity.question;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.exception.NullObjectException;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
@@ -14,6 +15,88 @@ class NumericQuestionEntityTest {
     void should_have_date_type() {
         NumericQuestionEntity q = new NumericQuestionEntity();
         assertEquals("NUMERIC", q.getDataType());
+    }
+
+    @Test
+    void should_set_related_unit_value_set() {
+        QuestionCommand.AddNumericQuestion command = new QuestionCommand.AddNumericQuestion(
+                "mask",
+                "1",
+                "0",
+                1l,
+                100l,
+                "literal units",
+                123l,
+                new QuestionCommand.QuestionData(
+                        "codeset",
+                        "localId",
+                        "name",
+                        "subgrp",
+                        "descrip",
+                        "label",
+                        "tooltip",
+                        1009l,
+                        null,
+                        null),
+                new QuestionCommand.ReportingData(
+                        "lbl",
+                        "RDBNM",
+                        "COLNM",
+                        "DMRT"),
+                new QuestionCommand.MessagingData(
+                        false,
+                        null,
+                        null,
+                        null,
+                        false,
+                        null),
+                1l,
+                Instant.now());
+        NumericQuestionEntity q = new NumericQuestionEntity(command);
+
+        assertEquals(UnitType.CODED.toString(), q.getUnitTypeCd());
+        assertEquals("123", q.getUnitValue());
+    }
+
+    @Test
+    void should_set_related_unit_literal_value() {
+        QuestionCommand.AddNumericQuestion command = new QuestionCommand.AddNumericQuestion(
+                "mask",
+                "1",
+                "0",
+                1l,
+                100l,
+                "literal units",
+                null,
+                new QuestionCommand.QuestionData(
+                        "codeset",
+                        "localId",
+                        "name",
+                        "subgrp",
+                        "descrip",
+                        "label",
+                        "tooltip",
+                        1009l,
+                        null,
+                        null),
+                new QuestionCommand.ReportingData(
+                        "lbl",
+                        "RDBNM",
+                        "COLNM",
+                        "DMRT"),
+                new QuestionCommand.MessagingData(
+                        false,
+                        null,
+                        null,
+                        null,
+                        false,
+                        null),
+                1l,
+                Instant.now());
+        NumericQuestionEntity q = new NumericQuestionEntity(command);
+
+        assertEquals(UnitType.LITERAL.toString(), q.getUnitTypeCd());
+        assertEquals("literal units", q.getUnitValue());
     }
 
     @Test

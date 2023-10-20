@@ -203,7 +203,7 @@ public class CreateQuestionSteps {
             assertEquals(numericRequest.relatedUnitsLiteral(), question.getUnitValue());
         } else if (numericRequest.relatedUnitsValueSet() != null) {
             assertEquals(UnitType.CODED.toString(), question.getUnitTypeCd());
-            assertEquals(numericRequest.relatedUnitsValueSet(), question.getUnitValue());
+            assertEquals(numericRequest.relatedUnitsValueSet().toString(), question.getUnitValue());
         }
         assertEquals(QuestionType.NUMERIC, numericRequest.type());
     }
