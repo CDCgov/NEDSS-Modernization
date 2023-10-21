@@ -25,6 +25,9 @@ project(':me-api').projectDir = new File('libs/me-api')
 include ':configuration-api'
 project(':configuration-api').projectDir = new File('libs/configuration-api')
 
+include ':concept-api'
+project(':concept-api').projectDir = new File('libs/concept-api')
+
 // libs
 include ':database-entities'
 project(':database-entities').projectDir = new File('libs/database-entities')
@@ -38,9 +41,6 @@ include ':id-generator'
 project(':id-generator').projectDir = new File('libs/id-generator')
 include ':accumulation'
 project(':accumulation').projectDir = new File('libs/accumulation')
-
-include ':concept'
-project(':concept').projectDir = new File('libs/concept')
 
 
 //  testing libraries
@@ -58,3 +58,6 @@ project(':testing:auth-cucumber').projectDir = new File('libs/testing/auth-cucum
 
 include ':testing:http-interaction'
 project(':testing:http-interaction').projectDir = new File('libs/testing/http-interaction')
+
+include ':testing:database'
+project(':testing:database').projectDir = new File('libs/testing/database')

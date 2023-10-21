@@ -12,6 +12,7 @@ validation = "2.1.0.Final"
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 mockito-inline = { module = "org.mockito:mockito-inline", version = "4.11.0" }
 springBoot = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBoot" }
+springBoot-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version.ref = "springBoot" }
 springBoot-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "springBoot" }
 springBoot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
 springBoot-graphql = { module = "org.springframework.boot:spring-boot-starter-graphql", version.ref = "springBoot" }

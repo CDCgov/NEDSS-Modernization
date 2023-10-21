@@ -24,7 +24,34 @@ testing {
 
 dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
 
+    implementation project(':accumulation')
 
+    // core
+    implementation libs.bundles.jpa
+    annotationProcessor libs.springBoot.jpa
 
+    implementation libs.springBoot.web
+    implementation libs.bundles.security
+
+    // database
+    implementation libs.mssql.jdbc
+
+    // querydsl
+    implementation libs.bundles.queryDSL
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+
+    // blazebit for querydsl paging
+    implementation libs.bundles.blaze.persistence.queryDSL
+    implementation libs.bundles.jackson
+
+    // lombok
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+}
+
+compileJava {
+    options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
 }
