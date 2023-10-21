@@ -39,6 +39,9 @@ project(':id-generator').projectDir = new File('libs/id-generator')
 include ':accumulation'
 project(':accumulation').projectDir = new File('libs/accumulation')
 
+include ':concept'
+project(':concept').projectDir = new File('libs/concept')
+
 
 //  testing libraries
 include ':testing:support'
