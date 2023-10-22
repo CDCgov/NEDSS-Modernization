@@ -31,7 +31,7 @@ dependencies {
     //  feature modules
     implementation project(':me-api')
     implementation project(':configuration-api')
-    implementation project(':concept-api')
+    implementation project(':options-api')
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 

@@ -25,8 +25,8 @@ project(':me-api').projectDir = new File('libs/me-api')
 include ':configuration-api'
 project(':configuration-api').projectDir = new File('libs/configuration-api')
 
-include ':concept-api'
-project(':concept-api').projectDir = new File('libs/concept-api')
+include ':options-api'
+project(':options-api').projectDir = new File('libs/options-api')
 
 // libs
 include ':database-entities'

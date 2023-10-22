@@ -3491,6 +3491,81 @@
 			]
 		},
 		{
+			"name": "Options",
+			"item": [
+				{
+					"name": "Concepts",
+					"item": [
+						{
+							"name": "All Concepts by Value Set",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/options/concepts/:name",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"options",
+										"concepts",
+										":name"
+									],
+									"variable": [
+										{
+											"key": "name",
+											"value": "CODE_SYSTEM"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Specific Concepts by Value Set Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/options/concepts/:name/search?criteria=ad&limit=3",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"options",
+										"concepts",
+										":name",
+										"search"
+									],
+									"query": [
+										{
+											"key": "criteria",
+											"value": "ad"
+										},
+										{
+											"key": "limit",
+											"value": "3"
+										}
+									],
+									"variable": [
+										{
+											"key": "name",
+											"value": "CODE_SYSTEM"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "Login",
 			"event": [
 				{
@@ -3535,6 +3610,16 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
