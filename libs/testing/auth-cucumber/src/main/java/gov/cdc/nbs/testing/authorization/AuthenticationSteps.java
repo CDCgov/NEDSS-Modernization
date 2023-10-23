@@ -1,20 +1,30 @@
 package gov.cdc.nbs.testing.authorization;
 
+import gov.cdc.nbs.authentication.NBSToken;
+import gov.cdc.nbs.authentication.TokenCreator;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("java:S100")
 @Transactional
 public class AuthenticationSteps {
 
-  @Autowired
-  ActiveUserMother mother;
 
-  @Autowired
-  Active<ActiveUser> activeUser;
+  private final TokenCreator tokenCreator;
+  private final ActiveUserMother mother;
+  private final Active<ActiveUser> activeUser;
+
+  public AuthenticationSteps(
+      final TokenCreator tokenCreator,
+      final ActiveUserMother mother,
+      final Active<ActiveUser> activeUser
+  ) {
+    this.tokenCreator = tokenCreator;
+    this.mother = mother;
+    this.activeUser = activeUser;
+  }
 
   @Before
   public void clean() {
@@ -30,7 +40,13 @@ public class AuthenticationSteps {
   public void i_am_logged_in() {
     ActiveUser user = mother.create();
 
-    ActiveUser currentUser = new ActiveUser(user.id(), user.username(), user.nedssEntry());
+    activate(user);
+  }
+
+  private void activate(final ActiveUser user) {
+    NBSToken token = this.tokenCreator.forUser(user.username());
+
+    ActiveUser currentUser = new ActiveUser(user.id(), user.username(), user.nedssEntry(), token);
     activeUser.active(currentUser);
   }
 
@@ -38,7 +54,6 @@ public class AuthenticationSteps {
   public void i_am_logged_in_as(final String name) {
     ActiveUser user = mother.create(name);
 
-    ActiveUser currentUser = new ActiveUser(user.id(), user.username(), user.nedssEntry());
-    activeUser.active(currentUser);
+    activate(user);
   }
 }
