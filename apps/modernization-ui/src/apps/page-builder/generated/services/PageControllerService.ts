@@ -4,7 +4,6 @@
 import type { Page_PageSummary_ } from '../models/Page_PageSummary_';
 import type { PageCreateRequest } from '../models/PageCreateRequest';
 import type { PageCreateResponse } from '../models/PageCreateResponse';
-import type { PagedDetail } from '../models/PagedDetail';
 import type { PageStateResponse } from '../models/PageStateResponse';
 import type { PageSummary } from '../models/PageSummary';
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
@@ -200,38 +199,6 @@ export class PageControllerService {
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-            },
-        });
-    }
-
-    /**
-     * getPageDetails
-     * @returns PagedDetail OK
-     * @throws ApiError
-     */
-    public static getPageDetailsUsingGet({
-        authorization,
-        id,
-    }: {
-        authorization: any,
-        /**
-         * id
-         */
-        id: number,
-    }): CancelablePromise<PagedDetail> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{id}/details',
-            path: {
-                'id': id,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
             },
         });
     }

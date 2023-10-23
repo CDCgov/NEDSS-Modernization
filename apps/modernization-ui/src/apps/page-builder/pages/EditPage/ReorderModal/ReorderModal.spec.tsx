@@ -1,37 +1,34 @@
-import { getByText, render } from '@testing-library/react';
-import { PageTab } from "apps/page-builder/generated/models/PageTab"
-import { ReorderModal } from "./ReorderModal";
-
+import { render } from '@testing-library/react';
+import { ReorderModal } from './ReorderModal';
+import { PagesTab } from 'apps/page-builder/generated';
 
 describe('when ReorderModal renders', () => {
-    const content: PageTab = {
+    const content: PagesTab = {
         id: 123456,
         name: 'Test Page',
-        tabSections:  [
+        sections: [
             {
                 id: 1234,
                 name: 'Section1',
-                sectionSubSections: [],
-                visible: 'T'
+                subSections: [],
+                visible: true
             },
             {
                 id: 5678,
                 name: 'Section2',
-                sectionSubSections: [],
-                visible: 'T'
+                subSections: [],
+                visible: true
             }
         ],
-        visible: 'T'
+        visible: true
     };
     const props = {
         modalRef: { current: null },
         pageName: 'Test Page',
         content: content
-    }
+    };
     it('should display Sections', () => {
-        const { getByText } = render(
-            <ReorderModal {...props} />
-        )
+        const { getByText } = render(<ReorderModal {...props} />);
         expect(getByText('Test Page')).toBeTruthy();
     });
 });

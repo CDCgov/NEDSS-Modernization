@@ -2,7 +2,7 @@ import { ModalRef, ModalFooter, ModalToggleButton, ButtonGroup } from '@trusswor
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { RefObject } from 'react';
 import './ReorderModal.scss';
-import { PageTab } from 'apps/page-builder/generated/models/PageTab';
+import { PagesTab } from 'apps/page-builder/generated';
 import { ReorderSection } from '../ReorderSection/ReorderSection';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { Icon } from 'components/Icon/Icon';
@@ -10,7 +10,7 @@ import { Icon } from 'components/Icon/Icon';
 type ReorderProps = {
     modalRef: RefObject<ModalRef>;
     pageName: string;
-    content: PageTab;
+    content: PagesTab;
     alertMessage?: string;
 };
 
@@ -32,9 +32,9 @@ export const ReorderModal = ({ modalRef, pageName, content, alertMessage }: Reor
                                 <Icon name="folder" />
                                 <p>{pageName}</p>
                             </div>
-                            {content?.tabSections
-                                ? content.tabSections.map((section: any, i: number) => {
-                                      if (section.visible === 'T') {
+                            {content?.sections
+                                ? content.sections.map((section, i) => {
+                                      if (section.visible) {
                                           return <ReorderSection key={i} section={section} />;
                                       } else {
                                           return;
