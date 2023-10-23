@@ -1,26 +1,26 @@
 import { render } from '@testing-library/react';
-import { PageTab } from 'apps/page-builder/generated';
+import { PagesTab } from 'apps/page-builder/generated';
 import { EditPageContentComponent } from './EditPageContent';
 
 describe('when EditPageContent renders', () => {
-    const content: PageTab = {
+    const content: PagesTab = {
         id: 123456,
         name: 'Test Name',
-        tabSections: [
+        sections: [
             {
                 id: 1119232,
                 name: 'Patient',
-                sectionSubSections: [],
-                visible: 'T'
+                subSections: [],
+                visible: true
             },
             {
                 id: 1119225,
                 name: 'Vaccination',
-                sectionSubSections: [],
-                visible: 'T'
+                subSections: [],
+                visible: true
             }
         ],
-        visible: 'T'
+        visible: true
     };
     const mockFunction = jest.fn();
 
