@@ -65,12 +65,10 @@ export default function NavBar() {
                                         <td className="navLink">
                                             <a href={`${NBS_URL}/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
                                         </td>
-                                        <td>
-                                            <span> | </span>
-                                        </td>
 
                                         {systemManagementAccess && (
                                             <td className="navLink">
+                                                <span> | </span>
                                                 <a href={`${NBS_URL}/SystemAdmin.do`}>System Management</a>
                                             </td>
                                         )}
