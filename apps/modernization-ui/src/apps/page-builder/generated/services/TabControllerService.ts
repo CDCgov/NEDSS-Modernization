@@ -34,7 +34,7 @@ export class TabControllerService {
     }): CancelablePromise<Tab | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/tabs/',
+            url: '/nbs/page-builder/api/v1/pages/{page}/tabs',
             path: {
                 'page': page,
             },

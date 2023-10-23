@@ -1,7 +1,20 @@
 spring:
   kafka:
     bootstrap-servers: localhost:19092
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org:
+      springframework:
+        jdbc:
+          core: DEBUG
+
 testing:
+  id-generation:
+    suffix: 'TEST'
+    starting: -20000000 # a negative id should reduce conflicts of ids in a live system
   database:
     image: cdc-sandbox-nbs-mssql
 

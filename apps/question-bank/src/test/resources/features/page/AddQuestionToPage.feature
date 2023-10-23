@@ -1,4 +1,4 @@
-@add_question_to_page
+@page @add_question_to_page
 Feature: I can add a question to a page
 
     Background: Pages and Questions exist
