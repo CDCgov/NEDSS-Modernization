@@ -19,6 +19,9 @@ import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
+import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.repository.CodesetRepository;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
@@ -27,6 +30,9 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.model.Question;
+import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
+import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
+import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
@@ -304,5 +310,121 @@ class QuestionCreatorTest {
 
         // when retrieving the codes, an exception is thrown
         assertThrows(CreateQuestionException.class,() ->creator.getNbsClassCode());
+    }
+
+    @Test
+    void should_create_date_question() {
+        // given the database will return an entity with an Id
+        DateQuestionEntity dq = new DateQuestionEntity();
+        dq.setId(999L);
+        when(repository.save(Mockito.any())).thenReturn(dq);
+
+        // and that entity will be mapped to a question
+        when(mapper.toDateQuestion(dq)).thenReturn(new DateQuestion(
+                999l,
+                null,
+                false,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+
+        // given a create question request
+        CreateQuestionRequest.Date request = QuestionRequestMother.dateRequest();
+
+        // when a question is created
+        Question question = creator.create(123L, request);
+
+        // then the id of the new question is returned
+        assertEquals(dq.getId().longValue(), question.id());
+    }
+
+    @Test
+    void should_create_numeric_question() {
+        // given the database will return an entity with an Id
+        NumericQuestionEntity tq = new NumericQuestionEntity();
+        tq.setId(999L);
+        when(repository.save(Mockito.any())).thenReturn(tq);
+
+        // and that entity will be mapped to a question
+        when(mapper.toNumericQuestion(tq)).thenReturn(new NumericQuestion(
+                999l,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+
+        // given a create question request
+        CreateQuestionRequest.Numeric request = QuestionRequestMother.numericRequest();
+
+        // when a question is created
+        Question question = creator.create(123L, request);
+
+        // then the id of the new question is returned
+        assertEquals(tq.getId().longValue(), question.id());
+    }
+
+    @Test
+    void should_create_coded_question() {
+        // given the database will return an entity with an Id
+        CodedQuestionEntity tq = new CodedQuestionEntity();
+        tq.setId(999L);
+        when(repository.save(Mockito.any())).thenReturn(tq);
+
+        // and an existing value set
+        when(codesetRepository.findOneByCodeSetGroupId(123l)).thenReturn(Optional.of(new Codeset()));
+
+        // and that entity will be mapped to a question
+        when(mapper.toCodedQuestion(tq)).thenReturn(new CodedQuestion(
+                999l,
+                123l,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+
+        // given a create question request
+        CreateQuestionRequest.Coded request = QuestionRequestMother.codedRequest(123l);
+
+        // when a question is created
+        Question question = creator.create(123L, request);
+
+        // then the id of the new question is returned
+        assertEquals(tq.getId().longValue(), question.id());
     }
 }
