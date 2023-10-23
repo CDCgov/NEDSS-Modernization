@@ -1,10 +1,9 @@
-// import { Button, Icon } from '@trussworks/react-uswds';
-import { PageTab } from 'apps/page-builder/generated';
+import { Tab } from 'apps/page-builder/generated';
 import './ManageTabs.scss';
 import { Icon } from '@trussworks/react-uswds';
 
 type Props = {
-    tabs: PageTab[];
+    tabs: Tab[];
 };
 
 const ManageTabs = ({ tabs }: Props) => {

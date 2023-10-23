@@ -2,10 +2,10 @@ import { useState } from 'react';
 import './ReorderSubsection.scss';
 import { Icon } from 'components/Icon/Icon';
 import { ReorderQuestion } from '../ReorderQuestion/ReorderQuestion';
-import { PageSubSection } from 'apps/page-builder/generated/models/PageSubSection';
+import { PagesSubSection } from 'apps/page-builder/generated';
 
 type Props = {
-    subsection: PageSubSection;
+    subsection: PagesSubSection;
 };
 
 export const ReorderSubsection = ({ subsection }: Props) => {
@@ -26,9 +26,9 @@ export const ReorderSubsection = ({ subsection }: Props) => {
                 {subsection.name}
             </div>
             <div className={`reorder-subsection__questions ${questionsOpen ? '' : 'closed'}`}>
-                {subsection && subsection.pageQuestions
-                    ? subsection.pageQuestions.map((question: any, i: number) => {
-                          if (question.dispay === 'T') {
+                {subsection && subsection.questions
+                    ? subsection.questions.map((question, i) => {
+                          if (question.display) {
                               return <ReorderQuestion question={question} key={i} />;
                           }
                       })

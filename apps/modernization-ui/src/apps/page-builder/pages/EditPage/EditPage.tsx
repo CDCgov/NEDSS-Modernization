@@ -9,7 +9,7 @@ import { EditPageContentComponent } from 'apps/page-builder/components/EditPageC
 import { EditPageSidebar } from 'apps/page-builder/components/EditPageSidebar/EditPageSidebar';
 import { fetchPageDetails, savePageAsDraft } from 'apps/page-builder/services/pagesAPI';
 import { UserContext } from 'user';
-import { PageTab, PagedDetail } from 'apps/page-builder/generated';
+import { PagesResponse } from 'apps/page-builder/generated';
 import AddSectionModal from 'apps/page-builder/components/AddSection/AddSectionModal';
 import { ModalRef } from '@trussworks/react-uswds';
 import { Spinner } from 'components/Spinner/Spinner';
@@ -20,38 +20,24 @@ export const EditPage = () => {
     const { pageId } = useParams();
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
-    const [page, setPage] = useState<PagedDetail>();
-    const [tabs, setTabs] = useState<PageTab[] | undefined>();
+    const [page, setPage] = useState<PagesResponse>();
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
     const reorderModalRef = useRef<ModalRef>(null);
     const [alertType, setAlertType] = useState<string>('');
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
-    const getPageDetails = () => {
+    useEffect(() => {
         if (pageId) {
-            fetchPageDetails(token, Number(pageId)).then((data: any) => {
+            fetchPageDetails(token, Number(pageId)).then((data) => {
                 setPage(data);
             });
         }
-    };
-
-    useEffect(() => {
-        // Fetch page summary
-        getPageDetails();
     }, [pageId]);
 
-    useEffect(() => {
-        if (page) {
-            setTabs(page.pageTabs);
-        }
-    }, [page]);
-
-    const handleAddSuccess = async () => {
+    const handleAddSuccess = () => {
         if (pageId) {
-            await fetchPageDetails(token, Number(pageId)).then((data: any) => {
-                setPage(data);
-            });
+            fetchPageDetails(token, Number(pageId)).then(setPage);
         }
     };
 
@@ -72,12 +58,12 @@ export const EditPage = () => {
         <PageBuilder page="edit-page">
             {page ? (
                 <div className="edit-page">
-                    <PagesBreadcrumb currentPage={page.Name} />
+                    <PagesBreadcrumb currentPage={page.name} />
                     <div className="edit-page__header">
                         <EditPageHeader page={page} handleSaveDraft={handleSaveDraft} />
-                        {tabs ? (
+                        {page.tabs ? (
                             <EditPageTabs
-                                tabs={tabs}
+                                tabs={page.tabs}
                                 active={active}
                                 setActive={setActive}
                                 onAddSuccess={handleAddSuccess}
@@ -88,11 +74,8 @@ export const EditPage = () => {
                         <div className="edit-page__content">
                             {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
 
-                            {page.pageTabs?.[active] ? (
-                                <EditPageContentComponent
-                                    content={page.pageTabs[active]}
-                                    onAddSection={handleAddSuccess}
-                                />
+                            {page.tabs?.[active] ? (
+                                <EditPageContentComponent content={page.tabs[active]} onAddSection={handleAddSuccess} />
                             ) : null}
 
                             <EditPageSidebar
@@ -105,16 +88,16 @@ export const EditPage = () => {
             ) : (
                 <Spinner />
             )}
-            {page && pageId && page.pageTabs?.[active].id ? (
+            {page && pageId && page.tabs?.[active].id ? (
                 <AddSectionModal
                     modalRef={addSectionModalRef}
                     pageId={pageId}
-                    tabId={page.pageTabs[active]?.id}
+                    tabId={page.tabs[active]?.id}
                     onAddSection={handleAddSuccess}
                 />
             ) : null}
-            {page && page.Name && page.pageTabs?.[active] ? (
-                <ReorderModal modalRef={reorderModalRef} pageName={page.Name} content={page.pageTabs[active]} />
+            {page && page.name && page.tabs?.[active] ? (
+                <ReorderModal modalRef={reorderModalRef} pageName={page.name} content={page.tabs[active]} />
             ) : null}
         </PageBuilder>
     );

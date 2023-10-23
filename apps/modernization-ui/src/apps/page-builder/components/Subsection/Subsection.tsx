@@ -3,11 +3,11 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import { useState } from 'react';
 import './Subsection.scss';
 import { Question } from '../Question/Question';
-import { PageQuestion, PageSubSection } from 'apps/page-builder/generated';
+import { PagesSubSection } from 'apps/page-builder/generated';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 
-export const SubsectionComponent = ({ subsection }: { subsection: PageSubSection }) => {
+export const SubsectionComponent = ({ subsection }: { subsection: PagesSubSection }) => {
     const [open, setOpen] = useState(true);
 
     return (
@@ -15,7 +15,7 @@ export const SubsectionComponent = ({ subsection }: { subsection: PageSubSection
             <div className="subsection__header">
                 <div className="subsection__header--left">
                     <h2>{subsection.name}</h2>
-                    <Counter count={subsection.pageQuestions?.length || 0} />
+                    <Counter count={subsection.questions?.length || 0} />
                 </div>
                 <div className="subsection__header--right">
                     <Button type="button" outline>
@@ -41,8 +41,8 @@ export const SubsectionComponent = ({ subsection }: { subsection: PageSubSection
             </div>
             {open ? (
                 <div className="subsection__body">
-                    {subsection.pageQuestions?.map((question: PageQuestion, i: number) => {
-                        return question.dispay === 'T' ? <Question key={i} question={question} /> : null;
+                    {subsection.questions?.map((question, i) => {
+                        return question.display ? <Question key={i} question={question} /> : null;
                     })}
                 </div>
             ) : null}
