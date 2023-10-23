@@ -45,7 +45,7 @@ public class QuestionManagementUtil {
     /**
      * Verifies the new question will not conflict with any existing questions.
      * 
-     * The following fields must be unique but are not defined as unique in the databse:
+     * The following fields must be unique but are not defined as unique in the database:
      * 
      * questionNm, questionIdentifier, userDefinedColmnNm, rdbColumnNm
      * 

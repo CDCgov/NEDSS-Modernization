@@ -75,20 +75,23 @@ public class CreateQuestionSteps {
             switch (questionType) {
                 case "text":
                     request = QuestionRequestMother.localTextRequest();
+                    response = controller.createTextQuestion((CreateQuestionRequest.Text) request);
                     break;
                 case "date":
                     request = QuestionRequestMother.dateRequest();
+                    response = controller.createDateQuestion((CreateQuestionRequest.Date) request);
                     break;
                 case "numeric":
                     request = QuestionRequestMother.numericRequest();
+                    response = controller.createNumericQuestion((CreateQuestionRequest.Numeric) request);
                     break;
                 case "coded":
                     request = QuestionRequestMother.codedRequest(4150L); // Yes, No, Unknown Value set in test db
+                    response = controller.createCodedQuestion((CreateQuestionRequest.Coded) request);
                     break;
                 default:
                     throw new NotYetImplementedException();
             }
-            response = controller.createQuestion(request);
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -100,7 +103,6 @@ public class CreateQuestionSteps {
     public void create_with_duplicate_field(String field) {
         WaQuestion existing = questionRepository.findAll().get(0);
         CreateQuestionRequest.Text request;
-
         switch (field) {
             case "question name":
                 request = QuestionRequestMother.custom(
@@ -138,7 +140,7 @@ public class CreateQuestionSteps {
                 throw new IllegalArgumentException();
         }
         try {
-            controller.createQuestion(request);
+            controller.createTextQuestion(request);
         } catch (UniqueQuestionException e) {
             exceptionHolder.setException(e);
         }

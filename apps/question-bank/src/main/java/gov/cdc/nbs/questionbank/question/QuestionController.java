@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.question.model.Question;
+import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
+import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
+import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
+import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
 import gov.cdc.nbs.questionbank.question.response.GetQuestionResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -63,14 +66,32 @@ public class QuestionController {
         return results;
     }
 
-    @PostMapping
+    @PostMapping("text")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateQuestionResponse createQuestion(@RequestBody CreateQuestionRequest request) {
-        log.debug("Received create question request");
+    public TextQuestion createTextQuestion(@RequestBody CreateQuestionRequest.Text request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        long questionId = creator.create(userId, request);
-        log.debug("Successfully created question with Id: {}", questionId);
-        return new CreateQuestionResponse(questionId);
+        return creator.create(userId, request);
+    }
+
+    @PostMapping("numeric")
+    @ResponseStatus(HttpStatus.CREATED)
+    public NumericQuestion createNumericQuestion(@RequestBody CreateQuestionRequest.Numeric request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return creator.create(userId, request);
+    }
+
+    @PostMapping("coded")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CodedQuestion createCodedQuestion(@RequestBody CreateQuestionRequest.Coded request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return creator.create(userId, request);
+    }
+
+    @PostMapping("date")
+    @ResponseStatus(HttpStatus.CREATED)
+    public DateQuestion createDateQuestion(@RequestBody CreateQuestionRequest.Date request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return creator.create(userId, request);
     }
 
     @PutMapping("{id}")

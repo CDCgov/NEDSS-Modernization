@@ -35,13 +35,13 @@ class QuestionControllerTest {
         when(provider.getCurrentUserDetails()).thenReturn(user);
 
         // and a create text question request is sent
-        CreateQuestionRequest request = QuestionRequestMother.localTextRequest();
+        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
 
         // and the creator will create the question
-        when(creator.create(eq(user.getId()), Mockito.any(CreateQuestionRequest.class))).thenReturn(19L);
+        when(creator.create(eq(user.getId()), Mockito.any(CreateQuestionRequest.Text.class))).thenReturn(19L);
 
         // when the request is processed
-        CreateQuestionResponse response = controller.createQuestion(request);
+        CreateQuestionResponse response = controller.createTextQuestion(request);
 
         // then a valid response is given
         assertEquals(19L, response.questionId());
@@ -49,15 +49,15 @@ class QuestionControllerTest {
 
     private NbsUserDetails userDetails() {
         return new NbsUserDetails(
-            1L,
-            "test",
-            "test",
-            "test",
-            false,
-            false,
-            null,
-            null,
-            null,
-            true);
+                1L,
+                "test",
+                "test",
+                "test",
+                false,
+                false,
+                null,
+                null,
+                null,
+                true);
     }
 }
