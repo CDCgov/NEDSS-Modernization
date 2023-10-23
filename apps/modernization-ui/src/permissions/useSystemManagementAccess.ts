@@ -12,7 +12,7 @@ const SYSTEM_MANAGEMENT_PERMISSIONS = [
 
 const useSystemManagementAccess = (permissions: string[] | undefined | null) => {
     const hasAccess = useMemo(() => {
-        return permissions && permissions.some((permission) => SYSTEM_MANAGEMENT_PERMISSIONS.includes(permission));
+        return !!permissions && permissions.some((permission) => SYSTEM_MANAGEMENT_PERMISSIONS.includes(permission));
     }, [permissions]);
 
     return hasAccess;
