@@ -14,7 +14,7 @@ describe('when there is no user', () => {
 
         const actual = result.current;
 
-        expect(actual).toEqual({ delete: false });
+        expect(actual).toEqual({ delete: false, compareInvestigation: false });
     });
 });
 
@@ -26,21 +26,11 @@ describe('when the user has no permissions', () => {
 
         const actual = result.current;
 
-        expect(actual).toEqual({ delete: false });
+        expect(actual).toEqual({ delete: false, compareInvestigation: false });
     });
 });
 
 describe('when the user has permissions', () => {
-    it('should allow patient delete when the DELETE-PATIENT permission is present', () => {
-        mockedState = { user: { permissions: ['VIEW-PATIENT', 'DELETE-PATIENT', 'VIEW-INVESTIGATION'] } };
-
-        const { result } = renderHook(() => usePatientProfilePermissions());
-
-        const actual = result.current;
-
-        expect(actual).toEqual({ delete: true });
-    });
-
     it('should not allow patient delete when the DELETE-PATIENT permission is not present', () => {
         mockedState = { user: { permissions: ['VIEW-PATIENT', 'VIEW-INVESTIGATION'] } };
 
@@ -48,6 +38,16 @@ describe('when the user has permissions', () => {
 
         const actual = result.current;
 
-        expect(actual).toEqual({ delete: false });
+        expect(actual).toEqual({ delete: false, compareInvestigation: false });
+    });
+
+    it('should allow patient delete when the DELETE-PATIENT permission is present', () => {
+        mockedState = { user: { permissions: ['VIEW-PATIENT', 'DELETE-PATIENT', 'VIEW-INVESTIGATION'] } };
+
+        const { result } = renderHook(() => usePatientProfilePermissions());
+
+        const actual = result.current;
+
+        expect(actual).toEqual({ delete: true, compareInvestigation: false });
     });
 });

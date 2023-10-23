@@ -3,17 +3,28 @@ import { useUser } from 'user';
 
 type PatientProfilePermission = {
     delete: boolean;
+    compareInvestigation: boolean;
+};
+
+type PermissionKeyMap = {
+    [key: string]: keyof PatientProfilePermission;
 };
 
 const initial: PatientProfilePermission = {
-    delete: false
+    delete: false,
+    compareInvestigation: false
+};
+
+const permissionKeyMap: PermissionKeyMap = {
+    'MERGEINVESTIGATION-INVESTIGATION': 'compareInvestigation',
+    'DELETE-PATIENT': 'delete'
 };
 
 const resovlePermissions = (permissions?: string[]) => {
     if (permissions) {
         return permissions.slice(0).reduce((existing, next) => {
-            if (next === 'DELETE-PATIENT') {
-                return { ...existing, delete: true };
+            if (permissionKeyMap[next]) {
+                existing[permissionKeyMap[next]] = true;
             }
             return existing;
         }, initial);
