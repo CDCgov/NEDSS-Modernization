@@ -1,20 +1,20 @@
 package gov.cdc.nbs.questionbank.question;
 
-import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
-import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.question.model.Question;
+import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionControllerTest {
@@ -38,13 +38,30 @@ class QuestionControllerTest {
         CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
 
         // and the creator will create the question
-        when(creator.create(eq(user.getId()), Mockito.any(CreateQuestionRequest.Text.class))).thenReturn(19L);
+        when(creator.create(eq(user.getId()), Mockito.any(CreateQuestionRequest.Text.class)))
+                .thenReturn(new TextQuestion(19L,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null));
 
         // when the request is processed
-        CreateQuestionResponse response = controller.createTextQuestion(request);
+        Question response = controller.createTextQuestion(request);
 
         // then a valid response is given
-        assertEquals(19L, response.questionId());
+        assertEquals(19L, response.id());
     }
 
     private NbsUserDetails userDetails() {

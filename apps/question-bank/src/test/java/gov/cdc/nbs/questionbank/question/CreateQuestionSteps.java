@@ -15,11 +15,11 @@ import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
+import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.QuestionType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
-import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
+import gov.cdc.nbs.questionbank.question.request.QuestionType;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
@@ -46,7 +46,7 @@ public class CreateQuestionSteps {
 
     private CreateQuestionRequest request;
 
-    private CreateQuestionResponse response;
+    private Question response;
 
 
     @Given("No questions exist")
@@ -169,9 +169,9 @@ public class CreateQuestionSteps {
     private void validateTextQuestion() {
         assertNotNull(response);
         TextQuestionEntity question =
-                (TextQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+                (TextQuestionEntity) questionRepository.findById(response.id()).orElseThrow();
         CreateQuestionRequest.Text textRequest = (CreateQuestionRequest.Text) request;
-        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(question.getId().longValue(), response.id());
         assertEquals(textRequest.defaultValue(), question.getDefaultValue());
         assertEquals(textRequest.mask(), question.getMask());
         assertEquals(textRequest.fieldLength(), question.getFieldSize());
@@ -181,9 +181,9 @@ public class CreateQuestionSteps {
     private void validateDateQuestion() {
         assertNotNull(response);
         DateQuestionEntity question =
-                (DateQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+                (DateQuestionEntity) questionRepository.findById(response.id()).orElseThrow();
         CreateQuestionRequest.Date dateRequest = (CreateQuestionRequest.Date) request;
-        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(question.getId().longValue(), response.id());
         assertEquals(dateRequest.mask(), question.getMask());
         assertEquals(dateRequest.allowFutureDates() ? 'T' : 'F', question.getFutureDateIndCd().charValue());
         assertEquals(QuestionType.DATE, dateRequest.type());
@@ -191,10 +191,10 @@ public class CreateQuestionSteps {
 
     private void validateNumericQuestion() {
         assertNotNull(response);
-        NumericQuestionEntity question = (NumericQuestionEntity) questionRepository.findById(response.questionId())
+        NumericQuestionEntity question = (NumericQuestionEntity) questionRepository.findById(response.id())
                 .orElseThrow();
         CreateQuestionRequest.Numeric numericRequest = (CreateQuestionRequest.Numeric) request;
-        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(question.getId().longValue(), response.id());
         assertEquals(numericRequest.mask(), question.getMask());
         assertEquals(numericRequest.fieldLength(), question.getFieldSize());
         assertEquals(numericRequest.defaultValue(), question.getDefaultValue());
@@ -213,9 +213,9 @@ public class CreateQuestionSteps {
     private void validateCodedQuestion() {
         assertNotNull(response);
         CodedQuestionEntity question =
-                (CodedQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+                (CodedQuestionEntity) questionRepository.findById(response.id()).orElseThrow();
         CreateQuestionRequest.Coded codedRequest = (CreateQuestionRequest.Coded) request;
-        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(question.getId().longValue(), response.id());
         assertEquals(codedRequest.valueSet(), question.getCodeSetGroupId());
         assertEquals(codedRequest.defaultValue(), question.getDefaultValue());
         assertEquals('F', question.getOtherValueIndCd().charValue());
