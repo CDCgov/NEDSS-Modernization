@@ -62,9 +62,10 @@ public class PageMother {
 
   public void clean() {
     this.available.all().forEach(cleaner::clean);
-    wanndMetadataRepository.deleteAll();
-    wARDBMetadataRepository.deleteAll();
-    waRuleMetaDataRepository.deleteAll();
+    this.available.reset();
+//    wanndMetadataRepository.deleteAll();
+//    wARDBMetadataRepository.deleteAll();
+//    waRuleMetaDataRepository.deleteAll();
   }
 
   public WaTemplate one() {
@@ -100,7 +101,7 @@ public class PageMother {
   private WaTemplate createBrucellosisPage() {
     Instant now = Instant.now();
     WaTemplate page = new WaTemplate();
-    page.setTemplateNm("brucellosis page");
+    page.setTemplateNm("Brucellosis page");
     page.setTemplateType("Draft");
     page.setBusObjType("INV");
     page.setNndEntityIdentifier("GEN_Case_Map_v2.0");
@@ -129,7 +130,6 @@ public class PageMother {
     section.setVersionCtrlNbr(1);
 
     page.setUiMetadata(Arrays.asList(tab, section));
-    this.entityManager.persist(page);
     include(page);
     return page;
   }
@@ -151,7 +151,7 @@ public class PageMother {
 
     page.associateCondition(ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn());
 
-    this.entityManager.persist(page);
+    include(page);
 
     // add page detail mappings
     WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
@@ -164,13 +164,13 @@ public class PageMother {
     waUiMetadatumRepository.save(subSection);
     waUiMetadatumRepository.save(question);
 
-    include(page);
+
     return page;
   }
 
   public WaTemplate createPageDraft(WaTemplate pageIn) {
 
-    this.entityManager.persist(pageIn);
+//    this.entityManager.persist(pageIn);
 
     Instant now = Instant.now().plusSeconds(15);
     WaTemplate page = new WaTemplate();
@@ -188,20 +188,31 @@ public class PageMother {
 
     page.associateCondition(ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn());
 
-    this.entityManager.persist(page);
+    include(page);
 
     // add page detail mappings
-    WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
+    page.add(
+        new PageContentCommand.AddTab(
+        page,
+        "tab",
+        true,
+        "TAB_",
+        2,
+        this.settings.createdBy(),
+        Instant.now()
+    )
+    );
+
     WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
     WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
     WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
 
-    waUiMetadatumRepository.save(tab);
+
     waUiMetadatumRepository.save(section);
     waUiMetadatumRepository.save(subSection);
     waUiMetadatumRepository.save(question);
 
-    include(page);
+
     return page;
   }
 
@@ -226,12 +237,12 @@ public class PageMother {
         this.settings.createdBy(),
         this.settings.createdOn());
 
-    this.entityManager.persist(page);
-
     include(page);
   }
 
   private void include(final WaTemplate page) {
+    this.entityManager.persist(page);
+    this.entityManager.flush();
     PageIdentifier created = new PageIdentifier(page.getId(), page.getTemplateNm());
 
     this.active.active(created);

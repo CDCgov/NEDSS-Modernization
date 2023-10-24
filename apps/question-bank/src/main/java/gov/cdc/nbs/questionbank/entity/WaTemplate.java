@@ -123,6 +123,7 @@ public class WaTemplate {
     this.templateType = "Draft";
     this.recordStatusCd = "ACTIVE";
     this.conditionMappings = new HashSet<>();
+    this.uiMetadata = new ArrayList<>();
   }
 
   public WaTemplate(

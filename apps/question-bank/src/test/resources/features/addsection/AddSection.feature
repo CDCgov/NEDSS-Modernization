@@ -1,4 +1,4 @@
-@add_section_steps
+@page @add_section_steps
 Feature: Create Section Service
 
     Background:
