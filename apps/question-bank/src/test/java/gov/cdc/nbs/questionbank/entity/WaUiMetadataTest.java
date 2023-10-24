@@ -26,13 +26,13 @@ class WaUiMetadataTest {
         WaTemplate page = page();
         TextQuestionEntity question = QuestionEntityMother.textQuestion();
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
@@ -49,13 +49,13 @@ class WaUiMetadataTest {
         WaTemplate page = page();
         DateQuestionEntity question = QuestionEntityMother.dateQuestion();
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
@@ -71,13 +71,13 @@ class WaUiMetadataTest {
         WaTemplate page = page();
         NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
@@ -98,13 +98,13 @@ class WaUiMetadataTest {
         WaTemplate page = page();
         CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
@@ -131,14 +131,14 @@ class WaUiMetadataTest {
         };
 
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created 
         // Then an exception is thrown
-        assertThrows(AddQuestionException.class, () -> new WaUiMetadata(command));
+        assertThrows(AddQuestionException.class, () -> new WaUiMetadata(page, command));
 
     }
 
@@ -155,7 +155,7 @@ class WaUiMetadataTest {
 
     private void assertGeneralValues(WaUiMetadata metadata, PageContentCommand.AddQuestion command) {
         var question = command.question();
-        assertEquals(command.page().getId(), metadata.getWaTemplateUid().getId());
+        assertEquals(command.page(), metadata.getWaTemplateUid().getId());
         assertEquals(question.getNbsUiComponentUid(), metadata.getNbsUiComponentUid());
         assertEquals(question.getQuestionLabel(), metadata.getQuestionLabel());
         assertEquals(question.getQuestionToolTip(), metadata.getQuestionToolTip());
@@ -184,11 +184,13 @@ class WaUiMetadataTest {
 
     @Test
     void should_create_tab() {
-        PageContentCommand.AddTab command = addTab();
-        WaUiMetadata tabMetadata = new WaUiMetadata(command);
+        WaTemplate page = new WaTemplate();
+        page.setId(123l);
+        PageContentCommand.AddTab command = addTab(page);
+        WaUiMetadata tabMetadata = new WaUiMetadata(page, command);
 
         assertEquals(1010L, tabMetadata.getNbsUiComponentUid().longValue());
-        assertEquals(command.page(), tabMetadata.getWaTemplateUid());
+        assertEquals(command.page(), tabMetadata.getWaTemplateUid().getId());
         assertEquals(command.label(), tabMetadata.getQuestionLabel());
         assertEquals(command.visible() ? "T" : "F", tabMetadata.getDisplayInd());
         assertEquals(command.identifier(), tabMetadata.getQuestionIdentifier());
@@ -210,8 +212,10 @@ class WaUiMetadataTest {
 
     @Test
     void should_update_tab() {
-        PageContentCommand.AddTab command = addTab();
-        WaUiMetadata tabMetadata = new WaUiMetadata(command);
+        WaTemplate page = new WaTemplate();
+        page.setId(123l);
+        PageContentCommand.AddTab command = addTab(page);
+        WaUiMetadata tabMetadata = new WaUiMetadata(page, command);
 
         PageContentCommand.UpdateTab updateCommand = updateTab();
         tabMetadata.update(updateCommand);
@@ -230,11 +234,9 @@ class WaUiMetadataTest {
                 Instant.now());
     }
 
-    private PageContentCommand.AddTab addTab() {
-        WaTemplate page = new WaTemplate();
-        page.setId(123l);
+    private PageContentCommand.AddTab addTab(WaTemplate page) {
         return new PageContentCommand.AddTab(
-                page,
+                page.getId(),
                 "test label",
                 false,
                 "some identifier",

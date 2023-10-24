@@ -55,7 +55,7 @@ public class PageQuestionCreator {
         uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, request.orderNumber());
 
         // create an new entity 
-        WaUiMetadata questionPageEntry = new WaUiMetadata(asAdd(template, question, user, orderNbr));
+        WaUiMetadata questionPageEntry = new WaUiMetadata(template, asAdd(template, question, user, orderNbr));
 
         // save the new entry
         return uiMetadatumRepository.save(questionPageEntry).getId();
@@ -66,7 +66,12 @@ public class PageQuestionCreator {
             WaQuestion question,
             Long user,
             Integer orderNumber) {
-        return new AddQuestion(page, question, orderNumber, user, Instant.now());
+        return new AddQuestion(
+                page.getId(),
+                question,
+                orderNumber,
+                user,
+                Instant.now());
     }
 
 }

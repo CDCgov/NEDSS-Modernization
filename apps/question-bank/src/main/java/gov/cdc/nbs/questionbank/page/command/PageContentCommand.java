@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.command;
 
 import java.time.Instant;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 
 public sealed interface PageContentCommand {
@@ -10,7 +9,7 @@ public sealed interface PageContentCommand {
     Instant requestedOn();
 
     public record AddQuestion(
-            WaTemplate page,
+            Long page,
             WaQuestion question,
             Integer orderNumber,
             long userId,
@@ -18,7 +17,7 @@ public sealed interface PageContentCommand {
     }
 
     public record AddTab(
-            WaTemplate page,
+            Long page,
             String label,
             boolean visible,
             String identifier,
@@ -30,6 +29,16 @@ public sealed interface PageContentCommand {
     public record UpdateTab(
             String label,
             boolean visible,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record AddSection(
+            Long page,
+            String label,
+            boolean visible,
+            String identifier,
+            int orderNumber,
             long userId,
             Instant requestedOn) implements PageContentCommand {
     }

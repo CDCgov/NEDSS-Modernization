@@ -1,81 +1,70 @@
 package gov.cdc.nbs.questionbank.page.content.section;
 
 import java.time.Instant;
-import javax.persistence.EntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.section.exception.AddSectionException;
+import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentIdGenerator;
+import gov.cdc.nbs.questionbank.page.content.section.exception.CreateSectionException;
+import gov.cdc.nbs.questionbank.page.content.section.model.Section;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @Transactional
 public class SectionCreator {
 
-    @Autowired
-    private WaUiMetaDataRepository waUiMetaDataRepository;
+    private final WaUiMetaDataRepository repository;
+    private final WaTemplateRepository templateRepository;
+    private final PageContentIdGenerator idGenerator;
 
-    @Autowired
-    private EntityManager entityManager;
-
-    public CreateSectionResponse createSection(long pageId, Long userId, CreateSectionRequest request) {
-        try {
-            WaUiMetadata waUiMetadata = createWaUiMetadata(pageId, userId, request);
-            log.info("Updating Wa_UI_metadata table by adding new section");
-            waUiMetaDataRepository.incrementOrderNumbers(waUiMetadata.getOrderNbr(), waUiMetadata.getId());
-            waUiMetaDataRepository.save(waUiMetadata);
-            return new CreateSectionResponse(waUiMetadata.getId(), "Section Created Successfully");
-        } catch (Exception exception) {
-            throw new AddSectionException("Add Section exception");
-        }
-
+    public SectionCreator(
+            final WaUiMetaDataRepository repository,
+            final WaTemplateRepository templateRepository,
+            final PageContentIdGenerator idGenerator) {
+        this.repository = repository;
+        this.templateRepository = templateRepository;
+        this.idGenerator = idGenerator;
     }
 
-    private WaUiMetadata createWaUiMetadata(long pageId, Long uid, CreateSectionRequest request) {
-        WaTemplate page = entityManager.getReference(WaTemplate.class, pageId);
-        WaUiMetadata waUiMetadata = new WaUiMetadata();
-        waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setNbsUiComponentUid(1015L);
-        waUiMetadata.getNbsUiComponentUid();
-        waUiMetadata.setWaTemplateUid(page);
-        Long nextOrderNumber = waUiMetaDataRepository.findOrderNbr(
-                request.tabId(),
-                pageId,
-                1010L);
-        if (nextOrderNumber == null) {
-            nextOrderNumber = waUiMetaDataRepository.findOrderNbr_2(
-                    request.tabId(),
-                    pageId,
-                    1010L);
+    public Section createSection(long pageId, Long userId, CreateSectionRequest request) {
+        WaTemplate page = templateRepository.findById(pageId)
+                .orElseThrow(() -> new CreateSectionException("Failed to find page with id: " + pageId));
+        if (!"Draft".equals(page.getTemplateType())) {
+            throw new CreateSectionException("Unable to add section to non Draft page");
         }
-        waUiMetadata.setQuestionLabel(request.name());
-        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
-        waUiMetadata.setDisplayInd(request.visible() ? "T" : "F");
-        waUiMetadata.setPublishIndCd('T');
-        waUiMetadata.setEnableInd("T");
-        waUiMetadata.setRequiredInd("F");
-        waUiMetadata.setCoinfectionIndCd('F');
-        waUiMetadata.setFutureDateIndCd('F');
-        waUiMetadata.setStandardQuestionIndCd('F');
-        waUiMetadata.setStandardNndIndCd('F');
-        waUiMetadata.setQuestionLabel(request.name());
-        waUiMetadata.setAddTime(Instant.now());
-        waUiMetadata.setLastChgTime(Instant.now());
-        waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setRecordStatusCd("Active");
-        waUiMetadata.setLastChgUserId(uid);
-        waUiMetadata.setVersionCtrlNbr(1);
-        waUiMetadata.setRecordStatusTime(Instant.now());
-        waUiMetadata.setQuestionIdentifier("NBS_1_15");
-        waUiMetadata.setLocalId("NBS_1_15");
+        WaUiMetadata tab = repository.findById(request.tabId())
+                .orElseThrow(() -> new CreateSectionException("Failed to find Tab to insert section into"));
 
-        return waUiMetadata;
+        WaUiMetadata section = new WaUiMetadata(page,
+                asAdd(
+                        page.getId(),
+                        idGenerator.next(),
+                        userId,
+                        tab.getOrderNbr() + 1,
+                        request));
 
+        repository.incrementOrderNumbers(tab.getOrderNbr(), page.getId());
+        section = repository.save(section);
+        return new Section(section.getId(), section.getQuestionLabel(), "T".equals(section.getDisplayInd()));
+    }
+
+    private PageContentCommand.AddSection asAdd(
+            Long page,
+            String sectionId,
+            Long userId,
+            Integer order,
+            CreateSectionRequest request) {
+        return new PageContentCommand.AddSection(
+                page,
+                request.name(),
+                request.visible(),
+                sectionId,
+                order,
+                userId,
+                Instant.now());
     }
 }

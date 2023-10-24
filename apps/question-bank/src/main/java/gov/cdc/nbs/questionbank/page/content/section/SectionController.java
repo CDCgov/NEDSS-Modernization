@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.model.Section;
 
 
@@ -39,7 +38,7 @@ public class SectionController {
     }
 
     @PostMapping
-    public CreateSectionResponse createSection(
+    public Section createSection(
             @PathVariable("page") Long page,
             @RequestBody CreateSectionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();

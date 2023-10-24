@@ -174,8 +174,8 @@ public class WaTemplate {
     return components;
   }
 
-  public void add(final PageContentCommand.AddTab add) {
-    WaUiMetadata component = new WaUiMetadata(add);
+  public void add(final WaTemplate page, final PageContentCommand.AddTab add) {
+    WaUiMetadata component = new WaUiMetadata(page,add);
     including(component);
   }
 

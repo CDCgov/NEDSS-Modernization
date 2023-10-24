@@ -256,8 +256,8 @@ public class PageMother {
     // a new tab will always go last
     WaUiMetadata last = last(found.getUiMetadata()).orElseThrow();
     int next = last.getOrderNbr() + 1;
-    found.add(new PageContentCommand.AddTab(
-        found,
+    found.add(found, new PageContentCommand.AddTab(
+        found.getId(),
         name,
         true,
         "TAB_"+next,  //  bring in the test uuid generator!

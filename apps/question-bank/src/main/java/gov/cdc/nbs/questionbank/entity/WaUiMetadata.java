@@ -248,14 +248,14 @@ public class WaUiMetadata {
   }
 
 
-  public WaUiMetadata(PageContentCommand.AddQuestion command) {
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddQuestion command) {
     this();
     // Defaults
     this.standardNndIndCd = 'F';
     this.standardQuestionIndCd = 'F';
 
     // User specified
-    this.waTemplateUid = command.page();
+    this.waTemplateUid = page;
     this.nbsUiComponentUid = command.question().getNbsUiComponentUid();
     this.questionLabel = command.question().getQuestionLabel();
     this.questionToolTip = command.question().getQuestionToolTip();
@@ -300,10 +300,10 @@ public class WaUiMetadata {
     this.added(command);
   }
 
-  public WaUiMetadata(PageContentCommand.AddTab command) {
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddTab command) {
     this();
     this.nbsUiComponentUid = 1010L;
-    this.waTemplateUid = command.page();
+    this.waTemplateUid = page;
     this.questionLabel = command.label();
     this.displayInd = command.visible() ? "T" : "F";
     this.questionIdentifier = command.identifier();
@@ -317,6 +317,19 @@ public class WaUiMetadata {
     this.displayInd = command.visible() ? "T" : "F";
     this.questionLabel = command.label();
     updated(command);
+  }
+
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddSection command) {
+    this();
+    this.nbsUiComponentUid = 1015L;
+    this.waTemplateUid = page;
+    this.questionLabel = command.label();
+    this.displayInd = command.visible() ? "T" : "F";
+    this.questionIdentifier = command.identifier();
+    this.orderNbr = command.orderNumber();
+
+    // Audit
+    added(command);
   }
 
   public void update(UpdateSection command) {
