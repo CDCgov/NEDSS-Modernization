@@ -87,8 +87,8 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
             @Param("id") Long id);
 
     @Modifying
-    @Query(value = "update WaUiMetadata w set w.orderNbr = w.orderNbr - 1 where w.orderNbr >= :orderNbr and w.id != :id")
-    void decrementOrderNumbers(@Param("orderNbr") Integer start, @Param("id") Long id);
+    @Query(value = "UPDATE WaUiMetadata w SET w.orderNbr = w.orderNbr - 1 WHERE w.orderNbr >=:start AND w.waTemplateUid.id =:page")
+    void decrementOrderNumbers(@Param("start") Integer start, @Param("page") Long page);
 
     @Query(value = "SELECT w.orderNbr FROM WaUiMetadata w WHERE w.id = :id")
     Optional<Integer> getOrderNumber(@Param("id") Long id);

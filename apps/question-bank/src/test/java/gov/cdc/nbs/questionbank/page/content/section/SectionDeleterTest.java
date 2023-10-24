@@ -17,6 +17,7 @@ import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataReposito
 class SectionDeleterTest {
     @Mock
     private WaUiMetaDataRepository repository;
+
     @Mock
     private WaTemplateRepository templateRepository;
 
@@ -75,21 +76,21 @@ class SectionDeleterTest {
     }
 
     @Test
-    void should_not_delete_published() {
+    void should_not_delete_because_published() {
         // Given a page that is a Draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(false);
+        when(templateRepository.isPageDraft(0L)).thenReturn(false);
 
         // When a delete section request is processed
         // Then an exception is thrown
-        assertThrows(DeleteSectionException.class, () -> deleter.deleteSection(2l, 1l));
+        assertThrows(DeleteSectionException.class, () -> deleter.deleteSection(0l, 1l));
     }
 
     @Test
-    void should_not_delete_no_tab() {
+    void should_not_delete_no_section() {
         // Given a page that is a Draft
         when(templateRepository.isPageDraft(2l)).thenReturn(true);
 
-        // And an tab that doesn't exist
+        // And an section that doesn't exist
         when(repository.getOrderNumber(1l)).thenReturn(Optional.empty());
 
         // When a delete section request is processed

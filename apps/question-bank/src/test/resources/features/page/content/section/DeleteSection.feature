@@ -1,5 +1,5 @@
 @delete_section
-Feature: Delete Secton
+Feature: Delete Section
 
     Background:
         Given I have a page named "Front Page"

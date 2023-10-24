@@ -1,38 +1,30 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
+import java.time.Instant;
+import javax.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.AddSubSectionException;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.subsection.response.DeleteSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
-import java.util.Optional;
-import javax.persistence.EntityManager;
 
 @Slf4j
 @Service
 @Transactional
-public class SubSectionCreator {
+public class SubsectionCreator {
 
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
     private static final String UPDATE_MESSAGE = "SubSection Updated Successfully";
-    private static final String DELETE_MESSAGE = "SubSection Deleted Successfully";
-
-    private static final long TAB = 1010L;
-    private static final long SECTION = 1015L;
-    private static final long SUBSECTION = 1016L;
 
     @Autowired
     private EntityManager entityManager;
@@ -50,34 +42,6 @@ public class SubSectionCreator {
         }
     }
 
-    public DeleteSubSectionResponse deleteSubSection(Long pageNumber, Long subsection) {
-        try {
-            log.info("Deleting Sub Section");
-            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(subsection)
-                    .orElseThrow(
-                            () -> new DeleteSubSectionException("Failed to find subsection with id: " + subsection));
-            Optional<Long> nbsComponentUidOptional =
-                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr + 1, pageNumber);
-            if (nbsComponentUidOptional.isPresent()) {
-                Long nbsComponentUid = nbsComponentUidOptional.get();
-                if (nbsComponentUid == TAB || nbsComponentUid == SECTION
-                        || nbsComponentUid == SUBSECTION || nbsComponentUid == null) {
-                    waUiMetaDataRepository.deleteById(subsection);
-                    waUiMetaDataRepository.decrementOrderNumbers(orderNbr, subsection);
-                    return new DeleteSubSectionResponse(subsection, DELETE_MESSAGE);
-                } else {
-                    throw new DeleteSubSectionException("Conditions not satisfied");
-                }
-            } else {
-                waUiMetaDataRepository.deleteById(subsection);
-                waUiMetaDataRepository.decrementOrderNumbers(orderNbr, subsection);
-                return new DeleteSubSectionResponse(subsection, DELETE_MESSAGE);
-            }
-        } catch (Exception exception) {
-            throw new DeleteSubSectionException("Delete SubSection exception");
-        }
-
-    }
 
     public UpdateSubSectionResponse updateSubSection(Long subSectionId, UpdateSubSectionRequest request) {
         try {

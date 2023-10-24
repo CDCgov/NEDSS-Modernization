@@ -32,11 +32,11 @@ public class SectionDeleter {
 
         // If there is no next component, the section is empty.
         // If the next component is a tab or section, the section is empty
-        if (nextComponent.isEmpty() || nextComponent.get() == TAB || nextComponent.get() == SECTION) {
-            repository.deleteById(sectionId);
-            repository.decrementOrderNumbers(orderNbr, sectionId);
-        } else {
+        if (!nextComponent.isEmpty() && nextComponent.get() != TAB && nextComponent.get() != SECTION) {
             throw new DeleteSectionException("Unable to delete a section with content");
         }
+
+        repository.deleteById(sectionId);
+        repository.decrementOrderNumbers(orderNbr, sectionId);
     }
 }
