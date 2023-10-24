@@ -5,6 +5,7 @@ import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
@@ -313,6 +314,12 @@ public class WaUiMetadata {
   }
 
   public void update(UpdateTab command) {
+    this.displayInd = command.visible() ? "T" : "F";
+    this.questionLabel = command.label();
+    updated(command);
+  }
+
+  public void update(UpdateSection command) {
     this.displayInd = command.visible() ? "T" : "F";
     this.questionLabel = command.label();
     updated(command);

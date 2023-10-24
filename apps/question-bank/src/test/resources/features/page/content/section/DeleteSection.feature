@@ -11,7 +11,6 @@ Feature: Delete Secton
         When I send a delete section request
         Then the section is deleted
 
-
     Scenario: I cannot delete a section without logging in
         Given I am not logged in
         When I send a delete section request

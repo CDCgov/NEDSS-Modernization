@@ -13,7 +13,7 @@ import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.section.model.Section;
 
 
 @RestController
@@ -23,16 +23,19 @@ public class SectionController {
 
     private final SectionCreator creator;
     private final SectionDeleter deleter;
+    private final SectionUpdater updater;
 
     private final UserDetailsProvider userDetailsProvider;
 
     public SectionController(
-            final SectionCreator createSectionService,
+            final SectionCreator creator,
             final UserDetailsProvider userDetailsProvider,
-            final SectionDeleter deleter) {
+            final SectionDeleter deleter,
+            final SectionUpdater updater) {
         this.userDetailsProvider = userDetailsProvider;
-        this.creator = createSectionService;
+        this.creator = creator;
         this.deleter = deleter;
+        this.updater = updater;
     }
 
     @PostMapping
@@ -50,10 +53,13 @@ public class SectionController {
         deleter.deleteSection(page, sectionId);
     }
 
-    @PutMapping("{sectionId}")
-    public UpdateSectionResponse updateSection(@PathVariable("sectionId") Long sectionId,
+    @PutMapping("{section}")
+    public Section updateSection(
+            @PathVariable("page") Long page,
+            @PathVariable("section") Long section,
             @RequestBody UpdateSectionRequest request) {
-        return creator.updateSection(sectionId, request);
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return updater.update(page, section, userId, request);
     }
 
 }

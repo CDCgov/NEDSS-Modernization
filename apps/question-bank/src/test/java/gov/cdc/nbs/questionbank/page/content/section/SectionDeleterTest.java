@@ -29,7 +29,7 @@ class SectionDeleterTest {
         when(templateRepository.isPageDraft(2l)).thenReturn(true);
 
         // And an empty section with order number
-        when(repository.getOrderNumber(1l)).thenReturn(3);
+        when(repository.getOrderNumber(1l)).thenReturn(Optional.of(3));
         when(repository.findNextNbsUiComponentUid(4, 2l)).thenReturn(Optional.of(1010l));
 
         // When a delete section request is processed
@@ -46,7 +46,7 @@ class SectionDeleterTest {
         when(templateRepository.isPageDraft(2l)).thenReturn(true);
 
         // And an empty section with order number
-        when(repository.getOrderNumber(1l)).thenReturn(3);
+        when(repository.getOrderNumber(1l)).thenReturn(Optional.of(3));
         when(repository.findNextNbsUiComponentUid(4, 2l)).thenReturn(Optional.empty());
 
         // When a delete section request is processed
@@ -63,7 +63,7 @@ class SectionDeleterTest {
         when(templateRepository.isPageDraft(2l)).thenReturn(true);
 
         // And an empty section with order number
-        when(repository.getOrderNumber(1l)).thenReturn(3);
+        when(repository.getOrderNumber(1l)).thenReturn(Optional.of(3));
         when(repository.findNextNbsUiComponentUid(4, 2l)).thenReturn(Optional.of(1015l));
 
         // When a delete section request is processed
@@ -85,12 +85,25 @@ class SectionDeleterTest {
     }
 
     @Test
+    void should_not_delete_no_tab() {
+        // Given a page that is a Draft
+        when(templateRepository.isPageDraft(2l)).thenReturn(true);
+
+        // And an tab that doesn't exist
+        when(repository.getOrderNumber(1l)).thenReturn(Optional.empty());
+
+        // When a delete section request is processed
+        // Then an exception is thrown
+        assertThrows(DeleteSectionException.class, () -> deleter.deleteSection(2l, 1l));
+    }
+
+    @Test
     void should_not_delete_has_content() {
         // Given a page that is a Draft
         when(templateRepository.isPageDraft(2l)).thenReturn(true);
 
         // And a section with content
-        when(repository.getOrderNumber(1l)).thenReturn(3);
+        when(repository.getOrderNumber(1l)).thenReturn(Optional.of(3));
         when(repository.findNextNbsUiComponentUid(4, 2l)).thenReturn(Optional.of(1009l));
 
         // When a delete section request is processed

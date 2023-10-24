@@ -4,6 +4,7 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Collections;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,7 +46,7 @@ class TabDeleterTest {
         .thenReturn(Collections.singletonList(1010l));
 
         // And an existing order number
-        when(repository.getOrderNumber(2L)).thenReturn(2);
+        when(repository.getOrderNumber(2L)).thenReturn(Optional.of(2));
 
         // When a delete is processed
         deleter.delete(1l, 2l);

@@ -26,7 +26,8 @@ public class SectionDeleter {
             throw new DeleteSectionException("Unable to remove section from a published page");
         }
 
-        Integer orderNbr = repository.getOrderNumber(sectionId);
+        Integer orderNbr = repository.getOrderNumber(sectionId)
+                .orElseThrow(() -> new DeleteSectionException("Unable to find section with Id: " + sectionId));
         Optional<Long> nextComponent = repository.findNextNbsUiComponentUid(orderNbr + 1, page);
 
         // If there is no next component, the section is empty.

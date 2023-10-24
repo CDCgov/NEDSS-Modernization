@@ -1,6 +1,15 @@
 package gov.cdc.nbs.questionbank.page.content.addsection;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.section.SectionController;
@@ -10,16 +19,6 @@ import gov.cdc.nbs.questionbank.page.content.section.SectionUpdater;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AddSectionControllerTest {
@@ -57,19 +56,19 @@ class AddSectionControllerTest {
 
     @Test
     void updateSectionTest() {
-
-        UpdateSectionRequest updateSectionRequest = new UpdateSectionRequest("Question Label", "T");
-        Mockito.when(createSectionService.updateSection(123L, updateSectionRequest))
-                .thenReturn(new UpdateSectionResponse(123L, "Section Updated Successfully"));
-
-        UpdateSectionResponse updateSectionResponse = sectionController.updateSection(123L, updateSectionRequest);
-        assertEquals(123L, updateSectionResponse.uid());
+        UpdateSectionRequest request = new UpdateSectionRequest("test", false);
+        when(userDetailsProvider.getCurrentUserDetails()).thenReturn(userDetails());
+        sectionController.updateSection(1l, 2l, request);
+        verify(sectionUpdater).update(1l, 2L, 3l, request);
     }
-
 
     @Test
     void deleteSectionTest() {
         sectionController.deleteSection(100L, 123L);
         verify(sectionDeleter).deleteSection(100l, 123L);
+    }
+
+    private NbsUserDetails userDetails() {
+        return NbsUserDetails.builder().id(3l).build();
     }
 }

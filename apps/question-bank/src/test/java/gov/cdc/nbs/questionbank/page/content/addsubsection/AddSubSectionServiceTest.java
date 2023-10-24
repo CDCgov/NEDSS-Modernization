@@ -76,7 +76,7 @@ class AddSubSectionServiceTest {
     void deleteSubSectionTest() {
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
-                .thenReturn(1);
+                .thenReturn(Optional.of(1));
 
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
                 .thenReturn(Optional.of(1015L));
@@ -91,7 +91,7 @@ class AddSubSectionServiceTest {
     void deleteSubSectionTestExceptionInElse() {
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
-                .thenReturn(1);
+                .thenReturn(Optional.of(1));
 
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
                 .thenReturn(Optional.of(10L));
@@ -105,7 +105,7 @@ class AddSubSectionServiceTest {
     void deleteSubSectionTestInElse() {
 
         Mockito.when(waUiMetaDataRepository.getOrderNumber(123L))
-                .thenReturn(1);
+                .thenReturn(Optional.of(1));
 
         Mockito.when(waUiMetaDataRepository.findNextNbsUiComponentUid( 2, 1234L))
                 .thenReturn(Optional.empty());

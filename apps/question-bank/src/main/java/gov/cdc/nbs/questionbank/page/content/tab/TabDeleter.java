@@ -51,7 +51,8 @@ public class TabDeleter {
             throw new DeleteTabException("Unable to delete a tab with content");
         }
         // get the tabs current order_nbr
-        Integer orderNbr = repository.getOrderNumber(tab);
+        Integer orderNbr = repository.getOrderNumber(tab)
+                .orElseThrow(() -> new DeleteTabException("Failed to find tab with id: " + tab));
 
         // delete the tab entry
         repository.deleteById(tab);

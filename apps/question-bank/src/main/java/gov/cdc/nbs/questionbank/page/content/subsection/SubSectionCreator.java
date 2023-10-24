@@ -50,26 +50,28 @@ public class SubSectionCreator {
         }
     }
 
-    public DeleteSubSectionResponse deleteSubSection(Long pageNumber, Long subSectionId) {
+    public DeleteSubSectionResponse deleteSubSection(Long pageNumber, Long subsection) {
         try {
             log.info("Deleting Sub Section");
-            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(subSectionId);
+            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(subsection)
+                    .orElseThrow(
+                            () -> new DeleteSubSectionException("Failed to find subsection with id: " + subsection));
             Optional<Long> nbsComponentUidOptional =
                     waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr + 1, pageNumber);
             if (nbsComponentUidOptional.isPresent()) {
                 Long nbsComponentUid = nbsComponentUidOptional.get();
                 if (nbsComponentUid == TAB || nbsComponentUid == SECTION
                         || nbsComponentUid == SUBSECTION || nbsComponentUid == null) {
-                    waUiMetaDataRepository.deleteById(subSectionId);
-                    waUiMetaDataRepository.decrementOrderNumbers(orderNbr, subSectionId);
-                    return new DeleteSubSectionResponse(subSectionId, DELETE_MESSAGE);
+                    waUiMetaDataRepository.deleteById(subsection);
+                    waUiMetaDataRepository.decrementOrderNumbers(orderNbr, subsection);
+                    return new DeleteSubSectionResponse(subsection, DELETE_MESSAGE);
                 } else {
                     throw new DeleteSubSectionException("Conditions not satisfied");
                 }
             } else {
-                waUiMetaDataRepository.deleteById(subSectionId);
-                waUiMetaDataRepository.decrementOrderNumbers(orderNbr, subSectionId);
-                return new DeleteSubSectionResponse(subSectionId, DELETE_MESSAGE);
+                waUiMetaDataRepository.deleteById(subsection);
+                waUiMetaDataRepository.decrementOrderNumbers(orderNbr, subsection);
+                return new DeleteSubSectionResponse(subsection, DELETE_MESSAGE);
             }
         } catch (Exception exception) {
             throw new DeleteSubSectionException("Delete SubSection exception");

@@ -8,11 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.section.exception.AddSectionException;
-import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,8 +20,6 @@ public class SectionCreator {
 
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
-
-    private static final String UPDATE_MESSAGE = "Section updated successfully";
 
     @Autowired
     private EntityManager entityManager;
@@ -41,22 +36,6 @@ public class SectionCreator {
         }
 
     }
-
-    public UpdateSectionResponse updateSection(Long sectionId, UpdateSectionRequest request) {
-        try {
-            log.info("Updating section");
-            if (request.questionLabel() == null || request.visible() == null) {
-                throw new UpdateSectionException("Label and visibility fields are required");
-            }
-            waUiMetaDataRepository.setLabelAndVisibility(request.questionLabel(),
-                    request.visible(), sectionId);
-            return new UpdateSectionResponse(sectionId, UPDATE_MESSAGE);
-        } catch (Exception exception) {
-            throw new UpdateSectionException("Update Section Exception");
-        }
-
-    }
-
 
     private WaUiMetadata createWaUiMetadata(long pageId, Long uid, CreateSectionRequest request) {
         WaTemplate page = entityManager.getReference(WaTemplate.class, pageId);
