@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.page.command;
 
 import java.time.Instant;
+
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 
@@ -14,6 +16,15 @@ public sealed interface PageContentCommand {
             WaQuestion question,
             Integer orderNumber,
             long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record AddLineSeparator(
+            WaTemplate page,
+            Long componentId,
+            Integer orderNumber,
+            long userId,
+            String adminComments,
             Instant requestedOn) implements PageContentCommand {
     }
 }

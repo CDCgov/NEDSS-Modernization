@@ -206,6 +206,36 @@ public class WaUiMetadata {
     private String blockNm;
 
 
+    public WaUiMetadata(PageContentCommand.AddLineSeparator command) {
+        // Defaults
+        this.standardNndIndCd = 'F';
+        this.standardQuestionIndCd = null;
+        this.enableInd = "T";
+        this.displayInd = "T";
+        this.requiredInd = "F";
+        this.entryMethod = null;
+        this.recordStatusCd = ACTIVE;
+        this.versionCtrlNbr = 1;
+
+        // User specified
+        this.waTemplateUid = command.page();
+        this.nbsUiComponentUid = command.componentId();
+        this.orderNbr = command.orderNumber();
+        this.adminComment = command.adminComments();
+
+        this.added(command);
+    }
+
+    private void added(PageContentCommand.AddLineSeparator command) {
+        this.addTime = command.requestedOn();
+        this.addUserId = command.userId();
+        this.lastChgTime = command.requestedOn();
+        this.lastChgUserId = command.userId();
+        this.recordStatusTime = command.requestedOn();
+    }
+
+
+
     public WaUiMetadata(PageContentCommand.AddQuestion command) {
         // Defaults
         this.standardNndIndCd = 'F';
