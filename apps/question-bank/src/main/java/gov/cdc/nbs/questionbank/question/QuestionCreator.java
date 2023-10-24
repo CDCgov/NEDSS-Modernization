@@ -22,6 +22,10 @@ import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 
 @Component
 class QuestionCreator {
@@ -51,7 +55,7 @@ class QuestionCreator {
         this.questionMapper = questionMapper;
     }
 
-    public TextQuestion create(Long userId, CreateQuestionRequest.Text request) {
+    public TextQuestion create(Long userId, CreateTextQuestionRequest request) {
         TextQuestionEntity question = new TextQuestionEntity(asAdd(userId, request));
         managementUtil.verifyUnique(question);
         question = repository.save(question);
@@ -59,7 +63,7 @@ class QuestionCreator {
         return questionMapper.toTextQuestion(question);
     }
 
-    public DateQuestion create(Long userId, CreateQuestionRequest.Date request) {
+    public DateQuestion create(Long userId, CreateDateQuestionRequest request) {
         DateQuestionEntity question = new DateQuestionEntity(asAdd(userId, request));
         managementUtil.verifyUnique(question);
         question = repository.save(question);
@@ -67,7 +71,7 @@ class QuestionCreator {
         return questionMapper.toDateQuestion(question);
     }
 
-    public NumericQuestion create(Long userId, CreateQuestionRequest.Numeric request) {
+    public NumericQuestion create(Long userId, CreateNumericQuestionRequest request) {
         NumericQuestionEntity question = new NumericQuestionEntity(asAdd(userId, request));
         managementUtil.verifyUnique(question);
         question = repository.save(question);
@@ -75,10 +79,10 @@ class QuestionCreator {
         return questionMapper.toNumericQuestion(question);
     }
 
-    public CodedQuestion create(Long userId, CreateQuestionRequest.Coded request) {
+    public CodedQuestion create(Long userId, CreateCodedQuestionRequest request) {
         CodedQuestionEntity question = new CodedQuestionEntity(asAdd(userId, request));
         managementUtil.verifyUnique(question);
-        verifyValueSetExists(request.valueSet());
+        verifyValueSetExists(request.getValueSet());
         question = repository.save(question);
         sendCreateEvent(question.getId(), userId, question.getAddTime());
         return questionMapper.toCodedQuestion(question);
@@ -94,72 +98,80 @@ class QuestionCreator {
         eventProducer.send(new QuestionCreatedEvent(id, user, createTime));
     }
 
-    private AddNumericQuestion asAdd(Long userId, CreateQuestionRequest.Numeric request) {
+    private AddNumericQuestion asAdd(Long userId, CreateNumericQuestionRequest request) {
         return new QuestionCommand.AddNumericQuestion(
-                request.mask(),
-                request.fieldLength(),
-                request.defaultValue(),
-                request.minValue(),
-                request.maxValue(),
-                request.relatedUnitsLiteral(),
-                request.relatedUnitsValueSet(),
+                request.getMask(),
+                request.getFieldLength(),
+                request.getDefaultValue(),
+                request.getMinValue(),
+                request.getMaxValue(),
+                request.getRelatedUnitsLiteral(),
+                request.getRelatedUnitsValueSet(),
                 asQuestionData(request),
-                asReportingData(request.dataMartInfo(), request.subgroup()),
-                asMessagingData(request.messagingInfo()),
+                asReportingData(
+                        request.getDataMartInfo(),
+                        request.getSubgroup()),
+                asMessagingData(request.getMessagingInfo()),
                 userId,
                 Instant.now());
     }
 
-    private AddDateQuestion asAdd(Long userId, CreateQuestionRequest.Date request) {
+    private AddDateQuestion asAdd(Long userId, CreateDateQuestionRequest request) {
         return new QuestionCommand.AddDateQuestion(
-                request.mask(),
-                request.allowFutureDates(),
+                request.getMask(),
+                request.isAllowFutureDates(),
                 asQuestionData(request),
-                asReportingData(request.dataMartInfo(), request.subgroup()),
-                asMessagingData(request.messagingInfo()),
+                asReportingData(
+                        request.getDataMartInfo(),
+                        request.getSubgroup()),
+                asMessagingData(request.getMessagingInfo()),
                 userId,
                 Instant.now());
     }
 
-    QuestionCommand.AddTextQuestion asAdd(Long userId, CreateQuestionRequest.Text request) {
+    QuestionCommand.AddTextQuestion asAdd(Long userId, CreateTextQuestionRequest request) {
         return new QuestionCommand.AddTextQuestion(
-                request.mask(),
-                request.fieldLength(),
-                request.defaultValue(),
+                request.getMask(),
+                request.getFieldLength(),
+                request.getDefaultValue(),
                 asQuestionData(request),
-                asReportingData(request.dataMartInfo(), request.subgroup()),
-                asMessagingData(request.messagingInfo()),
+                asReportingData(
+                        request.getDataMartInfo(),
+                        request.getSubgroup()),
+                asMessagingData(request.getMessagingInfo()),
                 userId,
                 Instant.now());
     }
 
-    QuestionCommand.AddCodedQuestion asAdd(Long userId, CreateQuestionRequest.Coded request) {
+    QuestionCommand.AddCodedQuestion asAdd(Long userId, CreateCodedQuestionRequest request) {
         return new QuestionCommand.AddCodedQuestion(
-                request.valueSet(),
-                request.defaultValue(),
+                request.getValueSet(),
+                request.getDefaultValue(),
                 asQuestionData(request),
-                asReportingData(request.dataMartInfo(), request.subgroup()),
-                asMessagingData(request.messagingInfo()),
+                asReportingData(
+                        request.getDataMartInfo(),
+                        request.getSubgroup()),
+                asMessagingData(request.getMessagingInfo()),
                 userId,
                 Instant.now());
     }
 
     QuestionCommand.QuestionData asQuestionData(CreateQuestionRequest request) {
-        var messagingInfo = request.messagingInfo();
+        var messagingInfo = request.getMessagingInfo();
         return new QuestionCommand.QuestionData(
-                request.codeSet(),
+                request.getCodeSet(),
                 getLocalId(request),
-                request.uniqueName(),
-                request.subgroup(),
-                request.description(),
-                request.label(),
-                request.tooltip(),
-                request.displayControl(),
-                request.adminComments(),
+                request.getUniqueName(),
+                request.getSubgroup(),
+                request.getDescription(),
+                request.getLabel(),
+                request.getTooltip(),
+                request.getDisplayControl(),
+                request.getAdminComments(),
                 managementUtil.getQuestionOid(
                         messagingInfo.includedInMessage(),
                         messagingInfo.codeSystem(),
-                        request.codeSet()));
+                        request.getCodeSet()));
     }
 
     QuestionCommand.ReportingData asReportingData(CreateQuestionRequest.ReportingInfo dataMartInfo, String subgroup) {
@@ -189,14 +201,15 @@ class QuestionCreator {
      * @return
      */
     String getLocalId(CreateQuestionRequest request) {
-        if (request.codeSet().equals("LOCAL") && (request.uniqueId() == null || request.uniqueId().isBlank())) {
+        if (request.getCodeSet().equals("LOCAL")
+                && (request.getUniqueId() == null || request.getUniqueId().isBlank())) {
             // Question Ids are a combination of the 
             // `NBS_ODSE.NBS_configuration NBS_CLASS_CODE config value + the next valid Id 
             // Ex. GA13004
             String nbsClassCode = getNbsClassCode();
             return nbsClassCode + idGenerator.getNextValidId(EntityType.NBS_QUESTION_ID_LDF).getId();
         } else {
-            return request.uniqueId().trim();
+            return request.getUniqueId().trim();
         }
     }
 

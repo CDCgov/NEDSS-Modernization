@@ -20,7 +20,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
@@ -87,13 +87,13 @@ class QuestionManagementUtilTest {
     @Test
     void should_return_oid_for_not_included_local_request() {
         // given a request with messaging not included
-        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest(false);
+        CreateTextQuestionRequest request = QuestionRequestMother.localTextRequest(false);
 
         // when I generate the question oid
         QuestionOid oid = questionManagementUtil.getQuestionOid(
                 false,
-                request.messagingInfo().codeSystem(),
-                request.codeSet());
+                request.getMessagingInfo().codeSystem(),
+                request.getCodeSet());
 
         // then I am returned the proper code system info
         assertEquals("L", oid.oid());
@@ -103,13 +103,13 @@ class QuestionManagementUtilTest {
     @Test
     void should_return_oid_for_not_included_phin_request() {
         // given a request with messaging not included
-        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
+        CreateTextQuestionRequest request = QuestionRequestMother.phinTextRequest(false);
 
         // when I generate the question oid
         QuestionOid oid = questionManagementUtil.getQuestionOid(
                 false,
-                request.messagingInfo().codeSystem(),
-                request.codeSet());
+                request.getMessagingInfo().codeSystem(),
+                request.getCodeSet());
 
         // then I am returned the proper code system info
         assertEquals("2.16.840.1.114222.4.5.232", oid.oid());
@@ -119,13 +119,14 @@ class QuestionManagementUtilTest {
     @Test
     void should_throw_exception_failed_to_find_code_system() {
         // given a request with an invalid code_system
-        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
-        when(codeValueGeneralRepository.findByCode(request.messagingInfo().codeSystem())).thenReturn(Optional.empty());
+        CreateTextQuestionRequest request = QuestionRequestMother.localTextRequest();
+        when(codeValueGeneralRepository.findByCode(request.getMessagingInfo().codeSystem()))
+                .thenReturn(Optional.empty());
 
         // when retrieving the question oid 
         // then an exception is thrown
-        String codeSystem = request.messagingInfo().codeSystem();
-        String codeSet = request.codeSet();
+        String codeSystem = request.getMessagingInfo().codeSystem();
+        String codeSet = request.getCodeSet();
         assertThrows(UpdateQuestionException.class,
                 () -> questionManagementUtil.getQuestionOid(
                         true,

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.question.request;
 
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
+import gov.cdc.nbs.questionbank.entity.question.UnitType;
 
 public record UpdateQuestionRequest(
         String uniqueName, // editable if not in use

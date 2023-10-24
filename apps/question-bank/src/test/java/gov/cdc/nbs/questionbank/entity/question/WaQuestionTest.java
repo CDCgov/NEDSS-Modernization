@@ -171,7 +171,7 @@ class WaQuestionTest {
     private QuestionCommand.AddTextQuestion createCommand() {
         return new QuestionCommand.AddTextQuestion(
                 "Mask",
-                "25",
+                25,
                 "default value",
                 new QuestionCommand.QuestionData(
                         "code set",

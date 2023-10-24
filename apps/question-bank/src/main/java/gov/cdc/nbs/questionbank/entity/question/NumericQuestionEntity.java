@@ -5,7 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -74,8 +73,12 @@ public class NumericQuestionEntity extends WaQuestion {
         super(command);
 
         setMask(command.mask());
-        setFieldSize(command.fieldLength());
-        setDefaultValue(command.defaultValue());
+        if (command.fieldLength() != null) {
+            setFieldSize(command.fieldLength().toString());
+        }
+        if (command.defaultValue() != null) {
+            setDefaultValue(command.defaultValue().toString());
+        }
         setMinValue(command.minValue());
         setMaxValue(command.maxValue());
         if (command.relatedUnitsValueSet() != null) {

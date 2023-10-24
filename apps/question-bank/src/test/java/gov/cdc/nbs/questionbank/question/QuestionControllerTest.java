@@ -13,7 +13,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,10 +35,10 @@ class QuestionControllerTest {
         when(provider.getCurrentUserDetails()).thenReturn(user);
 
         // and a create text question request is sent
-        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
+        CreateTextQuestionRequest request = QuestionRequestMother.localTextRequest();
 
         // and the creator will create the question
-        when(creator.create(eq(user.getId()), Mockito.any(CreateQuestionRequest.Text.class)))
+        when(creator.create(eq(user.getId()), Mockito.any(CreateTextQuestionRequest.class)))
                 .thenReturn(new TextQuestion(19L,
                         null,
                         null,

@@ -1,8 +1,8 @@
 package gov.cdc.nbs.questionbank.support;
 
 import java.time.Instant;
+import gov.cdc.nbs.questionbank.entity.question.UnitType;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 
 public class QuestionCommandMother {
     private QuestionCommandMother() {}

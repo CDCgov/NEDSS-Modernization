@@ -19,7 +19,10 @@ import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
@@ -68,28 +71,28 @@ public class QuestionController {
 
     @PostMapping("text")
     @ResponseStatus(HttpStatus.CREATED)
-    public TextQuestion createTextQuestion(@RequestBody CreateQuestionRequest.Text request) {
+    public TextQuestion createTextQuestion(@RequestBody CreateTextQuestionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return creator.create(userId, request);
     }
 
     @PostMapping("numeric")
     @ResponseStatus(HttpStatus.CREATED)
-    public NumericQuestion createNumericQuestion(@RequestBody CreateQuestionRequest.Numeric request) {
+    public NumericQuestion createNumericQuestion(@RequestBody CreateNumericQuestionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return creator.create(userId, request);
     }
 
     @PostMapping("coded")
     @ResponseStatus(HttpStatus.CREATED)
-    public CodedQuestion createCodedQuestion(@RequestBody CreateQuestionRequest.Coded request) {
+    public CodedQuestion createCodedQuestion(@RequestBody CreateCodedQuestionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return creator.create(userId, request);
     }
 
     @PostMapping("date")
     @ResponseStatus(HttpStatus.CREATED)
-    public DateQuestion createDateQuestion(@RequestBody CreateQuestionRequest.Date request) {
+    public DateQuestion createDateQuestion(@RequestBody CreateDateQuestionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return creator.create(userId, request);
     }
