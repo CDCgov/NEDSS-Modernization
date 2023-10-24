@@ -1,1 +1,1 @@
-export * from './useSystemManagementAccess';
+export * from './useNavigationBarPermissions';

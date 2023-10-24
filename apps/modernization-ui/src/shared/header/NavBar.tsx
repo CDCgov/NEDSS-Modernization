@@ -2,8 +2,8 @@ import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Config } from '../../config';
 import { UserContext } from '../../providers/UserContext';
-import { useSystemManagementAccess } from 'permissions';
 import './NavBar.scss';
+import { useNavigationBarPermissions } from 'permissions';
 
 // eslint-disable-next-line no-undef
 const NBS_URL = Config.nbsUrl;
@@ -17,7 +17,7 @@ export default function NavBar() {
     const logoutClick = () => {
         logout();
     };
-    const systemManagementAccess = useSystemManagementAccess(user?.permissions);
+    const { systemManagementAccess } = useNavigationBarPermissions();
 
     return (
         <div className="nav-bar">
