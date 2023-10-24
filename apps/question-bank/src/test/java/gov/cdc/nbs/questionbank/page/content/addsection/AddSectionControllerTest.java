@@ -5,18 +5,21 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.section.SectionController;
 import gov.cdc.nbs.questionbank.page.content.section.SectionCreator;
+import gov.cdc.nbs.questionbank.page.content.section.SectionDeleter;
+import gov.cdc.nbs.questionbank.page.content.section.SectionUpdater;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AddSectionControllerTest {
@@ -25,13 +28,19 @@ class AddSectionControllerTest {
     private SectionCreator createSectionService;
 
     @Mock
+    private SectionUpdater sectionUpdater;
+
+    @Mock
+    private SectionDeleter sectionDeleter;
+
+    @Mock
     private UserDetailsProvider userDetailsProvider;
+
+    @InjectMocks
+    private SectionController sectionController;
 
     @Test
     void createSectionTest() {
-
-        SectionController addSectionController = new SectionController(createSectionService,
-                userDetailsProvider);
 
         CreateSectionRequest createSectionRequest = new CreateSectionRequest(1000L, "Local", true);
         NbsUserDetails nbsUserDetails =
@@ -42,35 +51,25 @@ class AddSectionControllerTest {
         Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
 
         CreateSectionResponse createSectionResponse =
-                addSectionController.createSection(1000376L, createSectionRequest);
+                sectionController.createSection(1000376L, createSectionRequest);
         assertEquals(123L, createSectionResponse.uid());
     }
 
     @Test
     void updateSectionTest() {
 
-        SectionController addsectionController = new SectionController(createSectionService,
-                userDetailsProvider);
-
-        UpdateSectionRequest updateSectionRequest = new UpdateSectionRequest( "Question Label", "T");
+        UpdateSectionRequest updateSectionRequest = new UpdateSectionRequest("Question Label", "T");
         Mockito.when(createSectionService.updateSection(123L, updateSectionRequest))
                 .thenReturn(new UpdateSectionResponse(123L, "Section Updated Successfully"));
 
-        UpdateSectionResponse updateSectionResponse = addsectionController.updateSection(123L, updateSectionRequest);
+        UpdateSectionResponse updateSectionResponse = sectionController.updateSection(123L, updateSectionRequest);
         assertEquals(123L, updateSectionResponse.uid());
     }
 
 
     @Test
     void deleteSectionTest() {
-
-        SectionController addsectionController = new SectionController(createSectionService,
-                userDetailsProvider);
-
-        Mockito.when(createSectionService.deleteSection( 100L, 123L))
-                .thenReturn(new DeleteSectionResponse(123L, "Section Deleted Successfully"));
-
-        DeleteSectionResponse deleteSectionResponse = addsectionController.deleteSection(100L, 123L);
-        assertEquals(123L, deleteSectionResponse.uid());
+        sectionController.deleteSection(100L, 123L);
+        verify(sectionDeleter).deleteSection(100l, 123L);
     }
 }

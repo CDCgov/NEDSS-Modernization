@@ -1,14 +1,19 @@
 package gov.cdc.nbs.questionbank.page.content.section;
 
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.response.CreateSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.section.response.DeleteSectionResponse;
 import gov.cdc.nbs.questionbank.page.content.section.response.UpdateSectionResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -17,16 +22,20 @@ import org.springframework.web.bind.annotation.*;
 public class SectionController {
 
     private final SectionCreator creator;
+    private final SectionDeleter deleter;
 
     private final UserDetailsProvider userDetailsProvider;
 
-    public SectionController(SectionCreator createSectionService, UserDetailsProvider userDetailsProvider) {
+    public SectionController(
+            final SectionCreator createSectionService,
+            final UserDetailsProvider userDetailsProvider,
+            final SectionDeleter deleter) {
         this.userDetailsProvider = userDetailsProvider;
         this.creator = createSectionService;
+        this.deleter = deleter;
     }
 
     @PostMapping
-    @ResponseBody
     public CreateSectionResponse createSection(
             @PathVariable("page") Long page,
             @RequestBody CreateSectionRequest request) {
@@ -35,14 +44,15 @@ public class SectionController {
     }
 
     @DeleteMapping("{sectionId}")
-    @ResponseBody
-    public DeleteSectionResponse deleteSection(@PathVariable("page") Long page, @PathVariable("sectionId") Long sectionId) {
-        return creator.deleteSection(page, sectionId);
+    public void deleteSection(
+            @PathVariable("page") Long page,
+            @PathVariable("sectionId") Long sectionId) {
+        deleter.deleteSection(page, sectionId);
     }
 
     @PutMapping("{sectionId}")
-    @ResponseBody
-    public UpdateSectionResponse updateSection(@PathVariable("sectionId") Long sectionId, @RequestBody UpdateSectionRequest request) {
+    public UpdateSectionResponse updateSection(@PathVariable("sectionId") Long sectionId,
+            @RequestBody UpdateSectionRequest request) {
         return creator.updateSection(sectionId, request);
     }
 
