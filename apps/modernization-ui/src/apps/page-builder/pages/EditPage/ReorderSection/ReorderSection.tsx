@@ -1,11 +1,11 @@
 import { Icon } from 'components/Icon/Icon';
 import './ReorderSection.scss';
-import { PageSection } from 'apps/page-builder/generated/models/PageSection';
 import { useState } from 'react';
 import { ReorderSubsection } from '../ReorderSubsection/ReorderSubsection';
+import { PagesSection } from 'apps/page-builder/generated';
 
 type Props = {
-    section: PageSection;
+    section: PagesSection;
 };
 
 export const ReorderSection = ({ section }: Props) => {
@@ -26,9 +26,9 @@ export const ReorderSection = ({ section }: Props) => {
                 <p>{section.name}</p>
             </div>
             <div className={`reorder-section__subsections ${subsectionOpen ? '' : 'closed'}`}>
-                {section && section.sectionSubSections
-                    ? section.sectionSubSections.map((subsection: any, i: number) => {
-                          if (subsection.visible === 'T') {
+                {section && section.subSections
+                    ? section.subSections.map((subsection, i) => {
+                          if (subsection.visible) {
                               return <ReorderSubsection subsection={subsection} key={i} />;
                           }
                       })
