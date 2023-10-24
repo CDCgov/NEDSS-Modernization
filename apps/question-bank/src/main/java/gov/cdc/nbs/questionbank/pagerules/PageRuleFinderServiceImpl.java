@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.pagerules;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Slf4j
 @Service
 public class PageRuleFinderServiceImpl implements PageRuleFinderService {
 
