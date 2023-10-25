@@ -1,11 +1,9 @@
 import { createContext, useContext } from 'react';
 import { usePatientProfile } from './usePatientProfile';
-import { ApolloQueryResult, OperationVariables } from '@apollo/client';
-import { PatientProfileResult } from './useFindPatientProfileSummary';
 
 // Define the context type
 interface ProfileContextType {
-    changed: (variables?: Partial<OperationVariables> | undefined) => Promise<ApolloQueryResult<PatientProfileResult>>;
+    changed: () => void;
 }
 
 // Create the context with an initial value of null
@@ -21,7 +19,9 @@ export function useProfileContext() {
 }
 
 export const ProfileProvider = ({ children, id }: any) => {
-    const { refetch: changed } = usePatientProfile(id);
+    const { refetch } = usePatientProfile(id);
+
+    const changed = () => refetch();
 
     return <ProfileContext.Provider value={{ changed }}>{children}</ProfileContext.Provider>;
 };
