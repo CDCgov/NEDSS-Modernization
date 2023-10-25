@@ -26,8 +26,8 @@ import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.QuestionType;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
