@@ -30,6 +30,9 @@ import lombok.Setter;
 public class WaUiMetadata {
     public static final String ACTIVE = "Active";
     public static final String INACTIVE = "Inactive";
+    private static final Long LINE_SEPARATOR_ID = 1012L;
+    private static final Long HYPERLINK_ID = 1003L;
+    private static final Long READ_ONLY_COMMENTS_ID = 1030L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -204,23 +207,45 @@ public class WaUiMetadata {
 
     @Column(name = "block_nm", length = 30)
     private String blockNm;
-
-    public WaUiMetadata(PageContentCommand.AddHyperLink command) {
+    
+    public WaUiMetadata(PageContentCommand.AddReadOnlyComments command) {
         // Defaults
         this.standardNndIndCd = 'F';
-        this.standardQuestionIndCd = null;
         this.enableInd = "T";
         this.displayInd = "T";
         this.requiredInd = "F";
         this.entryMethod = null;
         this.recordStatusCd = ACTIVE;
         this.versionCtrlNbr = 1;
+        this.nbsUiComponentUid = READ_ONLY_COMMENTS_ID;
 
         // User specified
         this.waTemplateUid = command.page();
-        this.nbsUiComponentUid = command.componentId();
         this.orderNbr = command.orderNumber();
         this.adminComment = command.adminComments();
+        this.questionLabel = command.comments();
+
+        this.added(command);
+    }
+
+    public WaUiMetadata(PageContentCommand.AddHyperLink command) {
+        // Defaults
+        this.standardNndIndCd = 'F';
+        this.enableInd = "T";
+        this.displayInd = "T";
+        this.requiredInd = "F";
+        this.entryMethod = null;
+        this.recordStatusCd = ACTIVE;
+        this.versionCtrlNbr = 1;
+        this.nbsUiComponentUid = HYPERLINK_ID;
+
+        // User specified
+        this.waTemplateUid = command.page();
+        this.orderNbr = command.orderNumber();
+        this.adminComment = command.adminComments();
+        this.questionLabel = command.label();
+        this.defaultValue = command.linkUrl();
+
 
         this.added(command);
     }
@@ -228,17 +253,17 @@ public class WaUiMetadata {
     public WaUiMetadata(PageContentCommand.AddLineSeparator command) {
         // Defaults
         this.standardNndIndCd = 'F';
-        this.standardQuestionIndCd = null;
         this.enableInd = "T";
         this.displayInd = "T";
         this.requiredInd = "F";
         this.entryMethod = null;
         this.recordStatusCd = ACTIVE;
         this.versionCtrlNbr = 1;
+        this.nbsUiComponentUid = LINE_SEPARATOR_ID;
+
 
         // User specified
         this.waTemplateUid = command.page();
-        this.nbsUiComponentUid = command.componentId();
         this.orderNbr = command.orderNumber();
         this.adminComment = command.adminComments();
 

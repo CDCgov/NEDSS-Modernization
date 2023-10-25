@@ -7,35 +7,42 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 
 public sealed interface PageContentCommand {
-    long userId();
+        long userId();
 
-    Instant requestedOn();
+        Instant requestedOn();
 
-    public record AddQuestion(
-            WaTemplate page,
-            WaQuestion question,
-            Integer orderNumber,
-            long userId,
-            Instant requestedOn) implements PageContentCommand {
-    }
+        public record AddQuestion(
+                        WaTemplate page,
+                        WaQuestion question,
+                        Integer orderNumber,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
+        }
 
-    public record AddLineSeparator(
-            WaTemplate page,
-            Long componentId,
-            Integer orderNumber,
-            long userId,
-            String adminComments,
-            Instant requestedOn) implements PageContentCommand {
-    }
+        public record AddLineSeparator(
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String adminComments,
+                        Instant requestedOn) implements PageContentCommand {
+        }
 
-    public record AddHyperLink(
-            WaTemplate page,
-            Long componentId,
-            Integer orderNumber,
-            long userId,
-            String adminComments,
-            String label,
-            String linkUrl,
-            Instant requestedOn) implements PageContentCommand {
-    }
+        public record AddHyperLink(
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String adminComments,
+                        String label,
+                        String linkUrl,
+                        Instant requestedOn) implements PageContentCommand {
+        }
+
+        public record AddReadOnlyComments(
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String comments,
+                        String adminComments,
+                        Instant requestedOn) implements PageContentCommand {
+        }
 }
