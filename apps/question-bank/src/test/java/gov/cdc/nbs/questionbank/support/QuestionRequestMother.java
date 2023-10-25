@@ -90,6 +90,7 @@ public class QuestionRequestMother {
         setSharedFields(request);
         request.setUniqueId(identifier);
         request.setUniqueName(uniqueName);
+        request.setDisplayControl(1008l);
         request.setDataMartInfo(reportingInfo(
                 "custom label",
                 rdbTableName,
