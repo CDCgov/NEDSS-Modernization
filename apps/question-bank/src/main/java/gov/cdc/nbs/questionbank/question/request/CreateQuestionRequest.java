@@ -17,7 +17,6 @@ public abstract class CreateQuestionRequest {
     private ReportingInfo dataMartInfo;
     private MessagingInfo messagingInfo;
     private String adminComments;
-    private QuestionType type;
 
     public record ReportingInfo(
             String reportLabel,

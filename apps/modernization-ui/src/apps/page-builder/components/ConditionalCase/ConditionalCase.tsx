@@ -37,26 +37,6 @@ export const ConditionalCase = () => {
         setEditQtn(!isEditQtn);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleupdateQtn = (id: number, request: any) => {
-        QuestionControllerService.updateQuestionUsingPut({
-            authorization,
-            id,
-            request
-        }).then((resp: any) => {
-            console.log(resp);
-        });
-    };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleCreateQtn = (request: any) => {
-        QuestionControllerService.createQuestionUsingPost({
-            authorization,
-            request
-        }).then((resp: any) => {
-            console.log(resp);
-        });
-    };
-
     const handleAddQuestion = (e: any) => {
         e.stopPropagation();
     };

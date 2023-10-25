@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type CreateQuestionResponse = {
-    questionId?: number;
+export type SearchPageRuleRequest = {
+    searchValue?: string;
 };
 
