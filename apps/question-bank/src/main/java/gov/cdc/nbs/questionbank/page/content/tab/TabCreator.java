@@ -1,129 +1,96 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
-import gov.cdc.nbs.questionbank.page.content.tab.exceptions.AddTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.exceptions.DeleteTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.exceptions.UpdateTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
-import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.response.CreateTabResponse;
-import gov.cdc.nbs.questionbank.page.content.tab.response.DeleteTabResponse;
-import gov.cdc.nbs.questionbank.page.content.tab.response.UpdateTabResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.time.Instant;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
-import java.util.Optional;
-import javax.persistence.EntityManager;
+import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.id.IdGeneratorService.EntityType;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.tab.exceptions.CreateTabException;
+import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
+import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
+import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 
-@Slf4j
 @Component
 @Transactional
 public class TabCreator {
 
-    @Autowired
-    private WaUiMetaDataRepository waUiMetaDataRepository;
+    private final WaUiMetaDataRepository repository;
+    private final WaTemplateRepository templateRepository;
+    private final IdGeneratorService idGenerator;
+    private final NbsConfigurationRepository configRepository;
 
-    private static final String UPDATE_MESSAGE = " Tab Updated Successfully";
-
-    private static final String DELETE_MESSAGE = "Tab Deleted Successfully";
-    @Autowired
-    private EntityManager entityManager;
-
-    private static final long TAB = 1010L;
-
-    private Long getCurrentHighestOrderNumber(Long waTemplateId) {
-        Long maxOrderNumber = waUiMetaDataRepository.findMaxOrderNumberByTemplateUid(waTemplateId);
-        return (maxOrderNumber != null) ? maxOrderNumber : 0L;
+    public TabCreator(
+            final WaUiMetaDataRepository repository,
+            final WaTemplateRepository templateRepository,
+            final IdGeneratorService idGenerator,
+            final NbsConfigurationRepository configRepository) {
+        this.repository = repository;
+        this.templateRepository = templateRepository;
+        this.idGenerator = idGenerator;
+        this.configRepository = configRepository;
     }
 
-    public CreateTabResponse createTab(long page, Long userId, CreateTabRequest request) throws AddTabException {
-        try {
-            WaUiMetadata waUiMetadata = createWaUiMetadata(page, userId, request);
-            log.info("Saving Rule to DB");
-            waUiMetaDataRepository.save(waUiMetadata);
-            waUiMetaDataRepository.incrementOrderNumbers(waUiMetadata.getOrderNbr(), waUiMetadata.getId());
-            return new CreateTabResponse(waUiMetadata.getId(), "Tab Created Successfully");
-        } catch (Exception exception) {
-            throw new AddTabException("Failed to add tab to page");
-        }
-    }
-
-    public DeleteTabResponse deleteTab(Long pageNumber, Long tabId) {
-        try {
-            log.info("Deleting Tab");
-            Integer orderNbr = waUiMetaDataRepository.getOrderNumber(tabId);
-            Optional<Long> nbsComponentUidOptional =
-                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
-            if (nbsComponentUidOptional.isPresent()) {
-                Long nbsComponentUid = nbsComponentUidOptional.get();
-                if (nbsComponentUid == TAB || nbsComponentUid == null) {
-                    waUiMetaDataRepository.deleteById(tabId);
-                    waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, tabId);
-                    return new DeleteTabResponse(tabId, DELETE_MESSAGE);
-                } else {
-                    throw new DeleteTabException("Conditions not satisfied");
-                }
-            } else {
-                waUiMetaDataRepository.deleteById(tabId);
-                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, tabId);
-                return new DeleteTabResponse(tabId, DELETE_MESSAGE);
-            }
-        }  catch(Exception exception) {
-            throw new DeleteTabException("Delete Tab Exception");
+    public Tab create(long page, Long userId, CreateTabRequest request) {
+        if (!templateRepository.isPageDraft(page)) {
+            throw new CreateTabException("Unable to add tab to published page");
         }
 
+        WaUiMetadata waUiMetadata = createTabEntity(page, userId, request);
+        repository.save(waUiMetadata);
+        return new Tab(waUiMetadata.getId(), request.name(), request.visible());
     }
 
-    public UpdateTabResponse updateTab(Long tabId, UpdateTabRequest request) {
-        try {
-            log.info("Updating section");
-            if (request.questionLabel() == null || request.visible() == null) {
-                throw new UpdateSectionException("Label and visibility fields are required");
-            }
-            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(),
-                    request.visible(), tabId);
-            return new UpdateTabResponse(tabId, UPDATE_MESSAGE);
-        } catch(Exception exception) {
-            throw new UpdateTabException("Update Tab Exception");
-        }
+    private WaUiMetadata createTabEntity(long pageId, Long user, CreateTabRequest request) {
+        WaTemplate page = templateRepository.getReferenceById(pageId);
+        Integer nextOrderNumber = getCurrentHighestOrderNumber(pageId) + 1;
 
+        return new WaUiMetadata(asAdd(
+                page,
+                request.name(),
+                request.visible(),
+                getIdentifier(),
+                nextOrderNumber,
+                user));
     }
 
-    private WaUiMetadata createWaUiMetadata(long pageId, Long uid, CreateTabRequest request) {
-        WaTemplate page = entityManager.getReference(WaTemplate.class, pageId);
-        WaUiMetadata waUiMetadata = new WaUiMetadata();
-        waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setNbsUiComponentUid(1010L);
-        waUiMetadata.getNbsUiComponentUid();
-        waUiMetadata.setWaTemplateUid(page);
-        Long nextOrderNumber = getCurrentHighestOrderNumber(pageId);
+    private Integer getCurrentHighestOrderNumber(Long waTemplateId) {
+        return repository.findMaxOrderNumberByTemplateUid(waTemplateId)
+                .orElseThrow(() -> new CreateTabException("Failed to find max order number for page"));
+    }
 
-        waUiMetadata.setDisplayInd(request.visible() ? "T" : "F");
-        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
-        waUiMetadata.setRequiredInd("F");
-        waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setAddTime(Instant.now());
-        waUiMetadata.setLastChgTime(Instant.now());
-        waUiMetadata.setLastChgUserId(uid);
-        waUiMetadata.setRecordStatusCd("Active");
-        waUiMetadata.setRecordStatusTime(Instant.now());
-        waUiMetadata.setVersionCtrlNbr(1);
-        waUiMetadata.setStandardNndIndCd('F');
-        waUiMetadata.setLocalId("NBS_1_14");
-        waUiMetadata.setQuestionIdentifier("NBS_UI_4");
-        waUiMetadata.setCoinfectionIndCd('F');
-        waUiMetadata.setFutureDateIndCd('F');
-        waUiMetadata.setStandardQuestionIndCd('F');
-        waUiMetadata.setPublishIndCd('T');
-        waUiMetadata.setQuestionLabel(request.name());
-        waUiMetadata.setEnableInd("T");
+    /**
+     * <p>
+     * Tab Ids are a combination of the <strong>NBS_ODSE.NBS_configuration.NBS_CLASS_CODE</strong> value and the next
+     * valid Id from the <strong>Local_UID_generator NBS_QUESTION_ID_LDF</strong>
+     * </p>
+     * <p>
+     * Example: GA10001
+     * </p>
+     * Id generation copied from NBS Classic PageManagementActionUtil #1729
+     *
+     * 
+     * @return String
+     */
+    private String getIdentifier() {
+        String classCode = configRepository.findById("NBS_CLASS_CODE")
+                .orElseThrow(() -> new CreateTabException("Failed to lookup NBS_CLASS_CODE"))
+                .getConfigValue();
+        var id = idGenerator.getNextValidId(EntityType.NBS_QUESTION_ID_LDF).getId();
+        return classCode + id;
+    }
 
-        return waUiMetadata;
-
+    private PageContentCommand.AddTab asAdd(
+            WaTemplate page,
+            String label,
+            boolean visible,
+            String identifier,
+            int orderNumber,
+            long user) {
+        return new PageContentCommand.AddTab(page, label, visible, identifier, orderNumber, user, Instant.now());
     }
 }

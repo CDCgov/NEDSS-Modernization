@@ -56,37 +56,38 @@ public class SectionCreator {
             log.info("Deleting Section");
             Integer orderNbr = waUiMetaDataRepository.getOrderNumber(sectionId);
             Optional<Long> nbsComponentUidOptional =
-                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr+1, pageNumber);
+                    waUiMetaDataRepository.findNextNbsUiComponentUid(orderNbr + 1, pageNumber);
             if (nbsComponentUidOptional.isPresent()) {
                 Long nbsComponentUid = nbsComponentUidOptional.get();
-                if (nbsComponentUid == TAB ||nbsComponentUid == SECTION
-                       || nbsComponentUid == null) {
+                if (nbsComponentUid == TAB || nbsComponentUid == SECTION
+                        || nbsComponentUid == null) {
                     waUiMetaDataRepository.deleteById(sectionId);
-                    waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, sectionId);
+                    waUiMetaDataRepository.decrementOrderNumbers(orderNbr, sectionId);
                     return new DeleteSectionResponse(sectionId, DELETE_MESSAGE);
                 } else {
                     throw new DeleteSectionException("Conditions not satisfied");
                 }
             } else {
                 waUiMetaDataRepository.deleteById(sectionId);
-                waUiMetaDataRepository.updateOrderNumberByDecreasing(orderNbr, sectionId);
+                waUiMetaDataRepository.decrementOrderNumbers(orderNbr, sectionId);
                 return new DeleteSectionResponse(sectionId, DELETE_MESSAGE);
             }
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             throw new DeleteSectionException("Delete Section Exception");
         }
 
     }
+
     public UpdateSectionResponse updateSection(Long sectionId, UpdateSectionRequest request) {
         try {
             log.info("Updating section");
             if (request.questionLabel() == null || request.visible() == null) {
                 throw new UpdateSectionException("Label and visibility fields are required");
             }
-            waUiMetaDataRepository.updateQuestionLabelAndVisibility(request.questionLabel(),
+            waUiMetaDataRepository.setLabelAndVisibility(request.questionLabel(),
                     request.visible(), sectionId);
             return new UpdateSectionResponse(sectionId, UPDATE_MESSAGE);
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             throw new UpdateSectionException("Update Section Exception");
         }
 

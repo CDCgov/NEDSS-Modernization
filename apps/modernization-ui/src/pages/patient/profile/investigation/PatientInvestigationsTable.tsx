@@ -9,6 +9,7 @@ import { sort } from './PatientInvestigationSorter';
 import { SelectionHandler, SelectionMode, TableBody, TableComponent } from 'components/Table';
 import { Direction } from 'sorting';
 import { ClassicButton, ClassicLink } from 'classic';
+import { usePatientProfilePermissions } from '../permission';
 import { useInvestigationCompare } from './useInvestigationCompare';
 
 type InvestigationSelectionHandler = (investigation: Investigation) => SelectionHandler;
@@ -71,6 +72,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
     const [total, setTotal] = useState<number>(0);
     const [items, setItems] = useState<Investigation[]>([]);
     const [bodies, setBodies] = useState<TableBody[]>([]);
+    const permissions = usePatientProfilePermissions();
 
     const { comparable, selected, select, deselect } = useInvestigationCompare();
 
@@ -123,14 +125,16 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
             buttons={
                 allowAdd && (
                     <div className="grid-row">
-                        <ClassicButton
-                            disabled={!comparable}
-                            type="button"
-                            className="grid-row"
-                            url={`/nbs/api/profile/${patient}/investigation/${selected?.[0]?.investigation}/compare/${selected?.[1]?.investigation}`}>
-                            <Icon.Topic className="margin-right-05" />
-                            Compare investigations
-                        </ClassicButton>
+                        {permissions.compareInvestigation && (
+                            <ClassicButton
+                                disabled={!comparable}
+                                type="button"
+                                className="grid-row"
+                                url={`/nbs/api/profile/${patient}/investigation/${selected?.[0]?.investigation}/compare/${selected?.[1]?.investigation}`}>
+                                <Icon.Topic className="margin-right-05" />
+                                Compare investigations
+                            </ClassicButton>
+                        )}
                         <ClassicButton url={`/nbs/api/profile/${patient}/investigation`}>
                             <Icon.Add className="margin-right-05" />
                             Add investigation

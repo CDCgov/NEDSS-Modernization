@@ -13,10 +13,12 @@ import java.util.Optional;
 public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long> {
 
     @Query(value = "SELECT MAX(w.orderNbr) FROM WaUiMetadata w WHERE w.waTemplateUid.id =:page")
-    Long findMaxOrderNumberByTemplateUid(@Param("page") Long page);
+    Optional<Integer> findMaxOrderNumberByTemplateUid(@Param("page") Long page);
 
-    @Query(value = "select top 1 nbs_ui_component_uid from WA_UI_metadata where order_nbr = ?1  and wa_template_uid = ?2", nativeQuery = true)
+    @Query(value = "select top 1 nbs_ui_component_uid from WA_UI_metadata where order_nbr = ?1  and wa_template_uid = ?2",
+            nativeQuery = true)
     Optional<Long> findNextNbsUiComponentUid(Integer orderNbr, Long page);
+
     @Query(value = "SELECT" +
             "    COALESCE((SELECT" +
             "            MIN(order_nbr)" +
@@ -73,17 +75,20 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
      * @return
      */
     @Query("SELECT MIN(m.orderNbr) FROM WaUiMetadata m WHERE m.waTemplateUid.id =:page AND m.orderNbr > :orderNbr AND (m.nbsUiComponentUid = 1015 OR m.nbsUiComponentUid = 1010)")
-    Long findOrderNbrOfNextSectionOrTab(
+    Integer findOrderNbrOfNextSectionOrTab(
             @Param("orderNbr") Integer orderNbr,
             @Param("page") long page);
 
     @Modifying
-    @Query(value = "update WaUiMetadata w set w.questionLabel = :questionLabel, w.displayInd = :displayInd  where w.id = :id")
-    void updateQuestionLabelAndVisibility(@Param("questionLabel") String questionLabel, @Param("displayInd")String visibility, @Param("id") Long id);
+    @Query("UPDATE WaUiMetadata w set w.questionLabel = :questionLabel, w.displayInd = :displayInd WHERE w.id = :id")
+    void setLabelAndVisibility(
+            @Param("questionLabel") String questionLabel,
+            @Param("displayInd") String visibility,
+            @Param("id") Long id);
 
     @Modifying
     @Query(value = "update WaUiMetadata w set w.orderNbr = w.orderNbr - 1 where w.orderNbr >= :orderNbr and w.id != :id")
-    void updateOrderNumberByDecreasing(@Param("orderNbr") Integer orderNbr, @Param("id")  Long id);
+    void decrementOrderNumbers(@Param("orderNbr") Integer start, @Param("id") Long id);
 
     @Query(value = "SELECT w.orderNbr FROM WaUiMetadata w WHERE w.id = :id")
     Integer getOrderNumber(@Param("id") Long id);

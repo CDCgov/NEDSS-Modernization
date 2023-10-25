@@ -97,14 +97,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         ]
     });
 
-    const handleSelected = ({ target }: any, item: any) => {
-        if (target.checked) {
-            const value: any = summaries.filter((val: any) => item.id === val.id);
-            setSelectedQuestion(value);
-        } else {
-            setSelectedQuestion({});
-        }
-    };
     // @ts-ignore
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
     /*
@@ -137,6 +129,9 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     }, [summaries]);
 
     const handleSort = (name: string, direction: Direction): void => {
+        if (pages?.currentPage > 1 && setCurrentPage) {
+            setCurrentPage(1);
+        }
         if (name && Direction) {
             setSortBy(toSortString(name, direction));
         }
@@ -205,12 +200,11 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={pages?.pageSize || 0}
-                    totalResults={pages?.totalElements || 0}
-                    currentPage={pages?.current || 0}
+                    pageSize={pages?.pageSize}
+                    totalResults={pages?.totalElements}
+                    currentPage={pages?.currentPage}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
-                    handleSelected={handleSelected}
                     rangeSelector={true}
                     isLoading={isLoading}
                 />
@@ -218,7 +212,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 dataNotAvailableElement
             )}
             {summaries?.length > 0 && searchQuery && searchAvailableElement}
-            <div className="footer-action">{footerActionBtn}</div>
+            <div className="footer-action display-none">{footerActionBtn}</div>
         </div>
     );
 };

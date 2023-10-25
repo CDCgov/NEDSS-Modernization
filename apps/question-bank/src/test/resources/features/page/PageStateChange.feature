@@ -1,3 +1,4 @@
+@page
 Feature: Save Page as Draft
 
     Background:
