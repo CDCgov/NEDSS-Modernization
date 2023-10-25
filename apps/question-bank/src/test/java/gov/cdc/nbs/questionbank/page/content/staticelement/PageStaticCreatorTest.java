@@ -23,6 +23,7 @@ import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticLineSeparatorRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
 
 @ExtendWith(MockitoExtension.class)
 class PageStaticCreatorTest {
@@ -97,5 +98,38 @@ class PageStaticCreatorTest {
         assertEquals(request.linkUrl(), captor.getValue().getDefaultValue());
         assertNotNull(newId);
     }
+
+    @Test
+    void should_add_read_only_comments_to_page() {
+        var request = new AddStaticReadOnlyCommentsRequest("comments test", null, 123L);
+
+        Long pageId = 321L;
+        when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
+
+        Long userId = 999L;
+
+        WaUiMetadata subsec = new WaUiMetadata();
+        subsec.setOrderNbr(4);
+
+        when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
+
+        when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr())).thenReturn(4);
+
+        ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
+        when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
+            WaUiMetadata savedMetadatum = m.getArgument(0);
+            savedMetadatum.setId(77L);
+            return savedMetadatum;
+        });
+
+        Long newId = contentManager.addReadOnlyComments(pageId, request, userId);
+
+
+        verify(uiMetadatumRepository, times(1)).save(Mockito.any());
+        assertEquals(999L, captor.getValue().getAddUserId().longValue());
+        assertEquals(request.commentsText(), captor.getValue().getQuestionLabel());
+        assertNotNull(newId);
+    }
+
 
 }

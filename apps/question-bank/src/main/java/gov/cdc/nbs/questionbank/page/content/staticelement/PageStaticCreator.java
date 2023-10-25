@@ -106,7 +106,7 @@ public class PageStaticCreator {
         if (pageId == null) {
             throw new AddStaticElementException("Page is required");
         }
-        if (request.comments() == null) {
+        if (request.commentsText() == null) {
             throw new AddStaticElementException("Comments are required");
         }
 
@@ -124,7 +124,7 @@ public class PageStaticCreator {
                 template,
                 orderNum,
                 userId,
-                request.comments(),
+                request.commentsText(),
                 request.adminComments()));
 
         return uiMetadatumRepository.save(staticElementEntry).getId();

@@ -32,7 +32,7 @@ public class WaUiMetadata {
     public static final String INACTIVE = "Inactive";
     private static final Long LINE_SEPARATOR_ID = 1012L;
     private static final Long HYPERLINK_ID = 1003L;
-    private static final Long READ_ONLY_COMMENTS_ID = 1030L;
+    private static final Long READ_ONLY_COMMENTS_ID = 1014L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
