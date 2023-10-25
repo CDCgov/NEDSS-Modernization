@@ -94,7 +94,8 @@ export const RacesTable = ({ patient }: Props) => {
                     pageNumber: currentPage - 1,
                     pageSize: TOTAL_TABLE_DATA
                 }
-            }
+            },
+            notifyOnNetworkStatusChange: true
         });
     }, [currentPage]);
 
