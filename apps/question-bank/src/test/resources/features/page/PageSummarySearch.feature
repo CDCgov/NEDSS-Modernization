@@ -9,7 +9,7 @@ Feature: Search for page summary
         When I get all page summaries
         Then page summaries are returned
 
-    Scenario: I can sort page summaries
+    Scenario Outline: I can sort page summaries
         Given I am an admin user
         When I get all page summaries and sort by "<sort-field>" "<direction>"
         Then page summaries are returned sorted by "<sort-field>" "<direction>"
@@ -44,7 +44,7 @@ Feature: Search for page summary
         When I get all page summaries
         Then an accessdenied exception is thrown
 
-    Scenario: I can search for page summaries
+    Scenario Outline: I can search for page summaries
         Given I am an admin user
         When I search for summaries by "<search text>"
         Then page summaries are returned that match "<search text>"
@@ -54,7 +54,7 @@ Feature: Search for page summary
             | brucellosis |
             | meningitis  |
 
-    Scenario: I can sort page summaries when searching
+    Scenario Outline: I can sort page summaries when searching
         Given I am an admin user
         When I search for summaries by "" and sort by "<sort-field>" "<direction>"
         Then page summaries are returned sorted by "<sort-field>" "<direction>"
