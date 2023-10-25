@@ -27,4 +27,15 @@ public sealed interface PageContentCommand {
             String adminComments,
             Instant requestedOn) implements PageContentCommand {
     }
+
+    public record AddHyperLink(
+            WaTemplate page,
+            Long componentId,
+            Integer orderNumber,
+            long userId,
+            String adminComments,
+            String label,
+            String linkUrl,
+            Instant requestedOn) implements PageContentCommand {
+    }
 }

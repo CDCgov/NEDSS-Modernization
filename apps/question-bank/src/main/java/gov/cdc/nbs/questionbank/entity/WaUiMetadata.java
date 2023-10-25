@@ -205,6 +205,25 @@ public class WaUiMetadata {
     @Column(name = "block_nm", length = 30)
     private String blockNm;
 
+    public WaUiMetadata(PageContentCommand.AddHyperLink command) {
+        // Defaults
+        this.standardNndIndCd = 'F';
+        this.standardQuestionIndCd = null;
+        this.enableInd = "T";
+        this.displayInd = "T";
+        this.requiredInd = "F";
+        this.entryMethod = null;
+        this.recordStatusCd = ACTIVE;
+        this.versionCtrlNbr = 1;
+
+        // User specified
+        this.waTemplateUid = command.page();
+        this.nbsUiComponentUid = command.componentId();
+        this.orderNbr = command.orderNumber();
+        this.adminComment = command.adminComments();
+
+        this.added(command);
+    }
 
     public WaUiMetadata(PageContentCommand.AddLineSeparator command) {
         // Defaults
@@ -225,16 +244,6 @@ public class WaUiMetadata {
 
         this.added(command);
     }
-
-    private void added(PageContentCommand.AddLineSeparator command) {
-        this.addTime = command.requestedOn();
-        this.addUserId = command.userId();
-        this.lastChgTime = command.requestedOn();
-        this.lastChgUserId = command.userId();
-        this.recordStatusTime = command.requestedOn();
-    }
-
-
 
     public WaUiMetadata(PageContentCommand.AddQuestion command) {
         // Defaults
@@ -294,7 +303,7 @@ public class WaUiMetadata {
         this.added(command);
     }
 
-    private void added(PageContentCommand.AddQuestion command) {
+    private void added(PageContentCommand command) {
         this.addTime = command.requestedOn();
         this.addUserId = command.userId();
         this.lastChgTime = command.requestedOn();

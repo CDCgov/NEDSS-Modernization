@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLink;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticLineSeparatorRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,16 @@ public class AddStaticController {
         return new AddStaticResponse(componentId);
     }
 
+    @PostMapping("/hyperlink")
+    public AddStaticResponse addStaticHyperLink(
+        @PathVariable("page") Long pageId,
+        @RequestBody AddStaticHyperLink request
+    ) {
+
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        Long componentId = pageStaticCreator.addHyperLink(pageId, request, userId);
+        return new AddStaticResponse(componentId);
+    }
 
 
 }

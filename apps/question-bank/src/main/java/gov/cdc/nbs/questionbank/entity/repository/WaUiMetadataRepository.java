@@ -36,6 +36,9 @@ public interface WaUiMetadataRepository extends JpaRepository<WaUiMetadata, Long
 
     @Query("Select COALESCE(Max(ui.orderNbr),0) FROM WaUiMetadata ui WHERE ui.waTemplateUid.id =:pageId")
     Integer findMaxOrderNbrForPage(@Param("pageId") Long pageId);
-    
+
+    @Query("SELECT COALESCE(min(ui.orderNbr), (SELECT max(ui.orderNbr) + 1 FROM WaUiMetadata ui WHERE ui.waTemplateUid.id=:pageId)) FROM WaUiMetadata ui WHERE ui.waTemplateUid.id = :pageId AND ui.orderNbr > :orderNum AND ui.nbsUiComponentUid IN (1016, 1015, 1010)")
+    Integer findMaxOrderNbrForSubsection(@Param("pageId") Long pageId, @Param("orderNum") Integer orderNum);
+
     public void deleteByWaTemplateUid(WaTemplate page);
 }

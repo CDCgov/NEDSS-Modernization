@@ -8,13 +8,14 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.cdc.nbs.questionbank.entity.NbsUiComponent;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddHyperLink;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddLineSeparator;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLink;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticLineSeparatorRequest;
 
 @Component
@@ -24,9 +25,9 @@ public class PageStaticCreator {
     private final WaUiMetadataRepository uiMetadatumRepository;
     private final EntityManager entityManager;
 
-    public static final Long LINE_SEPARATOR_ID = (long) 1012;
-    public static final Long HYPERLINK_ID = (long) 1003;
-    public static final Long READ_ONLY_ID = (long) 1030;
+    public static final Long LINE_SEPARATOR_ID = 1012L;
+    public static final Long HYPERLINK_ID = 1003L;
+    public static final Long READ_ONLY_ID = 1030L;
 
 
     public PageStaticCreator(
@@ -37,8 +38,42 @@ public class PageStaticCreator {
     }
 
     public Long addLineSeparator(Long pageId, AddStaticLineSeparatorRequest request, Long user) {
+        if(pageId == null) {
+            throw new AddStaticElementException("Page is required");
+        }
+
+        WaTemplate template = entityManager.getReference(WaTemplate.class, pageId);
+ 
+        // i know my component id is 1012 for line separator, this is never going to change
+        WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId()).orElseThrow( () -> new AddStaticElementException("Failed to find subsection"));
+
+
+        Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
+
+
+
+        uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
+
+        WaUiMetadata staticElementEntry = new WaUiMetadata(asAddLineSeparator(template, LINE_SEPARATOR_ID, orderNum, user, request.adminComments()));
+
+        return uiMetadatumRepository.save(staticElementEntry).getId();
+    }
+
+    private PageContentCommand.AddLineSeparator asAddLineSeparator(
+            WaTemplate page,
+            Long componentId,
+            Integer orderNumber,
+            long userId,
+            String adminComments) {
+        return new AddLineSeparator(page, componentId, orderNumber, userId, adminComments, Instant.now());
+    }
+
+    public Long addHyperLink(Long pageId, AddStaticHyperLink request, Long userId) {
         if(pageId == null || request.orderNum() == null) {
             throw new AddStaticElementException("Page and Order Number are required");
+        }
+        if(request.label() == null || request.linkUrl() == null) {
+            throw new AddStaticElementException("Label and Link URL are required");
         }
 
         WaTemplate template = entityManager.getReference(WaTemplate.class, pageId);
@@ -51,18 +86,22 @@ public class PageStaticCreator {
 
         uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, request.orderNum());
 
-        WaUiMetadata staticElementEntry = new WaUiMetadata(asAdd(template, LINE_SEPARATOR_ID, orderNbr, user, request.adminComments()));
+        WaUiMetadata staticElementEntry = new WaUiMetadata(asAddHyperLink(template, LINE_SEPARATOR_ID, orderNbr, userId, request.adminComments(), request.label(), request.linkUrl()));
 
-        return uiMetadatumRepository.save(staticElementEntry).getId();
+
+
+        return null;
     }
 
-    private PageContentCommand.AddLineSeparator asAdd(
+    private PageContentCommand.AddHyperLink asAddHyperLink(
             WaTemplate page,
             Long componentId,
             Integer orderNumber,
             long userId,
-            String adminComments) {
-        return new AddLineSeparator(page, componentId, orderNumber, userId, adminComments, Instant.now());
+            String adminComments,
+            String label,
+            String linkUrl) {
+        return new AddHyperLink(page, componentId, orderNumber, userId, adminComments, label, linkUrl, Instant.now());
     }
 
 }
