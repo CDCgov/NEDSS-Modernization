@@ -239,8 +239,6 @@ public class PageMother {
 
   public WaTemplate createPageDraft(WaTemplate pageIn) {
 
-//    this.entityManager.persist(pageIn);
-
     Instant now = Instant.now().plusSeconds(15);
     WaTemplate page = new WaTemplate();
     page.setTemplateNm(pageIn.getTemplateNm());
