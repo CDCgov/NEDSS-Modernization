@@ -3,13 +3,10 @@ package gov.cdc.nbs.questionbank.question;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.time.Instant;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -24,8 +21,6 @@ import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.repository.CodesetRepository;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
-import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
@@ -56,9 +51,6 @@ class QuestionCreatorTest {
 
     @Mock
     private CodeValueGeneralRepository codeValueGeneralRepository;
-
-    @Mock
-    private QuestionCreatedEventProducer.EnabledProducer producer;
 
     @Mock
     private NbsConfigurationRepository configRepository;
@@ -242,50 +234,6 @@ class QuestionCreatorTest {
 
         // then the id of the new question is returned
         assertEquals(tq.getId().longValue(), question.id());
-    }
-
-    @Test
-    void should_post_created_event() {
-        // given the database will return an entity with an Id and add time
-        Instant now = Instant.now();
-        TextQuestionEntity tq = new TextQuestionEntity();
-        tq.setId(999L);
-        tq.setAddTime(now);
-        when(repository.save(Mockito.any())).thenReturn(tq);
-
-        // and that entity will be mapped to a question
-        when(mapper.toTextQuestion(tq)).thenReturn(new TextQuestion(
-                999l,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null));
-
-        // given a create question request
-        CreateTextQuestionRequest request = QuestionRequestMother.phinTextRequest(false);
-
-        // when a question is created
-        Question question = creator.create(123L, request);
-
-        // then a question created event is sent
-        ArgumentCaptor<QuestionCreatedEvent> eventCaptor = ArgumentCaptor.forClass(QuestionCreatedEvent.class);
-        verify(producer).send(eventCaptor.capture());
-        QuestionCreatedEvent event = eventCaptor.getValue();
-        assertEquals(question.id(), event.id());
-        assertEquals(123L, event.createdBy());
-        assertEquals(now, event.createdAt());
     }
 
     @Test

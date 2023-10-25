@@ -8,8 +8,7 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.kafka.common.Uuid;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -124,9 +123,9 @@ class ValueSetReaderTest {
         code.setValueSetOid("valueSetOid");
         code.setValueSetStatusCd("valueSetStatusCd");
         code.setValueSetStatusTime(Instant.now());
-        code.setParentIsCd(Uuid.randomUuid().getLeastSignificantBits());
+        code.setParentIsCd(UUID.randomUUID().getLeastSignificantBits());
         code.setAddTime(Instant.now());
-        code.setAddUserId(Uuid.randomUuid().getLeastSignificantBits());
+        code.setAddUserId(UUID.randomUUID().getLeastSignificantBits());
 
         return code;
     }

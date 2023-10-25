@@ -9,8 +9,6 @@ import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.repository.CodesetRepository;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
-import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddDateQuestion;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddNumericQuestion;
@@ -32,7 +30,6 @@ class QuestionCreator {
 
     private final IdGeneratorService idGenerator;
     private final WaQuestionRepository repository;
-    private final QuestionCreatedEventProducer eventProducer;
     private final NbsConfigurationRepository configRepository;
     private final CodesetRepository codesetRepository;
     private final QuestionManagementUtil managementUtil;
@@ -41,14 +38,12 @@ class QuestionCreator {
     public QuestionCreator(
             final IdGeneratorService idGenerator,
             final WaQuestionRepository repository,
-            final QuestionCreatedEventProducer eventProducer,
             final NbsConfigurationRepository configRepository,
             final CodesetRepository codesetRepository,
             final QuestionManagementUtil managementUtil,
             final QuestionMapper questionMapper) {
         this.idGenerator = idGenerator;
         this.repository = repository;
-        this.eventProducer = eventProducer;
         this.configRepository = configRepository;
         this.codesetRepository = codesetRepository;
         this.managementUtil = managementUtil;
@@ -59,7 +54,6 @@ class QuestionCreator {
         TextQuestionEntity question = new TextQuestionEntity(asAdd(userId, request));
         managementUtil.verifyUnique(question);
         question = repository.save(question);
-        sendCreateEvent(question.getId(), userId, question.getAddTime());
         return questionMapper.toTextQuestion(question);
     }
 
@@ -67,7 +61,6 @@ class QuestionCreator {
         DateQuestionEntity question = new DateQuestionEntity(asAdd(userId, request));
         managementUtil.verifyUnique(question);
         question = repository.save(question);
-        sendCreateEvent(question.getId(), userId, question.getAddTime());
         return questionMapper.toDateQuestion(question);
     }
 
@@ -75,7 +68,6 @@ class QuestionCreator {
         NumericQuestionEntity question = new NumericQuestionEntity(asAdd(userId, request));
         managementUtil.verifyUnique(question);
         question = repository.save(question);
-        sendCreateEvent(question.getId(), userId, question.getAddTime());
         return questionMapper.toNumericQuestion(question);
     }
 
@@ -84,7 +76,6 @@ class QuestionCreator {
         managementUtil.verifyUnique(question);
         verifyValueSetExists(request.getValueSet());
         question = repository.save(question);
-        sendCreateEvent(question.getId(), userId, question.getAddTime());
         return questionMapper.toCodedQuestion(question);
     }
 
@@ -92,10 +83,6 @@ class QuestionCreator {
         if (codesetRepository.findOneByCodeSetGroupId(valueSet).isEmpty()) {
             throw new CreateQuestionException("Unable to find ValueSet with id: " + valueSet);
         }
-    }
-
-    private void sendCreateEvent(Long id, Long user, Instant createTime) {
-        eventProducer.send(new QuestionCreatedEvent(id, user, createTime));
     }
 
     private AddNumericQuestion asAdd(Long userId, CreateNumericQuestionRequest request) {
