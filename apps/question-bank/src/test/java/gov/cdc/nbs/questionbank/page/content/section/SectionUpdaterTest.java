@@ -18,16 +18,16 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.model.Section;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 
 @ExtendWith(MockitoExtension.class)
 class SectionUpdaterTest {
 
     @Mock
-    WaUiMetaDataRepository repository;
+    WaUiMetadataRepository repository;
 
     @Mock
     WaTemplateRepository templateRepository;

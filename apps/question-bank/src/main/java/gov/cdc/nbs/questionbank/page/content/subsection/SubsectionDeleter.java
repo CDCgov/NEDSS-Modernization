@@ -6,17 +6,17 @@ import java.util.Optional;
 import java.util.Set;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubsectionException;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 
 @Component
 public class SubsectionDeleter {
 
-    private final WaUiMetaDataRepository repository;
+    private final WaUiMetadataRepository repository;
     private final WaTemplateRepository templateRepository;
 
     public SubsectionDeleter(
-            final WaUiMetaDataRepository repository,
+            final WaUiMetadataRepository repository,
             final WaTemplateRepository templateRepository) {
         this.repository = repository;
         this.templateRepository = templateRepository;
@@ -34,9 +34,9 @@ public class SubsectionDeleter {
             throw new DeleteSubsectionException("Unable to delete subsection if page is not draft");
         }
 
-        Integer orderNbr = repository.getOrderNumber(subsection)
+        Integer orderNbr = repository.findOrderNumber(subsection)
                 .orElseThrow(() -> new DeleteSubsectionException("Failed to find subsection with id: " + subsection));
-        Optional<Long> nextComponent = repository.findNextNbsUiComponentUid(orderNbr + 1, page);
+        Optional<Long> nextComponent = repository.findNbsUiComponentUid(orderNbr + 1, page);
 
         // If next component is empty, subsection is empty
         // If next component is tab, section, or subsection then subsection is empty

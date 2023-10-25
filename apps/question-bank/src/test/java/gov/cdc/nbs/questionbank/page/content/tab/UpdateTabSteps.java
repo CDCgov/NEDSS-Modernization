@@ -7,7 +7,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -20,7 +20,7 @@ public class UpdateTabSteps {
     private TabController tabController;
 
     @Autowired
-    private WaUiMetaDataRepository waUiMetadataRepository;
+    private WaUiMetadataRepository waUiMetadataRepository;
 
     @Autowired
     private PageMother pageMother;

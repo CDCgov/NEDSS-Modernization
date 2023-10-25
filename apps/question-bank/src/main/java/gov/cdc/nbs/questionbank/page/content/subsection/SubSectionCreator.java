@@ -1,107 +1,88 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
 import java.time.Instant;
-import javax.persistence.EntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.AddSubSectionException;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
-import lombok.extern.slf4j.Slf4j;
+import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentIdGenerator;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.CreateSubsectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubsectionRequest;
 
-@Slf4j
 @Service
 @Transactional
 public class SubsectionCreator {
 
-    @Autowired
-    private WaUiMetaDataRepository waUiMetaDataRepository;
+    private final WaUiMetadataRepository repository;
+    private final WaTemplateRepository templateRepository;
+    private final PageContentIdGenerator idGenerator;
 
-    private static final String UPDATE_MESSAGE = "SubSection Updated Successfully";
-
-    @Autowired
-    private EntityManager entityManager;
-
-    public CreateSubSectionResponse createSubSection(long pageId, Long userId, CreateSubSectionRequest request) {
-        try {
-            WaUiMetadata waUiMetadata = createWaUiMetadata(pageId, userId, request);
-            // Increment orderNbr for everything beginning at the new subSection orderNbr to "make room" to insert the subsection
-            waUiMetaDataRepository.incrementOrderNumbers(waUiMetadata.getOrderNbr(), pageId);
-            waUiMetaDataRepository.save(waUiMetadata);
-            log.info("Updating Wa_UI_metadata table by adding new subsection");
-            return new CreateSubSectionResponse(waUiMetadata.getId(), "SubSection Created Successfully");
-        } catch (Exception exception) {
-            throw new AddSubSectionException("Failed to add SubSection");
-        }
+    public SubsectionCreator(
+            final WaUiMetadataRepository repository,
+            final WaTemplateRepository templateRepository,
+            final PageContentIdGenerator idGenerator) {
+        this.repository = repository;
+        this.templateRepository = templateRepository;
+        this.idGenerator = idGenerator;
     }
 
-
-    public UpdateSubSectionResponse updateSubSection(Long subSectionId, UpdateSubSectionRequest request) {
-        try {
-            log.info("Updating subsection");
-            if (request.questionLabel() == null || request.visible() == null) {
-                throw new UpdateSubSectionException("Label and visibility fields are required");
-            }
-            waUiMetaDataRepository.setLabelAndVisibility(request.questionLabel(),
-                    request.visible(), subSectionId);
-            return new UpdateSubSectionResponse(subSectionId, UPDATE_MESSAGE);
-        } catch (Exception exception) {
-            throw new UpdateSubSectionException("Update SubSection Exception");
+    public Subsection create(long pageId, Long userId, CreateSubsectionRequest request) {
+        // Verify a name is provided
+        if (request == null || !StringUtils.hasLength(request.name())) {
+            throw new CreateSubsectionException("Subsection Name is required");
         }
 
+        // Find the page and verify it is a Draft
+        WaTemplate page = templateRepository.findById(pageId)
+                .orElseThrow(() -> new CreateSubsectionException("Failed to find page with id: " + pageId));
+
+        if (!"Draft".equals(page.getTemplateType())) {
+            throw new CreateSubsectionException("Unable to add subsection to non Draft page");
+        }
+
+        // Find the section to add the subsection to
+        WaUiMetadata section = repository.findById(request.sectionId())
+                .orElseThrow(
+                        () -> new CreateSubsectionException("Unable to find Section with id: " + request.sectionId()));
+
+        // Make room to insert the new subsection into the Section
+        repository.incrementOrderNbrGreaterThanOrEqualTo(pageId, section.getOrderNbr() + 1);
+
+        // Create the subsection entity
+        WaUiMetadata subsection = new WaUiMetadata(
+                page,
+                asAdd(
+                        pageId,
+                        userId,
+                        section.getOrderNbr() + 1,
+                        request));
+
+        // Insert it into the database at the now open position
+        subsection = repository.save(subsection);
+
+        return new Subsection(
+                subsection.getId(),
+                subsection.getQuestionLabel(),
+                "T".equals(subsection.getDisplayInd()));
     }
 
-
-    private WaUiMetadata createWaUiMetadata(long pageId, Long uid, CreateSubSectionRequest request) {
-        Instant now = Instant.now();
-        WaTemplate page = entityManager.getReference(WaTemplate.class, pageId);
-        WaUiMetadata waUiMetadata = new WaUiMetadata();
-        waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setNbsUiComponentUid(1016L);
-        waUiMetadata.getNbsUiComponentUid();
-        waUiMetadata.setWaTemplateUid(page);
-
-        WaUiMetadata section = waUiMetaDataRepository.findById(request.sectionId()).orElseThrow(
-                () -> new AddSubSectionException("Failed to find section with id: " + request.sectionId()));
-
-        // Find the orderNbr for the next section within a tab
-        Integer orderNbr = waUiMetaDataRepository.findOrderNbrOfNextSectionOrTab(section.getOrderNbr(), pageId);
-
-        // If there are no more sections or tabs after the given orderNbr, find the max
-        if (orderNbr == null) {
-            orderNbr = waUiMetaDataRepository.findMaxOrderNumberByTemplateUid(pageId)
-                    .orElseThrow(() -> new AddSubSectionException("Failed to find max order for page")) + 1;
-        }
-
-        waUiMetadata.setQuestionLabel(request.name());
-        waUiMetadata.setDisplayInd(request.visible() ? "T" : "F");
-        waUiMetadata.setOrderNbr(orderNbr);
-        waUiMetadata.setRequiredInd("F");
-        waUiMetadata.setCoinfectionIndCd('F');
-        waUiMetadata.setFutureDateIndCd('F');
-        waUiMetadata.setStandardQuestionIndCd('F');
-        waUiMetadata.setPublishIndCd('T');
-        waUiMetadata.setQuestionLabel(request.name());
-        waUiMetadata.setEnableInd("T");
-        waUiMetadata.setStandardNndIndCd('F');
-        waUiMetadata.setAddTime(now);
-        waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setLastChgTime(now);
-        waUiMetadata.setLastChgUserId(uid);
-        waUiMetadata.setRecordStatusCd("Active");
-        waUiMetadata.setRecordStatusTime(now);
-        waUiMetadata.setVersionCtrlNbr(1);
-        waUiMetadata.setLocalId("NBS_1_15");
-        waUiMetadata.setQuestionIdentifier("NBS_1_15");
-
-        return waUiMetadata;
-
+    private PageContentCommand.AddSubsection asAdd(
+            long pageId,
+            long userId,
+            Integer order,
+            CreateSubsectionRequest request) {
+        return new PageContentCommand.AddSubsection(
+                pageId,
+                request.name(),
+                request.visible(),
+                idGenerator.next(),
+                order,
+                userId,
+                Instant.now());
     }
 }

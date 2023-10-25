@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.subsection.response.CreateSubSectionResponse;
-import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectionResponse;
+import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubsectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubsectionRequest;
 
 
 @RestController
@@ -23,31 +21,31 @@ import gov.cdc.nbs.questionbank.page.content.subsection.response.UpdateSubSectio
 public class SubsectionController {
 
     private final SubsectionCreator creator;
+    private final SubsectionUpdater updater;
     private final SubsectionDeleter deleter;
-
     private final UserDetailsProvider userDetailsProvider;
 
     public SubsectionController(
             final SubsectionCreator createSubSectionService,
             final SubsectionDeleter deleter,
+            final SubsectionUpdater updater,
             final UserDetailsProvider userDetailsProvider) {
         this.userDetailsProvider = userDetailsProvider;
         this.deleter = deleter;
+        this.updater = updater;
         this.creator = createSubSectionService;
     }
 
     @PostMapping
-    @ResponseBody
-    public CreateSubSectionResponse createSubSection(
+    public Subsection createSubsection(
             @PathVariable("page") Long page,
-            @RequestBody CreateSubSectionRequest request) {
+            @RequestBody CreateSubsectionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return creator.createSubSection(page, userId, request);
+        return creator.create(page, userId, request);
     }
 
 
     @DeleteMapping("{subSectionId}")
-    @ResponseBody
     public void deleteSubSection(
             @PathVariable("page") Long page,
             @PathVariable Long subSectionId) {
@@ -55,10 +53,12 @@ public class SubsectionController {
     }
 
     @PutMapping("{subSectionId}")
-    @ResponseBody
-    public UpdateSubSectionResponse updateSubSection(@PathVariable("subSectionId") Long subSectionId,
-            @RequestBody UpdateSubSectionRequest request) {
-        return creator.updateSubSection(subSectionId, request);
+    public Subsection updateSubSection(
+            @PathVariable("page") Long page,
+            @PathVariable("subSectionId") Long subSectionId,
+            @RequestBody UpdateSubsectionRequest request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return updater.update(page, subSectionId, userId, request);
     }
 
 }

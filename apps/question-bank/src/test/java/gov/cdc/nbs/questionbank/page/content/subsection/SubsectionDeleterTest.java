@@ -14,14 +14,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubsectionException;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 
 @ExtendWith(MockitoExtension.class)
 class SubsectionDeleterTest {
 
     @Mock
-    private WaUiMetaDataRepository repository;
+    private WaUiMetadataRepository repository;
     @Mock
     private WaTemplateRepository templateRepository;
 
@@ -35,8 +35,8 @@ class SubsectionDeleterTest {
         when(templateRepository.isPageDraft(2l)).thenReturn(true);
 
         // And an empty subsection with order number
-        when(repository.getOrderNumber(1l)).thenReturn(Optional.of(3));
-        when(repository.findNextNbsUiComponentUid(4, 2l)).thenReturn(Optional.ofNullable(nextComponent));
+        when(repository.findOrderNumber(1l)).thenReturn(Optional.of(3));
+        when(repository.findNbsUiComponentUid(4, 2l)).thenReturn(Optional.ofNullable(nextComponent));
 
         // When a delete subsection request is processed
         deleter.delete(2l, 1l);
@@ -70,7 +70,7 @@ class SubsectionDeleterTest {
         when(templateRepository.isPageDraft(2l)).thenReturn(true);
 
         // And an subsection that doesn't exist
-        when(repository.getOrderNumber(1l)).thenReturn(Optional.empty());
+        when(repository.findOrderNumber(1l)).thenReturn(Optional.empty());
 
         // When a delete section request is processed
         // Then an exception is thrown
@@ -83,8 +83,8 @@ class SubsectionDeleterTest {
         when(templateRepository.isPageDraft(2l)).thenReturn(true);
 
         // And a section with content
-        when(repository.getOrderNumber(1l)).thenReturn(Optional.of(3));
-        when(repository.findNextNbsUiComponentUid(4, 2l)).thenReturn(Optional.of(1009l));
+        when(repository.findOrderNumber(1l)).thenReturn(Optional.of(3));
+        when(repository.findNbsUiComponentUid(4, 2l)).thenReturn(Optional.of(1009l));
 
         // When a delete section request is processed
         // Then an exception is thrown

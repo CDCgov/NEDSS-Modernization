@@ -3,13 +3,14 @@ package gov.cdc.nbs.questionbank.page.content.tab;
 import java.time.Instant;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.PageContentIdGenerator;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.CreateTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
 
@@ -17,13 +18,13 @@ import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
 @Transactional
 public class TabCreator {
 
-    private final WaUiMetaDataRepository repository;
+    private final WaUiMetadataRepository repository;
     private final WaTemplateRepository templateRepository;
     private final PageContentIdGenerator idGenerator;
 
 
     public TabCreator(
-            final WaUiMetaDataRepository repository,
+            final WaUiMetadataRepository repository,
             final WaTemplateRepository templateRepository,
             final PageContentIdGenerator idGenerator) {
         this.repository = repository;
@@ -32,6 +33,10 @@ public class TabCreator {
     }
 
     public Tab create(long page, Long userId, CreateTabRequest request) {
+        if (request == null || !StringUtils.hasLength(request.name())) {
+            throw new CreateTabException("Name is a required field");
+        }
+
         if (!templateRepository.isPageDraft(page)) {
             throw new CreateTabException("Unable to add tab to published page");
         }
@@ -57,8 +62,7 @@ public class TabCreator {
     }
 
     private Integer getCurrentHighestOrderNumber(Long waTemplateId) {
-        return repository.findMaxOrderNumberByTemplateUid(waTemplateId)
-                .orElseThrow(() -> new CreateTabException("Failed to find max order number for page"));
+        return repository.findMaxOrderNbrForPage(waTemplateId);
     }
 
 

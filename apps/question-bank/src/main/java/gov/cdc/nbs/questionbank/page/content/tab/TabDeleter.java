@@ -5,8 +5,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.DeleteTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 
 @Component
 @Transactional
@@ -30,12 +30,12 @@ public class TabDeleter {
                     order_nbr ASC;
                     """;
 
-    private final WaUiMetaDataRepository repository;
+    private final WaUiMetadataRepository repository;
     private final WaTemplateRepository templateRepository;
     private final JdbcTemplate template;
 
     public TabDeleter(
-            final WaUiMetaDataRepository repository,
+            final WaUiMetadataRepository repository,
             final WaTemplateRepository templateRepository,
             final JdbcTemplate template) {
         this.repository = repository;
@@ -51,7 +51,7 @@ public class TabDeleter {
             throw new DeleteTabException("Unable to delete a tab with content");
         }
         // get the tabs current order_nbr
-        Integer orderNbr = repository.getOrderNumber(tab)
+        Integer orderNbr = repository.findOrderNumber(tab)
                 .orElseThrow(() -> new DeleteTabException("Failed to find tab with id: " + tab));
 
         // delete the tab entry

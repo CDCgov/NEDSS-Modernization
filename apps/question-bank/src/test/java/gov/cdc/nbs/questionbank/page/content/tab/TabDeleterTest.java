@@ -15,14 +15,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.DeleteTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 
 @ExtendWith(MockitoExtension.class)
 class TabDeleterTest {
 
     @Mock
-    private WaUiMetaDataRepository repository;
+    private WaUiMetadataRepository repository;
     @Mock
     private WaTemplateRepository templateRepository;
     @Mock
@@ -46,7 +46,7 @@ class TabDeleterTest {
         .thenReturn(Collections.singletonList(1010l));
 
         // And an existing order number
-        when(repository.getOrderNumber(2L)).thenReturn(Optional.of(2));
+        when(repository.findOrderNumber(2L)).thenReturn(Optional.of(2));
 
         // When a delete is processed
         deleter.delete(1l, 2l);

@@ -2,22 +2,23 @@ package gov.cdc.nbs.questionbank.page.content.section;
 
 import java.time.Instant;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.model.Section;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 
 @Component
 public class SectionUpdater {
 
-    private final WaUiMetaDataRepository repository;
+    private final WaUiMetadataRepository repository;
     private final WaTemplateRepository templateRepository;
 
     public SectionUpdater(
-            final WaUiMetaDataRepository repository,
+            final WaUiMetadataRepository repository,
             final WaTemplateRepository templateRepository) {
         this.repository = repository;
         this.templateRepository = templateRepository;
@@ -28,8 +29,8 @@ public class SectionUpdater {
             throw new UpdateSectionException("Unable to update section in a published page");
         }
 
-        if (request == null || request.name() == null || request.name().isBlank()) {
-            throw new UpdateSectionException("Label and visibility fields are required");
+        if (request == null || !StringUtils.hasLength(request.name())) {
+            throw new UpdateSectionException("Section Name is required");
         }
 
         WaUiMetadata section = repository.findById(sectionId)

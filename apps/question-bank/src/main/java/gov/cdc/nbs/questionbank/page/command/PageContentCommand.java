@@ -49,4 +49,21 @@ public sealed interface PageContentCommand {
             long userId,
             Instant requestedOn) implements PageContentCommand {
     }
+
+    public record AddSubsection(
+            Long page,
+            String label,
+            boolean visible,
+            String identifier,
+            int orderNumber,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record UpdateSubsection(
+            String label,
+            boolean visible,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
 }

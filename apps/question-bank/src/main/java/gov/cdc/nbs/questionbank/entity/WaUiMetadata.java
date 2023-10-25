@@ -6,6 +6,7 @@ import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSubsection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
@@ -305,7 +306,7 @@ public class WaUiMetadata {
     this.nbsUiComponentUid = 1010L;
     this.waTemplateUid = page;
     this.questionLabel = command.label();
-    this.displayInd = command.visible() ? "T" : "F";
+    setVisible(command.visible());
     this.questionIdentifier = command.identifier();
     this.orderNbr = command.orderNumber();
 
@@ -314,7 +315,13 @@ public class WaUiMetadata {
   }
 
   public void update(UpdateTab command) {
-    this.displayInd = command.visible() ? "T" : "F";
+    setVisible(command.visible());
+    this.questionLabel = command.label();
+    updated(command);
+  }
+
+  public void update(UpdateSubsection command) {
+    setVisible(command.visible());
     this.questionLabel = command.label();
     updated(command);
   }
@@ -324,7 +331,20 @@ public class WaUiMetadata {
     this.nbsUiComponentUid = 1015L;
     this.waTemplateUid = page;
     this.questionLabel = command.label();
-    this.displayInd = command.visible() ? "T" : "F";
+    setVisible(command.visible());
+    this.questionIdentifier = command.identifier();
+    this.orderNbr = command.orderNumber();
+
+    // Audit
+    added(command);
+  }
+
+   public WaUiMetadata(WaTemplate page, PageContentCommand.AddSubsection command) {
+    this();
+    this.nbsUiComponentUid = 1016L;
+    this.waTemplateUid = page;
+    this.questionLabel = command.label();
+    setVisible(command.visible());
     this.questionIdentifier = command.identifier();
     this.orderNbr = command.orderNumber();
 
@@ -333,7 +353,7 @@ public class WaUiMetadata {
   }
 
   public void update(UpdateSection command) {
-    this.displayInd = command.visible() ? "T" : "F";
+    setVisible(command.visible());
     this.questionLabel = command.label();
     updated(command);
   }
@@ -411,6 +431,10 @@ public class WaUiMetadata {
         original.getBatchTableColumnWidth(),
         original.getCoinfectionIndCd(),
         original.getBlockNm());
+  }
+
+  private void setVisible(boolean visible) {
+    this.displayInd = visible ? "T" : "F";
   }
 
   @Override

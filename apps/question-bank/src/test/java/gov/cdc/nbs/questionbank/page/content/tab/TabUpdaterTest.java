@@ -12,14 +12,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.UpdateTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 
 @ExtendWith(MockitoExtension.class)
 class TabUpdaterTest {
     @Mock
-    private WaUiMetaDataRepository repository;
+    private WaUiMetadataRepository repository;
     @Mock
     private WaTemplateRepository templateRepository;
 

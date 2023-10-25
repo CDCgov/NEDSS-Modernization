@@ -42,7 +42,7 @@ public class SectionController {
             @PathVariable("page") Long page,
             @RequestBody CreateSectionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return creator.createSection(page, userId, request);
+        return creator.create(page, userId, request);
     }
 
     @DeleteMapping("{sectionId}")
