@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
@@ -50,9 +49,8 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
 
     @Override
-    public CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request) {
-        WaRuleMetadata waRuleMetadata = setRuleDataValues(userId, request);
-        log.info("Saving Rule to DB");
+    public CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request,Long page) {
+        WaRuleMetadata waRuleMetadata = setRuleDataValues(userId, request,page);
         waRuleMetaDataRepository.save(waRuleMetadata);
         sendRuleEvent(request);
         return new CreateRuleResponse(waRuleMetadata.getId(), "Rule Created Successfully");
@@ -63,7 +61,7 @@ public class PageRuleServiceImpl implements PageRuleService {
         ruleCreatedEventProducer.send(new RuleCreatedEvent(ruleRequest));
     }
 
-    private WaRuleMetadata setRuleDataValues(Long userId, CreateRuleRequest request) {
+    private WaRuleMetadata setRuleDataValues(Long userId, CreateRuleRequest request,Long page) {
         WaRuleMetadata ruleMetadata = new WaRuleMetadata();
         RuleData ruleData = createRuleData(request, ruleMetadata);
         ruleMetadata.setRuleCd(request.ruleFunction());
@@ -82,7 +80,7 @@ public class PageRuleServiceImpl implements PageRuleService {
         ruleMetadata.setErrormsgText(ruleData.errorMsgText());
         ruleMetadata.setJsFunction(ruleData.jsFunctionNameHelper().jsFunction());
         ruleMetadata.setJsFunctionName(ruleData.jsFunctionNameHelper().jsFunctionName());
-        ruleMetadata.setWaTemplateUid(request.templateUid());
+        ruleMetadata.setWaTemplateUid(page);
         ruleMetadata.setRuleExpression(ruleData.ruleExpression());
 
         return ruleMetadata;
@@ -756,14 +754,14 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
 
     @Override
-    public CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest request, Long userId) {
+    public CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest request, Long userId,Long page) {
         boolean isPresent = waRuleMetaDataRepository.existsById(ruleId);
         if (!isPresent) {
             return new CreateRuleResponse(ruleId, "RuleId Not Found");
         } else {
             WaRuleMetadata waRuleMetadata = waRuleMetaDataRepository.getReferenceById(ruleId);
             RuleData ruleData = createRuleData(request, waRuleMetadata);
-            WaRuleMetadata updatedValues = setUpdatedValues(ruleData, waRuleMetadata, request, userId);
+            WaRuleMetadata updatedValues = setUpdatedValues(ruleData, waRuleMetadata, request, userId,page);
             waRuleMetaDataRepository.save(updatedValues);
             return new CreateRuleResponse(updatedValues.getId(), "Rule Successfully Updated");
         }
@@ -773,7 +771,7 @@ public class PageRuleServiceImpl implements PageRuleService {
             RuleData ruleData,
             WaRuleMetadata ruleMetadata,
             CreateRuleRequest request,
-            Long userId) {
+            Long userId,Long page) {
         Instant now = Instant.now();
         ruleMetadata.setRuleCd(request.ruleFunction());
         ruleMetadata.setLogic(request.comparator());
@@ -792,29 +790,10 @@ public class PageRuleServiceImpl implements PageRuleService {
         ruleMetadata.setErrormsgText(ruleData.errorMsgText());
         ruleMetadata.setJsFunction(ruleData.jsFunctionNameHelper().jsFunction());
         ruleMetadata.setJsFunctionName(ruleData.jsFunctionNameHelper().jsFunctionName());
-        ruleMetadata.setWaTemplateUid(request.templateUid());
+        ruleMetadata.setWaTemplateUid(page);
         ruleMetadata.setRuleExpression(ruleData.ruleExpression());
         ruleMetadata.setId(ruleMetadata.getId());
 
         return ruleMetadata;
-    }
-
-    @Override
-    public ViewRuleResponse getRuleResponse(Long ruleId) {
-        WaRuleMetadata ruleMetadata = waRuleMetaDataRepository.getReferenceById(ruleId);
-        List<String> sourceValues = new ArrayList<>();
-        List<String> targetValues = new ArrayList<>();
-        if (ruleMetadata.getSourceValues() == null || ruleMetadata.getTargetQuestionIdentifier() == null) {
-            sourceValues.add(null);
-            targetValues.add(null);
-        } else {
-            String[] sourceValue = ruleMetadata.getSourceValues().split(",");
-            sourceValues = Arrays.asList(sourceValue);
-            String[] targetValue = ruleMetadata.getTargetQuestionIdentifier().split(",");
-            targetValues = Arrays.asList(targetValue);
-        }
-        return new ViewRuleResponse(ruleId, ruleMetadata.getWaTemplateUid(), ruleMetadata.getRuleCd(),
-                ruleMetadata.getRuleDescText(), ruleMetadata.getSourceQuestionIdentifier(), sourceValues,
-                ruleMetadata.getLogic(), ruleMetadata.getTargetType(), ruleMetadata.getErrormsgText(), targetValues);
     }
 }

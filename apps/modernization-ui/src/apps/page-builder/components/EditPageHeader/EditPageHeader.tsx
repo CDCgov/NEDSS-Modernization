@@ -1,12 +1,12 @@
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import './EditPageHeader.scss';
-import { PagedDetail } from 'apps/page-builder/generated';
 import { useRef, useState } from 'react';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { SaveTemplates } from '../SaveTemplate/SaveTemplate';
+import { PagesResponse } from 'apps/page-builder/generated';
 
 type PageProps = {
-    page: PagedDetail;
+    page: PagesResponse;
     handleSaveDraft: () => void;
 };
 
@@ -17,8 +17,8 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
     return (
         <div className="edit-page-header">
             <div className="edit-page-header__left">
-                <h2>{page.Name}</h2>
-                <h4>{page.pageDescription}</h4>
+                <h2>{page.name}</h2>
+                <h4>{page.description}</h4>
             </div>
             <div className="edit-page-header__right">
                 {isSaveTemplate ? (

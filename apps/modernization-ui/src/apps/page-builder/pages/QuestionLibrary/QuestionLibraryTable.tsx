@@ -215,9 +215,9 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={pages?.pageSize || 0}
-                    totalResults={pages?.totalElements || 0}
-                    currentPage={pages?.current || 0}
+                    pageSize={pages?.pageSize}
+                    totalResults={pages?.totalElements}
+                    currentPage={pages?.currentPage}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     selectable

@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Config } from '../../config';
 import { UserContext } from '../../providers/UserContext';
 import './NavBar.scss';
+import { useNavigationBarPermissions } from 'shared/header/permissions';
 
 // eslint-disable-next-line no-undef
 const NBS_URL = Config.nbsUrl;
@@ -16,6 +17,8 @@ export default function NavBar() {
     const logoutClick = () => {
         logout();
     };
+    const { systemManagementAccess } = useNavigationBarPermissions();
+
     return (
         <div className="nav-bar">
             <table role="presentation" className="nedssNavTable">
@@ -62,13 +65,13 @@ export default function NavBar() {
                                         <td className="navLink">
                                             <a href={`${NBS_URL}/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
                                         </td>
-                                        <td>
-                                            <span> | </span>
-                                        </td>
 
-                                        <td className="navLink">
-                                            <a href={`${NBS_URL}/SystemAdmin.do`}>System Management</a>
-                                        </td>
+                                        {systemManagementAccess && (
+                                            <td className="navLink">
+                                                <span> | </span>
+                                                <a href={`${NBS_URL}/SystemAdmin.do`}>System Management</a>
+                                            </td>
+                                        )}
                                     </tr>
                                 </tbody>
                             </table>
