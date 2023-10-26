@@ -192,4 +192,20 @@ class PageStaticCreatorTest {
         assertNotNull(newId);
     }
 
+    @Test
+    void should_delete_static_element_from_page() {
+        var request = new DeleteStaticElementRequest(123L);
+
+        Long pageId = 321L;
+
+        WaUiMetadata component = new WaUiMetadata();
+        component.setOrderNbr(7);
+
+        when(uiMetadatumRepository.findById(request.componentId())).thenReturn(Optional.of(component));
+
+        contentManager.deleteStaticElement(pageId, request);
+
+        
+    }
+
 }
