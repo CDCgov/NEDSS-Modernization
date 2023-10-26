@@ -29,7 +29,8 @@ export const usePatientProfile = (patient?: string) => {
             getProfile({
                 variables: {
                     shortId: +patient
-                }
+                },
+                notifyOnNetworkStatusChange: true
             });
         }
     }, [patient]);

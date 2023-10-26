@@ -3,6 +3,7 @@ Feature: Page Component Access Restrictions
 
   Background:
     Given I am logged in
+    And pages exist
 
   Scenario: I cannot retrieve the components of a page without the proper permission
     When I view the components of a page

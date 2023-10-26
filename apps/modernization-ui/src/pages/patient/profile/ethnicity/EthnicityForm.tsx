@@ -35,17 +35,12 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
     const selectedEthinicity = useWatch({ control, name: 'ethnicGroup', defaultValue: entry.ethnicGroup });
 
     const onSubmit = (entered: FieldValues) => {
-        console.log('submitting....');
-        try {
-            onChanged({
-                asOf: externalizeDateTime(entered.asOf),
-                ethnicGroup: orNull(entered.ethnicGroup),
-                unknownReason: orNull(entered.unknownReason),
-                detailed: entered.detailed ? entered.detailed : []
-            });
-        } catch (error: string | any) {
-            console.log('error submitting ethnicity form', error);
-        }
+        onChanged({
+            asOf: externalizeDateTime(entered.asOf),
+            ethnicGroup: orNull(entered.ethnicGroup),
+            unknownReason: orNull(entered.unknownReason),
+            detailed: entered.detailed ? entered.detailed : []
+        });
     };
 
     return (
