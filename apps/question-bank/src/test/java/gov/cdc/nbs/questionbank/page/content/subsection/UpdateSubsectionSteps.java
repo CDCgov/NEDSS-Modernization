@@ -1,8 +1,7 @@
-package gov.cdc.nbs.questionbank.page.content.section;
+package gov.cdc.nbs.questionbank.page.content.subsection;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -10,20 +9,20 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.section.model.Section;
-import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.section.SectionController;
+import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 @Transactional
-public class CreateSectionSteps {
+public class UpdateSubsectionSteps {
     @Autowired
     private SectionController sectionController;
 
     @Autowired
-    private WaUiMetadataRepository repository;
+    private WaUiMetadataRepository waUiMetadataRepository;
 
     @Autowired
     private PageMother pageMother;
@@ -31,23 +30,21 @@ public class CreateSectionSteps {
     @Autowired
     private ExceptionHolder exceptionHolder;
 
-    private Section section;
+    private WaUiMetadata subsectionToUpdate;
 
-    @Given("I send a create section request")
-    public void i_send_a_create_section_request() {
+    @Given("I send an update subsection request")
+    public void i_send_an_update_subsection_request() {
         WaTemplate page = pageMother.one();
 
-        WaUiMetadata tab = page.getUiMetadata().stream()
-                .filter(u -> u.getNbsUiComponentUid() == 1010L)
+        subsectionToUpdate = page.getUiMetadata().stream()
+                .filter(u -> u.getNbsUiComponentUid() == 1016l)
                 .findFirst()
                 .orElseThrow();
         try {
-            section = sectionController.createSection(
+            sectionController.updateSection(
                     page.getId(),
-                    new CreateSectionRequest(
-                            tab.getId(),
-                            "new section",
-                            true));
+                    subsectionToUpdate.getId(),
+                    new UpdateSectionRequest("Updated Name", false));
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -55,15 +52,12 @@ public class CreateSectionSteps {
         }
     }
 
+    @Then("the subsection is updated")
+    public void the_subsection_is_updated() {
+        assertNotNull(subsectionToUpdate);
+        WaUiMetadata updatedSubsection = waUiMetadataRepository.findById(subsectionToUpdate.getId()).orElseThrow();
 
-    @Then("the section is created")
-    public void the_section_is_created() {
-        assertNotNull(section);
-        assertEquals("new section", section.name());
-        assertTrue(section.visible());
-
-        WaUiMetadata sectionMetadata = repository.findById(section.id()).orElseThrow();
-        assertEquals("new section", sectionMetadata.getQuestionLabel());
-        assertEquals("T", sectionMetadata.getDisplayInd());
+        assertEquals("Updated Name", updatedSubsection.getQuestionLabel());
+        assertEquals("F", updatedSubsection.getDisplayInd());
     }
 }

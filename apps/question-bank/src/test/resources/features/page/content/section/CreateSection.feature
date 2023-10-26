@@ -1,9 +1,9 @@
 @create_section
-Feature: Create Secton
+Feature: Create Section
 
     Background:
-        Given I have a page named "Front Page"
-        And the page has a tab named "Tab"
+        Given I have a page
+        And the page has a tab
 
     Scenario: I can create a section
         Given I am an admin user

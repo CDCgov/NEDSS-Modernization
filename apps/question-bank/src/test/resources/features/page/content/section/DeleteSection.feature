@@ -2,9 +2,9 @@
 Feature: Delete Section
 
     Background:
-        Given I have a page named "Front Page"
-        And the page has a tab named "Tab"
-        And the page has a section named "Section" in the "Tab" tab
+        Given I have a page
+        And the page has a tab
+        And the page has a section in the 1st tab
 
     Scenario: I can delete a section
         Given I am an admin user

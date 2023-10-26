@@ -2,10 +2,10 @@ package gov.cdc.nbs.questionbank.page.content.section;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
@@ -14,12 +14,13 @@ import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
+@Transactional
 public class DeleteSectionSteps {
     @Autowired
     private SectionController sectionController;
 
     @Autowired
-    private WaUiMetadataRepository waUiMetadataRepository;
+    private WaUiMetadataRepository repository;
 
     @Autowired
     private PageMother pageMother;
@@ -33,12 +34,10 @@ public class DeleteSectionSteps {
     public void i_send_a_delete_section_request() {
         WaTemplate page = pageMother.one();
 
-        List<WaUiMetadata> sections = page.getUiMetadata().stream()
+        sectionToDelete = page.getUiMetadata().stream()
                 .filter(u -> u.getNbsUiComponentUid() == 1015l)
-                .toList();
-
-        // the last section is empty, so it can be deleted
-        sectionToDelete = sections.get(sections.size() - 1);
+                .findFirst()
+                .orElseThrow();
 
         try {
             sectionController.deleteSection(page.getId(), sectionToDelete.getId());
@@ -49,10 +48,9 @@ public class DeleteSectionSteps {
         }
     }
 
-
     @Then("the section is deleted")
     public void the_section_is_deleted() {
         assertNotNull(sectionToDelete);
-        assertTrue(waUiMetadataRepository.findById(sectionToDelete.getId()).isEmpty());
+        assertTrue(repository.findById(sectionToDelete.getId()).isEmpty());
     }
 }

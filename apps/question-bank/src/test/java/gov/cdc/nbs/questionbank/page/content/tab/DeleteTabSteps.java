@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
@@ -12,9 +12,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +24,6 @@ public class DeleteTabSteps {
 
     @Autowired
     private TabController tabController;
-
-    @Autowired
-    private WaUiMetadataRepository waUiMetadataRepository;
 
     @Autowired
     private ExceptionHolder exceptionHolder;
@@ -73,10 +68,9 @@ public class DeleteTabSteps {
 
     @Then("the tab is deleted")
     public void the_tab_is_deleted() {
-
         WaUiMetadata deleted = this.deleted.active();
 
-        this.entityManager.find(WaUiMetadata.class, deleted.getId());
-
+        WaUiMetadata tab = this.entityManager.find(WaUiMetadata.class, deleted.getId());
+        assertNull(tab);
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
@@ -14,6 +15,7 @@ import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
+@Transactional
 public class DeleteSubsectionSteps {
     @Autowired
     private SubsectionController subsectionController;

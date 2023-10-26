@@ -1,6 +1,6 @@
-package gov.cdc.nbs.questionbank.page.content.section;
+package gov.cdc.nbs.questionbank.page.content.subsection;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.section.model.Section;
-import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubsectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 @Transactional
-public class CreateSectionSteps {
+public class CreateSubsectionSteps {
+
     @Autowired
-    private SectionController sectionController;
+    private SubsectionController subsectionController;
 
     @Autowired
     private WaUiMetadataRepository repository;
@@ -31,22 +32,22 @@ public class CreateSectionSteps {
     @Autowired
     private ExceptionHolder exceptionHolder;
 
-    private Section section;
+    private Subsection subsection;
 
-    @Given("I send a create section request")
-    public void i_send_a_create_section_request() {
+    @Given("I send a create subsection request")
+    public void i_send_a_create_subsection_request() {
         WaTemplate page = pageMother.one();
 
-        WaUiMetadata tab = page.getUiMetadata().stream()
-                .filter(u -> u.getNbsUiComponentUid() == 1010L)
+        WaUiMetadata section = page.getUiMetadata().stream()
+                .filter(u -> u.getNbsUiComponentUid() == 1015L)
                 .findFirst()
                 .orElseThrow();
         try {
-            section = sectionController.createSection(
+            subsection = subsectionController.createSubsection(
                     page.getId(),
-                    new CreateSectionRequest(
-                            tab.getId(),
-                            "new section",
+                    new CreateSubsectionRequest(
+                            section.getId(),
+                            "new subsection",
                             true));
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -56,14 +57,14 @@ public class CreateSectionSteps {
     }
 
 
-    @Then("the section is created")
-    public void the_section_is_created() {
-        assertNotNull(section);
-        assertEquals("new section", section.name());
-        assertTrue(section.visible());
+    @Then("the subsection is created")
+    public void the_subsection_is_created() {
+        assertNotNull(subsection);
+        assertEquals("new subsection", subsection.name());
+        assertTrue(subsection.visible());
 
-        WaUiMetadata sectionMetadata = repository.findById(section.id()).orElseThrow();
-        assertEquals("new section", sectionMetadata.getQuestionLabel());
-        assertEquals("T", sectionMetadata.getDisplayInd());
+        WaUiMetadata subsectionMeta = repository.findById(subsection.id()).orElseThrow();
+        assertEquals("new subsection", subsectionMeta.getQuestionLabel());
+        assertEquals("T", subsectionMeta.getDisplayInd());
     }
 }

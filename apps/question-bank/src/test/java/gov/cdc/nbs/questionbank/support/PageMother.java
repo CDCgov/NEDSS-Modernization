@@ -2,13 +2,10 @@ package gov.cdc.nbs.questionbank.support;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.component.tree.ComponentTreeResolver;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
-import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +29,6 @@ public class PageMother {
 
   @Autowired
   private WaUiMetadataRepository waUiMetadatumRepository;
-
-  @Autowired
-  private WaRuleMetaDataRepository waRuleMetaDataRepository;
-
-  @Autowired
-  private WANNDMetadataRepository wanndMetadataRepository;
-
-  @Autowired
-  private WARDBMetadataRepository wARDBMetadataRepository;
 
   @Autowired
   EntityManager entityManager;
@@ -259,8 +247,9 @@ public class PageMother {
 
     // add page detail mappings
     page.add(
-        new PageContentCommand.AddTab(
         page,
+        new PageContentCommand.AddTab(
+        page.getId(),
         "tab",
         true,
         "TAB_",
