@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient;
 
-import com.github.javafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
@@ -14,6 +13,7 @@ import gov.cdc.nbs.support.RaceMother;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
+import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
