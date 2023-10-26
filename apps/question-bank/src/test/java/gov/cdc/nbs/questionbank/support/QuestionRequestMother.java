@@ -5,6 +5,8 @@ import gov.cdc.nbs.questionbank.entity.question.UnitType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest.DateMask;
+import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest.NumericMask;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest.TextMask;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
@@ -36,7 +38,7 @@ public class QuestionRequestMother {
         setSharedFields(request);
 
         request.setDisplayControl(1008L);
-        request.setMask("Mask");
+        request.setMask(DateMask.DATE);
         request.setAllowFutureDates(false);
         return request;
     }
@@ -61,7 +63,7 @@ public class QuestionRequestMother {
         CreateNumericQuestionRequest request = new CreateNumericQuestionRequest();
         setSharedFields(request);
 
-        request.setMask("NUM");
+        request.setMask(NumericMask.NUM);
         request.setFieldLength(3);
         request.setDefaultValue(1l);
         request.setMinValue(0l);

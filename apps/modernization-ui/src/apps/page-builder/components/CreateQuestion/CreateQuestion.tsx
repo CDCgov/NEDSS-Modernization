@@ -191,6 +191,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         };
         // TODO based on the type selected call one of the questionAPI methods
         // such as createDateQuestion()
+        console.log('ensure', request);
     };
     const handleUpdateQuestion = () => {
         const request = {

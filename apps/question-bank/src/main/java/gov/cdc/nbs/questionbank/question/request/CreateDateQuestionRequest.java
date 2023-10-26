@@ -6,6 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateDateQuestionRequest extends CreateQuestionRequest {
-    private String mask;
+    private DateMask mask;
     private boolean allowFutureDates;
+
+    public enum DateMask {
+        DATE
+    }
 }

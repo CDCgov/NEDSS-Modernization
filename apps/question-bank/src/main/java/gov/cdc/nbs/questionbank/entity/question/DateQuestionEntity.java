@@ -34,7 +34,7 @@ public class DateQuestionEntity extends WaQuestion {
     public DateQuestionEntity(QuestionCommand.AddDateQuestion command) {
         super(command);
 
-        setMask(command.mask());
+        setMask(command.mask().toString());
         setFutureDateIndCd(command.allowFutureDates());
 
         // Audit

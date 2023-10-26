@@ -6,6 +6,7 @@ import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.exception.NullObjectException;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest.NumericMask;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
 
 class NumericQuestionEntityTest {
@@ -19,7 +20,7 @@ class NumericQuestionEntityTest {
     @Test
     void should_set_related_unit_value_set() {
         QuestionCommand.AddNumericQuestion command = new QuestionCommand.AddNumericQuestion(
-                "mask",
+                NumericMask.NUM_DD,
                 1,
                 0l,
                 1l,
@@ -60,7 +61,7 @@ class NumericQuestionEntityTest {
     @Test
     void should_set_related_unit_literal_value() {
         QuestionCommand.AddNumericQuestion command = new QuestionCommand.AddNumericQuestion(
-                "mask",
+                NumericMask.NUM_EXT,
                 1,
                 0l,
                 1l,

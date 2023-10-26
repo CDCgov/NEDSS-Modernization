@@ -72,7 +72,7 @@ public class NumericQuestionEntity extends WaQuestion {
     public NumericQuestionEntity(QuestionCommand.AddNumericQuestion command) {
         super(command);
 
-        setMask(command.mask());
+        setMask(command.mask().toString());
         if (command.fieldLength() != null) {
             setFieldSize(command.fieldLength().toString());
         }

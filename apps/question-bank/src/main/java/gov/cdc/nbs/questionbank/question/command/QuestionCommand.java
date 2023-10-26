@@ -3,6 +3,8 @@ package gov.cdc.nbs.questionbank.question.command;
 import java.time.Instant;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.UnitType;
+import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest.DateMask;
+import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest.NumericMask;
 import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest.TextMask;
 
 public sealed interface QuestionCommand {
@@ -60,7 +62,7 @@ public sealed interface QuestionCommand {
 
     public record AddDateQuestion(
             // Date specific fields
-            String mask,
+            DateMask mask,
             boolean allowFutureDates,
 
             // General Question fields
@@ -79,7 +81,7 @@ public sealed interface QuestionCommand {
 
     public record AddNumericQuestion(
             // Date specific fields
-            String mask,
+            NumericMask mask,
             Integer fieldLength,
             Long defaultValue,
             Long minValue,

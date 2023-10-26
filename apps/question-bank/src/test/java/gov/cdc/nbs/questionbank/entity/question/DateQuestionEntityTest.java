@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.MessagingData;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.ReportingData;
+import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest.DateMask;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
 
 class DateQuestionEntityTest {
@@ -17,7 +18,7 @@ class DateQuestionEntityTest {
 
     @Test
     void should_set_future_date_to_F() {
-        QuestionCommand.AddDateQuestion command = addCommand("mask", false);
+        QuestionCommand.AddDateQuestion command = addCommand(DateMask.DATE, false);
 
         DateQuestionEntity q = new DateQuestionEntity(command);
         assertEquals('F', q.getFutureDateIndCd().charValue());
@@ -26,14 +27,14 @@ class DateQuestionEntityTest {
 
     @Test
     void should_set_future_date_to_T() {
-        QuestionCommand.AddDateQuestion command = addCommand("mask1", true);
+        QuestionCommand.AddDateQuestion command = addCommand(DateMask.DATE, true);
 
         DateQuestionEntity q = new DateQuestionEntity(command);
         assertEquals('T', q.getFutureDateIndCd().charValue());
         assertEquals("mask1", q.getMask());
     }
 
-    private QuestionCommand.AddDateQuestion addCommand(String mask, boolean allowFutureDates) {
+    private QuestionCommand.AddDateQuestion addCommand(DateMask mask, boolean allowFutureDates) {
         return new QuestionCommand.AddDateQuestion(
                 mask,
                 allowFutureDates,
