@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.entity.question;
 import static org.junit.Assert.assertEquals;
 import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
+import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 class TextQuestionEntityTest {
 
@@ -14,15 +15,13 @@ class TextQuestionEntityTest {
 
     @Test
     void should_do_update() {
+        TextQuestionEntity entity = QuestionEntityMother.textQuestion();
         var command = QuestionCommandMother.update();
-        TextQuestionEntity q = new TextQuestionEntity();
-        q.setQuestionType("LOCAL");
-        q.setVersionCtrlNbr(1);
 
-        q.update(command);
+        entity.update(command);
 
-        assertEquals(command.mask(), q.getMask());
-        assertEquals(command.fieldLength(), q.getFieldSize());
-        assertEquals(command.defaultValue(), q.getDefaultValue());
+        assertEquals(command.mask(), entity.getMask());
+        assertEquals(command.fieldLength(), entity.getFieldSize());
+        assertEquals(command.defaultValue(), entity.getDefaultValue());
     }
 }

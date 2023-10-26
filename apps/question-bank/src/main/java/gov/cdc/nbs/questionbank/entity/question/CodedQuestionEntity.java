@@ -18,16 +18,8 @@ public class CodedQuestionEntity extends WaQuestion {
     @Column(name = "code_set_group_id")
     private Long codeSetGroupId;
 
-    public void setCodeSetGroupId(Long valueSet) {
-        this.codeSetGroupId = requireNonNull(valueSet, "ValueSet");
-    }
-
     @Column(name = "default_value", length = 300)
     private String defaultValue;
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
-    }
 
     @Override
     public String getDataType() {
@@ -37,9 +29,9 @@ public class CodedQuestionEntity extends WaQuestion {
     public CodedQuestionEntity(QuestionCommand.AddCodedQuestion command) {
         super(command);
 
-        setCodeSetGroupId(command.valueSet());
-        setDefaultValue(command.defaultValue());
-        setOtherValueIndCd('F');
+        this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet");
+        this.defaultValue = command.defaultValue();
+        this.otherValueIndCd = 'F';
 
         // Audit
         created(command);
@@ -57,8 +49,8 @@ public class CodedQuestionEntity extends WaQuestion {
         update(command.questionData());
 
         // Coded fields
-        setCodeSetGroupId(command.valueSet());
-        setDefaultValue(command.defaultValue());
+        this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet");
+        this.defaultValue = command.defaultValue();
 
         // Reporting
         setReportingData(command);
