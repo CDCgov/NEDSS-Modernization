@@ -24,6 +24,7 @@ import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteStaticElementRequest;
 
 @ExtendWith(MockitoExtension.class)
 class PageStaticCreatorTest {

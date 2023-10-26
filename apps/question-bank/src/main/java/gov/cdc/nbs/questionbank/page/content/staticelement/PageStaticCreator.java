@@ -15,9 +15,11 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddHyperLink;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddStaticElementDefault;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddReadOnlyComments;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
+import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.DeleteStaticElementException;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteStaticElementRequest;
 
 @Component
 @Transactional
@@ -189,6 +191,21 @@ public class PageStaticCreator {
                 asAddStaticElementDefault(template, orderNum, userId, ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID, request.adminComments()));
 
         return uiMetadatumRepository.save(staticElementEntry).getId();
+    }
+
+    public boolean deleteStaticElement(Long pageId, DeleteStaticElementRequest request) {
+        if(pageId == null) {
+            throw new DeleteStaticElementException("Page is required");
+        }
+
+        WaUiMetadata component = uiMetadatumRepository.findById(request.componentId())
+                .orElseThrow(() -> new DeleteStaticElementException("Failed to find component"));
+
+        uiMetadatumRepository.decrementOrderNbrGreaterThan(pageId, component.getOrderNbr());
+
+        uiMetadatumRepository.deleteById(request.componentId());
+
+        return true;
     }
 
 }

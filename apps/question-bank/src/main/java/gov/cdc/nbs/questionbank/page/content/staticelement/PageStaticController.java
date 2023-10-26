@@ -11,7 +11,9 @@ import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteStaticElementRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
+import gov.cdc.nbs.questionbank.page.content.staticelement.response.DeleteStaticResponse;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -76,7 +78,7 @@ public class PageStaticController {
         return new AddStaticResponse(componentId);
     }
 
-    @PostMapping("/original_elec_doc_list")
+    @PostMapping("/original-elec-doc-list")
     public AddStaticResponse addStaticOriginalElectronicDocList(
             @PathVariable("page") Long pageId,
             @RequestBody AddStaticElementDefaultRequest request
@@ -84,6 +86,14 @@ public class PageStaticController {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         Long componentId = pageStaticCreator.addOriginalElectronicDocList(pageId, request, userId);
         return new AddStaticResponse(componentId);
+    }
+
+    @PostMapping("/delete-static-element")
+    public DeleteStaticResponse deleteStaticElement(
+            @PathVariable("page") Long pageId,
+            @RequestBody DeleteStaticElementRequest request
+    ) {
+        return pageStaticCreator.deleteStaticElement(pageId, request) ? new DeleteStaticResponse("delete success") : new DeleteStaticResponse("delete fail");
     }
 
 }
