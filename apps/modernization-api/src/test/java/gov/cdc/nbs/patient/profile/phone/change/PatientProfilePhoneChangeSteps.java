@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.phone.change;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
@@ -50,17 +50,16 @@ public class PatientProfilePhoneChangeSteps {
         long patient = patients.one().id();
 
         newRequest = new NewPatientPhoneInput(
-            patient,
-            RandomUtil.getRandomDateInPast(),
-            RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
-            RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP","TMP"),
-            RandomUtil.getRandomString(),
-            faker.phoneNumber().cellPhone(),
-            faker.phoneNumber().extension(),
-            faker.internet().emailAddress(),
-            faker.internet().url(),
-            RandomUtil.getRandomString()
-        );
+                patient,
+                RandomUtil.getRandomDateInPast(),
+                RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
+                RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
+                RandomUtil.getRandomString(),
+                faker.phoneNumber().cellPhone(),
+                faker.phoneNumber().extension(),
+                faker.internet().emailAddress(),
+                faker.internet().url(),
+                RandomUtil.getRandomString());
 
         controller.add(newRequest);
     }
@@ -73,49 +72,45 @@ public class PatientProfilePhoneChangeSteps {
         Person person = this.entityManager.find(Person.class, patient.id());
 
         assertThat(person.phones()).anySatisfy(
-            actual -> assertThat(actual)
-                .returns(newRequest.type(), TeleEntityLocatorParticipation::getCd)
-                .returns(newRequest.use(), TeleEntityLocatorParticipation::getUseCd)
-                .returns(newRequest.asOf(), TeleEntityLocatorParticipation::getAsOfDate)
-                .returns(newRequest.comment(), TeleEntityLocatorParticipation::getLocatorDescTxt)
-                .satisfies(
-                    phone -> assertThat(phone)
-                        .extracting(TeleEntityLocatorParticipation::getId)
-                        .returns(newRequest.patient(), EntityLocatorParticipationId::getEntityUid)
-                )
-                .satisfies(
-                    phone -> assertThat(phone).extracting(TeleEntityLocatorParticipation::getLocator)
-                        .returns(newRequest.countryCode(), TeleLocator::getCntryCd)
-                        .returns(newRequest.number(), TeleLocator::getPhoneNbrTxt)
-                        .returns(newRequest.extension(), TeleLocator::getExtensionTxt)
-                        .returns(newRequest.email(), TeleLocator::getEmailAddress)
-                        .returns(newRequest.url(), TeleLocator::getUrlAddress)
-                )
-        );
+                actual -> assertThat(actual)
+                        .returns(newRequest.type(), TeleEntityLocatorParticipation::getCd)
+                        .returns(newRequest.use(), TeleEntityLocatorParticipation::getUseCd)
+                        .returns(newRequest.asOf(), TeleEntityLocatorParticipation::getAsOfDate)
+                        .returns(newRequest.comment(), TeleEntityLocatorParticipation::getLocatorDescTxt)
+                        .satisfies(
+                                phone -> assertThat(phone)
+                                        .extracting(TeleEntityLocatorParticipation::getId)
+                                        .returns(newRequest.patient(), EntityLocatorParticipationId::getEntityUid))
+                        .satisfies(
+                                phone -> assertThat(phone).extracting(TeleEntityLocatorParticipation::getLocator)
+                                        .returns(newRequest.countryCode(), TeleLocator::getCntryCd)
+                                        .returns(newRequest.number(), TeleLocator::getPhoneNbrTxt)
+                                        .returns(newRequest.extension(), TeleLocator::getExtensionTxt)
+                                        .returns(newRequest.email(), TeleLocator::getEmailAddress)
+                                        .returns(newRequest.url(), TeleLocator::getUrlAddress)));
     }
 
     @When("a patient's phone is changed")
     @Transactional
     public void a_patient_phone_is_changed() {
         TeleEntityLocatorParticipation existing = this.entityManager.find(Person.class, patients.one().id())
-            .phones()
-            .stream()
-            .findFirst()
-            .orElseThrow();
+                .phones()
+                .stream()
+                .findFirst()
+                .orElseThrow();
 
         updateRequest = new UpdatePatientPhoneInput(
-            existing.getId().getEntityUid(),
-            existing.getId().getLocatorUid(),
-            RandomUtil.getRandomDateInPast(),
-            RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
-            RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP","TMP"),
-            RandomUtil.getRandomString(),
-            faker.phoneNumber().cellPhone(),
-            faker.phoneNumber().extension(),
-            faker.internet().emailAddress(),
-            faker.internet().url(),
-            RandomUtil.getRandomString()
-        );
+                existing.getId().getEntityUid(),
+                existing.getId().getLocatorUid(),
+                RandomUtil.getRandomDateInPast(),
+                RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
+                RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
+                RandomUtil.getRandomString(),
+                faker.phoneNumber().cellPhone(),
+                faker.phoneNumber().extension(),
+                faker.internet().emailAddress(),
+                faker.internet().url(),
+                RandomUtil.getRandomString());
 
         controller.update(updateRequest);
     }
@@ -128,25 +123,22 @@ public class PatientProfilePhoneChangeSteps {
         Person person = this.entityManager.find(Person.class, patient.id());
 
         assertThat(person.phones()).anySatisfy(
-            actual -> assertThat(actual)
-                .returns(updateRequest.type(), TeleEntityLocatorParticipation::getCd)
-                .returns(updateRequest.use(), TeleEntityLocatorParticipation::getUseCd)
-                .returns(updateRequest.asOf(), TeleEntityLocatorParticipation::getAsOfDate)
-                .returns(updateRequest.comment(), TeleEntityLocatorParticipation::getLocatorDescTxt)
-                .satisfies(
-                    phone -> assertThat(phone)
-                        .extracting(TeleEntityLocatorParticipation::getId)
-                        .returns(updateRequest.patient(), EntityLocatorParticipationId::getEntityUid)
-                )
-                .satisfies(
-                    phone -> assertThat(phone).extracting(TeleEntityLocatorParticipation::getLocator)
-                        .returns(updateRequest.countryCode(), TeleLocator::getCntryCd)
-                        .returns(updateRequest.number(), TeleLocator::getPhoneNbrTxt)
-                        .returns(updateRequest.extension(), TeleLocator::getExtensionTxt)
-                        .returns(updateRequest.email(), TeleLocator::getEmailAddress)
-                        .returns(updateRequest.url(), TeleLocator::getUrlAddress)
-                )
-        );
+                actual -> assertThat(actual)
+                        .returns(updateRequest.type(), TeleEntityLocatorParticipation::getCd)
+                        .returns(updateRequest.use(), TeleEntityLocatorParticipation::getUseCd)
+                        .returns(updateRequest.asOf(), TeleEntityLocatorParticipation::getAsOfDate)
+                        .returns(updateRequest.comment(), TeleEntityLocatorParticipation::getLocatorDescTxt)
+                        .satisfies(
+                                phone -> assertThat(phone)
+                                        .extracting(TeleEntityLocatorParticipation::getId)
+                                        .returns(updateRequest.patient(), EntityLocatorParticipationId::getEntityUid))
+                        .satisfies(
+                                phone -> assertThat(phone).extracting(TeleEntityLocatorParticipation::getLocator)
+                                        .returns(updateRequest.countryCode(), TeleLocator::getCntryCd)
+                                        .returns(updateRequest.number(), TeleLocator::getPhoneNbrTxt)
+                                        .returns(updateRequest.extension(), TeleLocator::getExtensionTxt)
+                                        .returns(updateRequest.email(), TeleLocator::getEmailAddress)
+                                        .returns(updateRequest.url(), TeleLocator::getUrlAddress)));
     }
 
     @When("a patient's phone is removed")
@@ -156,11 +148,11 @@ public class PatientProfilePhoneChangeSteps {
         Person patient = this.entityManager.find(Person.class, patients.one().id());
 
         this.deleteRequest = patient.phones()
-            .stream()
-            .findFirst()
-            .map(TeleEntityLocatorParticipation::getId)
-            .map(id -> new DeletePatientPhoneInput(id.getEntityUid(), id.getLocatorUid()))
-            .orElseThrow();
+                .stream()
+                .findFirst()
+                .map(TeleEntityLocatorParticipation::getId)
+                .map(id -> new DeletePatientPhoneInput(id.getEntityUid(), id.getLocatorUid()))
+                .orElseThrow();
 
         this.controller.delete(this.deleteRequest);
     }
@@ -173,30 +165,28 @@ public class PatientProfilePhoneChangeSteps {
         Person actual = this.entityManager.find(Person.class, patient.id());
 
         assertThat(actual.phones())
-            .noneSatisfy(
-                phone -> assertThat(phone)
-                    .extracting(TeleEntityLocatorParticipation::getId)
-                    .returns(deleteRequest.patient(), EntityLocatorParticipationId::getEntityUid)
-                    .returns(deleteRequest.id(), EntityLocatorParticipationId::getLocatorUid)
-            )
-        ;
+                .noneSatisfy(
+                        phone -> assertThat(phone)
+                                .extracting(TeleEntityLocatorParticipation::getId)
+                                .returns(deleteRequest.patient(), EntityLocatorParticipationId::getEntityUid)
+                                .returns(deleteRequest.id(), EntityLocatorParticipationId::getLocatorUid));
     }
 
     @Then("I am unable to add a patient's phone")
     public void i_am_unable_to_add_a_patient_ethnicity() {
         assertThatThrownBy(() -> controller.add(newRequest))
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("I am unable to change a patient's phone")
     public void i_am_unable_to_change_a_patient_ethnicity() {
         assertThatThrownBy(() -> controller.update(updateRequest))
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("I am unable to remove a patient's phone")
     public void i_am_unable_to_remove_a_patient_ethnicity() {
         assertThatThrownBy(() -> controller.delete(deleteRequest))
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 }
