@@ -74,7 +74,6 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getRaces] = useFindAllRaceValuesLazyQuery({ onCompleted: setRaces });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
     const [getStates] = useStatesLazyQuery({ onCompleted: setStates });
-    const [error, setError] = React.useState('');
 
     // on init, load search data from API
     useEffect(() => {
@@ -91,7 +90,7 @@ export const SearchCriteriaProvider = (props: any) => {
                 getStates();
             }
         } catch (error: string | any) {
-            setError(error);
+            console.log('error load search data', error);
         }
     }, [state.isLoggedIn]);
 

@@ -8,7 +8,6 @@ import type { ViewRuleResponse } from '../models/ViewRuleResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-import {Page_Question_} from "../models/Page_Question_";
 
 export class PageRuleControllerService {
 
@@ -34,40 +33,6 @@ export class PageRuleControllerService {
                 'Authorization': authorization,
             },
             body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-    /**
-     * findAllRuleResponse
-     * @returns ViewRuleResponse OK
-     * @throws ApiError
-     */
-    public static findAllRuleResponseUsingGet({
-          authorization,
-          page,
-          size,
-          sort,
-      }: {
-        authorization: any,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<ViewRuleResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/rules',
-            headers: {
-                'Authorization': authorization,
-            },
-            query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
-            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

@@ -1,9 +1,9 @@
+import { PagesQuestion } from 'apps/page-builder/generated';
 import './ReorderQuestion.scss';
-import { PageQuestion } from 'apps/page-builder/generated/models/PageQuestion';
 import { Icon } from 'components/Icon/Icon';
 
 type Props = {
-    question: PageQuestion;
+    question: PagesQuestion;
 };
 
 export const ReorderQuestion = ({ question }: Props) => {

@@ -4,7 +4,7 @@ import format from 'date-fns/format';
 import { SortableTable } from 'components/Table/SortableTable';
 import { Actions as ActionState } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
-import { Identification, IdentificationEntry } from './identification';
+import { IdentificationEntry } from './identification';
 import {
     PatientIdentification,
     useAddPatientIdentificationMutation,
@@ -29,17 +29,18 @@ import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
+import { orNull } from 'utils';
 
-const asEntry = (identification: Identification): IdentificationEntry => ({
+const asEntry = (identification: PatientIdentification): IdentificationEntry => ({
     patient: identification.patient,
-    asOf: internalizeDate(identification?.asOf),
+    asOf: internalizeDate(identification.asOf),
     type: maybeId(identification.type),
-    value: identification.value,
-    state: maybeId(identification?.authority),
-    sequence: identification?.sequence
+    value: orNull(identification.value),
+    state: maybeId(identification.authority),
+    sequence: identification.sequence
 });
 
-const asDetail = (data: Identification): Detail[] => [
+const asDetail = (data: PatientIdentification): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
     { name: 'Type', value: maybeDescription(data.type) },
     { name: 'Authority', value: maybeDescription(data.authority) },
@@ -77,7 +78,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const { changed } = useProfileContext();
 
     const [isActions, setIsActions] = useState<any>(null);
-    const [identifications, setIdentifications] = useState<Identification[]>([]);
+    const [identifications, setIdentifications] = useState<PatientIdentification[]>([]);
 
     const handleComplete = (data: PatientIdentificationResult) => {
         setTotal(data?.findPatientProfile.identification?.total ?? 0);
@@ -91,7 +92,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const [update] = useUpdatePatientIdentificationMutation();
     const [remove] = useDeletePatientIdentificationMutation();
 
-    const { selected, actions } = useTableActionState<Identification>();
+    const { selected, actions } = useTableActionState<PatientIdentification>();
     const modal = useRef<ModalRef>(null);
 
     useEffect(() => {
@@ -200,7 +201,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
         switch (name.toLowerCase()) {
             case 'as of':
                 setIdentifications(
-                    identifications?.slice().sort((a: Identification, b: Identification) => {
+                    identifications?.slice().sort((a: PatientIdentification, b: PatientIdentification) => {
                         const dateA: any = new Date(a?.asOf);
                         const dateB: any = new Date(b?.asOf);
                         return type === 'asc' ? dateB - dateA : dateA - dateB;

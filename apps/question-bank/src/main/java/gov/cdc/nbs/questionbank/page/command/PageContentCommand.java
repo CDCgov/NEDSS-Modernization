@@ -48,4 +48,20 @@ public sealed interface PageContentCommand {
                         Long componentId,
                         Instant requestedOn) implements PageContentCommand {
         }
+        public record AddTab(
+                        WaTemplate page,
+                        String label,
+                        boolean visible,
+                        String identifier,
+                        int orderNumber,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
+        }
+
+        public record UpdateTab(
+                        String label,
+                        boolean visible,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
+        }
 }

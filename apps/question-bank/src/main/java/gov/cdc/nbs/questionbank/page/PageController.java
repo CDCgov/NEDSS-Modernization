@@ -27,7 +27,6 @@ import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.request.PageSummaryRequest;
 import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
-import gov.cdc.nbs.questionbank.page.response.PageDetailResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.services.PageSummaryFinder;
 import gov.cdc.nbs.questionbank.page.services.PageUpdater;
@@ -41,7 +40,6 @@ public class PageController {
 
     private final PageUpdater pageUpdater;
     private final PageSummaryFinder finder;
-    private final PageFinder pageFinder;
     private final PageCreator creator;
     private final PageStateChanger stateChange;
     private final PageDownloader pageDownloader;
@@ -49,14 +47,12 @@ public class PageController {
     public PageController(
             final PageUpdater pageUpdater,
             final PageSummaryFinder finder,
-            final PageFinder pageFinder,
             final PageCreator creator,
             final PageStateChanger stateChange,
             final PageDownloader pageDownloader,
             final UserDetailsProvider userDetailsProvider) {
         this.pageUpdater = pageUpdater;
         this.finder = finder;
-        this.pageFinder= pageFinder;
         this.creator = creator;
         this.stateChange = stateChange;
         this.pageDownloader = pageDownloader;
@@ -97,12 +93,6 @@ public class PageController {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return creator.createPage(request, userId);
     }
-    
-    @GetMapping("{id}/details")
-    public PageDetailResponse.PagedDetail getPageDetails(@PathVariable("id") Long pageId) {
-    	return pageFinder.getPageDetails(pageId);
-    }
-
 
     @PutMapping("{id}/draft")
     public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {

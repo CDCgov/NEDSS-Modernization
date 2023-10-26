@@ -28,6 +28,7 @@ public class PageConstants {
 	public static final String ADD_PAGE_MMG_EMPTY = "MMG is required.";
 	
 	//Page Details
+	public static final Long PAGE_COMPONENT = 1002L;
 	public static final Long TAB_COMPONENT = 1010L;
 	public static final Long SECTION_COMPONENT= 1015L;
 	public static final Long SUB_SECTION_COMPONENT= 1016L;

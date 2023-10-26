@@ -9,7 +9,7 @@ on:
 
 jobs:
   pipeline:
-    name: Verify
+    name: Verify and Ensure
     runs-on: ubuntu-latest
 
     steps:
@@ -27,3 +27,7 @@ jobs:
       - name: Verify
         working-directory: ./apps/modernization-ui
         run: npx react-scripts test --watchAll=false
+
+      - name: Ensure
+        working-directory: ./apps/modernization-ui
+        run: npx react-scripts build

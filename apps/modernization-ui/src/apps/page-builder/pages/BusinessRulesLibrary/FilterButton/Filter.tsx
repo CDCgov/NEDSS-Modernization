@@ -6,8 +6,8 @@ import { MultiSelectInput } from 'components/selection/multi';
 import { fetchConditions } from '../../../services/conditionAPI';
 import { Condition } from '../../../generated';
 import { UserContext } from '../../../../../providers/UserContext';
-import { FilterWrapper } from '../../FilterModal/FilterWrapper';
-import { FilterPanel } from '../../FilterModal/FilterPanel';
+import { FilterWrapper } from '../../../components/FilterModal/FilterWrapper';
+import { FilterPanel } from '../../../components/FilterModal/FilterPanel';
 
 import { statusOptions, businessRuleFieldList, initOperator } from '../../../constant/constant';
 import { BusinessRuleContext } from '../../../context/BusinessContext';
