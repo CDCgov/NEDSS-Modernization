@@ -13,8 +13,6 @@ WORKDIR /usr/src/nbs
 
 RUN ./gradlew :nbs-gateway:build -x test --no-daemon
 
-
-
 RUN jar xf apps/nbs-gateway/build/libs/nbs-gateway.jar
 RUN jdeps --ignore-missing-deps -q  \
     --recursive  \
@@ -35,8 +33,10 @@ FROM debian:12-slim
 
 COPY --from=builder /usr/src/nbs/gateway/runtime /deployment/runtime
 
-COPY --from=builder /usr/src/nbs/apps/nbs-gateway/build/libs/nbs-gateway.jar /deployment/application/
+COPY --from=builder /usr/src/nbs/apps/nbs-gateway/build/libs/nbs-gateway.jar /deployment/application/api.jar
 
-WORKDIR /deployment
+ENV PATH /deployment/runtime/bin:$PATH
 
-ENTRYPOINT runtime/bin/java -jar application/nbs-gateway.jar
+WORKDIR /deployment/application
+
+CMD ["java", "-jar", "api.jar"]
