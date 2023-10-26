@@ -13,10 +13,14 @@ class NbsTestDatabaseInitializer implements ApplicationContextInitializer<Config
   @Override
   @SuppressWarnings(
       {
-          "resource", // We don't want to close the container until after tests have completed
-          "secrets:S6703" // The database credentials are for development only
+          // We don't want to close the container until after tests have completed
+          "resource",
+          // The database container and credentials are for development only, working on
+          // removing the credentials entirely.
+          "secrets:S6703",
+          "java:S2068"
       }
-      )
+  )
   public void initialize(final ConfigurableApplicationContext context) {
     String image = context.getEnvironment().getProperty("testing.database.image", DEFAULT_IMAGE_VALUE);
     NbsDatabaseContainer container = new NbsDatabaseContainer(image)
