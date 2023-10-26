@@ -158,7 +158,7 @@ public class PageStaticCreator {
 
         WaTemplate template = entityManager.getReference(WaTemplate.class, pageId);
 
- 
+
         WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
                 .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
 
@@ -167,7 +167,8 @@ public class PageStaticCreator {
         uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
 
         WaUiMetadata staticElementEntry = new WaUiMetadata(
-                asAddStaticElementDefault(template, orderNum, userId, READ_ONLY_PARTICIPANTS_LIST_ID, request.adminComments()));
+                asAddStaticElementDefault(template, orderNum, userId, READ_ONLY_PARTICIPANTS_LIST_ID,
+                        request.adminComments()));
 
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
@@ -179,7 +180,7 @@ public class PageStaticCreator {
 
         WaTemplate template = entityManager.getReference(WaTemplate.class, pageId);
 
- 
+
         WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
                 .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
 
@@ -188,22 +189,34 @@ public class PageStaticCreator {
         uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
 
         WaUiMetadata staticElementEntry = new WaUiMetadata(
-                asAddStaticElementDefault(template, orderNum, userId, ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID, request.adminComments()));
+                asAddStaticElementDefault(template, orderNum, userId, ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID,
+                        request.adminComments()));
 
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
 
     public boolean deleteStaticElement(Long pageId, DeleteStaticElementRequest request) {
-        if(pageId == null) {
+        if (pageId == null) {
             throw new DeleteStaticElementException("Page is required");
+        }
+
+        
+        WaTemplate template = entityManager.find(WaTemplate.class, pageId);
+        
+        if(template == null) {
+            throw new DeleteStaticElementException("Please provide valid page ID");
+        }
+
+        if(!template.getTemplateType().equals("Draft")) {
+            throw new DeleteStaticElementException("Page cannot be published");
         }
 
         WaUiMetadata component = uiMetadatumRepository.findById(request.componentId())
                 .orElseThrow(() -> new DeleteStaticElementException("Failed to find component"));
 
-        uiMetadatumRepository.decrementOrderNbrGreaterThan(pageId, component.getOrderNbr());
-
         uiMetadatumRepository.deleteById(request.componentId());
+
+        uiMetadatumRepository.decrementOrderNbrGreaterThan(pageId, component.getOrderNbr());
 
         return true;
     }
