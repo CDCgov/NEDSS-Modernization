@@ -126,7 +126,7 @@ class QuestionManagementUtilTest {
         // when retrieving the question oid 
         // then an exception is thrown
         String codeSystem = request.getMessagingInfo().codeSystem();
-        String codeSet = request.getCodeSet();
+        String codeSet = request.getCodeSet().toString();
         assertThrows(UpdateQuestionException.class,
                 () -> questionManagementUtil.getQuestionOid(
                         true,

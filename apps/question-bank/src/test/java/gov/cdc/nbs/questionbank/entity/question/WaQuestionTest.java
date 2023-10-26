@@ -11,6 +11,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.MessagingData;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.ReportingData;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest.TextMask;
 
 class WaQuestionTest {
 
@@ -106,7 +107,7 @@ class WaQuestionTest {
         assertEquals(questionData.subgroup(), question.getSubGroupNm());
         assertEquals(questionData.description(), question.getDescTxt());
         assertEquals(questionData.displayControl(), question.getNbsUiComponentUid());
-        assertEquals(questionData.codeSet(), question.getQuestionType());
+        assertEquals(questionData.codeSet().toString(), question.getQuestionType());
         assertEquals(questionData.adminComments(), question.getAdminComment());
 
         validateMessageFields(question, command.messagingData());
@@ -170,11 +171,11 @@ class WaQuestionTest {
 
     private QuestionCommand.AddTextQuestion createCommand() {
         return new QuestionCommand.AddTextQuestion(
-                "Mask",
+                TextMask.TXT,
                 25,
                 "default value",
                 new QuestionCommand.QuestionData(
-                        "code set",
+                        CodeSet.LOCAL,
                         "local id",
                         "unique name",
                         "subgroup",

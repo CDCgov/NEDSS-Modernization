@@ -251,7 +251,7 @@ public abstract class WaQuestion {
         setSubGroupNm(data.subgroup());
         setDescTxt(data.description());
         setNbsUiComponentUid(data.displayControl());
-        setQuestionType(data.codeSet());
+        setQuestionType(data.codeSet().toString());
         setAdminComment(data.adminComments());
     }
 
@@ -274,7 +274,6 @@ public abstract class WaQuestion {
         } else {
             setQuestionIdentifierNnd(null);
             setQuestionLabelNnd(null);
-            setStandardNndIndCd(null);
             setQuestionRequiredNnd(null);
             setQuestionDataTypeNnd(null);
             setHl7SegmentField(null);

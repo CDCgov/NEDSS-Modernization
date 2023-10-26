@@ -1,10 +1,12 @@
 package gov.cdc.nbs.questionbank.support;
 
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.UnitType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest.TextMask;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
 import gov.cdc.nbs.questionbank.question.request.CreateCodedQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest;
@@ -14,19 +16,19 @@ import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.Messaging
 public class QuestionRequestMother {
 
     public static CreateTextQuestionRequest localTextRequest() {
-        return textRequest("LOCAL", true);
+        return textRequest(CodeSet.LOCAL, true);
     }
 
     public static CreateTextQuestionRequest localTextRequest(boolean includeInMessage) {
-        return textRequest("LOCAL", includeInMessage);
+        return textRequest(CodeSet.LOCAL, includeInMessage);
     }
 
     public static CreateTextQuestionRequest phinTextRequest() {
-        return textRequest("PHIN", true);
+        return textRequest(CodeSet.PHIN, true);
     }
 
     public static CreateTextQuestionRequest phinTextRequest(boolean includeInMessage) {
-        return textRequest("PHIN", includeInMessage);
+        return textRequest(CodeSet.PHIN, includeInMessage);
     }
 
     public static CreateDateQuestionRequest dateRequest() {
@@ -40,7 +42,7 @@ public class QuestionRequestMother {
     }
 
     private static void setSharedFields(CreateQuestionRequest request) {
-        request.setCodeSet("PHIN");
+        request.setCodeSet(CodeSet.PHIN);
         request.setUniqueId("Test unique Id");
         request.setUniqueName("TEST UNIQUE NAME");
         request.setSubgroup("TEST_Subgroup");
@@ -97,20 +99,20 @@ public class QuestionRequestMother {
                 rdbColumnName,
                 dataMartColumnName));
 
-        request.setMask("Mask");
+        request.setMask(TextMask.TXT);
         request.setFieldLength(50);
         request.setDefaultValue("Test default");
         return request;
     }
 
-    private static CreateTextQuestionRequest textRequest(String codeSet, boolean includedInMessage) {
+    private static CreateTextQuestionRequest textRequest(CodeSet codeSet, boolean includedInMessage) {
         CreateTextQuestionRequest request = new CreateTextQuestionRequest();
         setSharedFields(request);
 
         request.setCodeSet(codeSet);
         request.setMessagingInfo(
                 messagingInfo(includedInMessage));
-        request.setMask("Mask");
+        request.setMask(TextMask.TXT);
         request.setFieldLength(50);
         request.setDefaultValue("Test default");
         request.setDisplayControl(1008l);
@@ -180,7 +182,7 @@ public class QuestionRequestMother {
     public static CreateTextQuestionRequest localWithUniqueId(String uniqueId) {
         CreateTextQuestionRequest request = new CreateTextQuestionRequest();
         request.setUniqueId(uniqueId);
-        request.setCodeSet("LOCAL");
+        request.setCodeSet(CodeSet.LOCAL);
         return request;
     }
 

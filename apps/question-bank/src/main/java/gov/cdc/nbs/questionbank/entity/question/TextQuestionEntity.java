@@ -45,7 +45,7 @@ public class TextQuestionEntity extends WaQuestion {
         super(command);
 
         setDefaultValue(command.defaultValue());
-        setMask(command.mask());
+        setMask(command.mask().toString());
         if (command.fieldLength() != null) {
             setFieldSize(command.fieldLength().toString());
         }

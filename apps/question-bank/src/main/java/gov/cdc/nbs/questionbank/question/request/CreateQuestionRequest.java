@@ -1,12 +1,13 @@
 package gov.cdc.nbs.questionbank.question.request;
 
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public abstract class CreateQuestionRequest {
-    private String codeSet;
+    private CodeSet codeSet;
     private String uniqueId;
     private String uniqueName;
     private String subgroup;

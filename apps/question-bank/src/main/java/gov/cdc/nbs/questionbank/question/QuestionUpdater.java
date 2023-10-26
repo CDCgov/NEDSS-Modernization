@@ -108,7 +108,10 @@ public class QuestionUpdater {
             boolean isInUse,
             WaQuestion question) {
         return new QuestionCommand.Update(
-                asQuestionData(request, isInUse, question.getQuestionType()),
+                asQuestionData(
+                        request,
+                        isInUse,
+                        question.getQuestionType()),
                 request.defaultValue(),
                 request.mask(),
                 request.fieldLength(),
@@ -124,8 +127,10 @@ public class QuestionUpdater {
                 Instant.now());
     }
 
-    QuestionCommand.UpdatableQuestionData asQuestionData(UpdateQuestionRequest request, boolean isInUse,
-            String questionType) {
+    QuestionCommand.UpdatableQuestionData asQuestionData(
+            UpdateQuestionRequest request,
+            boolean isInUse,
+            String codeset) {
         return new QuestionCommand.UpdatableQuestionData(
                 isInUse,
                 request.uniqueName(),
@@ -137,7 +142,7 @@ public class QuestionUpdater {
                 managementUtil.getQuestionOid(
                         request.includedInMessage(),
                         request.codeSystem(),
-                        questionType));
+                        codeset));
     }
 
     QuestionCommand.ReportingData asReportingData(UpdateQuestionRequest request, String subgroup) {

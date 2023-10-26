@@ -2,13 +2,10 @@ package gov.cdc.nbs.questionbank.support;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.component.tree.ComponentTreeResolver;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
-import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +31,6 @@ public class PageMother {
   private WaUiMetadataRepository waUiMetadatumRepository;
 
   @Autowired
-  private WaRuleMetaDataRepository waRuleMetaDataRepository;
-
-  @Autowired
-  private WANNDMetadataRepository wanndMetadataRepository;
-
-  @Autowired
-  private WARDBMetadataRepository wARDBMetadataRepository;
-
-  @Autowired
   EntityManager entityManager;
 
   @Autowired
@@ -63,9 +51,6 @@ public class PageMother {
   public void clean() {
     this.available.all().forEach(cleaner::clean);
     this.available.reset();
-//    wanndMetadataRepository.deleteAll();
-//    wARDBMetadataRepository.deleteAll();
-//    waRuleMetaDataRepository.deleteAll();
   }
 
   public WaTemplate one() {

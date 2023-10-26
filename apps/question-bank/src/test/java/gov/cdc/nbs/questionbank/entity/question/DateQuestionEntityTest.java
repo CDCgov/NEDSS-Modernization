@@ -38,7 +38,7 @@ class DateQuestionEntityTest {
                 mask,
                 allowFutureDates,
                 new QuestionCommand.QuestionData(
-                        "code set",
+                        CodeSet.LOCAL,
                         "localId",
                         "uniqueName",
                         "subgroup",

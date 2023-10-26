@@ -4,6 +4,7 @@ import java.time.Instant;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.EntityType;
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -188,7 +189,7 @@ class QuestionCreator {
      * @return
      */
     String getLocalId(CreateQuestionRequest request) {
-        if (request.getCodeSet().equals("LOCAL")
+        if (request.getCodeSet().equals(CodeSet.LOCAL)
                 && (request.getUniqueId() == null || request.getUniqueId().isBlank())) {
             // Question Ids are a combination of the 
             // `NBS_ODSE.NBS_configuration NBS_CLASS_CODE config value + the next valid Id 

@@ -27,7 +27,7 @@ class NumericQuestionEntityTest {
                 "literal units",
                 123l,
                 new QuestionCommand.QuestionData(
-                        "codeset",
+                        CodeSet.LOCAL,
                         "localId",
                         "name",
                         "subgrp",
@@ -68,7 +68,7 @@ class NumericQuestionEntityTest {
                 "literal units",
                 null,
                 new QuestionCommand.QuestionData(
-                        "codeset",
+                        CodeSet.LOCAL,
                         "localId",
                         "name",
                         "subgrp",

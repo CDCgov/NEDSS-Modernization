@@ -1,7 +1,9 @@
 package gov.cdc.nbs.questionbank.question.command;
 
 import java.time.Instant;
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.UnitType;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest.TextMask;
 
 public sealed interface QuestionCommand {
     long userId();
@@ -38,7 +40,7 @@ public sealed interface QuestionCommand {
 
     public record AddTextQuestion(
             // Text specific fields
-            String mask,
+            TextMask mask,
             Integer fieldLength,
             String defaultValue,
 
@@ -120,7 +122,7 @@ public sealed interface QuestionCommand {
             Instant requestedOn) implements CreateQuestionCommand {
     }
     record QuestionData(
-            String codeSet,
+            CodeSet codeSet,
             String localId,
             String uniqueName,
             String subgroup,
