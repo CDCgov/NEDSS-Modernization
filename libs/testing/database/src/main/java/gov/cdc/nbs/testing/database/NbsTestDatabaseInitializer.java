@@ -11,7 +11,12 @@ class NbsTestDatabaseInitializer implements ApplicationContextInitializer<Config
   private static final String DEFAULT_IMAGE_VALUE = "cdc-sandbox-nbs-mssql";
 
   @Override
-  @SuppressWarnings({"resource"}) // We don't want to close the container
+  @SuppressWarnings(
+      {
+          "resource", // We don't want to close the container until after tests have completed
+          "secrets:S6703" // The database credentials are for development only
+      }
+      )
   public void initialize(final ConfigurableApplicationContext context) {
     String image = context.getEnvironment().getProperty("testing.database.image", DEFAULT_IMAGE_VALUE);
     NbsDatabaseContainer container = new NbsDatabaseContainer(image)
