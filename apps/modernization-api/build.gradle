@@ -29,9 +29,8 @@ dependencies {
 
     //  feature modules
     implementation project(':me-api')
-
-    // configuration module
     implementation project(':configuration-api')
+    implementation project(':options-api')
 
     implementation libs.snake.yaml
     implementation libs.guava
