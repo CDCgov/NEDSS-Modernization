@@ -15,11 +15,6 @@ testing {
     suites {
         test {
             useJUnitJupiter()
-
-            if (System.getProperty("testing.database.image") != null) {
-                systemProperty "testing.database.image", System.getProperty("testing.database.image")
-            }
-
             dependencies {
                 implementation libs.bundles.testing
                 implementation libs.spring.test
@@ -41,5 +36,11 @@ dependencies {
     implementation libs.springBoot.web
     implementation libs.bundles.swagger
     implementation libs.springBoot.jdbc
+}
+
+test {
+    if (System.getProperty("testing.database.image") != null) {
+        systemProperty "testing.database.image", System.getProperty("testing.database.image")
+    }
 }
 
