@@ -3524,7 +3524,7 @@
 							"response": []
 						},
 						{
-							"name": "Specific Concepts by Value Set Copy",
+							"name": "Specific Concepts by Value Set",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3585,6 +3585,9 @@
 				"followAuthorizationHeader": false
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
