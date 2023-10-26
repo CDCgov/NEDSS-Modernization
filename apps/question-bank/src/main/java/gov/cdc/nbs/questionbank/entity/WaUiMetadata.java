@@ -12,7 +12,7 @@ import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,7 +38,10 @@ public class WaUiMetadata {
   @Column(name = "wa_ui_metadata_uid", nullable = false)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {
+      CascadeType.REMOVE,
+      CascadeType.DETACH
+    })
   @JoinColumn(name = "wa_template_uid", nullable = false)
   private WaTemplate waTemplateUid;
 
