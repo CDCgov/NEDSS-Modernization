@@ -20,11 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/api/v1/pages/{page}/static-element/")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-public class AddStaticController {
+public class PageStaticController {
     private final UserDetailsProvider userDetailsProvider;
     private final PageStaticCreator pageStaticCreator;
 
-    public AddStaticController(
+    public PageStaticController(
             final UserDetailsProvider userDetailsProvider,
             final PageStaticCreator pageStaticCreator) {
         this.userDetailsProvider = userDetailsProvider;
