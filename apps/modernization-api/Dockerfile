@@ -59,9 +59,10 @@ ENV NBS_WILDFLY_SERVER=wildfly
 
 COPY --from=api-builder /usr/src/nbs/modernization-api/runtime /deployment/runtime
 
-COPY --from=api-builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api.jar /deployment/application/
+COPY --from=api-builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api.jar /deployment/application/api.jar
 
-WORKDIR /deployment
+ENV PATH /deployment/runtime/bin:$PATH
 
-ENTRYPOINT runtime/bin/java -jar application/modernization-api.jar
+WORKDIR /deployment/application
 
+CMD ["java", "-jar", "api.jar"]

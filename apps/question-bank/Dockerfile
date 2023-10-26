@@ -40,8 +40,11 @@ ENV NBS_DATASOURCE_SERVER=nbs-mssql
 
 COPY --from=builder /usr/src/nbs/page-builder/runtime /deployment/runtime
 
-COPY --from=builder /usr/src/nbs/apps/question-bank/build/libs/question-bank.jar /deployment/application/
+COPY --from=builder /usr/src/nbs/apps/question-bank/build/libs/question-bank.jar /deployment/application/api.jar
 
-WORKDIR /deployment
 
-ENTRYPOINT runtime/bin/java -jar application/question-bank.jar
+ENV PATH /deployment/runtime/bin:$PATH
+
+WORKDIR /deployment/application
+
+CMD ["java", "-jar", "api.jar"]
