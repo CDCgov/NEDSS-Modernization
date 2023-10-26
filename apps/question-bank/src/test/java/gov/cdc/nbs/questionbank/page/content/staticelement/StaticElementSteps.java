@@ -3,14 +3,18 @@ package gov.cdc.nbs.questionbank.page.content.staticelement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+@Transactional
 public class StaticElementSteps {
 
     @Autowired
@@ -21,6 +25,9 @@ public class StaticElementSteps {
 
     @Autowired
     private PageMother mother;
+
+    @Autowired
+    private ExceptionHolder exceptionHolder;
 
     private Long lineSeparatorId;
 
@@ -33,10 +40,14 @@ public class StaticElementSteps {
                 .findFirst()
                 .orElseThrow();
 
-        lineSeparatorId = pageStaticController.addStaticLineSeparator(
+        try {
+            lineSeparatorId = pageStaticController.addStaticLineSeparator(
                 temp.getId(),
                 new AddStaticElementDefaultRequest(null, subsection.getId()))
                 .componentId();
+        } catch(AccessDeniedException e) {
+            exceptionHolder.setException(e);
+        }
     }
 
     @Then("a line separator is created")
