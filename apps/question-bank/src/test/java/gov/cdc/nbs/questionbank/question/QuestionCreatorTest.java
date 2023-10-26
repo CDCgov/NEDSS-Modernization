@@ -206,8 +206,8 @@ class QuestionCreatorTest {
     @Test
     void should_save_to_db() {
         // given the database will return an entity with an Id
-        TextQuestionEntity tq = new TextQuestionEntity();
-        tq.setId(999L);
+        TextQuestionEntity tq = Mockito.mock(TextQuestionEntity.class);
+        when(tq.getId()).thenReturn(999l);
         when(repository.save(Mockito.any())).thenReturn(tq);
 
         // and that entity will be mapped to a question
@@ -271,8 +271,8 @@ class QuestionCreatorTest {
     @Test
     void should_create_date_question() {
         // given the database will return an entity with an Id
-        DateQuestionEntity dq = new DateQuestionEntity();
-        dq.setId(999L);
+        DateQuestionEntity dq = Mockito.mock(DateQuestionEntity.class);
+        when(dq.getId()).thenReturn(999l);
         when(repository.save(Mockito.any())).thenReturn(dq);
 
         // and that entity will be mapped to a question
@@ -307,12 +307,12 @@ class QuestionCreatorTest {
     @Test
     void should_create_numeric_question() {
         // given the database will return an entity with an Id
-        NumericQuestionEntity tq = new NumericQuestionEntity();
-        tq.setId(999L);
-        when(repository.save(Mockito.any())).thenReturn(tq);
+        NumericQuestionEntity nq = Mockito.mock(NumericQuestionEntity.class);
+        when(nq.getId()).thenReturn(999l);
+        when(repository.save(Mockito.any())).thenReturn(nq);
 
         // and that entity will be mapped to a question
-        when(mapper.toNumericQuestion(tq)).thenReturn(new NumericQuestion(
+        when(mapper.toNumericQuestion(nq)).thenReturn(new NumericQuestion(
                 999l,
                 null,
                 null,
@@ -342,21 +342,21 @@ class QuestionCreatorTest {
         Question question = creator.create(123L, request);
 
         // then the id of the new question is returned
-        assertEquals(tq.getId().longValue(), question.id());
+        assertEquals(nq.getId().longValue(), question.id());
     }
 
     @Test
     void should_create_coded_question() {
         // given the database will return an entity with an Id
-        CodedQuestionEntity tq = new CodedQuestionEntity();
-        tq.setId(999L);
-        when(repository.save(Mockito.any())).thenReturn(tq);
+        CodedQuestionEntity cq = Mockito.mock(CodedQuestionEntity.class);
+        when(cq.getId()).thenReturn(999l);
+        when(repository.save(Mockito.any())).thenReturn(cq);
 
         // and an existing value set
         when(codesetRepository.findOneByCodeSetGroupId(123l)).thenReturn(Optional.of(new Codeset()));
 
         // and that entity will be mapped to a question
-        when(mapper.toCodedQuestion(tq)).thenReturn(new CodedQuestion(
+        when(mapper.toCodedQuestion(cq)).thenReturn(new CodedQuestion(
                 999l,
                 123l,
                 null,
@@ -381,6 +381,6 @@ class QuestionCreatorTest {
         Question question = creator.create(123L, request);
 
         // then the id of the new question is returned
-        assertEquals(tq.getId().longValue(), question.id());
+        assertEquals(cq.getId().longValue(), question.id());
     }
 }

@@ -18,14 +18,6 @@ public class DateQuestionEntity extends WaQuestion {
     @Column(name = "mask", length = 50)
     private String mask;
 
-    public void setMask(String mask) {
-        this.mask = requireNonNull(mask, "Mask");
-    }
-
-    public void setFutureDateIndCd(boolean allowFutureDates) {
-        this.setFutureDateIndCd(allowFutureDates ? 'T' : 'F');
-    }
-
     @Override
     public String getDataType() {
         return DateQuestionEntity.DATE_QUESION_TYPE;
@@ -34,8 +26,9 @@ public class DateQuestionEntity extends WaQuestion {
     public DateQuestionEntity(QuestionCommand.AddDateQuestion command) {
         super(command);
 
-        setMask(command.mask().toString());
-        setFutureDateIndCd(command.allowFutureDates());
+        this.mask = requireNonNull(command.mask().toString(), "Mask");
+        this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
+
 
         // Audit
         created(command);
@@ -53,8 +46,8 @@ public class DateQuestionEntity extends WaQuestion {
         update(command.questionData());
 
         // Date fields
-        setMask(command.mask());
-        setFutureDateIndCd(command.allowFutureDates());
+        this.mask = requireNonNull(command.mask(), "Mask");
+        this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
 
         // Reporting
         setReportingData(command);

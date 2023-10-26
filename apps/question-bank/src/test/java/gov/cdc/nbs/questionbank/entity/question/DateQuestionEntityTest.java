@@ -7,6 +7,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.MessagingData;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.ReportingData;
 import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest.DateMask;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
+import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 class DateQuestionEntityTest {
 
@@ -67,15 +68,13 @@ class DateQuestionEntityTest {
 
     @Test
     void should_do_update() {
+        DateQuestionEntity entity = QuestionEntityMother.dateQuestion();
         var command = QuestionCommandMother.update();
-        DateQuestionEntity q = new DateQuestionEntity();
-        q.setQuestionType("LOCAL");
-        q.setVersionCtrlNbr(1);
 
-        q.update(command);
+        entity.update(command);
 
-        assertEquals(command.mask(), q.getMask());
-        assertEquals(command.allowFutureDates() ? 'T' : 'F', q.getFutureDateIndCd().charValue());
+        assertEquals(command.mask(), entity.getMask());
+        assertEquals(command.allowFutureDates() ? 'T' : 'F', entity.getFutureDateIndCd().charValue());
 
     }
 }

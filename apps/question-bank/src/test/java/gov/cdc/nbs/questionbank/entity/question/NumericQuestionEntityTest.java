@@ -8,6 +8,7 @@ import gov.cdc.nbs.questionbank.exception.NullObjectException;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest.NumericMask;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
+import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 class NumericQuestionEntityTest {
 
@@ -101,24 +102,23 @@ class NumericQuestionEntityTest {
 
     @Test
     void should_do_update() {
+        NumericQuestionEntity entity = QuestionEntityMother.numericQuestion();
         var command = QuestionCommandMother.update();
-        NumericQuestionEntity q = new NumericQuestionEntity();
-        q.setQuestionType("LOCAL");
-        q.setVersionCtrlNbr(1);
 
-        q.update(command);
+        entity.update(command);
 
-        assertEquals(command.mask(), q.getMask());
-        assertEquals(command.fieldLength(), q.getFieldSize());
-        assertEquals(command.defaultValue(), q.getDefaultValue());
-        assertEquals(command.minValue(), q.getMinValue());
-        assertEquals(command.maxValue(), q.getMaxValue());
-        assertEquals(command.unitType().toString(), q.getUnitTypeCd());
-        assertEquals(command.unitValue(), q.getUnitValue());
+        assertEquals(command.mask(), entity.getMask());
+        assertEquals(command.fieldLength(), entity.getFieldSize());
+        assertEquals(command.defaultValue(), entity.getDefaultValue());
+        assertEquals(command.minValue(), entity.getMinValue());
+        assertEquals(command.maxValue(), entity.getMaxValue());
+        assertEquals(command.unitType().toString(), entity.getUnitTypeCd());
+        assertEquals(command.unitValue(), entity.getUnitValue());
     }
 
     @Test
     void unitvalue_required_if_unit_type_is_provided() {
+        NumericQuestionEntity entity = QuestionEntityMother.numericQuestion();
         var command = new QuestionCommand.Update(
                 new QuestionCommand.UpdatableQuestionData(
                         true,
@@ -141,13 +141,10 @@ class NumericQuestionEntityTest {
                 new QuestionCommand.ReportingData("asdf", "ASD", "FDSA", "DSSF"),
                 new QuestionCommand.MessagingData(false, null, null, null, false, null),
                 0, null);
-        NumericQuestionEntity q = new NumericQuestionEntity();
-        q.setQuestionType("LOCAL");
-        q.setVersionCtrlNbr(1);
 
         assertThrows("If specifying UnitType, UnitValue must not be null",
                 NullObjectException.class,
-                () -> q.update(command));
+                () -> entity.update(command));
     }
 
 }
