@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -42,5 +43,7 @@ public class StaticElementSteps {
     public void a_line_separator_is_created() {
         assertNotNull(lineSeparatorId);
         WaUiMetadata lineSeparatorEnt = waUiMetaDataRepository.findById(lineSeparatorId).orElseThrow();
+        assertEquals(lineSeparatorId, lineSeparatorEnt.getId());
+        assertEquals(1012L, lineSeparatorEnt.getNbsUiComponentUid().longValue());
     }
 }

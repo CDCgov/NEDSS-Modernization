@@ -1,3 +1,4 @@
+@create_line_separator
 Feature: Create Line Separator
 
     Background:
