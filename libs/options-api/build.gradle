@@ -7,6 +7,8 @@ plugins {
     alias libs.plugins.springDependencies
 }
 
+apply from: "${rootDir}/gradle/cucumber-logging.gradle"
+
 group = 'gov.cdc.nbs.options'
 
 testing {
