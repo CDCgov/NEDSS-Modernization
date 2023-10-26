@@ -30,9 +30,6 @@ import lombok.Setter;
 public class WaUiMetadata {
     public static final String ACTIVE = "Active";
     public static final String INACTIVE = "Inactive";
-    private static final Long LINE_SEPARATOR_ID = 1012L;
-    private static final Long HYPERLINK_ID = 1003L;
-    private static final Long READ_ONLY_COMMENTS_ID = 1014L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -217,13 +214,14 @@ public class WaUiMetadata {
         this.entryMethod = null;
         this.recordStatusCd = ACTIVE;
         this.versionCtrlNbr = 1;
-        this.nbsUiComponentUid = READ_ONLY_COMMENTS_ID;
 
         // User specified
         this.waTemplateUid = command.page();
         this.orderNbr = command.orderNumber();
         this.adminComment = command.adminComments();
         this.questionLabel = command.comments();
+        this.nbsUiComponentUid = command.componentId();
+
 
         this.added(command);
     }
@@ -237,7 +235,6 @@ public class WaUiMetadata {
         this.entryMethod = null;
         this.recordStatusCd = ACTIVE;
         this.versionCtrlNbr = 1;
-        this.nbsUiComponentUid = HYPERLINK_ID;
 
         // User specified
         this.waTemplateUid = command.page();
@@ -245,12 +242,13 @@ public class WaUiMetadata {
         this.adminComment = command.adminComments();
         this.questionLabel = command.label();
         this.defaultValue = command.linkUrl();
+        this.nbsUiComponentUid = command.componentId();
 
 
         this.added(command);
     }
 
-    public WaUiMetadata(PageContentCommand.AddLineSeparator command) {
+    public WaUiMetadata(PageContentCommand.AddStaticElementDefault command) {
         // Defaults
         this.standardNndIndCd = 'F';
         this.enableInd = "T";
@@ -259,13 +257,14 @@ public class WaUiMetadata {
         this.entryMethod = null;
         this.recordStatusCd = ACTIVE;
         this.versionCtrlNbr = 1;
-        this.nbsUiComponentUid = LINE_SEPARATOR_ID;
 
 
         // User specified
         this.waTemplateUid = command.page();
         this.orderNbr = command.orderNumber();
         this.adminComment = command.adminComments();
+        this.nbsUiComponentUid = command.componentId();
+
 
         this.added(command);
     }

@@ -12,11 +12,11 @@ import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddHyperLink;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddLineSeparator;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddStaticElementDefault;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddReadOnlyComments;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticLineSeparatorRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
 
 @Component
@@ -26,6 +26,13 @@ public class PageStaticCreator {
     private final WaUiMetadataRepository uiMetadatumRepository;
     private final EntityManager entityManager;
 
+    // NBS Component ID for the static elements
+    private static final Long LINE_SEPARATOR_ID = 1012L;
+    private static final Long HYPERLINK_ID = 1003L;
+    private static final Long READ_ONLY_COMMENTS_ID = 1014L;
+    private static final Long READ_ONLY_PARTICIPANTS_LIST_ID = 1030L;
+    private static final Long ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID = 1036L;
+
     public PageStaticCreator(
             final WaUiMetadataRepository uiMetadatumRepository,
             final EntityManager entityManager) {
@@ -33,15 +40,13 @@ public class PageStaticCreator {
         this.uiMetadatumRepository = uiMetadatumRepository;
     }
 
-    public Long addLineSeparator(Long pageId, AddStaticLineSeparatorRequest request, Long user) {
+    public Long addLineSeparator(Long pageId, AddStaticElementDefaultRequest request, Long user) {
         if (pageId == null) {
             throw new AddStaticElementException("Page is required");
         }
 
         WaTemplate template = entityManager.getReference(WaTemplate.class, pageId);
 
-        // i know my component id is 1012 for line separator, this is never going to
-        // change
         WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
                 .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
 
@@ -50,17 +55,18 @@ public class PageStaticCreator {
         uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
 
         WaUiMetadata staticElementEntry = new WaUiMetadata(
-                asAddLineSeparator(template, orderNum, user, request.adminComments()));
+                asAddStaticElementDefault(template, orderNum, user, LINE_SEPARATOR_ID, request.adminComments()));
 
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
 
-    private PageContentCommand.AddLineSeparator asAddLineSeparator(
+    private PageContentCommand.AddStaticElementDefault asAddStaticElementDefault(
             WaTemplate page,
             Integer orderNumber,
             long userId,
+            long componentId,
             String adminComments) {
-        return new AddLineSeparator(page, orderNumber, userId, adminComments, Instant.now());
+        return new AddStaticElementDefault(page, orderNumber, userId, adminComments, componentId, Instant.now());
     }
 
     public Long addHyperLink(Long pageId, AddStaticHyperLinkRequest request, Long userId) {
@@ -87,7 +93,8 @@ public class PageStaticCreator {
                 userId,
                 request.adminComments(),
                 request.label(),
-                request.linkUrl()));
+                request.linkUrl(),
+                HYPERLINK_ID));
 
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
@@ -98,8 +105,9 @@ public class PageStaticCreator {
             long userId,
             String adminComments,
             String label,
-            String linkUrl) {
-        return new AddHyperLink(page, orderNumber, userId, adminComments, label, linkUrl, Instant.now());
+            String linkUrl,
+            Long componentId) {
+        return new AddHyperLink(page, orderNumber, userId, adminComments, label, linkUrl, componentId, Instant.now());
     }
 
     public Long addReadOnlyComments(Long pageId, AddStaticReadOnlyCommentsRequest request, Long userId) {
@@ -125,7 +133,8 @@ public class PageStaticCreator {
                 orderNum,
                 userId,
                 request.commentsText(),
-                request.adminComments()));
+                request.adminComments(),
+                READ_ONLY_COMMENTS_ID));
 
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
@@ -135,8 +144,51 @@ public class PageStaticCreator {
             Integer orderNumber,
             long userId,
             String comments,
-            String adminComments) {
-        return new AddReadOnlyComments(page, orderNumber, userId, comments, adminComments, Instant.now());
+            String adminComments,
+            Long componentId) {
+        return new AddReadOnlyComments(page, orderNumber, userId, comments, adminComments, componentId, Instant.now());
+    }
+
+    public Long addReadOnlyParticipantsList(Long pageId, AddStaticElementDefaultRequest request, Long userId) {
+        if (pageId == null) {
+            throw new AddStaticElementException("Page is required");
+        }
+
+        WaTemplate template = entityManager.getReference(WaTemplate.class, pageId);
+
+ 
+        WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
+                .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
+
+        Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
+
+        uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
+
+        WaUiMetadata staticElementEntry = new WaUiMetadata(
+                asAddStaticElementDefault(template, orderNum, userId, READ_ONLY_PARTICIPANTS_LIST_ID, request.adminComments()));
+
+        return uiMetadatumRepository.save(staticElementEntry).getId();
+    }
+
+    public Long addOriginalElectronicDocList(Long pageId, AddStaticElementDefaultRequest request, Long userId) {
+        if (pageId == null) {
+            throw new AddStaticElementException("Page is required");
+        }
+
+        WaTemplate template = entityManager.getReference(WaTemplate.class, pageId);
+
+ 
+        WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
+                .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
+
+        Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
+
+        uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
+
+        WaUiMetadata staticElementEntry = new WaUiMetadata(
+                asAddStaticElementDefault(template, orderNum, userId, ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID, request.adminComments()));
+
+        return uiMetadatumRepository.save(staticElementEntry).getId();
     }
 
 }

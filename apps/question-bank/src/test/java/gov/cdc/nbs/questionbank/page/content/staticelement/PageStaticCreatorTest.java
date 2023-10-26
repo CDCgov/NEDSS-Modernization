@@ -22,7 +22,7 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticLineSeparatorRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +39,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_line_separator_to_page() {
-        var request = new AddStaticLineSeparatorRequest(null, 10L);
+        var request = new AddStaticElementDefaultRequest(null, 10L);
 
         Long pageId = 123L;
         when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -131,5 +131,64 @@ class PageStaticCreatorTest {
         assertNotNull(newId);
     }
 
+    @Test
+    void should_add_read_only_participants_list() {
+        var request = new AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = 123L;
+        when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
+
+        Long userId = 999L;
+
+        WaUiMetadata subsec = new WaUiMetadata();
+        subsec.setOrderNbr(4);
+
+        when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
+
+        when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr())).thenReturn(4);
+
+        ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
+        when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
+            WaUiMetadata savedMetadatum = m.getArgument(0);
+            savedMetadatum.setId(77L);
+            return savedMetadatum;
+        });
+
+        Long newId = contentManager.addReadOnlyParticipantsList(pageId, request, userId);
+
+        verify(uiMetadatumRepository, times(1)).save(Mockito.any());
+        assertEquals(999L, captor.getValue().getAddUserId().longValue());
+        assertNotNull(newId);
+    }
+
+    @Test
+    void should_add_original_electronic_doc_list() {
+        var request = new AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = 123L;
+        when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
+
+        Long userId = 999L;
+
+        WaUiMetadata subsec = new WaUiMetadata();
+        subsec.setOrderNbr(4);
+
+        when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
+
+        when(uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subsec.getOrderNbr())).thenReturn(4);
+
+        ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
+        when(uiMetadatumRepository.save(captor.capture())).thenAnswer(m -> {
+            WaUiMetadata savedMetadatum = m.getArgument(0);
+            savedMetadatum.setId(77L);
+            return savedMetadatum;
+        });
+
+        Long newId = contentManager.addOriginalElectronicDocList(pageId, request, userId);
+
+        verify(uiMetadatumRepository, times(1)).save(Mockito.any());
+        assertEquals(999L, captor.getValue().getAddUserId().longValue());
+        assertNotNull(newId);
+    }
 
 }

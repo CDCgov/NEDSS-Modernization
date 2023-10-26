@@ -2,6 +2,6 @@ package gov.cdc.nbs.questionbank.page.content.staticelement.request;
 
 import org.springframework.lang.Nullable;
 
-public record AddStaticLineSeparatorRequest(@Nullable String adminComments, Long subSectionId) {
+public record AddStaticElementDefaultRequest(@Nullable String adminComments, Long subSectionId) {
     
 }
