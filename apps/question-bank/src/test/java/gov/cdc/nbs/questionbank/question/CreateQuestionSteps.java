@@ -176,7 +176,7 @@ public class CreateQuestionSteps {
         CreateTextQuestionRequest textRequest = (CreateTextQuestionRequest) request;
         assertEquals(question.getId().longValue(), response.id());
         assertEquals(textRequest.getDefaultValue(), question.getDefaultValue());
-        assertEquals(textRequest.getMask(), question.getMask());
+        assertEquals(textRequest.getMask().toString(), question.getMask());
         assertEquals(textRequest.getFieldLength().toString(), question.getFieldSize());
     }
 
@@ -186,7 +186,7 @@ public class CreateQuestionSteps {
                 (DateQuestionEntity) questionRepository.findById(response.id()).orElseThrow();
         CreateDateQuestionRequest dateRequest = (CreateDateQuestionRequest) request;
         assertEquals(question.getId().longValue(), response.id());
-        assertEquals(dateRequest.getMask(), question.getMask());
+        assertEquals(dateRequest.getMask().toString(), question.getMask());
         assertEquals(dateRequest.isAllowFutureDates() ? 'T' : 'F', question.getFutureDateIndCd().charValue());
     }
 
@@ -196,7 +196,7 @@ public class CreateQuestionSteps {
                 .orElseThrow();
         CreateNumericQuestionRequest numericRequest = (CreateNumericQuestionRequest) request;
         assertEquals(question.getId().longValue(), response.id());
-        assertEquals(numericRequest.getMask(), question.getMask());
+        assertEquals(numericRequest.getMask().toString(), question.getMask());
         assertEquals(numericRequest.getFieldLength().toString(), question.getFieldSize());
         assertEquals(numericRequest.getDefaultValue().toString(), question.getDefaultValue());
         assertEquals(numericRequest.getMinValue(), question.getMinValue());

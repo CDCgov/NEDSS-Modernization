@@ -23,11 +23,6 @@ public class QuestionManagementUtil {
         this.questionRepository = questionRepository;
     }
 
-    public QuestionOid getQuestionOid(boolean includedInMessage, String codeSystem, String codeSet) {
-        CodeSet code = CodeSet.valueOf(codeSet);
-        return getQuestionOid(includedInMessage, codeSystem, code);
-    }
-
     public QuestionOid getQuestionOid(boolean includedInMessage, String codeSystem, CodeSet codeSet) {
         if (includedInMessage) {
             return codeValueGeneralRepository.findByCode(

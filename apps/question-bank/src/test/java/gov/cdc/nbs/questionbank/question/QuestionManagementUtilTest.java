@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -15,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
@@ -77,7 +77,7 @@ class QuestionManagementUtilTest {
         when(codeValueGeneralRepository.findByCode(Mockito.anyString())).thenReturn(Optional.of(cvg));
 
         // when I generate the question oid
-        QuestionOid oid = questionManagementUtil.getQuestionOid(true, "", "");
+        QuestionOid oid = questionManagementUtil.getQuestionOid(true, "", CodeSet.LOCAL);
 
         // then I am returned the proper code system info
         assertEquals(cvg.getCodeDescTxt(), oid.oid());
@@ -126,21 +126,11 @@ class QuestionManagementUtilTest {
         // when retrieving the question oid 
         // then an exception is thrown
         String codeSystem = request.getMessagingInfo().codeSystem();
-        String codeSet = request.getCodeSet().toString();
+        CodeSet codeSet = request.getCodeSet();
         assertThrows(UpdateQuestionException.class,
                 () -> questionManagementUtil.getQuestionOid(
                         true,
                         codeSystem,
                         codeSet));
-    }
-
-    @Test
-    void should_return_null_oid() {
-        // given a non PHIN or LOCAL codeSet
-        // when retrieving the question oid
-        QuestionOid oid = questionManagementUtil.getQuestionOid(false, "", "NOT_PHIN_OR_LOCAL");
-
-        // then null is returned
-        assertNull(oid);
     }
 }

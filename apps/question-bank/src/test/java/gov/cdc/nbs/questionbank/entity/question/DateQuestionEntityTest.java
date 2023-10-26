@@ -22,7 +22,7 @@ class DateQuestionEntityTest {
 
         DateQuestionEntity q = new DateQuestionEntity(command);
         assertEquals('F', q.getFutureDateIndCd().charValue());
-        assertEquals("mask", q.getMask());
+        assertEquals("DATE", q.getMask());
     }
 
     @Test
@@ -31,7 +31,7 @@ class DateQuestionEntityTest {
 
         DateQuestionEntity q = new DateQuestionEntity(command);
         assertEquals('T', q.getFutureDateIndCd().charValue());
-        assertEquals("mask1", q.getMask());
+        assertEquals("DATE", q.getMask());
     }
 
     private QuestionCommand.AddDateQuestion addCommand(DateMask mask, boolean allowFutureDates) {

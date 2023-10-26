@@ -16,6 +16,7 @@ import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -171,8 +172,11 @@ class QuestionCreatorTest {
         CreateTextQuestionRequest request = QuestionRequestMother.phinTextRequest(false);
 
         // and a valid oid
-        when(managementUtil.getQuestionOid(false, "ABNORMAL_FLAGS_HL7", "PHIN"))
-                .thenReturn(new QuestionOid("test", "test"));
+        when(managementUtil.getQuestionOid(
+                false,
+                "ABNORMAL_FLAGS_HL7",
+                CodeSet.PHIN))
+                        .thenReturn(new QuestionOid("test", "test"));
 
         // when i convert to an Add command
         QuestionCommand.AddTextQuestion command = creator.asAdd(123L, request);

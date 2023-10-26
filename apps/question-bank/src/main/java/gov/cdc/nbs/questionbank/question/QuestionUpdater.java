@@ -110,8 +110,7 @@ public class QuestionUpdater {
         return new QuestionCommand.Update(
                 asQuestionData(
                         request,
-                        isInUse,
-                        question.getQuestionType()),
+                        isInUse),
                 request.defaultValue(),
                 request.mask(),
                 request.fieldLength(),
@@ -129,8 +128,7 @@ public class QuestionUpdater {
 
     QuestionCommand.UpdatableQuestionData asQuestionData(
             UpdateQuestionRequest request,
-            boolean isInUse,
-            String codeset) {
+            boolean isInUse) {
         return new QuestionCommand.UpdatableQuestionData(
                 isInUse,
                 request.uniqueName(),
@@ -142,7 +140,7 @@ public class QuestionUpdater {
                 managementUtil.getQuestionOid(
                         request.includedInMessage(),
                         request.codeSystem(),
-                        codeset));
+                        null)); // Cannot update codeset
     }
 
     QuestionCommand.ReportingData asReportingData(UpdateQuestionRequest request, String subgroup) {

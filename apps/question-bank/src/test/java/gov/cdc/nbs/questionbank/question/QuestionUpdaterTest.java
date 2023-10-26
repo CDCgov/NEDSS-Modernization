@@ -129,8 +129,11 @@ class QuestionUpdaterTest {
         UpdateQuestionRequest request = QuestionRequestMother.update();
 
         // and a valid oid
-        when(managementUtil.getQuestionOid(true, request.codeSystem(), "LOCAL"))
-                .thenReturn(new QuestionOid("oid", "oid system"));
+        when(managementUtil.getQuestionOid(
+                true,
+                "PH_ACCEPTAPPLICATION",
+                null))
+                        .thenReturn(new QuestionOid("oid", "oid system"));
 
 
         // and an existing question
