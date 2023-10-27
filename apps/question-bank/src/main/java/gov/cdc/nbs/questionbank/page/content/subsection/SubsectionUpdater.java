@@ -7,9 +7,9 @@ import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubsectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubsectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 
 @Component
 public class SubsectionUpdater {
@@ -24,20 +24,20 @@ public class SubsectionUpdater {
         this.templateRepository = templateRepository;
     }
 
-    public Subsection update(Long page, Long subSectionId, Long userId, UpdateSubsectionRequest request) {
+    public Subsection update(Long page, Long subSectionId, Long userId, UpdateSubSectionRequest request) {
         // Verify request is valid
         if (request == null || !StringUtils.hasLength(request.name())) {
-            throw new UpdateSubsectionException("Subsection Name is required");
+            throw new UpdateSubSectionException("Subsection Name is required");
         }
 
         // Verify page exists and is a Draft
         if (!templateRepository.isPageDraft(page)) {
-            throw new UpdateSubsectionException("Unable to update subsection on non Draft page");
+            throw new UpdateSubSectionException("Unable to update subsection on non Draft page");
         }
 
         // Update the entry
         WaUiMetadata subsection = repository.findById(subSectionId)
-                .orElseThrow(() -> new UpdateSubsectionException("Failed to find subsection with id: " + subSectionId));
+                .orElseThrow(() -> new UpdateSubSectionException("Failed to find subsection with id: " + subSectionId));
 
         subsection.update(asCommand(userId, request));
         subsection = repository.save(subsection);
@@ -47,7 +47,7 @@ public class SubsectionUpdater {
                 "T".equals(subsection.getDisplayInd()));
     }
 
-    private PageContentCommand.UpdateSubsection asCommand(Long userId, UpdateSubsectionRequest request) {
+    private PageContentCommand.UpdateSubsection asCommand(Long userId, UpdateSubSectionRequest request) {
         return new PageContentCommand.UpdateSubsection(
                 request.name(),
                 request.visible(),

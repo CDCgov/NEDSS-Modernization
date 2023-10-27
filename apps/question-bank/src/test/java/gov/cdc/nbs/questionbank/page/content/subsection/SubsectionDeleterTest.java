@@ -3,92 +3,50 @@ package gov.cdc.nbs.questionbank.page.content.subsection;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubsectionException;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
 
 @ExtendWith(MockitoExtension.class)
 class SubsectionDeleterTest {
 
     @Mock
-    private WaUiMetadataRepository repository;
-    @Mock
-    private WaTemplateRepository templateRepository;
+    private EntityManager entityManager;
 
     @InjectMocks
     private SubsectionDeleter deleter;
 
-    @ParameterizedTest
-    @MethodSource("componentList")
-    void should_delete_subsection(Long nextComponent) {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
+    @Test
+    void should_delete_subsection() {
+        // Given a page
+        WaTemplate page = Mockito.mock(WaTemplate.class);
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
 
-        // And an empty subsection with order number
-        when(repository.findOrderNumber(1l)).thenReturn(Optional.of(3));
-        when(repository.findNbsUiComponentUid(4, 2l)).thenReturn(Optional.ofNullable(nextComponent));
-
-        // When a delete subsection request is processed
-        deleter.delete(2l, 1l);
+        // When a request to delete a subsection is processed
+        deleter.delete(1l, 2l, 999l);
 
         // Then the subsection is deleted
-        verify(repository).deleteById(1l);
-        verify(repository).decrementOrderNumbers(3, 1l);
-    }
-
-    private static List<Long> componentList() {
-        return Arrays.asList(
-                1010l, // TAB
-                1015l, // SECTION
-                1016l, // SUBSECTION
-                null);
+        ArgumentCaptor<PageContentCommand.DeleteSubsection> captor =
+                ArgumentCaptor.forClass(PageContentCommand.DeleteSubsection.class);
+        verify(page).deleteSubsection(captor.capture());
     }
 
     @Test
-    void should_not_delete_because_published() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(0L)).thenReturn(false);
+    void should_not_delete_section_no_page_found() {
+        // Given a page that doesn't exist
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
 
-        // When a delete subsection request is processed
+        // When a request to delete a subsection is processed
         // Then an exception is thrown
-        assertThrows(DeleteSubsectionException.class, () -> deleter.delete(0l, 1l));
-    }
-
-    @Test
-    void should_not_delete_no_subsection() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
-
-        // And an subsection that doesn't exist
-        when(repository.findOrderNumber(1l)).thenReturn(Optional.empty());
-
-        // When a delete section request is processed
-        // Then an exception is thrown
-        assertThrows(DeleteSubsectionException.class, () -> deleter.delete(2l, 1l));
-    }
-
-    @Test
-    void should_not_delete_has_content() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
-
-        // And a section with content
-        when(repository.findOrderNumber(1l)).thenReturn(Optional.of(3));
-        when(repository.findNbsUiComponentUid(4, 2l)).thenReturn(Optional.of(1009l));
-
-        // When a delete section request is processed
-        // Then an exception is thrown
-        assertThrows(DeleteSubsectionException.class, () -> deleter.delete(2l, 1l));
+        assertThrows(DeleteSubSectionException.class, () -> deleter.delete(1l, 2l, 999l));
     }
 
 }

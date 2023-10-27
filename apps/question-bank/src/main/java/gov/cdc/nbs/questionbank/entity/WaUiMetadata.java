@@ -325,27 +325,27 @@ public class WaUiMetadata {
     updated(command);
   }
 
-  public WaUiMetadata(WaTemplate page, PageContentCommand.AddSection command) {
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddSection command, Integer orderNumber) {
     this();
     this.nbsUiComponentUid = 1015L;
     this.waTemplateUid = page;
     this.questionLabel = command.label();
     setVisible(command.visible());
     this.questionIdentifier = command.identifier();
-    this.orderNbr = command.orderNumber();
+    this.orderNbr = orderNumber;
 
     // Audit
     added(command);
   }
 
-   public WaUiMetadata(WaTemplate page, PageContentCommand.AddSubsection command) {
+   public WaUiMetadata(WaTemplate page, PageContentCommand.AddSubsection command, Integer orderNumber) {
     this();
     this.nbsUiComponentUid = 1016L;
     this.waTemplateUid = page;
     this.questionLabel = command.label();
     setVisible(command.visible());
     this.questionIdentifier = command.identifier();
-    this.orderNbr = command.orderNumber();
+    this.orderNbr = orderNumber;
 
     // Audit
     added(command);

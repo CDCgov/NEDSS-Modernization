@@ -6,11 +6,13 @@ import static org.mockito.Mockito.when;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,10 +31,12 @@ class SectionDeleterTest {
         when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
 
         // When a request to delete a section is processed
-        deleter.deleteSection(1l, 2l);
+        deleter.deleteSection(1l, 2l, 999l);
 
         // Then the section is deleted
-        verify(page).deleteSection(2l);
+        ArgumentCaptor<PageContentCommand.DeleteSection> captor =
+                ArgumentCaptor.forClass(PageContentCommand.DeleteSection.class);
+        verify(page).deleteSection(captor.capture());
     }
 
     @Test
@@ -42,7 +46,7 @@ class SectionDeleterTest {
 
         // When a request to delete a section is processed
         // Then an exception is thrown
-        assertThrows(DeleteSectionException.class, () -> deleter.deleteSection(1l, 2l));
+        assertThrows(DeleteSectionException.class, () -> deleter.deleteSection(1l, 2l, 999l));
     }
 
 }

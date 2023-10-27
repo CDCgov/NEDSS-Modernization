@@ -34,11 +34,10 @@ public sealed interface PageContentCommand {
     }
 
     public record AddSection(
-            Long page,
             String label,
             boolean visible,
             String identifier,
-            int orderNumber,
+            long tab,
             long userId,
             Instant requestedOn) implements PageContentCommand {
     }
@@ -50,12 +49,14 @@ public sealed interface PageContentCommand {
             Instant requestedOn) implements PageContentCommand {
     }
 
+    public record DeleteSection(long setionId, long userId, Instant requestedOn) implements PageContentCommand {
+    }
+
     public record AddSubsection(
-            Long page,
             String label,
             boolean visible,
             String identifier,
-            int orderNumber,
+            long section,
             long userId,
             Instant requestedOn) implements PageContentCommand {
     }
@@ -65,5 +66,9 @@ public sealed interface PageContentCommand {
             boolean visible,
             long userId,
             Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record DeleteSubsection(long subsectionId, long userId, Instant requestedOn) implements PageContentCommand {
+
     }
 }

@@ -19,9 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubsectionException;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubsectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SubsectionUpdaterTest {
@@ -48,7 +48,7 @@ class SubsectionUpdaterTest {
         when(repository.save(Mockito.any())).thenAnswer(i -> i.getArgument(0));
 
         // When a valid request is made to update the section
-        UpdateSubsectionRequest request = new UpdateSubsectionRequest("New name", false);
+        UpdateSubSectionRequest request = new UpdateSubSectionRequest("New name", false);
         Subsection section = updater.update(2l, 1l, 3l, request);
 
         // Then the section is updated
@@ -64,16 +64,16 @@ class SubsectionUpdaterTest {
 
         // When a request is made
         // Then an exception is thrown
-        UpdateSubsectionRequest request = new UpdateSubsectionRequest("New name", false);
-        assertThrows(UpdateSubsectionException.class, () ->updater.update(2l, 1l, 3l, request));
+        UpdateSubSectionRequest request = new UpdateSubSectionRequest("New name", false);
+        assertThrows(UpdateSubSectionException.class, () ->updater.update(2l, 1l, 3l, request));
     }
 
     @ParameterizedTest
     @MethodSource("badRequests")
-    void should_not_update_subsection(UpdateSubsectionRequest request) {
+    void should_not_update_subsection(UpdateSubSectionRequest request) {
         // When a request is made
         // Then an exception is thrown
-        assertThrows(UpdateSubsectionException.class, () -> updater.update(2l, 1l, 3l, request));
+        assertThrows(UpdateSubSectionException.class, () -> updater.update(2l, 1l, 3l, request));
         verifyNoInteractions(repository);
     }
 
@@ -87,14 +87,14 @@ class SubsectionUpdaterTest {
 
         // When a request
         // Then an exception is thrown
-        UpdateSubsectionRequest request = new UpdateSubsectionRequest("New name", false);
-        assertThrows(UpdateSubsectionException.class, () ->updater.update(2l, 1l, 3l, request));
+        UpdateSubSectionRequest request = new UpdateSubSectionRequest("New name", false);
+        assertThrows(UpdateSubSectionException.class, () ->updater.update(2l, 1l, 3l, request));
     }
 
-    private static List<UpdateSubsectionRequest> badRequests() {
+    private static List<UpdateSubSectionRequest> badRequests() {
         return Arrays.asList(
-                new UpdateSubsectionRequest("", false), // Empty name
-                new UpdateSubsectionRequest(null, false), // null name
+                new UpdateSubSectionRequest("", false), // Empty name
+                new UpdateSubSectionRequest(null, false), // null name
                 null // Null request
         );
     }

@@ -18,7 +18,7 @@ import io.cucumber.java.en.Then;
 @Transactional
 public class DeleteSubsectionSteps {
     @Autowired
-    private SubsectionController subsectionController;
+    private SubSectionController subsectionController;
 
     @Autowired
     private WaUiMetadataRepository waUiMetadataRepository;

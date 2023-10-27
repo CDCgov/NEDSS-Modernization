@@ -49,7 +49,8 @@ public class SectionController {
     public void deleteSection(
             @PathVariable("page") Long page,
             @PathVariable("sectionId") Long sectionId) {
-        deleter.deleteSection(page, sectionId);
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        deleter.deleteSection(page, sectionId, userId);
     }
 
     @PutMapping("{section}")

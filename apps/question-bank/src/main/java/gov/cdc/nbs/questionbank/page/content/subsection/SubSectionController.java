@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubsectionRequest;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubsectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 
 
 @RestController
 @RequestMapping("/api/v1/pages/{page}/subsections/")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-public class SubsectionController {
+public class SubSectionController {
 
-    private final SubsectionCreator creator;
+    private final SubSectionCreator creator;
     private final SubsectionUpdater updater;
     private final SubsectionDeleter deleter;
     private final UserDetailsProvider userDetailsProvider;
 
-    public SubsectionController(
-            final SubsectionCreator createSubSectionService,
+    public SubSectionController(
+            final SubSectionCreator createSubSectionService,
             final SubsectionDeleter deleter,
             final SubsectionUpdater updater,
             final UserDetailsProvider userDetailsProvider) {
@@ -39,7 +39,7 @@ public class SubsectionController {
     @PostMapping
     public Subsection createSubsection(
             @PathVariable("page") Long page,
-            @RequestBody CreateSubsectionRequest request) {
+            @RequestBody CreateSubSectionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return creator.create(page, userId, request);
     }
@@ -49,14 +49,15 @@ public class SubsectionController {
     public void deleteSubSection(
             @PathVariable("page") Long page,
             @PathVariable Long subSectionId) {
-        deleter.delete(page, subSectionId);
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        deleter.delete(page, subSectionId, userId);
     }
 
     @PutMapping("{subSectionId}")
     public Subsection updateSubSection(
             @PathVariable("page") Long page,
             @PathVariable("subSectionId") Long subSectionId,
-            @RequestBody UpdateSubsectionRequest request) {
+            @RequestBody UpdateSubSectionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return updater.update(page, subSectionId, userId, request);
     }

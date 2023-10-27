@@ -1,12 +1,13 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import gov.cdc.nbs.questionbank.page.PageCommand;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
-import gov.cdc.nbs.questionbank.page.util.PageConstants;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,14 +20,12 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
+import gov.cdc.nbs.questionbank.page.PageCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -208,6 +207,50 @@ public class WaTemplate {
     including(section);
   }
 
+  public WaUiMetadata addSection(PageContentCommand.AddSection command) {
+    // Can only modify Draft pages
+    if (!DRAFT.equals(templateType)) {
+      throw new PageContentModificationException("Unable to add section to non Draft page");
+    }
+
+    // Find the container to insert section into
+    WaUiMetadata tab = uiMetadata.stream()
+        .filter(ui -> ui.getId() == command.tab())
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException("Failed to find tab to insert section into"));
+
+    // create section
+    WaUiMetadata section = new WaUiMetadata(this, command, tab.getOrderNbr() + 1);
+
+    including(section);
+    changed(command);
+    return section;
+  }
+
+  public void addSubSection(WaUiMetadata subsection) {
+    including(subsection);
+  }
+
+  public WaUiMetadata addSubSection(PageContentCommand.AddSubsection command) {
+    // Can only modify Draft pages
+    if (!DRAFT.equals(templateType)) {
+      throw new PageContentModificationException("Unable to add subsection to non Draft page");
+    }
+
+    // Find the container to insert subsection into
+    WaUiMetadata section = uiMetadata.stream()
+        .filter(ui -> ui.getId() == command.section())
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException("Failed to find tab to insert section into"));
+
+    // create section
+    WaUiMetadata subsection = new WaUiMetadata(this, command, section.getOrderNbr() + 1);
+
+    including(subsection);
+    changed(command);
+    return subsection;
+  }
+
   public void addSubSection(
       final String name,
       final int at,
@@ -241,26 +284,52 @@ public class WaTemplate {
     including(component);
   }
 
-  public void deleteSection(long sectionId) {
+  public void deleteSection(PageContentCommand.DeleteSection command) {
     // Can only modify Draft pages
-    if (!DRAFT.equals(templateType)) {
-      throw new DeleteSectionException("Unable to remove section from a published page");
+    if (!DRAFT.equals(getTemplateType())) {
+      throw new PageContentModificationException("Unable to remove section from a published page");
     }
 
-    // Find the section requsted to delete
+    // Find the section to delete
     WaUiMetadata section = uiMetadata.stream()
-        .filter(e -> e.getId() == sectionId)
+        .filter(e -> e.getId() == command.setionId() && e.getNbsUiComponentUid() == 1015l)
         .findFirst()
-        .orElseThrow(() -> new DeleteSectionException("Failed to find section with id: " + sectionId));
+        .orElseThrow(
+            () -> new PageContentModificationException("Failed to find section with id: " + command.setionId()));
 
     // If element after section is null, another section, or Tab then we can delete the section
     if (!isElementAtOrderNullOrOneOf(Arrays.asList(1015l, 1010l), section.getOrderNbr() + 1)) {
-      throw new DeleteSectionException("Unable to delete a section with content");
+      throw new PageContentModificationException("Unable to delete a section with content");
     }
 
     // Remove section and adjust orderNbrs
     uiMetadata.remove(section);
     adjustingComponentsFrom(section.getOrderNbr());
+    changed(command);
+  }
+
+  public void deleteSubsection(PageContentCommand.DeleteSubsection command) {
+    // Can only modify Draft pages
+    if (!DRAFT.equals(getTemplateType())) {
+      throw new PageContentModificationException("Unable to remove subsection from a published page");
+    }
+
+    // Find the subsection to delete
+    WaUiMetadata section = uiMetadata.stream()
+        .filter(e -> e.getId() == command.subsectionId() && e.getNbsUiComponentUid() == 1016l)
+        .findFirst()
+        .orElseThrow(
+            () -> new PageContentModificationException("Failed to find subsection with id: " + command.subsectionId()));
+
+    // If element after section is null, another subsection, section, or Tab then we can delete the subsection
+    if (!isElementAtOrderNullOrOneOf(Arrays.asList(1016l, 1015l, 1010l), section.getOrderNbr() + 1)) {
+      throw new PageContentModificationException("Unable to delete a subsection with content");
+    }
+
+    // Remove subsection and adjust order numbers
+    uiMetadata.remove(section);
+    adjustingComponentsFrom(section.getOrderNbr());
+    changed(command);
   }
 
   private boolean isElementAtOrderNullOrOneOf(List<Long> validComponents, int orderNumber) {
@@ -305,6 +374,11 @@ public class WaTemplate {
   public void changed(final PageCommand command) {
     setLastChgTime(command.requestedOn());
     setLastChgUserId(command.requester());
+  }
+
+  private void changed(final PageContentCommand command) {
+    setLastChgTime(command.requestedOn());
+    setLastChgUserId(command.userId());
   }
 
   public void update(final PageCommand.UpdateDetails command) {

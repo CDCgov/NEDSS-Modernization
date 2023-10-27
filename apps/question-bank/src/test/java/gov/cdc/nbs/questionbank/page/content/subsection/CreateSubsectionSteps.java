@@ -11,7 +11,7 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubsectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
@@ -21,7 +21,7 @@ import io.cucumber.java.en.Then;
 public class CreateSubsectionSteps {
 
     @Autowired
-    private SubsectionController subsectionController;
+    private SubSectionController subsectionController;
 
     @Autowired
     private WaUiMetadataRepository repository;
@@ -45,7 +45,7 @@ public class CreateSubsectionSteps {
         try {
             subsection = subsectionController.createSubsection(
                     page.getId(),
-                    new CreateSubsectionRequest(
+                    new CreateSubSectionRequest(
                             section.getId(),
                             "new subsection",
                             true));

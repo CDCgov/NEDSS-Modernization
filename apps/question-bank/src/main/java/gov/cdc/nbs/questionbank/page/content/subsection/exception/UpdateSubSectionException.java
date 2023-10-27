@@ -2,9 +2,9 @@ package gov.cdc.nbs.questionbank.page.content.subsection.exception;
 
 import gov.cdc.nbs.questionbank.exception.BadRequestException;
 
-public class UpdateSubsectionException extends BadRequestException {
+public class UpdateSubSectionException extends BadRequestException {
 
-    public UpdateSubsectionException(String message) {
+    public UpdateSubSectionException(String message) {
         super(message);
     }
 

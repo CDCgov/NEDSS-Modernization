@@ -1,50 +1,30 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.time.Instant;
+import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubsectionException;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
 
 @Component
 public class SubsectionDeleter {
 
-    private final WaUiMetadataRepository repository;
-    private final WaTemplateRepository templateRepository;
+    private final EntityManager entityManager;
 
-    public SubsectionDeleter(
-            final WaUiMetadataRepository repository,
-            final WaTemplateRepository templateRepository) {
-        this.repository = repository;
-        this.templateRepository = templateRepository;
+    public SubsectionDeleter(final EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
-    private static final Set<Long> allowed = new HashSet<>(
-            Arrays.asList(
-                    1010l, // Tab
-                    1015l, // Section
-                    1016l // Subsection
-            ));
-
-    public void delete(Long page, Long subsection) {
-        if (!templateRepository.isPageDraft(page)) {
-            throw new DeleteSubsectionException("Unable to delete subsection if page is not draft");
+    public void delete(Long page, Long subsection, long userId) {
+        WaTemplate template = entityManager.find(WaTemplate.class, page);
+        if (template == null) {
+            throw new DeleteSubSectionException("Unable to find page with id: " + page);
         }
 
-        Integer orderNbr = repository.findOrderNumber(subsection)
-                .orElseThrow(() -> new DeleteSubsectionException("Failed to find subsection with id: " + subsection));
-        Optional<Long> nextComponent = repository.findNbsUiComponentUid(orderNbr + 1, page);
-
-        // If next component is empty, subsection is empty
-        // If next component is tab, section, or subsection then subsection is empty
-        if (!nextComponent.isEmpty() && !allowed.contains(nextComponent.get())) {
-            throw new DeleteSubsectionException("Unable to delete subsection with content");
-        }
-
-        repository.deleteById(subsection);
-        repository.decrementOrderNumbers(orderNbr, subsection);
+        template.deleteSubsection(new PageContentCommand.DeleteSubsection(
+                subsection,
+                userId,
+                Instant.now()));
     }
 }
