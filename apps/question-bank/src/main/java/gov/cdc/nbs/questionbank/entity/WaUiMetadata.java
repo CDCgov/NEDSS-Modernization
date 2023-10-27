@@ -244,15 +244,7 @@ public class WaUiMetadata {
     this.recordStatusTime = createdOn;
 
   }
-
-  private void added(PageContentCommand.AddQuestion command) {
-    this.addTime = command.requestedOn();
-    this.addUserId = command.userId();
-    this.lastChgTime = command.requestedOn();
-    this.lastChgUserId = command.userId();
-    this.recordStatusTime = command.requestedOn();
-  }
-
+  
   public WaUiMetadata(PageContentCommand.AddReadOnlyComments command) {
     // Defaults
     this.standardNndIndCd = 'F';
