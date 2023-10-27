@@ -24,6 +24,7 @@ public class PageStaticCreator {
     private static final String PAGE_REQUIRED_EXCEPTION_MESSAGE = "Page is required";
     private static final String PAGE_NOT_FOUND_EXCEPTION_MESSAGE = "Unable to find page";
     private static final String SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE = "Failed to find subsection";
+    private static final String PAGE_IF_DRAFT = "Draft";
 
     // NBS Component ID for the static elements
 
@@ -41,7 +42,7 @@ public class PageStaticCreator {
 
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
-        if (!template.getTemplateType().equals("Draft")) {
+        if (!template.getTemplateType().equals(PAGE_IF_DRAFT)) {
             throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 
@@ -76,7 +77,7 @@ public class PageStaticCreator {
 
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
-        if (!template.getTemplateType().equals("Draft")) {
+        if (!template.getTemplateType().equals(PAGE_IF_DRAFT)) {
             throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 
@@ -120,7 +121,7 @@ public class PageStaticCreator {
 
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
-        if (!template.getTemplateType().equals("Draft")) {
+        if (!template.getTemplateType().equals(PAGE_IF_DRAFT)) {
             throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 
@@ -159,7 +160,7 @@ public class PageStaticCreator {
 
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
-        if (!template.getTemplateType().equals("Draft")) {
+        if (!template.getTemplateType().equals(PAGE_IF_DRAFT)) {
             throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 
@@ -192,7 +193,7 @@ public class PageStaticCreator {
 
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
-        if (!template.getTemplateType().equals("Draft")) {
+        if (!template.getTemplateType().equals(PAGE_IF_DRAFT)) {
             throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 

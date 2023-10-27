@@ -20,7 +20,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import com.itextpdf.text.pdf.parser.LineSegment;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -244,7 +243,7 @@ public class WaUiMetadata {
     this.recordStatusTime = createdOn;
 
   }
-  
+
   public WaUiMetadata(PageContentCommand.AddReadOnlyComments command) {
     // Defaults
     this.standardNndIndCd = 'F';

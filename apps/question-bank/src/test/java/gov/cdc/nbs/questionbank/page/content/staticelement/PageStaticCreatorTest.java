@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.content.staticelement;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.PageStaticRequests;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,8 +68,59 @@ class PageStaticCreatorTest {
     }
 
     @Test
+    void should_not_create_line_separator_if_not_draft() {
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Published");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        assertThrows(AddStaticElementException.class, () -> contentManager.addLineSeparator(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_line_separator_if_page_null() {
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = null;
+        Long userId = 999L;
+
+
+
+        assertThrows(AddStaticElementException.class, () -> contentManager.addLineSeparator(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_line_separator_if_subsection_invalid() {
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, null);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Draft");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        WaUiMetadata subsec = new WaUiMetadata();
+        subsec.setOrderNbr(4);
+
+        // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
+
+        assertThrows(AddStaticElementException.class, () -> contentManager.addLineSeparator(pageId, request, userId));
+    }
+
+    @Test
     void should_add_hyperlink_to_page() {
-        var request = new PageStaticRequests.AddStaticHyperLinkRequest("google", "google.com", null, 10L);
+        var request = new PageStaticRequests.AddStaticHyperLinkRequest(
+                "google",
+                "google.com",
+                null,
+                10L);
 
         Long pageId = 123L;
         when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -98,8 +151,68 @@ class PageStaticCreatorTest {
     }
 
     @Test
+    void should_not_create_hyperlink_if_not_draft() {
+        var request = new PageStaticRequests.AddStaticHyperLinkRequest(
+                "google",
+                "google.com",
+                null,
+                10L);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Published");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        assertThrows(AddStaticElementException.class, () -> contentManager.addHyperLink(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_hyperlink_if_page_null() {
+        var request = new PageStaticRequests.AddStaticHyperLinkRequest(
+                "google",
+                "google.com",
+                null,
+                10L);
+
+        Long pageId = null;
+        Long userId = 999L;
+
+        assertThrows(AddStaticElementException.class, () -> contentManager.addHyperLink(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_hyperlink_if_subsection_invalid() {
+        var request = new PageStaticRequests.AddStaticHyperLinkRequest(
+                "google",
+                "google.com",
+                null,
+                null);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Draft");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        WaUiMetadata subsec = new WaUiMetadata();
+        subsec.setOrderNbr(4);
+
+        // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
+
+        assertThrows(AddStaticElementException.class, () -> contentManager.addHyperLink(pageId, request, userId));
+    }
+
+    @Test
     void should_add_read_only_comments_to_page() {
-        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest("comments test", null, 123L);
+        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest(
+                "comments test",
+                null,
+                123L);
 
         Long pageId = 321L;
         when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -127,6 +240,63 @@ class PageStaticCreatorTest {
         assertEquals(999L, captor.getValue().getAddUserId().longValue());
         assertEquals(request.commentsText(), captor.getValue().getQuestionLabel());
         assertNotNull(newId);
+    }
+
+    @Test
+    void should_not_create_read_only_comments_if_not_draft() {
+        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest(
+                "comments test",
+                null,
+                123L);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Published");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        assertThrows(AddStaticElementException.class,
+                () -> contentManager.addReadOnlyComments(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_read_only_comments_if_page_null() {
+        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest(
+                "comments test",
+                null,
+                123L);
+
+        Long pageId = null;
+        Long userId = 999L;
+
+        assertThrows(AddStaticElementException.class,
+                () -> contentManager.addReadOnlyComments(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_read_only_comments_if_subsection_invalid() {
+        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest(
+                "comments test",
+                null,
+                123L);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Draft");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        WaUiMetadata subsec = new WaUiMetadata();
+        subsec.setOrderNbr(4);
+
+        // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
+
+        assertThrows(AddStaticElementException.class,
+                () -> contentManager.addReadOnlyComments(pageId, request, userId));
     }
 
     @Test
@@ -160,6 +330,54 @@ class PageStaticCreatorTest {
     }
 
     @Test
+    void should_not_create_read_only_participants_list_if_not_draft() {
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Published");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        assertThrows(AddStaticElementException.class,
+                () -> contentManager.addReadOnlyParticipantsList(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_read_only_participants_list_if_page_null() {
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = null;
+        Long userId = 999L;
+
+        assertThrows(AddStaticElementException.class,
+                () -> contentManager.addReadOnlyParticipantsList(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_read_only_participants_list_if_subsection_invalid() {
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Draft");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        WaUiMetadata subsec = new WaUiMetadata();
+        subsec.setOrderNbr(4);
+
+        // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
+
+        assertThrows(AddStaticElementException.class,
+                () -> contentManager.addReadOnlyParticipantsList(pageId, request, userId));
+    }
+
+    @Test
     void should_add_original_electronic_doc_list() {
         var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
 
@@ -187,6 +405,55 @@ class PageStaticCreatorTest {
         verify(uiMetadatumRepository, times(1)).save(Mockito.any());
         assertEquals(999L, captor.getValue().getAddUserId().longValue());
         assertNotNull(newId);
+    }
+
+    @Test
+    void should_not_create_original_electronic_doc_list_if_not_draft() {
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Published");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        assertThrows(AddStaticElementException.class,
+                () -> contentManager.addOriginalElectronicDocList(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_original_electronic_doc_list_if_page_null() {
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = null;
+        Long userId = 999L;
+
+        assertThrows(AddStaticElementException.class,
+                () -> contentManager.addOriginalElectronicDocList(pageId, request, userId));
+    }
+
+    @Test
+    void should_not_create_original_electronic_doc_list_if_subsection_invalid() {
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+
+        Long pageId = 123L;
+        WaTemplate temp = new WaTemplate();
+        temp.setTemplateType("Draft");
+
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(temp);
+
+        Long userId = 999L;
+
+        WaUiMetadata subsec = new WaUiMetadata();
+        subsec.setOrderNbr(4);
+
+        // when(uiMetadatumRepository.findById(request.subSectionId())).thenReturn(Optional.of(subsec));
+
+        assertThrows(
+                AddStaticElementException.class,
+                () -> contentManager.addOriginalElectronicDocList(pageId, request, userId));
     }
 
 }
