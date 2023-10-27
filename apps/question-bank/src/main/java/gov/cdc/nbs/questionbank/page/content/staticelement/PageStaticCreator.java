@@ -21,6 +21,10 @@ public class PageStaticCreator {
     private final WaUiMetadataRepository uiMetadatumRepository;
     private final EntityManager entityManager;
 
+    private static final String PAGE_REQUIRED_EXCEPTION_MESSAGE = "Page is required";
+    private static final String PAGE_NOT_FOUND_EXCEPTION_MESSAGE = "Unable to find page";
+    private static final String SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE = "Failed to find subsection";
+
     // NBS Component ID for the static elements
 
     public PageStaticCreator(
@@ -32,17 +36,17 @@ public class PageStaticCreator {
 
     public Long addLineSeparator(Long pageId, AddStaticElementDefaultRequest request, Long user) {
         if (pageId == null) {
-            throw new AddStaticElementException("Page is required");
+            throw new AddStaticElementException(PAGE_REQUIRED_EXCEPTION_MESSAGE);
         }
 
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
         if (!template.getTemplateType().equals("Draft")) {
-            throw new AddStaticElementException("Unable to find page");
+            throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 
         WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-                .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
+                .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
         Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
@@ -64,7 +68,7 @@ public class PageStaticCreator {
 
     public Long addHyperLink(Long pageId, AddStaticHyperLinkRequest request, Long userId) {
         if (pageId == null) {
-            throw new AddStaticElementException("Page is required");
+            throw new AddStaticElementException(PAGE_REQUIRED_EXCEPTION_MESSAGE);
         }
         if (request.label() == null || request.linkUrl() == null) {
             throw new AddStaticElementException("Label and Link URL are required");
@@ -73,12 +77,12 @@ public class PageStaticCreator {
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
         if (!template.getTemplateType().equals("Draft")) {
-            throw new AddStaticElementException("Unable to find page");
+            throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 
         // Find max order number for the subsection
         WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-                .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
+                .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
         Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
@@ -108,7 +112,7 @@ public class PageStaticCreator {
     public Long addReadOnlyComments(Long pageId, AddStaticReadOnlyCommentsRequest request,
             Long userId) {
         if (pageId == null) {
-            throw new AddStaticElementException("Page is required");
+            throw new AddStaticElementException(PAGE_REQUIRED_EXCEPTION_MESSAGE);
         }
         if (request.commentsText() == null) {
             throw new AddStaticElementException("Comments are required");
@@ -117,12 +121,12 @@ public class PageStaticCreator {
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
         if (!template.getTemplateType().equals("Draft")) {
-            throw new AddStaticElementException("Unable to find page");
+            throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 
         // Find max order number for the subsection
         WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-                .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
+                .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
         Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
@@ -150,17 +154,17 @@ public class PageStaticCreator {
     public Long addReadOnlyParticipantsList(Long pageId, AddStaticElementDefaultRequest request,
             Long userId) {
         if (pageId == null) {
-            throw new AddStaticElementException("Page is required");
+            throw new AddStaticElementException(PAGE_REQUIRED_EXCEPTION_MESSAGE);
         }
 
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
         if (!template.getTemplateType().equals("Draft")) {
-            throw new AddStaticElementException("Unable to find page");
+            throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 
         WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-                .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
+                .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
         Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
@@ -183,17 +187,17 @@ public class PageStaticCreator {
     public Long addOriginalElectronicDocList(Long pageId, AddStaticElementDefaultRequest request,
             Long userId) {
         if (pageId == null) {
-            throw new AddStaticElementException("Page is required");
+            throw new AddStaticElementException(PAGE_REQUIRED_EXCEPTION_MESSAGE);
         }
 
         WaTemplate template = entityManager.find(WaTemplate.class, pageId);
 
         if (!template.getTemplateType().equals("Draft")) {
-            throw new AddStaticElementException("Unable to find page");
+            throw new AddStaticElementException(PAGE_NOT_FOUND_EXCEPTION_MESSAGE);
         }
 
         WaUiMetadata subSection = uiMetadatumRepository.findById(request.subSectionId())
-                .orElseThrow(() -> new AddStaticElementException("Failed to find subsection"));
+                .orElseThrow(() -> new AddStaticElementException(SUBSECTION_NOT_FOUND_EXCEPTION_MESSAGE));
 
         Integer orderNum = uiMetadatumRepository.findMaxOrderNbrForSubsection(pageId, subSection.getOrderNbr());
 
