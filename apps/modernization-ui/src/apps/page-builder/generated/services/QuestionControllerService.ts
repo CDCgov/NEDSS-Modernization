@@ -130,7 +130,7 @@ export class QuestionControllerService {
         /**
          * request
          */
-        request: CreateNumericQuestionRequest,
+        request: CreateNumericQuestionRequest | any,
     }): CancelablePromise<NumericQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -270,7 +270,7 @@ export class QuestionControllerService {
         /**
          * request
          */
-        request: UpdateQuestionRequest,
+        request: UpdateQuestionRequest| any,
     }): CancelablePromise<Question | any> {
         return __request(OpenAPI, {
             method: 'PUT',

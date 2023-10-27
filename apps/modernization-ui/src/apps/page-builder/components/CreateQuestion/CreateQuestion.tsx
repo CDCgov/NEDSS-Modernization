@@ -23,7 +23,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const init = {
         label: '',
         description: '',
-        type: UpdateQuestionRequest.type.TEXT,
+        type: UpdateQuestionRequest.type.CODED,
         subgroup: '',
         uniqueId: '',
         uniqueName: '',
@@ -44,15 +44,18 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         displayType: '',
         reportLabel: '',
         defaultValue: 'test@gmai.com',
-        fieldLength: '50',
+        fieldLength: 50,
         mask: 'TXT',
         fieldSize: '50',
         tooltip: '',
         displayControl: 0,
         minValue: 0,
-        maxValue: 0,
+        maxValue: 50,
         allowFutureDates: false,
-        dateFormat: ''
+        dateFormat: '',
+        relatedUnitsLiteral: 'ML',
+        relatedUnitsValueSet: 2,
+        valueset: '115920'
     };
     const validation = {
         label: { required: true, error: false, fb: false },
@@ -156,40 +159,91 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         ));
     const handleSubmit = () => {
         if (question?.id) return handleUpdateQuestion();
-        const request = {
+        let request = {
             dataMartInfo: {
                 defaultLabelInReport: 'Test',
+                dataMartColumnName: questionData.dataMartColumnName,
                 defaultRdbTableName: questionData.defaultRdbTableName,
                 rdbColumnName: questionData.rdbColumnName,
-                dataMartColumnName: questionData.dataMartColumnName,
                 reportLabel: questionData.reportLabel || 'Report label'
             },
             messagingInfo: {
-                includedInMessage: questionData.includedInMessage,
-                messageVariableId: questionData.messageVariableId,
-                labelInMessage: questionData.labelInMessage,
                 codeSystem: questionData.codeSystem,
-                requiredInMessage: questionData.requiredInMessage,
-                hl7DataType: questionData.hl7DataType
+                conceptCode: 'ARBO',
+                conceptName: 'CONDITION_FAMILY',
+                preferredConceptName: 'Arboviral'
+                // includedInMessage: questionData.includedInMessage,
+                // messageVariableId: questionData.messageVariableId,
+                // labelInMessage: questionData.labelInMessage,
+                // requiredInMessage: questionData.requiredInMessage,
+                // hl7DataType: questionData.hl7DataType
             },
-            label: questionData.label,
-            uniqueName: questionData.uniqueName,
-            uniqueId: questionData.uniqueId,
-            subgroup: questionData.subgroup,
             adminComments: questionData.adminComments,
-            description: questionData.label,
-            type: questionData.type,
             codeSet: questionData.codeSet,
-            tooltip: questionData.tooltip || '',
-            displayControl: questionData.displayControl || 0,
-            defaultValue: questionData.defaultValue,
-            allowFutureDates: questionData.allowFutureDates,
+            description: questionData.description,
+            defaultValue: questionData.defaultValue, // text
+            displayControl: questionData.displayControl,
             fieldLength: questionData.fieldLength,
-            fieldSize: questionData.fieldSize,
-            mask: questionData.mask
+            label: questionData.label,
+            mask: questionData.mask,
+            subgroup: questionData.subgroup,
+            tooltip: questionData.tooltip,
+            uniqueName: questionData.uniqueName,
+            uniqueId: questionData.uniqueId
+            // type: questionData.type,
+            // allowFutureDates: questionData.allowFutureDates,
+            // fieldSize: questionData.fieldSize
         };
-        // TODO based on the type selected call one of the questionAPI methods
-        // such as createDateQuestion()
+        if (selectedFieldType === 'TEXT') {
+            request = { ...request, defaultValue: questionData.defaultValue };
+            QuestionControllerService.createTextQuestionUsingPost({
+                authorization,
+                request
+            }).then((response: any) => {
+                showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
+                resetInput();
+                return response;
+            });
+        } else if (selectedFieldType === 'DATE') {
+            // @ts-ignore
+            request = { ...request, allowFutureDates: questionData.allowFutureDates };
+            QuestionControllerService.createDateQuestionUsingPost({
+                authorization,
+                request
+            }).then((response: any) => {
+                showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
+                resetInput();
+                return response;
+            });
+        } else if (selectedFieldType === 'NUMERIC') {
+            const dateRequest = {
+                ...request,
+                minValue: 0,
+                maxValue: 50,
+                relatedUnitsLiteral: questionData.relatedUnitsLiteral,
+                relatedUnitsValueSet: questionData.relatedUnitsValueSet
+            };
+            QuestionControllerService.createNumericQuestionUsingPost({
+                authorization,
+                request: dateRequest
+            }).then((response: any) => {
+                showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
+                resetInput();
+                return response;
+            });
+        } else {
+            // @ts-ignore
+            request = { ...request, valueSet: questionData.valueset };
+            QuestionControllerService.createCodedQuestionUsingPost({
+                authorization,
+                request
+            }).then((response: any) => {
+                showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
+                resetInput();
+                return response;
+            });
+        }
+
         console.log('ensure', request);
     };
     const handleUpdateQuestion = () => {
@@ -325,10 +379,10 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         }
     };
     const fieldTypeTab = [
-        { name: 'Value set' },
-        { name: 'Numerics entry' },
-        { name: 'Text only' },
-        { name: 'Date picker' }
+        { name: 'Value set', value: UpdateQuestionRequest.type.CODED },
+        { name: 'Numerics entry', value: UpdateQuestionRequest.type.NUMERIC },
+        { name: 'Text only', value: UpdateQuestionRequest.type.TEXT },
+        { name: 'Date picker', value: UpdateQuestionRequest.type.DATE }
     ];
 
     const valueSetmodalRef = useRef<ModalRef>(null);
@@ -519,15 +573,16 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         <Button
                             key={index}
                             type="button"
-                            outline={field.name !== selectedFieldType}
-                            onClick={() => setSelectedFieldType(field.name)}>
+                            outline={field.value !== selectedFieldType}
+                            onClick={() => setSelectedFieldType(field.value)}>
                             {field.name}
                         </Button>
                     ))}
                 </ButtonGroup>
                 <br></br>
-                {selectedFieldType === 'Value set' && renderValueSet}
-                {(selectedFieldType === 'Numerics entry' || selectedFieldType === 'Text only') && (
+                {selectedFieldType === UpdateQuestionRequest.type.CODED && renderValueSet}
+                {(selectedFieldType === UpdateQuestionRequest.type.NUMERIC ||
+                    selectedFieldType === UpdateQuestionRequest.type.TEXT) && (
                     <>
                         <label>
                             Mask <span className="mandatory-indicator">*</span>
@@ -566,7 +621,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         </div>
                     </>
                 )}
-                {selectedFieldType === 'Numerics entry' && (
+                {selectedFieldType === UpdateQuestionRequest.type.NUMERIC && (
                     <>
                         <div className={isValid['minValue'].error ? 'error-border' : ''}>
                             <label>Minimum Value</label>
@@ -623,7 +678,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         </div>
                     </>
                 )}
-                {selectedFieldType === 'Date picker' && (
+                {selectedFieldType === UpdateQuestionRequest.type.DATE && (
                     <>
                         <div className={isValid['dateFormat'].error ? 'error-border' : ''}>
                             <label>
