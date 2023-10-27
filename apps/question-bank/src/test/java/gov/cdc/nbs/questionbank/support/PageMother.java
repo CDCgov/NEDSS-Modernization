@@ -246,8 +246,7 @@ public class PageMother {
     include(page);
 
     // add page detail mappings
-    page.add(
-        page,
+    page.addTab(
         new PageContentCommand.AddTab(
         page.getId(),
         "tab",
@@ -323,7 +322,7 @@ public class PageMother {
     // a new tab will always go last
     WaUiMetadata last = last(found.getUiMetadata()).orElseThrow();
     int next = last.getOrderNbr() + 1;
-    found.add(found, new PageContentCommand.AddTab(
+    found.addTab(new PageContentCommand.AddTab(
         found.getId(),
         name,
         true,

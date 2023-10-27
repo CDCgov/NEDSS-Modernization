@@ -15,7 +15,7 @@ Feature: Delete Subsection
 
     Scenario: I cannot delete a subsection without logging in
         Given I am not logged in
-        When I send a subsection section request
+        When I send a delete subsection request
         Then a no credentials found exception is thrown
 
     Scenario: I cannot delete a subsection without permissions

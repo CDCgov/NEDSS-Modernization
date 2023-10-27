@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.question.PageQuestionController;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
@@ -33,9 +32,6 @@ public class AddQuestionToPageSteps {
     private WaUiMetadataRepository repository;
 
     @Autowired
-    private WANNDMetadataRepository nndMetadataRepository;
-
-    @Autowired
     private QuestionMother questionMother;
 
     @Autowired
@@ -46,12 +42,6 @@ public class AddQuestionToPageSteps {
     @Before
     public void clearExceptions() {
         exceptionHolder.clear();
-    }
-
-    @Given("No questions are in use")
-    public void no_questions_are_in_use() {
-        nndMetadataRepository.deleteAll();
-        repository.deleteAll();
     }
 
     @Given("I add a question to a page")

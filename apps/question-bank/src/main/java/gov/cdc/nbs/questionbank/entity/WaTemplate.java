@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.entity;
 
 import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +17,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Entity
 @Table(name = "WA_template", catalog = "NBS_ODSE")
 public class WaTemplate {
+  private static final String DRAFT = "Draft";
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "wa_template_uid", nullable = false)
@@ -116,11 +121,12 @@ public class WaTemplate {
       CascadeType.PERSIST,
       CascadeType.MERGE,
       CascadeType.REMOVE
-  })
+  }, orphanRemoval = true)
+  @OrderBy("orderNbr")
   private List<WaUiMetadata> uiMetadata;
 
   public WaTemplate() {
-    this.templateType = "Draft";
+    this.templateType = DRAFT;
     this.recordStatusCd = "ACTIVE";
     this.conditionMappings = new HashSet<>();
     this.uiMetadata = new ArrayList<>();
@@ -131,8 +137,7 @@ public class WaTemplate {
       final String mappingGuide,
       final String name,
       final long createdBy,
-      final Instant createdOn
-  ) {
+      final Instant createdOn) {
     this();
     this.busObjType = object;
     this.nndEntityIdentifier = mappingGuide;
@@ -157,8 +162,7 @@ public class WaTemplate {
         this.templateNm,
         1,
         this.addUserId,
-        this.addTime
-    );
+        this.addTime);
 
     root.setAddUserId(this.addUserId);
     root.setAddTime(this.addTime);
@@ -175,43 +179,47 @@ public class WaTemplate {
     return components;
   }
 
-  public void add(final WaTemplate page, final PageContentCommand.AddTab add) {
-    WaUiMetadata component = new WaUiMetadata(page,add);
+  public void addTab(final PageContentCommand.AddTab add) {
+    WaUiMetadata component = new WaUiMetadata(this, add);
     including(component);
+  }
+
+  public void addTab(WaUiMetadata tab) {
+    including(tab);
   }
 
   public void addSection(
       final String name,
       final int at,
       final long addedBy,
-      final Instant addedOn
-  ) {
+      final Instant addedOn) {
     WaUiMetadata component = new WaUiMetadata(
         this,
         PageConstants.SECTION_COMPONENT,
         name,
         at,
         addedBy,
-        addedOn
-    );
+        addedOn);
 
     including(component);
+  }
+
+  public void addSection(WaUiMetadata section) {
+    including(section);
   }
 
   public void addSubSection(
       final String name,
       final int at,
       final long addedBy,
-      final Instant addedOn
-  ) {
+      final Instant addedOn) {
     WaUiMetadata component = new WaUiMetadata(
         this,
         PageConstants.SUB_SECTION_COMPONENT,
         name,
         at,
         addedBy,
-        addedOn
-    );
+        addedOn);
 
     including(component);
   }
@@ -221,23 +229,50 @@ public class WaTemplate {
       final long type,
       final int at,
       final long addedBy,
-      final Instant addedOn
-  ) {
+      final Instant addedOn) {
     WaUiMetadata component = new WaUiMetadata(
         this,
         type,
         name,
         at,
         addedBy,
-        addedOn
-    );
+        addedOn);
 
     including(component);
   }
 
+  public void deleteSection(long sectionId) {
+    // Can only modify Draft pages
+    if (!DRAFT.equals(templateType)) {
+      throw new DeleteSectionException("Unable to remove section from a published page");
+    }
+
+    // Find the section requsted to delete
+    WaUiMetadata section = uiMetadata.stream()
+        .filter(e -> e.getId() == sectionId)
+        .findFirst()
+        .orElseThrow(() -> new DeleteSectionException("Failed to find section with id: " + sectionId));
+
+    // If element after section is null, another section, or Tab then we can delete the section
+    if (!isElementAtOrderNullOrOneOf(Arrays.asList(1015l, 1010l), section.getOrderNbr() + 1)) {
+      throw new DeleteSectionException("Unable to delete a section with content");
+    }
+
+    // Remove section and adjust orderNbrs
+    uiMetadata.remove(section);
+    adjustingComponentsFrom(section.getOrderNbr());
+  }
+
+  private boolean isElementAtOrderNullOrOneOf(List<Long> validComponents, int orderNumber) {
+    WaUiMetadata next = uiMetadata.stream()
+        .filter(e -> e.getOrderNbr() == orderNumber)
+        .findFirst()
+        .orElse(null);
+    return next == null || validComponents.contains(next.getNbsUiComponentUid());
+  }
+
   private void including(final WaUiMetadata component) {
     this.uiMetadata.add(component);
-
     adjustingComponentsFrom(component.getOrderNbr());
   }
 
@@ -248,8 +283,7 @@ public class WaTemplate {
         .filter(c -> c.getOrderNbr() >= position)
         .sorted(
             Comparator.comparing(WaUiMetadata::getOrderNbr)
-                .thenComparing(WaUiMetadata::getLastChgTime, Comparator.reverseOrder())
-        )
+                .thenComparing(WaUiMetadata::getLastChgTime, Comparator.reverseOrder()))
 
         .forEach(c -> c.setOrderNbr(current.getAndIncrement()));
   }
@@ -257,14 +291,12 @@ public class WaTemplate {
   public PageCondMapping associateCondition(
       final String condition,
       final long associatedBy,
-      final Instant associatedOn
-  ) {
+      final Instant associatedOn) {
     PageCondMapping mapping = new PageCondMapping(
         this,
         condition,
         associatedBy,
-        associatedOn
-    );
+        associatedOn);
 
     this.conditionMappings.add(mapping);
     return mapping;
@@ -282,7 +314,7 @@ public class WaTemplate {
     setDescTxt(command.description());
 
     // If the page is just an initial draft allow update of conditions and Data mart name
-    boolean isInitialDraft = getTemplateType().equals("Draft") && getPublishVersionNbr() == null;
+    boolean isInitialDraft = getTemplateType().equals(DRAFT) && getPublishVersionNbr() == null;
     if (isInitialDraft) {
       setDatamartNm(command.dataMartName());
 

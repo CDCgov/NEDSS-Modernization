@@ -65,7 +65,6 @@ public class DeleteTabSteps {
         }
     }
 
-
     @Then("the tab is deleted")
     public void the_tab_is_deleted() {
         WaUiMetadata deleted = this.deleted.active();

@@ -5,6 +5,7 @@ Feature: Create Subsection
         Given I have a page
         And the page has a tab
         And the page has a section in the 1st tab
+        And the page has a sub-section named "whatever" in the 1st section
 
     Scenario: I can create a subsection
         Given I am an admin user

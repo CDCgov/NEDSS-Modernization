@@ -1,5 +1,15 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -12,17 +22,6 @@ import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import java.time.Instant;
 
 @AllArgsConstructor
 @Getter
@@ -38,10 +37,7 @@ public class WaUiMetadata {
   @Column(name = "wa_ui_metadata_uid", nullable = false)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {
-      CascadeType.REMOVE,
-      CascadeType.DETACH
-    })
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "wa_template_uid", nullable = false)
   private WaTemplate waTemplateUid;
 

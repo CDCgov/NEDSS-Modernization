@@ -1,114 +1,48 @@
 package gov.cdc.nbs.questionbank.page.content.section;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.content.section.exception.DeleteSectionException;
 
 @ExtendWith(MockitoExtension.class)
 class SectionDeleterTest {
     @Mock
-    private WaUiMetadataRepository repository;
-
-    @Mock
-    private WaTemplateRepository templateRepository;
+    private EntityManager entityManager;
 
     @InjectMocks
     private SectionDeleter deleter;
 
+
     @Test
-    void should_delete_section_next_element_is_tab() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
+    void should_delete_section() {
+        // Given a page
+        WaTemplate page = Mockito.mock(WaTemplate.class);
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
 
-        // And an empty section with order number
-        when(repository.findOrderNumber(1l)).thenReturn(Optional.of(3));
-        when(repository.findNbsUiComponentUid(4, 2l)).thenReturn(Optional.of(1010l));
-
-        // When a delete section request is processed
-        deleter.deleteSection(2l, 1l);
+        // When a request to delete a section is processed
+        deleter.deleteSection(1l, 2l);
 
         // Then the section is deleted
-        verify(repository).deleteById(1l);
-        verify(repository).decrementOrderNumbers(3, 1l);
+        verify(page).deleteSection(2l);
     }
 
     @Test
-    void should_delete_section_end_of_page() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
+    void should_not_delete_section_no_page_found() {
+        // Given a page that doesn't exist
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
 
-        // And an empty section with order number
-        when(repository.findOrderNumber(1l)).thenReturn(Optional.of(3));
-        when(repository.findNbsUiComponentUid(4, 2l)).thenReturn(Optional.empty());
-
-        // When a delete section request is processed
-        deleter.deleteSection(2l, 1l);
-
-        // Then the section is deleted
-        verify(repository).deleteById(1l);
-        verify(repository).decrementOrderNumbers(3, 1l);
-    }
-
-    @Test
-    void should_delete_section_next_element_is_section() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
-
-        // And an empty section with order number
-        when(repository.findOrderNumber(1l)).thenReturn(Optional.of(3));
-        when(repository.findNbsUiComponentUid(4, 2l)).thenReturn(Optional.of(1015l));
-
-        // When a delete section request is processed
-        deleter.deleteSection(2l, 1l);
-
-        // Then the section is deleted
-        verify(repository).deleteById(1l);
-        verify(repository).decrementOrderNumbers(3, 1l);
-    }
-
-    @Test
-    void should_not_delete_because_published() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(0L)).thenReturn(false);
-
-        // When a delete section request is processed
+        // When a request to delete a section is processed
         // Then an exception is thrown
-        assertThrows(DeleteSectionException.class, () -> deleter.deleteSection(0l, 1l));
+        assertThrows(DeleteSectionException.class, () -> deleter.deleteSection(1l, 2l));
     }
 
-    @Test
-    void should_not_delete_no_section() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
-
-        // And an section that doesn't exist
-        when(repository.findOrderNumber(1l)).thenReturn(Optional.empty());
-
-        // When a delete section request is processed
-        // Then an exception is thrown
-        assertThrows(DeleteSectionException.class, () -> deleter.deleteSection(2l, 1l));
-    }
-
-    @Test
-    void should_not_delete_has_content() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
-
-        // And a section with content
-        when(repository.findOrderNumber(1l)).thenReturn(Optional.of(3));
-        when(repository.findNbsUiComponentUid(4, 2l)).thenReturn(Optional.of(1009l));
-
-        // When a delete section request is processed
-        // Then an exception is thrown
-        assertThrows(DeleteSectionException.class, () -> deleter.deleteSection(2l, 1l));
-    }
 }

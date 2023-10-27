@@ -2,12 +2,12 @@ package gov.cdc.nbs.questionbank.support;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 
 @Component
@@ -17,14 +17,16 @@ public class QuestionMother {
     private WaQuestionRepository questionRepository;
 
     @Autowired
-    private WaQuestionHistRepository histRepository;
+    EntityManager entityManager;
+
+    @Autowired
+    private TestQuestionCleaner cleaner;
 
     private List<WaQuestion> allQuestions = new ArrayList<>();
 
     public void clean() {
-        histRepository.deleteAll();
-        questionRepository.deleteAll();
-        allQuestions.clear();
+        this.allQuestions.forEach(cleaner::clean);
+        this.allQuestions.clear();
     }
 
     public WaQuestion textQuestion() {
