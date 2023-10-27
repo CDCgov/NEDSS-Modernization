@@ -41,7 +41,7 @@ describe('ConditionLibraryTabel', () => {
             investigationFormCd: 'IFCD',
             nndInd: 'NNDID',
             progAreaCd: 'PACD',
-            statusCd: 'ACTIVE'
+            statusCd: 'A'
         };
 
         const conditions = [condition];
@@ -66,7 +66,31 @@ describe('ConditionLibraryTabel', () => {
             expect(tableData[4]).toHaveTextContent('CCDD');
             expect(tableData[5]).toHaveTextContent('NNDID');
             expect(tableData[6]).toHaveTextContent('IFCD');
-            expect(tableData[7]).toHaveTextContent('ACTIVE');
+            expect(tableData[7]).toHaveTextContent('Active');
+        });
+
+        it('should display "Inactive" when status is I', async () => {
+            conditions[0].statusCd = 'I';
+            const { container } = render(
+                <BrowserRouter>
+                    <ConditionLibraryTable
+                        conditions={conditions}
+                        currentPage={1}
+                        pageSize={10}
+                        totalElements={50}></ConditionLibraryTable>
+                </BrowserRouter>
+            );
+
+            const tableData = container.getElementsByClassName('table-data');
+
+            expect(tableData[0]).toHaveTextContent('test condition');
+            expect(tableData[1]).toHaveTextContent('11234');
+            expect(tableData[2]).toHaveTextContent('PACD');
+            expect(tableData[3]).toHaveTextContent('FCD');
+            expect(tableData[4]).toHaveTextContent('CCDD');
+            expect(tableData[5]).toHaveTextContent('NNDID');
+            expect(tableData[6]).toHaveTextContent('IFCD');
+            expect(tableData[7]).toHaveTextContent('Inactive');
         });
     });
 });
