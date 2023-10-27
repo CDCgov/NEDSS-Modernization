@@ -51,9 +51,6 @@ public class PageMother {
   public void clean() {
     this.available.all().forEach(cleaner::clean);
     this.available.reset();
-//    wanndMetadataRepository.deleteAll();
-//    wARDBMetadataRepository.deleteAll();
-//    waRuleMetaDataRepository.deleteAll();
   }
 
   public WaTemplate one() {

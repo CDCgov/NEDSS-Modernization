@@ -3,12 +3,11 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "cdc-sandbox/**"
-      - "docker-compose.yml"
-      - "**.md"
-      - ".github/workflows/**"
-      - "apps/nbs-gateway/**"
+    paths:
+      - "apps/modernization-api/**"
+      - "apps/modernization-ui/**"
+      - "libs/accumulation/**"
+      - "!libs/testing/**"
 
 jobs:
   sonar_scan:

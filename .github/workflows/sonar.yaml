@@ -17,7 +17,11 @@ on:
   pull_request:
     paths:
       - "apps/**"
+      - "!apps/modernization-ui"
       - "libs/**"
+      - "build.gradle"
+      - "settings.gradle"
+      - "gradle/**"
       - ".github/workflows/sonar.yaml"
 env:
   deployment_env: dev

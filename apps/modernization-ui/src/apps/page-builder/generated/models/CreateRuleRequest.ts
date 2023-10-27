@@ -15,6 +15,5 @@ export type CreateRuleRequest = {
     targetType?: string;
     targetValueIdentifier?: Array<string>;
     targetValueText?: Array<string>;
-    templateUid?: number;
 };
 

@@ -18,23 +18,11 @@ public class TextQuestionEntity extends WaQuestion {
     @Column(name = "mask", length = 50)
     private String mask;
 
-    public void setMask(String mask) {
-        this.mask = requireNonNull(mask, "Mask");
-    }
-
     @Column(name = "field_size", length = 10)
     private String fieldSize;
 
-    public void setFieldSize(String fieldSize) {
-        this.fieldSize = requireNonNull(fieldSize, "Field size");
-    }
-
     @Column(name = "default_value", length = 300)
     private String defaultValue;
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
-    }
 
     @Override
     public String getDataType() {
@@ -44,9 +32,11 @@ public class TextQuestionEntity extends WaQuestion {
     public TextQuestionEntity(QuestionCommand.AddTextQuestion command) {
         super(command);
 
-        setDefaultValue(command.defaultValue());
-        setMask(command.mask());
-        setFieldSize(command.fieldLength());
+        this.defaultValue = command.defaultValue();
+        this.mask = requireNonNull(command.mask(), "Mask").toString();
+        if (command.fieldLength() != null) {
+            this.fieldSize = requireNonNull(command.fieldLength(), "Field size").toString();
+        }
 
         // Audit
         created(command);
@@ -63,10 +53,9 @@ public class TextQuestionEntity extends WaQuestion {
         update(command.questionData());
 
         // Text specific fields
-        setDefaultValue(command.defaultValue());
-        setMask(command.mask());
-        setFieldSize(command.fieldLength());
-
+        this.defaultValue = command.defaultValue();
+        this.mask = requireNonNull(command.mask(), "Mask");
+        this.fieldSize = requireNonNull(command.fieldLength(), "Field size");
 
         // Reporting
         setReportingData(command);

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.identification;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
@@ -53,9 +53,7 @@ public class PatientProfileIdentificationSteps {
     PatientInput.Identification identification = new PatientInput.Identification(
         faker.idNumber().ssnValid(),
         "SS",
-        "ANY"
-    );
-
+        "ANY");
 
     this.input.active().getIdentifications().add(identification);
   }
@@ -65,9 +63,7 @@ public class PatientProfileIdentificationSteps {
     PatientInput.Identification identification = new PatientInput.Identification(
         RandomUtil.getRandomString(),
         RandomUtil.getRandomString(),
-        RandomUtil.getRandomString()
-    );
-
+        RandomUtil.getRandomString());
 
     this.input.active().getIdentifications().add(identification);
   }
@@ -109,8 +105,7 @@ public class PatientProfileIdentificationSteps {
     GraphQLPage page = new GraphQLPage(1);
 
     assertThatThrownBy(
-        () -> this.resolver.resolve(profile, page)
-    )
+        () -> this.resolver.resolve(profile, page))
         .isInstanceOf(AccessDeniedException.class);
   }
 
@@ -138,13 +133,11 @@ public class PatientProfileIdentificationSteps {
   @Transactional
   public void the_patient_has_identification(
       final String type,
-      final String value
-  ) {
+      final String value) {
     mother.withIdentification(
         this.activePatient.active(),
         resolveType(type),
-        value
-    );
+        value);
   }
 
   private String resolveType(final String type) {
