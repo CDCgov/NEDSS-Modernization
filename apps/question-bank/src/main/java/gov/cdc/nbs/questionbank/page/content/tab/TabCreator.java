@@ -40,7 +40,7 @@ public class TabCreator {
             throw new CreateTabException("Failed to find page with id: " + pageId);
         }
 
-        // Create the new section
+        // Create the new tab
         WaUiMetadata tab = page.addTab(asAdd(
                 idGenerator.next(),
                 userId,
