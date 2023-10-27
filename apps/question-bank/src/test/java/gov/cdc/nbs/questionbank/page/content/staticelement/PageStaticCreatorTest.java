@@ -21,9 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.PageStaticRequests;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,7 +40,7 @@ class PageStaticCreatorTest {
         var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
 
         Long pageId = 123L;
-        when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
 
         Long userId = 999L;
 
@@ -73,7 +70,7 @@ class PageStaticCreatorTest {
         var request = new PageStaticRequests.AddStaticHyperLinkRequest("google", "google.com", null, 10L);
 
         Long pageId = 123L;
-        when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
 
         Long userId = 999L;
 
@@ -105,7 +102,7 @@ class PageStaticCreatorTest {
         var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest("comments test", null, 123L);
 
         Long pageId = 321L;
-        when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
 
         Long userId = 999L;
 
@@ -137,7 +134,7 @@ class PageStaticCreatorTest {
         var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
 
         Long pageId = 123L;
-        when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
 
         Long userId = 999L;
 
@@ -167,7 +164,7 @@ class PageStaticCreatorTest {
         var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
 
         Long pageId = 123L;
-        when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
+        when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
 
         Long userId = 999L;
 
