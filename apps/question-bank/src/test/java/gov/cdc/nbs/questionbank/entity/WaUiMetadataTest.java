@@ -226,6 +226,22 @@ class WaUiMetadataTest {
         assertEquals(updateCommand.requestedOn(), tabMetadata.getLastChgTime());
     }
 
+    @Test
+    void should_update_subsection() {
+        WaTemplate page = new WaTemplate();
+        page.setId(123l);
+        PageContentCommand.AddSubsection command = addSubsection(page);
+        WaUiMetadata subsectionMetadata = new WaUiMetadata(page, command, 3);
+
+        PageContentCommand.UpdateSubsection updateCommand = updateSubsection();
+        subsectionMetadata.update(updateCommand);
+
+        assertEquals(updateCommand.label(), subsectionMetadata.getQuestionLabel());
+        assertEquals(updateCommand.visible() ? "T" : "F", subsectionMetadata.getDisplayInd());
+        assertEquals(updateCommand.userId(), subsectionMetadata.getLastChgUserId().longValue());
+        assertEquals(updateCommand.requestedOn(), subsectionMetadata.getLastChgTime());
+    }
+
     private PageContentCommand.UpdateTab updateTab() {
         return new PageContentCommand.UpdateTab(
                 "updated label",
@@ -234,9 +250,28 @@ class WaUiMetadataTest {
                 Instant.now());
     }
 
+    private PageContentCommand.UpdateSubsection updateSubsection() {
+        return new PageContentCommand.UpdateSubsection(
+                "updated label",
+                false,
+                3l,
+                444,
+                Instant.now());
+    }
+
     private PageContentCommand.AddTab addTab(WaTemplate page) {
         return new PageContentCommand.AddTab(
                 page.getId(),
+                "test label",
+                false,
+                "some identifier",
+                55,
+                22,
+                Instant.now());
+    }
+
+    private PageContentCommand.AddSubsection addSubsection(WaTemplate page) {
+        return new PageContentCommand.AddSubsection(
                 "test label",
                 false,
                 "some identifier",

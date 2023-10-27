@@ -8,11 +8,11 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
 
 @Component
-public class SubsectionDeleter {
+public class SubSectionDeleter {
 
     private final EntityManager entityManager;
 
-    public SubsectionDeleter(final EntityManager entityManager) {
+    public SubSectionDeleter(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

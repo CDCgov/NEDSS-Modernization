@@ -22,7 +22,7 @@ class SubsectionDeleterTest {
     private EntityManager entityManager;
 
     @InjectMocks
-    private SubsectionDeleter deleter;
+    private SubSectionDeleter deleter;
 
     @Test
     void should_delete_subsection() {

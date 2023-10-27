@@ -21,14 +21,14 @@ import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSection
 public class SubSectionController {
 
     private final SubSectionCreator creator;
-    private final SubsectionUpdater updater;
-    private final SubsectionDeleter deleter;
+    private final SubSectionUpdater updater;
+    private final SubSectionDeleter deleter;
     private final UserDetailsProvider userDetailsProvider;
 
     public SubSectionController(
             final SubSectionCreator createSubSectionService,
-            final SubsectionDeleter deleter,
-            final SubsectionUpdater updater,
+            final SubSectionDeleter deleter,
+            final SubSectionUpdater updater,
             final UserDetailsProvider userDetailsProvider) {
         this.userDetailsProvider = userDetailsProvider;
         this.deleter = deleter;

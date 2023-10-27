@@ -64,6 +64,7 @@ public sealed interface PageContentCommand {
     public record UpdateSubsection(
             String label,
             boolean visible,
+            long subsection,
             long userId,
             Instant requestedOn) implements PageContentCommand {
     }

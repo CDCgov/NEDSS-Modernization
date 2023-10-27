@@ -33,7 +33,7 @@ class SubsectionUpdaterTest {
     private WaTemplateRepository templateRepository;
 
     @InjectMocks
-    private SubsectionUpdater updater;
+    private SubSectionUpdater updater;
 
 
     @Test

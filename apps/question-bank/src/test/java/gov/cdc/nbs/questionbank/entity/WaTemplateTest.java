@@ -331,7 +331,7 @@ class WaTemplateTest {
                 "subsection label",
                 true,
                 "subsectionIdentifier",
-                3,
+                3l,
                 999l,
                 Instant.now()));
 
@@ -384,6 +384,75 @@ class WaTemplateTest {
 
         // Then an exception is thrown
         assertThrows(PageContentModificationException.class, () -> page.addSubSection(command));
+    }
+
+    @Test
+    void subsection_update() {
+        // Given a template
+        WaTemplate page = Mockito.spy(new WaTemplate());
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // And that tab has a section
+        WaUiMetadata section = section(page, 3l, 3);
+        page.addSection(section);
+
+        // And that section has a subsection
+        page.addSubSection(subsection(page, 4l, 4));
+
+        // When an update subsection command is processed
+        Instant now = Instant.now();
+        PageContentCommand.UpdateSubsection command = new PageContentCommand.UpdateSubsection(
+                "updated subsection label",
+                false,
+                4,
+                998l,
+                now);
+        WaUiMetadata updated = page.updateSubSection(command);
+
+        // Then the subsection is updated
+        assertNotNull(updated);
+        assertEquals("updated subsection label", updated.getQuestionLabel());
+        assertEquals(now, page.getLastChgTime());
+        assertEquals(998l, page.getLastChgUserId().longValue());
+    }
+
+    @Test
+    void subsection_update_error_non_draft() {
+        // Given a template that is not a Draft
+        WaTemplate page = Mockito.spy(new WaTemplate());
+        when(page.getTemplateType()).thenReturn("Published");
+
+        // When an update subsection command is processed
+        Instant now = Instant.now();
+        PageContentCommand.UpdateSubsection command = new PageContentCommand.UpdateSubsection(
+                "updated subsection label",
+                false,
+                4,
+                998l,
+                now);
+
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.updateSubSection(command));
+    }
+
+    @Test
+    void subsection_update_error_no_subsection() {
+        // Given a template 
+        WaTemplate page = Mockito.spy(new WaTemplate());
+
+        // When an update subsection command is processed
+        Instant now = Instant.now();
+        PageContentCommand.UpdateSubsection command = new PageContentCommand.UpdateSubsection(
+                "updated subsection label",
+                false,
+                4,
+                998l,
+                now);
+
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.updateSubSection(command));
     }
 
     private WaUiMetadata tab(WaTemplate page, Long id, int orderNbr) {

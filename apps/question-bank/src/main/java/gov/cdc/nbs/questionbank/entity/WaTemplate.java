@@ -209,9 +209,7 @@ public class WaTemplate {
 
   public WaUiMetadata addSection(PageContentCommand.AddSection command) {
     // Can only modify Draft pages
-    if (!DRAFT.equals(templateType)) {
-      throw new PageContentModificationException("Unable to add section to non Draft page");
-    }
+    verifyDraftType();
 
     // Find the container to insert section into
     WaUiMetadata tab = uiMetadata.stream()
@@ -233,13 +231,11 @@ public class WaTemplate {
 
   public WaUiMetadata addSubSection(PageContentCommand.AddSubsection command) {
     // Can only modify Draft pages
-    if (!DRAFT.equals(templateType)) {
-      throw new PageContentModificationException("Unable to add subsection to non Draft page");
-    }
+    verifyDraftType();
 
     // Find the container to insert subsection into
     WaUiMetadata section = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.section())
+        .filter(ui -> ui.getId() == command.section() && ui.getNbsUiComponentUid() == 1015l)
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find tab to insert section into"));
 
@@ -247,6 +243,20 @@ public class WaTemplate {
     WaUiMetadata subsection = new WaUiMetadata(this, command, section.getOrderNbr() + 1);
 
     including(subsection);
+    changed(command);
+    return subsection;
+  }
+
+  public WaUiMetadata updateSubSection(PageContentCommand.UpdateSubsection command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    WaUiMetadata subsection = uiMetadata.stream()
+        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == 1016)
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to update"));
+
+    subsection.update(command);
     changed(command);
     return subsection;
   }
@@ -286,9 +296,7 @@ public class WaTemplate {
 
   public void deleteSection(PageContentCommand.DeleteSection command) {
     // Can only modify Draft pages
-    if (!DRAFT.equals(getTemplateType())) {
-      throw new PageContentModificationException("Unable to remove section from a published page");
-    }
+    verifyDraftType();
 
     // Find the section to delete
     WaUiMetadata section = uiMetadata.stream()
@@ -310,9 +318,7 @@ public class WaTemplate {
 
   public void deleteSubsection(PageContentCommand.DeleteSubsection command) {
     // Can only modify Draft pages
-    if (!DRAFT.equals(getTemplateType())) {
-      throw new PageContentModificationException("Unable to remove subsection from a published page");
-    }
+    verifyDraftType();
 
     // Find the subsection to delete
     WaUiMetadata section = uiMetadata.stream()
@@ -403,5 +409,11 @@ public class WaTemplate {
         conditionCode -> getConditionMappings().add(new PageCondMapping(command, this, conditionCode)));
 
     changed(command);
+  }
+
+  private void verifyDraftType() {
+    if (!DRAFT.equals(templateType)) {
+      throw new PageContentModificationException("Unable to modify non Draft page");
+    }
   }
 }
