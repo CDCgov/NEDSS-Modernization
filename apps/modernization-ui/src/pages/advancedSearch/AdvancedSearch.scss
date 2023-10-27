@@ -41,20 +41,6 @@ button {
     background-color: #003470 !important;
 }
 
-.page-title-bar {
-    min-height: 78px;
-    font-family: sans-serif;
-    font-size: 32px;
-    padding: 0 23px;
-    border-bottom: 1px solid #e7e9e9;
-    .add-patient-button {
-        height: fit-content;
-    }
-    .hide-button {
-        display: none;
-    }
-}
-
 .refine-text {
     font-size: 22px;
     padding: 25px 1rem 0;
