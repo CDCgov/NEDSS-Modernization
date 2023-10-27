@@ -20,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import com.itextpdf.text.pdf.parser.LineSegment;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -30,6 +31,12 @@ import java.time.Instant;
 public class WaUiMetadata {
   public static final String ACTIVE = "Active";
   public static final String INACTIVE = "Inactive";
+
+  private static final Long LINE_SEPARATOR_ID = 1012L;
+  private static final Long HYPERLINK_ID = 1003L;
+  private static final Long READ_ONLY_COMMENTS_ID = 1014L;
+  private static final Long READ_ONLY_PARTICIPANTS_LIST_ID = 1030L;
+  private static final Long ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID = 1036L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -260,7 +267,7 @@ public class WaUiMetadata {
     this.orderNbr = command.orderNumber();
     this.adminComment = command.adminComments();
     this.questionLabel = command.comments();
-    this.nbsUiComponentUid = command.componentId();
+    this.nbsUiComponentUid = READ_ONLY_COMMENTS_ID;
 
 
     this.added(command);
@@ -282,13 +289,13 @@ public class WaUiMetadata {
     this.adminComment = command.adminComments();
     this.questionLabel = command.label();
     this.defaultValue = command.linkUrl();
-    this.nbsUiComponentUid = command.componentId();
+    this.nbsUiComponentUid = HYPERLINK_ID;
 
 
     this.added(command);
   }
 
-  public WaUiMetadata(PageContentCommand.AddStaticElementDefault command) {
+  public WaUiMetadata(PageContentCommand.AddLineSeparator command) {
     // Defaults
     this.standardNndIndCd = 'F';
     this.enableInd = "T";
@@ -303,7 +310,49 @@ public class WaUiMetadata {
     this.waTemplateUid = command.page();
     this.orderNbr = command.orderNumber();
     this.adminComment = command.adminComments();
-    this.nbsUiComponentUid = command.componentId();
+    this.nbsUiComponentUid = LINE_SEPARATOR_ID;
+
+
+    this.added(command);
+  }
+
+  public WaUiMetadata(PageContentCommand.AddOrignalElectronicDocList command) {
+    // Defaults
+    this.standardNndIndCd = 'F';
+    this.enableInd = "T";
+    this.displayInd = "T";
+    this.requiredInd = "F";
+    this.entryMethod = null;
+    this.recordStatusCd = ACTIVE;
+    this.versionCtrlNbr = 1;
+
+
+    // User specified
+    this.waTemplateUid = command.page();
+    this.orderNbr = command.orderNumber();
+    this.adminComment = command.adminComments();
+    this.nbsUiComponentUid = ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID;
+
+
+    this.added(command);
+  }
+
+  public WaUiMetadata(PageContentCommand.AddReadOnlyParticipantsList command) {
+    // Defaults
+    this.standardNndIndCd = 'F';
+    this.enableInd = "T";
+    this.displayInd = "T";
+    this.requiredInd = "F";
+    this.entryMethod = null;
+    this.recordStatusCd = ACTIVE;
+    this.versionCtrlNbr = 1;
+
+
+    // User specified
+    this.waTemplateUid = command.page();
+    this.orderNbr = command.orderNumber();
+    this.adminComment = command.adminComments();
+    this.nbsUiComponentUid = READ_ONLY_PARTICIPANTS_LIST_ID;
 
 
     this.added(command);

@@ -19,12 +19,27 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
-        public record AddStaticElementDefault(
+        public record AddLineSeparator(
                         WaTemplate page,
                         Integer orderNumber,
                         long userId,
                         String adminComments,
-                        Long componentId,
+                        Instant requestedOn) implements PageContentCommand {
+        }
+
+        public record AddReadOnlyParticipantsList(
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String adminComments,
+                        Instant requestedOn) implements PageContentCommand {
+        }
+
+        public record AddOrignalElectronicDocList(
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String adminComments,
                         Instant requestedOn) implements PageContentCommand {
         }
 
@@ -35,7 +50,6 @@ public sealed interface PageContentCommand {
                         String adminComments,
                         String label,
                         String linkUrl,
-                        Long componentId,
                         Instant requestedOn) implements PageContentCommand {
         }
 
@@ -45,7 +59,6 @@ public sealed interface PageContentCommand {
                         long userId,
                         String comments,
                         String adminComments,
-                        Long componentId,
                         Instant requestedOn) implements PageContentCommand {
         }
         public record AddTab(

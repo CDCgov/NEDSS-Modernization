@@ -24,6 +24,7 @@ import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.PageStaticRequests;
 
 @ExtendWith(MockitoExtension.class)
 class PageStaticCreatorTest {
@@ -39,7 +40,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_line_separator_to_page() {
-        var request = new AddStaticElementDefaultRequest(null, 10L);
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
 
         Long pageId = 123L;
         when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -69,7 +70,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_hyperlink_to_page() {
-        var request = new AddStaticHyperLinkRequest("google", "google.com", null, 10L);
+        var request = new PageStaticRequests.AddStaticHyperLinkRequest("google", "google.com", null, 10L);
 
         Long pageId = 123L;
         when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -101,7 +102,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_read_only_comments_to_page() {
-        var request = new AddStaticReadOnlyCommentsRequest("comments test", null, 123L);
+        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest("comments test", null, 123L);
 
         Long pageId = 321L;
         when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -133,7 +134,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_read_only_participants_list() {
-        var request = new AddStaticElementDefaultRequest(null, 10L);
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
 
         Long pageId = 123L;
         when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -163,7 +164,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_original_electronic_doc_list() {
-        var request = new AddStaticElementDefaultRequest(null, 10L);
+        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
 
         Long pageId = 123L;
         when(entityManager.getReference(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
