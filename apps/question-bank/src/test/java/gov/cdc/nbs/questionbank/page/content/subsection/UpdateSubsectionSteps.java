@@ -9,8 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.section.SectionController;
-import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
@@ -19,7 +18,7 @@ import io.cucumber.java.en.Then;
 @Transactional
 public class UpdateSubsectionSteps {
     @Autowired
-    private SectionController sectionController;
+    private SubSectionController subsectionController;
 
     @Autowired
     private WaUiMetadataRepository waUiMetadataRepository;
@@ -41,10 +40,10 @@ public class UpdateSubsectionSteps {
                 .findFirst()
                 .orElseThrow();
         try {
-            sectionController.updateSection(
+            subsectionController.updateSubSection(
                     page.getId(),
                     subsectionToUpdate.getId(),
-                    new UpdateSectionRequest("Updated Name", false));
+                    new UpdateSubSectionRequest("Updated Name", false));
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

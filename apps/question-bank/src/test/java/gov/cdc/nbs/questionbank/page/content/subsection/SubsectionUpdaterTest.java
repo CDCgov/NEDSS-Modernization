@@ -46,6 +46,7 @@ class SubsectionUpdaterTest {
         // Then the section is updated
         assertEquals("New name", captor.getValue().label());
         assertEquals(false, captor.getValue().visible());
+        assertEquals(2l, captor.getValue().subsection());
     }
 
     @Test

@@ -33,6 +33,9 @@ import lombok.Setter;
 @Table(name = "WA_template", catalog = "NBS_ODSE")
 public class WaTemplate {
   private static final String DRAFT = "Draft";
+  private static final long TAB = 1010l;
+  private static final long SECTION = 1015l;
+  private static final long SUB_SECTION = 1016l;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -198,13 +201,13 @@ public class WaTemplate {
 
     // Find the tab to delete
     WaUiMetadata tab = uiMetadata.stream()
-        .filter(e -> e.getId() == command.tabId() && e.getNbsUiComponentUid() == 1010l)
+        .filter(e -> e.getId() == command.tabId() && e.getNbsUiComponentUid() == TAB)
         .findFirst()
         .orElseThrow(
             () -> new PageContentModificationException("Failed to find tab with id: " + command.tabId()));
 
     // If element after section is null or another Tab then we can delete the tab
-    if (!isElementAtOrderNullOrOneOf(Arrays.asList(1010l), tab.getOrderNbr() + 1)) {
+    if (!isElementAtOrderNullOrOneOf(Arrays.asList(TAB), tab.getOrderNbr() + 1)) {
       throw new PageContentModificationException("Unable to delete a tab with content");
     }
 
@@ -295,7 +298,7 @@ public class WaTemplate {
     verifyDraftType();
 
     WaUiMetadata section = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.sectionId() && ui.getNbsUiComponentUid() == 1015)
+        .filter(ui -> ui.getId() == command.sectionId() && ui.getNbsUiComponentUid() == SECTION)
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find section to update"));
 
@@ -314,7 +317,7 @@ public class WaTemplate {
 
     // Find the container to insert subsection into
     WaUiMetadata section = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.section() && ui.getNbsUiComponentUid() == 1015l)
+        .filter(ui -> ui.getId() == command.section() && ui.getNbsUiComponentUid() == SECTION)
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find tab to insert section into"));
 
@@ -339,7 +342,7 @@ public class WaTemplate {
     verifyDraftType();
 
     WaUiMetadata subsection = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == 1016)
+        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to update"));
 
@@ -387,13 +390,13 @@ public class WaTemplate {
 
     // Find the section to delete
     WaUiMetadata section = uiMetadata.stream()
-        .filter(e -> e.getId() == command.setionId() && e.getNbsUiComponentUid() == 1015l)
+        .filter(e -> e.getId() == command.setionId() && e.getNbsUiComponentUid() == SECTION)
         .findFirst()
         .orElseThrow(
             () -> new PageContentModificationException("Failed to find section with id: " + command.setionId()));
 
     // If element after section is null, another section, or Tab then we can delete the section
-    if (!isElementAtOrderNullOrOneOf(Arrays.asList(1015l, 1010l), section.getOrderNbr() + 1)) {
+    if (!isElementAtOrderNullOrOneOf(Arrays.asList(SECTION, TAB), section.getOrderNbr() + 1)) {
       throw new PageContentModificationException("Unable to delete a section with content");
     }
 
@@ -409,13 +412,13 @@ public class WaTemplate {
 
     // Find the subsection to delete
     WaUiMetadata section = uiMetadata.stream()
-        .filter(e -> e.getId() == command.subsectionId() && e.getNbsUiComponentUid() == 1016l)
+        .filter(e -> e.getId() == command.subsectionId() && e.getNbsUiComponentUid() == SUB_SECTION)
         .findFirst()
         .orElseThrow(
             () -> new PageContentModificationException("Failed to find subsection with id: " + command.subsectionId()));
 
     // If element after section is null, another subsection, section, or Tab then we can delete the subsection
-    if (!isElementAtOrderNullOrOneOf(Arrays.asList(1016l, 1015l, 1010l), section.getOrderNbr() + 1)) {
+    if (!isElementAtOrderNullOrOneOf(Arrays.asList(SUB_SECTION, SECTION, TAB), section.getOrderNbr() + 1)) {
       throw new PageContentModificationException("Unable to delete a subsection with content");
     }
 

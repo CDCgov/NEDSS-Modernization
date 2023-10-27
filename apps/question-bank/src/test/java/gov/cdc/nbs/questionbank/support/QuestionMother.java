@@ -31,6 +31,10 @@ public class QuestionMother {
         this.allQuestions.clear();
     }
 
+    public void addManaged(Long questionId) {
+        this.allQuestions.add(entityManager.find(WaQuestion.class, questionId));
+    }
+
     public WaQuestion textQuestion() {
         return allQuestions.stream()
                 .filter(q -> q instanceof TextQuestionEntity).findFirst()

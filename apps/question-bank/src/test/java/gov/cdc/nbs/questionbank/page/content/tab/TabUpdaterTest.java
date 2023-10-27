@@ -44,6 +44,7 @@ class TabUpdaterTest {
         // Then the tab is updated
         assertEquals("New name", captor.getValue().label());
         assertEquals(false, captor.getValue().visible());
+        assertEquals(2l, captor.getValue().tab());
     }
 
     @Test

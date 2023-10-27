@@ -2,15 +2,19 @@ package gov.cdc.nbs.questionbank.entity.question;
 
 import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
 import java.time.Instant;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Where;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
@@ -36,6 +40,13 @@ public abstract class WaQuestion {
     @Column(name = "wa_question_uid", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "waQuestionUid",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE,
+                    CascadeType.REMOVE,
+                    CascadeType.PERSIST})
+    private List<WaQuestionHist> questionHist;
 
     @Column(name = "data_cd", length = 50)
     private String dataCd;

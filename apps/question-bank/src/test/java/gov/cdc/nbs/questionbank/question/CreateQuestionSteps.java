@@ -88,6 +88,7 @@ public class CreateQuestionSteps {
                     throw new NotYetImplementedException();
             }
             response = controller.createQuestion(request);
+            questionMother.addManaged(response.questionId());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

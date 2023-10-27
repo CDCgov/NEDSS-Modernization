@@ -49,8 +49,8 @@ public class SubSectionUpdater {
         return new PageContentCommand.UpdateSubsection(
                 request.name(),
                 request.visible(),
-                userId,
                 subsectionId,
+                userId,
                 Instant.now());
     }
 }

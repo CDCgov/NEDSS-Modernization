@@ -2,10 +2,10 @@
 Feature: Update Subsection
 
     Background:
-        Given I have a page named "Page"
-        And the page has a tab named "Tab"
-        And the page has a section named "Section" in the "Tab" tab
-        And the page has a sub-section named "Subsection" in the "Section" section
+        Given I have a page
+        And the page has a tab
+        And the page has a section in the 1st tab
+        And the page has a sub-section named "Subsection" in the 1st section
 
     Scenario: I can update a subsection
         Given I am an admin user
