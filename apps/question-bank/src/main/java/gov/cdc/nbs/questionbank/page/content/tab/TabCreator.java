@@ -1,13 +1,12 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
 import java.time.Instant;
+import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.PageContentIdGenerator;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.CreateTabException;
@@ -18,68 +17,54 @@ import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
 @Transactional
 public class TabCreator {
 
-    private final WaUiMetadataRepository repository;
-    private final WaTemplateRepository templateRepository;
+    private final EntityManager entityManager;
     private final PageContentIdGenerator idGenerator;
 
 
     public TabCreator(
-            final WaUiMetadataRepository repository,
-            final WaTemplateRepository templateRepository,
+            final EntityManager entityManager,
             final PageContentIdGenerator idGenerator) {
-        this.repository = repository;
-        this.templateRepository = templateRepository;
+        this.entityManager = entityManager;
         this.idGenerator = idGenerator;
     }
 
-    public Tab create(long page, Long userId, CreateTabRequest request) {
+    public Tab create(long pageId, Long userId, CreateTabRequest request) {
+        // Verify the required fields are provided
         if (request == null || !StringUtils.hasLength(request.name())) {
-            throw new CreateTabException("Name is a required field");
+            throw new CreateTabException("Tab Name is required");
         }
 
-        if (!templateRepository.isPageDraft(page)) {
-            throw new CreateTabException("Unable to add tab to published page");
+        // Find the page
+        WaTemplate page = entityManager.find(WaTemplate.class, pageId);
+        if (page == null) {
+            throw new CreateTabException("Failed to find page with id: " + pageId);
         }
 
-        WaUiMetadata waUiMetadata = createTabEntity(page, userId, request);
-        repository.save(waUiMetadata);
-        return new Tab(waUiMetadata.getId(), request.name(), request.visible());
-    }
+        // Create the new section
+        WaUiMetadata tab = page.addTab(asAdd(
+                idGenerator.next(),
+                userId,
+                request));
 
-    private WaUiMetadata createTabEntity(long pageId, Long user, CreateTabRequest request) {
-        WaTemplate page = templateRepository.getReferenceById(pageId);
-        Integer nextOrderNumber = getCurrentHighestOrderNumber(pageId) + 1;
+        // Persist the entity
+        entityManager.flush();
 
-        return new WaUiMetadata(
-                page,
-                asAdd(
-                        page.getId(),
-                        request.name(),
-                        request.visible(),
-                        idGenerator.next(),
-                        nextOrderNumber,
-                        user));
-    }
-
-    private Integer getCurrentHighestOrderNumber(Long waTemplateId) {
-        return repository.findMaxOrderNbrForPage(waTemplateId);
+        return new Tab(
+                tab.getId(),
+                tab.getQuestionLabel(),
+                "T".equals(tab.getDisplayInd()));
     }
 
 
     private PageContentCommand.AddTab asAdd(
-            Long page,
-            String label,
-            boolean visible,
             String identifier,
-            int orderNumber,
-            long user) {
+            long userId,
+            CreateTabRequest request) {
         return new PageContentCommand.AddTab(
-                page,
-                label,
-                visible,
+                request.name(),
+                request.visible(),
                 identifier,
-                orderNumber,
-                user,
+                userId,
                 Instant.now());
     }
 }

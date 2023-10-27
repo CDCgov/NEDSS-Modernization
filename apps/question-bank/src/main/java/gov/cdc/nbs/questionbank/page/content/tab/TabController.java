@@ -41,7 +41,8 @@ public class TabController {
 
     @DeleteMapping("{tabId}")
     public void deleteTab(@PathVariable("page") Long page, @PathVariable Long tabId) {
-        deleter.delete(page, tabId);
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        deleter.delete(page, tabId, userId);
     }
 
     @PutMapping("{tabId}")
@@ -50,7 +51,7 @@ public class TabController {
             @PathVariable Long tabId,
             @RequestBody UpdateTabRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return updater.update(page, tabId, request, userId);
+        return updater.update(page, tabId, userId, request);
     }
 
 }

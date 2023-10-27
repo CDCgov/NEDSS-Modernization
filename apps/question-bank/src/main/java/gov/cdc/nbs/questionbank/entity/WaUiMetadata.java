@@ -300,14 +300,14 @@ public class WaUiMetadata {
     this.added(command);
   }
 
-  public WaUiMetadata(WaTemplate page, PageContentCommand.AddTab command) {
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddTab command, Integer orderNumber) {
     this();
     this.nbsUiComponentUid = 1010L;
     this.waTemplateUid = page;
     this.questionLabel = command.label();
     setVisible(command.visible());
     this.questionIdentifier = command.identifier();
-    this.orderNbr = command.orderNumber();
+    this.orderNbr = orderNumber;
 
     // Audit
     added(command);

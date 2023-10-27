@@ -1,12 +1,12 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
 import java.time.Instant;
+import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.UpdateTabException;
 import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
@@ -16,37 +16,43 @@ import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
 @Transactional
 public class TabUpdater {
 
-    private final WaUiMetadataRepository repository;
-    private final WaTemplateRepository templateRepository;
+    private final EntityManager entityManager;
 
     public TabUpdater(
-            final WaUiMetadataRepository repository,
-            final WaTemplateRepository templateRepository) {
-        this.repository = repository;
-        this.templateRepository = templateRepository;
+            final EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
-    public Tab update(Long page, Long tab, UpdateTabRequest request, long user) {
-        if (!templateRepository.isPageDraft(page)) {
-            throw new UpdateTabException("Unable to update a published page");
-        }
+    public Tab update(Long pageId, Long tab, long user, UpdateTabRequest request) {
         if (request == null || !StringUtils.hasLength(request.name())) {
-            throw new UpdateTabException("Label is a required field");
+            throw new UpdateTabException("Tab Name is required");
         }
 
-        WaUiMetadata metadata = repository.findById(tab)
-                .orElseThrow(() -> new UpdateTabException("Failed to find tab"));
+        WaTemplate page = entityManager.find(WaTemplate.class, pageId);
 
-        metadata.update(asCommand(request.name(), request.visible(), user));
-        metadata = repository.save(metadata);
+        if (page == null) {
+            throw new UpdateTabException("Unable to find page with id: " + pageId);
+        }
+
+        WaUiMetadata updatedTab = page.updateTab(asCommand(user, tab, request));
+
+        entityManager.flush();
 
         return new Tab(
-                metadata.getId(),
-                metadata.getQuestionLabel(),
-                metadata.getDisplayInd().equals("T"));
+                updatedTab.getId(),
+                updatedTab.getQuestionLabel(),
+                "T".equals(updatedTab.getDisplayInd()));
     }
 
-    private PageContentCommand.UpdateTab asCommand(String label, boolean visible, long user) {
-        return new PageContentCommand.UpdateTab(label, visible, user, Instant.now());
+    private PageContentCommand.UpdateTab asCommand(
+            long user,
+            long tab,
+            UpdateTabRequest request) {
+        return new PageContentCommand.UpdateTab(
+                request.name(),
+                request.visible(),
+                tab,
+                user,
+                Instant.now());
     }
 }

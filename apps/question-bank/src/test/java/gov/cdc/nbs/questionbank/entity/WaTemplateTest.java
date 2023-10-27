@@ -17,7 +17,7 @@ class WaTemplateTest {
     @Test
     void section_add() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -42,8 +42,8 @@ class WaTemplateTest {
     @Test
     void section_add_error_page_not_draft() {
         // Given a template that is not a draft
-        WaTemplate page = Mockito.spy(new WaTemplate());
-        when(page.getTemplateType()).thenReturn("Published");
+        WaTemplate page = new WaTemplate();
+        page.updateType("Published");
 
         // When an add section request is processed
         PageContentCommand.AddSection command = new PageContentCommand.AddSection(
@@ -61,7 +61,7 @@ class WaTemplateTest {
     @Test
     void section_add_error_tab_not_found() {
         // Given a template 
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And there is no tab
 
@@ -81,7 +81,7 @@ class WaTemplateTest {
     @Test
     void section_delete() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -100,7 +100,7 @@ class WaTemplateTest {
     @Test
     void section_delete_before_tab() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -122,7 +122,7 @@ class WaTemplateTest {
     @Test
     void section_delete_before_another_section() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -144,7 +144,7 @@ class WaTemplateTest {
     @Test
     void section_delete_error_no_section() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -158,7 +158,7 @@ class WaTemplateTest {
     @Test
     void section_delete_error_section_has_content() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -178,7 +178,7 @@ class WaTemplateTest {
     @Test
     void subsection_delete() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -200,7 +200,7 @@ class WaTemplateTest {
     @Test
     void subsection_delete_before_tab() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -225,7 +225,7 @@ class WaTemplateTest {
     @Test
     void subsection_delete_before_another_subsection() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -250,7 +250,7 @@ class WaTemplateTest {
     @Test
     void subsection_delete_before_a_section() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -275,7 +275,7 @@ class WaTemplateTest {
     @Test
     void subsection_delete_error_no_subsection() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -289,7 +289,7 @@ class WaTemplateTest {
     @Test
     void subsection_delete_error_subsection_has_content() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -318,7 +318,7 @@ class WaTemplateTest {
     @Test
     void subsection_add() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -347,9 +347,8 @@ class WaTemplateTest {
     @Test
     void subsection_add_error_page_not_draft() {
         // Given a template that is not a draft
-        WaTemplate page = Mockito.spy(new WaTemplate());
-        when(page.getTemplateType()).thenReturn("Published");
-
+        WaTemplate page = new WaTemplate();
+        page.updateType("Published");
         // When an add subsection request is processed
         PageContentCommand.AddSubsection command = new PageContentCommand.AddSubsection(
                 "subsection label",
@@ -366,7 +365,7 @@ class WaTemplateTest {
     @Test
     void subsection_add_error_section_not_found() {
         // Given a template 
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -389,7 +388,7 @@ class WaTemplateTest {
     @Test
     void subsection_update() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -421,8 +420,8 @@ class WaTemplateTest {
     @Test
     void subsection_update_error_non_draft() {
         // Given a template that is not a Draft
-        WaTemplate page = Mockito.spy(new WaTemplate());
-        when(page.getTemplateType()).thenReturn("Published");
+        WaTemplate page = new WaTemplate();
+        page.updateType("Published");
 
         // When an update subsection command is processed
         Instant now = Instant.now();
@@ -440,7 +439,7 @@ class WaTemplateTest {
     @Test
     void subsection_update_error_no_subsection() {
         // Given a template 
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // When an update subsection command is processed
         Instant now = Instant.now();
@@ -458,7 +457,7 @@ class WaTemplateTest {
     @Test
     void section_update() {
         // Given a template
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // And it has a tab
         page.addTab(tab(page, 2l, 2));
@@ -486,8 +485,8 @@ class WaTemplateTest {
     @Test
     void section_update_error_non_draft() {
         // Given a template that is not a Draft
-        WaTemplate page = Mockito.spy(new WaTemplate());
-        when(page.getTemplateType()).thenReturn("Published");
+        WaTemplate page = new WaTemplate();
+        page.updateType("Published");
 
         // When an update section command is processed
         Instant now = Instant.now();
@@ -505,7 +504,7 @@ class WaTemplateTest {
     @Test
     void section_update_error_no_section() {
         // Given a template 
-        WaTemplate page = Mockito.spy(new WaTemplate());
+        WaTemplate page = new WaTemplate();
 
         // When an update section command is processed
         Instant now = Instant.now();
@@ -520,15 +519,177 @@ class WaTemplateTest {
         assertThrows(PageContentModificationException.class, () -> page.updateSection(command));
     }
 
+    @Test
+    void tab_update() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // When an update tab command is processed
+        Instant now = Instant.now();
+        PageContentCommand.UpdateTab command = new PageContentCommand.UpdateTab(
+                "updated tab label",
+                false,
+                2,
+                998l,
+                now);
+        WaUiMetadata updated = page.updateTab(command);
+
+        // Then the subsection is updated
+        assertNotNull(updated);
+        assertEquals("updated tab label", updated.getQuestionLabel());
+        assertEquals(now, page.getLastChgTime());
+        assertEquals(998l, page.getLastChgUserId().longValue());
+    }
+
+    @Test
+    void tab_update_error_non_draft() {
+        // Given a template that is not a Draft
+        WaTemplate page = new WaTemplate();
+        page.updateType("Published");
+
+        // When an update tab command is processed
+        Instant now = Instant.now();
+        PageContentCommand.UpdateSection command = new PageContentCommand.UpdateSection(
+                "updated tab label",
+                false,
+                4,
+                998l,
+                now);
+
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.updateSection(command));
+    }
+
+    @Test
+    void tab_update_error_no_section() {
+        // Given a template 
+        WaTemplate page = new WaTemplate();
+
+        // When an update tab command is processed
+        Instant now = Instant.now();
+        PageContentCommand.UpdateTab command = new PageContentCommand.UpdateTab(
+                "updated tab label",
+                false,
+                4,
+                998l,
+                now);
+
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.updateTab(command));
+    }
+
+    @Test
+    void tab_delete() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        WaUiMetadata tab = tab(page, 2l, 2);
+        page.addTab(tab);
+
+        // When a delete tab request is processed
+        page.deleteTab(new PageContentCommand.DeleteTab(2l, 999l, Instant.now()));
+
+        // Then the tab is removed
+        assertFalse(page.getUiMetadata().contains(tab));
+    }
+
+    @Test
+    void tab_delete_before_tab() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        WaUiMetadata tab = tab(page, 2l, 2);
+        page.addTab(tab);
+
+        // And there is another tab
+        page.addTab(tab(page, 4l, 4));
+
+        // When a delete tab request is processed
+        page.deleteTab(new PageContentCommand.DeleteTab(2l, 999l, Instant.now()));
+
+        // Then the tab is removed
+        assertFalse(page.getUiMetadata().contains(tab));
+    }
+
+    @Test
+    void tab_delete_error_no_tab() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // When a delete tab request is processed
+        PageContentCommand.DeleteTab command = new PageContentCommand.DeleteTab(2l, 999l, Instant.now());
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.deleteTab(command));
+    }
+
+    @Test
+    void tab_delete_error_tab_has_content() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // And that tab has a section
+        page.addSection(section(page, 3l, 3));
+
+        // When a delete section request is processed
+        PageContentCommand.DeleteTab command = new PageContentCommand.DeleteTab(2l, 999l, Instant.now());
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.deleteTab(command));
+    }
+
+    @Test
+    void tab_add() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // When an add tab request is processed
+        WaUiMetadata tab = page.addTab(new PageContentCommand.AddTab(
+                "tab label",
+                true,
+                "tabIdentifier",
+                999l,
+                Instant.now()));
+
+        // Then the tab is added
+        assertNotNull(tab);
+        assertTrue(page.getUiMetadata().contains(tab));
+        assertEquals("tabIdentifier", page.getUiMetadata().get(0).getQuestionIdentifier());
+        assertEquals("tab label", page.getUiMetadata().get(0).getQuestionLabel());
+    }
+
+    @Test
+    void tab_add_error_page_not_draft() {
+        // Given a template that is not a draft
+        WaTemplate page = new WaTemplate();
+        page.updateType("Published");
+
+        // When an add tab request is processed
+        PageContentCommand.AddTab command = new PageContentCommand.AddTab(
+                "tab label",
+                true,
+                "tabIdentifier",
+                999l,
+                Instant.now());
+
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.addTab(command));
+    }
+
     private WaUiMetadata tab(WaTemplate page, Long id, int orderNbr) {
         WaUiMetadata tab = new WaUiMetadata(page, new PageContentCommand.AddTab(
-                page.getId(),
                 "tab",
                 true,
                 "tab",
-                orderNbr,
                 999l,
-                Instant.now()));
+                Instant.now()),
+                orderNbr);
         tab = Mockito.spy(tab);
         when(tab.getId()).thenReturn(id);
         return tab;

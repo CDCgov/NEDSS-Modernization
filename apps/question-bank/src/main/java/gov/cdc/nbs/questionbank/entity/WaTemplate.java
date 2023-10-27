@@ -178,9 +178,58 @@ public class WaTemplate {
     return components;
   }
 
-  public void addTab(final PageContentCommand.AddTab add) {
-    WaUiMetadata component = new WaUiMetadata(this, add);
-    including(component);
+  public WaUiMetadata updateTab(PageContentCommand.UpdateTab command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    WaUiMetadata section = uiMetadata.stream()
+        .filter(ui -> ui.getId() == command.tab() && ui.getNbsUiComponentUid() == 1010)
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException("Failed to find tab to update"));
+
+    section.update(command);
+    changed(command);
+    return section;
+  }
+
+  public void deleteTab(PageContentCommand.DeleteTab command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // Find the tab to delete
+    WaUiMetadata tab = uiMetadata.stream()
+        .filter(e -> e.getId() == command.tabId() && e.getNbsUiComponentUid() == 1010l)
+        .findFirst()
+        .orElseThrow(
+            () -> new PageContentModificationException("Failed to find tab with id: " + command.tabId()));
+
+    // If element after section is null or another Tab then we can delete the tab
+    if (!isElementAtOrderNullOrOneOf(Arrays.asList(1010l), tab.getOrderNbr() + 1)) {
+      throw new PageContentModificationException("Unable to delete a tab with content");
+    }
+
+    // Remove section and adjust orderNbrs
+    uiMetadata.remove(tab);
+    adjustingComponentsFrom(tab.getOrderNbr());
+    changed(command);
+  }
+
+  public WaUiMetadata addTab(PageContentCommand.AddTab command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // Tabs are always inserted at the end
+    Integer orderNumber = uiMetadata.stream()
+        .mapToInt(WaUiMetadata::getOrderNbr)
+        .max()
+        .orElse(2); // If the page is empty, the first tab occurs at orderNbr 2
+
+    // create tab
+    WaUiMetadata tab = new WaUiMetadata(this, command, orderNumber);
+
+    including(tab);
+    changed(command);
+    return tab;
   }
 
   public void addTab(WaUiMetadata tab) {
@@ -423,6 +472,10 @@ public class WaTemplate {
         conditionCode -> getConditionMappings().add(new PageCondMapping(command, this, conditionCode)));
 
     changed(command);
+  }
+
+  public void updateType(String type) {
+    this.templateType = type;
   }
 
   private void verifyDraftType() {

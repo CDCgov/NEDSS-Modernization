@@ -248,11 +248,9 @@ public class PageMother {
     // add page detail mappings
     page.addTab(
         new PageContentCommand.AddTab(
-        page.getId(),
         "tab",
         true,
         "TAB_",
-        2,
         this.settings.createdBy(),
         Instant.now()
     )
@@ -323,11 +321,9 @@ public class PageMother {
     WaUiMetadata last = last(found.getUiMetadata()).orElseThrow();
     int next = last.getOrderNbr() + 1;
     found.addTab(new PageContentCommand.AddTab(
-        found.getId(),
         name,
         true,
         "TAB_"+next,  //  bring in the test uuid generator!
-        next,
         this.settings.createdBy(),
         Instant.now()
     ));

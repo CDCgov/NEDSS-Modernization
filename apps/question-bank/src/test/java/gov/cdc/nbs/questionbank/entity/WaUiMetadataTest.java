@@ -187,14 +187,14 @@ class WaUiMetadataTest {
         WaTemplate page = new WaTemplate();
         page.setId(123l);
         PageContentCommand.AddTab command = addTab(page);
-        WaUiMetadata tabMetadata = new WaUiMetadata(page, command);
+        WaUiMetadata tabMetadata = new WaUiMetadata(page, command, 2);
 
         assertEquals(1010L, tabMetadata.getNbsUiComponentUid().longValue());
-        assertEquals(command.page(), tabMetadata.getWaTemplateUid().getId());
+        assertEquals(page.getId(), tabMetadata.getWaTemplateUid().getId());
         assertEquals(command.label(), tabMetadata.getQuestionLabel());
         assertEquals(command.visible() ? "T" : "F", tabMetadata.getDisplayInd());
         assertEquals(command.identifier(), tabMetadata.getQuestionIdentifier());
-        assertEquals(command.orderNumber(), tabMetadata.getOrderNbr().intValue());
+        assertEquals(2, tabMetadata.getOrderNbr().intValue());
         assertEquals(command.requestedOn(), tabMetadata.getRecordStatusTime());
         assertEquals("F", tabMetadata.getRequiredInd());
         assertEquals(1, tabMetadata.getVersionCtrlNbr().intValue());
@@ -215,7 +215,7 @@ class WaUiMetadataTest {
         WaTemplate page = new WaTemplate();
         page.setId(123l);
         PageContentCommand.AddTab command = addTab(page);
-        WaUiMetadata tabMetadata = new WaUiMetadata(page, command);
+        WaUiMetadata tabMetadata = new WaUiMetadata(page, command, 2);
 
         PageContentCommand.UpdateTab updateCommand = updateTab();
         tabMetadata.update(updateCommand);
@@ -246,6 +246,7 @@ class WaUiMetadataTest {
         return new PageContentCommand.UpdateTab(
                 "updated label",
                 true,
+                3l,
                 444,
                 Instant.now());
     }
@@ -261,11 +262,9 @@ class WaUiMetadataTest {
 
     private PageContentCommand.AddTab addTab(WaTemplate page) {
         return new PageContentCommand.AddTab(
-                page.getId(),
                 "test label",
                 false,
                 "some identifier",
-                55,
                 22,
                 Instant.now());
     }
