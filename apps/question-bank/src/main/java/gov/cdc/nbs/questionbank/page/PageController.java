@@ -22,9 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.page.model.PageSummary;
+import gov.cdc.nbs.questionbank.page.summary.search.PageSummary;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
-import gov.cdc.nbs.questionbank.page.request.PageSummaryRequest;
 import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
@@ -74,16 +73,6 @@ public class PageController {
             @PageableDefault(size = 25, sort = "id", page = 0) Pageable pageable) {
         log.debug("Received find all page summary request");
         var results = finder.find(pageable);
-        log.debug("Returning page summaries");
-        return results;
-    }
-
-    @PostMapping("/search")
-    public Page<PageSummary> search(
-            @RequestBody PageSummaryRequest request,
-            @PageableDefault(size = 25, sort = "id", page = 0) Pageable pageable) {
-        log.debug("Received get page summary request");
-        var results = finder.find(request, pageable);
         log.debug("Returning page summaries");
         return results;
     }

@@ -5,18 +5,22 @@ import gov.cdc.nbs.questionbank.support.PageMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class PageSteps {
 
   private static final String DEFAULT_OBJECT = "INV";
   private static final String DEFAULT_MAPPING_GUIDE = "GEN_Case_Map_v2.0";
 
-  @Autowired
-  PageMother mother;
+  private final PageMother mother;
+  private final Active<PageIdentifier> page;
 
-  @Autowired
-  Active<PageIdentifier> page;
+  public PageSteps(
+      final PageMother mother,
+      final Active<PageIdentifier> page
+  ) {
+    this.mother = mother;
+    this.page = page;
+  }
 
   @Before
   public void reset() {
@@ -29,7 +33,7 @@ public class PageSteps {
     mother.asepticMeningitis();
   }
 
-  @Given("I have a page")
+  @Given("I have a(nother) page")
   public void i_have_a_page() {
     this.mother.create(DEFAULT_OBJECT, "Automated Test Page", DEFAULT_MAPPING_GUIDE);
   }
@@ -44,80 +48,43 @@ public class PageSteps {
 
     PageIdentifier active = page.active();
 
-    if (property.equalsIgnoreCase("description")) {
-      mother.withDescription(active, value);
+    switch (property.toLowerCase()) {
+      case "description" -> mother.withDescription(active, value);
+      case "name" -> mother.withName(active, value);
+      case "eventtype", "event type" -> mother.withEventType(active, resolveEventType(value));
+
+      default -> throw new IllegalStateException("Unexpected Page value: " + property);
     }
-
   }
 
-  @Given("the page has a(nother) tab")
-  public void the_page_has_a_tab() {
-    PageIdentifier active = page.active();
-
-    mother.withTab(active);
+  private EventType resolveEventType(final String value) {
+    return switch (value.toLowerCase()) {
+      case "contact" -> EventType.CONTACT;
+      case "interview" -> EventType.INTERVIEW;
+      case "lab isolate tracking" -> EventType.LAB_ISOLATE_TRACKING;
+      case "lab report" -> EventType.LAB_REPORT;
+      case "lab susceptibility" -> EventType.LAB_SUSCEPTIBILITY;
+      case "vaccination" -> EventType.VACCINATION;
+      default -> throw new IllegalStateException("Unexpected Event Type value: " + value);
+    };
   }
 
-  @Given("the page has a tab named {string}")
-  public void the_page_has_a_named_tab(final String name) {
-    PageIdentifier active = page.active();
+  @Given("the page is (a ){string}")
+  public void the_page_has_the_status_of(final String status) {
 
-    mother.withTab(active, name);
+    String value = switch (status.toLowerCase()) {
+      case "draft", "published with draft", "initial draft" -> "Draft";
+      case "published" -> "Published";
+      case "template" -> "Template";
+      default -> throw new IllegalStateException("Unexpected Page Status value: " + status.toLowerCase());
+    };
+
+    this.page.maybeActive().ifPresent(page -> mother.withStatus(page, value));
   }
 
-  @Given("^the page has a section named \"(.*)\" in the (\\d+)(?:st|nd|rd|th) tab$")
-  public void the_page_has_a_named_section_in_the_nth_tab(final String section, final int tab) {
-    PageIdentifier active = page.active();
-
-    mother.withSectionIn(active, section, tab);
-  }
-
-  @Given("^the page has a section in the (\\d+)(?:st|nd|rd|th) tab$")
-  public void the_page_has_a_section_in_the_nth_tab(final int tab) {
-    PageIdentifier active = page.active();
-
-    mother.withSectionIn(active, tab);
-  }
-
-  @Given("the page has a section named {string} in the {string} tab")
-  public void the_page_has_a_section_in_the_named_tab(final String section, final String tab) {
-    PageIdentifier active = page.active();
-
-    mother.withSectionIn(active, section, tab);
-  }
-
-  @Given("^the page has a(?:n|nother)? sub-section in the (\\d+)(?:st|nd|rd|th) section")
-  public void the_page_has_a_sub_section_in_the_nth_section(final int section) {
-    PageIdentifier active = page.active();
-
-    mother.withSubSectionIn(active, section);
-  }
-
-  @Given("^the page has a sub-section named \"(.*)\" in the (\\d+)(?:st|nd|rd|th) section")
-  public void the_page_has_a_named_sub_section_in_the_nth_section(final String subSection, final int section) {
-    PageIdentifier active = page.active();
-
-    mother.withSubSectionIn(active, subSection, section);
-  }
-
-  @Given("the page has a sub-section named {string} in the {string} section")
-  public void the_page_has_a_named_sub_section_in_the_section_named(final String subSection, final String section) {
-    PageIdentifier active = page.active();
-
-    mother.withSubSectionIn(active, subSection, section);
-  }
-  
-  @Given("^the page has a question named \"(.*)\" in the (\\d+)(?:st|nd|rd|th) sub-section")
-  public void the_page_has_a_named_question_in_the_nth_sub_section(final String subSection, final int section) {
-    PageIdentifier active = page.active();
-
-    mother.withContentIn(active, subSection, section);
-  }
-
-  @Given("the page has a question named {string} in the {string} sub-section")
-  public void the_page_has_a_named_question_in_the_sub_section_named(final String subSection, final String section) {
-    PageIdentifier active = page.active();
-
-    mother.withContentIn(active, subSection, section);
+  @Given("the page is tied to the {condition} condition")
+  public void the_page_is_tied_to_the_condition(final String condition) {
+    this.page.maybeActive().ifPresent(page -> mother.withCondition(page, condition));
   }
 
 }

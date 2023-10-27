@@ -1,6 +1,7 @@
-package gov.cdc.nbs.questionbank.page.model;
+package gov.cdc.nbs.questionbank.page.summary.search;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 
@@ -11,7 +12,7 @@ public record PageSummary(
         String description,
         String status,
         MessageMappingGuide messageMappingGuide,
-        List<ConditionSummary> conditions,
+        Collection<ConditionSummary> conditions,
         Instant lastUpdate,
         String lastUpdateBy) {
 
