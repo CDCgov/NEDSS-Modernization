@@ -111,7 +111,7 @@ const ConditionLibraryTable = ({ conditions, currentPage, pageSize, totalElement
 
             { id: 6, title: condition.nndInd },
             { id: 7, title: condition.investigationFormCd },
-            { id: 8, title: condition.statusCd }
+            { id: 8, title: condition.statusCd === 'A' ? 'Active' : 'Inactive' }
         ]
     });
 

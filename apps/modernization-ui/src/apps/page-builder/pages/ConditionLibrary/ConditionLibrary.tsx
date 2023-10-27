@@ -5,9 +5,10 @@ import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 import { searchConditions } from 'apps/page-builder/services/conditionAPI';
 import ConditionLibraryTable from './ConditionLibraryTable';
 import './ConditionLibrary.scss';
+import { Condition } from '../../generated';
 
 const ConditionLibrary = () => {
-    const [conditions, setConditions] = useState([]);
+    const [conditions, setConditions] = useState<Condition[]>([]);
     const { searchQuery, sortBy, sortDirection, currentPage, pageSize, setIsLoading } = useContext(ConditionsContext);
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;

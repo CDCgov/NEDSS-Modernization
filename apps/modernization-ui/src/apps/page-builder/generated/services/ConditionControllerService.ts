@@ -123,7 +123,7 @@ export class ConditionControllerService {
         page?: number;
         size?: number;
         sort?: string;
-    }): CancelablePromise<Page_Condition_ | any> {
+    }): CancelablePromise<Page_Condition_> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/conditions/search',

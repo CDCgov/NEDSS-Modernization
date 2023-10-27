@@ -1,5 +1,11 @@
 /* eslint-disable camelcase */
-import { Condition, ConditionControllerService, CreateConditionRequest, ReadConditionRequest } from '../generated';
+import {
+    Condition,
+    ConditionControllerService,
+    CreateConditionRequest,
+    Page_Condition_,
+    ReadConditionRequest
+} from '../generated';
 
 export const fetchConditions = async (token: string): Promise<Array<Condition>> => {
     const response = await ConditionControllerService.findAllConditionsUsingGet({
@@ -24,7 +30,7 @@ export const searchConditions = async (
     size: number,
     sort: string,
     search: ReadConditionRequest
-) => {
+): Promise<Page_Condition_> => {
     const response = await ConditionControllerService.searchConditionsUsingPost({
         authorization: token,
         search,
