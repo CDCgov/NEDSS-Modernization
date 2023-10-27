@@ -72,16 +72,22 @@ public class NumericQuestionEntity extends WaQuestion {
     public NumericQuestionEntity(QuestionCommand.AddNumericQuestion command) {
         super(command);
 
-        setMask(command.mask());
-        setFieldSize(command.fieldLength());
-        setDefaultValue(command.defaultValue());
+        setMask(command.mask().toString());
+        if (command.fieldLength() != null) {
+            setFieldSize(command.fieldLength().toString());
+        }
+        if (command.defaultValue() != null) {
+            setDefaultValue(command.defaultValue().toString());
+        }
         setMinValue(command.minValue());
         setMaxValue(command.maxValue());
-        setUnitTypeCd(command.unitTypeCd());
-        if (unitTypeCd != null) {
-            requireNonNull(command.unitValue(), "If specifying UnitType, UnitValue");
+        if (command.relatedUnitsValueSet() != null) {
+            setUnitTypeCd(UnitType.CODED.toString());
+            setUnitValue(command.relatedUnitsValueSet().toString());
+        } else if (command.relatedUnitsLiteral() != null && !command.relatedUnitsLiteral().isBlank()) {
+            setUnitTypeCd(UnitType.LITERAL.toString());
+            setUnitValue(command.relatedUnitsLiteral());
         }
-        setUnitValue(command.unitValue());
 
         // Audit
         created(command);

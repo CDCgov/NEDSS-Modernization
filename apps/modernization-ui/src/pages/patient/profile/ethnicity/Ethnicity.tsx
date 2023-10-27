@@ -78,7 +78,8 @@ export const Ethnicity = ({ patient }: Props) => {
             fetchProfile({
                 variables: {
                     patient: patient
-                }
+                },
+                notifyOnNetworkStatusChange: true
             });
         }
     }, [patient]);

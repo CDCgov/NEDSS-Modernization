@@ -16,6 +16,7 @@ import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.authentication.entity.QAuthUser;
@@ -80,16 +81,22 @@ public class PageSummaryFinder {
         BlazeJPAQuery<Tuple> query = findSummaryQuery(request);
         setOrderBy(query, pageable);
 
-        var pageIds = query.offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+        List<Tuple> results = query.fetch();
 
-        // cannot paginate distinct, so we have to submit a count query
-        var count = findSummaryQuery(request)
-                .fetchCount();
+        // get distinct Ids and handle paging
+        List<Long> distinctIds = results.stream()
+                .map(r -> r.get(0, Long.class)) // first column is id
+                .distinct()
+                .toList();
+        List<Long> ids = distinctIds
+                .subList((int) pageable.getOffset(),
+                        Math.min(
+                                distinctIds.size(),
+                                (int) pageable.getOffset() + pageable.getPageSize()));
 
-        var ids = pageIds.stream().map(t -> t.get(waTemplate.id)).toList();
-        return fetchPageSummary(ids, pageable, (int) count);
+        var count = distinctIds.size();
+
+        return fetchPageSummary(ids, pageable, count);
     }
 
     /**
@@ -140,7 +147,6 @@ public class PageSummaryFinder {
                         waTemplate.lastChgTime,
                         authUser.userFirstNm,
                         authUser.userLastNm)
-                .distinct()
                 .from(waTemplate)
                 .leftJoin(authUser).on(waTemplate.lastChgUserId.eq(authUser.nedssEntryId))
                 .leftJoin(conditionMapping).on(waTemplate.id.eq(conditionMapping.waTemplateUid.id))
@@ -171,7 +177,7 @@ public class PageSummaryFinder {
         OrderSpecifier<?> sort = switch (order.getProperty()) {
             case "id" -> isAscending ? waTemplate.id.asc() : waTemplate.id.desc();
             case "name" -> isAscending ? waTemplate.templateNm.asc().nullsFirst() : waTemplate.templateNm.desc();
-            case "eventType" -> isAscending ? waTemplate.busObjType.asc() : waTemplate.busObjType.desc();
+            case "eventType" -> isAscending ? eventTypeOrder().asc() : eventTypeOrder().desc();
             case "status" -> isAscending ? waTemplate.templateType.asc() : waTemplate.templateType.desc();
             case "lastUpdate" -> isAscending ? waTemplate.lastChgTime.asc() : waTemplate.lastChgTime.desc();
             case "lastUpdateBy" -> isAscending ? authUser.userLastNm.asc().nullsFirst() : authUser.userLastNm.desc();
@@ -184,6 +190,18 @@ public class PageSummaryFinder {
         }
     }
 
+    // Provides custom ordering for bus_obj_Type column
+    private NumberExpression<Integer> eventTypeOrder() {
+        return waTemplate.busObjType
+                .when("CON").then(1) // Contact
+                .when("IXS").then(2) // Interview
+                .when("INV").then(3) // Investigation
+                .when("ISO").then(4) // Lab Isolate Tracking
+                .when("LAB").then(5) // Lab Report
+                .when("SUS").then(6) // Lab Susceptibility
+                .when("VAC").then(7) // Vaccination
+                .otherwise(8);
+    }
 
 }
 

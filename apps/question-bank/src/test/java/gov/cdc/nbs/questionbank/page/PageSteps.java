@@ -18,9 +18,15 @@ public class PageSteps {
   @Autowired
   Active<PageIdentifier> page;
 
-  @Before("@page")
+  @Before
   public void reset() {
     this.mother.clean();
+  }
+
+  @Given("pages exist")
+  public void pages_exist() {
+    mother.brucellosis();
+    mother.asepticMeningitis();
   }
 
   @Given("I have a page")

@@ -81,7 +81,8 @@ export const Mortality = ({ patient }: Props) => {
             fetch({
                 variables: {
                     patient: patient
-                }
+                },
+                notifyOnNetworkStatusChange: true
             });
         }
     }, [patient]);

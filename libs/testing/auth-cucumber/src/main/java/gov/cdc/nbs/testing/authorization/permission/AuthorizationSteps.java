@@ -6,6 +6,7 @@ import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
@@ -27,9 +28,10 @@ public class AuthorizationSteps {
   AuthorizationRoleMother roleMother;
 
   @Before
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void clean() {
     roleMother.reset();
-    setMother.reset();
+    //  need to figure out how to remove permission sets also
   }
 
   @Given("I can {string} any {string}")

@@ -25,6 +25,9 @@ project(':me-api').projectDir = new File('libs/me-api')
 include ':configuration-api'
 project(':configuration-api').projectDir = new File('libs/configuration-api')
 
+include ':options-api'
+project(':options-api').projectDir = new File('libs/options-api')
+
 // libs
 include ':database-entities'
 project(':database-entities').projectDir = new File('libs/database-entities')
@@ -55,3 +58,6 @@ project(':testing:auth-cucumber').projectDir = new File('libs/testing/auth-cucum
 
 include ':testing:http-interaction'
 project(':testing:http-interaction').projectDir = new File('libs/testing/http-interaction')
+
+include ':testing:database'
+project(':testing:database').projectDir = new File('libs/testing/database')

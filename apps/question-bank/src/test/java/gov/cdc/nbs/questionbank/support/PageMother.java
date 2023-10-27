@@ -2,13 +2,10 @@ package gov.cdc.nbs.questionbank.support;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.component.tree.ComponentTreeResolver;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
-import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +31,6 @@ public class PageMother {
   private WaUiMetadataRepository waUiMetadatumRepository;
 
   @Autowired
-  private WaRuleMetaDataRepository waRuleMetaDataRepository;
-
-  @Autowired
-  private WANNDMetadataRepository wanndMetadataRepository;
-
-  @Autowired
-  private WARDBMetadataRepository wARDBMetadataRepository;
-
-  @Autowired
   EntityManager entityManager;
 
   @Autowired
@@ -62,9 +50,7 @@ public class PageMother {
 
   public void clean() {
     this.available.all().forEach(cleaner::clean);
-    wanndMetadataRepository.deleteAll();
-    wARDBMetadataRepository.deleteAll();
-    waRuleMetaDataRepository.deleteAll();
+    this.available.reset();
   }
 
   public WaTemplate one() {
@@ -100,7 +86,7 @@ public class PageMother {
   private WaTemplate createBrucellosisPage() {
     Instant now = Instant.now();
     WaTemplate page = new WaTemplate();
-    page.setTemplateNm("brucellosis page");
+    page.setTemplateNm("Brucellosis page");
     page.setTemplateType("Draft");
     page.setBusObjType("INV");
     page.setNndEntityIdentifier("GEN_Case_Map_v2.0");
@@ -114,22 +100,90 @@ public class PageMother {
 
     page.associateCondition(BRUCELLOSIS_ID, this.settings.createdBy(), this.settings.createdOn());
 
+    WaUiMetadata pageType = new WaUiMetadata();
+    pageType.setWaTemplateUid(page);
+    pageType.setNbsUiComponentUid(1002L);
+    pageType.setOrderNbr(1);
+    pageType.setDisplayInd("T");
+    pageType.setVersionCtrlNbr(1);
+
     WaUiMetadata tab = new WaUiMetadata();
     tab.setWaTemplateUid(page);
     tab.setNbsUiComponentUid(1010L);
-    tab.setOrderNbr(1);
+    tab.setOrderNbr(2);
     tab.setDisplayInd("T");
     tab.setVersionCtrlNbr(1);
+    tab.setQuestionLabel("First tab");
 
     WaUiMetadata section = new WaUiMetadata();
     section.setWaTemplateUid(page);
     section.setNbsUiComponentUid(1015L);
-    section.setOrderNbr(2);
+    section.setOrderNbr(3);
     section.setDisplayInd("T");
     section.setVersionCtrlNbr(1);
+    section.setQuestionLabel("First section");
 
-    page.setUiMetadata(Arrays.asList(tab, section));
-    this.entityManager.persist(page);
+    WaUiMetadata subsection = new WaUiMetadata();
+    subsection.setWaTemplateUid(page);
+    subsection.setNbsUiComponentUid(1016L);
+    subsection.setOrderNbr(4);
+    subsection.setDisplayInd("T");
+    subsection.setVersionCtrlNbr(1);
+    subsection.setQuestionLabel("First subsection");
+
+    WaUiMetadata question = new WaUiMetadata();
+    question.setWaTemplateUid(page);
+    question.setNbsUiComponentUid(1009L);
+    question.setOrderNbr(5);
+    question.setDisplayInd("T");
+    question.setVersionCtrlNbr(1);
+    question.setQuestionLabel("First question");
+
+    WaUiMetadata tab2 = new WaUiMetadata();
+    tab2.setWaTemplateUid(page);
+    tab2.setNbsUiComponentUid(1010L);
+    tab2.setOrderNbr(6);
+    tab2.setDisplayInd("T");
+    tab2.setVersionCtrlNbr(1);
+    tab2.setQuestionLabel("Second tab");
+
+    WaUiMetadata section2 = new WaUiMetadata();
+    section2.setWaTemplateUid(page);
+    section2.setNbsUiComponentUid(1015L);
+    section2.setOrderNbr(7);
+    section2.setDisplayInd("T");
+    section2.setVersionCtrlNbr(1);
+    section2.setQuestionLabel("Second section");
+
+    WaUiMetadata subsection2 = new WaUiMetadata();
+    subsection2.setWaTemplateUid(page);
+    subsection2.setNbsUiComponentUid(1016L);
+    subsection2.setOrderNbr(8);
+    subsection2.setDisplayInd("T");
+    subsection2.setVersionCtrlNbr(1);
+    subsection2.setQuestionLabel("Second subsection");
+
+    WaUiMetadata question2 = new WaUiMetadata();
+    question2.setWaTemplateUid(page);
+    question2.setNbsUiComponentUid(1009L);
+    question2.setOrderNbr(9);
+    question2.setDisplayInd("T");
+    question2.setVersionCtrlNbr(1);
+    question2.setQuestionLabel("Second question");
+
+    page.setUiMetadata(
+        Arrays.asList(
+        pageType,
+        tab,
+        section,
+        subsection,
+        question,
+        tab2,
+        section2,
+        subsection2,
+        question2
+        )
+    );
     include(page);
     return page;
   }
@@ -151,7 +205,7 @@ public class PageMother {
 
     page.associateCondition(ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn());
 
-    this.entityManager.persist(page);
+    include(page);
 
     // add page detail mappings
     WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
@@ -164,13 +218,11 @@ public class PageMother {
     waUiMetadatumRepository.save(subSection);
     waUiMetadatumRepository.save(question);
 
-    include(page);
+
     return page;
   }
 
   public WaTemplate createPageDraft(WaTemplate pageIn) {
-
-    this.entityManager.persist(pageIn);
 
     Instant now = Instant.now().plusSeconds(15);
     WaTemplate page = new WaTemplate();
@@ -188,20 +240,31 @@ public class PageMother {
 
     page.associateCondition(ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn());
 
-    this.entityManager.persist(page);
+    include(page);
 
     // add page detail mappings
-    WaUiMetadata tab = getwaUiMetaDtum(page, PageConstants.TAB_COMPONENT, 2);
+    page.add(
+        new PageContentCommand.AddTab(
+        page,
+        "tab",
+        true,
+        "TAB_",
+        2,
+        this.settings.createdBy(),
+        Instant.now()
+    )
+    );
+
     WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
     WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
     WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
 
-    waUiMetadatumRepository.save(tab);
+
     waUiMetadatumRepository.save(section);
     waUiMetadatumRepository.save(subSection);
     waUiMetadatumRepository.save(question);
 
-    include(page);
+
     return page;
   }
 
@@ -226,12 +289,12 @@ public class PageMother {
         this.settings.createdBy(),
         this.settings.createdOn());
 
-    this.entityManager.persist(page);
-
     include(page);
   }
 
   private void include(final WaTemplate page) {
+    this.entityManager.persist(page);
+    this.entityManager.flush();
     PageIdentifier created = new PageIdentifier(page.getId(), page.getTemplateNm());
 
     this.active.active(created);

@@ -2,7 +2,9 @@
 Feature: Delete Tab
 
     Background:
-        Given pages exist
+        Given I have a page
+        And the page has a tab
+        And the page has another tab
 
     Scenario: I can delete a tab
         Given I am an admin user
