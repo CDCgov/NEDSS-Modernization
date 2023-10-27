@@ -12,8 +12,8 @@ import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.QuestionType;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
 
 @Component
 @Transactional
@@ -108,7 +108,9 @@ public class QuestionUpdater {
             boolean isInUse,
             WaQuestion question) {
         return new QuestionCommand.Update(
-                asQuestionData(request, isInUse, question.getQuestionType()),
+                asQuestionData(
+                        request,
+                        isInUse),
                 request.defaultValue(),
                 request.mask(),
                 request.fieldLength(),
@@ -124,8 +126,9 @@ public class QuestionUpdater {
                 Instant.now());
     }
 
-    QuestionCommand.UpdatableQuestionData asQuestionData(UpdateQuestionRequest request, boolean isInUse,
-            String questionType) {
+    QuestionCommand.UpdatableQuestionData asQuestionData(
+            UpdateQuestionRequest request,
+            boolean isInUse) {
         return new QuestionCommand.UpdatableQuestionData(
                 isInUse,
                 request.uniqueName(),
@@ -137,7 +140,7 @@ public class QuestionUpdater {
                 managementUtil.getQuestionOid(
                         request.includedInMessage(),
                         request.codeSystem(),
-                        questionType));
+                        null)); // Cannot update codeset
     }
 
     QuestionCommand.ReportingData asReportingData(UpdateQuestionRequest request, String subgroup) {

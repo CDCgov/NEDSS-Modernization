@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,8 @@ import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.QuestionType;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
@@ -55,7 +56,8 @@ class QuestionUpdaterTest {
     @Test
     void should_set_status_inactive() {
         // given an active question and a working repository
-        when(repository.findById(321L)).thenReturn(Optional.of(emptyQuestion()));
+        WaQuestion empty = emptyQuestion();
+        when(repository.findById(321L)).thenReturn(Optional.of(empty));
         ArgumentCaptor<WaQuestion> captor = ArgumentCaptor.forClass(WaQuestion.class);
         when(repository.save(captor.capture())).thenAnswer(q -> q.getArgument(0));
 
@@ -71,7 +73,8 @@ class QuestionUpdaterTest {
     @Test
     void should_increment_version() {
         // given an active question and a working repository
-        when(repository.findById(321L)).thenReturn(Optional.of(emptyQuestion()));
+        WaQuestion empty = emptyQuestion();
+        when(repository.findById(321L)).thenReturn(Optional.of(empty));
         ArgumentCaptor<WaQuestion> captor = ArgumentCaptor.forClass(WaQuestion.class);
         when(repository.save(captor.capture())).thenAnswer(q -> q.getArgument(0));
 
@@ -87,7 +90,8 @@ class QuestionUpdaterTest {
     @Test
     void should_set_status_active() {
         // given an active question and a working repository
-        when(repository.findById(321L)).thenReturn(Optional.of(emptyQuestion()));
+        WaQuestion empty = emptyQuestion();
+        when(repository.findById(321L)).thenReturn(Optional.of(empty));
         ArgumentCaptor<WaQuestion> captor = ArgumentCaptor.forClass(WaQuestion.class);
         when(repository.save(captor.capture())).thenAnswer(q -> q.getArgument(0));
 
@@ -115,7 +119,8 @@ class QuestionUpdaterTest {
         UpdateQuestionRequest request = QuestionRequestMother.update(QuestionType.DATE);
 
         // and an existing question
-        when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(inactiveQuestion()));
+        WaQuestion inactive = inactiveQuestion();
+        when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(inactive));
 
         // when i send an update then an exception is thrown
         assertThrows(UpdateQuestionException.class, () -> updater.update(1L, 2L, request));
@@ -129,8 +134,11 @@ class QuestionUpdaterTest {
         UpdateQuestionRequest request = QuestionRequestMother.update();
 
         // and a valid oid
-        when(managementUtil.getQuestionOid(true, request.codeSystem(), "LOCAL"))
-                .thenReturn(new QuestionOid("oid", "oid system"));
+        when(managementUtil.getQuestionOid(
+                true,
+                "PH_ACCEPTAPPLICATION",
+                null))
+                        .thenReturn(new QuestionOid("oid", "oid system"));
 
 
         // and an existing question
@@ -175,18 +183,13 @@ class QuestionUpdaterTest {
     }
 
     private WaQuestion emptyQuestion() {
-        TextQuestionEntity q = new TextQuestionEntity();
-        q.setId(321L);
-        q.setRecordStatusCd(WaQuestion.ACTIVE);
-        q.setVersionCtrlNbr(1);
+        TextQuestionEntity q = QuestionEntityMother.textQuestion();
         return q;
     }
 
     private WaQuestion inactiveQuestion() {
-        TextQuestionEntity q = new TextQuestionEntity();
-        q.setId(321L);
-        q.setRecordStatusCd(WaQuestion.INACTIVE);
-        q.setVersionCtrlNbr(1);
+        TextQuestionEntity q = QuestionEntityMother.textQuestion();
+        q.statusChange(new QuestionCommand.SetStatus(false, 0, Instant.now()));
         return q;
     }
 
@@ -195,9 +198,9 @@ class QuestionUpdaterTest {
     void cant_update_type_if_inuse() {
         // given an update request
         UpdateQuestionRequest request = QuestionRequestMother.update(QuestionType.DATE);
-
+        TextQuestionEntity spy = QuestionEntityMother.textQuestion();
         // and an existign question
-        when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(QuestionEntityMother.textQuestion()));
+        when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(spy));
 
         // and a question that is in use
         when(metadatumRepository
@@ -205,7 +208,7 @@ class QuestionUpdaterTest {
                         .thenReturn(Collections.singletonList(new WaUiMetadata()));
 
         // and the question can be saved
-        when(repository.save(Mockito.any())).thenReturn(QuestionEntityMother.textQuestion());
+        when(repository.save(Mockito.any())).thenReturn(spy);
 
         // when i send an update
         updater.update(1L, 2L, request);
@@ -220,15 +223,16 @@ class QuestionUpdaterTest {
         UpdateQuestionRequest request = QuestionRequestMother.update(QuestionType.DATE);
 
         // and an existign question
-        when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(QuestionEntityMother.textQuestion()));
+        TextQuestionEntity spy = QuestionEntityMother.textQuestion();
+        when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(spy));
 
         // and a question that is in use
         when(metadatumRepository
-                .findAllByQuestionIdentifier(QuestionEntityMother.textQuestion().getQuestionIdentifier()))
+                .findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
                         .thenReturn(Collections.emptyList());
 
         // and the question can be saved
-        when(repository.save(Mockito.any())).thenReturn(QuestionEntityMother.textQuestion());
+        when(repository.save(Mockito.any())).thenReturn(spy);
 
         // when i send an update
         updater.update(1L, 2L, request);

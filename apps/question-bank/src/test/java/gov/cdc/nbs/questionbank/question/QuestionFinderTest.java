@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
@@ -46,11 +47,12 @@ class QuestionFinderTest {
     @Test
     void find_test() {
         // given a question exists
-        when(questionRepository.findById(1L)).thenReturn(Optional.of(QuestionEntityMother.dateQuestion()));
-        
+        DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
+        when(questionRepository.findById(1L)).thenReturn(Optional.of(spy));
+
         // and it is not in use
-        when(metadatumRepository.findAllByQuestionIdentifier(QuestionEntityMother.dateQuestion().getQuestionIdentifier()))
-            .thenReturn(new ArrayList<>());
+        when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
+                .thenReturn(new ArrayList<>());
 
         // when i try to find a question
         GetQuestionResponse response = finder.find(1L);
@@ -72,11 +74,12 @@ class QuestionFinderTest {
     @Test
     void in_use_test() {
         // given a question exists
-        when(questionRepository.findById(1L)).thenReturn(Optional.of(QuestionEntityMother.dateQuestion()));
-        
+        DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
+        when(questionRepository.findById(1L)).thenReturn(Optional.of(spy));
+
         // and it is in use
-        when(metadatumRepository.findAllByQuestionIdentifier(QuestionEntityMother.dateQuestion().getQuestionIdentifier()))
-            .thenReturn(Collections.singletonList(new WaUiMetadata()));
+        when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
+                .thenReturn(Collections.singletonList(new WaUiMetadata()));
 
         // when i try to find a question
         GetQuestionResponse response = finder.find(1L);

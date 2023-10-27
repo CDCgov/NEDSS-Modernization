@@ -7,8 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.ArrayList;
-
-import org.apache.kafka.common.Uuid;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -218,7 +217,6 @@ class ValueSetCreatorTest {
 		valueConcept.setNbsUid(10);
 		valueConcept.setAdminComments("adminComments");
 		valueConcept.setAddTime(Instant.now());
-		valueConcept.setAddUserId(Uuid.randomUuid().getLeastSignificantBits());
 
 		return valueConcept;
 
@@ -248,9 +246,9 @@ class ValueSetCreatorTest {
 		request.setValueSetOid("valueSetOid");
 		request.setValueSetStatusCd("valueSetStatusCd");
 		request.setValueSetStatusTime(Instant.now());
-		request.setParentIsCd(Uuid.randomUuid().getLeastSignificantBits());
+		request.setParentIsCd(UUID.randomUUID().getLeastSignificantBits());
 		request.setAddTime(Instant.now());
-		request.setAddUserId(Uuid.randomUuid().getLeastSignificantBits());
+		request.setAddUserId(UUID.randomUUID().getLeastSignificantBits());
 		request.setValues(new ArrayList<>());
 
 		return request;

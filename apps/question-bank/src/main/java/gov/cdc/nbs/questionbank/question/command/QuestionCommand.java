@@ -1,7 +1,11 @@
 package gov.cdc.nbs.questionbank.question.command;
 
 import java.time.Instant;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
+import gov.cdc.nbs.questionbank.entity.question.UnitType;
+import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest.DateMask;
+import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest.NumericMask;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest.TextMask;
 
 public sealed interface QuestionCommand {
     long userId();
@@ -38,8 +42,8 @@ public sealed interface QuestionCommand {
 
     public record AddTextQuestion(
             // Text specific fields
-            String mask,
-            String fieldLength,
+            TextMask mask,
+            Integer fieldLength,
             String defaultValue,
 
             // General Question fields
@@ -58,7 +62,7 @@ public sealed interface QuestionCommand {
 
     public record AddDateQuestion(
             // Date specific fields
-            String mask,
+            DateMask mask,
             boolean allowFutureDates,
 
             // General Question fields
@@ -77,13 +81,15 @@ public sealed interface QuestionCommand {
 
     public record AddNumericQuestion(
             // Date specific fields
-            String mask,
-            String fieldLength,
-            String defaultValue,
+            NumericMask mask,
+            Integer fieldLength,
+            Long defaultValue,
             Long minValue,
             Long maxValue,
-            String unitTypeCd, // Coded or Literal
-            String unitValue, // Id of Value set, or literal value
+
+            // Related units
+            String relatedUnitsLiteral,
+            Long relatedUnitsValueSet,
 
             // General Question fields
             QuestionData questionData,
@@ -118,7 +124,7 @@ public sealed interface QuestionCommand {
             Instant requestedOn) implements CreateQuestionCommand {
     }
     record QuestionData(
-            String codeSet,
+            CodeSet codeSet,
             String localId,
             String uniqueName,
             String subgroup,

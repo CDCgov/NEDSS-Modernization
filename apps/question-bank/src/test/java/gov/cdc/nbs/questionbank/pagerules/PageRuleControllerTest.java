@@ -56,8 +56,6 @@ class PageRuleControllerTest {
     @Test
     void shouldDeleteRuleId() {
         Long ruleId = 99L;
-        NbsUserDetails nbsUserDetails =
-                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
         Mockito.when(pageRuleService.deletePageRule(99L))
                 .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Deleted"));
         CreateRuleResponse ruleResponse = pageRuleController.deletePageRule(ruleId);

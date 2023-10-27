@@ -1,8 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
-import gov.cdc.nbs.questionbank.kafka.message.rule.RuleCreatedEvent;
-import gov.cdc.nbs.questionbank.kafka.producer.RuleCreatedEventProducer;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
@@ -14,7 +12,6 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -25,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PageRuleServiceImplTest {
@@ -35,16 +31,12 @@ class PageRuleServiceImplTest {
     @Mock
     private WaRuleMetaDataRepository waRuleMetaDataRepository;
 
-    @Mock
-    private RuleCreatedEventProducer.EnabledProducer ruleCreatedEventProducer;
-
     @InjectMocks
     private PageRuleFinderServiceImpl pageRuleFinderServiceImpl;
 
     @BeforeEach
     void setup() {
         Mockito.reset(waRuleMetaDataRepository);
-        Mockito.reset(ruleCreatedEventProducer);
     }
 
     @Test
@@ -52,7 +44,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -61,16 +53,6 @@ class PageRuleServiceImplTest {
 
     }
 
-    @Test
-    void should_send_ruleRequest_Event() throws RuleException {
-        Long userId = 99L;
-        CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
-        ArgumentCaptor<RuleCreatedEvent> eventCaptor = ArgumentCaptor.forClass(RuleCreatedEvent.class);
-        Mockito.verify(ruleCreatedEventProducer, times(1)).send(eventCaptor.capture());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
-
-    }
 
     @Test
     void shouldGiveRuleExpressionInACorrectFormatForDateCompare() throws RuleException {
@@ -78,7 +60,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.dateCompareRuleRequest();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -91,7 +73,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.DisableRuleRequest();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
 
@@ -103,7 +85,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.DisableRuleTestDataAnySourceIsTrue();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -116,7 +98,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.EnableRuleTestDataAnySourceIsTrue();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -129,7 +111,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.EnableRuleRequest();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -142,7 +124,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.HideRuleRequest();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -155,7 +137,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.HideRuleTestDataAnySourceIsTrue();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -168,7 +150,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleTestDataAnySourceIsTrue();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -182,7 +164,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleTestData_othercomparator();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -197,7 +179,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequest();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -210,7 +192,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleTestData();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -222,7 +204,8 @@ class PageRuleServiceImplTest {
         CreateRuleRequest ruleRequest = RuleRequestMother.InvalidRuleRequest();
         Long userId = 99L;
         RuleException exception =
-                assertThrows(RuleException.class, () -> pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L));
+                assertThrows(RuleException.class,
+                        () -> pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L));
 
         assertEquals(
                 "gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException: Error in Creating Rule Expression and Error Message Text",
@@ -235,7 +218,7 @@ class PageRuleServiceImplTest {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequestIfAnySource();
         Long userId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest, 123456L);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
@@ -259,7 +242,7 @@ class PageRuleServiceImplTest {
         ruleMetadata.setId(99L);
         ruleMetadata.setRuleCd("Hide");
         ruleMetadata.setRuleExpression("testRuleExpression");
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.updatePageRule(ruleId, ruleRequest, userId,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.updatePageRule(ruleId, ruleRequest, userId, 123456L);
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).existsById(ruleId);
         assertEquals("RuleId Not Found", ruleResponse.message());
     }
@@ -275,7 +258,7 @@ class PageRuleServiceImplTest {
         ruleMetadata.setRuleExpression("testRuleExpression");
         Mockito.when(waRuleMetaDataRepository.existsById(ruleId)).thenReturn(true);
         Mockito.when(waRuleMetaDataRepository.getReferenceById(ruleId)).thenReturn(ruleMetadata);
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.updatePageRule(ruleId, ruleRequest, userId,123456L);
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.updatePageRule(ruleId, ruleRequest, userId, 123456L);
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).existsById(ruleId);
         assertEquals("Rule Successfully Updated", ruleResponse.message());
     }
@@ -460,28 +443,28 @@ class PageRuleServiceImplTest {
 
     @Test
     void getAllPageRuleTest() {
-        Pageable pageable= null;
-        Page<WaRuleMetadata> ruleMetadataPage= new PageImpl<>(Collections.singletonList(morbWaRuleMetadata()));
-        Mockito.when(waRuleMetaDataRepository.findByWaTemplateUid(123456L,pageable)).thenReturn(ruleMetadataPage);
-        Page<ViewRuleResponse> ruleResponse = pageRuleFinderServiceImpl.getAllPageRule(pageable,123456L);
+        Pageable pageable = null;
+        Page<WaRuleMetadata> ruleMetadataPage = new PageImpl<>(Collections.singletonList(morbWaRuleMetadata()));
+        Mockito.when(waRuleMetaDataRepository.findByWaTemplateUid(123456L, pageable)).thenReturn(ruleMetadataPage);
+        Page<ViewRuleResponse> ruleResponse = pageRuleFinderServiceImpl.getAllPageRule(pageable, 123456L);
         assertNotNull(ruleResponse);
         List<ViewRuleResponse> actualResponse = ruleResponse.stream().toList();
         assertNotNull(actualResponse);
-        assertEquals(1,actualResponse.size());
-        assertEquals(99,actualResponse.get(0).ruleId());
-        assertEquals("Question",actualResponse.get(0).targetType());
+        assertEquals(1, actualResponse.size());
+        assertEquals(99, actualResponse.get(0).ruleId());
+        assertEquals("Question", actualResponse.get(0).targetType());
 
         WaRuleMetadata data = morbWaRuleMetadata();
         data.setSourceValues("Test Source values");
         data.setTargetQuestionIdentifier("Test target questions identifier");
-        ruleMetadataPage= new PageImpl<>(Collections.singletonList(data));
-        Mockito.when(waRuleMetaDataRepository.findByWaTemplateUid(123456L,pageable)).thenReturn(ruleMetadataPage);
-        ruleResponse = pageRuleFinderServiceImpl.getAllPageRule(pageable,123456L);
+        ruleMetadataPage = new PageImpl<>(Collections.singletonList(data));
+        Mockito.when(waRuleMetaDataRepository.findByWaTemplateUid(123456L, pageable)).thenReturn(ruleMetadataPage);
+        ruleResponse = pageRuleFinderServiceImpl.getAllPageRule(pageable, 123456L);
         assertNotNull(ruleResponse);
         actualResponse = ruleResponse.stream().toList();
         assertNotNull(actualResponse);
-        assertEquals(1,actualResponse.size());
-        assertEquals(99,actualResponse.get(0).ruleId());
+        assertEquals(1, actualResponse.size());
+        assertEquals(99, actualResponse.get(0).ruleId());
     }
 
     private WaRuleMetadata morbWaRuleMetadata() {
@@ -500,22 +483,23 @@ class PageRuleServiceImplTest {
     @Test
     void findPageRuleTest() {
         int page = 0;
-        int size =1;
-        String sort ="id";
-        Pageable pageRequest = PageRequest.of(page,size, Sort.by(sort));
+        int size = 1;
+        String sort = "id";
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
         SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
-        Page<WaRuleMetadata> ruleMetadataPage= new PageImpl<>(Collections.singletonList(morbWaRuleMetadata()));
-        Mockito.when(waRuleMetaDataRepository.
-                findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase
-                        (request.searchValue(),request.searchValue(),pageRequest)).thenReturn(ruleMetadataPage);
-        Page<ViewRuleResponse> ruleResponse = pageRuleFinderServiceImpl.findPageRule(request,pageRequest);
+        Page<WaRuleMetadata> ruleMetadataPage = new PageImpl<>(Collections.singletonList(morbWaRuleMetadata()));
+        Mockito.when(waRuleMetaDataRepository
+                .findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase(
+                        request.searchValue(), request.searchValue(), pageRequest))
+                .thenReturn(ruleMetadataPage);
+        Page<ViewRuleResponse> ruleResponse = pageRuleFinderServiceImpl.findPageRule(request, pageRequest);
         assertNotNull(ruleResponse);
 
         List<ViewRuleResponse> actualResponse = ruleResponse.stream().toList();
         assertNotNull(actualResponse);
-        assertEquals(1,actualResponse.size());
-        assertEquals(99,actualResponse.get(0).ruleId());
-        assertEquals("Question",actualResponse.get(0).targetType());
+        assertEquals(1, actualResponse.size());
+        assertEquals(99, actualResponse.get(0).ruleId());
+        assertEquals("Question", actualResponse.get(0).targetType());
     }
 
 }
