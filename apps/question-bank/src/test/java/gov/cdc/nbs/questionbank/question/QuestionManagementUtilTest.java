@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -15,12 +14,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
@@ -77,7 +77,7 @@ class QuestionManagementUtilTest {
         when(codeValueGeneralRepository.findByCode(Mockito.anyString())).thenReturn(Optional.of(cvg));
 
         // when I generate the question oid
-        QuestionOid oid = questionManagementUtil.getQuestionOid(true, "", "");
+        QuestionOid oid = questionManagementUtil.getQuestionOid(true, "", CodeSet.LOCAL);
 
         // then I am returned the proper code system info
         assertEquals(cvg.getCodeDescTxt(), oid.oid());
@@ -87,13 +87,13 @@ class QuestionManagementUtilTest {
     @Test
     void should_return_oid_for_not_included_local_request() {
         // given a request with messaging not included
-        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest(false);
+        CreateTextQuestionRequest request = QuestionRequestMother.localTextRequest(false);
 
         // when I generate the question oid
         QuestionOid oid = questionManagementUtil.getQuestionOid(
                 false,
-                request.messagingInfo().codeSystem(),
-                request.codeSet());
+                request.getMessagingInfo().codeSystem(),
+                request.getCodeSet());
 
         // then I am returned the proper code system info
         assertEquals("L", oid.oid());
@@ -103,13 +103,13 @@ class QuestionManagementUtilTest {
     @Test
     void should_return_oid_for_not_included_phin_request() {
         // given a request with messaging not included
-        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
+        CreateTextQuestionRequest request = QuestionRequestMother.phinTextRequest(false);
 
         // when I generate the question oid
         QuestionOid oid = questionManagementUtil.getQuestionOid(
                 false,
-                request.messagingInfo().codeSystem(),
-                request.codeSet());
+                request.getMessagingInfo().codeSystem(),
+                request.getCodeSet());
 
         // then I am returned the proper code system info
         assertEquals("2.16.840.1.114222.4.5.232", oid.oid());
@@ -119,27 +119,18 @@ class QuestionManagementUtilTest {
     @Test
     void should_throw_exception_failed_to_find_code_system() {
         // given a request with an invalid code_system
-        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
-        when(codeValueGeneralRepository.findByCode(request.messagingInfo().codeSystem())).thenReturn(Optional.empty());
+        CreateTextQuestionRequest request = QuestionRequestMother.localTextRequest();
+        when(codeValueGeneralRepository.findByCode(request.getMessagingInfo().codeSystem()))
+                .thenReturn(Optional.empty());
 
         // when retrieving the question oid 
         // then an exception is thrown
-        String codeSystem = request.messagingInfo().codeSystem();
-        String codeSet = request.codeSet();
+        String codeSystem = request.getMessagingInfo().codeSystem();
+        CodeSet codeSet = request.getCodeSet();
         assertThrows(UpdateQuestionException.class,
                 () -> questionManagementUtil.getQuestionOid(
                         true,
                         codeSystem,
                         codeSet));
-    }
-
-    @Test
-    void should_return_null_oid() {
-        // given a non PHIN or LOCAL codeSet
-        // when retrieving the question oid
-        QuestionOid oid = questionManagementUtil.getQuestionOid(false, "", "NOT_PHIN_OR_LOCAL");
-
-        // then null is returned
-        assertNull(oid);
     }
 }

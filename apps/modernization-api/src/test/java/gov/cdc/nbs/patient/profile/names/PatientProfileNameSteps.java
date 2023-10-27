@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.names;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCreateAssertions;
@@ -41,8 +41,7 @@ public class PatientProfileNameSteps {
   public void the_patient_has_the_name(
       final String type,
       final String first,
-      final String last
-  ) {
+      final String last) {
 
     String resolvedType = resolveType(type);
 
@@ -50,8 +49,7 @@ public class PatientProfileNameSteps {
         patient.active(),
         resolvedType,
         first,
-        last
-    );
+        last);
   }
 
   @Given("the patient has the {string} name {string} {string} as of {string}")
@@ -59,8 +57,7 @@ public class PatientProfileNameSteps {
       final String type,
       final String first,
       final String last,
-      final String asOf
-  ) {
+      final String asOf) {
 
     String resolvedType = resolveType(type);
 
@@ -69,8 +66,7 @@ public class PatientProfileNameSteps {
         LocalDate.parse(asOf).atStartOfDay(ZoneId.systemDefault()).toInstant(),
         resolvedType,
         first,
-        last
-    );
+        last);
   }
 
   @Given("the patient has the {string} name {string} {string} {string}, {string} as of {string}")
@@ -80,8 +76,7 @@ public class PatientProfileNameSteps {
       final String middle,
       final String last,
       final String suffix,
-      final String asOf
-  ) {
+      final String asOf) {
 
     String resolvedType = resolveType(type);
     String resolvedSuffix = resolveSuffix(suffix);
@@ -93,8 +88,7 @@ public class PatientProfileNameSteps {
         first,
         middle,
         last,
-        resolvedSuffix
-    );
+        resolvedSuffix);
 
   }
 

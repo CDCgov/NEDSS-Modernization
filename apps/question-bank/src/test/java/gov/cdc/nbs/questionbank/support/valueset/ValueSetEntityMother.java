@@ -2,9 +2,7 @@ package gov.cdc.nbs.questionbank.support.valueset;
 
 import java.time.Instant;
 import java.util.ArrayList;
-
-import org.apache.kafka.common.Uuid;
-
+import java.util.UUID;
 import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.CodesetId;
@@ -52,7 +50,7 @@ public class ValueSetEntityMother {
 		valueConcept.setNbsUid(10);
 		valueConcept.setAdminComments("adminComments");
 		valueConcept.setAddTime(Instant.now());
-		valueConcept.setAddUserId(Uuid.randomUuid().getLeastSignificantBits());
+		valueConcept.setAddUserId(UUID.randomUUID().getLeastSignificantBits());
 
 		return valueConcept;
 
@@ -82,9 +80,9 @@ public class ValueSetEntityMother {
 		request.setValueSetOid("valueSetOid");
 		request.setValueSetStatusCd("valueSetStatusCd");
 		request.setValueSetStatusTime(Instant.now());
-		request.setParentIsCd(Uuid.randomUuid().getLeastSignificantBits());
+		request.setParentIsCd(UUID.randomUUID().getLeastSignificantBits());
 		request.setAddTime(Instant.now());
-		request.setAddUserId(Uuid.randomUuid().getLeastSignificantBits());
+		request.setAddUserId(UUID.randomUUID().getLeastSignificantBits());
 		request.setValues(new ArrayList<>());
 		return request;
 		

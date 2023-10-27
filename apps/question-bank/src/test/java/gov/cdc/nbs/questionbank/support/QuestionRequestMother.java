@@ -1,134 +1,124 @@
 package gov.cdc.nbs.questionbank.support;
 
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
+import gov.cdc.nbs.questionbank.entity.question.UnitType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.QuestionType;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest.DateMask;
+import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest.NumericMask;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
+import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest.TextMask;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
+import gov.cdc.nbs.questionbank.question.request.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
 
 public class QuestionRequestMother {
 
-    public static CreateQuestionRequest.Text localTextRequest() {
-        return textRequest("LOCAL", true);
+    public static CreateTextQuestionRequest localTextRequest() {
+        return textRequest(CodeSet.LOCAL, true);
     }
 
-    public static CreateQuestionRequest.Text localTextRequest(boolean includeInMessage) {
-        return textRequest("LOCAL", includeInMessage);
+    public static CreateTextQuestionRequest localTextRequest(boolean includeInMessage) {
+        return textRequest(CodeSet.LOCAL, includeInMessage);
     }
 
-    public static CreateQuestionRequest.Text phinTextRequest() {
-        return textRequest("PHIN", true);
+    public static CreateTextQuestionRequest phinTextRequest() {
+        return textRequest(CodeSet.PHIN, true);
     }
 
-    public static CreateQuestionRequest.Text phinTextRequest(boolean includeInMessage) {
-        return textRequest("PHIN", includeInMessage);
+    public static CreateTextQuestionRequest phinTextRequest(boolean includeInMessage) {
+        return textRequest(CodeSet.PHIN, includeInMessage);
     }
 
-    public static CreateQuestionRequest.Date dateRequest() {
-        return new CreateQuestionRequest.Date(
-                "PHIN",
-                "Test unique Id",
-                "TEST UNIQUE NAME",
-                "Test_Subgroup",
-                "Test description",
-                "Test label",
-                "Test tooltip",
-                1008L,
-                reportingInfo(),
-                messagingInfo(false),
-                "Test admin comments",
-                QuestionType.DATE,
-                "Mask",
-                false);
+    public static CreateDateQuestionRequest dateRequest() {
+        CreateDateQuestionRequest request = new CreateDateQuestionRequest();
+        setSharedFields(request);
+
+        request.setDisplayControl(1008L);
+        request.setMask(DateMask.DATE);
+        request.setAllowFutureDates(false);
+        return request;
     }
 
-    public static CreateQuestionRequest.Numeric numericRequest() {
-        return numericRequest(UnitType.LITERAL, "Some literal value");
+    private static void setSharedFields(CreateQuestionRequest request) {
+        request.setCodeSet(CodeSet.PHIN);
+        request.setUniqueId("Test unique Id");
+        request.setUniqueName("TEST UNIQUE NAME");
+        request.setSubgroup("TEST_Subgroup");
+        request.setDescription("Test description");
+        request.setLabel("Test label");
+        request.setTooltip("Test tooltip");
+        request.setDataMartInfo(reportingInfo());
+        request.setMessagingInfo(messagingInfo(false));
     }
 
-    public static CreateQuestionRequest.Numeric numericRequest(UnitType unitType, String unitValue) {
-        return new CreateQuestionRequest.Numeric(
-                "PHIN",
-                "Test unique Id",
-                "TEST UNIQUE NAME",
-                "Test_Subgroup",
-                "Test description",
-                "Test label",
-                "Test tooltip",
-                1008L,
-                reportingInfo(),
-                messagingInfo(false),
-                "Test admin comments",
-                QuestionType.NUMERIC,
-                "NUM",
-                "3",
-                "1",
-                0L,
-                100L,
-                unitType,
-                unitValue);
+    public static CreateNumericQuestionRequest numericRequest() {
+        return numericRequest(null, "Some literal value");
     }
 
-    public static CreateQuestionRequest.Coded codedRequest(long valueSet) {
-        return new CreateQuestionRequest.Coded(
-                "PHIN",
-                "Test unique Id",
-                "TEST UNIQUE NAME",
-                "Test_Subgroup",
-                "Test description",
-                "Test label",
-                "Test tooltip",
-                1008L,
-                reportingInfo(),
-                messagingInfo(true),
-                "Test admin comments",
-                QuestionType.CODED,
-                valueSet,
-                null);
+    public static CreateNumericQuestionRequest numericRequest(Long valueSet, String literalValue) {
+        CreateNumericQuestionRequest request = new CreateNumericQuestionRequest();
+        setSharedFields(request);
+
+        request.setMask(NumericMask.NUM);
+        request.setFieldLength(3);
+        request.setDefaultValue(1l);
+        request.setMinValue(0l);
+        request.setMaxValue(100l);
+        request.setRelatedUnitsLiteral(literalValue);
+        request.setRelatedUnitsValueSet(valueSet);
+        request.setDisplayControl(1008l);
+        return request;
     }
 
-    public static CreateQuestionRequest.Text custom(
+    public static CreateCodedQuestionRequest codedRequest(long valueSet) {
+        CreateCodedQuestionRequest request = new CreateCodedQuestionRequest();
+        setSharedFields(request);
+
+        request.setDisplayControl(1007l);
+        request.setAdminComments("Test admin comments");
+        request.setValueSet(valueSet);
+        return request;
+    }
+
+    public static CreateTextQuestionRequest custom(
             String uniqueName,
             String identifier,
             String dataMartColumnName,
             String rdbTableName,
             String rdbColumnName) {
-        return new CreateQuestionRequest.Text(
-                "PHIN",
-                identifier,
-                uniqueName,
-                "Test_Subgroup",
-                "Test description",
-                "Test label",
-                "Test tooltip",
-                1111L,
-                reportingInfo("custom label", rdbTableName, rdbColumnName, dataMartColumnName),
-                messagingInfo(false),
-                "Test admin comments",
-                QuestionType.TEXT,
-                "Mask",
-                "50",
-                "Test default");
+        CreateTextQuestionRequest request = new CreateTextQuestionRequest();
+        setSharedFields(request);
+        request.setUniqueId(identifier);
+        request.setUniqueName(uniqueName);
+        request.setDisplayControl(1008l);
+        request.setDataMartInfo(reportingInfo(
+                "custom label",
+                rdbTableName,
+                rdbColumnName,
+                dataMartColumnName));
+
+        request.setMask(TextMask.TXT);
+        request.setFieldLength(50);
+        request.setDefaultValue("Test default");
+        return request;
     }
 
-    private static CreateQuestionRequest.Text textRequest(String codeSet, boolean includedInMessage) {
-        return new CreateQuestionRequest.Text(
-                codeSet,
-                "Test unique Id",
-                "TEST UNIQUE NAME",
-                "Test_Subgroup",
-                "Test description",
-                "Test label",
-                "Test tooltip",
-                1111L,
-                reportingInfo(),
-                messagingInfo(includedInMessage),
-                "Test admin comments",
-                QuestionType.TEXT,
-                "Mask",
-                "50",
-                "Test default");
+    private static CreateTextQuestionRequest textRequest(CodeSet codeSet, boolean includedInMessage) {
+        CreateTextQuestionRequest request = new CreateTextQuestionRequest();
+        setSharedFields(request);
+
+        request.setCodeSet(codeSet);
+        request.setMessagingInfo(
+                messagingInfo(includedInMessage));
+        request.setMask(TextMask.TXT);
+        request.setFieldLength(50);
+        request.setDefaultValue("Test default");
+        request.setDisplayControl(1008l);
+        return request;
     }
 
     public static MessagingInfo messagingInfo(boolean includedInMessage) {
@@ -191,23 +181,11 @@ public class QuestionRequestMother {
         return update(QuestionType.TEXT);
     }
 
-    public static CreateQuestionRequest.Text localWithUniqueId(String uniqueId) {
-        return new CreateQuestionRequest.Text(
-                "LOCAL",
-                uniqueId,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                QuestionType.TEXT,
-                null,
-                null,
-                null);
+    public static CreateTextQuestionRequest localWithUniqueId(String uniqueId) {
+        CreateTextQuestionRequest request = new CreateTextQuestionRequest();
+        request.setUniqueId(uniqueId);
+        request.setCodeSet(CodeSet.LOCAL);
+        return request;
     }
 
 }

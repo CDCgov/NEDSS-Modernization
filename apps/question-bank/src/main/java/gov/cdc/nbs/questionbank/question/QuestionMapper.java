@@ -32,7 +32,7 @@ public class QuestionMapper {
         }
     }
 
-    private TextQuestion toTextQuestion(TextQuestionEntity q) {
+    public TextQuestion toTextQuestion(TextQuestionEntity q) {
         return new TextQuestion(
                 q.getId(),
                 q.getMask(),
@@ -53,7 +53,7 @@ public class QuestionMapper {
                 getMessagingInfo(q));
     }
 
-    private DateQuestion toDateQuestion(DateQuestionEntity q) {
+    public DateQuestion toDateQuestion(DateQuestionEntity q) {
         return new DateQuestion(
                 q.getId(),
                 q.getMask(),
@@ -73,7 +73,7 @@ public class QuestionMapper {
                 getMessagingInfo(q));
     }
 
-    private NumericQuestion toNumericQuestion(NumericQuestionEntity q) {
+    public NumericQuestion toNumericQuestion(NumericQuestionEntity q) {
         return new NumericQuestion(
                 q.getId(),
                 q.getMask(),
@@ -98,7 +98,7 @@ public class QuestionMapper {
                 getMessagingInfo(q));
     }
 
-    private CodedQuestion toCodedQuestion(CodedQuestionEntity q) {
+    public CodedQuestion toCodedQuestion(CodedQuestionEntity q) {
         return new CodedQuestion(
                 q.getId(),
                 q.getCodeSetGroupId(),

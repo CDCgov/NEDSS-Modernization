@@ -3,8 +3,6 @@ package gov.cdc.nbs.questionbank.pagerules;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
-import gov.cdc.nbs.questionbank.kafka.message.rule.RuleCreatedEvent;
-import gov.cdc.nbs.questionbank.kafka.producer.RuleCreatedEventProducer;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
@@ -38,27 +36,19 @@ public class PageRuleServiceImpl implements PageRuleService {
     private static final String ACTION_1 = "()\n{";
 
     private final WaRuleMetaDataRepository waRuleMetaDataRepository;
-    private final RuleCreatedEventProducer ruleCreatedEventProducer;
 
 
     public PageRuleServiceImpl(
-            WaRuleMetaDataRepository waRuleMetaDataRepository,
-            RuleCreatedEventProducer ruleCreatedEventProducer) {
+            WaRuleMetaDataRepository waRuleMetaDataRepository) {
         this.waRuleMetaDataRepository = waRuleMetaDataRepository;
-        this.ruleCreatedEventProducer = ruleCreatedEventProducer;
     }
 
     @Override
     public CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request,Long page) {
         WaRuleMetadata waRuleMetadata = setRuleDataValues(userId, request,page);
         waRuleMetaDataRepository.save(waRuleMetadata);
-        sendRuleEvent(request);
         return new CreateRuleResponse(waRuleMetadata.getId(), "Rule Created Successfully");
 
-    }
-
-    private void sendRuleEvent(CreateRuleRequest ruleRequest) {
-        ruleCreatedEventProducer.send(new RuleCreatedEvent(ruleRequest));
     }
 
     private WaRuleMetadata setRuleDataValues(Long userId, CreateRuleRequest request,Long page) {
