@@ -1,109 +1,89 @@
 package gov.cdc.nbs.questionbank.page.content.section;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
-import gov.cdc.nbs.questionbank.page.content.section.model.Section;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SectionUpdaterTest {
 
     @Mock
-    WaUiMetadataRepository repository;
-
-    @Mock
-    WaTemplateRepository templateRepository;
+    private EntityManager entityManager;
 
     @InjectMocks
     private SectionUpdater updater;
 
+
     @Test
     void should_update_section() {
-        // Given a page is a draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
+        // Given a page
+        WaTemplate page = Mockito.mock(WaTemplate.class);
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
+        WaUiMetadata sectionMock = Mockito.mock(WaUiMetadata.class);
+        when(sectionMock.getId()).thenReturn(98l);
+        ArgumentCaptor<PageContentCommand.UpdateSection> captor =
+                ArgumentCaptor.forClass(PageContentCommand.UpdateSection.class);
+        when(page.updateSection(captor.capture())).thenReturn(sectionMock);
 
-        // And a section exists
-        when(repository.findById(1l)).thenReturn(Optional.of(emptyMetadata()));
-
-        // And a working repository
-        when(repository.save(Mockito.any())).thenAnswer(i -> i.getArgument(0));
 
         // When a valid request is made to update the section
         UpdateSectionRequest request = new UpdateSectionRequest("New name", false);
-        Section section = updater.update(2l, 1l, 3l, request);
+        updater.update(1l, 2l, 3l, request);
 
         // Then the section is updated
-        assertEquals(2l, section.id());
-        assertEquals("New name", section.name());
-        assertFalse(section.visible());
+        assertEquals("New name", captor.getValue().label());
+        assertEquals(false, captor.getValue().visible());
     }
 
     @Test
-    void should_not_update_section_published() {
-        // Given a page is published
-        when(templateRepository.isPageDraft(2l)).thenReturn(false);
+    void should_not_update_null_name() {
+        // When an invalid request is made
+        UpdateSectionRequest request = new UpdateSectionRequest(null, false);
 
-        // When a valid request is made to update the section
         // Then an exception is thrown
-        UpdateSectionRequest request = new UpdateSectionRequest("New name", false);
-        assertThrows(UpdateSectionException.class, () ->updater.update(2l, 1l, 3l, request));
-    }
-
-    @ParameterizedTest
-    @MethodSource("badRequests")
-    void should_not_update_section_null_request(UpdateSectionRequest request) {
-        // Given a page is a draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
-
-        // When a request is made to update the section with a null request
-        // Then an exception is thrown
-        assertThrows(UpdateSectionException.class, () ->updater.update(2l, 1l, 3l, request));
-        verifyNoInteractions(repository);
-    }
-
-    private static List<UpdateSectionRequest> badRequests() {
-        return Arrays.asList(
-                new UpdateSectionRequest("", false), // Empty name
-                new UpdateSectionRequest(null, false), // null name
-                null // Null request
-        );
+        assertThrows(UpdateSectionException.class, () -> updater.update(1l, 2l, 3l, request));
     }
 
     @Test
-    void should_not_update_section_no_section() {
-        // Given a page is a draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
+    void should_not_update_empty_name() {
+        // When an invalid request is made
+        UpdateSectionRequest request = new UpdateSectionRequest("", false);
 
-        // And a section does not exists
-        when(repository.findById(1l)).thenReturn(Optional.empty());
-
-        // When a valid request is made to update the section
         // Then an exception is thrown
-        UpdateSectionRequest request = new UpdateSectionRequest("New name", false);
-        assertThrows(UpdateSectionException.class, () ->updater.update(2l, 1l, 3l, request));
+        assertThrows(UpdateSectionException.class, () -> updater.update(1l, 2l, 3l, request));
     }
 
-    private WaUiMetadata emptyMetadata() {
-        WaUiMetadata metadata = new WaUiMetadata();
-        metadata.setId(2l);
-        return metadata;
+    @Test
+    void should_not_update_null_request() {
+        // When an invalid request is made
+        UpdateSectionRequest request = null;
+
+        // Then an exception is thrown
+        assertThrows(UpdateSectionException.class, () -> updater.update(1l, 2l, 3l, request));
+    }
+
+    @Test
+    void should_not_update_null_page() {
+        // Given a page does not exist
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
+
+        // When an request is made
+        UpdateSectionRequest request = new UpdateSectionRequest("new name", false);
+
+        // Then an exception is thrown
+        assertThrows(UpdateSectionException.class, () -> updater.update(1l, 2l, 3l, request));
     }
 }

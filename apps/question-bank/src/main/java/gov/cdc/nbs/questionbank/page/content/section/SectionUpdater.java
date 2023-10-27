@@ -1,11 +1,11 @@
 package gov.cdc.nbs.questionbank.page.content.section;
 
 import java.time.Instant;
+import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.section.exception.UpdateSectionException;
 import gov.cdc.nbs.questionbank.page.content.section.model.Section;
@@ -14,40 +14,39 @@ import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionReques
 @Component
 public class SectionUpdater {
 
-    private final WaUiMetadataRepository repository;
-    private final WaTemplateRepository templateRepository;
+    private final EntityManager entityManager;
 
     public SectionUpdater(
-            final WaUiMetadataRepository repository,
-            final WaTemplateRepository templateRepository) {
-        this.repository = repository;
-        this.templateRepository = templateRepository;
+            final EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
-    public Section update(Long page, Long sectionId, Long userId, UpdateSectionRequest request) {
-        if (!templateRepository.isPageDraft(page)) {
-            throw new UpdateSectionException("Unable to update section in a published page");
-        }
-
+    public Section update(Long pageId, Long sectionId, Long userId, UpdateSectionRequest request) {
+        // Verify request is valid
         if (request == null || !StringUtils.hasLength(request.name())) {
             throw new UpdateSectionException("Section Name is required");
         }
 
-        WaUiMetadata section = repository.findById(sectionId)
-                .orElseThrow(() -> new UpdateSectionException("Failed to find section with id: " + sectionId));
-        section.update(asUpdate(request, userId));
-        section = repository.save(section);
+        WaTemplate page = entityManager.find(WaTemplate.class, pageId);
 
+        if (page == null) {
+            throw new UpdateSectionException("Unable to find page with id: " + pageId);
+        }
+
+        WaUiMetadata section = page.updateSection(asCommand(userId, sectionId, request));
+
+        entityManager.flush();
         return new Section(
                 section.getId(),
                 section.getQuestionLabel(),
                 "T".equals(section.getDisplayInd()));
     }
 
-    private PageContentCommand.UpdateSection asUpdate(UpdateSectionRequest request, Long userId) {
+    private PageContentCommand.UpdateSection asCommand(Long userId, Long sectionId, UpdateSectionRequest request) {
         return new PageContentCommand.UpdateSection(
                 request.name(),
                 request.visible(),
+                sectionId,
                 userId,
                 Instant.now());
     }

@@ -48,6 +48,7 @@ public class SubSectionCreator {
 
         // Persist the entities
         entityManager.flush();
+
         return new Subsection(subsection.getId(), subsection.getQuestionLabel(),
                 "T".equals(subsection.getDisplayInd()));
     }

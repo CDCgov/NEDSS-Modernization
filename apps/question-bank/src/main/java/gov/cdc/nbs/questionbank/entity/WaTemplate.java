@@ -225,6 +225,20 @@ public class WaTemplate {
     return section;
   }
 
+  public WaUiMetadata updateSection(PageContentCommand.UpdateSection command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    WaUiMetadata section = uiMetadata.stream()
+        .filter(ui -> ui.getId() == command.sectionId() && ui.getNbsUiComponentUid() == 1015)
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException("Failed to find section to update"));
+
+    section.update(command);
+    changed(command);
+    return section;
+  }
+
   public void addSubSection(WaUiMetadata subsection) {
     including(subsection);
   }

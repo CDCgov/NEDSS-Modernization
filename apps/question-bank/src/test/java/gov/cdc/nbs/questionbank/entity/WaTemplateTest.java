@@ -455,6 +455,71 @@ class WaTemplateTest {
         assertThrows(PageContentModificationException.class, () -> page.updateSubSection(command));
     }
 
+    @Test
+    void section_update() {
+        // Given a template
+        WaTemplate page = Mockito.spy(new WaTemplate());
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // And that tab has a section
+        page.addSection(section(page, 3l, 3));
+
+        // When an update section command is processed
+        Instant now = Instant.now();
+        PageContentCommand.UpdateSection command = new PageContentCommand.UpdateSection(
+                "updated section label",
+                false,
+                3,
+                998l,
+                now);
+        WaUiMetadata updated = page.updateSection(command);
+
+        // Then the subsection is updated
+        assertNotNull(updated);
+        assertEquals("updated section label", updated.getQuestionLabel());
+        assertEquals(now, page.getLastChgTime());
+        assertEquals(998l, page.getLastChgUserId().longValue());
+    }
+
+    @Test
+    void section_update_error_non_draft() {
+        // Given a template that is not a Draft
+        WaTemplate page = Mockito.spy(new WaTemplate());
+        when(page.getTemplateType()).thenReturn("Published");
+
+        // When an update section command is processed
+        Instant now = Instant.now();
+        PageContentCommand.UpdateSection command = new PageContentCommand.UpdateSection(
+                "updated section label",
+                false,
+                4,
+                998l,
+                now);
+
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.updateSection(command));
+    }
+
+    @Test
+    void section_update_error_no_section() {
+        // Given a template 
+        WaTemplate page = Mockito.spy(new WaTemplate());
+
+        // When an update section command is processed
+        Instant now = Instant.now();
+        PageContentCommand.UpdateSection command = new PageContentCommand.UpdateSection(
+                "updated subsection label",
+                false,
+                4,
+                998l,
+                now);
+
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.updateSection(command));
+    }
+
     private WaUiMetadata tab(WaTemplate page, Long id, int orderNbr) {
         WaUiMetadata tab = new WaUiMetadata(page, new PageContentCommand.AddTab(
                 page.getId(),

@@ -48,6 +48,7 @@ public class SectionCreator {
 
         // Persist the entities
         entityManager.flush();
+
         return new Section(section.getId(), section.getQuestionLabel(), "T".equals(section.getDisplayInd()));
     }
 

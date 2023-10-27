@@ -1,36 +1,27 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
-import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SubsectionUpdaterTest {
 
     @Mock
-    private WaUiMetadataRepository repository;
-
-    @Mock
-    private WaTemplateRepository templateRepository;
+    private EntityManager entityManager;
 
     @InjectMocks
     private SubSectionUpdater updater;
@@ -38,71 +29,61 @@ class SubsectionUpdaterTest {
 
     @Test
     void should_update_subsection() {
-        // Given a page is a draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
+        // Given a page
+        WaTemplate page = Mockito.mock(WaTemplate.class);
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
+        WaUiMetadata subSectionMock = Mockito.mock(WaUiMetadata.class);
+        when(subSectionMock.getId()).thenReturn(98l);
+        ArgumentCaptor<PageContentCommand.UpdateSubsection> captor =
+                ArgumentCaptor.forClass(PageContentCommand.UpdateSubsection.class);
+        when(page.updateSubSection(captor.capture())).thenReturn(subSectionMock);
 
-        // And a subsection exists
-        when(repository.findById(1l)).thenReturn(Optional.of(emptyMetadata()));
-
-        // And a working repository
-        when(repository.save(Mockito.any())).thenAnswer(i -> i.getArgument(0));
 
         // When a valid request is made to update the section
         UpdateSubSectionRequest request = new UpdateSubSectionRequest("New name", false);
-        Subsection section = updater.update(2l, 1l, 3l, request);
+        updater.update(1l, 2l, 3l, request);
 
         // Then the section is updated
-        assertEquals(2l, section.id());
-        assertEquals("New name", section.name());
-        assertFalse(section.visible());
+        assertEquals("New name", captor.getValue().label());
+        assertEquals(false, captor.getValue().visible());
     }
 
     @Test
-    void should_not_update_subsection_page_is_published() {
-        // Given a page is published
-        when(templateRepository.isPageDraft(2l)).thenReturn(false);
+    void should_not_update_null_name() {
+        // When an invalid request is made
+        UpdateSubSectionRequest request = new UpdateSubSectionRequest(null, false);
 
-        // When a request is made
         // Then an exception is thrown
-        UpdateSubSectionRequest request = new UpdateSubSectionRequest("New name", false);
-        assertThrows(UpdateSubSectionException.class, () ->updater.update(2l, 1l, 3l, request));
-    }
-
-    @ParameterizedTest
-    @MethodSource("badRequests")
-    void should_not_update_subsection(UpdateSubSectionRequest request) {
-        // When a request is made
-        // Then an exception is thrown
-        assertThrows(UpdateSubSectionException.class, () -> updater.update(2l, 1l, 3l, request));
-        verifyNoInteractions(repository);
+        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, 3l, request));
     }
 
     @Test
-    void should_not_update_subsection_because_it_doesnt_exist() {
-        // Given a page is a draft
-        when(templateRepository.isPageDraft(2l)).thenReturn(true);
+    void should_not_update_empty_name() {
+        // When an invalid request is made
+        UpdateSubSectionRequest request = new UpdateSubSectionRequest("", false);
 
-        // And a subsection does not exists
-        when(repository.findById(1l)).thenReturn(Optional.empty());
-
-        // When a request
         // Then an exception is thrown
-        UpdateSubSectionRequest request = new UpdateSubSectionRequest("New name", false);
-        assertThrows(UpdateSubSectionException.class, () ->updater.update(2l, 1l, 3l, request));
+        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, 3l, request));
     }
 
-    private static List<UpdateSubSectionRequest> badRequests() {
-        return Arrays.asList(
-                new UpdateSubSectionRequest("", false), // Empty name
-                new UpdateSubSectionRequest(null, false), // null name
-                null // Null request
-        );
+    @Test
+    void should_not_update_null_request() {
+        // When an invalid request is made
+        UpdateSubSectionRequest request = null;
+
+        // Then an exception is thrown
+        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, 3l, request));
     }
 
-    private WaUiMetadata emptyMetadata() {
-        WaUiMetadata metadata = new WaUiMetadata();
-        metadata.setId(2l);
-        metadata.setNbsUiComponentUid(1016l);
-        return metadata;
+    @Test
+    void should_not_update_null_page() {
+        // Given a page does not exist
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
+
+        // When an request is made
+        UpdateSubSectionRequest request = new UpdateSubSectionRequest("new name", false);
+
+        // Then an exception is thrown
+        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, 3l, request));
     }
 }
