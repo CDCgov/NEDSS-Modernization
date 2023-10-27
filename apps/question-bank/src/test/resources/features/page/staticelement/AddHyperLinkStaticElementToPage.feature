@@ -12,12 +12,12 @@ Feature: Create Hyperlink
         When I send a hyperlink request with "<label>" and "<link>"
         Then a hyperlink is created with "<label>" and "<link>"
         Examples:
-            | label      |
-            | google     | 
-            | yahoo      |
-            | link       |
-            | google.com |
-            | yahoo.com  |
+            | label      |    | link       |
+            | google     |    | google.com |
+            | yahoo      |    | yahoo.com  |
+            
+            
+            
 
     Scenario: I cannot create a hyperlink element without logging in
         Given I am not logged in
