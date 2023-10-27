@@ -195,30 +195,6 @@ public class PageStaticCreator {
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
 
-    public boolean deleteStaticElement(Long pageId, DeleteStaticElementRequest request) {
-        if (pageId == null) {
-            throw new DeleteStaticElementException("Page is required");
-        }
-
-        
-        WaTemplate template = entityManager.find(WaTemplate.class, pageId);
-        
-        if(template == null) {
-            throw new DeleteStaticElementException("Please provide valid page ID");
-        }
-
-        if(!template.getTemplateType().equals("Draft")) {
-            throw new DeleteStaticElementException("Page cannot be published");
-        }
-
-        WaUiMetadata component = uiMetadatumRepository.findById(request.componentId())
-                .orElseThrow(() -> new DeleteStaticElementException("Failed to find component"));
-
-        uiMetadatumRepository.deleteById(request.componentId());
-
-        uiMetadatumRepository.decrementOrderNbrGreaterThan(pageId, component.getOrderNbr());
-
-        return true;
-    }
+    
 
 }

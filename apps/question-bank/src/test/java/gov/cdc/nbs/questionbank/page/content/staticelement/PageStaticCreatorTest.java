@@ -24,7 +24,6 @@ import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteStaticElementRequest;
 
 @ExtendWith(MockitoExtension.class)
 class PageStaticCreatorTest {
@@ -35,7 +34,7 @@ class PageStaticCreatorTest {
     private EntityManager entityManager;
 
     @InjectMocks
-    private PageStaticCreator contentManager;
+    private PageStaticCreator pageStaticCreator;
 
 
     @Test
@@ -61,7 +60,7 @@ class PageStaticCreatorTest {
             return savedMetadatum;
         });
 
-        Long newId = contentManager.addLineSeparator(pageId, request, userId);
+        Long newId = pageStaticCreator.addLineSeparator(pageId, request, userId);
 
         verify(uiMetadatumRepository, times(1)).save(Mockito.any());
         assertEquals(999L, captor.getValue().getAddUserId().longValue());
@@ -91,7 +90,7 @@ class PageStaticCreatorTest {
             return savedMetadatum;
         });
 
-        Long newId = contentManager.addHyperLink(pageId, request, userId);
+        Long newId = pageStaticCreator.addHyperLink(pageId, request, userId);
 
         verify(uiMetadatumRepository, times(1)).save(Mockito.any());
         assertEquals(999L, captor.getValue().getAddUserId().longValue());
@@ -123,7 +122,7 @@ class PageStaticCreatorTest {
             return savedMetadatum;
         });
 
-        Long newId = contentManager.addReadOnlyComments(pageId, request, userId);
+        Long newId = pageStaticCreator.addReadOnlyComments(pageId, request, userId);
 
 
         verify(uiMetadatumRepository, times(1)).save(Mockito.any());
@@ -155,7 +154,7 @@ class PageStaticCreatorTest {
             return savedMetadatum;
         });
 
-        Long newId = contentManager.addReadOnlyParticipantsList(pageId, request, userId);
+        Long newId = pageStaticCreator.addReadOnlyParticipantsList(pageId, request, userId);
 
         verify(uiMetadatumRepository, times(1)).save(Mockito.any());
         assertEquals(999L, captor.getValue().getAddUserId().longValue());
@@ -185,27 +184,10 @@ class PageStaticCreatorTest {
             return savedMetadatum;
         });
 
-        Long newId = contentManager.addOriginalElectronicDocList(pageId, request, userId);
+        Long newId = pageStaticCreator.addOriginalElectronicDocList(pageId, request, userId);
 
         verify(uiMetadatumRepository, times(1)).save(Mockito.any());
         assertEquals(999L, captor.getValue().getAddUserId().longValue());
         assertNotNull(newId);
     }
-
-    @Test
-    void should_delete_static_element_from_page() {
-        var request = new DeleteStaticElementRequest(123L);
-
-        Long pageId = 321L;
-
-        WaUiMetadata component = new WaUiMetadata();
-        component.setOrderNbr(7);
-
-        when(uiMetadatumRepository.findById(request.componentId())).thenReturn(Optional.of(component));
-
-        contentManager.deleteStaticElement(pageId, request);
-
-        
-    }
-
 }

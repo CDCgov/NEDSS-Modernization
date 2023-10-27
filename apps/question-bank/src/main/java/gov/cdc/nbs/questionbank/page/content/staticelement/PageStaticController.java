@@ -25,12 +25,16 @@ import lombok.extern.slf4j.Slf4j;
 public class PageStaticController {
     private final UserDetailsProvider userDetailsProvider;
     private final PageStaticCreator pageStaticCreator;
+    private final PageStaticDeletor pageStaticDeletor;
+
 
     public PageStaticController(
             final UserDetailsProvider userDetailsProvider,
-            final PageStaticCreator pageStaticCreator) {
+            final PageStaticCreator pageStaticCreator,
+            final PageStaticDeletor pageStaticDeletor) {
         this.userDetailsProvider = userDetailsProvider;
         this.pageStaticCreator = pageStaticCreator;
+        this.pageStaticDeletor = pageStaticDeletor;
     }
 
 
@@ -59,8 +63,7 @@ public class PageStaticController {
     @PostMapping("/read-only-comments")
     public AddStaticResponse addStaticReadOnlyComments(
             @PathVariable("page") Long pageId,
-            @RequestBody AddStaticReadOnlyCommentsRequest request
-    ) {
+            @RequestBody AddStaticReadOnlyCommentsRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         Long componentId = pageStaticCreator.addReadOnlyComments(pageId, request, userId);
 
@@ -70,8 +73,7 @@ public class PageStaticController {
     @PostMapping("/read-only-participants-list")
     public AddStaticResponse addStaticReadOnlyParticipantsList(
             @PathVariable("page") Long pageId,
-            @RequestBody AddStaticElementDefaultRequest request
-    ) {
+            @RequestBody AddStaticElementDefaultRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         Long componentId = pageStaticCreator.addReadOnlyParticipantsList(pageId, request, userId);
 
@@ -81,8 +83,7 @@ public class PageStaticController {
     @PostMapping("/original-elec-doc-list")
     public AddStaticResponse addStaticOriginalElectronicDocList(
             @PathVariable("page") Long pageId,
-            @RequestBody AddStaticElementDefaultRequest request
-    ) {
+            @RequestBody AddStaticElementDefaultRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         Long componentId = pageStaticCreator.addOriginalElectronicDocList(pageId, request, userId);
         return new AddStaticResponse(componentId);
@@ -91,9 +92,9 @@ public class PageStaticController {
     @PostMapping("/delete-static-element")
     public DeleteStaticResponse deleteStaticElement(
             @PathVariable("page") Long pageId,
-            @RequestBody DeleteStaticElementRequest request
-    ) {
-        return pageStaticCreator.deleteStaticElement(pageId, request) ? new DeleteStaticResponse("delete success") : new DeleteStaticResponse("delete fail");
+            @RequestBody DeleteStaticElementRequest request) {
+        return pageStaticDeletor.deleteStaticElement(pageId, request) ? new DeleteStaticResponse("delete success")
+                : new DeleteStaticResponse("delete fail");
     }
 
 }
