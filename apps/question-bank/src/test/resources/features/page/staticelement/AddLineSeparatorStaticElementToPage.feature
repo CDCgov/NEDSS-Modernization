@@ -12,7 +12,12 @@ Feature: Create Line Separator
         When I send an add line separator request
         Then a line separator is created
 
-    Scenario: I cannot create a line separator static element without credentials
+    Scenario: I cannot create a line separator static element without logging in
         Given I am not logged in
+        When I send an add line separator request
+        Then a no credentials found exception is thrown
+
+    Scenario: I cannot create a line separator static element without having admin permissions
+        Given I am a user without permissions
         When I send an add line separator request
         Then an accessdenied exception is thrown

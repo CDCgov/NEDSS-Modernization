@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -15,7 +16,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 @Transactional
-public class StaticElementSteps {
+public class AddLineSeparatorSteps {
 
     @Autowired
     private PageStaticController pageStaticController;
@@ -31,6 +32,7 @@ public class StaticElementSteps {
 
     private Long lineSeparatorId;
 
+
     @When("I send an add line separator request")
     public void i_send_an_add_tab_request() {
         // create request
@@ -42,10 +44,12 @@ public class StaticElementSteps {
 
         try {
             lineSeparatorId = pageStaticController.addStaticLineSeparator(
-                temp.getId(),
-                new PageStaticRequests.AddStaticElementDefaultRequest(null, subsection.getId()))
-                .componentId();
-        } catch(AccessDeniedException e) {
+                    temp.getId(),
+                    new PageStaticRequests.AddStaticElementDefaultRequest(null, subsection.getId()))
+                    .componentId();
+        } catch (AccessDeniedException e) {
+            exceptionHolder.setException(e);
+        } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }

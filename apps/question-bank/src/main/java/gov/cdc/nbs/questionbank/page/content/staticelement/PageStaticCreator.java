@@ -10,12 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddHyperLink;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddLineSeparator;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddReadOnlyComments;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.*;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.PageStaticRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.PageStaticRequests.*;
 
 @Component
 @Transactional
@@ -33,7 +30,7 @@ public class PageStaticCreator {
         this.uiMetadatumRepository = uiMetadatumRepository;
     }
 
-    public Long addLineSeparator(Long pageId, PageStaticRequests.AddStaticElementDefaultRequest request, Long user) {
+    public Long addLineSeparator(Long pageId, AddStaticElementDefaultRequest request, Long user) {
         if (pageId == null) {
             throw new AddStaticElementException("Page is required");
         }
@@ -57,7 +54,7 @@ public class PageStaticCreator {
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
 
-    private PageContentCommand.AddLineSeparator asAddLineSeparator(
+    private AddLineSeparator asAddLineSeparator(
             WaTemplate page,
             Integer orderNumber,
             long userId,
@@ -65,7 +62,7 @@ public class PageStaticCreator {
         return new AddLineSeparator(page, orderNumber, userId, adminComments, Instant.now());
     }
 
-    public Long addHyperLink(Long pageId, PageStaticRequests.AddStaticHyperLinkRequest request, Long userId) {
+    public Long addHyperLink(Long pageId, AddStaticHyperLinkRequest request, Long userId) {
         if (pageId == null) {
             throw new AddStaticElementException("Page is required");
         }
@@ -98,7 +95,7 @@ public class PageStaticCreator {
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
 
-    private PageContentCommand.AddHyperLink asAddHyperLink(
+    private AddHyperLink asAddHyperLink(
             WaTemplate page,
             Integer orderNumber,
             long userId,
@@ -108,7 +105,7 @@ public class PageStaticCreator {
         return new AddHyperLink(page, orderNumber, userId, adminComments, label, linkUrl, Instant.now());
     }
 
-    public Long addReadOnlyComments(Long pageId, PageStaticRequests.AddStaticReadOnlyCommentsRequest request,
+    public Long addReadOnlyComments(Long pageId, AddStaticReadOnlyCommentsRequest request,
             Long userId) {
         if (pageId == null) {
             throw new AddStaticElementException("Page is required");
@@ -141,7 +138,7 @@ public class PageStaticCreator {
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
 
-    private PageContentCommand.AddReadOnlyComments asAddReadOnlyComments(
+    private AddReadOnlyComments asAddReadOnlyComments(
             WaTemplate page,
             Integer orderNumber,
             long userId,
@@ -150,7 +147,7 @@ public class PageStaticCreator {
         return new AddReadOnlyComments(page, orderNumber, userId, comments, adminComments, Instant.now());
     }
 
-    public Long addReadOnlyParticipantsList(Long pageId, PageStaticRequests.AddStaticElementDefaultRequest request,
+    public Long addReadOnlyParticipantsList(Long pageId, AddStaticElementDefaultRequest request,
             Long userId) {
         if (pageId == null) {
             throw new AddStaticElementException("Page is required");
@@ -175,15 +172,15 @@ public class PageStaticCreator {
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
 
-    private PageContentCommand.AddLineSeparator asAddReadOnlyParticipantsList(
+    private AddReadOnlyParticipantsList asAddReadOnlyParticipantsList(
             WaTemplate page,
             Integer orderNumber,
             long userId,
             String adminComments) {
-        return new AddLineSeparator(page, orderNumber, userId, adminComments, Instant.now());
+        return new AddReadOnlyParticipantsList(page, orderNumber, userId, adminComments, Instant.now());
     }
 
-    public Long addOriginalElectronicDocList(Long pageId, PageStaticRequests.AddStaticElementDefaultRequest request,
+    public Long addOriginalElectronicDocList(Long pageId, AddStaticElementDefaultRequest request,
             Long userId) {
         if (pageId == null) {
             throw new AddStaticElementException("Page is required");
@@ -208,12 +205,12 @@ public class PageStaticCreator {
         return uiMetadatumRepository.save(staticElementEntry).getId();
     }
 
-    private PageContentCommand.AddLineSeparator asAddOriginalElectronicDocList(
+    private AddOrignalElectronicDocList asAddOriginalElectronicDocList(
             WaTemplate page,
             Integer orderNumber,
             long userId,
             String adminComments) {
-        return new AddLineSeparator(page, orderNumber, userId, adminComments, Instant.now());
+        return new AddOrignalElectronicDocList(page, orderNumber, userId, adminComments, Instant.now());
     }
 
 }
