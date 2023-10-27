@@ -15,11 +15,9 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddHyperLink;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddStaticElementDefault;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddReadOnlyComments;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
-import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.DeleteStaticElementException;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteStaticElementRequest;
 
 @Component
 @Transactional
