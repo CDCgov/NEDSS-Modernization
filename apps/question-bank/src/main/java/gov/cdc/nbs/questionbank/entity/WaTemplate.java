@@ -218,16 +218,16 @@ public class WaTemplate {
     // Can only modify Draft pages
     verifyDraftType();
 
-    // Tabs are always inserted at the end
+    // Tabs are always inserted at the end, so find the max or 1
     Integer orderNumber = uiMetadata.stream()
         .mapToInt(WaUiMetadata::getOrderNbr)
         .max()
-        .orElse(2); // If the page is empty, the first tab occurs at orderNbr 2
+        .orElse(1) + 1;
 
     // create tab
     WaUiMetadata tab = new WaUiMetadata(this, command, orderNumber);
 
-    including(tab);
+    this.uiMetadata.add(tab);
     changed(command);
     return tab;
   }
@@ -269,9 +269,25 @@ public class WaTemplate {
     // create section
     WaUiMetadata section = new WaUiMetadata(this, command, tab.getOrderNbr() + 1);
 
-    including(section);
+    // make a spot for the section in the orderNbr list
+    incrementAllFrom(tab.getOrderNbr() + 1);
+
+    // Insert entity
+    this.uiMetadata.add(section);
+
+    // Sort by orderNbr
+    this.uiMetadata.sort(Comparator.comparing(WaUiMetadata::getOrderNbr));
+
     changed(command);
     return section;
+  }
+
+  private void incrementAllFrom(Integer start) {
+    this.uiMetadata.forEach(ui -> {
+      if (ui.getOrderNbr() >= start) {
+        ui.setOrderNbr(ui.getOrderNbr() + 1);
+      }
+    });
   }
 
   public WaUiMetadata updateSection(PageContentCommand.UpdateSection command) {
@@ -302,10 +318,18 @@ public class WaTemplate {
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find tab to insert section into"));
 
-    // create section
+    // create subsection
     WaUiMetadata subsection = new WaUiMetadata(this, command, section.getOrderNbr() + 1);
 
-    including(subsection);
+    // make a spot for the subsection in the orderNbr list
+    incrementAllFrom(section.getOrderNbr() + 1);
+
+    // Insert entity
+    this.uiMetadata.add(subsection);
+
+    // Sort by orderNbr
+    this.uiMetadata.sort(Comparator.comparing(WaUiMetadata::getOrderNbr));
+
     changed(command);
     return subsection;
   }
