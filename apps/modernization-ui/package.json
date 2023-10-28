@@ -105,6 +105,7 @@
         "prettier": "^2.7.1",
         "prop-types": "^15.8.1",
         "sass": "^1.54.0",
+        "typescript-plugin-css-modules": "^5.0.2",
         "webpack": "^5.89.0"
     }
 }

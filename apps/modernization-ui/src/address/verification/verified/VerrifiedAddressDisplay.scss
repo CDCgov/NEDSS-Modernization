@@ -1,6 +1,8 @@
-@import 'styles/modal.scss';
+@use 'styles/modal.scss';
 
 .verified-address-selection {
+    --difference-color: #fa9441;
+
     display: flex;
     justify-content: space-around;
 
@@ -10,7 +12,7 @@
 
         .difference {
             font-weight: bold;
-            color: $color-orange-30;
+            color: var(--difference-color);
         }
     }
 }
