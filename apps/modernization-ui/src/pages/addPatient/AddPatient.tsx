@@ -245,11 +245,9 @@ const AddPatient = () => {
                             }}>
                             <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                                 New patient
-                                <div className="button-group">
-                                    <Button className="padding-x-3 add-patient-button" type={'submit'}>
-                                        Save changes
-                                    </Button>
-                                </div>
+                                <Button className="add-patient-button" type={'submit'}>
+                                    Save changes
+                                </Button>
                             </div>
                         </Grid>
                         <div className="content">
