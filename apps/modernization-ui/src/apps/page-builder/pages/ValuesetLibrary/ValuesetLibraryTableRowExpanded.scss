@@ -1,4 +1,4 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .wrapper {
     display: block;
@@ -12,17 +12,17 @@
 }
 
 .tabContainer {
-    background-color: $color-bg-base-lightest;
+    background-color: colors.$color-bg-base-lightest;
     padding: 4px;
 }
 
 .tab {
-    background-color: $color-bg-base-lightest;
-    color: $color-black;
+    background-color: colors.$color-bg-base-lightest;
+    color: colors.$color-black;
     border: none;
     &:hover {
-        background-color: $color-bg-base-lightest;
-        color: $color-black;
+        background-color: colors.$color-bg-base-lightest;
+        color: colors.$color-black;
     }
 }
 

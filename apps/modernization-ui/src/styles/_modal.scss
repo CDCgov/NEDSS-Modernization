@@ -1,5 +1,7 @@
+@use 'styles/colors';
+
 .modal {
-    --modal-border-color: #dfe1e2;
+    $modal-border-color: #dfe1e2;
 
     padding: 0;
 
@@ -9,9 +11,9 @@
 
         .warning {
             border-left-width: 8px;
-            border-left-color: var(--warning-color);
+            border-left-color: colors.$warning;
             border-left-style: solid;
-            color: var(--warning-color);
+            color: colors.$warning;
         }
     }
 
@@ -32,7 +34,7 @@
     .modal-actions {
         margin-top: 1.5rem;
         padding: 1rem;
-        border-top-color: var(--modal-border-color);
+        border-top-color: $modal-border-color;
         border-top-style: solid;
         border-top-width: 1px;
     }

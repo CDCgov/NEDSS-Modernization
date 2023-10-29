@@ -1,11 +1,11 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .more-options {
     position: relative;
     .more-options__header {
         cursor: pointer;
         &.active::after {
-            content: "";
+            content: '';
             position: absolute;
             top: 0;
             left: -0%;
@@ -13,7 +13,7 @@
             height: 90%;
             z-index: 0;
             border-radius: 50%;
-            background-color: $color-base-light;
+            background-color: colors.$color-base-light;
             opacity: 0.25;
         }
     }
@@ -26,23 +26,24 @@
         left: 0.4rem;
         min-width: 8rem;
         border-radius: 5px;
-        border: 1px solid var(--base-lighter, #DCDEE0);
-        background: var(--base-white, #FFF);
+        border: 1px solid var(--base-lighter, #dcdee0);
+        background: var(--base-white, #fff);
         box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15);
         button {
             margin: 0;
             background-color: unset;
-            color: $color-base-dark;
+            color: colors.$color-base-dark;
             text-align: initial;
             font-weight: 400;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            svg, img {
+            svg,
+            img {
                 margin: 0;
                 height: 1.4rem;
                 width: 1.4rem;
-                color: $color-base-dark;
+                color: colors.$color-base-dark;
             }
         }
     }

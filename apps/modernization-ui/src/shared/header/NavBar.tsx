@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Config } from 'config';
 import { UserContext } from 'providers/UserContext';
 import { useNavigationBarPermissions } from 'shared/header/permissions';
-import './_NavBar.module.scss';
+import './NavBar.scss';
 
 // eslint-disable-next-line no-undef
 const NBS_URL = Config.nbsUrl;

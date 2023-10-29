@@ -1,4 +1,4 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .alert-banner {
     width: 100%;
@@ -10,24 +10,24 @@
     align-items: center;
     position: relative;
     &.success {
-        background-color: $color-bg-alert-success;
-        border-left: 8px solid $color-alert-success;
+        background-color: colors.$alert-success-background;
+        border-left: 8px solid colors.$alert-success;
     }
     &.warning {
-        background-color: $color-bg-alert-warning;
-        border-left: 8px solid $color-alert-warning;
+        background-color: colors.$alert-warning-background;
+        border-left: 8px solid colors.$alert-warning;
     }
     &.prompt {
-        background-color: $color-bg-alert-prompt;
-        border-left: 8px solid $color-alert-prompt;
+        background-color: colors.$alert-prompt-background;
+        border-left: 8px solid colors.$alert-prompt;
     }
     &.info {
         background-color: $color-bg-info-prompt;
         border-left: 8px solid $color-alert-info;
     }
     &.error {
-        background-color: $color-bg-alert-error;
-        border-left: 8px solid $color-alert-error;
+        background-color: colors.$alert-error-background;
+        border-left: 8px solid colors.$alert-error;
     }
     &__left,
     &__right {

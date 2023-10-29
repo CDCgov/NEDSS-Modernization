@@ -1,17 +1,19 @@
-@import 'settings.scss';
+@use 'styles/borders' as borders;
+@use 'styles/colors' as colors;
+
 .manage-pages {
     display: flex;
     position: relative;
     border-radius: 5px;
-    border: $border-medium;
+    border: borders.$border-medium;
     .manage-pages__container {
         display: flex;
         flex-direction: row;
     }
     .manage-pages__table {
-        background-color: $color-white;
+        background-color: colors.$color-white;
         border-radius: 3px;
-        border: 1px solid $color-bg-base-lightest;
+        border: 1px solid colors.$color-bg-base-lightest;
         min-width: 96.5%;
         min-height: calc(100vh - 16rem);
         justify-content: center;

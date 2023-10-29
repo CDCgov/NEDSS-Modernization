@@ -1,5 +1,12 @@
-@import '../mixins/viewports';
-@import './colors';
+@use 'mixins/viewports' as viewports;
+@use 'styles/borders' as borders;
+
+@import '@trussworks/react-uswds/lib/uswds.css';
+@import '@trussworks/react-uswds/lib/index.css';
+
+$theme-image-path: '~uswds/src/img';
+$theme-font-path: '~uswds/src/fonts';
+$theme-hero-image: '~uswds/src/img/hero.png';
 
 table.usa-table {
     overflow-x: auto;
@@ -9,7 +16,7 @@ table.usa-table {
         width: 100%;
     }
 }
-@include tablet {
+@include viewports.tablet {
     table.usa-table {
         display: block;
         table-layout: auto;
@@ -39,7 +46,7 @@ table.usa-table {
                 .usa-modal__main {
                     .usa-modal__footer {
                         margin-top: 0;
-                        border-top: $border-medium;
+                        border-top: borders.$border-medium;
                     }
                 }
             }

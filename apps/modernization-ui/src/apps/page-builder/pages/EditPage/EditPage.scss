@@ -1,4 +1,5 @@
-@import 'settings';
+@use 'styles/borders' as borders;
+@use 'styles/colors' as colors;
 
 .edit-page {
     padding: 1.6rem;

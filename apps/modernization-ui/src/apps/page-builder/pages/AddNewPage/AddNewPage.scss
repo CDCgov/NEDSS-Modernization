@@ -1,4 +1,4 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .add-new-page {
     background-color: #f1f6f9;
@@ -23,7 +23,7 @@
         width: 80%;
         min-width: 960px;
         max-width: 960px;
-        background-color: $color-white;
+        background-color: colors.$color-white;
         margin: 1.2rem 0;
         display: flex;
         justify-content: center;
@@ -41,7 +41,7 @@
                 font-size: 0.875rem;
                 line-height: 1.4rem;
                 margin-top: 0.5rem;
-                color: $color-base-light;
+                color: colors.$color-base-light;
             }
             h2 {
                 text-align: center;
@@ -64,7 +64,7 @@
                 p {
                     margin: 0;
                     font-weight: 700;
-                    color: $color-primary;
+                    color: colors.$color-primary;
                 }
             }
         }

@@ -1,4 +1,4 @@
-@import 'settings.scss';
+@use 'styles/animation' as animation;
 
 .reorder-subsection {
     .reorder-subsection__toggle {
@@ -26,7 +26,7 @@
         max-height: 400vh;
         opacity: 100;
         margin-left: 2.4rem;
-        transition: $transition-1;
+        transition: animation.$transition-1;
         &.closed {
             max-height: 0;
             opacity: 0;
