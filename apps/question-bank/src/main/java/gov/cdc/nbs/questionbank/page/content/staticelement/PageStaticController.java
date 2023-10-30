@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.content.staticelement;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -84,7 +85,7 @@ public class PageStaticController {
         return new AddStaticResponse(componentId);
     }
 
-    @PostMapping("/delete-static-element")
+    @DeleteMapping("/delete-static-element")
     public DeleteStaticResponse deleteStaticElement(
             @PathVariable("page") Long pageId,
             @RequestBody StaticContentRequests.DeleteElement request) {
