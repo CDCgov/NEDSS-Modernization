@@ -12,6 +12,7 @@ import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContent
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -25,6 +26,9 @@ public class AddOriginalElectronicDocListStep {
 
     @Autowired
     private PageMother mother;
+
+    @Autowired
+    private Authenticated authenticated;
 
     @Autowired
     private ExceptionHolder exceptionHolder;
@@ -42,9 +46,13 @@ public class AddOriginalElectronicDocListStep {
                 .orElseThrow();
 
         try {
-            originalElectronicDocListId = pageStaticController.addStaticOriginalElectronicDocList(
-                    temp.getId(),
-                    new StaticContentRequests.AddDefault(null, subsection.getId()))
+            originalElectronicDocListId = authenticated
+                    .using(user -> pageStaticController.addStaticOriginalElectronicDocList(
+                            temp.getId(),
+                            new StaticContentRequests.AddDefault(
+                                    null,
+                                    subsection.getId()),
+                            user))
                     .componentId();
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -56,7 +64,8 @@ public class AddOriginalElectronicDocListStep {
     @Then("a original electronic document list element is created")
     public void a_original_electronic_document_list_element_is_created() {
         assertNotNull(originalElectronicDocListId);
-        WaUiMetadata originalElectronicDocListEnt = waUiMetaDataRepository.findById(originalElectronicDocListId).orElseThrow();
+        WaUiMetadata originalElectronicDocListEnt =
+                waUiMetaDataRepository.findById(originalElectronicDocListId).orElseThrow();
         assertEquals(originalElectronicDocListId, originalElectronicDocListEnt.getId());
         assertEquals(1036L, originalElectronicDocListEnt.getNbsUiComponentUid().longValue());
     }

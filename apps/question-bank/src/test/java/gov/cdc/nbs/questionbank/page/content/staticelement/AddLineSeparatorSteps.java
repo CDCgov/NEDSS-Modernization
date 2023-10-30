@@ -12,6 +12,7 @@ import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContent
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -26,6 +27,9 @@ public class AddLineSeparatorSteps {
 
     @Autowired
     private PageMother mother;
+
+    @Autowired
+    private Authenticated authenticated;
 
     @Autowired
     private ExceptionHolder exceptionHolder;
@@ -43,9 +47,12 @@ public class AddLineSeparatorSteps {
                 .orElseThrow();
 
         try {
-            lineSeparatorId = pageStaticController.addStaticLineSeparator(
+            lineSeparatorId = authenticated.using(user -> pageStaticController.addStaticLineSeparator(
                     temp.getId(),
-                    new StaticContentRequests.AddDefault(null, subsection.getId()))
+                    new StaticContentRequests.AddDefault(
+                            null,
+                            subsection.getId()),
+                    user))
                     .componentId();
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);

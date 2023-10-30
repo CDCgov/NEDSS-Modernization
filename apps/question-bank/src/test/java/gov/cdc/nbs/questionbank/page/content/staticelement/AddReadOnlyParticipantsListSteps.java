@@ -12,6 +12,7 @@ import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContent
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -25,6 +26,9 @@ public class AddReadOnlyParticipantsListSteps {
 
     @Autowired
     private PageMother mother;
+
+    @Autowired
+    private Authenticated authenticated;
 
     @Autowired
     private ExceptionHolder exceptionHolder;
@@ -42,9 +46,13 @@ public class AddReadOnlyParticipantsListSteps {
                 .orElseThrow();
 
         try {
-            readOnlyParticipantsListId = pageStaticController.addStaticReadOnlyParticipantsList(
-                    temp.getId(),
-                    new StaticContentRequests.AddDefault(null, subsection.getId()))
+            readOnlyParticipantsListId = authenticated
+                    .using(user -> pageStaticController.addStaticReadOnlyParticipantsList(
+                            temp.getId(),
+                            new StaticContentRequests.AddDefault(
+                                    null,
+                                    subsection.getId()),
+                            user))
                     .componentId();
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -56,7 +64,8 @@ public class AddReadOnlyParticipantsListSteps {
     @Then("a read only participants list element is created")
     public void a_read_only_participants_list_element_is_created() {
         assertNotNull(readOnlyParticipantsListId);
-        WaUiMetadata readOnlyParticipantsEnt = waUiMetaDataRepository.findById(readOnlyParticipantsListId).orElseThrow();
+        WaUiMetadata readOnlyParticipantsEnt =
+                waUiMetaDataRepository.findById(readOnlyParticipantsListId).orElseThrow();
         assertEquals(readOnlyParticipantsListId, readOnlyParticipantsEnt.getId());
         assertEquals(1030L, readOnlyParticipantsEnt.getNbsUiComponentUid().longValue());
     }

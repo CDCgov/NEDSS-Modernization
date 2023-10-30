@@ -8,7 +8,7 @@ Feature: Create Line Separator
         And the page has a sub-section named "sub-section" in the 1st section
     
     Scenario: I can create a line separator static element
-        Given I am an admin user
+        Given I am logged in And I can "LDFAdministration" any "System"
         When I send an add line separator request
         Then a line separator is created
 
@@ -18,6 +18,6 @@ Feature: Create Line Separator
         Then a no credentials found exception is thrown
 
     Scenario: I cannot create a line separator static element without having admin permissions
-        Given I am a user without permissions
+        Given I am logged in
         When I send an add line separator request
         Then an accessdenied exception is thrown

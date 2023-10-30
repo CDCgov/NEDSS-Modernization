@@ -12,6 +12,7 @@ import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContent
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -27,6 +28,9 @@ public class AddReadOnlyCommentsSteps {
     private PageMother mother;
 
     @Autowired
+    private Authenticated authenticated;
+
+    @Autowired
     private ExceptionHolder exceptionHolder;
 
     private Long readOnlyCommentsId;
@@ -40,12 +44,13 @@ public class AddReadOnlyCommentsSteps {
                 .orElseThrow();
 
         try {
-            readOnlyCommentsId = pageStaticController.addStaticReadOnlyComments(
+            readOnlyCommentsId = authenticated.using(user -> pageStaticController.addStaticReadOnlyComments(
                     temp.getId(),
                     new StaticContentRequests.AddReadOnlyComments(
                             comments,
                             null,
-                            subsection.getId()))
+                            subsection.getId()),
+                    user))
                     .componentId();
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);

@@ -8,7 +8,7 @@ Feature: Create Read Only Comments
         And the page has a sub-section named "sub-section" in the 1st section
 
     Scenario: I can create a read only comments static element
-        Given I am an admin user
+        Given I am logged in And I can "LDFAdministration" any "System"
         When I send a read only comments element request with "<comments>"
         Then a read only comments element is created with "<comments>"
     
@@ -18,7 +18,7 @@ Feature: Create Read Only Comments
         Then a no credentials found exception is thrown
 
     Scenario: I cannot create a read only comments static element without permissions
-        Given I am a user without permissions
+        Given I am logged in
         When I send a read only comments element request with "<comments>"
         Then an accessdenied exception is thrown
 

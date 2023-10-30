@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -12,6 +13,7 @@ import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContent
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -27,6 +29,9 @@ public class AddHyperLinkSteps {
     private PageMother mother;
 
     @Autowired
+    private Authenticated authenticated;
+
+    @Autowired
     private ExceptionHolder exceptionHolder;
 
     private Long hyperLinkId;
@@ -40,13 +45,14 @@ public class AddHyperLinkSteps {
                 .orElseThrow();
 
         try {
-            hyperLinkId = pageStaticController.addStaticHyperLink(
+            hyperLinkId = authenticated.using(user -> pageStaticController.addStaticHyperLink(
                     temp.getId(),
                     new StaticContentRequests.AddHyperlink(
                             label,
                             link,
                             null,
-                            subsection.getId()))
+                            subsection.getId()),
+                    user))
                     .componentId();
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
