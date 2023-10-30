@@ -1,38 +1,34 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticHyperLinkRequest;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticElementDefaultRequest;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.AddStaticReadOnlyCommentsRequest;
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteStaticElementRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.DeleteStaticResponse;
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/pages/{page}/static-element/")
+@RequestMapping("/api/v1/pages/{page}/content/static")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class PageStaticController {
-    private final UserDetailsProvider userDetailsProvider;
     private final PageStaticCreator pageStaticCreator;
     private final PageStaticDeletor pageStaticDeletor;
 
 
     public PageStaticController(
-            final UserDetailsProvider userDetailsProvider,
             final PageStaticCreator pageStaticCreator,
             final PageStaticDeletor pageStaticDeletor) {
-        this.userDetailsProvider = userDetailsProvider;
         this.pageStaticCreator = pageStaticCreator;
         this.pageStaticDeletor = pageStaticDeletor;
     }
@@ -41,10 +37,10 @@ public class PageStaticController {
     @PostMapping("/line-separator")
     public AddStaticResponse addStaticLineSeparator(
             @PathVariable("page") Long pageId,
-            @RequestBody AddStaticElementDefaultRequest request) {
+            @RequestBody StaticContentRequests.AddDefault request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         log.debug("Received request to add line separator in page");
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Long componentId = pageStaticCreator.addLineSeparator(pageId, request, userId);
+        Long componentId = pageStaticCreator.addLineSeparator(pageId, request, details.getId());
         log.debug("Completed adding line separator");
         log.debug("component ID = " + componentId);
         return new AddStaticResponse(componentId);
@@ -53,19 +49,19 @@ public class PageStaticController {
     @PostMapping("/hyperlink")
     public AddStaticResponse addStaticHyperLink(
             @PathVariable("page") Long pageId,
-            @RequestBody AddStaticHyperLinkRequest request) {
+            @RequestBody StaticContentRequests.AddHyperlink request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
 
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Long componentId = pageStaticCreator.addHyperLink(pageId, request, userId);
+        Long componentId = pageStaticCreator.addHyperLink(pageId, request, details.getId());
         return new AddStaticResponse(componentId);
     }
 
     @PostMapping("/read-only-comments")
     public AddStaticResponse addStaticReadOnlyComments(
             @PathVariable("page") Long pageId,
-            @RequestBody AddStaticReadOnlyCommentsRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Long componentId = pageStaticCreator.addReadOnlyComments(pageId, request, userId);
+            @RequestBody StaticContentRequests.AddReadOnlyComments request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        Long componentId = pageStaticCreator.addReadOnlyComments(pageId, request, details.getId());
 
         return new AddStaticResponse(componentId);
     }
@@ -73,9 +69,9 @@ public class PageStaticController {
     @PostMapping("/read-only-participants-list")
     public AddStaticResponse addStaticReadOnlyParticipantsList(
             @PathVariable("page") Long pageId,
-            @RequestBody AddStaticElementDefaultRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Long componentId = pageStaticCreator.addReadOnlyParticipantsList(pageId, request, userId);
+            @RequestBody StaticContentRequests.AddDefault request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        Long componentId = pageStaticCreator.addReadOnlyParticipantsList(pageId, request, details.getId());
 
         return new AddStaticResponse(componentId);
     }
@@ -83,9 +79,9 @@ public class PageStaticController {
     @PostMapping("/original-elec-doc-list")
     public AddStaticResponse addStaticOriginalElectronicDocList(
             @PathVariable("page") Long pageId,
-            @RequestBody AddStaticElementDefaultRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Long componentId = pageStaticCreator.addOriginalElectronicDocList(pageId, request, userId);
+            @RequestBody StaticContentRequests.AddDefault request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        Long componentId = pageStaticCreator.addOriginalElectronicDocList(pageId, request, details.getId());
         return new AddStaticResponse(componentId);
     }
 

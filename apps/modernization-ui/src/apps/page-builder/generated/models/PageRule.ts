@@ -6,7 +6,7 @@ export type PageRule = {
     function?: string;
     id?: number;
     logic?: string;
-    pageId?: number;
+    page?: number;
     sourceField?: string;
     targetField?: string;
     values?: string;

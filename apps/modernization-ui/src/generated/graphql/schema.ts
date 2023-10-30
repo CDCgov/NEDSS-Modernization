@@ -5,77 +5,79 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  Date: any;
-  DateTime: any;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  Date: { input: any; output: any; }
+  DateTime: { input: any; output: any; }
 };
 
 export type ActId = {
   __typename?: 'ActId';
-  actIdSeq?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  lastChangeTime?: Maybe<Scalars['DateTime']>;
-  recordStatus?: Maybe<Scalars['String']>;
-  rootExtensionTxt?: Maybe<Scalars['String']>;
-  typeCd?: Maybe<Scalars['String']>;
+  actIdSeq?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  lastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  recordStatus?: Maybe<Scalars['String']['output']>;
+  rootExtensionTxt?: Maybe<Scalars['String']['output']>;
+  typeCd?: Maybe<Scalars['String']['output']>;
 };
 
 export type AddressType = {
   __typename?: 'AddressType';
-  codeShortDescTxt: Scalars['String'];
+  codeShortDescTxt: Scalars['String']['output'];
   id: CodeValueGeneralId;
 };
 
 export type AddressTypeResults = {
   __typename?: 'AddressTypeResults';
   content: Array<AddressType>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type AddressUse = {
   __typename?: 'AddressUse';
-  codeShortDescTxt: Scalars['String'];
+  codeShortDescTxt: Scalars['String']['output'];
   id: CodeValueGeneralId;
 };
 
 export type AddressUseResults = {
   __typename?: 'AddressUseResults';
   content: Array<AddressUse>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type AdministrativeInput = {
-  asOf?: InputMaybe<Scalars['DateTime']>;
-  comment?: InputMaybe<Scalars['String']>;
-  patient: Scalars['Int'];
+  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  comment?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['Int']['input'];
 };
 
 export type AssigningAuthor = {
   __typename?: 'AssigningAuthor';
-  codeShortDescTxt: Scalars['String'];
+  codeShortDescTxt: Scalars['String']['output'];
   id: CodeValueGeneralId;
 };
 
 export type AssigningAuthorResults = {
   __typename?: 'AssigningAuthorResults';
   content: Array<AssigningAuthor>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type AssociatedInvestigation = {
   __typename?: 'AssociatedInvestigation';
-  actRelationshipLastChgTime?: Maybe<Scalars['DateTime']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['DateTime']>;
-  localId?: Maybe<Scalars['String']>;
-  publicHealthCaseUid?: Maybe<Scalars['Int']>;
+  actRelationshipLastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  lastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  localId?: Maybe<Scalars['String']['output']>;
+  publicHealthCaseUid?: Maybe<Scalars['Int']['output']>;
 };
 
 export enum CaseStatus {
@@ -89,32 +91,32 @@ export enum CaseStatus {
 
 export type CodeValueGeneralId = {
   __typename?: 'CodeValueGeneralId';
-  code: Scalars['ID'];
-  codeSetNm: Scalars['String'];
+  code: Scalars['ID']['output'];
+  codeSetNm: Scalars['String']['output'];
 };
 
 export type CodedResult = {
   __typename?: 'CodedResult';
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
 };
 
 export type CodedValue = {
   __typename?: 'CodedValue';
-  name: Scalars['String'];
-  value: Scalars['String'];
+  name: Scalars['String']['output'];
+  value: Scalars['String']['output'];
 };
 
 export type ConditionCode = {
   __typename?: 'ConditionCode';
-  conditionDescTxt?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
+  conditionDescTxt?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
 };
 
 export type ContactsNamedByPatientResults = {
   __typename?: 'ContactsNamedByPatientResults';
   content: Array<Maybe<NamedByPatient>>;
-  number: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export enum Deceased {
@@ -125,57 +127,57 @@ export enum Deceased {
 
 export type Degree = {
   __typename?: 'Degree';
-  codeShortDescTxt: Scalars['String'];
+  codeShortDescTxt: Scalars['String']['output'];
   id: CodeValueGeneralId;
 };
 
 export type DegreeResults = {
   __typename?: 'DegreeResults';
   content: Array<Degree>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type DeletePatientAddressInput = {
-  id: Scalars['Int'];
-  patient: Scalars['Int'];
+  id: Scalars['Int']['input'];
+  patient: Scalars['Int']['input'];
 };
 
 export type DeletePatientIdentificationInput = {
-  patient: Scalars['Int'];
-  sequence: Scalars['Int'];
+  patient: Scalars['Int']['input'];
+  sequence: Scalars['Int']['input'];
 };
 
 export type DeletePatientNameInput = {
-  patient: Scalars['Int'];
-  sequence: Scalars['Int'];
+  patient: Scalars['Int']['input'];
+  sequence: Scalars['Int']['input'];
 };
 
 export type DeletePatientPhoneInput = {
-  id: Scalars['Int'];
-  patient: Scalars['Int'];
+  id: Scalars['Int']['input'];
+  patient: Scalars['Int']['input'];
 };
 
 export type DeletePatientRace = {
-  category: Scalars['String'];
-  patient: Scalars['Int'];
+  category: Scalars['String']['input'];
+  patient: Scalars['Int']['input'];
 };
 
 export type Description = {
   __typename?: 'Description';
-  title?: Maybe<Scalars['String']>;
-  value?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 export type DocumentRequiringReview = {
   __typename?: 'DocumentRequiringReview';
-  dateReceived: Scalars['DateTime'];
+  dateReceived: Scalars['DateTime']['output'];
   descriptions: Array<Maybe<Description>>;
-  eventDate?: Maybe<Scalars['DateTime']>;
+  eventDate?: Maybe<Scalars['DateTime']['output']>;
   facilityProviders: FacilityProviders;
-  id: Scalars['ID'];
-  isElectronic: Scalars['Boolean'];
-  localId: Scalars['String'];
-  type: Scalars['String'];
+  id: Scalars['ID']['output'];
+  isElectronic: Scalars['Boolean']['output'];
+  localId: Scalars['String']['output'];
+  type: Scalars['String']['output'];
 };
 
 export enum DocumentRequiringReviewSortableField {
@@ -186,8 +188,8 @@ export enum DocumentRequiringReviewSortableField {
 }
 
 export type DocumentRequiringReviewSortablePage = {
-  pageNumber?: InputMaybe<Scalars['Int']>;
-  pageSize?: InputMaybe<Scalars['Int']>;
+  pageNumber?: InputMaybe<Scalars['Int']['input']>;
+  pageSize?: InputMaybe<Scalars['Int']['input']>;
   sortDirection?: InputMaybe<SortDirection>;
   sortField?: InputMaybe<DocumentRequiringReviewSortableField>;
 };
@@ -199,31 +201,31 @@ export enum EntryMethod {
 
 export type Ethnicity = {
   __typename?: 'Ethnicity';
-  codeDescTxt: Scalars['String'];
+  codeDescTxt: Scalars['String']['output'];
   id: EthnicityId;
 };
 
 export type EthnicityId = {
   __typename?: 'EthnicityId';
-  code: Scalars['String'];
+  code: Scalars['String']['output'];
 };
 
 export type EthnicityInput = {
-  asOf: Scalars['DateTime'];
-  detailed?: InputMaybe<Array<Scalars['String']>>;
-  ethnicGroup?: InputMaybe<Scalars['String']>;
-  patient: Scalars['String'];
-  unknownReason?: InputMaybe<Scalars['String']>;
+  asOf: Scalars['DateTime']['input'];
+  detailed?: InputMaybe<Array<Scalars['String']['input']>>;
+  ethnicGroup?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['String']['input'];
+  unknownReason?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EthnicityResults = {
   __typename?: 'EthnicityResults';
   content: Array<Maybe<Ethnicity>>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type EventId = {
-  id: Scalars['String'];
+  id: Scalars['String']['input'];
   investigationEventType: InvestigationEventIdType;
 };
 
@@ -246,92 +248,92 @@ export enum Gender {
 }
 
 export type GeneralInfoInput = {
-  adultsInHouse?: InputMaybe<Scalars['Int']>;
-  asOf: Scalars['DateTime'];
-  childrenInHouse?: InputMaybe<Scalars['Int']>;
-  educationLevel?: InputMaybe<Scalars['String']>;
-  maritalStatus?: InputMaybe<Scalars['String']>;
-  maternalMaidenName?: InputMaybe<Scalars['String']>;
-  occupation?: InputMaybe<Scalars['String']>;
-  patient: Scalars['Int'];
-  primaryLanguage?: InputMaybe<Scalars['String']>;
-  speaksEnglish?: InputMaybe<Scalars['String']>;
-  stateHIVCase?: InputMaybe<Scalars['String']>;
+  adultsInHouse?: InputMaybe<Scalars['Int']['input']>;
+  asOf: Scalars['DateTime']['input'];
+  childrenInHouse?: InputMaybe<Scalars['Int']['input']>;
+  educationLevel?: InputMaybe<Scalars['String']['input']>;
+  maritalStatus?: InputMaybe<Scalars['String']['input']>;
+  maternalMaidenName?: InputMaybe<Scalars['String']['input']>;
+  occupation?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['Int']['input'];
+  primaryLanguage?: InputMaybe<Scalars['String']['input']>;
+  speaksEnglish?: InputMaybe<Scalars['String']['input']>;
+  stateHIVCase?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GroupedCodedValue = {
   __typename?: 'GroupedCodedValue';
-  group: Scalars['String'];
-  name: Scalars['String'];
-  value: Scalars['String'];
+  group: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  value: Scalars['String']['output'];
 };
 
 export type IdentificationCriteria = {
-  assigningAuthority?: InputMaybe<Scalars['String']>;
-  identificationNumber?: InputMaybe<Scalars['String']>;
-  identificationType?: InputMaybe<Scalars['String']>;
+  assigningAuthority?: InputMaybe<Scalars['String']['input']>;
+  identificationNumber?: InputMaybe<Scalars['String']['input']>;
+  identificationType?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type IdentificationType = {
   __typename?: 'IdentificationType';
-  codeDescTxt: Scalars['String'];
+  codeDescTxt: Scalars['String']['output'];
   id: IdentificationTypeId;
 };
 
 export type IdentificationTypeId = {
   __typename?: 'IdentificationTypeId';
-  code: Scalars['String'];
+  code: Scalars['String']['output'];
 };
 
 export type IdentificationTypes = {
   __typename?: 'IdentificationTypes';
-  codeShortDescTxt: Scalars['String'];
+  codeShortDescTxt: Scalars['String']['output'];
   id: CodeValueGeneralId;
 };
 
 export type IdentificationTypesResults = {
   __typename?: 'IdentificationTypesResults';
   content: Array<IdentificationTypes>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type Investigation = {
   __typename?: 'Investigation';
   actIds?: Maybe<Array<Maybe<ActId>>>;
-  activityFromTime?: Maybe<Scalars['DateTime']>;
-  activityToTime?: Maybe<Scalars['DateTime']>;
-  addTime?: Maybe<Scalars['DateTime']>;
-  addUserId?: Maybe<Scalars['Int']>;
-  caseClassCd?: Maybe<Scalars['String']>;
-  caseTypeCd?: Maybe<Scalars['String']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  currProcessStateCd?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  investigationStatusCd?: Maybe<Scalars['String']>;
-  jurisdictionCd?: Maybe<Scalars['Int']>;
-  jurisdictionCodeDescTxt?: Maybe<Scalars['String']>;
-  lastChangeTime?: Maybe<Scalars['DateTime']>;
-  lastChangeUserId?: Maybe<Scalars['Int']>;
-  localId?: Maybe<Scalars['String']>;
-  moodCd?: Maybe<Scalars['String']>;
-  notificationAddTime?: Maybe<Scalars['DateTime']>;
-  notificationLastChgTime?: Maybe<Scalars['DateTime']>;
-  notificationLocalId?: Maybe<Scalars['String']>;
-  notificationRecordStatusCd?: Maybe<Scalars['String']>;
+  activityFromTime?: Maybe<Scalars['DateTime']['output']>;
+  activityToTime?: Maybe<Scalars['DateTime']['output']>;
+  addTime?: Maybe<Scalars['DateTime']['output']>;
+  addUserId?: Maybe<Scalars['Int']['output']>;
+  caseClassCd?: Maybe<Scalars['String']['output']>;
+  caseTypeCd?: Maybe<Scalars['String']['output']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  currProcessStateCd?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
+  investigationStatusCd?: Maybe<Scalars['String']['output']>;
+  jurisdictionCd?: Maybe<Scalars['Int']['output']>;
+  jurisdictionCodeDescTxt?: Maybe<Scalars['String']['output']>;
+  lastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  lastChangeUserId?: Maybe<Scalars['Int']['output']>;
+  localId?: Maybe<Scalars['String']['output']>;
+  moodCd?: Maybe<Scalars['String']['output']>;
+  notificationAddTime?: Maybe<Scalars['DateTime']['output']>;
+  notificationLastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  notificationLocalId?: Maybe<Scalars['String']['output']>;
+  notificationRecordStatusCd?: Maybe<Scalars['String']['output']>;
   organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation>>>;
-  outbreakName?: Maybe<Scalars['String']>;
+  outbreakName?: Maybe<Scalars['String']['output']>;
   personParticipations?: Maybe<Array<Maybe<PersonParticipation>>>;
-  pregnantIndCd?: Maybe<Scalars['String']>;
-  progAreaCd?: Maybe<Scalars['String']>;
-  publicHealthCaseLastChgTime?: Maybe<Scalars['DateTime']>;
-  publicHealthCaseUid?: Maybe<Scalars['Int']>;
-  recordStatus?: Maybe<Scalars['String']>;
-  rptFormCmpltTime?: Maybe<Scalars['DateTime']>;
+  pregnantIndCd?: Maybe<Scalars['String']['output']>;
+  progAreaCd?: Maybe<Scalars['String']['output']>;
+  publicHealthCaseLastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  publicHealthCaseUid?: Maybe<Scalars['Int']['output']>;
+  recordStatus?: Maybe<Scalars['String']['output']>;
+  rptFormCmpltTime?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type InvestigationEventDateSearch = {
-  from: Scalars['Date'];
-  to: Scalars['Date'];
+  from: Scalars['Date']['input'];
+  to: Scalars['Date']['input'];
   type: InvestigationEventDateType;
 };
 
@@ -354,27 +356,27 @@ export enum InvestigationEventIdType {
 
 export type InvestigationFilter = {
   caseStatuses?: InputMaybe<Array<CaseStatus>>;
-  conditions?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  createdBy?: InputMaybe<Scalars['String']>;
+  conditions?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
   eventDate?: InputMaybe<InvestigationEventDateSearch>;
   eventId?: InputMaybe<EventId>;
   investigationStatus?: InputMaybe<InvestigationStatus>;
-  investigatorId?: InputMaybe<Scalars['ID']>;
-  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  lastUpdatedBy?: InputMaybe<Scalars['String']>;
+  investigatorId?: InputMaybe<Scalars['ID']['input']>;
+  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  lastUpdatedBy?: InputMaybe<Scalars['String']['input']>;
   notificationStatuses?: InputMaybe<Array<InputMaybe<NotificationStatus>>>;
-  outbreakNames?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  patientId?: InputMaybe<Scalars['Int']>;
+  outbreakNames?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  patientId?: InputMaybe<Scalars['Int']['input']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
   processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
-  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
 };
 
 export type InvestigationResults = {
   __typename?: 'InvestigationResults';
   content: Array<Maybe<Investigation>>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export enum InvestigationStatus {
@@ -384,109 +386,109 @@ export enum InvestigationStatus {
 
 export type Jurisdiction = {
   __typename?: 'Jurisdiction';
-  assigningAuthorityCd?: Maybe<Scalars['String']>;
-  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
-  codeDescTxt?: Maybe<Scalars['String']>;
-  codeSeqNum?: Maybe<Scalars['Int']>;
-  codeSetNm?: Maybe<Scalars['String']>;
-  codeShortDescTxt?: Maybe<Scalars['String']>;
-  codeSystemCd?: Maybe<Scalars['String']>;
-  codeSystemDescTxt?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['DateTime']>;
-  effectiveToTime?: Maybe<Scalars['DateTime']>;
-  exportInd?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  indentLevelNbr?: Maybe<Scalars['Int']>;
-  isModifiableInd?: Maybe<Scalars['String']>;
-  nbsUid?: Maybe<Scalars['ID']>;
-  parentIsCd?: Maybe<Scalars['String']>;
-  sourceConceptId?: Maybe<Scalars['String']>;
-  stateDomainCd?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['DateTime']>;
-  typeCd: Scalars['String'];
+  assigningAuthorityCd?: Maybe<Scalars['String']['output']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']['output']>;
+  codeDescTxt?: Maybe<Scalars['String']['output']>;
+  codeSeqNum?: Maybe<Scalars['Int']['output']>;
+  codeSetNm?: Maybe<Scalars['String']['output']>;
+  codeShortDescTxt?: Maybe<Scalars['String']['output']>;
+  codeSystemCd?: Maybe<Scalars['String']['output']>;
+  codeSystemDescTxt?: Maybe<Scalars['String']['output']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']['output']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']['output']>;
+  exportInd?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  indentLevelNbr?: Maybe<Scalars['Int']['output']>;
+  isModifiableInd?: Maybe<Scalars['String']['output']>;
+  nbsUid?: Maybe<Scalars['ID']['output']>;
+  parentIsCd?: Maybe<Scalars['String']['output']>;
+  sourceConceptId?: Maybe<Scalars['String']['output']>;
+  stateDomainCd?: Maybe<Scalars['String']['output']>;
+  statusCd?: Maybe<Scalars['String']['output']>;
+  statusTime?: Maybe<Scalars['DateTime']['output']>;
+  typeCd: Scalars['String']['output'];
 };
 
 export type KeyValuePair = {
   __typename?: 'KeyValuePair';
-  key: Scalars['String'];
-  value: Scalars['String'];
+  key: Scalars['String']['output'];
+  value: Scalars['String']['output'];
 };
 
 export type KeyValuePairResults = {
   __typename?: 'KeyValuePairResults';
   content: Array<KeyValuePair>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type LabReport = {
   __typename?: 'LabReport';
   actIds?: Maybe<Array<Maybe<ActId>>>;
-  activityToTime?: Maybe<Scalars['DateTime']>;
-  addTime?: Maybe<Scalars['DateTime']>;
-  addUserId?: Maybe<Scalars['Int']>;
+  activityToTime?: Maybe<Scalars['DateTime']['output']>;
+  addTime?: Maybe<Scalars['DateTime']['output']>;
+  addUserId?: Maybe<Scalars['Int']['output']>;
   associatedInvestigations?: Maybe<Array<Maybe<AssociatedInvestigation>>>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  classCd?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['DateTime']>;
-  electronicInd?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  jurisdictionCd?: Maybe<Scalars['Int']>;
-  jurisdictionCodeDescTxt?: Maybe<Scalars['String']>;
-  lastChange?: Maybe<Scalars['DateTime']>;
-  lastChgUserId?: Maybe<Scalars['Int']>;
-  localId?: Maybe<Scalars['String']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  classCd?: Maybe<Scalars['String']['output']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']['output']>;
+  electronicInd?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  jurisdictionCd?: Maybe<Scalars['Int']['output']>;
+  jurisdictionCodeDescTxt?: Maybe<Scalars['String']['output']>;
+  lastChange?: Maybe<Scalars['DateTime']['output']>;
+  lastChgUserId?: Maybe<Scalars['Int']['output']>;
+  localId?: Maybe<Scalars['String']['output']>;
   materialParticipations?: Maybe<Array<Maybe<MaterialParticipation>>>;
-  moodCd?: Maybe<Scalars['String']>;
-  observationLastChgTime?: Maybe<Scalars['DateTime']>;
-  observationUid?: Maybe<Scalars['Int']>;
+  moodCd?: Maybe<Scalars['String']['output']>;
+  observationLastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  observationUid?: Maybe<Scalars['Int']['output']>;
   observations?: Maybe<Array<Maybe<Observation>>>;
   organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation>>>;
   personParticipations?: Maybe<Array<Maybe<PersonParticipation>>>;
-  pregnantIndCd?: Maybe<Scalars['String']>;
-  programAreaCd?: Maybe<Scalars['String']>;
-  recordStatusCd?: Maybe<Scalars['String']>;
-  rptToStateTime?: Maybe<Scalars['DateTime']>;
-  versionCtrlNbr?: Maybe<Scalars['Int']>;
+  pregnantIndCd?: Maybe<Scalars['String']['output']>;
+  programAreaCd?: Maybe<Scalars['String']['output']>;
+  recordStatusCd?: Maybe<Scalars['String']['output']>;
+  rptToStateTime?: Maybe<Scalars['DateTime']['output']>;
+  versionCtrlNbr?: Maybe<Scalars['Int']['output']>;
 };
 
 export type LabReportEventId = {
-  labEventId: Scalars['String'];
+  labEventId: Scalars['String']['input'];
   labEventType: LaboratoryEventIdType;
 };
 
 export type LabReportFilter = {
-  codedResult?: InputMaybe<Scalars['String']>;
-  createdBy?: InputMaybe<Scalars['ID']>;
+  codedResult?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['ID']['input']>;
   enteredBy?: InputMaybe<Array<InputMaybe<UserType>>>;
   entryMethods?: InputMaybe<Array<InputMaybe<EntryMethod>>>;
   eventDate?: InputMaybe<LaboratoryEventDateSearch>;
   eventId?: InputMaybe<LabReportEventId>;
   eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
-  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  lastUpdatedBy?: InputMaybe<Scalars['ID']>;
-  patientId?: InputMaybe<Scalars['Int']>;
+  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  lastUpdatedBy?: InputMaybe<Scalars['ID']['input']>;
+  patientId?: InputMaybe<Scalars['Int']['input']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
   processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
-  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   providerSearch?: InputMaybe<LabReportProviderSearch>;
-  resultedTest?: InputMaybe<Scalars['String']>;
+  resultedTest?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type LabReportProviderSearch = {
-  providerId: Scalars['ID'];
+  providerId: Scalars['ID']['input'];
   providerType: ProviderType;
 };
 
 export type LabReportResults = {
   __typename?: 'LabReportResults';
   content: Array<Maybe<LabReport>>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type LaboratoryEventDateSearch = {
-  from: Scalars['Date'];
-  to: Scalars['Date'];
+  from: Scalars['Date']['input'];
+  to: Scalars['Date']['input'];
   type: LaboratoryReportEventDateType;
 };
 
@@ -510,26 +512,26 @@ export enum LaboratoryReportStatus {
 
 export type MaterialParticipation = {
   __typename?: 'MaterialParticipation';
-  actUid?: Maybe<Scalars['Int']>;
-  cd?: Maybe<Scalars['String']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  entityId?: Maybe<Scalars['String']>;
-  participationLastChangeTime?: Maybe<Scalars['DateTime']>;
-  participationRecordStatus?: Maybe<Scalars['String']>;
-  subjectClassCd?: Maybe<Scalars['String']>;
-  typeCd?: Maybe<Scalars['String']>;
-  typeDescTxt?: Maybe<Scalars['String']>;
+  actUid?: Maybe<Scalars['Int']['output']>;
+  cd?: Maybe<Scalars['String']['output']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  entityId?: Maybe<Scalars['String']['output']>;
+  participationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  participationRecordStatus?: Maybe<Scalars['String']['output']>;
+  subjectClassCd?: Maybe<Scalars['String']['output']>;
+  typeCd?: Maybe<Scalars['String']['output']>;
+  typeDescTxt?: Maybe<Scalars['String']['output']>;
 };
 
 export type MortalityInput = {
-  asOf: Scalars['DateTime'];
-  city?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
-  county?: InputMaybe<Scalars['String']>;
-  deceased?: InputMaybe<Scalars['String']>;
-  deceasedOn?: InputMaybe<Scalars['Date']>;
-  patient: Scalars['Int'];
-  state?: InputMaybe<Scalars['String']>;
+  asOf: Scalars['DateTime']['input'];
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  county?: InputMaybe<Scalars['String']['input']>;
+  deceased?: InputMaybe<Scalars['String']['input']>;
+  deceasedOn?: InputMaybe<Scalars['Date']['input']>;
+  patient: Scalars['Int']['input'];
+  state?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Mutation = {
@@ -591,7 +593,7 @@ export type MutationCreatePatientArgs = {
 
 
 export type MutationDeletePatientArgs = {
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 };
 
 
@@ -601,8 +603,8 @@ export type MutationDeletePatientAddressArgs = {
 
 
 export type MutationDeletePatientEmailArgs = {
-  patientId: Scalars['Int'];
-  personSeqNum: Scalars['Int'];
+  patientId: Scalars['Int']['input'];
+  personSeqNum: Scalars['Int']['input'];
 };
 
 
@@ -677,47 +679,47 @@ export type MutationUpdatePatientRaceArgs = {
 
 export type NaicsIndustryCode = {
   __typename?: 'NaicsIndustryCode';
-  assigningAuthorityCd?: Maybe<Scalars['String']>;
-  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
-  codeDescTxt?: Maybe<Scalars['String']>;
-  codeSetNm?: Maybe<Scalars['String']>;
-  codeShortDescTxt?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['DateTime']>;
-  effectiveToTime?: Maybe<Scalars['DateTime']>;
-  id: Scalars['ID'];
-  indentLevelNbr?: Maybe<Scalars['Int']>;
-  isModifiableInd?: Maybe<Scalars['String']>;
-  keyInfoTxt?: Maybe<Scalars['String']>;
-  nbsUid?: Maybe<Scalars['Int']>;
-  parentIsCd?: Maybe<Scalars['String']>;
-  seqNum?: Maybe<Scalars['Int']>;
-  sourceConceptId?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['String']>;
+  assigningAuthorityCd?: Maybe<Scalars['String']['output']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']['output']>;
+  codeDescTxt?: Maybe<Scalars['String']['output']>;
+  codeSetNm?: Maybe<Scalars['String']['output']>;
+  codeShortDescTxt?: Maybe<Scalars['String']['output']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']['output']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['ID']['output'];
+  indentLevelNbr?: Maybe<Scalars['Int']['output']>;
+  isModifiableInd?: Maybe<Scalars['String']['output']>;
+  keyInfoTxt?: Maybe<Scalars['String']['output']>;
+  nbsUid?: Maybe<Scalars['Int']['output']>;
+  parentIsCd?: Maybe<Scalars['String']['output']>;
+  seqNum?: Maybe<Scalars['Int']['output']>;
+  sourceConceptId?: Maybe<Scalars['String']['output']>;
+  statusCd?: Maybe<Scalars['String']['output']>;
+  statusTime?: Maybe<Scalars['String']['output']>;
 };
 
 export type NamePrefix = {
   __typename?: 'NamePrefix';
-  codeShortDescTxt: Scalars['String'];
+  codeShortDescTxt: Scalars['String']['output'];
   id: CodeValueGeneralId;
 };
 
 export type NamePrefixResults = {
   __typename?: 'NamePrefixResults';
   content: Array<NamePrefix>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type NameType = {
   __typename?: 'NameType';
-  codeShortDescTxt: Scalars['String'];
+  codeShortDescTxt: Scalars['String']['output'];
   id: CodeValueGeneralId;
 };
 
 export type NameTypeResults = {
   __typename?: 'NameTypeResults';
   content: Array<NameType>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export enum NameUseCd {
@@ -753,10 +755,10 @@ export type NamedByContact = {
   associatedWith?: Maybe<PatientContactInvestigation>;
   condition: TracedCondition;
   contact: NamedContact;
-  contactRecord: Scalars['ID'];
-  createdOn: Scalars['DateTime'];
-  event: Scalars['String'];
-  namedOn: Scalars['DateTime'];
+  contactRecord: Scalars['ID']['output'];
+  createdOn: Scalars['DateTime']['output'];
+  event: Scalars['String']['output'];
+  namedOn: Scalars['DateTime']['output'];
 };
 
 export type NamedByPatient = {
@@ -764,101 +766,101 @@ export type NamedByPatient = {
   associatedWith?: Maybe<PatientContactInvestigation>;
   condition: TracedCondition;
   contact: NamedContact;
-  contactRecord: Scalars['ID'];
-  createdOn: Scalars['DateTime'];
-  disposition?: Maybe<Scalars['String']>;
-  event: Scalars['String'];
-  namedOn: Scalars['DateTime'];
-  priority?: Maybe<Scalars['String']>;
+  contactRecord: Scalars['ID']['output'];
+  createdOn: Scalars['DateTime']['output'];
+  disposition?: Maybe<Scalars['String']['output']>;
+  event: Scalars['String']['output'];
+  namedOn: Scalars['DateTime']['output'];
+  priority?: Maybe<Scalars['String']['output']>;
 };
 
 export type NamedContact = {
   __typename?: 'NamedContact';
-  id: Scalars['ID'];
-  name: Scalars['String'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type NewPatientAddress = {
-  censusTract?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
-  county?: InputMaybe<Scalars['String']>;
-  state?: InputMaybe<Scalars['String']>;
-  streetAddress1?: InputMaybe<Scalars['String']>;
-  streetAddress2?: InputMaybe<Scalars['String']>;
-  zip?: InputMaybe<Scalars['String']>;
+  censusTract?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  county?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  streetAddress1?: InputMaybe<Scalars['String']['input']>;
+  streetAddress2?: InputMaybe<Scalars['String']['input']>;
+  zip?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type NewPatientAddressInput = {
-  address1?: InputMaybe<Scalars['String']>;
-  address2?: InputMaybe<Scalars['String']>;
-  asOf: Scalars['DateTime'];
-  censusTract?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
-  comment?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
-  county?: InputMaybe<Scalars['String']>;
-  patient: Scalars['Int'];
-  state?: InputMaybe<Scalars['String']>;
-  type: Scalars['String'];
-  use: Scalars['String'];
-  zipcode?: InputMaybe<Scalars['String']>;
+  address1?: InputMaybe<Scalars['String']['input']>;
+  address2?: InputMaybe<Scalars['String']['input']>;
+  asOf: Scalars['DateTime']['input'];
+  censusTract?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  comment?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  county?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['Int']['input'];
+  state?: InputMaybe<Scalars['String']['input']>;
+  type: Scalars['String']['input'];
+  use: Scalars['String']['input'];
+  zipcode?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type NewPatientIdentification = {
-  authority?: InputMaybe<Scalars['String']>;
-  type: Scalars['String'];
-  value: Scalars['String'];
+  authority?: InputMaybe<Scalars['String']['input']>;
+  type: Scalars['String']['input'];
+  value: Scalars['String']['input'];
 };
 
 export type NewPatientIdentificationInput = {
-  asOf: Scalars['DateTime'];
-  authority?: InputMaybe<Scalars['String']>;
-  patient: Scalars['Int'];
-  type: Scalars['String'];
-  value: Scalars['String'];
+  asOf: Scalars['DateTime']['input'];
+  authority?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['Int']['input'];
+  type: Scalars['String']['input'];
+  value: Scalars['String']['input'];
 };
 
 export type NewPatientName = {
-  first?: InputMaybe<Scalars['String']>;
-  last?: InputMaybe<Scalars['String']>;
-  middle?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['String']['input']>;
+  last?: InputMaybe<Scalars['String']['input']>;
+  middle?: InputMaybe<Scalars['String']['input']>;
   suffix?: InputMaybe<Suffix>;
   use: NameUseCd;
 };
 
 export type NewPatientNameInput = {
-  asOf?: InputMaybe<Scalars['DateTime']>;
-  degree?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['String']>;
-  last?: InputMaybe<Scalars['String']>;
-  middle?: InputMaybe<Scalars['String']>;
-  patient: Scalars['Int'];
-  prefix?: InputMaybe<Scalars['String']>;
-  secondLast?: InputMaybe<Scalars['String']>;
-  secondMiddle?: InputMaybe<Scalars['String']>;
-  suffix?: InputMaybe<Scalars['String']>;
-  type: Scalars['String'];
+  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  degree?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['String']['input']>;
+  last?: InputMaybe<Scalars['String']['input']>;
+  middle?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['Int']['input'];
+  prefix?: InputMaybe<Scalars['String']['input']>;
+  secondLast?: InputMaybe<Scalars['String']['input']>;
+  secondMiddle?: InputMaybe<Scalars['String']['input']>;
+  suffix?: InputMaybe<Scalars['String']['input']>;
+  type: Scalars['String']['input'];
 };
 
 export type NewPatientPhoneInput = {
-  asOf: Scalars['DateTime'];
-  comment?: InputMaybe<Scalars['String']>;
-  countryCode?: InputMaybe<Scalars['String']>;
-  email?: InputMaybe<Scalars['String']>;
-  extension?: InputMaybe<Scalars['String']>;
-  number?: InputMaybe<Scalars['String']>;
-  patient: Scalars['Int'];
-  type: Scalars['String'];
-  url?: InputMaybe<Scalars['String']>;
-  use: Scalars['String'];
+  asOf: Scalars['DateTime']['input'];
+  comment?: InputMaybe<Scalars['String']['input']>;
+  countryCode?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  extension?: InputMaybe<Scalars['String']['input']>;
+  number?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['Int']['input'];
+  type: Scalars['String']['input'];
+  url?: InputMaybe<Scalars['String']['input']>;
+  use: Scalars['String']['input'];
 };
 
 export type NewPatientPhoneNumber = {
-  extension?: InputMaybe<Scalars['String']>;
-  number: Scalars['String'];
-  type: Scalars['String'];
-  use: Scalars['String'];
+  extension?: InputMaybe<Scalars['String']['input']>;
+  number: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+  use: Scalars['String']['input'];
 };
 
 export enum NotificationStatus {
@@ -872,18 +874,18 @@ export enum NotificationStatus {
 
 export type Observation = {
   __typename?: 'Observation';
-  altCd?: Maybe<Scalars['String']>;
-  altCdSystemCd?: Maybe<Scalars['String']>;
-  altDescTxt?: Maybe<Scalars['String']>;
-  cd?: Maybe<Scalars['String']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  domainCd?: Maybe<Scalars['String']>;
-  ovcAltCdSystemCd?: Maybe<Scalars['String']>;
-  ovcAltCode?: Maybe<Scalars['String']>;
-  ovcAltDescTxt?: Maybe<Scalars['String']>;
-  ovcCode?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
+  altCd?: Maybe<Scalars['String']['output']>;
+  altCdSystemCd?: Maybe<Scalars['String']['output']>;
+  altDescTxt?: Maybe<Scalars['String']['output']>;
+  cd?: Maybe<Scalars['String']['output']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  displayName?: Maybe<Scalars['String']['output']>;
+  domainCd?: Maybe<Scalars['String']['output']>;
+  ovcAltCdSystemCd?: Maybe<Scalars['String']['output']>;
+  ovcAltCode?: Maybe<Scalars['String']['output']>;
+  ovcAltDescTxt?: Maybe<Scalars['String']['output']>;
+  ovcCode?: Maybe<Scalars['String']['output']>;
+  statusCd?: Maybe<Scalars['String']['output']>;
 };
 
 export enum Operator {
@@ -894,609 +896,609 @@ export enum Operator {
 
 export type OrderingProvider = {
   __typename?: 'OrderingProvider';
-  name?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']['output']>;
 };
 
 export type Organization = {
   __typename?: 'Organization';
-  addReasonCd?: Maybe<Scalars['String']>;
-  addTime?: Maybe<Scalars['DateTime']>;
-  addUserId?: Maybe<Scalars['ID']>;
-  cd?: Maybe<Scalars['String']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  cityCd?: Maybe<Scalars['String']>;
-  cityDescTxt?: Maybe<Scalars['String']>;
-  cntryCd?: Maybe<Scalars['String']>;
-  cntyCd?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  displayNm?: Maybe<Scalars['String']>;
-  durationAmt?: Maybe<Scalars['String']>;
-  durationUnitCd?: Maybe<Scalars['String']>;
-  edxInd?: Maybe<Scalars['String']>;
-  electronicInd?: Maybe<Scalars['String']>;
-  fromTime?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['ID']>;
-  lastChgReasonCd?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['DateTime']>;
-  lastChgUserId?: Maybe<Scalars['Int']>;
-  localId?: Maybe<Scalars['String']>;
-  phoneCntryCd?: Maybe<Scalars['String']>;
-  phoneNbr?: Maybe<Scalars['String']>;
+  addReasonCd?: Maybe<Scalars['String']['output']>;
+  addTime?: Maybe<Scalars['DateTime']['output']>;
+  addUserId?: Maybe<Scalars['ID']['output']>;
+  cd?: Maybe<Scalars['String']['output']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  cityCd?: Maybe<Scalars['String']['output']>;
+  cityDescTxt?: Maybe<Scalars['String']['output']>;
+  cntryCd?: Maybe<Scalars['String']['output']>;
+  cntyCd?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  displayNm?: Maybe<Scalars['String']['output']>;
+  durationAmt?: Maybe<Scalars['String']['output']>;
+  durationUnitCd?: Maybe<Scalars['String']['output']>;
+  edxInd?: Maybe<Scalars['String']['output']>;
+  electronicInd?: Maybe<Scalars['String']['output']>;
+  fromTime?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
+  lastChgReasonCd?: Maybe<Scalars['String']['output']>;
+  lastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  lastChgUserId?: Maybe<Scalars['Int']['output']>;
+  localId?: Maybe<Scalars['String']['output']>;
+  phoneCntryCd?: Maybe<Scalars['String']['output']>;
+  phoneNbr?: Maybe<Scalars['String']['output']>;
   recordStatusCd?: Maybe<RecordStatus>;
-  recordStatusTime?: Maybe<Scalars['DateTime']>;
-  standardIndustryClassCd?: Maybe<Scalars['String']>;
-  standardIndustryDescTxt?: Maybe<Scalars['String']>;
-  stateCd?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['DateTime']>;
-  streetAddr1?: Maybe<Scalars['String']>;
-  streetAddr2?: Maybe<Scalars['String']>;
-  toTime?: Maybe<Scalars['DateTime']>;
-  userAffiliationTxt?: Maybe<Scalars['String']>;
-  versionCtrlNbr?: Maybe<Scalars['Int']>;
-  zipCd?: Maybe<Scalars['String']>;
+  recordStatusTime?: Maybe<Scalars['DateTime']['output']>;
+  standardIndustryClassCd?: Maybe<Scalars['String']['output']>;
+  standardIndustryDescTxt?: Maybe<Scalars['String']['output']>;
+  stateCd?: Maybe<Scalars['String']['output']>;
+  statusCd?: Maybe<Scalars['String']['output']>;
+  statusTime?: Maybe<Scalars['DateTime']['output']>;
+  streetAddr1?: Maybe<Scalars['String']['output']>;
+  streetAddr2?: Maybe<Scalars['String']['output']>;
+  toTime?: Maybe<Scalars['DateTime']['output']>;
+  userAffiliationTxt?: Maybe<Scalars['String']['output']>;
+  versionCtrlNbr?: Maybe<Scalars['Int']['output']>;
+  zipCd?: Maybe<Scalars['String']['output']>;
 };
 
 export type OrganizationFilter = {
-  cityCd?: InputMaybe<Scalars['String']>;
-  cityDescTxt?: InputMaybe<Scalars['String']>;
-  displayNm?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  stateCd?: InputMaybe<Scalars['String']>;
-  streetAddr1?: InputMaybe<Scalars['String']>;
-  streetAddr2?: InputMaybe<Scalars['String']>;
-  zipCd?: InputMaybe<Scalars['String']>;
+  cityCd?: InputMaybe<Scalars['String']['input']>;
+  cityDescTxt?: InputMaybe<Scalars['String']['input']>;
+  displayNm?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  stateCd?: InputMaybe<Scalars['String']['input']>;
+  streetAddr1?: InputMaybe<Scalars['String']['input']>;
+  streetAddr2?: InputMaybe<Scalars['String']['input']>;
+  zipCd?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type OrganizationParticipation = {
   __typename?: 'OrganizationParticipation';
-  actUid?: Maybe<Scalars['Int']>;
-  entityId?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  organizationLastChangeTime?: Maybe<Scalars['DateTime']>;
-  participationLastChangeTime?: Maybe<Scalars['DateTime']>;
-  participationRecordStatus?: Maybe<Scalars['String']>;
-  subjectClassCd?: Maybe<Scalars['String']>;
-  typeCd?: Maybe<Scalars['String']>;
-  typeDescTxt?: Maybe<Scalars['String']>;
+  actUid?: Maybe<Scalars['Int']['output']>;
+  entityId?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  organizationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  participationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  participationRecordStatus?: Maybe<Scalars['String']['output']>;
+  subjectClassCd?: Maybe<Scalars['String']['output']>;
+  typeCd?: Maybe<Scalars['String']['output']>;
+  typeDescTxt?: Maybe<Scalars['String']['output']>;
 };
 
 export type OrganizationResults = {
   __typename?: 'OrganizationResults';
   content: Array<Maybe<Organization>>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type Outbreak = {
   __typename?: 'Outbreak';
-  codeShortDescTxt?: Maybe<Scalars['String']>;
+  codeShortDescTxt?: Maybe<Scalars['String']['output']>;
   id: OutbreakId;
 };
 
 export type OutbreakId = {
   __typename?: 'OutbreakId';
-  code: Scalars['String'];
-  codeSetNm: Scalars['String'];
+  code: Scalars['String']['output'];
+  codeSetNm: Scalars['String']['output'];
 };
 
 export type OutbreakResults = {
   __typename?: 'OutbreakResults';
   content: Array<Maybe<Outbreak>>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type Page = {
-  pageNumber: Scalars['Int'];
-  pageSize: Scalars['Int'];
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
 };
 
 export type PatientAddress = {
   __typename?: 'PatientAddress';
-  address1?: Maybe<Scalars['String']>;
-  address2?: Maybe<Scalars['String']>;
-  asOf: Scalars['DateTime'];
-  censusTract?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  comment?: Maybe<Scalars['String']>;
+  address1?: Maybe<Scalars['String']['output']>;
+  address2?: Maybe<Scalars['String']['output']>;
+  asOf: Scalars['DateTime']['output'];
+  censusTract?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  comment?: Maybe<Scalars['String']['output']>;
   country?: Maybe<PatientCountry>;
   county?: Maybe<PatientCounty>;
-  id: Scalars['ID'];
-  patient: Scalars['Int'];
+  id: Scalars['ID']['output'];
+  patient: Scalars['Int']['output'];
   state?: Maybe<PatientState>;
   type: PatientAddressType;
   use: PatientAddressUse;
-  version: Scalars['Int'];
-  zipcode?: Maybe<Scalars['String']>;
+  version: Scalars['Int']['output'];
+  zipcode?: Maybe<Scalars['String']['output']>;
 };
 
 export type PatientAddressChangeResult = {
   __typename?: 'PatientAddressChangeResult';
-  id: Scalars['Int'];
-  patient: Scalars['Int'];
+  id: Scalars['Int']['output'];
+  patient: Scalars['Int']['output'];
 };
 
 export type PatientAddressResults = {
   __typename?: 'PatientAddressResults';
   content: Array<PatientAddress>;
-  number: Scalars['Int'];
-  size: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientAddressType = {
   __typename?: 'PatientAddressType';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientAddressUse = {
   __typename?: 'PatientAddressUse';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientAdministrative = {
   __typename?: 'PatientAdministrative';
-  asOf: Scalars['DateTime'];
-  comment?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  patient: Scalars['ID'];
-  version: Scalars['Int'];
+  asOf: Scalars['DateTime']['output'];
+  comment?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  patient: Scalars['ID']['output'];
+  version: Scalars['Int']['output'];
 };
 
 export type PatientAdministrativeChangeResult = {
   __typename?: 'PatientAdministrativeChangeResult';
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['output'];
 };
 
 export type PatientAdministrativeResults = {
   __typename?: 'PatientAdministrativeResults';
   content: Array<PatientAdministrative>;
-  number: Scalars['Int'];
-  size: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientBirth = {
   __typename?: 'PatientBirth';
-  age?: Maybe<Scalars['Int']>;
-  asOf: Scalars['DateTime'];
-  birthOrder?: Maybe<Scalars['Int']>;
-  bornOn?: Maybe<Scalars['Date']>;
-  city?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Int']['output']>;
+  asOf: Scalars['DateTime']['output'];
+  birthOrder?: Maybe<Scalars['Int']['output']>;
+  bornOn?: Maybe<Scalars['Date']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
   country?: Maybe<PatientCountry>;
   county?: Maybe<PatientCounty>;
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   multipleBirth?: Maybe<PatientIndicatorCodedValue>;
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['output'];
   state?: Maybe<PatientState>;
-  version: Scalars['Int'];
+  version: Scalars['Int']['output'];
 };
 
 export type PatientBirthAndGenderChangeResult = {
   __typename?: 'PatientBirthAndGenderChangeResult';
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['output'];
 };
 
 export type PatientContactInvestigation = {
   __typename?: 'PatientContactInvestigation';
-  condition: Scalars['String'];
-  id: Scalars['ID'];
-  local: Scalars['String'];
+  condition: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  local: Scalars['String']['output'];
 };
 
 export type PatientCountry = {
   __typename?: 'PatientCountry';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientCounty = {
   __typename?: 'PatientCounty';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientCreatedResponse = {
   __typename?: 'PatientCreatedResponse';
-  id: Scalars['Int'];
-  shortId: Scalars['Int'];
+  id: Scalars['Int']['output'];
+  shortId: Scalars['Int']['output'];
 };
 
 export type PatientDeleteFailed = {
   __typename?: 'PatientDeleteFailed';
-  patient: Scalars['Int'];
-  reason: Scalars['String'];
+  patient: Scalars['Int']['output'];
+  reason: Scalars['String']['output'];
 };
 
 export type PatientDeleteResult = PatientDeleteFailed | PatientDeleteSuccessful;
 
 export type PatientDeleteSuccessful = {
   __typename?: 'PatientDeleteSuccessful';
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['output'];
 };
 
 export type PatientDetailedEthnicity = {
   __typename?: 'PatientDetailedEthnicity';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientDocument = {
   __typename?: 'PatientDocument';
   associatedWith?: Maybe<PatientDocumentInvestigation>;
-  condition?: Maybe<Scalars['String']>;
-  document: Scalars['ID'];
-  event: Scalars['String'];
-  receivedOn: Scalars['DateTime'];
-  reportedOn: Scalars['DateTime'];
-  sendingFacility: Scalars['String'];
-  type: Scalars['String'];
+  condition?: Maybe<Scalars['String']['output']>;
+  document: Scalars['ID']['output'];
+  event: Scalars['String']['output'];
+  receivedOn: Scalars['DateTime']['output'];
+  reportedOn: Scalars['DateTime']['output'];
+  sendingFacility: Scalars['String']['output'];
+  type: Scalars['String']['output'];
 };
 
 export type PatientDocumentInvestigation = {
   __typename?: 'PatientDocumentInvestigation';
-  id: Scalars['ID'];
-  local: Scalars['String'];
+  id: Scalars['ID']['output'];
+  local: Scalars['String']['output'];
 };
 
 export type PatientDocumentRequiringReviewResults = {
   __typename?: 'PatientDocumentRequiringReviewResults';
   content: Array<Maybe<DocumentRequiringReview>>;
-  number: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientDocumentResults = {
   __typename?: 'PatientDocumentResults';
   content: Array<Maybe<PatientDocument>>;
-  number: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientEducationLevel = {
   __typename?: 'PatientEducationLevel';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientEthnicGroup = {
   __typename?: 'PatientEthnicGroup';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientEthnicity = {
   __typename?: 'PatientEthnicity';
-  asOf: Scalars['DateTime'];
+  asOf: Scalars['DateTime']['output'];
   detailed: Array<PatientDetailedEthnicity>;
   ethnicGroup: PatientEthnicGroup;
-  id: Scalars['ID'];
-  patient: Scalars['Int'];
+  id: Scalars['ID']['output'];
+  patient: Scalars['Int']['output'];
   unknownReason?: Maybe<PatientEthnicityUnknownReason>;
-  version: Scalars['Int'];
+  version: Scalars['Int']['output'];
 };
 
 export type PatientEthnicityChangeResult = {
   __typename?: 'PatientEthnicityChangeResult';
-  patient: Scalars['String'];
+  patient: Scalars['String']['output'];
 };
 
 export type PatientEthnicityUnknownReason = {
   __typename?: 'PatientEthnicityUnknownReason';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientGender = {
   __typename?: 'PatientGender';
-  additional?: Maybe<Scalars['String']>;
-  asOf: Scalars['DateTime'];
+  additional?: Maybe<Scalars['String']['output']>;
+  asOf: Scalars['DateTime']['output'];
   birth?: Maybe<PatientGenderCodedValue>;
   current?: Maybe<PatientGenderCodedValue>;
-  id: Scalars['ID'];
-  patient: Scalars['Int'];
+  id: Scalars['ID']['output'];
+  patient: Scalars['Int']['output'];
   preferred?: Maybe<PatientPreferredGender>;
   unknownReason?: Maybe<PatientGenderUnknownReason>;
-  version: Scalars['Int'];
+  version: Scalars['Int']['output'];
 };
 
 export type PatientGenderCodedValue = {
   __typename?: 'PatientGenderCodedValue';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientGenderUnknownReason = {
   __typename?: 'PatientGenderUnknownReason';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientGeneral = {
   __typename?: 'PatientGeneral';
-  adultsInHouse?: Maybe<Scalars['Int']>;
-  asOf: Scalars['DateTime'];
-  childrenInHouse?: Maybe<Scalars['Int']>;
+  adultsInHouse?: Maybe<Scalars['Int']['output']>;
+  asOf: Scalars['DateTime']['output'];
+  childrenInHouse?: Maybe<Scalars['Int']['output']>;
   educationLevel?: Maybe<PatientEducationLevel>;
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   maritalStatus?: Maybe<PatientMaritalStatus>;
-  maternalMaidenName?: Maybe<Scalars['String']>;
+  maternalMaidenName?: Maybe<Scalars['String']['output']>;
   occupation?: Maybe<PatientOccupation>;
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['output'];
   primaryLanguage?: Maybe<PatientPrimaryLanguage>;
   speaksEnglish?: Maybe<PatientIndicatorCodedValue>;
-  stateHIVCase?: Maybe<Scalars['String']>;
-  version: Scalars['Int'];
+  stateHIVCase?: Maybe<Scalars['String']['output']>;
+  version: Scalars['Int']['output'];
 };
 
 export type PatientGeneralChangeResult = {
   __typename?: 'PatientGeneralChangeResult';
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['output'];
 };
 
 export type PatientIdentification = {
   __typename?: 'PatientIdentification';
-  asOf: Scalars['DateTime'];
+  asOf: Scalars['DateTime']['output'];
   authority?: Maybe<PatientIdentificationAuthority>;
-  patient: Scalars['Int'];
-  sequence: Scalars['Int'];
+  patient: Scalars['Int']['output'];
+  sequence: Scalars['Int']['output'];
   type: PatientIdentificationType;
-  value?: Maybe<Scalars['String']>;
-  version: Scalars['Int'];
+  value?: Maybe<Scalars['String']['output']>;
+  version: Scalars['Int']['output'];
 };
 
 export type PatientIdentificationAuthority = {
   __typename?: 'PatientIdentificationAuthority';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientIdentificationChangeResult = {
   __typename?: 'PatientIdentificationChangeResult';
-  patient: Scalars['Int'];
-  sequence: Scalars['Int'];
+  patient: Scalars['Int']['output'];
+  sequence: Scalars['Int']['output'];
 };
 
 export type PatientIdentificationResults = {
   __typename?: 'PatientIdentificationResults';
   content: Array<PatientIdentification>;
-  number: Scalars['Int'];
-  size: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientIdentificationType = {
   __typename?: 'PatientIdentificationType';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientIdentificationTypeResults = {
   __typename?: 'PatientIdentificationTypeResults';
   content: Array<Maybe<IdentificationType>>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientIndicatorCodedValue = {
   __typename?: 'PatientIndicatorCodedValue';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientInvestigation = {
   __typename?: 'PatientInvestigation';
-  caseStatus?: Maybe<Scalars['String']>;
-  coInfection?: Maybe<Scalars['String']>;
-  comparable: Scalars['Boolean'];
-  condition: Scalars['String'];
-  event: Scalars['String'];
-  investigation: Scalars['ID'];
-  investigator?: Maybe<Scalars['String']>;
-  jurisdiction: Scalars['String'];
-  notification?: Maybe<Scalars['String']>;
-  startedOn?: Maybe<Scalars['Date']>;
-  status: Scalars['String'];
+  caseStatus?: Maybe<Scalars['String']['output']>;
+  coInfection?: Maybe<Scalars['String']['output']>;
+  comparable: Scalars['Boolean']['output'];
+  condition: Scalars['String']['output'];
+  event: Scalars['String']['output'];
+  investigation: Scalars['ID']['output'];
+  investigator?: Maybe<Scalars['String']['output']>;
+  jurisdiction: Scalars['String']['output'];
+  notification?: Maybe<Scalars['String']['output']>;
+  startedOn?: Maybe<Scalars['Date']['output']>;
+  status: Scalars['String']['output'];
 };
 
 export type PatientInvestigationResults = {
   __typename?: 'PatientInvestigationResults';
   content: Array<Maybe<PatientInvestigation>>;
-  number: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientLegalName = {
   __typename?: 'PatientLegalName';
-  first?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['String']>;
-  middle?: Maybe<Scalars['String']>;
-  prefix?: Maybe<Scalars['String']>;
-  suffix?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['String']['output']>;
+  last?: Maybe<Scalars['String']['output']>;
+  middle?: Maybe<Scalars['String']['output']>;
+  prefix?: Maybe<Scalars['String']['output']>;
+  suffix?: Maybe<Scalars['String']['output']>;
 };
 
 export type PatientMaritalStatus = {
   __typename?: 'PatientMaritalStatus';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientMorbidity = {
   __typename?: 'PatientMorbidity';
   associatedWith?: Maybe<PatientMorbidityInvestigation>;
-  condition: Scalars['String'];
-  event: Scalars['String'];
-  jurisdiction: Scalars['String'];
+  condition: Scalars['String']['output'];
+  event: Scalars['String']['output'];
+  jurisdiction: Scalars['String']['output'];
   labResults: Array<Maybe<PatientMorbidityLabResult>>;
-  morbidity: Scalars['ID'];
-  provider?: Maybe<Scalars['String']>;
-  receivedOn: Scalars['DateTime'];
-  reportedOn: Scalars['DateTime'];
-  treatments: Array<Maybe<Scalars['String']>>;
+  morbidity: Scalars['ID']['output'];
+  provider?: Maybe<Scalars['String']['output']>;
+  receivedOn: Scalars['DateTime']['output'];
+  reportedOn: Scalars['DateTime']['output'];
+  treatments: Array<Maybe<Scalars['String']['output']>>;
 };
 
 export type PatientMorbidityInvestigation = {
   __typename?: 'PatientMorbidityInvestigation';
-  condition: Scalars['String'];
-  id: Scalars['ID'];
-  local: Scalars['String'];
+  condition: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  local: Scalars['String']['output'];
 };
 
 export type PatientMorbidityLabResult = {
   __typename?: 'PatientMorbidityLabResult';
-  codedResult?: Maybe<Scalars['String']>;
-  labTest: Scalars['String'];
-  numericResult?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['String']>;
-  textResult?: Maybe<Scalars['String']>;
+  codedResult?: Maybe<Scalars['String']['output']>;
+  labTest: Scalars['String']['output'];
+  numericResult?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  textResult?: Maybe<Scalars['String']['output']>;
 };
 
 export type PatientMorbidityResults = {
   __typename?: 'PatientMorbidityResults';
   content: Array<Maybe<PatientMorbidity>>;
-  number: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientMortality = {
   __typename?: 'PatientMortality';
-  asOf: Scalars['DateTime'];
-  city?: Maybe<Scalars['String']>;
+  asOf: Scalars['DateTime']['output'];
+  city?: Maybe<Scalars['String']['output']>;
   country?: Maybe<PatientCountry>;
   county?: Maybe<PatientCounty>;
   deceased?: Maybe<PatientIndicatorCodedValue>;
-  deceasedOn?: Maybe<Scalars['Date']>;
-  id: Scalars['ID'];
-  patient: Scalars['Int'];
+  deceasedOn?: Maybe<Scalars['Date']['output']>;
+  id: Scalars['ID']['output'];
+  patient: Scalars['Int']['output'];
   state?: Maybe<PatientState>;
-  version: Scalars['Int'];
+  version: Scalars['Int']['output'];
 };
 
 export type PatientMortalityChangeResult = {
   __typename?: 'PatientMortalityChangeResult';
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['output'];
 };
 
 export type PatientName = {
   __typename?: 'PatientName';
-  asOf: Scalars['DateTime'];
+  asOf: Scalars['DateTime']['output'];
   degree?: Maybe<PatientNameDegree>;
-  first?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['String']>;
-  middle?: Maybe<Scalars['String']>;
-  patient: Scalars['Int'];
+  first?: Maybe<Scalars['String']['output']>;
+  last?: Maybe<Scalars['String']['output']>;
+  middle?: Maybe<Scalars['String']['output']>;
+  patient: Scalars['Int']['output'];
   prefix?: Maybe<PatientNamePrefix>;
-  secondLast?: Maybe<Scalars['String']>;
-  secondMiddle?: Maybe<Scalars['String']>;
-  sequence: Scalars['Int'];
+  secondLast?: Maybe<Scalars['String']['output']>;
+  secondMiddle?: Maybe<Scalars['String']['output']>;
+  sequence: Scalars['Int']['output'];
   suffix?: Maybe<PatientNameSuffix>;
   use: PatientNameUse;
-  version: Scalars['Int'];
+  version: Scalars['Int']['output'];
 };
 
 export type PatientNameChangeResult = {
   __typename?: 'PatientNameChangeResult';
-  patient: Scalars['Int'];
-  sequence: Scalars['Int'];
+  patient: Scalars['Int']['output'];
+  sequence: Scalars['Int']['output'];
 };
 
 export type PatientNameDegree = {
   __typename?: 'PatientNameDegree';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientNamePrefix = {
   __typename?: 'PatientNamePrefix';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientNameResults = {
   __typename?: 'PatientNameResults';
   content: Array<PatientName>;
-  number: Scalars['Int'];
-  size: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientNameSuffix = {
   __typename?: 'PatientNameSuffix';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientNameUse = {
   __typename?: 'PatientNameUse';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientNamedByContactResults = {
   __typename?: 'PatientNamedByContactResults';
   content: Array<Maybe<NamedByPatient>>;
-  number: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientOccupation = {
   __typename?: 'PatientOccupation';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientPhone = {
   __typename?: 'PatientPhone';
-  asOf: Scalars['DateTime'];
-  comment?: Maybe<Scalars['String']>;
-  countryCode?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  extension?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  number?: Maybe<Scalars['String']>;
-  patient: Scalars['Int'];
+  asOf: Scalars['DateTime']['output'];
+  comment?: Maybe<Scalars['String']['output']>;
+  countryCode?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  extension?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  number?: Maybe<Scalars['String']['output']>;
+  patient: Scalars['Int']['output'];
   type?: Maybe<PatientPhoneType>;
-  url?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']['output']>;
   use?: Maybe<PatientPhoneUse>;
-  version: Scalars['Int'];
+  version: Scalars['Int']['output'];
 };
 
 export type PatientPhoneChangeResult = {
   __typename?: 'PatientPhoneChangeResult';
-  id: Scalars['Int'];
-  patient: Scalars['Int'];
+  id: Scalars['Int']['output'];
+  patient: Scalars['Int']['output'];
 };
 
 export type PatientPhoneResults = {
   __typename?: 'PatientPhoneResults';
   content: Array<PatientPhone>;
-  number: Scalars['Int'];
-  size: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientPhoneType = {
   __typename?: 'PatientPhoneType';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientPhoneUse = {
   __typename?: 'PatientPhoneUse';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientPreferredGender = {
   __typename?: 'PatientPreferredGender';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientPrimaryLanguage = {
   __typename?: 'PatientPrimaryLanguage';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientProfile = {
@@ -1504,21 +1506,21 @@ export type PatientProfile = {
   addresses: PatientAddressResults;
   administrative: PatientAdministrativeResults;
   birth?: Maybe<PatientBirth>;
-  deletable: Scalars['Boolean'];
+  deletable: Scalars['Boolean']['output'];
   ethnicity?: Maybe<PatientEthnicity>;
   gender?: Maybe<PatientGender>;
   general?: Maybe<PatientGeneral>;
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   identification: PatientIdentificationResults;
-  local: Scalars['String'];
+  local: Scalars['String']['output'];
   mortality?: Maybe<PatientMortality>;
   names: PatientNameResults;
   phones: PatientPhoneResults;
   races: PatientRaceResults;
-  shortId: Scalars['Int'];
-  status: Scalars['String'];
+  shortId: Scalars['Int']['output'];
+  status: Scalars['String']['output'];
   summary?: Maybe<PatientSummary>;
-  version: Scalars['Int'];
+  version: Scalars['Int']['output'];
 };
 
 
@@ -1553,330 +1555,330 @@ export type PatientProfileRacesArgs = {
 
 
 export type PatientProfileSummaryArgs = {
-  asOf?: InputMaybe<Scalars['DateTime']>;
+  asOf?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type PatientRace = {
   __typename?: 'PatientRace';
-  asOf: Scalars['DateTime'];
+  asOf: Scalars['DateTime']['output'];
   category: PatientRaceCategory;
   detailed: Array<PatientRaceDetail>;
-  id: Scalars['Int'];
-  patient: Scalars['Int'];
-  version: Scalars['Int'];
+  id: Scalars['Int']['output'];
+  patient: Scalars['Int']['output'];
+  version: Scalars['Int']['output'];
 };
 
 export type PatientRaceCategory = {
   __typename?: 'PatientRaceCategory';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientRaceChangeResult = {
   __typename?: 'PatientRaceChangeResult';
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['output'];
 };
 
 export type PatientRaceDetail = {
   __typename?: 'PatientRaceDetail';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientRaceResults = {
   __typename?: 'PatientRaceResults';
   content: Array<PatientRace>;
-  number: Scalars['Int'];
-  size: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientSearchResult = {
   __typename?: 'PatientSearchResult';
   addresses: Array<PatientSearchResultAddress>;
-  age?: Maybe<Scalars['Int']>;
-  birthday?: Maybe<Scalars['Date']>;
-  emails: Array<Scalars['String']>;
-  gender?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Int']['output']>;
+  birthday?: Maybe<Scalars['Date']['output']>;
+  emails: Array<Scalars['String']['output']>;
+  gender?: Maybe<Scalars['String']['output']>;
   identification: Array<PatientSearchResultIdentification>;
   legalName?: Maybe<PatientSearchResultName>;
   names: Array<PatientSearchResultName>;
-  patient: Scalars['Int'];
-  phones: Array<Scalars['String']>;
-  shortId: Scalars['Int'];
-  status: Scalars['String'];
+  patient: Scalars['Int']['output'];
+  phones: Array<Scalars['String']['output']>;
+  shortId: Scalars['Int']['output'];
+  status: Scalars['String']['output'];
 };
 
 export type PatientSearchResultAddress = {
   __typename?: 'PatientSearchResultAddress';
-  address?: Maybe<Scalars['String']>;
-  address2?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  state?: Maybe<Scalars['String']>;
-  use: Scalars['String'];
-  zipcode?: Maybe<Scalars['String']>;
+  address?: Maybe<Scalars['String']['output']>;
+  address2?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
+  use: Scalars['String']['output'];
+  zipcode?: Maybe<Scalars['String']['output']>;
 };
 
 export type PatientSearchResultIdentification = {
   __typename?: 'PatientSearchResultIdentification';
-  type: Scalars['String'];
-  value: Scalars['String'];
+  type: Scalars['String']['output'];
+  value: Scalars['String']['output'];
 };
 
 export type PatientSearchResultName = {
   __typename?: 'PatientSearchResultName';
-  first?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['String']>;
-  middle?: Maybe<Scalars['String']>;
-  suffix?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['String']['output']>;
+  last?: Maybe<Scalars['String']['output']>;
+  middle?: Maybe<Scalars['String']['output']>;
+  suffix?: Maybe<Scalars['String']['output']>;
 };
 
 export type PatientSearchResults = {
   __typename?: 'PatientSearchResults';
   content: Array<PatientSearchResult>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientState = {
   __typename?: 'PatientState';
-  description: Scalars['String'];
-  id: Scalars['String'];
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type PatientSummary = {
   __typename?: 'PatientSummary';
   address: Array<PatientSummaryAddress>;
-  age?: Maybe<Scalars['Int']>;
-  birthday?: Maybe<Scalars['Date']>;
+  age?: Maybe<Scalars['Int']['output']>;
+  birthday?: Maybe<Scalars['Date']['output']>;
   email?: Maybe<Array<PatientSummaryEmail>>;
-  ethnicity?: Maybe<Scalars['String']>;
-  gender?: Maybe<Scalars['String']>;
+  ethnicity?: Maybe<Scalars['String']['output']>;
+  gender?: Maybe<Scalars['String']['output']>;
   home?: Maybe<PatientSummaryAddress>;
   identification?: Maybe<Array<PatientSummaryIdentification>>;
   legalName?: Maybe<PatientLegalName>;
   phone?: Maybe<Array<PatientSummaryPhone>>;
-  races?: Maybe<Array<Scalars['String']>>;
+  races?: Maybe<Array<Scalars['String']['output']>>;
 };
 
 export type PatientSummaryAddress = {
   __typename?: 'PatientSummaryAddress';
-  address?: Maybe<Scalars['String']>;
-  address2?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  state?: Maybe<Scalars['String']>;
-  use: Scalars['String'];
-  zipcode?: Maybe<Scalars['String']>;
+  address?: Maybe<Scalars['String']['output']>;
+  address2?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
+  use: Scalars['String']['output'];
+  zipcode?: Maybe<Scalars['String']['output']>;
 };
 
 export type PatientSummaryEmail = {
   __typename?: 'PatientSummaryEmail';
-  address?: Maybe<Scalars['String']>;
-  use?: Maybe<Scalars['String']>;
+  address?: Maybe<Scalars['String']['output']>;
+  use?: Maybe<Scalars['String']['output']>;
 };
 
 export type PatientSummaryIdentification = {
   __typename?: 'PatientSummaryIdentification';
-  type: Scalars['String'];
-  value: Scalars['String'];
+  type: Scalars['String']['output'];
+  value: Scalars['String']['output'];
 };
 
 export type PatientSummaryPhone = {
   __typename?: 'PatientSummaryPhone';
-  number?: Maybe<Scalars['String']>;
-  use?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['String']['output']>;
+  use?: Maybe<Scalars['String']['output']>;
 };
 
 export type PatientTreatment = {
   __typename?: 'PatientTreatment';
   associatedWith: PatientTreatmentInvestigation;
-  createdOn: Scalars['DateTime'];
-  description: Scalars['String'];
-  event: Scalars['String'];
-  provider?: Maybe<Scalars['String']>;
-  treatedOn: Scalars['DateTime'];
-  treatment: Scalars['ID'];
+  createdOn: Scalars['DateTime']['output'];
+  description: Scalars['String']['output'];
+  event: Scalars['String']['output'];
+  provider?: Maybe<Scalars['String']['output']>;
+  treatedOn: Scalars['DateTime']['output'];
+  treatment: Scalars['ID']['output'];
 };
 
 export type PatientTreatmentInvestigation = {
   __typename?: 'PatientTreatmentInvestigation';
-  condition: Scalars['String'];
-  id: Scalars['ID'];
-  local: Scalars['String'];
+  condition: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  local: Scalars['String']['output'];
 };
 
 export type PatientTreatmentResults = {
   __typename?: 'PatientTreatmentResults';
   content: Array<Maybe<PatientTreatment>>;
-  number: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PatientUpdateResponse = {
   __typename?: 'PatientUpdateResponse';
-  patientId: Scalars['ID'];
+  patientId: Scalars['ID']['output'];
 };
 
 export type PatientVaccination = {
   __typename?: 'PatientVaccination';
-  administered: Scalars['String'];
-  administeredOn?: Maybe<Scalars['DateTime']>;
+  administered: Scalars['String']['output'];
+  administeredOn?: Maybe<Scalars['DateTime']['output']>;
   associatedWith?: Maybe<PatientVaccinationInvestigation>;
-  createdOn: Scalars['DateTime'];
-  event: Scalars['String'];
-  provider?: Maybe<Scalars['String']>;
-  vaccination: Scalars['ID'];
+  createdOn: Scalars['DateTime']['output'];
+  event: Scalars['String']['output'];
+  provider?: Maybe<Scalars['String']['output']>;
+  vaccination: Scalars['ID']['output'];
 };
 
 export type PatientVaccinationInvestigation = {
   __typename?: 'PatientVaccinationInvestigation';
-  condition: Scalars['String'];
-  id: Scalars['ID'];
-  local: Scalars['String'];
+  condition: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  local: Scalars['String']['output'];
 };
 
 export type PatientVaccinationResults = {
   __typename?: 'PatientVaccinationResults';
   content: Array<Maybe<PatientVaccination>>;
-  number: Scalars['Int'];
-  total: Scalars['Int'];
+  number: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
 };
 
 export type PersonFilter = {
-  address?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
-  dateOfBirth?: InputMaybe<Scalars['Date']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  dateOfBirth?: InputMaybe<Scalars['Date']['input']>;
   dateOfBirthOperator?: InputMaybe<Operator>;
   deceased?: InputMaybe<Deceased>;
-  email?: InputMaybe<Scalars['String']>;
-  ethnicity?: InputMaybe<Scalars['String']>;
-  firstName?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  ethnicity?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Gender>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   identification?: InputMaybe<IdentificationCriteria>;
-  lastName?: InputMaybe<Scalars['String']>;
-  mortalityStatus?: InputMaybe<Scalars['String']>;
-  phoneNumber?: InputMaybe<Scalars['String']>;
-  race?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  mortalityStatus?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  race?: InputMaybe<Scalars['String']['input']>;
   recordStatus: Array<RecordStatus>;
-  ssn?: InputMaybe<Scalars['String']>;
-  state?: InputMaybe<Scalars['String']>;
-  treatmentId?: InputMaybe<Scalars['String']>;
-  vaccinationId?: InputMaybe<Scalars['String']>;
-  zip?: InputMaybe<Scalars['String']>;
+  ssn?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  treatmentId?: InputMaybe<Scalars['String']['input']>;
+  vaccinationId?: InputMaybe<Scalars['String']['input']>;
+  zip?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PersonInput = {
   addresses?: InputMaybe<Array<NewPatientAddress>>;
-  asOf?: InputMaybe<Scalars['DateTime']>;
+  asOf?: InputMaybe<Scalars['DateTime']['input']>;
   birthGender?: InputMaybe<Gender>;
-  comments?: InputMaybe<Scalars['String']>;
+  comments?: InputMaybe<Scalars['String']['input']>;
   currentGender?: InputMaybe<Gender>;
-  dateOfBirth?: InputMaybe<Scalars['Date']>;
+  dateOfBirth?: InputMaybe<Scalars['Date']['input']>;
   deceased?: InputMaybe<Deceased>;
-  deceasedTime?: InputMaybe<Scalars['DateTime']>;
-  emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ethnicity?: InputMaybe<Scalars['String']>;
+  deceasedTime?: InputMaybe<Scalars['DateTime']['input']>;
+  emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  ethnicity?: InputMaybe<Scalars['String']['input']>;
   identifications?: InputMaybe<Array<NewPatientIdentification>>;
-  maritalStatus?: InputMaybe<Scalars['String']>;
+  maritalStatus?: InputMaybe<Scalars['String']['input']>;
   names?: InputMaybe<Array<InputMaybe<NewPatientName>>>;
   phoneNumbers?: InputMaybe<Array<NewPatientPhoneNumber>>;
-  races?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  stateHIVCase?: InputMaybe<Scalars['String']>;
+  races?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  stateHIVCase?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PersonParticipation = {
   __typename?: 'PersonParticipation';
-  actUid: Scalars['Int'];
-  birthTime?: Maybe<Scalars['DateTime']>;
-  currSexCd?: Maybe<Scalars['String']>;
-  entityId: Scalars['Int'];
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  localId?: Maybe<Scalars['String']>;
-  participationLastChangeTime?: Maybe<Scalars['DateTime']>;
-  participationRecordStatus?: Maybe<Scalars['String']>;
-  personCd: Scalars['String'];
-  personLastChangeTime?: Maybe<Scalars['DateTime']>;
-  personParentUid?: Maybe<Scalars['Int']>;
-  personRecordStatus: Scalars['String'];
-  shortId?: Maybe<Scalars['Int']>;
-  subjectClassCd?: Maybe<Scalars['String']>;
-  typeCd?: Maybe<Scalars['String']>;
-  typeDescTxt?: Maybe<Scalars['String']>;
+  actUid: Scalars['Int']['output'];
+  birthTime?: Maybe<Scalars['DateTime']['output']>;
+  currSexCd?: Maybe<Scalars['String']['output']>;
+  entityId: Scalars['Int']['output'];
+  firstName?: Maybe<Scalars['String']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  localId?: Maybe<Scalars['String']['output']>;
+  participationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  participationRecordStatus?: Maybe<Scalars['String']['output']>;
+  personCd: Scalars['String']['output'];
+  personLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  personParentUid?: Maybe<Scalars['Int']['output']>;
+  personRecordStatus: Scalars['String']['output'];
+  shortId?: Maybe<Scalars['Int']['output']>;
+  subjectClassCd?: Maybe<Scalars['String']['output']>;
+  typeCd?: Maybe<Scalars['String']['output']>;
+  typeDescTxt?: Maybe<Scalars['String']['output']>;
 };
 
 export type PhoneAndEmailType = {
   __typename?: 'PhoneAndEmailType';
-  codeShortDescTxt: Scalars['String'];
+  codeShortDescTxt: Scalars['String']['output'];
   id: CodeValueGeneralId;
 };
 
 export type PhoneAndEmailTypeResults = {
   __typename?: 'PhoneAndEmailTypeResults';
   content: Array<PhoneAndEmailType>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type PhoneAndEmailUse = {
   __typename?: 'PhoneAndEmailUse';
-  codeShortDescTxt: Scalars['String'];
+  codeShortDescTxt: Scalars['String']['output'];
   id: CodeValueGeneralId;
 };
 
 export type PhoneAndEmailUseResults = {
   __typename?: 'PhoneAndEmailUseResults';
   content: Array<PhoneAndEmailUse>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export type Place = {
   __typename?: 'Place';
-  addReasonCd?: Maybe<Scalars['String']>;
-  addTime?: Maybe<Scalars['DateTime']>;
-  addUserId?: Maybe<Scalars['Int']>;
-  cd?: Maybe<Scalars['String']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  cityCd?: Maybe<Scalars['String']>;
-  cityDescTxt?: Maybe<Scalars['String']>;
-  cntryCd?: Maybe<Scalars['String']>;
-  cntyCd?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  durationAmt?: Maybe<Scalars['String']>;
-  durationUnitCd?: Maybe<Scalars['String']>;
-  fromTime?: Maybe<Scalars['DateTime']>;
-  id?: Maybe<Scalars['ID']>;
-  lastChgReasonCd?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['DateTime']>;
-  lastChgUserId?: Maybe<Scalars['Int']>;
-  localId?: Maybe<Scalars['String']>;
-  nm?: Maybe<Scalars['String']>;
-  phoneCntryCd?: Maybe<Scalars['String']>;
-  phoneNbr?: Maybe<Scalars['String']>;
-  recordStatusCd?: Maybe<Scalars['String']>;
-  recordStatusTime?: Maybe<Scalars['DateTime']>;
-  stateCd?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['DateTime']>;
-  streetAddr1?: Maybe<Scalars['String']>;
-  streetAddr2?: Maybe<Scalars['String']>;
-  toTime?: Maybe<Scalars['DateTime']>;
-  userAffiliationTxt?: Maybe<Scalars['String']>;
-  versionCtrlNbr?: Maybe<Scalars['Int']>;
-  zipCd?: Maybe<Scalars['String']>;
+  addReasonCd?: Maybe<Scalars['String']['output']>;
+  addTime?: Maybe<Scalars['DateTime']['output']>;
+  addUserId?: Maybe<Scalars['Int']['output']>;
+  cd?: Maybe<Scalars['String']['output']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  cityCd?: Maybe<Scalars['String']['output']>;
+  cityDescTxt?: Maybe<Scalars['String']['output']>;
+  cntryCd?: Maybe<Scalars['String']['output']>;
+  cntyCd?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  durationAmt?: Maybe<Scalars['String']['output']>;
+  durationUnitCd?: Maybe<Scalars['String']['output']>;
+  fromTime?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
+  lastChgReasonCd?: Maybe<Scalars['String']['output']>;
+  lastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  lastChgUserId?: Maybe<Scalars['Int']['output']>;
+  localId?: Maybe<Scalars['String']['output']>;
+  nm?: Maybe<Scalars['String']['output']>;
+  phoneCntryCd?: Maybe<Scalars['String']['output']>;
+  phoneNbr?: Maybe<Scalars['String']['output']>;
+  recordStatusCd?: Maybe<Scalars['String']['output']>;
+  recordStatusTime?: Maybe<Scalars['DateTime']['output']>;
+  stateCd?: Maybe<Scalars['String']['output']>;
+  statusCd?: Maybe<Scalars['String']['output']>;
+  statusTime?: Maybe<Scalars['DateTime']['output']>;
+  streetAddr1?: Maybe<Scalars['String']['output']>;
+  streetAddr2?: Maybe<Scalars['String']['output']>;
+  toTime?: Maybe<Scalars['DateTime']['output']>;
+  userAffiliationTxt?: Maybe<Scalars['String']['output']>;
+  versionCtrlNbr?: Maybe<Scalars['Int']['output']>;
+  zipCd?: Maybe<Scalars['String']['output']>;
 };
 
 export type PlaceFilter = {
-  cityCd?: InputMaybe<Scalars['String']>;
-  cityDescTxt?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  nm?: InputMaybe<Scalars['String']>;
-  stateCd?: InputMaybe<Scalars['String']>;
-  streetAddr1?: InputMaybe<Scalars['String']>;
-  streetAddr2?: InputMaybe<Scalars['String']>;
-  zipCd?: InputMaybe<Scalars['String']>;
+  cityCd?: InputMaybe<Scalars['String']['input']>;
+  cityDescTxt?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  nm?: InputMaybe<Scalars['String']['input']>;
+  stateCd?: InputMaybe<Scalars['String']['input']>;
+  streetAddr1?: InputMaybe<Scalars['String']['input']>;
+  streetAddr2?: InputMaybe<Scalars['String']['input']>;
+  zipCd?: InputMaybe<Scalars['String']['input']>;
 };
 
 export enum PregnancyStatus {
@@ -1897,18 +1899,18 @@ export enum ProcessingStatus {
 
 export type ProgramAreaCode = {
   __typename?: 'ProgramAreaCode';
-  codeSeq?: Maybe<Scalars['Int']>;
-  codeSetNm?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  nbsUid?: Maybe<Scalars['ID']>;
-  progAreaDescTxt?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['DateTime']>;
+  codeSeq?: Maybe<Scalars['Int']['output']>;
+  codeSetNm?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  nbsUid?: Maybe<Scalars['ID']['output']>;
+  progAreaDescTxt?: Maybe<Scalars['String']['output']>;
+  statusCd?: Maybe<Scalars['String']['output']>;
+  statusTime?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type ProviderFacilitySearch = {
   entityType: ReportingEntityType;
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 export enum ProviderType {
@@ -1989,12 +1991,12 @@ export type Query = {
 
 
 export type QueryCountiesArgs = {
-  state?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<Scalars['String']['input']>;
 };
 
 
 export type QueryDetailedRacesArgs = {
-  category?: InputMaybe<Scalars['String']>;
+  category?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -2090,7 +2092,7 @@ export type QueryFindAllRaceValuesArgs = {
 
 export type QueryFindAllStateCountyCodeValuesArgs = {
   page?: InputMaybe<Page>;
-  stateCode?: InputMaybe<Scalars['String']>;
+  stateCode?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -2101,29 +2103,29 @@ export type QueryFindAllUsersArgs = {
 
 export type QueryFindContactsNamedByPatientArgs = {
   page?: InputMaybe<Page>;
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 };
 
 
 export type QueryFindDistinctCodedResultsArgs = {
-  searchText: Scalars['String'];
+  searchText: Scalars['String']['input'];
 };
 
 
 export type QueryFindDistinctResultedTestArgs = {
-  searchText: Scalars['String'];
+  searchText: Scalars['String']['input'];
 };
 
 
 export type QueryFindDocumentsForPatientArgs = {
   page?: InputMaybe<Page>;
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 };
 
 
 export type QueryFindDocumentsRequiringReviewForPatientArgs = {
   page?: InputMaybe<DocumentRequiringReviewSortablePage>;
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['input'];
 };
 
 
@@ -2134,9 +2136,9 @@ export type QueryFindInvestigationsByFilterArgs = {
 
 
 export type QueryFindInvestigationsForPatientArgs = {
-  openOnly?: InputMaybe<Scalars['Boolean']>;
+  openOnly?: InputMaybe<Scalars['Boolean']['input']>;
   page?: InputMaybe<Page>;
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 };
 
 
@@ -2148,7 +2150,7 @@ export type QueryFindLabReportsByFilterArgs = {
 
 export type QueryFindMorbidityReportsForPatientArgs = {
   page?: InputMaybe<Page>;
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 };
 
 
@@ -2159,12 +2161,12 @@ export type QueryFindNameSuffixesArgs = {
 
 export type QueryFindOpenInvestigationsForPatientArgs = {
   page?: InputMaybe<Page>;
-  patientId: Scalars['Int'];
+  patientId: Scalars['Int']['input'];
 };
 
 
 export type QueryFindOrganizationByIdArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -2176,13 +2178,13 @@ export type QueryFindOrganizationsByFilterArgs = {
 
 export type QueryFindPatientNamedByContactArgs = {
   page?: InputMaybe<Page>;
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 };
 
 
 export type QueryFindPatientProfileArgs = {
-  patient?: InputMaybe<Scalars['ID']>;
-  shortId?: InputMaybe<Scalars['Int']>;
+  patient?: InputMaybe<Scalars['ID']['input']>;
+  shortId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -2193,7 +2195,7 @@ export type QueryFindPatientsByFilterArgs = {
 
 
 export type QueryFindPlaceByIdArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -2205,43 +2207,43 @@ export type QueryFindPlacesByFilterArgs = {
 
 export type QueryFindSnomedCodedResultsArgs = {
   page?: InputMaybe<Page>;
-  searchText: Scalars['String'];
+  searchText: Scalars['String']['input'];
 };
 
 
 export type QueryFindTreatmentsForPatientArgs = {
   page?: InputMaybe<Page>;
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 };
 
 
 export type QueryFindVaccinationsForPatientArgs = {
   page?: InputMaybe<Page>;
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 };
 
 export type Race = {
   __typename?: 'Race';
-  codeDescTxt: Scalars['String'];
+  codeDescTxt: Scalars['String']['output'];
   id: RaceId;
 };
 
 export type RaceId = {
   __typename?: 'RaceId';
-  code: Scalars['String'];
+  code: Scalars['String']['output'];
 };
 
 export type RaceInput = {
-  asOf?: InputMaybe<Scalars['DateTime']>;
-  category: Scalars['String'];
-  detailed?: InputMaybe<Array<Scalars['String']>>;
-  patient: Scalars['Int'];
+  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  category: Scalars['String']['input'];
+  detailed?: InputMaybe<Array<Scalars['String']['input']>>;
+  patient: Scalars['Int']['input'];
 };
 
 export type RaceResults = {
   __typename?: 'RaceResults';
   content: Array<Maybe<Race>>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export enum RecordStatus {
@@ -2258,29 +2260,29 @@ export enum ReportingEntityType {
 
 export type ReportingFacility = {
   __typename?: 'ReportingFacility';
-  name?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']['output']>;
 };
 
 export type ResultedTest = {
   __typename?: 'ResultedTest';
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
 };
 
 export type SendingFacility = {
   __typename?: 'SendingFacility';
-  name?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']['output']>;
 };
 
 export type SnomedCode = {
   __typename?: 'SnomedCode';
-  id?: Maybe<Scalars['String']>;
-  snomedDescTxt?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']['output']>;
+  snomedDescTxt?: Maybe<Scalars['String']['output']>;
 };
 
 export type SnomedCodedResults = {
   __typename?: 'SnomedCodedResults';
   content: Array<Maybe<SnomedCode>>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export enum SortDirection {
@@ -2295,46 +2297,46 @@ export enum SortField {
 }
 
 export type SortablePage = {
-  pageNumber?: InputMaybe<Scalars['Int']>;
-  pageSize?: InputMaybe<Scalars['Int']>;
+  pageNumber?: InputMaybe<Scalars['Int']['input']>;
+  pageSize?: InputMaybe<Scalars['Int']['input']>;
   sortDirection?: InputMaybe<SortDirection>;
   sortField?: InputMaybe<SortField>;
 };
 
 export type StateCodedValue = {
   __typename?: 'StateCodedValue';
-  abbreviation: Scalars['String'];
-  name: Scalars['String'];
-  value: Scalars['ID'];
+  abbreviation: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  value: Scalars['ID']['output'];
 };
 
 export type StateCountyCodeValue = {
   __typename?: 'StateCountyCodeValue';
-  assigningAuthorityCd?: Maybe<Scalars['String']>;
-  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
-  codeDescTxt?: Maybe<Scalars['String']>;
-  codeSetNm?: Maybe<Scalars['String']>;
-  codeShortDescTxt?: Maybe<Scalars['String']>;
-  codeSystemCd?: Maybe<Scalars['String']>;
-  codeSystemDescTxt?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['DateTime']>;
-  effectiveToTime?: Maybe<Scalars['DateTime']>;
-  excludedTxt?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  indentLevelNbr?: Maybe<Scalars['Int']>;
-  isModifiableInd?: Maybe<Scalars['Int']>;
-  nbsUid?: Maybe<Scalars['Int']>;
-  parentIsCd?: Maybe<Scalars['Int']>;
-  seqNum?: Maybe<Scalars['Int']>;
-  sourceConceptId?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['Int']>;
-  statusTime?: Maybe<Scalars['DateTime']>;
+  assigningAuthorityCd?: Maybe<Scalars['String']['output']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']['output']>;
+  codeDescTxt?: Maybe<Scalars['String']['output']>;
+  codeSetNm?: Maybe<Scalars['String']['output']>;
+  codeShortDescTxt?: Maybe<Scalars['String']['output']>;
+  codeSystemCd?: Maybe<Scalars['String']['output']>;
+  codeSystemDescTxt?: Maybe<Scalars['String']['output']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']['output']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']['output']>;
+  excludedTxt?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  indentLevelNbr?: Maybe<Scalars['Int']['output']>;
+  isModifiableInd?: Maybe<Scalars['Int']['output']>;
+  nbsUid?: Maybe<Scalars['Int']['output']>;
+  parentIsCd?: Maybe<Scalars['Int']['output']>;
+  seqNum?: Maybe<Scalars['Int']['output']>;
+  sourceConceptId?: Maybe<Scalars['String']['output']>;
+  statusCd?: Maybe<Scalars['Int']['output']>;
+  statusTime?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type StateCountyCodeValueResults = {
   __typename?: 'StateCountyCodeValueResults';
   content: Array<StateCountyCodeValue>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export enum Suffix {
@@ -2349,103 +2351,103 @@ export enum Suffix {
 
 export type TracedCondition = {
   __typename?: 'TracedCondition';
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
 };
 
 export type UpdateBirthAndGenderInput = {
-  asOf: Scalars['DateTime'];
+  asOf: Scalars['DateTime']['input'];
   birth?: InputMaybe<UpdateBirthInput>;
   gender?: InputMaybe<UpdateGenderInput>;
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 };
 
 export type UpdateBirthInput = {
-  birthOrder?: InputMaybe<Scalars['Int']>;
-  bornOn?: InputMaybe<Scalars['Date']>;
-  city?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
-  county?: InputMaybe<Scalars['String']>;
-  gender?: InputMaybe<Scalars['String']>;
-  multipleBirth?: InputMaybe<Scalars['String']>;
-  state?: InputMaybe<Scalars['String']>;
+  birthOrder?: InputMaybe<Scalars['Int']['input']>;
+  bornOn?: InputMaybe<Scalars['Date']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  county?: InputMaybe<Scalars['String']['input']>;
+  gender?: InputMaybe<Scalars['String']['input']>;
+  multipleBirth?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateGenderInput = {
-  additional?: InputMaybe<Scalars['String']>;
-  current?: InputMaybe<Scalars['String']>;
-  preferred?: InputMaybe<Scalars['String']>;
-  unknownReason?: InputMaybe<Scalars['String']>;
+  additional?: InputMaybe<Scalars['String']['input']>;
+  current?: InputMaybe<Scalars['String']['input']>;
+  preferred?: InputMaybe<Scalars['String']['input']>;
+  unknownReason?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdatePatientAddressInput = {
-  address1?: InputMaybe<Scalars['String']>;
-  address2?: InputMaybe<Scalars['String']>;
-  asOf: Scalars['DateTime'];
-  censusTract?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
-  comment?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
-  county?: InputMaybe<Scalars['String']>;
-  id: Scalars['Int'];
-  patient: Scalars['Int'];
-  state?: InputMaybe<Scalars['String']>;
-  type: Scalars['String'];
-  use: Scalars['String'];
-  zipcode?: InputMaybe<Scalars['String']>;
+  address1?: InputMaybe<Scalars['String']['input']>;
+  address2?: InputMaybe<Scalars['String']['input']>;
+  asOf: Scalars['DateTime']['input'];
+  censusTract?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  comment?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  county?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  patient: Scalars['Int']['input'];
+  state?: InputMaybe<Scalars['String']['input']>;
+  type: Scalars['String']['input'];
+  use: Scalars['String']['input'];
+  zipcode?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdatePatientIdentificationInput = {
-  asOf: Scalars['DateTime'];
-  authority?: InputMaybe<Scalars['String']>;
-  patient: Scalars['Int'];
-  sequence: Scalars['Int'];
-  type: Scalars['String'];
-  value: Scalars['String'];
+  asOf: Scalars['DateTime']['input'];
+  authority?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['Int']['input'];
+  sequence: Scalars['Int']['input'];
+  type: Scalars['String']['input'];
+  value: Scalars['String']['input'];
 };
 
 export type UpdatePatientNameInput = {
-  asOf?: InputMaybe<Scalars['DateTime']>;
-  degree?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['String']>;
-  last?: InputMaybe<Scalars['String']>;
-  middle?: InputMaybe<Scalars['String']>;
-  patient: Scalars['Int'];
-  prefix?: InputMaybe<Scalars['String']>;
-  secondLast?: InputMaybe<Scalars['String']>;
-  secondMiddle?: InputMaybe<Scalars['String']>;
-  sequence: Scalars['Int'];
-  suffix?: InputMaybe<Scalars['String']>;
-  type: Scalars['String'];
+  asOf?: InputMaybe<Scalars['DateTime']['input']>;
+  degree?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['String']['input']>;
+  last?: InputMaybe<Scalars['String']['input']>;
+  middle?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['Int']['input'];
+  prefix?: InputMaybe<Scalars['String']['input']>;
+  secondLast?: InputMaybe<Scalars['String']['input']>;
+  secondMiddle?: InputMaybe<Scalars['String']['input']>;
+  sequence: Scalars['Int']['input'];
+  suffix?: InputMaybe<Scalars['String']['input']>;
+  type: Scalars['String']['input'];
 };
 
 export type UpdatePatientPhoneInput = {
-  asOf: Scalars['DateTime'];
-  comment?: InputMaybe<Scalars['String']>;
-  countryCode?: InputMaybe<Scalars['String']>;
-  email?: InputMaybe<Scalars['String']>;
-  extension?: InputMaybe<Scalars['String']>;
-  id: Scalars['Int'];
-  number?: InputMaybe<Scalars['String']>;
-  patient: Scalars['Int'];
-  type: Scalars['String'];
-  url?: InputMaybe<Scalars['String']>;
-  use: Scalars['String'];
+  asOf: Scalars['DateTime']['input'];
+  comment?: InputMaybe<Scalars['String']['input']>;
+  countryCode?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  extension?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['Int']['input'];
+  number?: InputMaybe<Scalars['String']['input']>;
+  patient: Scalars['Int']['input'];
+  type: Scalars['String']['input'];
+  url?: InputMaybe<Scalars['String']['input']>;
+  use: Scalars['String']['input'];
 };
 
 export type User = {
   __typename?: 'User';
-  nedssEntryId: Scalars['ID'];
+  nedssEntryId: Scalars['ID']['output'];
   recordStatusCd?: Maybe<RecordStatus>;
-  userFirstNm: Scalars['String'];
-  userId: Scalars['String'];
-  userLastNm: Scalars['String'];
+  userFirstNm: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
+  userLastNm: Scalars['String']['output'];
 };
 
 export type UserResults = {
   __typename?: 'UserResults';
   content: Array<Maybe<User>>;
-  total: Scalars['Int'];
+  total: Scalars['Int']['output'];
 };
 
 export enum UserType {
@@ -2496,7 +2498,7 @@ export type CreatePatientMutationVariables = Exact<{
 export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'PatientCreatedResponse', id: number, shortId: number } };
 
 export type DeletePatientMutationVariables = Exact<{
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
 }>;
 
 
@@ -2510,8 +2512,8 @@ export type DeletePatientAddressMutationVariables = Exact<{
 export type DeletePatientAddressMutation = { __typename?: 'Mutation', deletePatientAddress: { __typename?: 'PatientAddressChangeResult', patient: number, id: number } };
 
 export type DeletePatientEmailMutationVariables = Exact<{
-  patientId: Scalars['Int'];
-  personSeqNum: Scalars['Int'];
+  patientId: Scalars['Int']['input'];
+  personSeqNum: Scalars['Int']['input'];
 }>;
 
 
@@ -2631,7 +2633,7 @@ export type AssigningAuthoritiesQueryVariables = Exact<{ [key: string]: never; }
 export type AssigningAuthoritiesQuery = { __typename?: 'Query', assigningAuthorities: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
 
 export type CountiesQueryVariables = Exact<{
-  state?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -2653,7 +2655,7 @@ export type DetailedEthnicitiesQueryVariables = Exact<{ [key: string]: never; }>
 export type DetailedEthnicitiesQuery = { __typename?: 'Query', detailedEthnicities: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
 
 export type DetailedRacesQueryVariables = Exact<{
-  category?: InputMaybe<Scalars['String']>;
+  category?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -2801,7 +2803,7 @@ export type FindAllRaceValuesQueryVariables = Exact<{
 export type FindAllRaceValuesQuery = { __typename?: 'Query', findAllRaceValues: { __typename?: 'RaceResults', total: number, content: Array<{ __typename?: 'Race', codeDescTxt: string, id: { __typename?: 'RaceId', code: string } } | null> } };
 
 export type FindAllStateCountyCodeValuesQueryVariables = Exact<{
-  stateCode?: InputMaybe<Scalars['String']>;
+  stateCode?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Page>;
 }>;
 
@@ -2816,7 +2818,7 @@ export type FindAllUsersQueryVariables = Exact<{
 export type FindAllUsersQuery = { __typename?: 'Query', findAllUsers: { __typename?: 'UserResults', total: number, content: Array<{ __typename?: 'User', nedssEntryId: string, userId: string, userFirstNm: string, userLastNm: string, recordStatusCd?: RecordStatus | null } | null> } };
 
 export type FindContactsNamedByPatientQueryVariables = Exact<{
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
   page?: InputMaybe<Page>;
 }>;
 
@@ -2824,21 +2826,21 @@ export type FindContactsNamedByPatientQueryVariables = Exact<{
 export type FindContactsNamedByPatientQuery = { __typename?: 'Query', findContactsNamedByPatient?: { __typename?: 'ContactsNamedByPatientResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, namedOn: any, priority?: string | null, disposition?: string | null, event: string, condition: { __typename?: 'TracedCondition', id?: string | null, description?: string | null }, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
 
 export type FindDistinctCodedResultsQueryVariables = Exact<{
-  searchText: Scalars['String'];
+  searchText: Scalars['String']['input'];
 }>;
 
 
 export type FindDistinctCodedResultsQuery = { __typename?: 'Query', findDistinctCodedResults: Array<{ __typename?: 'CodedResult', name: string }> };
 
 export type FindDistinctResultedTestQueryVariables = Exact<{
-  searchText: Scalars['String'];
+  searchText: Scalars['String']['input'];
 }>;
 
 
 export type FindDistinctResultedTestQuery = { __typename?: 'Query', findDistinctResultedTest: Array<{ __typename?: 'ResultedTest', name: string }> };
 
 export type FindDocumentsForPatientQueryVariables = Exact<{
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
   page?: InputMaybe<Page>;
 }>;
 
@@ -2846,7 +2848,7 @@ export type FindDocumentsForPatientQueryVariables = Exact<{
 export type FindDocumentsForPatientQuery = { __typename?: 'Query', findDocumentsForPatient?: { __typename?: 'PatientDocumentResults', total: number, number: number, content: Array<{ __typename?: 'PatientDocument', document: string, receivedOn: any, type: string, sendingFacility: string, reportedOn: any, condition?: string | null, event: string, associatedWith?: { __typename?: 'PatientDocumentInvestigation', id: string, local: string } | null } | null> } | null };
 
 export type FindDocumentsRequiringReviewForPatientQueryVariables = Exact<{
-  patient: Scalars['Int'];
+  patient: Scalars['Int']['input'];
   page?: InputMaybe<DocumentRequiringReviewSortablePage>;
 }>;
 
@@ -2862,9 +2864,9 @@ export type FindInvestigationsByFilterQueryVariables = Exact<{
 export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, recordStatus?: string | null, lastChangeTime?: any | null, publicHealthCaseUid?: number | null, caseClassCd?: string | null, outbreakName?: string | null, caseTypeCd?: string | null, cdDescTxt?: string | null, progAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, rptFormCmpltTime?: any | null, activityToTime?: any | null, activityFromTime?: any | null, addTime?: any | null, publicHealthCaseLastChgTime?: any | null, addUserId?: number | null, lastChangeUserId?: number | null, currProcessStateCd?: string | null, investigationStatusCd?: string | null, moodCd?: string | null, notificationLocalId?: string | null, notificationAddTime?: any | null, notificationRecordStatusCd?: string | null, notificationLastChgTime?: any | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null } | null> } };
 
 export type FindInvestigationsForPatientQueryVariables = Exact<{
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
   page?: InputMaybe<Page>;
-  openOnly?: InputMaybe<Scalars['Boolean']>;
+  openOnly?: InputMaybe<Scalars['Boolean']['input']>;
 }>;
 
 
@@ -2879,7 +2881,7 @@ export type FindLabReportsByFilterQueryVariables = Exact<{
 export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations?: Array<{ __typename?: 'AssociatedInvestigation', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> } };
 
 export type FindMorbidityReportsForPatientQueryVariables = Exact<{
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
   page?: InputMaybe<Page>;
 }>;
 
@@ -2894,7 +2896,7 @@ export type FindNameSuffixesQueryVariables = Exact<{
 export type FindNameSuffixesQuery = { __typename?: 'Query', findNameSuffixes: { __typename?: 'KeyValuePairResults', total: number, content: Array<{ __typename?: 'KeyValuePair', key: string, value: string }> } };
 
 export type FindOpenInvestigationsForPatientQueryVariables = Exact<{
-  patientId: Scalars['Int'];
+  patientId: Scalars['Int']['input'];
   page?: InputMaybe<Page>;
 }>;
 
@@ -2902,7 +2904,7 @@ export type FindOpenInvestigationsForPatientQueryVariables = Exact<{
 export type FindOpenInvestigationsForPatientQuery = { __typename?: 'Query', findOpenInvestigationsForPatient: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, recordStatus?: string | null, lastChangeTime?: any | null, publicHealthCaseUid?: number | null, caseClassCd?: string | null, outbreakName?: string | null, caseTypeCd?: string | null, cdDescTxt?: string | null, progAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, rptFormCmpltTime?: any | null, activityToTime?: any | null, activityFromTime?: any | null, addTime?: any | null, publicHealthCaseLastChgTime?: any | null, addUserId?: number | null, lastChangeUserId?: number | null, currProcessStateCd?: string | null, investigationStatusCd?: string | null, moodCd?: string | null, notificationLocalId?: string | null, notificationAddTime?: any | null, notificationRecordStatusCd?: string | null, notificationLastChgTime?: any | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null } | null> } };
 
 export type FindOrganizationByIdQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
@@ -2917,7 +2919,7 @@ export type FindOrganizationsByFilterQueryVariables = Exact<{
 export type FindOrganizationsByFilterQuery = { __typename?: 'Query', findOrganizationsByFilter: { __typename?: 'OrganizationResults', total: number, content: Array<{ __typename?: 'Organization', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, standardIndustryClassCd?: string | null, standardIndustryDescTxt?: string | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, displayNm?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, zipCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null, electronicInd?: string | null, edxInd?: string | null } | null> } };
 
 export type FindPatientNamedByContactQueryVariables = Exact<{
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
   page?: InputMaybe<Page>;
 }>;
 
@@ -2925,15 +2927,15 @@ export type FindPatientNamedByContactQueryVariables = Exact<{
 export type FindPatientNamedByContactQuery = { __typename?: 'Query', findPatientNamedByContact?: { __typename?: 'PatientNamedByContactResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, namedOn: any, priority?: string | null, disposition?: string | null, event: string, condition: { __typename?: 'TracedCondition', id?: string | null, description?: string | null }, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
 
 export type FindPatientProfileQueryVariables = Exact<{
-  asOf?: InputMaybe<Scalars['DateTime']>;
+  asOf?: InputMaybe<Scalars['DateTime']['input']>;
   page?: InputMaybe<Page>;
   page1?: InputMaybe<Page>;
   page2?: InputMaybe<Page>;
   page3?: InputMaybe<Page>;
   page4?: InputMaybe<Page>;
   page5?: InputMaybe<Page>;
-  patient?: InputMaybe<Scalars['ID']>;
-  shortId?: InputMaybe<Scalars['Int']>;
+  patient?: InputMaybe<Scalars['ID']['input']>;
+  shortId?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
@@ -2948,7 +2950,7 @@ export type FindPatientsByFilterQueryVariables = Exact<{
 export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, state?: string | null, zipcode?: string | null }> }> } };
 
 export type FindPlaceByIdQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
@@ -2963,7 +2965,7 @@ export type FindPlacesByFilterQueryVariables = Exact<{
 export type FindPlacesByFilterQuery = { __typename?: 'Query', findPlacesByFilter: Array<{ __typename?: 'Place', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: number | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, nm?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, zipCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null } | null> };
 
 export type FindSnomedCodedResultsQueryVariables = Exact<{
-  searchText: Scalars['String'];
+  searchText: Scalars['String']['input'];
   page?: InputMaybe<Page>;
 }>;
 
@@ -2971,7 +2973,7 @@ export type FindSnomedCodedResultsQueryVariables = Exact<{
 export type FindSnomedCodedResultsQuery = { __typename?: 'Query', findSnomedCodedResults: { __typename?: 'SnomedCodedResults', total: number, content: Array<{ __typename?: 'SnomedCode', id?: string | null, snomedDescTxt?: string | null } | null> } };
 
 export type FindTreatmentsForPatientQueryVariables = Exact<{
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
   page?: InputMaybe<Page>;
 }>;
 
@@ -2979,7 +2981,7 @@ export type FindTreatmentsForPatientQueryVariables = Exact<{
 export type FindTreatmentsForPatientQuery = { __typename?: 'Query', findTreatmentsForPatient?: { __typename?: 'PatientTreatmentResults', total: number, number: number, content: Array<{ __typename?: 'PatientTreatment', treatment: string, createdOn: any, provider?: string | null, treatedOn: any, description: string, event: string, associatedWith: { __typename?: 'PatientTreatmentInvestigation', id: string, local: string, condition: string } } | null> } | null };
 
 export type FindVaccinationsForPatientQueryVariables = Exact<{
-  patient: Scalars['ID'];
+  patient: Scalars['ID']['input'];
   page?: InputMaybe<Page>;
 }>;
 

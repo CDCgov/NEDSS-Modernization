@@ -3,12 +3,11 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "cdc-sandbox/**"
-      - "docker-compose.yml"
-      - "**.md"
-      - ".github/workflows/**"
-      - "apps/nbs-gateway/**"
+    paths:
+      - "apps/modernization-api/**"
+      - "apps/modernization-ui/**"
+      - "libs/accumulation/**"
+      - "!libs/testing/**"
 
 jobs:
   sonar_scan:
@@ -33,12 +32,12 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   call-update-helm:
-    name: Request DEV deployment
+    name: Request INT1 deployment
     needs: call-build-microservice-container-workflow
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
     with:
       microservice_name: modernization-api
-      values_file_with_path: charts/modernization-api/values-dev.yaml
+      values_file_with_path: charts/modernization-api/values-int1.yaml
       new_image_tag: ${{ needs.call-build-microservice-container-workflow.outputs.output_image_tag }}
     secrets:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}

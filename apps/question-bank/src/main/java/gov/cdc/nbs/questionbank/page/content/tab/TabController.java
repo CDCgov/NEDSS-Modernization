@@ -2,48 +2,55 @@ package gov.cdc.nbs.questionbank.page.content.tab;
 
 
 import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.response.DeleteTabResponse;
-import gov.cdc.nbs.questionbank.page.content.tab.response.UpdateTabResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.response.CreateTabResponse;
+import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
 
 
 @RestController
-@RequestMapping("/api/v1/pages/{page}/tabs/")
+@RequestMapping("/api/v1/pages/{page}/tabs")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class TabController {
 
     private final TabCreator creator;
+    private final TabUpdater updater;
+    private final TabDeleter deleter;
 
     private final UserDetailsProvider userDetailsProvider;
 
-    public TabController(TabCreator createTabService, UserDetailsProvider userDetailsProvider) {
+    public TabController(
+            final TabCreator creator,
+            final TabUpdater updater,
+            final UserDetailsProvider userDetailsProvider,
+            final TabDeleter deleter) {
         this.userDetailsProvider = userDetailsProvider;
-        this.creator = createTabService;
+        this.creator = creator;
+        this.updater = updater;
+        this.deleter = deleter;
     }
 
     @PostMapping
-    @ResponseBody
-    public CreateTabResponse createTab(
+    public Tab createTab(
             @PathVariable("page") Long page,
             @RequestBody CreateTabRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return creator.createTab(page, userId, request);
+        return creator.create(page, userId, request);
     }
 
     @DeleteMapping("{tabId}")
-    @ResponseBody
-    public DeleteTabResponse deleteTab(@PathVariable("page") Long page, @PathVariable Long tabId) {
-        return creator.deleteTab(page, tabId);
+    public void deleteTab(@PathVariable("page") Long page, @PathVariable Long tabId) {
+        deleter.delete(page, tabId);
     }
 
     @PutMapping("{tabId}")
-    @ResponseBody
-    public UpdateTabResponse updateTab(@PathVariable Long tabId, @RequestBody UpdateTabRequest request) {
-        return creator.updateTab(tabId, request);
+    public Tab updateTab(
+            @PathVariable("page") Long page,
+            @PathVariable Long tabId,
+            @RequestBody UpdateTabRequest request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return updater.update(page, tabId, request, userId);
     }
 
 }

@@ -2,14 +2,13 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { Counter } from '../Counter/Counter';
 import './Section.scss';
 import { useRef, useState } from 'react';
-import { PageSubSection as SubsectionProps } from '../../generated';
+import { PagesSection } from '../../generated';
 import { SubsectionComponent as Subsection } from '../Subsection/Subsection';
-import { PageSection as SectionProps } from '../../generated';
 import AddSectionModal from '../AddSection/AddSectionModal';
 import { useParams } from 'react-router-dom';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
 
-export const SectionComponent = ({ section, onAddSection }: { section: SectionProps; onAddSection: () => void }) => {
+export const SectionComponent = ({ section, onAddSection }: { section: PagesSection; onAddSection: () => void }) => {
     const [open, setOpen] = useState(true);
     const { pageId } = useParams();
     const addSectionModalRef = useRef<ModalRef>(null);
@@ -20,7 +19,7 @@ export const SectionComponent = ({ section, onAddSection }: { section: SectionPr
                 <div className="section__header">
                     <div className="section__header--left">
                         <h2>{section.name}</h2>
-                        <Counter count={section.sectionSubSections?.length || 0} />
+                        <Counter count={section.subSections?.length || 0} />
                     </div>
                     <div className="section__header--right">
                         <ModalToggleButton type="button" outline modalRef={addSectionModalRef} opener>
@@ -43,8 +42,8 @@ export const SectionComponent = ({ section, onAddSection }: { section: SectionPr
                 </div>
                 {open ? (
                     <div className="section__body">
-                        {section.sectionSubSections?.map((subsection: SubsectionProps, i: number) => {
-                            if (subsection.visible === 'T') {
+                        {section.subSections?.map((subsection, i) => {
+                            if (subsection.visible) {
                                 return <Subsection key={i} subsection={subsection} />;
                             } else {
                                 return;

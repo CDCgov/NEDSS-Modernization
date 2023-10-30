@@ -78,7 +78,7 @@ public class PatientProfileRaceSteps {
     public void the_profile_has_no_associated_races() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.display());
 
         GraphQLPage page = new GraphQLPage(1);
 
@@ -91,7 +91,7 @@ public class PatientProfileRaceSteps {
         long patient = this.patients.one().id();
 
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.display());
 
         GraphQLPage page = new GraphQLPage(1);
 

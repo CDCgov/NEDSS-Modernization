@@ -168,6 +168,84 @@ const businessRuleFieldList = [
         value: 'id'
     }
 ];
+const questionFieldList = [
+    {
+        name: 'Unique Name',
+        value: 'UniqueName'
+    },
+    {
+        name: 'Unique ID',
+        value: 'UniqueId'
+    },
+    {
+        name: 'Subgroup',
+        value: 'Subgroup'
+    },
+    {
+        name: 'Type',
+        value: 'Type'
+    },
+    {
+        name: 'Label',
+        value: 'Label'
+    },
+    {
+        name: 'Status',
+        value: 'Status'
+    }
+];
+const valueSetFieldList = [
+    {
+        name: 'Value set name',
+        value: 'ValueSetName'
+    },
+    {
+        name: 'Value set description',
+        value: 'ValueSetDescription'
+    },
+    {
+        name: 'Type',
+        value: 'Type'
+    },
+    {
+        name: 'Value set code',
+        value: 'ValueSetCode'
+    },
+    {
+        name: 'Status',
+        value: 'Status'
+    }
+];
+const conditionFieldList = [
+    {
+        name: 'Condition',
+        value: 'Condition'
+    },
+    {
+        name: 'Code',
+        value: 'Code'
+    },
+    {
+        name: 'Program area',
+        value: 'ProgramArea'
+    },
+    {
+        name: 'Condition Family',
+        value: 'ConditionFamily'
+    },
+    {
+        name: 'Coinfection group',
+        value: 'CoinfectionGroup'
+    },
+    {
+        name: 'NND',
+        value: 'NND'
+    },
+    {
+        name: 'Status',
+        value: 'Status'
+    }
+];
 const initOperator = [
     {
         name: 'Starts with',
@@ -232,5 +310,8 @@ export {
     arithOperator,
     dateOperator,
     initOperator,
-    businessRuleFieldList
+    businessRuleFieldList,
+    questionFieldList,
+    valueSetFieldList,
+    conditionFieldList
 };

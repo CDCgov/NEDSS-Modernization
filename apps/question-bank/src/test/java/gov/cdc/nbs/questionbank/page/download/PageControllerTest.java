@@ -37,7 +37,7 @@ class PageControllerTest {
     @Test
     void downloadPageLibraryPDFTest() throws Exception {
 
-        PageController pageController = new PageController(pageUpdater, finder, pageFinder, creator, stateChange,
+        PageController pageController = new PageController(pageUpdater, finder, creator, stateChange,
                 pageDownloader, userDetailsProvider);
 
         byte[] resp = "pagedownloader".getBytes();

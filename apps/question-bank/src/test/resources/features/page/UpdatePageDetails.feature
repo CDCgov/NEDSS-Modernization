@@ -1,9 +1,11 @@
 @update_page_details
 Feature: Update page details
 
-    Scenario: I can update a page's details
+    Background:
         Given pages exist
-        And I am an admin user
+
+    Scenario: I can update a page's details
+        Given I am an admin user
         When I send an update page details request
         Then the page details are updated
 

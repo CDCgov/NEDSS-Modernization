@@ -39,12 +39,13 @@ class PatientProfileTupleMapper {
             Objects.requireNonNull(
                 tuple.get(this.tables.patient().personParentUid.recordStatusCd),
                 "A patient recordStatusCd is required"
-            ).toString();
+            ).display();
 
         return new PatientProfile(
             identifier,
             local,
             version,
-            recordStatusCd);
+            recordStatusCd
+        );
     }
 }

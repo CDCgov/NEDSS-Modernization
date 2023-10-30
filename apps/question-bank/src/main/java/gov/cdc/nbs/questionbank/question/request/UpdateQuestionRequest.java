@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.question.request;
 
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
+import gov.cdc.nbs.questionbank.entity.question.UnitType;
 
 public record UpdateQuestionRequest(
         String uniqueName, // editable if not in use
@@ -44,5 +44,12 @@ public record UpdateQuestionRequest(
         String codeSystem,
         boolean requiredInMessage,
         String hl7DataType) {
+
+    public enum QuestionType {
+        TEXT,
+        NUMERIC,
+        DATE,
+        CODED
+    }
 
 }

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Component
@@ -27,7 +28,8 @@ public class Authenticated {
   public Authenticated(
       final Active<ActiveUser> active,
       final NBSUserDetailsResolver resolver,
-      final EntityManager entityManager) {
+      final EntityManager entityManager
+  ) {
     this.active = active;
     this.resolver = resolver;
     this.entityManager = entityManager;
@@ -37,17 +39,30 @@ public class Authenticated {
     SecurityContextHolder.getContext().setAuthentication(null);
   }
 
-  private Authentication authentication() {
+  private NbsUserDetails userDetails() {
     ActiveUser activeUser = this.active.active();
 
     AuthUser authUser = this.entityManager.find(AuthUser.class, activeUser.id());
 
-    NbsUserDetails details = resolver.resolve(authUser);
+    return resolver.resolve(authUser);
+  }
+
+  private Authentication authentication(final NbsUserDetails details) {
+    return new PreAuthenticatedAuthenticationToken(
+        details,
+        null,
+        details.getAuthorities()
+    );
+  }
+
+  private Authentication authentication() {
+    NbsUserDetails details = userDetails();
 
     return new PreAuthenticatedAuthenticationToken(
         details,
         null,
-        details.getAuthorities());
+        details.getAuthorities()
+    );
   }
 
   /**
@@ -64,6 +79,20 @@ public class Authenticated {
 
     try {
       return action.get();
+    } finally {
+      reset();
+    }
+
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public <T> T using(final Function<NbsUserDetails, T> action) {
+    NbsUserDetails details = userDetails();
+    Authentication authentication = authentication(details);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    try {
+      return action.apply(details);
     } finally {
       reset();
     }

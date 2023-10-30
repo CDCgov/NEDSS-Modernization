@@ -1,26 +1,26 @@
 import { render } from '@testing-library/react';
-import { PageSection } from 'apps/page-builder/generated';
+import { PagesSection } from 'apps/page-builder/generated';
 import { SectionComponent } from './Section';
 
 describe('when Section renders', () => {
-    const section: PageSection = {
+    const section: PagesSection = {
         id: 123456,
         name: 'Test Section',
-        sectionSubSections: [
+        subSections: [
             {
                 id: 1234,
                 name: 'Sub 1',
-                pageQuestions: [],
-                visible: 'T'
+                questions: [],
+                visible: true
             },
             {
                 id: 1234,
                 name: 'Sub 1',
-                pageQuestions: [],
-                visible: 'T'
+                questions: [],
+                visible: true
             }
         ],
-        visible: 'T'
+        visible: true
     };
     const mockFunction = jest.fn();
 

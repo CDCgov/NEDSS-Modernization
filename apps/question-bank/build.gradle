@@ -6,10 +6,18 @@ plugins {
     alias libs.plugins.springDependencies
 }
 
-group = 'gov.cdc'
+group = 'gov.cdc.nbs.page.builder'
 version = '0.0.1-SNAPSHOT'
 
 apply from: "${rootDir}/gradle/cucumber-logging.gradle"
+
+bootJar {
+    manifest {
+        attributes 'API-Version': archiveVersion
+    }
+
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}
 
 test {
     // always re-run tests
@@ -39,26 +47,37 @@ testing {
             useJUnitJupiter()
 
             dependencies {
-                implementation libs.bundles.jpa
-                implementation libs.bundles.testing
-                implementation libs.spring.test
-                implementation libs.spring.kafka.test
-                implementation 'org.awaitility:awaitility:4.2.0'
-
-
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
+
+                implementation libs.bundles.testing
+                implementation libs.spring.test
+                implementation 'org.awaitility:awaitility:4.2.0'
+
                 implementation libs.bundles.testcontainers
 
                 implementation libs.bundles.cucumber
 
+                implementation project(':testing:support')
+                implementation project(':testing:identity')
+                implementation project(':testing:auth')
+                implementation project(':testing:auth-cucumber')
+                implementation project(':testing:http-interaction')
             }
         }
     }
 }
 
-dependencies {    
-    // Spring
+dependencies {
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+
+    implementation project(':authentication')
+    implementation project(':audit')
+    implementation project(':id-generator')
+
+    implementation libs.snake.yaml
+    implementation libs.guava
+
     implementation libs.springBoot.web
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
@@ -66,7 +85,7 @@ dependencies {
     implementation libs.bundles.security
 
     // swagger
-    implementation "io.springfox:springfox-boot-starter:3.0.0"
+    implementation libs.bundles.swagger
 
     // querydsl
     implementation libs.bundles.queryDSL
@@ -79,34 +98,18 @@ dependencies {
     // database
     implementation libs.mssql.jdbc
 
-    // Kafka
-    implementation libs.spring.kafka
-
     // lombok
     compileOnly libs.lombok
     annotationProcessor libs.lombok
     
     
     // csv
-      implementation "org.apache.commons:commons-csv:1.9.0"
+    implementation "org.apache.commons:commons-csv:1.9.0"
 
     // itext pdf generation
-    implementation "com.itextpdf:itextpdf:5.5.13.3"
-    
-
-    
-
-    // auth
-    implementation project(':authentication')
-
-    // id generation
-    implementation project(':id-generator')
-    
+    implementation libs.itextpdf
 
 }
-
-compileJava.mustRunAfter(":authentication:build")
-compileJava.mustRunAfter(":id-generator:build")
 
 compileJava {
     options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'

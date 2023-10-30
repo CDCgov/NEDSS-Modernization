@@ -2,13 +2,21 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id 'jvm-test-suite'
-    id 'org.springframework.boot' version '3.1.4'
+    id 'org.springframework.boot' version '3.1.5'
 }
 
 apply plugin: 'io.spring.dependency-management'
 
-group = 'gov.cdc'
+group = 'gov.cdc.nbs.gateway'
 version = '0.0.1-SNAPSHOT'
+
+bootJar {
+    manifest {
+        attributes 'API-Version': archiveVersion
+    }
+
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}
 
 testing {
     suites {
@@ -27,7 +35,7 @@ dependencies {
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation platform("org.springframework.cloud:spring-cloud-dependencies:2022.0.4")
-
+    implementation libs.snake.yaml
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 }
 

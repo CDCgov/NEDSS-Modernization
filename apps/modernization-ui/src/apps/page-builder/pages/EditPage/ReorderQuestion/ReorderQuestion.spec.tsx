@@ -1,28 +1,25 @@
-import { render } from "@testing-library/react";
-import { ReorderQuestion } from "./ReorderQuestion";
-import { PageQuestion } from "apps/page-builder/generated/models/PageQuestion";
+import { render } from '@testing-library/react';
+import { ReorderQuestion } from './ReorderQuestion';
+import { PagesQuestion } from 'apps/page-builder/generated';
 
 describe('when ReorderSubsection renders', () => {
-    const question: PageQuestion = {
+    const question: PagesQuestion = {
         allowFutureDates: true,
-        coInection: 'asdf',
+        coInfection: true,
         dataType: 'asdf',
         description: 'asdf',
-        dispay: 'T',
-        enabled: 'asdf',
+        display: true,
+        enabled: true,
         id: 123,
-        labelOnScreen: 'asdf',
         mask: 'asdf',
         name: 'Test Question',
-        questionIdentifier: 'asdf',
-        questionToolTip: 'asdf',
-        questionType: 'asdf',
-        required: 'asdf',
-        subGroup: 'asdf',
-    }
-    const { getByText } = render (
-        <ReorderQuestion question={question} />
-    )
+        question: 'asdf',
+        tooltip: 'asdf',
+        standard: 'asdf',
+        required: false,
+        subGroup: 'asdf'
+    };
+    const { getByText } = render(<ReorderQuestion question={question} />);
     it('should display Question Name', () => {
         expect(getByText('Test Question')).toBeTruthy();
     });

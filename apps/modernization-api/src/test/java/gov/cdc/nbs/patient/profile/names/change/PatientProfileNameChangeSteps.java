@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.names.change;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.entity.odse.PersonNameId;

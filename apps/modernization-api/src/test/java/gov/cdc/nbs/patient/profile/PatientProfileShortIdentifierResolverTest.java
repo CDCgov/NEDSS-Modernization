@@ -24,7 +24,7 @@ class PatientProfileShortIdentifierResolverTest {
         PatientProfileShortIdentifierResolver resolver =
             new PatientProfileShortIdentifierResolver(shortIdentifierResolver);
 
-        PatientProfile profile = new PatientProfile(3911L, "local", (short) 67, RecordStatus.ACTIVE.toString());
+        PatientProfile profile = new PatientProfile(3911L, "local", (short) 67, RecordStatus.ACTIVE.display());
 
         OptionalLong actual = resolver.resolve(profile);
 

@@ -115,7 +115,8 @@ export const SexBirth = ({ patient }: Props) => {
         fetch({
             variables: {
                 patient: patient
-            }
+            },
+            notifyOnNetworkStatusChange: true
         });
     }, [patient]);
 

@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type UpdateTabRequest = {
-    questionLabel?: string;
-    visible?: string;
+    label: string;
+    visible: boolean;
 };
 

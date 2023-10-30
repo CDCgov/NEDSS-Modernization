@@ -2,10 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateTabRequest } from '../models/CreateTabRequest';
-import type { CreateTabResponse } from '../models/CreateTabResponse';
-import type { DeleteTabResponse } from '../models/DeleteTabResponse';
+import type { Tab } from '../models/Tab';
 import type { UpdateTabRequest } from '../models/UpdateTabRequest';
-import type { UpdateTabResponse } from '../models/UpdateTabResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -15,7 +13,7 @@ export class TabControllerService {
 
     /**
      * createTab
-     * @returns CreateTabResponse OK
+     * @returns Tab OK
      * @returns any Created
      * @throws ApiError
      */
@@ -33,10 +31,10 @@ export class TabControllerService {
          * request
          */
         request: CreateTabRequest,
-    }): CancelablePromise<CreateTabResponse | any> {
+    }): CancelablePromise<Tab | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/tabs/',
+            url: '/nbs/page-builder/api/v1/pages/{page}/tabs',
             path: {
                 'page': page,
             },
@@ -54,16 +52,21 @@ export class TabControllerService {
 
     /**
      * updateTab
-     * @returns UpdateTabResponse OK
+     * @returns Tab OK
      * @returns any Created
      * @throws ApiError
      */
     public static updateTabUsingPut({
         authorization,
+        page,
         request,
         tabId,
     }: {
         authorization: any,
+        /**
+         * page
+         */
+        page: number,
         /**
          * request
          */
@@ -72,11 +75,12 @@ export class TabControllerService {
          * tabId
          */
         tabId: number,
-    }): CancelablePromise<UpdateTabResponse | any> {
+    }): CancelablePromise<Tab | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/pages/{page}/tabs/{tabId}',
             path: {
+                'page': page,
                 'tabId': tabId,
             },
             headers: {
@@ -93,7 +97,7 @@ export class TabControllerService {
 
     /**
      * deleteTab
-     * @returns DeleteTabResponse OK
+     * @returns any OK
      * @throws ApiError
      */
     public static deleteTabUsingDelete({
@@ -110,7 +114,7 @@ export class TabControllerService {
          * tabId
          */
         tabId: number,
-    }): CancelablePromise<DeleteTabResponse> {
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/nbs/page-builder/api/v1/pages/{page}/tabs/{tabId}',

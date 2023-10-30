@@ -189,14 +189,9 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             fieldSize: questionData.fieldSize,
             mask: questionData.mask
         };
-        QuestionControllerService.createQuestionUsingPost({
-            authorization,
-            request
-        }).then((response: any) => {
-            showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
-            resetInput();
-            return response;
-        });
+        // TODO based on the type selected call one of the questionAPI methods
+        // such as createDateQuestion()
+        console.log('ensure', request);
     };
     const handleUpdateQuestion = () => {
         const request = {
