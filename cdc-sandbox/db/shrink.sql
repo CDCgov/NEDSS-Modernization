@@ -1,5 +1,19 @@
 -- THE FOLLOWING SQL WILL SHRINK ANY DATABASE TO AN ARBITRARY NUMBER OF PATIENTS
 
+-- The physical size of the current production anonymized masters are too unwieldy (restore time, size, etc.). 
+-- This script pares down any database to an arbitrary size with the most performant method. 
+-- Since tables are very large any method using deletes would take forever to run. 
+-- So we chose to rebuild from the ground up while satisfying any constraints 
+-- (that the subset of patients requires) in the most performant manner as possible as follows:
+
+-- 1) analyze all schemas and identify largest schemas/tables and start with biggest and work our way down
+-- 2) for each schema remove all database constraints
+-- 3) rebuild tables without indexes (while maintaining copies of the old and creating new unique key names to prevent collisions)
+-- 4) bulk insert with select intos from old tables (fast since no indexes)
+-- 5) re-add/build indexes (with new unique names to avoid collisions)
+-- 6) rename tables (switch old and new)
+-- 7) remove old tables
+
 -- THESE WERE THE SIZES FOR EACH SCHEMA BASED ON A FULL CDC ANONYMIZED DB:
 
 -- NBS_DataIngest 16M
