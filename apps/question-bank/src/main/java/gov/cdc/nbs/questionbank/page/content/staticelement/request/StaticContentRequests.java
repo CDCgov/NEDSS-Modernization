@@ -26,4 +26,8 @@ public interface StaticContentRequests {
             Long subSectionId) {
     }
 
+    public record DeleteElement(Long componentId) {
+    
+    }
+
 }

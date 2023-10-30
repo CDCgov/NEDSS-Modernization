@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteStaticElementRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.DeleteStaticResponse;
@@ -88,7 +87,7 @@ public class PageStaticController {
     @PostMapping("/delete-static-element")
     public DeleteStaticResponse deleteStaticElement(
             @PathVariable("page") Long pageId,
-            @RequestBody DeleteStaticElementRequest request) {
+            @RequestBody StaticContentRequests.DeleteElement request) {
         return pageStaticDeletor.deleteStaticElement(pageId, request) ? new DeleteStaticResponse("delete success")
                 : new DeleteStaticResponse("delete fail");
     }

@@ -7,7 +7,7 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.DeleteStaticElementException;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteStaticElementRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 
 @Component
 @Transactional
@@ -22,7 +22,7 @@ public class PageStaticDeletor {
         this.entityManager = entityManager;
     }
 
-    public boolean deleteStaticElement(Long pageId, DeleteStaticElementRequest request) {
+    public boolean deleteStaticElement(Long pageId, StaticContentRequests.DeleteElement request) {
         if (pageId == null) {
             throw new DeleteStaticElementException("Page is required");
         }

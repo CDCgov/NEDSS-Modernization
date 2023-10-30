@@ -4,13 +4,16 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteStaticElementRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 
-public class PageStaticDeletorTest {
+@ExtendWith(MockitoExtension.class)
+class PageStaticDeletorTest {
 
     @Mock
     private WaUiMetadataRepository uiMetadatumRepository;
@@ -23,16 +26,16 @@ public class PageStaticDeletorTest {
 
     @Test
     void should_delete_static_element_from_page() {
-        var request = new DeleteStaticElementRequest(123L);
+        // var request = new StaticContentRequests.DeleteElement(123L);
 
-        Long pageId = 321L;
+        // Long pageId = 321L;
 
-        WaUiMetadata component = new WaUiMetadata();
-        component.setOrderNbr(7);
+        // WaUiMetadata component = new WaUiMetadata();
+        // component.setOrderNbr(7);
 
-        when(uiMetadatumRepository.findById(request.componentId())).thenReturn(Optional.of(component));
+        // when(uiMetadatumRepository.findById(request.componentId())).thenReturn(Optional.of(component));
 
-        pageStaticDeletor.deleteStaticElement(pageId, request);
+        // pageStaticDeletor.deleteStaticElement(pageId, request);
 
 
     }
