@@ -2,25 +2,25 @@ package gov.cdc.nbs.questionbank.page.content.staticelement.request;
 
 import org.springframework.lang.Nullable;
 
-public interface PageStaticRequests {
+public interface StaticContentRequests {
 
     String adminComments();
 
     Long subSectionId();
 
-    public record AddStaticElementDefaultRequest(
+    public record AddDefault(
             @Nullable String adminComments,
             Long subSectionId) {
     }
 
-    public record AddStaticHyperLinkRequest(
+    public record AddHyperlink(
             String label,
             String linkUrl,
             @Nullable String adminComments,
             Long subSectionId) {
     }
 
-    public record AddStaticReadOnlyCommentsRequest(
+    public record AddReadOnlyComments(
             String commentsText,
             @Nullable String adminComments,
             Long subSectionId) {

@@ -8,7 +8,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.PageStaticRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
@@ -45,7 +45,7 @@ public class AddLineSeparatorSteps {
         try {
             lineSeparatorId = pageStaticController.addStaticLineSeparator(
                     temp.getId(),
-                    new PageStaticRequests.AddStaticElementDefaultRequest(null, subsection.getId()))
+                    new StaticContentRequests.AddDefault(null, subsection.getId()))
                     .componentId();
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);

@@ -246,13 +246,10 @@ public class WaUiMetadata {
 
   public WaUiMetadata(PageContentCommand.AddReadOnlyComments command) {
     // Defaults
-    this.standardNndIndCd = 'F';
-    this.enableInd = "T";
-    this.displayInd = "T";
-    this.requiredInd = "F";
+    this();
+
+    this.publishIndCd = null;
     this.entryMethod = null;
-    this.recordStatusCd = ACTIVE;
-    this.versionCtrlNbr = 1;
     // User specified
     this.waTemplateUid = command.page();
     this.orderNbr = command.orderNumber();
@@ -266,13 +263,10 @@ public class WaUiMetadata {
 
   public WaUiMetadata(PageContentCommand.AddHyperLink command) {
     // Defaults
-    this.standardNndIndCd = 'F';
-    this.enableInd = "T";
-    this.displayInd = "T";
-    this.requiredInd = "F";
+    this();
+
+    this.publishIndCd = null;
     this.entryMethod = null;
-    this.recordStatusCd = ACTIVE;
-    this.versionCtrlNbr = 1;
 
     // User specified
     this.waTemplateUid = command.page();
@@ -288,13 +282,10 @@ public class WaUiMetadata {
 
   public WaUiMetadata(PageContentCommand.AddLineSeparator command) {
     // Defaults
-    this.standardNndIndCd = 'F';
-    this.enableInd = "T";
-    this.displayInd = "T";
-    this.requiredInd = "F";
+    this();
+
+    this.publishIndCd = null;
     this.entryMethod = null;
-    this.recordStatusCd = ACTIVE;
-    this.versionCtrlNbr = 1;
 
 
     // User specified
@@ -309,13 +300,10 @@ public class WaUiMetadata {
 
   public WaUiMetadata(PageContentCommand.AddOrignalElectronicDocList command) {
     // Defaults
-    this.standardNndIndCd = 'F';
-    this.enableInd = "T";
-    this.displayInd = "T";
-    this.requiredInd = "F";
+    this();
+
+    this.publishIndCd = null;
     this.entryMethod = null;
-    this.recordStatusCd = ACTIVE;
-    this.versionCtrlNbr = 1;
 
 
     // User specified
@@ -330,13 +318,10 @@ public class WaUiMetadata {
 
   public WaUiMetadata(PageContentCommand.AddReadOnlyParticipantsList command) {
     // Defaults
-    this.standardNndIndCd = 'F';
-    this.enableInd = "T";
-    this.displayInd = "T";
-    this.requiredInd = "F";
+    this();
+
+    this.publishIndCd = null;
     this.entryMethod = null;
-    this.recordStatusCd = ACTIVE;
-    this.versionCtrlNbr = 1;
 
 
     // User specified

@@ -8,7 +8,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.PageStaticRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
@@ -42,7 +42,7 @@ public class AddHyperLinkSteps {
         try {
             hyperLinkId = pageStaticController.addStaticHyperLink(
                     temp.getId(),
-                    new PageStaticRequests.AddStaticHyperLinkRequest(
+                    new StaticContentRequests.AddHyperlink(
                             label,
                             link,
                             null,

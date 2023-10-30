@@ -23,7 +23,7 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.PageStaticRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 
 @ExtendWith(MockitoExtension.class)
 class PageStaticCreatorTest {
@@ -39,7 +39,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_line_separator_to_page() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = 123L;
         when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -69,7 +69,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_line_separator_if_not_draft() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = 123L;
         WaTemplate temp = new WaTemplate();
@@ -84,7 +84,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_line_separator_if_page_null() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = null;
         Long userId = 999L;
@@ -96,7 +96,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_line_separator_if_subsection_invalid() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, null);
+        var request = new StaticContentRequests.AddDefault(null, null);
 
         Long pageId = 123L;
         WaTemplate temp = new WaTemplate();
@@ -116,7 +116,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_hyperlink_to_page() {
-        var request = new PageStaticRequests.AddStaticHyperLinkRequest(
+        var request = new StaticContentRequests.AddHyperlink(
                 "google",
                 "google.com",
                 null,
@@ -152,7 +152,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_hyperlink_if_not_draft() {
-        var request = new PageStaticRequests.AddStaticHyperLinkRequest(
+        var request = new StaticContentRequests.AddHyperlink(
                 "google",
                 "google.com",
                 null,
@@ -171,7 +171,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_hyperlink_if_page_null() {
-        var request = new PageStaticRequests.AddStaticHyperLinkRequest(
+        var request = new StaticContentRequests.AddHyperlink(
                 "google",
                 "google.com",
                 null,
@@ -185,7 +185,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_hyperlink_if_subsection_invalid() {
-        var request = new PageStaticRequests.AddStaticHyperLinkRequest(
+        var request = new StaticContentRequests.AddHyperlink(
                 "google",
                 "google.com",
                 null,
@@ -209,7 +209,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_read_only_comments_to_page() {
-        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest(
+        var request = new StaticContentRequests.AddReadOnlyComments(
                 "comments test",
                 null,
                 123L);
@@ -244,7 +244,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_read_only_comments_if_not_draft() {
-        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest(
+        var request = new StaticContentRequests.AddReadOnlyComments(
                 "comments test",
                 null,
                 123L);
@@ -263,7 +263,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_read_only_comments_if_page_null() {
-        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest(
+        var request = new StaticContentRequests.AddReadOnlyComments(
                 "comments test",
                 null,
                 123L);
@@ -277,7 +277,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_read_only_comments_if_subsection_invalid() {
-        var request = new PageStaticRequests.AddStaticReadOnlyCommentsRequest(
+        var request = new StaticContentRequests.AddReadOnlyComments(
                 "comments test",
                 null,
                 123L);
@@ -301,7 +301,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_read_only_participants_list() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = 123L;
         when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -331,7 +331,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_read_only_participants_list_if_not_draft() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = 123L;
         WaTemplate temp = new WaTemplate();
@@ -347,7 +347,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_read_only_participants_list_if_page_null() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = null;
         Long userId = 999L;
@@ -358,7 +358,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_read_only_participants_list_if_subsection_invalid() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = 123L;
         WaTemplate temp = new WaTemplate();
@@ -379,7 +379,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_add_original_electronic_doc_list() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = 123L;
         when(entityManager.find(WaTemplate.class, pageId)).thenReturn(new WaTemplate());
@@ -409,7 +409,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_original_electronic_doc_list_if_not_draft() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = 123L;
         WaTemplate temp = new WaTemplate();
@@ -425,7 +425,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_original_electronic_doc_list_if_page_null() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = null;
         Long userId = 999L;
@@ -436,7 +436,7 @@ class PageStaticCreatorTest {
 
     @Test
     void should_not_create_original_electronic_doc_list_if_subsection_invalid() {
-        var request = new PageStaticRequests.AddStaticElementDefaultRequest(null, 10L);
+        var request = new StaticContentRequests.AddDefault(null, 10L);
 
         Long pageId = 123L;
         WaTemplate temp = new WaTemplate();
