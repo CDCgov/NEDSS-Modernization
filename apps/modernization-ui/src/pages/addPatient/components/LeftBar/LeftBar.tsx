@@ -1,5 +1,5 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Config } from 'config';
+import { Link } from 'components/Link';
 
 export enum ACTIVE_TAB {
     PATIENT = 'patient',
@@ -7,8 +7,6 @@ export enum ACTIVE_TAB {
     PROVIDER = 'provider',
     MORBIDITY = 'morbidity'
 }
-
-const NBS_URL = Config.nbsUrl;
 
 export const LeftBar = ({ activeTab }: any) => {
     return (
@@ -18,42 +16,30 @@ export const LeftBar = ({ activeTab }: any) => {
             </Grid>
             <div className="border-base-light grid-row flex-no-wrap border-top padding-y-1 margin-x-3 cursor-pointer width-full">
                 {activeTab === ACTIVE_TAB.PATIENT && <span className="line"></span>}
-                <h6
-                    className={`${
-                        activeTab === ACTIVE_TAB.PATIENT && 'active'
-                    } text-normal margin-0 font-sans-md padding-bottom-1 width-full padding-y-1 padding-left-2`}>
+                <h6 className="active text-normal margin-0 font-sans-md width-full padding-y-1 padding-left-2">
                     New patient
                 </h6>
             </div>
-            <div className="border-base-light grid-row flex-no-wrap border-top padding-y-1 margin-x-3 cursor-pointer width-full">
-                <a href={`${NBS_URL}/OrgSearchResults1.do?ContextAction=Add`} className="text-black">
-                    <h6
-                        className={`${
-                            activeTab === ACTIVE_TAB.ORGANIZATION && 'active'
-                        } text-normal margin-0 font-sans-md padding-bottom-1 width-full padding-y-1 padding-left-2`}>
-                        New {ACTIVE_TAB.ORGANIZATION}
-                    </h6>
-                </a>
+            <div className="border-base-light grid-row flex-no-wrap border-top padding-y-2 margin-x-3 cursor-pointer width-full">
+                <Link
+                    className="font-sans-md padding-left-2"
+                    name={`New ${ACTIVE_TAB.ORGANIZATION}`}
+                    link={`nbs/OrgSearchResults1.do?ContextAction=Add`}
+                />
             </div>
-            <div className="border-base-light grid-row flex-no-wrap border-top padding-y-1 margin-x-3 cursor-pointer width-full">
-                <a href={`${NBS_URL}/ProvSearchResults1.do?ContextAction=Add`} className="text-black">
-                    <h6
-                        className={`${
-                            activeTab === ACTIVE_TAB.PROVIDER && 'active'
-                        } text-normal margin-0 font-sans-md padding-bottom-1 width-full padding-y-1 padding-left-2`}>
-                        New {ACTIVE_TAB.PROVIDER}
-                    </h6>
-                </a>
+            <div className="border-base-light grid-row flex-no-wrap border-top padding-y-2 margin-x-3 cursor-pointer width-full">
+                <Link
+                    className="font-sans-md padding-left-2"
+                    name={`New ${ACTIVE_TAB.PROVIDER}`}
+                    link={`nbs/ProvSearchResults1.do?ContextAction=Add`}
+                />
             </div>
-            <div className="border-base-light grid-row flex-no-wrap border-top padding-y-1 margin-x-3 cursor-pointer width-full">
-                <a href={`${NBS_URL}/MyTaskList1.do?ContextAction=AddMorbDataEntry`} className="text-black">
-                    <h6
-                        className={`${
-                            activeTab === ACTIVE_TAB.MORBIDITY && 'active'
-                        } text-normal margin-0 font-sans-md padding-bottom-1 width-full padding-y-1 padding-left-2`}>
-                        New {ACTIVE_TAB.MORBIDITY}
-                    </h6>
-                </a>
+            <div className="border-base-light grid-row flex-no-wrap border-top padding-y-2 margin-x-3 cursor-pointer width-full">
+                <Link
+                    className="font-sans-md padding-left-2"
+                    name={`New ${ACTIVE_TAB.MORBIDITY}`}
+                    link={`nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry`}
+                />
             </div>
         </Grid>
     );
