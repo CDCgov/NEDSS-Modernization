@@ -211,6 +211,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
             {summaries?.length ? (
                 <TableComponent
+                    contextName="questions"
                     tableHeader=""
                     tableHead={tableColumns}
                     tableBody={tableRows}

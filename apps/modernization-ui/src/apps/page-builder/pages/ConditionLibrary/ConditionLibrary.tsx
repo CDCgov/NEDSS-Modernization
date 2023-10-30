@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import { UserContext } from 'user';
-import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
+// import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 import { searchConditions } from 'apps/page-builder/services/conditionAPI';
 import ConditionLibraryTable from './ConditionLibraryTable';
 import './ConditionLibrary.scss';
 import { Condition } from '../../generated';
+import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 
 const ConditionLibrary = () => {
     const [conditions, setConditions] = useState<Condition[]>([]);

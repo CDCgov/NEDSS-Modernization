@@ -55,6 +55,7 @@ export type Props = {
     selectable?: boolean;
     handleSelected?: OldSelectionHandler;
     isLoading?: boolean;
+    contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates';
 };
 
 export const TableComponent = ({
@@ -73,7 +74,8 @@ export const TableComponent = ({
     rangeSelector = false,
     selectable = false,
     handleSelected,
-    isLoading = false
+    isLoading = false,
+    contextName
 }: Props) => {
     const sorting = useTableSorting({ enabled: tableBody && tableBody.length > 1, onSort: sortData });
 
@@ -166,7 +168,7 @@ export const TableComponent = ({
                     ) : (
                         <>
                             <span>Showing &nbsp;</span>
-                            <RangeToggle />
+                            <RangeToggle contextName={contextName} />
                             <span> &nbsp;of {totalResults}</span>
                         </>
                     )}

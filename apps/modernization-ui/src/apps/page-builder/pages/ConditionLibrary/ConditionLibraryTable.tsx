@@ -123,11 +123,13 @@ const ConditionLibraryTable = ({ conditions, currentPage, pageSize, totalElement
 
     return (
         <TableComponent
+            contextName="conditions"
             tableHeader="Condition Library"
             tableHead={tableColumns}
             tableBody={tableRows}
             isPagination={true}
             pageSize={pageSize}
+            rangeSelector={true}
             totalResults={totalElements}
             currentPage={currentPage}
             handleNext={setCurrentPage}
@@ -141,7 +143,6 @@ const ConditionLibraryTable = ({ conditions, currentPage, pageSize, totalElement
                     // onPrintIconClick={handleDownloadPDF}
                 />
             }
-            rangeSelector={true}
         />
     );
 };
