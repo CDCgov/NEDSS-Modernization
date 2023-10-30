@@ -11,7 +11,7 @@ import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
+import gov.cdc.nbs.questionbank.page.content.subsection.model.SubSection;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
@@ -36,7 +36,7 @@ public class CreateSubsectionSteps {
     @Autowired
     private UserDetailsProvider user;
 
-    private Subsection subsection;
+    private SubSection subsection;
 
     @Given("I send a create subsection request")
     public void i_send_a_create_subsection_request() {

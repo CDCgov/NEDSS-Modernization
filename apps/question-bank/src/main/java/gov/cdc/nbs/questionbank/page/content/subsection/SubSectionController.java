@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
+import gov.cdc.nbs.questionbank.page.content.subsection.model.SubSection;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import springfox.documentation.annotations.ApiIgnore;
@@ -36,7 +36,7 @@ public class SubSectionController {
     }
 
     @PostMapping
-    public Subsection createSubsection(
+    public SubSection createSubsection(
             @PathVariable("page") Long page,
             @RequestBody CreateSubSectionRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
@@ -53,7 +53,7 @@ public class SubSectionController {
     }
 
     @PutMapping("{subSectionId}")
-    public Subsection updateSubSection(
+    public SubSection updateSubSection(
             @PathVariable("page") Long page,
             @PathVariable("subSectionId") Long subSectionId,
             @RequestBody UpdateSubSectionRequest request,

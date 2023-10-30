@@ -10,7 +10,7 @@ import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.PageContentIdGenerator;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.CreateSubsectionException;
-import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
+import gov.cdc.nbs.questionbank.page.content.subsection.model.SubSection;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
 
 @Service
@@ -27,7 +27,7 @@ public class SubSectionCreator {
         this.idGenerator = idGenerator;
     }
 
-    public Subsection create(long pageId, CreateSubSectionRequest request, Long userId) {
+    public SubSection create(long pageId, CreateSubSectionRequest request, Long userId) {
         // Verify the required fields are provided
         if (request == null || !StringUtils.hasLength(request.name())) {
             throw new CreateSubsectionException("Subsection Name is required");
@@ -49,7 +49,7 @@ public class SubSectionCreator {
         // Persist the entities
         entityManager.flush();
 
-        return new Subsection(subsection.getId(), subsection.getQuestionLabel(),
+        return new SubSection(subsection.getId(), subsection.getQuestionLabel(),
                 "T".equals(subsection.getDisplayInd()));
     }
 
