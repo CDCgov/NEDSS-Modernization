@@ -1,4 +1,5 @@
 import { Grid } from '@trussworks/react-uswds';
+import { MenuItem } from './MenuItem';
 
 export enum ACTIVE_TAB {
     PATIENT = 'patient',
@@ -15,22 +16,13 @@ export const LeftBar = ({ activeTab }: any) => {
             </Grid>
             <div className="border-base-light grid-row flex-no-wrap border-top padding-y-1 margin-x-3 cursor-pointer width-full">
                 {activeTab === ACTIVE_TAB.PATIENT && <span className="line"></span>}
-                <h6
-                    className={`${
-                        activeTab === ACTIVE_TAB.PATIENT && 'active'
-                    } text-normal margin-0 font-sans-md padding-bottom-1 width-full padding-y-1 padding-left-2`}>
+                <h6 className="active text-normal margin-0 font-sans-md width-full padding-y-1 padding-left-2">
                     New patient
                 </h6>
             </div>
-            {/* To be added new in future a list of other pages, for now its commented out as its not needed until designers have built out designs for these pages */}
-            {/* <div className="border-base-light grid-row flex-no-wrap border-top padding-y-1 margin-x-3 cursor-pointer width-full">
-                <h6
-                    className={`${
-                        activeTab === ACTIVE_TAB.ORGANIZATION && 'active'
-                    } text-normal margin-0 font-sans-md padding-bottom-1 width-full padding-y-1 padding-left-2`}>
-                    New {ACTIVE_TAB.ORGANIZATION}
-                </h6>
-            </div> */}
+            <MenuItem name={`New ${ACTIVE_TAB.ORGANIZATION}`} link={`nbs/OrgSearchResults1.do?ContextAction=Add`} />
+            <MenuItem name={`New ${ACTIVE_TAB.MORBIDITY}`} link={`nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry`} />
+            <MenuItem name={`New ${ACTIVE_TAB.PROVIDER}`} link={`nbs/ProvSearchResults1.do?ContextAction=Add`} />
         </Grid>
     );
 };

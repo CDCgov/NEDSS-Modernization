@@ -104,6 +104,7 @@ button {
 
 .button-group {
     position: relative;
+    min-height: 50px;
     .usa-nav__submenu {
         position: absolute;
         right: 0.5rem;
