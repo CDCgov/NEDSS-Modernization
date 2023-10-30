@@ -1,8 +1,8 @@
 import ReactSelect, { MultiValue, components } from 'react-select';
-import React, { FocusEventHandler, useEffect, useMemo, useState } from 'react';
-import './MultiSelectInput.scss';
+import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
 import { mapNonNull } from 'utils';
 import { Label, ErrorMessage } from '@trussworks/react-uswds';
+import './MultiSelectInput.scss';
 import classNames from 'classnames';
 
 const CheckedOption = (props: any) => {
@@ -18,7 +18,7 @@ const CheckedOption = (props: any) => {
 const USWDSDropdownIndicator = (props: any) => (
     // Replaces the default arrow indicator from react-select with the select indicator from USDWS
     <components.DropdownIndicator {...props}>
-        <div className="multi-select select-indicator" />
+        <div className={'multi-select-selection-indicator'} />
     </components.DropdownIndicator>
 );
 
@@ -76,7 +76,7 @@ export const MultiSelectInput = ({
     const Input = (props: any) => <components.Input {...props} maxLength={50} />;
 
     return (
-        <div className={`multi-select-input ${required ? 'required' : ''}`}>
+        <div className={classNames('multi-select-input', { required: required })}>
             {label && (
                 <Label className={classNames({ required })} htmlFor={label}>
                     {label}
