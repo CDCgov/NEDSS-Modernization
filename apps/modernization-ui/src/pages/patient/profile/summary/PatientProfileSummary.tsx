@@ -9,11 +9,11 @@ import {
     PatientSummaryPhone
 } from 'generated/graphql/schema';
 import { Spinner } from '@cmsgov/design-system';
-import { formattedName } from 'utils';
 import { internalizeDate } from 'date';
 import { Patient } from 'pages/patient/profile';
 import { displayAddress } from 'address/display/displayAddress';
 import { NoData } from 'components/NoData';
+import { displayName } from 'name';
 
 type Props = {
     patient?: Patient;
@@ -85,20 +85,9 @@ export const PatientProfileSummary = ({ patient, summary }: Props) => {
             ) : (
                 <>
                     <div className="border-bottom border-base-lighter patient-summary-title">
-                        <h2>{`${formattedName(
-                            `${summary?.legalName?.first || ''} ${summary?.legalName?.middle || ''}  ${
-                                summary?.legalName?.last || ''
-                            }`,
-                            summary?.legalName?.suffix
-                        )}`}</h2>
-                        <span>
-                            Patient ID: {patient.shortId}
-                            {patient.status != 'ACTIVE' && (
-                                <span className="text-red text-right margin-left-2">
-                                    {patient.status === 'LOG_DEL' ? 'INACTIVE' : patient.status}
-                                </span>
-                            )}
-                        </span>
+                        <h2>{summary?.legalName && displayName()(summary.legalName)}</h2>
+                        <span>Patient ID: {patient.shortId}</span>
+                        {patient.status != 'ACTIVE' && <span className="text-red">{patient.status}</span>}
                     </div>
                     <div className="patient-summary-items">
                         <div className="grouped">

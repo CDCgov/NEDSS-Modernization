@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.question;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
@@ -22,7 +23,7 @@ public class QuestionManagementUtil {
         this.questionRepository = questionRepository;
     }
 
-    public QuestionOid getQuestionOid(boolean includedInMessage, String codeSystem, String codeSet) {
+    public QuestionOid getQuestionOid(boolean includedInMessage, String codeSystem, CodeSet codeSet) {
         if (includedInMessage) {
             return codeValueGeneralRepository.findByCode(
                     codeSystem)
@@ -35,8 +36,8 @@ public class QuestionManagementUtil {
                             "Failed to find 'CODE_SYSTEM' for code: " + codeSystem));
         } else {
             return switch (codeSet) {
-                case "PHIN" -> new QuestionOid("2.16.840.1.114222.4.5.232", "PHIN Questions");
-                case "LOCAL" -> new QuestionOid("L", "Local");
+                case PHIN -> new QuestionOid("2.16.840.1.114222.4.5.232", "PHIN Questions");
+                case LOCAL -> new QuestionOid("L", "Local");
                 default -> null;
             };
         }
@@ -45,7 +46,7 @@ public class QuestionManagementUtil {
     /**
      * Verifies the new question will not conflict with any existing questions.
      * 
-     * The following fields must be unique but are not defined as unique in the databse:
+     * The following fields must be unique but are not defined as unique in the database:
      * 
      * questionNm, questionIdentifier, userDefinedColmnNm, rdbColumnNm
      * 

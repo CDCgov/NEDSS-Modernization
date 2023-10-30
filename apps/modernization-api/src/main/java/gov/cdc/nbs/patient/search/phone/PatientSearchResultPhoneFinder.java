@@ -8,21 +8,23 @@ import java.util.Collection;
 @Component
 class PatientSearchResultPhoneFinder {
 
-  private static final String QUERY = """
-            select distinct
-          [phone_number].phone_nbr_txt    as [phone_number]
-      from Entity_locator_participation [locators]
+  private static final String QUERY =
+      """
+          select distinct
+              [phone_number].phone_nbr_txt    as [phone_number]
+          from Entity_locator_participation [locators]
 
-          join Tele_locator [phone_number] on
-                  [phone_number].[tele_locator_uid] = [locators].[locator_uid]
-              and [phone_number].record_status_cd = [locators].[record_status_cd]
+              join Tele_locator [phone_number] on
+                      [phone_number].[tele_locator_uid] = [locators].[locator_uid]
+                  and [phone_number].record_status_cd   = [locators].[record_status_cd]
+                  and [phone_number].phone_nbr_txt is not null
 
 
-      where   [locators].entity_uid = ?
-          and [locators].[class_cd] = 'TELE'
-          and [locators].cd <> 'NET'
-          and [locators].record_status_cd = 'ACTIVE'
-            """;
+          where   [locators].entity_uid = ?
+              and [locators].[class_cd] = 'TELE'
+              and [locators].cd <> 'NET'              
+              and [locators].record_status_cd = 'ACTIVE'
+      """;
   private static final int PATIENT_PARAMETER = 1;
   private static final int PHONE_COLUMN = 1;
 

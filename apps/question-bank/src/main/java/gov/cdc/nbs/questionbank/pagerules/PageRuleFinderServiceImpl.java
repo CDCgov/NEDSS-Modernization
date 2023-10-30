@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.pagerules;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Slf4j
 @Service
 public class PageRuleFinderServiceImpl implements PageRuleFinderService {
 
@@ -39,37 +37,42 @@ public class PageRuleFinderServiceImpl implements PageRuleFinderService {
     }
 
     @Override
-    public Page<ViewRuleResponse> getAllPageRule(Pageable pageRequest,Long page) {
-        Page<WaRuleMetadata> ruleMetadataPage =waRuleMetaDataRepository.findByWaTemplateUid(page,pageRequest);
+    public Page<ViewRuleResponse> getAllPageRule(Pageable pageRequest, Long page) {
+        Page<WaRuleMetadata> ruleMetadataPage = waRuleMetaDataRepository.findByWaTemplateUid(page, pageRequest);
         return buildViewRuleResponse(ruleMetadataPage);
     }
 
     @Override
     public Page<ViewRuleResponse> findPageRule(SearchPageRuleRequest request, Pageable pageable) {
-        Page<WaRuleMetadata> ruleMetadataPage =waRuleMetaDataRepository.findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase(request.searchValue(),request.searchValue(),pageable);
+        Page<WaRuleMetadata> ruleMetadataPage = waRuleMetaDataRepository
+                .findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase(
+                        request.searchValue(), request.searchValue(), pageable);
         return buildViewRuleResponse(ruleMetadataPage);
     }
 
-    private Page<ViewRuleResponse> buildViewRuleResponse(Page<WaRuleMetadata> ruleMetadataPage){
+    private Page<ViewRuleResponse> buildViewRuleResponse(Page<WaRuleMetadata> ruleMetadataPage) {
         List<ViewRuleResponse> ruleMetadata =
-                ruleMetadataPage.getContent().stream().map(rule ->new ViewRuleResponse(rule.getId(), rule.getWaTemplateUid(), rule.getRuleCd(),
-                        rule.getRuleDescText(), rule.getSourceQuestionIdentifier(), buildSourceTargetValues(rule,true),
-                        rule.getLogic(), rule.getTargetType(), rule.getErrormsgText(),
-                        buildSourceTargetValues(rule,false))).toList();
-        return new PageImpl<>(ruleMetadata,ruleMetadataPage.getPageable(),ruleMetadataPage.getTotalElements());
+                ruleMetadataPage.getContent().stream()
+                        .map(rule -> new ViewRuleResponse(rule.getId(), rule.getWaTemplateUid(), rule.getRuleCd(),
+                                rule.getRuleDescText(), rule.getSourceQuestionIdentifier(),
+                                buildSourceTargetValues(rule, true),
+                                rule.getLogic(), rule.getTargetType(), rule.getErrormsgText(),
+                                buildSourceTargetValues(rule, false)))
+                        .toList();
+        return new PageImpl<>(ruleMetadata, ruleMetadataPage.getPageable(), ruleMetadataPage.getTotalElements());
     }
 
     private List<String> buildSourceTargetValues(WaRuleMetadata ruleMetadata, boolean isSource) {
 
         List<String> sourceValues = new ArrayList<>();
         List<String> targetValues = new ArrayList<>();
-        if(isSource){
+        if (isSource) {
             if (ruleMetadata.getSourceValues() == null || ruleMetadata.getTargetQuestionIdentifier() == null) {
-                return  sourceValues;
+                return sourceValues;
             } else {
-               return Arrays.asList(ruleMetadata.getSourceValues().split(","));
+                return Arrays.asList(ruleMetadata.getSourceValues().split(","));
             }
-        }else{
+        } else {
             if (ruleMetadata.getSourceValues() == null || ruleMetadata.getTargetQuestionIdentifier() == null) {
                 return targetValues;
             } else {
