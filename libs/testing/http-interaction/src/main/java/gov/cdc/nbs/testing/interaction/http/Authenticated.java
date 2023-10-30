@@ -1,5 +1,6 @@
 package gov.cdc.nbs.testing.interaction.http;
 
+import gov.cdc.nbs.authentication.NBSToken;
 import gov.cdc.nbs.authentication.NBSUserDetailsResolver;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.entity.AuthUser;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -28,8 +30,7 @@ public class Authenticated {
   public Authenticated(
       final Active<ActiveUser> active,
       final NBSUserDetailsResolver resolver,
-      final EntityManager entityManager
-  ) {
+      final EntityManager entityManager) {
     this.active = active;
     this.resolver = resolver;
     this.entityManager = entityManager;
@@ -39,34 +40,30 @@ public class Authenticated {
     SecurityContextHolder.getContext().setAuthentication(null);
   }
 
-  private NbsUserDetails userDetails() {
-    ActiveUser activeUser = this.active.active();
-
-    AuthUser authUser = this.entityManager.find(AuthUser.class, activeUser.id());
-
-    return resolver.resolve(authUser);
+  private Optional<NbsUserDetails> userDetails() {
+    return this.active.maybeActive()
+        .map(activeUser -> this.entityManager.find(AuthUser.class, activeUser.id()))
+        .map(resolver::resolve);
   }
 
   private Authentication authentication(final NbsUserDetails details) {
     return new PreAuthenticatedAuthenticationToken(
         details,
         null,
-        details.getAuthorities()
-    );
+        details.getAuthorities());
   }
 
-  private Authentication authentication() {
-    NbsUserDetails details = userDetails();
-
-    return new PreAuthenticatedAuthenticationToken(
-        details,
-        null,
-        details.getAuthorities()
-    );
+  private Optional<Authentication> authentication() {
+    return userDetails()
+        .map(details -> new PreAuthenticatedAuthenticationToken(
+            details,
+            null,
+            details.getAuthorities()));
   }
 
   /**
-   * Executes the given {@code action} ensuring that the {@link SecurityContextHolder} is configured to be authenticated
+   * Executes the given {@code action} ensuring that the
+   * {@link SecurityContextHolder} is configured to be authenticated
    * with the Active User.
    *
    * @param action The action to perform while authenticated.
@@ -75,7 +72,8 @@ public class Authenticated {
    */
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public <T> T perform(final Supplier<T> action) {
-    SecurityContextHolder.getContext().setAuthentication(authentication());
+
+    authentication().ifPresent(SecurityContextHolder.getContext()::setAuthentication);
 
     try {
       return action.get();
@@ -87,12 +85,15 @@ public class Authenticated {
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public <T> T using(final Function<NbsUserDetails, T> action) {
-    NbsUserDetails details = userDetails();
-    Authentication authentication = authentication(details);
-    SecurityContextHolder.getContext().setAuthentication(authentication);
+    Optional<NbsUserDetails> userDetails = userDetails();
+
+    userDetails.map(details -> new PreAuthenticatedAuthenticationToken(
+        details,
+        null,
+        details.getAuthorities())).ifPresent(SecurityContextHolder.getContext()::setAuthentication);
 
     try {
-      return action.apply(details);
+      return action.apply(userDetails.orElse(null));
     } finally {
       reset();
     }
@@ -100,11 +101,13 @@ public class Authenticated {
   }
 
   public MockHttpServletRequestBuilder withUser(final MockHttpServletRequestBuilder builder) {
-    return builder.header(
-        HttpHeaders.AUTHORIZATION,
-        "Bearer " + active.active().token().value()
-    );
+    String authorization = active.maybeActive()
+        .map(ActiveUser::token)
+        .map(NBSToken::value)
+        .map(token -> "Bearer " + token)
+        .orElse("NOPE");
 
+    return builder.header(HttpHeaders.AUTHORIZATION, authorization);
 
   }
 }
