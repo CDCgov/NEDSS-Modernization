@@ -71,7 +71,7 @@ INNER JOIN sys.columns col2
 -- alter table  [example_table1] drop constraint [example_constraint1];
 -- alter table  [example_table2] drop constraint [example_constraint2];
 
-CREATE TABLE NBS_ODSE.dbo.Person2 (
+CREATE TABLE NBS_ODSE.dbo.Person_shrunken (
 	person_uid bigint NOT NULL,
 	add_reason_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	add_time datetime NULL,
@@ -192,79 +192,79 @@ CREATE TABLE NBS_ODSE.dbo.Person2 (
 -- WHERE person_parent_uid=person_uid and person_parent_uid <= 10137000 and record_status_cd='ACTIVE' and cd='PAT';
 -- UNIQUE PATIENTS: 1067
 
-INSERT INTO person2
+INSERT INTO Person_shrunken
 SELECT * FROM person
 WHERE person_parent_uid <= 10137000 and record_status_cd='ACTIVE' and cd='PAT';
 
- CREATE NONCLUSTERED INDEX IDX_DEDUP_PERSON_2 ON dbo.Person2 (  cd ASC  , electronic_ind ASC  , record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_DEDUP_PERSON_2 ON dbo.Person_shrunken (  cd ASC  , electronic_ind ASC  , record_status_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX IDX_PERSON_DEDUP1_2 ON dbo.Person2 (  cd ASC  , record_status_cd ASC  , dedup_match_ind ASC  , group_nbr ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_PERSON_DEDUP1_2 ON dbo.Person_shrunken (  cd ASC  , record_status_cd ASC  , dedup_match_ind ASC  , group_nbr ASC  )  
 	 INCLUDE ( cd_desc_txt , person_parent_uid ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX IDX_PERSON_DEDUP2_2 ON dbo.Person2 (  cd ASC  , group_nbr ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_PERSON_DEDUP2_2 ON dbo.Person_shrunken (  cd ASC  , group_nbr ASC  )  
 	 INCLUDE ( dedup_match_ind ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX IDX_PERSON_DEDUP3_2 ON dbo.Person2 (  group_nbr ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_PERSON_DEDUP3_2 ON dbo.Person_shrunken (  group_nbr ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX IDX_PERSON_PARENT_UID_2 ON dbo.Person2 (  person_parent_uid ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_PERSON_PARENT_UID_2 ON dbo.Person_shrunken (  person_parent_uid ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_PERSON_IND03_2 ON dbo.Person2 (  curr_sex_cd ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_PERSON_IND03_2 ON dbo.Person_shrunken (  curr_sex_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_PERSON_IND04_2 ON dbo.Person2 (  ethnic_group_ind ASC  , record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_PERSON_IND04_2 ON dbo.Person_shrunken (  ethnic_group_ind ASC  , record_status_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_PERSON_IND05_2 ON dbo.Person2 (  cd ASC  , record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_PERSON_IND05_2 ON dbo.Person_shrunken (  cd ASC  , record_status_cd ASC  )  
 	 INCLUDE ( person_parent_uid ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX INDEX_PERSON_SEX_BIRTH_2 ON dbo.Person2 (  curr_sex_cd ASC  , birth_time ASC  , ethnic_group_ind ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_PERSON_SEX_BIRTH_2 ON dbo.Person_shrunken (  curr_sex_cd ASC  , birth_time ASC  , ethnic_group_ind ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX PERF_02032021_01_2 ON dbo.Person2 (  cd ASC  , local_id ASC  , record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX PERF_02032021_01_2 ON dbo.Person_shrunken (  cd ASC  , local_id ASC  , record_status_cd ASC  )  
 	 INCLUDE ( person_parent_uid , person_uid ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX PERF_02052021_05_2 ON dbo.Person2 (  cd ASC  , record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX PERF_02052021_05_2 ON dbo.Person_shrunken (  cd ASC  , record_status_cd ASC  )  
 	 INCLUDE ( ehars_id , person_parent_uid , person_uid ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX PERF_03282021_01_2 ON dbo.Person2 (  cd ASC  , record_status_cd ASC  , group_nbr ASC  , birth_time ASC  )  
+ CREATE NONCLUSTERED INDEX PERF_03282021_01_2 ON dbo.Person_shrunken (  cd ASC  , record_status_cd ASC  , group_nbr ASC  , birth_time ASC  )  
 	 INCLUDE ( birth_gender_cd , cd_desc_txt , curr_sex_cd , person_parent_uid ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX PERSON_CDDESCTXT_NIDX_2 ON dbo.Person2 (  cd_desc_txt ASC  )  
+ CREATE NONCLUSTERED INDEX PERSON_CDDESCTXT_NIDX_2 ON dbo.Person_shrunken (  cd_desc_txt ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX PERSON_INDX_PERF1_2 ON dbo.Person2 (  person_uid ASC  , person_parent_uid ASC  , cd ASC  , record_status_cd ASC  , last_nm ASC  , first_nm ASC  , birth_time_calc ASC  )  
+ CREATE NONCLUSTERED INDEX PERSON_INDX_PERF1_2 ON dbo.Person_shrunken (  person_uid ASC  , person_parent_uid ASC  , cd ASC  , record_status_cd ASC  , last_nm ASC  , first_nm ASC  , birth_time_calc ASC  )  
 	 INCLUDE ( age_reported , age_reported_unit_cd , as_of_date_admin , birth_time , curr_sex_cd , deceased_time , ethnic_group_ind , local_id , marital_status_cd , SSN , version_ctrl_nbr ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX PERSON_PERSONPARENTUID_NIDX_2 ON dbo.Person2 (  person_parent_uid ASC  , birth_time ASC  )  
+ CREATE NONCLUSTERED INDEX PERSON_PERSONPARENTUID_NIDX_2 ON dbo.Person_shrunken (  person_parent_uid ASC  , birth_time ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX RDB_PERF_03242021_01_2 ON dbo.Person2 (  record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX RDB_PERF_03242021_01_2 ON dbo.Person_shrunken (  record_status_cd ASC  )  
 	 INCLUDE ( last_chg_time ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX RDB_PERF_03242021_06_2 ON dbo.Person2 (  cd ASC  , record_status_cd ASC  , cd_desc_txt ASC  , last_chg_time ASC  )  
+ CREATE NONCLUSTERED INDEX RDB_PERF_03242021_06_2 ON dbo.Person_shrunken (  cd ASC  , record_status_cd ASC  , cd_desc_txt ASC  , last_chg_time ASC  )  
 	 INCLUDE ( person_parent_uid ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX RDB_PERF_04042021_01_2 ON dbo.Person2 (  last_chg_time ASC  )  
+ CREATE NONCLUSTERED INDEX RDB_PERF_04042021_01_2 ON dbo.Person_shrunken (  last_chg_time ASC  )  
 	 INCLUDE ( local_id ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX RDB_PERF_04042021_03_2 ON dbo.Person2 (  local_id ASC  , last_chg_time ASC  )  
+ CREATE NONCLUSTERED INDEX RDB_PERF_04042021_03_2 ON dbo.Person_shrunken (  local_id ASC  , last_chg_time ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
 
-CREATE TABLE NBS_ODSE.dbo.Participation2 (
+CREATE TABLE NBS_ODSE.dbo.Participation_shrunken (
 	subject_entity_uid bigint NOT NULL,
 	act_uid bigint NOT NULL,
 	type_cd varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
@@ -294,25 +294,25 @@ CREATE TABLE NBS_ODSE.dbo.Participation2 (
 	CONSTRAINT PK_Participation_2 PRIMARY KEY (subject_entity_uid,act_uid,type_cd)
 );
 
-INSERT INTO Participation2 
+INSERT INTO Participation_shrunken 
 SELECT * FROM Participation
-WHERE subject_entity_uid in (select person_uid from Person2)
+WHERE subject_entity_uid in (select person_uid from Person_shrunken)
 
- CREATE NONCLUSTERED INDEX PARTICIPATION_TYPE_CD_2 ON dbo.Participation2 (  type_cd ASC  )  
+ CREATE NONCLUSTERED INDEX PARTICIPATION_TYPE_CD_2 ON dbo.Participation_shrunken (  type_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX PERF_02062021_12_2 ON dbo.Participation2 (  type_cd ASC  )  
+ CREATE NONCLUSTERED INDEX PERF_02062021_12_2 ON dbo.Participation_shrunken (  type_cd ASC  )  
 	 INCLUDE ( act_uid , from_time , subject_entity_uid ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_PARTICIPATION ] ;
- CREATE NONCLUSTERED INDEX Participation_ix01_2 ON dbo.Participation2 (  act_uid ASC  )  
+ CREATE NONCLUSTERED INDEX Participation_ix01_2 ON dbo.Participation_shrunken (  act_uid ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX participation_classrecord_ix_2 ON dbo.Participation2 (  act_uid ASC  , act_class_cd ASC  , record_status_cd ASC  , type_cd ASC  , subject_class_cd ASC  )  
+ CREATE NONCLUSTERED INDEX participation_classrecord_ix_2 ON dbo.Participation_shrunken (  act_uid ASC  , act_class_cd ASC  , record_status_cd ASC  , type_cd ASC  , subject_class_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_INDEX ] ;
 
-CREATE TABLE NBS_ODSE.dbo.Observation2 (
+CREATE TABLE NBS_ODSE.dbo.Observation_shrunken (
 	observation_uid bigint NOT NULL,
 	activity_duration_amt varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	activity_duration_unit_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -382,49 +382,49 @@ CREATE TABLE NBS_ODSE.dbo.Observation2 (
 	CONSTRAINT PK_Observation_2 PRIMARY KEY (observation_uid)
 );
 
-INSERT INTO Observation2 
+INSERT INTO Observation_shrunken 
 SELECT * FROM Observation
-WHERE observation_uid in (select act_uid from participation2)
+WHERE observation_uid in (select act_uid from Participation_shrunken)
 
-CREATE NONCLUSTERED INDEX IDX_OBSERVATION_QUEUE_2 ON dbo.Observation2 (  ctrl_cd_display_form ASC  , obs_domain_cd_st_1 ASC  )  
+CREATE NONCLUSTERED INDEX IDX_OBSERVATION_QUEUE_2 ON dbo.Observation_shrunken (  ctrl_cd_display_form ASC  , obs_domain_cd_st_1 ASC  )  
 INCLUDE ( jurisdiction_cd , prog_area_cd , rpt_to_state_time ) 
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [ODS_ACTS ] ;
-CREATE NONCLUSTERED INDEX IDX_OBSERVATION_QUEUE1_2 ON dbo.Observation2 (  ctrl_cd_display_form ASC  , record_status_cd ASC  )  
+CREATE NONCLUSTERED INDEX IDX_OBSERVATION_QUEUE1_2 ON dbo.Observation_shrunken (  ctrl_cd_display_form ASC  , record_status_cd ASC  )  
 INCLUDE ( cd , jurisdiction_cd , local_id , prog_area_cd , rpt_to_state_time , shared_ind ) 
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [ODS_ACTS ] ;
-CREATE NONCLUSTERED INDEX IDX_OBSERVATION_QUE_COUNT_2 ON dbo.Observation2 (  program_jurisdiction_oid ASC  , ctrl_cd_display_form ASC  , record_status_cd ASC  )  
+CREATE NONCLUSTERED INDEX IDX_OBSERVATION_QUE_COUNT_2 ON dbo.Observation_shrunken (  program_jurisdiction_oid ASC  , ctrl_cd_display_form ASC  , record_status_cd ASC  )  
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [ODS_ACTS ] ;
-CREATE NONCLUSTERED INDEX IDX_Observation_02162021_05_2 ON dbo.Observation2 (  obs_domain_cd_st_1 ASC  , ctrl_cd_display_form ASC  )  
+CREATE NONCLUSTERED INDEX IDX_Observation_02162021_05_2 ON dbo.Observation_shrunken (  obs_domain_cd_st_1 ASC  , ctrl_cd_display_form ASC  )  
 INCLUDE ( jurisdiction_cd , prog_area_cd ) 
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [ODS_ACTS ] ;
-CREATE NONCLUSTERED INDEX OBSERVATION_OBSDOMAINCDST1_NIDX_2 ON dbo.Observation2 (  obs_domain_cd_st_1 ASC  )  
+CREATE NONCLUSTERED INDEX OBSERVATION_OBSDOMAINCDST1_NIDX_2 ON dbo.Observation_shrunken (  obs_domain_cd_st_1 ASC  )  
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [PRIMARY ] ;
-CREATE NONCLUSTERED INDEX PERF_02102021_01_2 ON dbo.Observation2 (  ctrl_cd_display_form ASC  , obs_domain_cd_st_1 ASC  , record_status_cd ASC  )  
+CREATE NONCLUSTERED INDEX PERF_02102021_01_2 ON dbo.Observation_shrunken (  ctrl_cd_display_form ASC  , obs_domain_cd_st_1 ASC  , record_status_cd ASC  )  
 INCLUDE ( effective_from_time , observation_uid ) 
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [ODS_ACTS ] ;
-CREATE NONCLUSTERED INDEX PERF_08262022_02_2 ON dbo.Observation2 (  ctrl_cd_display_form ASC  , program_jurisdiction_oid ASC  , record_status_cd ASC  , version_ctrl_nbr ASC  , rpt_to_state_time ASC  )  
+CREATE NONCLUSTERED INDEX PERF_08262022_02_2 ON dbo.Observation_shrunken (  ctrl_cd_display_form ASC  , program_jurisdiction_oid ASC  , record_status_cd ASC  , version_ctrl_nbr ASC  , rpt_to_state_time ASC  )  
 INCLUDE ( electronic_ind ) 
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [ODS_ACTS ] ;
-CREATE NONCLUSTERED INDEX RDB_PERF_03242021_05_2 ON dbo.Observation2 (  last_chg_time ASC  )  
+CREATE NONCLUSTERED INDEX RDB_PERF_03242021_05_2 ON dbo.Observation_shrunken (  last_chg_time ASC  )  
 INCLUDE ( ctrl_cd_display_form , local_id ) 
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [ODS_ACTS ] ;
-CREATE NONCLUSTERED INDEX RDB_PERF_03302021_09_2 ON dbo.Observation2 (  ctrl_cd_display_form ASC  , obs_domain_cd_st_1 ASC  , electronic_ind ASC  , last_chg_time ASC  )  
+CREATE NONCLUSTERED INDEX RDB_PERF_03302021_09_2 ON dbo.Observation_shrunken (  ctrl_cd_display_form ASC  , obs_domain_cd_st_1 ASC  , electronic_ind ASC  , last_chg_time ASC  )  
 INCLUDE ( add_time , add_user_id , jurisdiction_cd , last_chg_user_id , local_id , prog_area_cd , program_jurisdiction_oid , record_status_cd , record_status_time , status_cd , status_time ) 
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [ODS_ACTS ] ;
-CREATE NONCLUSTERED INDEX observation_INDX_perf1_2 ON dbo.Observation2 (  ctrl_cd_display_form ASC  , obs_domain_cd_st_1 ASC  , prog_area_cd ASC  , jurisdiction_cd ASC  )  
+CREATE NONCLUSTERED INDEX observation_INDX_perf1_2 ON dbo.Observation_shrunken (  ctrl_cd_display_form ASC  , obs_domain_cd_st_1 ASC  , prog_area_cd ASC  , jurisdiction_cd ASC  )  
 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 ON [PRIMARY ] ;
 
-CREATE TABLE NBS_ODSE.dbo.Person_name2 (
+CREATE TABLE NBS_ODSE.dbo.Person_name_shrunken (
 	person_uid bigint NOT NULL,
 	person_name_seq smallint NOT NULL,
 	add_reason_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -459,36 +459,36 @@ CREATE TABLE NBS_ODSE.dbo.Person_name2 (
 	CONSTRAINT PK_Person_name_2 PRIMARY KEY (person_uid,person_name_seq),
 );
 
-INSERT INTO Person_name2 
+INSERT INTO Person_name_shrunken 
 SELECT * FROM Person_name 
-WHERE person_uid in (select person_uid from Person2)
+WHERE person_uid in (select person_uid from Person_shrunken)
 
- CREATE NONCLUSTERED INDEX IDX_PERSON_NM_02112021_01_2 ON dbo.Person_name2 (  nm_use_cd ASC  , record_status_cd ASC  , first_nm ASC  , last_nm ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_PERSON_NM_02112021_01_2 ON dbo.Person_name_shrunken (  nm_use_cd ASC  , record_status_cd ASC  , first_nm ASC  , last_nm ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX IDX_PERSON_NM_DEDUP_2 ON dbo.Person_name2 (  nm_use_cd ASC  , record_status_cd ASC  , last_nm ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_PERSON_NM_DEDUP_2 ON dbo.Person_name_shrunken (  nm_use_cd ASC  , record_status_cd ASC  , last_nm ASC  )  
 	 INCLUDE ( as_of_date ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX IDX_PERSON_NM_DEDUP1_2 ON dbo.Person_name2 (  nm_use_cd ASC  , record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_PERSON_NM_DEDUP1_2 ON dbo.Person_name_shrunken (  nm_use_cd ASC  , record_status_cd ASC  )  
 	 INCLUDE ( first_nm_sndx , last_nm_sndx , last_nm2_sndx , middle_nm ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX IDX_PERSON_NM_DEDUP2_2 ON dbo.Person_name2 (  first_nm_sndx ASC  , last_nm_sndx ASC  , nm_use_cd ASC  , record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_PERSON_NM_DEDUP2_2 ON dbo.Person_name_shrunken (  first_nm_sndx ASC  , last_nm_sndx ASC  , nm_use_cd ASC  , record_status_cd ASC  )  
 	 INCLUDE ( last_nm2_sndx , middle_nm ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX INDEX_LAST_CHG_TIME_2 ON dbo.Person_name2 (  last_chg_time ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_LAST_CHG_TIME_2 ON dbo.Person_name_shrunken (  last_chg_time ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX INDEX_PERSON_NAME_IND01_2 ON dbo.Person_name2 (  record_status_cd ASC  , last_nm ASC  , first_nm ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_PERSON_NAME_IND01_2 ON dbo.Person_name_shrunken (  record_status_cd ASC  , last_nm ASC  , first_nm ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_PERSON_NAME_IND02_2 ON dbo.Person_name2 (  nm_use_cd ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_PERSON_NAME_IND02_2 ON dbo.Person_name_shrunken (  nm_use_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
 
-CREATE TABLE NBS_ODSE.dbo.Act_id2 (
+CREATE TABLE NBS_ODSE.dbo.Act_id_shrunken (
 	act_uid bigint NOT NULL,
 	act_id_seq smallint NOT NULL,
 	add_reason_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -514,15 +514,15 @@ CREATE TABLE NBS_ODSE.dbo.Act_id2 (
 	CONSTRAINT PK_Act_id_2 PRIMARY KEY (act_uid,act_id_seq),
 );
 
-INSERT INTO Act_id2 
+INSERT INTO Act_id_shrunken 
 SELECT * FROM Act_id 
-WHERE act_uid in (select observation_uid from Observation2)
+WHERE act_uid in (select observation_uid from Observation_shrunken)
 
-CREATE NONCLUSTERED INDEX IDX_ACT_ID_ELR1_2 ON dbo.Act_id2 (  root_extension_txt ASC  , type_cd ASC  )  
+CREATE NONCLUSTERED INDEX IDX_ACT_ID_ELR1_2 ON dbo.Act_id_shrunken (  root_extension_txt ASC  , type_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ACTS ] ;
 
-CREATE TABLE NBS_ODSE.dbo.Act_relationship2 (
+CREATE TABLE NBS_ODSE.dbo.Act_relationship_shrunken (
 	target_act_uid bigint NOT NULL,
 	source_act_uid bigint NOT NULL,
 	type_cd varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
@@ -548,34 +548,34 @@ CREATE TABLE NBS_ODSE.dbo.Act_relationship2 (
 	CONSTRAINT PK_Act_relationship_2 PRIMARY KEY (source_act_uid,target_act_uid,type_cd)
 );
 
-INSERT INTO Act_relationship2 
+INSERT INTO Act_relationship_shrunken 
 SELECT * FROM Act_relationship 
-WHERE source_act_uid in (select observation_uid from Observation2)
+WHERE source_act_uid in (select observation_uid from Observation_shrunken)
 
- CREATE NONCLUSTERED INDEX IX_Act_relationship_2 ON dbo.Act_relationship2 (  type_cd ASC  )  
+ CREATE NONCLUSTERED INDEX IX_Act_relationship_2 ON dbo.Act_relationship_shrunken (  type_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX IX_Act_relationship_1_2 ON dbo.Act_relationship2 (  source_class_cd ASC  )  
+ CREATE NONCLUSTERED INDEX IX_Act_relationship_1_2 ON dbo.Act_relationship_shrunken (  source_class_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX NonClusteredIndex_act_relationship_source_act_uid_2 ON dbo.Act_relationship2 (  source_act_uid ASC  )  
+ CREATE NONCLUSTERED INDEX NonClusteredIndex_act_relationship_source_act_uid_2 ON dbo.Act_relationship_shrunken (  source_act_uid ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX RDB_PERF_03242021_04_2 ON dbo.Act_relationship2 (  type_cd ASC  )  
+ CREATE NONCLUSTERED INDEX RDB_PERF_03242021_04_2 ON dbo.Act_relationship_shrunken (  type_cd ASC  )  
 	 INCLUDE ( last_chg_time ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ACTS ] ;
- CREATE NONCLUSTERED INDEX act_relationship_ix01_2 ON dbo.Act_relationship2 (  target_act_uid ASC  , type_cd ASC  , status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX act_relationship_ix01_2 ON dbo.Act_relationship_shrunken (  target_act_uid ASC  , type_cd ASC  , status_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX act_relationship_ix02_2 ON dbo.Act_relationship2 (  target_act_uid ASC  , type_cd ASC  , target_class_cd ASC  , record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX act_relationship_ix02_2 ON dbo.Act_relationship_shrunken (  target_act_uid ASC  , type_cd ASC  , target_class_cd ASC  , record_status_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX act_relationship_ix03_2 ON dbo.Act_relationship2 (  target_act_uid ASC  , type_cd ASC  , target_class_cd ASC  , record_status_cd ASC  , source_class_cd ASC  )  
+ CREATE NONCLUSTERED INDEX act_relationship_ix03_2 ON dbo.Act_relationship_shrunken (  target_act_uid ASC  , type_cd ASC  , target_class_cd ASC  , record_status_cd ASC  , source_class_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
 
-CREATE TABLE NBS_ODSE.dbo.Entity_id2 (
+CREATE TABLE NBS_ODSE.dbo.Entity_id_shrunken (
 	entity_uid bigint NOT NULL,
 	entity_id_seq smallint NOT NULL,
 	add_reason_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -605,41 +605,41 @@ CREATE TABLE NBS_ODSE.dbo.Entity_id2 (
 	CONSTRAINT PK_Entity_id_2 PRIMARY KEY (entity_uid,entity_id_seq)
 );
 
-INSERT INTO Entity_id2 
+INSERT INTO Entity_id_shrunken 
 SELECT * FROM Entity_id 
-WHERE entity_uid in (select person_uid from Person2)
+WHERE entity_uid in (select person_uid from Person_shrunken)
 
 
- CREATE NONCLUSTERED INDEX ENTITY_ID_INDX_PERF1_2 ON dbo.Entity_id2 (  entity_uid ASC  , status_cd ASC  , root_extension_txt ASC  , type_cd ASC  )  
+ CREATE NONCLUSTERED INDEX ENTITY_ID_INDX_PERF1_2 ON dbo.Entity_id_shrunken (  entity_uid ASC  , status_cd ASC  , root_extension_txt ASC  , type_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX IDX_ENTITY_ID_02112021_02_2 ON dbo.Entity_id2 (  record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_ENTITY_ID_02112021_02_2 ON dbo.Entity_id_shrunken (  record_status_cd ASC  )  
 	 INCLUDE ( root_extension_txt , type_cd ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX IDX_ENTITY_ID_02112021_03_2 ON dbo.Entity_id2 (  root_extension_txt ASC  , type_cd ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_ENTITY_ID_02112021_03_2 ON dbo.Entity_id_shrunken (  root_extension_txt ASC  , type_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX IDX_ENTITY_ID_ELR1_2 ON dbo.Entity_id2 (  assigning_authority_cd ASC  , root_extension_txt ASC  , type_cd ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_ENTITY_ID_ELR1_2 ON dbo.Entity_id_shrunken (  assigning_authority_cd ASC  , root_extension_txt ASC  , type_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX INDEX_ENTITY_ID_IND01_2 ON dbo.Entity_id2 (  status_cd ASC  , type_cd ASC  , root_extension_txt ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_ENTITY_ID_IND01_2 ON dbo.Entity_id_shrunken (  status_cd ASC  , type_cd ASC  , root_extension_txt ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_LAST_CHG_TIME_2 ON dbo.Entity_id2 (  last_chg_time ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_LAST_CHG_TIME_2 ON dbo.Entity_id_shrunken (  last_chg_time ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX RDB_PERF_03302021_04_2 ON dbo.Entity_id2 (  type_cd ASC  )  
+ CREATE NONCLUSTERED INDEX RDB_PERF_03302021_04_2 ON dbo.Entity_id_shrunken (  type_cd ASC  )  
 	 INCLUDE ( assigning_authority_cd , root_extension_txt ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
- CREATE NONCLUSTERED INDEX RDB_PERF_04042021_07_2 ON dbo.Entity_id2 (  assigning_authority_cd ASC  , record_status_cd ASC  , type_cd ASC  )  
+ CREATE NONCLUSTERED INDEX RDB_PERF_04042021_07_2 ON dbo.Entity_id_shrunken (  assigning_authority_cd ASC  , record_status_cd ASC  , type_cd ASC  )  
 	 INCLUDE ( as_of_date , entity_uid , root_extension_txt ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITIES ] ;
 
 
-CREATE TABLE NBS_ODSE.dbo.Entity_locator_participation2 (
+CREATE TABLE NBS_ODSE.dbo.Entity_locator_Participation_shrunken (
 	entity_uid bigint NOT NULL,
 	locator_uid bigint NOT NULL,
 	add_reason_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -668,41 +668,41 @@ CREATE TABLE NBS_ODSE.dbo.Entity_locator_participation2 (
 	CONSTRAINT PK_Entity_loc_participation_2 PRIMARY KEY (entity_uid,locator_uid)
 );
 
-INSERT INTO Entity_locator_participation2 
+INSERT INTO Entity_locator_Participation_shrunken 
 SELECT * FROM Entity_locator_participation 
 WHERE entity_uid in (select person_uid from Person)
 
- CREATE NONCLUSTERED INDEX ELP_INDX_PERF1_2 ON dbo.Entity_locator_participation2 (  entity_uid ASC  , class_cd ASC  , use_cd ASC  , cd ASC  , status_cd ASC  , locator_uid ASC  )  
+ CREATE NONCLUSTERED INDEX ELP_INDX_PERF1_2 ON dbo.Entity_locator_Participation_shrunken (  entity_uid ASC  , class_cd ASC  , use_cd ASC  , cd ASC  , status_cd ASC  , locator_uid ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX IDX_ELR_PARTICIPATION_ECU_2 ON dbo.Entity_locator_participation2 (  entity_uid ASC  , cd ASC  , use_cd ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_ELR_PARTICIPATION_ECU_2 ON dbo.Entity_locator_Participation_shrunken (  entity_uid ASC  , cd ASC  , use_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_ELR_PARTICIPATION_IND01_2 ON dbo.Entity_locator_participation2 (  class_cd ASC  , status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_ELR_PARTICIPATION_IND01_2 ON dbo.Entity_locator_Participation_shrunken (  class_cd ASC  , status_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_ELR_PARTICIPATION_IND02_2 ON dbo.Entity_locator_participation2 (  locator_uid ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_ELR_PARTICIPATION_IND02_2 ON dbo.Entity_locator_Participation_shrunken (  locator_uid ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_ELR_PARTICIPATION_IND03_2 ON dbo.Entity_locator_participation2 (  cd ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_ELR_PARTICIPATION_IND03_2 ON dbo.Entity_locator_Participation_shrunken (  cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_ENTITY_LOCATOR_PARTIC_2 ON dbo.Entity_locator_participation2 (  use_cd ASC  , record_status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_ENTITY_LOCATOR_PARTIC_2 ON dbo.Entity_locator_Participation_shrunken (  use_cd ASC  , record_status_cd ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 80   ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
- CREATE NONCLUSTERED INDEX INDEX_LAST_CHG_TIME_2 ON dbo.Entity_locator_participation2 (  last_chg_time ASC  )  
+ CREATE NONCLUSTERED INDEX INDEX_LAST_CHG_TIME_2 ON dbo.Entity_locator_Participation_shrunken (  last_chg_time ASC  )  
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITY_LOCATOR ] ;
- CREATE NONCLUSTERED INDEX PERF_02052021_07_2 ON dbo.Entity_locator_participation2 (  class_cd ASC  , record_status_cd ASC  , status_cd ASC  )  
+ CREATE NONCLUSTERED INDEX PERF_02052021_07_2 ON dbo.Entity_locator_Participation_shrunken (  class_cd ASC  , record_status_cd ASC  , status_cd ASC  )  
 	 INCLUDE ( cd , entity_uid , locator_uid , use_cd ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITY_LOCATOR ] ;
- CREATE NONCLUSTERED INDEX RDB_PERF_03302021_03_2 ON dbo.Entity_locator_participation2 (  cd ASC  , class_cd ASC  , use_cd ASC  )  
+ CREATE NONCLUSTERED INDEX RDB_PERF_03302021_03_2 ON dbo.Entity_locator_Participation_shrunken (  cd ASC  , class_cd ASC  , use_cd ASC  )  
 	 INCLUDE ( locator_desc_txt ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [ODS_ENTITY_LOCATOR ] ;
 
-CREATE TABLE NBS_ODSE.dbo.Auth_user2 (
+CREATE TABLE NBS_ODSE.dbo.Auth_user_shrunken (
 	auth_user_uid bigint IDENTITY(1,1) NOT NULL,
 	user_id varchar(256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	user_type varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -731,21 +731,21 @@ CREATE TABLE NBS_ODSE.dbo.Auth_user2 (
 	CONSTRAINT UQ_Auth_user_id_2 UNIQUE (user_id),
 );
 
-SET IDENTITY_INSERT Auth_user2 ON;
+SET IDENTITY_INSERT Auth_user_shrunken ON;
 
-INSERT INTO Auth_user2 (auth_user_uid,user_id,user_type,user_title,user_department,user_first_nm,user_last_nm,user_work_email,user_work_phone,
+INSERT INTO Auth_user_shrunken (auth_user_uid,user_id,user_type,user_title,user_department,user_first_nm,user_last_nm,user_work_email,user_work_phone,
 	user_mobile_phone,master_sec_admin_ind,prog_area_admin_ind,nedss_entry_id,external_org_uid,user_password,user_comments,
 	add_time,add_user_id,last_chg_time,last_chg_user_id,record_status_cd,record_status_time,jurisdiction_derivation_ind,provider_uid)
 SELECT auth_user_uid,user_id,user_type,user_title,user_department,user_first_nm,user_last_nm,user_work_email,user_work_phone,
 	user_mobile_phone,master_sec_admin_ind,prog_area_admin_ind,nedss_entry_id,external_org_uid,user_password,user_comments,
 	add_time,add_user_id,last_chg_time,last_chg_user_id,record_status_cd,record_status_time,jurisdiction_derivation_ind,provider_uid FROM Auth_user where user_id in ('state', 'superuser', 'coordinator', 'clerical');
 
- CREATE NONCLUSTERED INDEX IDX_Auth_user_02162021_04_2 ON dbo.Auth_user2 (  nedss_entry_id ASC  )  
+ CREATE NONCLUSTERED INDEX IDX_Auth_user_02162021_04_2 ON dbo.Auth_user_shrunken (  nedss_entry_id ASC  )  
 	 INCLUDE ( user_first_nm , user_last_nm ) 
 	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
 	 ON [PRIMARY ] ;
 
-CREATE TABLE NBS_ODSE.dbo.Entity_loc_participation_hist2 (
+CREATE TABLE NBS_ODSE.dbo.Entity_loc_participation_hist_shrunken (
 	entity_uid bigint NOT NULL,
 	locator_uid bigint NOT NULL,
 	version_ctrl_nbr smallint NOT NULL,
@@ -774,33 +774,36 @@ CREATE TABLE NBS_ODSE.dbo.Entity_loc_participation_hist2 (
 	CONSTRAINT PK_Entity_loc_particip_hist2 PRIMARY KEY (entity_uid,locator_uid,version_ctrl_nbr)
 );
 
-INSERT INTO Entity_loc_participation_hist2 
+INSERT INTO Entity_loc_participation_hist_shrunken 
 SELECT * FROM Entity_loc_participation_hist 
 WHERE entity_uid in (select person_uid from Person)
 
-EXEC sp_rename 'Person', 'Person3';
-EXEC sp_rename 'Person2', 'Person';
+EXEC sp_rename 'Person', 'Person_original';
+EXEC sp_rename 'Person_shrunken', 'Person';
 
-EXEC sp_rename 'Observation', 'Observation3';
-EXEC sp_rename 'Observation2', 'Observation';
+EXEC sp_rename 'Observation', 'Observation_original';
+EXEC sp_rename 'Observation_shrunken', 'Observation';
 
-EXEC sp_rename 'Participation', 'Participation3';
-EXEC sp_rename 'Participation2', 'Participation';
+EXEC sp_rename 'Participation', 'Participation_original';
+EXEC sp_rename 'Participation_shrunken', 'Participation';
 
-EXEC sp_rename 'Act_id', 'Act_id3';
-EXEC sp_rename 'Act_id2', 'Act_id';
+EXEC sp_rename 'Act_id', 'Act_id_original';
+EXEC sp_rename 'Act_id_shrunken', 'Act_id';
 
-EXEC sp_rename 'Person_name', 'Person_name3';
-EXEC sp_rename 'Person_name2', 'Person_name';
+EXEC sp_rename 'Person_name', 'Person_name_original';
+EXEC sp_rename 'Person_name_shrunken', 'Person_name';
 
-EXEC sp_rename 'Act_relationship', 'Act_relationship3';
-EXEC sp_rename 'Act_relationship2', 'Act_relationship';
+EXEC sp_rename 'Act_relationship', 'Act_relationship_original';
+EXEC sp_rename 'Act_relationship_shrunken', 'Act_relationship';
 
-EXEC sp_rename 'Entity_id', 'Entity_id3';
-EXEC sp_rename 'Entity_id2', 'Entity_id';
+EXEC sp_rename 'Entity_id', 'Entity_id_original';
+EXEC sp_rename 'Entity_id_shrunken', 'Entity_id';
 
-EXEC sp_rename 'Auth_user', 'Auth_user3';
-EXEC sp_rename 'Auth_user2', 'Auth_user';
+EXEC sp_rename 'Auth_user', 'Auth_user_original';
+EXEC sp_rename 'Auth_user_shrunken', 'Auth_user';
+
+EXEC sp_rename 'Entity_loc_participation_hist', 'Entity_loc_participation_hist_original';
+EXEC sp_rename 'Entity_loc_participation_hist_shrunken', 'Entity_loc_participation_hist';
 
 
 USE RDB;
