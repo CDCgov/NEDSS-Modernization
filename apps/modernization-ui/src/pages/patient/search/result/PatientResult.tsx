@@ -12,7 +12,6 @@ import {
 import { formattedName } from 'utils';
 import { internalizeDate } from 'date';
 import { displayName } from 'name';
-import { displayFullName } from 'name';
 import { displayAddress } from 'address/display';
 import { NoData } from 'components/NoData';
 
@@ -38,7 +37,7 @@ const PatientResult = ({ result, onSelected }: PatientResultProps) => {
                             }}>
                             {!result.legalName
                                 ? 'No Data'
-                                : displayFullName(result.legalName?.last, result.legalName?.middle, result.legalName?.first)}
+                                : displayName('full', result?.legalName)}
                         </a>
                     </Grid>
                     <Grid col={12}>
