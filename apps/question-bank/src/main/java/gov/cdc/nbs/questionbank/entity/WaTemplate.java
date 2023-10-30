@@ -437,7 +437,8 @@ public class WaTemplate {
 
     // ensure page doesn't already contain question
     Optional<WaUiMetadata> existing = uiMetadata.stream()
-        .filter(e -> e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier()))
+        .filter(e -> e.getQuestionIdentifier() != null
+            && e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier()))
         .findFirst();
 
     if (existing.isPresent()) {
