@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Link } from './Link';
+import { MenuItem } from './MenuItem';
 
-describe('Link Component', () => {
-    it('renders the link with the correct text and href', () => {
-        const { getByText } = render(<Link name="TestLink" link="https://example.com" />);
+describe('MenuItem Component', () => {
+    it('renders the MenuItem with the correct text and href', () => {
+        const { getByText } = render(<MenuItem name="TestLink" link="https://example.com" />);
         const linkElement = getByText('TestLink');
 
         expect(linkElement).toBeInTheDocument();
@@ -12,7 +12,7 @@ describe('Link Component', () => {
     });
 
     it('applies the default "link" class', () => {
-        const { getByText } = render(<Link name="TestLink" link="https://example.com" />);
+        const { getByText } = render(<MenuItem name="TestLink" link="https://example.com" />);
         const linkElement = getByText('TestLink');
 
         expect(linkElement).toHaveClass('link');

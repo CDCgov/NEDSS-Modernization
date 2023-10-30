@@ -1,5 +1,5 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Link } from './Link';
+import { MenuItem } from './MenuItem';
 
 export enum ACTIVE_TAB {
     PATIENT = 'patient',
@@ -20,9 +20,9 @@ export const LeftBar = ({ activeTab }: any) => {
                     New patient
                 </h6>
             </div>
-            <Link name={`New ${ACTIVE_TAB.ORGANIZATION}`} link={`nbs/OrgSearchResults1.do?ContextAction=Add`} />
-            <Link name={`New ${ACTIVE_TAB.MORBIDITY}`} link={`nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry`} />
-            <Link name={`New ${ACTIVE_TAB.PROVIDER}`} link={`nbs/ProvSearchResults1.do?ContextAction=Add`} />
+            <MenuItem name={`New ${ACTIVE_TAB.ORGANIZATION}`} link={`nbs/OrgSearchResults1.do?ContextAction=Add`} />
+            <MenuItem name={`New ${ACTIVE_TAB.MORBIDITY}`} link={`nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry`} />
+            <MenuItem name={`New ${ACTIVE_TAB.PROVIDER}`} link={`nbs/ProvSearchResults1.do?ContextAction=Add`} />
         </Grid>
     );
 };
