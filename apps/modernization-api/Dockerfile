@@ -1,4 +1,4 @@
-FROM node:18 as ui-builder
+FROM node:18 AS ui-builder
 
 WORKDIR /usr/modernization-ui
 
@@ -11,7 +11,7 @@ COPY apps/modernization-ui .
 
 RUN npm run build
 
-FROM eclipse-temurin:17 as api-builder
+FROM eclipse-temurin:17 AS api-builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -27,20 +27,41 @@ COPY libs /usr/src/nbs/libs
 
 
 # Copy the UI
-copy --from=ui-builder /usr/modernization-ui/build /usr/src/nbs/apps/modernization-ui/build
+COPY --from=ui-builder /usr/modernization-ui/build /usr/src/nbs/apps/modernization-ui/build/
 
 WORKDIR /usr/src/nbs
 
 # Build just the modernization-api and any required library
 RUN ./gradlew :modernization-api:buildNeeded -x test --no-daemon
 
-FROM eclipse-temurin:17-jre
+RUN jar xf apps/modernization-api/build/libs/modernization-api.jar
 
-COPY --from=api-builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api*.jar api.jar 
+RUN jdeps --ignore-missing-deps -q  \
+    --recursive  \
+    --multi-release 17  \
+    --print-module-deps  \
+    --class-path 'BOOT-INF/lib/*'  \
+    apps/modernization-api/build/libs/modernization-api.jar > deps.info
+
+RUN jlink \
+    --add-modules $(cat deps.info) \
+    --strip-debug \
+    --compress 2 \
+    --no-header-files \
+    --no-man-pages \
+    --output modernization-api/runtime
+
+FROM debian:12-slim
 
 ENV NBS_DATASOURCE_SERVER=nbs-mssql
 ENV NBS_ELASTICSEARCH_SERVER=elasticsearch
 ENV NBS_WILDFLY_SERVER=wildfly
 
-# Run jar
-CMD ["java", "-jar", "api.jar"]
+COPY --from=api-builder /usr/src/nbs/modernization-api/runtime /deployment/runtime
+
+COPY --from=api-builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api.jar /deployment/application/
+
+WORKDIR /deployment
+
+ENTRYPOINT runtime/bin/java -jar application/modernization-api.jar
+

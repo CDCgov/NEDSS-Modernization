@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.address;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
@@ -63,8 +63,7 @@ public class PatientProfileAddressSteps {
       final String use,
       final String address,
       final String city,
-      final String zip
-  ) {
+      final String zip) {
 
     PatientIdentifier identifier = activePatient.active();
 
@@ -76,8 +75,7 @@ public class PatientProfileAddressSteps {
         address,
         city,
         null,
-        zip
-    );
+        zip);
 
   }
 
@@ -105,8 +103,7 @@ public class PatientProfileAddressSteps {
         RandomUtil.getRandomString(),
         RandomUtil.country(),
         RandomUtil.getRandomNumericString(15),
-        null
-    );
+        null);
 
     this.input.active().getAddresses().add(address);
   }
@@ -162,8 +159,7 @@ public class PatientProfileAddressSteps {
             .returns(input.county(), i -> i.county().id())
             .returns(input.zipcode(), PatientAddress::zipcode)
             .returns(input.country(), i -> i.country().id())
-            .returns(input.censusTract(), PatientAddress::censusTract)
-    );
+            .returns(input.censusTract(), PatientAddress::censusTract));
   }
 
   @Then("the patient profile has the expected address")
@@ -190,8 +186,7 @@ public class PatientProfileAddressSteps {
             .returns(input.county(), i -> i.county().id())
             .returns(input.zipcode(), PatientAddress::zipcode)
             .returns(input.country(), i -> i.country().id())
-            .returns(input.censusTract(), PatientAddress::censusTract)
-    );
+            .returns(input.censusTract(), PatientAddress::censusTract));
   }
 
   @Then("the profile has no associated addresses")
@@ -210,14 +205,12 @@ public class PatientProfileAddressSteps {
   public void the_profile_address_is_not_accessible() {
     long patient = this.activePatient.active().id();
 
-
     PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
     GraphQLPage page = new GraphQLPage(5);
 
     assertThatThrownBy(
-        () -> this.resolver.resolve(profile, page)
-    )
+        () -> this.resolver.resolve(profile, page))
         .isInstanceOf(AccessDeniedException.class);
   }
 }
