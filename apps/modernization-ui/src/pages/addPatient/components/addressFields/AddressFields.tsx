@@ -62,7 +62,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                             control={control}
                             name="streetAddress2"
                             rules={maxLengthRule(100)}
-                            render={({ field: { onChange, onBlur, value, name } }) => (
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     onBlur={onBlur}
                                     onChange={onChange}
@@ -71,6 +71,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     defaultValue={value}
                                     htmlFor={name}
                                     id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
