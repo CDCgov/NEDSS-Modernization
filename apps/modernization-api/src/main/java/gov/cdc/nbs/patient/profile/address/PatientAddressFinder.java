@@ -56,8 +56,7 @@ class PatientAddressFinder {
         return query.from(this.tables.patient())
             .where(
                 this.tables.patient().id.eq(patient),
-                this.tables.patient().cd.eq(PATIENT_CODE),
-                this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE)
+                this.tables.patient().cd.eq(PATIENT_CODE)
             )
             .join(this.tables.locators()).on(
                 this.tables.locators().id.entityUid.eq(this.tables.patient().id),
