@@ -15,8 +15,9 @@ buildscript {
     }
 }
 
+
 plugins {
-    id 'java'
+    id 'java-library'
     id 'jacoco'
     id "org.sonarqube" version "4.0.0.2929"
 }
@@ -32,12 +33,13 @@ subprojects {
             url "https://packages.confluent.io/maven"
         }
     }
-}
 
-gradle.buildFinished {
-    def failures = rootProject.ext.testFailures
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
 
-    if (failures > 0) { // check if any tests failed
-        throw new GradleException("The build finished but ${rootProject.ext.testFailures} tests failed! ")
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
 }

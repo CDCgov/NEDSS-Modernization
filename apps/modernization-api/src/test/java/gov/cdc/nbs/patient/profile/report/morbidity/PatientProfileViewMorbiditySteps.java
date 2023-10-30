@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.report.morbidity;
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.patient.morbidity.TestMorbidityReports;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -24,7 +24,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-
 public class PatientProfileViewMorbiditySteps {
 
     @Value("${nbs.wildfly.url:http://wildfly:7001}")
@@ -40,22 +39,17 @@ public class PatientProfileViewMorbiditySteps {
     MockMvc mvc;
 
     @Autowired
-    TestActive<SessionCookie> activeSession;
+    Active<SessionCookie> activeSession;
 
     @Autowired
-    TestActive<MockHttpServletResponse> activeResponse;
+    Active<MockHttpServletResponse> activeResponse;
 
     @Autowired
-    TestActive<UserDetails> activeUserDetails;
+    Active<UserDetails> activeUserDetails;
 
     @Autowired
     @Qualifier("classic")
     MockRestServiceServer server;
-
-    @Before
-    public void clearResponse() {
-        activeResponse.reset();
-    }
 
     @Before
     public void clearServer() {
@@ -67,34 +61,28 @@ public class PatientProfileViewMorbiditySteps {
         long patient = patients.one();
 
         server.expect(
-                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit")
-            )
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         long morbidity = reports.one();
 
         String request = String.format(
-            "/nbs/api/profile/%d/report/morbidity/%d",
-            patient,
-            morbidity
-        );
+                "/nbs/api/profile/%d/report/morbidity/%d",
+                patient,
+                morbidity);
 
         activeResponse.active(
-            mvc.perform(
-                    MockMvcRequestBuilders.get(request)
-                        .with(user(activeUserDetails.active()))
-                        .cookie(activeSession.active().asCookie())
-                )
-                .andReturn()
-                .getResponse()
-        );
+                mvc.perform(
+                        MockMvcRequestBuilders.get(request)
+                                .with(user(activeUserDetails.active()))
+                                .cookie(activeSession.active().asCookie()))
+                        .andReturn()
+                        .getResponse());
     }
 
     @Then("the classic profile is prepared to view a morbidity report")
@@ -107,19 +95,17 @@ public class PatientProfileViewMorbiditySteps {
         long patient = patients.one();
         long morbidity = reports.one();
 
-        String expected =
-            "/nbs/ViewFile1.do?ContextAction=ObservationMorbIDOnSummary&observationUID=" + morbidity;
+        String expected = "/nbs/ViewFile1.do?ContextAction=ObservationMorbIDOnSummary&observationUID=" + morbidity;
 
         MockHttpServletResponse response = activeResponse.active();
 
         assertThat(response.getRedirectedUrl()).contains(expected);
 
         assertThat(response.getCookies())
-            .satisfiesOnlyOnce(cookie -> {
-                    assertThat(cookie.getName()).isEqualTo("Returning-Patient");
+                .satisfiesOnlyOnce(cookie -> {
+                    assertThat(cookie.getName()).isEqualTo("Return-Patient");
                     assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-                }
-            );
+                });
     }
 
     @Then("I am not allowed to view a Classic NBS morbidity report")

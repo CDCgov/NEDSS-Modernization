@@ -15,7 +15,7 @@ http:
       rule: "PathPrefix(`/nbs/api`) || PathPrefix(`/nbs/redirect`)"
     pagebuilder-api:
       service: pagebuilder-api
-      rule: "PathPrefix(`/page-builder/api`)"
+      rule: "PathPrefix(`/nbs/page-builder/api`)"
     # Base /nbs forward
     nbsForward:
       service: nbs-gateway

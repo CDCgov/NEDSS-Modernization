@@ -72,8 +72,246 @@ const text = [
     },
     {
         value: 1029,
-        label: 'Readonly User  text, number, or date no save'
+        label: 'Readonly User text, number, or date no save'
     }
 ];
 
-export { coded, text, dateOrNumeric, fieldType };
+const statusOptions = [
+    { label: 'Published', value: 'published' },
+    {
+        label: 'Draft',
+        value: 'Draft'
+    },
+    {
+        label: 'Published with draft',
+        value: 'PublishedWithDraft'
+    }
+];
+
+const eventYpeOption = [
+    { label: 'Investigation', value: 'Investigation' },
+    {
+        label: 'Contact record',
+        value: 'Contact record'
+    },
+    {
+        label: 'Interview',
+        value: 'Interview'
+    },
+    {
+        label: 'Lab isolate tracking',
+        value: 'Lab isolate tracking'
+    },
+    {
+        label: 'Lab report',
+        value: 'Lab report'
+    },
+    {
+        label: 'Lab susceptibility',
+        value: 'Lab susceptibility'
+    },
+    {
+        label: 'Lab susceptibility',
+        value: 'Vaccination'
+    }
+];
+
+const pageFieldList = [
+    {
+        name: 'Page Name',
+        value: 'PageName'
+    },
+    {
+        name: 'Event Type',
+        value: 'eventType'
+    },
+    {
+        name: 'Related Condition(s)',
+        value: 'relatedCondition'
+    },
+    {
+        name: 'Status',
+        value: 'status'
+    },
+    {
+        name: 'Last updated',
+        value: 'lastUpdated'
+    },
+    {
+        name: 'Last updated by',
+        value: 'lastUpdatedBy'
+    }
+];
+const businessRuleFieldList = [
+    {
+        name: 'Source Fields',
+        value: 'sourceFields'
+    },
+    {
+        name: 'Logic',
+        value: 'logic'
+    },
+    {
+        name: 'Values',
+        value: 'values'
+    },
+    {
+        name: 'Function',
+        value: 'function'
+    },
+    {
+        name: 'Target Fields',
+        value: 'targetFields'
+    },
+    {
+        name: 'Id',
+        value: 'id'
+    }
+];
+const questionFieldList = [
+    {
+        name: 'Unique Name',
+        value: 'UniqueName'
+    },
+    {
+        name: 'Unique ID',
+        value: 'UniqueId'
+    },
+    {
+        name: 'Subgroup',
+        value: 'Subgroup'
+    },
+    {
+        name: 'Type',
+        value: 'Type'
+    },
+    {
+        name: 'Label',
+        value: 'Label'
+    },
+    {
+        name: 'Status',
+        value: 'Status'
+    }
+];
+const valueSetFieldList = [
+    {
+        name: 'Value set name',
+        value: 'ValueSetName'
+    },
+    {
+        name: 'Value set description',
+        value: 'ValueSetDescription'
+    },
+    {
+        name: 'Type',
+        value: 'Type'
+    },
+    {
+        name: 'Value set code',
+        value: 'ValueSetCode'
+    },
+    {
+        name: 'Status',
+        value: 'Status'
+    }
+];
+const conditionFieldList = [
+    {
+        name: 'Condition',
+        value: 'Condition'
+    },
+    {
+        name: 'Code',
+        value: 'Code'
+    },
+    {
+        name: 'Program area',
+        value: 'ProgramArea'
+    },
+    {
+        name: 'Condition Family',
+        value: 'ConditionFamily'
+    },
+    {
+        name: 'Coinfection group',
+        value: 'CoinfectionGroup'
+    },
+    {
+        name: 'NND',
+        value: 'NND'
+    },
+    {
+        name: 'Status',
+        value: 'Status'
+    }
+];
+const initOperator = [
+    {
+        name: 'Starts with',
+        value: 'startsWith'
+    },
+    {
+        name: 'Contains',
+        value: 'contains'
+    },
+    {
+        name: 'Equals',
+        value: 'Equals'
+    },
+    {
+        name: 'Not equal to',
+        value: 'net'
+    }
+];
+
+const arithOperator = [
+    {
+        name: 'Equals',
+        value: 'Equals'
+    },
+    {
+        name: 'Not equal to',
+        value: 'net'
+    }
+];
+
+const dateOperator = [
+    {
+        name: 'Between',
+        value: 'btw'
+    },
+    {
+        name: 'Today',
+        value: 'today'
+    },
+    {
+        name: 'Yesterday',
+        value: 'yesterday'
+    },
+    {
+        name: 'Past 7 days ',
+        value: 'past 7 days '
+    },
+    {
+        name: 'Past 30 days ',
+        value: 'past 30 days '
+    }
+];
+
+export {
+    coded,
+    text,
+    dateOrNumeric,
+    fieldType,
+    statusOptions,
+    eventYpeOption,
+    pageFieldList,
+    arithOperator,
+    dateOperator,
+    initOperator,
+    businessRuleFieldList,
+    questionFieldList,
+    valueSetFieldList,
+    conditionFieldList
+};

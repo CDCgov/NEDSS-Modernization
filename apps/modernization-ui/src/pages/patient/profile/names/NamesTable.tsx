@@ -27,6 +27,7 @@ import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { sortingByDate } from 'sorting/sortingByDate';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -59,7 +60,7 @@ const asEntry = (name: PatientName): NameEntry => ({
 const resolveInitialEntry = (patient: string): NameEntry => ({
     patient: +patient,
     sequence: null,
-    asOf: null,
+    asOf: internalizeDate(new Date()),
     type: null,
     prefix: null,
     first: null,
@@ -104,7 +105,7 @@ export const NamesTable = ({ patient }: Props) => {
 
     const handleComplete = (data: FindPatientProfileQuery) => {
         setTotal(data?.findPatientProfile?.names?.total ?? 0);
-        setNames(data?.findPatientProfile?.names?.content ?? []);
+        setNames(sortingByDate(data?.findPatientProfile?.names?.content || []) as Array<PatientName>);
     };
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfileNames({ onCompleted: handleComplete });
@@ -121,7 +122,8 @@ export const NamesTable = ({ patient }: Props) => {
                     pageNumber: currentPage - 1,
                     pageSize: TOTAL_TABLE_DATA
                 }
-            }
+            },
+            notifyOnNetworkStatusChange: true
         });
     }, [currentPage]);
 

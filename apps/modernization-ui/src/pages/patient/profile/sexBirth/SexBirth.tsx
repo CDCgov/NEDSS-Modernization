@@ -18,6 +18,7 @@ const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
         text: internalizeDate(birth?.asOf)
     },
     { title: 'Current age:', text: birth?.age?.toString() },
+    { title: 'Date of birth:', text: internalizeDate(birth?.bornOn) },
     { title: 'Current sex:', text: gender?.current?.description },
     { title: 'Unknown reason:', text: maybeDescription(gender?.unknownReason) },
     { title: 'Transgender information:', text: maybeDescription(gender?.preferred) },
@@ -114,7 +115,8 @@ export const SexBirth = ({ patient }: Props) => {
         fetch({
             variables: {
                 patient: patient
-            }
+            },
+            notifyOnNetworkStatusChange: true
         });
     }, [patient]);
 

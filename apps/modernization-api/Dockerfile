@@ -1,4 +1,17 @@
-FROM amazoncorretto:17 as builder
+FROM node:18 AS ui-builder
+
+WORKDIR /usr/modernization-ui
+
+COPY apps/modernization-ui/package.json package.json
+
+RUN npm install
+
+# Copy required sources
+COPY apps/modernization-ui .
+
+RUN npm run build
+
+FROM eclipse-temurin:17 AS api-builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -6,37 +19,50 @@ COPY gradlew /usr/src/nbs/gradlew
 COPY build.gradle /usr/src/nbs/build.gradle
 COPY settings.gradle /usr/src/nbs/settings.gradle
 
+COPY lombok.config /usr/src/nbs/lombok.config
+
 # Copy required sources
-COPY apps /usr/src/nbs/apps
+COPY apps/modernization-api /usr/src/nbs/apps/modernization-api
 COPY libs /usr/src/nbs/libs
 
-COPY . /usr/src/nbs
 
-# Preparation for the modernization-ui build
-# Install node
-RUN yum update -y \
-    && curl --silent --location https://rpm.nodesource.com/setup_16.x | bash - \
-    && yum install tar gzip nodejs -y
-
-# Install node modules
-WORKDIR /usr/src/nbs/apps/modernization-ui
-RUN npm install
+# Copy the UI
+COPY --from=ui-builder /usr/modernization-ui/build /usr/src/nbs/apps/modernization-ui/build/
 
 WORKDIR /usr/src/nbs
-
-# Build the UI
-RUN ./gradlew :modernization-ui:build -x test --no-daemon 
 
 # Build just the modernization-api and any required library
 RUN ./gradlew :modernization-api:buildNeeded -x test --no-daemon
 
-FROM amazoncorretto:17
+RUN jar xf apps/modernization-api/build/libs/modernization-api.jar
 
-COPY --from=builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api*.jar api.jar 
+RUN jdeps --ignore-missing-deps -q  \
+    --recursive  \
+    --multi-release 17  \
+    --print-module-deps  \
+    --class-path 'BOOT-INF/lib/*'  \
+    apps/modernization-api/build/libs/modernization-api.jar > deps.info
+
+RUN jlink \
+    --add-modules $(cat deps.info) \
+    --strip-debug \
+    --compress 2 \
+    --no-header-files \
+    --no-man-pages \
+    --output modernization-api/runtime
+
+FROM debian:12-slim
 
 ENV NBS_DATASOURCE_SERVER=nbs-mssql
 ENV NBS_ELASTICSEARCH_SERVER=elasticsearch
 ENV NBS_WILDFLY_SERVER=wildfly
 
-# Run jar
+COPY --from=api-builder /usr/src/nbs/modernization-api/runtime /deployment/runtime
+
+COPY --from=api-builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api.jar /deployment/application/api.jar
+
+ENV PATH /deployment/runtime/bin:$PATH
+
+WORKDIR /deployment/application
+
 CMD ["java", "-jar", "api.jar"]

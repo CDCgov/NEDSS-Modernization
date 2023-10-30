@@ -1,8 +1,5 @@
 extend type Query {
-  findDistinctResultedTest(
-    searchText: String!
-    loinc: Boolean!
-  ): [ResultedTest!]!
+  findDistinctResultedTest(searchText: String!): [ResultedTest!]!
 }
 
 type ResultedTest {

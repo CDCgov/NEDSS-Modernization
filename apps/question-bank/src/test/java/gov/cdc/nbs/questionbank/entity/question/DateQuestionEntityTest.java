@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.MessagingData;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.ReportingData;
+import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest.DateMask;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
+import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 class DateQuestionEntityTest {
 
@@ -17,28 +19,28 @@ class DateQuestionEntityTest {
 
     @Test
     void should_set_future_date_to_F() {
-        QuestionCommand.AddDateQuestion command = addCommand("mask", false);
+        QuestionCommand.AddDateQuestion command = addCommand(DateMask.DATE, false);
 
         DateQuestionEntity q = new DateQuestionEntity(command);
         assertEquals('F', q.getFutureDateIndCd().charValue());
-        assertEquals("mask", q.getMask());
+        assertEquals("DATE", q.getMask());
     }
 
     @Test
     void should_set_future_date_to_T() {
-        QuestionCommand.AddDateQuestion command = addCommand("mask1", true);
+        QuestionCommand.AddDateQuestion command = addCommand(DateMask.DATE, true);
 
         DateQuestionEntity q = new DateQuestionEntity(command);
         assertEquals('T', q.getFutureDateIndCd().charValue());
-        assertEquals("mask1", q.getMask());
+        assertEquals("DATE", q.getMask());
     }
 
-    private QuestionCommand.AddDateQuestion addCommand(String mask, boolean allowFutureDates) {
+    private QuestionCommand.AddDateQuestion addCommand(DateMask mask, boolean allowFutureDates) {
         return new QuestionCommand.AddDateQuestion(
                 mask,
                 allowFutureDates,
                 new QuestionCommand.QuestionData(
-                        "code set",
+                        CodeSet.LOCAL,
                         "localId",
                         "uniqueName",
                         "subgroup",
@@ -66,15 +68,13 @@ class DateQuestionEntityTest {
 
     @Test
     void should_do_update() {
+        DateQuestionEntity entity = QuestionEntityMother.dateQuestion();
         var command = QuestionCommandMother.update();
-        DateQuestionEntity q = new DateQuestionEntity();
-        q.setQuestionType("LOCAL");
-        q.setVersionCtrlNbr(1);
 
-        q.update(command);
+        entity.update(command);
 
-        assertEquals(command.mask(), q.getMask());
-        assertEquals(command.allowFutureDates() ? 'T' : 'F', q.getFutureDateIndCd().charValue());
+        assertEquals(command.mask(), entity.getMask());
+        assertEquals(command.allowFutureDates() ? 'T' : 'F', entity.getFutureDateIndCd().charValue());
 
     }
 }

@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.investigation;
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.event.search.investigation.TestInvestigations;
 import gov.cdc.nbs.patient.TestPatients;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -24,7 +24,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-
 public class PatientProfileViewInvestigationSteps {
 
     @Value("${nbs.wildfly.url:http://wildfly:7001}")
@@ -40,22 +39,17 @@ public class PatientProfileViewInvestigationSteps {
     MockMvc mvc;
 
     @Autowired
-    TestActive<SessionCookie> activeSession;
+    Active<SessionCookie> activeSession;
 
     @Autowired
-    TestActive<MockHttpServletResponse> activeResponse;
+    Active<MockHttpServletResponse> activeResponse;
 
     @Autowired
-    TestActive<UserDetails> activeUserDetails;
+    Active<UserDetails> activeUserDetails;
 
     @Autowired
     @Qualifier("classic")
     MockRestServiceServer server;
-
-    @Before
-    public void clearResponse() {
-        activeResponse.reset();
-    }
 
     @Before
     public void clearServer() {
@@ -101,8 +95,8 @@ public class PatientProfileViewInvestigationSteps {
         long patient = patients.one();
         long investigation = investigations.one();
 
-        String expected =
-                "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID=" + investigation;
+        String expected = "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID="
+                + investigation;
 
         MockHttpServletResponse response = activeResponse.active();
 
@@ -110,7 +104,7 @@ public class PatientProfileViewInvestigationSteps {
 
         assertThat(response.getCookies())
                 .satisfiesOnlyOnce(cookie -> {
-                    assertThat(cookie.getName()).isEqualTo("Returning-Patient");
+                    assertThat(cookie.getName()).isEqualTo("Return-Patient");
                     assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
                 });
     }

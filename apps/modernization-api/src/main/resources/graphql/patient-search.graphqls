@@ -1,0 +1,102 @@
+
+input IdentificationCriteria {
+    identificationNumber: String
+    identificationType: String
+    assigningAuthority: String
+}
+
+input PersonFilter {
+    id: ID
+    lastName: String
+    firstName: String
+    race: String
+    identification: IdentificationCriteria
+    ssn: String
+    phoneNumber: String
+    email: String
+    dateOfBirth: Date
+    dateOfBirthOperator: Operator
+    gender: Gender
+    deceased: Deceased
+    address: String
+    city: String
+    state: String
+    country: String
+    zip: String
+    mortalityStatus: String
+    ethnicity: String
+    vaccinationId: String
+    treatmentId: String
+    recordStatus: [RecordStatus!]!
+}
+
+enum Gender {
+    M
+    F
+    U
+}
+
+enum Deceased {
+    Y
+    N
+    UNK
+}
+
+enum Operator {
+    EQUAL
+    BEFORE
+    AFTER
+}
+
+enum SortDirection {
+    ASC
+    DESC
+}
+
+type PatientSearchResultIdentification {
+    type: String!
+    value: String!
+}
+
+type PatientSearchResultName {
+    first: String
+    middle: String
+    last: String
+    suffix: String
+}
+
+type PatientSearchResultAddress {
+    use: String!
+    address: String
+    address2: String
+    city: String
+    state: String
+    zipcode: String
+}
+
+type PatientSearchResult {
+    patient: Int!
+    birthday: Date
+    age: Int
+    gender: String
+    status: String!
+    shortId: Int!
+    legalName: PatientSearchResultName
+    names: [PatientSearchResultName!]!
+    identification: [PatientSearchResultIdentification!]!
+    addresses: [PatientSearchResultAddress!]!
+    phones: [String!]!
+    emails: [String!]!
+}
+
+type PatientSearchResults {
+    content: [PatientSearchResult!]!
+    total: Int!
+}
+
+extend type Query {
+    findPatientsByFilter(
+        filter: PersonFilter!
+        page: SortablePage
+    ): PatientSearchResults!
+}

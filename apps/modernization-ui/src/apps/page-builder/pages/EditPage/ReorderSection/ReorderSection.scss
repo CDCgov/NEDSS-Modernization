@@ -1,0 +1,25 @@
+@import 'settings.scss';
+
+.reorder-section {
+    .reorder-section__toggle {
+        cursor: pointer;
+    }
+    .reorder-section__tile {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.9rem 1.5rem;
+    }
+    .reorder-section__subsections {
+        height: auto;
+        max-height: 400vh;
+        opacity: 100;
+        margin-left: 1.0rem;
+        transition: $transition-1;
+        &.closed {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+    }
+}

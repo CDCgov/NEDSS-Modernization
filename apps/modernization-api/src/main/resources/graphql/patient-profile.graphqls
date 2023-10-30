@@ -4,7 +4,9 @@ type PatientIndicatorCodedValue {
 }
 
 type PatientSummaryAddress {
-    street: String
+    use: String!
+    address: String
+    address2: String
     city: String
     state: String
     zipcode: String
@@ -21,16 +23,23 @@ type PatientSummaryEmail {
     address: String
 }
 
+type PatientSummaryIdentification {
+    type: String!
+    value: String!
+}
+
 type PatientSummary {
     legalName: PatientLegalName
     birthday: Date
     age: Int
     gender: String
     ethnicity: String
-    race: String
+    races: [String!]
+    home: PatientSummaryAddress
+    address: [PatientSummaryAddress!]!
+    identification: [PatientSummaryIdentification!]
     phone: [PatientSummaryPhone!]
     email: [PatientSummaryEmail!]
-    address: PatientSummaryAddress
 }
 
 type PatientLegalName {
@@ -222,6 +231,8 @@ type PatientGender {
     preferred: PatientPreferredGender
     additional: String
 }
+
+
 
 type PatientIdentificationType {
     id: String!

@@ -1,10 +1,11 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
+    id 'jvm-test-suite'
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
-group = 'gov.cdc'
+group = 'gov.cdc.nbs.modernization'
 version = '1.0.0-SNAPSHOT'
 
 apply from: "${rootDir}/gradle/cucumber-logging.gradle"
@@ -13,16 +14,13 @@ bootJar {
     manifest {
         attributes 'API-Version': archiveVersion
     }
-}
 
-jar {
-    //  packages the application and spring into one jar
-    enabled = false
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
 }
 
 dependencies {
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
-    implementation project(':modernization-ui')
     implementation project(':accumulation')
     implementation project(':database-entities')
     implementation project(':event-schema')
@@ -31,28 +29,27 @@ dependencies {
 
     //  feature modules
     implementation project(':me-api')
+    implementation project(':configuration-api')
+    implementation project(':options-api')
 
-    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation libs.snake.yaml
+    implementation libs.guava
 
-    // core
+    implementation libs.mssql.jdbc
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
-
-    implementation libs.bundles.security
-    implementation libs.springBoot.web
-
-    // graphql
-    implementation libs.springBoot.graphql
-    // database
-    implementation libs.mssql.jdbc
-
-    // querydsl
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
 
     // blazebit for querydsl paging
     implementation libs.bundles.blaze.persistence.queryDSL
     implementation libs.bundles.jackson
+
+    implementation libs.bundles.security
+    implementation libs.springBoot.web
+
+    // graphql
+    implementation libs.springBoot.graphql
 
     // elasticsearch
     implementation libs.bundles.elasticsearch
@@ -65,8 +62,7 @@ dependencies {
     annotationProcessor libs.lombok
 
     // itext pdf generation
-    implementation "com.itextpdf:itextpdf:5.5.13.3"
-
+    implementation libs.itextpdf
     implementation "commons-codec:commons-codec:1.15"
 
     implementation libs.bundles.jackson
@@ -74,22 +70,6 @@ dependencies {
     // Kafka
     implementation libs.spring.kafka
 
-    testImplementation libs.bundles.cucumber
-
-    testCompileOnly libs.lombok
-    testAnnotationProcessor libs.lombok
-
-    testImplementation libs.bundles.testing
-    testImplementation libs.spring.test
-    testImplementation libs.spring.security.test
-    testImplementation libs.bundles.testcontainers.elasticsearch
-    testImplementation libs.bundles.javafaker
-    testImplementation libs.spring.kafka.test
-
-    testImplementation libs.awaitility
-
-    //  Required for testing multipart form-data from Classic NBS
-    testImplementation "commons-fileupload:commons-fileupload:1.5"
 }
 
 configurations {
@@ -110,6 +90,40 @@ test {
     }
 }
 
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation project(':testing:support')
+                implementation project(':testing:identity')
+                implementation project(':testing:auth')
+                implementation project(':testing:auth-cucumber')
+                implementation project(':testing:http-interaction')
+
+                implementation libs.bundles.cucumber
+
+                compileOnly libs.lombok
+                annotationProcessor libs.lombok
+
+                implementation libs.bundles.testing
+                implementation libs.spring.test
+                implementation libs.spring.security.test
+                implementation libs.bundles.testcontainers.elasticsearch
+                implementation 'net.datafaker:datafaker:2.0.2'
+                implementation libs.spring.kafka.test
+
+                implementation libs.awaitility
+
+                //  Required for testing multipart form-data from Classic NBS
+                implementation "commons-fileupload:commons-fileupload:1.5"
+            }
+        }
+    }
+}
+
+
 tasks.withType(JavaExec).configureEach {
 
     debugOptions {
@@ -128,9 +142,3 @@ processResources {
         into "static"
     }
 }
-
-compileJava.mustRunAfter(":modernization-ui:build")
-compileJava.mustRunAfter(":database-entities:build")
-compileJava.mustRunAfter(":event-schema:build")
-compileJava.mustRunAfter(":authentication:build")
-compileJava.mustRunAfter(":id-generator:build")

@@ -1,15 +1,48 @@
-import React, { useState } from 'react';
-import { ModalToggleButton, TextInput } from '@trussworks/react-uswds';
+import React, { useContext, useState } from 'react';
+import { Button, TextInput } from '@trussworks/react-uswds';
 import { ToggleButton } from '../ToggleButton';
+import './AddTab.scss';
+import { TabControllerService } from 'apps/page-builder/generated';
+import { UserContext } from 'user';
+import { useParams } from 'react-router-dom';
 
-export const AddTab = ({ modalRef }: any) => {
+type Props = {
+    onAddTab: () => void;
+    onCancel: () => void;
+};
+
+export const AddTab = ({ onAddTab, onCancel }: Props) => {
     const [tabDetails, setTabDetails] = useState({ name: '', desc: '', visible: true });
+    const { state } = useContext(UserContext);
+    const { pageId } = useParams();
+    const token = `Bearer ${state.getToken()}`;
+
     const handleTabInput = ({ target }: any) => {
         setTabDetails({
             ...tabDetails,
             [target.name]: target?.type === 'checkbox' ? target?.checked : target.value
         });
     };
+
+    const handleAddTab = async () => {
+        if (pageId) {
+            try {
+                await TabControllerService.createTabUsingPost({
+                    page: parseInt(pageId),
+                    authorization: token,
+                    request: {
+                        name: tabDetails.name,
+                        // description: tabDetails.desc,
+                        visible: tabDetails.visible
+                    }
+                });
+                onAddTab();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    };
+
     const renderTabForm = (
         <div className="form-container margin-top-1em">
             <div>
@@ -36,25 +69,21 @@ export const AddTab = ({ modalRef }: any) => {
                     onChange={handleTabInput}
                 />
             </div>
-            <div>
-                <label> Visible</label>
+            <div className="visible-toggle-container">
+                <label> Not Visible</label>
                 <ToggleButton checked={tabDetails.visible} name="visible" onChange={handleTabInput} />
+                <label> Visible</label>
             </div>
-            <div className=" margin-bottom-1em add-tab-modal ds-u-text-align--right ">
-                <ModalToggleButton
-                    closer
-                    modalRef={modalRef}
-                    className="submit-btn"
-                    disabled={!tabDetails.name}
-                    type="button">
-                    Add
-                </ModalToggleButton>
-                <ModalToggleButton closer modalRef={modalRef} className="cancel-btn" type="button">
+            <div className="margin-bottom-1em add-tab-modal ds-u-text-align--right ">
+                <Button className="submit-btn" disabled={!tabDetails.name} onClick={handleAddTab} type="button">
+                    Add tab
+                </Button>
+                <Button type="button" onClick={onCancel} className="cancel-btn">
                     Cancel
-                </ModalToggleButton>
+                </Button>
             </div>
         </div>
     );
 
-    return <div className="add-valueset">{renderTabForm}</div>;
+    return <div className="add-valueset add-tab">{renderTabForm}</div>;
 };

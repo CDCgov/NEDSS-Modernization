@@ -214,41 +214,6 @@ type ConditionCode {
     conditionDescTxt: String
 }
 extend type Query {
-  findAllCountryCodes(page: Page): [CountryCode]!
-}
-
-type CountryCode {
-  id: ID
-  assigningAuthorityCd: String
-  assigningAuthorityDescTxt: String
-  codeDescTxt: String
-  codeShortDescTxt: String
-  effectiveFromTime: DateTime
-  effectiveToTime: DateTime
-  excludedTxt: String
-  keyInfoTxt: String
-  indentLevelNbr: Int
-  isModifiableInd: String
-  parentIsCd: String
-  statusCd: String
-  statusTime: DateTime
-  codeSetNm: String
-  seqNum: Int
-  nbsUid: Int
-  sourceConceptId: String
-  codeSystemCd: String
-  codeSystemDescTxt: String
-}
-extend type Query {
-    findAllCountyCodesForState(stateCode: String!, page: Page): [CountyCode]!
-}
-
-type CountyCode {
-    id: String!
-    codeDescTxt: String
-    codeShortDescTxt: String
-}
-extend type Query {
     findAllEthnicityValues(page: Page): EthnicityResults!
 }
 
@@ -602,20 +567,14 @@ enum LaboratoryReportStatus {
   UNPROCESSED
 }
 extend type Query {
-  findDistinctCodedResults(
-    searchText: String!
-    snomed: Boolean!
-  ): [CodedResult!]!
+  findDistinctCodedResults(searchText: String!): [CodedResult!]!
 }
 
 type CodedResult {
   name: String!
 }
 extend type Query {
-  findDistinctResultedTest(
-    searchText: String!
-    loinc: Boolean!
-  ): [ResultedTest!]!
+  findDistinctResultedTest(searchText: String!): [ResultedTest!]!
 }
 
 type ResultedTest {
@@ -855,6 +814,7 @@ type PatientInvestigation {
     coInfection: String
     notification: String
     investigator: String
+    comparable: Boolean!
 }
 
 type PatientInvestigationResults {
@@ -909,7 +869,9 @@ type PatientIndicatorCodedValue {
 }
 
 type PatientSummaryAddress {
-    street: String
+    use: String!
+    address: String
+    address2: String
     city: String
     state: String
     zipcode: String
@@ -926,16 +888,23 @@ type PatientSummaryEmail {
     address: String
 }
 
+type PatientSummaryIdentification {
+    type: String!
+    value: String!
+}
+
 type PatientSummary {
     legalName: PatientLegalName
     birthday: Date
     age: Int
     gender: String
     ethnicity: String
-    race: String
+    races: [String!]
+    home: PatientSummaryAddress
+    address: [PatientSummaryAddress!]!
+    identification: [PatientSummaryIdentification!]
     phone: [PatientSummaryPhone!]
     email: [PatientSummaryEmail!]
-    address: PatientSummaryAddress
 }
 
 type PatientLegalName {
@@ -1128,6 +1097,8 @@ type PatientGender {
     additional: String
 }
 
+
+
 type PatientIdentificationType {
     id: String!
     description: String!
@@ -1279,6 +1250,108 @@ type PatientProfile {
 extend type Query {
     findPatientProfile(patient: ID, shortId: Int): PatientProfile
 }
+
+input IdentificationCriteria {
+    identificationNumber: String
+    identificationType: String
+    assigningAuthority: String
+}
+
+input PersonFilter {
+    id: ID
+    lastName: String
+    firstName: String
+    race: String
+    identification: IdentificationCriteria
+    ssn: String
+    phoneNumber: String
+    email: String
+    dateOfBirth: Date
+    dateOfBirthOperator: Operator
+    gender: Gender
+    deceased: Deceased
+    address: String
+    city: String
+    state: String
+    country: String
+    zip: String
+    mortalityStatus: String
+    ethnicity: String
+    vaccinationId: String
+    treatmentId: String
+    recordStatus: [RecordStatus!]!
+}
+
+enum Gender {
+    M
+    F
+    U
+}
+
+enum Deceased {
+    Y
+    N
+    UNK
+}
+
+enum Operator {
+    EQUAL
+    BEFORE
+    AFTER
+}
+
+enum SortDirection {
+    ASC
+    DESC
+}
+
+type PatientSearchResultIdentification {
+    type: String!
+    value: String!
+}
+
+type PatientSearchResultName {
+    first: String
+    middle: String
+    last: String
+    suffix: String
+}
+
+type PatientSearchResultAddress {
+    use: String!
+    address: String
+    address2: String
+    city: String
+    state: String
+    zipcode: String
+}
+
+type PatientSearchResult {
+    patient: Int!
+    birthday: Date
+    age: Int
+    gender: String
+    status: String!
+    shortId: Int!
+    legalName: PatientSearchResultName
+    names: [PatientSearchResultName!]!
+    identification: [PatientSearchResultIdentification!]!
+    addresses: [PatientSearchResultAddress!]!
+    phones: [String!]!
+    emails: [String!]!
+}
+
+type PatientSearchResults {
+    content: [PatientSearchResult!]!
+    total: Int!
+}
+
+extend type Query {
+    findPatientsByFilter(
+        filter: PersonFilter!
+        page: SortablePage
+    ): PatientSearchResults!
+}
 type PatientTreatment {
   treatment: ID!
   createdOn: DateTime!
@@ -1330,16 +1403,6 @@ extend type Query {
     findVaccinationsForPatient(patient: ID!, page: Page): PatientVaccinationResults
 }
 type Query {
-    findPatientById(id: ID!): Person
-    findAllPatients(page: SortablePage): PersonResults!
-    findPatientsByFilter(
-        filter: PersonFilter!
-        page: SortablePage
-    ): PersonResults!
-    findPatientsByOrganizationFilter(
-        filter: OrganizationFilter!
-        page: SortablePage
-    ): PersonResults!
     findOpenInvestigationsForPatient(
         patientId: Int!
         page: Page
@@ -1392,157 +1455,30 @@ type PatientUpdateResponse {
     patientId: ID!
 }
 
-type PersonResults {
-    content: [Person!]!
-    total: Int!
+enum Suffix {
+    ESQ
+    II
+    III
+    IV
+    JR
+    SR
+    V
 }
 
-input IdentificationCriteria {
-    identificationNumber: String!
-    identificationType: String!
-    assigningAuthority: String
-}
-
-input PersonFilter {
-    id: ID
-    lastName: String
-    firstName: String
-    race: String
-    identification: IdentificationCriteria
-    ssn: String
-    phoneNumber: String
-    email: String
-    dateOfBirth: Date
-    dateOfBirthOperator: Operator
-    gender: Gender
-    deceased: Deceased
-    address: String
-    city: String
-    state: String
-    country: String
-    zip: String
-    mortalityStatus: String
-    ethnicity: String
-    vaccinationId: String
-    treatmentId: String
-    recordStatus: [RecordStatus!]!
-}
-
-type Person {
-    shortId: Int
-    id: ID
-    nbsEntity: NBSEntity!
-    entityIds: [PersonIdentification]
-    names: [PersonName]
-    addReasonCd: String
-    addTime: DateTime
-    addUserId: ID
-    administrativeGenderCd: String
-    ageCalc: Int
-    ageCalcTime: DateTime
-    ageCalcUnitCd: String
-    ageCategoryCd: String
-    ageReported: String
-    ageReportedTime: DateTime
-    ageReportedUnitCd: String
-    birthGenderCd: Gender
-    birthOrderNbr: Int
-    birthTime: DateTime
-    birthTimeCalc: DateTime
-    cd: String
-    cdDescTxt: String
-    currSexCd: String
-    deceasedIndCd: String
-    deceasedTime: DateTime
-    description: String
-    educationLevelCd: String
-    educationLevelDescTxt: String
-    ethnicGroupInd: String
-    lastChgReasonCd: String
-    lastChgTime: DateTime
-    lastChgUserId: ID
-    localId: String
-    maritalStatusCd: String
-    maritalStatusDescTxt: String
-    mothersMaidenNm: String
-    multipleBirthInd: String
-    occupationCd: String
-    preferredGenderCd: String
-    primLangCd: String
-    primLangDescTxt: String
-    recordStatusCd: RecordStatus
-    recordStatusTime: DateTime
-    statusCd: String
-    statusTime: DateTime
-    survivedIndCd: String
-    userAffiliationTxt: String
-    firstNm: String
-    lastNm: String
-    middleNm: String
-    nmPrefix: String
-    nmSuffix: String
-    preferredNm: String
-    hmStreetAddr1: String
-    hmStreetAddr2: String
-    hmCityCd: String
-    hmCityDescTxt: String
-    hmStateCd: String
-    hmZipCd: String
-    hmCntyCd: String
-    hmCntryCd: String
-    hmPhoneNbr: String
-    hmPhoneCntryCd: String
-    hmEmailAddr: String
-    cellPhoneNbr: String
-    wkStreetAddr1: String
-    wkStreetAddr2: String
-    wkCityCd: String
-    wkCityDescTxt: String
-    wkStateCd: String
-    wkZipCd: String
-    wkCntyCd: String
-    wkCntryCd: String
-    wkPhoneNbr: String
-    wkPhoneCntryCd: String
-    wkEmailAddr: String
-    ssn: String
-    medicaidNum: String
-    dlNum: String
-    dlStateCd: String
-    raceCd: String
-    raceSeqNbr: Int
-    raceCategoryCd: String
-    ethnicityGroupCd: String
-    ethnicGroupSeqNbr: Int
-    adultsInHouseNbr: Int
-    childrenInHouseNbr: Int
-    birthCityCd: String
-    birthCityDescTxt: String
-    birthCntryCd: String
-    birthStateCd: String
-    raceDescTxt: String
-    ethnicGroupDescTxt: String
-    versionCtrlNbr: Int
-    asOfDateAdmin: DateTime
-    asOfDateEthnicity: DateTime
-    asOfDateGeneral: DateTime
-    asOfDateMorbidity: DateTime
-    asOfDateSex: DateTime
-    electronicInd: String
-    personParentUid: personParentUid
-    dedupMatchInd: String
-    groupNbr: Int
-    groupTime: DateTime
-    edxInd: String
-    speaksEnglishCd: String
-    additionalGenderCd: String
-    eharsId: String
-    ethnicUnkReasonCd: String
-    sexUnkReasonCd: String
-}
-
-type personParentUid {
-    id: ID
+enum NameUseCd {
+    AD # Adopted Name
+    AL # Alias Name
+    A # Artist/Stage Name
+    S # Coded Pseudo
+    I # Indigenous/Tribal
+    L # Legal
+    C # License
+    M # Maiden Name
+    MO # Mother's Name
+    BR # Name at Birth
+    P # Name of Partner/Spouse
+    R # Religious
+    U
 }
 
 input NewPatientName {
@@ -1842,113 +1778,6 @@ input UpdateGenderInput {
 type PatientBirthAndGenderChangeResult {
     patient: Int!
 }
-
-enum NameUseCd {
-    AD # Adopted Name
-    AL # Alias Name
-    A # Artist/Stage Name
-    S # Coded Pseudo
-    I # Indigenous/Tribal
-    L # Legal
-    C # License
-    M # Maiden Name
-    MO # Mother's Name
-    BR # Name at Birth
-    P # Name of Partner/Spouse
-    R # Religious
-    U
-}
-
-enum Suffix {
-    ESQ
-    II
-    III
-    IV
-    JR
-    SR
-    V
-}
-
-enum PhoneType {
-    HOME
-    CELL
-    WORK
-}
-
-enum Gender {
-    M
-    F
-    U
-}
-
-enum Deceased {
-    Y
-    N
-    UNK
-}
-
-enum Operator {
-    EQUAL
-    BEFORE
-    AFTER
-}
-
-enum SortDirection {
-    ASC
-    DESC
-}
-
-type PersonIdentification {
-    typeDescTxt: String
-    typeCd: String
-    rootExtensionTxt: String
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-}
-
-type PersonName {
-    firstNm: String
-    middleNm: String
-    lastNm: String
-    nmSuffix: String
-    nmPrefix: String
-}
-
-type Locator {
-    emailAddress: String
-    extenstionTxt: String
-    phoneNbrTxt: String
-    urlAddress: String
-    censusBlockCd: String
-    censusMinorCivilDivisionCd: String
-    censusTrackCd: String
-    cityCd: String
-    cityDescTxt: String
-    cntryCd: String
-    cntryDescTxt: String
-    cntyCd: String
-    cntyDescTxt: String
-    msaCongressDistrictCd: String
-    regionDistrictCd: String
-    stateCd: String
-    streetAddr1: String
-    streetAddr2: String
-    zipCd: String
-    geocodeMatchInd: String
-    withinCityLimitsInd: String
-    censusTract: String
-    stateCode: StateCode
-    countryCode: CountryCode
-}
-
-type LocatorParticipations {
-    classCd: String
-    locator: Locator
-}
-
-type NBSEntity {
-    entityLocatorParticipations: [LocatorParticipations]
-}
 extend type Query {
   findPlaceById(id: ID!): Place
   findAllPlaces(page: Page): [Place]!
@@ -2108,32 +1937,6 @@ type SnomedCodedResults {
 type SnomedCode {
     id: String
     snomedDescTxt: String
-}
-extend type Query {
-  findAllStateCodes(page: Page): [StateCode]!
-}
-
-type StateCode {
-  id: String
-  assigningAuthorityCd: String
-  assigningAuthorityDescTxt: String
-  stateNm: String
-  codeDescTxt: String
-  effectiveFromTime: DateTime
-  effectiveToTime: DateTime
-  excludedTxt: String
-  indentLevelNbr: Int
-  isModifiableInd: String
-  keyInfoTxt: String
-  parentIsCd: String
-  statusCd: String
-  statusTime: DateTime
-  codeSetNm: String
-  seqNum: Int
-  nbsUid: Int
-  sourceConceptId: String
-  codeSystemCd: String
-  codeSystemDescTxt: String
 }
 extend type Query {
     findAllUsers(page: Page): UserResults!

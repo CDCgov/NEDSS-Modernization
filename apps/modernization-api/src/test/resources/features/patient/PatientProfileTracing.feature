@@ -36,6 +36,7 @@ Feature: Patient Profile Contact Tracing
     Given I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     Then the profile contacts that named the patient are not returned
 
+  @web-interaction
   Scenario: A Contact is viewed from the Patient Profile
     Given I am logged into NBS and a security log entry exists
     And I have the authorities: "VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
@@ -45,6 +46,7 @@ Feature: Patient Profile Contact Tracing
     Then the classic profile is prepared to view a Contact
     And I am redirected to Classic NBS to view a Contact
 
+  @web-interaction
   Scenario: A Contact is viewed from the Patient Profile without required permissions
     Given I am logged into NBS and a security log entry exists
     And I have the authorities: "OTHER" for the jurisdiction: "ALL" and program area: "STD"

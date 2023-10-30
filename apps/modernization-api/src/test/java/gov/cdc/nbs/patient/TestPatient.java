@@ -1,14 +1,14 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
 @Component
-public class TestPatient extends TestActive<Person> {
+public class TestPatient extends Active<Person> {
 
     private final EntityManager entityManager;
 

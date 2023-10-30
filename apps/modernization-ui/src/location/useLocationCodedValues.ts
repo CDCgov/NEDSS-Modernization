@@ -48,7 +48,7 @@ const initial = {
 type StateCodedValues = {
     all: StateCodedValue[];
     byAbbreviation: (_abbreviation: string) => StateCodedValue | null;
-    byValue: (_value: string | null) => StateCodedValue | null;
+    byValue: (_value?: string | null) => StateCodedValue | null;
 };
 
 type CountyCodedValues = {
@@ -72,7 +72,7 @@ const useLocationCodedValues = () => {
                 all: values.states,
                 byAbbreviation: (abbreviation: string) =>
                     values.states.find((state) => state.abbreviation === abbreviation) ?? null,
-                byValue: (value: string | null) => values.states.find((state) => state.value === value) ?? null
+                byValue: (value?: string | null) => values.states.find((state) => state.value === value) ?? null
             }
         });
     };

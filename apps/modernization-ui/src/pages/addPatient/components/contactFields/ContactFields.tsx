@@ -4,6 +4,7 @@ import FormCard from 'components/FormCard/FormCard';
 import { validatePhoneNumber } from 'validation/phone';
 import { Input } from 'components/FormInputs/Input';
 import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
+import { maxLengthRule } from 'validation/entry';
 
 type Props = {
     id: string;
@@ -34,16 +35,20 @@ export default function ContactFields({ id, title }: Props) {
                             rules={{
                                 validate: {
                                     properNumber: validatePhoneNumber
-                                }
+                                },
+                                ...maxLengthRule(20)
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                 <PhoneNumberInput
                                     placeholder="333-444-555"
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     label="Home phone"
-                                    defaultValue={value}
+                                    value={value}
                                     id="homePhone"
                                     error={error?.message}
+                                    mask="___-___-____"
+                                    pattern="\d{3}-\d{3}-\d{4}"
                                 />
                             )}
                         />
@@ -57,16 +62,20 @@ export default function ContactFields({ id, title }: Props) {
                             rules={{
                                 validate: {
                                     properNumber: validatePhoneNumber
-                                }
+                                },
+                                ...maxLengthRule(20)
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                 <PhoneNumberInput
                                     placeholder="333-444-555"
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     label="Work phone"
                                     defaultValue={value}
                                     id="workPhone"
                                     error={error?.message}
+                                    mask="___-___-____"
+                                    pattern="\d{3}-\d{3}-\d{4}"
                                 />
                             )}
                         />
@@ -75,16 +84,19 @@ export default function ContactFields({ id, title }: Props) {
                         <Controller
                             control={control}
                             name="extension"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule(20)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     inputMode="numeric"
                                     placeholder="1234"
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     type="tel"
                                     label="Ext"
                                     defaultValue={value}
                                     htmlFor={name}
                                     id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -99,16 +111,20 @@ export default function ContactFields({ id, title }: Props) {
                                 rules={{
                                     validate: {
                                         properNumber: validatePhoneNumber
-                                    }
+                                    },
+                                    ...maxLengthRule(20)
                                 }}
-                                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                     <PhoneNumberInput
                                         placeholder="333-444-555"
                                         onChange={onChange}
+                                        onBlur={onBlur}
                                         label="Cell phone"
                                         defaultValue={value}
                                         id={name}
                                         error={error?.message}
+                                        mask="___-___-____"
+                                        pattern="\d{3}-\d{3}-\d{4}"
                                     />
                                 )}
                             />
@@ -143,12 +159,14 @@ export default function ContactFields({ id, title }: Props) {
                                     pattern: {
                                         value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                                         message: 'Please enter a valid email address (example: youremail@website.com)'
-                                    }
+                                    },
+                                    ...maxLengthRule(100)
                                 }}
-                                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                     <Input
                                         placeholder="jdoe@gmail.com"
                                         onChange={onChange}
+                                        onBlur={onBlur}
                                         type="text"
                                         label="Email"
                                         defaultValue={value}

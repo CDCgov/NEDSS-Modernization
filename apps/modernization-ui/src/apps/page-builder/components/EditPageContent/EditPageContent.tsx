@@ -1,19 +1,19 @@
+import { PagesTab } from 'apps/page-builder/generated';
 import { SectionComponent } from '../Section/Section';
 import './EditPageContent.scss';
-import { EditPageContent } from 'apps/page-builder/generated/models/EditPageContent';
 
 export const EditPageContentComponent = ({
     content,
     onAddSection
 }: {
-    content: EditPageContent;
+    content: PagesTab;
     onAddSection: () => void;
 }) => {
     return (
         <div className="edit-page-content">
             <div className="edit-page-content__sections">
-                {content.tabSections.map((section: any, i: number) => {
-                    if (section.visible === 'T') {
+                {content.sections?.map((section, i) => {
+                    if (section.visible) {
                         return <SectionComponent key={i} section={section} onAddSection={onAddSection} />;
                     } else {
                         return;

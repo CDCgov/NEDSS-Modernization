@@ -1,4 +1,4 @@
-import { render, screen, act, fireEvent } from '@testing-library/react';
+import { render, screen, act, fireEvent, waitFor } from '@testing-library/react';
 import { QuickConditionLookup } from './QuickConditionLookup';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { Direction } from 'sorting';
@@ -54,7 +54,7 @@ afterEach(() => {
 });
 
 describe('QuickConditionLookup', () => {
-    it('should render successfully', () => {
+    it('should render successfully', async () => {
         const modal = { current: null };
 
         const { baseElement } = render(
@@ -64,10 +64,13 @@ describe('QuickConditionLookup', () => {
                 </PagesContext.Provider>
             </BrowserRouter>
         );
-        expect(baseElement).toBeTruthy();
+
+        await waitFor(() => {
+            expect(baseElement).toBeTruthy();
+        });
     });
 
-    it('should fetch  the conditions when mounted', () => {
+    it('should fetch  the conditions when mounted', async () => {
         const modal = { current: null };
         const { container } = render(
             <BrowserRouter>
@@ -77,7 +80,9 @@ describe('QuickConditionLookup', () => {
             </BrowserRouter>
         );
 
-        expect(mockSearchConditionUsingPost).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(mockSearchConditionUsingPost).toHaveBeenCalled();
+        });
     });
 
     it('has the correct title', async () => {
@@ -91,7 +96,10 @@ describe('QuickConditionLookup', () => {
         );
 
         const title = getByText('Search and add condition(s)');
-        expect(title).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(title).toBeInTheDocument();
+        });
     });
 
     it('has a search bar', async () => {
@@ -105,7 +113,10 @@ describe('QuickConditionLookup', () => {
         );
 
         const searchBar = await screen.findByTestId('condition-search');
-        expect(searchBar).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(searchBar).toBeInTheDocument();
+        });
     });
 
     it('has a search button', async () => {
@@ -119,7 +130,10 @@ describe('QuickConditionLookup', () => {
         );
 
         const searchBtn = await screen.findByTestId('condition-search-btn');
-        expect(searchBtn).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(searchBtn).toBeInTheDocument();
+        });
     });
 
     it('should display the correct table headers', async () => {
@@ -139,12 +153,14 @@ describe('QuickConditionLookup', () => {
         const investigationPage = await screen.findByText('Investigateion page');
         const status = await screen.findByText('Status');
 
-        expect(condition).toBeInTheDocument();
-        expect(conditionCode).toBeInTheDocument();
-        expect(programArea).toBeInTheDocument();
-        expect(conditionFamily).toBeInTheDocument();
-        expect(investigationPage).toBeInTheDocument();
-        expect(status).toBeInTheDocument();
+        await waitFor(() => {
+            expect(condition).toBeInTheDocument();
+            expect(conditionCode).toBeInTheDocument();
+            expect(programArea).toBeInTheDocument();
+            expect(conditionFamily).toBeInTheDocument();
+            expect(investigationPage).toBeInTheDocument();
+            expect(status).toBeInTheDocument();
+        });
     });
 
     it('should display the correct table data', async () => {
@@ -163,11 +179,13 @@ describe('QuickConditionLookup', () => {
         const conditionFamily = await screen.findByText('test family');
         const status = await screen.findByText('Active');
 
-        expect(condition).toBeInTheDocument();
-        expect(conditionCode).toBeInTheDocument();
-        expect(programArea).toBeInTheDocument();
-        expect(conditionFamily).toBeInTheDocument();
-        expect(status).toBeInTheDocument();
+        await waitFor(() => {
+            expect(condition).toBeInTheDocument();
+            expect(conditionCode).toBeInTheDocument();
+            expect(programArea).toBeInTheDocument();
+            expect(conditionFamily).toBeInTheDocument();
+            expect(status).toBeInTheDocument();
+        });
     });
 
     it('should have a cancel button', async () => {
@@ -181,7 +199,10 @@ describe('QuickConditionLookup', () => {
         );
 
         const cancelBtn = getByTestId('condition-cancel-btn');
-        expect(cancelBtn).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(cancelBtn).toBeInTheDocument();
+        });
     });
 
     it('should have an add condition button', async () => {
@@ -195,7 +216,10 @@ describe('QuickConditionLookup', () => {
         );
 
         const addBtn = getByTestId('condition-add-btn');
-        expect(addBtn).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(addBtn).toBeInTheDocument();
+        });
     });
 
     describe('when the cancel button is clicked', () => {
@@ -213,7 +237,10 @@ describe('QuickConditionLookup', () => {
             act(() => {
                 cancelBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             });
-            expect(modal.current?.modalIsOpen).toBeFalsy();
+
+            await waitFor(() => {
+                expect(modal.current?.modalIsOpen).toBeFalsy();
+            });
         });
     });
 
@@ -232,7 +259,10 @@ describe('QuickConditionLookup', () => {
             act(() => {
                 searchBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             });
-            expect(mockSearchConditionUsingPost).toHaveBeenCalled();
+
+            await waitFor(() => {
+                expect(mockSearchConditionUsingPost).toHaveBeenCalled();
+            });
         });
 
         it('should call the searchConditionUsingPost with the correct parameters', async () => {
@@ -258,13 +288,15 @@ describe('QuickConditionLookup', () => {
                 searchBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             });
 
-            expect(mockSearchConditionUsingPost).toHaveBeenCalledWith({
-                authorization: 'Bearer undefined',
-                page: 1,
-                search: {
-                    searchText: 'hello'
-                },
-                size: 10
+            await waitFor(() => {
+                expect(mockSearchConditionUsingPost).toHaveBeenCalledWith({
+                    authorization: 'Bearer undefined',
+                    page: 1,
+                    search: {
+                        searchText: 'hello'
+                    },
+                    size: 10
+                });
             });
         });
     });
@@ -284,7 +316,10 @@ describe('QuickConditionLookup', () => {
             act(() => {
                 addBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             });
-            expect(addConditions).toHaveBeenCalled();
+
+            await waitFor(() => {
+                expect(addConditions).toHaveBeenCalled();
+            });
         });
     });
 });

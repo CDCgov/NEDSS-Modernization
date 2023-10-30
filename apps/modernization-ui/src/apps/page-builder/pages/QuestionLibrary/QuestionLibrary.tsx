@@ -5,6 +5,7 @@ import { QuestionsContext } from '../../context/QuestionsContext';
 import { fetchQuestion } from './useQuestionAPI';
 import { QuestionLibraryTable } from './QuestionLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
+import { PageBuilder } from '../PageBuilder/PageBuilder';
 export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
     // const [activeTab] = useState(types || 'recent');
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(QuestionsContext);
@@ -29,25 +30,33 @@ export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
         setTotalElements(totalElements);
         setIsLoading(false);
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
-    return (
-        <div className="question-local-library">
-            {!hideTabs && (
-                <div className="margin-left-2em">
-                    <h2>Add question</h2>
-                </div>
-            )}
-            <div className="search-description-block">
-                <p>You can search for an existing question or create a new one</p>
-            </div>
-            <div className="question-local-library__container">
-                <div className="question-local-library__table">
-                    <QuestionLibraryTable
-                        summaries={summaries}
-                        qtnModalRef={modalRef}
-                        pages={{ currentPage, pageSize, totalElements }}
-                    />
-                </div>
+
+    const renderQuestionList = (
+        <div className="question-local-library__container">
+            <div className="question-local-library__table">
+                <QuestionLibraryTable
+                    summaries={summaries}
+                    qtnModalRef={modalRef}
+                    pages={{ currentPage, pageSize, totalElements }}
+                />
             </div>
         </div>
+    );
+
+    if (hideTabs) return <div className="question-local-library">{renderQuestionList}</div>;
+    return (
+        <PageBuilder page="question-library" menu={true}>
+            <div className="question-local-library">
+                {!hideTabs && (
+                    <div className="margin-left-2em">
+                        <h2>Add question</h2>
+                    </div>
+                )}
+                <div className="search-description-block">
+                    <p>You can search for an existing question or create a new one</p>
+                </div>
+                {renderQuestionList}
+            </div>
+        </PageBuilder>
     );
 };

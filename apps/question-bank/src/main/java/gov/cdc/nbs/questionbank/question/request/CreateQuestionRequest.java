@@ -1,133 +1,23 @@
 package gov.cdc.nbs.questionbank.question.request;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
+import lombok.Getter;
+import lombok.Setter;
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "type",
-        visible = true)
-@JsonSubTypes({
-        @Type(value = CreateQuestionRequest.Text.class, name = "TEXT"),
-        @Type(value = CreateQuestionRequest.Date.class, name = "DATE"),
-        @Type(value = CreateQuestionRequest.Numeric.class, name = "NUMERIC"),
-        @Type(value = CreateQuestionRequest.Coded.class, name = "CODED")
-})
-public sealed interface CreateQuestionRequest {
-    String codeSet();
-
-    String uniqueId();
-
-    String uniqueName();
-
-    String subgroup();
-
-    String description();
-
-    String label();
-
-    String tooltip();
-
-    Long displayControl();
-
-    ReportingInfo dataMartInfo();
-
-    MessagingInfo messagingInfo();
-
-    String adminComments();
-
-    QuestionType type();
-
-    record Text(
-            // General question fields
-            String codeSet,
-            String uniqueId,
-            String uniqueName,
-            String subgroup,
-            String description,
-            String label,
-            String tooltip,
-            Long displayControl,
-            ReportingInfo dataMartInfo,
-            MessagingInfo messagingInfo,
-            String adminComments,
-            QuestionType type,
-
-            // Text specific fields
-            String mask,
-            String fieldLength,
-            String defaultValue) implements CreateQuestionRequest {
-    }
-
-    record Date(
-            // General question fields
-            String codeSet,
-            String uniqueId,
-            String uniqueName,
-            String subgroup,
-            String description,
-            String label,
-            String tooltip,
-            Long displayControl,
-            ReportingInfo dataMartInfo,
-            MessagingInfo messagingInfo,
-            String adminComments,
-            QuestionType type,
-
-            // Date specific fields
-            String mask,
-            boolean allowFutureDates) implements CreateQuestionRequest {
-
-    }
-
-    record Numeric(
-            // General question fields
-            String codeSet,
-            String uniqueId,
-            String uniqueName,
-            String subgroup,
-            String description,
-            String label,
-            String tooltip,
-            Long displayControl,
-            ReportingInfo dataMartInfo,
-            MessagingInfo messagingInfo,
-            String adminComments,
-            QuestionType type,
-
-            // Numeric specific fields
-            String mask,
-            String fieldLength,
-            String defaultValue,
-            Long minValue,
-            Long maxValue,
-            UnitType unitTypeCd,
-            String unitValue // Id of Value set, or literal value
-    ) implements CreateQuestionRequest {
-
-    }
-    record Coded(
-            // General question fields
-            String codeSet,
-            String uniqueId,
-            String uniqueName,
-            String subgroup,
-            String description,
-            String label,
-            String tooltip,
-            Long displayControl,
-            ReportingInfo dataMartInfo,
-            MessagingInfo messagingInfo,
-            String adminComments,
-            QuestionType type,
-
-            // Coded specific fields
-            Long valueSet,
-            String defaultValue) implements CreateQuestionRequest {
-
-    }
+@Getter
+@Setter
+public abstract class CreateQuestionRequest {
+    private CodeSet codeSet;
+    private String uniqueId;
+    private String uniqueName;
+    private String subgroup;
+    private String description;
+    private String label;
+    private String tooltip;
+    private Long displayControl;
+    private ReportingInfo dataMartInfo;
+    private MessagingInfo messagingInfo;
+    private String adminComments;
 
     public record ReportingInfo(
             String reportLabel,
@@ -145,8 +35,4 @@ public sealed interface CreateQuestionRequest {
             String hl7DataType) {
     }
 
-    public enum UnitType {
-        CODED,
-        LITERAL
-    }
 }

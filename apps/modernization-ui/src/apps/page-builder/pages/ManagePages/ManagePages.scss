@@ -2,13 +2,14 @@
 
 .manage-pages {
     position: relative;
+    border-radius: 5px;
+    border: $border-medium;
     .manage-pages__container {
         display: flex;
         flex-direction: row;
     }
     .manage-pages__table {
         background-color: $color-white;
-        margin: 1.5rem;
         border-radius: 3px;
         border: 1px solid $color-bg-base-lightest;
         min-width: 96.5%;
@@ -22,6 +23,9 @@
             &:nth-of-type(4) {
                 width: 150px;
             }
+        }
+        .table-menu .input label {
+            display: none;
         }
         .ds-c-spinner {
             position: absolute;

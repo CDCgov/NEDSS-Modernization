@@ -26,7 +26,7 @@ export class VocabSearchControllerService {
     }): CancelablePromise<ValueSetByOIDResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page-builder/api/v1/phin/oid/{oid}',
+            url: '/nbs/page-builder/api/v1/phin/oid/{oid}',
             path: {
                 'oid': oid,
             },

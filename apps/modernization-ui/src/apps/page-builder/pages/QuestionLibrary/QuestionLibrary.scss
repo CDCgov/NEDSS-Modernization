@@ -2,6 +2,16 @@
 
 .question-local-library {
   background-color: $color-white;
+  border-radius: 5px;
+  border: $border-medium;
+  h2 {
+    margin: 0;
+  }
+  .margin-left-2em {
+    margin-left: 2em;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
   .search-description-block {
      p { margin: 32px 32px 8px}
     color: var(--base-black, #000);
@@ -12,13 +22,14 @@
     line-height: normal;
   }
   position: relative;
-
+  .question-local-library__container {
+    padding: 1.5rem;
+  }
   .question-local-library__table {
     .padding-x-2.search-box {
       display: none;
     }
     background-color: $color-white;
-    margin: 1.5rem;
     border-radius: 3px;
     border: 1px solid $color-bg-base-lightest;
     table.usa-table {

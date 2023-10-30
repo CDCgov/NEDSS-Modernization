@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.treatment;
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.patient.treatment.TestTreatments;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -39,13 +39,13 @@ public class PatientProfileViewTreatmentSteps {
     MockMvc mvc;
 
     @Autowired
-    TestActive<SessionCookie> activeSession;
+    Active<SessionCookie> activeSession;
 
     @Autowired
-    TestActive<MockHttpServletResponse> activeResponse;
+    Active<MockHttpServletResponse> activeResponse;
 
     @Autowired
-    TestActive<UserDetails> activeUserDetails;
+    Active<UserDetails> activeUserDetails;
 
     @Autowired
     @Qualifier("classic")
@@ -62,34 +62,28 @@ public class PatientProfileViewTreatmentSteps {
         long patient = patients.one();
 
         server.expect(
-                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit")
-            )
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess())
-        ;
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess());
 
         long treatment = treatments.one();
 
         String request = String.format(
-            "/nbs/api/profile/%d/treatment/%d",
-            patient,
-            treatment
-        );
+                "/nbs/api/profile/%d/treatment/%d",
+                patient,
+                treatment);
 
         activeResponse.active(
-            mvc.perform(
-                    MockMvcRequestBuilders.get(request)
-                        .with(user(activeUserDetails.active()))
-                        .cookie(activeSession.active().asCookie())
-                )
-                .andReturn()
-                .getResponse()
-        );
+                mvc.perform(
+                        MockMvcRequestBuilders.get(request)
+                                .with(user(activeUserDetails.active()))
+                                .cookie(activeSession.active().asCookie()))
+                        .andReturn()
+                        .getResponse());
     }
 
     @Then("the classic profile is prepared to view a Treatment")
@@ -102,19 +96,17 @@ public class PatientProfileViewTreatmentSteps {
         long patient = patients.one();
         long treatment = treatments.one();
 
-        String expected =
-            "/nbs/ViewFile1.do?ContextAction=TreatmentIDOnEvents&treatmentUID=" + treatment;
+        String expected = "/nbs/ViewFile1.do?ContextAction=TreatmentIDOnEvents&treatmentUID=" + treatment;
 
         MockHttpServletResponse response = activeResponse.active();
 
         assertThat(response.getRedirectedUrl()).contains(expected);
 
         assertThat(response.getCookies())
-            .satisfiesOnlyOnce(cookie -> {
-                    assertThat(cookie.getName()).isEqualTo("Returning-Patient");
+                .satisfiesOnlyOnce(cookie -> {
+                    assertThat(cookie.getName()).isEqualTo("Return-Patient");
                     assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-                }
-            );
+                });
     }
 
     @Then("I am not allowed to view a Classic NBS Treatment")

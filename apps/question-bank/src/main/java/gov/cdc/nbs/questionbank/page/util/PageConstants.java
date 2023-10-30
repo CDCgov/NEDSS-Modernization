@@ -6,6 +6,7 @@ public class PageConstants {
 	
 	// Page State Change
 	public static final String SAVE_DRAFT_SUCCESS = "Draft was saved successfully.";
+	public static final String SAVE_DRAFT_NOCHANGE = "Page already has draft.";
 	public static final String SAVE_DRAFT_FAIL = " Failed to update to draft status: ";
 	public static final String DELETE_DRAFT_FAIL = " Failed to delete page draft. ";
 	public static final String PAGE_NOT_FOUND = " Could not find page with given id.";
@@ -27,6 +28,7 @@ public class PageConstants {
 	public static final String ADD_PAGE_MMG_EMPTY = "MMG is required.";
 	
 	//Page Details
+	public static final Long PAGE_COMPONENT = 1002L;
 	public static final Long TAB_COMPONENT = 1010L;
 	public static final Long SECTION_COMPONENT= 1015L;
 	public static final Long SUB_SECTION_COMPONENT= 1016L;

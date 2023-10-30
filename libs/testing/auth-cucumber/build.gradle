@@ -1,0 +1,38 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'jvm-test-suite'
+
+    alias libs.plugins.springBoot apply false
+    alias libs.plugins.springDependencies
+}
+
+group = 'gov.cdc.nbs.testing.auth-cucumber'
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation libs.bundles.testing
+            }
+        }
+    }
+}
+
+dependencies {
+
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation libs.springBoot
+
+    implementation libs.bundles.jpa
+    implementation libs.bundles.queryDSL
+
+    implementation project(':authentication')
+    implementation project(':testing:support')
+    implementation project(':testing:identity')
+    implementation project(':testing:auth')
+
+    implementation libs.cucumber.java
+}

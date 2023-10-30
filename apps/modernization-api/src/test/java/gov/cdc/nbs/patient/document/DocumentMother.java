@@ -8,7 +8,7 @@ import gov.cdc.nbs.entity.odse.NbsDocumentMetadatum;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
@@ -20,10 +20,10 @@ public class DocumentMother {
 
     private static final String DOCUMENT_CLASS = "DOC";
     private static final String PERSON_CLASS = "PSN";
-    private static Long CLAYTON_STD_OID = 1300600015L; // Clayton count + STD
+    private static final Long CLAYTON_STD_OID = 1300600015L; // Clayton count + STD
 
     private final MotherSettings settings;
-    private final TestUniqueIdGenerator idGenerator;
+    private final SequentialIdentityGenerator idGenerator;
     private final EntityManager entityManager;
     private final TestDocumentCleaner cleaner;
 
@@ -31,7 +31,7 @@ public class DocumentMother {
 
     DocumentMother(
             final MotherSettings settings,
-            final TestUniqueIdGenerator idGenerator,
+            final SequentialIdentityGenerator idGenerator,
             final EntityManager entityManager,
             final TestDocumentCleaner cleaner,
             final TestDocuments documents) {

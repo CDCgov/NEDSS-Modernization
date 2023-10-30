@@ -16,8 +16,8 @@ public class LabResultController {
     }
 
     @QueryMapping
-    public List<CodedResult> findDistinctCodedResults(@Argument String searchText, @Argument boolean snomed) {
-        return finder.findDistinctCodedResults(searchText, snomed);
+    public List<CodedResult> findDistinctCodedResults(@Argument String searchText) {
+        return finder.findDistinctCodedResults(searchText);
     }
 
 }

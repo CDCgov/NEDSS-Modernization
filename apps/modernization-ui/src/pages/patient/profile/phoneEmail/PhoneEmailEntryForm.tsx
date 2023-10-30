@@ -1,4 +1,4 @@
-import { Button, Grid, Icon, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
+import { Button, ErrorMessage, Grid, Icon, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
@@ -6,6 +6,7 @@ import { Input } from 'components/FormInputs/Input';
 import { usePatientPhoneCodedValues } from './usePatientPhoneCodedValues';
 import { PhoneEmailEntry } from './PhoneEmailEntry';
 import { validatePhoneNumber } from 'validation/phone';
+import { maxLengthRule } from 'validation/entry';
 
 type EntryProps = {
     action: string;
@@ -135,9 +136,10 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     properNumber: (value) => validatePhoneNumber(value)
                                 }
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -145,6 +147,8 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     name="number"
                                     htmlFor="number"
                                     id="number"
+                                    mask="___-___-____"
+                                    pattern="\d{3}-\d{3}-\d{4}"
                                     error={
                                         error &&
                                         'Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).'
@@ -164,9 +168,10 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     message: 'A Extension should be 1 to 4 digits'
                                 }
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -188,11 +193,13 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                 pattern: {
                                     value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                                     message: 'Please enter a valid email address (example: youremail@website.com)'
-                                }
+                                },
+                                ...maxLengthRule(100)
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -200,9 +207,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     name="email"
                                     htmlFor="email"
                                     id="email"
-                                    error={
-                                        error && 'Please enter a valid email address (example: youremail@website.com)'
-                                    }
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -211,10 +216,12 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                         <Controller
                             control={control}
                             name="url"
+                            rules={maxLengthRule(100)}
                             defaultValue={entry.url}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -222,6 +229,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                                     name="url"
                                     htmlFor="url"
                                     id="url"
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -231,19 +239,22 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onDelete }: Entry
                             control={control}
                             name="comment"
                             defaultValue={entry.comment}
-                            render={({ field: { onChange, value } }) => (
+                            rules={maxLengthRule(2000)}
+                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                 <Grid>
                                     <Grid className="flex-align-self-center">
                                         <Label htmlFor={'comment'}>Additional comments:</Label>
                                     </Grid>
                                     <Grid>
                                         <Textarea
+                                            onBlur={onBlur}
                                             onChange={onChange}
                                             name="comment"
                                             id="comment"
                                             defaultValue={value}
                                         />
                                     </Grid>
+                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                                 </Grid>
                             )}
                         />

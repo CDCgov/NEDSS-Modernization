@@ -7,70 +7,97 @@ import './EditPage.scss';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { EditPageContentComponent } from 'apps/page-builder/components/EditPageContent/EditPageContent';
 import { EditPageSidebar } from 'apps/page-builder/components/EditPageSidebar/EditPageSidebar';
-import { fetchPageDetails } from 'apps/page-builder/services/pagesAPI';
+import { fetchPageDetails, savePageAsDraft } from 'apps/page-builder/services/pagesAPI';
 import { UserContext } from 'user';
-import { PageDetails } from 'apps/page-builder/generated/models/PageDetails';
+import { PagesResponse } from 'apps/page-builder/generated';
 import AddSectionModal from 'apps/page-builder/components/AddSection/AddSectionModal';
 import { ModalRef } from '@trussworks/react-uswds';
-import { Tabs } from 'apps/page-builder/generated/models/Tabs';
+import { Spinner } from 'components/Spinner/Spinner';
+import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+import { ReorderModal } from './ReorderModal/ReorderModal';
 
 export const EditPage = () => {
     const { pageId } = useParams();
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
-    const [page, setPage] = useState<PageDetails>();
-    const [tabs, setTabs] = useState<Tabs[]>([]);
+    const [page, setPage] = useState<PagesResponse>();
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
+    const reorderModalRef = useRef<ModalRef>(null);
+    const [alertType, setAlertType] = useState<string>('');
+    const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
     useEffect(() => {
-        // Fetch page summary
         if (pageId) {
-            fetchPageDetails(token, Number(pageId)).then((data: any) => {
+            fetchPageDetails(token, Number(pageId)).then((data) => {
                 setPage(data);
             });
         }
     }, [pageId]);
 
-    useEffect(() => {
-        if (page) {
-            setTabs(page.pageTabs);
-        }
-    }, [page]);
-
-    const handleAddSection = () => {
+    const handleAddSuccess = () => {
         if (pageId) {
-            fetchPageDetails(token, Number(pageId)).then((data: any) => {
-                setPage(data);
-            });
+            fetchPageDetails(token, Number(pageId)).then(setPage);
         }
+    };
+
+    const handleSaveDraft = () => {
+        savePageAsDraft(token, Number(pageId))
+            .then((response) => {
+                console.log(response);
+                setAlertMessage('Page successfully saved as Draft');
+                setAlertType('success');
+            })
+            .catch((error) => {
+                setAlertMessage(error.body.message);
+                setAlertType('error');
+            });
     };
 
     return (
         <PageBuilder page="edit-page">
             {page ? (
                 <div className="edit-page">
-                    <PagesBreadcrumb currentPage={page.Name} />
+                    <PagesBreadcrumb currentPage={page.name} />
                     <div className="edit-page__header">
-                        <EditPageHeader page={page} />
-                        <EditPageTabs tabs={tabs} active={active} setActive={setActive} />
+                        <EditPageHeader page={page} handleSaveDraft={handleSaveDraft} />
+                        {page.tabs ? (
+                            <EditPageTabs
+                                tabs={page.tabs}
+                                active={active}
+                                setActive={setActive}
+                                onAddSuccess={handleAddSuccess}
+                            />
+                        ) : null}
                     </div>
                     <div className="edit-page__container">
-                        {page.pageTabs[active] ? (
-                            <EditPageContentComponent content={page.pageTabs[active]} onAddSection={handleAddSection} />
-                        ) : null}
+                        <div className="edit-page__content">
+                            {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
 
-                        <EditPageSidebar modalRef={addSectionModalRef} />
+                            {page.tabs?.[active] ? (
+                                <EditPageContentComponent content={page.tabs[active]} onAddSection={handleAddSuccess} />
+                            ) : null}
+
+                            <EditPageSidebar
+                                addSectionModalRef={addSectionModalRef}
+                                reorderModalRef={reorderModalRef}
+                            />
+                        </div>
                     </div>
                 </div>
-            ) : null}
-            {page && pageId ? (
+            ) : (
+                <Spinner />
+            )}
+            {page && pageId && page.tabs?.[active].id ? (
                 <AddSectionModal
                     modalRef={addSectionModalRef}
                     pageId={pageId}
-                    tabId={page.pageTabs[active].id}
-                    onAddSection={handleAddSection}
+                    tabId={page.tabs[active]?.id}
+                    onAddSection={handleAddSuccess}
                 />
+            ) : null}
+            {page && page.name && page.tabs?.[active] ? (
+                <ReorderModal modalRef={reorderModalRef} pageName={page.name} content={page.tabs[active]} />
             ) : null}
         </PageBuilder>
     );

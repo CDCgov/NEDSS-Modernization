@@ -1,9 +1,8 @@
 package gov.cdc.nbs.questionbank.page;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +25,17 @@ import gov.cdc.nbs.questionbank.entity.repository.UserProfileRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import lombok.RequiredArgsConstructor;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 @Service
 @RequiredArgsConstructor
 public class PageDownloader {
@@ -41,6 +51,13 @@ public class PageDownloader {
 
 	@Autowired
 	private UserProfileRepository userProfileRepository;
+
+	private static final List<String> PAGE_LIBRARY_HEADERS = Arrays.asList("Event Type",
+			"Page Name", "Page State", "Related Conditions(s)", "Last Updated", "Last Updated By ");
+	private static final Font helvetica = new Font(FontFamily.HELVETICA, 7, Font.NORMAL);
+	private static final DateTimeFormatter dateFormatter = DateTimeFormatter
+			.ofPattern("dd/MM/yyyy")
+			.withZone(ZoneId.of("UTC"));
 
 	
 	public ByteArrayInputStream downloadLibrary()  throws IOException {
@@ -58,12 +75,13 @@ public class PageDownloader {
 			for (WaTemplate page : pages) {
 				List<ConditionCode> pageConditions = new ArrayList<>();
 
-				mappings.stream().filter(p -> p.getWaTemplateUid().equals(page)).collect(Collectors.toList())
-						.forEach(v -> 
-							conditionCodes.stream()
-                                    .filter(c -> c.getId().equals(v.getConditionCd()))
-									.forEach(pageConditions::add)
-						);
+				mappings.stream()
+                .filter(p -> p.getWaTemplateUid().equals(page))
+                .forEach(v -> 
+                    conditionCodes.stream()
+                            .filter(c -> c.getId().equals(v.getConditionCd()))
+                            .forEach(pageConditions::add)
+                );
 				
 				List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
 						formatttedRelatedConditions(pageConditions), page.getLastChgTime().toString(),
@@ -127,4 +145,63 @@ public class PageDownloader {
 	  
 	}
 
+	public byte[] downloadLibraryPDF() throws DocumentException, IOException {
+		var outputStream = new ByteArrayOutputStream();
+		Document document = new Document();
+		document.setPageSize(PageSize.A4.rotate());
+		PdfWriter.getInstance(document, outputStream);
+
+		document.open();
+		PdfPTable table = new PdfPTable(6);
+		table.setWidthPercentage(95);
+
+		addPageLibraryTableHeader(table);
+		List<WaTemplate> pages = templateRepository.getAllPagesOrderedByName();
+		List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUidIn(pages);
+		List<ConditionCode> conditionCodes = conditionCodeRepository.findByIdIn(conditionIds(mappings));
+
+		for (WaTemplate page : pages) {
+			List<ConditionCode> pageConditions = new ArrayList<>();
+
+			mappings.stream().filter(p -> p.getWaTemplateUid().equals(page)).toList()
+					.forEach(v ->
+							conditionCodes.stream()
+									.filter(c -> c.getId().equals(v.getConditionCd()))
+									.forEach(pageConditions::add)
+					);
+
+			List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
+					formatttedRelatedConditions(pageConditions), null != page.getLastChgTime()? dateFormatter.format(page.getLastChgTime()):"",
+					getLastUpdatedUser(page.getLastChgUserId()));
+			addRows(table,data);
+
+		}
+		
+		document.add(table);
+		document.close();
+		outputStream.close();
+		return outputStream.toByteArray();
+	}
+
+	private void addRows(PdfPTable table, List<String> pagelibrarydata) {
+		 for(String data: pagelibrarydata){
+			 table.addCell(createStringCell(data, helvetica));
+		 }
+	}
+	private PdfPCell createStringCell(String content, Font font) {
+		if (content == null) {
+			return new PdfPCell();
+		}
+		return new PdfPCell(new Phrase(content, font));
+	}
+	private void addPageLibraryTableHeader(PdfPTable table) {
+		PAGE_LIBRARY_HEADERS
+				.forEach(columnTitle -> {
+					PdfPCell header = new PdfPCell();
+					header.setBackgroundColor(new BaseColor(233, 233, 233));
+					header.setBorderWidth(1);
+					header.setPhrase(new Phrase(columnTitle, helvetica));
+					table.addCell(header);
+				});
+	}
 }

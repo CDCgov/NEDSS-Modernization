@@ -8,7 +8,7 @@ const props = {
     modalRef: { current: null },
     tabId: 5,
     pageId: '10056',
-    onAddSection: jest.fn
+    onAddSection: jest.fn()
 };
 
 const addSections = jest.fn();
@@ -81,10 +81,9 @@ describe('AddSectionModal', () => {
 
                 expect(mockAddSectionUsingPost).toHaveBeenCalledWith({
                     authorization: 'Bearer undefined',
-                    pageId: '10056',
+                    page: 10056,
                     request: {
                         name: 'Test Section',
-                        description: '',
                         visible: true,
                         tabId: 5
                     }

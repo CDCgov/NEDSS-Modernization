@@ -1,5 +1,5 @@
 import ReactSelect, { MultiValue, components } from 'react-select';
-import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
+import React, { FocusEventHandler, useEffect, useMemo, useState } from 'react';
 import './MultiSelectInput.scss';
 import { mapNonNull } from 'utils';
 import { Label, ErrorMessage } from '@trussworks/react-uswds';
@@ -25,15 +25,16 @@ const USWDSDropdownIndicator = (props: any) => (
 const asSelectable = (selectables: Selectable[]) => (item: string) =>
     selectables.find((option) => option.value === item) || null;
 
-type Option = { name: string; value: string };
+type Options = { name: string; value: string };
 
 type MultiSelectInputProps = {
     label?: string;
     id?: string;
     name?: string;
-    options?: Option[];
+    placeholder?: string;
+    options?: Options[];
     value?: string[];
-    onChange?: (value: string[]) => void;
+    onChange?: (value: any) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
     required?: boolean;
     error?: string;
@@ -50,7 +51,8 @@ export const MultiSelectInput = ({
     onBlur,
     value = [],
     required,
-    error
+    error,
+    placeholder = '- Select -'
 }: MultiSelectInputProps) => {
     const selectableOptions = useMemo(
         () => options.map((item) => ({ value: item.value, label: item.name })),
@@ -66,12 +68,12 @@ export const MultiSelectInput = ({
 
     const handleOnChange = (newValue: MultiValue<Selectable>) => {
         setSelectedOptions([...newValue]);
-
         if (onChange) {
             const values = newValue.map((item) => item.value);
             onChange(values);
         }
     };
+    const Input = (props: any) => <components.Input {...props} maxLength={50} />;
 
     return (
         <div className={`multi-select-input ${required ? 'required' : ''}`}>
@@ -86,7 +88,7 @@ export const MultiSelectInput = ({
                 id={id}
                 name={name}
                 value={selectedOptions}
-                placeholder="- Select -"
+                placeholder={placeholder}
                 classNamePrefix="multi-select"
                 hideSelectedOptions={false}
                 closeMenuOnSelect={false}
@@ -94,7 +96,7 @@ export const MultiSelectInput = ({
                 onChange={handleOnChange}
                 onBlur={onBlur}
                 options={selectableOptions}
-                components={{ Option: CheckedOption, DropdownIndicator: USWDSDropdownIndicator }}
+                components={{ Input, Option: CheckedOption, DropdownIndicator: USWDSDropdownIndicator }}
             />
         </div>
     );

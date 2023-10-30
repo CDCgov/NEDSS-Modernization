@@ -2,12 +2,21 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id 'jvm-test-suite'
-    alias libs.plugins.springBoot
-    alias libs.plugins.springDependencies
+    id 'org.springframework.boot' version '3.1.5'
 }
 
-group = 'gov.cdc'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'gov.cdc.nbs.gateway'
 version = '0.0.1-SNAPSHOT'
+
+bootJar {
+    manifest {
+        attributes 'API-Version': archiveVersion
+    }
+
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}
 
 testing {
     suites {
@@ -16,7 +25,7 @@ testing {
 
             dependencies {
                 implementation 'org.springframework.boot:spring-boot-starter-test'
-                implementation "com.github.tomakehurst:wiremock-jre8:2.35.0"
+                implementation "org.wiremock:wiremock:3.1.0"
             }
         }
     }
@@ -25,8 +34,8 @@ testing {
 dependencies {
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.8")
-
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:2022.0.4")
+    implementation libs.snake.yaml
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 }
 

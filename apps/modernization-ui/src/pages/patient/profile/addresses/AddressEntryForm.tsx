@@ -1,4 +1,4 @@
-import { Button, Grid, Icon, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
+import { Button, ErrorMessage, Grid, Icon, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
 import { externalizeDateTime } from 'date';
 import { useLocationCodedValues } from 'location';
@@ -12,6 +12,7 @@ import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
 import { AddressEntry } from './AddressEntry';
 
 import './AddressEntryForm.scss';
+import { maxLengthRule } from 'validation/entry';
 
 type EntryProps = {
     action: string;
@@ -134,7 +135,8 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                             control={control}
                             name="address1"
                             defaultValue={entry.address1}
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule(100)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <AddressSuggestionInput
                                     flexBox
                                     id={name}
@@ -143,7 +145,9 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                     label="Street address 1"
                                     defaultValue={value}
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     onSelection={handleSuggestionSelection}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -153,16 +157,19 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                             control={control}
                             name="address2"
                             defaultValue={entry.address2}
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule(100)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     defaultValue={value}
                                     type="text"
                                     label="Street address 2"
                                     name={name}
                                     htmlFor={name}
                                     id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -172,16 +179,19 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                             control={control}
                             name="city"
                             defaultValue={entry.city}
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule(100)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     defaultValue={value}
                                     type="text"
                                     label="City"
                                     name={name}
                                     htmlFor={name}
                                     id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -213,12 +223,14 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                                     value: /^\d{5}(?:[-\s]\d{4})?$/,
                                     message:
                                         'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
-                                }
+                                },
+                                ...maxLengthRule(20)
                             }}
-                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                            render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     defaultValue={value}
                                     type="text"
                                     label="Zip"
@@ -252,16 +264,19 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                             control={control}
                             name="censusTract"
                             defaultValue={entry.censusTract}
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule(10)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     defaultValue={value}
                                     type="text"
                                     label="Census tract"
                                     name={name}
                                     htmlFor={name}
                                     id={name}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -288,13 +303,23 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                             control={control}
                             name="comment"
                             defaultValue={entry.comment}
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={maxLengthRule(2000)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Grid col>
                                     <Grid className="flex-align-self-center">
                                         <Label htmlFor={name}>Additional comments:</Label>
                                     </Grid>
                                     <Grid>
-                                        <Textarea onChange={onChange} name={name} id={name} defaultValue={value} />
+                                        <Textarea
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            name={name}
+                                            id={name}
+                                            defaultValue={value}
+                                        />
+                                        {error?.message && (
+                                            <ErrorMessage id={error.message}>{error.message}</ErrorMessage>
+                                        )}
                                     </Grid>
                                 </Grid>
                             )}

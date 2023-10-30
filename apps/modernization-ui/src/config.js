@@ -4,8 +4,7 @@ const prod = {
         : `${window.location.protocol}//${window.location.host}/nbs`,
     modernizationUrl: `${window.location.protocol}//${window.location.host}`,
     pageBuilderUrl: `${window.location.protocol}//${window.location.host}`,
-    enableLogin: false,
-    features: {}
+    enableLogin: false
 };
 
 const dev = {

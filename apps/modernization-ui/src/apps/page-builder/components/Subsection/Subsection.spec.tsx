@@ -1,19 +1,17 @@
 import { render } from '@testing-library/react';
-import { Subsection } from "apps/page-builder/generated/models/Subsection"
-import { SubsectionComponent } from "./Subsection";
+import { PagesSubSection } from 'apps/page-builder/generated';
+import { SubsectionComponent } from './Subsection';
 
 describe('when Subsection renders', () => {
-    const subsection: Subsection = {
+    const subsection: PagesSubSection = {
         id: 123456,
         name: 'Test Subsection',
-        pageQuestions: [],
-        visible: 'T'
+        questions: [],
+        visible: true
     };
     const mockFunction = jest.fn();
 
-    const { container } = render(
-        <SubsectionComponent subsection={subsection} />
-    );
+    const { container } = render(<SubsectionComponent subsection={subsection} />);
 
     it('should display Subsection name', () => {
         const name = container.getElementsByTagName('h2');

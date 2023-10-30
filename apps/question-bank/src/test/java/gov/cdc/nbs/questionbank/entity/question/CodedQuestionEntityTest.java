@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.entity.question;
 import static org.junit.Assert.assertEquals;
 import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
+import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 class CodedQuestionEntityTest {
 
@@ -16,10 +17,7 @@ class CodedQuestionEntityTest {
     @Test
     void should_do_update() {
         var command = QuestionCommandMother.update();
-        CodedQuestionEntity q = new CodedQuestionEntity();
-        q.setQuestionType("LOCAL");
-        q.setVersionCtrlNbr(1);
-
+        CodedQuestionEntity q = QuestionEntityMother.codedQuestion();
         q.update(command);
 
         assertEquals(command.defaultValue(), q.getDefaultValue());

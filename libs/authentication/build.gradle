@@ -17,18 +17,15 @@ testing {
             dependencies {
                 implementation libs.bundles.testing
                 implementation libs.spring.test
-                implementation libs.spring.kafka.test
             }
         }
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom SpringBootPlugin.BOM_COORDINATES
-    }
-}
 dependencies {
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+
     implementation project(':accumulation')
 
     // core

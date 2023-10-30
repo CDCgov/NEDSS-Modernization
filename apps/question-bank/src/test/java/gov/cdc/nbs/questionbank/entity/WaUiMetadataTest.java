@@ -180,4 +180,66 @@ class WaUiMetadataTest {
         return page;
 
     }
+
+
+    @Test
+    void should_create_tab() {
+        PageContentCommand.AddTab command = addTab();
+        WaUiMetadata tabMetadata = new WaUiMetadata(command);
+
+        assertEquals(1010L, tabMetadata.getNbsUiComponentUid().longValue());
+        assertEquals(command.page(), tabMetadata.getWaTemplateUid());
+        assertEquals(command.label(), tabMetadata.getQuestionLabel());
+        assertEquals(command.visible() ? "T" : "F", tabMetadata.getDisplayInd());
+        assertEquals(command.identifier(), tabMetadata.getQuestionIdentifier());
+        assertEquals(command.orderNumber(), tabMetadata.getOrderNbr().intValue());
+        assertEquals(command.requestedOn(), tabMetadata.getRecordStatusTime());
+        assertEquals("F", tabMetadata.getRequiredInd());
+        assertEquals(1, tabMetadata.getVersionCtrlNbr().intValue());
+        assertEquals('F', tabMetadata.getStandardNndIndCd().charValue());
+        assertEquals('T', tabMetadata.getPublishIndCd().charValue());
+        assertEquals("T", tabMetadata.getEnableInd());
+
+        assertEquals(command.requestedOn(), tabMetadata.getAddTime());
+        assertEquals(command.userId(), tabMetadata.getAddUserId().longValue());
+        assertEquals(command.requestedOn(), tabMetadata.getLastChgTime());
+        assertEquals(command.userId(), tabMetadata.getLastChgUserId().longValue());
+        assertEquals("Active", tabMetadata.getRecordStatusCd());
+        assertEquals(command.requestedOn(), tabMetadata.getRecordStatusTime());
+    }
+
+    @Test
+    void should_update_tab() {
+        PageContentCommand.AddTab command = addTab();
+        WaUiMetadata tabMetadata = new WaUiMetadata(command);
+
+        PageContentCommand.UpdateTab updateCommand = updateTab();
+        tabMetadata.update(updateCommand);
+
+        assertEquals(updateCommand.label(), tabMetadata.getQuestionLabel());
+        assertEquals(updateCommand.visible() ? "T" : "F", tabMetadata.getDisplayInd());
+        assertEquals(updateCommand.userId(), tabMetadata.getLastChgUserId().longValue());
+        assertEquals(updateCommand.requestedOn(), tabMetadata.getLastChgTime());
+    }
+
+    private PageContentCommand.UpdateTab updateTab() {
+        return new PageContentCommand.UpdateTab(
+                "updated label",
+                true,
+                444,
+                Instant.now());
+    }
+
+    private PageContentCommand.AddTab addTab() {
+        WaTemplate page = new WaTemplate();
+        page.setId(123l);
+        return new PageContentCommand.AddTab(
+                page,
+                "test label",
+                false,
+                "some identifier",
+                55,
+                22,
+                Instant.now());
+    }
 }

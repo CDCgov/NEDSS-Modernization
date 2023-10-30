@@ -4,24 +4,30 @@ import { Icon } from '@trussworks/react-uswds';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './TableMenu.scss';
+import { PageFilterModal } from '../../pages/FilterModal/PageFilterModal';
 
 type Props = {
     tableType: string;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
+    onDownloadIconClick?: () => void;
+    onPrintIconClick?: () => void;
 };
 
-export const TableMenu = ({ tableType, searchQuery, setSearchQuery }: Props) => {
+export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIconClick, onPrintIconClick }: Props) => {
     const navigate = useNavigate();
     const [keywords, setKeywords] = useState<string>('');
+
     const addNew = () => {
         navigate(`/page-builder/add/${tableType}`);
     };
+
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key == 'Enter') {
             setSearchQuery(keywords);
         }
     };
+
     useEffect(() => {
         if (searchQuery && searchQuery !== '') {
             setKeywords(searchQuery);
@@ -43,9 +49,10 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery }: Props) => 
                 <Icon.Search size={3} />
             </Button>
             <Button type="button" outline>
-                <Icon.Print size={3} />
+                <Icon.Print size={3} onClick={onPrintIconClick} data-testid="print-icon" />
             </Button>
-            <Button type="button" outline>
+            <PageFilterModal />
+            <Button type="button" outline onClick={onDownloadIconClick} data-testid="file-download">
                 <Icon.FileDownload size={3} />
             </Button>
             <Button type="button" onClick={addNew}>

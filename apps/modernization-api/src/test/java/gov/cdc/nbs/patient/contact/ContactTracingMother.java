@@ -4,7 +4,7 @@ import gov.cdc.nbs.entity.odse.CtContact;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -15,7 +15,7 @@ class ContactTracingMother {
   private static final String TRACING_CLASS = "CON";
 
   private final MotherSettings settings;
-  private final TestUniqueIdGenerator idGenerator;
+  private final SequentialIdentityGenerator idGenerator;
   private final EntityManager entityManager;
   private final TestContactTracings tracings;
 
@@ -23,7 +23,7 @@ class ContactTracingMother {
 
   ContactTracingMother(
       final MotherSettings settings,
-      final TestUniqueIdGenerator idGenerator,
+      final SequentialIdentityGenerator idGenerator,
       final EntityManager entityManager,
       final TestContactTracings tracings,
       final TestContactTracingCleaner cleaner

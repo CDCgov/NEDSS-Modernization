@@ -1,30 +1,29 @@
 [versions]
-springBoot = "2.7.8"
+springBoot = "2.7.17"
 assertj = "3.24.2"
-jackson = "2.14.2"
 queryDSL = "5.0.0"
 blaze-persistence = "1.6.8"
 testcontainers = "1.17.6"
-cucumber = "7.8.0"
-validation = "2.1.0.Final"
+cucumber = "7.14.0"
 
 [libraries]
-assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
-mockito-inline = { module = "org.mockito:mockito-inline", version = "4.11.0" }
+guava = {module ='com.google.guava:guava', version='32.1.3-jre'}
+snake-yaml = {module ="org.yaml:snakeyaml", version ="2.2"}
 springBoot = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBoot" }
+springBoot-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version.ref = "springBoot" }
 springBoot-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "springBoot" }
 springBoot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
 springBoot-graphql = { module = "org.springframework.boot:spring-boot-starter-graphql", version.ref = "springBoot" }
 spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
 spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
-spring-elasticsearch = { module = "org.springframework.data:spring-data-elasticsearch", version = "4.4.6" }
+spring-elasticsearch = { module = "org.springframework.data:spring-data-elasticsearch", version = "4.4.17" }
 spring-json = { module = "org.springframework.boot:spring-boot-starter-json", version.ref = "springBoot" }
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBoot" }
-spring-security-test = {module = 'org.springframework.security:spring-security-test'}
-springfox = {module='io.springfox:springfox-boot-starter', version='3.0.0'}
-jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
-jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+spring-security-test = { module = 'org.springframework.security:spring-security-test' }
+springfox = { module = 'io.springfox:springfox-boot-starter', version = '3.0.0' }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core" }
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"}
 queryDSL-apt = { module = "com.querydsl:querydsl-apt", version.ref = "queryDSL" }
 queryDSL-jpa = { module = "com.querydsl:querydsl-jpa", version.ref = "queryDSL" }
 lombok = { module = "org.projectlombok:lombok" }
@@ -32,19 +31,20 @@ mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version = "10.2.1.
 blaze-persistence-core = { module = "com.blazebit:blaze-persistence-core-impl", version.ref = "blaze-persistence" }
 blaze-persistence-queryDSL = { module = "com.blazebit:blaze-persistence-integration-querydsl-expressions", version.ref = "blaze-persistence" }
 blaze-persistence-hibernate = { module = "com.blazebit:blaze-persistence-integration-hibernate-5.6", version.ref = "blaze-persistence" }
-java-jwt = { module = "com.auth0:java-jwt", version = "4.2.0" }
+java-jwt = { module = "com.auth0:java-jwt", version = "4.4.0" }
+itextpdf = {module="com.itextpdf:itextpdf", version="5.5.13.3"}
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+mockito-inline = { module = "org.mockito:mockito-inline", version = "4.11.0" }
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 testcontainers-elasticsearch = { module = "org.testcontainers:elasticsearch", version.ref = "testcontainers" }
-javafaker = { module = "com.github.javafaker:javafaker", version = "1.0.2" }
-snakeyaml = { module = "org.yaml:snakeyaml", version = "1.33" }
 cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber" }
 cucumber-spring = { module = "io.cucumber:cucumber-spring", version.ref = "cucumber" }
 cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumber" }
 cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform-engine", version.ref = "cucumber" }
 junit = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-suite" }
-awaitility = {module = "org.awaitility:awaitility"}
+awaitility = { module = "org.awaitility:awaitility" }
 
 [bundles]
 security = ["java-jwt", "spring-security"]
@@ -53,6 +53,7 @@ jpa = ["springBoot", "springBoot-jpa"]
 elasticsearch = ["spring-elasticsearch"]
 kafka = ["spring-kafka"]
 testing = ["assertj-core", "mockito-inline"]
+springtesting = ["spring-test", "junit"]
 queryDSL = ["queryDSL-apt", "queryDSL-jpa"]
 blaze-persistence-queryDSL = [
     "blaze-persistence-core",
@@ -66,7 +67,6 @@ testcontainers-elasticsearch = [
     "testcontainers-junit",
     "testcontainers-elasticsearch",
 ]
-javafaker = ["javafaker", "snakeyaml"]
 cucumber = [
     "cucumber-java",
     "cucumber-spring",

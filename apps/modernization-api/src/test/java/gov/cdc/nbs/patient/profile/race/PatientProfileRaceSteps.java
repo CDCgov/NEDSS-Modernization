@@ -9,8 +9,8 @@ import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -28,13 +28,13 @@ public class PatientProfileRaceSteps {
     PatientMother mother;
 
     @Autowired
-    TestActive<PatientInput> input;
+    Active<PatientInput> input;
 
     @Autowired
     TestPatient patient;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
     PatientRaceResolver resolver;
@@ -78,7 +78,7 @@ public class PatientProfileRaceSteps {
     public void the_profile_has_no_associated_races() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.display());
 
         GraphQLPage page = new GraphQLPage(1);
 
@@ -91,7 +91,7 @@ public class PatientProfileRaceSteps {
         long patient = this.patients.one().id();
 
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.display());
 
         GraphQLPage page = new GraphQLPage(1);
 

@@ -7,7 +7,7 @@ import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.entity.odse.Treatment;
 import gov.cdc.nbs.entity.odse.TreatmentAdministered;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.identity.TestUniqueIdGenerator;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ class TreatmentMother {
     private static final String TREATMENT_OF_INVESTIGATION = "TreatmentToPHC";
 
     private final MotherSettings settings;
-    private final TestUniqueIdGenerator idGenerator;
+    private final SequentialIdentityGenerator idGenerator;
     private final EntityManager entityManager;
     private final TestTreatmentCleaner cleaner;
 
@@ -29,7 +29,7 @@ class TreatmentMother {
 
     TreatmentMother(
         final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
+        final SequentialIdentityGenerator idGenerator,
         final EntityManager entityManager,
         final TestTreatmentCleaner cleaner,
         final TestTreatments treatments

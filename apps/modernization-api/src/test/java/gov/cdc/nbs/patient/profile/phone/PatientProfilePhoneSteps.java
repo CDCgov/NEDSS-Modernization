@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.phone;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.input.PatientInput;
@@ -8,17 +8,15 @@ import gov.cdc.nbs.patient.PatientCreateAssertions;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.TestActive;
-import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.testing.support.Active;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.Collection;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,21 +28,20 @@ public class PatientProfilePhoneSteps {
     PatientMother mother;
 
     @Autowired
-    TestAvailable<PatientIdentifier> patients;
+    Available<PatientIdentifier> patients;
 
     @Autowired
-    TestActive<PatientInput> input;
+    Active<PatientInput> input;
 
     @Autowired
     TestPatient patient;
-    
 
     @Given("the patient has a phone")
     public void the_patient_has_a_phone() {
         mother.withPhone(patients.one());
-       
+
     }
-    
+
     @Given("the new patient's phone number is entered")
     public void the_new_patient_phone_number_is_entered() {
 
@@ -55,10 +52,8 @@ public class PatientProfilePhoneSteps {
         phoneNumber.setExtension(faker.phoneNumber().extension());
 
         this.input.active().getPhoneNumbers().add(phoneNumber);
-        
-        
+
     }
-    
 
     @Then("the new patient has the entered phone number")
     @Transactional
@@ -67,14 +62,14 @@ public class PatientProfilePhoneSteps {
 
         Collection<TeleEntityLocatorParticipation> phoneNumbers = actual.phoneNumbers();
 
-        if(!phoneNumbers.isEmpty()) {
+        if (!phoneNumbers.isEmpty()) {
 
             assertThat(phoneNumbers)
-                .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsPhoneNumbers(input.active().getPhoneNumbers()));
-
+                    .satisfiesExactlyInAnyOrder(
+                            PatientCreateAssertions.containsPhoneNumbers(input.active().getPhoneNumbers()));
 
         }
 
     }
-    
+
 }

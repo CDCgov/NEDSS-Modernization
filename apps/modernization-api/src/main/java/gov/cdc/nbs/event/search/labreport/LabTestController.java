@@ -17,8 +17,8 @@ public class LabTestController {
     }
 
     @QueryMapping
-    public List<ResultedTest> findDistinctResultedTest(@Argument String searchText, @Argument boolean loinc) {
-        return resultedTestFinder.findDistinctResultedTest(searchText, loinc);
+    public List<ResultedTest> findDistinctResultedTest(@Argument String searchText) {
+        return resultedTestFinder.findDistinctResultedTests(searchText);
     }
 
 }

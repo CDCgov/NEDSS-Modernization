@@ -2,14 +2,14 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import './Question.scss';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { EditPageQuestion } from 'apps/page-builder/generated/models/EditPageQuestion';
+import { PagesQuestion } from 'apps/page-builder/generated';
 
-export const Question = ({ question }: { question: EditPageQuestion }) => {
+export const Question = ({ question }: { question: PagesQuestion }) => {
     return (
         <div className="question">
             <div className="question__name">
-                {question.labelOnScreen}
-                <span>{question.questionIdentifier}</span>
+                {question.name}
+                <span>{question.question}</span>
             </div>
             <div className="question__field">
                 {question.dataType === 'CODED' ? (

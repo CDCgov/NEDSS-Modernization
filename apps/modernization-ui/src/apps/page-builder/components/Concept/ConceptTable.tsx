@@ -34,7 +34,6 @@ export const ConceptTable = ({ summaries, pages }: Props) => {
 
     const asTableRow = (page: any): TableBody => ({
         id: page.id,
-        checkbox: false,
         tableDetails: [
             {
                 id: 1,

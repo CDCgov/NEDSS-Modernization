@@ -3,17 +3,19 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import { useState } from 'react';
 import './Subsection.scss';
 import { Question } from '../Question/Question';
-import { Subsection } from 'apps/page-builder/generated/models/Subsection';
+import { PagesSubSection } from 'apps/page-builder/generated';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
+import { Icon as IconComponent } from 'components/Icon/Icon';
 
-export const SubsectionComponent = ({ subsection }: { subsection: Subsection }) => {
+export const SubsectionComponent = ({ subsection }: { subsection: PagesSubSection }) => {
     const [open, setOpen] = useState(true);
+
     return (
         <div className="subsection">
             <div className="subsection__header">
                 <div className="subsection__header--left">
                     <h2>{subsection.name}</h2>
-                    <Counter count={subsection.pageQuestions.length} />
+                    <Counter count={subsection.questions?.length || 0} />
                 </div>
                 <div className="subsection__header--right">
                     <Button type="button" outline>
@@ -24,7 +26,7 @@ export const SubsectionComponent = ({ subsection }: { subsection: Subsection }) 
                             <Icon.Edit size={3} /> Edit Subsection
                         </Button>
                         <Button type="button" onClick={() => console.log('BLAH')}>
-                            <img src="/group.svg" /> Group Subsection
+                            <IconComponent name={'group'} size={'s'} /> Group Subsection
                         </Button>
                         <Button type="button" onClick={() => console.log('BLAH')}>
                             <Icon.Delete size={3} /> Delete
@@ -39,12 +41,8 @@ export const SubsectionComponent = ({ subsection }: { subsection: Subsection }) 
             </div>
             {open ? (
                 <div className="subsection__body">
-                    {subsection.pageQuestions.map((question: any, i: number) => {
-                        if (question.visible === 'T') {
-                            return <Question key={i} question={question} />;
-                        } else {
-                            return;
-                        }
+                    {subsection.questions?.map((question, i) => {
+                        return question.display ? <Question key={i} question={question} /> : null;
                     })}
                 </div>
             ) : null}

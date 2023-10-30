@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.model;
 import java.util.List;
 
 public record CreateRuleRequest(
-        Long templateUid,
         String ruleFunction,
         String ruleDescription,
         String sourceText,

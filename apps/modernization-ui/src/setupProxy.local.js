@@ -3,7 +3,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const NBS_API = '/nbs/api';
 const GRAPHQL = '/graphql';
 const ENCRYPTION = '/encryption';
-const PAGEBUILDER_API = '/page-builder/api';
+const PAGEBUILDER_API = '/nbs/page-builder/api';
 
 // only forward POST methods so the login page can load
 const LOGIN = function (pathname, req) {

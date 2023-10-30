@@ -27,7 +27,6 @@ public class RuleRequestMother {
         CreateRuleRequest.SourceValues sourceValue = new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
         sourceValues.add(sourceValue);
         return new CreateRuleRequest(
-                123456L,
                 "Enable",
                 "TestDescription",
                 "testSource",
@@ -49,7 +48,6 @@ public class RuleRequestMother {
         targetIdentifiers.add("INV133");
 
         return new CreateRuleRequest(
-                123456L,
                 "Date Compare",
                 "'Admission Date (INV132)' must be <= 'Discharge Date (INV133)'.",
                 "Admission Date",
@@ -87,7 +85,6 @@ public class RuleRequestMother {
         sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
-                123456L,
                 "Enable",
                 "If the Patient Pregnant(INV178) is Yes, enable Weeks (NBS128)",
                 "Is the patient pregnant?",
@@ -112,7 +109,6 @@ public class RuleRequestMother {
         sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
-                123456L,
                 "Disable",
                 "Disable",
                 "test",
@@ -142,7 +138,6 @@ public class RuleRequestMother {
         sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
-                123456L,
                 "Hide",
                 "Testing hide Function",
                 "Age at Onset Units",
@@ -162,7 +157,6 @@ public class RuleRequestMother {
         targetIdentifiers.add("CON143");
 
         return new CreateRuleRequest(
-                123456L,
                 "Require If",
                 "If the Naming Between question is answered, require the Named dropdown",
                 "Relationship with Patient/Other infected Patient?",
@@ -184,7 +178,6 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-                123456L,
                 "Require If",
                 "require if ",
                 "test",
@@ -207,7 +200,6 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-                123456L,
                 "Require If",
                 "require if ",
                 "test",
@@ -228,7 +220,6 @@ public class RuleRequestMother {
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
         return new CreateRuleRequest(
-                123456L,
                 "Hide",
                 "Hide",
                 "test",
@@ -250,7 +241,6 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-                123456L,
                 "Enable",
                 "Enable",
                 "test",
@@ -271,7 +261,6 @@ public class RuleRequestMother {
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
         return new CreateRuleRequest(
-                123456L,
                 "Disable",
                 "Disable",
                 "test",
@@ -296,7 +285,6 @@ public class RuleRequestMother {
         sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
-                123456L,
                 "Unhide",
                 "Unhide",
                 "test",
@@ -318,7 +306,6 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-                123456L,
                 "Unhide",
                 "Unhide",
                 "test",
@@ -343,7 +330,6 @@ public class RuleRequestMother {
         sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
-                123456L,
                 "Invalid",
                 "Invalid",
                 "test",

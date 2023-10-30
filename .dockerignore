@@ -1,4 +1,11 @@
+.github
 cdc-sandbox
+docs
+documentation
 node_modules
+.vscode
+.gradle
+bin
 build
 log
+**/.DS_Store

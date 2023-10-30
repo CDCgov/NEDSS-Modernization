@@ -1,12 +1,12 @@
 package gov.cdc.nbs.patient.profile.phone;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCreateAssertions;
 import gov.cdc.nbs.patient.TestPatient;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class PatientProfileEmailSteps {
     private final Faker faker = new Faker();
 
     @Autowired
-    TestActive<PatientInput> input;
+    Active<PatientInput> input;
 
     @Autowired
     TestPatient patient;
@@ -38,11 +38,11 @@ public class PatientProfileEmailSteps {
 
         Collection<TeleEntityLocatorParticipation> emails = actual.emailAddresses();
 
-        if(!emails.isEmpty()) {
+        if (!emails.isEmpty()) {
 
             assertThat(emails)
-                .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
-
+                    .satisfiesExactlyInAnyOrder(
+                            PatientCreateAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
 
         }
 

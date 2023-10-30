@@ -1,10 +1,8 @@
 @import 'settings.scss';
 
 .edit-page-content {
-    margin-top: 1.2rem;
     width: 100%;
     max-width: 960px;
-    height: 100%;
     &__sections {
         display: flex;
         flex-direction: column;

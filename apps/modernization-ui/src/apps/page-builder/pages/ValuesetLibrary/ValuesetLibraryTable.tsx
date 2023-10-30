@@ -43,7 +43,6 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     // @ts-ignore
     const asTableRow = (valueSet: ValueSet): TableBody => ({
         id: valueSet.nbsUid,
-        checkbox: true,
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
         expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         tableDetails: [
@@ -62,7 +61,12 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     (
                         <div className="ds-u-text-align--right">
                             {expandedRows.some((id) => id === valueSet.nbsUid) ? (
-                                <Button type="button" unstyled aria-label="expand-less">
+                                <Button
+                                    type="button"
+                                    unstyled
+                                    aria-label="expand-less"
+                                    key={valueSet.nbsUid}
+                                    data-testid="expand-less">
                                     <Icon.ExpandLess
                                         style={{ cursor: 'pointer' }}
                                         size={4}
@@ -71,7 +75,12 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                                     />
                                 </Button>
                             ) : (
-                                <Button type="button" unstyled aria-label="expand-more">
+                                <Button
+                                    data-testid="expand-more"
+                                    type="button"
+                                    unstyled
+                                    aria-label="expand-more"
+                                    key={valueSet.nbsUid}>
                                     <Icon.ExpandMore
                                         style={{ cursor: 'pointer' }}
                                         size={4}
@@ -269,6 +278,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             />
         </div>
     );
+
     return (
         <div>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
@@ -279,10 +289,11 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     tableBody={tableRows}
                     isPagination={true}
                     pageSize={pages?.pageSize || 0}
-                    totalResults={pages?.total || 0}
+                    totalResults={pages?.totalElements || 0}
                     currentPage={pages?.current || 0}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
+                    selectable
                     handleSelected={handleSelected}
                     rangeSelector={true}
                     isLoading={isLoading}

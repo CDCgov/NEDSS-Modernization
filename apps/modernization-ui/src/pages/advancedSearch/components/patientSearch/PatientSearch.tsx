@@ -1,60 +1,55 @@
 import { Accordion, Button, Checkbox, ErrorMessage, Form, FormGroup, Grid, Label } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Gender, PersonFilter, RecordStatus } from '../../../../generated/graphql/schema';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
+import { Gender, PersonFilter, RecordStatus } from '../../../../generated/graphql/schema';
 import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
-import { validate as validatePhoneNumber } from 'validation/search';
+import { objectOrUndefined } from 'utils/objectOrUndefined';
+import { validNameRule } from 'validation/entry';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
-    data: PersonFilter | undefined;
+    personFilter: PersonFilter | undefined;
     clearAll: () => void;
 };
 
-export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearchProps) => {
-    const [selectedRecordStatus, setSelectedRecordStatus] = useState([] as RecordStatus[]);
-    const methods = useForm();
-    const {
-        handleSubmit,
-        control,
-        formState: { errors },
-        reset
-    } = methods;
-
+export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: PatientSearchProps) => {
+    const form = useForm<PersonFilter>({ defaultValues: { recordStatus: [RecordStatus.Active] }, mode: 'onBlur' });
     useEffect(() => {
-        if (data) {
-            methods.reset({
-                firstName: data.firstName,
-                lastName: data.lastName,
-                address: data.address,
-                city: data.city,
-                state: data.state,
-                zip: data.zip,
-                patientId: data.id,
-                dob: data.dateOfBirth,
-                gender: data.gender,
-                phoneNumber: data.phoneNumber,
-                email: data.email,
-                identificationNumber: data.identification?.identificationNumber,
-                identificationType: data.identification?.identificationType,
-                ethnicity: data.ethnicity,
-                race: data.race
-            });
+        if (personFilter) {
+            form.reset({ ...personFilter }, { keepDefaultValues: true });
         }
-        // Default to Active checked
-        data?.recordStatus
-            ? setSelectedRecordStatus(data.recordStatus)
-            : setSelectedRecordStatus([RecordStatus.Active]);
-    }, [data]);
+    }, [personFilter]);
 
-    useEffect(() => {}, [errors]);
+    useEffect(() => {}, [form.formState.errors]);
+
+    const handleRecordStatusChange = (
+        value: RecordStatus[],
+        status: RecordStatus,
+        isChecked: boolean,
+        onChange: (recordStatus: RecordStatus[]) => void
+    ): void => {
+        if (isChecked) {
+            value.push(status);
+            onChange(value);
+        } else {
+            onChange(value.filter((s) => s !== status));
+        }
+        form.trigger('recordStatus'); // Trigger validation
+    };
+
+    const handleSubmit = (filter: PersonFilter) => {
+        // Clean up any empty filter objects
+        Object.values(filter.identification ?? {}).length > 0;
+        filter.identification = objectOrUndefined(filter.identification);
+        handleSubmission(filter);
+    };
 
     const simpleSearchItems: AccordionItemProps[] = [
         {
@@ -63,10 +58,12 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                 <>
                     <Grid col={12}>
                         <Controller
-                            control={control}
+                            control={form.control}
                             name="lastName"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     type="text"
                                     label="Last name"
@@ -74,17 +71,19 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                     defaultValue={value}
                                     htmlFor={name}
                                     id={name}
-                                    error={errors?.lastName && 'Last name is required.'}
+                                    error={error?.message}
                                 />
                             )}
                         />
                     </Grid>
                     <Grid col={12}>
                         <Controller
-                            control={control}
+                            control={form.control}
                             name="firstName"
-                            render={({ field: { onChange, value, name } }) => (
+                            rules={validNameRule}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <Input
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -92,15 +91,15 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                     name={name}
                                     htmlFor={name}
                                     id={name}
-                                    error={errors?.firstName && 'First name is required.'}
+                                    error={error?.message}
                                 />
                             )}
                         />
                     </Grid>
                     <Grid col={12}>
                         <Controller
-                            control={control}
-                            name="dob"
+                            control={form.control}
+                            name="dateOfBirth"
                             render={({ field: { onChange, value, name } }) => (
                                 <DatePickerInput
                                     defaultValue={value}
@@ -116,7 +115,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                     </Grid>
                     <Grid col={12}>
                         <Controller
-                            control={control}
+                            control={form.control}
                             name="gender"
                             render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
@@ -137,8 +136,8 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                     </Grid>
                     <Grid col={12}>
                         <Controller
-                            control={control}
-                            name="patientId"
+                            control={form.control}
+                            name="id"
                             render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
@@ -153,48 +152,80 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         />
                     </Grid>
                     <Grid col={12}>
-                        <FormGroup error={selectedRecordStatus.length === 0}>
+                        <FormGroup error={!!form.formState.errors.recordStatus}>
                             <Label htmlFor={''}>Include records that are</Label>
-                            {selectedRecordStatus.length === 0 && (
+                            {form.formState.errors.recordStatus ? (
                                 <ErrorMessage id="record-status-error-message">
                                     At least one status is required
                                 </ErrorMessage>
-                            )}
-                            <Grid row>
-                                <Grid col={6}>
-                                    <Checkbox
-                                        id={'record-status-active'}
-                                        onChange={(v) =>
-                                            handleRecordStatusChange(RecordStatus.Active, v.target.checked)
-                                        }
-                                        name={'name'}
-                                        label={'Active'}
-                                        checked={selectedRecordStatus.includes(RecordStatus.Active)}
-                                    />
-                                </Grid>
-                                <Grid col={6}>
-                                    <Checkbox
-                                        id={'record-status-deleted'}
-                                        onChange={(v) =>
-                                            handleRecordStatusChange(RecordStatus.LogDel, v.target.checked)
-                                        }
-                                        name={'name'}
-                                        label={'Deleted'}
-                                        checked={selectedRecordStatus.includes(RecordStatus.LogDel)}
-                                    />
-                                </Grid>
-                                <Grid col={6}>
-                                    <Checkbox
-                                        id={'record-status-superceded'}
-                                        onChange={(v) =>
-                                            handleRecordStatusChange(RecordStatus.Superceded, v.target.checked)
-                                        }
-                                        name={'name'}
-                                        label={'Superseded'}
-                                        checked={selectedRecordStatus.includes(RecordStatus.Superceded)}
-                                    />
-                                </Grid>
-                            </Grid>
+                            ) : null}
+                            <Controller
+                                control={form.control}
+                                name="recordStatus"
+                                rules={{ validate: (v) => v.length !== 0 }}
+                                render={({ field: { onChange, value } }) => {
+                                    return (
+                                        <>
+                                            <Grid row>
+                                                <Grid col={6}>
+                                                    <Checkbox
+                                                        id={'record-status-active'}
+                                                        onChange={(v) =>
+                                                            handleRecordStatusChange(
+                                                                value,
+                                                                RecordStatus.Active,
+                                                                v.target.checked,
+                                                                onChange
+                                                            )
+                                                        }
+                                                        name={'name'}
+                                                        label={'Active'}
+                                                        checked={form
+                                                            .getValues('recordStatus')
+                                                            .includes(RecordStatus.Active)}
+                                                    />
+                                                </Grid>
+                                                <Grid col={6}>
+                                                    <Checkbox
+                                                        id={'record-status-deleted'}
+                                                        onChange={(v) =>
+                                                            handleRecordStatusChange(
+                                                                value,
+                                                                RecordStatus.LogDel,
+                                                                v.target.checked,
+                                                                onChange
+                                                            )
+                                                        }
+                                                        name={'name'}
+                                                        label={'Deleted'}
+                                                        checked={form
+                                                            .getValues('recordStatus')
+                                                            .includes(RecordStatus.LogDel)}
+                                                    />
+                                                </Grid>
+                                                <Grid col={6}>
+                                                    <Checkbox
+                                                        id={'record-status-superceded'}
+                                                        onChange={(v) =>
+                                                            handleRecordStatusChange(
+                                                                value,
+                                                                RecordStatus.Superceded,
+                                                                v.target.checked,
+                                                                onChange
+                                                            )
+                                                        }
+                                                        name={'name'}
+                                                        label={'Superseded'}
+                                                        checked={form
+                                                            .getValues('recordStatus')
+                                                            .includes(RecordStatus.Superceded)}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                        </>
+                                    );
+                                }}
+                            />
                         </FormGroup>
                     </Grid>
                 </>
@@ -206,7 +237,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         },
         {
             title: 'Address',
-            content: <AddressForm control={control} />,
+            content: <AddressForm control={form.control} />,
             expanded: false,
             id: '2',
             headingLevel: 'h4',
@@ -214,7 +245,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         },
         {
             title: 'Contact',
-            content: <ContactForm control={control} errors={errors} />,
+            content: <ContactForm control={form.control} errors={form.formState.errors} />,
             expanded: false,
             id: '3',
             headingLevel: 'h4',
@@ -222,7 +253,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         },
         {
             title: 'ID',
-            content: <IDForm control={control} />,
+            content: <IDForm control={form} />,
             expanded: false,
             id: '4',
             headingLevel: 'h4',
@@ -230,7 +261,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         },
         {
             title: 'Race / Ethnicity',
-            content: <EthnicityForm control={control} />,
+            content: <EthnicityForm control={form.control} />,
             expanded: false,
             id: '5',
             headingLevel: 'h4',
@@ -238,56 +269,14 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         }
     ];
 
-    const handleRecordStatusChange = (status: RecordStatus, isChecked: boolean) => {
-        // Add or remove record status from state
-        if (isChecked) {
-            setSelectedRecordStatus([...selectedRecordStatus, status]);
-        } else {
-            setSelectedRecordStatus(selectedRecordStatus.filter((r) => r !== status));
-        }
-    };
-
-    const onSubmit: any = (body: any) => {
-        // at least 1 record status must be selected
-        if (selectedRecordStatus.length === 0) {
-            return;
-        }
-        const rowData: PersonFilter = {
-            firstName: body.firstName,
-            lastName: body.lastName,
-            recordStatus: selectedRecordStatus
-        };
-        body.dob && (rowData.dateOfBirth = body.dob);
-        body.gender !== '- Select -' && (rowData.gender = body.gender);
-        body.patientId && (rowData.id = body.patientId);
-
-        body.address && (rowData.address = body.address);
-        body.city && (rowData.city = body.city);
-        body.state !== '- Select -' && (rowData.state = body.state);
-        body.zip && (rowData.zip = body.zip);
-        body.phoneNumber && validatePhoneNumber(body.phoneNumber) && (rowData.phoneNumber = body.phoneNumber);
-        body.email && (rowData.email = body.email);
-
-        body.race !== '- Select -' && (rowData.race = body.race);
-        body.ethnicity !== '- Select -' && (rowData.ethnicity = body.ethnicity);
-
-        if (body.identificationNumber && body.identificationType !== '- Select -') {
-            rowData.identification = {
-                identificationNumber: body.identificationNumber,
-                identificationType: body.identificationType
-            };
-        }
-        handleSubmission(rowData);
-    };
-
     return (
-        <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
+        <Form onSubmit={form.handleSubmit(handleSubmit)} className="width-full maxw-full">
             <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>
                 <Accordion items={simpleSearchItems} multiselectable={true} />
             </div>
             <Grid row className="bottom-search">
                 <Grid col={12} className="padding-x-2">
-                    <Button className="width-full clear-btn" type={'submit'}>
+                    <Button disabled={!form.formState.isValid} className="width-full clear-btn" type={'submit'}>
                         Search
                     </Button>
                 </Grid>
@@ -296,23 +285,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         className="width-full clear-btn"
                         type={'button'}
                         onClick={() => {
-                            reset({
-                                firstName: '',
-                                lastName: '',
-                                address: '',
-                                city: '',
-                                state: '-Select-',
-                                zip: '',
-                                patientId: '',
-                                dob: '',
-                                gender: '-Select-',
-                                phoneNumber: '',
-                                email: '',
-                                identificationNumber: '',
-                                identificationType: '-Select-',
-                                ethnicity: '-Select-',
-                                race: '-Select-'
-                            });
+                            form.reset({}, { keepDefaultValues: true });
                             clearAll();
                         }}
                         outline>

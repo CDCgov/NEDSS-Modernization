@@ -24,6 +24,7 @@ import { VerifiableAdddress, AddressVerificationModal } from 'address/verificati
 import { orNull } from 'utils';
 import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'pages/patient/add';
 import { isMissingFields } from './isMissingFields';
+import { usePreFilled } from './usePreFilled';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -77,13 +78,18 @@ const AddPatient = () => {
     const navigate = useNavigate();
 
     const locations = useLocationCodedValues();
-
     const coded = useAddPatientCodedValues();
 
     const [handleSavePatient] = useCreatePatientMutation();
     const modalRef = useRef<ModalRef>(null);
 
     const [entryState, setEntryState] = useState<EntryState>({ step: 'entry' });
+
+    const prefillled = usePreFilled(initialEntry());
+
+    useEffect(() => {
+        reset(prefillled);
+    }, [prefillled]);
 
     const methods = useForm<NewPatientEntry, DefaultNewPatentEntry>({
         defaultValues: initialEntry(),
@@ -92,6 +98,7 @@ const AddPatient = () => {
 
     const {
         handleSubmit,
+        reset,
         formState: { errors }
     } = methods;
 
@@ -238,11 +245,9 @@ const AddPatient = () => {
                             }}>
                             <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                                 New patient
-                                <div className="button-group">
-                                    <Button className="padding-x-3 add-patient-button" type={'submit'}>
-                                        Save changes
-                                    </Button>
-                                </div>
+                                <Button className="add-patient-button" type={'submit'}>
+                                    Save changes
+                                </Button>
                             </div>
                         </Grid>
                         <div className="content">

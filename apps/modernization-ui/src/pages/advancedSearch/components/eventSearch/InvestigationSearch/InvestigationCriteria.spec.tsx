@@ -34,7 +34,9 @@ const InvestigationCriteriaFieldsWithDefaultsSet = () => {
                     conditions: [],
                     jurisdictions: [],
                     userResults: [],
-                    outbreaks: [{ id: { code: 'outbreak', codeSetNm: 'someOutbreak' } }],
+                    outbreaks: [
+                        { id: { code: 'outbreak', codeSetNm: 'someOutbreak' }, codeShortDescTxt: 'outbreak display' }
+                    ],
                     ethnicities: [],
                     races: [],
                     identificationTypes: [],
@@ -58,34 +60,34 @@ describe('InvestigationGeneralFields component', () => {
         expect(investigationStatusSelect).toHaveValue('');
 
         // Outbreak name
-        getByText('Outbreak name');
-        const outbreakSelect = getByTestId('outbreakNames');
-        expect(outbreakSelect).toHaveAttribute('placeholder', '-Select-');
-        expect(outbreakSelect).toHaveValue('');
-
-        // Case status
-        expect(multiSelectInputs[0].getElementsByClassName('usa-label')[0]).toHaveTextContent('Case status');
+        expect(multiSelectInputs[0].getElementsByClassName('usa-label')[0]).toHaveTextContent('Outbreak name');
         expect(multiSelectInputs[0].getElementsByClassName('multi-select__placeholder')[0]).toHaveTextContent(
             '- Select -'
         );
 
-        // Case processing status
-        expect(multiSelectInputs[1].getElementsByClassName('usa-label')[0]).toHaveTextContent(
-            'Current processing status'
-        );
+        // Case status
+        expect(multiSelectInputs[1].getElementsByClassName('usa-label')[0]).toHaveTextContent('Case status');
         expect(multiSelectInputs[1].getElementsByClassName('multi-select__placeholder')[0]).toHaveTextContent(
             '- Select -'
         );
 
-        // Notification status
-        expect(multiSelectInputs[2].getElementsByClassName('usa-label')[0]).toHaveTextContent('Notification status');
+        // Case processing status
+        expect(multiSelectInputs[2].getElementsByClassName('usa-label')[0]).toHaveTextContent(
+            'Current processing status'
+        );
         expect(multiSelectInputs[2].getElementsByClassName('multi-select__placeholder')[0]).toHaveTextContent(
+            '- Select -'
+        );
+
+        // Notification status
+        expect(multiSelectInputs[3].getElementsByClassName('usa-label')[0]).toHaveTextContent('Notification status');
+        expect(multiSelectInputs[3].getElementsByClassName('multi-select__placeholder')[0]).toHaveTextContent(
             '- Select -'
         );
     });
 
     it('should show form values', () => {
-        const { container, getByTestId } = render(<InvestigationCriteriaFieldsWithDefaultsSet />);
+        const { container, getByTestId, getByText } = render(<InvestigationCriteriaFieldsWithDefaultsSet />);
         const multiSelectInputs = container.getElementsByClassName('multi-select-input');
 
         // Investigation status
@@ -93,26 +95,28 @@ describe('InvestigationGeneralFields component', () => {
         expect(investigationStatusSelect).toHaveValue(InvestigationStatus.Open);
 
         // Outbreak name
-        const outbreakSelect = getByTestId('outbreakNames');
-        expect(outbreakSelect).toHaveValue('outbreak');
+        expect(multiSelectInputs[0].getElementsByClassName('usa-label')[0]).toHaveTextContent('Outbreak name');
+        expect(multiSelectInputs[0].getElementsByClassName('multi-select__multi-value__label')[0]).toHaveTextContent(
+            'Outbreak display'
+        );
 
         // Case status
-        expect(multiSelectInputs[0].getElementsByClassName('usa-label')[0]).toHaveTextContent('Case status');
-        expect(multiSelectInputs[0].getElementsByClassName('multi-select__multi-value__label')[0]).toHaveTextContent(
+        expect(multiSelectInputs[1].getElementsByClassName('usa-label')[0]).toHaveTextContent('Case status');
+        expect(multiSelectInputs[1].getElementsByClassName('multi-select__multi-value__label')[0]).toHaveTextContent(
             formatInterfaceString(CaseStatus.Confirmed)
         );
 
         // Case processing status
-        expect(multiSelectInputs[1].getElementsByClassName('usa-label')[0]).toHaveTextContent(
+        expect(multiSelectInputs[2].getElementsByClassName('usa-label')[0]).toHaveTextContent(
             'Current processing status'
         );
-        expect(multiSelectInputs[1].getElementsByClassName('multi-select__multi-value__label')[0]).toHaveTextContent(
+        expect(multiSelectInputs[2].getElementsByClassName('multi-select__multi-value__label')[0]).toHaveTextContent(
             formatInterfaceString(ProcessingStatus.AwaitingInterview)
         );
 
         // Notification status
-        expect(multiSelectInputs[2].getElementsByClassName('usa-label')[0]).toHaveTextContent('Notification status');
-        expect(multiSelectInputs[2].getElementsByClassName('multi-select__multi-value__label')[0]).toHaveTextContent(
+        expect(multiSelectInputs[3].getElementsByClassName('usa-label')[0]).toHaveTextContent('Notification status');
+        expect(multiSelectInputs[3].getElementsByClassName('multi-select__multi-value__label')[0]).toHaveTextContent(
             formatInterfaceString(NotificationStatus.Completed)
         );
     });

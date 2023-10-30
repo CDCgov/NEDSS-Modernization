@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { FindInvestigationsForPatientQuery, useFindInvestigationsForPatientLazyQuery } from 'generated/graphql/schema';
@@ -6,15 +6,20 @@ import { FindInvestigationsForPatientQuery, useFindInvestigationsForPatientLazyQ
 import { Headers, Investigation } from './PatientInvestigation';
 import { transform } from './PatientInvestigationTransformer';
 import { sort } from './PatientInvestigationSorter';
-import { TableBody, TableComponent } from 'components/Table/Table';
+import { SelectionHandler, SelectionMode, TableBody, TableComponent } from 'components/Table';
 import { Direction } from 'sorting';
 import { ClassicButton, ClassicLink } from 'classic';
+import { usePatientProfilePermissions } from '../permission';
+import { useInvestigationCompare } from './useInvestigationCompare';
+
+type InvestigationSelectionHandler = (investigation: Investigation) => SelectionHandler;
 
 const asTableBody =
-    (patient?: string) =>
+    (handleSelect: InvestigationSelectionHandler, patient?: string) =>
     (investigation: Investigation): TableBody => ({
         id: investigation.investigation,
-        checkbox: true,
+        selectable: investigation.comparable,
+        onSelect: handleSelect(investigation),
         tableDetails: [
             {
                 id: 1,
@@ -38,8 +43,11 @@ const asTableBody =
         ]
     });
 
-const asTableBodies = (investigations: Investigation[], patient?: string): TableBody[] =>
-    investigations?.map(asTableBody(patient)) || [];
+const asTableBodies = (
+    investigations: Investigation[],
+    handleSelect: InvestigationSelectionHandler,
+    patient?: string
+): TableBody[] => investigations?.map(asTableBody(handleSelect, patient)) || [];
 
 const headers = [
     { name: Headers.StartDate, sortable: true },
@@ -62,8 +70,19 @@ type Props = {
 export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
-    const [items, setItems] = useState<any>([]);
+    const [items, setItems] = useState<Investigation[]>([]);
     const [bodies, setBodies] = useState<TableBody[]>([]);
+    const permissions = usePatientProfilePermissions();
+
+    const { comparable, selected, select, deselect } = useInvestigationCompare();
+
+    const handleSelect = (investigation: Investigation) => (mode: SelectionMode) => {
+        if (mode === 'select') {
+            select(investigation);
+        } else {
+            deselect(investigation);
+        }
+    };
 
     const handleComplete = (data: FindInvestigationsForPatientQuery) => {
         setTotal(data?.findInvestigationsForPatient?.total || 0);
@@ -73,7 +92,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
         setItems(content);
 
         const sorted = sort(content, {});
-        setBodies(asTableBodies(sorted, patient));
+        setBodies(asTableBodies(sorted, handleSelect, patient));
     };
 
     const [getInvestigation, { called, loading }] = useFindInvestigationsForPatientLazyQuery({
@@ -98,21 +117,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
     const handleSort = (name: string, direction: string): void => {
         const criteria = { name: name as Headers, type: direction as Direction };
         const sorted = sort(items, criteria);
-        setBodies(asTableBodies(sorted, patient));
-    };
-
-    const [checkedItems, setCheckedItems] = useState<{ id: string; value: string | undefined }[]>([]);
-    const handleSelected = (e: React.ChangeEvent<HTMLInputElement>, row: TableBody) => {
-        if (e.target.checked) {
-            if (e.target.value === row.tableDetails[1].title) {
-                setCheckedItems((old) => [
-                    ...old,
-                    { id: row.id as string, value: row.tableDetails[1].title as string }
-                ]);
-            }
-        } else {
-            setCheckedItems(checkedItems.filter((item) => item.id !== row.id));
-        }
+        setBodies(asTableBodies(sorted, handleSelect, patient));
     };
 
     return (
@@ -120,16 +125,16 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
             buttons={
                 allowAdd && (
                     <div className="grid-row">
-                        <ClassicButton
-                            disabled={
-                                checkedItems.length !== 2 || checkedItems?.[0]?.value !== checkedItems?.[1]?.value
-                            }
-                            type="button"
-                            className="grid-row"
-                            url={`/nbs/api/profile/${patient}/investigation/${checkedItems?.[0]?.id}/compare/${checkedItems?.[1]?.id}`}>
-                            <Icon.Topic className="margin-right-05" />
-                            Compare investigations
-                        </ClassicButton>
+                        {permissions.compareInvestigation && (
+                            <ClassicButton
+                                disabled={!comparable}
+                                type="button"
+                                className="grid-row"
+                                url={`/nbs/api/profile/${patient}/investigation/${selected?.[0]?.investigation}/compare/${selected?.[1]?.investigation}`}>
+                                <Icon.Topic className="margin-right-05" />
+                                Compare investigations
+                            </ClassicButton>
+                        )}
                         <ClassicButton url={`/nbs/api/profile/${patient}/investigation`}>
                             <Icon.Add className="margin-right-05" />
                             Add investigation
@@ -147,7 +152,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
             currentPage={currentPage}
             handleNext={setCurrentPage}
             sortData={handleSort}
-            handleSelected={handleSelected}
+            selectable
         />
     );
 };

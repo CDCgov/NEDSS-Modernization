@@ -1,4 +1,4 @@
-FROM amazoncorretto:17 as builder
+FROM eclipse-temurin:17 as builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -17,11 +17,34 @@ WORKDIR /usr/src/nbs
 # Build just the pagebuilder-api and any required library
 RUN ./gradlew :question-bank:buildNeeded -x test --no-daemon
 
-FROM amazoncorretto:17
+RUN jar xf apps/question-bank/build/libs/question-bank.jar
 
-COPY --from=builder /usr/src/nbs/apps/question-bank/build/libs/question-bank*.jar api.jar 
+RUN jdeps --ignore-missing-deps -q  \
+    --recursive  \
+    --multi-release 17  \
+    --print-module-deps  \
+    --class-path 'BOOT-INF/lib/*'  \
+    apps/question-bank/build/libs/question-bank.jar > deps.info
+
+RUN jlink \
+    --add-modules $(cat deps.info) \
+    --strip-debug \
+    --compress 2 \
+    --no-header-files \
+    --no-man-pages \
+    --output page-builder/runtime
+
+FROM debian:12-slim
 
 ENV NBS_DATASOURCE_SERVER=nbs-mssql
 
-# Run jar
+COPY --from=builder /usr/src/nbs/page-builder/runtime /deployment/runtime
+
+COPY --from=builder /usr/src/nbs/apps/question-bank/build/libs/question-bank.jar /deployment/application/api.jar
+
+
+ENV PATH /deployment/runtime/bin:$PATH
+
+WORKDIR /deployment/application
+
 CMD ["java", "-jar", "api.jar"]

@@ -29,6 +29,7 @@ import { NoData } from 'components/NoData';
 import { useParams } from 'react-router-dom';
 import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { sortingByDate } from 'sorting/sortingByDate';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -58,7 +59,7 @@ const asEntry = (data: PatientPhone): UpdatePhoneEmailEntry => ({
 
 const resolveInitialEntry = (patient: string): NewPhoneEmailEntry => ({
     patient: +patient,
-    asOf: null,
+    asOf: internalizeDate(new Date()),
     type: null,
     use: null,
     countryCode: null,
@@ -104,7 +105,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
 
     const handleComplete = (data: PatientProfilePhoneEmailResult) => {
         setTotal(data?.findPatientProfile?.phones?.total ?? 0);
-        setPhoneEmail(data?.findPatientProfile?.phones?.content ?? []);
+        setPhoneEmail(sortingByDate(data?.findPatientProfile?.phones?.content || []) as Array<PatientPhone>);
     };
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfilePhoneAndEmail({ onCompleted: handleComplete });
@@ -121,7 +122,8 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     pageNumber: currentPage - 1,
                     pageSize: TOTAL_TABLE_DATA
                 }
-            }
+            },
+            notifyOnNetworkStatusChange: true
         });
     }, [currentPage]);
 

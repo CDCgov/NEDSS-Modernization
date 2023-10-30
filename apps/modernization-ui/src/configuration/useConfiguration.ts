@@ -1,4 +1,6 @@
-import { Config } from 'config';
+import { ConfigurationControllerService } from 'generated';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from 'user';
 
 type Settings = {
     smarty?: {
@@ -11,6 +13,9 @@ type Features = {
         autocomplete: boolean;
         verification: boolean;
     };
+    pageBuilder: {
+        enabled: boolean;
+    };
 };
 
 type Configuration = {
@@ -18,27 +23,45 @@ type Configuration = {
     features: Features;
 };
 
-const defaultFeatures = {
-    ...{
-        address: {
-            autocomplete: false,
-            verification: false
-        }
+const defaultFeatures: Features = {
+    address: {
+        autocomplete: false,
+        verification: false
     },
-    ...Config.features
+    pageBuilder: {
+        enabled: false
+    }
+};
+
+const defaultSettings: Settings = {
+    smarty: {
+        key: '166215385741384990'
+    }
 };
 
 const initial: Configuration = {
-    settings: {
-        smarty: {
-            key: '166215385741384990'
-        }
-    },
+    settings: defaultSettings,
     features: defaultFeatures
 };
 
-const useConfiguration = (): Configuration => initial;
+const useConfiguration = (): { settings: Settings; features: Features; loading: boolean } => {
+    const [config, setConfig] = useState<Configuration>(initial);
+    const [loading, setLoading] = useState(false);
+    const { state } = useContext(UserContext);
+
+    useEffect(() => {
+        if (state.isLoggedIn) {
+            setLoading(true);
+            ConfigurationControllerService.getConfigurationUsingGet({
+                authorization: `Bearer ${state.getToken()}`
+            }).then((response) => {
+                setConfig((existing) => ({ ...existing, ...(response as Configuration) }));
+                setLoading(false);
+            });
+        }
+    }, [state.isLoggedIn]);
+
+    return { ...config, loading };
+};
 
 export { useConfiguration };
-
-export type { Configuration, Settings };

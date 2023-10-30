@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { PageControllerService, Page_PageSummary_ } from 'apps/page-builder/generated';
+import { PageControllerService, Page_PageSummary_, PagesService } from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = (
     token: string,
@@ -38,7 +38,14 @@ export const createPage = (
 };
 
 export const fetchPageDetails = (token: string, id: number) => {
-    return PageControllerService.getPageDetails({
+    return PagesService.detailsUsingGet({
+        authorization: token,
+        id: id
+    });
+};
+
+export const savePageAsDraft = (token: string, id: number) => {
+    return PageControllerService.savePageDraftUsingPut({
         authorization: token,
         id: id
     }).then((response: any) => {

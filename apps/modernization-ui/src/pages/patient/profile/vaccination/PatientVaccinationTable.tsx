@@ -52,7 +52,6 @@ export const PatientVaccinationTable = ({ patient, vaccinations, allowAdd = fals
 
     const asTableBody = (vaccination: Vaccination): TableBody => ({
         id: vaccination?.event,
-        checkbox: false,
         tableDetails: [
             {
                 id: 1,

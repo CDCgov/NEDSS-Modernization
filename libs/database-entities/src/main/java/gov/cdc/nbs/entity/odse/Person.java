@@ -583,7 +583,7 @@ public class Person {
     }
 
     public List<EntityId> identifications() {
-        return this.nbsEntity.getEntityIds();
+        return this.nbsEntity.identifications();
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
@@ -764,5 +764,6 @@ public class Person {
 
         changed(remove);
     }
+
 
 }

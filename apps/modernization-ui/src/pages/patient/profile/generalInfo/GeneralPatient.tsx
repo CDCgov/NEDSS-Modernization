@@ -78,11 +78,6 @@ export const GeneralPatient = ({ patient }: Props) => {
     const handleUpdate = () => {
         refetch();
         isEditing(false);
-        showAlert({
-            type: 'success',
-            header: 'success',
-            message: `Updated General patient information`
-        });
     };
 
     const [getProfile, { refetch }] = useFindPatientProfileGeneral({ onCompleted: handleComplete });
@@ -91,7 +86,8 @@ export const GeneralPatient = ({ patient }: Props) => {
         getProfile({
             variables: {
                 patient: patient
-            }
+            },
+            notifyOnNetworkStatusChange: true
         });
     }, [patient]);
 
@@ -106,10 +102,16 @@ export const GeneralPatient = ({ patient }: Props) => {
                     asOf: externalizeDateTime(updated.asOf)
                 }
             }
-        }).then(() => {
-            handleUpdate();
-            changed();
-        });
+        })
+            .then(handleUpdate)
+            .then(() =>
+                showAlert({
+                    type: 'success',
+                    header: 'success',
+                    message: `Updated General patient information`
+                })
+            )
+            .then(changed);
     };
 
     return (

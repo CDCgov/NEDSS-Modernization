@@ -55,8 +55,10 @@ export const Ethnicity = ({ patient }: Props) => {
     const { profile } = usePatientProfile(id);
 
     const handleComplete = (result: FindPatientProfileQuery) => {
-        setData(asView(result.findPatientProfile?.ethnicity));
-        setEntry(asEntry(result.findPatientProfile?.ethnicity));
+        const current = result.findPatientProfile?.ethnicity;
+
+        setData(asView(current));
+        setEntry(asEntry(current));
     };
 
     const handleUpdate = () => {
@@ -76,7 +78,8 @@ export const Ethnicity = ({ patient }: Props) => {
             fetchProfile({
                 variables: {
                     patient: patient
-                }
+                },
+                notifyOnNetworkStatusChange: true
             });
         }
     }, [patient]);

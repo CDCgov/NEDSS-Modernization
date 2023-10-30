@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.report.lab;
 
 import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.TestPatients;
-import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -36,19 +36,17 @@ public class SubmitLabReportSteps {
     MockMvc mvc;
 
     @Autowired
-    TestActive<SessionCookie> activeSession;
+    Active<SessionCookie> activeSession;
 
     @Autowired
-    TestActive<MockHttpServletResponse> activeResponse;
+    Active<MockHttpServletResponse> activeResponse;
 
     @Autowired
     @Qualifier("classic")
     MockRestServiceServer server;
 
-
     @Before
     public void reset() {
-        activeResponse.reset();
         server.reset();
     }
 
@@ -56,39 +54,32 @@ public class SubmitLabReportSteps {
     public void a_lab_report_is_submitted_from_classic_nbs() throws Exception {
 
         server.expect(
-                requestTo(classicUrl + "/nbs/AddObservationLab2.do")
-            )
-            .andExpect(method(HttpMethod.POST))
-            .andExpect(
-                content().formDataContains(
-                    Map.of(
-                        "ContextAction", "Submit",
-                        "other-data", "value"
-                    )
-                )
-            )
-            .andRespond(withSuccess())
-        ;
+                requestTo(classicUrl + "/nbs/AddObservationLab2.do"))
+                .andExpect(method(HttpMethod.POST))
+                .andExpect(
+                        content().formDataContains(
+                                Map.of(
+                                        "ContextAction", "Submit",
+                                        "other-data", "value")))
+                .andRespond(withSuccess());
 
         long patient = patients.one();
 
         SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
 
-
         activeResponse.active(
-            mvc
-                .perform(
-                    MockMvcRequestBuilders.post("/nbs/redirect/patient/report/lab/submit")
-                        .param("ContextAction", "Submit")
-                        .param("other-data", "value")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .cookie(session.asCookie())
-                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient)))
+                mvc
+                        .perform(
+                                MockMvcRequestBuilders.post("/nbs/redirect/patient/report/lab/submit")
+                                        .param("ContextAction", "Submit")
+                                        .param("other-data", "value")
+                                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                        .cookie(session.asCookie())
+                                        .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
 
-                )
-                .andReturn()
-                .getResponse()
-        );
+                        )
+                        .andReturn()
+                        .getResponse());
     }
 
     @Then("the lab report is submitted to Classic NBS")
