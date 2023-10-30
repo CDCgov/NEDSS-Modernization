@@ -20,27 +20,9 @@ export const LeftBar = ({ activeTab }: any) => {
                     New patient
                 </h6>
             </div>
-            <div className="border-base-light grid-row flex-no-wrap border-top padding-y-2 margin-x-3 cursor-pointer width-full">
-                <Link
-                    className="font-sans-md padding-left-2"
-                    name={`New ${ACTIVE_TAB.ORGANIZATION}`}
-                    link={`nbs/OrgSearchResults1.do?ContextAction=Add`}
-                />
-            </div>
-            <div className="border-base-light grid-row flex-no-wrap border-top padding-y-2 margin-x-3 cursor-pointer width-full">
-                <Link
-                    className="font-sans-md padding-left-2"
-                    name={`New ${ACTIVE_TAB.PROVIDER}`}
-                    link={`nbs/ProvSearchResults1.do?ContextAction=Add`}
-                />
-            </div>
-            <div className="border-base-light grid-row flex-no-wrap border-top padding-y-2 margin-x-3 cursor-pointer width-full">
-                <Link
-                    className="font-sans-md padding-left-2"
-                    name={`New ${ACTIVE_TAB.MORBIDITY}`}
-                    link={`nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry`}
-                />
-            </div>
+            <Link name={`New ${ACTIVE_TAB.ORGANIZATION}`} link={`nbs/OrgSearchResults1.do?ContextAction=Add`} />
+            <Link name={`New ${ACTIVE_TAB.MORBIDITY}`} link={`nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry`} />
+            <Link name={`New ${ACTIVE_TAB.PROVIDER}`} link={`nbs/ProvSearchResults1.do?ContextAction=Add`} />
         </Grid>
     );
 };

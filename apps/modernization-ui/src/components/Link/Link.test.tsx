@@ -20,15 +20,4 @@ describe('Link Component', () => {
         expect(linkElement).toHaveClass('margin-0');
         expect(linkElement).toHaveClass('width-full');
     });
-
-    it('applies additional class when provided', () => {
-        const { getByText } = render(<Link name="TestLink" link="https://example.com" className="additional-class" />);
-        const linkElement = getByText('TestLink');
-
-        expect(linkElement).toHaveClass('link');
-        expect(linkElement).toHaveClass('text-normal');
-        expect(linkElement).toHaveClass('margin-0');
-        expect(linkElement).toHaveClass('width-full');
-        expect(linkElement).toHaveClass('additional-class');
-    });
 });
