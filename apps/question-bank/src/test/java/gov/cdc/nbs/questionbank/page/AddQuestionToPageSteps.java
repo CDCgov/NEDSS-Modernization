@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -21,6 +22,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
+@Transactional
 public class AddQuestionToPageSteps {
 
     @Autowired
@@ -52,7 +54,11 @@ public class AddQuestionToPageSteps {
     public void i_add_a_question_to_a_page() {
         WaQuestion question = questionMother.one();
         WaTemplate page = pageMother.one();
-        var request = new AddQuestionRequest(question.getId(), 1l);
+        WaUiMetadata subsection = page.getUiMetadata().stream()
+                .filter(ui -> ui.getNbsUiComponentUid() == 1016l)
+                .findFirst()
+                .orElseThrow();
+        var request = new AddQuestionRequest(question.getId(), subsection.getId());
         try {
             response = pageQuestionController.addQuestionToPage(page.getId(), request, user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
@@ -68,6 +74,6 @@ public class AddQuestionToPageSteps {
         assertNotNull(response.componentId());
         WaUiMetadata metadata = repository.findById(response.componentId())
                 .orElseThrow(() -> new RuntimeException("Failed to find inserted metadata"));
-        assertEquals(1, metadata.getOrderNbr().intValue());
+        assertEquals(5, metadata.getOrderNbr().intValue());
     }
 }
