@@ -27,7 +27,7 @@ public class SectionCreator {
         this.idGenerator = idGenerator;
     }
 
-    public Section create(long pageId, Long userId, CreateSectionRequest request) {
+    public Section create(long pageId, CreateSectionRequest request, Long userId) {
         // Verify the required fields are provided
         if (request == null || !StringUtils.hasLength(request.name())) {
             throw new CreateSectionException("Section Name is required");

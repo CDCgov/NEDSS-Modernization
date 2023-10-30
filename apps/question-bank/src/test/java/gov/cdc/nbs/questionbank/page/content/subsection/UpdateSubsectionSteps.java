@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
@@ -29,6 +30,9 @@ public class UpdateSubsectionSteps {
     @Autowired
     private ExceptionHolder exceptionHolder;
 
+    @Autowired
+    private UserDetailsProvider user;
+
     private WaUiMetadata subsectionToUpdate;
 
     @Given("I send an update subsection request")
@@ -43,7 +47,8 @@ public class UpdateSubsectionSteps {
             subsectionController.updateSubSection(
                     page.getId(),
                     subsectionToUpdate.getId(),
-                    new UpdateSubSectionRequest("Updated Name", false));
+                    new UpdateSubSectionRequest("Updated Name", false),
+                    user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

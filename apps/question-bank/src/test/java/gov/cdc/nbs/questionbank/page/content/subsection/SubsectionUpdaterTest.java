@@ -41,7 +41,7 @@ class SubsectionUpdaterTest {
 
         // When a valid request is made to update the section
         UpdateSubSectionRequest request = new UpdateSubSectionRequest("New name", false);
-        updater.update(1l, 2l, 3l, request);
+        updater.update(1l, 2l, request, 3l);
 
         // Then the section is updated
         assertEquals("New name", captor.getValue().label());
@@ -55,7 +55,7 @@ class SubsectionUpdaterTest {
         UpdateSubSectionRequest request = new UpdateSubSectionRequest(null, false);
 
         // Then an exception is thrown
-        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, 3l, request));
+        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, request, 3l));
     }
 
     @Test
@@ -64,7 +64,7 @@ class SubsectionUpdaterTest {
         UpdateSubSectionRequest request = new UpdateSubSectionRequest("", false);
 
         // Then an exception is thrown
-        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, 3l, request));
+        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, request, 3l));
     }
 
     @Test
@@ -73,7 +73,7 @@ class SubsectionUpdaterTest {
         UpdateSubSectionRequest request = null;
 
         // Then an exception is thrown
-        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, 3l, request));
+        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, request, 3l));
     }
 
     @Test
@@ -85,6 +85,6 @@ class SubsectionUpdaterTest {
         UpdateSubSectionRequest request = new UpdateSubSectionRequest("new name", false);
 
         // Then an exception is thrown
-        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l, 3l, request));
+        assertThrows(UpdateSubSectionException.class, () -> updater.update(1l, 2l,  request, 3l));
     }
 }

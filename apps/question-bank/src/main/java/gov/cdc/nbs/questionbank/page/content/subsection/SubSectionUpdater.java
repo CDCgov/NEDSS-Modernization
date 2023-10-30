@@ -1,11 +1,11 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
 import java.time.Instant;
-import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.model.Subsection;
@@ -14,28 +14,33 @@ import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSection
 @Component
 public class SubSectionUpdater {
 
-    private final EntityManager entityManager;
+    private final WaUiMetadataRepository repository;
+    private final WaTemplateRepository templateRepository;
 
     public SubSectionUpdater(
-            final EntityManager entityManager) {
-        this.entityManager = entityManager;
+            final WaUiMetadataRepository repository,
+            final WaTemplateRepository templateRepository) {
+        this.repository = repository;
+        this.templateRepository = templateRepository;
     }
 
-    public Subsection update(Long pageId, Long subsectionId, Long userId, UpdateSubSectionRequest request) {
+    public Subsection update(Long page, Long subSectionId, UpdateSubSectionRequest request, Long userId) {
         // Verify request is valid
         if (request == null || !StringUtils.hasLength(request.name())) {
             throw new UpdateSubSectionException("Subsection Name is required");
         }
 
-        WaTemplate page = entityManager.find(WaTemplate.class, pageId);
-
-        if (page == null) {
-            throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
+        // Verify page exists and is a Draft
+        if (!templateRepository.isPageDraft(page)) {
+            throw new UpdateSubSectionException("Unable to update subsection on non Draft page");
         }
 
-        WaUiMetadata subsection = page.updateSubSection(asCommand(userId, subsectionId, request));
+        // Update the entry
+        WaUiMetadata subsection = repository.findById(subSectionId)
+                .orElseThrow(() -> new UpdateSubSectionException("Failed to find subsection with id: " + subSectionId));
 
-        entityManager.flush();
+        subsection.update(asCommand(userId, subSectionId, request));
+        subsection = repository.save(subsection);
         return new Subsection(
                 subsection.getId(),
                 subsection.getQuestionLabel(),
@@ -44,12 +49,12 @@ public class SubSectionUpdater {
 
     private PageContentCommand.UpdateSubsection asCommand(
             Long userId,
-            Long subsectionId,
+            long subSectionId,
             UpdateSubSectionRequest request) {
         return new PageContentCommand.UpdateSubsection(
                 request.name(),
                 request.visible(),
-                subsectionId,
+                subSectionId,
                 userId,
                 Instant.now());
     }

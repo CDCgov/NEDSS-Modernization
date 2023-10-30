@@ -6,6 +6,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
@@ -30,6 +31,9 @@ public class UpdateTabSteps {
     @Autowired
     private ExceptionHolder exceptionHolder;
 
+    @Autowired
+    private UserDetailsProvider user;
+
     private Boolean visibility = RandomUtils.nextBoolean();
     private Tab response;
 
@@ -42,7 +46,7 @@ public class UpdateTabSteps {
                 .orElseThrow();
         UpdateTabRequest request = new UpdateTabRequest("Updated tab name", visibility);
         try {
-            response = tabController.updateTab(template.getId(), tab.getId(), request);
+            response = tabController.updateTab(template.getId(), tab.getId(), request, user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

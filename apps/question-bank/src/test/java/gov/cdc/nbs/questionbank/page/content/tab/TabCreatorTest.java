@@ -46,8 +46,8 @@ class TabCreatorTest {
         // When a request is processed to add a tab 
         creator.create(
                 1l,
-                44l,
-                new CreateTabRequest("tab", false));
+                new CreateTabRequest("tab", false),
+                44l);
 
         // Then the tab is created
         ArgumentCaptor<PageContentCommand.AddTab> captor =
@@ -66,7 +66,7 @@ class TabCreatorTest {
         // When a request is made
         // Then an exception is thrown
         CreateTabRequest request = new CreateTabRequest("tab", true);
-        assertThrows(CreateTabException.class, () -> creator.create(1l, 5l, request));
+        assertThrows(CreateTabException.class, () -> creator.create(1l, request, 5l));
     }
 
     @Test
@@ -74,14 +74,14 @@ class TabCreatorTest {
         // When a request is made without a name
         // Then an exception is thrown
         CreateTabRequest request = new CreateTabRequest("", true);
-        assertThrows(CreateTabException.class, () -> creator.create(1l, 5l, request));
+        assertThrows(CreateTabException.class, () -> creator.create(1l, request, 5l));
     }
 
     @Test
     void should_not_create_null_name() {
         // When a request is made without a name
         // Then an exception is thrown
-        assertThrows(CreateTabException.class, () -> creator.create(1l, 5l, null));
+        assertThrows(CreateTabException.class, () -> creator.create(1l, null, 5l));
     }
 
 

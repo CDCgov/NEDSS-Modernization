@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.content.section;
 
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,10 +10,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.questionbank.page.content.section.model.Section;
 import gov.cdc.nbs.questionbank.page.content.section.request.CreateSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.section.model.Section;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 @RestController
@@ -24,14 +26,10 @@ public class SectionController {
     private final SectionDeleter deleter;
     private final SectionUpdater updater;
 
-    private final UserDetailsProvider userDetailsProvider;
-
     public SectionController(
             final SectionCreator creator,
-            final UserDetailsProvider userDetailsProvider,
             final SectionDeleter deleter,
             final SectionUpdater updater) {
-        this.userDetailsProvider = userDetailsProvider;
         this.creator = creator;
         this.deleter = deleter;
         this.updater = updater;
@@ -40,26 +38,26 @@ public class SectionController {
     @PostMapping
     public Section createSection(
             @PathVariable("page") Long page,
-            @RequestBody CreateSectionRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return creator.create(page, userId, request);
+            @RequestBody CreateSectionRequest request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        return creator.create(page, request, details.getId());
     }
 
     @DeleteMapping("{sectionId}")
     public void deleteSection(
             @PathVariable("page") Long page,
-            @PathVariable("sectionId") Long sectionId) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        deleter.deleteSection(page, sectionId, userId);
+            @PathVariable("sectionId") Long sectionId,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        deleter.deleteSection(page, sectionId, details.getId());
     }
 
     @PutMapping("{section}")
     public Section updateSection(
             @PathVariable("page") Long page,
             @PathVariable("section") Long section,
-            @RequestBody UpdateSectionRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return updater.update(page, section, userId, request);
+            @RequestBody UpdateSectionRequest request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        return updater.update(page, section, request, details.getId());
     }
 
 }

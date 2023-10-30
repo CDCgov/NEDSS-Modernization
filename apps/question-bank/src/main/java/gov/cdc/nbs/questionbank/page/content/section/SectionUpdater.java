@@ -21,7 +21,7 @@ public class SectionUpdater {
         this.entityManager = entityManager;
     }
 
-    public Section update(Long pageId, Long sectionId, Long userId, UpdateSectionRequest request) {
+    public Section update(Long pageId, Long sectionId, UpdateSectionRequest request, Long userId) {
         // Verify request is valid
         if (request == null || !StringUtils.hasLength(request.name())) {
             throw new UpdateSectionException("Section Name is required");

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
@@ -29,6 +30,9 @@ public class DeleteSubsectionSteps {
     @Autowired
     private ExceptionHolder exceptionHolder;
 
+    @Autowired
+    private UserDetailsProvider user;
+
     private WaUiMetadata subsectionToDelete;
 
     @Given("I send a delete subsection request")
@@ -42,7 +46,10 @@ public class DeleteSubsectionSteps {
         subsectionToDelete = subsections.get(subsections.size() - 1);
 
         try {
-            subsectionController.deleteSubSection(page.getId(), subsectionToDelete.getId());
+            subsectionController.deleteSubSection(
+                    page.getId(),
+                    subsectionToDelete.getId(),
+                    user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

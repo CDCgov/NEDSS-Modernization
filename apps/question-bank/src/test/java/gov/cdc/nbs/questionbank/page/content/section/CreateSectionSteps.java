@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
@@ -31,6 +32,9 @@ public class CreateSectionSteps {
     @Autowired
     private ExceptionHolder exceptionHolder;
 
+    @Autowired
+    private UserDetailsProvider user;
+
     private Section section;
 
     @Given("I send a create section request")
@@ -47,7 +51,8 @@ public class CreateSectionSteps {
                     new CreateSectionRequest(
                             tab.getId(),
                             "new section",
-                            true));
+                            true),
+                    user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

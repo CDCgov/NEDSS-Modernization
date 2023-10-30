@@ -23,7 +23,7 @@ public class TabUpdater {
         this.entityManager = entityManager;
     }
 
-    public Tab update(Long pageId, Long tab, long user, UpdateTabRequest request) {
+    public Tab update(Long pageId, Long tab, UpdateTabRequest request, long user) {
         if (request == null || !StringUtils.hasLength(request.name())) {
             throw new UpdateTabException("Tab Name is required");
         }

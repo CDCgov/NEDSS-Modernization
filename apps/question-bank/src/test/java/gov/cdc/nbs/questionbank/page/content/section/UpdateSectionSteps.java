@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
@@ -30,6 +31,9 @@ public class UpdateSectionSteps {
     @Autowired
     private ExceptionHolder exceptionHolder;
 
+    @Autowired
+    private UserDetailsProvider user;
+
     private WaUiMetadata sectionToUpdate;
 
     @Given("I send an update section request")
@@ -46,7 +50,8 @@ public class UpdateSectionSteps {
             sectionController.updateSection(
                     page.getId(),
                     sectionToUpdate.getId(),
-                    new UpdateSectionRequest("Updated Name", false));
+                    new UpdateSectionRequest("Updated Name", false),
+                    user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

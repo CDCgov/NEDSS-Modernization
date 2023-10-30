@@ -10,6 +10,7 @@ import io.cucumber.java.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -34,6 +35,9 @@ public class DeleteTabSteps {
     @Autowired
     EntityManager entityManager;
 
+    @Autowired
+    private UserDetailsProvider user;
+
     private final Active<WaUiMetadata> deleted = new Active<>();
 
     @Before("@delete_tab")
@@ -57,7 +61,7 @@ public class DeleteTabSteps {
         this.deleted.active(tab);
 
         try {
-            tabController.deleteTab(page.getId(), tab.getId());
+            tabController.deleteTab(page.getId(), tab.getId(), user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

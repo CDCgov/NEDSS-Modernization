@@ -39,7 +39,7 @@ class TabUpdaterTest {
 
         // When a valid request is made to update the tab
         UpdateTabRequest request = new UpdateTabRequest("New name", false);
-        updater.update(1l, 2l, 3l, request);
+        updater.update(1l, 2l, request, 3l);
 
         // Then the tab is updated
         assertEquals("New name", captor.getValue().label());
@@ -53,7 +53,7 @@ class TabUpdaterTest {
         UpdateTabRequest request = new UpdateTabRequest(null, false);
 
         // Then an exception is thrown
-        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, 3l, request));
+        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, request, 3l));
     }
 
     @Test
@@ -62,7 +62,7 @@ class TabUpdaterTest {
         UpdateTabRequest request = new UpdateTabRequest("", false);
 
         // Then an exception is thrown
-        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, 3l, request));
+        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, request, 3l));
     }
 
     @Test
@@ -71,7 +71,7 @@ class TabUpdaterTest {
         UpdateTabRequest request = null;
 
         // Then an exception is thrown
-        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, 3l, request));
+        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, request, 3l));
     }
 
     @Test
@@ -83,7 +83,7 @@ class TabUpdaterTest {
         UpdateTabRequest request = new UpdateTabRequest("new name", false);
 
         // Then an exception is thrown
-        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l, 3l, request));
+        assertThrows(UpdateTabException.class, () -> updater.update(1l, 2l,  request, 3l));
     }
 
 }

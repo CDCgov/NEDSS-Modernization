@@ -27,7 +27,7 @@ public class SubSectionCreator {
         this.idGenerator = idGenerator;
     }
 
-    public Subsection create(long pageId, Long userId, CreateSubSectionRequest request) {
+    public Subsection create(long pageId, CreateSubSectionRequest request, Long userId) {
         // Verify the required fields are provided
         if (request == null || !StringUtils.hasLength(request.name())) {
             throw new CreateSubsectionException("Subsection Name is required");

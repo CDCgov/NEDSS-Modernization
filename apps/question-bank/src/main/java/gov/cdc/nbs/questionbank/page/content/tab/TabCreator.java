@@ -28,7 +28,7 @@ public class TabCreator {
         this.idGenerator = idGenerator;
     }
 
-    public Tab create(long pageId, Long userId, CreateTabRequest request) {
+    public Tab create(long pageId, CreateTabRequest request, Long userId) {
         // Verify the required fields are provided
         if (request == null || !StringUtils.hasLength(request.name())) {
             throw new CreateTabException("Tab Name is required");

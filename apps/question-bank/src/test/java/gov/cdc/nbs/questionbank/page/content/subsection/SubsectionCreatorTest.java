@@ -46,8 +46,8 @@ class SubsectionCreatorTest {
         // When a request is processed to add a section 
         creator.create(
                 1l,
-                44l,
-                new CreateSubSectionRequest(3l, "subsection", false));
+                new CreateSubSectionRequest(3l, "subsection", false),
+                44l);
 
         // Then the section is created
         ArgumentCaptor<PageContentCommand.AddSubsection> captor =
@@ -66,7 +66,7 @@ class SubsectionCreatorTest {
         // When a request is made
         // Then an exception is thrown
         CreateSubSectionRequest request = new CreateSubSectionRequest(2l, "section", true);
-        assertThrows(CreateSubsectionException.class, () -> creator.create(1l, 5l, request));
+        assertThrows(CreateSubsectionException.class, () -> creator.create(1l,  request, 5l));
     }
 
     @Test
@@ -74,13 +74,13 @@ class SubsectionCreatorTest {
         // When a request is made without a name
         // Then an exception is thrown
         CreateSubSectionRequest request = new CreateSubSectionRequest(2l, "", true);
-        assertThrows(CreateSubsectionException.class, () -> creator.create(1l, 5l, request));
+        assertThrows(CreateSubsectionException.class, () -> creator.create(1l, request, 5l));
     }
 
     @Test
     void should_not_create_null_name() {
         // When a request is made without a name
         // Then an exception is thrown
-        assertThrows(CreateSubsectionException.class, () -> creator.create(1l, 5l, null));
+        assertThrows(CreateSubsectionException.class, () -> creator.create(1l, null, 5l));
     }
 }
