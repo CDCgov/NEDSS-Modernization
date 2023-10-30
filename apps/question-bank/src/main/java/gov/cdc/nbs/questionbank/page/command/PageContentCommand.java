@@ -11,7 +11,7 @@ public sealed interface PageContentCommand {
     public record AddQuestion(
             Long page,
             WaQuestion question,
-            Integer orderNumber,
+            long subsection,
             long userId,
             Instant requestedOn) implements PageContentCommand {
     }

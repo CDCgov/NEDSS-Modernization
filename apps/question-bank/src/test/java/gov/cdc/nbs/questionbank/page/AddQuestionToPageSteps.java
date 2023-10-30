@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
@@ -37,6 +38,9 @@ public class AddQuestionToPageSteps {
     @Autowired
     private PageMother pageMother;
 
+    @Autowired
+    private UserDetailsProvider user;
+
     private AddQuestionResponse response;
 
     @Before
@@ -48,9 +52,9 @@ public class AddQuestionToPageSteps {
     public void i_add_a_question_to_a_page() {
         WaQuestion question = questionMother.one();
         WaTemplate page = pageMother.one();
-        var request = new AddQuestionRequest(question.getId(), 1);
+        var request = new AddQuestionRequest(question.getId(), 1l);
         try {
-            response = pageQuestionController.addQuestionToPage(page.getId(), request);
+            response = pageQuestionController.addQuestionToPage(page.getId(), request, user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.persistence.Basic;
@@ -393,7 +394,8 @@ public class WaTemplate {
         .filter(e -> e.getId() == command.setionId() && e.getNbsUiComponentUid() == SECTION)
         .findFirst()
         .orElseThrow(
-            () -> new PageContentModificationException("Failed to find section with id: " + command.setionId()));
+            () -> new PageContentModificationException(
+                "Failed to find section with id: " + command.setionId()));
 
     // If element after section is null, another section, or Tab then we can delete the section
     if (!isElementAtOrderNullOrOneOf(Arrays.asList(SECTION, TAB), section.getOrderNbr() + 1)) {
@@ -415,7 +417,8 @@ public class WaTemplate {
         .filter(e -> e.getId() == command.subsectionId() && e.getNbsUiComponentUid() == SUB_SECTION)
         .findFirst()
         .orElseThrow(
-            () -> new PageContentModificationException("Failed to find subsection with id: " + command.subsectionId()));
+            () -> new PageContentModificationException(
+                "Failed to find subsection with id: " + command.subsectionId()));
 
     // If element after section is null, another subsection, section, or Tab then we can delete the subsection
     if (!isElementAtOrderNullOrOneOf(Arrays.asList(SUB_SECTION, SECTION, TAB), section.getOrderNbr() + 1)) {
@@ -426,6 +429,61 @@ public class WaTemplate {
     uiMetadata.remove(section);
     adjustingComponentsFrom(section.getOrderNbr());
     changed(command);
+  }
+
+  public WaUiMetadata addQuestion(PageContentCommand.AddQuestion command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // ensure page doesn't already contain question
+    Optional<WaUiMetadata> existing = uiMetadata.stream()
+        .filter(e -> e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier()))
+        .findFirst();
+
+    if (existing.isPresent()) {
+      throw new PageContentModificationException("Unable to add a question to a page multiple times");
+    }
+
+    // Find the SubSection to add question to 
+    WaUiMetadata subsection = uiMetadata.stream()
+        .filter(e -> e.getId() == command.subsection() && e.getNbsUiComponentUid() == SUB_SECTION)
+        .findFirst()
+        .orElseThrow(
+            () -> new PageContentModificationException(
+                "Failed to find subsection with id: " + command.subsection()));
+
+    // Questions are inserted at the END of a subsection, so find the next container (or null if subsection is at end)
+    Optional<WaUiMetadata> nextContainer = findNextElementOfComponent(
+        subsection.getOrderNbr() + 1,
+        Arrays.asList(SUB_SECTION, SECTION, TAB));
+    Integer orderNumber;
+    if (nextContainer.isEmpty()) {
+      orderNumber = uiMetadata.stream()
+          .mapToInt(WaUiMetadata::getOrderNbr)
+          .max()
+          .orElseThrow(() -> new PageContentModificationException("Invalid state")) + 1;
+    } else {
+      orderNumber = nextContainer.get().getOrderNbr();
+    }
+
+    // Make room for new question
+    incrementAllFrom(orderNumber);
+
+    // Add question
+    WaUiMetadata questionEntry = new WaUiMetadata(this, command, orderNumber);
+
+    this.uiMetadata.add(questionEntry);
+
+    this.uiMetadata.sort(Comparator.comparing(WaUiMetadata::getOrderNbr));
+
+    return questionEntry;
+  }
+
+  private Optional<WaUiMetadata> findNextElementOfComponent(Integer start, List<Long> componentTypes) {
+    return uiMetadata.stream()
+        .filter(ui -> ui.getOrderNbr() >= start)
+        .filter(ui -> componentTypes.contains(ui.getNbsUiComponentUid()))
+        .findFirst();
   }
 
   private boolean isElementAtOrderNullOrOneOf(List<Long> validComponents, int orderNumber) {

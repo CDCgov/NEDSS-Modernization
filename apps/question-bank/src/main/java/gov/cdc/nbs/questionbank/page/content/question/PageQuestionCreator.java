@@ -7,71 +7,60 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddQuestion;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
+import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
-import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 
 @Component
 @Transactional
 public class PageQuestionCreator {
 
-    private final WaQuestionRepository questionRepository;
-    private final WaUiMetadataRepository uiMetadatumRepository;
     private final EntityManager entityManager;
 
     public PageQuestionCreator(
-            final WaQuestionRepository questionRepository,
-            final WaUiMetadataRepository uiMetadatumRepository,
             final EntityManager entityManager) {
-        this.questionRepository = questionRepository;
-        this.uiMetadatumRepository = uiMetadatumRepository;
         this.entityManager = entityManager;
     }
 
-    public Long addQuestion(Long pageId, AddQuestionRequest request, Long user) {
-        if (pageId == null || request.orderNumber() == null) {
-            throw new AddQuestionException("Page and order number are required");
+    public AddQuestionResponse addQuestion(Long pageId, AddQuestionRequest request, Long user) {
+        if (request == null) {
+            throw new AddQuestionException("Invalid request provided");
         }
-        WaTemplate template = entityManager.getReference(WaTemplate.class, pageId);
+
+        // Find the page
+        WaTemplate page = entityManager.find(WaTemplate.class, pageId);
+        if (page == null) {
+            throw new AddQuestionException("Failed to find page with id: " + pageId);
+        }
+
         // find the question
-        WaQuestion question = questionRepository.findById(request.questionId())
-                .orElseThrow(() -> new QuestionNotFoundException(request.questionId()));
-
-        // check if question is already associated with page 
-        Long count = uiMetadatumRepository.countByPageAndQuestionIdentifier(pageId, question.getQuestionIdentifier());
-        if (count > 0) {
-            throw new AddQuestionException("The specified question is already associated with the page");
+        WaQuestion question = entityManager.find(WaQuestion.class, request.questionId());
+        if (question == null) {
+            throw new QuestionNotFoundException(request.questionId());
         }
 
-        // limit order number to max + 1 of existing questions
-        Integer currentMaxOrder = uiMetadatumRepository.findMaxOrderNbrForPage(pageId);
-        Integer orderNbr = request.orderNumber() > currentMaxOrder + 1 ? currentMaxOrder + 1 : request.orderNumber();
+        // Create the new question metadata entry
+        WaUiMetadata metadata = page.addQuestion(asAdd(pageId, question, request.subsectionId(), user));
 
-        // add 1 to any existing entry with 'order_nbr >= new entry order_nbr'
-        uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, request.orderNumber());
+        // Persist the entities
+        entityManager.flush();
 
-        // create an new entity 
-        WaUiMetadata questionPageEntry = new WaUiMetadata(template, asAdd(template, question, user, orderNbr));
-
-        // save the new entry
-        return uiMetadatumRepository.save(questionPageEntry).getId();
+        return new AddQuestionResponse(metadata.getId());
     }
 
     private PageContentCommand.AddQuestion asAdd(
-            WaTemplate page,
+            Long pageId,
             WaQuestion question,
-            Long user,
-            Integer orderNumber) {
+            Long subsection,
+            Long user) {
         return new AddQuestion(
-                page.getId(),
+                pageId,
                 question,
-                orderNumber,
+                subsection,
                 user,
                 Instant.now());
     }
-
 }

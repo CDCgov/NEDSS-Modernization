@@ -32,11 +32,11 @@ class WaUiMetadataTest {
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(page, command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
-        assertGeneralValues(metadata, command);
+        assertGeneralValues(metadata, command, 5);
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
         assertEquals(question.getMask(), metadata.getMask());
         assertEquals(question.getFieldSize(), metadata.getFieldSize());
@@ -55,11 +55,11 @@ class WaUiMetadataTest {
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(page, command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
-        assertGeneralValues(metadata, command);
+        assertGeneralValues(metadata, command, 5);
         assertEquals(question.getMask(), metadata.getMask());
         assertEquals(question.getFutureDateIndCd(), metadata.getFutureDateIndCd());
     }
@@ -77,11 +77,11 @@ class WaUiMetadataTest {
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(page, command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
-        assertGeneralValues(metadata, command);
+        assertGeneralValues(metadata, command, 5);
         assertEquals(question.getMask(), metadata.getMask());
         assertEquals(question.getFieldSize(), metadata.getFieldSize());
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
@@ -104,11 +104,11 @@ class WaUiMetadataTest {
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(page, command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
-        assertGeneralValues(metadata, command);
+        assertGeneralValues(metadata, command, 5);
         assertEquals(question.getCodeSetGroupId(), metadata.getCodeSetGroupId());
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
     }
@@ -138,7 +138,7 @@ class WaUiMetadataTest {
                 now);
         // When a new WaUiMetadata entry is created 
         // Then an exception is thrown
-        assertThrows(AddQuestionException.class, () -> new WaUiMetadata(page, command));
+        assertThrows(AddQuestionException.class, () -> new WaUiMetadata(page, command, 5));
 
     }
 
@@ -153,13 +153,14 @@ class WaUiMetadataTest {
         assertEquals(1, metadata.getVersionCtrlNbr().intValue());
     }
 
-    private void assertGeneralValues(WaUiMetadata metadata, PageContentCommand.AddQuestion command) {
+    private void assertGeneralValues(WaUiMetadata metadata, PageContentCommand.AddQuestion command,
+            Integer orderNumber) {
         var question = command.question();
         assertEquals(command.page(), metadata.getWaTemplateUid().getId());
         assertEquals(question.getNbsUiComponentUid(), metadata.getNbsUiComponentUid());
         assertEquals(question.getQuestionLabel(), metadata.getQuestionLabel());
         assertEquals(question.getQuestionToolTip(), metadata.getQuestionToolTip());
-        assertEquals(command.orderNumber(), metadata.getOrderNbr());
+        assertEquals(orderNumber, metadata.getOrderNbr());
         assertEquals(question.getAdminComment(), metadata.getAdminComment());
         assertEquals(question.getDataLocation(), metadata.getDataLocation());
         assertEquals(question.getDescTxt(), metadata.getDescTxt());

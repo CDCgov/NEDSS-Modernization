@@ -248,7 +248,7 @@ public class WaUiMetadata {
   }
 
 
-  public WaUiMetadata(WaTemplate page, PageContentCommand.AddQuestion command) {
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddQuestion command, Integer orderNumber) {
     this();
     // Defaults
     this.standardNndIndCd = 'F';
@@ -259,7 +259,7 @@ public class WaUiMetadata {
     this.nbsUiComponentUid = command.question().getNbsUiComponentUid();
     this.questionLabel = command.question().getQuestionLabel();
     this.questionToolTip = command.question().getQuestionToolTip();
-    this.orderNbr = command.orderNumber();
+    this.orderNbr = orderNumber;
     this.adminComment = command.question().getAdminComment();
     this.dataLocation = command.question().getDataLocation();
     this.descTxt = command.question().getDescTxt();

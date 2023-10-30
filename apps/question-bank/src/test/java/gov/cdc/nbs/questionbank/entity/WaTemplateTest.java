@@ -9,8 +9,10 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 class WaTemplateTest {
 
@@ -680,6 +682,227 @@ class WaTemplateTest {
 
         // Then an exception is thrown
         assertThrows(PageContentModificationException.class, () -> page.addTab(command));
+    }
+
+    @Test
+    void question_add() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // And it has a section
+        page.addSection(section(page, 3l, 3));
+
+        // And it has a subsection
+        page.addSubSection(subsection(page, 4l, 4));
+
+        // And a question exists
+        WaQuestion question = QuestionEntityMother.textQuestion();
+
+        // When an add question request is processed
+        WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
+                page.getId(),
+                question,
+                4l,
+                98l,
+                Instant.now()));
+
+        // Then the question is added
+        assertNotNull(questionMeta);
+        assertTrue(page.getUiMetadata().contains(questionMeta));
+        assertEquals(question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
+        assertEquals(5, questionMeta.getOrderNbr().intValue());
+    }
+
+    @Test
+    void question_add_subsection_follows() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // And it has a section
+        page.addSection(section(page, 3l, 3));
+
+        // And it has a subsection
+        page.addSubSection(subsection(page, 4l, 4));
+
+        // And it has another subsection
+        page.addSubSection(subsection(page, 5l, 5));
+
+        // And a question exists
+        WaQuestion question = QuestionEntityMother.textQuestion();
+
+        // When an add question request is processed
+        WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
+                page.getId(),
+                question,
+                4l,
+                98l,
+                Instant.now()));
+
+        // Then the question is added
+        assertNotNull(questionMeta);
+        assertTrue(page.getUiMetadata().contains(questionMeta));
+        assertEquals(question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
+        assertEquals(5, questionMeta.getOrderNbr().intValue());
+    }
+
+    @Test
+    void question_add_tab_follows() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // And it has a section
+        page.addSection(section(page, 3l, 3));
+
+        // And it has a subsection
+        page.addSubSection(subsection(page, 4l, 4));
+
+        // And it has another tab
+        page.addTab(tab(page, 5l, 5));
+
+        // And a question exists
+        WaQuestion question = QuestionEntityMother.textQuestion();
+
+        // When an add question request is processed
+        WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
+                page.getId(),
+                question,
+                4l,
+                98l,
+                Instant.now()));
+
+        // Then the question is added
+        assertNotNull(questionMeta);
+        assertTrue(page.getUiMetadata().contains(questionMeta));
+        assertEquals(question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
+        assertEquals(5, questionMeta.getOrderNbr().intValue());
+    }
+
+    @Test
+    void question_add_section_follows() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // And it has a section
+        page.addSection(section(page, 3l, 3));
+
+        // And it has a subsection
+        page.addSubSection(subsection(page, 4l, 4));
+
+        // And it has another section
+        page.addSection(section(page, 5l, 5));
+
+        // And a question exists
+        WaQuestion question = QuestionEntityMother.textQuestion();
+
+        // When an add question request is processed
+        WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
+                page.getId(),
+                question,
+                4l,
+                98l,
+                Instant.now()));
+
+        // Then the question is added
+        assertNotNull(questionMeta);
+        assertTrue(page.getUiMetadata().contains(questionMeta));
+        assertEquals(question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
+        assertEquals(5, questionMeta.getOrderNbr().intValue());
+    }
+
+    @Test
+    void question_add_error_page_not_draft() {
+        // Given a template that is not a draft
+        WaTemplate page = new WaTemplate();
+        page.updateType("Published");
+
+        // And a question exists
+        WaQuestion question = QuestionEntityMother.textQuestion();
+
+        // When an add question request is processed
+        PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
+                page.getId(),
+                question,
+                4l,
+                98l,
+                Instant.now());
+
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.addQuestion(command));
+    }
+
+    @Test
+    void question_add_error_question_already_present() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // And it has a section
+        page.addSection(section(page, 3l, 3));
+
+        // And it has a subsection
+        page.addSubSection(subsection(page, 4l, 4));
+
+        // And a question exists
+        WaQuestion question = QuestionEntityMother.textQuestion();
+
+        // And an add question request is processed
+        PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
+                page.getId(),
+                question,
+                4l,
+                98l,
+                Instant.now());
+        WaUiMetadata questionMeta = page.addQuestion(command);
+
+        // And the question is added
+        assertNotNull(questionMeta);
+        assertTrue(page.getUiMetadata().contains(questionMeta));
+
+        // When another request is processed to add the same question
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.addQuestion(command));
+    }
+
+    @Test
+    void question_add_error_subsection_not_found() {
+        // Given a template
+        WaTemplate page = new WaTemplate();
+
+        // And it has a tab
+        page.addTab(tab(page, 2l, 2));
+
+        // And it has a section
+        page.addSection(section(page, 3l, 3));
+
+        // And it has no subsection
+
+        // And a question exists
+        WaQuestion question = QuestionEntityMother.textQuestion();
+
+        // When an add question request is processed
+        PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
+                page.getId(),
+                question,
+                4l,
+                98l,
+                Instant.now());
+
+        // Then an exception is thrown
+        assertThrows(PageContentModificationException.class, () -> page.addQuestion(command));
     }
 
     private WaUiMetadata tab(WaTemplate page, Long id, int orderNbr) {
