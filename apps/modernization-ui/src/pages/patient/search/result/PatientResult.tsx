@@ -9,7 +9,6 @@ import {
     PatientSearchResultName,
     PatientSearchResultAddress
 } from 'generated/graphql/schema';
-import { formattedName } from 'utils';
 import { internalizeDate } from 'date';
 import { displayName } from 'name';
 import { displayAddress } from 'address/display';
@@ -35,9 +34,7 @@ const PatientResult = ({ result, onSelected }: PatientResultProps) => {
                                 wordBreak: 'break-word',
                                 cursor: 'pointer'
                             }}>
-                            {!result.legalName
-                                ? 'No Data'
-                                : displayName('full', result?.legalName)}
+                            {!result.legalName ? 'No·Data' : displayName()(result?.legalName)}
                         </a>
                     </Grid>
                     <Grid col={12}>
