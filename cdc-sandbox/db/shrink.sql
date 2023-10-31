@@ -789,6 +789,75 @@ EXEC sp_rename 'Entity_loc_participation_hist', 'Entity_loc_participation_hist_o
 EXEC sp_rename 'Entity_loc_participation_hist_shrunken', 'Entity_loc_participation_hist';
 
 
+--- truncate all history tables (optional - assuming we don't want to test existing data)
+truncate table act_id_hist;
+truncate table act_locator_participation_hist;
+truncate table act_relationship_hist;
+truncate table case_management_hist;
+truncate table clinical_document_hist;
+truncate table confirmation_method_hist;
+truncate table ct_contact_answer_hist;
+truncate table ct_contact_hist;
+truncate table dsm_algorithm_hist;
+truncate table entity_group_hist;
+truncate table entity_id_hist;
+truncate table entity_loc_participation_hist;
+truncate table geocoding_result_hist;
+truncate table intervention_hist;
+truncate table interview_hist;
+truncate table lab_event_hist;
+truncate table manufactured_material_hist;
+truncate table material_hist;
+truncate table nbs_act_entity_hist;
+truncate table nbs_answer_hist;
+truncate table nbs_case_answer_hist;
+truncate table nbs_document_hist;
+truncate table nbs_page_hist;
+truncate table nbs_question_hist;
+truncate table nbs_rdb_metadata_hist;
+truncate table nbs_ui_metadata_hist;
+truncate table nnd_metadata_hist;
+truncate table non_person_living_subject_hist;
+truncate table notification_hist;
+truncate table obs_value_coded_hist;
+truncate table obs_value_coded_mod_hist;
+truncate table obs_value_date_hist;
+truncate table obs_value_numeric_hist;
+truncate table obs_value_txt_hist;
+truncate table observation_hist;
+truncate table observation_interp_hist;
+truncate table observation_reason_hist;
+truncate table organization_hist;
+truncate table organization_name_hist;
+truncate table page_cond_mapping_hist;
+truncate table participation_hist;
+truncate table patient_encounter_hist;
+truncate table participation_hist;
+truncate table person_ethnic_group_hist;
+truncate table person_hist;
+truncate table person_name_hist;
+truncate table person_race_hist;
+truncate table physical_locator_hist;
+truncate table place_hist;
+truncate table postal_locator_hist;
+truncate table procedure1_hist;
+truncate table public_health_case_hist;
+truncate table referral_hist;
+truncate table role_hist;
+truncate table state_defined_field_data_hist;
+truncate table substance_administration_hist;
+truncate table tele_locator_hist;
+truncate table treatment_administered_hist;
+truncate table treatment_hist;
+truncate table treatment_procedure_hist;
+truncate table wa_nnd_metadata_hist;
+truncate table wa_question_hist;
+truncate table wa_rdb_metadata_hist;
+truncate table wa_rule_metadata_hist;
+truncate table wa_template_hist;
+truncate table wa_ui_metadata_hist;
+truncate table workup_hist;
+
 USE RDB;
 
 -- |table                             |used_mb  |allocated_mb|
