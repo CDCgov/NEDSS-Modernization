@@ -34,7 +34,7 @@ const PatientResult = ({ result, onSelected }: PatientResultProps) => {
                                 wordBreak: 'break-word',
                                 cursor: 'pointer'
                             }}>
-                            {!result.legalName ? 'No·Data' : displayName()(result?.legalName)}
+                            {!result.legalName ? 'No Data' : displayName()(result?.legalName)}
                         </a>
                     </Grid>
                     <Grid col={12}>
