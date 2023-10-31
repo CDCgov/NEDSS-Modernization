@@ -51,25 +51,8 @@ order by sum(spc.used_pages) desc
 
 USE NBS_ODSE;
 
-    SELECT  'alter table  [' + tab1.name  + '] drop constraint [' + obj.name  + '];' + char(13)
-FROM sys.foreign_key_columns fkc
-INNER JOIN sys.objects obj
-    ON obj.object_id = fkc.constraint_object_id
-INNER JOIN sys.tables tab1
-    ON tab1.object_id = fkc.parent_object_id
-INNER JOIN sys.schemas sch
-    ON tab1.schema_id = sch.schema_id
-INNER JOIN sys.columns col1
-    ON col1.column_id = parent_column_id AND col1.object_id = tab1.object_id
-INNER JOIN sys.tables tab2
-    ON tab2.object_id = fkc.referenced_object_id
-INNER JOIN sys.columns col2
-    ON col2.column_id = referenced_column_id AND col2.object_id = tab2.object_id
-
--- MANUAL STEP
--- copy and paste the above sql results as many times as all contrainsts are gone:
--- alter table  [example_table1] drop constraint [example_constraint1];
--- alter table  [example_table2] drop constraint [example_constraint2];
+-- Disable constraints for all tables in the database:
+EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
 
 CREATE TABLE NBS_ODSE.dbo.Person_shrunken (
 	person_uid bigint NOT NULL,
@@ -819,24 +802,6 @@ USE RDB;
 -- |dbo.EVENT_METRIC_INC              |8,033.3  |8,033.46    |
 -- |dbo.D_ORGANIZATION                |5,126.22 |5,126.48    |
 
-    SELECT  'alter table  [' + tab1.name  + '] drop constraint [' + obj.name  + '];' + char(13)
-FROM sys.foreign_key_columns fkc
-INNER JOIN sys.objects obj
-    ON obj.object_id = fkc.constraint_object_id
-INNER JOIN sys.tables tab1
-    ON tab1.object_id = fkc.parent_object_id
-INNER JOIN sys.schemas sch
-    ON tab1.schema_id = sch.schema_id
-INNER JOIN sys.columns col1
-    ON col1.column_id = parent_column_id AND col1.object_id = tab1.object_id
-INNER JOIN sys.tables tab2
-    ON tab2.object_id = fkc.referenced_object_id
-INNER JOIN sys.columns col2
-    ON col2.column_id = referenced_column_id AND col2.object_id = tab2.object_id
-
---- copy and paste the following sample results as many times as all contrainsts are gone:
----- alter table  [example_table] drop constraint [example_constraint];
-
 --- truncate all tables.  the ingestion team can populate them on the fly;
 truncate table RDB.dbo.LAB100;
 truncate table RDB.dbo.LAB_TEST;
@@ -846,3 +811,6 @@ truncate table RDB.dbo.S_PATIENT;
 truncate table RDB.dbo.LAB_RESULT_VAL;
 truncate table RDB.dbo.EVENT_METRIC_INC;
 truncate table RDB.dbo.D_ORGANIZATION;
+
+-- Re-enable constraints for all tables in the database:
+EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'
