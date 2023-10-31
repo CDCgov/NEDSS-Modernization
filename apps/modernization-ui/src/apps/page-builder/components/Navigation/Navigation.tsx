@@ -1,5 +1,6 @@
-import './Navigation.scss';
 import { useNavigate } from 'react-router-dom';
+import './Navigation.scss';
+import { Config } from 'config';
 
 type Props = {
     active: string;
@@ -23,20 +24,26 @@ export const Navigation = ({ active }: Props) => {
                     <p>Pages</p>
                 </div>
                 <div className="navigation__button">
-                    <p>Templates</p>
+                    <a
+                        href={`${Config.nbsUrl}/ManageTemplates.do?method=ManageTemplatesLib&actionMode=Manage&initLoad=true`}>
+                        <p>Templates</p>
+                    </a>
                 </div>
                 <div className="navigation__button">
-                    <p>Conditions</p>
+                    <a
+                        href={`${Config.nbsUrl}/ManageCondition.do?method=ViewConditionLib&actionMode=Manage&initLoad=true`}>
+                        <p>Conditions</p>
+                    </a>
                 </div>
-                <div
-                    className={`navigation__button ${active === 'question-library' ? 'active' : ''}`}
-                    onClick={() => goBack('question-library')}>
-                    <p>Questions</p>
+                <div className={`navigation__button ${active === 'question-library' ? 'active' : ''}`}>
+                    <a href={`${Config.nbsUrl}/SearchManageQuestions.do?method=loadQuestionLibrary&initLoad=true`}>
+                        <p>Questions</p>
+                    </a>
                 </div>
-                <div
-                    className={`navigation__button ${active === 'valueset-library' ? 'active' : ''}`}
-                    onClick={() => goBack('valueset-library')}>
-                    <p>Value sets</p>
+                <div className={`navigation__button ${active === 'valueset-library' ? 'active' : ''}`}>
+                    <a href={`${Config.nbsUrl}/ManageCodeSet.do?method=ViewValueSetLib&initLoad=true`}>
+                        <p>Value sets</p>
+                    </a>
                 </div>
             </div>
         </div>
