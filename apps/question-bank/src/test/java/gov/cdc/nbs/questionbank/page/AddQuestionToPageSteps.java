@@ -6,10 +6,11 @@ import static org.junit.Assert.assertNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.question.PageQuestionController;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
@@ -21,6 +22,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
+@Transactional
 public class AddQuestionToPageSteps {
 
     @Autowired
@@ -33,13 +35,13 @@ public class AddQuestionToPageSteps {
     private WaUiMetadataRepository repository;
 
     @Autowired
-    private WANNDMetadataRepository nndMetadataRepository;
-
-    @Autowired
     private QuestionMother questionMother;
 
     @Autowired
     private PageMother pageMother;
+
+    @Autowired
+    private UserDetailsProvider user;
 
     private AddQuestionResponse response;
 
@@ -48,19 +50,17 @@ public class AddQuestionToPageSteps {
         exceptionHolder.clear();
     }
 
-    @Given("No questions are in use")
-    public void no_questions_are_in_use() {
-        nndMetadataRepository.deleteAll();
-        repository.deleteAll();
-    }
-
     @Given("I add a question to a page")
     public void i_add_a_question_to_a_page() {
         WaQuestion question = questionMother.one();
         WaTemplate page = pageMother.one();
-        var request = new AddQuestionRequest(question.getId(), 1);
+        WaUiMetadata subsection = page.getUiMetadata().stream()
+                .filter(ui -> ui.getNbsUiComponentUid() == 1016l)
+                .findFirst()
+                .orElseThrow();
+        var request = new AddQuestionRequest(question.getId(), subsection.getId());
         try {
-            response = pageQuestionController.addQuestionToPage(page.getId(), request);
+            response = pageQuestionController.addQuestionToPage(page.getId(), request, user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -74,6 +74,6 @@ public class AddQuestionToPageSteps {
         assertNotNull(response.componentId());
         WaUiMetadata metadata = repository.findById(response.componentId())
                 .orElseThrow(() -> new RuntimeException("Failed to find inserted metadata"));
-        assertEquals(1, metadata.getOrderNbr().intValue());
+        assertEquals(5, metadata.getOrderNbr().intValue());
     }
 }

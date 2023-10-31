@@ -1,5 +1,5 @@
 package gov.cdc.nbs.questionbank.page.content.section.request;
 
-public record UpdateSectionRequest(String questionLabel, String visible) {
+public record UpdateSectionRequest(String name, boolean visible) {
 
 }

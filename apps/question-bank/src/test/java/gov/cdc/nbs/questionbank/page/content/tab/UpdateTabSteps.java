@@ -6,9 +6,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.request.UpdateTabRequest;
 import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -22,13 +23,16 @@ public class UpdateTabSteps {
     private TabController tabController;
 
     @Autowired
-    private WaUiMetaDataRepository waUiMetadataRepository;
+    private WaUiMetadataRepository waUiMetadataRepository;
 
     @Autowired
     private PageMother pageMother;
 
     @Autowired
     private ExceptionHolder exceptionHolder;
+
+    @Autowired
+    private UserDetailsProvider user;
 
     private Boolean visibility = RandomUtils.nextBoolean();
     private Tab response;
@@ -42,7 +46,7 @@ public class UpdateTabSteps {
                 .orElseThrow();
         UpdateTabRequest request = new UpdateTabRequest("Updated tab name", visibility);
         try {
-            response = tabController.updateTab(template.getId(), tab.getId(), request);
+            response = tabController.updateTab(template.getId(), tab.getId(), request, user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

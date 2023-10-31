@@ -3,86 +3,49 @@ package gov.cdc.nbs.questionbank.page.content.tab;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.util.Collections;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.RowMapper;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.DeleteTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 
 @ExtendWith(MockitoExtension.class)
 class TabDeleterTest {
 
     @Mock
-    private WaUiMetaDataRepository repository;
-    @Mock
-    private WaTemplateRepository templateRepository;
-    @Mock
-    private JdbcTemplate template;
+    private EntityManager entityManager;
 
     @InjectMocks
     private TabDeleter deleter;
 
     @Test
-    @SuppressWarnings("unchecked")
     void should_delete_tab() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(1l)).thenReturn(true);
+        // Given a page
+        WaTemplate page = Mockito.mock(WaTemplate.class);
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
 
-        // And an empty tab
-        when(template.query(
-                Mockito.anyString(),
-                Mockito.any(PreparedStatementSetter.class),
-                Mockito.any(RowMapper.class)
-            ))
-        .thenReturn(Collections.singletonList(1010l));
+        // When a request to delete a tab is processed
+        deleter.delete(1l, 2l, 999l);
 
-        // And an existing order number
-        when(repository.getOrderNumber(2L)).thenReturn(2);
-
-        // When a delete is processed
-        deleter.delete(1l, 2l);
-
-        // Then the entry should be deleted
-        verify(repository).deleteById(2L);
-
-        // And the elements reordered after it
-        verify(repository).decrementOrderNumbers(2, 2l);
+        // Then the tab is deleted
+        ArgumentCaptor<PageContentCommand.DeleteTab> captor =
+                ArgumentCaptor.forClass(PageContentCommand.DeleteTab.class);
+        verify(page).deleteTab(captor.capture());
     }
 
     @Test
-    void should_not_delete_tab_non_draft() {
-        // Given a page that is not a Draft
-        when(templateRepository.isPageDraft(1l)).thenReturn(false);
+    void should_not_delete_tab_no_page_found() {
+        // Given a page that doesn't exist
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
 
-        // When a delete is processed
+        // When a request to delete a tab is processed
         // Then an exception is thrown
-        assertThrows(DeleteTabException.class, () ->deleter.delete(1l, 2l));
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    void should_not_delete_tab_non_empty_tab() {
-        // Given a page that is a Draft
-        when(templateRepository.isPageDraft(1l)).thenReturn(true);
-
-        // And a tab with content
-        when(template.query(
-                Mockito.anyString(),
-                Mockito.any(PreparedStatementSetter.class),
-                Mockito.any(RowMapper.class)
-            ))
-        .thenReturn(Collections.singletonList(1015l));
-
-        // When a delete is processed
-        // Then an exception is thrown
-        assertThrows(DeleteTabException.class, () ->deleter.delete(1l, 2l));
+        assertThrows(DeleteTabException.class, () -> deleter.delete(1l, 2l, 999l));
     }
 }

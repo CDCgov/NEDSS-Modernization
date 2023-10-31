@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.command;
 
 import java.time.Instant;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 
 public sealed interface PageContentCommand {
@@ -10,19 +9,17 @@ public sealed interface PageContentCommand {
     Instant requestedOn();
 
     public record AddQuestion(
-            WaTemplate page,
+            Long page,
             WaQuestion question,
-            Integer orderNumber,
+            long subsection,
             long userId,
             Instant requestedOn) implements PageContentCommand {
     }
 
     public record AddTab(
-            WaTemplate page,
             String label,
             boolean visible,
             String identifier,
-            int orderNumber,
             long userId,
             Instant requestedOn) implements PageContentCommand {
     }
@@ -30,7 +27,61 @@ public sealed interface PageContentCommand {
     public record UpdateTab(
             String label,
             boolean visible,
+            long tab,
             long userId,
             Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record DeleteTab(
+            long tabId,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record AddSection(
+            String label,
+            boolean visible,
+            String identifier,
+            long tab,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record UpdateSection(
+            String label,
+            boolean visible,
+            long sectionId,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record DeleteSection(
+            long setionId,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record AddSubsection(
+            String label,
+            boolean visible,
+            String identifier,
+            long section,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record UpdateSubsection(
+            String label,
+            boolean visible,
+            long subsection,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+    }
+
+    public record DeleteSubsection(
+            long subsectionId,
+            long userId,
+            Instant requestedOn) implements PageContentCommand {
+
     }
 }
