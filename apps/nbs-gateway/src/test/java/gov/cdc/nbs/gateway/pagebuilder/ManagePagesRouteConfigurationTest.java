@@ -5,10 +5,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.notFound;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 
@@ -27,18 +30,32 @@ class ManagePagesRouteConfigurationTest {
       .build();
 
   @RegisterExtension
-  static WireMockExtension service = WireMockExtension.newInstance()
+  static WireMockExtension modernizationApi = WireMockExtension.newInstance()
       .options(wireMockConfig().port(10002))
       .build();
 
   @Autowired
   WebTestClient webClient;
 
+  @Autowired
+  RouteLocator pagebuilderManagePagesConfig;
+
+  @Autowired
+  PageBuilderService service;
+
+  @Test
+  void should_contain_route() {
+    assertNotNull(pagebuilderManagePagesConfig);
+    assertTrue(pagebuilderManagePagesConfig.getRoutes()
+        .any(i -> i.getId().equals("pagebuilder-manage-pages") && i.getUri().equals(service.uri()))
+        .block());
+  }
+
 
   @Test
   void should_route_to_modernized() {
 
-    service.stubFor(get(urlPathMatching("/nbs/redirect/pagebuilder/manage/pages")).willReturn(ok()));
+    modernizationApi.stubFor(get(urlPathMatching("/nbs/redirect/pagebuilder/manage/pages")).willReturn(ok()));
 
     webClient
         .get().uri(
