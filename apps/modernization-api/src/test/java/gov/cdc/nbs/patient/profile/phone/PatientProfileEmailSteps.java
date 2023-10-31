@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.phone;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.input.PatientInput;
@@ -38,11 +38,11 @@ public class PatientProfileEmailSteps {
 
         Collection<TeleEntityLocatorParticipation> emails = actual.emailAddresses();
 
-        if(!emails.isEmpty()) {
+        if (!emails.isEmpty()) {
 
             assertThat(emails)
-                .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
-
+                    .satisfiesExactlyInAnyOrder(
+                            PatientCreateAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
 
         }
 

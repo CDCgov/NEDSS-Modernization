@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.phone;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.input.PatientInput;
@@ -15,7 +15,6 @@ import io.cucumber.java.en.Then;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.Collection;
 
@@ -36,14 +35,13 @@ public class PatientProfilePhoneSteps {
 
     @Autowired
     TestPatient patient;
-    
 
     @Given("the patient has a phone")
     public void the_patient_has_a_phone() {
         mother.withPhone(patients.one());
-       
+
     }
-    
+
     @Given("the new patient's phone number is entered")
     public void the_new_patient_phone_number_is_entered() {
 
@@ -54,10 +52,8 @@ public class PatientProfilePhoneSteps {
         phoneNumber.setExtension(faker.phoneNumber().extension());
 
         this.input.active().getPhoneNumbers().add(phoneNumber);
-        
-        
+
     }
-    
 
     @Then("the new patient has the entered phone number")
     @Transactional
@@ -66,14 +62,14 @@ public class PatientProfilePhoneSteps {
 
         Collection<TeleEntityLocatorParticipation> phoneNumbers = actual.phoneNumbers();
 
-        if(!phoneNumbers.isEmpty()) {
+        if (!phoneNumbers.isEmpty()) {
 
             assertThat(phoneNumbers)
-                .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsPhoneNumbers(input.active().getPhoneNumbers()));
-
+                    .satisfiesExactlyInAnyOrder(
+                            PatientCreateAssertions.containsPhoneNumbers(input.active().getPhoneNumbers()));
 
         }
 
     }
-    
+
 }

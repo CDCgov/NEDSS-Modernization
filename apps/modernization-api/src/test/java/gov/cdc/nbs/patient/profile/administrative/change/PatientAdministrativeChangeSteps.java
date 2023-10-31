@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.administrative.change;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Available;
@@ -43,14 +43,12 @@ public class PatientAdministrativeChangeSteps {
         PatientIdentifier patient = this.patients.one();
 
         this.changes = new UpdatePatientAdministrative(
-            patient.id(),
-            RandomUtil.getRandomDateInPast(),
-            faker.lorem().paragraph()
-        );
+                patient.id(),
+                RandomUtil.getRandomDateInPast(),
+                faker.lorem().paragraph());
 
         controller.update(changes);
     }
-
 
     @Then("the patient has the changed administrative")
     @Transactional
@@ -60,14 +58,13 @@ public class PatientAdministrativeChangeSteps {
         Person actual = this.entityManager.find(Person.class, patient.id());
 
         assertThat(actual)
-            .returns(changes.asOf(), Person::getAsOfDateAdmin)
-            .returns(changes.comment(), Person::getDescription)
-        ;
+                .returns(changes.asOf(), Person::getAsOfDateAdmin)
+                .returns(changes.comment(), Person::getDescription);
     }
 
     @Then("I am unable to change a patient's administrative")
     public void i_am_unable_to_change_a_patient_administrative() {
         assertThatThrownBy(() -> controller.update(changes))
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 }
