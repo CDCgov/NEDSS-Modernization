@@ -129,4 +129,14 @@ class RedirectControllerTest {
         assertNull(attributes.getAttribute("q"));
         assertNull(attributes.getAttribute("type"));
     }
+
+    @Test
+    void should_redirect_manage_pages() {
+        // When a request is made to manage pages
+        RedirectView redirectView = controller.redirectManagePages();
+
+        // Then a redirect is returned
+        assertNotNull(redirectView);
+        assertEquals("/page-builder/manage/pages", redirectView.getUrl());
+    }
 }

@@ -1,32 +1,38 @@
 package gov.cdc.nbs.controller;
 
-import gov.cdc.nbs.event.search.InvestigationFilter;
-import gov.cdc.nbs.redirect.search.EventFilterResolver;
-import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
-import gov.cdc.nbs.service.EncryptionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+import gov.cdc.nbs.event.search.InvestigationFilter;
+import gov.cdc.nbs.redirect.search.EventFilterResolver;
+import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
+import gov.cdc.nbs.service.EncryptionService;
 import springfox.documentation.annotations.ApiIgnore;
-
-import java.util.Map;
 
 @RestController
 public class RedirectController {
     private static final String ADVANCED_SEARCH = "/advanced-search";
 
-    @Autowired
-    PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver;
+    private final PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver;
 
-    @Autowired
-    EventFilterResolver eventFilterResolver;
+    private final EventFilterResolver eventFilterResolver;
 
-    @Autowired
-    EncryptionService encryptionService;
+    private final EncryptionService encryptionService;
+
+    public RedirectController(
+            final PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver,
+            final EventFilterResolver eventFilterResolver,
+            final EncryptionService encryptionService) {
+        this.patientFilterFromRequestParamResolver = patientFilterFromRequestParamResolver;
+        this.eventFilterResolver = eventFilterResolver;
+        this.encryptionService = encryptionService;
+    }
+
+
 
     /**
      * Intercepts legacy home page search requests, pulls out the current user from the JSESSIONID, the search criteria
