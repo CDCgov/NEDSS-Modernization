@@ -8,7 +8,8 @@ Feature: Create Original Electronic Document List
         And the page has a sub-section named "sub-section" in the 1st section
 
     Scenario: I can create a original electronic document list static element
-        Given I am logged in And I can "LDFAdministration" any "System"
+        Given I am logged in
+        And I can "LDFAdministration" any "System"
         When I send a original electronic document list request
         Then a original electronic document list element is created
 
