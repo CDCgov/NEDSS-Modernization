@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { DraggableLocation, DropResult } from 'react-beautiful-dnd';
+import { DragStart, DragUpdate, DraggableLocation, DropResult } from 'react-beautiful-dnd';
 import { PagesSection, PagesTab } from '../generated';
-import { moveObjectInArray, moveQuestionInArray } from '../helpers/moveObjectInArray';
+import { moveSubsectionInArray, moveQuestionInArray } from '../helpers/moveObjectInArray';
 
 type DragDropProps = (source: DraggableLocation, destination: DraggableLocation) => void;
 
@@ -16,8 +16,8 @@ type SectionDropshadow = { marginLeft: number; height: number };
 
 type DragDropContextProps = {
     handleDragEnd: (result: DropResult) => void;
-    handleDragStart: (event: any) => void;
-    handleDragUpdate: (event: any) => void;
+    handleDragStart: (event: DragStart) => void;
+    handleDragUpdate: (event: DragUpdate) => void;
     subsectionDropshadowProps: SubsectionDropshadow;
     sectionDropshadowProps: SectionDropshadow;
     sections: PagesSection[];
@@ -67,7 +67,7 @@ const getStyle = (
         return total + curr[clientDirection] + prop;
     }, 0);
 
-const DragDropProvider: React.FC<{ children: any; data: PagesTab | undefined }> = ({ children, data }) => {
+const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | undefined }> = ({ children, data }) => {
     const [sections, setSections] = useState<PagesSection[]>([]);
     const [sectionDropshadowProps, setSectionDropshadowProps] = useState<SectionDropshadow>({
         marginLeft: 0,
@@ -85,7 +85,7 @@ const DragDropProvider: React.FC<{ children: any; data: PagesTab | undefined }> 
 
     // handling movement of subsection in the same section
     const moveSubsectionWithinSection: DragDropProps = (source, destination) => {
-        const updatedOrder = moveObjectInArray(
+        const updatedOrder = moveSubsectionInArray(
             sections.find((section) => section.id!.toString() === source.droppableId)!.subSections!,
             source.index,
             destination.index
@@ -271,7 +271,7 @@ const DragDropProvider: React.FC<{ children: any; data: PagesTab | undefined }> 
         });
     };
 
-    const handleDragUpdate = (event: any) => {
+    const handleDragUpdate = (event: DragUpdate) => {
         const { source, destination } = event;
         if (!destination) return;
         if (event.type === 'section') {
@@ -281,7 +281,7 @@ const DragDropProvider: React.FC<{ children: any; data: PagesTab | undefined }> 
         }
     };
 
-    const handleDragStart = (event: any) => {
+    const handleDragStart = (event: DragStart) => {
         // the destination and source section Index will be the same for start
         const { index } = event.source;
         setCloseId(event.draggableId);

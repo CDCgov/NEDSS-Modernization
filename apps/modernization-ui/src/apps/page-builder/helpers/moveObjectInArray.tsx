@@ -1,6 +1,6 @@
 import { PagesQuestion, PagesSubSection } from '../generated';
 
-export const moveObjectInArray = (array: PagesSubSection[], source: number, destination: number) => {
+export const moveSubsectionInArray = (array: PagesSubSection[], source: number, destination: number) => {
     const result = array.slice();
     const item = result.splice(source, 1)[0];
 

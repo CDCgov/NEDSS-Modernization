@@ -1,4 +1,4 @@
-import { moveObjectInArray } from "./moveObjectInArray";
+import { moveSubsectionInArray } from "./moveObjectInArray";
 
 describe('Object manipulation in Array', () => {
     it('should place two after three', () => {
@@ -13,7 +13,7 @@ describe('Object manipulation in Array', () => {
             { name: 'eight', id: 7 }
         ];
 
-        const actual = moveObjectInArray(values, 7, 3);
+        const actual = moveSubsectionInArray(values, 7, 3);
 
         expect(actual).toEqual([
             { name: 'one', id: 0 },
@@ -31,7 +31,7 @@ describe('Object manipulation in Array', () => {
             { name: 'one', id: 0 },
             { name: 'two', id: 1 },
         ];
-            const actual = moveObjectInArray(values, 0, 1);
+            const actual = moveSubsectionInArray(values, 0, 1);
 
             expect(actual).toEqual(
                 expect.arrayContaining([
