@@ -12,25 +12,25 @@ import org.springframework.core.Ordered;
 @Configuration
 @ConditionalOnProperty(prefix = "nbs.gateway.pagebuilder.manage", name = "enabled", havingValue = "true")
 public class ManagePagesRouteConfiguration {
-    @Bean
-    RouteLocator pagebuilderManagePagesConfig(
-            final RouteLocatorBuilder builder,
-            @Qualifier("default") final GatewayFilter globalFilter,
-            final PageBuilderService service) {
-        return builder.routes()
-                .route(
-                        "pagebuilder-manage-page",
-                        route -> route
-                                .order(Ordered.HIGHEST_PRECEDENCE)
-                                .path("/nbs/ManagePage.do")
-                                .and()
-                                .query("method", "list")
-                                .and()
-                                .query("initLoad", "true")
-                                .filters(
-                                        filter -> filter.setPath("/nbs/redirect/pagebuilder/manage/pages")
-                                                .filter(globalFilter))
-                                .uri(service.uri()))
-                .build();
-    }
+  @Bean
+  RouteLocator pagebuilderManagePagesConfig(
+      final RouteLocatorBuilder builder,
+      @Qualifier("default") final GatewayFilter globalFilter,
+      final PageBuilderService service) {
+    return builder.routes()
+        .route(
+            "pagebuilder-manage-pages",
+            route -> route
+                .order(Ordered.HIGHEST_PRECEDENCE)
+                .path("/nbs/ManagePage.do")
+                .and()
+                .query("method", "list")
+                .and()
+                .query("initLoad", "true")
+                .filters(
+                    filter -> filter.setPath("/nbs/redirect/pagebuilder/manage/pages")
+                        .filter(globalFilter))
+                .uri(service.uri()))
+        .build();
+  }
 }
