@@ -23,7 +23,6 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
         setSubsections(section.subSections);
     }, [section]);
 
-    console.log(subsections);
     useEffect(() => {
         if (closeId === section.id!.toString()) {
             setSubsectionOpen(false);
