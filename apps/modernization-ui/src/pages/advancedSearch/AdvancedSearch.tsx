@@ -476,29 +476,32 @@ export const AdvancedSearch = () => {
                             )}
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className="button-group">
-                                    <Button
-                                        disabled={
-                                            (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                            (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                            (!patientData?.content || patientData?.content?.length === 0)
-                                        }
-                                        className="padding-x-3"
-                                        type={'button'}
-                                        onClick={() => setShowSorting(!showSorting)}
-                                        outline>
-                                        Sort by
-                                        <img
-                                            style={{ marginLeft: '5px' }}
-                                            src={
+                                    {lastSearchType && !isNoResultsFound() && !isError() && !isLoading() && (
+                                        <Button
+                                            disabled={
                                                 (!investigationData?.content ||
                                                     investigationData?.content?.length === 0) &&
                                                 (!labReportData?.content || labReportData?.content?.length === 0) &&
                                                 (!patientData?.content || patientData?.content?.length === 0)
-                                                    ? '/icons/down-arrow-white.svg'
-                                                    : '/icons/down-arrow-blue.svg'
                                             }
-                                        />
-                                    </Button>
+                                            className="padding-x-3"
+                                            type={'button'}
+                                            onClick={() => setShowSorting(!showSorting)}
+                                            outline>
+                                            Sort by
+                                            <img
+                                                style={{ marginLeft: '5px' }}
+                                                src={
+                                                    (!investigationData?.content ||
+                                                        investigationData?.content?.length === 0) &&
+                                                    (!labReportData?.content || labReportData?.content?.length === 0) &&
+                                                    (!patientData?.content || patientData?.content?.length === 0)
+                                                        ? '/icons/down-arrow-white.svg'
+                                                        : '/icons/down-arrow-blue.svg'
+                                                }
+                                            />
+                                        </Button>
+                                    )}
                                     {showSorting && (
                                         <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                             <li className="usa-nav__submenu-item">
