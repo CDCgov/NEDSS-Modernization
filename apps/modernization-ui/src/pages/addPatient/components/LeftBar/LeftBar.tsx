@@ -3,9 +3,9 @@ import { MenuItem } from './MenuItem';
 
 export enum ACTIVE_TAB {
     PATIENT = 'patient',
-    ORGANIZATION = 'organization',
-    PROVIDER = 'provider',
-    MORBIDITY = 'morbidity'
+    ORGANIZATION = 'Organization',
+    PROVIDER = 'Provider',
+    MORBIDITY = 'Morbidity'
 }
 
 export const LeftBar = ({ activeTab }: any) => {
@@ -20,9 +20,12 @@ export const LeftBar = ({ activeTab }: any) => {
                     New patient
                 </h6>
             </div>
-            <MenuItem name={`New ${ACTIVE_TAB.ORGANIZATION}`} link={`nbs/OrgSearchResults1.do?ContextAction=Add`} />
-            <MenuItem name={`New ${ACTIVE_TAB.MORBIDITY}`} link={`nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry`} />
-            <MenuItem name={`New ${ACTIVE_TAB.PROVIDER}`} link={`nbs/ProvSearchResults1.do?ContextAction=Add`} />
+            <MenuItem
+                name={`${ACTIVE_TAB.ORGANIZATION}`}
+                link={`nbs/MyTaskList1.do?ContextAction=GlobalOrganization`}
+            />
+            <MenuItem name={`${ACTIVE_TAB.MORBIDITY}`} link={`nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry`} />
+            <MenuItem name={`${ACTIVE_TAB.PROVIDER}`} link={`nbs/MyTaskList1.do?ContextAction=GlobalProvider`} />
         </Grid>
     );
 };
