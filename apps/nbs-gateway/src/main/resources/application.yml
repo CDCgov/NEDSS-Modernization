@@ -33,3 +33,7 @@ nbs:
       profile:
         enabled: true
         service: 'localhost:8080'
+    pagebuilder:
+      manage: 
+        enabled: true
+        service: 'localhost:8080/page-builder/manage/pages'

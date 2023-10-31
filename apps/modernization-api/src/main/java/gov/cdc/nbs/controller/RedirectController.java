@@ -35,8 +35,8 @@ public class RedirectController {
     @ApiIgnore
     @PostMapping("/nbs/redirect/simpleSearch")
     public RedirectView redirectSimpleSearch(
-        final RedirectAttributes attributes,
-        @RequestParam final Map<String, String> incomingParams) {
+            final RedirectAttributes attributes,
+            @RequestParam final Map<String, String> incomingParams) {
         var redirect = new RedirectView(ADVANCED_SEARCH);
         var redirectedUrl = redirect.getUrl();
         if (redirectedUrl != null && redirectedUrl.equals(ADVANCED_SEARCH) && incomingParams.size() > 0) {
@@ -63,6 +63,12 @@ public class RedirectController {
     @GetMapping("/nbs/redirect/advancedSearch")
     public RedirectView redirectAdvancedSearch() {
         return new RedirectView(ADVANCED_SEARCH);
+    }
+
+    @ApiIgnore
+    @GetMapping("/nbs/redirect/pagebuilder/manage/pages")
+    public RedirectView redirectManagePages() {
+        return new RedirectView("/page-builder/manage/pages");
     }
 
 }
