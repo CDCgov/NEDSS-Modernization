@@ -1,81 +1,88 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.util.Optional;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.id.IdGeneratorService;
-import gov.cdc.nbs.id.IdGeneratorService.EntityType;
-import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
-import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentIdGenerator;
 import gov.cdc.nbs.questionbank.page.content.tab.exceptions.CreateTabException;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.page.content.tab.request.CreateTabRequest;
-import gov.cdc.nbs.questionbank.page.content.tab.response.Tab;
-import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 
 @ExtendWith(MockitoExtension.class)
 class TabCreatorTest {
     @Mock
-    private WaUiMetaDataRepository repository;
+    private EntityManager entityManager;
+
     @Mock
-    private WaTemplateRepository templateRepository;
-    @Mock
-    private IdGeneratorService idGenerator;
-    @Mock
-    private NbsConfigurationRepository configRepository;
+    private PageContentIdGenerator idGenerator;
 
     @InjectMocks
     private TabCreator creator;
 
     @Test
     void should_create_tab() {
-        // Given a page that is a draft
-        when(templateRepository.isPageDraft(1l)).thenReturn(true);
-        when(templateRepository.getReferenceById(1l)).thenReturn(new WaTemplate());
-        when(repository.findMaxOrderNumberByTemplateUid(1l)).thenReturn(Optional.of(1));
-        ArgumentCaptor<WaUiMetadata> captor = ArgumentCaptor.forClass(WaUiMetadata.class);
-        when(repository.save(captor.capture())).then(a -> a.getArgument(0));
+        // Given a page
+        WaTemplate page = Mockito.mock(WaTemplate.class);
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
+        WaUiMetadata newTabMock = Mockito.mock(WaUiMetadata.class);
+        when(newTabMock.getId()).thenReturn(98l);
+        when(page.addTab(Mockito.any(PageContentCommand.AddTab.class))).thenReturn(newTabMock);
 
-        // And a valid configRepository
-        when(configRepository.findById("NBS_CLASS_CODE")).thenReturn(Optional.of(config()));
+        // And a working id generator
+        when(idGenerator.next()).thenReturn("someId");
 
-        // And a configured Id service
-        when(idGenerator.getNextValidId(EntityType.NBS_QUESTION_ID_LDF)).thenReturn(new GeneratedId(123l,"pre","suf"));
+        // When a request is processed to add a tab 
+        creator.create(
+                1l,
+                new CreateTabRequest("tab", false),
+                44l);
 
-        // When a request is processed to create a tab
-        Tab actual = creator.create(1l, 2l, new CreateTabRequest("tab name", true));
-
-        // Then a tab is created
-        assertNotNull(actual);
-        assertEquals("tab name", actual.name());
-        assertEquals(true, actual.visible());
-        assertEquals("TEST123", captor.getValue().getQuestionIdentifier());
+        // Then the tab is created
+        ArgumentCaptor<PageContentCommand.AddTab> captor =
+                ArgumentCaptor.forClass(PageContentCommand.AddTab.class);
+        verify(page).addTab(captor.capture());
+        assertEquals("someId", captor.getValue().identifier());
+        assertEquals("tab", captor.getValue().label());
+        assertFalse(captor.getValue().visible());
     }
 
     @Test
-    void should_not_create_tab() {
-        // Given a page that is not draft
-        when(templateRepository.isPageDraft(1l)).thenReturn(false);
-
-        // When a request is processed to create a tab
+    void should_not_create_no_page() {
+        // Given a page does not exist
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
+        
+        // When a request is made
         // Then an exception is thrown
-        assertThrows(CreateTabException.class, () -> creator.create(1l, 2l, null));
+        CreateTabRequest request = new CreateTabRequest("tab", true);
+        assertThrows(CreateTabException.class, () -> creator.create(1l, request, 5l));
     }
 
-    private NbsConfiguration config() {
-        NbsConfiguration config = new NbsConfiguration();
-        config.setConfigValue("TEST");
-        return config;
+    @Test
+    void should_not_create_empty_name() {
+        // When a request is made without a name
+        // Then an exception is thrown
+        CreateTabRequest request = new CreateTabRequest("", true);
+        assertThrows(CreateTabException.class, () -> creator.create(1l, request, 5l));
     }
+
+    @Test
+    void should_not_create_null_name() {
+        // When a request is made without a name
+        // Then an exception is thrown
+        assertThrows(CreateTabException.class, () -> creator.create(1l, null, 5l));
+    }
+
+
 }

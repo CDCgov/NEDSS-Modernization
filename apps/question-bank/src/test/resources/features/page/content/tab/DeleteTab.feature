@@ -11,7 +11,6 @@ Feature: Delete Tab
         When I send a delete tab request
         Then the tab is deleted
 
-
     Scenario: I cannot delete a tab without logging in
         Given I am not logged in
         When I send a delete tab request

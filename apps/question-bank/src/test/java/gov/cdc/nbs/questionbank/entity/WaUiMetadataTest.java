@@ -26,17 +26,17 @@ class WaUiMetadataTest {
         WaTemplate page = page();
         TextQuestionEntity question = QuestionEntityMother.textQuestion();
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
-        assertGeneralValues(metadata, command);
+        assertGeneralValues(metadata, command, 5);
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
         assertEquals(question.getMask(), metadata.getMask());
         assertEquals(question.getFieldSize(), metadata.getFieldSize());
@@ -49,17 +49,17 @@ class WaUiMetadataTest {
         WaTemplate page = page();
         DateQuestionEntity question = QuestionEntityMother.dateQuestion();
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
-        assertGeneralValues(metadata, command);
+        assertGeneralValues(metadata, command, 5);
         assertEquals(question.getMask(), metadata.getMask());
         assertEquals(question.getFutureDateIndCd(), metadata.getFutureDateIndCd());
     }
@@ -71,17 +71,17 @@ class WaUiMetadataTest {
         WaTemplate page = page();
         NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
-        assertGeneralValues(metadata, command);
+        assertGeneralValues(metadata, command, 5);
         assertEquals(question.getMask(), metadata.getMask());
         assertEquals(question.getFieldSize(), metadata.getFieldSize());
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
@@ -98,17 +98,17 @@ class WaUiMetadataTest {
         WaTemplate page = page();
         CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created
-        WaUiMetadata metadata = new WaUiMetadata(command);
+        WaUiMetadata metadata = new WaUiMetadata(page, command, 5);
 
         // Then the expected values are set
         assertDefaultValues(metadata);
-        assertGeneralValues(metadata, command);
+        assertGeneralValues(metadata, command, 5);
         assertEquals(question.getCodeSetGroupId(), metadata.getCodeSetGroupId());
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
     }
@@ -131,14 +131,14 @@ class WaUiMetadataTest {
         };
 
         PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
-                page,
+                page.getId(),
                 question,
                 12,
                 1L,
                 now);
         // When a new WaUiMetadata entry is created 
         // Then an exception is thrown
-        assertThrows(AddQuestionException.class, () -> new WaUiMetadata(command));
+        assertThrows(AddQuestionException.class, () -> new WaUiMetadata(page, command, 5));
 
     }
 
@@ -153,13 +153,14 @@ class WaUiMetadataTest {
         assertEquals(1, metadata.getVersionCtrlNbr().intValue());
     }
 
-    private void assertGeneralValues(WaUiMetadata metadata, PageContentCommand.AddQuestion command) {
+    private void assertGeneralValues(WaUiMetadata metadata, PageContentCommand.AddQuestion command,
+            Integer orderNumber) {
         var question = command.question();
-        assertEquals(command.page().getId(), metadata.getWaTemplateUid().getId());
+        assertEquals(command.page(), metadata.getWaTemplateUid().getId());
         assertEquals(question.getNbsUiComponentUid(), metadata.getNbsUiComponentUid());
         assertEquals(question.getQuestionLabel(), metadata.getQuestionLabel());
         assertEquals(question.getQuestionToolTip(), metadata.getQuestionToolTip());
-        assertEquals(command.orderNumber(), metadata.getOrderNbr());
+        assertEquals(orderNumber, metadata.getOrderNbr());
         assertEquals(question.getAdminComment(), metadata.getAdminComment());
         assertEquals(question.getDataLocation(), metadata.getDataLocation());
         assertEquals(question.getDescTxt(), metadata.getDescTxt());
@@ -184,15 +185,17 @@ class WaUiMetadataTest {
 
     @Test
     void should_create_tab() {
-        PageContentCommand.AddTab command = addTab();
-        WaUiMetadata tabMetadata = new WaUiMetadata(command);
+        WaTemplate page = new WaTemplate();
+        page.setId(123l);
+        PageContentCommand.AddTab command = addTab(page);
+        WaUiMetadata tabMetadata = new WaUiMetadata(page, command, 2);
 
         assertEquals(1010L, tabMetadata.getNbsUiComponentUid().longValue());
-        assertEquals(command.page(), tabMetadata.getWaTemplateUid());
+        assertEquals(page.getId(), tabMetadata.getWaTemplateUid().getId());
         assertEquals(command.label(), tabMetadata.getQuestionLabel());
         assertEquals(command.visible() ? "T" : "F", tabMetadata.getDisplayInd());
         assertEquals(command.identifier(), tabMetadata.getQuestionIdentifier());
-        assertEquals(command.orderNumber(), tabMetadata.getOrderNbr().intValue());
+        assertEquals(2, tabMetadata.getOrderNbr().intValue());
         assertEquals(command.requestedOn(), tabMetadata.getRecordStatusTime());
         assertEquals("F", tabMetadata.getRequiredInd());
         assertEquals(1, tabMetadata.getVersionCtrlNbr().intValue());
@@ -210,8 +213,10 @@ class WaUiMetadataTest {
 
     @Test
     void should_update_tab() {
-        PageContentCommand.AddTab command = addTab();
-        WaUiMetadata tabMetadata = new WaUiMetadata(command);
+        WaTemplate page = new WaTemplate();
+        page.setId(123l);
+        PageContentCommand.AddTab command = addTab(page);
+        WaUiMetadata tabMetadata = new WaUiMetadata(page, command, 2);
 
         PageContentCommand.UpdateTab updateCommand = updateTab();
         tabMetadata.update(updateCommand);
@@ -222,19 +227,51 @@ class WaUiMetadataTest {
         assertEquals(updateCommand.requestedOn(), tabMetadata.getLastChgTime());
     }
 
+    @Test
+    void should_update_subsection() {
+        WaTemplate page = new WaTemplate();
+        page.setId(123l);
+        PageContentCommand.AddSubsection command = addSubsection(page);
+        WaUiMetadata subsectionMetadata = new WaUiMetadata(page, command, 3);
+
+        PageContentCommand.UpdateSubsection updateCommand = updateSubsection();
+        subsectionMetadata.update(updateCommand);
+
+        assertEquals(updateCommand.label(), subsectionMetadata.getQuestionLabel());
+        assertEquals(updateCommand.visible() ? "T" : "F", subsectionMetadata.getDisplayInd());
+        assertEquals(updateCommand.userId(), subsectionMetadata.getLastChgUserId().longValue());
+        assertEquals(updateCommand.requestedOn(), subsectionMetadata.getLastChgTime());
+    }
+
     private PageContentCommand.UpdateTab updateTab() {
         return new PageContentCommand.UpdateTab(
                 "updated label",
                 true,
+                3l,
                 444,
                 Instant.now());
     }
 
-    private PageContentCommand.AddTab addTab() {
-        WaTemplate page = new WaTemplate();
-        page.setId(123l);
+    private PageContentCommand.UpdateSubsection updateSubsection() {
+        return new PageContentCommand.UpdateSubsection(
+                "updated label",
+                false,
+                3l,
+                444,
+                Instant.now());
+    }
+
+    private PageContentCommand.AddTab addTab(WaTemplate page) {
         return new PageContentCommand.AddTab(
-                page,
+                "test label",
+                false,
+                "some identifier",
+                22,
+                Instant.now());
+    }
+
+    private PageContentCommand.AddSubsection addSubsection(WaTemplate page) {
+        return new PageContentCommand.AddSubsection(
                 "test label",
                 false,
                 "some identifier",

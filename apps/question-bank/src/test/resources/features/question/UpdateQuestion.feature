@@ -3,7 +3,6 @@ Feature: Update question
 
     Background: Clean questions
         Given No questions exist
-        And No questions are in use
 
     Scenario: I can update a question
         Given I am an admin user

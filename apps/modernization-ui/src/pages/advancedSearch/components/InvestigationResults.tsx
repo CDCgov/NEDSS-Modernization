@@ -23,6 +23,9 @@ export const InvestigationResults = ({
 }: InvestigationResultsProps) => {
     const searchItemsRef: any = useRef();
     const navigate = useNavigate();
+    const PAGE_SIZE = 25;
+    const paginationStart = 1 + (currentPage - 1) * PAGE_SIZE;
+    const paginationEnd = Math.min(paginationStart - 1 + data.length, totalResults);
 
     // Update 'width' and 'height' when the window resizes
     useEffect(() => {
@@ -134,7 +137,7 @@ export const InvestigationResults = ({
             {Boolean(totalResults && data?.length > 0) && (
                 <Grid row className="flex-align-center flex-justify">
                     <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
-                        Showing {data.length} of {totalResults}
+                        Showing {paginationStart} - {paginationEnd} of {totalResults}
                     </p>
                     <Pagination
                         style={{ justifyContent: 'flex-end' }}

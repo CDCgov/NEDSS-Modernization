@@ -12,7 +12,9 @@ type SearchItemsProps = {
 
 export const PatientResults = ({ data, totalResults, handlePagination, currentPage }: SearchItemsProps) => {
     const navigate = useNavigate();
-
+    const PAGE_SIZE = 25;
+    const paginationStart = 1 + (currentPage - 1) * PAGE_SIZE;
+    const paginationEnd = Math.min(paginationStart - 1 + data.length, totalResults);
     const redirectPatientProfile = (item: PatientSearchResult) => {
         navigate(`/patient-profile/${item.shortId}`);
     };
@@ -22,7 +24,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
             {totalResults && data?.length > 0 && (
                 <Grid row className="flex-align-center flex-justify">
                     <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
-                        Showing {data.length} of {totalResults}
+                        Showing {paginationStart} - {paginationEnd} of {totalResults}
                     </p>
                     <Pagination
                         style={{ justifyContent: 'flex-end' }}
