@@ -10,6 +10,7 @@ Feature: Delete Static Element
     Scenario: I can delete a static element
         Given I am logged in 
         And I can "LDFAdministration" any "System" 
+        And I create an add line separator request with "some admin comments"
         And I send an add line separator request
         When I send a delete line separator request
         Then a line separator is deleted
