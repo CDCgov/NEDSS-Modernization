@@ -36,4 +36,4 @@ nbs:
     pagebuilder:
       manage: 
         enabled: true
-        service: 'localhost:8080/page-builder/manage/pages'
+        service: 'localhost:8080'
