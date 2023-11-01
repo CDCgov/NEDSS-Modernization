@@ -70,7 +70,7 @@ public class PageStaticController {
         return new AddStaticResponse(componentId);
     }
 
-    @PostMapping("/original_elec_doc_list")
+    @PostMapping("/original-elec-doc-list")
     public AddStaticResponse addStaticOriginalElectronicDocList(
             @PathVariable("page") Long pageId,
             @RequestBody StaticContentRequests.AddDefault request,

@@ -10,19 +10,22 @@ Feature: Create Hyperlink
     Scenario: I can create a hyperlink static element
         Given I am logged in 
         And I can "LDFAdministration" any "System"
-        When I send a hyperlink request with "<label>" and "<link>"
-        Then a hyperlink is created with "<label>" and "<link>"
+        And I create a hyperlink request with "<label>" and "<link>"
+        When I send a hyperlink request
+        Then a hyperlink is created
         Examples:
             | label      |    | link       |
             | google     |    | google.com |
             | yahoo      |    | yahoo.com  |
 
     Scenario: I cannot create a hyperlink element without logging in
-        Given I am not logged in
-        When I send a hyperlink request with "<label>" and "<link>"
-        Then a no credentials found exception is thrown
+        Given I am not logged in at all
+        And I create a hyperlink request with "<label>" and "<link>"
+        When I send a hyperlink request
+        Then an illegal state exception is thrown
 
     Scenario: I cannot create a hyperlink element without having permissions
-        Given I am logged in
-        When I send a hyperlink request with "<label>" and "<link>"
-        Then an accessdenied exception is thrown
+        Given I am a user without permissions
+        And I create a hyperlink request with "<label>" and "<link>"
+        When I send a hyperlink request
+        Then an illegal state exception is thrown

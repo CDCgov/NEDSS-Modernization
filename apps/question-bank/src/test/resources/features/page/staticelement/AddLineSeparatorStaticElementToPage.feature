@@ -9,8 +9,9 @@ Feature: Create Line Separator
     
     Scenario: I can create a line separator static element
         Given I am logged in 
-        And I can "LDFAdministration" any "System"
-        When I send an add line separator request with "<adminComments>"
+        And I can "LDFAdministration" any "System" 
+        And I create an add line separator request with "<adminComments>"
+        When I send an add line separator request
         Then a line separator is created
 
     Examples:
@@ -19,11 +20,13 @@ Feature: Create Line Separator
             | test comments      |
 
     Scenario: I cannot create a line separator static element without logging in
-        Given I am not logged in
-        When I send an add line separator request with "<adminComments>"
-        Then a no credentials found exception is thrown
+        Given I am not logged in at all
+        And I create an add line separator request with "<adminComments>"
+        When I send an add line separator request
+        Then an illegal state exception is thrown
 
     Scenario: I cannot create a line separator static element without having admin permissions
         Given I am a user without permissions
-        When I send an add line separator request with "<adminComments>"
-        Then an accessdenied exception is thrown
+        And I create an add line separator request with "<adminComments>"
+        When I send an add line separator request
+        Then an illegal state exception is thrown
