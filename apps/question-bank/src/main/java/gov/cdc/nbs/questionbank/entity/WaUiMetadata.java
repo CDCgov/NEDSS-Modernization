@@ -1,16 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
-import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,7 +10,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.Instant;
+import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSubsection;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
+import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
@@ -334,18 +335,18 @@ public class WaUiMetadata {
     this.added(command);
   }
 
-  public WaUiMetadata(PageContentCommand.AddQuestion command) {
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddQuestion command, Integer orderNumber) {
     this();
     // Defaults
     this.standardNndIndCd = 'F';
     this.standardQuestionIndCd = 'F';
 
     // User specified
-    this.waTemplateUid = command.page();
+    this.waTemplateUid = page;
     this.nbsUiComponentUid = command.question().getNbsUiComponentUid();
     this.questionLabel = command.question().getQuestionLabel();
     this.questionToolTip = command.question().getQuestionToolTip();
-    this.orderNbr = command.orderNumber();
+    this.orderNbr = orderNumber;
     this.adminComment = command.question().getAdminComment();
     this.dataLocation = command.question().getDataLocation();
     this.descTxt = command.question().getDescTxt();
@@ -387,21 +388,59 @@ public class WaUiMetadata {
 
   }
 
-  public WaUiMetadata(PageContentCommand.AddTab command) {
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddTab command, Integer orderNumber) {
     this();
     this.nbsUiComponentUid = 1010L;
-    this.waTemplateUid = command.page();
+    this.waTemplateUid = page;
     this.questionLabel = command.label();
-    this.displayInd = command.visible() ? "T" : "F";
+    setVisible(command.visible());
     this.questionIdentifier = command.identifier();
-    this.orderNbr = command.orderNumber();
+    this.orderNbr = orderNumber;
 
     // Audit
     added(command);
   }
 
   public void update(UpdateTab command) {
-    this.displayInd = command.visible() ? "T" : "F";
+    setVisible(command.visible());
+    this.questionLabel = command.label();
+    updated(command);
+  }
+
+  public void update(UpdateSubsection command) {
+    setVisible(command.visible());
+    this.questionLabel = command.label();
+    updated(command);
+  }
+
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddSection command, Integer orderNumber) {
+    this();
+    this.nbsUiComponentUid = 1015L;
+    this.waTemplateUid = page;
+    this.questionLabel = command.label();
+    setVisible(command.visible());
+    this.questionIdentifier = command.identifier();
+    this.orderNbr = orderNumber;
+
+    // Audit
+    added(command);
+  }
+
+   public WaUiMetadata(WaTemplate page, PageContentCommand.AddSubsection command, Integer orderNumber) {
+    this();
+    this.nbsUiComponentUid = 1016L;
+    this.waTemplateUid = page;
+    this.questionLabel = command.label();
+    setVisible(command.visible());
+    this.questionIdentifier = command.identifier();
+    this.orderNbr = orderNumber;
+
+    // Audit
+    added(command);
+  }
+
+  public void update(UpdateSection command) {
+    setVisible(command.visible());
     this.questionLabel = command.label();
     updated(command);
   }
@@ -479,6 +518,10 @@ public class WaUiMetadata {
         original.getBatchTableColumnWidth(),
         original.getCoinfectionIndCd(),
         original.getBlockNm());
+  }
+
+  private void setVisible(boolean visible) {
+    this.displayInd = visible ? "T" : "F";
   }
 
   @Override

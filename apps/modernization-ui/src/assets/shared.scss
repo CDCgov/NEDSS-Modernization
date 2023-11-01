@@ -19,3 +19,18 @@ a {
         text-decoration: underline;
     }
 }
+
+.page-title-bar {
+    min-height: 78px;
+    font-family: sans-serif;
+    font-size: 32px;
+    padding: 0 23px;
+    border-bottom: 1px solid #e7e9e9;
+    .add-patient-button {
+        height: fit-content;
+        margin: 0 !important;
+    }
+    .hide-button {
+        display: none;
+    }
+}

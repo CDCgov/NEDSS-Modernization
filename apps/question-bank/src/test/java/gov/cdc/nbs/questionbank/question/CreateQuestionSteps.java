@@ -95,6 +95,7 @@ public class CreateQuestionSteps {
                 default:
                     throw new NotYetImplementedException();
             }
+            questionMother.addManaged(response.id());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

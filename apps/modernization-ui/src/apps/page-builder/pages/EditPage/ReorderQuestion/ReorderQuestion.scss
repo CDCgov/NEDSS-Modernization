@@ -1,7 +1,13 @@
 @import 'settings.scss';
 
 .reorder-question {
+    .reorder-question__handle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .reorder-question__tile {
+        background-color: $color-white;
         display: flex;
         align-items: center;
         gap: 1rem;
@@ -10,6 +16,9 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+        &.hidden {
+            height: 0px;
         }
     }
 }

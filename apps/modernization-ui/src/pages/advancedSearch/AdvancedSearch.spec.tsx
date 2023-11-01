@@ -25,19 +25,4 @@ describe('AdvancedSearch component tests', () => {
             expect(btn.hasAttribute('disabled'));
         });
     });
-
-    describe('When Closest match button is clicked', () => {
-        it('should render list of all patients which closely matches the search criteria', () => {
-            const { container, getByText } = render(
-                <MockedProvider>
-                    <BrowserRouter>
-                        <AdvancedSearch />
-                    </BrowserRouter>
-                </MockedProvider>
-            );
-            const sortByButton = getByText('Sort by');
-
-            fireEvent.click(sortByButton);
-        });
-    });
 });

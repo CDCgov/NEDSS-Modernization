@@ -3,6 +3,7 @@ package gov.cdc.nbs.testing.authorization;
 import gov.cdc.nbs.authentication.entity.AuthAudit;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
+import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 
@@ -48,6 +49,30 @@ public class ActiveUserMother {
     user.setUserLastNm("user");
     user.setMasterSecAdminInd('F');
     user.setProgAreaAdminInd('F');
+    user.setNedssEntryId(identifier);
+
+    AuthAudit audit = new AuthAudit(this.settings.createdBy(), this.settings.createdOn());
+
+    user.setAudit(audit);
+
+    entityManager.persist(user);
+
+    ActiveUser activeUser = new ActiveUser(user.getId(), user.getUserId(), user.getNedssEntryId());
+    users.available(activeUser);
+
+    return activeUser;
+  }
+
+  public ActiveUser createAdmin(final String name) {
+    long identifier = idGenerator.next();
+
+    AuthUser user = new AuthUser();
+    user.setUserId(name);
+    user.setUserType("internalUser");
+    user.setUserFirstNm("test");
+    user.setUserLastNm("user");
+    user.setMasterSecAdminInd('T');
+    user.setProgAreaAdminInd('T');
     user.setNedssEntryId(identifier);
 
     AuthAudit audit = new AuthAudit(this.settings.createdBy(), this.settings.createdOn());

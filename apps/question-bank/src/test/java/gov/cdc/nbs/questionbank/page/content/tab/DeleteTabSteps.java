@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
@@ -10,11 +10,10 @@ import io.cucumber.java.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.tab.repository.WaUiMetaDataRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +27,6 @@ public class DeleteTabSteps {
     private TabController tabController;
 
     @Autowired
-    private WaUiMetaDataRepository waUiMetadataRepository;
-
-    @Autowired
     private ExceptionHolder exceptionHolder;
 
     @Autowired
@@ -38,6 +34,9 @@ public class DeleteTabSteps {
 
     @Autowired
     EntityManager entityManager;
+
+    @Autowired
+    private UserDetailsProvider user;
 
     private final Active<WaUiMetadata> deleted = new Active<>();
 
@@ -62,7 +61,7 @@ public class DeleteTabSteps {
         this.deleted.active(tab);
 
         try {
-            tabController.deleteTab(page.getId(), tab.getId());
+            tabController.deleteTab(page.getId(), tab.getId(), user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -70,13 +69,11 @@ public class DeleteTabSteps {
         }
     }
 
-
     @Then("the tab is deleted")
     public void the_tab_is_deleted() {
-
         WaUiMetadata deleted = this.deleted.active();
 
-        this.entityManager.find(WaUiMetadata.class, deleted.getId());
-
+        WaUiMetadata tab = this.entityManager.find(WaUiMetadata.class, deleted.getId());
+        assertNull(tab);
     }
 }

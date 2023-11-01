@@ -72,6 +72,20 @@ public class PatientSteps {
           value
       );
 
+      case "country code" -> mother.withPhone(
+          identifier,
+          value,
+          null,
+          null
+      );
+
+      case "extension" -> mother.withPhone(
+          identifier,
+          null,
+          null,
+          value
+      );
+
       case "email", "email address" -> mother.withEmail(
           identifier,
           value
@@ -109,5 +123,23 @@ public class PatientSteps {
       case "multi-race", "multi" -> "M";
       default -> "U";
     };
+  }
+
+  @Given("the patient has the phone number {string}-{string} x{string}")
+  public void the_patient_has_the_phone_number(
+      final String countryCode,
+      final String number,
+      final String extension
+  ) {
+
+    PatientIdentifier identifier = this.patient.active();
+
+    mother.withPhone(
+        identifier,
+        countryCode,
+        number,
+        extension
+    );
+
   }
 }

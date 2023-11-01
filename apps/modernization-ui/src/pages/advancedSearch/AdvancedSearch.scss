@@ -9,6 +9,9 @@ button {
 }
 .search-page-height {
     position: relative;
+    .accordian-item {
+        padding-top: 0;
+    }
 }
 
 .bg-light {
@@ -39,20 +42,6 @@ button {
 }
 .usa-pagination .usa-current {
     background-color: #003470 !important;
-}
-
-.page-title-bar {
-    min-height: 78px;
-    font-family: sans-serif;
-    font-size: 32px;
-    padding: 0 23px;
-    border-bottom: 1px solid #e7e9e9;
-    .add-patient-button {
-        height: fit-content;
-    }
-    .hide-button {
-        display: none;
-    }
 }
 
 .refine-text {
@@ -118,6 +107,7 @@ button {
 
 .button-group {
     position: relative;
+    min-height: 50px;
     .usa-nav__submenu {
         position: absolute;
         right: 0.5rem;

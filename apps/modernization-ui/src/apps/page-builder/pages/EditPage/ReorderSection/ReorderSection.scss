@@ -4,7 +4,13 @@
     .reorder-section__toggle {
         cursor: pointer;
     }
+    .reorder-section__handle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .reorder-section__tile {
+        background-color: $color-white;
         display: flex;
         align-items: center;
         gap: 1rem;
