@@ -17,7 +17,7 @@ describe('TableMenu', () => {
                 <TableMenu {...props} />
             </BrowserRouter>
         );
-        expect(screen.getByText('Add new')).toBeInTheDocument();
+        expect(screen.getByText('Create new')).toBeInTheDocument();
     });
 
     it('has a download button', () => {

@@ -12,7 +12,6 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class ConditionControllerService {
-
     /**
      * findConditions
      * @returns Page_Condition_ OK
@@ -22,29 +21,29 @@ export class ConditionControllerService {
         authorization,
         page,
         size,
-        sort,
+        sort
     }: {
-        authorization: any,
-        page?: number,
-        size?: number,
-        sort?: string,
+        authorization: any;
+        page?: number;
+        size?: number;
+        sort?: string;
     }): CancelablePromise<Page_Condition_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/conditions/',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -56,26 +55,26 @@ export class ConditionControllerService {
      */
     public static createConditionUsingPost({
         authorization,
-        request,
+        request
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * request
          */
-        request: CreateConditionRequest,
+        request: CreateConditionRequest;
     }): CancelablePromise<Condition | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/conditions/',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -85,21 +84,21 @@ export class ConditionControllerService {
      * @throws ApiError
      */
     public static findAllConditionsUsingGet({
-        authorization,
+        authorization
     }: {
-        authorization: any,
+        authorization: any;
     }): CancelablePromise<Array<Condition>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/conditions/all',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -114,34 +113,34 @@ export class ConditionControllerService {
         search,
         page,
         size,
-        sort,
+        sort
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * search
          */
-        search: ReadConditionRequest,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_Condition_ | any> {
+        search: ReadConditionRequest;
+        page?: number;
+        size?: number;
+        sort?: string;
+    }): CancelablePromise<Page_Condition_> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/conditions/search',
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+                page: page,
+                size: size,
+                sort: sort
             },
             body: search,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
 
@@ -152,27 +151,27 @@ export class ConditionControllerService {
      */
     public static inactivateConditionUsingDelete({
         authorization,
-        id,
+        id
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * id
          */
-        id: string,
+        id: string;
     }): CancelablePromise<ConditionStatusResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/nbs/page-builder/api/v1/conditions/{id}',
             path: {
-                'id': id,
+                id: id
             },
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             errors: {
                 401: `Unauthorized`,
-                403: `Forbidden`,
-            },
+                403: `Forbidden`
+            }
         });
     }
 
@@ -183,28 +182,27 @@ export class ConditionControllerService {
      */
     public static activateConditionUsingPatch({
         authorization,
-        id,
+        id
     }: {
-        authorization: any,
+        authorization: any;
         /**
          * id
          */
-        id: string,
+        id: string;
     }): CancelablePromise<ConditionStatusResponse> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/nbs/page-builder/api/v1/conditions/{id}',
             path: {
-                'id': id,
+                id: id
             },
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             errors: {
                 401: `Unauthorized`,
-                403: `Forbidden`,
-            },
+                403: `Forbidden`
+            }
         });
     }
-
 }
