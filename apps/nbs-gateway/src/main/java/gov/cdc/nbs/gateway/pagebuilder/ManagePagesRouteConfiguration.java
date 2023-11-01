@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 
 @Configuration
-@ConditionalOnProperty(prefix = "nbs.gateway.pagebuilder.manage", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "nbs.gateway.pagebuilder", name = "enabled", havingValue = "true")
 public class ManagePagesRouteConfiguration {
   @Bean
   RouteLocator pagebuilderManagePagesConfig(

@@ -34,6 +34,5 @@ nbs:
         enabled: true
         service: 'localhost:8080'
     pagebuilder:
-      manage: 
-        enabled: true
-        service: 'localhost:8080'
+      enabled: false
+      service: 'localhost:8080'

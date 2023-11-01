@@ -18,8 +18,8 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
         "nbs.gateway.classic=http://localhost:10000",
-        "nbs.gateway.pagebuilder.manage.service=localhost:10002",
-        "nbs.gateway.pagebuilder.manage.enabled=false"
+        "nbs.gateway.pagebuilder.service=localhost:10002",
+        "nbs.gateway.pagebuilder.enabled=false"
     })
 class ManagePagesRouteConfigurationDisabledTest {
 
