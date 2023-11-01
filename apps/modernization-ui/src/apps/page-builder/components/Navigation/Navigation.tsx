@@ -25,7 +25,9 @@ export const Navigation = ({ active }: Props) => {
                 <div className="navigation__button">
                     <p>Templates</p>
                 </div>
-                <div className="navigation__button">
+                <div
+                    className={`navigation__button ${active === 'condition-library' ? 'active' : ''}`}
+                    onClick={() => goBack('condition-library')}>
                     <p>Conditions</p>
                 </div>
                 <div
