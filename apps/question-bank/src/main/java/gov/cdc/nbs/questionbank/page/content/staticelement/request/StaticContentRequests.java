@@ -25,4 +25,5 @@ public sealed interface StaticContentRequests {
             @Nullable String adminComments,
             Long subSectionId) implements StaticContentRequests {
     }
+
 }
