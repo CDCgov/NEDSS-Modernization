@@ -40,8 +40,6 @@ class PageStaticDeletorTest {
 
         when(uiMetadatumRepository.findById(request.componentId())).thenReturn(Optional.of(component));
 
-
-
         assertTrue(pageStaticDeletor.deleteStaticElement(pageId, request));
     }
 

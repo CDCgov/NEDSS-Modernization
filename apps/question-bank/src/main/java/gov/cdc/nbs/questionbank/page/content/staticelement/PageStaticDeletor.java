@@ -34,7 +34,7 @@ public class PageStaticDeletor {
             throw new DeleteStaticElementException("Please provide valid page ID");
         }
 
-        if ("Draft".equals(template.getTemplateType())) {
+        if (!("Draft").equals(template.getTemplateType())) {
             throw new DeleteStaticElementException("Page cannot be published");
         }
 
