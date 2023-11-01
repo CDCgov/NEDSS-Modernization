@@ -34,6 +34,12 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
         }
     }, [searchQuery]);
 
+    useEffect(() => {
+        if (!keywords || keywords === '') {
+            setSearchQuery('');
+        }
+    }, [keywords]);
+
     return (
         <div className="table-menu">
             <Input
