@@ -15,6 +15,7 @@ import { ModalRef } from '@trussworks/react-uswds';
 import { Spinner } from 'components/Spinner/Spinner';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ReorderModal } from './ReorderModal/ReorderModal';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 
 export const EditPage = () => {
     const { pageId } = useParams();
@@ -57,48 +58,53 @@ export const EditPage = () => {
     return (
         <PageBuilder page="edit-page">
             {page ? (
-                <div className="edit-page">
-                    <PagesBreadcrumb currentPage={page.name} />
-                    <div className="edit-page__header">
-                        <EditPageHeader page={page} handleSaveDraft={handleSaveDraft} />
-                        {page.tabs ? (
-                            <EditPageTabs
-                                tabs={page.tabs}
-                                active={active}
-                                setActive={setActive}
-                                onAddSuccess={handleAddSuccess}
-                            />
-                        ) : null}
-                    </div>
-                    <div className="edit-page__container">
-                        <div className="edit-page__content">
-                            {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
-
-                            {page.tabs?.[active] ? (
-                                <EditPageContentComponent content={page.tabs[active]} onAddSection={handleAddSuccess} />
+                <DragDropProvider data={page.tabs?.[active]}>
+                    <div className="edit-page">
+                        <PagesBreadcrumb currentPage={page.name} />
+                        <div className="edit-page__header">
+                            <EditPageHeader page={page} handleSaveDraft={handleSaveDraft} />
+                            {page.tabs ? (
+                                <EditPageTabs
+                                    tabs={page.tabs}
+                                    active={active}
+                                    setActive={setActive}
+                                    onAddSuccess={handleAddSuccess}
+                                />
                             ) : null}
+                        </div>
+                        <div className="edit-page__container">
+                            <div className="edit-page__content">
+                                {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
 
-                            <EditPageSidebar
-                                addSectionModalRef={addSectionModalRef}
-                                reorderModalRef={reorderModalRef}
-                            />
+                                {page.tabs?.[active] ? (
+                                    <EditPageContentComponent
+                                        content={page.tabs[active]}
+                                        onAddSection={handleAddSuccess}
+                                    />
+                                ) : null}
+
+                                <EditPageSidebar
+                                    addSectionModalRef={addSectionModalRef}
+                                    reorderModalRef={reorderModalRef}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
+                    {pageId && page.tabs?.[active].id ? (
+                        <AddSectionModal
+                            modalRef={addSectionModalRef}
+                            pageId={pageId}
+                            tabId={page.tabs[active]?.id}
+                            onAddSection={handleAddSuccess}
+                        />
+                    ) : null}
+                    {page.name && page.tabs?.[active] ? (
+                        <ReorderModal modalRef={reorderModalRef} pageName={page.tabs[active].name} />
+                    ) : null}
+                </DragDropProvider>
             ) : (
                 <Spinner />
             )}
-            {page && pageId && page.tabs?.[active].id ? (
-                <AddSectionModal
-                    modalRef={addSectionModalRef}
-                    pageId={pageId}
-                    tabId={page.tabs[active]?.id}
-                    onAddSection={handleAddSuccess}
-                />
-            ) : null}
-            {page && page.name && page.tabs?.[active] ? (
-                <ReorderModal modalRef={reorderModalRef} pageName={page.name} content={page.tabs[active]} />
-            ) : null}
         </PageBuilder>
     );
 };

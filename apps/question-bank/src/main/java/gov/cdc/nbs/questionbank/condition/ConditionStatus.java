@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.condition;
 
 import gov.cdc.nbs.questionbank.condition.exception.ConditionBadRequest;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionInternalServerError;
+import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,9 @@ import gov.cdc.nbs.questionbank.condition.response.ConditionStatusResponse;
 public class ConditionStatus {
     @Autowired
     private ConditionCodeRepository conditionCodeRepository;
+
+    @Autowired
+    private LdfPageSetRepository ldfPageSetRepository;
 
     public ConditionStatusResponse activateCondition(String id) {
         ConditionStatusResponse response = new ConditionStatusResponse();
@@ -31,6 +35,7 @@ public class ConditionStatus {
         } catch (Exception e) {
             throw new ConditionInternalServerError(id);
         }
+        ldfPageSetRepository.updateStatusBasedOnConditionCode();
         return response;
     }
 
@@ -50,6 +55,7 @@ public class ConditionStatus {
         } catch (Exception e) {
             throw new ConditionInternalServerError(id);
         }
+        ldfPageSetRepository.updateStatusBasedOnConditionCode();
         return response;
     }
 }

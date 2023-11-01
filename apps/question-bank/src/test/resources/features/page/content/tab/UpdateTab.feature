@@ -2,7 +2,8 @@
 Feature: Update Tab
 
     Background:
-        Given pages exist
+        Given I have a page
+        And the page has a tab
 
     Scenario: I can update a tab
         Given I am an admin user

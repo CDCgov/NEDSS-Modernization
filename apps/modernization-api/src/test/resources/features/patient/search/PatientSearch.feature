@@ -106,6 +106,14 @@ Feature: Patient Search
     And the search results have a patient with a "first name" equal to "Al"
     And the search results have a patient with a "last name" equal to "Lias"
 
+  Scenario: I can search for a Patient using a phone number
+    Given the patient has the phone number "1"-"888-240-2200" x"1009"
+    And I have another patient
+    And the patient has a "phone number" of "613-240-2200"
+    And I add the patient criteria for an "phone number" equal to "888-240-2200"
+    When I search for patients
+    Then the search results have a patient with a "phone number" equal to "888-240-2200"
+
   Scenario: I can search for a Patient using a partial phone number
     Given the patient has a "phone number" of "888-240-2200"
     And I have another patient
@@ -153,3 +161,17 @@ Feature: Patient Search
     And I add the patient criteria for an "identification value" equal to "4099"
     When I search for patients
     Then the patient is not in the search results
+
+  Scenario: BUG: CNFT1-1560 Patients with only a country code are searchable
+    Given the patient has a "country code" of "+32"
+    And the patient has a "first name" of "Eva"
+    And I add the patient criteria for an "first name" equal to "Eva"
+    When I search for patients
+    Then the search results have a patient with a "first name" equal to "Eva"
+
+  Scenario: BUG: CNFT1-1560 Patients only an extension are searchable
+    Given the patient has an "extension" of "3943"
+    And the patient has a "first name" of "Liam"
+    And I add the patient criteria for an "first name" equal to "Liam"
+    When I search for patients
+    Then the search results have a patient with a "first name" equal to "Liam"

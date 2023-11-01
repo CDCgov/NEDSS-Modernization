@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
-import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -10,9 +9,10 @@ import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import gov.cdc.nbs.support.IdentificationMother;
 import gov.cdc.nbs.support.RaceMother;
+import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import gov.cdc.nbs.support.util.RandomUtil;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,14 +125,14 @@ public class PatientMother {
       final String state,
       final String zip
   ) {
-   withAddress(
-       identifier,
-       "H",
-       address,
-       city,
-       state,
-       zip
-   );
+    withAddress(
+        identifier,
+        "H",
+        address,
+        city,
+        state,
+        zip
+    );
   }
 
   public void withAddress(
@@ -339,6 +339,15 @@ public class PatientMother {
       final PatientIdentifier identifier,
       final String number
   ) {
+    withPhone(identifier, null, number, null);
+  }
+
+  public void withPhone(
+      final PatientIdentifier identifier,
+      final String countryCode,
+      final String number,
+      final String extension
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
@@ -348,9 +357,9 @@ public class PatientMother {
             "PH",
             "H",
             RandomUtil.getRandomDateInPast(),
-            null,
+            countryCode,
             number,
-            null,
+            extension,
             null,
             null,
             null,

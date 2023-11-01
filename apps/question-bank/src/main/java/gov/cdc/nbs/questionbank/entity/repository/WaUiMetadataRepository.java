@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entity.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,9 +32,12 @@ public interface WaUiMetadataRepository extends JpaRepository<WaUiMetadata, Long
 
 
     @Modifying
-    @Query("Update WaUiMetadata ui SET ui.orderNbr = ui.orderNbr + 1 WHERE ui.waTemplateUid.id = :pageId AND ui.orderNbr >= :orderNumber")
-    void incrementOrderNbrGreaterThanOrEqualTo(@Param("pageId") Long pageId, @Param("orderNumber") Integer orderNumber);
+    @Query("UPDATE WaUiMetadata ui SET ui.orderNbr = ui.orderNbr + 1 WHERE ui.waTemplateUid.id = :pageId AND ui.orderNbr >= :start")
+    void incrementOrderNbrGreaterThanOrEqualTo(@Param("pageId") Long pageId, @Param("start") Integer start);
 
+    @Modifying
+    @Query(value = "UPDATE WaUiMetadata w SET w.orderNbr = w.orderNbr - 1 WHERE w.orderNbr >=:start AND w.waTemplateUid.id =:page")
+    void decrementOrderNumbers(@Param("start") Integer start, @Param("page") Long page);
 
     @Query("SELECT COUNT(ui) FROM WaUiMetadata ui WHERE ui.waTemplateUid.id =:pageId AND ui.questionIdentifier =:questionIdentifier")
     Long countByPageAndQuestionIdentifier(
@@ -48,4 +52,14 @@ public interface WaUiMetadataRepository extends JpaRepository<WaUiMetadata, Long
 
     public void deleteAllByWaTemplateUid(WaTemplate template);
 
+    @Query(value = "SELECT w.orderNbr FROM WaUiMetadata w WHERE w.id = :id")
+    Optional<Integer> findOrderNumber(@Param("id") Long id);
+
+    @Query(value = "SELECT w.nbsUiComponentUid FROM WaUiMetadata w WHERE w.orderNbr =:orderNbr AND w.waTemplateUid.id =:pageId")
+    Optional<Long> findNbsUiComponentUid(@Param("orderNbr") Integer orderNbr, @Param("pageId") Long pageId);
+
+    @Query("SELECT MIN(m.orderNbr) FROM WaUiMetadata m WHERE m.waTemplateUid.id =:page AND m.orderNbr > :orderNbr AND m.nbsUiComponentUid IN (1015, 1010)")
+    Integer findOrderNbrOfNextSectionOrTab(
+            @Param("orderNbr") Integer orderNbr,
+            @Param("page") long page);
 }

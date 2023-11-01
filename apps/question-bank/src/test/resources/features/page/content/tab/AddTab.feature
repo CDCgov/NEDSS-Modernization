@@ -2,7 +2,7 @@
 Feature: Create Tab
 
     Background:
-        Given pages exist
+        Given I have a page
 
     Scenario: I can add a tab to a page
         Given I am an admin user
