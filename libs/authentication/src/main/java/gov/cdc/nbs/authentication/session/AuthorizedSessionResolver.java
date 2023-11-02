@@ -1,10 +1,12 @@
 package gov.cdc.nbs.authentication.session;
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 import gov.cdc.nbs.authentication.AuthorizedUserResolver;
 import gov.cdc.nbs.authentication.NBSUserCookie;
 import gov.cdc.nbs.authentication.SessionCookie;
 
+@Component
 public class AuthorizedSessionResolver {
   private final AuthorizedUserResolver resolver;
 

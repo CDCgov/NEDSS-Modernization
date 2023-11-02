@@ -65,7 +65,7 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
         // Redirect to timeout
         outgoing.setStatus(HttpStatus.FOUND.value());
         outgoing.setHeader(HttpHeaders.LOCATION, "/nbs/timeout");
-        return;
+        break;
     }
   }
 
@@ -75,7 +75,6 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
       FilterChain chain) throws IOException, ServletException {
     SessionAuthorization sessionAuthorization = sessionResolver.resolve(incoming);
     if (sessionAuthorization instanceof SessionAuthorization.Authorized authorized) {
-      // JSESSIONID was valid. Create and apply token
       applyCredentials(authorized.user().user(), incoming, outgoing);
       chain.doFilter(incoming, outgoing);
     } else if (sessionAuthorization instanceof SessionAuthorization.Unauthorized unauthorized) {
@@ -83,7 +82,7 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
     }
   }
 
-  // Fetches the user from the database and sets the Spring security context as well as adding the token to the response
+  // Fetches the user from the database and sets the Spring security context as well as adding the necessary cookies
   private void applyCredentials(
       String user,
       HttpServletRequest request,
@@ -92,6 +91,8 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
     Authentication auth = createSpringAuthentication(userDetails, request);
     SecurityContextHolder.getContext().setAuthentication(auth);
     cookieEnsurer.ensure(user, response);
+    NBSUserCookie userCookie = new NBSUserCookie(user);
+    userCookie.apply(securityProperties, response);
   }
 
 

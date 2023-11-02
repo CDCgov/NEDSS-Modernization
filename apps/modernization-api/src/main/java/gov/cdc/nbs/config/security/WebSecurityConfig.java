@@ -15,7 +15,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.authentication.NBSAuthenticationFilter;
+import gov.cdc.nbs.authentication.UserService;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
+import gov.cdc.nbs.authentication.session.AuthorizedSessionResolver;
+import gov.cdc.nbs.authentication.token.NBSTokenCookieEnsurer;
+import gov.cdc.nbs.authentication.token.NBSTokenValidator;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +38,34 @@ public class WebSecurityConfig {
   private String graphQLEndpoint;
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain securityFilterChain(
+      HttpSecurity http,
+      final NBSTokenValidator tokenValidator,
+      final AuthorizedSessionResolver sessionResolver,
+      final NBSTokenCookieEnsurer cookieEnsurer,
+      final SecurityProperties securityProperties,
+      final UserService userService)
+      throws Exception {
+
+    final NBSAuthenticationFilter authFilter = new NBSAuthenticationFilter(
+        tokenValidator,
+        sessionResolver,
+        cookieEnsurer,
+        securityProperties,
+        userService);
     return http.authorizeRequests()
         .antMatchers(
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-resources/**",
-            "/v2/api-docs/**")
+            "/v2/api-docs/**",
+            "/login",
+            "/nbs/redirect/*")
         .permitAll()
         .anyRequest().authenticated()
         .and()
+        .csrf().disable()
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
         .exceptionHandling().authenticationEntryPoint(this::writeErrorMessage)
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

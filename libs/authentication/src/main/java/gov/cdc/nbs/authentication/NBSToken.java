@@ -18,6 +18,9 @@ public record NBSToken(String value) {
   }
 
   public static Optional<NBSToken> resolve(Cookie[] cookies) {
+    if (cookies == null) {
+      return Optional.empty();
+    }
     for (Cookie cookie : cookies) {
       if (cookie.getName().equals(NBS_TOKEN_NAME)) {
         return Optional.of(new NBSToken(cookie.getValue()));
