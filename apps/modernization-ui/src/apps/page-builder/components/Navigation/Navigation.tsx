@@ -20,25 +20,26 @@ export const Navigation = ({ active }: Props) => {
                 <div
                     className={`navigation__button ${active === 'manage-pages' ? 'active' : ''}`}
                     onClick={() => goBack('pages')}>
-                    <p>Pages</p>
+                    <p>Page Library</p>
                 </div>
-                <div className="navigation__button">
-                    <p>Templates</p>
-                </div>
+
                 <div
                     className={`navigation__button ${active === 'condition-library' ? 'active' : ''}`}
                     onClick={() => goBack('condition-library')}>
-                    <p>Conditions</p>
+                    <p>Condition Library</p>
                 </div>
                 <div
                     className={`navigation__button ${active === 'question-library' ? 'active' : ''}`}
                     onClick={() => goBack('question-library')}>
-                    <p>Questions</p>
+                    <p>Question Library</p>
+                </div>
+                <div className="navigation__button">
+                    <p>Template Library</p>
                 </div>
                 <div
                     className={`navigation__button ${active === 'valueset-library' ? 'active' : ''}`}
                     onClick={() => goBack('valueset-library')}>
-                    <p>Value sets</p>
+                    <p>Value set Library</p>
                 </div>
             </div>
         </div>
