@@ -22,8 +22,8 @@ const ConditionLibrary = () => {
             searchText: searchQuery
         })
             .then((data) => {
-                setConditions(data.content);
-                setTotalElements(data.totalElements);
+                setConditions(data.content ?? []);
+                setTotalElements(data.totalElements ?? 0);
                 setIsLoading(false);
             })
             .catch((error) => {

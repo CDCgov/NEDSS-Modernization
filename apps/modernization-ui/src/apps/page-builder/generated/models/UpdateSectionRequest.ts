@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type UpdateSectionRequest = {
-    questionLabel?: string;
-    visible?: string;
+    name?: string;
+    visible?: boolean;
 };
 
