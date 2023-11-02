@@ -5,12 +5,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -42,6 +46,9 @@ class PageDownloaderTest {
     @Mock
     private UserProfileRepository userProfileRepository;
 
+    @Mock
+    WaUiMetadataRepository waUiMetadataRepository;
+
     @InjectMocks
     private PageDownloader pageDownloader;
 
@@ -52,26 +59,26 @@ class PageDownloaderTest {
     Instant now = Instant.now();
 
     @Test
-	void downloadLibrary() throws IOException {
-		when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
-		when(pageConMappingRepository.findByWaTemplateUidIn(Mockito.any())).thenReturn(List.of(getMapping()));
-		when(conditionCodeRepository.findByIdIn(Mockito.anyList())).thenReturn(List.of(conditionCode()));
-		ByteArrayInputStream response = pageDownloader.downloadLibrary();
-		byte[] content = response.readAllBytes();
-		assertNotNull(content);
-		response.read(content, 0, content.length);
-		String output = new String(content, StandardCharsets.UTF_8);
-		assertNotNull(output);
-		
-	}
+    void downloadLibrary() throws IOException {
+        when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
+        when(pageConMappingRepository.findByWaTemplateUidIn(Mockito.any())).thenReturn(List.of(getMapping()));
+        when(conditionCodeRepository.findByIdIn(Mockito.anyList())).thenReturn(List.of(conditionCode()));
+        ByteArrayInputStream response = pageDownloader.downloadLibrary();
+        byte[] content = response.readAllBytes();
+        assertNotNull(content);
+        response.read(content, 0, content.length);
+        String output = new String(content, StandardCharsets.UTF_8);
+        assertNotNull(output);
+
+    }
 
     @Test
-	void downloadLibraryException() {
-	when(templateRepository.getAllPagesOrderedByName()).thenThrow(new QueryException("Error downloading Page Library"));
-	var exception = assertThrows(RuntimeException.class, () -> pageDownloader.downloadLibrary());
-	assertTrue(exception.getMessage().contains("Error downloading Page Library"));
-	
-	}
+    void downloadLibraryException() {
+        when(templateRepository.getAllPagesOrderedByName()).thenThrow(new QueryException("Error downloading Page Library"));
+        var exception = assertThrows(RuntimeException.class, () -> pageDownloader.downloadLibrary());
+        assertTrue(exception.getMessage().contains("Error downloading Page Library"));
+
+    }
 
 
     @Test
@@ -86,20 +93,20 @@ class PageDownloaderTest {
 
 
     @Test
-	void getLastUpdatedUserTest() {
-	when(userProfileRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(getUserProfile()));
-	 String user = pageDownloader.getLastUpdatedUser(1l);
-	 assertNotNull(user);
-	 assertEquals("Update User", user);
-	}
+    void getLastUpdatedUserTest() {
+        when(userProfileRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(getUserProfile()));
+        String user = pageDownloader.getLastUpdatedUser(1l);
+        assertNotNull(user);
+        assertEquals("Update User", user);
+    }
 
     @Test
-	void getLastUpdatedUserTestNoProfile() {
-	when(userProfileRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-	 String user = pageDownloader.getLastUpdatedUser(1l);
-	 assertNotNull(user);
-	 assertEquals(" ", user);
-	}
+    void getLastUpdatedUserTestNoProfile() {
+        when(userProfileRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        String user = pageDownloader.getLastUpdatedUser(1l);
+        assertNotNull(user);
+        assertEquals(" ", user);
+    }
 
     private ConditionCode conditionCode() {
         ConditionCode code = new ConditionCode();
@@ -140,24 +147,53 @@ class PageDownloaderTest {
     }
 
     @Test
-	 void downloadLibraryPdf() throws IOException, DocumentException {
-		 when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
-		 when(pageConMappingRepository.findByWaTemplateUidIn(Mockito.any())).thenReturn(List.of(getMapping()));
-		 when(conditionCodeRepository.findByIdIn(Mockito.any())).thenReturn(List.of(conditionCode()));
-		 byte[] content = pageDownloader.downloadLibraryPDF();
-		 assertNotNull(content);
+    void downloadLibraryPdf() throws IOException, DocumentException {
+        when(templateRepository.getAllPagesOrderedByName()).thenReturn(List.of(getTemplate(1l)));
+        when(pageConMappingRepository.findByWaTemplateUidIn(Mockito.any())).thenReturn(List.of(getMapping()));
+        when(conditionCodeRepository.findByIdIn(Mockito.any())).thenReturn(List.of(conditionCode()));
+        byte[] content = pageDownloader.downloadLibraryPDF();
+        assertNotNull(content);
 
-		 String output = new String(content, StandardCharsets.UTF_8);
-		 assertNotNull(output);
+        String output = new String(content, StandardCharsets.UTF_8);
+        assertNotNull(output);
 
-	 }
+    }
 
     @Test
-	 void downloadLibraryPdfException() {
-		 when(templateRepository.getAllPagesOrderedByName()).thenThrow(new QueryException("Error downloading Page Library"));
-		 var exception = assertThrows(RuntimeException.class, () -> pageDownloader.downloadLibraryPDF());
-		 assertTrue(exception.getMessage().contains("Error downloading Page Library"));
+    void downloadLibraryPdfException() {
+        when(templateRepository.getAllPagesOrderedByName()).thenThrow(new QueryException("Error downloading Page Library"));
+        var exception = assertThrows(RuntimeException.class, () -> pageDownloader.downloadLibraryPDF());
+        assertTrue(exception.getMessage().contains("Error downloading Page Library"));
 
-	 }
+    }
+
+    @Test
+    void downloadPageMetaData() throws IOException {
+        Long waTemplateUid = 100l;
+        when(waUiMetadataRepository.findPageMetadataByWaTemplateUid(waTemplateUid)).thenReturn(getPageMetaData());
+        ByteArrayInputStream response = pageDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid);
+        byte[] content = response.readAllBytes();
+        assertNotNull(content);
+        response.read(content, 0, content.length);
+        String output = new String(content, StandardCharsets.UTF_8);
+        assertNotNull(output);
+
+    }
+
+    List<Object[]> getPageMetaData() {
+        List<Object[]> pageMetaData = new ArrayList<>();
+        pageMetaData.add(new Object[]{"col1_val", "col2_val", "col3_val", "col4_val", "col5_val", "col6_val", "col7_val"});
+        pageMetaData.add(new Object[]{"col1_val", "col2_val", "col3_val", "col4_val", "col5_val", "col6_val", "col7_val"});
+        return pageMetaData;
+    }
+
+    @Test
+    void downloadPageMetaDataException() {
+        when(waUiMetadataRepository.findPageMetadataByWaTemplateUid(100l)).thenThrow(new QueryException("Error downloading Page Metadata"));
+        var exception = assertThrows(RuntimeException.class, () -> pageDownloader.downloadPageMetadataByWaTemplateUid(100l));
+        assertTrue(exception.getMessage().contains("Error downloading Page Metadata"));
+
+    }
+
 
 }

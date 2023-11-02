@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
@@ -40,168 +42,194 @@ import com.itextpdf.text.pdf.PdfWriter;
 @RequiredArgsConstructor
 public class PageDownloader {
 
-	@Autowired
-	private WaTemplateRepository templateRepository;
+    @Autowired
+    private WaTemplateRepository templateRepository;
 
-	@Autowired
-	private PageCondMappingRepository pageConMappingRepository;
+    @Autowired
+    private PageCondMappingRepository pageConMappingRepository;
 
-	@Autowired
-	private ConditionCodeRepository conditionCodeRepository;
+    @Autowired
+    private ConditionCodeRepository conditionCodeRepository;
 
-	@Autowired
-	private UserProfileRepository userProfileRepository;
+    @Autowired
+    private UserProfileRepository userProfileRepository;
 
-	private static final List<String> PAGE_LIBRARY_HEADERS = Arrays.asList("Event Type",
-			"Page Name", "Page State", "Related Conditions(s)", "Last Updated", "Last Updated By ");
-	private static final Font helvetica = new Font(FontFamily.HELVETICA, 7, Font.NORMAL);
-	private static final DateTimeFormatter dateFormatter = DateTimeFormatter
-			.ofPattern("dd/MM/yyyy")
-			.withZone(ZoneId.of("UTC"));
+    @Autowired
+    private WaUiMetadataRepository waUiMetadataRepository;
 
-	
-	public ByteArrayInputStream downloadLibrary()  throws IOException {
-		final CSVFormat format = CSVFormat.Builder.create().setQuoteMode(QuoteMode.MINIMAL).setHeader("Event Type",
-				"Page Name", "Page State", "Related Conditions(s)", "Last Udated", "Last Udated By ").build();
-		
+    private static final List<String> PAGE_LIBRARY_HEADERS = Arrays.asList("Event Type",
+            "Page Name", "Page State", "Related Conditions(s)", "Last Updated", "Last Updated By ");
+    private static final Font helvetica = new Font(FontFamily.HELVETICA, 7, Font.NORMAL);
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter
+            .ofPattern("dd/MM/yyyy")
+            .withZone(ZoneId.of("UTC"));
 
-		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format)) {
-			
-			List<WaTemplate> pages = templateRepository.getAllPagesOrderedByName();
-			List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUidIn(pages);
-			List<ConditionCode> conditionCodes = conditionCodeRepository.findByIdIn(conditionIds(mappings));
 
-			for (WaTemplate page : pages) {
-				List<ConditionCode> pageConditions = new ArrayList<>();
+    public ByteArrayInputStream downloadLibrary() throws IOException {
+        final CSVFormat format = CSVFormat.Builder.create().setQuoteMode(QuoteMode.MINIMAL).setHeader("Event Type",
+                "Page Name", "Page State", "Related Conditions(s)", "Last Udated", "Last Udated By ").build();
 
-				mappings.stream()
-                .filter(p -> p.getWaTemplateUid().equals(page))
-                .forEach(v -> 
-                    conditionCodes.stream()
-                            .filter(c -> c.getId().equals(v.getConditionCd()))
-                            .forEach(pageConditions::add)
-                );
-				
-				List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
-						formatttedRelatedConditions(pageConditions), page.getLastChgTime().toString(),
-						getLastUpdatedUser(page.getLastChgUserId()));
-				csvPrinter.printRecord(data);
 
-			}
-			csvPrinter.flush();
-			return new ByteArrayInputStream(out.toByteArray());
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format)) {
 
-		} catch (IOException e) {
-			throw new IOException("Error downloading Page Library: " + e.getMessage());
-		}
+            List<WaTemplate> pages = templateRepository.getAllPagesOrderedByName();
+            List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUidIn(pages);
+            List<ConditionCode> conditionCodes = conditionCodeRepository.findByIdIn(conditionIds(mappings));
+            for (WaTemplate page : pages) {
+                List<ConditionCode> pageConditions = new ArrayList<>();
 
-	}
+                mappings.stream()
+                        .filter(p -> p.getWaTemplateUid().equals(page))
+                        .forEach(v ->
+                                conditionCodes.stream()
+                                        .filter(c -> c.getId().equals(v.getConditionCd()))
+                                        .forEach(pageConditions::add)
+                        );
 
-	public String formatttedRelatedConditions(List<ConditionCode> conditions) {
+                List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
+                        formatttedRelatedConditions(pageConditions), page.getLastChgTime().toString(),
+                        getLastUpdatedUser(page.getLastChgUserId()));
+                csvPrinter.printRecord(data);
+
+            }
+            csvPrinter.flush();
+            return new ByteArrayInputStream(out.toByteArray());
+
+        } catch (IOException e) {
+            throw new IOException("Error downloading Page Library: " + e.getMessage());
+        }
+
+    }
+
+    public String formatttedRelatedConditions(List<ConditionCode> conditions) {
         return conditions.stream()
                 .map(c -> c.getConditionDescTxt() + "(" + c.getId() + ")")
                 .collect(Collectors.joining(","));
-	}
+    }
 
-	public String getLastUpdatedUser(Long lastChgUserId) {
-		Optional<UserProfile> user = userProfileRepository.findById(lastChgUserId);
-		if (user.isPresent()) {
-			return user.get().getFirstNm() + " " + user.get().getLastNm();
-		}
-		return " ";
-	}
-	private List<String> conditionIds(List<PageCondMapping> mappings) {
-		List<String> conditionIds = new ArrayList<>();
-		for(PageCondMapping map : mappings) {
-			conditionIds.add(map.getConditionCd());
-		}
-		return conditionIds;
-	}
-	
-	private String getEventType(String type) {
-	if (type == null || type.length() < 1)
-	 return " ";
-	
-	  switch (type) {
-		case "INV":
-			return  "Investigation";
-		case "CON":
-		    return "Contact";
-		case "VAC":
-			return "Vaccination";
-		case "IXS":
-			return "Interview";
-		case "SUS":
-			return "Lab Susceptibility";
-		case "LAB":
-			return "Lab Report";
-		case "ISO":
-			return "Lab Isolate Tracking";
-		default:
-			return type;
+    public String getLastUpdatedUser(Long lastChgUserId) {
+        Optional<UserProfile> user = userProfileRepository.findById(lastChgUserId);
+        if (user.isPresent()) {
+            return user.get().getFirstNm() + " " + user.get().getLastNm();
+        }
+        return " ";
+    }
 
-	}
-	  
-	}
+    private List<String> conditionIds(List<PageCondMapping> mappings) {
+        List<String> conditionIds = new ArrayList<>();
+        for (PageCondMapping map : mappings) {
+            conditionIds.add(map.getConditionCd());
+        }
+        return conditionIds;
+    }
 
-	public byte[] downloadLibraryPDF() throws DocumentException, IOException {
-		var outputStream = new ByteArrayOutputStream();
-		Document document = new Document();
-		document.setPageSize(PageSize.A4.rotate());
-		PdfWriter.getInstance(document, outputStream);
+    private String getEventType(String type) {
+        if (type == null || type.length() < 1)
+            return " ";
 
-		document.open();
-		PdfPTable table = new PdfPTable(6);
-		table.setWidthPercentage(95);
+        switch (type) {
+            case "INV":
+                return "Investigation";
+            case "CON":
+                return "Contact";
+            case "VAC":
+                return "Vaccination";
+            case "IXS":
+                return "Interview";
+            case "SUS":
+                return "Lab Susceptibility";
+            case "LAB":
+                return "Lab Report";
+            case "ISO":
+                return "Lab Isolate Tracking";
+            default:
+                return type;
 
-		addPageLibraryTableHeader(table);
-		List<WaTemplate> pages = templateRepository.getAllPagesOrderedByName();
-		List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUidIn(pages);
-		List<ConditionCode> conditionCodes = conditionCodeRepository.findByIdIn(conditionIds(mappings));
+        }
 
-		for (WaTemplate page : pages) {
-			List<ConditionCode> pageConditions = new ArrayList<>();
+    }
 
-			mappings.stream().filter(p -> p.getWaTemplateUid().equals(page)).toList()
-					.forEach(v ->
-							conditionCodes.stream()
-									.filter(c -> c.getId().equals(v.getConditionCd()))
-									.forEach(pageConditions::add)
-					);
+    public byte[] downloadLibraryPDF() throws DocumentException, IOException {
+        var outputStream = new ByteArrayOutputStream();
+        Document document = new Document();
+        document.setPageSize(PageSize.A4.rotate());
+        PdfWriter.getInstance(document, outputStream);
 
-			List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
-					formatttedRelatedConditions(pageConditions), null != page.getLastChgTime()? dateFormatter.format(page.getLastChgTime()):"",
-					getLastUpdatedUser(page.getLastChgUserId()));
-			addRows(table,data);
+        document.open();
+        PdfPTable table = new PdfPTable(6);
+        table.setWidthPercentage(95);
 
-		}
-		
-		document.add(table);
-		document.close();
-		outputStream.close();
-		return outputStream.toByteArray();
-	}
+        addPageLibraryTableHeader(table);
+        List<WaTemplate> pages = templateRepository.getAllPagesOrderedByName();
+        List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUidIn(pages);
+        List<ConditionCode> conditionCodes = conditionCodeRepository.findByIdIn(conditionIds(mappings));
 
-	private void addRows(PdfPTable table, List<String> pagelibrarydata) {
-		 for(String data: pagelibrarydata){
-			 table.addCell(createStringCell(data, helvetica));
-		 }
-	}
-	private PdfPCell createStringCell(String content, Font font) {
-		if (content == null) {
-			return new PdfPCell();
-		}
-		return new PdfPCell(new Phrase(content, font));
-	}
-	private void addPageLibraryTableHeader(PdfPTable table) {
-		PAGE_LIBRARY_HEADERS
-				.forEach(columnTitle -> {
-					PdfPCell header = new PdfPCell();
-					header.setBackgroundColor(new BaseColor(233, 233, 233));
-					header.setBorderWidth(1);
-					header.setPhrase(new Phrase(columnTitle, helvetica));
-					table.addCell(header);
-				});
-	}
+        for (WaTemplate page : pages) {
+            List<ConditionCode> pageConditions = new ArrayList<>();
+
+            mappings.stream().filter(p -> p.getWaTemplateUid().equals(page)).toList()
+                    .forEach(v ->
+                            conditionCodes.stream()
+                                    .filter(c -> c.getId().equals(v.getConditionCd()))
+                                    .forEach(pageConditions::add)
+                    );
+
+            List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
+                    formatttedRelatedConditions(pageConditions), null != page.getLastChgTime() ? dateFormatter.format(page.getLastChgTime()) : "",
+                    getLastUpdatedUser(page.getLastChgUserId()));
+            addRows(table, data);
+
+        }
+
+        document.add(table);
+        document.close();
+        outputStream.close();
+        return outputStream.toByteArray();
+    }
+
+    private void addRows(PdfPTable table, List<String> pagelibrarydata) {
+        for (String data : pagelibrarydata) {
+            table.addCell(createStringCell(data, helvetica));
+        }
+    }
+
+    private PdfPCell createStringCell(String content, Font font) {
+        if (content == null) {
+            return new PdfPCell();
+        }
+        return new PdfPCell(new Phrase(content, font));
+    }
+
+    private void addPageLibraryTableHeader(PdfPTable table) {
+        PAGE_LIBRARY_HEADERS
+                .forEach(columnTitle -> {
+                    PdfPCell header = new PdfPCell();
+                    header.setBackgroundColor(new BaseColor(233, 233, 233));
+                    header.setBorderWidth(1);
+                    header.setPhrase(new Phrase(columnTitle, helvetica));
+                    table.addCell(header);
+                });
+    }
+
+    public ByteArrayInputStream downloadPageMetadataByWaTemplateUid(Long waTemplateUid) throws IOException {
+        final CSVFormat format = CSVFormat.Builder.create().setQuoteMode(QuoteMode.MINIMAL).
+                setHeader(PageConstants.PAGE_METADATA_CSV_HEADER.split(",")).build();
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format)) {
+            List<Object[]> pageMetadata = waUiMetadataRepository.findPageMetadataByWaTemplateUid(waTemplateUid);
+            String temp = "";
+            for (Object[] data : pageMetadata) {
+                for (Object element : data) {
+                    temp = temp + ",";
+                }
+                temp = "";
+                csvPrinter.printRecord(data);
+            }
+            csvPrinter.flush();
+            return new ByteArrayInputStream(out.toByteArray());
+        } catch (IOException e) {
+            throw new IOException("Error downloading Page Metadata: " + e.getMessage());
+        }
+    }
 }
