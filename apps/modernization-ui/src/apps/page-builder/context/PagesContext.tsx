@@ -5,7 +5,7 @@ interface PagesContextData {
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     currentPage: number;
-    setCurrentPage?: (page: number) => void;
+    setCurrentPage: (page: number) => void;
     sortBy: string;
     setSortBy: (name: string) => void;
     sortDirection: string;
@@ -35,7 +35,7 @@ export const PagesContext = createContext<PagesContextData>(pagesContextDefaultV
 
 export const PagesProvider = ({ children }: any) => {
     const [searchQuery, setSearchQuery] = useState(pagesContextDefaultValue.searchQuery);
-    const [currentPage, setCurrentPage] = useState(pagesContextDefaultValue.currentPage);
+    const [currentPage, setCurrentPage] = useState<number>(pagesContextDefaultValue.currentPage);
     const [sortBy, setSortBy] = useState(pagesContextDefaultValue.sortBy);
     const [sortDirection, setSortDirection] = useState(pagesContextDefaultValue.sortDirection);
     const [pageSize, setPageSize] = useState(pagesContextDefaultValue.pageSize);
