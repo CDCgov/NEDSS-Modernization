@@ -2,7 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UpdateSubSectionRequest = {
+export type Section = {
+    id?: number;
     name?: string;
     visible?: boolean;
 };

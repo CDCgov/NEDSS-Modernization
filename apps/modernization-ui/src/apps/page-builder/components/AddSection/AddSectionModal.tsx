@@ -41,7 +41,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
     const handleSubmit = async () => {
         try {
             if (isSubSection) {
-                await SubSectionControllerService.createSubSectionUsingPost({
+                await SubSectionControllerService.createSubsectionUsingPost({
                     authorization: token,
                     page: parseInt(pageId),
                     request: { name: sectionName, sectionId, visible }

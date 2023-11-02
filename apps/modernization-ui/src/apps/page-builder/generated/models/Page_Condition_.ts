@@ -7,15 +7,16 @@ import type { Pageable } from './Pageable';
 import type { Sort } from './Sort';
 
 export type Page_Condition_ = {
-    content: Array<Condition>;
+    content?: Array<Condition>;
     empty?: boolean;
-    first: boolean;
-    last: boolean;
-    number: number;
-    numberOfElements: number;
+    first?: boolean;
+    last?: boolean;
+    number?: number;
+    numberOfElements?: number;
     pageable?: Pageable;
-    size: number;
+    size?: number;
     sort?: Sort;
-    totalElements: number;
-    totalPages: number;
+    totalElements?: number;
+    totalPages?: number;
 };
+

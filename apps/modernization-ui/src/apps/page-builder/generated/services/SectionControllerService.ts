@@ -2,10 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateSectionRequest } from '../models/CreateSectionRequest';
-import type { CreateSectionResponse } from '../models/CreateSectionResponse';
-import type { DeleteSectionResponse } from '../models/DeleteSectionResponse';
+import type { Section } from '../models/Section';
 import type { UpdateSectionRequest } from '../models/UpdateSectionRequest';
-import type { UpdateSectionResponse } from '../models/UpdateSectionResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -15,7 +13,7 @@ export class SectionControllerService {
 
     /**
      * createSection
-     * @returns CreateSectionResponse OK
+     * @returns Section OK
      * @returns any Created
      * @throws ApiError
      */
@@ -33,7 +31,7 @@ export class SectionControllerService {
          * request
          */
         request: CreateSectionRequest,
-    }): CancelablePromise<CreateSectionResponse | any> {
+    }): CancelablePromise<Section | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/pages/{page}/sections/',
@@ -53,47 +51,8 @@ export class SectionControllerService {
     }
 
     /**
-     * updateSection
-     * @returns UpdateSectionResponse OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updateSectionUsingPut({
-        authorization,
-        request,
-        sectionId,
-    }: {
-        authorization: any,
-        /**
-         * request
-         */
-        request: UpdateSectionRequest,
-        /**
-         * sectionId
-         */
-        sectionId: number,
-    }): CancelablePromise<UpdateSectionResponse | any> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/sections/{sectionId}',
-            path: {
-                'sectionId': sectionId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
      * deleteSection
-     * @returns DeleteSectionResponse OK
+     * @returns any OK
      * @throws ApiError
      */
     public static deleteSectionUsingDelete({
@@ -110,7 +69,7 @@ export class SectionControllerService {
          * sectionId
          */
         sectionId: number,
-    }): CancelablePromise<DeleteSectionResponse> {
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/nbs/page-builder/api/v1/pages/{page}/sections/{sectionId}',
@@ -124,6 +83,51 @@ export class SectionControllerService {
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
+            },
+        });
+    }
+
+    /**
+     * updateSection
+     * @returns Section OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static updateSectionUsingPut({
+        authorization,
+        page,
+        request,
+        section,
+    }: {
+        authorization: any,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * request
+         */
+        request: UpdateSectionRequest,
+        /**
+         * section
+         */
+        section: number,
+    }): CancelablePromise<Section | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/page-builder/api/v1/pages/{page}/sections/{section}',
+            path: {
+                'page': page,
+                'section': section,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
             },
         });
     }
