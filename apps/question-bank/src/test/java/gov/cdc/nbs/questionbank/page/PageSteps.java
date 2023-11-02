@@ -4,7 +4,10 @@ import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
+
+import java.util.function.Consumer;
 
 public class PageSteps {
 
@@ -43,6 +46,11 @@ public class PageSteps {
     this.mother.create(DEFAULT_OBJECT, name, DEFAULT_MAPPING_GUIDE);
   }
 
+  @Given("the page is for a(n) {eventType}")
+  public void the_page_is_for(final String eventType) {
+    mother.withEventType(page.active(), EventType.resolve(eventType));
+  }
+
   @Given("the page has a(n) {string} of {string}")
   public void the_page_has_a_property_with_the_value(final String property, final String value) {
 
@@ -51,35 +59,28 @@ public class PageSteps {
     switch (property.toLowerCase()) {
       case "description" -> mother.withDescription(active, value);
       case "name" -> mother.withName(active, value);
-      case "eventtype", "event type" -> mother.withEventType(active, resolveEventType(value));
-
       default -> throw new IllegalStateException("Unexpected Page value: " + property);
     }
   }
 
-  private EventType resolveEventType(final String value) {
-    return switch (value.toLowerCase()) {
-      case "contact" -> EventType.CONTACT;
-      case "interview" -> EventType.INTERVIEW;
-      case "lab isolate tracking" -> EventType.LAB_ISOLATE_TRACKING;
-      case "lab report" -> EventType.LAB_REPORT;
-      case "lab susceptibility" -> EventType.LAB_SUSCEPTIBILITY;
-      case "vaccination" -> EventType.VACCINATION;
-      default -> throw new IllegalStateException("Unexpected Event Type value: " + value);
-    };
+  @ParameterType("(?i)(draft|published with draft|initial draft|published|template)")
+  public String pageStatus(final String value) {
+    return value;
   }
 
-  @Given("the page is (a ){string}")
+  @Given("the page is (a ){pageStatus}")
   public void the_page_has_the_status_of(final String status) {
 
-    String value = switch (status.toLowerCase()) {
-      case "draft", "published with draft", "initial draft" -> "Draft";
-      case "published" -> "Published";
-      case "template" -> "Template";
-      default -> throw new IllegalStateException("Unexpected Page Status value: " + status.toLowerCase());
+    Consumer<PageIdentifier> consumer = switch (status.toLowerCase()) {
+      case "draft", "initial draft" -> mother::draft;
+      case "published with draft" -> ((Consumer<PageIdentifier>) mother::published).andThen(mother::draft);
+      case "published" -> mother::published;
+      case "template" -> mother::template;
+      default -> page -> {
+      };  //  NOOP
     };
 
-    this.page.maybeActive().ifPresent(page -> mother.withStatus(page, value));
+    this.page.maybeActive().ifPresent(consumer);
   }
 
   @Given("the page is tied to the {condition} condition")

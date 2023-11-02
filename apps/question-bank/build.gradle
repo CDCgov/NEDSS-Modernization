@@ -35,7 +35,7 @@ test {
         systemProperty "testing.database.image", System.getProperty("testing.database.image")
     }
 
-    debugOptions {
+   debugOptions {
         enabled = true
         server = true
         suspend = false

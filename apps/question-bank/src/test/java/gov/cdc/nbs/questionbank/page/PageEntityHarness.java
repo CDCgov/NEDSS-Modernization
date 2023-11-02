@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.page;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.function.Consumer;
@@ -18,6 +19,7 @@ public class PageEntityHarness {
     this.entityManager = entityManager;
   }
 
+  @Transactional
   public Harnessed with(final PageIdentifier identifier) {
     WaTemplate page = this.entityManager.find(WaTemplate.class, identifier.id());
     return new Harnessed(page);

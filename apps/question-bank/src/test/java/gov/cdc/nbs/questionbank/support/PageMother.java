@@ -4,6 +4,7 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.EventType;
+import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.PageEntityHarness;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.component.tree.ComponentTreeResolver;
@@ -98,7 +99,13 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associateCondition(BRUCELLOSIS_ID, this.settings.createdBy(), this.settings.createdOn());
+    page.associateCondition(
+        new PageCommand.AssociateCondition(
+            BRUCELLOSIS_ID,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
 
     WaUiMetadata pageType = new WaUiMetadata();
     pageType.setWaTemplateUid(page);
@@ -201,7 +208,13 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associateCondition(ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn());
+    page.associateCondition(
+        new PageCommand.AssociateCondition(
+            ASEPTIC_MENINGITIS_ID,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
 
     include(page);
 
@@ -235,7 +248,13 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associateCondition(ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn());
+    page.associateCondition(
+        new PageCommand.AssociateCondition(
+            ASEPTIC_MENINGITIS_ID,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
 
     include(page);
 
@@ -304,16 +323,49 @@ public class PageMother {
     harness.with(page).use(found -> found.setBusObjType(value.code()));
   }
 
-  public void withStatus(final PageIdentifier page, final String status) {
-    harness.with(page).use(found -> found.setTemplateType(status));
+  public void draft(final PageIdentifier page) {
+    harness.with(page).use(
+        //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
+        //  with that becoming the Active page
+        found -> {
+          found.setTemplateType("Draft");
+          found.setPublishIndCd('F');
+        }
+    );
+  }
+
+  public void template(final PageIdentifier page) {
+    harness.with(page).use(
+        found -> {
+          //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
+          //  with that becoming the Active page
+          found.setTemplateType("Template");
+          found.setPublishIndCd('F');
+        }
+    );
+  }
+
+  public void published(final PageIdentifier page) {
+    harness.with(page).use(
+        found -> found.publish(
+            new PageCommand.Publish(
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        )
+    );
   }
 
   public void withCondition(final PageIdentifier page, final String condition) {
     harness.with(page).use(
         found -> found.associateCondition(
-            condition,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
+            new PageCommand.AssociateCondition(
+                condition,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        )
+    );
   }
 
 }

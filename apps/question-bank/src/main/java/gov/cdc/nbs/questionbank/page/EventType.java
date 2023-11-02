@@ -7,7 +7,20 @@ public enum EventType {
   LAB_ISOLATE_TRACKING("ISO", "Lab Isolate Tracking"),
   LAB_REPORT("LAB", "Lab Report"),
   LAB_SUSCEPTIBILITY("SUS", "Lab Susceptibility"),
-  VACCINATION("VAC", "Vaccination");
+  VACCINATION("VAC", "Vaccination")
+  ;
+
+  public static EventType resolve(final String value) {
+    return switch (value) {
+      case "CON" -> EventType.CONTACT;
+      case "IXS" -> EventType.INTERVIEW;
+      case "ISO" -> EventType.LAB_ISOLATE_TRACKING;
+      case "LAB" -> EventType.LAB_REPORT;
+      case "SUS" -> EventType.LAB_SUSCEPTIBILITY;
+      case "VAC" -> EventType.VACCINATION;
+      default -> throw new IllegalStateException("Unexpected Event Type value: " + value);
+    };
+  }
 
   private final String code;
   private final String display;

@@ -10,7 +10,8 @@ Feature: Searching for Page Summaries
     Given the page has a "name" of "Needle In a Haystack"
     And I am looking for page summaries that contain "stack"
     When I search for page summaries
-    Then the found page summaries contain a page with the "name" "Needle In a Haystack"
+    Then there is only one page summary found
+    And the found page summaries contain a page with the "name" "Needle In a Haystack"
 
   Scenario: I can search for Page Summaries by condition
     Given the page is tied to the Crusted Scabies condition
@@ -19,7 +20,7 @@ Feature: Searching for Page Summaries
     Then the found page summaries contain a page with the "condition" "Crusted Scabies"
 
   Scenario: Templates are not included when searching Page Summaries
-    Given the page is a "template"
+    Given the page is a Template
     And the page has a "name" of "Needle In a Haystack"
     And I am looking for page summaries that contain "stack"
     When I search for page summaries

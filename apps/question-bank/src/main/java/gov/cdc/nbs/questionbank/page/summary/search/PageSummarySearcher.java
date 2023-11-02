@@ -1,191 +1,182 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
+import com.google.common.collect.Ordering;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.support.QueryBase;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.authentication.entity.QAuthUser;
-import gov.cdc.nbs.questionbank.entity.QCodeValueGeneral;
-import gov.cdc.nbs.questionbank.entity.QPageCondMapping;
-import gov.cdc.nbs.questionbank.entity.QWaTemplate;
-import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
-import gov.cdc.nbs.questionbank.exception.QueryException;
-import gov.cdc.nbs.questionbank.page.PageSummaryMapper;
+import gov.cdc.nbs.accumulation.Accumulator;
+import gov.cdc.nbs.questionbank.filter.querydsl.QueryDSLFilterApplier;
+import gov.cdc.nbs.questionbank.order.QueryDSLOrderResolver;
+import gov.cdc.nbs.questionbank.page.services.PageSummaryQuery;
+import gov.cdc.nbs.questionbank.page.summary.PageSummaryMapper;
+import gov.cdc.nbs.questionbank.page.summary.PageSummaryMerger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Component
 class PageSummarySearcher {
 
-  private static final QWaTemplate waTemplate = QWaTemplate.waTemplate;
-  private static final QAuthUser authUser = QAuthUser.authUser;
-  private static final QConditionCode conditionCode = QConditionCode.conditionCode;
-  private static final QPageCondMapping conditionMapping = QPageCondMapping.pageCondMapping;
-  private static final QCodeValueGeneral codeValueGeneral = QCodeValueGeneral.codeValueGeneral;
-
-
-  private final PageSummaryMapper mapper;
   private final JPAQueryFactory factory;
+  private final PageSummaryTables tables;
+  private final PageSummaryQuery query;
+  private final PageSummaryMapper mapper;
+  private final PageSummaryMerger merger;
 
-  PageSummarySearcher(
-      final PageSummaryMapper mapper,
-      final JPAQueryFactory factory
-  ) {
-    this.mapper = mapper;
+  PageSummarySearcher(final JPAQueryFactory factory) {
     this.factory = factory;
+    this.tables = new PageSummaryTables();
+    this.query = new PageSummaryQuery(this.tables);
+    this.mapper = new PageSummaryMapper(this.tables);
+    this.merger = new PageSummaryMerger();
   }
 
-  Page<PageSummary> find(
-      final PageSummaryCriteria request,
-      final Pageable pageable
-  ) {
-    // searches on page name and condition
-    JPAQuery<Tuple> query = findApplicableSummaries(request);
-    setOrderBy(query, pageable);
+  Page<PageSummary> find(final PageSummaryCriteria criteria, final Pageable pageable) {
 
-    // get distinct Ids and handle paging
-    List<Long> distinctIds = query.stream()
-        .map(tuple -> tuple.get(waTemplate.id))
+    // searches on page name and condition
+    OrderSpecifier<?>[] ordering = resolveOrdering(pageable);
+
+    List<Long> found = findApplicableSummaries(criteria)
+        .orderBy(ordering)
+        .stream()
+        .map(tuple -> tuple.get(this.tables.page().id))
         .distinct()
         .toList();
 
-    List<Long> ids = distinctIds
+    int total = found.size();
+
+    List<Long> ids = found
         .subList((int) pageable.getOffset(),
             Math.min(
-                distinctIds.size(),
+                total,
                 (int) pageable.getOffset() + pageable.getPageSize()
             )
         );
 
-    int total = distinctIds.size();
+    return total > 0
+        ? resolvePage(ids, ordering, pageable, total)
+        : noResultsFound(pageable);
+  }
 
-    return fetchPageSummary(ids, pageable, total);
+  private Page<PageSummary> noResultsFound(final Pageable pageable) {
+    return new PageImpl<>(List.of(), pageable, 0);
   }
 
   private JPAQuery<Tuple> findApplicableSummaries(final PageSummaryCriteria criteria) {
-    return this.factory.select(
-            waTemplate.id,
-            waTemplate.templateType,
-            waTemplate.templateNm,
-            waTemplate.busObjType,
-            waTemplate.lastChgTime,
-            authUser.userFirstNm,
-            authUser.userLastNm
+    return this.factory.selectDistinct(
+            this.tables.page().id,
+            this.tables.page().templateType,
+            this.tables.page().publishVersionNbr,
+            this.tables.page().templateNm,
+            this.tables.eventType().codeShortDescTxt,
+            this.tables.condition().conditionShortNm,
+            this.tables.page().lastChgTime,
+            this.tables.lastUpdatedBy()
         )
-        .from(waTemplate)
-        .leftJoin(authUser).on(waTemplate.lastChgUserId.eq(authUser.nedssEntryId))
-        .leftJoin(conditionMapping).on(waTemplate.id.eq(conditionMapping.waTemplateUid.id))
-        .leftJoin(conditionCode).on(conditionMapping.conditionCd.eq(conditionCode.id))
+        .from(this.tables.page())
+        .join(this.tables.eventType()).on(
+            this.tables.eventType().id.codeSetNm.eq("BUS_OBJ_TYPE"),
+            this.tables.eventType().id.code.eq(this.tables.page().busObjType)
+        )
+        .leftJoin(this.tables.authUser())
+        .on(this.tables.page().lastChgUserId.eq(this.tables.authUser().nedssEntryId))
+        .leftJoin(this.tables.conditionMapping())
+        .on(this.tables.page().id.eq(this.tables.conditionMapping().waTemplateUid.id))
+        .leftJoin(this.tables.condition())
+        .on(this.tables.conditionMapping().conditionCd.eq(this.tables.condition().id))
+        .leftJoin(this.tables.mappingGuide()).on(
+            this.tables.mappingGuide().id.codeSetNm.eq("NBS_MSG_PROFILE"),
+            this.tables.mappingGuide().id.code.eq(this.tables.page().nndEntityIdentifier)
+        )
         .where(applyCriteria(criteria));
   }
 
   private BooleanExpression applyCriteria(final PageSummaryCriteria criteria) {
     // do not load legacy, template, or 'Published with Draft' pages
     // see legacy code PageManagementDAOImpl.java#2485
-    BooleanExpression onlyPages = waTemplate.templateType.in("Draft", "Published");
+    BooleanExpression onlyPages = this.tables.page().templateType.in("Draft", "Published");
 
+    return Stream.concat(
+            applySearch(criteria),
+            QueryDSLFilterApplier.apply(
+                this::resolveProperty,
+                criteria.filters()
+            )
+        )
+        .reduce(
+            onlyPages,
+            BooleanExpression::and,
+            BooleanExpression::and
+        );
+  }
+
+  private Stream<BooleanExpression> applySearch(final PageSummaryCriteria criteria) {
     if (criteria.search() != null && !criteria.search().isBlank()) {
-      String search = contains(criteria.search());
       // query template name and condition name
-      return onlyPages.and(waTemplate.templateNm.like(search)
+      return Stream.of(this.tables.page().templateNm.contains(criteria.search())
           .or(
-              conditionCode.conditionShortNm.like(search)
-                  .or(waTemplate.id.like(search)
-                  )
+              this.tables.condition().conditionShortNm.contains(criteria.search())
+                  .or(this.tables.page().id.like(criteria.search()))
           )
       );
     }
-    return onlyPages;
+    return Stream.empty();
   }
 
-  private String contains(final String value) {
-    return "%" + value + "%";
+  private Stream<Expression<?>> resolveProperty(final String property) {
+    return switch (property.toLowerCase()) {
+      case "name" -> Stream.of(this.tables.page().templateNm);
+      case "eventtype", "event-type" -> Stream.of(this.tables.eventType().codeShortDescTxt);
+      case "condition", "conditions" -> Stream.of(this.tables.condition().conditionShortNm);
+      case "status" -> Stream.of(this.tables.page().templateType, this.tables.page().publishVersionNbr);
+      case "lastupdatedby" -> Stream.of(this.tables.lastUpdatedBy());
+      case "lastupdate" -> Stream.of(this.tables.page().lastChgTime);
+      default -> Stream.empty();
+    };
+
   }
 
   /**
    * Adds order by clauses to query. First order by is the user supplied clause, second is the identifier to prevent
    * non-unique sort exception. Supported fields are: id, name, eventType, status, lastUpdate, lastUpdatedBy
    */
-  private void setOrderBy(final QueryBase<?> query, final Pageable pageable) {
-
-    Sort.Order order = pageable.getSort().get().findFirst().orElse(null);
-    if (order == null) {
-      query.orderBy(waTemplate.id.desc());
-      return;
-    }
-
-    OrderSpecifier<?> sort = resolveOrder(order);
-
-    query.orderBy(sort);
-    //    if (!order.getProperty().equals("id")) {
-    //      query.orderBy(waTemplate.id.desc());
-    //    }
-  }
-
-  private OrderSpecifier<?> resolveOrder(final Sort.Order order) {
-    boolean isAscending = order.getDirection().isAscending();
-    return switch (order.getProperty()) {
-      case "id" -> isAscending ? waTemplate.id.asc() : waTemplate.id.desc();
-      case "name" -> isAscending ? waTemplate.templateNm.asc().nullsFirst() : waTemplate.templateNm.desc();
-      case "eventType" -> isAscending ? eventTypeOrder().asc() : eventTypeOrder().desc();
-      case "status" -> isAscending ? waTemplate.templateType.asc() : waTemplate.templateType.desc();
-      case "lastUpdate" -> isAscending ? waTemplate.lastChgTime.asc() : waTemplate.lastChgTime.desc();
-      case "lastUpdateBy" -> isAscending ? authUser.userLastNm.asc().nullsFirst() : authUser.userLastNm.desc();
-      default -> throw new QueryException(
-          "Invalid sort specified. Allowed values are: [id, name, eventType , status, lastUpdate, lastUpdateBy]");
-    };
-  }
-
-  // Provides custom ordering for bus_obj_Type column
-  private NumberExpression<Integer> eventTypeOrder() {
-    return waTemplate.busObjType
-        .when("CON").then(1) // Contact
-        .when("IXS").then(2) // Interview
-        .when("INV").then(3) // Investigation
-        .when("ISO").then(4) // Lab Isolate Tracking
-        .when("LAB").then(5) // Lab Report
-        .when("SUS").then(6) // Lab Susceptibility
-        .when("VAC").then(7) // Vaccination
-        .otherwise(8);
+  private OrderSpecifier<?>[] resolveOrdering(final Pageable pageable) {
+    return Stream.concat(
+            QueryDSLOrderResolver.resolve(
+                this::resolveProperty,
+                pageable
+            ),
+            Stream.of(this.tables.page().id.desc())
+        ).filter(Objects::nonNull)
+        .toArray(OrderSpecifier[]::new);
   }
 
   /**
    * Retrieves PageSummary objects for a list of Ids
    */
-  private Page<PageSummary> fetchPageSummary(List<Long> ids, Pageable pageable, int totalSize) {
+  private Page<PageSummary> resolvePage(
+      final List<Long> ids,
+      final OrderSpecifier<?>[] ordering,
+      final Pageable pageable,
+      int totalSize
+  ) {
     // get the summaries based on supplied Ids
-    JPAQuery<Tuple> query = factory.select(
-            waTemplate.id,
-            waTemplate.templateType,
-            waTemplate.templateNm,
-            waTemplate.descTxt,
-            waTemplate.busObjType,
-            waTemplate.lastChgTime,
-            waTemplate.lastChgUserId,
-            waTemplate.nndEntityIdentifier,
-            waTemplate.publishVersionNbr,
-            codeValueGeneral.codeShortDescTxt,
-            authUser.userFirstNm,
-            authUser.userLastNm,
-            conditionCode.id,
-            conditionCode.conditionShortNm
-        ).from(waTemplate)
-        .leftJoin(authUser).on(waTemplate.lastChgUserId.eq(authUser.nedssEntryId))
-        .leftJoin(conditionMapping).on(waTemplate.id.eq(conditionMapping.waTemplateUid.id))
-        .leftJoin(conditionCode).on(conditionMapping.conditionCd.eq(conditionCode.id))
-        .leftJoin(codeValueGeneral).on(waTemplate.nndEntityIdentifier.eq(codeValueGeneral.id.code))
-        .where(waTemplate.id.in(ids));
-    setOrderBy(query, pageable);
-
-    List<PageSummary> summaries = mapper.map(query.fetch());
+    List<PageSummary> summaries = this.query.query(this.factory)
+        .where(this.tables.page().id.in(ids))
+        .orderBy(ordering)
+        .stream()
+        .map(mapper::map)
+        .collect(Accumulator.collecting(PageSummary::id, this.merger::merge))
+        .stream().sorted(Ordering.explicit(ids).onResultOf(PageSummary::id))
+        .toList();
     return new PageImpl<>(summaries, pageable, totalSize);
   }
 

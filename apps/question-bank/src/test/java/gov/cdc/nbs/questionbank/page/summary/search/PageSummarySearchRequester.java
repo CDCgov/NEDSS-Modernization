@@ -2,8 +2,6 @@ package gov.cdc.nbs.questionbank.page.summary.search;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -16,13 +14,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
-class PageSummarySearchRequest {
+class PageSummarySearchRequester {
 
   private final ObjectMapper mapper;
   private final Authenticated authenticated;
   private final MockMvc mvc;
 
-  PageSummarySearchRequest(
+  PageSummarySearchRequester(
       final ObjectMapper mapper,
       final Authenticated authenticated,
       final MockMvc mvc
@@ -54,10 +52,8 @@ class PageSummarySearchRequest {
       final Pageable page,
       final PageSummaryRequest criteria
   ) throws JsonProcessingException {
-    ObjectNode body = JsonNodeFactory.instance.objectNode()
-        .put("search", criteria.search());
 
-    byte[] content = mapper.writeValueAsBytes(body);
+    byte[] content = mapper.writeValueAsBytes(criteria);
 
     return post("/api/v1/pages/search")
         .content(content)

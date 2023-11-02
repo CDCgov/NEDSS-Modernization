@@ -1,14 +1,12 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
+import gov.cdc.nbs.questionbank.page.PageCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,12 +19,15 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import gov.cdc.nbs.questionbank.page.PageCommand;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.util.PageConstants;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
@@ -236,7 +237,7 @@ public class WaTemplate {
     return tab;
   }
 
-  public void addTab(WaUiMetadata tab) {
+  void addTab(WaUiMetadata tab) {
     including(tab);
   }
 
@@ -256,7 +257,7 @@ public class WaTemplate {
     including(component);
   }
 
-  public void addSection(WaUiMetadata section) {
+  void addSection(WaUiMetadata section) {
     including(section);
   }
 
@@ -308,7 +309,7 @@ public class WaTemplate {
     return section;
   }
 
-  public void addSubSection(WaUiMetadata subsection) {
+  void addSubSection(WaUiMetadata subsection) {
     including(subsection);
   }
 
@@ -512,18 +513,18 @@ public class WaTemplate {
         .forEach(c -> c.setOrderNbr(current.getAndIncrement()));
   }
 
-  public PageCondMapping associateCondition(
-      final String condition,
-      final long associatedBy,
-      final Instant associatedOn) {
-    PageCondMapping mapping = new PageCondMapping(
-        this,
-        condition,
-        associatedBy,
-        associatedOn);
+  public void associateCondition(final PageCommand.AssociateCondition command) {
+    this.conditionMappings.add(new PageCondMapping(this, command));
+    changed(command);
+  }
 
-    this.conditionMappings.add(mapping);
-    return mapping;
+  public void publish(final PageCommand.Publish command) {
+
+    this.templateType = "Published";
+    this.publishVersionNbr = this.publishVersionNbr == null ? 1 : ++this.publishVersionNbr;
+    this.publishIndCd = 'T';
+
+    changed(command);
   }
 
   public void changed(final PageCommand command) {
@@ -553,9 +554,12 @@ public class WaTemplate {
 
     // add any conditions not currently mapped
     var existingConditions = getConditionMappings().stream().map(cm -> cm.getConditionCd()).toList();
-    var conditionsToAdd = command.conditionIds().stream().filter(c -> !existingConditions.contains(c)).toList();
-    conditionsToAdd.forEach(
-        conditionCode -> getConditionMappings().add(new PageCondMapping(command, this, conditionCode)));
+
+    command.conditionIds().stream().filter(c -> !existingConditions.contains(c))
+        .map(condition -> new PageCommand.AssociateCondition(
+            condition, command.requester(),
+            command.requestedOn())
+        ).forEach(this::associateCondition);
 
     changed(command);
   }
