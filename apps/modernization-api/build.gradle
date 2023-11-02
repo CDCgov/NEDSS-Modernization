@@ -49,7 +49,7 @@ dependencies {
     implementation libs.springBoot.web
 
     // graphql
-    implementation libs.springBoot.graphql
+    implementation libs.bundles.graphql
 
     // elasticsearch
     implementation libs.bundles.elasticsearch
