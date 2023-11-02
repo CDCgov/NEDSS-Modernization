@@ -1,24 +1,24 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElementRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.lu.an;
 
 @Transactional
 public class LineSeparatorSteps {
@@ -30,9 +30,16 @@ public class LineSeparatorSteps {
     private ExceptionHolder exceptionHolder;
 
     @Autowired
+    private WaUiMetadataRepository waUiMetadataRepository;
+
+    @Autowired
+    private ObjectMapper mapper;
+
+    @Autowired
     private StaticRequest request;
 
-    private final Active<ResultActions> response = new Active<>();
+    private final Active<ResultActions> addResponse = new Active<>();
+    private final Active<ResultActions> deleteResponse = new Active<>();
     private final Active<StaticContentRequests.AddDefault> jsonRequestBody = new Active<>();
     private final Active<WaTemplate> currPage = new Active<>();
 
@@ -51,7 +58,7 @@ public class LineSeparatorSteps {
     @When("I send an add line separator request")
     public void i_send_an_add_line_separator_request() {
         try {
-            response.active(request.lineSeparatorRequest(
+            addResponse.active(request.lineSeparatorRequest(
                     currPage.active().getId(),
                     jsonRequestBody.active()));
         } catch (Exception e) {
@@ -68,10 +75,36 @@ public class LineSeparatorSteps {
     @Then("a line separator is created")
     public void a_line_separator_is_created() {
         try {
-            this.response.active()
+            this.addResponse.active()
                     .andExpect(jsonPath("$.componentId").isNumber());
         } catch (Exception e) {
             exceptionHolder.setException(e);
         }
+    }
+
+    @When("I send a delete line separator request")
+    public void i_send_a_delete_line_separator_request() {
+        String res;
+        try {
+            res = this.addResponse.active().andReturn().getResponse().getContentAsString();
+            AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
+
+            this.deleteResponse.active(request.deleteStaticElementRequest(
+                this.currPage.active().getId(), 
+                new DeleteElementRequest(staticResponse.componentId())));
+
+        } catch (Exception e) {
+            exceptionHolder.setException(e);
+        }
+        
+    }
+
+    @Then("a line separator is deleted")
+    public void a_line_separator_is_deleted() throws Exception {
+        String res = this.addResponse.active().andReturn().getResponse().getContentAsString();
+        AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
+        assertNotNull(waUiMetadataRepository.findById(staticResponse.componentId()));
+        this.deleteResponse.active().andExpect(jsonPath("$.result").value("delete success"));
+
     }
 }

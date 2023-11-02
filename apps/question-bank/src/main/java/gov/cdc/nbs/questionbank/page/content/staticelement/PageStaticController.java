@@ -2,14 +2,17 @@ package gov.cdc.nbs.questionbank.page.content.staticelement;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElementRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
+import gov.cdc.nbs.questionbank.page.content.staticelement.response.DeleteStaticResponse;
 import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -21,10 +24,14 @@ import springfox.documentation.annotations.ApiIgnore;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class PageStaticController {
     private final PageStaticCreator pageStaticCreator;
+    private final PageStaticDeletor pageStaticDeletor;
+
 
     public PageStaticController(
-            final PageStaticCreator pageStaticCreator) {
+            final PageStaticCreator pageStaticCreator,
+            final PageStaticDeletor pageStaticDeletor) {
         this.pageStaticCreator = pageStaticCreator;
+        this.pageStaticDeletor = pageStaticDeletor;
     }
 
 
@@ -77,6 +84,14 @@ public class PageStaticController {
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         Long componentId = pageStaticCreator.addOriginalElectronicDocList(pageId, request, details.getId());
         return new AddStaticResponse(componentId);
+    }
+
+    @DeleteMapping("/delete-static-element")
+    public DeleteStaticResponse deleteStaticElement(
+            @PathVariable("page") Long pageId,
+            @RequestBody DeleteElementRequest request) {
+        return pageStaticDeletor.deleteStaticElement(pageId, request) ? new DeleteStaticResponse("delete success")
+                : new DeleteStaticResponse("delete fail");
     }
 
 }

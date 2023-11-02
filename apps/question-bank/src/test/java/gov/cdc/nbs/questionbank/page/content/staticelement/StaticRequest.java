@@ -1,11 +1,13 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElementRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 
@@ -53,6 +55,13 @@ class StaticRequest {
     ResultActions readOnlyParticipantsListRequest(final long page, StaticContentRequests requests) throws Exception {
         return mvc.perform(
                 this.authenticated.withUser(post("/api/v1/pages/{page}/content/static/read-only-participants-list", page))
+                        .content(asJsonString(requests))
+                        .contentType(MediaType.APPLICATION_JSON));
+    }
+
+    ResultActions deleteStaticElementRequest(final long page, DeleteElementRequest requests) throws Exception {
+        return mvc.perform(
+                this.authenticated.withUser(delete("/api/v1/pages/{page}/content/static/delete-static-element", page))
                         .content(asJsonString(requests))
                         .contentType(MediaType.APPLICATION_JSON));
     }
