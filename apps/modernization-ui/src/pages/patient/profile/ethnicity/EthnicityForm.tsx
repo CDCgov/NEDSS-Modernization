@@ -97,7 +97,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
             </Grid>
             {selectedEthinicity === HISPANIC && (
                 <Grid row className="flex-justify flex-align-center padding-2">
-                    <Grid col={6} className="margin-top-1">
+                    <Grid col={6} className="margin-top-1 text-bold">
                         Spanish origin:
                     </Grid>
                     <Grid col={6}>
