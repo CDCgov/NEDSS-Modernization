@@ -1,6 +1,8 @@
 package gov.cdc.nbs.authentication;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.regex.Pattern;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,23 +26,30 @@ import gov.cdc.nbs.authentication.token.NBSTokenValidator.TokenValidation;
  * JSESSIONID. An unauthorized user will be redirected to `/nbs/timeout`/
  */
 public class NBSAuthenticationFilter extends OncePerRequestFilter {
+  public interface IgnoredPaths {
+    public Collection<String> get();
+  }
+
   private final NBSTokenValidator tokenValidator;
   private final AuthorizedSessionResolver sessionResolver;
   private final NBSTokenCookieEnsurer cookieEnsurer;
   private final SecurityProperties securityProperties;
   private final UserService userService;
+  private final IgnoredPaths ignoredPaths;
 
   public NBSAuthenticationFilter(
       final NBSTokenValidator tokenValidator,
       final AuthorizedSessionResolver sessionResolver,
       final NBSTokenCookieEnsurer cookieEnsurer,
       final SecurityProperties securityProperties,
-      final UserService userService) {
+      final UserService userService,
+      final IgnoredPaths ignoredPaths) {
     this.tokenValidator = tokenValidator;
     this.sessionResolver = sessionResolver;
     this.cookieEnsurer = cookieEnsurer;
     this.securityProperties = securityProperties;
     this.userService = userService;
+    this.ignoredPaths = ignoredPaths;
   }
 
   @Override
@@ -67,6 +76,13 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
         outgoing.setHeader(HttpHeaders.LOCATION, "/nbs/timeout");
         break;
     }
+  }
+
+  @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    String uri = request.getRequestURI();
+    return ignoredPaths.get().stream()
+        .anyMatch(m -> Pattern.matches(m, uri)) || "/nbs/timeout".equals(uri);
   }
 
   private void doSessionAuthentication(

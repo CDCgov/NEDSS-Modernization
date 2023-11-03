@@ -44,7 +44,8 @@ public class WebSecurityConfig {
       final AuthorizedSessionResolver sessionResolver,
       final NBSTokenCookieEnsurer cookieEnsurer,
       final SecurityProperties securityProperties,
-      final UserService userService)
+      final UserService userService,
+      final AuthenticationIgnoredPaths ignoredPaths)
       throws Exception {
 
     final NBSAuthenticationFilter authFilter = new NBSAuthenticationFilter(
@@ -52,15 +53,10 @@ public class WebSecurityConfig {
         sessionResolver,
         cookieEnsurer,
         securityProperties,
-        userService);
+        userService,
+        ignoredPaths);
     return http.authorizeRequests()
-        .antMatchers(
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/swagger-resources/**",
-            "/v2/api-docs/**",
-            "/login",
-            "/nbs/redirect/*")
+        .antMatchers(ignoredPaths.asArray())
         .permitAll()
         .anyRequest().authenticated()
         .and()
