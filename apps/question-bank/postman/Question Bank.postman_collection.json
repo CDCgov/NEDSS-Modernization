@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "642caf83-8d31-4600-b76a-558c598aa842",
+		"_postman_id": "5c21478d-bb79-4431-9f3e-cca3d256b6eb",
 		"name": "Question Bank",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "27971066"
+		"_exporter_id": "28141522"
 	},
 	"item": [
 		{
@@ -378,7 +378,404 @@
 			"name": "Pages",
 			"item": [
 				{
-					"name": "Get All Page Summary",
+					"name": "Tabs",
+					"item": [
+						{
+							"name": "Create Tab",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{$randomNoun}}\",\n    \"visible\" : true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/tabs",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										":page",
+										"tabs"
+									],
+									"variable": [
+										{
+											"key": "page",
+											"value": "1000315"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Search",
+					"item": [
+						{
+							"name": "Search",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"search\": \"port\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with single value filter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"condition\",\"operator\":\"contains\",\"value\":\"type\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with single value filter Copy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"condition\",\"operator\":\"contains\",\"value\":\"type\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with multi value filter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"condition\",\"operator\":\"contains\",\"values\":[\"type\", \"sec\"]}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with date range filter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"lastUpdate\", \"after\":\"2023-10-05\", \"before\":\"2023-10-31\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with date after",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"lastUpdate\", \"after\":\"2023-10-05\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filtering with date before",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"lastUpdate\", \"before\":\"2023-10-31\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Pages",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -389,11 +786,10 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:8095/page-builder/api/v1/pages?page=0&size=25&sort=id,ASC",
+							"raw": "{{page-builder}}/page-builder/api/v1/pages?page=0&size=25&sort=id,ASC",
 							"host": [
-								"localhost"
+								"{{page-builder}}"
 							],
-							"port": "8095",
 							"path": [
 								"page-builder",
 								"api",
@@ -412,6 +808,40 @@
 								{
 									"key": "sort",
 									"value": "id,ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1000319",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "1000319"
 								}
 							]
 						}
@@ -439,11 +869,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/page-builder/api/v1/pages/:id/details",
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:id/details",
 							"host": [
-								"localhost"
+								"{{page-builder}}"
 							],
-							"port": "8095",
 							"path": [
 								"page-builder",
 								"api",
@@ -463,50 +892,90 @@
 					"response": []
 				},
 				{
-					"name": "Search page summary",
+					"name": "Reorder component",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/components/:component/after/:after",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page",
+								"components",
+								":component",
+								"after",
+								":after"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "1000376"
+								},
+								{
+									"key": "component",
+									"value": "1118520"
+								},
+								{
+									"key": "after",
+									"value": "1118383"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const page = pm.response.json().pageId;",
+									"pm.collectionVariables.set(\"page\", page);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"search\": \"1000366\"\n}",
+							"raw": "{\n    \"templateId\": \"1000378\",\n    \"eventType\": \"INV\",\n    \"name\": \"{{$randomBsNoun}}\",\n    \"pageDescription\": \"Created for development testing.\",\n    \"conditionIds\": [\n        \"TV\"\n    ],\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"dataMartName\": \"{{ran}}\"\n}",
 							"options": {
 								"raw": {
+									"headerFamily": "json",
 									"language": "json"
 								}
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/page-builder/api/v1/pages?pages=0&size=10&sort=id,ASC",
+							"raw": "{{page-builder}}/page-builder/api/v1/pages",
 							"host": [
-								"localhost"
+								"{{page-builder}}"
 							],
-							"port": "8095",
 							"path": [
 								"page-builder",
 								"api",
 								"v1",
 								"pages"
-							],
-							"query": [
-								{
-									"key": "pages",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "10"
-								},
-								{
-									"key": "sort",
-									"value": "id,ASC"
-								}
 							]
 						}
 					},
@@ -529,11 +998,10 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:8095/page-builder/api/v1/valueset/:valueSet/concepts",
+							"raw": "{{page-builder}}/page-builder/api/v1/valueset/:valueSet/concepts",
 							"host": [
-								"localhost"
+								"{{page-builder}}"
 							],
-							"port": "8095",
 							"path": [
 								"page-builder",
 								"api",
@@ -577,11 +1045,10 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:8095/page-builder/api/v1/program-area",
+							"raw": "{{page-builder}}/page-builder/api/v1/program-area",
 							"host": [
-								"localhost"
+								"{{page-builder}}"
 							],
-							"port": "8095",
 							"path": [
 								"page-builder",
 								"api",
@@ -595,26 +1062,97 @@
 			]
 		},
 		{
-			"name": "nnd_batch_to_cdc Login",
+			"name": "Rules",
+			"item": [
+				{
+					"name": "Rules",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/rules?page=0&size=10&sort=ruleDescText",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"rules"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "ruleDescText"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Rules",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"searchValue\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/rules/search",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"rules",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var response = JSON.parse(responseBody);",
-							"",
-							"postman.setEnvironmentVariable(\"token\", response.token);"
+							"const token = pm.response.json().token;",
+							"pm.collectionVariables.set(\"token\", token);"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"nnd_batch_to_cdc\"\n}",
+					"raw": "{\n    \"username\": \"{{page-builder-user}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -622,17 +1160,61 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/login",
+					"raw": "{{base}}/login",
 					"host": [
-						"localhost"
+						"{{base}}"
 					],
-					"port": "8080",
 					"path": [
 						"login"
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "page-builder",
+			"value": "{{page-builder-host}}/nbs",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "page",
+			"value": ""
 		}
 	]
 }
