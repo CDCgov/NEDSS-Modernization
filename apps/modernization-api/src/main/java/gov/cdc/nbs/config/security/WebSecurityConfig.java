@@ -18,10 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.authentication.NBSAuthenticationFilter;
-import gov.cdc.nbs.authentication.UserService;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
-import gov.cdc.nbs.authentication.session.AuthorizedSessionResolver;
-import gov.cdc.nbs.authentication.token.NBSTokenCookieEnsurer;
+import gov.cdc.nbs.authentication.NBSAuthenticationIssuer;
+import gov.cdc.nbs.authentication.session.SessionAuthenticator;
 import gov.cdc.nbs.authentication.token.NBSTokenValidator;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
@@ -41,20 +39,16 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(
       HttpSecurity http,
       final NBSTokenValidator tokenValidator,
-      final AuthorizedSessionResolver sessionResolver,
-      final NBSTokenCookieEnsurer cookieEnsurer,
-      final SecurityProperties securityProperties,
-      final UserService userService,
-      final AuthenticationIgnoredPaths ignoredPaths)
+      final AuthenticationIgnoredPaths ignoredPaths,
+      final NBSAuthenticationIssuer authIssuer,
+      final SessionAuthenticator sessionAuthenticator)
       throws Exception {
 
     final NBSAuthenticationFilter authFilter = new NBSAuthenticationFilter(
         tokenValidator,
-        sessionResolver,
-        cookieEnsurer,
-        securityProperties,
-        userService,
-        ignoredPaths);
+        ignoredPaths,
+        authIssuer,
+        sessionAuthenticator);
     return http.authorizeRequests()
         .antMatchers(ignoredPaths.asArray())
         .permitAll()

@@ -2,28 +2,21 @@ package gov.cdc.nbs.authentication;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.regex.Pattern;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
-import gov.cdc.nbs.authentication.session.AuthorizedSessionResolver;
-import gov.cdc.nbs.authentication.session.SessionAuthorization;
-import gov.cdc.nbs.authentication.token.NBSTokenCookieEnsurer;
+import gov.cdc.nbs.authentication.session.SessionAuthenticator;
 import gov.cdc.nbs.authentication.token.NBSTokenValidator;
 import gov.cdc.nbs.authentication.token.NBSTokenValidator.TokenValidation;
 
 /**
- * A {@code Filter} that ensures that incoming requests have a valid 'Authentication' header, nbs_token cookie, or
- * JSESSIONID. An unauthorized user will be redirected to `/nbs/timeout`/
+ * A {@code OncePerRequestFilter} that ensures that incoming requests have a valid 'Authentication' header, nbs_token,
+ * or JSESSIONID. An unauthorized user will be redirected to `/nbs/timeout`/
  */
 public class NBSAuthenticationFilter extends OncePerRequestFilter {
   public interface IgnoredPaths {
@@ -31,25 +24,19 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
   }
 
   private final NBSTokenValidator tokenValidator;
-  private final AuthorizedSessionResolver sessionResolver;
-  private final NBSTokenCookieEnsurer cookieEnsurer;
-  private final SecurityProperties securityProperties;
-  private final UserService userService;
   private final IgnoredPaths ignoredPaths;
+  private final NBSAuthenticationIssuer authIssuer;
+  private final SessionAuthenticator sessionAuthenticator;
 
   public NBSAuthenticationFilter(
       final NBSTokenValidator tokenValidator,
-      final AuthorizedSessionResolver sessionResolver,
-      final NBSTokenCookieEnsurer cookieEnsurer,
-      final SecurityProperties securityProperties,
-      final UserService userService,
-      final IgnoredPaths ignoredPaths) {
+      final IgnoredPaths ignoredPaths,
+      final NBSAuthenticationIssuer authIssuer,
+      final SessionAuthenticator sessionAuthenticator) {
     this.tokenValidator = tokenValidator;
-    this.sessionResolver = sessionResolver;
-    this.cookieEnsurer = cookieEnsurer;
-    this.securityProperties = securityProperties;
-    this.userService = userService;
     this.ignoredPaths = ignoredPaths;
+    this.authIssuer = authIssuer;
+    this.sessionAuthenticator = sessionAuthenticator;
   }
 
   @Override
@@ -63,12 +50,12 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
     switch (tokenValidation.status()) {
       case VALID:
         // Set the Spring auth context for the user
-        applyCredentials(tokenValidation.user(), incoming, outgoing);
+        authIssuer.issue(tokenValidation.user(), incoming, outgoing);
         chain.doFilter(incoming, outgoing);
         break;
       case EXPIRED, UNSET:
         // check if the JSESSIONID is valid
-        doSessionAuthentication(incoming, outgoing, chain);
+        sessionAuthenticator.authenticate(incoming, outgoing, chain);
         break;
       case INVALID:
         // Redirect to timeout
@@ -82,47 +69,7 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
     String uri = request.getRequestURI();
     return ignoredPaths.get().stream()
-        .anyMatch(m -> Pattern.matches(m, uri)) || "/nbs/timeout".equals(uri);
-  }
-
-  private void doSessionAuthentication(
-      HttpServletRequest incoming,
-      HttpServletResponse outgoing,
-      FilterChain chain) throws IOException, ServletException {
-    SessionAuthorization sessionAuthorization = sessionResolver.resolve(incoming);
-    if (sessionAuthorization instanceof SessionAuthorization.Authorized authorized) {
-      applyCredentials(authorized.user().user(), incoming, outgoing);
-      chain.doFilter(incoming, outgoing);
-    } else if (sessionAuthorization instanceof SessionAuthorization.Unauthorized unauthorized) {
-      unauthorized.apply(securityProperties).accept(outgoing);
-    }
-  }
-
-  // Fetches the user from the database and sets the Spring security context as well as adding the necessary cookies
-  private void applyCredentials(
-      String user,
-      HttpServletRequest request,
-      HttpServletResponse response) {
-    NbsUserDetails userDetails = userService.loadUserByUsername(user);
-    Authentication auth = createSpringAuthentication(userDetails, request);
-    SecurityContextHolder.getContext().setAuthentication(auth);
-    cookieEnsurer.ensure(user, response);
-    NBSUserCookie userCookie = new NBSUserCookie(user);
-    userCookie.apply(securityProperties, response);
-  }
-
-
-  /**
-   * Creates a {@link org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken} that
-   * notifies Spring Security that the request has been authorized
-   */
-  private Authentication createSpringAuthentication(
-      final NbsUserDetails principal,
-      final HttpServletRequest request) {
-
-    var authentication = new PreAuthenticatedAuthenticationToken(principal, null, principal.getAuthorities());
-    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-    return authentication;
+        .anyMatch(p -> new AntPathRequestMatcher(p).matches(request)) || "/nbs/timeout".equals(uri);
   }
 
 }
