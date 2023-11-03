@@ -1,5 +1,6 @@
 package gov.cdc.nbs.event.search.investigation;
 
+import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
@@ -47,7 +48,11 @@ public class InvestigationQueryBuilder {
     @SuppressWarnings("squid:S3776")
     // ignore high cognitive complexity as the method is simply going through the
     // passed in parameters, checking if null, and if not appending to the query
-    public NativeSearchQuery buildInvestigationQuery(InvestigationFilter filter, Pageable pageable) {
+    public NativeSearchQuery buildInvestigationQuery(
+        final PermissionScope scope,
+        final InvestigationFilter filter,
+        final Pageable pageable
+    ) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Investigations are secured by Program Area and Jurisdiction
         addProgramAreaJurisdictionQuery(builder, Investigation.PROGRAM_JURISDICTION_OID);

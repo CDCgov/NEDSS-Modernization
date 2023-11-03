@@ -1,6 +1,10 @@
 scalar Date
 scalar DateTime
 
+type Query {
+
+}
+
 input Page {
   pageSize: Int!
   pageNumber: Int!
