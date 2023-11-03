@@ -43,7 +43,7 @@ public class WebSecurityConfig {
         sessionAuthenticator);
 
     return http.authorizeRequests()
-        .antMatchers(ignoredPaths.toArray())
+        .antMatchers(ignoredPaths.asArray())
         .permitAll()
         .anyRequest()
         .authenticated()

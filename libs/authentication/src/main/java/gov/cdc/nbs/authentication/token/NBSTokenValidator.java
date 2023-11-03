@@ -40,6 +40,7 @@ public class NBSTokenValidator {
     }
   }
 
+  // Checks for the presence of a token in the nbs_token cookie
   private Optional<String> resolveTokenFromCookie(final HttpServletRequest request) {
     return NBSToken.resolve(request.getCookies()).map(NBSToken::value);
   }

@@ -54,7 +54,7 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
         chain.doFilter(incoming, outgoing);
         break;
       case EXPIRED, UNSET:
-        // check if the JSESSIONID is valid
+        // attempt authentication using the JSESSIONID
         sessionAuthenticator.authenticate(incoming, outgoing, chain);
         break;
       case INVALID:

@@ -17,7 +17,7 @@ public class PageBuilderAuthenticationIgnoredPaths implements IgnoredPaths {
         "/v2/api-docs/**");
   }
 
-  public String[] toArray() {
+  public String[] asArray() {
     return get().toArray(new String[] {});
   }
 
