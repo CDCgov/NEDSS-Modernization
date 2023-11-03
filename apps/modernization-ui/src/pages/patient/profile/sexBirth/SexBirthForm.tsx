@@ -87,7 +87,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1 required">
-                    As of:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="asOf">
+                        As of:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -111,7 +113,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Date of birth:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="bornOn">
+                        Date of birth:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -131,14 +135,16 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                 </Grid>
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
+                <Grid style={{ fontWeight: 'bold' }} col={6} className="margin-top-1">
                     Current age:
                 </Grid>
                 <Grid col={6}>{age}</Grid>
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Current sex:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="bornOn">
+                        Current sex:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -159,7 +165,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Unknown reason:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="unknownGenderReason">
+                        Unknown reason:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -181,7 +189,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Transgender information:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="preferredGender">
+                        Transgender information:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -202,7 +212,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Additional gender:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="additionalGender">
+                        Additional gender:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -224,7 +236,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Birth sex:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="birthGender">
+                        Birth sex:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -245,7 +259,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Multiple birth:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="multipleBirth">
+                        Multiple birth:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -266,7 +282,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Birth order:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="birthOrder">
+                        Birth order:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -291,7 +309,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Birth city:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="city">
+                        Birth city:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -316,7 +336,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Birth state:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="state">
+                        Birth state:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -336,7 +358,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Birth county:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="county">
+                        Birth county:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -356,7 +380,9 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Birth country:
+                    <label style={{ fontWeight: 'bold' }} htmlFor="country">
+                        Birth country:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller

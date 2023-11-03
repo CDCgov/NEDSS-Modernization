@@ -47,7 +47,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1 label-text">
-                    <label className="required" htmlFor="asOf">
+                    <label style={{ fontWeight: 'bold' }} className="required" htmlFor="asOf">
                         As of:
                     </label>
                 </Grid>
@@ -75,7 +75,9 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    <label htmlFor="ethnicGroup">Ethnicity:</label>
+                    <label style={{ fontWeight: 'bold' }} htmlFor="ethnicGroup">
+                        Ethnicity:
+                    </label>
                 </Grid>
                 <Grid col={6}>
                     <Controller
@@ -118,7 +120,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
             )}
             {selectedEthinicity === UNKNOWN && (
                 <Grid row className="flex-justify flex-align-center padding-2">
-                    <Grid col={6} className="margin-top-1">
+                    <Grid style={{ fontWeight: 'bold' }} col={6} className="margin-top-1">
                         Reason unknown:
                     </Grid>
                     <Grid col={6}>
