@@ -10,6 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import gov.cdc.nbs.authentication.NBSAuthenticationFilter;
+import gov.cdc.nbs.authentication.NBSAuthenticationIssuer;
+import gov.cdc.nbs.authentication.session.SessionAuthenticator;
+import gov.cdc.nbs.authentication.token.NBSTokenValidator;
 import lombok.RequiredArgsConstructor;
 
 
@@ -23,17 +28,29 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  @SuppressWarnings("squid:S4502")
+  public SecurityFilterChain securityFilterChain(
+      HttpSecurity http,
+      final NBSTokenValidator tokenValidator,
+      final PageBuilderAuthenticationIgnoredPaths ignoredPaths,
+      final NBSAuthenticationIssuer authIssuer,
+      final SessionAuthenticator sessionAuthenticator) throws Exception {
+
+    final NBSAuthenticationFilter authFilter = new NBSAuthenticationFilter(
+        tokenValidator,
+        ignoredPaths,
+        authIssuer,
+        sessionAuthenticator);
+
     return http.authorizeRequests()
-        .antMatchers(
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/swagger-resources/**",
-            "/v2/api-docs/**")
+        .antMatchers(ignoredPaths.toArray())
         .permitAll()
         .anyRequest()
         .authenticated()
         .and()
+        .csrf()
+        .disable()
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .build();
