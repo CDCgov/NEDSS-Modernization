@@ -66,7 +66,7 @@ public class ConceptManager {
             CodeValueGeneral codeSystem = findCodeSystem(request.conceptMessagingInfo().codeSystem());
 
             concept.setCodeSystemCd(codeSystem.getCodeSystemCd());
-            concept.setCodeSystemDescTxt(codeSystem.getCodeSystemDescTxt());
+            concept.setCodeSystemDescTxt(codeSystem.getCodeShortDescTxt());
         }
 
         concept.setAdminComments(request.adminComments());
