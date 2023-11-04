@@ -61,6 +61,7 @@ export const EditPage = () => {
                 <DragDropProvider data={page.tabs?.[active]}>
                     <div className="edit-page">
                         <PagesBreadcrumb currentPage={page.name} />
+                        {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
                         <div className="edit-page__header">
                             <EditPageHeader page={page} handleSaveDraft={handleSaveDraft} />
                             {page.tabs ? (
@@ -74,8 +75,6 @@ export const EditPage = () => {
                         </div>
                         <div className="edit-page__container">
                             <div className="edit-page__content">
-                                {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
-
                                 {page.tabs?.[active] ? (
                                     <EditPageContentComponent
                                         content={page.tabs[active]}

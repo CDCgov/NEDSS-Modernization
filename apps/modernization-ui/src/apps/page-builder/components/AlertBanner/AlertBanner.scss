@@ -2,11 +2,12 @@
 
 .alert-banner {
     width: 100%;
-    padding: 0.3rem 1.0rem 1.0rem;
+    padding: 0.6rem 1.0rem;
     display: flex;
     flex-direction: row;
     gap: 0.5rem;
     margin-bottom: 1.0rem;
+    align-items: center;
     &.success {
         background-color: $color-bg-alert-success;
         border-left: 8px solid $color-alert-success;
@@ -23,7 +24,8 @@
         background-color: $color-bg-alert-error;
         border-left: 8px solid $color-alert-error;
     }
-    &__right {
-        padding-top: 0.4rem;
+    &__left, &__right{
+        display: flex;
+        align-items: center;
     }
 }
