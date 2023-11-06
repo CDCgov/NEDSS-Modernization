@@ -1,5 +1,6 @@
 package gov.cdc.nbs.gateway.pagebuilder;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.notFound;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
@@ -55,8 +56,9 @@ class ManagePagesRouteConfigurationTest {
   @Test
   void should_route_to_modernized() {
 
-    modernizationApi.stubFor(get(urlPathMatching("/nbs/redirect")).willReturn(ok()));
-
+    modernizationApi.stubFor(get(urlPathMatching("/nbs/redirect"))
+        .withHeader("NBS_REDIRECT", equalTo("/page-builder/manage/pages"))
+        .willReturn(ok()));
     webClient
         .get().uri(
             builder -> builder
