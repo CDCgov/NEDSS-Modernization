@@ -101,12 +101,6 @@ public class PageController {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return creator.createPage(request, userId);
     }
-    
-    @GetMapping("{id}/details")
-    public PageDetailResponse.PagedDetail getPageDetails(@PathVariable("id") Long pageId) {
-    	return pageFinder.getPageDetails(pageId);
-    }
-
 
     @PutMapping("{id}/draft")
     public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
@@ -141,8 +135,7 @@ public class PageController {
         return stateChange.deletePageDraft(pageId);
     }
 
-
-    @GetMapping("downloadPageMetadata/{waTemplateUid}")
+    @GetMapping("{waTemplateUid}/download-metadata")
     public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("waTemplateUid") Long waTemplateUid) throws IOException {
         String fileName = "PageMetadata.csv";
         InputStreamResource file = new InputStreamResource(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid));
