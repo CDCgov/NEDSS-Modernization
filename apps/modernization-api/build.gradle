@@ -1,7 +1,6 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-    id 'jvm-test-suite'
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
@@ -11,14 +10,16 @@ group = 'gov.cdc.nbs.modernization'
 version = '1.0.0-SNAPSHOT'
 
 springBoot {
-    buildInfo()
+    buildInfo {
+        properties {
+            additional = [
+                    'commit': rootProject.ext.commit
+            ]
+        }
+    }
 }
 
 bootJar {
-    manifest {
-        attributes 'API-Version': archiveVersion
-    }
-
     archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
 }
 
