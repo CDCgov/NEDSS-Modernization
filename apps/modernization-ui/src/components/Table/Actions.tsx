@@ -39,7 +39,7 @@ export const Actions = ({ handleAction, handleOutsideClick, notDeletable }: any)
                     onClick={() => handleAction('delete')}
                     unstyled
                     type="button"
-                    className="text-bold text-base-dark display-block padding-1 border-bottom border-base-lighter text-no-underline width-full">
+                    className="text-base-dark display-block padding-1 border-bottom border-base-lighter text-no-underline width-full">
                     Delete
                 </Button>
             )}
