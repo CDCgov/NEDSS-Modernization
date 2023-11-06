@@ -2,7 +2,7 @@ plugins {
     id 'jvm-test-suite'
 }
 
-group = 'gov.cdc'
+group = 'gov.cdc.accumulation'
 version = '1.0.0-SNAPSHOT'
 
 testing {
@@ -11,7 +11,7 @@ testing {
             useJUnitJupiter()
 
             dependencies {
-                implementation libs.bundles.testing
+                implementation.bundle(libs.bundles.testing)
             }
         }
     }

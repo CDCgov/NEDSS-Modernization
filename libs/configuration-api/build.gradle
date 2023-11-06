@@ -15,8 +15,8 @@ testing {
             useJUnitJupiter()
 
             dependencies {
-                implementation libs.bundles.testing
-                implementation libs.bundles.springtesting
+                implementation.bundle(libs.bundles.testing)
+                implementation libs.spring.test
             }
         }
     }

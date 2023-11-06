@@ -5,10 +5,14 @@ plugins {
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
+apply from: "${rootDir}/gradle/cucumber-logging.gradle"
+
 group = 'gov.cdc.nbs.modernization'
 version = '1.0.0-SNAPSHOT'
 
-apply from: "${rootDir}/gradle/cucumber-logging.gradle"
+springBoot {
+    buildInfo()
+}
 
 bootJar {
     manifest {
@@ -78,18 +82,6 @@ configurations {
     }
 }
 
-test {
-    //  Cucumber only supports the JUnit Platform
-    useJUnitPlatform()
-    // always re-run tests
-    test.outputs.upToDateWhen { false }
-    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
-    // support Github actions overriding the configured database image
-    if (System.getProperty("testing.database.image") != null) {
-        systemProperty "testing.database.image", System.getProperty("testing.database.image")
-    }
-}
-
 testing {
     suites {
         test {
@@ -102,15 +94,15 @@ testing {
                 implementation project(':testing:auth-cucumber')
                 implementation project(':testing:http-interaction')
 
-                implementation libs.bundles.cucumber
+                implementation.bundle(libs.bundles.cucumber)
 
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
 
-                implementation libs.bundles.testing
+                implementation.bundle(libs.bundles.testing)
                 implementation libs.spring.test
                 implementation libs.spring.security.test
-                implementation libs.bundles.testcontainers.elasticsearch
+                implementation.bundle(libs.bundles.testcontainers.elasticsearch)
                 implementation 'net.datafaker:datafaker:2.0.2'
                 implementation libs.spring.kafka.test
 
@@ -118,6 +110,20 @@ testing {
 
                 //  Required for testing multipart form-data from Classic NBS
                 implementation "commons-fileupload:commons-fileupload:1.5"
+            }
+
+            targets {
+                all {
+                    testTask.configure {
+                        outputs.upToDateWhen { false }
+
+                        systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+                        // support Github actions overriding the configured database image
+                        if (System.getProperty("testing.database.image") != null) {
+                            systemProperty "testing.database.image", System.getProperty("testing.database.image")
+                        }
+                    }
+                }
             }
         }
     }

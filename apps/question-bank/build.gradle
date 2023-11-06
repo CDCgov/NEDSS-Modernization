@@ -50,13 +50,13 @@ testing {
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
 
-                implementation libs.bundles.testing
+                implementation.bundle(libs.bundles.testing)
                 implementation libs.spring.test
                 implementation 'org.awaitility:awaitility:4.2.0'
 
-                implementation libs.bundles.testcontainers
+                implementation.bundle(libs.bundles.testcontainers)
 
-                implementation libs.bundles.cucumber
+                implementation.bundle(libs.bundles.cucumber)
 
                 implementation project(':testing:support')
                 implementation project(':testing:identity')
