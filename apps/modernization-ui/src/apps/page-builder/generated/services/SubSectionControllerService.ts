@@ -2,10 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateSubSectionRequest } from '../models/CreateSubSectionRequest';
-import type { CreateSubSectionResponse } from '../models/CreateSubSectionResponse';
-import type { DeleteSubSectionResponse } from '../models/DeleteSubSectionResponse';
+import type { SubSection } from '../models/SubSection';
 import type { UpdateSubSectionRequest } from '../models/UpdateSubSectionRequest';
-import type { UpdateSubSectionResponse } from '../models/UpdateSubSectionResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -14,12 +12,12 @@ import { request as __request } from '../core/request';
 export class SubSectionControllerService {
 
     /**
-     * createSubSection
-     * @returns CreateSubSectionResponse OK
+     * createSubsection
+     * @returns SubSection OK
      * @returns any Created
      * @throws ApiError
      */
-    public static createSubSectionUsingPost({
+    public static createSubsectionUsingPost({
         authorization,
         page,
         request,
@@ -33,7 +31,7 @@ export class SubSectionControllerService {
          * request
          */
         request: CreateSubSectionRequest,
-    }): CancelablePromise<CreateSubSectionResponse | any> {
+    }): CancelablePromise<SubSection | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/pages/{page}/subsections/',
@@ -54,16 +52,21 @@ export class SubSectionControllerService {
 
     /**
      * updateSubSection
-     * @returns UpdateSubSectionResponse OK
+     * @returns SubSection OK
      * @returns any Created
      * @throws ApiError
      */
     public static updateSubSectionUsingPut({
         authorization,
+        page,
         request,
         subSectionId,
     }: {
         authorization: any,
+        /**
+         * page
+         */
+        page: number,
         /**
          * request
          */
@@ -72,11 +75,12 @@ export class SubSectionControllerService {
          * subSectionId
          */
         subSectionId: number,
-    }): CancelablePromise<UpdateSubSectionResponse | any> {
+    }): CancelablePromise<SubSection | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/pages/{page}/subsections/{subSectionId}',
             path: {
+                'page': page,
                 'subSectionId': subSectionId,
             },
             headers: {
@@ -93,7 +97,7 @@ export class SubSectionControllerService {
 
     /**
      * deleteSubSection
-     * @returns DeleteSubSectionResponse OK
+     * @returns any OK
      * @throws ApiError
      */
     public static deleteSubSectionUsingDelete({
@@ -110,7 +114,7 @@ export class SubSectionControllerService {
          * subSectionId
          */
         subSectionId: number,
-    }): CancelablePromise<DeleteSubSectionResponse> {
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/nbs/page-builder/api/v1/pages/{page}/subsections/{subSectionId}',

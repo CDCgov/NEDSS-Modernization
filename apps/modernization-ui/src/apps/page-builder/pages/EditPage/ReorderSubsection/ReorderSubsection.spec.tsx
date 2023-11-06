@@ -1,8 +1,29 @@
 import { render } from '@testing-library/react';
 import { ReorderSubsection } from './ReorderSubsection';
-import { PagesSubSection } from 'apps/page-builder/generated';
+import { PagesSubSection, PagesTab } from 'apps/page-builder/generated';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 describe('when ReorderSubsection renders', () => {
+    const content: PagesTab = {
+        id: 123456,
+        name: 'Test Page',
+        sections: [
+            {
+                id: 1234,
+                name: 'Section1',
+                subSections: [],
+                visible: true
+            },
+            {
+                id: 5678,
+                name: 'Section2',
+                subSections: [],
+                visible: true
+            }
+        ],
+        visible: true
+    };
     const subsection: PagesSubSection = {
         id: 123456,
         name: 'Test Section',
@@ -30,7 +51,7 @@ describe('when ReorderSubsection renders', () => {
                 description: 'asdf',
                 display: true,
                 enabled: true,
-                id: 123,
+                id: 234,
                 mask: 'asdf',
                 name: 'asdf',
                 question: 'asdf',
@@ -42,7 +63,20 @@ describe('when ReorderSubsection renders', () => {
         ],
         visible: true
     };
-    const { container } = render(<ReorderSubsection subsection={subsection} />);
+    const { container } = render(
+        <DragDropProvider data={content}>
+            <DragDropContext onDragEnd={() => {}}>
+                <Droppable droppableId='testId'>
+                    {(provided) => (
+                        <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            className="test__subsections">
+                        <ReorderSubsection subsection={subsection} index={1} visible />
+                    </div>)}
+                </Droppable>
+            </DragDropContext>
+        </DragDropProvider>);
     it('should display Questions', () => {
         const questions = container.getElementsByClassName('reorder-question');
         expect(questions.length).toEqual(2);

@@ -1,13 +1,9 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-    id 'jvm-test-suite'
-
     alias libs.plugins.springBoot apply false
     alias libs.plugins.springDependencies
 }
-
-
 
 testing {
     suites {
@@ -15,7 +11,7 @@ testing {
             useJUnitJupiter()
 
             dependencies {
-                implementation libs.bundles.testing
+                implementation.bundle(libs.bundles.testing)
             }
         }
     }

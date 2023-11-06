@@ -1,7 +1,6 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-    id 'jvm-test-suite'
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
@@ -11,18 +10,24 @@ version = '0.0.1-SNAPSHOT'
 
 apply from: "${rootDir}/gradle/cucumber-logging.gradle"
 
-bootJar {
-    manifest {
-        attributes 'API-Version': archiveVersion
+springBoot {
+    buildInfo {
+        properties {
+            additional = [
+                    'commit': rootProject.ext.commit
+            ]
+        }
     }
+}
 
+bootJar {
     archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
 }
 
 test {
     // always re-run tests
     test.outputs.upToDateWhen { false }
-    
+
     systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
 
     // support Github actions overriding the configured database image
@@ -30,7 +35,7 @@ test {
         systemProperty "testing.database.image", System.getProperty("testing.database.image")
     }
 
-        debugOptions {
+    debugOptions {
         enabled = true
         server = true
         suspend = false
@@ -50,19 +55,33 @@ testing {
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
 
-                implementation libs.bundles.testing
+                implementation.bundle(libs.bundles.testing)
                 implementation libs.spring.test
                 implementation 'org.awaitility:awaitility:4.2.0'
 
-                implementation libs.bundles.testcontainers
+                implementation.bundle(libs.bundles.testcontainers)
 
-                implementation libs.bundles.cucumber
+                implementation.bundle(libs.bundles.cucumber)
 
                 implementation project(':testing:support')
                 implementation project(':testing:identity')
                 implementation project(':testing:auth')
                 implementation project(':testing:auth-cucumber')
                 implementation project(':testing:http-interaction')
+            }
+
+            targets {
+                all {
+                    testTask.configure {
+                        outputs.upToDateWhen { false }
+
+                        systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+                        // support Github actions overriding the configured database image
+                        if (System.getProperty("testing.database.image") != null) {
+                            systemProperty "testing.database.image", System.getProperty("testing.database.image")
+                        }
+                    }
+                }
             }
         }
     }
@@ -101,8 +120,8 @@ dependencies {
     // lombok
     compileOnly libs.lombok
     annotationProcessor libs.lombok
-    
-    
+
+
     // csv
     implementation "org.apache.commons:commons-csv:1.9.0"
 

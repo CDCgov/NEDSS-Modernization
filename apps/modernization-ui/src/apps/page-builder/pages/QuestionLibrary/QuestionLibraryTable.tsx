@@ -41,6 +41,7 @@ type Props = {
     pages?: any;
     qtnModalRef?: any;
 };
+
 export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
@@ -122,6 +123,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             setSortBy(toSortString(name, direction));
         }
     };
+
     const handleAddQsntoPage = async () => {
         // TODO need to add logic for find orderNumber and Id
         const id: number = 0;
@@ -161,7 +163,9 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             </ModalToggleButton>
         </div>
     );
+
     const modalRef = useRef<ModalRef>(null);
+
     const dataNotAvailableElement = (
         <div className="no-data-available">
             <label className="margin-bottom-1em no-text">
@@ -178,6 +182,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             />
         </div>
     );
+
     const searchAvailableElement = (
         <div className="no-data-available">
             <label className="no-text">Still can't find what are you're looking for?</label>
@@ -206,6 +211,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
             {summaries?.length ? (
                 <TableComponent
+                    contextName="questions"
                     tableHeader=""
                     tableHead={tableColumns}
                     tableBody={tableRows}

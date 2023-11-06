@@ -32,6 +32,12 @@ public class WaUiMetadata {
   public static final String ACTIVE = "Active";
   public static final String INACTIVE = "Inactive";
 
+  private static final Long LINE_SEPARATOR_ID = 1012L;
+  private static final Long HYPERLINK_ID = 1003L;
+  private static final Long READ_ONLY_COMMENTS_ID = 1014L;
+  private static final Long READ_ONLY_PARTICIPANTS_LIST_ID = 1030L;
+  private static final Long ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID = 1036L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "wa_ui_metadata_uid", nullable = false)
@@ -239,14 +245,95 @@ public class WaUiMetadata {
 
   }
 
-  private void added(PageContentCommand.AddQuestion command) {
-    this.addTime = command.requestedOn();
-    this.addUserId = command.userId();
-    this.lastChgTime = command.requestedOn();
-    this.lastChgUserId = command.userId();
-    this.recordStatusTime = command.requestedOn();
+  public WaUiMetadata(PageContentCommand.AddReadOnlyComments command) {
+    // Defaults
+    this();
+
+    this.publishIndCd = null;
+    this.entryMethod = null;
+    // User specified
+    this.waTemplateUid = command.page();
+    this.orderNbr = command.orderNumber();
+    this.adminComment = command.adminComments();
+    this.questionLabel = command.comments();
+    this.nbsUiComponentUid = READ_ONLY_COMMENTS_ID;
+
+
+    this.added(command);
   }
 
+  public WaUiMetadata(PageContentCommand.AddHyperLink command) {
+    // Defaults
+    this();
+
+    this.publishIndCd = null;
+    this.entryMethod = null;
+
+    // User specified
+    this.waTemplateUid = command.page();
+    this.orderNbr = command.orderNumber();
+    this.adminComment = command.adminComments();
+    this.questionLabel = command.label();
+    this.defaultValue = command.linkUrl();
+    this.nbsUiComponentUid = HYPERLINK_ID;
+
+
+    this.added(command);
+  }
+
+  public WaUiMetadata(PageContentCommand.AddLineSeparator command) {
+    // Defaults
+    this();
+
+    this.publishIndCd = null;
+    this.entryMethod = null;
+
+
+    // User specified
+    this.waTemplateUid = command.page();
+    this.orderNbr = command.orderNumber();
+    this.adminComment = command.adminComments();
+    this.nbsUiComponentUid = LINE_SEPARATOR_ID;
+
+
+    this.added(command);
+  }
+
+  public WaUiMetadata(PageContentCommand.AddOrignalElectronicDocList command) {
+    // Defaults
+    this();
+
+    this.publishIndCd = null;
+    this.entryMethod = null;
+
+
+    // User specified
+    this.waTemplateUid = command.page();
+    this.orderNbr = command.orderNumber();
+    this.adminComment = command.adminComments();
+    this.nbsUiComponentUid = ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID;
+
+
+    this.added(command);
+  }
+
+  public WaUiMetadata(PageContentCommand.AddReadOnlyParticipantsList command) {
+    // Defaults
+    this();
+
+    this.publishIndCd = null;
+    this.entryMethod = null;
+
+
+    // User specified
+    this.waTemplateUid = command.page();
+    this.orderNbr = command.orderNumber();
+    this.adminComment = command.adminComments();
+    this.nbsUiComponentUid = READ_ONLY_PARTICIPANTS_LIST_ID;
+
+
+    this.added(command);
+  }
 
   public WaUiMetadata(WaTemplate page, PageContentCommand.AddQuestion command, Integer orderNumber) {
     this();
@@ -298,6 +385,7 @@ public class WaUiMetadata {
 
     // Audit info
     this.added(command);
+
   }
 
   public WaUiMetadata(WaTemplate page, PageContentCommand.AddTab command, Integer orderNumber) {

@@ -7,7 +7,7 @@ import type { ReportingInfo } from './ReportingInfo';
 
 export type CreateCodedQuestionRequest = {
     adminComments?: string;
-    codeSet?: string;
+    codeSet?: CreateCodedQuestionRequest.codeSet;
     dataMartInfo?: ReportingInfo;
     defaultValue?: string;
     description?: string;
@@ -20,4 +20,14 @@ export type CreateCodedQuestionRequest = {
     uniqueName?: string;
     valueSet?: number;
 };
+
+export namespace CreateCodedQuestionRequest {
+
+    export enum codeSet {
+        LOCAL = 'LOCAL',
+        PHIN = 'PHIN',
+    }
+
+
+}
 
