@@ -2,8 +2,7 @@ package gov.cdc.nbs.questionbank.entity.repository;
 
 import java.util.List;
 
-import gov.cdc.nbs.questionbank.page.util.PageConstants;
-import gov.cdc.nbs.questionbank.page.util.QueryStore;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -41,8 +40,7 @@ public interface WaUiMetadataRepository extends JpaRepository<WaUiMetadata, Long
     
     public void deleteByWaTemplateUid(WaTemplate page);
 
-    @Query(value = QueryStore.FIND_PAGE_METADATA_BY_TEMPLATE_SQL,nativeQuery = true)
-    List<Object[]> findPageMetadataByWaTemplateUid(@Param("waTemplateUid") Long waTemplateUid);
+
 
 
 

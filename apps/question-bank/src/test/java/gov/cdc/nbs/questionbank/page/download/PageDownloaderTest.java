@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.PageMetaDataDownloader;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -31,6 +32,7 @@ import gov.cdc.nbs.questionbank.entity.repository.UserProfileRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.exception.QueryException;
 import gov.cdc.nbs.questionbank.page.PageDownloader;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 class PageDownloaderTest {
 
@@ -46,11 +48,14 @@ class PageDownloaderTest {
     @Mock
     private UserProfileRepository userProfileRepository;
 
-    @Mock
-    WaUiMetadataRepository waUiMetadataRepository;
 
     @InjectMocks
     private PageDownloader pageDownloader;
+
+    @Mock
+    private JdbcTemplate jdbcTemplate;
+    @InjectMocks
+    private PageMetaDataDownloader pageMetaDataDownloader;
 
     public PageDownloaderTest() {
         MockitoAnnotations.openMocks(this);
@@ -168,10 +173,10 @@ class PageDownloaderTest {
     }
 
     @Test
-    void downloadPageMetaData() throws IOException {
+    void downloadPageMetadata() throws IOException {
         Long waTemplateUid = 100l;
-        when(waUiMetadataRepository.findPageMetadataByWaTemplateUid(waTemplateUid)).thenReturn(getPageMetaData());
-        ByteArrayInputStream response = pageDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid);
+        when(pageMetaDataDownloader.findPageMetadataByWaTemplateUid(waTemplateUid)).thenReturn(getPageMetadata());
+        ByteArrayInputStream response = pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid);
         byte[] content = response.readAllBytes();
         assertNotNull(content);
         response.read(content, 0, content.length);
@@ -180,17 +185,17 @@ class PageDownloaderTest {
 
     }
 
-    List<Object[]> getPageMetaData() {
-        List<Object[]> pageMetaData = new ArrayList<>();
-        pageMetaData.add(new Object[]{"col1_val", "col2_val", "col3_val", "col4_val", "col5_val", "col6_val", "col7_val"});
-        pageMetaData.add(new Object[]{"col1_val", "col2_val", "col3_val", "col4_val", "col5_val", "col6_val", "col7_val"});
-        return pageMetaData;
+    List<Object[]> getPageMetadata() {
+        List<Object[]> pageMetadata = new ArrayList<>();
+        pageMetadata.add(new Object[]{"col1_val", "col2_val", "col3_val", "col4_val", "col5_val", "col6_val", "col7_val"});
+        pageMetadata.add(new Object[]{"col1_val", "col2_val", "col3_val", "col4_val", "col5_val", "col6_val", "col7_val"});
+        return pageMetadata;
     }
 
     @Test
-    void downloadPageMetaDataException() {
-        when(waUiMetadataRepository.findPageMetadataByWaTemplateUid(100l)).thenThrow(new QueryException("Error downloading Page Metadata"));
-        var exception = assertThrows(RuntimeException.class, () -> pageDownloader.downloadPageMetadataByWaTemplateUid(100l));
+    void downloadPageMetadataException() {
+        when(pageMetaDataDownloader.findPageMetadataByWaTemplateUid(100l)).thenThrow(new QueryException("Error downloading Page Metadata"));
+        var exception = assertThrows(RuntimeException.class, () -> pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(100l));
         assertTrue(exception.getMessage().contains("Error downloading Page Metadata"));
 
     }

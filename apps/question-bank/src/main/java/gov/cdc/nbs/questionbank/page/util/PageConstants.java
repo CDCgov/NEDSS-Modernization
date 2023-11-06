@@ -40,16 +40,5 @@ public class PageConstants {
     public static final String PAGE_NOT_EXISTS = "Could not find page with given Id: ";
     public static final String BAD_REQUEST = "Could not process request. ";
 
-    public static final String PAGE_METADATA_CSV_HEADER =
-                   "page_nm, order_nbr, question_identifier, question_nm, question_label, question_type, desc_txt,"+
-                    "question_tool_tip, data_type, ui_display_type, code_set_nm, value_set_code, value_set_nm, enable_ind,"+
-                    "display_ind, required_ind, publish_ind_cd, repeats_ind_cd, field_size, max_length, mask, min_value,"+
-                    "max_value, default_value, other_value_ind_cd, future_date_ind_cd, unit_type_cd, unit_code_set_nm,"+
-                    "unit_value, question_unit_identifier, unit_parent_identifier, data_location, part_type_cd, participation_type,"+
-                    "data_cd, data_use_cd, standard_question_ind_cd, standard_nnd_ind_cd, coinfection_ind_cd, repeat_group_seq_nbr,"+
-                    " question_group_seq_nbr, batch_table_appear_ind_cd, batch_table_column_width, batch_table_header, block_nm,"+
-                    "block_pivot_nbr, question_identifier_nnd, question_label_nnd, question_required_nnd, question_data_type_nnd,"+
-                    "hl7_segment_field, order_group_id, question_map, indicator_cd, group_nm, sub_group_nm, rdb_table_nm, "+
-                    "rdb_column_nm, data_mart_column_nm, rpt_admin_column_nm, admin_comment";
 
 }

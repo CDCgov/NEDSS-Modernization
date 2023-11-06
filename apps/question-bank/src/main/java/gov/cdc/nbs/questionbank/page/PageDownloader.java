@@ -54,9 +54,6 @@ public class PageDownloader {
     @Autowired
     private UserProfileRepository userProfileRepository;
 
-    @Autowired
-    private WaUiMetadataRepository waUiMetadataRepository;
-
     private static final List<String> PAGE_LIBRARY_HEADERS = Arrays.asList("Event Type",
             "Page Name", "Page State", "Related Conditions(s)", "Last Updated", "Last Updated By ");
     private static final Font helvetica = new Font(FontFamily.HELVETICA, 7, Font.NORMAL);
@@ -210,26 +207,5 @@ public class PageDownloader {
                     header.setPhrase(new Phrase(columnTitle, helvetica));
                     table.addCell(header);
                 });
-    }
-
-    public ByteArrayInputStream downloadPageMetadataByWaTemplateUid(Long waTemplateUid) throws IOException {
-        final CSVFormat format = CSVFormat.Builder.create().setQuoteMode(QuoteMode.MINIMAL).
-                setHeader(PageConstants.PAGE_METADATA_CSV_HEADER.split(",")).build();
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format)) {
-            List<Object[]> pageMetadata = waUiMetadataRepository.findPageMetadataByWaTemplateUid(waTemplateUid);
-            String temp = "";
-            for (Object[] data : pageMetadata) {
-                for (Object element : data) {
-                    temp = temp + ",";
-                }
-                temp = "";
-                csvPrinter.printRecord(data);
-            }
-            csvPrinter.flush();
-            return new ByteArrayInputStream(out.toByteArray());
-        } catch (IOException e) {
-            throw new IOException("Error downloading Page Metadata: " + e.getMessage());
-        }
     }
 }

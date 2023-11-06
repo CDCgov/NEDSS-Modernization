@@ -45,6 +45,8 @@ public class PageController {
     private final PageCreator creator;
     private final PageStateChanger stateChange;
     private final PageDownloader pageDownloader;
+    private final PageMetaDataDownloader pageMetaDataDownloader;
+
     private final UserDetailsProvider userDetailsProvider;
     public PageController(
             final PageUpdater pageUpdater,
@@ -53,6 +55,7 @@ public class PageController {
             final PageCreator creator,
             final PageStateChanger stateChange,
             final PageDownloader pageDownloader,
+            final PageMetaDataDownloader pageMetaDataDownloader,
             final UserDetailsProvider userDetailsProvider) {
         this.pageUpdater = pageUpdater;
         this.finder = finder;
@@ -60,6 +63,7 @@ public class PageController {
         this.creator = creator;
         this.stateChange = stateChange;
         this.pageDownloader = pageDownloader;
+        this.pageMetaDataDownloader = pageMetaDataDownloader;
         this.userDetailsProvider = userDetailsProvider;
     }
 
@@ -141,7 +145,7 @@ public class PageController {
     @GetMapping("downloadPageMetadata/{waTemplateUid}")
     public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("waTemplateUid") Long waTemplateUid) throws IOException {
         String fileName = "PageMetadata.csv";
-        InputStreamResource file = new InputStreamResource(pageDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid));
+        InputStreamResource file = new InputStreamResource(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid));
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/csv")).body(file);
     }
