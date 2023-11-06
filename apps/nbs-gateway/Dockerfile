@@ -1,8 +1,7 @@
-FROM eclipse-temurin:17 AS builder
+FROM gradle:8-jdk17 AS builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
-COPY gradlew /usr/src/nbs/gradlew
 COPY build.gradle /usr/src/nbs/build.gradle
 COPY settings.gradle /usr/src/nbs/settings.gradle
 
@@ -11,7 +10,7 @@ COPY apps/nbs-gateway /usr/src/nbs/apps/nbs-gateway
 
 WORKDIR /usr/src/nbs
 
-RUN ./gradlew :nbs-gateway:build -x test --no-daemon
+RUN gradle :nbs-gateway:build -x test --no-daemon
 
 RUN jar xf apps/nbs-gateway/build/libs/nbs-gateway.jar
 RUN jdeps --ignore-missing-deps -q  \
