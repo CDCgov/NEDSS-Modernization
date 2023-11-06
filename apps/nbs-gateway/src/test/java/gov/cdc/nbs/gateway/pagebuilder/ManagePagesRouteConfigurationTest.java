@@ -55,7 +55,7 @@ class ManagePagesRouteConfigurationTest {
   @Test
   void should_route_to_modernized() {
 
-    modernizationApi.stubFor(get(urlPathMatching("/nbs/redirect/pagebuilder/manage/pages")).willReturn(ok()));
+    modernizationApi.stubFor(get(urlPathMatching("/nbs/redirect")).willReturn(ok()));
 
     webClient
         .get().uri(

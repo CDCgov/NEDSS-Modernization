@@ -70,11 +70,4 @@ public class SearchRedirectController {
   public RedirectView redirectAdvancedSearch() {
     return new RedirectView(ADVANCED_SEARCH);
   }
-
-  @ApiIgnore
-  @GetMapping("/nbs/redirect/pagebuilder/manage/pages")
-  public RedirectView redirectManagePages() {
-    return new RedirectView("/page-builder/manage/pages");
-  }
-
 }

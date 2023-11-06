@@ -28,7 +28,8 @@ public class ManagePagesRouteConfiguration {
                 .and()
                 .query("initLoad", "true")
                 .filters(
-                    filter -> filter.setPath("/nbs/redirect/pagebuilder/manage/pages")
+                    filter -> filter.setPath("/nbs/redirect")
+                        .setRequestHeader("NBS_REDIRECT", "/page-builder/manage/pages")
                         .filter(globalFilter))
                 .uri(service.uri()))
         .build();
