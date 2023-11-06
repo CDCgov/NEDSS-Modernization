@@ -71,7 +71,6 @@ public class SearchRedirectController {
     return new RedirectView(ADVANCED_SEARCH);
   }
 
-  // TODO may not need
   @ApiIgnore
   @GetMapping("/nbs/redirect/pagebuilder/manage/pages")
   public RedirectView redirectManagePages() {
