@@ -3,12 +3,8 @@ package gov.cdc.nbs.questionbank.page;
 import com.itextpdf.text.DocumentException;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
-import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
-import gov.cdc.nbs.questionbank.page.services.PageSummaryFinder;
-import gov.cdc.nbs.questionbank.page.services.PageUpdater;
-import gov.cdc.nbs.questionbank.page.summary.search.PageSummary;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -34,36 +30,20 @@ import java.io.IOException;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class PageController {
 
-  private final PageUpdater pageUpdater;
-  private final PageSummaryFinder finder;
   private final PageCreator creator;
   private final PageStateChanger stateChange;
   private final PageDownloader pageDownloader;
   private final UserDetailsProvider userDetailsProvider;
 
   public PageController(
-      final PageUpdater pageUpdater,
-      final PageSummaryFinder finder,
       final PageCreator creator,
       final PageStateChanger stateChange,
       final PageDownloader pageDownloader,
       final UserDetailsProvider userDetailsProvider) {
-    this.pageUpdater = pageUpdater;
-    this.finder = finder;
     this.creator = creator;
     this.stateChange = stateChange;
     this.pageDownloader = pageDownloader;
     this.userDetailsProvider = userDetailsProvider;
-  }
-
-  @PutMapping("{id}/details")
-  public PageSummary updatePageDetails(
-      @PathVariable("id") Long pageId,
-      @RequestBody UpdatePageDetailsRequest request) {
-    log.debug("Received update page details request");
-    pageUpdater.update(pageId, request);
-    log.debug("Completed update page details request");
-    return finder.find(pageId).orElse(null);
   }
 
   @PostMapping

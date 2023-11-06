@@ -1,9 +1,6 @@
-package gov.cdc.nbs.questionbank.page.summary;
+package gov.cdc.nbs.questionbank.page.summary.search;
 
 import com.querydsl.core.Tuple;
-import gov.cdc.nbs.questionbank.page.summary.PageSummaryMapper;
-import gov.cdc.nbs.questionbank.page.summary.search.PageSummary;
-import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryTables;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -12,6 +9,7 @@ import org.mockito.Mockito;
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 class PageSummaryMapperTest {
@@ -39,7 +37,7 @@ class PageSummaryMapperTest {
   }
 
   @Test
-  void should_set_messageMappingGuide() {
+  void should_map_page_summary_from_result_set() {
 
     Tuple tuple = Mockito.mock(Tuple.class);
     when(tuple.get(this.tables.page().id)).thenReturn(17L);
@@ -49,8 +47,6 @@ class PageSummaryMapperTest {
     when(tuple.get(this.tables.page().publishVersionNbr)).thenReturn(null);
     when(tuple.get(this.tables.eventType().id.code)).thenReturn("INV");
     when(tuple.get(this.tables.eventType().codeShortDescTxt)).thenReturn("Investigation");
-    when(tuple.get(this.tables.mappingGuide().id.code)).thenReturn("mmgId");
-    when(tuple.get(this.tables.mappingGuide().codeShortDescTxt)).thenReturn("mmg description");
     when(tuple.get(this.tables.page().lastChgTime)).thenReturn(Instant.parse("2023-10-17T15:27:13Z"));
     when(tuple.get(this.tables.page().lastChgUserId)).thenReturn(2L);
     when(tuple.get(this.tables.lastUpdatedBy())).thenReturn("first last");
@@ -59,18 +55,23 @@ class PageSummaryMapperTest {
 
     assertThat(actual.id()).isEqualTo(17L);
     assertThat(actual.name()).isEqualTo("template name");
-    assertThat(actual.description()).isEqualTo("template description");
     assertThat(actual.status()).isEqualTo("Initial Draft");
 
     assertThat(actual.eventType().value()).isEqualTo("INV");
     assertThat(actual.eventType().name()).isEqualTo("Investigation");
-
-    assertThat(actual.messageMappingGuide().value()).isEqualTo("mmgId");
-    assertThat(actual.messageMappingGuide().name()).isEqualTo("mmg description");
 
     assertThat(actual.lastUpdateBy()).isEqualTo("first last");
     assertThat(actual.lastUpdate()).isEqualTo("2023-10-17T15:27:13Z");
 
   }
 
+  @Test
+  void should_throw_error_when_identifier_is_not_present() {
+
+    Tuple tuple = Mockito.mock(Tuple.class);
+
+    assertThatThrownBy(() -> mapper.map(tuple))
+        .hasMessageContaining("A Page Summary ID is required");
+
+  }
 }

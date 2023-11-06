@@ -18,6 +18,14 @@ public sealed interface PageCommand {
       Instant requestedOn) implements PageCommand {
   }
 
+  record ChangeName(
+      String name,
+      long requester,
+      Instant requestedOn
+  ) implements PageCommand {
+
+  }
+
   record AssociateCondition(
       String condition,
       long requester,

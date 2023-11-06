@@ -1,18 +1,13 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
-import com.google.common.collect.Ordering;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.accumulation.Accumulator;
 import gov.cdc.nbs.questionbank.filter.querydsl.QueryDSLFilterApplier;
 import gov.cdc.nbs.questionbank.order.QueryDSLOrderResolver;
-import gov.cdc.nbs.questionbank.page.services.PageSummaryQuery;
-import gov.cdc.nbs.questionbank.page.summary.PageSummaryMapper;
-import gov.cdc.nbs.questionbank.page.summary.PageSummaryMerger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,16 +22,15 @@ class PageSummarySearcher {
 
   private final JPAQueryFactory factory;
   private final PageSummaryTables tables;
-  private final PageSummaryQuery query;
-  private final PageSummaryMapper mapper;
-  private final PageSummaryMerger merger;
+  private final PageSummaryFinder finder;
 
-  PageSummarySearcher(final JPAQueryFactory factory) {
+  PageSummarySearcher(
+      final JPAQueryFactory factory,
+      final PageSummaryFinder finder
+  ) {
     this.factory = factory;
+    this.finder = finder;
     this.tables = new PageSummaryTables();
-    this.query = new PageSummaryQuery(this.tables);
-    this.mapper = new PageSummaryMapper(this.tables);
-    this.merger = new PageSummaryMerger();
   }
 
   Page<PageSummary> find(final PageSummaryCriteria criteria, final Pageable pageable) {
@@ -62,7 +56,7 @@ class PageSummarySearcher {
         );
 
     return total > 0
-        ? resolvePage(ids, ordering, pageable, total)
+        ? resolvePage(ids, pageable, total)
         : noResultsFound(pageable);
   }
 
@@ -79,7 +73,8 @@ class PageSummarySearcher {
             this.tables.eventType().codeShortDescTxt,
             this.tables.condition().conditionShortNm,
             this.tables.page().lastChgTime,
-            this.tables.lastUpdatedBy()
+            this.tables.authUser().userFirstNm,
+            this.tables.authUser().userLastNm
         )
         .from(this.tables.page())
         .join(this.tables.eventType()).on(
@@ -92,10 +87,6 @@ class PageSummarySearcher {
         .on(this.tables.page().id.eq(this.tables.conditionMapping().waTemplateUid.id))
         .leftJoin(this.tables.condition())
         .on(this.tables.conditionMapping().conditionCd.eq(this.tables.condition().id))
-        .leftJoin(this.tables.mappingGuide()).on(
-            this.tables.mappingGuide().id.codeSetNm.eq("NBS_MSG_PROFILE"),
-            this.tables.mappingGuide().id.code.eq(this.tables.page().nndEntityIdentifier)
-        )
         .where(applyCriteria(criteria));
   }
 
@@ -137,7 +128,7 @@ class PageSummarySearcher {
       case "eventtype", "event-type" -> Stream.of(this.tables.eventType().codeShortDescTxt);
       case "condition", "conditions" -> Stream.of(this.tables.condition().conditionShortNm);
       case "status" -> Stream.of(this.tables.page().templateType, this.tables.page().publishVersionNbr);
-      case "lastupdatedby" -> Stream.of(this.tables.lastUpdatedBy());
+      case "lastupdatedby" -> Stream.of(this.tables.authUser().userFirstNm, this.tables.authUser().userLastNm);
       case "lastupdate" -> Stream.of(this.tables.page().lastChgTime);
       default -> Stream.empty();
     };
@@ -164,19 +155,11 @@ class PageSummarySearcher {
    */
   private Page<PageSummary> resolvePage(
       final List<Long> ids,
-      final OrderSpecifier<?>[] ordering,
       final Pageable pageable,
       int totalSize
   ) {
     // get the summaries based on supplied Ids
-    List<PageSummary> summaries = this.query.query(this.factory)
-        .where(this.tables.page().id.in(ids))
-        .orderBy(ordering)
-        .stream()
-        .map(mapper::map)
-        .collect(Accumulator.collecting(PageSummary::id, this.merger::merge))
-        .stream().sorted(Ordering.explicit(ids).onResultOf(PageSummary::id))
-        .toList();
+    List<PageSummary> summaries = this.finder.findAll(ids);
     return new PageImpl<>(summaries, pageable, totalSize);
   }
 

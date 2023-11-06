@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.filter;
 
-public interface Filter {
+public sealed interface Filter permits DateFilter, DateRangeFilter, ValueFilter {
 
   String property();
 

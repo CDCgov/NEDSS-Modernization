@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.filter;
 
-public interface ValueFilter extends Filter {
+public sealed interface ValueFilter extends Filter permits MultiValueFilter, SingleValueFilter {
 
   Operator operator();
 

@@ -1,5 +1,5 @@
-@page-summary-search
-Feature: Searching for Filtered Page Summaries
+@page-summary-search @filtering
+Feature: Searching for Page Summaries Filtered by Name
 
   Background:
     Given I am logged in

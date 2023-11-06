@@ -1,79 +1,35 @@
-package gov.cdc.nbs.questionbank.page.summary;
+package gov.cdc.nbs.questionbank.page.summary.search;
 
 import com.querydsl.core.Tuple;
-import gov.cdc.nbs.accumulation.CollectionMerge;
 import gov.cdc.nbs.questionbank.page.summary.search.PageSummary;
 import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryTables;
 import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
-public class PageSummaryMapper {
+class PageSummaryMapper {
 
   private final PageSummaryTables tables;
 
-  public PageSummaryMapper() {
-    this(new PageSummaryTables());
-  }
-
-  public PageSummaryMapper(final PageSummaryTables tables) {
+  PageSummaryMapper(final PageSummaryTables tables) {
     this.tables = tables;
   }
 
-  public List<PageSummary> map(final List<Tuple> tuples) {
-    // preserves ordering
-    return tuples.stream()
-        .map(this::map)
-        .collect(Collectors.toMap(PageSummary::id, Function.identity(), this::merge, LinkedHashMap::new))
-        .values()
-        .stream()
-        .toList();
-  }
-
-  /**
-   * The query contains a join on the page_cond_mapping table that causes each condition associated with a page to
-   * generate an extra row. The merge function simply combines the condition lists and returns the 'left' entry
-   */
-  private PageSummary merge(final PageSummary left, final PageSummary right) {
-    Collection<ConditionSummary> conditions = CollectionMerge.merged(left.conditions(), right.conditions());
-
-    return new PageSummary(
-        left.id(),
-        left.eventType(),
-        left.name(),
-        left.description(),
-        left.status(),
-        left.messageMappingGuide(),
-        conditions,
-        left.lastUpdate(),
-        left.lastUpdateBy()
-    );
-  }
-
-  public PageSummary map(final Tuple tuple) {
-    Long identifier = tuple.get(this.tables.page().id);
+  PageSummary map(final Tuple tuple) {
+    long identifier = Objects.requireNonNull(tuple.get(this.tables.page().id), "A Page Summary ID is required.");
     List<ConditionSummary> conditions = List.of(asCondition(tuple));
     PageSummary.EventType eventType = getEventType(tuple);
 
     String lastUpdateBy = tuple.get(this.tables.lastUpdatedBy());
     Instant lastUpdate = tuple.get(this.tables.page().lastChgTime);
     String name = tuple.get(this.tables.page().templateNm);
-    String description = tuple.get(this.tables.page().descTxt);
     return new PageSummary(
         identifier,
         eventType,
         name,
-        description,
         getStatus(tuple),
-        new PageSummary.MessageMappingGuide(
-            tuple.get(this.tables.mappingGuide().id.code),
-            tuple.get(this.tables.mappingGuide().codeShortDescTxt)
-        ),
         conditions,
         lastUpdate,
         lastUpdateBy

@@ -1,9 +1,8 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
-import gov.cdc.nbs.questionbank.filter.Filter;
-import gov.cdc.nbs.questionbank.filter.MultiValueFilter;
-import gov.cdc.nbs.questionbank.filter.SingleValueFilter;
+import gov.cdc.nbs.questionbank.filter.DateFilter;
 import gov.cdc.nbs.questionbank.filter.ValueFilter;
+import gov.cdc.nbs.questionbank.filter.json.FilterJSON;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -15,6 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -50,27 +52,29 @@ public class PageSummarySearchSteps {
   @Given("I am looking for page summaries sorted by {string} {direction}")
   public void i_am_looking_for_page_summaries_sorted_by(final String property, final Sort.Direction direction) {
 
-    String sortOn = normalizeProperty(property);
+    String sortOn = pageSummaryProperty(property);
 
     this.pageable.active(this.pageable.active().withSort(Sort.by(direction, sortOn)));
   }
 
-  private String normalizeProperty(final String property) {
+  private String pageSummaryProperty(final String property) {
     return switch (property.toLowerCase()) {
       case "event type", "eventtype" -> "eventType";
+      case "lastupdatedby", "last updated by", "updated by", "changed by" -> "lastUpdatedBy";
+      case "lastupdatedon", "last updated on", "updated on", "changed on" -> "lastUpdate";
       default -> property;
     };
   }
 
-  @Then("I filter page summaries by {string} {operator} {string}")
+  @Then("I filter page summaries by {string} {valueOperator} {string}")
   public void i_filter_page_summaries_by_property_operator_value(
       final String property,
       final ValueFilter.Operator operator,
       final String value
   ) {
 
-    Filter filter = new SingleValueFilter(
-        normalizeProperty(property),
+    FilterJSON filter = new FilterJSON.SingleValue(
+        pageSummaryProperty(property),
         operator,
         value
     );
@@ -79,21 +83,66 @@ public class PageSummarySearchSteps {
 
   }
 
-  @Then("I filter page summaries by {string} {operator}")
+  @Then("I filter page summaries by {string} {valueOperator}")
   public void i_filter_page_summaries_by_property_operator_values(
       final String property,
       final ValueFilter.Operator operator,
       final List<String> values
   ) {
 
-    Filter filter = new MultiValueFilter(
-        normalizeProperty(property),
+    FilterJSON filter = new FilterJSON.MultiValue(
+        pageSummaryProperty(property),
         operator,
         values
     );
 
     this.criteria.active(existing -> existing.withFilter(filter));
 
+  }
+
+  @Then("I filter page summaries last updated (in the ){dateOperator}")
+  public void i_filter_page_summaries_last_updated(final DateFilter.Operator operator) {
+
+    FilterJSON filter = new FilterJSON.Date(
+        "lastUpdate",
+        operator
+    );
+
+    this.criteria.active(existing -> existing.withFilter(filter));
+  }
+
+  @Then("I filter page summaries last updated between {past} and {past}")
+  public void i_filter_page_summaries_last_updated_between(final Instant starting, final Instant until) {
+    withDateRange("lastUpdate", starting, until);
+  }
+
+  private void withDateRange(
+      final String property,
+      final Instant starting,
+      final Instant until
+  ) {
+
+    LocalDate startingDate = starting == null ? null : LocalDate.ofInstant(starting, ZoneId.systemDefault());
+    LocalDate untilDate = until == null ? null : LocalDate.ofInstant(until, ZoneId.systemDefault());
+
+    FilterJSON filter = new FilterJSON.DateRange(
+        property,
+        startingDate,
+        untilDate
+    );
+
+    this.criteria.active(existing -> existing.withFilter(filter));
+
+  }
+
+  @Then("I filter page summaries last updated after {past}")
+  public void i_filter_page_summaries_last_updated_after(final Instant after) {
+    withDateRange("lastUpdate", after, null);
+  }
+
+  @Then("I filter page summaries last updated before {past}")
+  public void i_filter_page_summaries_last_updated_before(final Instant before) {
+    withDateRange("lastUpdate", null, before);
   }
 
   @When("I search for page summaries")
@@ -166,6 +215,7 @@ public class PageSummarySearchSteps {
 
   @Then("the {nth} found page summary has a(n) {string} equal to {string}")
   @Then("the {nth} found page summary has the {string} {string}")
+  @Then("the {nth} found page summary was {string} {string}")
   public void the_found_nth_page_summaries_contain_a_page_with_nth_property_having_the_value(
       final int position,
       final String property,
@@ -199,10 +249,9 @@ public class PageSummarySearchSteps {
       case "description" -> jsonPath("$.content[%s].description", position);
       case "status" -> jsonPath("$.content[%s].status", position);
       case "lastupdate", "last updated", "last update" -> jsonPath("$.content[%s].lastUpdate", position);
-      case "lastupdatedby" -> jsonPath("$.content[%s].lastUpdateBy", position);
+      case "lastupdatedby", "last updated by", "updated by", "changed by" ->
+          jsonPath("$.content[%s].lastUpdateBy", position);
       case "eventtype", "event type" -> jsonPath("$.content[%s].eventType.name", position);
-      case "mmg", "messagemappingguide", "message mapping guide" ->
-          jsonPath("$.content[%s].messageMappingGuide.name", position);
       case "condition" -> jsonPath("$.content[%s].conditions[*].name", position);
       default -> throw new IllegalStateException("Unexpected Page Summary value: " + field.toLowerCase());
     };

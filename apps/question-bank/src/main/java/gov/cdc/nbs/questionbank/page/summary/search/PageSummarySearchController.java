@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api/v1/pages")
@@ -20,6 +23,13 @@ class PageSummarySearchController {
     this.searcher = searcher;
   }
 
+
+  @Operation(
+      operationId = "search",
+      summary = "Allows paginated searching of Page Summaries with filters.",
+      tags = "Page Summary"
+  )
+  @ApiOperation(value = "This is here to set the operationId", nickname = "search")
   @PostMapping("/search")
   Page<PageSummary> search(
       @RequestBody final PageSummaryRequest request,

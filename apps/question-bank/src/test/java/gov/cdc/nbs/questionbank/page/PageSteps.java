@@ -2,11 +2,13 @@ package gov.cdc.nbs.questionbank.page;
 
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.questionbank.support.PageMother;
+import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 
+import java.time.Instant;
 import java.util.function.Consumer;
 
 public class PageSteps {
@@ -48,7 +50,7 @@ public class PageSteps {
 
   @Given("the page is for a(n) {eventType}")
   public void the_page_is_for(final String eventType) {
-    mother.withEventType(page.active(), EventType.resolve(eventType));
+    mother.withEventType(page.active(), eventType);
   }
 
   @Given("the page has a(n) {string} of {string}")
@@ -61,6 +63,33 @@ public class PageSteps {
       case "name" -> mother.withName(active, value);
       default -> throw new IllegalStateException("Unexpected Page value: " + property);
     }
+  }
+
+  @Given("{user} changed the page name to {string}")
+  public void the_user_changed_the_page_property(final ActiveUser user, final String value) {
+    Instant when = Instant.now();
+    this.page.maybeActive()
+        .ifPresent(
+            active -> mother.withName(
+                active,
+                value,
+                user.nedssEntry(),
+                when
+            )
+        );
+  }
+
+  @Given("{user} changed the page name to {string} {past}")
+  public void the_user_changed_the_page_property(final ActiveUser user, final String value, final Instant when) {
+    this.page.maybeActive()
+        .ifPresent(
+            active -> mother.withName(
+                active,
+                value,
+                user.nedssEntry(),
+                when
+            )
+        );
   }
 
   @ParameterType("(?i)(draft|published with draft|initial draft|published|template)")

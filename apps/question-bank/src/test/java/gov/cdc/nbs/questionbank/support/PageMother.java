@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.support;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.EventType;
 import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.PageEntityHarness;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -312,15 +311,27 @@ public class PageMother {
   }
 
   public void withName(final PageIdentifier page, final String value) {
-    harness.with(page).use(found -> found.setTemplateNm(value));
+    withName(page, value, this.settings.createdBy(), this.settings.createdOn());
+  }
+
+  public void withName(final PageIdentifier page, final String value, final long user, final Instant when) {
+    harness.with(page).use(
+        found -> found.changeName(
+            new PageCommand.ChangeName(
+                value,
+                user,
+                when
+            )
+        )
+    );
   }
 
   public void withDescription(final PageIdentifier page, final String description) {
     harness.with(page).use(found -> found.setDescTxt(description));
   }
 
-  public void withEventType(final PageIdentifier page, final EventType value) {
-    harness.with(page).use(found -> found.setBusObjType(value.code()));
+  public void withEventType(final PageIdentifier page, final String value) {
+    harness.with(page).use(found -> found.setBusObjType(value));
   }
 
   public void draft(final PageIdentifier page) {

@@ -24,6 +24,8 @@ dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.springBoot
 
+    implementation libs.bundles.security
+
     implementation libs.bundles.jpa
     implementation libs.bundles.queryDSL
 

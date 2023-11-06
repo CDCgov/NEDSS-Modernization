@@ -1,19 +1,20 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
 import gov.cdc.nbs.questionbank.filter.Filter;
+import gov.cdc.nbs.questionbank.filter.json.FilterJSON;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 record PageSummaryRequest(
     String search,
-    List<Filter> filters
+    List<FilterJSON> filters
 
 ) {
 
   PageSummaryRequest(
       String search,
-      List<Filter> filters
+      List<FilterJSON> filters
 
   ) {
     this.search = search;
@@ -31,9 +32,9 @@ record PageSummaryRequest(
   }
 
 
-  PageSummaryRequest withFilter(final Filter filter) {
+  PageSummaryRequest withFilter(final FilterJSON filter) {
 
-    List<Filter> appended = Stream.concat(filters.stream(), Stream.of(filter)).toList();
+    List<FilterJSON> appended = Stream.concat(filters.stream(), Stream.of(filter)).toList();
 
     return new PageSummaryRequest(
         search(),

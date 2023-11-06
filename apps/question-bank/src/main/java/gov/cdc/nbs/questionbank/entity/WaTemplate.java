@@ -513,6 +513,11 @@ public class WaTemplate {
         .forEach(c -> c.setOrderNbr(current.getAndIncrement()));
   }
 
+  public void changeName(final PageCommand.ChangeName command) {
+    this.setTemplateNm(command.name());
+    changed(command);
+  }
+
   public void associateCondition(final PageCommand.AssociateCondition command) {
     this.conditionMappings.add(new PageCondMapping(this, command));
     changed(command);
@@ -527,7 +532,7 @@ public class WaTemplate {
     changed(command);
   }
 
-  public void changed(final PageCommand command) {
+  private void changed(final PageCommand command) {
     setLastChgTime(command.requestedOn());
     setLastChgUserId(command.requester());
   }
