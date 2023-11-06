@@ -9,13 +9,13 @@ RUN npm install
 # Copy required sources
 COPY apps/modernization-ui .
 
-RUN npm run build
+RUN npx react-scripts build
 
-FROM eclipse-temurin:17 AS api-builder
+FROM gradle:8-jdk17 AS api-builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
-COPY gradlew /usr/src/nbs/gradlew
+
 COPY build.gradle /usr/src/nbs/build.gradle
 COPY settings.gradle /usr/src/nbs/settings.gradle
 
@@ -25,14 +25,13 @@ COPY lombok.config /usr/src/nbs/lombok.config
 COPY apps/modernization-api /usr/src/nbs/apps/modernization-api
 COPY libs /usr/src/nbs/libs
 
-
 # Copy the UI
 COPY --from=ui-builder /usr/modernization-ui/build /usr/src/nbs/apps/modernization-ui/build/
 
 WORKDIR /usr/src/nbs
 
 # Build just the modernization-api and any required library
-RUN ./gradlew :modernization-api:buildNeeded -x test --no-daemon
+RUN gradle :modernization-api:buildNeeded -x test --no-daemon
 
 RUN jar xf apps/modernization-api/build/libs/modernization-api.jar
 
