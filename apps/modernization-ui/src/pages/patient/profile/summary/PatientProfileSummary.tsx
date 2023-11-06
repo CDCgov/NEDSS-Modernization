@@ -14,10 +14,10 @@ import { Patient } from 'pages/patient/profile';
 import { displayAddress } from 'address/display/displayAddress';
 import { NoData } from 'components/NoData';
 import { displayName } from 'name';
+import { useProfileContext } from '../ProfileContext';
 
 type Props = {
     patient?: Patient;
-    summary?: PatientSummary;
 };
 
 type Renderer<T> = (value: T) => ReactNode;
@@ -75,7 +75,9 @@ const SummaryItem = ({ index, label, children }: SummaryItemProps) => (
     </div>
 );
 
-export const PatientProfileSummary = ({ patient, summary }: Props) => {
+export const PatientProfileSummary = ({ patient }: Props) => {
+    const { profile } = useProfileContext();
+    const { summary } = profile || {};
     return (
         <div className="common-card patient-summary">
             {!patient || !summary ? (

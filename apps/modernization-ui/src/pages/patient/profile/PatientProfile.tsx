@@ -138,9 +138,7 @@ export const PatientProfile = () => {
                     </div>
                 </div>
                 <div className="main-body">
-                    {profile && profile.summary && (
-                        <PatientProfileSummary patient={profile?.patient} summary={profile?.summary} />
-                    )}
+                    {profile && <PatientProfileSummary patient={profile?.patient} />}
 
                     <div className="grid-row flex-align-center">
                         <h6
