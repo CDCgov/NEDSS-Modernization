@@ -1,7 +1,6 @@
 package gov.cdc.nbs.authentication;
 
 import java.io.IOException;
-import java.util.Collection;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,14 +18,13 @@ import gov.cdc.nbs.authentication.token.NBSTokenValidator.TokenValidation;
  * or JSESSIONID. An unauthorized user will be redirected to `/nbs/timeout`/
  */
 public class NBSAuthenticationFilter extends OncePerRequestFilter {
-  public interface IgnoredPaths {
-    public Collection<String> get();
-  }
+
 
   private final NBSTokenValidator tokenValidator;
   private final IgnoredPaths ignoredPaths;
   private final NBSAuthenticationIssuer authIssuer;
   private final SessionAuthenticator sessionAuthenticator;
+  private static final AntPathRequestMatcher timeoutPath = new AntPathRequestMatcher("/nbs/timeout");
 
   public NBSAuthenticationFilter(
       final NBSTokenValidator tokenValidator,
@@ -67,9 +65,7 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-    String uri = request.getRequestURI();
-    return ignoredPaths.get().stream()
-        .anyMatch(p -> new AntPathRequestMatcher(p).matches(request)) || "/nbs/timeout".equals(uri);
+    return timeoutPath.matches(request) || ignoredPaths.ignored(request);
   }
 
 }

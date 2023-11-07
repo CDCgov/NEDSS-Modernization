@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import gov.cdc.nbs.authentication.IgnoredPaths;
 import gov.cdc.nbs.authentication.NBSAuthenticationFilter;
 import gov.cdc.nbs.authentication.NBSAuthenticationIssuer;
 import gov.cdc.nbs.authentication.session.SessionAuthenticator;
@@ -32,9 +33,14 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(
       HttpSecurity http,
       final NBSTokenValidator tokenValidator,
-      final PageBuilderAuthenticationIgnoredPaths ignoredPaths,
       final NBSAuthenticationIssuer authIssuer,
       final SessionAuthenticator sessionAuthenticator) throws Exception {
+
+    final IgnoredPaths ignoredPaths = new IgnoredPaths(
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-resources/**",
+        "/v2/api-docs/**");
 
     final NBSAuthenticationFilter authFilter = new NBSAuthenticationFilter(
         tokenValidator,
@@ -43,7 +49,7 @@ public class WebSecurityConfig {
         sessionAuthenticator);
 
     return http.authorizeRequests()
-        .antMatchers(ignoredPaths.asArray())
+        .antMatchers(ignoredPaths.paths())
         .permitAll()
         .anyRequest()
         .authenticated()
