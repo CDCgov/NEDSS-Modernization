@@ -3,7 +3,10 @@ package gov.cdc.nbs.questionbank.page;
 import java.io.*;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
@@ -49,9 +52,8 @@ public class PageDownloader {
 	@Autowired
 	private UserProfileRepository userProfileRepository;
 
-
 	private static final List<String> PAGE_LIBRARY_HEADERS = Arrays.asList("Event Type",
-			"Page Name  VVV", "Page State VVV", "Related Conditions(s) VVV", "Last Updated", "Last Updated By ");
+			"Page Name", "Page State", "Related Conditions(s)", "Last Updated", "Last Updated By ");
 	private static final Font helvetica = new Font(FontFamily.HELVETICA, 7, Font.NORMAL);
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter
 			.ofPattern("MM/dd/yyyy")
@@ -60,14 +62,13 @@ public class PageDownloader {
 	
 	public ByteArrayInputStream downloadLibrary()  throws IOException {
 		final CSVFormat format = CSVFormat.Builder.create().setQuoteMode(QuoteMode.MINIMAL).setHeader("Event Type",
-				"Page Name", "Page State ", "Related Conditions(s) ", "Last Udated", "Last Udated By ").build();
+				"Page Name", "Page State", "Related Conditions(s)", "Last Udated", "Last Udated By ").build();
 		
 
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
 				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format)) {
-			System.out.println("x11");
+			
 			List<WaTemplate> pages = templateRepository.getAllPagesOrderedByName();
-			System.out.println("yyyyy " + pages.size());
 			List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUidIn(pages);
 			List<ConditionCode> conditionCodes = conditionCodeRepository.findByIdIn(conditionIds(mappings));
 
@@ -155,9 +156,7 @@ public class PageDownloader {
 		table.setWidthPercentage(95);
 
 		addPageLibraryTableHeader(table);
-		System.out.println("x22");
 		List<WaTemplate> pages = templateRepository.getAllPagesOrderedByName();
-		System.out.println("xxxxx " + pages.size());
 		List<PageCondMapping> mappings = pageConMappingRepository.findByWaTemplateUidIn(pages);
 		List<ConditionCode> conditionCodes = conditionCodeRepository.findByIdIn(conditionIds(mappings));
 
