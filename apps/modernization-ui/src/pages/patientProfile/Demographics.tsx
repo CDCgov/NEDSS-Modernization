@@ -27,7 +27,7 @@ export type AlertType = {
         | 'Identification'
         | 'General patient information'
         | 'Mortality'
-        | 'Sex & Birth'
+        | 'Sex & birth'
         | 'Ethnicity';
     name?: string;
 } | null;

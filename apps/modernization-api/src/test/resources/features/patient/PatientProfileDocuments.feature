@@ -30,7 +30,7 @@ Feature: Patient Profile Documents
   @web-interaction
   Scenario: A Document is viewed from the Patient Profile
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "VIEW-DOCUMENT" for the jurisdiction: "ALL" and program area: "STD"
+    And I can "VIEW" any "DOCUMENT"
     And the patient has a Case Report
     When the Document is viewed from the Patient Profile
     Then the classic profile is prepared to view a Document
@@ -39,7 +39,6 @@ Feature: Patient Profile Documents
   @web-interaction
   Scenario: A Document is viewed from the Patient Profile without required permissions
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "OTHER" for the jurisdiction: "ALL" and program area: "STD"
     And the patient has a Case Report
     When the Document is viewed from the Patient Profile
     Then I am not allowed to view a Classic NBS Document

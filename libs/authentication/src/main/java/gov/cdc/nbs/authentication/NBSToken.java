@@ -1,31 +1,41 @@
 package gov.cdc.nbs.authentication;
 
-import gov.cdc.nbs.authentication.config.SecurityProperties;
-
+import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
 
 public record NBSToken(String value) {
 
-    private static final String NBS_TOKEN_NAME = "nbs_token";
+  private static final String NBS_TOKEN_NAME = "nbs_token";
 
-    public void apply(
-        final SecurityProperties properties,
-        final HttpServletResponse response
-    ) {
-        Cookie cookie = asCookie();
-        cookie.setMaxAge(properties.getTokenExpirationSeconds());
+  public void apply(
+      final SecurityProperties properties,
+      final HttpServletResponse response) {
+    Cookie cookie = asCookie();
+    cookie.setMaxAge(properties.getTokenExpirationSeconds());
+    response.addCookie(cookie);
+  }
 
-        response.addCookie(cookie);
-
+  public static Optional<NBSToken> resolve(Cookie[] cookies) {
+    if (cookies == null) {
+      return Optional.empty();
     }
-
-    @SuppressWarnings({"squid:S3330"})
-    public Cookie asCookie() {
-        Cookie cookie = new Cookie(NBS_TOKEN_NAME, value());
-        cookie.setPath("/");
-        cookie.setSecure(true);
-        return cookie;
+    for (Cookie cookie : cookies) {
+      if (cookie.getName().equals(NBS_TOKEN_NAME)) {
+        return Optional.of(new NBSToken(cookie.getValue()));
+      }
     }
+    return Optional.empty();
+  }
+
+
+  @SuppressWarnings({"squid:S3330"})
+  private Cookie asCookie() {
+    Cookie cookie = new Cookie(NBS_TOKEN_NAME, value());
+    cookie.setPath("/");
+    cookie.setSecure(true);
+    return cookie;
+  }
 
 }

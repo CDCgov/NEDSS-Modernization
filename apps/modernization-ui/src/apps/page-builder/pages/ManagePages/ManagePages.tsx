@@ -26,13 +26,21 @@ export const ManagePages = () => {
         }
 
         // get Pages
-        fetchPageSummaries(token, searchQuery, sortBy.toLowerCase() + ',' + sortDirection, currentPage, pageSize).then(
-            (data: any) => {
+        try {
+            fetchPageSummaries(
+                token,
+                searchQuery,
+                sortBy.toLowerCase() + ',' + sortDirection,
+                currentPage,
+                pageSize
+            ).then((data: any) => {
                 setPages(data.content);
                 setTotalElements(data.totalElements);
                 setIsLoading(false);
-            }
-        );
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
 
     return (

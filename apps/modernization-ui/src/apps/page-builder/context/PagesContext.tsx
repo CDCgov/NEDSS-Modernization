@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
-import { createContext, useState, Dispatch, SetStateAction } from 'react';
+import { createContext, useState } from 'react';
+import { ContextData } from './contextData';
 
+<<<<<<< HEAD
 interface PagesContextData {
     searchQuery: string;
     setSearchQuery: (query: string) => void;
@@ -17,6 +19,11 @@ interface PagesContextData {
 }
 
 const pagesContextDefaultValue: PagesContextData = {
+=======
+const pagesContextDefaultValue: ContextData = {
+    filter: '',
+    setFilter: () => {},
+>>>>>>> main
     searchQuery: '',
     setSearchQuery: () => {},
     currentPage: 1,
@@ -31,9 +38,10 @@ const pagesContextDefaultValue: PagesContextData = {
     setIsLoading: () => {}
 };
 
-export const PagesContext = createContext<PagesContextData>(pagesContextDefaultValue);
+export const PagesContext = createContext<ContextData>(pagesContextDefaultValue);
 
 export const PagesProvider = ({ children }: any) => {
+    const [filter, setFilter] = useState(pagesContextDefaultValue.filter);
     const [searchQuery, setSearchQuery] = useState(pagesContextDefaultValue.searchQuery);
     const [currentPage, setCurrentPage] = useState<number>(pagesContextDefaultValue.currentPage);
     const [sortBy, setSortBy] = useState(pagesContextDefaultValue.sortBy);
@@ -44,6 +52,8 @@ export const PagesProvider = ({ children }: any) => {
     return (
         <PagesContext.Provider
             value={{
+                filter,
+                setFilter,
                 currentPage,
                 sortBy,
                 setSortBy,
