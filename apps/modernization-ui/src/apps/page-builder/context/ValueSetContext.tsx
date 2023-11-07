@@ -1,24 +1,8 @@
 /* eslint-disable camelcase */
-import { createContext, useState, Dispatch, SetStateAction } from 'react';
+import { createContext, useState } from 'react';
+import { ContextData } from './contextData';
 
-interface ValueSetsContextData {
-    filter: any;
-    setFilter: (filter: any) => void;
-    searchQuery: string;
-    setSearchQuery: (query: string) => void;
-    currentPage: number;
-    setCurrentPage?: (page: number) => void;
-    sortBy: string;
-    setSortBy: (name: string) => void;
-    sortDirection: string;
-    setSortDirection: (direction: string) => void;
-    pageSize: number;
-    setPageSize: Dispatch<SetStateAction<number>>;
-    isLoading: boolean;
-    setIsLoading: (status: boolean) => void;
-}
-
-const valueSetsDefaultValue: ValueSetsContextData = {
+const valueSetsDefaultValue: ContextData = {
     filter: {},
     setFilter: () => {},
     searchQuery: '',
@@ -35,7 +19,7 @@ const valueSetsDefaultValue: ValueSetsContextData = {
     setIsLoading: () => {}
 };
 
-export const ValueSetsContext = createContext<ValueSetsContextData>(valueSetsDefaultValue);
+export const ValueSetsContext = createContext<ContextData>(valueSetsDefaultValue);
 
 export const ValueSetsProvider = ({ children }: any) => {
     const [searchQuery, setSearchQuery] = useState(valueSetsDefaultValue.searchQuery);
