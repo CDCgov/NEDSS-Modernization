@@ -10,7 +10,7 @@
     background-color: $color-white;
     align-items: baseline;
     border-radius: 5px;
-    border: 1px solid var(--base-lighter, #dcdee0);
+    border: 1px solid var(--base-lighter, #DCDEE0);
     .navigation__heading {
         width: auto;
         h2 {
@@ -35,16 +35,13 @@
                 font-weight: 400;
                 font-size: 14px;
             }
-            a {
-                text-decoration: none;
-            }
             &.active {
                 p {
                     font-weight: 700;
                     color: $color-primary;
                 }
                 &::before {
-                    content: '';
+                    content: "";
                     position: absolute;
                     background-color: $color-primary;
                     top: 0.65rem;
