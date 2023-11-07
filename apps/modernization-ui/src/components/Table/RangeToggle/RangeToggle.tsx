@@ -1,32 +1,40 @@
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { Context, useContext, useEffect, useState } from 'react';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import './RangeToggle.scss';
 import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 import { QuestionsContext } from 'apps/page-builder/context/QuestionsContext';
 import { ValueSetsContext } from 'apps/page-builder/context/ValueSetContext';
+import { ContextData } from 'apps/page-builder/context/contextData';
 
 interface RangeToggleProps {
     contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates';
 }
 
 export const RangeToggle = ({ contextName }: RangeToggleProps) => {
-    const context = useMemo(() => {
+    const [context, setContext] = useState<Context<ContextData>>(PagesContext);
+
+    useEffect(() => {
         switch (contextName) {
             case 'pages':
-                return useContext(PagesContext);
+                setContext(PagesContext);
+                break;
             case 'conditions':
-                return useContext(ConditionsContext);
+                setContext(ConditionsContext);
+                break;
             case 'questions':
-                return useContext(QuestionsContext);
+                setContext(QuestionsContext);
+                break;
             case 'valuesets':
-                return useContext(ValueSetsContext);
+                setContext(ValueSetsContext);
+                break;
             default:
-                return useContext(PagesContext);
+                setContext(PagesContext);
+                break;
         }
     }, [contextName]);
 
-    const { pageSize, setPageSize, currentPage, setCurrentPage } = context;
+    const { pageSize, setPageSize, currentPage, setCurrentPage } = useContext(context);
     const [range, setRange] = useState(10);
     const options = [
         { name: '10', value: '10' },

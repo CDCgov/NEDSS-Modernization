@@ -14,9 +14,13 @@ export const fetchPageSummaries = (
         page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
         size: pageSize,
         sort
-    }).then((response: Page_PageSummary_) => {
-        return response;
-    });
+    })
+        .then((response: Page_PageSummary_) => {
+            return response;
+        })
+        .catch((error) => {
+            return error;
+        });
 };
 
 export const createPage = (

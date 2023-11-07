@@ -15,7 +15,7 @@ import { downloadPageLibraryPdf } from 'utils/ExportUtil';
 export enum Column {
     PageName = 'Page name',
     EventType = 'Event name',
-    RelatedConditions = 'Related conditions',
+    RelatedConditions = 'Related condition(s)',
     Status = 'Status',
     LastUpdate = 'Last updated',
     LastUpdatedBy = 'Last updated by'
@@ -90,6 +90,9 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
                     break;
                 case Column.Status:
                     setSortBy('status');
+                    break;
+                case Column.RelatedConditions:
+                    setSortBy('conditions');
                     break;
                 case Column.LastUpdate:
                     setSortBy('lastUpdate');
