@@ -17,7 +17,7 @@ on:
   pull_request:
     paths:
       - "apps/**"
-      - "!apps/modernization-ui"
+      - "!apps/modernization-ui/**"
       - "libs/**"
       - "build.gradle"
       - "settings.gradle"
@@ -89,7 +89,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.passed_github_token }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ env.sonar_token }}
-        run: ./gradlew clean build sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:latest-SNAPSHOT.e914c35
+        run: ./gradlew clean build codeCoverageReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:latest-SNAPSHOT.e914c35
 
       - name: Zip test report
         run: zip -r test-report.zip ./build/reports/*
