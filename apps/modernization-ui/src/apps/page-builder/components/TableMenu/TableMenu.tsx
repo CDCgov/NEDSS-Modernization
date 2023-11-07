@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './TableMenu.scss';
 import { PageFilterModal } from '../../pages/FilterModal/PageFilterModal';
+import { Config } from 'config';
 
 type Props = {
     tableType: string;
@@ -20,6 +21,10 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
 
     const addNew = () => {
         navigate(`/page-builder/add/${tableType}`);
+    };
+
+    const navigateToPagePorting = () => {
+        window.location.href = `${Config.nbsUrl}/ManagePage.do?method=loadManagePagePort&initLoad=true`;
     };
 
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -48,10 +53,13 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
             <Button type="submit" onClick={() => setSearchQuery(keywords)}>
                 <Icon.Search size={3} />
             </Button>
+            <Button type="button" outline onClick={() => navigateToPagePorting()}>
+                <p>Page porting</p>
+            </Button>
+            <PageFilterModal />
             <Button type="button" outline>
                 <Icon.Print size={3} onClick={onPrintIconClick} data-testid="print-icon" />
             </Button>
-            <PageFilterModal />
             <Button type="button" outline onClick={onDownloadIconClick} data-testid="file-download">
                 <Icon.FileDownload size={3} />
             </Button>
