@@ -8,7 +8,6 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class PagesService {
-
     /**
      * Pages
      * Provides the details of a Page including the components and the rules
@@ -17,29 +16,28 @@ export class PagesService {
      */
     public static detailsUsingGet({
         authorization,
-        id,
+        id
     }: {
-        authorization: string,
+        authorization: string;
         /**
          * id
          */
-        id: number,
+        id: number;
     }): CancelablePromise<PagesResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{id}',
+            url: '/nbs/page-builder/api/v1/pages/{id}/details',
             path: {
-                'id': id,
+                id: id
             },
             headers: {
-                'Authorization': authorization,
+                Authorization: authorization
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`,
-            },
+                404: `Not Found`
+            }
         });
     }
-
 }

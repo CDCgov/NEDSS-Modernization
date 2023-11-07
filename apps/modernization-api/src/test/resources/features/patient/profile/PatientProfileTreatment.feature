@@ -20,7 +20,7 @@ Feature: Patient Profile Treatments
 
   Scenario: A Treatment is viewed from the Patient Profile
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "VIEW-TREATMENT" for the jurisdiction: "ALL" and program area: "STD"
+    And I can "VIEW" any "TREATMENT"
     And the patient is a subject of a Treatment
     When the Treatment is viewed from the Patient Profile
     Then the classic profile is prepared to view a Treatment
@@ -28,7 +28,6 @@ Feature: Patient Profile Treatments
 
   Scenario: A Treatment is viewed from the Patient Profile without required permissions
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "OTHER" for the jurisdiction: "ALL" and program area: "STD"
     And the patient is a subject of a Treatment
     When the Treatment is viewed from the Patient Profile
     Then I am not allowed to view a Classic NBS Treatment
