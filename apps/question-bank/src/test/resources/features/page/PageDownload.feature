@@ -15,3 +15,8 @@ Feature: Download Pages
          Given I am a user without permissions
          When I make a request to download page library
          Then an accessdenied exception is thrown
+
+    Scenario: As an admin I can download page metadata
+         Given I am an admin user make an download page metadata request
+         When I make a request to download page metadata
+         Then Page metadata is downloaded

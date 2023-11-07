@@ -9,8 +9,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import gov.cdc.nbs.questionbank.page.PageMetaDataDownloader;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,6 +30,7 @@ import gov.cdc.nbs.questionbank.entity.repository.UserProfileRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.exception.QueryException;
 import gov.cdc.nbs.questionbank.page.PageDownloader;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 class PageDownloaderTest {
 
@@ -44,6 +48,11 @@ class PageDownloaderTest {
 
     @InjectMocks
     private PageDownloader pageDownloader;
+
+    @Mock
+    private JdbcTemplate jdbcTemplate;
+    @InjectMocks
+    private PageMetaDataDownloader pageMetaDataDownloader;
 
     public PageDownloaderTest() {
         MockitoAnnotations.openMocks(this);
@@ -159,5 +168,30 @@ class PageDownloaderTest {
 		 assertTrue(exception.getMessage().contains("Error downloading Page Library"));
 
 	 }
+
+    @Test
+    void downloadPageMetadata() throws IOException {
+        Long waTemplateUid = 100l;
+        when(pageMetaDataDownloader.findPageMetadataByWaTemplateUid(waTemplateUid)).thenReturn(getPageMetadata());
+        ByteArrayInputStream response = pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid);
+        byte[] content = response.readAllBytes();
+        assertNotNull(content);
+        response.read(content, 0, content.length);
+        String output = new String(content, StandardCharsets.UTF_8);
+        assertNotNull(output);
+    }
+
+    List<Object[]> getPageMetadata() {
+        List<Object[]> pageMetadata = new ArrayList<>();
+        pageMetadata.add(new Object[]{"col1_val", "col2_val", "col3_val", "col4_val", "col5_val", "col6_val", "col7_val"});
+        pageMetadata.add(new Object[]{"col1_val", "col2_val", "col3_val", "col4_val", "col5_val", "col6_val", "col7_val"});
+        return pageMetadata;
+    }
+    @Test
+    void downloadPageMetadataException() {
+        when(pageMetaDataDownloader.findPageMetadataByWaTemplateUid(100l)).thenThrow(new QueryException("Error downloading Page Metadata"));
+        var exception = assertThrows(RuntimeException.class, () -> pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(100l));
+        assertTrue(exception.getMessage().contains("Error downloading Page Metadata"));
+    }
 
 }

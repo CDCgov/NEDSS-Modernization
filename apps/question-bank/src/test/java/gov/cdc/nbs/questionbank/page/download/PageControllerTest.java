@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.page.download;
 
 import static org.junit.Assert.assertNotNull;
+
+import gov.cdc.nbs.questionbank.page.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -8,11 +10,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.page.PageController;
-import gov.cdc.nbs.questionbank.page.PageCreator;
-import gov.cdc.nbs.questionbank.page.PageDownloader;
-import gov.cdc.nbs.questionbank.page.PageFinder;
-import gov.cdc.nbs.questionbank.page.PageStateChanger;
 import gov.cdc.nbs.questionbank.page.services.PageSummaryFinder;
 import gov.cdc.nbs.questionbank.page.services.PageUpdater;
 
@@ -34,11 +31,14 @@ class PageControllerTest {
     @Mock
     private UserDetailsProvider userDetailsProvider;
 
+    @Mock
+    private PageMetaDataDownloader pageMetaDataDownloader;
+
     @Test
     void downloadPageLibraryPDFTest() throws Exception {
 
         PageController pageController = new PageController(pageUpdater, finder, creator, stateChange,
-                pageDownloader, userDetailsProvider);
+                pageDownloader, userDetailsProvider,pageMetaDataDownloader);
 
         byte[] resp = "pagedownloader".getBytes();
         Mockito.when(pageDownloader.downloadLibraryPDF())
