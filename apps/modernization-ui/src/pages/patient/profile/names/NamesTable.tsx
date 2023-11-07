@@ -84,7 +84,7 @@ export const NamesTable = ({ patient }: Props) => {
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
         { name: 'Prefix', sortable: true, sort: 'all' },
-        { name: 'Name ( last, first middle )', sortable: true, sort: 'all' },
+        { name: 'Name (last, first middle)', sortable: true, sort: 'all' },
         { name: 'Suffix', sortable: true, sort: 'all' },
         { name: 'Degree', sortable: true, sort: 'all' },
         { name: 'Actions', sortable: false }
