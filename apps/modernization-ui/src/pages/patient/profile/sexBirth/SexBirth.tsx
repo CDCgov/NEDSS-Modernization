@@ -147,7 +147,7 @@ export const SexBirth = ({ patient }: Props) => {
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
                 readOnly={profile?.patient?.status !== 'ACTIVE'}
-                title="Sex & Birth"
+                title="Sex & birth"
                 data={state.view}
                 editing={editing}
                 onEdit={() => isEditing(true)}>
