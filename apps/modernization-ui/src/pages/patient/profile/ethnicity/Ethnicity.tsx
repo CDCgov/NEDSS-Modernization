@@ -45,14 +45,14 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
     unknownReason: maybeId(ethnicity?.unknownReason),
     detailed: maybeIds(ethnicity?.detailed)
 });
-export const Ethnicity = ({ patient }: Props) => {
+export const Ethnicity = ({ patient: patientId }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
     const { changed } = useProfileContext();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
-    const { profile } = usePatientProfile(id);
+    const { patient } = usePatientProfile(id);
 
     const handleComplete = (result: FindPatientProfileQuery) => {
         const current = result.findPatientProfile?.ethnicity;
@@ -74,15 +74,15 @@ export const Ethnicity = ({ patient }: Props) => {
     const [fetchProfile, { refetch }] = useFindPatientProfileEthnicity({ onCompleted: handleComplete });
 
     useEffect(() => {
-        if (patient) {
+        if (patientId) {
             fetchProfile({
                 variables: {
-                    patient: patient
+                    patient: patientId
                 },
                 notifyOnNetworkStatusChange: true
             });
         }
-    }, [patient]);
+    }, [patientId]);
 
     const [update] = useUpdateEthnicityMutation();
 
@@ -91,7 +91,7 @@ export const Ethnicity = ({ patient }: Props) => {
             variables: {
                 input: {
                     ...updated,
-                    patient: patient
+                    patient: patientId
                 }
             }
         }).then(() => {
@@ -103,7 +103,7 @@ export const Ethnicity = ({ patient }: Props) => {
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
-                readOnly={profile?.patient?.status !== 'ACTIVE'}
+                readOnly={patient?.status !== 'ACTIVE'}
                 title="Ethnicity"
                 data={tableData}
                 editing={editing}

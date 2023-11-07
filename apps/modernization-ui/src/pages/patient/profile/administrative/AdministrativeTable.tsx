@@ -42,10 +42,10 @@ type Props = {
     patient: string;
 };
 
-export const AdministrativeTable = ({ patient }: Props) => {
+export const AdministrativeTable = ({ patient: patientId }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
-    const { profile } = usePatientProfile(id);
+    const { patient } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'General comment', sortable: true, sort: 'all' },
@@ -79,7 +79,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
     useEffect(() => {
         fetch({
             variables: {
-                patient: patient,
+                patient: patientId,
                 page: {
                     pageNumber: currentPage - 1,
                     pageSize: TOTAL_TABLE_DATA
@@ -92,7 +92,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
         update({
             variables: {
                 input: {
-                    patient: +patient,
+                    patient: +patientId,
                     asOf: externalizeDateTime(entry.asOf),
                     comment: entry.comment
                 }
@@ -142,7 +142,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                     administratives?.length < 1 && (
                         <div className="grid-row">
                             <Button
-                                disabled={profile?.patient?.status !== 'ACTIVE'}
+                                disabled={patient?.status !== 'ACTIVE'}
                                 type="button"
                                 onClick={actions.prepareForAdd}
                                 className="display-inline-flex">
@@ -173,7 +173,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                                 <Button
                                     type="button"
                                     unstyled
-                                    disabled={profile?.patient?.status !== 'ACTIVE'}
+                                    disabled={patient?.status !== 'ACTIVE'}
                                     onClick={() => setIsActions(isActions === index ? null : index)}>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>

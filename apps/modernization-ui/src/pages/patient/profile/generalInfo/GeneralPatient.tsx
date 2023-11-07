@@ -61,14 +61,14 @@ type Props = {
     patient: string;
 };
 
-export const GeneralPatient = ({ patient }: Props) => {
+export const GeneralPatient = ({ patient: patientId }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
     const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<GeneralInformationEntry>(initialEntry);
-    const { profile } = usePatientProfile(id);
+    const { patient } = usePatientProfile(id);
 
     const handleComplete = (data: PatientProfileGeneralResult) => {
         setData(asView(data.findPatientProfile?.general));
@@ -85,11 +85,11 @@ export const GeneralPatient = ({ patient }: Props) => {
     useEffect(() => {
         getProfile({
             variables: {
-                patient: patient
+                patient: patientId
             },
             notifyOnNetworkStatusChange: true
         });
-    }, [patient]);
+    }, [patientId]);
 
     const [update] = useUpdatePatientGeneralInfoMutation();
 
@@ -98,7 +98,7 @@ export const GeneralPatient = ({ patient }: Props) => {
             variables: {
                 input: {
                     ...updated,
-                    patient: +patient,
+                    patient: +patientId,
                     asOf: externalizeDateTime(updated.asOf)
                 }
             }
@@ -117,7 +117,7 @@ export const GeneralPatient = ({ patient }: Props) => {
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
-                readOnly={profile?.patient?.status !== 'ACTIVE'}
+                readOnly={patient?.status !== 'ACTIVE'}
                 title="General patient information"
                 data={tableData}
                 editing={editing}

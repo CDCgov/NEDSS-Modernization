@@ -46,13 +46,13 @@ type Props = {
     patient: string;
 };
 
-export const Mortality = ({ patient }: Props) => {
+export const Mortality = ({ patient: patientId }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<MortalityEntry>(initialEntry);
-    const { profile } = usePatientProfile(id);
+    const { patient } = usePatientProfile(id);
     const { changed } = useProfileContext();
 
     const handleComplete = (data: FindPatientProfileQuery) => {
@@ -77,15 +77,15 @@ export const Mortality = ({ patient }: Props) => {
     const [fetch, { refetch }] = useFindPatientProfileMortality({ onCompleted: handleComplete });
 
     useEffect(() => {
-        if (patient) {
+        if (patientId) {
             fetch({
                 variables: {
-                    patient: patient
+                    patient: patientId
                 },
                 notifyOnNetworkStatusChange: true
             });
         }
-    }, [patient]);
+    }, [patientId]);
 
     const [update] = useUpdatePatientMortalityMutation();
 
@@ -94,7 +94,7 @@ export const Mortality = ({ patient }: Props) => {
             variables: {
                 input: {
                     ...updated,
-                    patient: +patient,
+                    patient: +patientId,
                     asOf: externalizeDateTime(updated.asOf),
                     deceasedOn: externalizeDate(updated.deceasedOn)
                 }
@@ -108,7 +108,7 @@ export const Mortality = ({ patient }: Props) => {
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
-                readOnly={profile?.patient?.status !== 'ACTIVE'}
+                readOnly={patient?.status !== 'ACTIVE'}
                 title="Mortality"
                 data={tableData}
                 editing={editing}

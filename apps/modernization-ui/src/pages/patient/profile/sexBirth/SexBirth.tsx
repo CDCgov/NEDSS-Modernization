@@ -86,12 +86,12 @@ type Props = {
     patient: string;
 };
 
-export const SexBirth = ({ patient }: Props) => {
+export const SexBirth = ({ patient: patientId }: Props) => {
     const { showAlert } = useAlert();
     const { id } = useParams();
     const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
-    const { profile } = usePatientProfile(id);
+    const { patient } = usePatientProfile(id);
 
     const [state, setState] = useState<BirthAndGenderState>(initial);
 
@@ -114,11 +114,11 @@ export const SexBirth = ({ patient }: Props) => {
     useEffect(() => {
         fetch({
             variables: {
-                patient: patient
+                patient: patientId
             },
             notifyOnNetworkStatusChange: true
         });
-    }, [patient]);
+    }, [patientId]);
 
     const [update] = useUpdatePatientBirthAndGenderMutation();
 
@@ -126,7 +126,7 @@ export const SexBirth = ({ patient }: Props) => {
         update({
             variables: {
                 input: {
-                    patient: patient,
+                    patient: patientId,
                     ...updated
                 }
             }
@@ -146,7 +146,7 @@ export const SexBirth = ({ patient }: Props) => {
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
-                readOnly={profile?.patient?.status !== 'ACTIVE'}
+                readOnly={patient?.status !== 'ACTIVE'}
                 title="Sex & birth"
                 data={state.view}
                 editing={editing}
