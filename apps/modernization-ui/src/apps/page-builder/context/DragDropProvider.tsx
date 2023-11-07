@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { DragStart, DragUpdate, DraggableLocation, DropResult } from 'react-beautiful-dnd';
 import { PagesSection, PagesTab } from '../generated';
 import { moveSubsectionInArray, moveQuestionInArray } from '../helpers/moveObjectInArray';
+import { reorderObjects } from '../services/reorderObjectsAPI';
+import { UserContext } from 'user';
 
 type DragDropProps = (source: DraggableLocation, destination: DraggableLocation) => void;
 
@@ -67,7 +69,11 @@ const getStyle = (
         return total + curr[clientDirection] + prop;
     }, 0);
 
-const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | undefined }> = ({ children, data }) => {
+const DragDropProvider: React.FC<{
+    children: React.ReactNode;
+    data: PagesTab | undefined;
+    pageDropId: number;
+}> = ({ children, data, pageDropId }) => {
     const [sections, setSections] = useState<PagesSection[]>([]);
     const [sectionDropshadowProps, setSectionDropshadowProps] = useState<SectionDropshadow>({
         marginLeft: 0,
@@ -78,9 +84,15 @@ const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | u
         height: 0
     });
     const [closeId, setCloseId] = useState('');
+    const [moveId, setMoveId] = useState<number>(0);
+    let afterId: number;
+    const { state } = useContext(UserContext);
+    const token = `Bearer ${state.getToken()}`;
 
     useEffect(() => {
-        if (data && data.sections) setSections(data.sections);
+        if (data && data.sections) {
+            setSections(data.sections);
+        }
     }, [data]);
 
     // handling movement of subsection in the same section
@@ -93,6 +105,14 @@ const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | u
         const updatedSections = sections.map((section) =>
             section.id!.toString() !== source.droppableId ? section : { ...section, subSections: updatedOrder }
         );
+        const findId = sections.filter((section) => {
+            return section.id!.toString() === destination.droppableId;
+        });
+        if (findId[0].subSections![destination.index - 1]) {
+            afterId = findId[0].subSections![destination.index - 1].id!;
+        } else {
+            afterId = Number(destination.droppableId);
+        }
         setSections(updatedSections);
     };
 
@@ -112,6 +132,14 @@ const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | u
                 ? { ...section, subSections: destinationOrder }
                 : section
         );
+        const findId = sections.filter((section) => {
+            return section.id!.toString() === destination.droppableId;
+        });
+        if (findId[0].subSections![destination.index - 1]) {
+            afterId = findId[0].subSections![destination.index - 1].id!;
+        } else {
+            afterId = Number(destination.droppableId);
+        }
         setSections(updatedSections);
     };
 
@@ -132,7 +160,11 @@ const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | u
                 }
             })
         );
-
+        if (isolatedSubsection![0].questions![destination.index - 1]) {
+            afterId = isolatedSubsection![0].questions![destination.index - 1].id!;
+        } else {
+            afterId = isolatedSubsection![0].id!;
+        }
         const updatedOrder = moveQuestionInArray(isolatedSubsection![0]!.questions!, source.index, destination.index);
 
         const updatedSections = sections.map((section) => {
@@ -174,6 +206,7 @@ const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | u
         });
         const destinationSubsection = destinationSection.subSections!.filter((subsection) => {
             if (subsection.id!.toString() === destination.droppableId.toString()) {
+                afterId = subsection.id!;
                 return subsection;
             }
         });
@@ -186,6 +219,9 @@ const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | u
         )?.questions;
         const [removed] = sourceOrder!.splice(source.index, 1);
         destinationOrder!.splice(destination.index, 0, removed);
+        if (destinationOrder![destination.index - 1]) {
+            afterId = destinationOrder![destination.index - 1].id!;
+        }
 
         const updatedSections = sections.map((section) => {
             return {
@@ -282,9 +318,9 @@ const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | u
     };
 
     const handleDragStart = (event: DragStart) => {
-        // the destination and source section Index will be the same for start
         const { index } = event.source;
         setCloseId(event.draggableId);
+        setMoveId(Number(event.draggableId));
         if (event.type === 'section') {
             handleDropshadowSection(event, index, index);
         } else {
@@ -301,9 +337,9 @@ const DragDropProvider: React.FC<{ children: React.ReactNode; data: PagesTab | u
         } else if (type === 'question') {
             handleQuestionMove(source, destination);
         } else {
-            // else its a Subsection move so we go here
             handleSubsectionMove(source, destination);
         }
+        reorderObjects(token, afterId, moveId, pageDropId);
     };
 
     return (

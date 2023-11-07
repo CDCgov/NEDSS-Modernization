@@ -48,7 +48,6 @@ export const useSubGroupAPI = () => {
             codeSetNm: 'NBS_QUES_SUBGROUP'
         }).then((response: any) => {
             const data = response || [];
-            console.log('data....', data);
             const familyList: any = [];
             data.map((each: { localCode: never }) => {
                 familyList.push({ name: each.localCode, value: each.localCode });

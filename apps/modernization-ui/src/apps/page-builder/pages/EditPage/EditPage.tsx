@@ -58,7 +58,7 @@ export const EditPage = () => {
     return (
         <PageBuilder page="edit-page">
             {page ? (
-                <DragDropProvider data={page.tabs?.[active]}>
+                <DragDropProvider data={page.tabs?.[active]} pageDropId={page.id!}>
                     <div className="edit-page">
                         <PagesBreadcrumb currentPage={page.name} />
                         {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
