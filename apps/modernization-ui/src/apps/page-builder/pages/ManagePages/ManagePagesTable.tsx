@@ -135,6 +135,7 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
 
     return (
         <TableComponent
+            contextName="pages"
             tableHeader="Page Library"
             tableHead={tableColumns}
             tableBody={tableRows}

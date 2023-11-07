@@ -56,7 +56,7 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
                 <Icon.FileDownload size={3} />
             </Button>
             <Button type="button" onClick={addNew}>
-                <p>Add new {tableType}</p>
+                <p>Create new {tableType}</p>
             </Button>
         </div>
     );

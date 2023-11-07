@@ -118,7 +118,7 @@ export const GeneralPatient = ({ patient }: Props) => {
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
                 readOnly={profile?.patient?.status !== 'ACTIVE'}
-                title="General Patient Information"
+                title="General patient information"
                 data={tableData}
                 editing={editing}
                 onEdit={() => isEditing(true)}>

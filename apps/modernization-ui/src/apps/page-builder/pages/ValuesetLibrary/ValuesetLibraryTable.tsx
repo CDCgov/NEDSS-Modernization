@@ -284,6 +284,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
             {summaries?.length ? (
                 <TableComponent
+                    contextName="valuesets"
                     tableHeader=""
                     tableHead={tableColumns}
                     tableBody={tableRows}

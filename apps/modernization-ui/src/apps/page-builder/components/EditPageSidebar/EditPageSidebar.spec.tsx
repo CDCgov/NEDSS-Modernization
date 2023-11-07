@@ -10,7 +10,7 @@ describe('EditPageSidebar', () => {
     });
 
     it('should have an item with the text "Add section"', () => {
-        const { getByText } = render(<EditPageSidebar addSectionModalRef={modal1} reorderModalRef={modal2} />);
+        const { getByText } = render(<EditPageSidebar addSectionModalRef={modal1} reorderModalRef={modal2}/>);
         expect(getByText('Add section')).toBeTruthy();
     });
 

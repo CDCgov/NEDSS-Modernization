@@ -4,7 +4,13 @@
     .reorder-subsection__toggle {
         cursor: pointer;
     }
+    .reorder-subsection__handle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .reorder-subsection__tile {
+        background-color: $color-white;
         display: flex;
         align-items: center;
         gap: 1rem;
@@ -16,7 +22,9 @@
         }
     }
     .reorder-subsection__questions {
+        height: auto;
         max-height: 400vh;
+        opacity: 100;
         margin-left: 2.4rem;
         transition: $transition-1;
         &.closed {

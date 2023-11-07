@@ -31,7 +31,7 @@ beforeEach(async () => {
         content: [
             {
                 conditionShortNm: 'test name',
-                id: 10056,
+                id: '10056',
                 familyCd: 'test family',
                 investigationFormCd: 'test code',
                 progAreaCd: 'test area',

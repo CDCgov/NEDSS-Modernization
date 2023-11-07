@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type AddQuestionRequest = {
-    orderNumber?: number;
     questionId?: number;
+    subsectionId?: number;
 };
 

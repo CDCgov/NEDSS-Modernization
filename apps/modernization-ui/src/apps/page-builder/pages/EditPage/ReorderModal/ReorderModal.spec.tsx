@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { ReorderModal } from './ReorderModal';
 import { PagesTab } from 'apps/page-builder/generated';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 
 describe('when ReorderModal renders', () => {
     const content: PagesTab = {
@@ -24,11 +25,10 @@ describe('when ReorderModal renders', () => {
     };
     const props = {
         modalRef: { current: null },
-        pageName: 'Test Page',
-        content: content
+        pageName: 'Test Page'
     };
     it('should display Sections', () => {
-        const { getByText } = render(<ReorderModal {...props} />);
+        const { getByText } = render(<DragDropProvider data={content}><ReorderModal {...props} /></DragDropProvider>);
         expect(getByText('Test Page')).toBeTruthy();
     });
 });

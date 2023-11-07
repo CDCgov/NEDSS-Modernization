@@ -9,7 +9,7 @@ export type AlertBannerProps = {
 export const AlertBanner = ({ type, children }: AlertBannerProps) => {
     return (
         <div className={`alert-banner ${type}`}>
-            <div className="alert-banner-left">
+            <div className="alert-banner__left">
                 {type === 'success' && <Icon.CheckCircle size={3} />}
                 {type === 'warning' && <Icon.Warning size={3} />}
                 {type === 'prompt' && <Icon.Info size={3} />}

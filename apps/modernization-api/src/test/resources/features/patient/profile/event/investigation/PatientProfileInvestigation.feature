@@ -1,7 +1,7 @@
 @patient-profile-investigation
 Feature: Patient Profile Investigations
 
-  Background:
+  Background: 
     Given I have a patient
 
   Scenario: I can retrieve all investigations for a patient
@@ -32,7 +32,7 @@ Feature: Patient Profile Investigations
   @web-interaction
   Scenario: An investigation is viewed from the Patient Profile
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
+    And I can "VIEW" any "INVESTIGATION"
     And the patient is a subject of an investigation
     When the investigation is viewed from the Patient Profile
     Then the classic profile is prepared to view an investigation
@@ -41,7 +41,6 @@ Feature: Patient Profile Investigations
   @web-interaction
   Scenario: An investigation is viewed from the Patient Profile without required permissions
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "OTHER" for the jurisdiction: "ALL" and program area: "STD"
     And the patient is a subject of an investigation
     When the investigation is viewed from the Patient Profile
     Then I am not allowed to view a Classic NBS Investigation
@@ -49,7 +48,7 @@ Feature: Patient Profile Investigations
   @web-interaction
   Scenario: An investigation is added from the Patient Profile
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "ADD-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
+    And I can "ADD" any "INVESTIGATION"
     When an investigation is added from a Patient Profile
     Then the classic profile is prepared to add an investigation
     And I am redirected to Classic NBS to add an Investigation
@@ -57,14 +56,13 @@ Feature: Patient Profile Investigations
   @web-interaction
   Scenario: An investigation is added from the Patient Profile without required permissions
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "OTHER" for the jurisdiction: "ALL" and program area: "STD"
     When an investigation is added from a Patient Profile
     Then I am not allowed to add a Classic NBS Investigation
 
   @web-interaction
   Scenario: Investigations are compared from the Patient Profile
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "MERGEINVESTIGATION-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
+    And I can "MERGEINVESTIGATION" any "INVESTIGATION"
     And the patient is a subject of 2 investigations
     When the investigations are compared from a Patient Profile
     Then the classic profile is prepared to compare investigations
@@ -73,8 +71,6 @@ Feature: Patient Profile Investigations
   @web-interaction
   Scenario: Investigations are compared from the Patient Profile without required permissions
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "OTHER" for the jurisdiction: "ALL" and program area: "STD"
     And the patient is a subject of 2 investigations
     When the investigations are compared from a Patient Profile
     Then I am not allowed to compare Classic NBS Investigations
-

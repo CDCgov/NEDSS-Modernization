@@ -18,7 +18,8 @@
         position: relative;
         .edit-page__content {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             margin-top: 1.2rem;
             width: 100%;
             height: 100%;

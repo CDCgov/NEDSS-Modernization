@@ -1,8 +1,7 @@
-FROM eclipse-temurin:17 as builder
+FROM gradle:8-jdk17 AS builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
-COPY gradlew /usr/src/nbs/gradlew
 COPY build.gradle /usr/src/nbs/build.gradle
 COPY settings.gradle /usr/src/nbs/settings.gradle
 
@@ -15,7 +14,7 @@ COPY libs /usr/src/nbs/libs
 WORKDIR /usr/src/nbs
 
 # Build just the pagebuilder-api and any required library
-RUN ./gradlew :question-bank:buildNeeded -x test --no-daemon
+RUN gradle :question-bank:buildNeeded -x test --no-daemon
 
 RUN jar xf apps/question-bank/build/libs/question-bank.jar
 

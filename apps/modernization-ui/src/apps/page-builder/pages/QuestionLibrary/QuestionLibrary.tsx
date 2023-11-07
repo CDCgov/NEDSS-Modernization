@@ -6,8 +6,8 @@ import { fetchQuestion } from './useQuestionAPI';
 import { QuestionLibraryTable } from './QuestionLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
+
 export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
-    // const [activeTab] = useState(types || 'recent');
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(QuestionsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);

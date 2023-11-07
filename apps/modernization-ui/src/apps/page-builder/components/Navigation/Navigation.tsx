@@ -29,7 +29,7 @@ export const Navigation = ({ active }: Props) => {
                         <p>Templates</p>
                     </a>
                 </div>
-                <div className="navigation__button">
+                <div className={`navigation__button ${active === 'condition-library' ? 'active' : ''}`}>
                     <a
                         href={`${Config.nbsUrl}/ManageCondition.do?method=ViewConditionLib&actionMode=Manage&initLoad=true`}>
                         <p>Conditions</p>

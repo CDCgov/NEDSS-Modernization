@@ -43,6 +43,11 @@ public class AuthenticationSteps {
     activate(user);
   }
 
+  @Given("I am not logged in at all")
+  public void i_am_not_logged_in() {
+    activeUser.reset();
+  }
+
   private void activate(final ActiveUser user) {
     NBSToken token = this.tokenCreator.forUser(user.username());
 

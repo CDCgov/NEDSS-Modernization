@@ -10,6 +10,9 @@ public record SessionCookie(String identifier) {
     private static final String J_SESSION_COOKIE_NAME = "JSESSIONID";
 
     public static Optional<SessionCookie> resolve(final Cookie[] cookies) {
+      if (cookies == null) {
+        return Optional.empty();
+      }
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(J_SESSION_COOKIE_NAME)) {
                 String identifier = cookie.getValue();

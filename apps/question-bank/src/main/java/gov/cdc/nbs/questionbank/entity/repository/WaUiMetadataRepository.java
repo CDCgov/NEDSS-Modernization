@@ -36,8 +36,8 @@ public interface WaUiMetadataRepository extends JpaRepository<WaUiMetadata, Long
     void incrementOrderNbrGreaterThanOrEqualTo(@Param("pageId") Long pageId, @Param("start") Integer start);
 
     @Modifying
-    @Query(value = "UPDATE WaUiMetadata w SET w.orderNbr = w.orderNbr - 1 WHERE w.orderNbr >=:start AND w.waTemplateUid.id =:page")
-    void decrementOrderNumbers(@Param("start") Integer start, @Param("page") Long page);
+    @Query("Update WaUiMetadata ui SET ui.orderNbr = ui.orderNbr - 1 WHERE ui.waTemplateUid.id = :pageId AND ui.orderNbr > :orderNumber")
+    void decrementOrderNbrGreaterThan(@Param("pageId") Long pageId, @Param("orderNumber") Integer orderNumber);
 
     @Query("SELECT COUNT(ui) FROM WaUiMetadata ui WHERE ui.waTemplateUid.id =:pageId AND ui.questionIdentifier =:questionIdentifier")
     Long countByPageAndQuestionIdentifier(
@@ -46,6 +46,9 @@ public interface WaUiMetadataRepository extends JpaRepository<WaUiMetadata, Long
 
     @Query("Select COALESCE(Max(ui.orderNbr),0) FROM WaUiMetadata ui WHERE ui.waTemplateUid.id =:pageId")
     Integer findMaxOrderNbrForPage(@Param("pageId") Long pageId);
+
+    @Query("SELECT COALESCE(min(ui.orderNbr), (SELECT max(ui.orderNbr) + 1 FROM WaUiMetadata ui WHERE ui.waTemplateUid.id=:pageId)) FROM WaUiMetadata ui WHERE ui.waTemplateUid.id = :pageId AND ui.orderNbr > :orderNum AND ui.nbsUiComponentUid IN (1016, 1015, 1010)")
+    Integer findMaxOrderNbrForSubsection(@Param("pageId") Long pageId, @Param("orderNum") Integer orderNum);
 
     public void deleteAllByWaTemplateUid(WaTemplate template);
 
