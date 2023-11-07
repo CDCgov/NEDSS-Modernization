@@ -2,28 +2,9 @@
 import { createContext, useState } from 'react';
 import { ContextData } from './contextData';
 
-<<<<<<< HEAD
-interface PagesContextData {
-    searchQuery: string;
-    setSearchQuery: (query: string) => void;
-    currentPage: number;
-    setCurrentPage: (page: number) => void;
-    sortBy: string;
-    setSortBy: (name: string) => void;
-    sortDirection: string;
-    setSortDirection: (direction: string) => void;
-    pageSize: number;
-    setPageSize: Dispatch<SetStateAction<number>>;
-    isLoading: boolean;
-    setIsLoading: (status: boolean) => void;
-}
-
-const pagesContextDefaultValue: PagesContextData = {
-=======
 const pagesContextDefaultValue: ContextData = {
     filter: '',
     setFilter: () => {},
->>>>>>> main
     searchQuery: '',
     setSearchQuery: () => {},
     currentPage: 1,
