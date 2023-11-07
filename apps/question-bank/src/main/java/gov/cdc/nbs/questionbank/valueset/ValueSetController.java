@@ -28,7 +28,7 @@ import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/valueset/")
+@RequestMapping("/api/v1/valueset")
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ValueSetController {
@@ -84,7 +84,7 @@ public class ValueSetController {
         return valueSetReador.findConceptCodes(codeSetNm);
     }
 
-    @PutMapping("{codeSetNm}/concepts/{conceptCode}")
+    @PutMapping("/{codeSetNm}/concepts/{conceptCode}")
     public Concept updateConcept(
             @PathVariable String codeSetNm,
             @PathVariable String conceptCode,
