@@ -17,7 +17,7 @@ on:
   pull_request:
     paths:
       - "apps/**"
-      - "!apps/modernization-ui"
+      - "!apps/modernization-ui/**"
       - "libs/**"
       - "build.gradle"
       - "settings.gradle"
