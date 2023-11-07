@@ -7,7 +7,7 @@ import { Direction } from 'sorting';
 import './ManagePagesTable.scss';
 import { TableMenu } from 'apps/page-builder/components/TableMenu/TableMenu';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { UserContext } from 'user';
 import { downloadAsCsv } from 'utils/downloadAsCsv';
 import { downloadPageLibraryPdf } from 'utils/ExportUtil';
@@ -41,6 +41,8 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
     const { state } = useContext(UserContext);
+    const searchParams = useSearchParams();
+    const setSearchParams = searchParams[1];
     const token = `Bearer ${state.getToken()}`;
 
     const asTableRow = (page: PageSummary): TableBody => ({
@@ -136,6 +138,15 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
         }
     };
 
+    const handlePageClick = (page: number) => {
+        // saves the current page to a url param so that it persists on page refresh or navigating away
+        setSearchParams({ page: page.toString() });
+
+        if (setCurrentPage) {
+            setCurrentPage(page);
+        }
+    };
+
     return (
         <TableComponent
             contextName="pages"
@@ -146,7 +157,7 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
             pageSize={pageSize}
             totalResults={totalElements}
             currentPage={currentPage}
-            handleNext={setCurrentPage}
+            handleNext={handlePageClick}
             sortData={handleSort}
             buttons={
                 <TableMenu
