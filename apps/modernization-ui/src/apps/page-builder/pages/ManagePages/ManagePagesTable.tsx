@@ -41,6 +41,7 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
     const { state } = useContext(UserContext);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [searchParams, setSearchParams] = useSearchParams();
     const token = `Bearer ${state.getToken()}`;
 
