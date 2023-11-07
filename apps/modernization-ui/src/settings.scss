@@ -31,6 +31,10 @@ $theme-hero-image: '~uswds/src/img/hero.png';
     font-size: 32px !important;
 }
 
+.font-sans-3xs {
+    font-size: 13px !important;
+}
+
 .font-sans-xl {
     font-family: sans-serif !important;
 }
@@ -47,9 +51,15 @@ td span {
 }
 
 .css-1jqq78o-placeholder {
-     color: $color-black !important;
+    color: $color-black !important;
 }
 
 .text-red {
     color: $color-red-50 !important;
+}
+
+.usa-pagination__button:active,
+.usa-pagination__button:focus,
+.usa-pagination__button:hover {
+    border: 1px solid #1a4480 !important;
 }
