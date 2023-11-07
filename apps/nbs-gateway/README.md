@@ -55,6 +55,8 @@ The default profile contains the following properties configuration most likely 
 | nbs.gateway.patient.search.service  | `localhost:8080`        | The host name of the Patient Search service                                          |
 | nbs.gateway.patient.profile.enabled | `true`                  | Enables the Patient Profile routing                                                  |
 | nbs.gateway.patient.profile.service | `localhost:8080`        | The host name of the Patient Profile service                                         |
+| nbs.gateway.pagebuilder.enabled | `false`                  | Enables the Page Builder Page Management routing                                                  |
+| nbs.gateway.pagebuilder.service | `localhost:8080`        | The host name of the service                                         |
 
 ### Configuring the Reverse Proxy to use local nbs-gateway
 

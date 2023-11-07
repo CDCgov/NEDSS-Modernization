@@ -39,7 +39,7 @@ Feature: Patient Profile Contact Tracing
   @web-interaction
   Scenario: A Contact is viewed from the Patient Profile
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
+    And I can "VIEW" any "INVESTIGATION"
     And the patient is a subject of an investigation
     When the patient names a contact
     And the Contact is viewed from the Patient Profile
@@ -49,7 +49,6 @@ Feature: Patient Profile Contact Tracing
   @web-interaction
   Scenario: A Contact is viewed from the Patient Profile without required permissions
     Given I am logged into NBS and a security log entry exists
-    And I have the authorities: "OTHER" for the jurisdiction: "ALL" and program area: "STD"
     And the patient is a subject of an investigation
     When the patient names a contact
     And the Contact is viewed from the Patient Profile
