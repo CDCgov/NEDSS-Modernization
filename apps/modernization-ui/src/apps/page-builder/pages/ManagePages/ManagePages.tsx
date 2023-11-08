@@ -1,11 +1,12 @@
+import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { useContext, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { UserContext } from 'user';
+import { fetchPageSummaries } from '../../services/pagesAPI';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './ManagePages.scss';
-import { PagesContext } from 'apps/page-builder/context/PagesContext';
-import { fetchPageSummaries } from '../../services/pagesAPI';
 import { ManagePagesTable } from './ManagePagesTable';
-import { UserContext } from 'user';
-import { useSearchParams } from 'react-router-dom';
 
 export const ManagePages = () => {
     const [pages, setPages] = useState([]);
@@ -43,8 +44,17 @@ export const ManagePages = () => {
         }
     }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
 
+    const legacyCustomFieldsAlert = () => {
+        return (
+            <AlertBanner type="info">
+                <span style={{ marginRight: '4px' }}>To access the legacy Custom Fields Admin menu,</span>{' '}
+                <a href="/nbs/LDFAdminLoad.do">click here</a>.
+            </AlertBanner>
+        );
+    };
+
     return (
-        <PageBuilder page="manage-pages" menu={true}>
+        <PageBuilder page="manage-pages" menu={true} header={legacyCustomFieldsAlert()}>
             <div className="manage-pages">
                 <div className="manage-pages__container">
                     <div className="manage-pages__table">
