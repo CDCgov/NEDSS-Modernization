@@ -3,6 +3,8 @@ package gov.cdc.nbs.questionbank.support;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.PageCommand;
+import gov.cdc.nbs.questionbank.page.PageEntityHarness;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.component.tree.ComponentTreeResolver;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
@@ -15,11 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 @Component
 @Transactional
@@ -38,6 +35,9 @@ public class PageMother {
 
   @Autowired
   TestPageCleaner cleaner;
+
+  @Autowired
+  PageEntityHarness harness;
 
   @Autowired
   Available<PageIdentifier> available;
@@ -98,7 +98,13 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associateCondition(BRUCELLOSIS_ID, this.settings.createdBy(), this.settings.createdOn());
+    page.associateCondition(
+        new PageCommand.AssociateCondition(
+            BRUCELLOSIS_ID,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
 
     WaUiMetadata pageType = new WaUiMetadata();
     pageType.setWaTemplateUid(page);
@@ -173,17 +179,15 @@ public class PageMother {
 
     page.setUiMetadata(
         Arrays.asList(
-        pageType,
-        tab,
-        section,
-        subsection,
-        question,
-        tab2,
-        section2,
-        subsection2,
-        question2
-        )
-    );
+            pageType,
+            tab,
+            section,
+            subsection,
+            question,
+            tab2,
+            section2,
+            subsection2,
+            question2));
     include(page);
     return page;
   }
@@ -203,7 +207,13 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associateCondition(ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn());
+    page.associateCondition(
+        new PageCommand.AssociateCondition(
+            ASEPTIC_MENINGITIS_ID,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
 
     include(page);
 
@@ -217,7 +227,6 @@ public class PageMother {
     waUiMetadatumRepository.save(section);
     waUiMetadatumRepository.save(subSection);
     waUiMetadatumRepository.save(question);
-
 
     return page;
   }
@@ -238,30 +247,32 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associateCondition(ASEPTIC_MENINGITIS_ID, this.settings.createdBy(), this.settings.createdOn());
+    page.associateCondition(
+        new PageCommand.AssociateCondition(
+            ASEPTIC_MENINGITIS_ID,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
 
     include(page);
 
     // add page detail mappings
     page.addTab(
         new PageContentCommand.AddTab(
-        "tab",
-        true,
-        "TAB_",
-        this.settings.createdBy(),
-        Instant.now()
-    )
-    );
+            "tab",
+            true,
+            "TAB_",
+            this.settings.createdBy(),
+            Instant.now()));
 
     WaUiMetadata section = getwaUiMetaDtum(page, PageConstants.SECTION_COMPONENT, 3);
     WaUiMetadata subSection = getwaUiMetaDtum(page, PageConstants.SUB_SECTION_COMPONENT, 4);
     WaUiMetadata question = getwaUiMetaDtum(page, PageConstants.SPE_QUESTION_COMPONENT, 5);
 
-
     waUiMetadatumRepository.save(section);
     waUiMetadatumRepository.save(subSection);
     waUiMetadatumRepository.save(question);
-
 
     return page;
   }
@@ -299,191 +310,73 @@ public class PageMother {
     this.available.available(created);
   }
 
+  public void withName(final PageIdentifier page, final String value) {
+    withName(page, value, this.settings.createdBy(), this.settings.createdOn());
+  }
+
+  public void withName(final PageIdentifier page, final String value, final long user, final Instant when) {
+    harness.with(page).use(
+        found -> found.changeName(
+            new PageCommand.ChangeName(
+                value,
+                user,
+                when
+            )
+        )
+    );
+  }
+
   public void withDescription(final PageIdentifier page, final String description) {
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    found.setDescTxt(description);
+    harness.with(page).use(found -> found.setDescTxt(description));
   }
 
-  public void withTab(final PageIdentifier page) {
-    String name = String.format("%s Tab", page.name());
-
-    withTab(page, name);
+  public void withEventType(final PageIdentifier page, final String value) {
+    harness.with(page).use(found -> found.setBusObjType(value));
   }
 
-  public void withTab(final PageIdentifier page, final String name) {
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    // a new tab will always go last
-    WaUiMetadata last = last(found.getUiMetadata()).orElseThrow();
-    int next = last.getOrderNbr() + 1;
-    found.addTab(new PageContentCommand.AddTab(
-        name,
-        true,
-        "TAB_"+next,  //  bring in the test uuid generator!
-        this.settings.createdBy(),
-        Instant.now()
-    ));
-
+  public void draft(final PageIdentifier page) {
+    harness.with(page).use(
+        //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
+        //  with that becoming the Active page
+        found -> {
+          found.setTemplateType("Draft");
+          found.setPublishIndCd('F');
+        }
+    );
   }
 
-  public void withSectionIn(
-      final PageIdentifier page,
-      final String name,
-      final int tab) {
-
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    nthOfType(found.getUiMetadata(), tab, PageConstants.TAB_COMPONENT)
-        .ifPresent(container -> withSectionIn(found, container, name));
+  public void template(final PageIdentifier page) {
+    harness.with(page).use(
+        found -> {
+          //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
+          //  with that becoming the Active page
+          found.setTemplateType("Template");
+          found.setPublishIndCd('F');
+        }
+    );
   }
 
-  public void withSectionIn(
-      final PageIdentifier page,
-      final int tab) {
-
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    nthOfType(found.getUiMetadata(), tab, PageConstants.TAB_COMPONENT)
-        .ifPresent(container -> withSectionIn(found, container, container.getQuestionLabel() + " Section"));
+  public void published(final PageIdentifier page) {
+    harness.with(page).use(
+        found -> found.publish(
+            new PageCommand.Publish(
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        )
+    );
   }
 
-  public void withSectionIn(
-      final PageIdentifier page,
-      final String name,
-      final String tab) {
-
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    found.getUiMetadata().stream().filter(havingName(tab))
-        .findFirst()
-        .ifPresent(container -> withSectionIn(found, container, name));
-
+  public void withCondition(final PageIdentifier page, final String condition) {
+    harness.with(page).use(
+        found -> found.associateCondition(
+            new PageCommand.AssociateCondition(
+                condition,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        )
+    );
   }
 
-  private void withSectionIn(
-      final WaTemplate found,
-      final WaUiMetadata container,
-      final String name) {
-    placeWithin(found.getUiMetadata(), container, PageConstants.SECTION_COMPONENT)
-        .ifPresent(order -> found.addSection(name, order, this.settings.createdBy(), Instant.now()));
-
-  }
-
-  public void withSubSectionIn(
-      final PageIdentifier page,
-      final String name,
-      final int section) {
-
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    nthOfType(found.getUiMetadata(), section, PageConstants.SECTION_COMPONENT)
-        .ifPresent(container -> withSubSectionIn(found, container, name));
-  }
-
-  public void withSubSectionIn(
-      final PageIdentifier page,
-      final int section) {
-
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    nthOfType(found.getUiMetadata(), section, PageConstants.SECTION_COMPONENT)
-        .ifPresent(container -> withSubSectionIn(found, container, container.getQuestionLabel() + " Sub-Section"));
-  }
-
-  public void withSubSectionIn(
-      final PageIdentifier page,
-      final String name,
-      final String section) {
-
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    found.getUiMetadata().stream().filter(havingName(section))
-        .findFirst()
-        .ifPresent(container -> withSubSectionIn(found, container, name));
-  }
-
-  private void withSubSectionIn(
-      final WaTemplate found,
-      final WaUiMetadata container,
-      final String name) {
-    placeWithin(found.getUiMetadata(), container, PageConstants.SECTION_COMPONENT)
-        .ifPresent(order -> found.addSubSection(name, order, this.settings.createdBy(), Instant.now()));
-
-  }
-
-  public void withContentIn(
-      final PageIdentifier page,
-      final String name,
-      final int subSection) {
-
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    nthOfType(found.getUiMetadata(), subSection, PageConstants.SUB_SECTION_COMPONENT)
-        .ifPresent(container -> withContentIn(found, container, name));
-  }
-
-  public void withContentIn(
-      final PageIdentifier page,
-      final String name,
-      final String subSection) {
-
-    WaTemplate found = this.entityManager.find(WaTemplate.class, page.id());
-
-    found.getUiMetadata().stream().filter(havingName(subSection))
-        .findFirst()
-        .ifPresent(container -> withContentIn(found, container, name));
-  }
-
-  private void withContentIn(
-      final WaTemplate found,
-      final WaUiMetadata container,
-      final String name) {
-    placeWithin(found.getUiMetadata(), container, 1011L)
-        .ifPresent(order -> found.addContent(name, 1011L, order, this.settings.createdBy(), Instant.now()));
-
-  }
-
-  public static Optional<Integer> placeWithin(
-      final Collection<WaUiMetadata> components,
-      final WaUiMetadata container,
-      final long type) {
-    return components.stream()
-        .sorted(Comparator.comparing(WaUiMetadata::getOrderNbr))
-        .filter(after(container.getOrderNbr()))
-        .takeWhile(Predicate.not(havingType(container.getNbsUiComponentUid())))
-        .filter(havingType(type))
-        .max(Comparator.comparing(WaUiMetadata::getOrderNbr))
-        .or(() -> Optional.of(container))
-        .map(previous -> previous.getOrderNbr() + 1);
-  }
-
-  public static Optional<WaUiMetadata> last(final Collection<WaUiMetadata> components) {
-    return components
-        .stream()
-        .max(Comparator.comparing(WaUiMetadata::getOrderNbr));
-  }
-
-  public static Predicate<WaUiMetadata> havingName(final String name) {
-    return component -> Objects.equals(name, component.getQuestionLabel());
-  }
-
-  public static Predicate<WaUiMetadata> havingType(final long type) {
-    return component -> type == component.getNbsUiComponentUid();
-  }
-
-  public static Predicate<WaUiMetadata> after(final int position) {
-    return component -> component.getOrderNbr() > position;
-  }
-
-  public static Optional<WaUiMetadata> nthOfType(
-      final Collection<WaUiMetadata> components,
-      final int n,
-      final long type) {
-    return components.stream()
-        .filter(havingType(type))
-        .sorted(Comparator.comparing(WaUiMetadata::getOrderNbr))
-        .skip(n - 1)
-        .findFirst();
-  }
 }

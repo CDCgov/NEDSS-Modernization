@@ -1,9 +1,11 @@
 import { createContext, useContext } from 'react';
 import { usePatientProfile } from './usePatientProfile';
+import { PatientSummary } from 'generated/graphql/schema';
 
 // Define the context type
 interface ProfileContextType {
     changed: () => void;
+    summary?: PatientSummary;
 }
 
 // Create the context with an initial value of null
@@ -19,9 +21,9 @@ export function useProfileContext() {
 }
 
 export const ProfileProvider = ({ children, id }: any) => {
-    const { refetch } = usePatientProfile(id);
+    const { refetch, summary } = usePatientProfile(id);
 
     const changed = () => refetch();
 
-    return <ProfileContext.Provider value={{ changed }}>{children}</ProfileContext.Provider>;
+    return <ProfileContext.Provider value={{ changed, summary }}>{children}</ProfileContext.Provider>;
 };

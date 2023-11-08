@@ -18,7 +18,7 @@ export class VocabSearchControllerService {
         authorization,
         oid,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * oid
          */

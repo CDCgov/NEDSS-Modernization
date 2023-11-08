@@ -18,7 +18,7 @@ describe('when rendered', () => {
 
         expect(tableHeads[0].innerHTML).toBe('Page name');
         expect(tableHeads[1].innerHTML).toBe('Event name');
-        expect(tableHeads[2].innerHTML).toBe('Related conditions');
+        expect(tableHeads[2].innerHTML).toBe('Related condition(s)');
         expect(tableHeads[3].innerHTML).toBe('Status');
         expect(tableHeads[4].innerHTML).toBe('Last updated');
         expect(tableHeads[5].innerHTML).toBe('Last updated by');
@@ -32,7 +32,6 @@ describe('when at least one summary is available', () => {
         id: 1,
         lastUpdate: '2019-09-25T13:27:16.380Z',
         lastUpdateBy: 'last updateBy',
-        messageMappingGuide: { value: 'MMG Id', name: 'MMG display' },
         name: 'test page',
         status: 'Draft'
     };

@@ -1,22 +1,10 @@
 /* eslint-disable camelcase */
-import { createContext, useState, Dispatch, SetStateAction } from 'react';
+import { createContext, useState } from 'react';
+import { ContextData } from './contextData';
 
-interface PagesContextData {
-    searchQuery: string;
-    setSearchQuery: (query: string) => void;
-    currentPage: number;
-    setCurrentPage?: (page: number) => void;
-    sortBy: string;
-    setSortBy: (name: string) => void;
-    sortDirection: string;
-    setSortDirection: (direction: string) => void;
-    pageSize: number;
-    setPageSize: Dispatch<SetStateAction<number>>;
-    isLoading: boolean;
-    setIsLoading: (status: boolean) => void;
-}
-
-const pagesContextDefaultValue: PagesContextData = {
+const pagesContextDefaultValue: ContextData = {
+    filter: '',
+    setFilter: () => {},
     searchQuery: '',
     setSearchQuery: () => {},
     currentPage: 1,
@@ -31,11 +19,12 @@ const pagesContextDefaultValue: PagesContextData = {
     setIsLoading: () => {}
 };
 
-export const PagesContext = createContext<PagesContextData>(pagesContextDefaultValue);
+export const PagesContext = createContext<ContextData>(pagesContextDefaultValue);
 
 export const PagesProvider = ({ children }: any) => {
+    const [filter, setFilter] = useState(pagesContextDefaultValue.filter);
     const [searchQuery, setSearchQuery] = useState(pagesContextDefaultValue.searchQuery);
-    const [currentPage, setCurrentPage] = useState(pagesContextDefaultValue.currentPage);
+    const [currentPage, setCurrentPage] = useState<number>(pagesContextDefaultValue.currentPage);
     const [sortBy, setSortBy] = useState(pagesContextDefaultValue.sortBy);
     const [sortDirection, setSortDirection] = useState(pagesContextDefaultValue.sortDirection);
     const [pageSize, setPageSize] = useState(pagesContextDefaultValue.pageSize);
@@ -44,6 +33,8 @@ export const PagesProvider = ({ children }: any) => {
     return (
         <PagesContext.Provider
             value={{
+                filter,
+                setFilter,
                 currentPage,
                 sortBy,
                 setSortBy,

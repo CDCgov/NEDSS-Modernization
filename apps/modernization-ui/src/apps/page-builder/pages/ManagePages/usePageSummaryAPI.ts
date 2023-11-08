@@ -1,22 +1,18 @@
-/* eslint-disable camelcase */
-import { PageControllerService, Page_PageSummary_ } from 'apps/page-builder/generated';
+import { PageSummaryService, Page_PageSummary_ } from 'apps/page-builder/generated';
 
-export const fetchPageSummaries = (
+export const fetchPageSummaries = async (
     token: string,
     search?: string,
     sort?: string,
     currentPage?: number,
     pageSize?: number
-): Promise<Page_PageSummary_> => {
-    return PageControllerService.searchUsingPost({
+): Promise<Page_PageSummary_> =>
+    PageSummaryService.search({
         authorization: token,
         request: { search },
         page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
         size: pageSize,
         sort
-    }).then((response: Page_PageSummary_) => {
-        return response;
     });
-};
 
 export const fetchSinglePageSummary = {};
