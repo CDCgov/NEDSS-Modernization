@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './TableMenu.scss';
 import { PageFilterModal } from '../../pages/FilterModal/PageFilterModal';
-import { Config } from 'config';
 
 type Props = {
     tableType: string;
@@ -24,7 +23,7 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
     };
 
     const navigateToPagePorting = () => {
-        window.location.href = `${Config.nbsUrl}/ManagePage.do?method=loadManagePagePort&initLoad=true`;
+        window.location.href = '/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true';
     };
 
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
