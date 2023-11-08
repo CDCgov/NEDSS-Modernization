@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -102,12 +101,19 @@ public class CodeValueGeneral {
     @Column(name = "add_user_id")
     private Long addUserId;
 
+    public CodeValueGeneral() {
+        this.indentLevelNbr = 1;
+        this.isModifiableInd = 'Y';
+    }
+
     public CodeValueGeneral(ConceptCommand.AddConcept command) {
+        // Default
+        this();
+        
         this.id = new CodeValueGeneralId(command.codeset(), command.code());
         this.codeDescTxt = command.displayName();
         this.codeShortDescTxt = command.shortDisplayName();
-        this.effectiveFromTime = command.effectiveFromTime();
-        this.effectiveToTime = command.effectiveToTime();
+        
         this.statusCd = command.statusCode().equals(StatusCode.A) ? 'A' : 'I';
         this.statusTime = command.requestedOn();
         this.conceptStatusCd = command.statusCode().equals(StatusCode.A) ? "Active" : "Inactive";
@@ -119,9 +125,32 @@ public class CodeValueGeneral {
         this.codeSystemDescTxt = command.codeSystem();
         this.codeSystemCd = command.codeSystemId();
         this.conceptTypeCd = command.conceptTypeCd();
+        
+        added(command);
+    }
 
-        this.indentLevelNbr = 1;
-        this.isModifiableInd = 'Y';
+    public CodeValueGeneral updatValueGeneral(ConceptCommand.UpdateConcept command) {
+
+
+        this.codeDescTxt = command.longDisplayName();
+        this.codeShortDescTxt = command.shortDisplayName();
+        this.effectiveFromTime = command.effectiveFromTime();
+        this.effectiveToTime = (command.effectiveToTime() == null) ? this.effectiveToTime : command.effectiveToTime();
+        this.statusCd = (command.active()) ? 'A' : 'I';
+        this.conceptStatusCd = (command.active()) ? "Active" : "Inactive";
+        this.adminComments = (command.adminComments() ==  null) ? this.adminComments : command.adminComments();
+        
+        this.conceptCode = (command.conceptCode() == null) ? this.conceptCode : command.conceptCode();
+        this.conceptNm = (command.conceptName() == null) ? this.conceptNm : command.conceptName();
+        this.conceptPreferredNm = (command.preferredConceptName() == null) ? this.conceptPreferredNm : command.preferredConceptName();
+        this.codeSystemDescTxt = (command.codeSystem() == null) ? this.codeSystemDescTxt : command.codeSystem();
+        this.codeSystemCd = (command.codeSystemCd() == null) ? this.codeSystemCd : command.codeSystemCd();
+
+
+        return this;
+    }
+
+    private void added(ConceptCommand command) {
         this.addTime = command.requestedOn();
         this.addUserId = command.userId();
     }

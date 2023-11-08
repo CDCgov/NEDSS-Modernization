@@ -35,44 +35,93 @@ public class ConceptManager {
      * @param request
      * @return
      */
-    public Concept update(String codeSetNm, String conceptCode, UpdateConceptRequest request) {
+    public Concept update(String codeSetNm, String conceptCode, UpdateConceptRequest request, Long userId) {
         CodeValueGeneral concept = repository.findByIdCodeSetNmAndIdCode(codeSetNm, conceptCode)
                 .orElseThrow(() -> new ConceptNotFoundException(codeSetNm, conceptCode));
-        concept.setCodeDescTxt(requireNotEmpty(request.longName(), "longName"));
-        concept.setCodeShortDescTxt(requireNotEmpty(request.displayName(), "displayName"));
-        concept.setEffectiveFromTime(requireNonNull(request.effectiveFromTime(), "effectiveFromTime must not be null"));
-        concept.setEffectiveToTime(request.effectiveToTime());
-        Character newStatus = request.active() ? 'A' : 'I';
 
-        if (!newStatus.equals(concept.getStatusCd())) {
-            // There is also a `concept_status_cd` field that doesn't seem to be updated
-            concept.setStatusCd(newStatus);
-            concept.setStatusTime(Instant.now());
-        }
+        // Character newStatus = request.active() ? 'A' : 'I';
+
+        // if (!newStatus.equals(concept.getStatusCd())) {
+        //     // There is also a `concept_status_cd` field that doesn't seem to be updated
+        //     concept.setStatusCd(newStatus);
+        //     concept.setStatusTime(Instant.now());
+        // }
+        CodeValueGeneral codeSystem = findCodeSystem(request.conceptMessagingInfo().codeSystem());
+
 
         if (request.conceptMessagingInfo() != null) {
-            concept.setConceptCode(
+
+
+
+            concept.updatValueGeneral(updateConcept(requireNotEmpty(
+                    request.longName(), "longName"),
+                    requireNotEmpty(request.displayName(), "displayName"),
+                    requireNonNull(request.effectiveFromTime(), "effectiveFromTime"),
+                    request.effectiveToTime(),
+                    requireNonNull(request.active(), "active"),
+                    request.adminComments(),
                     requireNotEmpty(
                             request.conceptMessagingInfo().conceptCode(),
-                            "conceptMessagingInfo.conceptCode"));
-            concept.setConceptNm(
+                            "conceptMessagingInfo.conceptCode"),
                     requireNotEmpty(
                             request.conceptMessagingInfo().conceptName(),
-                            "conceptMessagingInfo.conceptName"));
-            concept.setConceptPreferredNm(
+                            "conceptMessagingInfo.conceptName"),
                     requireNotEmpty(
                             request.conceptMessagingInfo().preferredConceptName(),
-                            "conceptMessagingInfo.preferredConceptName"));
-            CodeValueGeneral codeSystem = findCodeSystem(request.conceptMessagingInfo().codeSystem());
+                            "conceptMessagingInfo.preferredConceptName"),
+                    codeSystem.getCodeShortDescTxt(),
+                    codeSystem.getCodeSystemCd(),
+                    userId));
 
-            concept.setCodeSystemCd(codeSystem.getCodeSystemCd());
-            concept.setCodeSystemDescTxt(codeSystem.getCodeShortDescTxt());
+
+        } else {
+            concept.updatValueGeneral(updateConcept(requireNotEmpty(
+                    request.longName(), "longName"),
+                    requireNotEmpty(request.displayName(), "displayName"),
+                    requireNonNull(request.effectiveFromTime(), "effectiveFromTime"),
+                    request.effectiveToTime(),
+                    requireNonNull(request.active(), "active"),
+                    request.adminComments(),
+                    null,
+                    null,
+                    null,
+                    codeSystem.getCodeShortDescTxt(),
+                    codeSystem.getCodeSystemCd(),
+                    userId));
         }
 
-        concept.setAdminComments(request.adminComments());
         concept = repository.save(concept);
 
         return conceptMapper.toConcept(concept);
+    }
+
+    private ConceptCommand.UpdateConcept updateConcept(
+            String longName,
+            String displayName,
+            Instant effectiveFromTime,
+            Instant effectiveToTime,
+            boolean active,
+            String adminComments,
+            String conceptCode,
+            String conceptName,
+            String preferredConceptName,
+            String codeSystem,
+            String codeSystemCd,
+            long userId) {
+        return new ConceptCommand.UpdateConcept(longName,
+                displayName,
+                effectiveFromTime,
+                effectiveToTime,
+                active,
+                adminComments,
+                Instant.now(),
+                conceptCode,
+                conceptName,
+                preferredConceptName,
+                codeSystem,
+                codeSystemCd,
+                userId,
+                Instant.now());
     }
 
     private CodeValueGeneral findCodeSystem(String codeSystemName) {

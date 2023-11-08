@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
@@ -26,6 +27,7 @@ import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/api/v1/valueset")
@@ -88,8 +90,9 @@ public class ValueSetController {
     public Concept updateConcept(
             @PathVariable String codeSetNm,
             @PathVariable String conceptCode,
-            @RequestBody UpdateConceptRequest request) {
-        return conceptManager.update(codeSetNm, conceptCode, request);
+            @RequestBody UpdateConceptRequest request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        return conceptManager.update(codeSetNm, conceptCode, request, details.getId());
     }
 
     @PostMapping("{codeSetNm}/concepts")

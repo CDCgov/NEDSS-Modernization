@@ -29,4 +29,27 @@ public sealed interface ConceptCommand {
             long userId,
             Instant requestedOn) implements ConceptCommand {
     }
+
+    public record UpdateConcept(
+        String longDisplayName,
+        String shortDisplayName,
+        Instant effectiveFromTime,
+        Instant effectiveToTime,
+        boolean active,
+        String adminComments,
+        Instant conceptStatusTime,
+
+        // Concept Messaging Info
+        String conceptCode,
+        String conceptName,
+        String preferredConceptName,
+        String codeSystem,
+        String codeSystemCd,
+
+        // Audit Fields
+        long userId,
+        Instant requestedOn
+    ) implements ConceptCommand {
+
+    }
 }
