@@ -1,53 +1,49 @@
 package gov.cdc.nbs.patient.document;
 
-import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.authorization.permission.Permission;
+import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.service.SecurityService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
-import java.util.Set;
 
 @Controller
 class PatientDocumentByPatientResolver {
 
-    private final int maxPageSize;
-    private final PatientDocumentFinder finder;
-    private final SecurityService securityService;
+  private static final Permission PERMISSION = new Permission("View", "Document");
 
-    PatientDocumentByPatientResolver(
-            @Value("${nbs.max-page-size}") final int maxPageSize,
-            final PatientDocumentFinder finder,
-            final SecurityService securityService) {
-        this.maxPageSize = maxPageSize;
-        this.finder = finder;
-        this.securityService = securityService;
-    }
+  private final PermissionScopeResolver resolver;
+  private final int maxPageSize;
+  private final PatientDocumentFinder finder;
 
-    @QueryMapping(name = "findDocumentsForPatient")
-    @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-DOCUMENT')")
-    Page<PatientDocument> find(
-            @Argument("patient") final long patient,
-            @Argument final GraphQLPage page) {
-        Set<Long> userOids = securityService.getCurrentUserProgramAreaJurisdictionOids();
-        Pageable pageable = GraphQLPage.toPageable(page, maxPageSize);
-        return this.finder.find(
-                patient,
-                userOids,
-                pageable);
-    }
+  PatientDocumentByPatientResolver(
+      final PermissionScopeResolver resolver,
+      @Value("${nbs.max-page-size}") final int maxPageSize,
+      final PatientDocumentFinder finder
+  ) {
+    this.resolver = resolver;
+    this.maxPageSize = maxPageSize;
+    this.finder = finder;
+  }
 
-    @SchemaMapping("documents")
-    @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-DOCUMENT')")
-    List<PatientDocument> resolve(final Person patient) {
-        Set<Long> userOids = securityService.getCurrentUserProgramAreaJurisdictionOids();
-        return this.finder.find(patient.getId(), userOids);
-    }
+  @QueryMapping(name = "findDocumentsForPatient")
+  @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-DOCUMENT')")
+  Page<PatientDocument> find(
+      @Argument("patient") final long patient,
+      @Argument final GraphQLPage page
+  ) {
+    PermissionScope scope = resolver.resolve(PERMISSION);
+    Pageable pageable = GraphQLPage.toPageable(page, maxPageSize);
+    return this.finder.find(
+        patient,
+        scope,
+        pageable
+    );
+  }
+
 }
