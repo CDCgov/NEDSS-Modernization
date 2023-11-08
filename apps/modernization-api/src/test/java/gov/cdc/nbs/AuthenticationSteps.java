@@ -78,9 +78,10 @@ public class AuthenticationSteps {
         assertEquals(HttpStatus.OK.value(), TestContext.response.getResponse().getStatus());
     }
 
-    @Then("I get a 401 unauthorized response")
-    public void i_get_a_401_unauthorized_response() {
-        assertEquals(HttpStatus.UNAUTHORIZED.value(), TestContext.response.getResponse().getStatus());
+    @Then("I get redirect to timeout")
+    public void i_get_a_302_found_response() {
+        assertEquals(HttpStatus.FOUND.value(), TestContext.response.getResponse().getStatus());
+        assertEquals("/nbs/timeout", TestContext.response.getResponse().getHeader("Location"));
     }
 
     private String findAllPatientsQuery() {

@@ -1,24 +1,8 @@
 /* eslint-disable camelcase */
-import { createContext, useState, Dispatch, SetStateAction } from 'react';
+import { createContext, useState } from 'react';
+import { ContextData } from './contextData';
 
-interface QuestionContextData {
-    filter: any;
-    setFilter: (filter: any) => void;
-    searchQuery: string;
-    setSearchQuery: (query: string) => void;
-    currentPage: number;
-    setCurrentPage?: (page: number) => void;
-    sortBy: string;
-    setSortBy: (name: string) => void;
-    sortDirection: string;
-    setSortDirection: (direction: string) => void;
-    pageSize: number;
-    setPageSize: Dispatch<SetStateAction<number>>;
-    isLoading: boolean;
-    setIsLoading: (status: boolean) => void;
-}
-
-const questionContextDefaultValue: QuestionContextData = {
+const questionContextDefaultValue: ContextData = {
     filter: {},
     setFilter: () => {},
     searchQuery: '',
@@ -35,7 +19,7 @@ const questionContextDefaultValue: QuestionContextData = {
     setIsLoading: () => {}
 };
 
-export const QuestionsContext = createContext<QuestionContextData>(questionContextDefaultValue);
+export const QuestionsContext = createContext<ContextData>(questionContextDefaultValue);
 
 export const QuestionProvider = ({ children }: any) => {
     const [searchQuery, setSearchQuery] = useState(questionContextDefaultValue.searchQuery);
