@@ -144,7 +144,7 @@ export default function ContactFields({ id, title }: Props) {
                             }
                             className="text-bold"
                             unstyled
-                            style={{ margin: '10px 0 0 0', padding: '0' }}>
+                            style={{ margin: '1.125rem 0 0 0', padding: '0' }}>
                             + Add another phone number
                         </Button>
                     </Grid>
@@ -190,7 +190,7 @@ export default function ContactFields({ id, title }: Props) {
                             }
                             className="text-bold"
                             unstyled
-                            style={{ margin: '10px 0 0 0', padding: '0' }}>
+                            style={{ margin: '1.125rem 0 0 0', padding: '0' }}>
                             + Add another email address
                         </Button>
                     </Grid>

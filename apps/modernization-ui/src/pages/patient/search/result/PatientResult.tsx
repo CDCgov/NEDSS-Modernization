@@ -119,7 +119,7 @@ const ResultItem = ({ label, orientation = 'horizontal', children }: ResultItemP
 type ResultItemLabelProps = { children: string };
 
 const ResultItemLabel = ({ children }: ResultItemLabelProps) => (
-    <span className="patient-search-result-item-label font-sans-3xs">{children}</span>
+    <span className="patient-search-result-item-label">{children}</span>
 );
 
 type ResultValueProps = {
