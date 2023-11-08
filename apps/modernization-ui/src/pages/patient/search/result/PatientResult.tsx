@@ -25,7 +25,7 @@ const PatientResult = ({ result, onSelected }: PatientResultProps) => {
             <Grid col={4}>
                 <Grid row gap={3}>
                     <Grid col={12} className="margin-bottom-2">
-                        <h5 className="margin-0 text-normal font-sans-3xs text-gray-50">LEGAL NAME</h5>
+                        <h5 className="margin-0 text-normal card-header-label text-gray-50">LEGAL NAME</h5>
                         <a
                             onClick={() => onSelected(result)}
                             tabIndex={0}
@@ -119,7 +119,7 @@ const ResultItem = ({ label, orientation = 'horizontal', children }: ResultItemP
 type ResultItemLabelProps = { children: string };
 
 const ResultItemLabel = ({ children }: ResultItemLabelProps) => (
-    <span className="patient-search-result-item-label font-sans-3xs">{children}</span>
+    <span className="patient-search-result-item-label card-header-label">{children}</span>
 );
 
 type ResultValueProps = {

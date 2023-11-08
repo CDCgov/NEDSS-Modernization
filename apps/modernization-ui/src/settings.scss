@@ -31,10 +31,6 @@ $theme-hero-image: '~uswds/src/img/hero.png';
     font-size: 32px !important;
 }
 
-.font-sans-3xs {
-    font-size: 13px !important;
-}
-
 .font-sans-xl {
     font-family: sans-serif !important;
 }
@@ -62,4 +58,8 @@ td span {
 .usa-pagination__button:focus,
 .usa-pagination__button:hover {
     border: 1px solid #1a4480 !important;
+}
+
+.card-header-label {
+    font-size: 13px !important;
 }

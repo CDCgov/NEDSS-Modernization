@@ -99,7 +99,7 @@ export const InvestigationResults = ({
         return (
             <Grid row gap={3}>
                 <Grid col={12} className="margin-bottom-2">
-                    <h5 className="margin-0 text-normal text-gray-50 font-sans-3xs">LEGAL NAME</h5>
+                    <h5 className="margin-0 text-normal text-gray-50 card-header-label">LEGAL NAME</h5>
                     <a
                         onClick={redirectPatientProfile}
                         className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
@@ -109,7 +109,7 @@ export const InvestigationResults = ({
                 </Grid>
                 <Grid col={12} className="margin-bottom-2">
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
+                        <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
                             DATE OF BIRTH
                         </h5>
                         <p className="margin-0 font-sans-2xs text-normal">
@@ -120,11 +120,13 @@ export const InvestigationResults = ({
                         </p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">SEX</h5>
+                        <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">SEX</h5>
                         <p className="margin-0 font-sans-2xs text-normal">{sex ? sex : <NoData />}</p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">PATIENT ID</h5>
+                        <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
+                            PATIENT ID
+                        </h5>
                         <p className="margin-0 font-sans-2xs text-normal">{patient?.shortId || <NoData />}</p>
                     </div>
                 </Grid>
@@ -162,7 +164,7 @@ export const InvestigationResults = ({
                                 <Grid col={3}>
                                     <Grid row gap={3} className="fill-height">
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50 font-sans-3xs">
+                                            <h5 className="margin-0 text-normal text-gray-50 card-header-label">
                                                 CONDITION
                                             </h5>
                                             <ClassicLink
@@ -176,7 +178,7 @@ export const InvestigationResults = ({
                                             <span>{item.localId}</span>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
                                                 START DATE
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
@@ -188,7 +190,7 @@ export const InvestigationResults = ({
                                 <Grid col={3}>
                                     <Grid row gap={3} className="fill-height">
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50 font-sans-3xs">
+                                            <h5 className="margin-0 text-normal text-gray-50 card-header-label">
                                                 JURISDICTION
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
@@ -196,7 +198,7 @@ export const InvestigationResults = ({
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
                                                 INVESTIGATOR
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
@@ -220,7 +222,7 @@ export const InvestigationResults = ({
                                             )}
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
                                                 NOTIFICATION
                                             </h5>
                                             {item.notificationRecordStatusCd ? (
