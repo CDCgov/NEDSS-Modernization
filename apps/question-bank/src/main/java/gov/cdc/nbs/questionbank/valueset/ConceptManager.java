@@ -39,20 +39,9 @@ public class ConceptManager {
         CodeValueGeneral concept = repository.findByIdCodeSetNmAndIdCode(codeSetNm, conceptCode)
                 .orElseThrow(() -> new ConceptNotFoundException(codeSetNm, conceptCode));
 
-        // Character newStatus = request.active() ? 'A' : 'I';
-
-        // if (!newStatus.equals(concept.getStatusCd())) {
-        //     // There is also a `concept_status_cd` field that doesn't seem to be updated
-        //     concept.setStatusCd(newStatus);
-        //     concept.setStatusTime(Instant.now());
-        // }
         CodeValueGeneral codeSystem = findCodeSystem(request.conceptMessagingInfo().codeSystem());
 
-
         if (request.conceptMessagingInfo() != null) {
-
-
-
             concept.updatValueGeneral(updateConcept(requireNotEmpty(
                     request.longName(), "longName"),
                     requireNotEmpty(request.displayName(), "displayName"),
@@ -71,9 +60,7 @@ public class ConceptManager {
                             "conceptMessagingInfo.preferredConceptName"),
                     codeSystem.getCodeShortDescTxt(),
                     codeSystem.getCodeSystemCd(),
-                    userId));
-
-
+                    userId)); 
         } else {
             concept.updatValueGeneral(updateConcept(requireNotEmpty(
                     request.longName(), "longName"),
