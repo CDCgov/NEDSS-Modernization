@@ -1,64 +1,25 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateRuleRequest } from '../models/CreateRuleRequest';
-import type { CreateRuleResponse } from '../models/CreateRuleResponse';
-import type { Page_ViewRuleResponse_ } from '../models/Page_ViewRuleResponse_';
-import type { SearchPageRuleRequest } from '../models/SearchPageRuleRequest';
-import type { ViewRuleResponse } from '../models/ViewRuleResponse';
+import type { AddDefault } from '../models/AddDefault';
+import type { AddHyperlink } from '../models/AddHyperlink';
+import type { AddReadOnlyComments } from '../models/AddReadOnlyComments';
+import type { AddStaticResponse } from '../models/AddStaticResponse';
+import type { DeleteElementRequest } from '../models/DeleteElementRequest';
+import type { DeleteStaticResponse } from '../models/DeleteStaticResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class PageRuleControllerService {
+export class PageStaticControllerService {
 
     /**
-     * getAllPageRule
-     * @returns Page_ViewRuleResponse_ OK
+     * deleteStaticElement
+     * @returns DeleteStaticResponse OK
      * @throws ApiError
      */
-    public static getAllPageRuleUsingGet({
-        authorization,
-        page,
-        size,
-        sort,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_ViewRuleResponse_> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{page}/rules',
-            path: {
-                'page': page,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            query: {
-                'size': size,
-                'sort': sort,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * createBusinessRule
-     * @returns CreateRuleResponse Created
-     * @throws ApiError
-     */
-    public static createBusinessRuleUsingPost({
+    public static deleteStaticElementUsingDelete({
         authorization,
         page,
         request,
@@ -71,172 +32,216 @@ export class PageRuleControllerService {
         /**
          * request
          */
-        request: CreateRuleRequest,
-    }): CancelablePromise<CreateRuleResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/rules',
-            path: {
-                'page': page,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * findPageRule
-     * @returns Page_ViewRuleResponse_ OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static findPageRuleUsingPost({
-        authorization,
-        request,
-        page,
-        size,
-        sort,
-    }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: SearchPageRuleRequest,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_ViewRuleResponse_ | any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/rules/search',
-            headers: {
-                'Authorization': authorization,
-            },
-            query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * viewRuleResponse
-     * @returns ViewRuleResponse OK
-     * @throws ApiError
-     */
-    public static viewRuleResponseUsingGet({
-        authorization,
-        ruleId,
-    }: {
-        authorization: string,
-        /**
-         * ruleId
-         */
-        ruleId: number,
-    }): CancelablePromise<ViewRuleResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{page}/rules/{ruleId}',
-            path: {
-                'ruleId': ruleId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * updatePageRule
-     * @returns CreateRuleResponse OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updatePageRuleUsingPut({
-        authorization,
-        page,
-        request,
-        ruleId,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * request
-         */
-        request: CreateRuleRequest,
-        /**
-         * ruleId
-         */
-        ruleId: number,
-    }): CancelablePromise<CreateRuleResponse | any> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/rules/{ruleId}',
-            path: {
-                'page': page,
-                'ruleId': ruleId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * deletePageRule
-     * @returns CreateRuleResponse OK
-     * @throws ApiError
-     */
-    public static deletePageRuleUsingDelete({
-        authorization,
-        ruleId,
-    }: {
-        authorization: string,
-        /**
-         * ruleId
-         */
-        ruleId: number,
-    }): CancelablePromise<CreateRuleResponse> {
+        request: DeleteElementRequest,
+    }): CancelablePromise<DeleteStaticResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/nbs/page-builder/api/v1/pages/{page}/rules/{ruleId}',
+            url: '/nbs/page-builder/api/v1/pages/{page}/content/static/delete-static-element',
             path: {
-                'ruleId': ruleId,
+                'page': page,
             },
             headers: {
                 'Authorization': authorization,
             },
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
+            },
+        });
+    }
+
+    /**
+     * addStaticHyperLink
+     * @returns AddStaticResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static addStaticHyperLinkUsingPost({
+        authorization,
+        page,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * request
+         */
+        request: AddHyperlink,
+    }): CancelablePromise<AddStaticResponse | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{page}/content/static/hyperlink',
+            path: {
+                'page': page,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * addStaticLineSeparator
+     * @returns AddStaticResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static addStaticLineSeparatorUsingPost({
+        authorization,
+        page,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * request
+         */
+        request: AddDefault,
+    }): CancelablePromise<AddStaticResponse | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{page}/content/static/line-separator',
+            path: {
+                'page': page,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * addStaticOriginalElectronicDocList
+     * @returns AddStaticResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static addStaticOriginalElectronicDocListUsingPost({
+        authorization,
+        page,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * request
+         */
+        request: AddDefault,
+    }): CancelablePromise<AddStaticResponse | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{page}/content/static/original-elec-doc-list',
+            path: {
+                'page': page,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * addStaticReadOnlyComments
+     * @returns AddStaticResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static addStaticReadOnlyCommentsUsingPost({
+        authorization,
+        page,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * request
+         */
+        request: AddReadOnlyComments,
+    }): CancelablePromise<AddStaticResponse | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{page}/content/static/read-only-comments',
+            path: {
+                'page': page,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * addStaticReadOnlyParticipantsList
+     * @returns AddStaticResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static addStaticReadOnlyParticipantsListUsingPost({
+        authorization,
+        page,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * request
+         */
+        request: AddDefault,
+    }): CancelablePromise<AddStaticResponse | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{page}/content/static/read-only-participants-list',
+            path: {
+                'page': page,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
             },
         });
     }

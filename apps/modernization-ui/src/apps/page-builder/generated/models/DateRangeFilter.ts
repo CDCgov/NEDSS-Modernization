@@ -4,8 +4,9 @@
 
 import type { Filter } from './Filter';
 
-export type PageSummaryRequest = {
-    filters?: Array<Filter>;
-    search?: string;
-};
+export type DateRangeFilter = (Filter & {
+    after?: string;
+    before?: string;
+    property: string;
+});
 

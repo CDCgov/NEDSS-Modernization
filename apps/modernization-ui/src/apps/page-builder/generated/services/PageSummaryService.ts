@@ -1,44 +1,47 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AddQuestionRequest } from '../models/AddQuestionRequest';
-import type { AddQuestionResponse } from '../models/AddQuestionResponse';
+import type { Page_PageSummary_ } from '../models/Page_PageSummary_';
+import type { PageSummaryRequest } from '../models/PageSummaryRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class PageQuestionControllerService {
+export class PageSummaryService {
 
     /**
-     * addQuestionToPage
-     * @returns AddQuestionResponse OK
+     * Allows paginated searching of Page Summaries with filters.
+     * @returns Page_PageSummary_ OK
      * @returns any Created
      * @throws ApiError
      */
-    public static addQuestionToPageUsingPost({
+    public static search({
         authorization,
-        page,
         request,
+        page,
+        size,
+        sort,
     }: {
         authorization: string,
         /**
-         * page
-         */
-        page: number,
-        /**
          * request
          */
-        request: AddQuestionRequest,
-    }): CancelablePromise<AddQuestionResponse | any> {
+        request: PageSummaryRequest,
+        page?: number,
+        size?: number,
+        sort?: string,
+    }): CancelablePromise<Page_PageSummary_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/',
-            path: {
-                'page': page,
-            },
+            url: '/nbs/page-builder/api/v1/pages/search',
             headers: {
                 'Authorization': authorization,
+            },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             body: request,
             errors: {
