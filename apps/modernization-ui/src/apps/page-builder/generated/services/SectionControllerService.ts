@@ -22,7 +22,7 @@ export class SectionControllerService {
         page,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */
@@ -60,7 +60,7 @@ export class SectionControllerService {
         page,
         sectionId,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */
@@ -99,7 +99,7 @@ export class SectionControllerService {
         request,
         section,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */

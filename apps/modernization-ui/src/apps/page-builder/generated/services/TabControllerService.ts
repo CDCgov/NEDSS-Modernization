@@ -22,7 +22,7 @@ export class TabControllerService {
         page,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */
@@ -62,7 +62,7 @@ export class TabControllerService {
         request,
         tabId,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */
@@ -105,7 +105,7 @@ export class TabControllerService {
         page,
         tabId,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */

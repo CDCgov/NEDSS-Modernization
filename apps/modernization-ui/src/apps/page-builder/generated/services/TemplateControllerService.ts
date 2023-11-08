@@ -21,7 +21,7 @@ export class TemplateControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         page?: number,
         size?: number,
         sort?: string,
@@ -58,7 +58,7 @@ export class TemplateControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * search
          */

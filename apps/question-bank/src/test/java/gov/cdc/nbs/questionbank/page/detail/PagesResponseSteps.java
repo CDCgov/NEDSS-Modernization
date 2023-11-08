@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
-import gov.cdc.nbs.questionbank.support.PageMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -23,9 +22,6 @@ public class PagesResponseSteps {
 
   @Autowired
   PagesRequest request;
-
-  @Autowired
-  PageMother pageMother;
 
   private final Active<ResultActions> response = new Active<>();
 
@@ -129,7 +125,7 @@ public class PagesResponseSteps {
       case "tab" -> "$.tabs[?(@.name=='%s')]";
       case "section" -> "$.tabs[*].sections[?(@.name=='%s')]";
       case "subsection", "sub section", "sub-section" -> "$.tabs[*].sections[*].subSections[?(@.name=='%s')]";
-      case "content", "question"-> "$.tabs[*].sections[*].subSections[*].questions[?(@.name=='%s')]";
+      case "content", "question" -> "$.tabs[*].sections[*].subSections[*].questions[?(@.name=='%s')]";
       default -> throw new AssertionError(String.format("Unexpected Page child %s", property));
     };
 

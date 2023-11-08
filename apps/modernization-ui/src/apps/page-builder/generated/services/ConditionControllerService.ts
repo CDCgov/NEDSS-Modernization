@@ -24,7 +24,7 @@ export class ConditionControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         page?: number,
         size?: number,
         sort?: string,
@@ -58,7 +58,7 @@ export class ConditionControllerService {
         authorization,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * request
          */
@@ -87,7 +87,7 @@ export class ConditionControllerService {
     public static findAllConditionsUsingGet({
         authorization,
     }: {
-        authorization: any,
+        authorization: string,
     }): CancelablePromise<Array<Condition>> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -116,7 +116,7 @@ export class ConditionControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * search
          */
@@ -154,7 +154,7 @@ export class ConditionControllerService {
         authorization,
         id,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * id
          */
@@ -185,7 +185,7 @@ export class ConditionControllerService {
         authorization,
         id,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * id
          */
