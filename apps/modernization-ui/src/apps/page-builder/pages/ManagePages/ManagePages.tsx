@@ -6,9 +6,10 @@ import { fetchPageSummaries } from '../../services/pagesAPI';
 import { ManagePagesTable } from './ManagePagesTable';
 import { UserContext } from 'user';
 import { useSearchParams } from 'react-router-dom';
+import { PageSummary, Page_PageSummary_ } from 'apps/page-builder/generated';
 
 export const ManagePages = () => {
-    const [pages, setPages] = useState([]);
+    const [pages, setPages] = useState<PageSummary[]>([]);
     const { searchQuery, sortBy, sortDirection, setCurrentPage, currentPage, pageSize, setIsLoading } =
         useContext(PagesContext);
     const { state } = useContext(UserContext);
@@ -27,19 +28,16 @@ export const ManagePages = () => {
 
         // get Pages
         try {
-            fetchPageSummaries(
-                token,
-                searchQuery,
-                sortBy.toLowerCase() + ',' + sortDirection,
-                currentPage,
-                pageSize
-            ).then((data: any) => {
-                setPages(data.content);
-                setTotalElements(data.totalElements);
-                setIsLoading(false);
-            });
+            fetchPageSummaries(token, searchQuery, sortBy + ',' + sortDirection, currentPage, pageSize).then(
+                (data: Page_PageSummary_) => {
+                    setPages(data.content);
+                    setTotalElements(data.totalElements);
+                    setIsLoading(false);
+                }
+            );
         } catch (error) {
             console.log(error);
+            setIsLoading(false);
         }
     }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
 

@@ -117,8 +117,16 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
         if (currentPage > 1 && setCurrentPage) {
             setCurrentPage(1);
         }
-        toSortString(name);
-        setSortDirection(direction);
+
+        if (direction === Direction.None) {
+            console.log('ascend...');
+            toSortString(Column.PageName);
+            setSortDirection(Direction.Ascending);
+        } else {
+            console.log('direction', direction);
+            toSortString(name);
+            setSortDirection(direction);
+        }
     };
 
     const handleDownloadCSV = async () => {
