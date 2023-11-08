@@ -1,4 +1,5 @@
 @import '../mixins/viewports';
+@import './colors';
 
 table.usa-table {
     overflow-x: auto;
@@ -49,4 +50,12 @@ table.usa-table {
 // Default button styling
 button.usa-button {
     font-size: 1rem;
+}
+
+.search-result-item-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02031rem;
+    text-transform: uppercase;
+    color: $color-gray-20;
 }
