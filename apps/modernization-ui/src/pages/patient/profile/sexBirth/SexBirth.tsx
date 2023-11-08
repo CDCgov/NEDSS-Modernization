@@ -8,9 +8,8 @@ import { maybeDescription, maybeId } from '../coded';
 import { BirthAndGenderEntry, SexBirthForm } from './SexBirthForm';
 import { maybeNumber, orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
-import { useParams } from 'react-router-dom';
-import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { Patient } from '../Patient';
 
 const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
     {
@@ -83,15 +82,13 @@ type BirthAndGenderState = {
 };
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
-export const SexBirth = ({ patient: patientId }: Props) => {
+export const SexBirth = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
     const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
-    const { patient } = usePatientProfile(id);
 
     const [state, setState] = useState<BirthAndGenderState>(initial);
 
@@ -112,35 +109,37 @@ export const SexBirth = ({ patient: patientId }: Props) => {
     const [fetch, { refetch }] = useFindPatientProfileBirth({ onCompleted: handleComplete });
 
     useEffect(() => {
-        fetch({
-            variables: {
-                patient: patientId
-            },
-            notifyOnNetworkStatusChange: true
-        });
-    }, [patientId]);
+        patient &&
+            fetch({
+                variables: {
+                    patient: patient.id
+                },
+                notifyOnNetworkStatusChange: true
+            });
+    }, [patient]);
 
     const [update] = useUpdatePatientBirthAndGenderMutation();
 
     const onUpdate = (updated: BirthAndGenderEntry) => {
-        update({
-            variables: {
-                input: {
-                    patient: patientId,
-                    ...updated
+        patient &&
+            update({
+                variables: {
+                    input: {
+                        patient: patient.id,
+                        ...updated
+                    }
                 }
-            }
-        })
-            .then(() => isEditing(false))
-            .then(() => {
-                refetch();
-                showAlert({
-                    type: 'success',
-                    header: 'success',
-                    message: `Updated sex & birth`
+            })
+                .then(() => isEditing(false))
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated sex & birth`
+                    });
+                    changed();
                 });
-                changed();
-            });
     };
 
     return (

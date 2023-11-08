@@ -26,10 +26,9 @@ import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
-import { useParams } from 'react-router-dom';
-import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
+import { Patient } from '../Patient';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -71,13 +70,11 @@ const resolveInitialEntry = (patient: string): NewPhoneEmailEntry => ({
 });
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
-export const PhoneAndEmailTable = ({ patient: patientId }: Props) => {
+export const PhoneAndEmailTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
-    const { patient } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -88,7 +85,7 @@ export const PhoneAndEmailTable = ({ patient: patientId }: Props) => {
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const initial = resolveInitialEntry(patientId);
+    const initial = resolveInitialEntry(patient?.id || '');
     const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientPhone>();
@@ -115,17 +112,18 @@ export const PhoneAndEmailTable = ({ patient: patientId }: Props) => {
     const [remove] = useDeletePatientPhoneMutation();
 
     useEffect(() => {
-        fetch({
-            variables: {
-                patient: patientId,
-                page: {
-                    pageNumber: currentPage - 1,
-                    pageSize: TOTAL_TABLE_DATA
-                }
-            },
-            notifyOnNetworkStatusChange: true
-        });
-    }, [currentPage]);
+        patient &&
+            fetch({
+                variables: {
+                    patient: patient?.id,
+                    page: {
+                        pageNumber: currentPage - 1,
+                        pageSize: TOTAL_TABLE_DATA
+                    }
+                },
+                notifyOnNetworkStatusChange: true
+            });
+    }, [currentPage, patient]);
 
     const onAdded = (entry: PhoneEmailEntry) => {
         if (isAdd(entry) && entry.use && entry.type) {

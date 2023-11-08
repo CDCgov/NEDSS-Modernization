@@ -7,12 +7,11 @@ import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
 import { useAlert } from 'alert/useAlert';
-import { useParams } from 'react-router-dom';
-import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { Patient } from '../Patient';
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
 const initialEntry = {
@@ -45,14 +44,12 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
     unknownReason: maybeId(ethnicity?.unknownReason),
     detailed: maybeIds(ethnicity?.detailed)
 });
-export const Ethnicity = ({ patient: patientId }: Props) => {
+export const Ethnicity = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
     const { changed } = useProfileContext();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
-    const { patient } = usePatientProfile(id);
 
     const handleComplete = (result: FindPatientProfileQuery) => {
         const current = result.findPatientProfile?.ethnicity;
@@ -74,30 +71,31 @@ export const Ethnicity = ({ patient: patientId }: Props) => {
     const [fetchProfile, { refetch }] = useFindPatientProfileEthnicity({ onCompleted: handleComplete });
 
     useEffect(() => {
-        if (patientId) {
+        if (patient) {
             fetchProfile({
                 variables: {
-                    patient: patientId
+                    patient: patient.id
                 },
                 notifyOnNetworkStatusChange: true
             });
         }
-    }, [patientId]);
+    }, [patient]);
 
     const [update] = useUpdateEthnicityMutation();
 
     const onUpdate = (updated: EthnicityEntry) => {
-        update({
-            variables: {
-                input: {
-                    ...updated,
-                    patient: patientId
+        patient &&
+            update({
+                variables: {
+                    input: {
+                        ...updated,
+                        patient: patient.id
+                    }
                 }
-            }
-        }).then(() => {
-            handleUpdate();
-            changed();
-        });
+            }).then(() => {
+                handleUpdate();
+                changed();
+            });
     };
 
     return (

@@ -165,7 +165,7 @@ export const PatientProfile = () => {
                     {activeTab === ACTIVE_TAB.EVENT && (
                         <Events patient={patient?.id} addEventsAllowed={patient?.status === 'ACTIVE'} />
                     )}
-                    {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics id={patient?.id || ''} />}
+                    {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics patient={patient} />}
 
                     <div className="text-center margin-y-5">
                         <Button outline type={'button'} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>

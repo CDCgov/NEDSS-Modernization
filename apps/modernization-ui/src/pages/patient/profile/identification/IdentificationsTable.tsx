@@ -25,11 +25,10 @@ import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
-import { useParams } from 'react-router-dom';
-import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { orNull } from 'utils';
+import { Patient } from '../Patient';
 
 const asEntry = (identification: PatientIdentification): IdentificationEntry => ({
     patient: identification.patient,
@@ -56,13 +55,11 @@ const resolveInitialEntry = (patient: string): IdentificationEntry => ({
 });
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
-export const IdentificationsTable = ({ patient: patientId }: Props) => {
+export const IdentificationsTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
-    const { patient } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -74,7 +71,7 @@ export const IdentificationsTable = ({ patient: patientId }: Props) => {
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const initial = resolveInitialEntry(patientId);
+    const initial = resolveInitialEntry(patient?.id || '');
     const { changed } = useProfileContext();
 
     const [isActions, setIsActions] = useState<any>(null);
@@ -100,17 +97,18 @@ export const IdentificationsTable = ({ patient: patientId }: Props) => {
     }, [selected]);
 
     useEffect(() => {
-        fetch({
-            variables: {
-                patient: patientId.toString(),
-                page: {
-                    pageNumber: currentPage - 1,
-                    pageSize: TOTAL_TABLE_DATA
-                }
-            },
-            notifyOnNetworkStatusChange: true
-        });
-    }, [currentPage]);
+        patient &&
+            fetch({
+                variables: {
+                    patient: patient?.id,
+                    page: {
+                        pageNumber: currentPage - 1,
+                        pageSize: TOTAL_TABLE_DATA
+                    }
+                },
+                notifyOnNetworkStatusChange: true
+            });
+    }, [currentPage, patient]);
 
     const onAdded = (entry: IdentificationEntry) => {
         add({

@@ -19,9 +19,8 @@ import { AdministrativeForm } from './AdminstrativeForm';
 import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
-import { useParams } from 'react-router-dom';
-import { usePatientProfile } from '../usePatientProfile';
 import { sortingByDate } from 'sorting/sortingByDate';
+import { Patient } from '../Patient';
 
 const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(addministrative?.asOf),
@@ -39,13 +38,11 @@ const initial: AdministrativeEntry = {
 };
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
-export const AdministrativeTable = ({ patient: patientId }: Props) => {
+export const AdministrativeTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
-    const { patient } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'General comment', sortable: true, sort: 'all' },
@@ -77,32 +74,34 @@ export const AdministrativeTable = ({ patient: patientId }: Props) => {
     }, [selected]);
 
     useEffect(() => {
-        fetch({
-            variables: {
-                patient: patientId,
-                page: {
-                    pageNumber: currentPage - 1,
-                    pageSize: TOTAL_TABLE_DATA
+        patient &&
+            fetch({
+                variables: {
+                    patient: patient.id,
+                    page: {
+                        pageNumber: currentPage - 1,
+                        pageSize: TOTAL_TABLE_DATA
+                    }
                 }
-            }
-        });
-    }, [currentPage]);
+            });
+    }, [currentPage, patient]);
 
     const onChanged = (entry: AdministrativeEntry) => {
-        update({
-            variables: {
-                input: {
-                    patient: +patientId,
-                    asOf: externalizeDateTime(entry.asOf),
-                    comment: entry.comment
+        patient &&
+            update({
+                variables: {
+                    input: {
+                        patient: +patient.id,
+                        asOf: externalizeDateTime(entry.asOf),
+                        comment: entry.comment
+                    }
                 }
-            }
-        })
-            .then(() => {
-                refetch();
-                showAlert({ type: 'success', header: 'success', message: 'Updated Comment' });
             })
-            .then(() => actions.reset());
+                .then(() => {
+                    refetch();
+                    showAlert({ type: 'success', header: 'success', message: 'Updated Comment' });
+                })
+                .then(() => actions.reset());
     };
 
     const tableHeadChanges = (name: string, type: string) => {

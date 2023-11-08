@@ -8,9 +8,8 @@ import { Data, EditableCard } from 'components/EditableCard';
 import { GeneralInformationEntry, GeneralPatientInformationForm } from './GeneralInformationForm';
 import { orNull } from 'utils/orNull';
 import { useAlert } from 'alert/useAlert';
-import { usePatientProfile } from '../usePatientProfile';
-import { useParams } from 'react-router-dom';
 import { useProfileContext } from '../ProfileContext';
+import { Patient } from '../Patient';
 
 const initialEntry = {
     asOf: null,
@@ -58,17 +57,15 @@ const asEntry = (mortality?: PatientGeneral | null): GeneralInformationEntry => 
 });
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
-export const GeneralPatient = ({ patient: patientId }: Props) => {
+export const GeneralPatient = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
     const { changed } = useProfileContext();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<GeneralInformationEntry>(initialEntry);
-    const { patient } = usePatientProfile(id);
 
     const handleComplete = (data: PatientProfileGeneralResult) => {
         setData(asView(data.findPatientProfile?.general));
@@ -83,35 +80,37 @@ export const GeneralPatient = ({ patient: patientId }: Props) => {
     const [getProfile, { refetch }] = useFindPatientProfileGeneral({ onCompleted: handleComplete });
 
     useEffect(() => {
-        getProfile({
-            variables: {
-                patient: patientId
-            },
-            notifyOnNetworkStatusChange: true
-        });
-    }, [patientId]);
+        patient &&
+            getProfile({
+                variables: {
+                    patient: patient?.id
+                },
+                notifyOnNetworkStatusChange: true
+            });
+    }, [patient]);
 
     const [update] = useUpdatePatientGeneralInfoMutation();
 
     const onUpdate = (updated: GeneralInformationEntry) => {
-        update({
-            variables: {
-                input: {
-                    ...updated,
-                    patient: +patientId,
-                    asOf: externalizeDateTime(updated.asOf)
+        patient &&
+            update({
+                variables: {
+                    input: {
+                        ...updated,
+                        patient: +patient?.id,
+                        asOf: externalizeDateTime(updated.asOf)
+                    }
                 }
-            }
-        })
-            .then(handleUpdate)
-            .then(() =>
-                showAlert({
-                    type: 'success',
-                    header: 'success',
-                    message: `Updated General patient information`
-                })
-            )
-            .then(changed);
+            })
+                .then(handleUpdate)
+                .then(() =>
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated General patient information`
+                    })
+                )
+                .then(changed);
     };
 
     return (

@@ -8,9 +8,8 @@ import { MortalityEntry, MortalityForm } from './MortalityForm';
 import { maybeDescription, maybeId } from '../coded';
 import { orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
-import { useParams } from 'react-router-dom';
-import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { Patient } from '../Patient';
 
 const initialEntry = {
     asOf: null,
@@ -43,16 +42,14 @@ const asEntry = (mortality: PatientMortality): MortalityEntry => ({
 });
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
-export const Mortality = ({ patient: patientId }: Props) => {
+export const Mortality = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<MortalityEntry>(initialEntry);
-    const { patient } = usePatientProfile(id);
     const { changed } = useProfileContext();
 
     const handleComplete = (data: FindPatientProfileQuery) => {
@@ -77,32 +74,33 @@ export const Mortality = ({ patient: patientId }: Props) => {
     const [fetch, { refetch }] = useFindPatientProfileMortality({ onCompleted: handleComplete });
 
     useEffect(() => {
-        if (patientId) {
+        if (patient) {
             fetch({
                 variables: {
-                    patient: patientId
+                    patient: patient.id
                 },
                 notifyOnNetworkStatusChange: true
             });
         }
-    }, [patientId]);
+    }, [patient]);
 
     const [update] = useUpdatePatientMortalityMutation();
 
     const onUpdate = (updated: MortalityEntry) => {
-        update({
-            variables: {
-                input: {
-                    ...updated,
-                    patient: +patientId,
-                    asOf: externalizeDateTime(updated.asOf),
-                    deceasedOn: externalizeDate(updated.deceasedOn)
+        patient &&
+            update({
+                variables: {
+                    input: {
+                        ...updated,
+                        patient: +patient.id,
+                        asOf: externalizeDateTime(updated.asOf),
+                        deceasedOn: externalizeDate(updated.deceasedOn)
+                    }
                 }
-            }
-        }).then(() => {
-            handleUpdate();
-            changed();
-        });
+            }).then(() => {
+                handleUpdate();
+                changed();
+            });
     };
 
     return (
