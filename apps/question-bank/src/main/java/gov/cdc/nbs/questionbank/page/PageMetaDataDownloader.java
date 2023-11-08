@@ -12,14 +12,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class PageMetaDataDownloader {
 
     private final JdbcTemplate jdbcTemplate;
 
-    String PageMetadataHeader = "page_nm, order_nbr, question_identifier, question_nm, question_label, question_type, desc_txt," +
+    private static final String PAGE_METADATA_HEADER = "page_nm, order_nbr, question_identifier, question_nm, question_label, question_type, desc_txt," +
             "question_tool_tip, data_type, ui_display_type, code_set_nm, value_set_code, value_set_nm, enable_ind," +
             "display_ind, required_ind, publish_ind_cd, repeats_ind_cd, field_size, max_length, mask, min_value," +
             "max_value, default_value, other_value_ind_cd, future_date_ind_cd, unit_type_cd, unit_code_set_nm," +
@@ -29,7 +28,6 @@ public class PageMetaDataDownloader {
             "block_pivot_nbr, question_identifier_nnd, question_label_nnd, question_required_nnd, question_data_type_nnd," +
             "hl7_segment_field, order_group_id, question_map, indicator_cd, group_nm, sub_group_nm, rdb_table_nm, " +
             "rdb_column_nm, data_mart_column_nm, rpt_admin_column_nm, admin_comment";
-
 
     private static final String QUERY =
             "SELECT " +
@@ -153,16 +151,11 @@ public class PageMetaDataDownloader {
 
     public ByteArrayInputStream downloadPageMetadataByWaTemplateUid(Long waTemplateUid) throws IOException {
         final CSVFormat format = CSVFormat.Builder.create().setQuoteMode(QuoteMode.MINIMAL).
-                setHeader(PageMetadataHeader.split(",")).build();
+                setHeader(PAGE_METADATA_HEADER.split(",")).build();
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
              CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format)) {
             List<Object[]> pageMetadata = findPageMetadataByWaTemplateUid(waTemplateUid);
-            String temp = "";
             for (Object[] data : pageMetadata) {
-                for (Object element : data) {
-                    temp = temp + ",";
-                }
-                temp = "";
                 csvPrinter.printRecord(data);
             }
             csvPrinter.flush();
@@ -173,7 +166,7 @@ public class PageMetaDataDownloader {
     }
 
     public List<Object[]> findPageMetadataByWaTemplateUid(Long waTemplateUid) {
-        List<Object[]> result = jdbcTemplate.query(QUERY, new Object[]{waTemplateUid}, (rs, rowNum) -> {
+        return jdbcTemplate.query(QUERY, setter -> setter.setLong(1, waTemplateUid), (rs, rowNum) -> {
             int columnCount = rs.getMetaData().getColumnCount();
             Object[] row = new Object[columnCount];
             for (int i = 1; i <= columnCount; i++) {
@@ -181,8 +174,6 @@ public class PageMetaDataDownloader {
             }
             return row;
         });
-        return result;
     }
-
 
 }
