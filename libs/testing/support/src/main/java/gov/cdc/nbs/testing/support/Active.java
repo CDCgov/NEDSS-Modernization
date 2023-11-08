@@ -3,14 +3,21 @@ package gov.cdc.nbs.testing.support;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 @Component
 public class Active<I> {
 
     private I item;
 
-    public void active(final I identifier) {
-        this.item = identifier;
+    public void active(final I next) {
+        this.item = next;
+    }
+
+    public void active(final UnaryOperator<I> next) {
+        if(this.item != null) {
+            this.item = next.apply(this.item);
+        }
     }
 
     public void reset() {

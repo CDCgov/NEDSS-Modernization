@@ -22,7 +22,7 @@ export class ReorderControllerService {
          * after
          */
         after: number,
-        authorization: any,
+        authorization: string,
         /**
          * component
          */

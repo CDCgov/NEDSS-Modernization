@@ -50,28 +50,16 @@ public class PageCondMapping {
 
   PageCondMapping(
       final WaTemplate page,
-      final String condition,
-      final long associatedBy,
-      final Instant associatedOn
+      final PageCommand.AssociateCondition command
   ) {
     this.waTemplateUid =page;
-    this.conditionCd = condition;
+    this.conditionCd = command.condition();
 
-    this.addUserId = associatedBy;
-    this.addTime = associatedOn;
-
-    this.lastChgUserId = associatedBy;
-    this.lastChgTime = associatedOn;
-  }
-
-  public PageCondMapping(PageCommand command, WaTemplate template, String conditionCode) {
-    this.waTemplateUid = template;
-    this.conditionCd = conditionCode;
-
-    this.addTime = command.requestedOn();
     this.addUserId = command.requester();
-    this.lastChgTime = command.requestedOn();
+    this.addTime = command.requestedOn();
+
     this.lastChgUserId = command.requester();
+    this.lastChgTime = command.requestedOn();
   }
 
 }

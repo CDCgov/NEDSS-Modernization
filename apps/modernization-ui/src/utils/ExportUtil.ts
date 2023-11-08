@@ -76,7 +76,7 @@ export const downloadLabReportSearchResultPdf = (labReportFilter: LabReportFilte
 
 export const downloadPageLibraryPdf = (token: string) => {
     // auto generated methods dont allow direct conversion to blob
-    fetch(`${OpenAPI.BASE}/page-builder/api/v1/pages/downloadPDF`, {
+    fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/downloadPDF`, {
         method: 'GET',
         headers: {
             Accept: 'application/pdf',

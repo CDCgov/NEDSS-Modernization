@@ -33,7 +33,7 @@ export class QuestionControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         page?: number,
         size?: number,
         sort?: string,
@@ -66,7 +66,7 @@ export class QuestionControllerService {
         authorization,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * request
          */
@@ -96,7 +96,7 @@ export class QuestionControllerService {
         authorization,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * request
          */
@@ -126,7 +126,7 @@ export class QuestionControllerService {
         authorization,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * request
          */
@@ -160,7 +160,7 @@ export class QuestionControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * request
          */
@@ -198,7 +198,7 @@ export class QuestionControllerService {
         authorization,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * request
          */
@@ -228,7 +228,7 @@ export class QuestionControllerService {
         authorization,
         id,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * id
          */
@@ -262,7 +262,7 @@ export class QuestionControllerService {
         id,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * id
          */
@@ -301,7 +301,7 @@ export class QuestionControllerService {
         id,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * id
          */

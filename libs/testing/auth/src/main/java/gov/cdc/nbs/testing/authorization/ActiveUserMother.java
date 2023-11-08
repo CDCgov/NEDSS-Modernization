@@ -3,7 +3,6 @@ package gov.cdc.nbs.testing.authorization;
 import gov.cdc.nbs.authentication.entity.AuthAudit;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
-import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 
@@ -40,32 +39,26 @@ public class ActiveUserMother {
   }
 
   public ActiveUser create(final String name) {
-    long identifier = idGenerator.next();
+    return create(name, "test", "user");
+  }
 
+  public ActiveUser create(
+      final String username,
+      final String first,
+      final String last
+  ) {
     AuthUser user = new AuthUser();
-    user.setUserId(name);
+    user.setUserId(username);
     user.setUserType("internalUser");
-    user.setUserFirstNm("test");
-    user.setUserLastNm("user");
+    user.setUserFirstNm(first);
+    user.setUserLastNm(last);
     user.setMasterSecAdminInd('F');
     user.setProgAreaAdminInd('F');
-    user.setNedssEntryId(identifier);
 
-    AuthAudit audit = new AuthAudit(this.settings.createdBy(), this.settings.createdOn());
-
-    user.setAudit(audit);
-
-    entityManager.persist(user);
-
-    ActiveUser activeUser = new ActiveUser(user.getId(), user.getUserId(), user.getNedssEntryId());
-    users.available(activeUser);
-
-    return activeUser;
+    return including(user);
   }
 
   public ActiveUser createAdmin(final String name) {
-    long identifier = idGenerator.next();
-
     AuthUser user = new AuthUser();
     user.setUserId(name);
     user.setUserType("internalUser");
@@ -73,6 +66,12 @@ public class ActiveUserMother {
     user.setUserLastNm("user");
     user.setMasterSecAdminInd('T');
     user.setProgAreaAdminInd('T');
+
+    return including(user);
+  }
+
+  private ActiveUser including(final AuthUser user) {
+    long identifier = idGenerator.next();
     user.setNedssEntryId(identifier);
 
     AuthAudit audit = new AuthAudit(this.settings.createdBy(), this.settings.createdOn());

@@ -56,7 +56,7 @@ public class PageDownloader {
 			"Page Name", "Page State", "Related Conditions(s)", "Last Updated", "Last Updated By ");
 	private static final Font helvetica = new Font(FontFamily.HELVETICA, 7, Font.NORMAL);
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter
-			.ofPattern("dd/MM/yyyy")
+			.ofPattern("MM/dd/yyyy")
 			.withZone(ZoneId.of("UTC"));
 
 	

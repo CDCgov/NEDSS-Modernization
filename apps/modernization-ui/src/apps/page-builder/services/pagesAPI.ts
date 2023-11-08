@@ -1,5 +1,10 @@
 /* eslint-disable camelcase */
-import { PageControllerService, Page_PageSummary_, PagesService } from 'apps/page-builder/generated';
+import {
+    PageControllerService,
+    Page_PageSummary_,
+    PagesService,
+    PageSummaryService
+} from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = (
     token: string,
@@ -8,19 +13,13 @@ export const fetchPageSummaries = (
     currentPage?: number,
     pageSize?: number
 ): Promise<Page_PageSummary_> => {
-    return PageControllerService.searchUsingPost({
+    return PageSummaryService.search({
         authorization: token,
         request: { search },
         page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
         size: pageSize,
         sort
-    })
-        .then((response: Page_PageSummary_) => {
-            return response;
-        })
-        .catch((error) => {
-            return error;
-        });
+    });
 };
 
 export const createPage = (
