@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import './Navigation.scss';
-import { Config } from 'config';
 
 type Props = {
     active: string;
@@ -24,24 +23,22 @@ export const Navigation = ({ active }: Props) => {
                     <p>Page library</p>
                 </div>
                 <div className={`navigation__button ${active === 'condition-library' ? 'active' : ''}`}>
-                    <a
-                        href={`${Config.nbsUrl}/ManageCondition.do?method=ViewConditionLib&actionMode=Manage&initLoad=true`}>
+                    <a href="/nbs/ManageCondition.do?method=ViewConditionLib&actionMode=Manage&initLoad=true">
                         <p>Condition library</p>
                     </a>
                 </div>
                 <div className={`navigation__button ${active === 'question-library' ? 'active' : ''}`}>
-                    <a href={`${Config.nbsUrl}/SearchManageQuestions.do?method=loadQuestionLibrary&initLoad=true`}>
+                    <a href="/nbs/SearchManageQuestions.do?method=loadQuestionLibrary&initLoad=true">
                         <p>Question library</p>
                     </a>
                 </div>
                 <div className="navigation__button">
-                    <a
-                        href={`${Config.nbsUrl}/ManageTemplates.do?method=ManageTemplatesLib&actionMode=Manage&initLoad=true`}>
+                    <a href="/nbs/ManageTemplates.do?method=ManageTemplatesLib&actionMode=Manage&initLoad=true">
                         <p>Template library</p>
                     </a>
                 </div>
                 <div className={`navigation__button ${active === 'valueset-library' ? 'active' : ''}`}>
-                    <a href={`${Config.nbsUrl}/ManageCodeSet.do?method=ViewValueSetLib&initLoad=true`}>
+                    <a href="/nbs/ManageCodeSet.do?method=ViewValueSetLib&initLoad=true">
                         <p>Value set library</p>
                     </a>
                 </div>
