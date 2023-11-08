@@ -10,10 +10,11 @@ import { Mortality } from 'pages/patient/profile/mortality';
 import { Ethnicity } from 'pages/patient/profile/ethnicity';
 import { SexBirth } from 'pages/patient/profile/sexBirth';
 import { AlertProvider } from 'alert';
+import { Patient } from 'pages/patient/profile';
 
 type DemographicProps = {
     handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
-    id: string;
+    patient: Patient | undefined;
 };
 
 export type AlertType = {
@@ -32,44 +33,44 @@ export type AlertType = {
     name?: string;
 } | null;
 
-export const Demographics = ({ id }: DemographicProps) => {
+export const Demographics = ({ patient }: DemographicProps) => {
     return (
         <AlertProvider>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <AdministrativeTable patient={id} />
+                <AdministrativeTable patient={patient} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <NamesTable patient={id} />
+                <NamesTable patient={patient} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <AddressesTable patient={id} />
+                <AddressesTable patient={patient} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PhoneAndEmailTable patient={id} />
+                <PhoneAndEmailTable patient={patient} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <IdentificationsTable patient={id} />
+                <IdentificationsTable patient={patient} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <RacesTable patient={id} />
+                <RacesTable patient={patient} />
             </div>
 
             <Grid row gap className="margin-auto">
                 <Grid col={6}>
                     <Grid row>
-                        <GeneralPatient patient={id} />
-                        <Mortality patient={id} />
+                        <GeneralPatient patient={patient} />
+                        <Mortality patient={patient} />
                     </Grid>
                 </Grid>
                 <Grid col={6}>
                     <Grid row>
-                        <Ethnicity patient={id} />
-                        <SexBirth patient={id} />
+                        <Ethnicity patient={patient} />
+                        <SexBirth patient={patient} />
                     </Grid>
                 </Grid>
             </Grid>
