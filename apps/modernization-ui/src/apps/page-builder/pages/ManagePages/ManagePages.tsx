@@ -6,7 +6,7 @@ import { fetchPageSummaries } from '../../services/pagesAPI';
 import { ManagePagesTable } from './ManagePagesTable';
 import { UserContext } from 'user';
 import { useSearchParams } from 'react-router-dom';
-import { PageSummary, Page_PageSummary_ } from 'apps/page-builder/generated';
+import { PageSummary, Page_PageSummary_ as PageSummaryResponse } from 'apps/page-builder/generated';
 
 export const ManagePages = () => {
     const [pages, setPages] = useState<PageSummary[]>([]);
@@ -29,7 +29,7 @@ export const ManagePages = () => {
         // get Pages
         try {
             fetchPageSummaries(token, searchQuery, sortBy + ',' + sortDirection, currentPage, pageSize).then(
-                (data: Page_PageSummary_) => {
+                (data: PageSummaryResponse) => {
                     setPages(data.content);
                     setTotalElements(data.totalElements);
                     setIsLoading(false);
