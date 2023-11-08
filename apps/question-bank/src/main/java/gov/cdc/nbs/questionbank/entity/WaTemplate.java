@@ -137,13 +137,13 @@ public class WaTemplate {
   }
 
   public WaTemplate(
-      final String object,
+      final String eventType,
       final String mappingGuide,
       final String name,
       final long createdBy,
       final Instant createdOn) {
     this();
-    this.busObjType = object;
+    this.busObjType = eventType;
     this.nndEntityIdentifier = mappingGuide;
     this.templateNm = name;
 

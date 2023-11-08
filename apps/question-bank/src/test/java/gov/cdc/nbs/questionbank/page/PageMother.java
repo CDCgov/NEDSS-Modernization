@@ -1,13 +1,13 @@
-package gov.cdc.nbs.questionbank.support;
+package gov.cdc.nbs.questionbank.page;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.PageCommand;
-import gov.cdc.nbs.questionbank.page.PageEntityHarness;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.component.tree.ComponentTreeResolver;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import gov.cdc.nbs.questionbank.support.PageIdentifier;
+import gov.cdc.nbs.questionbank.support.TestDataSettings;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -287,12 +287,13 @@ public class PageMother {
   }
 
   public void create(
-      final String object,
+      final String eventType,
       final String name,
-      final String mappingGuide) {
+      final String mappingGuide
+  ) {
 
     WaTemplate page = new WaTemplate(
-        object,
+        eventType,
         mappingGuide,
         name,
         this.settings.createdBy(),
@@ -326,12 +327,12 @@ public class PageMother {
     );
   }
 
-  public void withDescription(final PageIdentifier page, final String description) {
-    harness.with(page).use(found -> found.setDescTxt(description));
+  public void withDatamart(final PageIdentifier page, final String value) {
+    harness.with(page).use(found -> found.setDatamartNm(value));
   }
 
-  public void withEventType(final PageIdentifier page, final String value) {
-    harness.with(page).use(found -> found.setBusObjType(value));
+  public void withDescription(final PageIdentifier page, final String description) {
+    harness.with(page).use(found -> found.setDescTxt(description));
   }
 
   public void draft(final PageIdentifier page) {
