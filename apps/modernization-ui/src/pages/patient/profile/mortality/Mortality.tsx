@@ -8,9 +8,8 @@ import { MortalityEntry, MortalityForm } from './MortalityForm';
 import { maybeDescription, maybeId } from '../coded';
 import { orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
-import { useParams } from 'react-router-dom';
-import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { Patient } from '../Patient';
 
 const initialEntry = {
     asOf: null,
@@ -43,16 +42,14 @@ const asEntry = (mortality: PatientMortality): MortalityEntry => ({
 });
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
 export const Mortality = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<MortalityEntry>(initialEntry);
-    const { profile } = usePatientProfile(id);
     const { changed } = useProfileContext();
 
     const handleComplete = (data: FindPatientProfileQuery) => {
@@ -80,7 +77,7 @@ export const Mortality = ({ patient }: Props) => {
         if (patient) {
             fetch({
                 variables: {
-                    patient: patient
+                    patient: patient.id
                 },
                 notifyOnNetworkStatusChange: true
             });
@@ -90,25 +87,26 @@ export const Mortality = ({ patient }: Props) => {
     const [update] = useUpdatePatientMortalityMutation();
 
     const onUpdate = (updated: MortalityEntry) => {
-        update({
-            variables: {
-                input: {
-                    ...updated,
-                    patient: +patient,
-                    asOf: externalizeDateTime(updated.asOf),
-                    deceasedOn: externalizeDate(updated.deceasedOn)
+        patient &&
+            update({
+                variables: {
+                    input: {
+                        ...updated,
+                        patient: +patient.id,
+                        asOf: externalizeDateTime(updated.asOf),
+                        deceasedOn: externalizeDate(updated.deceasedOn)
+                    }
                 }
-            }
-        }).then(() => {
-            handleUpdate();
-            changed();
-        });
+            }).then(() => {
+                handleUpdate();
+                changed();
+            });
     };
 
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
-                readOnly={profile?.patient?.status !== 'ACTIVE'}
+                readOnly={patient?.status !== 'ACTIVE'}
                 title="Mortality"
                 data={tableData}
                 editing={editing}
