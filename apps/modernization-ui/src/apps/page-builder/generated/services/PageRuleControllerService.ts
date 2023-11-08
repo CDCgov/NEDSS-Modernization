@@ -24,7 +24,7 @@ export class PageRuleControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */
@@ -35,11 +35,13 @@ export class PageRuleControllerService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/pages/{page}/rules',
+            path: {
+                'page': page,
+            },
             headers: {
                 'Authorization': authorization,
             },
             query: {
-                'page': page,
                 'size': size,
                 'sort': sort,
             },
@@ -61,7 +63,7 @@ export class PageRuleControllerService {
         page,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */
@@ -102,7 +104,7 @@ export class PageRuleControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * request
          */
@@ -140,7 +142,7 @@ export class PageRuleControllerService {
         authorization,
         ruleId,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * ruleId
          */
@@ -175,7 +177,7 @@ export class PageRuleControllerService {
         request,
         ruleId,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */
@@ -217,7 +219,7 @@ export class PageRuleControllerService {
         authorization,
         ruleId,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * ruleId
          */

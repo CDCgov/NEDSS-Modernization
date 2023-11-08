@@ -5,6 +5,7 @@ import gov.cdc.nbs.authentication.TokenCreator;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("java:S100")
@@ -31,11 +32,6 @@ public class AuthenticationSteps {
     mother.reset();
   }
 
-  @Given("the {string} user exists")
-  public void the_user_exists(final String name) {
-    mother.create(name);
-  }
-
   @Given("I am logged in")
   public void i_am_logged_in() {
     ActiveUser user = mother.create();
@@ -43,9 +39,10 @@ public class AuthenticationSteps {
     activate(user);
   }
 
-  @Given("I am not logged in at all")
+  @Given("I am not logged in( at all)")
   public void i_am_not_logged_in() {
     activeUser.reset();
+    SecurityContextHolder.getContext().setAuthentication(null);
   }
 
   private void activate(final ActiveUser user) {

@@ -22,7 +22,7 @@ export class SubSectionControllerService {
         page,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */
@@ -62,7 +62,7 @@ export class SubSectionControllerService {
         request,
         subSectionId,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */
@@ -105,7 +105,7 @@ export class SubSectionControllerService {
         page,
         subSectionId,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */

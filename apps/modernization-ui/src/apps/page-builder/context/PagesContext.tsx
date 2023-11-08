@@ -24,7 +24,7 @@ export const PagesContext = createContext<ContextData>(pagesContextDefaultValue)
 export const PagesProvider = ({ children }: any) => {
     const [filter, setFilter] = useState(pagesContextDefaultValue.filter);
     const [searchQuery, setSearchQuery] = useState(pagesContextDefaultValue.searchQuery);
-    const [currentPage, setCurrentPage] = useState(pagesContextDefaultValue.currentPage);
+    const [currentPage, setCurrentPage] = useState<number>(pagesContextDefaultValue.currentPage);
     const [sortBy, setSortBy] = useState(pagesContextDefaultValue.sortBy);
     const [sortDirection, setSortDirection] = useState(pagesContextDefaultValue.sortDirection);
     const [pageSize, setPageSize] = useState(pagesContextDefaultValue.pageSize);

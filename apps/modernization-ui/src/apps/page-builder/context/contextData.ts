@@ -6,7 +6,7 @@ export interface ContextData {
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     currentPage: number;
-    setCurrentPage?: (page: number) => void;
+    setCurrentPage: (page: number) => void;
     sortBy: string;
     setSortBy: (name: string) => void;
     sortDirection: string;

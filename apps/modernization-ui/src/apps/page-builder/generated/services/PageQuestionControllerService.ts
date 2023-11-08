@@ -21,7 +21,7 @@ export class PageQuestionControllerService {
         page,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * page
          */

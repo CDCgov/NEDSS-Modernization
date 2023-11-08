@@ -29,7 +29,7 @@ export class ValueSetControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         page?: number,
         size?: number,
         sort?: string,
@@ -63,7 +63,7 @@ export class ValueSetControllerService {
         authorization,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * request
          */
@@ -97,7 +97,7 @@ export class ValueSetControllerService {
         size,
         sort,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * search
          */
@@ -136,7 +136,7 @@ export class ValueSetControllerService {
         authorization,
         update,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * update
          */
@@ -167,7 +167,7 @@ export class ValueSetControllerService {
         authorization,
         codeSetNm,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * codeSetNm
          */
@@ -199,7 +199,7 @@ export class ValueSetControllerService {
         authorization,
         codeSetNm,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * codeSetNm
          */
@@ -233,7 +233,7 @@ export class ValueSetControllerService {
         codeSetNm,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * codeSetNm
          */
@@ -273,7 +273,7 @@ export class ValueSetControllerService {
         conceptCode,
         request,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * codeSetNm
          */
@@ -316,7 +316,7 @@ export class ValueSetControllerService {
         authorization,
         codeSetNm,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * codeSetNm
          */

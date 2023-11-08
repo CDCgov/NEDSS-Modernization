@@ -17,7 +17,7 @@ export class ProgramAreaControllerService {
     public static getProgramAreasUsingGet({
         authorization,
     }: {
-        authorization: any,
+        authorization: string,
     }): CancelablePromise<Array<ProgramArea>> {
         return __request(OpenAPI, {
             method: 'GET',
