@@ -18,29 +18,20 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
     public Boolean existsByDatamartNmAndIdNot(String dataMartName, Long id);
 
     public Boolean existsByTemplateNmAndIdNot(String templateNm, Long id);
-
+    
     public Optional<WaTemplate> findFirstByTemplateNm(String templateNm);
-
+    
     public WaTemplate findByTemplateNmAndTemplateType(String templateNm, String templateType);
-
+    
     public Optional<WaTemplate> findFirstByDatamartNm(String dataMartNm);
-
+    
     @Query("SELECT v from WaTemplate v WHERE v.id=:id OR v.templateNm LIKE %:templateNm% OR v.conditionCd LIKE %:conditionCd% OR v.datamartNm LIKE %:dataMartNm% OR v.recordStatusCd LIKE %:recordStatusCd% OR v.templateType IN :templateType")
-    Page<WaTemplate> searchTemplate(
-            @Param("id") Long id,
-            @Param("templateNm") String templateNm,
-            @Param("conditionCd") String conditionCd,
-            @Param("dataMartNm") String dataMartNm,
-            @Param("recordStatusCd") String recordStatusCd,
-            @Param("templateType") List<String> templateType,
-            Pageable pageable);
-
+    Page<WaTemplate> searchTemplate(@Param("id") Long id, @Param("templateNm") String templateNm, @Param("conditionCd") String conditionCd , @Param("dataMartNm") String dataMartNm, @Param("recordStatusCd") String recordStatusCd,  @Param("templateType") List<String> templateType, Pageable pageable);
+    
     @Query("SELECT MAX(id) from WaTemplate")
     Long getMaxTemplateID();
 
-    @Query("SELECT v from WaTemplate v WHERE v.formCd LIKE '%PG_%'  order by v.templateNm asc")
+    @Query("SELECT v from WaTemplate v WHERE  " +
+            "  v.templateType IN ('Draft','Published') order by v.templateNm asc")
     List<WaTemplate> getAllPagesOrderedByName();
-
-    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM WaTemplate t WHERE t.templateType = 'Draft' AND t.id =:id")
-    boolean isPageDraft(@Param("id") Long id);
 }
