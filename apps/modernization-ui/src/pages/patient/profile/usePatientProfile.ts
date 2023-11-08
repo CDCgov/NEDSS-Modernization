@@ -8,7 +8,7 @@ export type Profile = {
     summary?: PatientSummary;
 };
 
-export const usePatientProfile = (patient?: string) => {
+export const usePatientProfile = (patientId?: string) => {
     const [profile, setProfile] = useState<Profile>();
 
     const handleComplete = (data: PatientProfileResult) => {
@@ -25,15 +25,15 @@ export const usePatientProfile = (patient?: string) => {
     const [getProfile, { refetch }] = useFindPatientProfileSummary({ onCompleted: handleComplete });
 
     useEffect(() => {
-        if (patient) {
+        if (patientId) {
             getProfile({
                 variables: {
-                    shortId: +patient
+                    shortId: +patientId
                 },
                 notifyOnNetworkStatusChange: true
             });
         }
-    }, [patient]);
+    }, [patientId]);
 
-    return { profile, refetch };
+    return { patient: profile?.patient, summary: profile?.summary, refetch };
 };
