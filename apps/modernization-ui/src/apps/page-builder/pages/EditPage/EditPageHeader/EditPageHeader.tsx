@@ -1,8 +1,8 @@
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import './EditPageHeader.scss';
 import { useRef, useState } from 'react';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { SaveTemplates } from '../SaveTemplate/SaveTemplate';
+import { ModalComponent } from '../../../../../components/ModalComponent/ModalComponent';
+import { SaveTemplates } from '../../../components/SaveTemplate/SaveTemplate';
 import { PagesResponse } from 'apps/page-builder/generated';
 
 type PageProps = {

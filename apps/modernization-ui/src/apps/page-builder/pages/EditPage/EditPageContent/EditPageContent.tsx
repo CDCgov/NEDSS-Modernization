@@ -1,5 +1,5 @@
 import { PagesTab } from 'apps/page-builder/generated';
-import { SectionComponent } from '../Section/Section';
+import { SectionComponent } from '../../../components/Section/Section';
 import './EditPageContent.scss';
 
 export const EditPageContentComponent = ({
