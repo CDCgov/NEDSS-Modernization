@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
 import gov.cdc.nbs.accumulation.CollectionMerge;
-import gov.cdc.nbs.questionbank.page.summary.search.PageSummary;
 import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 
 import java.util.Collection;

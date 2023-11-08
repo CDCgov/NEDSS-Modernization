@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 public class QueryDSLFilterApplier {
 
   public interface ExpressionResolver {
+    @SuppressWarnings("java:S1452")
     Stream<Expression<?>> resolve(final String property);
   }
 

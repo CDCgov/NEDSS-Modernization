@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
-import gov.cdc.nbs.questionbank.filter.Filter;
 import gov.cdc.nbs.questionbank.filter.json.FilterJSON;
 
 import java.util.List;
