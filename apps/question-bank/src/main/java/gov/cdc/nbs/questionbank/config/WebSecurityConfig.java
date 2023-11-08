@@ -10,8 +10,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
-import gov.cdc.nbs.authentication.token.JWTFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import gov.cdc.nbs.authentication.IgnoredPaths;
+import gov.cdc.nbs.authentication.NBSAuthenticationFilter;
+import gov.cdc.nbs.authentication.NBSAuthenticationIssuer;
+import gov.cdc.nbs.authentication.session.SessionAuthenticator;
+import gov.cdc.nbs.authentication.token.NBSTokenValidator;
 import lombok.RequiredArgsConstructor;
 
 
@@ -23,31 +27,40 @@ import lombok.RequiredArgsConstructor;
 @EnableJpaRepositories({"gov.cdc.nbs.questionbank"})
 @EntityScan({"gov.cdc.nbs.questionbank"})
 public class WebSecurityConfig {
-    private final JWTFilter jwtFilter;
 
-    @Bean
-    @SuppressWarnings("squid:S4502")
-    // Stateless applications implementing Bearer JWT scheme are protected against CSRF
-    // https://www.baeldung.com/spring-security-csrf#:~:text=If%20our%20stateless%20API%20uses,as%20we'll%20see%20next.
-    // https://docs.spring.io/spring-security/reference/features/exploits/csrf.html#csrf-protection-ssa
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeRequests()
-                .antMatchers(
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**",
-                        "/swagger-resources/**",
-                        "/v2/api-docs/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf()
-                .disable()
-                .addFilterBefore(jwtFilter, RequestHeaderAuthenticationFilter.class)
-                .build();
-    }
+  @Bean
+  @SuppressWarnings("squid:S4502")
+  public SecurityFilterChain securityFilterChain(
+      HttpSecurity http,
+      final NBSTokenValidator tokenValidator,
+      final NBSAuthenticationIssuer authIssuer,
+      final SessionAuthenticator sessionAuthenticator) throws Exception {
+
+    final IgnoredPaths ignoredPaths = new IgnoredPaths(
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-resources/**",
+        "/v2/api-docs/**");
+
+    final NBSAuthenticationFilter authFilter = new NBSAuthenticationFilter(
+        tokenValidator,
+        ignoredPaths,
+        authIssuer,
+        sessionAuthenticator);
+
+    return http.authorizeRequests()
+        .antMatchers(ignoredPaths.paths())
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .csrf()
+        .disable()
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .build();
+  }
 
 
 

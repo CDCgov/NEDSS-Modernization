@@ -1,12 +1,9 @@
 package gov.cdc.nbs.patient.profile.document;
 
-import gov.cdc.nbs.authentication.SessionCookie;
-import gov.cdc.nbs.patient.TestPatients;
-import gov.cdc.nbs.patient.document.TestDocuments;
-import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,12 +14,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import gov.cdc.nbs.authentication.SessionCookie;
+import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.document.TestDocuments;
+import gov.cdc.nbs.testing.support.Active;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class PatientProfileViewDocumentSteps {
 
@@ -79,7 +77,6 @@ public class PatientProfileViewDocumentSteps {
         activeResponse.active(
                 mvc.perform(
                         MockMvcRequestBuilders.get(request)
-                                .with(user(activeUserDetails.active()))
                                 .cookie(activeSession.active().asCookie()))
                         .andReturn()
                         .getResponse());

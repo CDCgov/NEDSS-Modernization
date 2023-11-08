@@ -9,7 +9,7 @@ type Props = {
 export const PagesBreadcrumb = ({ currentPage }: Props) => {
     const navigate = useNavigate();
     const goBack = () => {
-        navigate(`/page-builder/manage/pages`);
+        navigate(-1);
     };
 
     return (

@@ -18,7 +18,7 @@ describe('when rendered', () => {
 
         expect(tableHeads[0].innerHTML).toBe('Page name');
         expect(tableHeads[1].innerHTML).toBe('Event name');
-        expect(tableHeads[2].innerHTML).toBe('Related conditions');
+        expect(tableHeads[2].innerHTML).toBe('Related condition(s)');
         expect(tableHeads[3].innerHTML).toBe('Status');
         expect(tableHeads[4].innerHTML).toBe('Last updated');
         expect(tableHeads[5].innerHTML).toBe('Last updated by');
