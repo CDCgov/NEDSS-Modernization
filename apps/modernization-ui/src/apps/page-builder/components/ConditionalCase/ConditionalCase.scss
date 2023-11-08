@@ -1,3 +1,5 @@
+@use 'styles/borders';
+
 .question-container {
     padding: 24px;
     margin: auto 10%;
@@ -12,7 +14,7 @@
     .usa-accordion__button {
         padding: 24px;
         border-radius: 5px 5px 0px 0px;
-        border: 1px solid var(--base-lighter, #dcdee0);
+        @extend %thin;
         background: var(--base-white, #fff);
 
         .main-title {
@@ -70,7 +72,7 @@
         }
     }
     .accordion-item.usa-accordion__content {
-        border: 1px solid var(--base-lighter, #dcdee0);
+        @extend %thin;
         padding: 24px;
         .usa-accordion__button {
             background: var(--cool-accent-lighter, #e1f3f8);
@@ -113,7 +115,7 @@
     }
     .que-wrap {
         border-radius: 5px;
-        border: 1px solid var(--base-lighter, #dcdee0);
+        @extend %thin;
         background: var(--base-white, #fff);
         padding: 16px 24px;
         display: flex;
@@ -144,7 +146,7 @@
             justify-content: space-between;
             .que-add-valueset {
                 border-radius: 5px;
-                border: 1px solid var(--base-lighter, #dcdee0);
+                @extend %thin;
                 padding: 24px;
                 .label {
                     color: #000;

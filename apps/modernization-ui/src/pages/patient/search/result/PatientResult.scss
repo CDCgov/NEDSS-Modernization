@@ -1,4 +1,4 @@
-@import 'styles/colors';
+@use 'styles/colors';
 
 .patient-search-result {
     &-item {
@@ -11,7 +11,7 @@
 
         &-label {
             display: block;
-            color: $color-gray-50;
+            color: colors.$base;
             text-transform: uppercase;
             font-size: 0.85rem;
             font-weight: normal;

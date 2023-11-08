@@ -1,7 +1,7 @@
 @use 'styles/colors';
 
 .modal {
-    $modal-border-color: #dfe1e2;
+    $modal-border-color: colors.$border;
 
     padding: 0;
 

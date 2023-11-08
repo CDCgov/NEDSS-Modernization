@@ -3,21 +3,23 @@
 
 .subsection {
     border-radius: 0.25rem;
-    border: borders.$border-medium;
+    @extend %thin;
+
     .subsection__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: colors.$color-accent-cool-lighter;
+        background-color: colors.$primary-lighter;
         padding: 0 1.6rem;
-        border-bottom: borders.$border-medium;
+        @extend %thin-bottom;
+
         &--left,
         &--right {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             svg {
-                color: colors.$color-primary;
+                color: colors.$primary;
                 cursor: pointer;
                 gap: 0.8rem;
             }

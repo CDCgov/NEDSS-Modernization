@@ -1,3 +1,5 @@
+@use 'styles/borders';
+
 .search-desc {
     color: var(--base-base, #71767a);
     font-family: Public Sans;
@@ -8,11 +10,9 @@
 }
 .filter-config-panel {
     .usa-alert_body-delete {
-        //display: flex;
         justify-content: space-between;
-        //background: #FAF3D1;
         border-left: 8px solid #ffbe2e;
-        //align-items: center;
+
         div,
         p {
             display: flex;
@@ -61,7 +61,7 @@
         right: 42px;
         margin-top: 4px;
         border-radius: 5px;
-        border: 1px solid var(--base-lighter, #dcdee0);
+        @extend %thin;
         box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
         .usa-label {
             margin-top: 8px;

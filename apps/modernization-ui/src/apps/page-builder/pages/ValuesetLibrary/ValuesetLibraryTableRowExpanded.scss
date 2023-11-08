@@ -1,4 +1,5 @@
 @use 'styles/colors';
+@use 'styles/borders';
 
 .wrapper {
     display: block;
@@ -12,17 +13,17 @@
 }
 
 .tabContainer {
-    background-color: colors.$color-bg-base-lightest;
+    background-color: colors.$base-lightest;
     padding: 4px;
 }
 
 .tab {
-    background-color: colors.$color-bg-base-lightest;
-    color: colors.$color-black;
+    background-color: colors.$base-lightest;
+    color: colors.$base-black;
     border: none;
     &:hover {
-        background-color: colors.$color-bg-base-lightest;
-        color: colors.$color-black;
+        background-color: colors.$base-lightest;
+        color: colors.$base-black;
     }
 }
 
@@ -46,7 +47,7 @@
     align-items: flex-start;
     align-self: stretch;
     border-radius: 5px;
-    border: 1px solid var(--base-lighter, #dcdee0);
+    @extend %thin;
     padding: 1.5rem;
 
     .detailContainer {

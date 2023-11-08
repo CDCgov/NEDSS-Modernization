@@ -1,6 +1,8 @@
+@use 'styles/colors';
+
 .navbar {
     $classic-navigation-background: #003470;
-    $classic-navigation-color: white;
+    $classic-navigation-color: colors.$base-white;
     $classic-logo-color: #005ea2;
     $classic-page-header-color: black;
     $classic-page-header-background: #dcdcdc;

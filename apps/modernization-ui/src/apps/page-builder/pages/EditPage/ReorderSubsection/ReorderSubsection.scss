@@ -1,4 +1,5 @@
-@use 'styles/animation' as animation;
+@use 'styles/colors';
+@use 'styles/animation';
 
 .reorder-subsection {
     .reorder-subsection__toggle {
@@ -10,7 +11,7 @@
         align-items: center;
     }
     .reorder-subsection__tile {
-        background-color: $color-white;
+        background-color: colors.$base-white;
         display: flex;
         align-items: center;
         gap: 1rem;

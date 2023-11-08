@@ -1,3 +1,17 @@
-@use 'colors.scss' as colors;
+@use 'colors.scss';
 
-$border-medium: 1px solid colors.$border;
+@mixin bordered($which: 'border', $color: colors.$base-lighter) {
+    #{border}: 1px solid $color;
+}
+
+%thin {
+    @include bordered();
+}
+
+%thin-top {
+    @include bordered('border-top');
+}
+
+%thin-bottom {
+    @include bordered('border-bottom');
+}

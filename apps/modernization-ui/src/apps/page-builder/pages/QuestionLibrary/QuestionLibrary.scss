@@ -2,9 +2,10 @@
 @use 'styles/colors' as colors;
 
 .question-local-library {
-    background-color: colors.$color-white;
+    background-color: colors.$base-white;
     border-radius: 5px;
-    border: borders.$border-medium;
+    @extend %thin;
+
     h2 {
         margin: 0;
     }
@@ -32,12 +33,12 @@
         .padding-x-2.search-box {
             display: none;
         }
-        background-color: colors.$color-white;
+        background-color: colors.$base-white;
         border-radius: 3px;
-        border: 1px solid colors.$color-bg-base-lightest;
+        border: 1px solid colors.$base-lightest;
         table.usa-table {
             border-radius: 5px;
-            border: 1px solid var(--base-lighter, #dcdee0);
+            @extend %thin;
             border-bottom: 1px solid rgba(27, 27, 27, 0.95);
             background: var(--base-white, #fff);
         }
@@ -194,7 +195,7 @@
 }
 .no-data-available {
     border-radius: 5px;
-    border: 1px solid var(--base-lighter, #dcdee0);
+    @extend %thin;
     background: var(--base-white, #fff);
     display: flex;
     padding: 24px 0px;
@@ -222,7 +223,7 @@
     right: 42px;
     margin-top: 4px;
     border-radius: 5px;
-    border: 1px solid var(--base-lighter, #dcdee0);
+    @extend %thin;
     background: var(--base-white, #fff);
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     z-index: 10;

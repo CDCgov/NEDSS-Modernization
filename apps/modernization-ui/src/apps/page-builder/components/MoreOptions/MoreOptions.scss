@@ -1,4 +1,5 @@
 @use 'styles/colors';
+@use 'styles/borders';
 
 .more-options {
     position: relative;
@@ -13,7 +14,7 @@
             height: 90%;
             z-index: 0;
             border-radius: 50%;
-            background-color: colors.$color-base-light;
+            background-color: colors.$base-light;
             opacity: 0.25;
         }
     }
@@ -26,13 +27,13 @@
         left: 0.4rem;
         min-width: 8rem;
         border-radius: 5px;
-        border: 1px solid var(--base-lighter, #dcdee0);
+        @extend %thin;
         background: var(--base-white, #fff);
         box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15);
         button {
             margin: 0;
             background-color: unset;
-            color: colors.$color-base-dark;
+            color: colors.$base-dark;
             text-align: initial;
             font-weight: 400;
             display: flex;
@@ -43,7 +44,7 @@
                 margin: 0;
                 height: 1.4rem;
                 width: 1.4rem;
-                color: colors.$color-base-dark;
+                color: colors.$base-dark;
             }
         }
     }

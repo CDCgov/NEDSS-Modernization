@@ -9,7 +9,7 @@
     width: 100%;
     align-items: center;
     padding: 0 0rem 1.4rem;
-    color: colors.$color-primary;
+    color: colors.$primary;
 
     div {
         display: flex;
@@ -27,6 +27,6 @@
     h5 {
         margin: 0;
         font-size: 1rem;
-        color: colors.$color-primary-darker;
+        color: colors.$primary-darker;
     }
 }

@@ -1,10 +1,11 @@
 @use 'styles/colors';
+@use 'styles/borders';
 
 .value_set_concept_container {
     min-height: 486px;
 }
 .concept-local-library {
-    background-color: colors.$color-white;
+    background-color: colors.$base-white;
     .search-description-block {
         p {
             margin: 32px 32px 8px;
@@ -22,12 +23,12 @@
         .padding-x-2.search-box {
             display: none;
         }
-        background-color: colors.$color-white;
+        background-color: colors.$base-white;
         border-radius: 3px;
-        border: 1px solid colors.$color-bg-base-lightest;
+        border: 1px solid colors.$base-lightest;
         table.usa-table {
             border-radius: 5px;
-            border: 1px solid var(--base-lighter, #dcdee0);
+            @extend %thin;
             border-bottom: 1px solid rgba(27, 27, 27, 0.95);
             background: var(--base-white, #fff);
         }

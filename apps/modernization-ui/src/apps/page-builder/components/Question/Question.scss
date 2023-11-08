@@ -3,9 +3,9 @@
 
 .question {
     display: flex;
-    background-color: colors.$color-white;
+    background-color: colors.$base-white;
     border-radius: 0.25rem;
-    border: borders.$border-medium;
+    @extend %thin;
     padding: 0.8rem 1.6rem;
     gap: 1.4rem;
     &__name {

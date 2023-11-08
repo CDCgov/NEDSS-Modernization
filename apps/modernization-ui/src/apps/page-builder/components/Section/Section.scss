@@ -2,13 +2,15 @@
 @use 'styles/colors';
 
 .section {
-    background-color: colors.$color-white;
+    background-color: colors.$base-white;
     border-radius: 0.25rem;
-    border: borders.$border-medium;
+
+    @extend %thin;
+
     &__header {
         width: 100%;
         height: 5rem;
-        border-bottom: borders.$border-medium;
+        @extend %thin;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -24,7 +26,7 @@
             gap: 0.8rem;
             svg {
                 cursor: pointer;
-                color: colors.$color-primary;
+                color: colors.$primary;
             }
         }
     }

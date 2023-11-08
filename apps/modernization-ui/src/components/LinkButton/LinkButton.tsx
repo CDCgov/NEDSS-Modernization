@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import classnames from 'classnames';
-import './LinkButton.scss';
+import styles from './LinkButton.module.scss';
 
 type Props = {
     href: string;
