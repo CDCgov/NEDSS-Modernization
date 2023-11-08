@@ -35,7 +35,7 @@ test {
         systemProperty "testing.database.image", System.getProperty("testing.database.image")
     }
 
-    debugOptions {
+   debugOptions {
         enabled = true
         server = true
         suspend = false
@@ -91,6 +91,7 @@ dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
     implementation project(':authentication')
+    implementation project(':accumulation')
     implementation project(':audit')
     implementation project(':id-generator')
 
