@@ -36,6 +36,7 @@ public class QueryDSLFilterApplier {
         .flatMap(asBooleanExpression(filter));
   }
 
+  @SuppressWarnings("java:S1452")
   private static Function<Expression<?>, Stream<BooleanExpression>> asBooleanExpression(final Filter filter) {
     return expression -> {
       if (filter instanceof SingleValueFilter single && expression instanceof StringExpression string) {
@@ -44,10 +45,9 @@ public class QueryDSLFilterApplier {
         return Stream.of(QueryDSLMultiValueFilterApplier.apply(multi, string));
       } else if (filter instanceof DateFilter date && expression instanceof TemporalExpression<? extends Comparable> temporal) {
         return Stream.of(QueryDSLDateFilterApplier.apply(date, temporal));
-      } else if(filter instanceof DateRangeFilter dateRange && expression instanceof TemporalExpression<? extends Comparable> temporal) {
+      } else if (filter instanceof DateRangeFilter dateRange && expression instanceof TemporalExpression<? extends Comparable> temporal) {
         return Stream.of(QueryDSLDateRangeFilterApplier.apply(dateRange, temporal));
-      }
-      else {
+      } else {
         return Stream.empty();
       }
     };

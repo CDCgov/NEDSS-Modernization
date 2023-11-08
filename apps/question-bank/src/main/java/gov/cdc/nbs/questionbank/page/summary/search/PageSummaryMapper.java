@@ -1,8 +1,6 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
 import com.querydsl.core.Tuple;
-import gov.cdc.nbs.questionbank.page.summary.search.PageSummary;
-import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryTables;
 import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 
 import java.time.Instant;

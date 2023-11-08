@@ -13,9 +13,11 @@ import java.util.stream.Stream;
 public class QueryDSLOrderResolver {
 
   public interface ExpressionResolver {
+    @SuppressWarnings("java:S1452")
     Stream<Expression<?>> resolve(final String property);
   }
 
+  @SuppressWarnings("java:S1452")
   public static Stream<OrderSpecifier<?>> resolve(
       final ExpressionResolver resolver,
       final Pageable pageable

@@ -5,8 +5,6 @@ import com.querydsl.core.types.dsl.TemporalExpression;
 import gov.cdc.nbs.questionbank.filter.DateFilter;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 import static gov.cdc.nbs.questionbank.filter.querydsl.LocalDateConverter.asInstant;
 

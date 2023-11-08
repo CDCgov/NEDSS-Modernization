@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
+@SuppressWarnings("java:S100")
 public class ActiveUserSteps {
 
   private final ActiveUserMother mother;
