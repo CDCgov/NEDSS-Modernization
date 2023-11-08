@@ -22,10 +22,9 @@ import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
 import { useAlert } from 'alert/useAlert';
 import { NoData } from 'components/NoData';
-import { useParams } from 'react-router-dom';
-import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
+import { Patient } from '../Patient';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -48,13 +47,11 @@ const resolveInitialEntry = (patient: string): RaceEntry => ({
 });
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
 export const RacesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
-    const { profile } = usePatientProfile(id);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Race', sortable: true, sort: 'all' },
@@ -65,7 +62,7 @@ export const RacesTable = ({ patient }: Props) => {
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const initial = resolveInitialEntry(patient);
+    const initial = resolveInitialEntry(patient?.id || '');
     const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientRace>();
@@ -87,17 +84,18 @@ export const RacesTable = ({ patient }: Props) => {
     const [remove] = useDeletePatientRaceMutation();
 
     useEffect(() => {
-        fetch({
-            variables: {
-                patient: patient,
-                page: {
-                    pageNumber: currentPage - 1,
-                    pageSize: TOTAL_TABLE_DATA
-                }
-            },
-            notifyOnNetworkStatusChange: true
-        });
-    }, [currentPage]);
+        patient &&
+            fetch({
+                variables: {
+                    patient: patient?.id,
+                    page: {
+                        pageNumber: currentPage - 1,
+                        pageSize: TOTAL_TABLE_DATA
+                    }
+                },
+                notifyOnNetworkStatusChange: true
+            });
+    }, [currentPage, patient]);
 
     useEffect(() => {
         modal.current?.toggleModal(undefined, selected !== undefined);
@@ -222,7 +220,7 @@ export const RacesTable = ({ patient }: Props) => {
                 buttons={
                     <div className="grid-row">
                         <Button
-                            disabled={profile?.patient?.status !== 'ACTIVE'}
+                            disabled={patient?.status !== 'ACTIVE'}
                             type="button"
                             onClick={actions.prepareForAdd}
                             className="display-inline-flex">
@@ -255,7 +253,7 @@ export const RacesTable = ({ patient }: Props) => {
                                 <Button
                                     type="button"
                                     unstyled
-                                    disabled={profile?.patient?.status !== 'ACTIVE'}
+                                    disabled={patient?.status !== 'ACTIVE'}
                                     onClick={() => setIsActions(isActions === index ? null : index)}>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
