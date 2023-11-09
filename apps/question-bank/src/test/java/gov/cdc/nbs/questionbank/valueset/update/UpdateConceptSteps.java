@@ -2,20 +2,14 @@ package gov.cdc.nbs.questionbank.valueset.update;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
-import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
-import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.CodesetId;
 import gov.cdc.nbs.questionbank.exception.NotFoundException;
-import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.valueset.ValueSetMother;
 import gov.cdc.nbs.questionbank.valueset.ConceptRequest;
@@ -34,9 +28,6 @@ public class UpdateConceptSteps {
 
     @Autowired
     private ExceptionHolder exceptionHolder;
-
-    @Autowired
-    private CodeValueGeneralRepository codeValueGeneralRepository;
 
     @Autowired
     private ConceptRequest request;

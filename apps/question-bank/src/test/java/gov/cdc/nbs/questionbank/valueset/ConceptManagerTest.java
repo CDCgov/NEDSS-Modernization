@@ -2,9 +2,7 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.util.Optional;
@@ -17,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralId;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
-import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.exception.NullObjectException;
 import gov.cdc.nbs.questionbank.valueset.exception.ConceptNotFoundException;
 import gov.cdc.nbs.questionbank.valueset.exception.DuplicateConceptException;
