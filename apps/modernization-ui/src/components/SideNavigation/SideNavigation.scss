@@ -1,14 +1,11 @@
 .navigation {
-    height: 100%;
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 1rem 1rem 1.81rem 1rem;
+    padding: 1rem;
     background-color: #fff;
-    border-radius: 5px;
-    border: 1px solid var(--base-lighter, #e6e6e6);
     .heading {
-        width: auto;
         h2 {
             font-size: 1.375rem;
         }
@@ -21,45 +18,38 @@
         .item {
             position: relative;
             border-top: 1px solid #e6e6e6;
-            width: 200px;
             display: flex;
             cursor: pointer;
+
+            a {
+                height: 100%;
+                width: 100%;
+                font-size: 1.06rem;
+                padding: 0.75rem 1rem 0.69rem 1rem;
+                text-decoration: none;
+                margin: 0;
+                font-weight: 400;
+                font-size: 1.06rem;
+                color: #5c5c5c;
+                &:visited {
+                    color: #5c5c5c;
+                }
+            }
             &:focus {
                 outline: 0.25rem solid #2491ff;
             }
 
             &:hover {
                 background-color: #f0f0f0;
-                p {
+                a {
                     color: #005ea2;
                 }
             }
 
-            a {
-                font-size: 1.06rem;
-                padding: 0.5rem 1rem;
-                text-decoration: none;
-                height: 100%;
-                width: 100%;
-                color: #5c5c5c;
-                &:visited {
-                    color: #5c5c5c;
-                }
-            }
-
-            p {
-                margin: 0;
-                color: #5c5c5c;
-                font-weight: 400;
-                font-size: 1.06rem;
-            }
             &.active {
-                p {
-                    font-weight: 700;
-                    color: #005ea2;
-                }
                 a {
                     font-weight: 700;
+                    color: #005ea2;
                     &:visited {
                         color: #005ea2;
                     }
