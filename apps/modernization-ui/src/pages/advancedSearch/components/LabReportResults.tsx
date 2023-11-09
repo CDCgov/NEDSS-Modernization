@@ -100,7 +100,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         return (
             <Grid row gap={3}>
                 <Grid col={12} className="margin-bottom-2">
-                    <h5 className="margin-0 text-normal text-gray-50 card-header-label">LEGAL NAME</h5>
+                    <h5 className="margin-0 text-normal text-gray-50 search-result-item-label">LEGAL NAME</h5>
                     {name ? (
                         <a
                             onClick={redirectPatientProfile}
@@ -114,7 +114,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                 </Grid>
                 <Grid col={12} className="margin-bottom-2">
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
+                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                             DATE OF BIRTH
                         </h5>
                         <p className="margin-0 font-sans-1xs text-normal">
@@ -125,11 +125,13 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                         </p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">SEX</h5>
+                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                            SEX
+                        </h5>
                         <p className="margin-0 font-sans-1xs text-normal">{sex ? sex : <NoData />}</p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
+                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                             PATIENT ID
                         </h5>
                         <p className="margin-0 font-sans-1xs text-normal">{patient?.shortId}</p>
@@ -169,7 +171,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                 <Grid col={3}>
                                     <Grid row gap={3}>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal card-header-label text-gray-50">
+                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50">
                                                 DOCUMENT TYPE
                                             </h5>
                                             <ClassicLink
@@ -181,7 +183,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                             </ClassicLink>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 DATE RECEIVED
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
@@ -189,7 +191,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 DESCRIPTION
                                             </h5>
                                             {getDescription(item) === 'No Data' ? (
@@ -205,7 +207,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                 <Grid col={3}>
                                     <Grid row gap={3}>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 REPORTING FACILITY
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
@@ -213,7 +215,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 ORDERING PROVIDOR
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
@@ -223,7 +225,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                         <SearchCriteriaContext.Consumer>
                                             {({ searchCriteria }) => (
                                                 <Grid col={12} className="margin-bottom-2">
-                                                    <h5 className="margin-0 text-normal card-header-label text-gray-50">
+                                                    <h5 className="margin-0 text-normal search-result-item-label text-gray-50">
                                                         JURISDICTION
                                                     </h5>
                                                     <p className="margin-0 font-sans-1xs text-normal">
@@ -243,7 +245,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                 <Grid col={2}>
                                     <Grid row gap={3}>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 ASSOCIATED WITH
                                             </h5>
                                             <div className="margin-0 font-sans-1xs text-normal">
@@ -264,7 +266,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                             </div>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal card-header-label text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 LOCAL ID
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
