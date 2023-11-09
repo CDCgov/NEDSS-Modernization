@@ -29,7 +29,7 @@ export const PhoneNumberInput = ({
     return (
         <div className={`phone-number-input ${error ? 'input--error' : ''}`}>
             <Label htmlFor={id || 'phoneNumber'}>{label}</Label>
-            <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
+            {error && <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>}
             {mask ? (
                 <TextInputMask
                     {...props}
