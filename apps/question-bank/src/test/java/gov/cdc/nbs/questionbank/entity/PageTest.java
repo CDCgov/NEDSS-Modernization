@@ -291,37 +291,6 @@ class PageTest {
   }
 
   @Test
-  void should_not_associate_condition_if_ever_published() {
-    WaTemplate page = new WaTemplate(
-        "INV",
-        "mapping-guide-value",
-        "testing page",
-        99999L,
-        Instant.parse("2000-07-17T02:22:56Z")
-    ).publish(new PageCommand.Publish(
-            99999L,
-            Instant.parse("2000-07-17T02:22:56Z")
-        )
-    );
-
-    //  this should be replaced by the command when it is created.
-    page.setTemplateType("Draft");
-    page.setPublishIndCd('F');
-
-    assertThatThrownBy(() ->
-        page.associate(
-            new PageCommand.AssociateCondition(
-                "new-condition",
-                1409L,
-                Instant.parse("2010-11-17T17:05:19Z")
-            )
-        )
-    ).hasMessageContaining("The associated conditions cannot be changed if the Page had ever been Published");
-
-
-  }
-
-  @Test
   void should_disassociate_condition() {
     WaTemplate page = new WaTemplate(
         "INV",

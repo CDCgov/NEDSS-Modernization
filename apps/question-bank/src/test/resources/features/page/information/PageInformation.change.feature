@@ -77,15 +77,6 @@ Feature: Searching for Page Summaries
     When I change the page information
     Then the page information cannot be changed because "Changes can only be made to a Draft page"
 
-  Scenario: I cannot change the Conditions associated with a Page that has ever been Published
-    Given I have an Investigation page named "Testing Information"
-    And the page has a "datamart" of "datamart"
-    And the page is Published with Draft
-    And I want to change the page associations to include Plague
-    And I want to change the page "datamart" to "datamart"
-    When I change the page information
-    Then the page information cannot be changed because "The associated conditions cannot be changed if the Page had ever been Published"
-
   Scenario: I can change the Conditions associated with a Page
     Given I have an Investigation page named "Testing Information"
     And the page is associated with the Plague condition

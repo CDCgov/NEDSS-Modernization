@@ -575,25 +575,24 @@ public class WaTemplate {
     return this.publishVersionNbr != null;
   }
 
-  private void checkConditionChangesAllowed() {
-    checkChangesAllowed();
-    if (hasBeenPublished()) {
-      throw new PageUpdateException("The associated conditions cannot be changed if the Page had ever been Published");
-    }
-  }
-
   public WaTemplate associate(final PageCommand.AssociateCondition associate) {
-    checkConditionChangesAllowed();
+    checkChangesAllowed();
     this.conditionMappings.add(new PageCondMapping(this, associate));
     changed(associate);
     return this;
   }
 
   public WaTemplate disassociate(final PageCommand.DisassociateCondition dissociate) {
-    checkConditionChangesAllowed();
+    checkConditionDisassociationAllowed();
     this.conditionMappings.removeIf(condition -> Objects.equals(condition.getConditionCd(), dissociate.condition()));
     changed(dissociate);
     return this;
+  }
+  private void checkConditionDisassociationAllowed() {
+    checkChangesAllowed();
+    if (hasBeenPublished()) {
+      throw new PageUpdateException("The associated conditions cannot be changed if the Page had ever been Published");
+    }
   }
 
   public WaTemplate publish(final PageCommand.Publish command) {
