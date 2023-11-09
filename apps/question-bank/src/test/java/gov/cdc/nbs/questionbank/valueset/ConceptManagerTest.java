@@ -34,7 +34,10 @@ class ConceptManagerTest {
     private ConceptMapper mapper;
 
     @InjectMocks
-    private ConceptManager manager;
+    private ConceptCreator conceptCreator;
+
+    @InjectMocks
+    private ConceptUpdater conceptUpdater;
 
     @Test
     void should_throw_duplicate_exception() {
@@ -54,7 +57,7 @@ class ConceptManagerTest {
                 null,
                 null);
 
-        assertThrows(DuplicateConceptException.class, () -> manager.addConcept("codeset", request, 1L));
+        assertThrows(DuplicateConceptException.class, () -> conceptCreator.addConcept("codeset", request, 1L));
     }
 
     @Test
@@ -82,7 +85,7 @@ class ConceptManagerTest {
                 new AddConceptRequest.MessagingInfo(null, null, null, "L"));
 
         when(codeValueGeneralRepository.save(captor.capture())).thenAnswer(a -> a.getArguments()[0]);
-        manager.addConcept("codeset", request, 1L);
+        conceptCreator.addConcept("codeset", request, 1L);
 
         // Then the codeSystemType is set to 'LOCAL'
         assertEquals("LOCAL", captor.getValue().getConceptTypeCd());
@@ -113,7 +116,7 @@ class ConceptManagerTest {
                 new AddConceptRequest.MessagingInfo(null, null, null, "NBS_CDC"));
 
         when(codeValueGeneralRepository.save(captor.capture())).thenAnswer(a -> a.getArguments()[0]);
-        manager.addConcept("codeset", request, 1L);
+        conceptCreator.addConcept("codeset", request, 1L);
 
         // Then the codeSystemType is set to 'LOCAL'
         assertEquals("LOCAL", captor.getValue().getConceptTypeCd());
@@ -144,7 +147,7 @@ class ConceptManagerTest {
                 new AddConceptRequest.MessagingInfo(null, null, null, "anything"));
 
         when(codeValueGeneralRepository.save(captor.capture())).thenAnswer(a -> a.getArguments()[0]);
-        manager.addConcept("codeset", request, 1L);
+        conceptCreator.addConcept("codeset", request, 1L);
 
         // Then the codeSystemType is set to 'PHIN'
         assertEquals("PHIN", captor.getValue().getConceptTypeCd());
@@ -171,7 +174,7 @@ class ConceptManagerTest {
                 null,
                 new AddConceptRequest.MessagingInfo(null, null, null, "anything"));
         // Then an exception is thrown
-        assertThrows(ConceptNotFoundException.class, () -> manager.addConcept("codeset", request, 1L));
+        assertThrows(ConceptNotFoundException.class, () -> conceptCreator.addConcept("codeset", request, 1L));
     }
 
     @Test
@@ -218,7 +221,7 @@ class ConceptManagerTest {
 
         when(mapper.toConcept(concept)).thenReturn(newConcept);
 
-        Concept result = manager.update("concept", "something", request, 1L);
+        Concept result = conceptUpdater.update("concept", "something", request, 1L);
 
         assertEquals("longName", result.longName());
         assertEquals("displayName", result.display());
@@ -254,7 +257,7 @@ class ConceptManagerTest {
                         "pref name",
                         "anything"));
 
-        assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+        assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
     }
 
     @Test
@@ -283,7 +286,7 @@ class ConceptManagerTest {
                         "pref name",
                         "anything"));
 
-        assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+        assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
     }
 
     @Test
@@ -312,7 +315,7 @@ class ConceptManagerTest {
                         "pref name",
                         "anything"));
 
-        assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+        assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
     }
 
     @Test
@@ -341,7 +344,7 @@ class ConceptManagerTest {
                         "pref name",
                         "anything"));
 
-        assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+        assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
     }
 
     @Test
@@ -370,7 +373,7 @@ class ConceptManagerTest {
                         "pref name",
                         "anything"));
 
-        assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+        assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
     }
 
     @Test
@@ -399,7 +402,7 @@ class ConceptManagerTest {
                         null,
                         "anything"));
 
-        assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+        assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
     }
 
     @Test
@@ -421,7 +424,7 @@ class ConceptManagerTest {
                         "pref name",
                         null));
 
-        assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+        assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
     }
 
 }

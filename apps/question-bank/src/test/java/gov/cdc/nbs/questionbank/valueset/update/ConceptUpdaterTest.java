@@ -15,8 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.exception.NullObjectException;
-import gov.cdc.nbs.questionbank.valueset.ConceptManager;
+import gov.cdc.nbs.questionbank.valueset.ConceptCreator;
 import gov.cdc.nbs.questionbank.valueset.ConceptMapper;
+import gov.cdc.nbs.questionbank.valueset.ConceptUpdater;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.response.Concept;
 
@@ -30,7 +31,10 @@ class ConceptUpdaterTest {
         private ConceptMapper mapper;
 
         @InjectMocks
-        private ConceptManager manager;
+        private ConceptCreator conceptCreator;
+
+        @InjectMocks
+        private ConceptUpdater conceptUpdater;
 
         @Test
         void should_update_concept() {
@@ -74,7 +78,7 @@ class ConceptUpdaterTest {
 
                 when(mapper.toConcept(concept)).thenReturn(newConcept);
 
-                Concept result = manager.update("concept", "something", request, 1L);
+                Concept result = conceptUpdater.update("concept", "something", request, 1L);
 
                 assertEquals("longName", result.longName());
                 assertEquals("displayName", result.display());
@@ -116,7 +120,7 @@ class ConceptUpdaterTest {
 
                 when(mapper.toConcept(concept)).thenReturn(newConcept);
 
-                Concept result = manager.update("concept", "something", request, 1L);
+                Concept result = conceptUpdater.update("concept", "something", request, 1L);
 
                 assertEquals("longName", result.longName());
                 assertEquals("displayName", result.display());
@@ -148,7 +152,7 @@ class ConceptUpdaterTest {
                                                 "pref name",
                                                 "anything"));
 
-                assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+                assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
         }
 
         @Test
@@ -176,7 +180,7 @@ class ConceptUpdaterTest {
                                                 "pref name",
                                                 "anything"));
 
-                assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+                assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
         }
 
         @Test
@@ -204,7 +208,7 @@ class ConceptUpdaterTest {
                                                 "pref name",
                                                 "anything"));
 
-                assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+                assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
         }
 
         @Test
@@ -232,7 +236,7 @@ class ConceptUpdaterTest {
                                                 "pref name",
                                                 "anything"));
 
-                assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+                assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
         }
 
         @Test
@@ -260,7 +264,7 @@ class ConceptUpdaterTest {
                                                 "pref name",
                                                 "anything"));
 
-                assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+                assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
         }
 
         @Test
@@ -288,7 +292,7 @@ class ConceptUpdaterTest {
                                                 null,
                                                 "anything"));
 
-                assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+                assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
         }
 
         @Test
@@ -310,7 +314,7 @@ class ConceptUpdaterTest {
                                                 "pref name",
                                                 null));
 
-                assertThrows(NullObjectException.class, () -> manager.update("concept", "something", request, 1L));
+                assertThrows(NullObjectException.class, () -> conceptUpdater.update("concept", "something", request, 1L));
         }
 
 }

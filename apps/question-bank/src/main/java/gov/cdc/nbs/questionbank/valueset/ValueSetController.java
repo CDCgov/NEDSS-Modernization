@@ -39,7 +39,8 @@ public class ValueSetController {
     private final ValueSetReader valueSetReador;
     private final ValueSetUpdater valueSetUpdater;
     private final ValueSetCreator valueSetCreator;
-    private final ConceptManager conceptManager;
+    private final ConceptCreator conceptCreator;
+    private final ConceptUpdater conceptUpdater;
     private final UserDetailsProvider userDetailsProvider;
 
     @PostMapping
@@ -92,13 +93,13 @@ public class ValueSetController {
             @PathVariable String conceptCode,
             @RequestBody UpdateConceptRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-        return conceptManager.update(codeSetNm, conceptCode, request, details.getId());
+        return conceptUpdater.update(codeSetNm, conceptCode, request, details.getId());
     }
 
     @PostMapping("{codeSetNm}/concepts")
     public Concept addConcept(@PathVariable String codeSetNm, @RequestBody AddConceptRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return conceptManager.addConcept(codeSetNm, request, userId);
+        return conceptCreator.addConcept(codeSetNm, request, userId);
     }
 
 }
