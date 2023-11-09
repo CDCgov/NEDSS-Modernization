@@ -59,3 +59,9 @@ button.usa-button {
     text-transform: uppercase;
     color: $color-gray-20;
 }
+
+.usa-pagination__button:active,
+.usa-pagination__button:focus,
+.usa-pagination__button:hover {
+    border: 1px solid #1a4480 !important;
+}
