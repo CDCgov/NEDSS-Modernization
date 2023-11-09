@@ -14,6 +14,7 @@ import { Patient } from 'pages/patient/profile';
 import { displayAddress } from 'address/display/displayAddress';
 import { NoData } from 'components/NoData';
 import { displayName } from 'name';
+import { useProfileContext } from '../ProfileContext';
 
 type Props = {
     patient?: Patient;
@@ -75,7 +76,9 @@ const SummaryItem = ({ index, label, children }: SummaryItemProps) => (
     </div>
 );
 
-export const PatientProfileSummary = ({ patient, summary }: Props) => {
+export const PatientProfileSummary = ({ patient }: Props) => {
+    const { summary } = useProfileContext();
+
     return (
         <div className="common-card patient-summary">
             {!patient || !summary ? (

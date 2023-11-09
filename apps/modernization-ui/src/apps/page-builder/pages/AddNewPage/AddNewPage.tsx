@@ -95,6 +95,10 @@ export const AddNewPage = () => {
         setValue('conditionIds', [condition.id].concat(getValues('conditionIds')));
     };
 
+    const handleCancel = () => {
+        navigate(-1);
+    };
+
     return (
         <PageBuilder page="add-new-page">
             <div className="add-new-page">
@@ -239,7 +243,7 @@ export const AddNewPage = () => {
                             />
                         </div>
                         <div className="add-new-page__buttons">
-                            <Button type="button" outline>
+                            <Button type="button" outline onClick={handleCancel}>
                                 Cancel
                             </Button>
                             <Button type="submit">Create page</Button>
