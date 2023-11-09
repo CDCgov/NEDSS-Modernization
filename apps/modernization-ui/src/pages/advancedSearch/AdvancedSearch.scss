@@ -1,3 +1,5 @@
+@import '../../styles/colors';
+
 button {
     white-space: nowrap;
     img {
@@ -194,4 +196,12 @@ button {
 .checkbox-input {
     margin-right: 15px;
     text-transform: capitalize !important;
+}
+
+.search-result-item-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02031rem;
+    text-transform: uppercase;
+    color: $color-gray-20;
 }
