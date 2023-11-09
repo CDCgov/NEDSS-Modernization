@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page;
 
-import gov.cdc.nbs.questionbank.page.PageNameVerifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
