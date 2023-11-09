@@ -22,6 +22,10 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
         navigate(`/page-builder/add/${tableType}`);
     };
 
+    const navigateToPagePorting = () => {
+        window.location.href = '/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true';
+    };
+
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key == 'Enter') {
             setSearchQuery(keywords);
@@ -48,10 +52,13 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery, onDownloadIc
             <Button type="submit" onClick={() => setSearchQuery(keywords)}>
                 <Icon.Search size={3} />
             </Button>
+            <Button type="button" outline onClick={() => navigateToPagePorting()}>
+                <p>Page porting</p>
+            </Button>
+            <PageFilterModal />
             <Button type="button" outline>
                 <Icon.Print size={3} onClick={onPrintIconClick} data-testid="print-icon" />
             </Button>
-            <PageFilterModal />
             <Button type="button" outline onClick={onDownloadIconClick} data-testid="file-download">
                 <Icon.FileDownload size={3} />
             </Button>
