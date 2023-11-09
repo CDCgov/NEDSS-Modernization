@@ -46,9 +46,9 @@ export const PatientProfile = () => {
 
     const permissions = usePatientProfilePermissions();
 
-    const { profile } = usePatientProfile(id);
+    const { patient, summary } = usePatientProfile(id);
 
-    const deletability = resolveDeletability(profile?.patient);
+    const deletability = resolveDeletability(patient);
 
     const navigate = useNavigate();
 
@@ -57,10 +57,7 @@ export const PatientProfile = () => {
             showAlert({
                 type: 'success',
                 header: 'success',
-                message: `Deleted patient ${formattedName(
-                    profile?.summary?.legalName?.last,
-                    profile?.summary?.legalName?.first
-                )}`
+                message: `Deleted patient ${formattedName(summary?.legalName?.last, summary?.legalName?.first)}`
             });
             navigate('/advanced-search');
         } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
@@ -75,10 +72,10 @@ export const PatientProfile = () => {
     const [deletePatient] = useDeletePatientMutation({ onCompleted: handleComplete });
 
     function handleDeletePatient() {
-        if (profile?.patient) {
+        if (patient) {
             deletePatient({
                 variables: {
-                    patient: profile.patient.id
+                    patient: patient.id
                 }
             });
         }
@@ -88,12 +85,12 @@ export const PatientProfile = () => {
         <ProfileProvider id={id}>
             <div className="height-full main-banner">
                 <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
-                    <h1 className="font-sans-xl text-medium">Patient Profile</h1>
+                    <h1 className="font-sans-xl text-medium">Patient profile</h1>
                     <div>
                         <Button
                             type={'button'}
                             className="display-inline-flex print-btn"
-                            onClick={openPrintableView(profile?.patient.id)}>
+                            onClick={openPrintableView(patient?.id)}>
                             <Icon.Print className="margin-right-05" />
                             Print
                         </Button>
@@ -111,7 +108,7 @@ export const PatientProfile = () => {
                             <ConfirmationModal
                                 modal={modalRef}
                                 title="Permanently delete patient?"
-                                message={`Would you like to permanently delete patient record ${profile?.patient?.shortId}, ${profile?.summary?.legalName?.last}, ${profile?.summary?.legalName?.first}`}
+                                message={`Would you like to permanently delete patient record ${patient?.shortId}, ${summary?.legalName?.last}, ${summary?.legalName?.first}`}
                                 cancelText="No, go back"
                                 onCancel={() => {
                                     modalRef.current?.toggleModal(undefined, false);
@@ -138,9 +135,7 @@ export const PatientProfile = () => {
                     </div>
                 </div>
                 <div className="main-body">
-                    {profile && profile.summary && (
-                        <PatientProfileSummary patient={profile?.patient} summary={profile?.summary} />
-                    )}
+                    {patient && summary && <PatientProfileSummary summary={summary} patient={patient} />}
 
                     <div className="grid-row flex-align-center">
                         <h6
@@ -166,11 +161,11 @@ export const PatientProfile = () => {
                         </h6>
                     </div>
 
-                    {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={profile?.patient.id} />}
+                    {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={patient?.id} />}
                     {activeTab === ACTIVE_TAB.EVENT && (
-                        <Events patient={profile?.patient.id} addEventsAllowed={profile?.patient.status === 'ACTIVE'} />
+                        <Events patient={patient?.id} addEventsAllowed={patient?.status === 'ACTIVE'} />
                     )}
-                    {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics id={profile?.patient.id || ''} />}
+                    {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics patient={patient} />}
 
                     <div className="text-center margin-y-5">
                         <Button outline type={'button'} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>

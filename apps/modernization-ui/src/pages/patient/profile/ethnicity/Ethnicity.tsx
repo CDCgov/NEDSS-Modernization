@@ -7,12 +7,11 @@ import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
 import { useAlert } from 'alert/useAlert';
-import { useParams } from 'react-router-dom';
-import { usePatientProfile } from '../usePatientProfile';
 import { useProfileContext } from '../ProfileContext';
+import { Patient } from '../Patient';
 
 type Props = {
-    patient: string;
+    patient: Patient | undefined;
 };
 
 const initialEntry = {
@@ -47,12 +46,10 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
 });
 export const Ethnicity = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const { id } = useParams();
     const { changed } = useProfileContext();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
-    const { profile } = usePatientProfile(id);
 
     const handleComplete = (result: FindPatientProfileQuery) => {
         const current = result.findPatientProfile?.ethnicity;
@@ -77,7 +74,7 @@ export const Ethnicity = ({ patient }: Props) => {
         if (patient) {
             fetchProfile({
                 variables: {
-                    patient: patient
+                    patient: patient.id
                 },
                 notifyOnNetworkStatusChange: true
             });
@@ -87,23 +84,24 @@ export const Ethnicity = ({ patient }: Props) => {
     const [update] = useUpdateEthnicityMutation();
 
     const onUpdate = (updated: EthnicityEntry) => {
-        update({
-            variables: {
-                input: {
-                    ...updated,
-                    patient: patient
+        patient &&
+            update({
+                variables: {
+                    input: {
+                        ...updated,
+                        patient: patient.id
+                    }
                 }
-            }
-        }).then(() => {
-            handleUpdate();
-            changed();
-        });
+            }).then(() => {
+                handleUpdate();
+                changed();
+            });
     };
 
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard
-                readOnly={profile?.patient?.status !== 'ACTIVE'}
+                readOnly={patient?.status !== 'ACTIVE'}
                 title="Ethnicity"
                 data={tableData}
                 editing={editing}
