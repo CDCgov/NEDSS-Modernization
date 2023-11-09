@@ -23,7 +23,7 @@ class EventTypeRowMapperTest {
 
     EventTypeRowMapper mapper = new EventTypeRowMapper(columns);
 
-    EventType actual = mapper.mapRow(resultSet, 0);
+    SelectableEventType actual = mapper.mapRow(resultSet, 0);
 
     assertThat(actual.value()).isEqualTo("value");
     assertThat(actual.name()).isEqualTo("name");
@@ -40,7 +40,7 @@ class EventTypeRowMapperTest {
 
     EventTypeRowMapper mapper = new EventTypeRowMapper(columns);
 
-    EventType actual = mapper.mapRow(resultSet, 0);
+    SelectableEventType actual = mapper.mapRow(resultSet, 0);
 
     assertThat(actual).isNull();
   }

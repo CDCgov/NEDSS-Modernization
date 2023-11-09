@@ -23,7 +23,7 @@ class ConditionRowMapperTest {
 
     ConditionRowMapper mapper = new ConditionRowMapper(columns);
 
-    Condition actual = mapper.mapRow(resultSet, 0);
+    SelectableCondition actual = mapper.mapRow(resultSet, 0);
 
     assertThat(actual.value()).isEqualTo("value");
     assertThat(actual.name()).isEqualTo("name");
@@ -40,7 +40,7 @@ class ConditionRowMapperTest {
 
     ConditionRowMapper mapper = new ConditionRowMapper(columns);
 
-    Condition actual = mapper.mapRow(resultSet, 0);
+    SelectableCondition actual = mapper.mapRow(resultSet, 0);
 
     assertThat(actual).isNull();
   }

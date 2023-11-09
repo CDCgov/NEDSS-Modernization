@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MessageMappingGuideRowMapper implements RowMapper<MessageMappingGuide> {
+public class MessageMappingGuideRowMapper implements RowMapper<SelectableMessageMappingGuide> {
 
   public record Columns(
       int value,
@@ -21,7 +21,7 @@ public class MessageMappingGuideRowMapper implements RowMapper<MessageMappingGui
   }
 
   @Override
-  public MessageMappingGuide mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public SelectableMessageMappingGuide mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
     String value = resultSet.getString(this.columns.value());
 
     if (value == null) {
@@ -29,7 +29,7 @@ public class MessageMappingGuideRowMapper implements RowMapper<MessageMappingGui
     }
 
     String name = resultSet.getString(this.columns.name());
-    return new MessageMappingGuide(value, name);
+    return new SelectableMessageMappingGuide(value, name);
   }
 
 }

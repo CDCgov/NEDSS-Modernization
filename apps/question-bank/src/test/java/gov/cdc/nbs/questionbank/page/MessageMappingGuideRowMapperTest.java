@@ -23,7 +23,7 @@ class MessageMappingGuideRowMapperTest {
 
     MessageMappingGuideRowMapper mapper = new MessageMappingGuideRowMapper(columns);
 
-    MessageMappingGuide actual = mapper.mapRow(resultSet, 0);
+    SelectableMessageMappingGuide actual = mapper.mapRow(resultSet, 0);
 
     assertThat(actual.value()).isEqualTo("value");
     assertThat(actual.name()).isEqualTo("name");
@@ -40,7 +40,7 @@ class MessageMappingGuideRowMapperTest {
 
     MessageMappingGuideRowMapper mapper = new MessageMappingGuideRowMapper(columns);
 
-    MessageMappingGuide actual = mapper.mapRow(resultSet, 0);
+    SelectableMessageMappingGuide actual = mapper.mapRow(resultSet, 0);
 
     assertThat(actual).isNull();
   }

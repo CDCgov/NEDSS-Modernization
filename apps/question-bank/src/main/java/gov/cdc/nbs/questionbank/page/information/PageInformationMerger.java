@@ -1,14 +1,14 @@
 package gov.cdc.nbs.questionbank.page.information;
 
 import gov.cdc.nbs.accumulation.CollectionMerge;
-import gov.cdc.nbs.questionbank.page.Condition;
+import gov.cdc.nbs.questionbank.page.SelectableCondition;
 
 import java.util.Collection;
 
 class PageInformationMerger {
 
   PageInformation merge(final PageInformation left, final PageInformation right) {
-    Collection<Condition> associations = CollectionMerge.merged(left.associated(), right.associated());
+    Collection<SelectableCondition> associations = CollectionMerge.merged(left.associated(), right.associated());
 
     return new PageInformation(
         left.page(),

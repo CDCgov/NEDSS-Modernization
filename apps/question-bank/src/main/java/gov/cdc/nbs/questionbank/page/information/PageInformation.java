@@ -1,19 +1,19 @@
 package gov.cdc.nbs.questionbank.page.information;
 
-import gov.cdc.nbs.questionbank.page.Condition;
-import gov.cdc.nbs.questionbank.page.EventType;
-import gov.cdc.nbs.questionbank.page.MessageMappingGuide;
+import gov.cdc.nbs.questionbank.page.SelectableCondition;
+import gov.cdc.nbs.questionbank.page.SelectableEventType;
+import gov.cdc.nbs.questionbank.page.SelectableMessageMappingGuide;
 
 import java.util.Collection;
 
 record PageInformation(
     long page,
-    EventType eventType,
-    MessageMappingGuide messageMappingGuide,
+    SelectableEventType eventType,
+    SelectableMessageMappingGuide messageMappingGuide,
     String name,
     String datamart,
     String description,
-    Collection<Condition> associated
+    Collection<SelectableCondition> associated
 
 ) {
 

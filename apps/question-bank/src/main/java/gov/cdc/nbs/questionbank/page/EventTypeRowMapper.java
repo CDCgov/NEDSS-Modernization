@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class EventTypeRowMapper implements RowMapper<EventType> {
+public class EventTypeRowMapper implements RowMapper<SelectableEventType> {
 
   public record Columns(
       int value,
@@ -21,7 +21,7 @@ public class EventTypeRowMapper implements RowMapper<EventType> {
   }
 
   @Override
-  public EventType mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public SelectableEventType mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
     String value = resultSet.getString(this.columns.value());
 
     if (value == null) {
@@ -29,7 +29,7 @@ public class EventTypeRowMapper implements RowMapper<EventType> {
     }
 
     String name = resultSet.getString(this.columns.name());
-    return new EventType(value, name);
+    return new SelectableEventType(value, name);
   }
 
 }

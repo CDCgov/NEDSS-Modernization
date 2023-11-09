@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ConditionRowMapper implements RowMapper<Condition> {
+public class ConditionRowMapper implements RowMapper<SelectableCondition> {
 
   public record Columns(
       int value,
@@ -21,7 +21,7 @@ public class ConditionRowMapper implements RowMapper<Condition> {
   }
 
   @Override
-  public Condition mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+  public SelectableCondition mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
     String value = resultSet.getString(this.columns.value());
 
     if (value == null) {
@@ -29,7 +29,7 @@ public class ConditionRowMapper implements RowMapper<Condition> {
     }
 
     String name = resultSet.getString(this.columns.name());
-    return new Condition(value, name);
+    return new SelectableCondition(value, name);
   }
 
 }
