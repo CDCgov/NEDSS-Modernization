@@ -5,7 +5,7 @@ import './PageBuilderSideNav.scss';
 
 export const PageBuilderSideNav = () => {
     return (
-        <div className="page-builder-side">
+        <div className="page-builder-side-nav">
             <SideNavigation
                 title="Page Management"
                 active={1}
