@@ -2,9 +2,11 @@ package gov.cdc.nbs.questionbank.page;
 
 import com.itextpdf.text.DocumentException;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.page.model.PageInfo;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
+import gov.cdc.nbs.questionbank.page.services.PageInfoFinder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -34,16 +36,19 @@ public class PageController {
   private final PageStateChanger stateChange;
   private final PageDownloader pageDownloader;
   private final UserDetailsProvider userDetailsProvider;
+  private final PageInfoFinder pageInfoFinder;
 
   public PageController(
       final PageCreator creator,
       final PageStateChanger stateChange,
       final PageDownloader pageDownloader,
-      final UserDetailsProvider userDetailsProvider) {
+      final UserDetailsProvider userDetailsProvider,
+      final PageInfoFinder pageInfoFinder) {
     this.creator = creator;
     this.stateChange = stateChange;
     this.pageDownloader = pageDownloader;
     this.userDetailsProvider = userDetailsProvider;
+    this.pageInfoFinder = pageInfoFinder;
   }
 
   @PostMapping
@@ -85,5 +90,9 @@ public class PageController {
     return stateChange.deletePageDraft(pageId);
   }
 
+  @GetMapping("{id}/pageInfo-details")
+  public PageInfo getPageInfoDetails( @PathVariable("id") Long pageId) {
+    return pageInfoFinder.find(pageId);
+  }
 
 }
