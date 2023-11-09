@@ -34,16 +34,19 @@ public class PageController {
   private final PageStateChanger stateChange;
   private final PageDownloader pageDownloader;
   private final UserDetailsProvider userDetailsProvider;
+  private final PageDeletor pageDeletor;
 
   public PageController(
       final PageCreator creator,
       final PageStateChanger stateChange,
       final PageDownloader pageDownloader,
-      final UserDetailsProvider userDetailsProvider) {
+      final UserDetailsProvider userDetailsProvider,
+      final PageDeletor pageDeletor) {
     this.creator = creator;
     this.stateChange = stateChange;
     this.pageDownloader = pageDownloader;
     this.userDetailsProvider = userDetailsProvider;
+    this.pageDeletor = pageDeletor;
   }
 
   @PostMapping
@@ -82,7 +85,7 @@ public class PageController {
 
   @DeleteMapping("{id}/delete-draft")
   public PageStateResponse deletePageDraft(@PathVariable("id") Long pageId) {
-    return stateChange.deletePageDraft(pageId);
+    return pageDeletor.deletePageDraft(pageId);
   }
 
 
