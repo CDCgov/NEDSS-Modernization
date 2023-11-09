@@ -1,8 +1,10 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import gov.cdc.nbs.questionbank.page.PageCommand;
+import gov.cdc.nbs.questionbank.page.PageNameVerifier;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +27,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -513,23 +516,81 @@ public class WaTemplate {
         .forEach(c -> c.setOrderNbr(current.getAndIncrement()));
   }
 
-  public void changeName(final PageCommand.ChangeName command) {
-    this.setTemplateNm(command.name());
-    changed(command);
+  private void checkChangesAllowed() {
+    if(!Objects.equals(this.templateType, DRAFT)) {
+      throw new PageUpdateException("Changes can only be made to a Draft page");
+    }
   }
 
-  public void associateCondition(final PageCommand.AssociateCondition command) {
-    this.conditionMappings.add(new PageCondMapping(this, command));
-    changed(command);
+  public void changeName(
+      final PageNameVerifier verifier,
+      final PageCommand.ChangeName command
+  ) {
+    checkChangesAllowed();
+    if(!Objects.equals(this.templateNm, command.name())) {
+      checkUniqueName(command.name(), verifier);
+      this.templateNm = command.name();
+      changed(command);
+    }
   }
 
-  public void publish(final PageCommand.Publish command) {
+  private void checkUniqueName(final String name, final PageNameVerifier verifier) {
+    if(!verifier.isUnique(name)) {
+      throw new PageUpdateException(String.format("Another Page is named %s", name));
+    }
+  }
+
+  public void changeDatamart(
+      final PageNameVerifier verifier,
+      final PageCommand.ChangeDatamart command
+  ) {
+    checkChangesAllowed();
+    if(!Objects.equals(this.templateNm, command.datamart())) {
+      checkUniqueDatamart(command.datamart(), verifier);
+      this.datamartNm = command.datamart();
+      changed(command);
+    }
+  }
+
+  private void checkUniqueDatamart(final String datamart, final PageNameVerifier verifier) {
+    if(!verifier.isUnique(datamart)) {
+      throw new PageUpdateException(String.format("Another Page is using the datamart named %s", datamart));
+    }
+  }
+
+  private boolean hasBeenPublished() {
+    return this.publishVersionNbr != null;
+  }
+
+  private void checkConditionChangesAllowed() {
+    checkChangesAllowed();
+    if(hasBeenPublished()) {
+      throw new PageUpdateException("The associated conditions cannot be changed if the Page had ever been Published");
+    }
+  }
+
+  public WaTemplate associate(final PageCommand.AssociateCondition associate) {
+    checkConditionChangesAllowed();
+    this.conditionMappings.add(new PageCondMapping(this, associate));
+    changed(associate);
+    return this;
+  }
+
+  public WaTemplate disassociate(final PageCommand.DisassociateCondition dissociate) {
+    checkConditionChangesAllowed();
+    this.conditionMappings.removeIf(condition -> Objects.equals(condition.getConditionCd(), dissociate.condition()));
+    changed(dissociate);
+    return this;
+  }
+
+  public WaTemplate publish(final PageCommand.Publish command) {
 
     this.templateType = "Published";
     this.publishVersionNbr = this.publishVersionNbr == null ? 1 : ++this.publishVersionNbr;
     this.publishIndCd = 'T';
 
     changed(command);
+    return this;
   }
 
   private void changed(final PageCommand command) {
@@ -542,31 +603,19 @@ public class WaTemplate {
     setLastChgUserId(command.userId());
   }
 
-  public void update(final PageCommand.UpdateDetails command) {
+  public void update(final PageCommand.UpdateInformation updates) {
+    checkChangesAllowed();
 
-    setTemplateNm(command.name());
-    setNndEntityIdentifier(command.messageMappingGuide());
-    setDescTxt(command.description());
+    setNndEntityIdentifier(updates.messageMappingGuide());
+    setDescTxt(updates.description());
 
     // If the page is just an initial draft allow update of conditions and Data mart name
     boolean isInitialDraft = getTemplateType().equals(DRAFT) && getPublishVersionNbr() == null;
     if (isInitialDraft) {
-      setDatamartNm(command.dataMartName());
+      setDatamartNm(updates.datamart());
 
-      // Remove any conditions not in the conditions list
-      getConditionMappings().removeIf(cm -> !command.conditionIds().contains(cm.getConditionCd()));
     }
-
-    // add any conditions not currently mapped
-    var existingConditions = getConditionMappings().stream().map(cm -> cm.getConditionCd()).toList();
-
-    command.conditionIds().stream().filter(c -> !existingConditions.contains(c))
-        .map(condition -> new PageCommand.AssociateCondition(
-            condition, command.requester(),
-            command.requestedOn())
-        ).forEach(this::associateCondition);
-
-    changed(command);
+    changed(updates);
   }
 
   public void updateType(String type) {

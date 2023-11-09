@@ -1,0 +1,436 @@
+package gov.cdc.nbs.questionbank.entity;
+
+import gov.cdc.nbs.questionbank.page.PageCommand;
+import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+class PageTest {
+
+  @Test
+  void should_change_page_name_when_unique() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    page.changeName(
+        name -> true,
+        new PageCommand.ChangeName(
+            "updated-name",
+            1409L,
+            Instant.parse("2010-11-17T17:05:19Z")
+        )
+    );
+
+    assertThat(page.getTemplateNm()).isEqualTo("updated-name");
+
+
+    assertThat(page.getAddUserId()).isEqualTo(99999L);
+    assertThat(page.getAddTime()).isEqualTo("2000-07-17T02:22:56Z");
+
+    assertThat(page.getLastChgUserId()).isEqualTo(1409L);
+    assertThat(page.getLastChgTime()).isEqualTo("2010-11-17T17:05:19Z");
+  }
+
+  @Test
+  void should_change_page_name_when_not_unique() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    assertThatThrownBy(() ->
+        page.changeName(
+            name -> false,
+            new PageCommand.ChangeName(
+                "updated-name",
+                1409L,
+                Instant.parse("2010-11-17T17:05:19Z")
+            )
+        )
+    ).hasMessageContaining("Another Page is named updated-name");
+
+  }
+
+  @Test
+  void should_not_change_page_name_when_published() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    ).publish(new PageCommand.Publish(
+            99999L,
+            Instant.parse("2000-07-17T02:22:56Z")
+        )
+    );
+
+    assertThatThrownBy(() ->
+        page.changeName(
+            name -> true,
+            new PageCommand.ChangeName(
+                "updated-name",
+                1409L,
+                Instant.parse("2010-11-17T17:05:19Z")
+            )
+        )
+    ).hasMessageContaining("Changes can only be made to a Draft page");
+
+  }
+
+  @Test
+  void should_change_page_datamart_when_unique() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    page.changeDatamart(
+        name -> true,
+        new PageCommand.ChangeDatamart(
+            "updated-datamart",
+            1409L,
+            Instant.parse("2010-11-17T17:05:19Z")
+        )
+    );
+
+    assertThat(page.getDatamartNm()).isEqualTo("updated-datamart");
+
+
+    assertThat(page.getAddUserId()).isEqualTo(99999L);
+    assertThat(page.getAddTime()).isEqualTo("2000-07-17T02:22:56Z");
+
+    assertThat(page.getLastChgUserId()).isEqualTo(1409L);
+    assertThat(page.getLastChgTime()).isEqualTo("2010-11-17T17:05:19Z");
+  }
+
+  @Test
+  void should_change_page_datamart_when_not_unique() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    assertThatThrownBy(() ->
+        page.changeDatamart(
+            name -> false,
+            new PageCommand.ChangeDatamart(
+                "updated-datamart",
+                1409L,
+                Instant.parse("2010-11-17T17:05:19Z")
+            )
+        )
+    ).hasMessageContaining("Page is using the datamart named updated-datamart");
+
+  }
+
+  @Test
+  void should_not_change_page_datamart_when_published() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    ).publish(new PageCommand.Publish(
+            99999L,
+            Instant.parse("2000-07-17T02:22:56Z")
+        )
+    );
+
+    assertThatThrownBy(() ->
+        page.changeDatamart(
+            name -> true,
+            new PageCommand.ChangeDatamart(
+                "updated-datamart",
+                1409L,
+                Instant.parse("2010-11-17T17:05:19Z")
+            )
+        )
+    ).hasMessageContaining("Changes can only be made to a Draft page");
+
+  }
+
+  @Test
+  void should_update_page_information() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    page.update(
+        new PageCommand.UpdateInformation(
+            "mapping-guide-updated",
+            "updated-datamart",
+            "updated-description",
+            1409L,
+            Instant.parse("2010-11-17T17:05:19Z")
+        )
+    );
+
+    assertThat(page.getNndEntityIdentifier()).isEqualTo("mapping-guide-updated");
+    assertThat(page.getDatamartNm()).isEqualTo("updated-datamart");
+    assertThat(page.getDescTxt()).isEqualTo("updated-description");
+
+    assertThat(page.getAddUserId()).isEqualTo(99999L);
+    assertThat(page.getAddTime()).isEqualTo("2000-07-17T02:22:56Z");
+
+    assertThat(page.getLastChgUserId()).isEqualTo(1409L);
+    assertThat(page.getLastChgTime()).isEqualTo("2010-11-17T17:05:19Z");
+  }
+
+  @Test
+  void should_not_update_page_information_when_published() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    ).publish(new PageCommand.Publish(
+            99999L,
+            Instant.parse("2000-07-17T02:22:56Z")
+        )
+    );
+
+    assertThatThrownBy(() ->
+        page.update(
+            new PageCommand.UpdateInformation(
+                "mapping-guide-updated",
+                "updated-datamart",
+                "updated-description",
+                1409L,
+                Instant.parse("2010-11-17T17:05:19Z")
+            )
+        )
+    ).hasMessageContaining("Changes can only be made to a Draft page");
+
+  }
+
+  @Test
+  void should_associate_condition() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    page.associate(
+        new PageCommand.AssociateCondition(
+            "new-condition",
+            1409L,
+            Instant.parse("2010-11-17T17:05:19Z")
+        )
+    );
+
+    assertThat(page.getConditionMappings())
+        .satisfiesExactly(
+            actual -> assertAll(
+                () -> assertThat(actual.getConditionCd()).isEqualTo("new-condition"),
+                () -> assertThat(actual.getAddUserId()).isEqualTo(1409L),
+                () -> assertThat(actual.getAddTime()).isEqualTo("2010-11-17T17:05:19Z"),
+                () -> assertThat(actual.getLastChgUserId()).isEqualTo(1409L),
+                () -> assertThat(actual.getLastChgTime()).isEqualTo("2010-11-17T17:05:19Z")
+            )
+        );
+
+    assertThat(page.getAddUserId()).isEqualTo(99999L);
+    assertThat(page.getAddTime()).isEqualTo("2000-07-17T02:22:56Z");
+
+    assertThat(page.getLastChgUserId()).isEqualTo(1409L);
+    assertThat(page.getLastChgTime()).isEqualTo("2010-11-17T17:05:19Z");
+  }
+
+  @Test
+  void should_not_associate_condition_when_published() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    ).publish(new PageCommand.Publish(
+            99999L,
+            Instant.parse("2000-07-17T02:22:56Z")
+        )
+    );
+
+
+
+    assertThatThrownBy(() ->
+        page.associate(
+            new PageCommand.AssociateCondition(
+                "new-condition",
+                1409L,
+                Instant.parse("2010-11-17T17:05:19Z")
+            )
+        )
+    ).hasMessageContaining("Changes can only be made to a Draft page");
+
+
+  }
+
+  @Test
+  void should_not_associate_condition_if_ever_published() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    ).publish(new PageCommand.Publish(
+            99999L,
+            Instant.parse("2000-07-17T02:22:56Z")
+        )
+    );
+
+    //  this should be replaced by the command when it is created.
+    page.setTemplateType("Draft");
+    page.setPublishIndCd('F');
+
+    assertThatThrownBy(() ->
+        page.associate(
+            new PageCommand.AssociateCondition(
+                "new-condition",
+                1409L,
+                Instant.parse("2010-11-17T17:05:19Z")
+            )
+        )
+    ).hasMessageContaining("The associated conditions cannot be changed if the Page had ever been Published");
+
+
+  }
+
+  @Test
+  void should_disassociate_condition() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    page.associate(
+            new PageCommand.AssociateCondition(
+                "condition-one",
+                1123L,
+                Instant.parse("2014-08-07T00:05:00Z")
+            )
+        )
+        .associate(
+            new PageCommand.AssociateCondition(
+                "condition-other",
+                1087L,
+                Instant.parse("2015-10-02T00:00:00Z")
+            )
+        )
+        .disassociate(
+            new PageCommand.DisassociateCondition(
+                "condition-other",
+                1087L,
+                Instant.parse("2015-10-02T00:00:00Z")
+            )
+        )
+    ;
+
+    assertThat(page.getConditionMappings())
+        .satisfiesExactly(
+            actual -> assertThat(actual.getConditionCd()).isEqualTo("condition-one")
+        );
+
+    assertThat(page.getAddUserId()).isEqualTo(99999L);
+    assertThat(page.getAddTime()).isEqualTo("2000-07-17T02:22:56Z");
+
+    assertThat(page.getLastChgUserId()).isEqualTo(1087L);
+    assertThat(page.getLastChgTime()).isEqualTo("2015-10-02T00:00:00Z");
+  }
+
+  @Test
+  void should_not_disassociate_condition_when_published() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    ).associate(
+            new PageCommand.AssociateCondition(
+                "condition-one",
+                1123L,
+                Instant.parse("2014-08-07T00:05:00Z")
+            )
+        )
+        .publish(new PageCommand.Publish(
+                99999L,
+                Instant.parse("2000-07-17T02:22:56Z")
+            )
+        );
+
+    assertThatThrownBy(() ->
+        page.disassociate(
+            new PageCommand.DisassociateCondition(
+                "condition-other",
+                1087L,
+                Instant.parse("2015-10-02T00:00:00Z")
+            )
+        )
+    ).hasMessageContaining("Changes can only be made to a Draft page");
+
+  }
+
+  @Test
+  void should_not_disassociate_condition_if_ever_published() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    ).publish(new PageCommand.Publish(
+            99999L,
+            Instant.parse("2000-07-17T02:22:56Z")
+        )
+    );
+
+    //  this should be replaced by the command when it is created.
+    page.setTemplateType("Draft");
+    page.setPublishIndCd('F');
+
+    assertThatThrownBy(() ->
+        page.disassociate(
+            new PageCommand.DisassociateCondition(
+                "new-condition",
+                1409L,
+                Instant.parse("2010-11-17T17:05:19Z")
+            )
+        )
+    ).hasMessageContaining("The associated conditions cannot be changed if the Page had ever been Published");
+
+
+  }
+
+}
