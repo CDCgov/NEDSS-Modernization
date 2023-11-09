@@ -81,6 +81,7 @@ public class ConceptUpdater {
         return conceptMapper.toConcept(concept);
     }
 
+    @SuppressWarnings("squid:S107")
     private ConceptCommand.UpdateConcept updateConcept(
             String longName,
             String displayName,
