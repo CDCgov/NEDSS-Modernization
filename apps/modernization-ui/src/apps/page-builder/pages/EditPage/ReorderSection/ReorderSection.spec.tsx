@@ -52,7 +52,7 @@ describe('when ReorderSection renders', () => {
     };
     it('should display Subsections', () => {
         const { container } = render(
-            <DragDropProvider data={content} pageDropId={0}>
+            <DragDropProvider data={content} pageDropId={0} tabId={1}>
                 <DragDropContext onDragEnd={() => {}}>
                     <Droppable droppableId='testId'>
                         {(provided) => (

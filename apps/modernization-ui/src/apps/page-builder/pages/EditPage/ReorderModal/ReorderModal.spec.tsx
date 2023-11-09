@@ -28,7 +28,7 @@ describe('when ReorderModal renders', () => {
         pageName: 'Test Page'
     };
     it('should display Sections', () => {
-        const { getByText } = render(<DragDropProvider data={content} pageDropId={0}><ReorderModal {...props} /></DragDropProvider>);
+        const { getByText } = render(<DragDropProvider data={content} pageDropId={0} tabId={1}><ReorderModal {...props} /></DragDropProvider>);
         expect(getByText('Test Page')).toBeTruthy();
     });
 });

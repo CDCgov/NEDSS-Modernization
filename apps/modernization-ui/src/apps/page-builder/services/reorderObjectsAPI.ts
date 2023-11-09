@@ -1,7 +1,6 @@
 import { ReorderControllerService } from '../generated';
 
 export const reorderObjects = (token: string, after: number, component: number, page: number): Promise<any> => {
-    console.log(after, component, page);
     return ReorderControllerService.orderComponentAfterUsingPut({
         authorization: token,
         after: after,

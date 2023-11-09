@@ -44,8 +44,7 @@ export const EditPage = () => {
 
     const handleSaveDraft = () => {
         savePageAsDraft(token, Number(pageId))
-            .then((response) => {
-                console.log(response);
+            .then(() => {
                 setAlertMessage('Page successfully saved as Draft');
                 setAlertType('success');
             })
@@ -58,7 +57,7 @@ export const EditPage = () => {
     return (
         <PageBuilder page="edit-page">
             {page ? (
-                <DragDropProvider data={page.tabs?.[active]} pageDropId={page.id!}>
+                <DragDropProvider data={page.tabs?.[active]} pageDropId={page.id!} tabId={page.tabs![active].id!}>
                     <div className="edit-page">
                         <PagesBreadcrumb currentPage={page.name} />
                         {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}

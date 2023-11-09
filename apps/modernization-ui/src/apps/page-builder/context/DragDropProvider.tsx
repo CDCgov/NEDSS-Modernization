@@ -73,7 +73,8 @@ const DragDropProvider: React.FC<{
     children: React.ReactNode;
     data: PagesTab | undefined;
     pageDropId: number;
-}> = ({ children, data, pageDropId }) => {
+    tabId: number;
+}> = ({ children, data, pageDropId, tabId }) => {
     const [sections, setSections] = useState<PagesSection[]>([]);
     const [sectionDropshadowProps, setSectionDropshadowProps] = useState<SectionDropshadow>({
         marginLeft: 0,
@@ -260,6 +261,11 @@ const DragDropProvider: React.FC<{
         const reorderedSections = [...sections];
         const [removed] = reorderedSections.splice(source.index, 1);
         reorderedSections.splice(destination.index, 0, removed);
+        if (sections[destination.index - 1]) {
+            afterId = sections[destination.index - 1].id!;
+        } else {
+            afterId = tabId;
+        }
         setSections(reorderedSections);
     };
 

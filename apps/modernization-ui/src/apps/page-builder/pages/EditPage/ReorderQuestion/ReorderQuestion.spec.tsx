@@ -41,7 +41,7 @@ describe('when ReorderSubsection renders', () => {
         subGroup: 'asdf'
     };
     const { getByText } = render(
-        <DragDropProvider data={content} pageDropId={0}>
+        <DragDropProvider data={content} pageDropId={0} tabId={1}>
             <DragDropContext onDragEnd={() => {}}>
                 <Droppable droppableId='testId'>
                     {(provided) => (
