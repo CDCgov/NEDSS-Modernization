@@ -106,7 +106,7 @@ export const TableComponent = ({
 
         return rows.map((row: TableBody, index: number) => (
             <Fragment key={index}>
-                <tr>
+                <tr className="table-row" style={{ backgroundColor: 'yellow' }}>
                     {selectable && (
                         <td className="table-data selection">
                             <Checkbox

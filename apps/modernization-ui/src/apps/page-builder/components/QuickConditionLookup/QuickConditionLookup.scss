@@ -11,32 +11,37 @@
         }
     }
 }
+
 .condition-lookup-modal-body {
     padding: 24px;
 
     thead th {
         &:nth-of-type(1) {
-            width: 323px;
+            width: 56px;
         }
         &:nth-of-type(2) {
-            width: 103px;
+            width: 267px;
         }
         &:nth-of-type(3) {
-            width: 163px;
+            width: 103px;
         }
         &:nth-of-type(4) {
-            width: 182px;
+            width: 163px;
         }
         &:nth-of-type(5) {
-            width: 189px;
+            width: 182px;
         }
         &:nth-of-type(6) {
+            width: 189px;
+        }
+        &:nth-of-type(7) {
             width: 101px;
         }
     }
 
     tbody td {
-        padding: 0;
+        width: 1%;
+        white-space: nowrap;
     }
 
     .table-data {
