@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
 import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.PageNameVerifier;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -121,7 +122,9 @@ public class WaTemplate {
           CascadeType.MERGE,
           CascadeType.REMOVE,
           CascadeType.PERSIST
-      })
+      },
+      orphanRemoval = true
+  )
   private Set<PageCondMapping> conditionMappings;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
@@ -517,7 +520,7 @@ public class WaTemplate {
   }
 
   private void checkChangesAllowed() {
-    if(!Objects.equals(this.templateType, DRAFT)) {
+    if (!Objects.equals(this.templateType, DRAFT)) {
       throw new PageUpdateException("Changes can only be made to a Draft page");
     }
   }
@@ -527,7 +530,7 @@ public class WaTemplate {
       final PageCommand.ChangeName command
   ) {
     checkChangesAllowed();
-    if(!Objects.equals(this.templateNm, command.name())) {
+    if (!Objects.equals(this.templateNm, command.name())) {
       checkUniqueName(command.name(), verifier);
       this.templateNm = command.name();
       changed(command);
@@ -535,25 +538,35 @@ public class WaTemplate {
   }
 
   private void checkUniqueName(final String name, final PageNameVerifier verifier) {
-    if(!verifier.isUnique(name)) {
+    if (!verifier.isUnique(name)) {
       throw new PageUpdateException(String.format("Another Page is named %s", name));
     }
   }
 
   public void changeDatamart(
-      final PageNameVerifier verifier,
+      final DatamartNameVerifier verifier,
       final PageCommand.ChangeDatamart command
   ) {
-    checkChangesAllowed();
-    if(!Objects.equals(this.templateNm, command.datamart())) {
+    checkDatamartChangesAllowed();
+    if (!Objects.equals(this.templateNm, command.datamart())) {
       checkUniqueDatamart(command.datamart(), verifier);
       this.datamartNm = command.datamart();
       changed(command);
     }
   }
 
-  private void checkUniqueDatamart(final String datamart, final PageNameVerifier verifier) {
-    if(!verifier.isUnique(datamart)) {
+  private void checkDatamartChangesAllowed() {
+    checkChangesAllowed();
+    if (hasBeenPublished()) {
+      throw new PageUpdateException("The datamart cannot be changed if the Page had ever been Published");
+    }
+  }
+
+  private void checkUniqueDatamart(
+      final String datamart,
+      final DatamartNameVerifier verifier
+  ) {
+    if (!verifier.isUnique(datamart)) {
       throw new PageUpdateException(String.format("Another Page is using the datamart named %s", datamart));
     }
   }
@@ -564,7 +577,7 @@ public class WaTemplate {
 
   private void checkConditionChangesAllowed() {
     checkChangesAllowed();
-    if(hasBeenPublished()) {
+    if (hasBeenPublished()) {
       throw new PageUpdateException("The associated conditions cannot be changed if the Page had ever been Published");
     }
   }
@@ -594,27 +607,21 @@ public class WaTemplate {
   }
 
   private void changed(final PageCommand command) {
-    setLastChgTime(command.requestedOn());
-    setLastChgUserId(command.requester());
+    this.lastChgTime = command.requestedOn();
+    this.lastChgUserId = command.requester();
   }
 
   private void changed(final PageContentCommand command) {
-    setLastChgTime(command.requestedOn());
-    setLastChgUserId(command.userId());
+    this.lastChgTime = command.requestedOn();
+    this.lastChgUserId = command.userId();
   }
 
   public void update(final PageCommand.UpdateInformation updates) {
     checkChangesAllowed();
 
-    setNndEntityIdentifier(updates.messageMappingGuide());
-    setDescTxt(updates.description());
+    this.nndEntityIdentifier = updates.messageMappingGuide();
+    this.descTxt = updates.description();
 
-    // If the page is just an initial draft allow update of conditions and Data mart name
-    boolean isInitialDraft = getTemplateType().equals(DRAFT) && getPublishVersionNbr() == null;
-    if (isInitialDraft) {
-      setDatamartNm(updates.datamart());
-
-    }
     changed(updates);
   }
 

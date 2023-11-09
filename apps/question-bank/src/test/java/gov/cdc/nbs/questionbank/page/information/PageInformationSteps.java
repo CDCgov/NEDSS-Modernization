@@ -42,11 +42,21 @@ public class PageInformationSteps {
   }
 
   @Then("the page information should have a(n) {string} equal to {string}")
-  public void the_page_information_should_have_property_equal_to_value(final String property, final String value) throws Exception {
+  public void the_page_information_should_have_property_equal_to_value(final String property, final String value)
+      throws Exception {
     JsonPathResultMatchers pathMatcher = matchingPath(property);
 
     this.response.active()
         .andExpect(pathMatcher.value(matchingValue(property, value)));
+  }
+
+  @Then("the page information should not have a(n) {string} equal to {string}")
+  public void the_page_information_should_not_have_property_equal_to_value(final String property, final String value)
+      throws Exception {
+    JsonPathResultMatchers pathMatcher = matchingPath(property);
+
+    this.response.active()
+        .andExpect(pathMatcher.value(not(matchingValue(property, value))));
   }
 
   private JsonPathResultMatchers matchingPath(final String field) {

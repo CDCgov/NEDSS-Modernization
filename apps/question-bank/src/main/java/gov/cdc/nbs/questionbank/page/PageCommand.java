@@ -9,13 +9,11 @@ public sealed interface PageCommand {
 
   record UpdateInformation(
       String messageMappingGuide,
-      String datamart,
       String description,
       long requester,
       Instant requestedOn
   ) implements PageCommand {
   }
-
 
   record ChangeName(
       String name,

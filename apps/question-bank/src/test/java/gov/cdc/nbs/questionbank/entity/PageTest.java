@@ -182,7 +182,6 @@ class PageTest {
     page.update(
         new PageCommand.UpdateInformation(
             "mapping-guide-updated",
-            "updated-datamart",
             "updated-description",
             1409L,
             Instant.parse("2010-11-17T17:05:19Z")
@@ -190,7 +189,6 @@ class PageTest {
     );
 
     assertThat(page.getNndEntityIdentifier()).isEqualTo("mapping-guide-updated");
-    assertThat(page.getDatamartNm()).isEqualTo("updated-datamart");
     assertThat(page.getDescTxt()).isEqualTo("updated-description");
 
     assertThat(page.getAddUserId()).isEqualTo(99999L);
@@ -218,7 +216,6 @@ class PageTest {
         page.update(
             new PageCommand.UpdateInformation(
                 "mapping-guide-updated",
-                "updated-datamart",
                 "updated-description",
                 1409L,
                 Instant.parse("2010-11-17T17:05:19Z")

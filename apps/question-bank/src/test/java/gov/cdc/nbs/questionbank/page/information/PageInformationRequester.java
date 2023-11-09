@@ -13,7 +13,10 @@ class PageInformationRequester {
   private final Authenticated authenticated;
   private final MockMvc mvc;
 
-  PageInformationRequester(Authenticated authenticated, MockMvc mvc) {
+  PageInformationRequester(
+      final Authenticated authenticated,
+      final MockMvc mvc
+  ) {
     this.authenticated = authenticated;
     this.mvc = mvc;
   }
@@ -24,7 +27,7 @@ class PageInformationRequester {
           this.authenticated.withUser(get("/api/v1/pages/{page}/information", page))
       );
     } catch (Exception exception) {
-      throw new IllegalStateException("Unable to execute Page Information Request",exception);
+      throw new IllegalStateException("Unable to execute Page Information Request", exception);
     }
   }
 }
