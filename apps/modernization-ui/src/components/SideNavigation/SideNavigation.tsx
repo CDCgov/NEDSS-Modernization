@@ -1,38 +1,53 @@
-import React, { useState } from 'react';
+import classNames from 'classnames';
+import { ReactElement } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import './SideNavigation.scss';
-import { NavigationEntry } from './NavigationEntry';
 
-type NavigationEntryElement = typeof NavigationEntry;
-
-type NavigationProps = {
-    title: string;
-    entries: React.ReactElement<NavigationEntryElement>[];
-    active: React.Key;
-    onActiveChange?: (key: React.Key) => void;
+type EntryProps = {
+    children: string;
 };
-export const SideNavigation = (props: NavigationProps) => {
-    const [active, setActive] = useState<React.Key>(props.active);
-    const handleEntryClick = (key: React.Key) => {
-        setActive(key);
-        if (props.onActiveChange) {
-            props.onActiveChange(key);
-        }
-    };
+
+type LinkEntryProps = EntryProps & {
+    href: string;
+};
+
+const LinkEntry = ({ children, href }: LinkEntryProps) => <a href={href}>{children}</a>;
+
+type NavigationEntryProps = EntryProps & {
+    path: string;
+};
+const NavigationEntry = ({ children, path }: NavigationEntryProps) => {
+    return <Link to={path}>{children}</Link>;
+};
+
+type Children = ReactElement<LinkEntryProps> | ReactElement<NavigationEntryProps>;
+
+type SideNavigationProps = {
+    title: string;
+    className?: string;
+    children?: Children | Children[];
+};
+const SideNavigation = ({ title, className, children = [] }: SideNavigationProps) => {
+    const { pathname } = useLocation();
+
     return (
-        <div className="navigation">
-            <div className="heading">
-                <h2>{props.title}</h2>
-            </div>
-            <div className="menu">
-                {props.entries.map((entry, k) => (
-                    <div
-                        key={k}
-                        className={`item ${active == entry.key ? 'active' : ''}`}
-                        onClick={() => handleEntryClick(entry.key as React.Key)}>
-                        <React.Fragment>{entry}</React.Fragment>
-                    </div>
-                ))}
-            </div>
+        <div className={classNames('navigation', className)}>
+            <h2>{title}</h2>
+            <nav>
+                <ol>
+                    {ensureArray(children).map((child, index) => (
+                        <li key={index} className={classNames('item', { active: isActive(pathname, child) })}>
+                            {child}
+                        </li>
+                    ))}
+                </ol>
+            </nav>
         </div>
     );
 };
+
+const ensureArray = (children: Children | Children[]) => (Array.isArray(children) ? children : [children]);
+
+const isActive = (active: string, entry: Children) => 'path' in entry.props && entry.props.path === active;
+
+export { LinkEntry, NavigationEntry, SideNavigation };

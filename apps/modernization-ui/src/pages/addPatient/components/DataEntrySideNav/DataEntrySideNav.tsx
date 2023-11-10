@@ -1,28 +1,11 @@
-import { NavigationEntry } from 'components/SideNavigation/NavigationEntry';
-import { SideNavigation } from 'components/SideNavigation/SideNavigation';
+import { SideNavigation, NavigationEntry, LinkEntry } from 'components/SideNavigation/SideNavigation';
 import './DataEntrySideNav.scss';
 
-export const DataEntrySideNav = () => {
-    return (
-        <div className="data-entry-side-nav">
-            <SideNavigation
-                title="Data entry"
-                active={1}
-                entries={[
-                    <NavigationEntry key={1} label="New patient" href="/add-patient" useNav />,
-                    <NavigationEntry
-                        key={2}
-                        label="Organization"
-                        href="nbs/MyTaskList1.do?ContextAction=GlobalOrganization"
-                    />,
-                    <NavigationEntry
-                        key={3}
-                        label="Morbidity"
-                        href="nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry"
-                    />,
-                    <NavigationEntry key={4} label="Provider" href="nbs/MyTaskList1.do?ContextAction=GlobalProvider" />
-                ]}
-            />
-        </div>
-    );
-};
+export const DataEntrySideNav = () => (
+    <SideNavigation title="Data entry" className="data-entry-side-nav">
+        <NavigationEntry path="/add-patient">New patient</NavigationEntry>
+        <LinkEntry href="nbs/MyTaskList1.do?ContextAction=GlobalOrganization">Organization</LinkEntry>
+        <LinkEntry href="nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry">Morbidity</LinkEntry>
+        <LinkEntry href="nbs/MyTaskList1.do?ContextAction=GlobalProvider">Provider</LinkEntry>
+    </SideNavigation>
+);

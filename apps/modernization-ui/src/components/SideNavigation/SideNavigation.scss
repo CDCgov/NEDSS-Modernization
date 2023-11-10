@@ -1,48 +1,48 @@
 .navigation {
     display: flex;
-    flex-grow: 1;
     flex-direction: column;
-    justify-content: flex-start;
     padding: 1rem;
-    background-color: #fff;
-    .heading {
-        h2 {
-            font-size: 1.375rem;
-        }
+
+    h2 {
+        font-size: 1.375rem;
     }
-    .menu {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        margin-top: 0rem;
-        .item {
+
+    nav {
+        min-width: 12.5rem;
+        ol {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
             position: relative;
             border-top: 1px solid #e6e6e6;
             display: flex;
+            align-items: center;
+
+            height: 2.375rem;
             cursor: pointer;
 
             a {
-                height: 100%;
-                width: 100%;
-                font-size: 1.06rem;
+                flex-grow: 1;
                 padding: 0.75rem 1rem 0.69rem 1rem;
-                text-decoration: none;
-                margin: 0;
                 font-weight: 400;
                 font-size: 1.06rem;
                 color: #5c5c5c;
+
                 &:visited {
                     color: #5c5c5c;
                 }
-            }
-            &:focus {
-                outline: 0.25rem solid #2491ff;
-            }
 
-            &:hover {
-                background-color: #f0f0f0;
-                a {
-                    color: #005ea2;
+                &:focus {
+                    outline: 0.25rem solid #2491ff;
+                }
+
+                &:hover {
+                    background-color: #f0f0f0;
+                    a {
+                        color: #005ea2;
+                    }
                 }
             }
 
@@ -50,15 +50,16 @@
                 a {
                     font-weight: 700;
                     color: #005ea2;
+
                     &:visited {
                         color: #005ea2;
                     }
                 }
-                &::after {
+
+                &::before {
                     background-color: #005ea2;
                     border-radius: 99rem;
                     content: '';
-                    display: block;
                     position: absolute;
                     bottom: 0.25rem;
                     top: 0.25rem;
@@ -66,6 +67,7 @@
                     left: 0;
                 }
             }
+
             &:last-of-type {
                 border-bottom: 1px solid #e6e6e6;
             }
