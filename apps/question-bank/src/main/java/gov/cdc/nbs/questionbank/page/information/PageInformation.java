@@ -13,7 +13,7 @@ record PageInformation(
     String name,
     String datamart,
     String description,
-    Collection<SelectableCondition> associated
+    Collection<SelectableCondition> conditions
 
 ) {
 

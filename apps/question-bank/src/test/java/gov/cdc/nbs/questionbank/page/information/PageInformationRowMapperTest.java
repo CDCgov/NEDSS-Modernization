@@ -95,7 +95,7 @@ class PageInformationRowMapperTest {
 
     PageInformation actual = mapper.mapRow(resultSet, 0);
 
-    assertThat(actual.associated()).satisfiesExactly(
+    assertThat(actual.conditions()).satisfiesExactly(
         condition -> assertAll(
             () -> assertThat(condition.value()).isEqualTo("condition-value"),
             () -> assertThat(condition.name()).isEqualTo("condition-name")

@@ -805,7 +805,7 @@
 									"variable": [
 										{
 											"key": "page",
-											"value": "1000377"
+											"value": "1000375"
 										}
 									]
 								}
@@ -819,7 +819,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"name\": \"interfaces\",\n    \"datamart\": \"GEN_Case_Map_v2.0\",\n    \"description\": \"Created for development testing.\",\n    \"associated\": [\"TV\"]\n}",
+									"raw": "{\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"name\": \"interfaces\",\n    \"datamart\": \"GEN_Case_Map_v2.0\",\n    \"description\": \"Created for development testing.\",\n    \"conditions\": [\"TV\"]\n}",
 									"options": {
 										"raw": {
 											"language": "json"

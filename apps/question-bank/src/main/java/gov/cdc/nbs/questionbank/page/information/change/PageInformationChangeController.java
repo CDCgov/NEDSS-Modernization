@@ -30,7 +30,7 @@ class PageInformationChangeController {
   @Operation(
       operationId = "change",
       summary = "Allows changing the Information of a page",
-      description = "Allows changing message mapping guide, name, datamart, description, and associated conditions of a Page.",
+      description = "Allows changing message mapping guide, name, datamart, description, and related conditions of a Page.",
       tags = "Page Information"
   )
   @ApiOperation(value = "", nickname = "change")

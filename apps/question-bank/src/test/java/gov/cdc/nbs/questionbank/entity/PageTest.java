@@ -226,7 +226,7 @@ class PageTest {
   }
 
   @Test
-  void should_associate_condition() {
+  void should_relate_condition() {
     WaTemplate page = new WaTemplate(
         "INV",
         "mapping-guide-value",
@@ -235,8 +235,8 @@ class PageTest {
         Instant.parse("2000-07-17T02:22:56Z")
     );
 
-    page.associate(
-        new PageCommand.AssociateCondition(
+    page.relate(
+        new PageCommand.RelateCondition(
             "new-condition",
             1409L,
             Instant.parse("2010-11-17T17:05:19Z")
@@ -262,7 +262,7 @@ class PageTest {
   }
 
   @Test
-  void should_not_associate_condition_when_published() {
+  void should_not_relate_condition_when_published() {
     WaTemplate page = new WaTemplate(
         "INV",
         "mapping-guide-value",
@@ -278,8 +278,8 @@ class PageTest {
 
 
     assertThatThrownBy(() ->
-        page.associate(
-            new PageCommand.AssociateCondition(
+        page.relate(
+            new PageCommand.RelateCondition(
                 "new-condition",
                 1409L,
                 Instant.parse("2010-11-17T17:05:19Z")
@@ -291,7 +291,7 @@ class PageTest {
   }
 
   @Test
-  void should_disassociate_condition() {
+  void should_dissociate_condition() {
     WaTemplate page = new WaTemplate(
         "INV",
         "mapping-guide-value",
@@ -300,22 +300,22 @@ class PageTest {
         Instant.parse("2000-07-17T02:22:56Z")
     );
 
-    page.associate(
-            new PageCommand.AssociateCondition(
+    page.relate(
+            new PageCommand.RelateCondition(
                 "condition-one",
                 1123L,
                 Instant.parse("2014-08-07T00:05:00Z")
             )
         )
-        .associate(
-            new PageCommand.AssociateCondition(
+        .relate(
+            new PageCommand.RelateCondition(
                 "condition-other",
                 1087L,
                 Instant.parse("2015-10-02T00:00:00Z")
             )
         )
-        .disassociate(
-            new PageCommand.DisassociateCondition(
+        .dissociate(
+            new PageCommand.DissociateCondition(
                 "condition-other",
                 1087L,
                 Instant.parse("2015-10-02T00:00:00Z")
@@ -336,15 +336,15 @@ class PageTest {
   }
 
   @Test
-  void should_not_disassociate_condition_when_published() {
+  void should_not_dissociate_condition_when_published() {
     WaTemplate page = new WaTemplate(
         "INV",
         "mapping-guide-value",
         "testing page",
         99999L,
         Instant.parse("2000-07-17T02:22:56Z")
-    ).associate(
-            new PageCommand.AssociateCondition(
+    ).relate(
+            new PageCommand.RelateCondition(
                 "condition-one",
                 1123L,
                 Instant.parse("2014-08-07T00:05:00Z")
@@ -357,8 +357,8 @@ class PageTest {
         );
 
     assertThatThrownBy(() ->
-        page.disassociate(
-            new PageCommand.DisassociateCondition(
+        page.dissociate(
+            new PageCommand.DissociateCondition(
                 "condition-other",
                 1087L,
                 Instant.parse("2015-10-02T00:00:00Z")
@@ -369,7 +369,7 @@ class PageTest {
   }
 
   @Test
-  void should_not_disassociate_condition_if_ever_published() {
+  void should_not_dissociate_condition_if_ever_published() {
     WaTemplate page = new WaTemplate(
         "INV",
         "mapping-guide-value",
@@ -387,14 +387,14 @@ class PageTest {
     page.setPublishIndCd('F');
 
     assertThatThrownBy(() ->
-        page.disassociate(
-            new PageCommand.DisassociateCondition(
+        page.dissociate(
+            new PageCommand.DissociateCondition(
                 "new-condition",
                 1409L,
                 Instant.parse("2010-11-17T17:05:19Z")
             )
         )
-    ).hasMessageContaining("The associated conditions cannot be changed if the Page had ever been Published");
+    ).hasMessageContaining("The related conditions cannot be changed if the Page had ever been Published");
 
 
   }

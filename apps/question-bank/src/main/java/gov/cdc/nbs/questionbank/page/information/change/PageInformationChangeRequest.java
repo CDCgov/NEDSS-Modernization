@@ -9,7 +9,7 @@ record PageInformationChangeRequest(
     String name,
     String datamart,
     String description,
-    Collection<String> associated
+    Collection<String> conditions
 ) {
 
   PageInformationChangeRequest() {
@@ -22,7 +22,7 @@ record PageInformationChangeRequest(
         name(),
         datamart(),
         description(),
-        associated()
+        conditions()
     );
   }
 
@@ -32,7 +32,7 @@ record PageInformationChangeRequest(
         name,
         datamart(),
         description(),
-        associated()
+        conditions()
     );
   }
 
@@ -42,7 +42,7 @@ record PageInformationChangeRequest(
         name(),
         datamart,
         description(),
-        associated()
+        conditions()
     );
   }
 
@@ -52,12 +52,12 @@ record PageInformationChangeRequest(
         name(),
         datamart(),
         description,
-        associated()
+        conditions()
     );
   }
 
   PageInformationChangeRequest withCondition(final String condition) {
-    List<String> appended = Stream.concat(associated.stream(), Stream.of(condition)).toList();
+    List<String> appended = Stream.concat(conditions.stream(), Stream.of(condition)).toList();
     return new PageInformationChangeRequest(
         messageMappingGuide(),
         name(),

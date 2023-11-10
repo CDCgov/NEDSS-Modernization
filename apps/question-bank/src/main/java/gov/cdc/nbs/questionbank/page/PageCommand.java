@@ -31,7 +31,7 @@ public sealed interface PageCommand {
 
   }
 
-  record AssociateCondition(
+  record RelateCondition(
       String condition,
       long requester,
       Instant requestedOn
@@ -40,7 +40,7 @@ public sealed interface PageCommand {
   }
 
 
-  record DisassociateCondition(
+  record DissociateCondition(
       String condition,
       long requester,
       Instant requestedOn

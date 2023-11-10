@@ -24,7 +24,7 @@ class PageInformationController {
   @Operation(
       operationId = "find",
       summary = "Returns the Page Information of a page",
-      description = "The Page Information includes the event type, message mapping guide, name, datamart, description, and any associated conditions",
+      description = "The Page Information includes the event type, message mapping guide, name, datamart, description, and any related conditions",
       tags = "Page Information"
   )
   @ApiOperation(value = "", nickname = "find")

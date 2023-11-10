@@ -575,14 +575,14 @@ public class WaTemplate {
     return this.publishVersionNbr != null;
   }
 
-  public WaTemplate associate(final PageCommand.AssociateCondition associate) {
+  public WaTemplate relate(final PageCommand.RelateCondition associate) {
     checkChangesAllowed();
     this.conditionMappings.add(new PageCondMapping(this, associate));
     changed(associate);
     return this;
   }
 
-  public WaTemplate disassociate(final PageCommand.DisassociateCondition dissociate) {
+  public WaTemplate dissociate(final PageCommand.DissociateCondition dissociate) {
     checkConditionDisassociationAllowed();
     this.conditionMappings.removeIf(condition -> Objects.equals(condition.getConditionCd(), dissociate.condition()));
     changed(dissociate);

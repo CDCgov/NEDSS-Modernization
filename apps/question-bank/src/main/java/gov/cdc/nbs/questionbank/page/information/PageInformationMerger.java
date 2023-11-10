@@ -8,7 +8,7 @@ import java.util.Collection;
 class PageInformationMerger {
 
   PageInformation merge(final PageInformation left, final PageInformation right) {
-    Collection<SelectableCondition> associations = CollectionMerge.merged(left.associated(), right.associated());
+    Collection<SelectableCondition> associations = CollectionMerge.merged(left.conditions(), right.conditions());
 
     return new PageInformation(
         left.page(),

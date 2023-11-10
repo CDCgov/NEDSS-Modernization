@@ -118,28 +118,28 @@ class PageInformationChanger {
         .map(PageCondMapping::getConditionCd)
         .toList();
 
-    List<String> added = new ArrayList<>(request.associated());
+    List<String> added = new ArrayList<>(request.conditions());
     added.removeAll(existing);
 
     added.stream()
         .map(
-            condition -> new PageCommand.AssociateCondition(
+            condition -> new PageCommand.RelateCondition(
                 condition,
                 context.requestedBy(),
                 context.requestedAt()
             )
-        ).forEach(page::associate);
+        ).forEach(page::relate);
 
     List<String> removed = new ArrayList<>(existing);
-    removed.removeAll(request.associated());
+    removed.removeAll(request.conditions());
 
     removed.stream()
         .map(
-            condition -> new PageCommand.DisassociateCondition(
+            condition -> new PageCommand.DissociateCondition(
                 condition,
                 context.requestedBy(),
                 context.requestedAt()
             )
-        ).forEach(page::disassociate);
+        ).forEach(page::dissociate);
   }
 }

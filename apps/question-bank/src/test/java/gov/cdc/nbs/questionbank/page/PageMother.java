@@ -98,8 +98,8 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associate(
-        new PageCommand.AssociateCondition(
+    page.relate(
+        new PageCommand.RelateCondition(
             BRUCELLOSIS_ID,
             this.settings.createdBy(),
             this.settings.createdOn()
@@ -207,8 +207,8 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associate(
-        new PageCommand.AssociateCondition(
+    page.relate(
+        new PageCommand.RelateCondition(
             ASEPTIC_MENINGITIS_ID,
             this.settings.createdBy(),
             this.settings.createdOn()
@@ -247,8 +247,8 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associate(
-        new PageCommand.AssociateCondition(
+    page.relate(
+        new PageCommand.RelateCondition(
             ASEPTIC_MENINGITIS_ID,
             this.settings.createdBy(),
             this.settings.createdOn()
@@ -371,8 +371,8 @@ public class PageMother {
 
   public void withCondition(final PageIdentifier page, final String condition) {
     harness.with(page).use(
-        found -> found.associate(
-            new PageCommand.AssociateCondition(
+        found -> found.relate(
+            new PageCommand.RelateCondition(
                 condition,
                 this.settings.createdBy(),
                 this.settings.createdOn()
