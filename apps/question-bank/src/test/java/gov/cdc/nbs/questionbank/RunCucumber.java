@@ -27,7 +27,7 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 @EmbeddedNbsDatabase
 @SpringBootTest
 @Transactional
-@ActiveProfiles({"default", "development", "test"})
+@ActiveProfiles({"default", "test"})
 @AutoConfigureMockMvc
 @EnableSupport
 @EnableAuthenticatedInteractions

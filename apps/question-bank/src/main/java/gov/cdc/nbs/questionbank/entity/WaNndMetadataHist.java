@@ -91,7 +91,7 @@ public class WaNndMetadataHist {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "wa_template_hist_uid", nullable = false)
-    private WaTemplateHist waTemplateHistUid;
+    private PageHistoryEntity waTemplateHistUid;
 
     @Column(name = "wa_ui_metadata_uid", nullable = false)
     private Long waUiMetadataUid;
