@@ -2,7 +2,7 @@ import { Button, Form, Modal, ModalRef } from '@trussworks/react-uswds';
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditionLookup/QuickConditionLookup';
-import { Concept, Condition } from 'apps/page-builder/generated';
+import { Concept, Condition, Template } from 'apps/page-builder/generated';
 import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
 import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
@@ -24,11 +24,6 @@ type FormValues = {
     pageDescription?: string;
     templateId: number;
 };
-type Template = {
-    id: string;
-    templateNm: string;
-};
-
 const eventType = [
     { value: 'CON', name: 'Contact Record' },
     { value: 'IXS', name: 'Interview' },
@@ -59,10 +54,10 @@ export const AddNewPage = () => {
             .catch((error: any) => {
                 console.log('Error', error);
             });
-        fetchConditions(token).then((data: Condition[]) => {
+        fetchConditions(token).then((data) => {
             setConditions(data);
         });
-        fetchTemplates(token).then((data: any) => {
+        fetchTemplates(token).then((data) => {
             setTemplates(data);
         });
     }, [token]);
@@ -135,6 +130,7 @@ export const AddNewPage = () => {
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     label="Event type"
+                                    dataTestid="eventTypeDropdown"
                                     value={value}
                                     onChange={onChange}
                                     options={eventType}
@@ -158,7 +154,7 @@ export const AddNewPage = () => {
                                         />
                                     </FormProvider>
                                 ) : (
-                                    <div className="unsupported-event-type-message">
+                                    <div data-testid="event-type-warning" className="unsupported-event-type-message">
                                         {eventTypeName(watch.eventType).toUpperCase()} event type is not supported by
                                         the modern page design. Please click "Create page" to continue in classic design
                                         mode.

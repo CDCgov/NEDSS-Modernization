@@ -1,5 +1,5 @@
 import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { Concept, Condition } from 'apps/page-builder/generated';
+import { Concept, Condition, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
@@ -11,7 +11,7 @@ type AddNewPageFieldProps = {
     conditions: Condition[];
     conditionLookupModal: React.RefObject<ModalRef>;
     createConditionModal: React.RefObject<ModalRef>;
-    templates: { id: string; templateNm: string }[];
+    templates: Template[];
     mmgs: Concept[];
 };
 export const AddNewPageFields = (props: AddNewPageFieldProps) => {
@@ -72,8 +72,8 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         onChange={onChange}
                         options={props.templates.map((template) => {
                             return {
-                                name: template.templateNm,
-                                value: template.id
+                                name: template.templateNm ?? '',
+                                value: template.id?.toString() ?? ''
                             };
                         })}
                         error={error?.message}
