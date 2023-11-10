@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from 'react';
-import { PageBuilder } from '../PageBuilder/PageBuilder';
-import './ManagePages.scss';
 import { PagesContext } from 'apps/page-builder/context/PagesContext';
-import { fetchPageSummaries } from '../../services/pagesAPI';
-import { ManagePagesTable } from './ManagePagesTable';
-import { UserContext } from 'user';
+import { useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { UserContext } from 'user';
+import { fetchPageSummaries } from '../../services/pagesAPI';
+import { PageBuilder } from '../PageBuilder/PageBuilder';
+import './PageLibrary.scss';
+import { ManagePagesTable } from './ManagePagesTable';
+import { PageSummary } from 'apps/page-builder/generated';
 
-export const ManagePages = () => {
-    const [pages, setPages] = useState([]);
+export const PageLibrary = () => {
+    const [pages, setPages] = useState<PageSummary[]>([]);
     const { searchQuery, sortBy, sortDirection, setCurrentPage, currentPage, pageSize, setIsLoading } =
         useContext(PagesContext);
     const { state } = useContext(UserContext);
@@ -26,21 +27,15 @@ export const ManagePages = () => {
         }
 
         // get Pages
-        try {
-            fetchPageSummaries(
-                token,
-                searchQuery,
-                sortBy.toLowerCase() + ',' + sortDirection,
-                currentPage,
-                pageSize
-            ).then((data: any) => {
-                setPages(data.content);
-                setTotalElements(data.totalElements);
+        fetchPageSummaries(token, searchQuery, sortBy.toLowerCase() + ',' + sortDirection, currentPage, pageSize)
+            .then((data) => {
+                setPages(data.content ?? []);
+                setTotalElements(data.totalElements ?? 0);
                 setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error(error);
             });
-        } catch (error) {
-            console.log(error);
-        }
     }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
 
     return (

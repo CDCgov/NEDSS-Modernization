@@ -31,6 +31,17 @@ describe('TableMenu', () => {
         expect(button).toBeInTheDocument();
     });
 
+    it('has a page porting button', () => {
+        const { getByText } = render(
+            <BrowserRouter>
+                <TableMenu {...props} />
+            </BrowserRouter>
+        );
+
+        const button = getByText('Page porting');
+        expect(button).toBeInTheDocument();
+    });
+
     it('has a print button', () => {
         const { getByTestId } = render(
             <BrowserRouter>
