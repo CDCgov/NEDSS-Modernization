@@ -7,12 +7,13 @@ import { Button, ButtonGroup, Grid, Icon, ModalRef, ModalToggleButton, Radio } f
 import React, { useRef, useState } from 'react';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { CreateQuestion } from '../CreateQuestion/CreateQuestion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ReactSelect, { components } from 'react-select';
 import { fieldType, logicList } from '../../constant/constant';
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 import { useForm } from 'react-hook-form';
 import { MultiSelectInput } from '../../../../components/selection/multi';
+import TargetQuestion from '../SearchTargetQuestion/TargetQuestion';
 
 export const Question = ({ question }: { question: PagesQuestion }) => {
     const [qtnId, setQtnId] = useState(0);
@@ -58,6 +59,11 @@ const initLogic = {
     targetType: 'Question',
     targetQuestions: ''
 };
+type QuestionProps = {
+    id: number;
+    name: string;
+    selected: boolean;
+};
 export const QuestionWrap = ({ que }: any) => {
     const [activeTab, setActiveTab] = useState('Question');
     const navigateTo = useNavigate();
@@ -66,7 +72,10 @@ export const QuestionWrap = ({ que }: any) => {
     const [selectedFieldType, setSelectedFieldType] = useState('Enable');
     const [logicDetails, setLogicDetails] = useState(initLogic);
     const [isLogicForm, setIsLogicForm] = useState(false);
+    const [targetQuestion, setTargetQuestion] = useState<QuestionProps[]>([]);
     const queEditModalRef = useRef<ModalRef>(null);
+    const TargetQtnModalRef = useRef<ModalRef>(null);
+    const { pageId } = useParams();
 
     const handleLogicDetails = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         setLogicDetails({ ...logicDetails, [target.name]: target.value });
@@ -103,6 +112,13 @@ export const QuestionWrap = ({ que }: any) => {
             default:
                 return '/icons/single-select.svg';
         }
+    };
+
+    const handleFetchQuestion = (data: QuestionProps[]) => {
+        setTargetQuestion(data);
+    };
+    const clearFetchQuestion = () => {
+        setTargetQuestion([]);
     };
 
     const customStyles = {
@@ -294,11 +310,26 @@ export const QuestionWrap = ({ que }: any) => {
                                     <label className="input-label">Target Questions</label>
                                 </Grid>
                                 <Grid col={8}>
-                                    <div className="width-48-p">
-                                        <Button className="width-full margin-top-1em" type="submit" outline>
-                                            Search Target Question
-                                        </Button>
-                                    </div>
+                                    {targetQuestion.length < 1 ? (
+                                        <div className="width-48-p margin-bottom-1em">
+                                            <ModalToggleButton
+                                                modalRef={TargetQtnModalRef}
+                                                className="width-full margin-top-1em"
+                                                type="submit"
+                                                outline>
+                                                Search Target Question
+                                            </ModalToggleButton>
+                                        </div>
+                                    ) : (
+                                        <div className="que-valueset">
+                                            {targetQuestion?.map((qtn: QuestionProps, index: number) => (
+                                                <div className="margin-bottom-1" key={index}>
+                                                    <Icon.Check />
+                                                    <span className="margin-left-1"> {`${qtn.name} (${qtn.id})`}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </Grid>
                             </Grid>
                         </div>
@@ -320,14 +351,23 @@ export const QuestionWrap = ({ que }: any) => {
                                     onClick={handleAddLogic}>
                                     <span> Cancel</span>
                                 </Button>
+                                {targetQuestion.length > 0 && (
+                                    <Button
+                                        type="submit"
+                                        className="margin-right-2 line-btn"
+                                        unstyled
+                                        onClick={clearFetchQuestion}>
+                                        <span>Clear all target selections</span>
+                                    </Button>
+                                )}
                                 <Button type="submit" onClick={() => {}}>
-                                    <span> Apply Logic</span>
+                                    <span>Apply Logic</span>
                                 </Button>
                             </Grid>
                         )}
                     </Grid>
                     <Button
-                        className="add-btn"
+                        className="add-btn display-none"
                         type="button"
                         onClick={() => {
                             localStorage.setItem('selectedQuestion', que.id);
@@ -337,6 +377,7 @@ export const QuestionWrap = ({ que }: any) => {
                     </Button>
                 </div>
             </div>
+            <TargetQuestion modalRef={TargetQtnModalRef} getList={handleFetchQuestion} pageId={pageId?.toString()!} />
         </div>
     );
 };
