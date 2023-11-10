@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page;
 
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
-import gov.cdc.nbs.questionbank.support.PageMother;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
@@ -13,7 +12,7 @@ import java.util.function.Consumer;
 
 public class PageSteps {
 
-  private static final String DEFAULT_OBJECT = "INV";
+  private static final String DEFAULT_EVENT_TYPE = "INV";
   private static final String DEFAULT_MAPPING_GUIDE = "GEN_Case_Map_v2.0";
 
   private final PageMother mother;
@@ -40,17 +39,22 @@ public class PageSteps {
 
   @Given("I have a(nother) page")
   public void i_have_a_page() {
-    this.mother.create(DEFAULT_OBJECT, "Automated Test Page", DEFAULT_MAPPING_GUIDE);
+    this.mother.create(DEFAULT_EVENT_TYPE, "Automated Test Page", DEFAULT_MAPPING_GUIDE);
   }
 
   @Given("I have a page named {string}")
   public void i_have_a_page_component_named(final String name) {
-    this.mother.create(DEFAULT_OBJECT, name, DEFAULT_MAPPING_GUIDE);
+    this.mother.create(DEFAULT_EVENT_TYPE, name, DEFAULT_MAPPING_GUIDE);
   }
 
-  @Given("the page is for a(n) {eventType}")
-  public void the_page_is_for(final String eventType) {
-    mother.withEventType(page.active(), eventType);
+  @Given("I have a(n) {eventType} page named {string}")
+  public void i_have_an_event_type_page_named(final String eventType, final String name) {
+    this.mother.create(eventType, name, DEFAULT_MAPPING_GUIDE);
+  }
+
+  @Given("I have a(n) {eventType} page named {string} mapped by {messageMappingGuide}")
+  public void i_have_an_event_type_page_named_mapped_by(final String eventType, final String name, final String mmg) {
+    this.mother.create(eventType, name, mmg);
   }
 
   @Given("the page has a(n) {string} of {string}")
@@ -61,6 +65,7 @@ public class PageSteps {
     switch (property.toLowerCase()) {
       case "description" -> mother.withDescription(active, value);
       case "name" -> mother.withName(active, value);
+      case "datamart" -> mother.withDatamart(active, value);
       default -> throw new IllegalStateException("Unexpected Page value: " + property);
     }
   }
@@ -113,6 +118,7 @@ public class PageSteps {
   }
 
   @Given("the page is tied to the {condition} condition")
+  @Given("the page is associated with the {condition} condition")
   public void the_page_is_tied_to_the_condition(final String condition) {
     this.page.maybeActive().ifPresent(page -> mother.withCondition(page, condition));
   }

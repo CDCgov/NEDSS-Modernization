@@ -14,7 +14,7 @@ import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.subsection.model.SubSection;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.support.PageMother;
+import gov.cdc.nbs.questionbank.page.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 

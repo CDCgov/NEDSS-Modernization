@@ -99,7 +99,7 @@ export const PatientOpenInvestigationsTable = ({ patient, pageSize }: Props) => 
     return (
         <TableComponent
             isLoading={!called || loading}
-            tableHeader={'Open Investigations'}
+            tableHeader={'Open investigations'}
             tableHead={headers}
             tableBody={bodies}
             isPagination={true}
