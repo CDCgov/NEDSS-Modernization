@@ -16,9 +16,7 @@ ReactDOM.render(
                 <UserContextProvider>
                     <ApolloWrapper>
                         <NavBar />
-                        <div className="route-content">
-                            <AppRoutes />
-                        </div>
+                        <AppRoutes />
                     </ApolloWrapper>
                 </UserContextProvider>
             </BrowserRouter>
