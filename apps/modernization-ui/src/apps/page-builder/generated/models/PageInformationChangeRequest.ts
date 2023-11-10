@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type PageInformationChangeRequest = {
-    associated?: Array<string>;
+    conditions?: Array<string>;
     datamart?: string;
     description?: string;
     messageMappingGuide?: string;

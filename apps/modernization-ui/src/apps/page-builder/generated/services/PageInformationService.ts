@@ -12,7 +12,7 @@ export class PageInformationService {
 
     /**
      * Returns the Page Information of a page
-     * The Page Information includes the event type, message mapping guide, name, datamart, description, and any associated conditions
+     * The Page Information includes the event type, message mapping guide, name, datamart, description, and any related conditions
      * @returns PageInformation OK
      * @throws ApiError
      */
@@ -45,7 +45,7 @@ export class PageInformationService {
 
     /**
      * Allows changing the Information of a page
-     * Allows changing message mapping guide, name, datamart, description, and associated conditions of a Page.
+     * Allows changing message mapping guide, name, datamart, description, and related conditions of a Page.
      * @returns any OK
      * @throws ApiError
      */
