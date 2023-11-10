@@ -184,13 +184,13 @@
     .label {
         margin-bottom: 10px;
     }
-    .que-valueset {
-        padding: 10px 12px;
-        border-radius: 5px;
-        min-width: 250px;
-        border: 1px solid var(--primary-primary, #55595b);
-    }
     margin-bottom: 20px;
+}
+.que-valueset {
+    padding: 10px 12px;
+    border-radius: 5px;
+    min-width: 250px;
+    border: 1px solid var(--primary-primary, #55595b);
 }
 .targetType-radio {
     display: flex;

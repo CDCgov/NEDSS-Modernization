@@ -31,7 +31,7 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
         setIsLoading(false);
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
     return (
-        <PageBuilder>
+        <PageBuilder page="pages">
             <div className="business-rules-library padding-top-3">
                 <Breadcrumb header="Page Library" currentPage="Business Rules Library" />
                 <div className="business-rules-library__container">
