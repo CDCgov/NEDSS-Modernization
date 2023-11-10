@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { PagesResponse } from 'apps/page-builder/generated';
 import { EditPageHeader } from './EditPageHeader';
+import { AlertProvider } from 'alert';
 
 describe('when EditPageHeader renders', () => {
     const page: PagesResponse = {
@@ -26,14 +27,21 @@ describe('when EditPageHeader renders', () => {
     const mockFunction = jest.fn();
 
     it('should display Page name', () => {
-        const { getByText } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
+        const { getByText } = render(
+            <AlertProvider>
+                <EditPageHeader page={page} handleSaveDraft={mockFunction} />
+            </AlertProvider>
+        );
 
         expect(getByText('Test Page')).toBeInTheDocument();
     });
 
     it('should display Page description', () => {
-        const { getByText } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
-
+        const { getByText } = render(
+            <AlertProvider>
+                <EditPageHeader page={page} handleSaveDraft={mockFunction} />
+            </AlertProvider>
+        );
         expect(getByText('Test Page description')).toBeInTheDocument();
     });
 });

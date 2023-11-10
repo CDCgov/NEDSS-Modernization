@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { SaveTemplateRequest } from '../models/SaveTemplateRequest';
 import type { Template } from '../models/Template';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -25,6 +26,37 @@ export class TemplateControllerService {
             headers: {
                 'Authorization': authorization,
             },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * saveTemplate
+     * @returns Template OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static saveTemplateUsingPost({
+        authorization,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * request
+         */
+        request: SaveTemplateRequest,
+    }): CancelablePromise<Template | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/template/save',
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

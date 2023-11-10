@@ -76,6 +76,7 @@ export type { QuestionStatusRequest } from './models/QuestionStatusRequest';
 export type { ReadConditionRequest } from './models/ReadConditionRequest';
 export type { ReportingInfo } from './models/ReportingInfo';
 export type { Resource } from './models/Resource';
+export type { SaveTemplateRequest } from './models/SaveTemplateRequest';
 export type { SearchPageRuleRequest } from './models/SearchPageRuleRequest';
 export type { Section } from './models/Section';
 export type { SelectableCondition } from './models/SelectableCondition';

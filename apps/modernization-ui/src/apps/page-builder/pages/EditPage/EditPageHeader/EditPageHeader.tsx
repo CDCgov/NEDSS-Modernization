@@ -56,7 +56,7 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
             <ModalComponent
                 modalRef={modalRef}
                 modalHeading={'Save as Template'}
-                modalBody={<SaveTemplates modalRef={modalRef} />}
+                modalBody={<SaveTemplates modalRef={modalRef} page={page} />}
             />
         </div>
     );

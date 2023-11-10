@@ -1,12 +1,15 @@
 import React, { useContext, useState } from 'react';
-import { ModalToggleButton, TextInput } from '@trussworks/react-uswds';
+import { ModalToggleButton, TextInput, Textarea } from '@trussworks/react-uswds';
 import { UserContext } from '../../../../providers/UserContext';
 import './SavetTemplate.scss';
+import { TemplateControllerService } from '../../generated';
+import { useAlert } from '../../../../alert';
 
-export const SaveTemplates = ({ modalRef }: any) => {
+export const SaveTemplates = ({ modalRef, page }: any) => {
     const init = { name: '', desc: '' };
     const [details, setDetails] = useState(init);
     const { state } = useContext(UserContext);
+    const { showAlert } = useAlert();
     const [validateName, setValidateName] = useState(false);
     const handleTabInput = ({ target }: any) => {
         setDetails({
@@ -21,17 +24,24 @@ export const SaveTemplates = ({ modalRef }: any) => {
     const authorization = `Bearer ${state.getToken()}`;
     const handleSubmit = () => {
         const { name, desc } = details;
-        const request = { name, desc };
-        console.log('authorization..', request, authorization);
+        const request = {
+            templateDescription: desc,
+            name: name,
+            waTemplateUid: page.id
+        };
+        TemplateControllerService.saveTemplateUsingPost({ request, authorization }).then((resp) => {
+            console.log(resp);
+            showAlert({ type: 'success', header: 'Add', message: 'Question Added successfully' });
+        });
     };
     const validateBtn = !details.name || validateName || !details.desc;
     const renderTemplateForm = (
         <div className="form-container save-template margin-top-1em">
             <div className={validateName ? 'error-border' : ''}>
                 <label>
-                    Template Name <span className="mandatory-indicator">*</span>
+                    Template name <span className="mandatory-indicator">*</span>
                 </label>
-                {validateName && <label className="error-text">Template Name Not Valid</label>}
+                {validateName && <label className="error-text">Template name Not Valid</label>}
                 <TextInput
                     className="field-space"
                     type="text"
@@ -46,14 +56,15 @@ export const SaveTemplates = ({ modalRef }: any) => {
             </div>
             <div>
                 <label>
-                    Template Description <span className="mandatory-indicator">*</span>
+                    Template description <span className="mandatory-indicator">*</span>
                 </label>
-                <TextInput
+                <Textarea
                     className="field-space"
-                    type="text"
+                    maxLength={2000}
                     id="tab-description"
                     data-testid="tab-description"
                     name="desc"
+                    rows={2}
                     value={details.desc}
                     onChange={handleTabInput}
                 />
