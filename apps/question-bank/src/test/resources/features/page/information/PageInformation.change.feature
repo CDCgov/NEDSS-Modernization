@@ -98,4 +98,4 @@ Feature: Searching for Page Summaries
     And the page is Published with Draft
     And I want to change the page "datamart" to "datamart"
     When I change the page information
-    Then the page information cannot be changed because "The associated conditions cannot be changed if the Page had ever been Published"
+    Then the page information cannot be changed because "The related conditions cannot be changed if the Page had ever been Published"

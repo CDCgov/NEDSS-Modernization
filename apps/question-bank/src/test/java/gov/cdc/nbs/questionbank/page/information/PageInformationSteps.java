@@ -66,7 +66,7 @@ public class PageInformationSteps {
       case "name" -> jsonPath("$.name");
       case "datamart" -> jsonPath("$.datamart");
       case "description" -> jsonPath("$.description");
-      case "condition" -> jsonPath("$.associated[*].name");
+      case "condition" -> jsonPath("$.conditions[*].name");
       default -> throw new IllegalStateException("Unexpected Page Summary value: " + field.toLowerCase());
     };
   }

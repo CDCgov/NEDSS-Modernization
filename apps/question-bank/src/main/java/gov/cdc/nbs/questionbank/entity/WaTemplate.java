@@ -591,7 +591,7 @@ public class WaTemplate {
   private void checkConditionDisassociationAllowed() {
     checkChangesAllowed();
     if (hasBeenPublished()) {
-      throw new PageUpdateException("The associated conditions cannot be changed if the Page had ever been Published");
+      throw new PageUpdateException("The related conditions cannot be changed if the Page had ever been Published");
     }
   }
 
