@@ -15,7 +15,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "WA_template_hist", catalog = "NBS_ODSE")
-public class WaTemplateHist {
+public class PageHistoryEntity {
     @Id
     @Column(name = "wa_template_hist_uid", nullable = false)
     private Long id;

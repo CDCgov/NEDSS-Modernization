@@ -4,18 +4,18 @@ import { PhoneNumberInput } from './PhoneNumberInput';
 describe('PhoneNumberInput component tests', () => {
     describe('When phone number is valid and formatted', () => {
         it('should return true', () => {
-            const { getByTestId } = render(
+            const { queryByTestId } = render(
                 <PhoneNumberInput label="test-phone-input" defaultValue="555-555-5555" onChange={onchange} />
             );
-            expect(getByTestId('errorMessage').innerHTML).toBe('');
+            expect(queryByTestId('errorMessage')).toBeNull();
         });
     });
     describe('When phone number is partially valid', () => {
         it('should return true', () => {
-            const { getByTestId } = render(
+            const { queryByTestId } = render(
                 <PhoneNumberInput label="test-phone-partial" defaultValue="555" onChange={onchange} />
             );
-            expect(getByTestId('errorMessage').innerHTML).toBe('');
+            expect(queryByTestId('errorMessage')).toBeNull();
         });
     });
     describe('When phone number is invalid', () => {

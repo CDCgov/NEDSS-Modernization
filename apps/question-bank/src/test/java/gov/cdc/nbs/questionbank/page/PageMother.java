@@ -1,13 +1,13 @@
-package gov.cdc.nbs.questionbank.support;
+package gov.cdc.nbs.questionbank.page;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
-import gov.cdc.nbs.questionbank.page.PageCommand;
-import gov.cdc.nbs.questionbank.page.PageEntityHarness;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.component.tree.ComponentTreeResolver;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import gov.cdc.nbs.questionbank.support.PageIdentifier;
+import gov.cdc.nbs.questionbank.support.TestDataSettings;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,8 +98,8 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associateCondition(
-        new PageCommand.AssociateCondition(
+    page.relate(
+        new PageCommand.RelateCondition(
             BRUCELLOSIS_ID,
             this.settings.createdBy(),
             this.settings.createdOn()
@@ -207,8 +207,8 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associateCondition(
-        new PageCommand.AssociateCondition(
+    page.relate(
+        new PageCommand.RelateCondition(
             ASEPTIC_MENINGITIS_ID,
             this.settings.createdBy(),
             this.settings.createdOn()
@@ -247,8 +247,8 @@ public class PageMother {
     page.setLastChgTime(now);
     page.setLastChgUserId(1L);
 
-    page.associateCondition(
-        new PageCommand.AssociateCondition(
+    page.relate(
+        new PageCommand.RelateCondition(
             ASEPTIC_MENINGITIS_ID,
             this.settings.createdBy(),
             this.settings.createdOn()
@@ -287,12 +287,13 @@ public class PageMother {
   }
 
   public void create(
-      final String object,
+      final String eventType,
       final String name,
-      final String mappingGuide) {
+      final String mappingGuide
+  ) {
 
     WaTemplate page = new WaTemplate(
-        object,
+        eventType,
         mappingGuide,
         name,
         this.settings.createdBy(),
@@ -317,6 +318,7 @@ public class PageMother {
   public void withName(final PageIdentifier page, final String value, final long user, final Instant when) {
     harness.with(page).use(
         found -> found.changeName(
+            name -> true,
             new PageCommand.ChangeName(
                 value,
                 user,
@@ -326,12 +328,12 @@ public class PageMother {
     );
   }
 
-  public void withDescription(final PageIdentifier page, final String description) {
-    harness.with(page).use(found -> found.setDescTxt(description));
+  public void withDatamart(final PageIdentifier page, final String value) {
+    harness.with(page).use(found -> found.setDatamartNm(value));
   }
 
-  public void withEventType(final PageIdentifier page, final String value) {
-    harness.with(page).use(found -> found.setBusObjType(value));
+  public void withDescription(final PageIdentifier page, final String description) {
+    harness.with(page).use(found -> found.setDescTxt(description));
   }
 
   public void draft(final PageIdentifier page) {
@@ -369,8 +371,8 @@ public class PageMother {
 
   public void withCondition(final PageIdentifier page, final String condition) {
     harness.with(page).use(
-        found -> found.associateCondition(
-            new PageCommand.AssociateCondition(
+        found -> found.relate(
+            new PageCommand.RelateCondition(
                 condition,
                 this.settings.createdBy(),
                 this.settings.createdOn()

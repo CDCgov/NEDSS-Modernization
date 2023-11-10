@@ -1,3 +1,5 @@
+@import '../../styles/colors';
+
 button {
     white-space: nowrap;
     img {
@@ -23,10 +25,10 @@ button {
 }
 
 .type {
-    border-bottom: 5px solid transparent;
+    border-bottom: 0.4375rem solid transparent;
 }
 .type.active {
-    border-bottom: 7px solid #005ea2;
+    border-bottom: 0.4375rem solid #005ea2;
 }
 
 .left-searchbar {
@@ -123,6 +125,7 @@ button {
             border-bottom: 1px solid #dfdfdf;
             padding-bottom: 10px;
             margin: 15px;
+            display: flex;
             .usa-button--unstyled {
                 margin: 0;
                 color: black;
@@ -193,4 +196,12 @@ button {
 .checkbox-input {
     margin-right: 15px;
     text-transform: capitalize !important;
+}
+
+.search-result-item-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02031rem;
+    text-transform: uppercase;
+    color: $color-gray-20;
 }

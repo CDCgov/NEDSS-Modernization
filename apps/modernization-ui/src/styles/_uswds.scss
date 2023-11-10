@@ -1,4 +1,5 @@
 @import '../mixins/viewports';
+@import './colors';
 
 table.usa-table {
     overflow-x: auto;
@@ -49,4 +50,10 @@ table.usa-table {
 // Default button styling
 button.usa-button {
     font-size: 1rem;
+}
+
+.usa-pagination__button:active,
+.usa-pagination__button:focus,
+.usa-pagination__button:hover {
+    border: 1px solid #1a4480 !important;
 }

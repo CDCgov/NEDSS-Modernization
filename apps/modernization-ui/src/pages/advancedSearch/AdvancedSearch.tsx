@@ -391,10 +391,7 @@ export const AdvancedSearch = () => {
                                 <img src={'/icons/down-arrow-white.svg'} />
                             </Button>
                             {showAddNewDropDown && (
-                                <ul
-                                    ref={addPatiendRef}
-                                    id="basic-nav-section-one"
-                                    className="usa-nav__submenu add-patient-menu">
+                                <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                     <li className="usa-nav__submenu-item">
                                         <Button onClick={handleAddNewPatientClick} type={'button'} unstyled>
                                             Add new patient
