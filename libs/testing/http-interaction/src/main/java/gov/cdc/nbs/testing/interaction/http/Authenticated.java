@@ -46,24 +46,18 @@ public class Authenticated {
         .map(resolver::resolve);
   }
 
-  private Authentication authentication(final NbsUserDetails details) {
-    return new PreAuthenticatedAuthenticationToken(
-        details,
-        null,
-        details.getAuthorities());
-  }
-
   private Optional<Authentication> authentication() {
     return userDetails()
         .map(details -> new PreAuthenticatedAuthenticationToken(
-            details,
-            null,
-            details.getAuthorities()));
+                details,
+                null,
+                details.getAuthorities()
+            )
+        );
   }
 
   /**
-   * Executes the given {@code action} ensuring that the
-   * {@link SecurityContextHolder} is configured to be authenticated
+   * Executes the given {@code action} ensuring that the {@link SecurityContextHolder} is configured to be authenticated
    * with the Active User.
    *
    * @param action The action to perform while authenticated.
