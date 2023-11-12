@@ -62,4 +62,6 @@ public interface WaUiMetadataRepository extends JpaRepository<WaUiMetadata, Long
     Integer findOrderNbrOfNextSectionOrTab(
             @Param("orderNbr") Integer orderNbr,
             @Param("page") long page);
+
+    List<WaUiMetadata> findByWaTemplateUid(WaTemplate waTemplate);
 }

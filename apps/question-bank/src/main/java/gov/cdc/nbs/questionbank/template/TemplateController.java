@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.template;
 
+import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.template.request.SaveTemplateRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class TemplateController {
 
 	private final TemplateReader templateReader;
-
+	private final UserDetailsProvider userDetailsProvider;
 	@GetMapping
 	public Page<Template> findAllTemplates(@PageableDefault(size = 25) Pageable pageable) {
 		return templateReader.findAllTemplates(pageable);
@@ -32,6 +34,11 @@ public class TemplateController {
 	public Page<Template> searchTemplate(@RequestBody TemplateSearchRequest search,
 			@PageableDefault(size = 25) Pageable pageable) {
 		return templateReader.searchTemplate(search, pageable);
+	}
+	@PostMapping("save")
+	public Template saveTemplate(@RequestBody SaveTemplateRequest request) {
+		Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+		return templateReader.saveTemplate(request,userId);
 	}
 
 }

@@ -11,4 +11,6 @@ public interface PageCondMappingRepository extends JpaRepository<PageCondMapping
     List<PageCondMapping> findByWaTemplateUidIn(List<WaTemplate> pages);
 
     public void deleteAllByWaTemplateUid(WaTemplate template);
+
+    List<PageCondMapping> findByWaTemplateUidAndConditionCd(WaTemplate waTemplate, String conditionCode);
 }

@@ -15,6 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -23,6 +26,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "Page_cond_mapping", catalog = "NBS_ODSE")
+@XmlAccessorType(value = XmlAccessType.FIELD)
 public class PageCondMapping {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +35,7 @@ public class PageCondMapping {
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "wa_template_uid", nullable = false)
+  @XmlTransient
   private WaTemplate waTemplateUid;
 
   @Column(name = "condition_cd", nullable = false, length = 20)

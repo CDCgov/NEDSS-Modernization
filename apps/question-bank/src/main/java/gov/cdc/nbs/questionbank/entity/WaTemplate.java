@@ -22,21 +22,18 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "WA_template", catalog = "NBS_ODSE")
+@XmlAccessorType(value = XmlAccessType.FIELD)
 public class WaTemplate {
   private static final String DRAFT = "Draft";
   private static final long TAB = 1010l;
@@ -125,6 +122,7 @@ public class WaTemplate {
       },
       orphanRemoval = true
   )
+  @XmlTransient
   private Set<PageCondMapping> conditionMappings;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
@@ -133,6 +131,7 @@ public class WaTemplate {
       CascadeType.REMOVE
   }, orphanRemoval = true)
   @OrderBy("orderNbr")
+  @XmlTransient
   private List<WaUiMetadata> uiMetadata;
 
   public WaTemplate() {
