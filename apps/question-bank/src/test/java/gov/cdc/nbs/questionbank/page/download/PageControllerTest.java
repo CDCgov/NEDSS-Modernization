@@ -66,16 +66,16 @@ class PageControllerTest {
                 new PageHistory("1", "09/25/2019", "User1", "Note1"),
                 new PageHistory("2", "09/25/2019", "User2", "Note2")
         );
-        when(pageHistoryFinder.getPageHistory("templateName")).thenReturn(expectedPageHistory);
-        List<PageHistory> actualPageHistory = pageController.getPageHistory("templateName");
+        when(pageHistoryFinder.getPageHistory(100l)).thenReturn(expectedPageHistory);
+        List<PageHistory> actualPageHistory = pageController.getPageHistory(100l);
         assertEquals(expectedPageHistory, actualPageHistory);
     }
 
     @Test
     void getPageHistoryException() throws Exception {
-        when(pageHistoryFinder.getPageHistory("templateName")).
+        when(pageHistoryFinder.getPageHistory(100l)).
                 thenThrow(new RuntimeException("Error Fetching Page-History by Template_nm From the Database"));
-        var exception = assertThrows(RuntimeException.class, () -> pageController.getPageHistory("templateName"));
+        var exception = assertThrows(RuntimeException.class, () -> pageController.getPageHistory(100l));
         assertTrue(exception.getMessage().contains("Error Fetching Page-History by Template_nm From the Database"));
     }
 

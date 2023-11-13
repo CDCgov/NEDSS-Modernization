@@ -92,9 +92,9 @@ public class PageController {
   }
 
 
-  @GetMapping("{template_nm}/page-history")
-  public List<PageHistory> getPageHistory(@PathVariable("template_nm") String waTemplateName) {
-    return pageHistoryFinder.getPageHistory(waTemplateName);
+  @GetMapping("{id}/page-history")
+  public List<PageHistory> getPageHistory(@PathVariable("id") Long pageId) {
+    return pageHistoryFinder.getPageHistory(pageId);
   }
 
 }
