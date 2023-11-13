@@ -30,6 +30,7 @@ dependencies {
     implementation(project(':event-schema'))
     implementation(project(':authentication'))
     implementation(project(':id-generator'))
+    implementation(project(':libs:web'))
     implementation(project(':libs:classic-interaction'))
 
     //  feature modules

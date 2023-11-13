@@ -56,6 +56,9 @@ project(':id-generator').projectDir = new File('libs/id-generator')
 include ':accumulation'
 project(':accumulation').projectDir = new File('libs/accumulation')
 
+include ':libs:web'
+project(':libs:web').projectDir = new File('libs/web')
+
 include ':libs:classic-interaction'
 project(':libs:classic-interaction').projectDir = new File('libs/classic-interaction')
 
