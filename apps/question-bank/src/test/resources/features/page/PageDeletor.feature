@@ -15,5 +15,3 @@ Feature: Delete Draft Page
         Given I create a delete page request with published with draft page
         When I send a delete page request
         Then the page is deleted and changed to published
-
-    

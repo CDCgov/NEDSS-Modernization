@@ -1,17 +1,18 @@
 package gov.cdc.nbs.questionbank.page;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
+import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
+import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.support.PageMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -24,6 +25,9 @@ public class PageDeletorSteps {
 
     @Autowired
     private PageMother pageMother;
+
+    @Autowired
+    private ObjectMapper mapper;
 
     @Autowired
     private WaTemplateRepository waTemplateRepository;
@@ -68,10 +72,9 @@ public class PageDeletorSteps {
     }
 
     @Then("the page is deleted and changed to published")
-    public void the_page_is_not_deleted() {
+    public void the_page_deleted_and_changed_to_published() {
         Optional<WaTemplate> temp = waTemplateRepository.findById(currPage.active().getId());
         assertEquals(PageConstants.PUBLISHED, temp.get().getTemplateType());
         assertEquals(Optional.empty(), waTemplateRepository.findById(draftPage.active().getId()));
     }
-
 }
