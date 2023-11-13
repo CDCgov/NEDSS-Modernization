@@ -5,7 +5,6 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.repository.PageCondMappingRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WANNDMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WARDBMetadataRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;

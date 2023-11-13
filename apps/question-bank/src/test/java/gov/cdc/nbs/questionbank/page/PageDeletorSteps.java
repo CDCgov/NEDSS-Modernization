@@ -1,16 +1,12 @@
 package gov.cdc.nbs.questionbank.page;
 
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
-import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.testing.support.Active;
@@ -25,9 +21,6 @@ public class PageDeletorSteps {
 
     @Autowired
     private PageMother pageMother;
-
-    @Autowired
-    private ObjectMapper mapper;
 
     @Autowired
     private WaTemplateRepository waTemplateRepository;
