@@ -11,8 +11,21 @@ const LOGIN = function (pathname, req) {
 };
 
 module.exports = function (app) {
+    // Modernization API
     app.use(
-        createProxyMiddleware([NBS_API, GRAPHQL, ENCRYPTION, PAGEBUILDER_API], { target: 'http://localhost:8080/' })
+        createProxyMiddleware([NBS_API, GRAPHQL, ENCRYPTION, PAGEBUILDER_API], {
+            target: process.env.npm_config_backend,
+            changeOrigin: true,
+            logger: console,
+            logLevel: 'debug'
+        })
     );
-    app.use(createProxyMiddleware(LOGIN, { target: 'http://localhost:8080/' }));
+    app.use(
+        createProxyMiddleware(LOGIN, {
+            target: process.env.npm_config_backend,
+            changeOrigin: true,
+            logger: console,
+            logLevel: 'debug'
+        })
+    );
 };
