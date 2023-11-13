@@ -236,6 +236,7 @@ public class PageMother {
     Instant now = Instant.now().plusSeconds(15);
     WaTemplate page = new WaTemplate();
     page.setTemplateNm(pageIn.getTemplateNm());
+    page.setFormCd(pageIn.getFormCd());
     page.setTemplateType("Draft");
     page.setBusObjType("INV");
     page.setNndEntityIdentifier("GEN_Case_Map_v2.0");

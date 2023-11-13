@@ -30,20 +30,16 @@ public class PageDeletor {
 
     private final WaRuleMetaDataRepository waRuleMetaDataRepository;
 
-    private final PageCondMappingRepository pageConMappingRepository;
-
     public PageDeletor(
             final WaTemplateRepository templateRepository,
             final WaUiMetadataRepository waUiMetadataRepository,
             final WANNDMetadataRepository wanndMetadataRepository,
             final WARDBMetadataRepository wARDBMetadataRepository,
-            final WaRuleMetaDataRepository waRuleMetaDataRepository,
-            final PageCondMappingRepository pageConMappingRepository) {
+            final WaRuleMetaDataRepository waRuleMetaDataRepository) {
         this.templateRepository = templateRepository;
         this.waUiMetadataRepository = waUiMetadataRepository;
         this.wanndMetadataRepository = wanndMetadataRepository;
         this.waRuleMetaDataRepository = waRuleMetaDataRepository;
-        this.pageConMappingRepository = pageConMappingRepository;
         this.wARDBMetadataRepository = wARDBMetadataRepository;
     }
 

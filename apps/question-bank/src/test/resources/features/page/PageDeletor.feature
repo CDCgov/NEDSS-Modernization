@@ -11,9 +11,9 @@ Feature: Delete Draft Page
         When I send a delete page request
         Then the page is deleted 
 
-    Scenario: I cannot delete draft page if page is not a draft
-        Given I create a delete page request with published page
+    Scenario: I can delete draft page when published with draft
+        Given I create a delete page request with published with draft page
         When I send a delete page request
-        Then the page is not deleted
+        Then the page is deleted and changed to published
 
     

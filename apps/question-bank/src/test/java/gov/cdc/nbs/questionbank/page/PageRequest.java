@@ -1,8 +1,9 @@
 package gov.cdc.nbs.questionbank.page;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.test.web.servlet.ResultActions;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 
 @Component
@@ -12,9 +13,13 @@ public class PageRequest {
 
     PageRequest(
             final Authenticated authenticated,
-            final MockMvc mvc,
-            final ObjectMapper mapper) {
+            final MockMvc mvc) {
         this.authenticated = authenticated;
         this.mvc = mvc;
+    }
+
+    ResultActions deletePageRequest(final long page) throws Exception {
+        return mvc.perform(
+                this.authenticated.withUser(delete("/api/v1/pages/{page}/delete-draft", page)));
     }
 }
