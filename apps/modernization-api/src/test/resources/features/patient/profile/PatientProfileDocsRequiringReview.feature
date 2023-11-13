@@ -1,10 +1,10 @@
-@documents_requiring_review
+@documents_requiring_review @documents
 Feature: I can find documents requiring review for a particular patient
 
     Background:
         Given I have a patient
 
-    Scenario: I can find documents requiring review for a patient
+    Scenario Outline: I can find documents requiring review for a patient
         Given I have the authorities: "<permission>" for the jurisdiction: "ALL" and program area: "STD"
         And the patient has an unprocessed "<document type>"
         When I search for documents requiring review for the patient
@@ -15,7 +15,7 @@ Feature: I can find documents requiring review for a particular patient
             | morbidity report | FIND-PATIENT,VIEW-OBSERVATIONLABREPORT,VIEW-OBSERVATIONMORBIDITYREPORT               |
             | document         | FIND-PATIENT,VIEW-OBSERVATIONLABREPORT,VIEW-OBSERVATIONMORBIDITYREPORT,VIEW-DOCUMENT |
 
-    Scenario: I can not find documents requiring review without the proper permission
+    Scenario Outline: I can not find documents requiring review without the proper permission
         Given I have the authorities: "<permission>" for the jurisdiction: "ALL" and program area: "STD"
         And the patient has an unprocessed "<document type>"
         When I search for documents requiring review for the patient

@@ -2,11 +2,13 @@
 Feature: Lab report search
 
   Background:
-    Given I have the authorities: "FIND-PATIENT,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "STD"
-    And I have the authorities: "FIND-PATIENT,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "ARBO"
+    Given I am logged in
+    And I can "FIND" any "PATIENT"
+    And I can "VIEW" any "OBSERVATIONLABREPORT" for "STD" within all jurisdictions
+    And I can "VIEW" any "OBSERVATIONLABREPORT" for "ARBO" within all jurisdictions
 
   @lab_report_search_single_field
-  Scenario: I can find a lab report by one field in the laboratory report
+  Scenario Outline: I can find a lab report by one field in the laboratory report
     Given A lab report exist
     When I search laboratory events by "<field>" "<qualifier>"
     Then I find the lab report
@@ -37,7 +39,7 @@ Feature: Lab report search
       | patient id        |                                |
 
   @lab_report_search_multi_field
-  Scenario: I can find a lab report by many fields in the laboratory report
+  Scenario Outline: I can find a lab report by many fields in the laboratory report
     Given A lab report exist
     When I search laboratory events by "<field>" "<qualifier>" "<field2>" "<qualifier2>" "<field3>" "<qualifier3>"
     Then I find the lab report
