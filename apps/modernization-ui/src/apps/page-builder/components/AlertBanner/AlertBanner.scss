@@ -2,11 +2,11 @@
 
 .alert-banner {
     width: 100%;
-    padding: 0.6rem 1.0rem;
+    padding: 0.6rem 1rem;
     display: flex;
     flex-direction: row;
     gap: 0.5rem;
-    margin-bottom: 1.0rem;
+    margin-bottom: 1rem;
     align-items: center;
     &.success {
         background-color: $color-bg-alert-success;
@@ -20,11 +20,16 @@
         background-color: $color-bg-alert-prompt;
         border-left: 8px solid $color-alert-prompt;
     }
+    &.info {
+        background-color: $color-bg-info-prompt;
+        border-left: 8px solid $color-alert-info;
+    }
     &.error {
         background-color: $color-bg-alert-error;
         border-left: 8px solid $color-alert-error;
     }
-    &__left, &__right{
+    &__left,
+    &__right {
         display: flex;
         align-items: center;
     }

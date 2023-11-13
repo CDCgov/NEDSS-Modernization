@@ -13,6 +13,7 @@ export const AlertBanner = ({ type, children }: AlertBannerProps) => {
                 {type === 'success' && <Icon.CheckCircle size={3} />}
                 {type === 'warning' && <Icon.Warning size={3} />}
                 {type === 'prompt' && <Icon.Info size={3} />}
+                {type === 'info' && <Icon.Info size={3} />}
                 {type === 'error' && <Icon.Error size={5} />}
             </div>
             <div className="alert-banner__right">{children}</div>
