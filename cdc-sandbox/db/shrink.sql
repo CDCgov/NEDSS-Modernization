@@ -761,6 +761,72 @@ INSERT INTO Entity_loc_participation_hist_shrunken
 SELECT * FROM Entity_loc_participation_hist 
 WHERE entity_uid in (select person_uid from Person)
 
+CREATE TABLE NBS_ODSE.dbo.CT_contact_shrunken (
+	ct_contact_uid bigint NOT NULL,
+	local_id varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	subject_entity_uid bigint NOT NULL,
+	contact_entity_uid bigint NOT NULL,
+	subject_entity_phc_uid bigint NOT NULL,
+	contact_entity_phc_uid bigint NULL,
+	record_status_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	record_status_time datetime NOT NULL,
+	add_user_id bigint NOT NULL,
+	add_time datetime NOT NULL,
+	last_chg_time datetime NOT NULL,
+	last_chg_user_id bigint NOT NULL,
+	prog_area_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	jurisdiction_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	program_jurisdiction_oid bigint NULL,
+	shared_ind_cd char(1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	contact_status varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	priority_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	group_name_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	investigator_assigned_date datetime NULL,
+	disposition_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	disposition_date datetime NULL,
+	named_on_date datetime NULL,
+	relationship_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	health_status_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	txt varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	symptom_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	symptom_onset_date datetime NULL,
+	symptom_txt varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	risk_factor_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	risk_factor_txt varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	evaluation_completed_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	evaluation_date datetime NULL,
+	evaluation_txt varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	treatment_initiated_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	treatment_start_date datetime NULL,
+	treatment_not_start_rsn_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	treatment_end_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	treatment_end_date datetime NULL,
+	treatment_not_end_rsn_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	treatment_txt varchar(2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	version_ctrl_nbr smallint NOT NULL,
+	third_party_entity_uid bigint NULL,
+	third_party_entity_phc_uid bigint NULL,
+	processing_decision_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	subject_entity_epi_link_id varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	contact_entity_epi_link_id varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	named_during_interview_uid bigint NULL,
+	contact_referral_basis_cd varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK_CT_contact_2 PRIMARY KEY (ct_contact_uid),
+	CONSTRAINT UQ_CT_contact_3101_2 UNIQUE (contact_entity_uid)
+);
+
+INSERT INTO CT_contact_shrunken 
+SELECT * FROM CT_contact 
+WHERE contact_entity_uid in (select person_uid from Person) or subject_entity_uid in (select person_uid from Person)
+
+ CREATE NONCLUSTERED INDEX PERF_02052021_10_2 ON dbo.CT_contact_shrunken (  record_status_cd ASC  )  
+	 INCLUDE ( add_time , contact_entity_phc_uid , contact_entity_uid , contact_referral_basis_cd , ct_contact_uid , disposition_cd , local_id , named_during_interview_uid , named_on_date , priority_cd , processing_decision_cd , prog_area_cd , program_jurisdiction_oid , subject_entity_phc_uid , subject_entity_uid , third_party_entity_phc_uid , third_party_entity_uid ) 
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+ CREATE NONCLUSTERED INDEX PERF_08302021_02_2 ON dbo.CT_contact_shrunken (  subject_entity_phc_uid ASC  , contact_entity_phc_uid ASC  , third_party_entity_uid ASC  , record_status_cd ASC  , program_jurisdiction_oid ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+
 EXEC sp_rename 'Person', 'Person_original';
 EXEC sp_rename 'Person_shrunken', 'Person';
 
@@ -787,6 +853,9 @@ EXEC sp_rename 'Auth_user_shrunken', 'Auth_user';
 
 EXEC sp_rename 'Entity_loc_participation_hist', 'Entity_loc_participation_hist_original';
 EXEC sp_rename 'Entity_loc_participation_hist_shrunken', 'Entity_loc_participation_hist';
+
+EXEC sp_rename 'CT_contact', 'CT_contact_original';
+EXEC sp_rename 'CT_contact_shrunken', 'CT_contact';
 
 
 --- truncate all history tables (optional - assuming we don't want to test existing data)
