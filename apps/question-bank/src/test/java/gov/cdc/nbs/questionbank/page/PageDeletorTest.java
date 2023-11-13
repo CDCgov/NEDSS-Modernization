@@ -117,6 +117,42 @@ class PageDeletorTest {
     }
 
     @Test
+    void deleteDraftPageAndChangePublishedWithDraftPage() {
+        Long requestId = 1l;
+        WaTemplate page = new WaTemplate();
+        page.setId(2L);
+        page.setFormCd("Form_cd");
+        page.setTemplateType("Published With Draft");
+
+        WaTemplate draftPage = new WaTemplate();
+        draftPage.setId(requestId);
+        draftPage.setFormCd("Form_cd");
+        draftPage.setTemplateType("Draft");
+
+
+        when(templateRepository.findById(requestId)).thenReturn(Optional.of(draftPage));
+
+        when(templateRepository.findByFormCdAndTemplateType(draftPage.getFormCd(), PageConstants.PUBLISHED_WITH_DRAFT))
+                .thenReturn(page);
+
+        doNothing().when(wanndMetadataRepository).deleteByWaTemplateUid(draftPage);
+
+        doNothing().when(wARDBMetadataRepository).deleteByWaTemplateUid(draftPage);
+
+        doNothing().when(waUiMetadataRepository).deleteAllByWaTemplateUid(draftPage);
+
+        doNothing().when(waRuleMetaDataRepository).deleteByWaTemplateUid(draftPage.getId());
+
+        doNothing().when(templateRepository).deleteById(draftPage.getId());
+
+        PageStateResponse response = pageDeletor.deletePageDraft(requestId);
+        assertEquals(requestId, response.getTemplateId());
+        assertEquals(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS, response.getMessage());
+        assertEquals(PageConstants.PUBLISHED, page.getTemplateType());
+
+    }
+
+    @Test
     void deletePageDraftDraftNotFound() {
         Long requestId = 1l;
         WaTemplate NoDraft = getTemplate(requestId, "NoDraftPage", "Pblished");
