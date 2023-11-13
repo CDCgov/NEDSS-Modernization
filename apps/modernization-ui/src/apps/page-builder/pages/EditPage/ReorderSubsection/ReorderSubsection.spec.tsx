@@ -64,7 +64,7 @@ describe('when ReorderSubsection renders', () => {
         visible: true
     };
     const { container } = render(
-        <DragDropProvider data={content}>
+        <DragDropProvider data={content} pageDropId={0} tabId={1}>
             <DragDropContext onDragEnd={() => {}}>
                 <Droppable droppableId='testId'>
                     {(provided) => (
