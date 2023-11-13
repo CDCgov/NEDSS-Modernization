@@ -36,17 +36,10 @@ class PageInformationChanger {
       final long page,
       final PageInformationChangeRequest request
   ) {
-    this.service.with(
+    this.service.using(
         page,
-        with -> with.use(applyChanges(context, request))
+        existing -> applyChanges(existing, context, request)
     );
-  }
-
-  private Consumer<WaTemplate> applyChanges(
-      final RequestContext context,
-      final PageInformationChangeRequest request
-  ) {
-    return existing -> applyChanges(existing, context, request);
   }
 
   private void applyChanges(

@@ -1,6 +1,5 @@
 package gov.cdc.nbs.option.concept;
 
-import gov.cdc.nbs.option.concept.ConceptOption;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -37,8 +36,7 @@ class ConceptMother {
   private final Available<ConceptOption> availalbe;
 
   ConceptMother(
-      final JdbcTemplate template
-  ) {
+      final JdbcTemplate template) {
     this.template = new NamedParameterJdbcTemplate(template);
     this.availalbe = new Available<>();
   }
@@ -56,8 +54,7 @@ class ConceptMother {
       template.execute(
           DELETE_IN,
           new MapSqlParameterSource(parameters),
-          PreparedStatement::executeUpdate
-      );
+          PreparedStatement::executeUpdate);
       this.availalbe.reset();
     }
   }
@@ -77,18 +74,15 @@ class ConceptMother {
         "set", set,
         "code", code,
         "concept", concept,
-        "order", order
-    );
+        "order", order);
 
     template.execute(
         CREATE,
         new MapSqlParameterSource(parameters),
-        PreparedStatement::executeUpdate
-    );
+        PreparedStatement::executeUpdate);
 
     this.availalbe.available(new ConceptOption(code, concept, order));
 
   }
-
 
 }

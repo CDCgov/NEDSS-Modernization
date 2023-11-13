@@ -1,3 +1,7 @@
+nbs:
+  wildfly:
+    host: localhost
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
