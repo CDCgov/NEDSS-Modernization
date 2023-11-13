@@ -5,7 +5,6 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.event.search.LabReportFilter;
-import gov.cdc.nbs.event.search.LabReportFilter.ProcessingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,12 +14,10 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-
 
 @Component
 public class LabReportFinder {
-  private static final Permission PERMISSION = new Permission("View","ObservationLabReport");
+  private static final Permission PERMISSION = new Permission("View", "ObservationLabReport");
   private final PermissionScopeResolver resolver;
   private final ElasticsearchOperations operations;
   private final LabReportQueryBuilder queryBuilder;
@@ -39,7 +36,7 @@ public class LabReportFinder {
   @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-OBSERVATIONLABREPORT')")
   public Page<LabReport> find(LabReportFilter filter, Pageable pageable) {
     PermissionScope scope = this.resolver.resolve(PERMISSION);
-    var query = queryBuilder.buildLabReportQuery(scope,filter, pageable);
+    var query = queryBuilder.buildLabReportQuery(scope, filter, pageable);
     return performSearch(query, LabReport.class);
   }
 
