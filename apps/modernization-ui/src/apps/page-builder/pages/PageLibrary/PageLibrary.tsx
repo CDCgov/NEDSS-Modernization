@@ -7,6 +7,7 @@ import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './PageLibrary.scss';
 import { ManagePagesTable } from './ManagePagesTable';
 import { PageSummary } from 'apps/page-builder/generated';
+import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 
 export const PageLibrary = () => {
     const [pages, setPages] = useState<PageSummary[]>([]);
@@ -23,7 +24,7 @@ export const PageLibrary = () => {
         // set current page from query param
         if (searchParams.get('page') && parseInt(searchParams.get('page') || '') > 0) {
             const pageFromQuery = searchParams.get('page');
-            setCurrentPage(parseInt(pageFromQuery || '') || 1);
+            setCurrentPage(parseInt(pageFromQuery ?? '') || 1);
         }
 
         // get Pages
@@ -39,19 +40,22 @@ export const PageLibrary = () => {
     }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
 
     return (
-        <PageBuilder page="manage-pages" menu={true}>
-            <div className="manage-pages">
-                <div className="manage-pages__container">
-                    <div className="manage-pages__table">
-                        <ManagePagesTable
-                            summaries={pages}
-                            currentPage={currentPage}
-                            pageSize={pageSize}
-                            totalElements={totalElements}
-                        />
+        <>
+            <CustomFieldAdminBanner />
+            <PageBuilder nav>
+                <div className="manage-pages">
+                    <div className="manage-pages__container">
+                        <div className="manage-pages__table">
+                            <ManagePagesTable
+                                summaries={pages}
+                                currentPage={currentPage}
+                                pageSize={pageSize}
+                                totalElements={totalElements}
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </PageBuilder>
+            </PageBuilder>
+        </>
     );
 };

@@ -30,7 +30,7 @@ $color-orange-30: #fa9441;
 $color-orange-40: #c05600;
 $color-gold: #ffbe2e;
 $color-yellow: #fee685;
-$color-yellow-10: #faf3d1; 
+$color-yellow-10: #faf3d1;
 $color-green: #538200;
 $color-green-10: #ecf3ec;
 $color-mint: #04c585;
@@ -85,6 +85,7 @@ $color-emergency-dark: $color-gray-80;
 $color-alert-success: $color-green;
 $color-alert-warning: $color-gold;
 $color-alert-prompt: $color-primary;
+$color-alert-info: #00bde3;
 $color-alert-error: $color-red-25;
 
 //Background colours
@@ -124,3 +125,4 @@ $color-bg-alert-success: $color-green-10;
 $color-bg-alert-warning: $color-yellow-10;
 $color-bg-alert-prompt: $color-blue-5;
 $color-bg-alert-error: $color-red-5;
+$color-bg-info-prompt: $color-blue-5;

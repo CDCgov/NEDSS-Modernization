@@ -36,7 +36,7 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
 
     return (
-        <PageBuilder page="valueset-library" menu={true}>
+        <PageBuilder nav>
             <div className="valueset-local-library">
                 {!hideTabs && (
                     <div className="margin-left-2em">
