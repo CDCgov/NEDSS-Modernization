@@ -13,7 +13,7 @@ import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.support.PageMother;
+import gov.cdc.nbs.questionbank.page.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

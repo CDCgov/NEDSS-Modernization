@@ -85,7 +85,7 @@ export const PatientProfile = () => {
         <ProfileProvider id={id}>
             <div className="height-full main-banner">
                 <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
-                    <h1 className="font-sans-xl text-medium">Patient Profile</h1>
+                    <h1 className="font-sans-xl text-medium">Patient profile</h1>
                     <div>
                         <Button
                             type={'button'}

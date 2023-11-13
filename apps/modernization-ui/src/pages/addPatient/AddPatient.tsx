@@ -13,7 +13,6 @@ import { NameFields } from './components/nameFields/NameFields';
 import AddressFields from './components/addressFields/AddressFields';
 import ContactFields from './components/contactFields/ContactFields';
 import EthnicityFields from './components/ethnicityFields/EthnicityFields';
-import { ACTIVE_TAB, LeftBar } from './components/LeftBar/LeftBar';
 import RaceFields from './components/Race/RaceFields';
 import GeneralInformation from './components/generalInformation/generalInformation';
 import { IdentificationFields } from './components/identificationFields/IdentificationFields';
@@ -25,6 +24,7 @@ import { orNull } from 'utils';
 import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'pages/patient/add';
 import { isMissingFields } from './isMissingFields';
 import { usePreFilled } from './usePreFilled';
+import { DataEntrySideNav } from './components/DataEntrySideNav/DataEntrySideNav';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -227,7 +227,7 @@ const AddPatient = () => {
                 />
             )}
             <Grid col={3} className="bg-white border-right border-base-light">
-                <LeftBar activeTab={ACTIVE_TAB.PATIENT} />
+                <DataEntrySideNav />
             </Grid>
             <Grid col={9} className="margin-left-auto" style={{ position: 'relative' }}>
                 <FormProvider {...methods}>

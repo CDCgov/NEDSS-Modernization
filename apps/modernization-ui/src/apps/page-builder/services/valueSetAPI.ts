@@ -1,4 +1,4 @@
-import { Concept, ValueSetControllerService } from '../generated';
+import { ValueSetControllerService } from '../generated';
 
 export const fetchCodingSystemOptions = (token: string) => {
     return fetchValueSetOptions(token, 'CODE_SYSTEM');
@@ -17,17 +17,8 @@ export const fetchGroupOptions = (token: string) => {
 };
 
 export const fetchValueSetOptions = (token: string, codeSet: string) => {
-    return new Promise<Concept[]>((resolve, reject) => {
-        ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization: token,
-            codeSetNm: codeSet
-        })
-            .then((response: any) => {
-                resolve(response);
-            })
-            .catch((error) => {
-                console.log(error.toJSON());
-                reject(error);
-            });
+    return ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
+        authorization: token,
+        codeSetNm: codeSet
     });
 };

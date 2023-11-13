@@ -1,4 +1,4 @@
-import { Navigation } from '../../components/Navigation/Navigation';
+import { PageBuilderSideNav } from '../../components/Navigation/PageBuilderSideNav';
 import './PageBuilder.scss';
 
 type Props = {
@@ -7,12 +7,10 @@ type Props = {
     menu?: boolean;
 };
 
-export const PageBuilder = ({ page, children }: Props) => {
+export const PageBuilder = ({ children }: Props) => {
     return (
         <div className="page-builder">
-            <div className="page-builder__navigation">
-                <Navigation active={page}></Navigation>
-            </div>
+            <PageBuilderSideNav />
             <div className="page-builder__content">{children}</div>
         </div>
     );

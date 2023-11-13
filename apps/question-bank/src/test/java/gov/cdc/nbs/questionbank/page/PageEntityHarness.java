@@ -11,8 +11,6 @@ import java.util.function.Consumer;
 @Component
 public class PageEntityHarness {
 
-
-
   private final EntityManager entityManager;
 
   public PageEntityHarness(final EntityManager entityManager) {

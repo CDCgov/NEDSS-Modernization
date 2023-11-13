@@ -1,12 +1,12 @@
-import { TemplateControllerService } from '../generated';
+import { Template, TemplateControllerService } from '../generated';
 
-export const fetchTemplates = (token: string): Promise<any> => {
+export const fetchTemplates = (token: string): Promise<Template[]> => {
     return new Promise((resolve, reject) => {
         TemplateControllerService.findAllTemplatesUsingGet({
             authorization: token
         })
-            .then((response: any) => {
-                resolve(response.content);
+            .then((response) => {
+                resolve(response.content ?? []);
             })
             .catch((error: any) => {
                 console.log(error.toJSON());
