@@ -1,4 +1,4 @@
-import { Alert, Button, Grid, Icon } from '@trussworks/react-uswds';
+import { Alert, Button, Grid, Icon, Pagination } from '@trussworks/react-uswds';
 import { externalize, internalize } from 'pages/patient/search';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -69,6 +69,12 @@ export const AdvancedSearch = () => {
     const addPatiendRef = useRef<any>(null);
     const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
+
+    // pagination variables
+    const [resultStartCount, setResultStartCount] = useState<number>(0);
+    const [resultEndCount, setResultEndCount] = useState<number>(0);
+    const [resultTotal, setResultTotal] = useState<number>(0);
+
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
     const [
         findPatients,
@@ -167,8 +173,8 @@ export const AdvancedSearch = () => {
         });
     }, [searchParams, state.isLoggedIn, sort, currentPage]);
 
-    const performPatientSearch = (filter: PersonFilter) => {
-        findPatients({
+    const performPatientSearch = async (filter: PersonFilter) => {
+        const patientsResponse = await findPatients({
             variables: {
                 filter: filter,
                 page: {
@@ -178,6 +184,8 @@ export const AdvancedSearch = () => {
                 }
             }
         });
+        const patientsResult = patientsResponse.data?.findPatientsByFilter;
+        updatePaginationDetails(patientsResult);
         setLastSearchType(SEARCH_TYPE.PERSON);
         setActiveTab(ACTIVE_TAB.PERSON);
 
@@ -186,8 +194,8 @@ export const AdvancedSearch = () => {
         setPersonFilter(internalized);
     };
 
-    const performInvestigationSearch = (filter: InvestigationFilter) => {
-        findInvestigations({
+    const performInvestigationSearch = async (filter: InvestigationFilter) => {
+        const investigationResponse = await findInvestigations({
             variables: {
                 filter: filter,
                 page: {
@@ -197,14 +205,16 @@ export const AdvancedSearch = () => {
                 }
             }
         });
+        const investigationsResult = investigationResponse.data?.findInvestigationsByFilter;
+        updatePaginationDetails(investigationsResult);
         setLastSearchType(SEARCH_TYPE.INVESTIGATION);
         setActiveTab(ACTIVE_TAB.EVENT);
         setLabReportFilter(undefined);
         setInvestigationFilter(filter);
     };
 
-    const performLabReportSearch = (filter: LabReportFilter) => {
-        findLabReports({
+    const performLabReportSearch = async (filter: LabReportFilter) => {
+        const labReportsResponse = await findLabReports({
             variables: {
                 filter: filter,
                 page: {
@@ -214,6 +224,8 @@ export const AdvancedSearch = () => {
                 }
             }
         });
+        const labReportsResults = labReportsResponse.data?.findLabReportsByFilter;
+        updatePaginationDetails(labReportsResults);
         setLastSearchType(SEARCH_TYPE.LAB_REPORT);
         setActiveTab(ACTIVE_TAB.EVENT);
         setInvestigationFilter(undefined);
@@ -341,6 +353,26 @@ export const AdvancedSearch = () => {
         setCurrentPage(page);
     };
 
+    /**
+     * Update the pagination variables based on api response
+     * @param {FilterQueryResponse} result - response object og patient, investigation or lab results api
+     */
+    const updatePaginationDetails = (
+        result:
+            | FindPatientsByFilterQuery['findPatientsByFilter']
+            | FindInvestigationsByFilterQuery['findInvestigationsByFilter']
+            | FindLabReportsByFilterQuery['findLabReportsByFilter']
+            | undefined
+    ) => {
+        const content = result?.content;
+        const total = result?.total || 0;
+        const startCount = content?.length ? 1 + PAGE_SIZE * (currentPage - 1) : 0;
+        const endCount = content?.length ? startCount + content?.length - 1 : 0;
+        setResultStartCount(startCount);
+        setResultEndCount(endCount);
+        setResultTotal(total);
+    };
+
     function isLoading() {
         return patientDataLoading || investigationLoading || labReportLoading;
     }
@@ -386,7 +418,8 @@ export const AdvancedSearch = () => {
                                 disabled={!lastSearchType}
                                 className="padding-x-3 add-patient-button"
                                 type={'button'}
-                                onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
+                                onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
+                                outline>
                                 Add new
                                 <img src={'/icons/down-arrow-white.svg'} />
                             </Button>
@@ -602,6 +635,22 @@ export const AdvancedSearch = () => {
                                 </Button>
                             </div>
                         </Grid>
+                        {submitted && !!resultTotal && (
+                            <Grid row className="padding-left-4 padding-right-4 flex-align-center flex-justify">
+                                <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
+                                    Showing {resultStartCount} - {resultEndCount} of {resultTotal}
+                                </p>
+                                <Pagination
+                                    style={{ justifyContent: 'flex-end' }}
+                                    totalPages={Math.ceil(resultTotal / 25)}
+                                    currentPage={currentPage}
+                                    pathname={'/advanced-search'}
+                                    onClickNext={() => handlePagination(currentPage + 1)}
+                                    onClickPrevious={() => handlePagination(currentPage - 1)}
+                                    onClickPageNumber={(_, page) => handlePagination(page)}
+                                />
+                            </Grid>
+                        )}
                         {isLoading() && (
                             <Grid row className="padding-5 flex-justify-center">
                                 <span className="ds-c-spinner" role="status">
@@ -634,7 +683,7 @@ export const AdvancedSearch = () => {
                                         className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center text-normal flex-justify-center advanced-search-message"
                                         style={{
                                             background: 'white',
-                                            border: '1px solid #DFE1E2',
+                                            border: '1px solid #DCDEE0',
                                             borderRadius: '5px',
                                             height: '147px'
                                         }}>
@@ -648,7 +697,7 @@ export const AdvancedSearch = () => {
                                 className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
                                 style={{
                                     background: 'white',
-                                    border: '1px solid #DFE1E2',
+                                    border: '1px solid #DCDEE0',
                                     borderRadius: '5px',
                                     height: '147px'
                                 }}>
