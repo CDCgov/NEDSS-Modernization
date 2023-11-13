@@ -2,9 +2,11 @@ package gov.cdc.nbs.questionbank.page;
 
 import com.itextpdf.text.DocumentException;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.page.model.PageHistory;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
+import gov.cdc.nbs.questionbank.page.service.PageHistoryFinder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -21,8 +23,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -35,15 +37,19 @@ public class PageController {
   private final PageDownloader pageDownloader;
   private final UserDetailsProvider userDetailsProvider;
 
+  private final PageHistoryFinder pageHistoryFinder;
+
   public PageController(
-      final PageCreator creator,
-      final PageStateChanger stateChange,
-      final PageDownloader pageDownloader,
-      final UserDetailsProvider userDetailsProvider) {
+          final PageCreator creator,
+          final PageStateChanger stateChange,
+          final PageDownloader pageDownloader,
+          final UserDetailsProvider userDetailsProvider,
+          final PageHistoryFinder pageHistoryFinder) {
     this.creator = creator;
     this.stateChange = stateChange;
     this.pageDownloader = pageDownloader;
     this.userDetailsProvider = userDetailsProvider;
+    this.pageHistoryFinder = pageHistoryFinder;
   }
 
   @PostMapping
@@ -85,5 +91,10 @@ public class PageController {
     return stateChange.deletePageDraft(pageId);
   }
 
+
+  @GetMapping("{template_nm}/page-history")
+  public List<PageHistory> getPageHistory(@PathVariable("template_nm") String waTemplateName) {
+    return pageHistoryFinder.getPageHistory(waTemplateName);
+  }
 
 }
