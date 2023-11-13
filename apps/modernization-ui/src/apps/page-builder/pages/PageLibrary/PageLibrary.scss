@@ -1,6 +1,6 @@
 @import 'settings.scss';
-
 .manage-pages {
+    display: flex;
     position: relative;
     border-radius: 5px;
     border: $border-medium;

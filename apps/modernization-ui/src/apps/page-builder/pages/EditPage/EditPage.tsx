@@ -56,7 +56,7 @@ export const EditPage = () => {
     };
 
     return (
-        <PageBuilder page="edit-page">
+        <PageBuilder>
             {page ? (
                 <DragDropProvider data={page.tabs?.[active]}>
                     <div className="edit-page">

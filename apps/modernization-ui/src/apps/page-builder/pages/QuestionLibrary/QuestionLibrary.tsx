@@ -45,7 +45,7 @@ export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
 
     if (hideTabs) return <div className="question-local-library">{renderQuestionList}</div>;
     return (
-        <PageBuilder page="question-library" menu={true}>
+        <PageBuilder nav={true}>
             <div className="question-local-library">
                 {!hideTabs && (
                     <div className="margin-left-2em">
