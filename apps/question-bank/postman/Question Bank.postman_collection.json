@@ -775,6 +775,90 @@
 					]
 				},
 				{
+					"name": "Information",
+					"item": [
+						{
+							"name": "Information",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/information",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										":page",
+										"information"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1000377",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "page",
+											"value": "1000375"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Information",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"name\": \"interfaces\",\n    \"datamart\": \"GEN_Case_Map_v2.0\",\n    \"description\": \"Created for development testing.\",\n    \"conditions\": [\"TV\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/information",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										":page",
+										"information"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1000319",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "page",
+											"value": "1000377"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Pages",
 					"request": {
 						"method": "GET",

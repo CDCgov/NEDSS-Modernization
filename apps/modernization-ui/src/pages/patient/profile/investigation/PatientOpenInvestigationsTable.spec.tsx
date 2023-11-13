@@ -12,7 +12,7 @@ describe('when rendered', () => {
         );
 
         const tableHeader = container.getElementsByClassName('table-header');
-        expect(tableHeader[0].innerHTML).toBe('Open Investigations');
+        expect(tableHeader[0].innerHTML).toBe('Open investigations');
 
         const tableHeads = container.getElementsByClassName('head-name');
 

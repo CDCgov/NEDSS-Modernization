@@ -1,18 +1,5 @@
 package gov.cdc.nbs;
 
-import static org.junit.Assert.assertTrue;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.List;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.event.search.LabReportFilter.EntryMethod;
@@ -30,128 +17,139 @@ import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.elasticsearch.LabReportRepository;
 import gov.cdc.nbs.support.EventMother;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-@Transactional
-@Rollback(false)
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class LabReportSearchSteps {
-    @Autowired
-    private LabReportRepository labReportRepository;
-    @Autowired
-    private JurisdictionCodeRepository jurisdictionCodeRepository;
-    @Autowired
-    private LabReportFinder labReportFinder;
-    private List<LabReport> labReportSearchResults;
+  private static final Long PATIENT_ID = 8888888L;
 
-    private static final Long PATIENT_ID = 8888888L;
+  @Autowired
+  Authenticated authenticated;
 
-    @Given("A lab report exist")
-    public void lab_report_exist() {
-        addJurisdictionEntries();
-        var labReport = EventMother.labReport_acidFastStain(PATIENT_ID);
-        labReportRepository.save(labReport);
+  @Autowired
+  LabReportRepository labReportRepository;
+  @Autowired
+  JurisdictionCodeRepository jurisdictionCodeRepository;
+  @Autowired
+  LabReportFinder labReportFinder;
+  private List<LabReport> results;
+  private final Pageable page = Pageable.ofSize(25);
+
+  @Given("A lab report exist")
+  public void lab_report_exist() {
+    addJurisdictionEntries();
+    var labReport = EventMother.labReport_acidFastStain(PATIENT_ID);
+    labReportRepository.save(labReport);
+  }
+
+  @When("I search laboratory events by {string} {string}")
+  public void i_search_patients_by_laboratory_events(String field, String qualifier) {
+    var filter = updateLabReportFilter(new LabReportFilter(), field, qualifier);
+    results = search(filter);
+  }
+
+  private List<LabReport> search(final LabReportFilter filter) {
+    return authenticated.perform(() -> labReportFinder.find(filter, page).getContent());
+  }
+
+  @When("I search laboratory events by {string} {string} {string} {string} {string} {string}")
+  public void i_search_patients_by_laboratory_events(String field, String qualifier, String field2, String qualifier2,
+      String field3, String qualifier3) {
+    LabReportFilter filter = updateLabReportFilter(new LabReportFilter(), field, qualifier);
+    updateLabReportFilter(filter, field2, qualifier2);
+    updateLabReportFilter(filter, field3, qualifier3);
+    results = search(filter);
+  }
+
+  @Then("I find the lab report")
+  public void i_find_the_lab_report() {
+    assertThat(results).isNotEmpty();
+  }
+
+  private void addJurisdictionEntries() {
+    var jurisdictions = EventMother.getJurisdictionCodes();
+    jurisdictionCodeRepository.saveAll(jurisdictions);
+  }
+
+  private LabReportFilter updateLabReportFilter(LabReportFilter filter, String field,
+      String qualifier) {
+    if (field == null || field.isEmpty()) {
+      return filter;
     }
-
-    @When("I search laboratory events by {string} {string}")
-    public void i_search_patients_by_laboratory_events(String field, String qualifier) {
-        var filter = updateLabReportFilter(new LabReportFilter(), field, qualifier);
-        labReportSearchResults = labReportFinder.find(filter, null).getContent();
-    }
-
-    @When("I search laboratory events by {string} {string} {string} {string} {string} {string}")
-    public void i_search_patients_by_laboratory_events(String field, String qualifier, String field2, String qualifier2,
-            String field3, String qualifier3) {
-        LabReportFilter filter = updateLabReportFilter(new LabReportFilter(), field, qualifier);
-        updateLabReportFilter(filter, field2, qualifier2);
-        updateLabReportFilter(filter, field3, qualifier3);
-        labReportSearchResults = labReportFinder.find(filter, null).getContent();
-    }
-
-    @Then("I find the lab report")
-    public void i_find_the_lab_report() {
-        assertTrue(labReportSearchResults.size() > 0);
-    }
-
-    private void addJurisdictionEntries() {
-        var jurisdictions = EventMother.getJurisdictionCodes();
-        jurisdictionCodeRepository.saveAll(jurisdictions);
-    }
-
-    private LabReportFilter updateLabReportFilter(LabReportFilter filter, String field,
-            String qualifier) {
-        if (field == null || field.isEmpty()) {
-            return filter;
+    switch (field) {
+      case "program area":
+        filter.setProgramAreas(List.of("STD"));
+        break;
+      case "jurisdiction":
+        filter.setJurisdictions(Collections.singletonList(EventMother.CLAYTON_CODE));
+        break;
+      case "pregnancy status":
+        filter.setPregnancyStatus(PregnancyStatus.YES);
+        break;
+      case "event id":
+        switch (qualifier) {
+          case "accession number":
+            filter.setEventId(
+                new LabReportEventId(LaboratoryEventIdType.ACCESSION_NUMBER, "accession number"));
+            break;
+          case "lab id":
+            filter.setEventId(new LabReportEventId(LaboratoryEventIdType.LAB_ID, "OBS10003024GA01"));
+            break;
         }
-        switch (field) {
-            case "program area":
-                filter.setProgramAreas(Arrays.asList("STD"));
-                break;
-            case "jurisdiction":
-                filter.setJurisdictions(Arrays.asList(EventMother.CLAYTON_CODE));
-                break;
-            case "pregnancy status":
-                filter.setPregnancyStatus(PregnancyStatus.YES);
-                break;
-            case "event id":
-                switch (qualifier) {
-                    case "accession number":
-                        filter.setEventId(
-                                new LabReportEventId(LaboratoryEventIdType.ACCESSION_NUMBER, "accession number"));
-                        break;
-                    case "lab id":
-                        filter.setEventId(new LabReportEventId(LaboratoryEventIdType.LAB_ID, "OBS10003024GA01"));
-                        break;
-                }
-                break;
-            case "event date":
-                var eds = new LaboratoryEventDateSearch(
-                        LabReportDateType.valueOf(qualifier),
-                        LocalDate.now().minus(5, ChronoUnit.DAYS),
-                        LocalDate.now().plusDays(2));
-                filter.setEventDate(eds);
-                break;
-            case "entry method":
-                filter.setEntryMethods(Arrays.asList(EntryMethod.ELECTRONIC));
-                filter.setEnteredBy(Arrays.asList(UserType.EXTERNAL));
-                break;
-            case "entered by":
-                filter.setEnteredBy(Arrays.asList(UserType.EXTERNAL));
-                break;
-            case "event status":
-                filter.setEventStatus(Arrays.asList(EventStatus.NEW));
-                break;
-            case "processing status":
-                filter.setProcessingStatus(Arrays.asList(ProcessingStatus.UNPROCESSED));
-                break;
-            case "created by":
-                filter.setCreatedBy(EventMother.CREATED_BY);
-                break;
-            case "last updated by":
-                filter.setLastUpdatedBy(EventMother.UPDATED_BY);
-                break;
-            case "provider search":
-                var ps = new LabReportProviderSearch(ProviderType.valueOf(qualifier), PATIENT_ID);
-                filter.setProviderSearch(ps);
-                break;
-            case "resulted test":
-                filter.setResultedTest("Acid-Fast Stain");
-                break;
-            case "coded result":
-                filter.setCodedResult("abnormal");
-                break;
-            case "patient id":
-                filter.setPatientId(PATIENT_ID);
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported field: " + field);
-        }
-
-        return filter;
+        break;
+      case "event date":
+        var eds = new LaboratoryEventDateSearch(
+            LabReportDateType.valueOf(qualifier),
+            LocalDate.now().minusDays(5),
+            LocalDate.now().plusDays(2));
+        filter.setEventDate(eds);
+        break;
+      case "entry method":
+        filter.setEntryMethods(List.of(EntryMethod.ELECTRONIC));
+        filter.setEnteredBy(List.of(UserType.EXTERNAL));
+        break;
+      case "entered by":
+        filter.setEnteredBy(List.of(UserType.EXTERNAL));
+        break;
+      case "event status":
+        filter.setEventStatus(List.of(EventStatus.NEW));
+        break;
+      case "processing status":
+        filter.setProcessingStatus(List.of(ProcessingStatus.UNPROCESSED));
+        break;
+      case "created by":
+        filter.setCreatedBy(EventMother.CREATED_BY);
+        break;
+      case "last updated by":
+        filter.setLastUpdatedBy(EventMother.UPDATED_BY);
+        break;
+      case "provider search":
+        var ps = new LabReportProviderSearch(ProviderType.valueOf(qualifier), PATIENT_ID);
+        filter.setProviderSearch(ps);
+        break;
+      case "resulted test":
+        filter.setResultedTest("Acid-Fast Stain");
+        break;
+      case "coded result":
+        filter.setCodedResult("abnormal");
+        break;
+      case "patient id":
+        filter.setPatientId(PATIENT_ID);
+        break;
+      default:
+        throw new IllegalArgumentException("Unsupported field: " + field);
     }
+
+    return filter;
+  }
 }
