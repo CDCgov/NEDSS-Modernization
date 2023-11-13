@@ -12,8 +12,8 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
 @EnableOpenApi
 public class QuestionBankApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(QuestionBankApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(QuestionBankApplication.class, args);
+  }
 
 }

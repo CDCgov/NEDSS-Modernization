@@ -2,7 +2,6 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     alias libs.plugins.springBoot
-    alias libs.plugins.springDependencies
 }
 apply from: "${rootDir}/gradle/cucumber-logging.gradle"
 
@@ -26,11 +25,12 @@ bootJar {
 dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
-    implementation project(':accumulation')
-    implementation project(':database-entities')
-    implementation project(':event-schema')
-    implementation project(':authentication')
-    implementation project(':id-generator')
+    implementation(project(':accumulation'))
+    implementation(project(':database-entities'))
+    implementation(project(':event-schema'))
+    implementation(project(':authentication'))
+    implementation(project(':id-generator'))
+    implementation(project(':libs:classic-interaction'))
 
     //  feature modules
     implementation project(':me-api')
@@ -47,7 +47,7 @@ dependencies {
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
 
     // blazebit for querydsl paging
-    implementation libs.bundles.blaze.persistence.queryDSL
+//    implementation libs.bundles.blaze.persistence.queryDSL
     implementation libs.bundles.jackson
 
     implementation libs.bundles.security
