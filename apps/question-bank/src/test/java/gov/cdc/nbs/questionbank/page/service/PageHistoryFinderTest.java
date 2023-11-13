@@ -9,27 +9,28 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
 class PageHistoryFinderTest {
+
 
     @Mock
     JdbcTemplate jdbcTemplate;
 
     @InjectMocks
     PageHistoryFinder pageHistoryFinder;
+
 
     public PageHistoryFinderTest() {
         MockitoAnnotations.openMocks(this);
@@ -70,11 +71,40 @@ class PageHistoryFinderTest {
     }
 
     @Test
+    void testPageHistoryMapping() throws SQLException {
+        ResultSet rs = mock(ResultSet.class);
+        when(rs.getString(pageHistoryFinder.PUBLISH_VERSION_NBR)).thenReturn("1.0");
+        when(rs.getString(pageHistoryFinder.LAST_UPDATE_DATE)).thenReturn("09/25/2019");
+        when(rs.getString(pageHistoryFinder.LAST_UPDATE_BY)).thenReturn("John Doe");
+        when(rs.getString(pageHistoryFinder.NOTES)).thenReturn("Sample note");
+
+        RowMapper<PageHistory> pageHistoryRowMapper = (resultSet, i) -> {
+            return new PageHistory(
+                    resultSet.getString("publishVersionNbr"),
+                    resultSet.getString("lastUpdatedDate"),
+                    resultSet.getString("lastUpdatedBy"),
+                    resultSet.getString("notes")
+            );
+        };
+        PageHistory pageHistory = pageHistoryRowMapper.mapRow(rs, 1);
+        assertEquals("1.0", pageHistory.publishVersionNbr());
+        assertEquals("09/25/2019", pageHistory.lastUpdatedDate());
+        assertEquals("John Doe", pageHistory.lastUpdatedBy());
+        assertEquals("Sample note", pageHistory.notes());
+    }
+
+
+    @Test
     void getPageHistory_runtimeException_returnRuntimeExceptionWithMsg() {
         when(jdbcTemplate.query(anyString(), any(Object[].class), any(int[].class), any(RowMapper.class)))
                 .thenThrow(new RuntimeException("Error Fetching Page-History by Template_nm From the Database"));
         var exception = assertThrows(RuntimeException.class, () -> pageHistoryFinder.getPageHistory("TemplateName"));
         assertTrue(exception.getMessage().contains("Error Fetching Page-History by Template_nm From the Database"));
     }
+
+
+
+
+
 
 }
