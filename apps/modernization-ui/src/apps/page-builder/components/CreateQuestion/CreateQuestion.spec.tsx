@@ -1,4 +1,4 @@
-import { fireEvent, render, within } from '@testing-library/react';
+import { fireEvent, getByRole, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router-dom';
@@ -26,12 +26,32 @@ describe('When page loads', () => {
         );
         const btn = container.getElementsByClassName('usa-button')[0];
         expect(btn.hasAttribute('disabled'));
+
+        const hl7Segment = container.getElementsByClassName('hl7-segment')[0];
+        expect(hl7Segment.hasAttribute('disabled'));
+        const hl7DefaultVal = container.getElementsByClassName('')
+    });
+
+    it('Create and hl7 segment should be disabled and value should be constant', () => {
+        const { container } = render(
+            <BrowserRouter>
+                <AlertProvider>
+                    <CreateQuestion />
+                </AlertProvider>
+            </BrowserRouter>
+        );
+        const hl7Segment = container.getElementsByClassName('hl7-segment')[0];
+        expect(hl7Segment.hasAttribute('disabled'));
+        expect(container.querySelector('#hl7Segment')!.textContent).toBe(
+            'OBX-3.0'
+          );
+        
     });
 });
 
 describe('Question component tests', () => {
     it('should render a grid with 10 inputs labels which are Question Name, Coding System, Question Code, Others', () => {
-        const { getByText } = render(
+        const { getByText, getByLabelText } = render(
             <AlertProvider>
                 <CreateQuestion />
             </AlertProvider>
@@ -55,8 +75,6 @@ describe('Question component tests', () => {
         expect(getByText('HL7 data type')).toBeTruthy();
         expect(getByText('Administrative comments')).toBeTruthy();
         expect(getByText('HL7 Segment')).toBeTruthy();
-        expect(getByText('HL7 Segment')).toBeDisabled();
-
     });
 
     it('should allow valid input', () => {

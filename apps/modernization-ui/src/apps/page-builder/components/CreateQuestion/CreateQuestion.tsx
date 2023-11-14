@@ -833,17 +833,17 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
                 </Dropdown>
-                <label htmlFor='hl7Segment'>
+                <label htmlFor="hl7Segment">
                     HL7 Segment <span className="mandatory-indicator">*</span>
                 </label>
                 <br></br>
                 <Dropdown
-                    className="field-space"
+                    className="hl7-segment"
                     name="hl7Segment"
                     id="hl7Segment"
                     defaultValue={'OBX-3.0'}
                     disabled={true}>
-                    <option>OBX-3.0</option>
+                    <option className="obx-30">OBX-3.0</option>
                 </Dropdown>
                 <hr className="divider" />
                 <h4>Administrative</h4>
