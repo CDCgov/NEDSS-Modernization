@@ -32,16 +32,20 @@ public class PageController {
   private final PageStateChanger stateChange;
   private final PageDownloader pageDownloader;
   private final UserDetailsProvider userDetailsProvider;
+  private final PageMetaDataDownloader pageMetaDataDownloader;
 
   public PageController(
       final PageCreator creator,
       final PageStateChanger stateChange,
       final PageDownloader pageDownloader,
-      final UserDetailsProvider userDetailsProvider) {
+      final UserDetailsProvider userDetailsProvider,
+      final PageMetaDataDownloader pageMetaDataDownloader) {
+
     this.creator = creator;
     this.stateChange = stateChange;
     this.pageDownloader = pageDownloader;
     this.userDetailsProvider = userDetailsProvider;
+    this.pageMetaDataDownloader = pageMetaDataDownloader;
   }
 
   @PostMapping
@@ -81,6 +85,14 @@ public class PageController {
   @DeleteMapping("{id}/delete-draft")
   public PageStateResponse deletePageDraft(@PathVariable("id") Long pageId) {
     return stateChange.deletePageDraft(pageId);
+  }
+
+  @GetMapping("{waTemplateUid}/download-metadata")
+  public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("waTemplateUid") Long waTemplateUid) throws IOException {
+    String fileName = "PageMetadata.csv";
+    InputStreamResource file = new InputStreamResource(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid));
+    return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+            .contentType(MediaType.parseMediaType("application/csv")).body(file);
   }
 
 

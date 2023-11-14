@@ -1,10 +1,7 @@
 package gov.cdc.nbs.questionbank.page.download;
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.page.PageController;
-import gov.cdc.nbs.questionbank.page.PageCreator;
-import gov.cdc.nbs.questionbank.page.PageDownloader;
-import gov.cdc.nbs.questionbank.page.PageStateChanger;
+import gov.cdc.nbs.questionbank.page.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -25,12 +22,14 @@ class PageControllerTest {
     private PageDownloader pageDownloader;
     @Mock
     private UserDetailsProvider userDetailsProvider;
+    @Mock
+    private PageMetaDataDownloader pageMetaDataDownloader;
 
     @Test
     void downloadPageLibraryPDFTest() throws Exception {
 
         PageController pageController = new PageController(creator, stateChange,
-                pageDownloader, userDetailsProvider);
+                pageDownloader, userDetailsProvider,pageMetaDataDownloader);
 
         byte[] resp = "pagedownloader".getBytes();
         Mockito.when(pageDownloader.downloadLibraryPDF())
