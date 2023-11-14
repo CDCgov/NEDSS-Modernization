@@ -421,7 +421,9 @@ export const AdvancedSearch = () => {
                                 onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
                                 outline>
                                 Add new
-                                <img src={'/icons/down-arrow-white.svg'} />
+                                <img
+                                    src={lastSearchType ? '/icons/down-arrow-blue.svg' : '/icons/down-arrow-white.svg'}
+                                />
                             </Button>
                             {showAddNewDropDown && (
                                 <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">

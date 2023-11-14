@@ -28,7 +28,6 @@ export const ConditionalCase = () => {
             authorization
         }).then((resp: any) => {
             setQuestions(resp?.content);
-            console.log(resp);
         });
     }, []);
     const deletQtn = () => {};

@@ -23,7 +23,7 @@ type Props = {
 };
 
 const tableHeaders = [
-    { name: 'Condition', sortable: true, className: 'asdf' },
+    { name: 'Condition', sortable: true },
     { name: 'Code', sortable: true },
     { name: 'Program area', sortable: true },
     { name: 'Condition Family', sortable: true },
@@ -90,7 +90,8 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
 
     const asTableRow = (condition: any): TableBody => ({
         id: condition.id,
-        expanded: true,
+        expanded: false,
+        selectable: true,
         tableDetails: [
             {
                 id: 1,
@@ -188,7 +189,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         totalResults={totalConditions}
                         currentPage={currentPage}
                         handleNext={setCurrentPage}
-                        selectable
+                        selectable={true}
                         handleSelected={handleSelectConditions}
                     />
                 ) : (
