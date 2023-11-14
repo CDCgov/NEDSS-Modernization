@@ -54,6 +54,9 @@ describe('Question component tests', () => {
         expect(getByText('Code system name')).toBeTruthy();
         expect(getByText('HL7 data type')).toBeTruthy();
         expect(getByText('Administrative comments')).toBeTruthy();
+        expect(getByText('HL7 Segment')).toBeTruthy();
+        expect(getByText('HL7 Segment')).toBeDisabled();
+
     });
 
     it('should allow valid input', () => {
