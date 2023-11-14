@@ -7,6 +7,7 @@ import java.util.*;
 import gov.cdc.nbs.questionbank.entity.*;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.*;
+import gov.cdc.nbs.questionbank.page.util.PageUtil;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.question.exception.TemplateCreationException;
 import gov.cdc.nbs.questionbank.template.request.PageElements;
@@ -143,7 +144,7 @@ public class TemplateReader {
 			waTemplateDT.setRecordStatusTime(template.getRecordStatusTime());
 			waTemplateDT.setSourceNm(template.getSourceNm());
 			waTemplateDT.setVersionNote(template.getVersionNote());
-			waTemplateDT.setConditionMappings(copyConditionMappings(template.getConditionMappings(), waTemplateDT));
+			waTemplateDT.setConditionMappings(PageUtil.copyConditionMappings(template.getConditionMappings(), waTemplateDT));
 
 			WaTemplate waTemplateDTn = templateRepository.save(waTemplateDT);
 			return convertTemplate(waTemplateDTn);
@@ -170,23 +171,5 @@ public class TemplateReader {
 		}
 
 		return xmlString;
-	}
-
-	private Set<PageCondMapping> copyConditionMappings(Set<PageCondMapping> original, WaTemplate page) {
-		if (original == null)
-			return original;
-		Set<PageCondMapping> copy = new HashSet<>();
-		for (PageCondMapping con : original) {
-			PageCondMapping aCopy = new PageCondMapping();
-			aCopy.setAddTime(con.getAddTime());
-			aCopy.setAddUserId(con.getAddUserId());
-			aCopy.setConditionCd(con.getConditionCd());
-			aCopy.setLastChgTime(con.getLastChgTime());
-			aCopy.setLastChgUserId(con.getLastChgUserId());
-			aCopy.setWaTemplateUid(page);
-			copy.add(aCopy);
-
-		}
-		return copy;
 	}
 }

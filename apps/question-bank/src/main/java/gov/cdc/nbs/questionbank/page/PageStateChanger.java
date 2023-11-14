@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.EntityNotFoundException;
 
+import gov.cdc.nbs.questionbank.page.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -188,29 +189,10 @@ public class PageStateChanger {
         draftCopy.setSourceNm(oldPage.getSourceNm());
         draftCopy.setVersionNote(oldPage.getVersionNote());
         draftCopy.setXmlPayload(oldPage.getXmlPayload());
-        draftCopy.setConditionMappings(copyConditionMappings(oldPage.getConditionMappings(), draftCopy));
-
+        draftCopy.setConditionMappings(PageUtil.copyConditionMappings(oldPage.getConditionMappings(), draftCopy));
 
         return draftCopy;
 
     }
-    
-	private Set<PageCondMapping> copyConditionMappings(Set<PageCondMapping> original, WaTemplate page) {
-		if (original == null)
-			return original;
-		Set<PageCondMapping> copy = new HashSet<>();
-		for (PageCondMapping con : original) {
-			PageCondMapping aCopy = new PageCondMapping();
-			aCopy.setAddTime(con.getAddTime());
-			aCopy.setAddUserId(con.getAddUserId());
-			aCopy.setConditionCd(con.getConditionCd());
-			aCopy.setLastChgTime(con.getLastChgTime());
-			aCopy.setLastChgUserId(con.getLastChgUserId());
-			aCopy.setWaTemplateUid(page);
-			copy.add(aCopy);
-
-		}
-		return copy;
-	}
 
 }
