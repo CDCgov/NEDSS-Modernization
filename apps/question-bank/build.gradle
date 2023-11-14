@@ -68,6 +68,8 @@ testing {
                 implementation project(':testing:auth')
                 implementation project(':testing:auth-cucumber')
                 implementation project(':testing:http-interaction')
+                implementation project(':testing:classic-interaction-cucumber')
+
             }
 
             targets {

@@ -72,6 +72,9 @@ project(':testing:auth').projectDir = new File('libs/testing/auth')
 include ':testing:auth-cucumber'
 project(':testing:auth-cucumber').projectDir = new File('libs/testing/auth-cucumber')
 
+include ':testing:classic-interaction-cucumber'
+project(':testing:classic-interaction-cucumber').projectDir = new File('libs/testing/classic-interaction-cucumber')
+
 include ':testing:http-interaction'
 project(':testing:http-interaction').projectDir = new File('libs/testing/http-interaction')
 

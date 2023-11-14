@@ -46,8 +46,6 @@ dependencies {
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
 
-    // blazebit for querydsl paging
-//    implementation libs.bundles.blaze.persistence.queryDSL
     implementation libs.bundles.jackson
 
     implementation libs.bundles.security
@@ -94,6 +92,7 @@ testing {
                 implementation project(':testing:auth')
                 implementation project(':testing:auth-cucumber')
                 implementation project(':testing:http-interaction')
+                implementation project(':testing:classic-interaction-cucumber')
 
                 implementation.bundle(libs.bundles.cucumber)
 
@@ -109,8 +108,6 @@ testing {
 
                 implementation libs.awaitility
 
-                //  Required for testing multipart form-data from Classic NBS
-                implementation "commons-fileupload:commons-fileupload:1.5"
             }
 
             targets {

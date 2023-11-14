@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile;
+package gov.cdc.nbs.testing.classic.interaction;
 
 import org.springframework.context.annotation.Import;
 
