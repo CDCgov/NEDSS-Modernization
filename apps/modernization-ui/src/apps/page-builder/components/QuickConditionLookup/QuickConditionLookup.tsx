@@ -60,7 +60,6 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
 
     const handleSubmitSearch = useCallback(
         (page: number) => {
-            console.log('called', pageSize);
             setLoading(true);
             const authorization = `Bearer ${state.getToken()}`;
             const search: ReadConditionRequest = { searchText };
@@ -85,7 +84,6 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
     );
 
     useEffect(() => {
-        console.log('pageSize', pageSize);
         handleSubmitSearch(currentPage);
     }, [currentPage, pageSize]);
 
