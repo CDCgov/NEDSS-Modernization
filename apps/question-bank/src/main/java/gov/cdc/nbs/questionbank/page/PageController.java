@@ -4,6 +4,7 @@ import com.itextpdf.text.DocumentException;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
+import gov.cdc.nbs.questionbank.page.response.PageDeleteResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -82,7 +83,7 @@ public class PageController {
   }
 
   @DeleteMapping("{id}/delete-draft")
-  public PageStateResponse deletePageDraft(@PathVariable("id") Long pageId) {
+  public PageDeleteResponse deletePageDraft(@PathVariable("id") Long pageId) {
     return pageDeletor.deletePageDraft(pageId);
   }
 

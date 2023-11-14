@@ -27,9 +27,6 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
     
     public Optional<WaTemplate> findFirstByDatamartNm(String dataMartNm);
 
-    // @Query("select * from WA_template where form_cd = 'PG_Trichinellosis_Investigation' and template_type = 'Draft'")
-    // Page<WaTemplate> findBy
-    
     @Query("SELECT v from WaTemplate v WHERE v.id=:id OR v.templateNm LIKE %:templateNm% OR v.conditionCd LIKE %:conditionCd% OR v.datamartNm LIKE %:dataMartNm% OR v.recordStatusCd LIKE %:recordStatusCd% OR v.templateType IN :templateType")
     Page<WaTemplate> searchTemplate(@Param("id") Long id, @Param("templateNm") String templateNm, @Param("conditionCd") String conditionCd , @Param("dataMartNm") String dataMartNm, @Param("recordStatusCd") String recordStatusCd,  @Param("templateType") List<String> templateType, Pageable pageable);
     
