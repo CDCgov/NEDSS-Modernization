@@ -2,10 +2,12 @@ package gov.cdc.nbs.questionbank.page.util;
 
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import lombok.experimental.UtilityClass;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@UtilityClass
 public class PageUtil {
 
     public static Set<PageCondMapping> copyConditionMappings(Set<PageCondMapping> original, WaTemplate page) {
