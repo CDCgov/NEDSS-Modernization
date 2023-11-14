@@ -50,7 +50,7 @@ public class PageCondMapping {
 
   PageCondMapping(
       final WaTemplate page,
-      final PageCommand.AssociateCondition command
+      final PageCommand.RelateCondition command
   ) {
     this.waTemplateUid =page;
     this.conditionCd = command.condition();

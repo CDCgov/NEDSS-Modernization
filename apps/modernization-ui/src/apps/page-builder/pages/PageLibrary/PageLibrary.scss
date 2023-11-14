@@ -1,0 +1,35 @@
+@import 'settings.scss';
+.manage-pages {
+    display: flex;
+    position: relative;
+    border-radius: 5px;
+    border: $border-medium;
+    .manage-pages__container {
+        display: flex;
+        flex-direction: row;
+    }
+    .manage-pages__table {
+        background-color: $color-white;
+        border-radius: 3px;
+        border: 1px solid $color-bg-base-lightest;
+        min-width: 96.5%;
+        min-height: calc(100vh - 16rem);
+        justify-content: center;
+        display: flex;
+        thead th {
+            &:nth-of-type(2) {
+                width: 150px;
+            }
+            &:nth-of-type(4) {
+                width: 150px;
+            }
+        }
+        .table-menu .input label {
+            display: none;
+        }
+        .ds-c-spinner {
+            position: absolute;
+            top: 45%;
+        }
+    }
+}

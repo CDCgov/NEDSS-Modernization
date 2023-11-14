@@ -1,18 +1,15 @@
-import { Navigation } from '../../components/Navigation/Navigation';
+import { PageBuilderSideNav } from '../../components/Navigation/PageBuilderSideNav';
 import './PageBuilder.scss';
 
 type Props = {
-    page: string;
     children: any;
-    menu?: boolean;
+    nav?: boolean;
 };
 
-export const PageBuilder = ({ page, children }: Props) => {
+export const PageBuilder = ({ nav = false, children }: Props) => {
     return (
         <div className="page-builder">
-            <div className="page-builder__navigation">
-                <Navigation active={page}></Navigation>
-            </div>
+            {nav ? <PageBuilderSideNav /> : null}
             <div className="page-builder__content">{children}</div>
         </div>
     );

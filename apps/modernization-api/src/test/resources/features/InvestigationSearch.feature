@@ -2,9 +2,10 @@
 Feature: Investigation search
 
   Background:
-    Given I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
-    And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "ARBO"
-
+    Given I am logged in
+    And I can "FIND" any "PATIENT"
+    And I can "VIEW" any "INVESTIGATION" for "STD" within all jurisdictions
+    And I can "VIEW" any "INVESTIGATION" for "ARBO" within all jurisdictions
   @investigation_status_field
   Scenario Outline: I can find an investigation by different status fields
     Given An Investigation with a "<status>" status of "<value>" exists

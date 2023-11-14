@@ -13,10 +13,12 @@ export const PagesBreadcrumb = ({ currentPage }: Props) => {
     };
 
     return (
-        <div className="pages-breadcrumb" onClick={goBack}>
-            <Icon.ArrowBack size={3} />
-            <h4>Page library</h4>
-            {currentPage ? <h5>{currentPage}</h5> : null}
+        <div className="pages-breadcrumb">
+            <div onClick={goBack}>
+                <Icon.ArrowBack size={3} />
+                <h4>Page library</h4>
+            </div>
+            {currentPage ? <h5>/ {currentPage}</h5> : null}
         </div>
     );
 };

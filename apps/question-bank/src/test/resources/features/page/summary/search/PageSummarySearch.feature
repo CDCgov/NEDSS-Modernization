@@ -20,8 +20,8 @@ Feature: Searching for Page Summaries
     Then the found page summaries contain a page with the "condition" "Crusted Scabies"
 
   Scenario: Templates are not included when searching Page Summaries
-    Given the page is a Template
-    And the page has a "name" of "Needle In a Haystack"
+    Given the page has a "name" of "Needle In a Haystack"
+    And the page is a Template
     And I am looking for page summaries that contain "stack"
     When I search for page summaries
     Then there are no page summaries found

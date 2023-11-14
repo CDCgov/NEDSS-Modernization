@@ -88,7 +88,7 @@ public class WaUiMetadataHist {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "wa_template_hist_uid", nullable = false)
-    private WaTemplateHist waTemplateHistUid;
+    private PageHistoryEntity waTemplateHistUid;
 
     @Column(name = "code_set_group_id")
     private Long codeSetGroupId;

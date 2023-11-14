@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import { UserContext } from 'user';
-// import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 import { searchConditions } from 'apps/page-builder/services/conditionAPI';
 import ConditionLibraryTable from './ConditionLibraryTable';
 import './ConditionLibrary.scss';
@@ -32,7 +31,7 @@ const ConditionLibrary = () => {
     }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
 
     return (
-        <PageBuilder page="condition-library" menu={true}>
+        <PageBuilder nav>
             <div className="condition-local-library">
                 <div className="condition-local-library__container">
                     <div className="condition-local-library__table">

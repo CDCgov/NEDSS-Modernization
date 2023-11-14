@@ -18,9 +18,6 @@ public record PageSummary(
   public record EventType(String value, String name) {
   }
 
-
-  public record MessageMappingGuide(String value, String name) {
-  }
 }
 
 

@@ -11,7 +11,7 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.support.PageMother;
+import gov.cdc.nbs.questionbank.page.PageMother;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 

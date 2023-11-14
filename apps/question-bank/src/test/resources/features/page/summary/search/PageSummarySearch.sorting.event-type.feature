@@ -7,14 +7,10 @@ Feature: Searching for Sorted Page Summaries
     And I am looking for page summaries that contain "sorting"
 
   Scenario: I can search for Page Summaries sorted by event type ascending
-    Given I have a page named "sorting one"
-    And the page is for a Vaccination
-    And I have a page named "sorting two"
-    And the page is for a Lab Susceptibility
-    And I have a page named "sorting three"
-    And  the page is for a Contact Record
-    And I have a page named "sorting four"
-    And the page is for an Interview
+    Given I have a Vaccination page named "sorting one"
+    And I have a Lab Susceptibility page named "sorting two"
+    And I have a Contact Record page named "sorting three"
+    And I have an Interview page named "sorting four"
     And I am looking for page summaries sorted by "event type" ascending
     When I search for page summaries
     Then the 1st found page summary has the "event type" "contact record"
@@ -23,14 +19,10 @@ Feature: Searching for Sorted Page Summaries
     And the 4th found page summary has the "event type" "vaccination"
 
   Scenario: I can search for Page Summaries sorted by event type descending
-    Given I have a page named "sorting one"
-    And the page is for a Vaccination
-    And I have a page named "sorting two"
-    And the page is for a Lab Susceptibility
-    And I have a page named "sorting three"
-    And  the page is for a Contact Record
-    And I have a page named "sorting four"
-    And the page is for an Interview
+    Given I have a Vaccination page named "sorting one"
+    And I have a Lab Susceptibility page named "sorting two"
+    And I have a Contact Record page named "sorting three"
+    And I have an Interview page named "sorting four"
     And I am looking for page summaries sorted by "event type" descending
     When I search for page summaries
     Then the 1st found page summary has the "event type" "vaccination"
