@@ -15,7 +15,7 @@ class ClassicViewPagePreparerTest {
 
     RestTemplate template = new RestTemplate();
 
-    ClassicViewPagePreparer preparer = new ClassicViewPagePreparer(template);
+    ClassicPreviewPagePreparer preparer = new ClassicPreviewPagePreparer(template);
 
     MockRestServiceServer server = MockRestServiceServer.bindTo(template)
         .build();

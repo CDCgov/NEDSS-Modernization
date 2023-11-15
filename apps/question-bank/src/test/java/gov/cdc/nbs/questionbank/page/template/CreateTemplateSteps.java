@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -71,7 +73,15 @@ public class CreateTemplateSteps {
 
   private ResultActions classic(final long page, final CreateTemplateRequest request) {
 
+    server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=list&initLoad=true"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
+
     server.expect(requestTo(classicUrl + "/nbs/PreviewPage.do?method=viewPageLoad&waTemplateUid=" + page))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
+
+    server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=saveAsTemplateLoad"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
@@ -87,8 +97,8 @@ public class CreateTemplateSteps {
 
     server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=saveAsTemplate"))
         .andExpect(method(HttpMethod.POST))
-        .andExpect(content().multipartDataContains(form))
-        .andRespond(withSuccess());
+        .andExpect(content().formDataContains(form))
+        .andRespond(withStatus(HttpStatus.FOUND));
 
     return this.requester.request(page, request);
   }

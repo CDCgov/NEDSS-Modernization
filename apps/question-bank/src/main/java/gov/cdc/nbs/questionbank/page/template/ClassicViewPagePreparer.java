@@ -1,38 +1,30 @@
 package gov.cdc.nbs.questionbank.page.template;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 class ClassicViewPagePreparer {
 
-  private static final String LOCATION = "/PreviewPage.do";
-
-  private final RestTemplate template;
+  private final ClassicManagePagePreparer managePagePreparer;
+  private final ClassicPreviewPagePreparer previewPagePreparer;
+  private final ClassicSaveAsTemplateLoadPreparer templateLoadPreparer;
 
   ClassicViewPagePreparer(
-      @Qualifier("classic")
-      final RestTemplate template
+      final ClassicManagePagePreparer managePagePreparer,
+      final ClassicPreviewPagePreparer previewPagePreparer,
+      final ClassicSaveAsTemplateLoadPreparer templateLoadPreparer
   ) {
-    this.template = template;
+    this.managePagePreparer = managePagePreparer;
+    this.previewPagePreparer = previewPagePreparer;
+    this.templateLoadPreparer = templateLoadPreparer;
   }
 
   void prepare(final long page) {
-
-    String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "viewPageLoad")
-        .queryParam("waTemplateUid", page)
-        .build()
-        .toUriString();
-
-    RequestEntity<Void> viewPageRequest = RequestEntity
-        .get(pageLocation)
-        .build();
-
-    this.template.exchange(viewPageRequest, Void.class);
-
+    //  simulates navigating to Manage Pages
+    this.managePagePreparer.prepare();
+    //  simulates previewing a page for edit
+    this.previewPagePreparer.prepare(page);
+    //  simulates requesting to save a page as a template (pop-up)
+    this.templateLoadPreparer.prepare();
   }
 }
