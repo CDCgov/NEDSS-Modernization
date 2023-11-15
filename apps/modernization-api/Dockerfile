@@ -50,7 +50,7 @@ RUN jlink \
     --no-man-pages \
     --output modernization-api/runtime
 
-FROM debian:12-slim
+FROM redhat/ubi9-micro:latest
 
 ENV NBS_DATASOURCE_SERVER=nbs-mssql
 ENV NBS_ELASTICSEARCH_SERVER=elasticsearch

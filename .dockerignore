@@ -2,10 +2,10 @@
 cdc-sandbox
 docs
 documentation
-node_modules
+**/node_modules
 .vscode
 .gradle
-bin
-build
-log
+**/bin
+**/build
+**/log
 **/.DS_Store

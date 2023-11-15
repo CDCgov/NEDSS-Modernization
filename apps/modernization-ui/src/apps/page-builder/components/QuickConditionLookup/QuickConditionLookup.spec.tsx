@@ -4,8 +4,8 @@ import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { Direction } from 'sorting';
 import { Column } from 'apps/page-builder/pages/PageLibrary/ManagePagesTable';
 import { BrowserRouter } from 'react-router-dom';
-import { ConditionControllerService } from 'apps/page-builder/generated/services/ConditionControllerService';
 import { ModalRef } from '@trussworks/react-uswds';
+import * as searchConditions from 'apps/page-builder/services/conditionAPI';
 
 const pageContext = {
     currentPage: 1,
@@ -24,10 +24,10 @@ const pageContext = {
     setIsLoading: jest.fn()
 };
 const addConditions = jest.fn();
-const mockSearchConditionUsingPost = jest.spyOn(ConditionControllerService, 'searchConditionsUsingPost');
+const mockSearchConditions = jest.spyOn(searchConditions, 'searchConditions');
 
 beforeEach(async () => {
-    mockSearchConditionUsingPost.mockResolvedValue({
+    mockSearchConditions.mockResolvedValue({
         content: [
             {
                 conditionShortNm: 'test name',
@@ -81,7 +81,7 @@ describe('QuickConditionLookup', () => {
         );
 
         await waitFor(() => {
-            expect(mockSearchConditionUsingPost).toHaveBeenCalled();
+            expect(mockSearchConditions).toHaveBeenCalled();
         });
     });
 
@@ -149,8 +149,8 @@ describe('QuickConditionLookup', () => {
         const condition = await screen.findByText('Condition');
         const conditionCode = await screen.findByText('Code');
         const programArea = await screen.findByText('Program area');
-        const conditionFamily = await screen.findByText('Condition Family');
-        const investigationPage = await screen.findByText('Investigateion page');
+        const conditionFamily = await screen.findByText('Condition family');
+        const investigationPage = await screen.findByText('Investigation page');
         const status = await screen.findByText('Status');
 
         await waitFor(() => {
@@ -261,7 +261,7 @@ describe('QuickConditionLookup', () => {
             });
 
             await waitFor(() => {
-                expect(mockSearchConditionUsingPost).toHaveBeenCalled();
+                expect(mockSearchConditions).toHaveBeenCalled();
             });
         });
 
@@ -289,13 +289,8 @@ describe('QuickConditionLookup', () => {
             });
 
             await waitFor(() => {
-                expect(mockSearchConditionUsingPost).toHaveBeenCalledWith({
-                    authorization: 'Bearer undefined',
-                    page: 1,
-                    search: {
-                        searchText: 'hello'
-                    },
-                    size: 10
+                expect(mockSearchConditions).toHaveBeenCalledWith('Bearer undefined', 1, 10, 'conditionShortNm,asc', {
+                    searchText: 'hello'
                 });
             });
         });

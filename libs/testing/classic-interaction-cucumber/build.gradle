@@ -1,0 +1,20 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    alias libs.plugins.springBoot apply false
+}
+
+group = 'gov.cdc.nbs.testing.classic.interaction-cucumber'
+
+dependencies {
+    implementation project(':testing:support')
+
+    //  Required for testing multipart form-data from Classic NBS
+    implementation "commons-fileupload:commons-fileupload:1.5"
+
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation libs.springBoot.web
+    implementation libs.spring.test
+
+    implementation libs.cucumber.java
+}

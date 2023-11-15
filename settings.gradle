@@ -56,6 +56,11 @@ project(':id-generator').projectDir = new File('libs/id-generator')
 include ':accumulation'
 project(':accumulation').projectDir = new File('libs/accumulation')
 
+include ':libs:web'
+project(':libs:web').projectDir = new File('libs/web')
+
+include ':libs:classic-interaction'
+project(':libs:classic-interaction').projectDir = new File('libs/classic-interaction')
 
 //  testing libraries
 include ':testing:support'
@@ -69,6 +74,9 @@ project(':testing:auth').projectDir = new File('libs/testing/auth')
 
 include ':testing:auth-cucumber'
 project(':testing:auth-cucumber').projectDir = new File('libs/testing/auth-cucumber')
+
+include ':testing:classic-interaction-cucumber'
+project(':testing:classic-interaction-cucumber').projectDir = new File('libs/testing/classic-interaction-cucumber')
 
 include ':testing:http-interaction'
 project(':testing:http-interaction').projectDir = new File('libs/testing/http-interaction')

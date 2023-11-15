@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type { PageCreateRequest } from '../models/PageCreateRequest';
 import type { PageCreateResponse } from '../models/PageCreateResponse';
+import type { PageDeleteResponse } from '../models/PageDeleteResponse';
 import type { PageStateResponse } from '../models/PageStateResponse';
 import type { Resource } from '../models/Resource';
 
@@ -93,7 +94,7 @@ export class PageControllerService {
 
     /**
      * deletePageDraft
-     * @returns PageStateResponse OK
+     * @returns PageDeleteResponse OK
      * @throws ApiError
      */
     public static deletePageDraftUsingDelete({
@@ -105,7 +106,7 @@ export class PageControllerService {
          * id
          */
         id: number,
-    }): CancelablePromise<PageStateResponse> {
+    }): CancelablePromise<PageDeleteResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/nbs/page-builder/api/v1/pages/{id}/delete-draft',
