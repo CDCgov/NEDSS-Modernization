@@ -30,7 +30,7 @@ public class PageDeletor {
         WaTemplate page = entityManager.find(WaTemplate.class, id);
 
         if (page == null) {
-            throw new PageNotFoundException(PageConstants.PAGE_NOT_FOUND);
+            throw new PageNotFoundException();
         }
 
         if (page.getTemplateType().equals(PageConstants.DRAFT)) {
@@ -41,7 +41,7 @@ public class PageDeletor {
             WaTemplate draftPage = entityManager.find(WaTemplate.class, draftPageId);
 
             if (draftPage == null) {
-                throw new PageNotFoundException(PageConstants.PAGE_NOT_FOUND);
+                throw new PageNotFoundException();
             }
 
             entityManager.remove(draftPage);

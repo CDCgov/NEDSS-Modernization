@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank;
 
 import gov.cdc.nbs.questionbank.container.EmbeddedNbsDatabase;
+import gov.cdc.nbs.testing.classic.interaction.EnableClassicMockRestServer;
 import gov.cdc.nbs.testing.interaction.http.EnableAuthenticatedInteractions;
 import gov.cdc.nbs.testing.support.EnableSupport;
 import io.cucumber.spring.CucumberContextConfiguration;
@@ -31,6 +32,7 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 @AutoConfigureMockMvc
 @EnableSupport
 @EnableAuthenticatedInteractions
+@EnableClassicMockRestServer
 class RunCucumber {
 
 }

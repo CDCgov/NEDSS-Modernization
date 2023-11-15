@@ -1,7 +1,5 @@
 package gov.cdc.nbs.option.concept;
 
-import gov.cdc.nbs.option.concept.ConceptOption;
-import gov.cdc.nbs.option.concept.ConceptOptionFinder;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
