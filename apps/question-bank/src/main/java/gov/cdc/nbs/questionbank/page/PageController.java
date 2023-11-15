@@ -4,6 +4,7 @@ import com.itextpdf.text.DocumentException;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
+import gov.cdc.nbs.questionbank.page.response.PageDeleteResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -32,16 +33,19 @@ public class PageController {
   private final PageStateChanger stateChange;
   private final PageDownloader pageDownloader;
   private final UserDetailsProvider userDetailsProvider;
+  private final PageDeletor pageDeletor;
 
   public PageController(
       final PageCreator creator,
       final PageStateChanger stateChange,
       final PageDownloader pageDownloader,
-      final UserDetailsProvider userDetailsProvider) {
+      final UserDetailsProvider userDetailsProvider,
+      final PageDeletor pageDeletor) {
     this.creator = creator;
     this.stateChange = stateChange;
     this.pageDownloader = pageDownloader;
     this.userDetailsProvider = userDetailsProvider;
+    this.pageDeletor = pageDeletor;
   }
 
   @PostMapping
@@ -79,8 +83,8 @@ public class PageController {
   }
 
   @DeleteMapping("{id}/delete-draft")
-  public PageStateResponse deletePageDraft(@PathVariable("id") Long pageId) {
-    return stateChange.deletePageDraft(pageId);
+  public PageDeleteResponse deletePageDraft(@PathVariable("id") Long pageId) {
+    return pageDeletor.deletePageDraft(pageId);
   }
 
 

@@ -123,8 +123,7 @@ public class WaTemplate {
           CascadeType.REMOVE,
           CascadeType.PERSIST
       },
-      orphanRemoval = true
-  )
+      orphanRemoval = true)
   private Set<PageCondMapping> conditionMappings;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
@@ -134,6 +133,27 @@ public class WaTemplate {
   }, orphanRemoval = true)
   @OrderBy("orderNbr")
   private List<WaUiMetadata> uiMetadata;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
+  private List<WaNndMetadatum> nndMetadatums;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
+  private List<WaRdbMetadatum> waRdbMetadatums;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
+  private List<WaRuleMetadatum> waRuleMetadatums;
 
   public WaTemplate() {
     this.templateType = DRAFT;
@@ -527,8 +547,7 @@ public class WaTemplate {
 
   public void changeName(
       final PageNameVerifier verifier,
-      final PageCommand.ChangeName command
-  ) {
+      final PageCommand.ChangeName command) {
     checkChangesAllowed();
     if (!Objects.equals(this.templateNm, command.name())) {
       checkUniqueName(command.name(), verifier);
@@ -545,8 +564,7 @@ public class WaTemplate {
 
   public void changeDatamart(
       final DatamartNameVerifier verifier,
-      final PageCommand.ChangeDatamart command
-  ) {
+      final PageCommand.ChangeDatamart command) {
     checkDatamartChangesAllowed();
     if (!Objects.equals(this.templateNm, command.datamart())) {
       checkUniqueDatamart(command.datamart(), verifier);
@@ -564,8 +582,7 @@ public class WaTemplate {
 
   private void checkUniqueDatamart(
       final String datamart,
-      final DatamartNameVerifier verifier
-  ) {
+      final DatamartNameVerifier verifier) {
     if (!verifier.isUnique(datamart)) {
       throw new PageUpdateException(String.format("Another Page is using the datamart named %s", datamart));
     }
@@ -588,6 +605,7 @@ public class WaTemplate {
     changed(dissociate);
     return this;
   }
+
   private void checkConditionDisassociationAllowed() {
     checkChangesAllowed();
     if (hasBeenPublished()) {
