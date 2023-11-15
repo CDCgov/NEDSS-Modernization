@@ -58,18 +58,6 @@ public class ActiveUserMother {
     return including(user);
   }
 
-  public ActiveUser createAdmin(final String name) {
-    AuthUser user = new AuthUser();
-    user.setUserId(name);
-    user.setUserType("internalUser");
-    user.setUserFirstNm("test");
-    user.setUserLastNm("user");
-    user.setMasterSecAdminInd('T');
-    user.setProgAreaAdminInd('T');
-
-    return including(user);
-  }
-
   private ActiveUser including(final AuthUser user) {
     long identifier = idGenerator.next();
     user.setNedssEntryId(identifier);

@@ -147,3 +147,7 @@ processResources {
         into "static"
     }
 }
+
+bootRun {
+    systemProperty('spring.profiles.active', 'default,development');
+}
