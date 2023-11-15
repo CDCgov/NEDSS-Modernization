@@ -26,10 +26,6 @@ describe('When page loads', () => {
         );
         const btn = container.getElementsByClassName('usa-button')[0];
         expect(btn.hasAttribute('disabled'));
-
-        const hl7Segment = container.getElementsByClassName('hl7-segment')[0];
-        expect(hl7Segment.hasAttribute('disabled'));
-        const hl7DefaultVal = container.getElementsByClassName('')
     });
 
     it('Create and hl7 segment should be disabled and value should be constant', () => {
