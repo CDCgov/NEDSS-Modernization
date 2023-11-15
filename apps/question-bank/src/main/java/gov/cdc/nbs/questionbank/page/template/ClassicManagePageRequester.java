@@ -7,24 +7,22 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
-class ClassicPreviewPagePreparer {
+class ClassicManagePageRequester {
 
-  private static final String LOCATION = "/PreviewPage.do";
+  private static final String LOCATION = "/ManagePage.do";
 
   private final RestTemplate template;
 
-  ClassicPreviewPagePreparer(
-      @Qualifier("classic")
-      final RestTemplate template
+  ClassicManagePageRequester(
+      @Qualifier("classic") final RestTemplate template
   ) {
     this.template = template;
   }
 
-  void prepare(final long page) {
-
+  void request() {
     String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "viewPageLoad")
-        .queryParam("waTemplateUid", page)
+        .queryParam("method", "list")
+        .queryParam("initLoad", true)
         .build()
         .toUriString();
 

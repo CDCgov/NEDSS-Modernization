@@ -14,11 +14,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 class ClassicPageTemplateCreator {
 
   private final RestTemplate template;
-  private final ClassicViewPagePreparer preparer;
+  private final ClassicCreateTemplatePreparer preparer;
 
   ClassicPageTemplateCreator(
       @Qualifier("classic") final RestTemplate template,
-      final ClassicViewPagePreparer preparer
+      final ClassicCreateTemplatePreparer preparer
   ) {
     this.template = template;
     this.preparer = preparer;

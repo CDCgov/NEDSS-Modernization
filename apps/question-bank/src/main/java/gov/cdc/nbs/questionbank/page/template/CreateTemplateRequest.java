@@ -1,6 +1,13 @@
 package gov.cdc.nbs.questionbank.page.template;
 
-record CreateTemplateRequest(String name, String description) {
+import io.swagger.annotations.ApiModelProperty;
+
+record CreateTemplateRequest(
+    @ApiModelProperty(required = true)
+    String name,
+    @ApiModelProperty(required = true)
+    String description
+) {
 
   CreateTemplateRequest() {
     this(null, null);
