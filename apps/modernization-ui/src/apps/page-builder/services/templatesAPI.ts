@@ -6,7 +6,7 @@ export const fetchTemplates = (token: string): Promise<Template[]> => {
             authorization: token
         })
             .then((response) => {
-                resolve(response.content ?? []);
+                resolve(response);
             })
             .catch((error: any) => {
                 console.log(error.toJSON());

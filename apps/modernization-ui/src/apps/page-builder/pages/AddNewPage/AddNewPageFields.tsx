@@ -1,21 +1,22 @@
+import React from 'react';
 import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Concept, Condition, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
-import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { NavLink } from 'react-router-dom';
+import { FormValues } from './AddNewPage';
 
 type AddNewPageFieldProps = {
     conditions: Condition[];
     conditionLookupModal: React.RefObject<ModalRef>;
     createConditionModal: React.RefObject<ModalRef>;
+    importTemplateModal: React.RefObject<ModalRef>;
     templates: Template[];
     mmgs: Concept[];
 };
 export const AddNewPageFields = (props: AddNewPageFieldProps) => {
-    const form = useFormContext();
+    const form = useFormContext<FormValues>();
 
     return (
         <>
@@ -83,7 +84,9 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <p>
                 Can't find the template you're looking for?
                 <br />
-                <NavLink to={'add/template'}>Import a new template here</NavLink>
+                <ModalToggleButton modalRef={props.importTemplateModal} unstyled>
+                    <p>Import a new template here</p>
+                </ModalToggleButton>
             </p>
             <Controller
                 control={form.control}

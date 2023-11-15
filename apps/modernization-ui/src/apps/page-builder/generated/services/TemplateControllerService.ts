@@ -1,8 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Page_Template_ } from '../models/Page_Template_';
-import type { TemplateSearchRequest } from '../models/TemplateSearchRequest';
+import type { Template } from '../models/Template';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -12,30 +11,19 @@ export class TemplateControllerService {
 
     /**
      * findAllTemplates
-     * @returns Page_Template_ OK
+     * @returns Template OK
      * @throws ApiError
      */
     public static findAllTemplatesUsingGet({
         authorization,
-        page,
-        size,
-        sort,
     }: {
         authorization: string,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_Template_> {
+    }): CancelablePromise<Array<Template>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/template/',
             headers: {
                 'Authorization': authorization,
-            },
-            query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
             },
             errors: {
                 401: `Unauthorized`,
@@ -46,39 +34,27 @@ export class TemplateControllerService {
     }
 
     /**
-     * searchTemplate
-     * @returns Page_Template_ OK
+     * importTemplate
+     * @returns Template OK
      * @returns any Created
      * @throws ApiError
      */
-    public static searchTemplateUsingPost({
+    public static importTemplateUsingPost({
         authorization,
-        search,
-        page,
-        size,
-        sort,
+        fileInput,
     }: {
         authorization: string,
-        /**
-         * search
-         */
-        search: TemplateSearchRequest,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_Template_ | any> {
+        fileInput?: Blob,
+    }): CancelablePromise<Template | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/template/search',
+            url: '/nbs/page-builder/api/v1/template/import',
             headers: {
                 'Authorization': authorization,
             },
-            query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
+            formData: {
+                'fileInput': fileInput,
             },
-            body: search,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

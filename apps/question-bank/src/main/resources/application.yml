@@ -17,6 +17,7 @@ nbs:
     url: http://${nbs.wildfly.server}
 
 spring:
+  servlet.multipart.max-file-size: 10MB
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher # swagger

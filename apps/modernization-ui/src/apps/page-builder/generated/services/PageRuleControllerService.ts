@@ -35,11 +35,13 @@ export class PageRuleControllerService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/pages/{page}/rules',
+            path: {
+                'page': page,
+            },
             headers: {
                 'Authorization': authorization,
             },
             query: {
-                'page': page,
                 'size': size,
                 'sort': sort,
             },

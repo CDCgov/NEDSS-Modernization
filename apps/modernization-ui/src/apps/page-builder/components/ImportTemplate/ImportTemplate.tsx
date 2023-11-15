@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-import { Button, Icon, Tag } from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef, Tag } from '@trussworks/react-uswds';
+import { Template, TemplateControllerService } from 'apps/page-builder/generated';
+import { Spinner } from 'components/Spinner/Spinner';
+import React, { useContext, useState } from 'react';
+import { UserContext } from 'user';
+import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
 
-export const ImportTemplate = () => {
-    const [file, setFile] = useState(null);
-    const [files, setFiles] = useState<any>([]);
+type ImportTemplateProps = {
+    onTemplateCreated: (template: Template) => void;
+    modal: React.RefObject<ModalRef>;
+};
+export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps) => {
+    const { state } = useContext(UserContext);
+    const [file, setFile] = useState<File | undefined>();
     const [isError, setIsError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleFileChange = (event: any) => {
         const selectedFile = event.target.files[0];
-        setIsSuccess(false);
         // Checking if the file type is allowed or not
         const allowedTypes = ['xml'];
         if (!allowedTypes.includes(selectedFile?.type)) {
@@ -19,14 +26,10 @@ export const ImportTemplate = () => {
             setErrorMsg('Only XML files are allowed.');
         }
         setIsError(false);
-        setFiles([...files, selectedFile]);
         setFile(selectedFile);
     };
 
-    const handleSubmit = (event: any) => {
-        event.preventDefault();
-
-        if (isError) return;
+    const handleSubmit = () => {
         setErrorMsg('');
 
         // Checking if the file has been selected
@@ -35,36 +38,62 @@ export const ImportTemplate = () => {
             setErrorMsg('Please select a file.');
             return;
         }
-
+        setLoading(true);
+        TemplateControllerService.importTemplateUsingPost({
+            authorization: `Bearer ${state.getToken()}`,
+            fileInput: file
+        })
+            .then(async (response) => {
+                onTemplateCreated(response);
+                setLoading(false);
+                setFile(undefined);
+                modal.current?.toggleModal();
+            })
+            .catch((error) => {
+                setIsError(true);
+                setErrorMsg(error.body?.message ?? 'An error occured');
+                setLoading(false);
+            });
         setIsError(false);
-        setIsSuccess(true);
+    };
+
+    const handleCancel = () => {
+        setFile(undefined);
+        setIsError(false);
+        modal.current?.toggleModal();
     };
 
     return (
         <div className="import-template">
-            <Button className="usa-button--unstyled close-btn" type={'button'} onClick={() => {}}>
-                <Icon.Close />
-            </Button>
-            <h3 className="main-header-title">
-                <Button className="usa-button--unstyled back-btn" type={'button'} onClick={() => {}}>
-                    <Icon.ArrowBack />
-                </Button>
-                <span data-testid="header-title">Import template</span>
-            </h3>
+            {loading ? <Spinner /> : null}
             <div className="drop-container">
+                {isError && errorMsg ? (
+                    <div className="banner">
+                        <AlertBanner type="error">{errorMsg}</AlertBanner>
+                    </div>
+                ) : null}
+
                 <div className="heading">
                     <label>Import a new template</label>
                 </div>
-                <label onChange={handleFileChange} htmlFor="importTempId">
-                    <input name="" type="file" id="importTempId" accept="text/xml" hidden />
+                <label htmlFor="importTempId">
+                    <input
+                        value={''}
+                        onChange={handleFileChange}
+                        name="fileInput"
+                        type="file"
+                        id="importTempId"
+                        accept="text/xml"
+                        hidden
+                    />
 
                     <div className="drop-area">
                         <div className="display-flex gap-10">
-                            {files.map((fil: any, index: number) => (
-                                <div className="tag-cover" key={index}>
-                                    <Tag background="#005EA2">{fil?.name}</Tag>
+                            {file ? (
+                                <div className="tag-cover">
+                                    <Tag background="#005EA2">{file?.name}</Tag>
                                 </div>
-                            ))}
+                            ) : null}
                         </div>
                         <Icon.Logout size={4} />
                         <label htmlFor="importTempId">
@@ -73,15 +102,17 @@ export const ImportTemplate = () => {
                     </div>
                 </label>
             </div>
-            <div>
-                {isError && <div className="error-text">{errorMsg}</div>}
-                <Button className="submit-btn" type="button" onClick={handleSubmit}>
+            <div className="button-container">
+                <Button
+                    disabled={file === undefined || loading}
+                    className="submit-btn"
+                    type="button"
+                    onClick={handleSubmit}>
                     Import
                 </Button>
-                <Button className="cancel-btn" type="button">
+                <Button className="cancel-btn" type="button" onClick={handleCancel}>
                     Cancel
                 </Button>
-                {isSuccess && <div className="success-text">Valid File Type</div>}
             </div>
         </div>
     );
