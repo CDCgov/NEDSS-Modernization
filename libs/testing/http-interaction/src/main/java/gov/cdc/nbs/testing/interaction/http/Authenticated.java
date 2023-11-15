@@ -30,12 +30,12 @@ public class Authenticated {
   private final EntityManager entityManager;
 
   public Authenticated(
-      final Active<ActiveUser> active,
+      final Active<ActiveUser> activeUser,
       final Active<SessionCookie> activeSession,
       final NBSUserDetailsResolver resolver,
       final EntityManager entityManager
   ) {
-    this.activeUser = active;
+    this.activeUser = activeUser;
     this.activeSession = activeSession;
     this.resolver = resolver;
     this.entityManager = entityManager;
@@ -47,7 +47,7 @@ public class Authenticated {
 
   private Optional<NbsUserDetails> userDetails() {
     return this.activeUser.maybeActive()
-        .map(activeUser -> this.entityManager.find(AuthUser.class, activeUser.id()))
+        .map(user -> this.entityManager.find(AuthUser.class, user.id()))
         .map(resolver::resolve);
   }
 
