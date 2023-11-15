@@ -26,9 +26,10 @@ describe('When page loads', () => {
         );
         const btn = container.getElementsByClassName('usa-button')[0];
         expect(btn.hasAttribute('disabled'));
+
     });
 
-    it('Create and hl7 segment should be disabled and value should be constant', () => {
+    it('Should display disabled hl7 Segment selection with a constant value', () => {
         const { container } = render(
             <BrowserRouter>
                 <AlertProvider>
