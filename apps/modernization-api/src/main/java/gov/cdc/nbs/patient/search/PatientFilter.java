@@ -1,10 +1,12 @@
-package gov.cdc.nbs.graphql.filter;
+package gov.cdc.nbs.patient.search;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,6 +16,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,12 +44,11 @@ public class PatientFilter {
   private String firstName;
   private String race;
   private Identification identification;
-  private String ssn;
   private String phoneNumber;
   private String email;
   private LocalDate dateOfBirth;
   private String dateOfBirthOperator;
-  private Gender gender;
+  private String gender;
   private Deceased deceased;
   private String address;
   private String city;
@@ -58,6 +60,10 @@ public class PatientFilter {
   private List<RecordStatus> recordStatus;
   private String treatmentId;
   private String vaccinationId;
+  @JsonIgnore
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  private List<RecordStatus> adjustedStatus;
 
   public PatientFilter() {
     this(RecordStatus.ACTIVE);
@@ -76,5 +82,19 @@ public class PatientFilter {
       this.identification = new Identification();
     }
     return identification;
+  }
+
+  public List<RecordStatus> adjustedStatus() {
+    return adjustedStatus == null ? List.copyOf(this.recordStatus) : List.copyOf(this.adjustedStatus);
+  }
+
+  public PatientFilter adjustStatuses(final Collection<RecordStatus> statuses) {
+    this.adjustedStatus = List.copyOf(statuses);
+    return this;
+  }
+
+  public PatientFilter withGender(final String gender) {
+    this.gender = gender;
+    return this;
   }
 }

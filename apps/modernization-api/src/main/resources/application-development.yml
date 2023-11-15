@@ -18,7 +18,7 @@ logging:
           elasticsearch:
             client:
               # Logs queries passed to elasticsearch
-              WIRE: INFO
+              WIRE: TRACE
     nbs:
       classic:
         outgoing: DEBUG   # Logs any RestTemplate interactions with NBC Classic

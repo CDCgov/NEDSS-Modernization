@@ -1,6 +1,6 @@
 package gov.cdc.nbs.redirect.search;
 
-import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.patient.search.PatientFilter;
 import gov.cdc.nbs.message.enums.Gender;
 import org.junit.jupiter.api.Test;
 
