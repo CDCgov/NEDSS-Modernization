@@ -435,7 +435,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"search\": \"port\"\n}",
+									"raw": "{\n    \"search\": \"\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -443,7 +443,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=25&sort=id,ASC",
 									"host": [
 										"{{page-builder}}"
 									],
@@ -461,7 +461,7 @@
 										},
 										{
 											"key": "size",
-											"value": "10"
+											"value": "25"
 										},
 										{
 											"key": "sort",
@@ -925,7 +925,7 @@
 							"variable": [
 								{
 									"key": "page",
-									"value": "1000319"
+									"value": "{{page}}"
 								}
 							]
 						}
@@ -969,6 +969,49 @@
 								{
 									"key": "id",
 									"value": "1000366"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Template",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n  \"name\": \"Template {{$randomBsBuzz}}\",\n  \"description\": \"{{$randomLoremSentence}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/template",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page",
+								"template"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "{{page}}"
 								}
 							]
 						}
@@ -1042,7 +1085,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"templateId\": \"1000378\",\n    \"eventType\": \"INV\",\n    \"name\": \"{{$randomBsNoun}}\",\n    \"pageDescription\": \"Created for development testing.\",\n    \"conditionIds\": [\n        \"TV\"\n    ],\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"dataMartName\": \"{{ran}}\"\n}",
+							"raw": "{\n    \"templateId\": \"1000378\",\n    \"eventType\": \"INV\",\n    \"name\": \"{{$randomBsNoun}}\",\n    \"pageDescription\": \"Created for development testing.\",\n    \"conditionIds\": [\n        \"10057\"\n    ],\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"dataMartName\": \"{{$randomWord}}\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1250,6 +1293,30 @@
 					],
 					"path": [
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NBS Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{classic}}/nbs/nfc?UserName={{page-builder-user}}",
+					"host": [
+						"{{classic}}"
+					],
+					"path": [
+						"nbs",
+						"nfc"
+					],
+					"query": [
+						{
+							"key": "UserName",
+							"value": "{{page-builder-user}}"
+						}
 					]
 				}
 			},
