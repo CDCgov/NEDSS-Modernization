@@ -3,7 +3,7 @@ package gov.cdc.nbs;
 import gov.cdc.nbs.containers.NbsElasticsearchContainer;
 import gov.cdc.nbs.containers.database.EmbeddedNbsDatabase;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGeneratorTestConfiguration;
-import gov.cdc.nbs.patient.profile.EnableClassicMockRestServer;
+import gov.cdc.nbs.testing.classic.interaction.EnableClassicMockRestServer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;

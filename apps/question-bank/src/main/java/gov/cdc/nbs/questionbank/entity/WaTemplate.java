@@ -3,9 +3,11 @@ package gov.cdc.nbs.questionbank.entity;
 import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
 import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.PageNameVerifier;
+import gov.cdc.nbs.questionbank.page.TemplateNameVerifier;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
+import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import lombok.Getter;
 import lombok.Setter;
@@ -642,13 +644,51 @@ public class WaTemplate {
     changed(updates);
   }
 
-  public void updateType(String type) {
-    this.templateType = type;
-  }
-
   private void verifyDraftType() {
     if (!DRAFT.equals(templateType)) {
       throw new PageContentModificationException("Unable to modify non Draft page");
+    }
+  }
+
+  public void createTemplate(
+      final TemplateNameVerifier verifier,
+      final PageCommand.CreateTemplate create
+  ) {
+
+    //  This method should return a new Template object however, the creation of templates is being delegated to classic
+    //  NBS because of the complexity surrounding the XML payload.  For now, it is just verifying the template name is
+    //  unique.  Why is this method here?  To ensure that the business logic of a Page is in one place and not spread all
+    //  over the code base.
+    checkTemplateCreation(verifier, create);
+
+  }
+
+  private void checkTemplateCreation(
+      final TemplateNameVerifier verifier,
+      final PageCommand.CreateTemplate create
+  ) {
+
+    String name = create.name();
+
+    if (name == null || name.isBlank()) {
+      throw new TemplateCreationException("A Template name is required");
+    }
+
+    checkUniqueTemplateName(verifier, create.name());
+
+    String description = create.description();
+
+    if (description == null || description.isBlank()) {
+      throw new TemplateCreationException("A Template description is required");
+    }
+  }
+
+  private void checkUniqueTemplateName(final TemplateNameVerifier verifier, final String name) {
+    boolean unique = verifier.isUnique(name);
+
+    if (!unique) {
+      String message = String.format("Another Template is named %s", name);
+      throw new TemplateCreationException(message);
     }
   }
 }

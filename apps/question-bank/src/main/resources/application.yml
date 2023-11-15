@@ -10,6 +10,11 @@ nbs:
     tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
+  wildfly:
+    host: wildfly
+    server: ${nbs.wildfly.host}:${nbs.wildfly.port}
+    port: 7001
+    url: http://${nbs.wildfly.server}
 
 spring:
   mvc:
