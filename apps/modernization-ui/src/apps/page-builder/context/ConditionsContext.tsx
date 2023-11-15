@@ -72,7 +72,6 @@ export const ConditionProvider = ({ children }: any) => {
         }
 
         if (direction === Direction.None) {
-            console.log('none', { name, direction });
             toSortString(Column.Condition);
             setSortDirection(Direction.Ascending);
         } else {
@@ -80,8 +79,6 @@ export const ConditionProvider = ({ children }: any) => {
             setSortDirection(direction);
         }
     };
-
-    console.log('sortBy', { sortBy, sortDirection });
 
     return (
         <ConditionsContext.Provider
