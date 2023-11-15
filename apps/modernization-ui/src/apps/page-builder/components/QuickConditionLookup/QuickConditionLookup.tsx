@@ -67,7 +67,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
             ConditionControllerService.searchConditionsUsingPost({
                 authorization,
                 search,
-                page,
+                page: page,
                 size: pageSize
             })
                 .then((response: any) => {
@@ -84,7 +84,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
     );
 
     useEffect(() => {
-        handleSubmitSearch(currentPage);
+        handleSubmitSearch(currentPage - 1);
     }, [currentPage, pageSize]);
 
     useEffect(() => {
