@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { Direction } from 'sorting';
 
 export interface ContextData {
     filter: any;
@@ -15,4 +16,5 @@ export interface ContextData {
     setPageSize: Dispatch<SetStateAction<number>>;
     isLoading: boolean;
     setIsLoading: (status: boolean) => void;
+    handleSort?: (name: string, direction: Direction) => void;
 }

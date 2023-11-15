@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import { createContext, useState } from 'react';
 import { ContextData } from './contextData';
+import { Direction } from 'sorting';
+import { Column } from 'apps/page-builder/constant/conditionLibrary';
 
 const conditionContextDefaultValue: ContextData = {
     filter: {},
@@ -11,7 +13,7 @@ const conditionContextDefaultValue: ContextData = {
     setCurrentPage: () => {},
     sortBy: 'conditionShortNm',
     setSortBy: () => {},
-    sortDirection: 'asc',
+    sortDirection: Direction.Ascending,
     setSortDirection: () => {},
     pageSize: 10,
     setPageSize: () => {},
@@ -30,6 +32,57 @@ export const ConditionProvider = ({ children }: any) => {
     const [isLoading, setIsLoading] = useState(false);
     const [filter, setFilter] = useState(conditionContextDefaultValue.filter);
 
+    /*
+     * Converts header and Direction to API compatible sort string such as "name,asc"
+     */
+    const toSortString = (name: string) => {
+        if (name) {
+            switch (name) {
+                case Column.Condition:
+                    setSortBy(`conditionShortNm`);
+                    break;
+                case Column.Code:
+                    setSortBy(`id`);
+                    break;
+                case Column.ProgramArea:
+                    setSortBy(`progAreaCd`);
+                    break;
+                case Column.ConditionFamily:
+                    setSortBy(`familyCd`);
+                    break;
+                case Column.NND:
+                    setSortBy(`nndInd`);
+                    break;
+                case Column.InvestigationPage:
+                    setSortBy(`investigationFormCd`);
+                    break;
+                case Column.Status:
+                    setSortBy(`statusCd`);
+                    break;
+                default:
+                    setSortBy('conditionShortNm');
+                    break;
+            }
+        }
+    };
+
+    const handleSort = (name: string, direction: Direction): void => {
+        if (currentPage > 1 && setCurrentPage) {
+            setCurrentPage(1);
+        }
+
+        if (direction === Direction.None) {
+            console.log('none', { name, direction });
+            toSortString(Column.Condition);
+            setSortDirection(Direction.Ascending);
+        } else {
+            toSortString(name);
+            setSortDirection(direction);
+        }
+    };
+
+    console.log('sortBy', { sortBy, sortDirection });
+
     return (
         <ConditionsContext.Provider
             value={{
@@ -46,7 +99,8 @@ export const ConditionProvider = ({ children }: any) => {
                 pageSize,
                 setPageSize,
                 isLoading,
-                setIsLoading
+                setIsLoading,
+                handleSort
             }}>
             {children}
         </ConditionsContext.Provider>
