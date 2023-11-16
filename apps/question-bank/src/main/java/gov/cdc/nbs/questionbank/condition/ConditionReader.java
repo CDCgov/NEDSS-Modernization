@@ -34,7 +34,6 @@ public class ConditionReader {
 
 
     public Page<Condition> searchCondition(ReadConditionRequest request, Pageable pageable) {
-        Pageable test = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize());
         if (request.getSearchText() != null && !request.getSearchText().trim().isEmpty()) {
             BooleanBuilder predicate = new BooleanBuilder();
             BooleanExpression searchPredicate = QConditionCode.conditionCode.id.eq(request.getSearchText())
