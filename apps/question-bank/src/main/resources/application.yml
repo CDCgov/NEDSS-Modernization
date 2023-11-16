@@ -26,7 +26,7 @@ spring:
   data:
     web:
       pageable:
-        max-page-size: 50 # max pageable size
+        max-page-size: 100 # max pageable size
   jpa:
     properties:
       hibernate:
