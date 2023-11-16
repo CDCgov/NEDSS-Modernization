@@ -18,7 +18,6 @@ import { NoData } from 'components/NoData';
 import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 import { conditionTableColumns } from 'apps/page-builder/constant/conditionLibrary';
 import { searchConditions } from 'apps/page-builder/services/conditionAPI';
-import { Spinner } from '@cmsgov/design-system';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -74,7 +73,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
 
     useEffect(() => {
         handleSubmitSearch();
-    }, [currentPage, pageSize, sortBy, sortDirection, searchText]);
+    }, [currentPage - 1, pageSize, sortBy, sortDirection, searchText]);
 
     useEffect(() => {
         addConditions(selectedConditions);
@@ -131,73 +130,67 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                 </div>
             </ModalHeading>
             <div className="condition-lookup-modal-body">
-                {loading ? (
-                    <Spinner />
-                ) : (
-                    <>
-                        <p className="description">You can search for existing condition(s) or create a new one</p>
-                        <div className="search-container">
-                            <div style={{ display: 'flex' }}>
-                                <TextInput
-                                    inputSize="medium"
-                                    value={searchText}
-                                    onChange={(e) => handleSearch(e.target.value)}
-                                    placeholder="Search by keyword"
-                                    data-testid="condition-search"
-                                    id="condition-search"
-                                    style={{ height: '41px', border: 'none' }}
-                                    name={'condition-search'}
-                                    type="search"
-                                />
-                                <Button
-                                    data-testid="condition-search-btn"
-                                    type="button"
-                                    style={{ height: '41px', borderRadius: 0 }}
-                                    onClick={() => {
-                                        setCurrentPage(1);
-                                        handleSubmitSearch();
-                                    }}>
-                                    <Icon.Search />
-                                </Button>
-                            </div>
-                            <Button type="button" outline style={{ height: '41px' }}>
-                                <Icon.FilterAlt />
-                                Filter
-                            </Button>
-                            {/* <NavLink to={'page-builder/add/condition'}>
+                <p className="description">You can search for existing condition(s) or create a new one</p>
+                <div className="search-container">
+                    <div style={{ display: 'flex' }}>
+                        <TextInput
+                            inputSize="medium"
+                            value={searchText}
+                            onChange={(e) => handleSearch(e.target.value)}
+                            placeholder="Search by keyword"
+                            data-testid="condition-search"
+                            id="condition-search"
+                            style={{ height: '41px', border: 'none' }}
+                            name={'condition-search'}
+                            type="search"
+                        />
+                        <Button
+                            data-testid="condition-search-btn"
+                            type="button"
+                            style={{ height: '41px', borderRadius: 0 }}
+                            onClick={() => {
+                                setCurrentPage(1);
+                                handleSubmitSearch();
+                            }}>
+                            <Icon.Search />
+                        </Button>
+                    </div>
+                    <Button type="button" outline style={{ height: '41px' }}>
+                        <Icon.FilterAlt />
+                        Filter
+                    </Button>
+                    {/* <NavLink to={'page-builder/add/condition'}>
                         <Button type="button" style={{ height: '41px' }}>
                             Add new condition
                         </Button>
                     </NavLink> */}
-                            <ModalToggleButton
-                                modalRef={modal}
-                                closer
-                                onClick={handleAddConditions}
-                                data-testid="condition-add-btn">
-                                Add Condition
-                            </ModalToggleButton>
-                        </div>
-                        {conditions?.length ? (
-                            <TableComponent
-                                isLoading={loading}
-                                sortData={handleSort}
-                                tableHeader=""
-                                tableHead={conditionTableColumns}
-                                tableBody={tableRows}
-                                isPagination={true}
-                                pageSize={pageSize}
-                                totalResults={totalConditions}
-                                currentPage={currentPage}
-                                handleNext={setCurrentPage}
-                                selectable={true}
-                                contextName="conditions"
-                                rangeSelector={true}
-                                handleSelected={handleSelectConditions}
-                            />
-                        ) : (
-                            <NoData />
-                        )}
-                    </>
+                    <ModalToggleButton
+                        modalRef={modal}
+                        closer
+                        onClick={handleAddConditions}
+                        data-testid="condition-add-btn">
+                        Add Condition
+                    </ModalToggleButton>
+                </div>
+                {conditions?.length ? (
+                    <TableComponent
+                        isLoading={loading}
+                        sortData={handleSort}
+                        tableHeader=""
+                        tableHead={conditionTableColumns}
+                        tableBody={tableRows}
+                        isPagination={true}
+                        pageSize={pageSize}
+                        totalResults={totalConditions}
+                        currentPage={currentPage}
+                        handleNext={setCurrentPage}
+                        selectable={true}
+                        contextName="conditions"
+                        rangeSelector={true}
+                        handleSelected={handleSelectConditions}
+                    />
+                ) : (
+                    <NoData />
                 )}
             </div>
 
@@ -209,7 +202,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                     <ModalToggleButton
                         modalRef={modal}
                         closer
-                        onClick={() => handleAddConditions()}
+                        onClick={handleAddConditions}
                         data-testid="modal-condition-add-btn">
                         Add Condition
                     </ModalToggleButton>
