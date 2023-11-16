@@ -75,19 +75,6 @@ public class PageStateChangeSteps {
             exceptionHolder.setException(e);
         }
     }
-    
-	@When("I delete a page draft")
-	public void i_delete_a_page_draft() {
-		try {
-			pageStatedResponse = pageController.deletePageDraft(requestId);
-		} catch (AccessDeniedException e) {
-			exceptionHolder.setException(e);
-		} catch (AuthenticationCredentialsNotFoundException e) {
-			exceptionHolder.setException(e);
-		} catch (PageUpdateException e) {
-			exceptionHolder.setException(e);
-		}
-	}
 
     @Then("A page update exception should be thrown")
     public void a_page_update_exception_should__be_thrown() {

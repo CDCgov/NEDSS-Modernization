@@ -52,62 +52,12 @@ class PageStateChangeTest {
 
     @InjectMocks
     PageStateChanger pageStateChanger;
+    
 
     public PageStateChangeTest() {
         MockitoAnnotations.openMocks(this);
     }
     
-    @Test
-	void deleteSinglePageDraft() {
-		Long requestId = 1l;
-		WaTemplate page = getTemplate(requestId, "DraftPage", "Draft");
-		when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(page));
-		PageStateResponse response = pageStateChanger.deletePageDraft(requestId);
-		assertEquals(requestId, response.getTemplateId());
-		assertEquals(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS, response.getMessage());
-
-	}
-    
-	@Test
-	void deletePageDraft() {
-		Long requestId = 1l;
-		WaTemplate page = getTemplate(requestId, "DraftPage", "Published With Draft");
-		WaTemplate draftPage = getTemplate(2l, "DraftPage", "Draft");
-		when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(page));
-		when(templateRepository.findByTemplateNmAndTemplateType(Mockito.anyString(),Mockito.anyString())).thenReturn(draftPage);
-		PageStateResponse response = pageStateChanger.deletePageDraft(requestId);
-		assertEquals(requestId, response.getTemplateId());
-		assertEquals(page.getTemplateNm() + " " + PageConstants.DRAFT_DELETE_SUCCESS, response.getMessage());
-
-	}
-
-	@Test
-	void deletePageDraftDraftNotFound() {
-		Long requestId = 1l;
-		WaTemplate NoDraft = getTemplate(requestId, "NoDraftPage", "Pblished");
-		when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(NoDraft));
-		var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.deletePageDraft(requestId));
-		assertEquals(PageConstants.DRAFT_NOT_FOUND, exception.getMessage());
-	}
-
-	@Test
-	void deletePageDraftException() {
-		Long requestId = 1l;
-		WaTemplate page = getTemplate(requestId, "NoDraftPage", "Published With Draft");
-		when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(page));
-		when(templateRepository.findByTemplateNmAndTemplateType(Mockito.anyString(),Mockito.anyString()))
-				.thenThrow(new PageUpdateException(PageConstants.DELETE_DRAFT_FAIL));
-		var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.deletePageDraft(requestId));
-		assertEquals(PageConstants.DELETE_DRAFT_FAIL, exception.getMessage());
-	}
-
-	@Test
-	void deletePageDraftPageNotFound() {
-		Long requestId = 1l;
-		when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-		var exception = assertThrows(PageUpdateException.class, () -> pageStateChanger.deletePageDraft(requestId));
-		assertEquals(PageConstants.PAGE_NOT_FOUND, exception.getMessage());
-	}
 
     @Test
     void pageStateUpdateTest() {

@@ -141,21 +141,21 @@ export const PatientProfile = () => {
                         <h6
                             className={`${
                                 activeTab === ACTIVE_TAB.SUMMARY && 'active'
-                            } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0`}
+                            } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}
                             onClick={() => setActiveTab(ACTIVE_TAB.SUMMARY)}>
                             {ACTIVE_TAB.SUMMARY}
                         </h6>
                         <h6
                             className={`${
                                 activeTab === ACTIVE_TAB.EVENT && 'active'
-                            } padding-bottom-1 type text-normal margin-y-3 font-sans-md margin-x-3 cursor-pointer margin-top-2 margin-bottom-0`}
+                            } padding-bottom-1 type text-normal margin-y-3 font-sans-md margin-x-3 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}
                             onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}>
                             {ACTIVE_TAB.EVENT}
                         </h6>
                         <h6
                             className={`${
                                 activeTab === ACTIVE_TAB.DEMOGRAPHICS && 'active'
-                            } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0`}
+                            } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}
                             onClick={() => setActiveTab(ACTIVE_TAB.DEMOGRAPHICS)}>
                             {ACTIVE_TAB.DEMOGRAPHICS}
                         </h6>
