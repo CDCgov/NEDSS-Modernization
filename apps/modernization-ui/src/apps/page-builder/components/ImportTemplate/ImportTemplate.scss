@@ -89,9 +89,8 @@
 
         .submit-btn {
             float: right;
-            margin-right: 20px;
             border: 2px solid #005ea2;
-            border-radius: 4px;
+            border-radius: 0.25rem;
         }
         .cancel-btn {
             float: right;
@@ -99,14 +98,15 @@
             border: 2px solid #005ea2;
             background: #fff;
             color: #005ea2;
-            border-radius: 4px;
+            border-radius: 0.25rem;
         }
     }
 
     .usa-button {
         &:disabled {
             border: 2px solid #c9c9c9;
-            background: #c9c9c9;
+            background: var(--disabled-disabled, #c9c9c9);
+            color: #fff;
         }
     }
 }
