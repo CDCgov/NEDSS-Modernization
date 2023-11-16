@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ImportTemplate } from './ImportTemplate';
 const modal = { current: null, isShowing: false };
@@ -18,7 +18,48 @@ describe('When page loads', () => {
             </BrowserRouter>
         );
         const btn = container.getElementsByClassName('usa-button')[0];
-        expect(btn.hasAttribute('disabled'));
+        expect(btn.hasAttribute('disabled')).toBeTruthy();
+    });
+});
+
+describe('When a file is selected', () => {
+    it('should have an error if not .xml', async () => {
+        const { container } = render(
+            <BrowserRouter>
+                <ImportTemplate modal={modal} onTemplateCreated={() => {}} />
+            </BrowserRouter>
+        );
+        const file = new File(['fileContent'], 'template.txt', { type: 'txt' });
+        const input = container.getElementsByTagName('input')[0];
+        const submit = container.getElementsByClassName('submit-btn')[0];
+        await waitFor(() => {
+            fireEvent.change(input, { target: { files: [file] } });
+        });
+
+        await waitFor(() => {
+            fireEvent.click(submit);
+        });
+
+        await waitFor(() => {
+            const errorBanner = container.getElementsByClassName('banner')[0];
+            expect(errorBanner).toBeInTheDocument();
+        });
+    });
+
+    it('Import button should not be disabled', async () => {
+        const { container } = render(
+            <BrowserRouter>
+                <ImportTemplate modal={modal} onTemplateCreated={() => {}} />
+            </BrowserRouter>
+        );
+        const file = new File(['fileContent'], 'template.xml', { type: 'text/xml' });
+        const input = container.getElementsByTagName('input')[0];
+        await waitFor(() => {
+            fireEvent.change(input, { target: { files: [file] } });
+        });
+
+        const btn = container.getElementsByClassName('usa-button')[0];
+        expect(!btn.hasAttribute('disabled')).toBeTruthy();
     });
 });
 

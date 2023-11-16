@@ -1,5 +1,6 @@
 import { Button, Icon, ModalRef, Tag } from '@trussworks/react-uswds';
-import { Template, TemplateControllerService } from 'apps/page-builder/generated';
+import { Template } from 'apps/page-builder/generated';
+import { useImportTemplate } from 'apps/page-builder/services/templatesAPI';
 import { Spinner } from 'components/Spinner/Spinner';
 import React, { useContext, useState } from 'react';
 import { UserContext } from 'user';
@@ -13,63 +14,41 @@ type ImportTemplateProps = {
 export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps) => {
     const { state } = useContext(UserContext);
     const [file, setFile] = useState<File | undefined>();
-    const [isError, setIsError] = useState(false);
-    const [errorMsg, setErrorMsg] = useState('');
-    const [loading, setLoading] = useState(false);
+    const { isLoading, error, reset, importTemplate } = useImportTemplate();
 
-    const handleFileChange = (event: any) => {
-        const selectedFile = event.target.files[0];
-        // Checking if the file type is allowed or not
-        const allowedTypes = ['xml'];
-        if (!allowedTypes.includes(selectedFile?.type)) {
-            setIsError(true);
-            setErrorMsg('Only XML files are allowed.');
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files == null) {
+            setFile(undefined);
+        } else {
+            setFile(files[0]);
         }
-        setIsError(false);
-        setFile(selectedFile);
     };
 
-    const handleSubmit = () => {
-        setErrorMsg('');
-
-        // Checking if the file has been selected
-        if (!file) {
-            setIsError(true);
-            setErrorMsg('Please select a file.');
+    const handleSubmit = async () => {
+        if (file == undefined) {
             return;
         }
-        setLoading(true);
-        TemplateControllerService.importTemplateUsingPost({
-            authorization: `Bearer ${state.getToken()}`,
-            fileInput: file
-        })
-            .then(async (response) => {
-                onTemplateCreated(response);
-                setLoading(false);
-                setFile(undefined);
-                modal.current?.toggleModal();
-            })
+        importTemplate(`Bearer ${state.getToken()}`, file)
+            .then(onTemplateCreated)
             .catch((error) => {
-                setIsError(true);
-                setErrorMsg(error.body?.message ?? 'An error occured');
-                setLoading(false);
+                console.error(error);
             });
-        setIsError(false);
     };
 
     const handleCancel = () => {
         setFile(undefined);
-        setIsError(false);
+        reset();
         modal.current?.toggleModal();
     };
 
     return (
         <div className="import-template">
-            {loading ? <Spinner /> : null}
+            {isLoading ? <Spinner /> : null}
             <div className="drop-container">
-                {isError && errorMsg ? (
+                {error ? (
                     <div className="banner">
-                        <AlertBanner type="error">{errorMsg}</AlertBanner>
+                        <AlertBanner type="error">{error}</AlertBanner>
                     </div>
                 ) : null}
 
@@ -104,7 +83,7 @@ export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps
             </div>
             <div className="button-container">
                 <Button
-                    disabled={file === undefined || loading}
+                    disabled={file === undefined || isLoading}
                     className="submit-btn"
                     type="button"
                     onClick={handleSubmit}>
