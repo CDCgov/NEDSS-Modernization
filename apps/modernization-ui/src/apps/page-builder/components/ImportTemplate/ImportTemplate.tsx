@@ -12,6 +12,7 @@ type ImportTemplateProps = {
 };
 export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps) => {
     const [file, setFile] = useState<File | undefined>();
+    const [fileDrag, setFileDrag] = useState(false);
     const { isLoading, error, reset, importTemplate } = useImportTemplate();
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +31,7 @@ export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps
         importTemplate(file)
             .then((template) => {
                 onTemplateCreated(template);
+                reset();
                 modal.current?.toggleModal(undefined, false);
             })
             .catch((error) => {
@@ -43,10 +45,30 @@ export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps
         modal.current?.toggleModal();
     };
 
+    const handleDragEnd = (ev: React.DragEvent<HTMLDivElement>) => {
+        ev.preventDefault();
+        setFileDrag(false);
+    };
+
+    const handleDragOver = (ev: React.DragEvent<HTMLDivElement>) => {
+        ev.preventDefault();
+        setFileDrag(true);
+    };
+
+    const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        setFileDrag(false);
+        setFile(event.dataTransfer.files[0]);
+    };
+
     return (
         <div className="import-template">
             {isLoading ? <Spinner /> : null}
-            <div className="drop-container">
+            <div
+                className="drop-container"
+                onDragLeave={handleDragEnd}
+                onDragOver={handleDragOver}
+                onDrop={handleFileDrop}>
                 {error ? (
                     <div className="banner">
                         <AlertBanner type="error">{error}</AlertBanner>
@@ -67,7 +89,7 @@ export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps
                         hidden
                     />
 
-                    <div className="drop-area">
+                    <div className={`drop-area ${fileDrag ? 'dragged' : ''}`}>
                         <div className="display-flex gap-10">
                             {file ? (
                                 <div className="tag-cover">

@@ -1,3 +1,5 @@
+@use 'settings.scss';
+
 .import-template {
     display: flex;
     flex-direction: column;
@@ -44,6 +46,11 @@
             cursor: pointer;
             border-radius: 8px;
             border: 1px dashed var(--base-light, #a9aeb1);
+            transition: background-color 0.5s ease;
+
+            &.dragged {
+                background-color: settings.$color-gray-10;
+            }
             svg {
                 transform: rotate(-90deg);
                 color: #a9aeb1;
