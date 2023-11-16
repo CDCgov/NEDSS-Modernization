@@ -14,7 +14,7 @@ export default function EthnicityFields({ id, title, coded }: Props) {
 
     return (
         <FormCard id={id} title={title}>
-            <Grid col={12} className="padding-x-3 padding-bottom-3">
+            <Grid col={12} className="padding-x-3 padding-bottom-3 padding-top-2">
                 <Grid row>
                     <Grid col={12}>
                         {coded.ethnicGroups.map((ethnicity, key) => (

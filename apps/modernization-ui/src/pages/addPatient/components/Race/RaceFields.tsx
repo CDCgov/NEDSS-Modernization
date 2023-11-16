@@ -15,7 +15,7 @@ export default function RaceFields({ id, title, coded }: Props) {
     const tempArr: any = [];
     return (
         <FormCard title={title} id={id}>
-            <Grid col={12} className="padding-x-3 padding-bottom-3">
+            <Grid col={12} className="padding-x-3 padding-bottom-3 padding-top-2">
                 <Grid row>
                     <Grid col={12}>
                         <Fieldset>
