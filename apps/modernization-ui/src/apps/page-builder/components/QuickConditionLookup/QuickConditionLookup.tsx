@@ -140,7 +140,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                 </div>
             </ModalHeading>
             <div className="condition-lookup-modal-body">
-                <p className="description">You can search for existing condition(s) or create a new one</p>
+                <p className="description">You can search for existing condition(s) or create a new one.</p>
                 <div className="search-container">
                     <div style={{ display: 'flex' }}>
                         <TextInput
