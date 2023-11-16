@@ -67,9 +67,4 @@ public class AuthorizationSteps {
     activeSession.active(new SessionCookie(session));
   }
 
-  @Given("A sessionId is not set")
-  public void a_session_id_is_not_set() {
-    activeSession.reset();
-    activeUser.reset();
-  }
 }

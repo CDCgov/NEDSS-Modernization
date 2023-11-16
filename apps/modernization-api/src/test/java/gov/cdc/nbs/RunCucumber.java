@@ -31,7 +31,7 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @CucumberContextConfiguration
 @SpringBootTest
 @Import(PatientLocalIdentifierGeneratorTestConfiguration.class)
-@ActiveProfiles("test")
+@ActiveProfiles({"default","test","development"})
 @AutoConfigureMockMvc
 @Testcontainers
 @EmbeddedNbsDatabase
@@ -40,7 +40,7 @@ import static io.cucumber.junit.platform.engine.Constants.*;
     topics = {"patient"}
 )
 @EnableClassicMockRestServer
-public class RunCucumberTest {
+public class RunCucumber {
 
   @Container
   public static final NbsElasticsearchContainer ELASTICSEARCH_CONTAINER;

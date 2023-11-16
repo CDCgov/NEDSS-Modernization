@@ -107,10 +107,17 @@ public class Authenticated {
         .map(token -> "Bearer " + token)
         .orElse("NOPE");
 
+    return withSession(builder)
+        .header(HttpHeaders.AUTHORIZATION, authorization);
+
+  }
+
+  public MockHttpServletRequestBuilder withSession(final MockHttpServletRequestBuilder builder) {
+
     this.activeSession.maybeActive().map(SessionCookie::asCookie)
         .ifPresent(builder::cookie);
 
-    return builder.header(HttpHeaders.AUTHORIZATION, authorization);
+    return builder;
 
   }
 }
