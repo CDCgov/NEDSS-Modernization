@@ -57,8 +57,8 @@ class PageControllerTest {
                 pageDownloader, userDetailsProvider,pageMetaDataDownloader);
         ResponseEntity<Resource> response = pageController.downloadPageMetadata(waTemplateUid);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("attachment; filename=PageMetadata.csv", response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION));
-        assertEquals(MediaType.parseMediaType("application/csv"), response.getHeaders().getContentType());
+        assertEquals("attachment; filename=PageMetadata.xls", response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION));
+        assertEquals(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), response.getHeaders().getContentType());
     }
 
     @Test

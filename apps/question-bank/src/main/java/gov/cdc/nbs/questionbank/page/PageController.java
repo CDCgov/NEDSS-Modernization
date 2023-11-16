@@ -89,10 +89,12 @@ public class PageController {
 
   @GetMapping("{waTemplateUid}/download-metadata")
   public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("waTemplateUid") Long waTemplateUid) throws IOException {
-    String fileName = "PageMetadata.csv";
+    String fileName = "PageMetadata.xls";
     InputStreamResource file = new InputStreamResource(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid));
-    return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-            .contentType(MediaType.parseMediaType("application/csv")).body(file);
+    return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+            .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+            .body(file);
   }
 
 
