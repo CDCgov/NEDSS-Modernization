@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.util.UriComponentsBuilder;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.testing.support.Active;
@@ -88,12 +89,13 @@ public class ImportTemplateSteps {
   @When("I import a template")
   public void i_import_a_template() throws Exception {
     WaTemplate page = mother.one();
-    String location = LOCATION.replace(
-        "TEMPLATE_UID",
-        page.getId().toString())
-        .replace("TEMPLATE_NAME", page.getTemplateNm());
     HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(new URI(location));
+    URI uri = UriComponentsBuilder.fromUriString(LOCATION)
+        .replaceQueryParam("srcTemplateNm", page.getTemplateNm())
+        .replaceQueryParam("templateUid", page.getId().toString())
+        .build()
+        .toUri();
+    headers.setLocation(uri);
     server.expect(requestTo(classicUrl + "/nbs/ManageTemplates.do?method=importTemplate&type=Import"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(content().contentTypeCompatibleWith(MediaType.MULTIPART_FORM_DATA))
