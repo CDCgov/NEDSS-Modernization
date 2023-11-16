@@ -1,22 +1,20 @@
 import { render } from '@testing-library/react';
-import { ImportTemplate } from './ImportTemplate';
 import { BrowserRouter } from 'react-router-dom';
-import React from 'react';
+import { ImportTemplate } from './ImportTemplate';
+const modal = { current: null, isShowing: false };
 
 describe('General information component tests', () => {
     it('should display Import template form', () => {
-        const ref = React.useRef(null);
-        const { getByTestId } = render(<ImportTemplate modal={ref} onTemplateCreated={() => {}} />);
-        expect(getByTestId('header-title').innerHTML).toBe('Import template');
+        const { getByText } = render(<ImportTemplate modal={modal} onTemplateCreated={() => {}} />);
+        expect(getByText('Import a new template')).toBeInTheDocument();
     });
 });
 
 describe('When page loads', () => {
     it('Import button should be disabled', () => {
-        const ref = React.useRef(null);
         const { container } = render(
             <BrowserRouter>
-                <ImportTemplate modal={ref} onTemplateCreated={() => {}} />
+                <ImportTemplate modal={modal} onTemplateCreated={() => {}} />
             </BrowserRouter>
         );
         const btn = container.getElementsByClassName('usa-button')[0];
@@ -26,8 +24,7 @@ describe('When page loads', () => {
 
 describe('Import Template component tests', () => {
     it('should render a grid with 1 inputs labels which is  Choose file ', () => {
-        const ref = React.useRef(null);
-        const { getByText } = render(<ImportTemplate modal={ref} onTemplateCreated={() => {}} />);
+        const { getByText } = render(<ImportTemplate modal={modal} onTemplateCreated={() => {}} />);
         expect(getByText('Choose file')).toBeInTheDocument();
     });
 });
