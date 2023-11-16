@@ -4,6 +4,7 @@ import com.itextpdf.text.DocumentException;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
+import gov.cdc.nbs.questionbank.page.response.PageDeleteResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -32,19 +33,23 @@ public class PageController {
   private final PageStateChanger stateChange;
   private final PageDownloader pageDownloader;
   private final UserDetailsProvider userDetailsProvider;
+  private final PageDeletor pageDeletor;
+
   private final PageMetaDataDownloader pageMetaDataDownloader;
 
   public PageController(
-      final PageCreator creator,
-      final PageStateChanger stateChange,
-      final PageDownloader pageDownloader,
-      final UserDetailsProvider userDetailsProvider,
-      final PageMetaDataDownloader pageMetaDataDownloader) {
-
+          final PageCreator creator,
+          final PageStateChanger stateChange,
+          final PageDownloader pageDownloader,
+          final UserDetailsProvider userDetailsProvider,
+          final PageDeletor pageDeletor,
+          final PageMetaDataDownloader pageMetaDataDownloader
+  ) {
     this.creator = creator;
     this.stateChange = stateChange;
     this.pageDownloader = pageDownloader;
     this.userDetailsProvider = userDetailsProvider;
+    this.pageDeletor = pageDeletor;
     this.pageMetaDataDownloader = pageMetaDataDownloader;
   }
 
@@ -65,7 +70,7 @@ public class PageController {
     InputStreamResource file = new InputStreamResource(pageDownloader.downloadLibrary());
 
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-        .contentType(MediaType.parseMediaType("application/csv")).body(file);
+            .contentType(MediaType.parseMediaType("application/csv")).body(file);
   }
 
   @GetMapping("downloadPDF")
@@ -73,18 +78,18 @@ public class PageController {
     var pdf = pageDownloader.downloadLibraryPDF();
 
     return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_PDF)
-        .header(HttpHeaders.CONTENT_DISPOSITION,
-            ContentDisposition.attachment()
-                .filename("PageLibrary.pdf").build()
-                .toString())
-        .body(pdf);
+            .contentType(MediaType.APPLICATION_PDF)
+            .header(HttpHeaders.CONTENT_DISPOSITION,
+                    ContentDisposition.attachment()
+                            .filename("PageLibrary.pdf").build()
+                            .toString())
+            .body(pdf);
 
   }
 
   @DeleteMapping("{id}/delete-draft")
-  public PageStateResponse deletePageDraft(@PathVariable("id") Long pageId) {
-    return stateChange.deletePageDraft(pageId);
+  public PageDeleteResponse deletePageDraft(@PathVariable("id") Long pageId) {
+    return pageDeletor.deletePageDraft(pageId);
   }
 
   @GetMapping("{waTemplateUid}/download-metadata")
