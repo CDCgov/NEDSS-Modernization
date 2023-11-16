@@ -27,7 +27,7 @@ const tableHeaders = [
     { name: 'Code', sortable: true },
     { name: 'Program area', sortable: true },
     { name: 'Condition Family', sortable: true },
-    { name: 'Investigateion page', sortable: true },
+    { name: 'Investigation page', sortable: true },
     { name: 'Status', sortable: true }
 ];
 
@@ -67,7 +67,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
             ConditionControllerService.searchConditionsUsingPost({
                 authorization,
                 search,
-                page,
+                page: page,
                 size: pageSize
             })
                 .then((response: any) => {
@@ -84,7 +84,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
     );
 
     useEffect(() => {
-        handleSubmitSearch(currentPage);
+        handleSubmitSearch(currentPage - 1);
     }, [currentPage, pageSize]);
 
     useEffect(() => {

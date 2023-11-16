@@ -150,7 +150,7 @@ describe('QuickConditionLookup', () => {
         const conditionCode = await screen.findByText('Code');
         const programArea = await screen.findByText('Program area');
         const conditionFamily = await screen.findByText('Condition Family');
-        const investigationPage = await screen.findByText('Investigateion page');
+        const investigationPage = await screen.findByText('Investigation page');
         const status = await screen.findByText('Status');
 
         await waitFor(() => {
