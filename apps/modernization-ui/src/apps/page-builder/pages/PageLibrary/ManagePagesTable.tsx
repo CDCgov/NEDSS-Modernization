@@ -45,6 +45,15 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
     const setSearchParams = searchParams[1];
     const token = `Bearer ${state.getToken()}`;
 
+    const dateOptions: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    };
+
     const asTableRow = (page: PageSummary): TableBody => ({
         id: page.name,
         expanded: false,
@@ -71,7 +80,10 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
                     ) || null
             },
             { id: 4, title: page?.status || null },
-            { id: 5, title: page?.lastUpdate ? asLocalDate(page.lastUpdate).toLocaleString() : null },
+            {
+                id: 5,
+                title: page?.lastUpdate ? asLocalDate(page.lastUpdate).toLocaleString('en-US', dateOptions) : null
+            },
             { id: 6, title: page?.lastUpdateBy || null }
         ]
     });
