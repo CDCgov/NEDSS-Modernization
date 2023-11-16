@@ -49,7 +49,10 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="name"
-                rules={{ required: { value: true, message: 'Name is required.' } }}
+                rules={{
+                    required: { value: true, message: 'Name is required.' },
+                    pattern: { value: /[a-zA-Z]+/, message: 'Only alphabetical characters accepted' }
+                }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
