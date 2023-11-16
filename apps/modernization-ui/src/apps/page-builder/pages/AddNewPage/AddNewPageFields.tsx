@@ -51,7 +51,10 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 name="name"
                 rules={{
                     required: { value: true, message: 'Name is required.' },
-                    pattern: { value: /[a-zA-Z]+/, message: 'Only alphabetical characters accepted' }
+                    pattern: {
+                        value: /[a-zA-Z*()_+\-=;:/.,0-9]+$/,
+                        message: 'Only certain special characters accepted'
+                    }
                 }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <Input
