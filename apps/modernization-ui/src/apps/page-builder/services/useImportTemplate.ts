@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Template } from '../generated/models/Template';
 import { TemplateControllerService } from '../generated';
+import { UserContext } from 'user';
 
 export const useImportTemplate = (): {
     reset: () => void;
     isLoading: boolean;
     error: string | undefined;
-    importTemplate: (token: string, file: File) => Promise<Template>;
+    importTemplate: (file: File) => Promise<Template>;
 } => {
+    const { state } = useContext(UserContext);
     const [error, setError] = useState<string | undefined>();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -16,7 +18,7 @@ export const useImportTemplate = (): {
         setIsLoading(false);
     };
 
-    const importTemplate = (token: string, file: File): Promise<Template> => {
+    const importTemplate = (file: File): Promise<Template> => {
         return new Promise((resolve, reject) => {
             if (file.type !== 'text/xml') {
                 setError('Only XML files are allowed');
@@ -26,7 +28,7 @@ export const useImportTemplate = (): {
             setError(undefined);
 
             TemplateControllerService.importTemplateUsingPost({
-                authorization: token,
+                authorization: `Bearer ${state.getToken()}`,
                 fileInput: file
             })
                 .then((response) => {

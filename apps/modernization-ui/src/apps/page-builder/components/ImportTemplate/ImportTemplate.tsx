@@ -2,8 +2,7 @@ import { Button, Icon, ModalRef, Tag } from '@trussworks/react-uswds';
 import { Template } from 'apps/page-builder/generated';
 import { useImportTemplate } from 'apps/page-builder/services/useImportTemplate';
 import { Spinner } from 'components/Spinner/Spinner';
-import React, { useContext, useState } from 'react';
-import { UserContext } from 'user';
+import React, { useState } from 'react';
 import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
 
@@ -12,7 +11,6 @@ type ImportTemplateProps = {
     modal: React.RefObject<ModalRef>;
 };
 export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps) => {
-    const { state } = useContext(UserContext);
     const [file, setFile] = useState<File | undefined>();
     const { isLoading, error, reset, importTemplate } = useImportTemplate();
 
@@ -29,8 +27,11 @@ export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps
         if (file == undefined) {
             return;
         }
-        importTemplate(`Bearer ${state.getToken()}`, file)
-            .then(onTemplateCreated)
+        importTemplate(file)
+            .then((template) => {
+                onTemplateCreated(template);
+                modal.current?.toggleModal(undefined, false);
+            })
             .catch((error) => {
                 console.error(error);
             });
