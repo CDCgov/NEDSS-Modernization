@@ -1,4 +1,4 @@
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import './EditPageHeader.scss';
 import { useRef, useState } from 'react';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
@@ -38,6 +38,14 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                         Save draft
                     </Button>
                 )}
+                <a
+                    href={`/nbs/PreviewPage.do?from=L&waTemplateUid=${page.id}&method=viewPageLoad`}
+                    rel="noreferrer"
+                    target="_blank">
+                    <Button type="button" outline className="icon-button">
+                        <Icon.Visibility className="classic-link-icon" />
+                    </Button>
+                </a>
                 <Button type="button" outline>
                     {isSaveTemplate ? 'Edit' : 'Cancel'}
                 </Button>
