@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
+import { CancelablePromise, Template, TemplateControllerService } from 'apps/page-builder/generated';
 import { BrowserRouter } from 'react-router-dom';
 import { ImportTemplate } from './ImportTemplate';
-import { CancelablePromise, Template, TemplateControllerService } from 'apps/page-builder/generated';
 const toggleModal = jest.fn();
 const modal = {
     isShowing: false,
@@ -68,7 +68,25 @@ describe('When a file is selected', () => {
         });
 
         const btn = container.getElementsByClassName('usa-button')[0];
-        expect(!btn.hasAttribute('disabled')).toBeTruthy();
+        expect(btn.hasAttribute('disabled')).toBeFalsy();
+    });
+});
+
+describe('when a file is dropped', () => {
+    it('Import button should be enabled', async () => {
+        const { container } = render(
+            <BrowserRouter>
+                <ImportTemplate modal={modal} onTemplateCreated={() => {}} />
+            </BrowserRouter>
+        );
+        const file = new File(['fileContent'], 'template.xml', { type: 'text/xml' });
+        const dropContainer = container.getElementsByClassName('drop-container')[0];
+        await waitFor(() => {
+            fireEvent.drop(dropContainer, { dataTransfer: { files: [file] } });
+        });
+
+        const btn = container.getElementsByClassName('usa-button')[0];
+        expect(btn.hasAttribute('disabled')).toBeFalsy();
     });
 });
 
