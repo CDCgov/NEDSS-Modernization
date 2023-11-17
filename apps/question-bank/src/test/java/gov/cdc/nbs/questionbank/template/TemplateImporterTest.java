@@ -119,6 +119,26 @@ class TemplateImporterTest {
     assertThrows(TemplateImportException.class, () -> importer.importTemplate(mockFile));
   }
 
+  @Test
+  @SuppressWarnings("unchecked")
+  void should_fail_bad_id() {
+    // Given a template to import that already exists
+    MultipartFile mockFile = Mockito.mock(MultipartFile.class);
+    when(mockFile.getResource()).thenReturn(Mockito.mock(Resource.class));
+
+    // and a working Classic endpoint
+    HttpHeaders headers = Mockito.mock(HttpHeaders.class);
+    ResponseEntity<String> response = Mockito.mock(ResponseEntity.class);
+    when(response.getHeaders()).thenReturn(headers);
+    when(headers.getFirst("Location"))
+        .thenReturn("srcTemplateNm=AARBOVIRAL_1_3_INV_NBS_5_4&src=Import&templateUid=abcD");
+    when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
+
+    // when a template is imported
+    // then an exception is thrown
+    assertThrows(TemplateImportException.class, () -> importer.importTemplate(mockFile));
+  }
+
   private Template template() {
     return new Template(
         1000380l,
