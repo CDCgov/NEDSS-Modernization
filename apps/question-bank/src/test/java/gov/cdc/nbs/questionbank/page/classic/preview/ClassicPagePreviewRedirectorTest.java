@@ -1,0 +1,33 @@
+package gov.cdc.nbs.questionbank.page.classic.preview;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.servlet.view.RedirectView;
+import gov.cdc.nbs.questionbank.page.classic.ClassicPreviewPagePreparer;
+
+@ExtendWith(MockitoExtension.class)
+class ClassicPagePreviewRedirectorTest {
+
+  @Mock
+  private ClassicPreviewPagePreparer preparer;
+
+  @InjectMocks
+  private ClassicPagePreviewRedirector redirector;
+
+  @Test
+  void should_redirect_to_preview() {
+    // When a request is processed to preview 
+    RedirectView response = redirector.view(123L);
+
+    // Then classic is prepared
+    verify(preparer).prepare();
+
+    // And a redirect is issued to classic
+    assertEquals("/nbs/PreviewPage.do?from=L&method=viewPageLoad&waTemplateUid=123", response.getUrl());
+  }
+}

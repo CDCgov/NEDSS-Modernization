@@ -39,7 +39,8 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                     </Button>
                 )}
                 <a
-                    href={`/nbs/PreviewPage.do?from=L&waTemplateUid=${page.id}&method=viewPageLoad`}
+                    // href={`/nbs/PreviewPage.do?from=L&waTemplateUid=${page.id}&method=viewPageLoad`}
+                    href={`/nbs/page-builder/pages/${page.id}/preview`}
                     rel="noreferrer"
                     target="_blank">
                     <Button type="button" outline className="icon-button">

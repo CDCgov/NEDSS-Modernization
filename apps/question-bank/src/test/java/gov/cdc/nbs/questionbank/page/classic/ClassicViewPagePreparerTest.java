@@ -1,10 +1,9 @@
-package gov.cdc.nbs.questionbank.page.template;
+package gov.cdc.nbs.questionbank.page.classic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
-
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -24,8 +23,7 @@ class ClassicViewPagePreparerTest {
         .andExpect(method(HttpMethod.GET))
         .andExpect(queryParam("waTemplateUid", "2027"))
         .andExpect(queryParam("method", "viewPageLoad"))
-        .andRespond(withSuccess())
-    ;
+        .andRespond(withSuccess());
 
     preparer.request(2027L);
 
