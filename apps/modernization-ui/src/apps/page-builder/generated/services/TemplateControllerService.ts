@@ -34,17 +34,18 @@ export class TemplateControllerService {
     }
 
     /**
-     * importTemplate
+     * Creates a new Template from an XML File.
+     * Creates a new Template by importing an XML file that describes how the template should be created.
      * @returns Template OK
      * @returns any Created
      * @throws ApiError
      */
-    public static importTemplateUsingPost({
+    public static import({
         authorization,
-        fileInput,
+        file,
     }: {
         authorization: string,
-        fileInput?: Blob,
+        file?: Blob,
     }): CancelablePromise<Template | any> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -53,7 +54,7 @@ export class TemplateControllerService {
                 'Authorization': authorization,
             },
             formData: {
-                'fileInput': fileInput,
+                'file': file,
             },
             errors: {
                 401: `Unauthorized`,

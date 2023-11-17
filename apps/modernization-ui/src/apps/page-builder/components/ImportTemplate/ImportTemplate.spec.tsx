@@ -92,7 +92,7 @@ describe('when a file is dropped', () => {
 
 describe('When a file is successfully imported', () => {
     it('should excecute the callback', async () => {
-        const mockImport = jest.spyOn(TemplateControllerService, 'importTemplateUsingPost');
+        const mockImport = jest.spyOn(TemplateControllerService, 'import');
         mockImport.mockImplementation(() => Promise.resolve({ id: 1 } as Template) as CancelablePromise<Template>);
         const callback = jest.fn(() => {});
 
@@ -120,7 +120,7 @@ describe('When a file is successfully imported', () => {
     });
 
     it('should close the modal', async () => {
-        const mockImport = jest.spyOn(TemplateControllerService, 'importTemplateUsingPost');
+        const mockImport = jest.spyOn(TemplateControllerService, 'import');
         mockImport.mockImplementation(() => Promise.resolve({ id: 1 } as Template) as CancelablePromise<Template>);
 
         const { container } = render(

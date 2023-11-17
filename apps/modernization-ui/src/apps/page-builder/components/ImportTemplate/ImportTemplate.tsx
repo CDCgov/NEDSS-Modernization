@@ -2,7 +2,7 @@ import { Button, Icon, ModalRef, Tag } from '@trussworks/react-uswds';
 import { Template } from 'apps/page-builder/generated';
 import { useImportTemplate } from 'apps/page-builder/services/useImportTemplate';
 import { Spinner } from 'components/Spinner/Spinner';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
 
@@ -13,7 +13,15 @@ type ImportTemplateProps = {
 export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps) => {
     const [file, setFile] = useState<File | undefined>();
     const [fileDrag, setFileDrag] = useState(false);
-    const { isLoading, error, reset, importTemplate } = useImportTemplate();
+    const { error, isLoading, imported, reset, importTemplate } = useImportTemplate();
+
+    useEffect(() => {
+        if (imported) {
+            onTemplateCreated(imported);
+            reset();
+            modal.current?.toggleModal(undefined, false);
+        }
+    }, [imported]);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
@@ -24,19 +32,11 @@ export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         if (file == undefined) {
             return;
         }
-        importTemplate(file)
-            .then((template) => {
-                onTemplateCreated(template);
-                reset();
-                modal.current?.toggleModal(undefined, false);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        importTemplate(file);
     };
 
     const handleCancel = () => {
