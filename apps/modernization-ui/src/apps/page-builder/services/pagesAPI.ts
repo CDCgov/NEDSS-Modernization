@@ -3,19 +3,21 @@ import {
     PageControllerService,
     Page_PageSummary_,
     PagesService,
-    PageSummaryService
+    PageSummaryService,
+    Filter
 } from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = (
     token: string,
     search?: string,
+    filters?: Array<Filter>,
     sort?: string,
     currentPage?: number,
     pageSize?: number
 ): Promise<Page_PageSummary_> => {
     return PageSummaryService.search({
         authorization: token,
-        request: { search },
+        request: { search, filters },
         page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
         size: pageSize,
         sort

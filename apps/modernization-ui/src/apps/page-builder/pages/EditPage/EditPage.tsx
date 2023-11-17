@@ -16,6 +16,7 @@ import { Spinner } from 'components/Spinner/Spinner';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ReorderModal } from './ReorderModal/ReorderModal';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PageInfo } from './PageInfo/PageInfo';
 
 export const EditPage = () => {
     const { pageId } = useParams();
@@ -74,6 +75,7 @@ export const EditPage = () => {
                         </div>
                         <div className="edit-page__container">
                             <div className="edit-page__content">
+                                <PageInfo page={page.id} />
                                 {page.tabs?.[active] ? (
                                     <EditPageContentComponent
                                         content={page.tabs[active]}
@@ -81,10 +83,12 @@ export const EditPage = () => {
                                     />
                                 ) : null}
 
-                                <EditPageSidebar
-                                    addSectionModalRef={addSectionModalRef}
-                                    reorderModalRef={reorderModalRef}
-                                />
+                                {false && (
+                                    <EditPageSidebar
+                                        addSectionModalRef={addSectionModalRef}
+                                        reorderModalRef={reorderModalRef}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>

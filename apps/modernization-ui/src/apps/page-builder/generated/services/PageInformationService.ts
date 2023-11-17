@@ -42,6 +42,38 @@ export class PageInformationService {
             },
         });
     }
+    /**
+     * Returns the Page Information of a page
+     * The Page Information includes the event type, message mapping guide, name, datamart, description, and any related conditions
+     * @returns PageInformation OK
+     * @throws ApiError
+     */
+    public static getPageHistory({
+                           authorization,
+                           page,
+                       }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+    }): CancelablePromise<PageInformation> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/pages/{page}/page-history',
+            path: {
+                'page': page,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
 
     /**
      * Allows changing the Information of a page

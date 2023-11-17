@@ -166,9 +166,6 @@ export class PageControllerService {
         waTemplateUid,
     }: {
         authorization: string,
-        /**
-         * waTemplateUid
-         */
         waTemplateUid: number,
     }): CancelablePromise<Resource> {
         return __request(OpenAPI, {
@@ -179,6 +176,8 @@ export class PageControllerService {
             },
             headers: {
                 'Authorization': authorization,
+                // 'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                Accept: 'application/xlsx',
             },
             errors: {
                 401: `Unauthorized`,

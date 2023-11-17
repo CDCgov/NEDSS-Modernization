@@ -119,15 +119,15 @@ const eventYpeOption = [
 const pageFieldList = [
     {
         name: 'Page Name',
-        value: 'PageName'
+        value: 'name'
     },
     {
         name: 'Event Type',
-        value: 'eventType'
+        value: 'eventtype'
     },
     {
         name: 'Related Condition(s)',
-        value: 'relatedCondition'
+        value: 'condition'
     },
     {
         name: 'Status',
@@ -135,11 +135,11 @@ const pageFieldList = [
     },
     {
         name: 'Last updated',
-        value: 'lastUpdated'
+        value: 'lastupdated'
     },
     {
         name: 'Last updated by',
-        value: 'lastUpdatedBy'
+        value: 'lastupdatedby'
     }
 ];
 const businessRuleFieldList = [

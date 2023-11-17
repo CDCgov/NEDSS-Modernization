@@ -1,0 +1,86 @@
+@use 'styles/colors';
+
+.page-details {
+    background-color: #f1f6f9;
+    padding: 0 1.5rem 6rem;
+    min-height: 90vh;
+
+    form.usa-form {
+        max-width: unset;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .page-details__form {
+        position: relative;
+        .page-details-printer {
+            position: absolute;
+            right: 16px;
+
+        }
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        min-width: 960px;
+        max-width: 960px;
+        background-color: colors.$base-white;
+        margin: 1.2rem 0;
+        display: flex;
+        justify-content: center;
+
+        .pages-breadcrumb {
+            padding-top: 1.4rem;
+            padding-left: 1.4rem;
+        }
+
+        .page-details__content {
+            width: 480px;
+            padding: 2rem 0 4rem;
+            margin: 0 auto;
+            p {
+                font-size: 0.875rem;
+                line-height: 1.4rem;
+                margin-top: 0.5rem;
+                color: colors.$base-light;
+            }
+            h2 {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+            h4 {
+                font-weight: 400;
+                margin-bottom: 0;
+            }
+            a {
+                text-decoration: none;
+            }
+            .usa-button {
+                margin-top: 0.4rem;
+                font-size: 0.95rem;
+                text-decoration: none;
+                margin-top: 0;
+            }
+            button {
+                p {
+                    margin: 0;
+                    font-weight: 700;
+                    color: colors.$primary;
+                }
+            }
+        }
+
+        .unsupported-event-type-message {
+            border: 4px solid var(--warm-accent-accent, #fa9441);
+            background: rgba(250, 243, 209, 0.44);
+            display: flex;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            color: var(--base-black, #000);
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.62rem;
+        }
+    }
+}

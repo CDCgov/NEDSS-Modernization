@@ -3,6 +3,8 @@ import { createContext, Dispatch, SetStateAction } from 'react';
 export interface ContextData {
     filter: any;
     setFilter: (filter: any) => void;
+    records?: any;
+    setRecords?: (records: any) => void;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     currentPage: number;

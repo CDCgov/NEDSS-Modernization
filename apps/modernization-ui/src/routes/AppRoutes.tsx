@@ -21,6 +21,7 @@ import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/Crea
 import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 import { ValuesetLibrary } from 'apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
+import { PageDetails } from '../apps/page-builder/pages/PageDetails/PageDetails';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -70,7 +71,6 @@ export const AppRoutes = () => {
                             <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
                             <Route path="/add-patient" element={<AddPatient />} />
                             <Route path="/add-patient/patient-added" element={<AddedPatient />} />
-
                             {config.features.pageBuilder.enabled ? (
                                 <Route path="/page-builder" element={<PageBuilderContextProvider />}>
                                     <Route path="manage">
@@ -79,6 +79,7 @@ export const AppRoutes = () => {
                                         <Route path="question-library" element={<QuestionLibrary />} />
                                         <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
                                         <Route path="condition-library" element={<ConditionLibrary />} />
+                                        <Route path="page-details/:pageId?" element={<PageDetails />} />
                                     </Route>
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />
