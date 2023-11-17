@@ -8,18 +8,18 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import gov.cdc.nbs.RunCucumberTest;
+import gov.cdc.nbs.RunCucumber;
 
 @SpringBootTest(classes = ElasticSearchTest.class, properties = {"spring.profiles.active:test"})
 class ElasticSearchTest {
     @Test
     void testElasticSearchIsRunning() {
-        assertThat(RunCucumberTest.ELASTICSEARCH_CONTAINER.isRunning()).isTrue();
+        assertThat(RunCucumber.ELASTICSEARCH_CONTAINER.isRunning()).isTrue();
     }
 
     @Test
     void testElasticSearchHasCorrectPlugins() throws UnsupportedOperationException, IOException, InterruptedException {
-        String output = RunCucumberTest.ELASTICSEARCH_CONTAINER.execInContainer(
+        String output = RunCucumber.ELASTICSEARCH_CONTAINER.execInContainer(
                 "/usr/share/elasticsearch/bin/elasticsearch-plugin", "list").getStdout();
         assertEquals("analysis-phonetic\n", output);
     }
