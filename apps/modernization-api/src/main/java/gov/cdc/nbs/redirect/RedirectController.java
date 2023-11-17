@@ -1,8 +1,8 @@
 package gov.cdc.nbs.redirect;
 
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 import gov.cdc.nbs.exception.RedirectionException;
@@ -16,7 +16,7 @@ public class RedirectController {
   private static final String REDIRECT_HEADER = "NBS_REDIRECT";
 
   @ApiIgnore
-  @GetMapping()
+  @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
   public RedirectView redirect(HttpServletRequest request) {
     String location = request.getHeader(REDIRECT_HEADER);
     if (location == null) {
