@@ -54,7 +54,7 @@ describe('when at least one summary is available', () => {
         expect(tableData[1]).toHaveTextContent('Investigation');
         expect(tableData[2]).toHaveTextContent('condition display');
         expect(tableData[3]).toHaveTextContent('Draft');
-        expect(tableData[4]).toHaveTextContent('9/25/2019, 1:27:16 PM');
+        expect(tableData[4]).toHaveTextContent('09/25/2019');
         expect(tableData[5]).toHaveTextContent('last updateBy');
     });
 
