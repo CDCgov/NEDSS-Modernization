@@ -52,8 +52,7 @@ class ManagePagesRouteConfigurationDisabledTest {
 
 
   @Test
-  void should_route_to_modernized() {
-
+  void should_not_route_to_modernized() {
     modernizationApi.stubFor(get(urlPathMatching("/nbs/redirect/pagebuilder/manage/pages")).willReturn(ok()));
 
     webClient
@@ -61,7 +60,6 @@ class ManagePagesRouteConfigurationDisabledTest {
             builder -> builder
                 .path("/nbs/ManagePage.do")
                 .queryParam("method", "list")
-                .queryParam("initLoad", "true")
                 .build())
         .exchange()
         .expectStatus()

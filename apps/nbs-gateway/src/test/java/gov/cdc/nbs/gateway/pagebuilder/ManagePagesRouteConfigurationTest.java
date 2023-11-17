@@ -52,10 +52,24 @@ class ManagePagesRouteConfigurationTest {
         .block());
   }
 
-
   @Test
   void should_route_to_modernized() {
+    modernizationApi.stubFor(get(urlPathMatching("/nbs/redirect"))
+        .withHeader("NBS_REDIRECT", equalTo("/page-builder/manage/pages"))
+        .willReturn(ok()));
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/nbs/ManagePage.do")
+                .queryParam("method", "list")
+                .build())
+        .exchange()
+        .expectStatus()
+        .isOk();
+  }
 
+  @Test
+  void should_route_to_modernized_initLoad() {
     modernizationApi.stubFor(get(urlPathMatching("/nbs/redirect"))
         .withHeader("NBS_REDIRECT", equalTo("/page-builder/manage/pages"))
         .willReturn(ok()));
