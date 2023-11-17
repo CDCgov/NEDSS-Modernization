@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
-import gov.cdc.nbs.authentication.SessionCookie;
-import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -10,97 +10,87 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.ResultActions;
 
 import javax.servlet.http.Cookie;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 public class DeleteLegacyInvestigationSteps {
 
-    @Value("${nbs.wildfly.url:http://wildfly:7001}")
-    String classicUrl;
+  @Value("${nbs.wildfly.url:http://wildfly:7001}")
+  String classicUrl;
 
-    @Autowired
-    TestPatients patients;
+  @Autowired
+  Active<PatientIdentifier> activePatient;
 
-    @Autowired
-    MockMvc mvc;
+  @Autowired
+  MockMvc mvc;
 
-    @Autowired
-    Active<SessionCookie> activeSession;
+  @Autowired
+  Authenticated authenticated;
 
-    @Autowired
-    Active<MockHttpServletResponse> activeResponse;
+  @Autowired
+  Active<ResultActions> activeResponse;
 
-    @Autowired
-    @Qualifier("classic")
-    MockRestServiceServer server;
+  @Autowired
+  @Qualifier("classic")
+  MockRestServiceServer server;
 
-    @Before
-    public void reset() {
-        server.reset();
-    }
+  @Before
+  public void reset() {
+    server.reset();
+  }
 
-    @When("a legacy investigation is deleted from Classic NBS")
-    public void a_legacy_investigation_is_deleted_from_classic_nbs() throws Exception {
+  @When("a legacy investigation is deleted from Classic NBS")
+  public void a_legacy_investigation_is_deleted_from_classic_nbs() throws Exception {
 
-        server.expect(
-                requestTo(classicUrl + "/nbs/ViewInvestigation1.do?ContextAction=ReturnToFileSummary&delete=true"))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess());
+    server.expect(
+            requestTo(classicUrl + "/nbs/ViewInvestigation1.do?ContextAction=ReturnToFileSummary&delete=true"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
 
-        long patient = patients.one();
+    long patient = activePatient.active().id();
 
-        SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
+    activeResponse.active(
+        mvc.perform(
+            authenticated.withSession(get("/nbs/redirect/patient/investigation/delete"))
+                .param("ContextAction", "ReturnToFileSummary")
+                .param("delete", "true")
+                .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
 
-        activeResponse.active(
-                mvc
-                        .perform(
-                                MockMvcRequestBuilders.get("/nbs/redirect/patient/investigation/delete")
-                                        .param("ContextAction", "ReturnToFileSummary")
-                                        .param("delete", "true")
-                                        .cookie(session.asCookie())
-                                        .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
+        )
+    );
+  }
 
-                        )
-                        .andReturn()
-                        .getResponse());
-    }
+  @When("a newly created legacy investigation is deleted from Classic NBS")
+  public void a_newly_created_legacy_investigation_is_deleted_from_classic_nbs() throws Exception {
 
-    @When("a newly created legacy investigation is deleted from Classic NBS")
-    public void a_newly_created_legacy_investigation_is_deleted_from_classic_nbs() throws Exception {
+    server.expect(requestTo(classicUrl + "/nbs/ViewInvestigation3.do?ContextAction=ReturnToFileEvents&delete=true"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
 
-        server.expect(
-                requestTo(classicUrl + "/nbs/ViewInvestigation3.do?ContextAction=ReturnToFileEvents&delete=true"))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess());
+    long patient = activePatient.active().id();
 
-        long patient = patients.one();
+    activeResponse.active(
+        mvc
+            .perform(
+                authenticated.withSession(get("/nbs/redirect/patient/investigation/delete"))
+                    .param("ContextAction", "ReturnToFileEvents")
+                    .param("delete", "true")
+                    .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
 
-        SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
+            )
+    );
+  }
 
-        activeResponse.active(
-                mvc
-                        .perform(
-                                MockMvcRequestBuilders.get("/nbs/redirect/patient/investigation/delete")
-                                        .param("ContextAction", "ReturnToFileEvents")
-                                        .param("delete", "true")
-                                        .cookie(session.asCookie())
-                                        .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
-
-                        )
-                        .andReturn()
-                        .getResponse());
-    }
-
-    @Then("the legacy investigation delete is submitted to Classic NBS")
-    public void the__legacy_investigation_delete_is_submitted_to_classic_nbs() {
-        server.verify();
-    }
+  @Then("the legacy investigation delete is submitted to Classic NBS")
+  public void the__legacy_investigation_delete_is_submitted_to_classic_nbs() {
+    server.verify();
+  }
 }

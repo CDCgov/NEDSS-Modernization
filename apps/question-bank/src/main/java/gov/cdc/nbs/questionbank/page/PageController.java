@@ -29,63 +29,77 @@ import java.io.IOException;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class PageController {
 
-  private final PageCreator creator;
-  private final PageStateChanger stateChange;
-  private final PageDownloader pageDownloader;
-  private final UserDetailsProvider userDetailsProvider;
-  private final PageDeletor pageDeletor;
+    private final PageCreator creator;
+    private final PageStateChanger stateChange;
+    private final PageDownloader pageDownloader;
+    private final UserDetailsProvider userDetailsProvider;
+    private final PageDeletor pageDeletor;
+    private final PageMetaDataDownloader pageMetaDataDownloader;
 
-  public PageController(
-      final PageCreator creator,
-      final PageStateChanger stateChange,
-      final PageDownloader pageDownloader,
-      final UserDetailsProvider userDetailsProvider,
-      final PageDeletor pageDeletor) {
-    this.creator = creator;
-    this.stateChange = stateChange;
-    this.pageDownloader = pageDownloader;
-    this.userDetailsProvider = userDetailsProvider;
-    this.pageDeletor = pageDeletor;
-  }
+    public PageController(
+            final PageCreator creator,
+            final PageStateChanger stateChange,
+            final PageDownloader pageDownloader,
+            final UserDetailsProvider userDetailsProvider,
+            final PageDeletor pageDeletor,
+            final PageMetaDataDownloader pageMetaDataDownloader
+    ) {
+        this.creator = creator;
+        this.stateChange = stateChange;
+        this.pageDownloader = pageDownloader;
+        this.userDetailsProvider = userDetailsProvider;
+        this.pageDeletor = pageDeletor;
+        this.pageMetaDataDownloader = pageMetaDataDownloader;
+    }
 
-  @PostMapping
-  public PageCreateResponse createPage(@RequestBody PageCreateRequest request) {
-    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-    return creator.createPage(request, userId);
-  }
+    @PostMapping
+    public PageCreateResponse createPage(@RequestBody PageCreateRequest request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return creator.createPage(request, userId);
+    }
 
-  @PutMapping("{id}/draft")
-  public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
-    return stateChange.savePageAsDraft(pageId);
-  }
+    @PutMapping("{id}/draft")
+    public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
+        return stateChange.savePageAsDraft(pageId);
+    }
 
-  @GetMapping("download")
-  public ResponseEntity<Resource> downloadPageLibrary() throws IOException {
-    String fileName = "PageLibrary.csv";
-    InputStreamResource file = new InputStreamResource(pageDownloader.downloadLibrary());
+    @GetMapping("download")
+    public ResponseEntity<Resource> downloadPageLibrary() throws IOException {
+        String fileName = "PageLibrary.csv";
+        InputStreamResource file = new InputStreamResource(pageDownloader.downloadLibrary());
 
-    return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-        .contentType(MediaType.parseMediaType("application/csv")).body(file);
-  }
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                .contentType(MediaType.parseMediaType("application/csv")).body(file);
+    }
 
-  @GetMapping("downloadPDF")
-  public ResponseEntity<byte[]> downloadPageLibraryPDF() throws DocumentException, IOException {
-    var pdf = pageDownloader.downloadLibraryPDF();
+    @GetMapping("downloadPDF")
+    public ResponseEntity<byte[]> downloadPageLibraryPDF() throws DocumentException, IOException {
+        var pdf = pageDownloader.downloadLibraryPDF();
 
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_PDF)
-        .header(HttpHeaders.CONTENT_DISPOSITION,
-            ContentDisposition.attachment()
-                .filename("PageLibrary.pdf").build()
-                .toString())
-        .body(pdf);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment()
+                                .filename("PageLibrary.pdf").build()
+                                .toString())
+                .body(pdf);
 
-  }
+    }
 
-  @DeleteMapping("{id}/delete-draft")
-  public PageDeleteResponse deletePageDraft(@PathVariable("id") Long pageId) {
-    return pageDeletor.deletePageDraft(pageId);
-  }
+    @DeleteMapping("{id}/delete-draft")
+    public PageDeleteResponse deletePageDraft(@PathVariable("id") Long pageId) {
+        return pageDeletor.deletePageDraft(pageId);
+    }
+
+    @GetMapping("{waTemplateUid}/download-metadata")
+    public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("waTemplateUid") Long waTemplateUid) throws IOException {
+        String fileName = "PageMetadata.xlsx";
+        InputStreamResource file = new InputStreamResource(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(file);
+    }
 
 
 }
