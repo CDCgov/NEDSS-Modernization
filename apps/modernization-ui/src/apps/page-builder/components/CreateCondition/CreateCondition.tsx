@@ -62,18 +62,16 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
 
     return (
         <div className="create-condition">
+            <h2>Create new condition</h2>
             <Form onSubmit={onSubmit}>
                 <div className="create-condition__container">
-                    <h2 className="main-header-title" data-testid="header-title">
-                        Create a new Condition
-                    </h2>
-                    <h4>Let's create a new condition to add to your page</h4>
+                    <h4 className="main-header-title" data-testid="header-title">
+                        Condition details
+                    </h4>
                     <p>
-                        First, we fill out some information about your new condition before creating it and associating
-                        it to your new page
-                    </p>
-                    <p>
-                        All fields with <span className="mandatory-indicator">*</span> are required
+                        These fields will be displayed to your users.
+                        <br />
+                        <span className="mandatory-indicator">*</span> indicates a required field.
                     </p>
                     <br></br>
                     <Controller
@@ -317,7 +315,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         </Button>
                     )}
                     <Button className="submit-btn" type="submit">
-                        Create & add condition
+                        Create and add to page
                     </Button>
                 </div>
             </Form>
