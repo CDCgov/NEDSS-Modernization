@@ -38,8 +38,10 @@ export const RangeToggle = ({ contextName }: RangeToggleProps) => {
     const [range, setRange] = useState(10);
     const options = [
         { name: '10', value: '10' },
-        { name: '25', value: '25' },
-        { name: '50', value: '50' }
+        { name: '20', value: '20' },
+        { name: '30', value: '30' },
+        { name: '50', value: '50' },
+        { name: '100', value: '100' }
     ];
 
     useEffect(() => {

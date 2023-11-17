@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,25 +17,20 @@ public class PageService {
     this.entityManager = entityManager;
   }
 
+  /**
+   * Runs the {@code consumer} if an entity can be uniquely identified by the given {@code identifier}.
+   *
+   * @param identifier The unique identifier of the Page
+   * @param consumer   A consumer that will run on the found Page
+   */
   @Transactional
-  public void with(final long identifier, final Consumer<With<WaTemplate>> consumer) {
+  public void using(final long identifier, final Consumer<WaTemplate> consumer) {
     WaTemplate page = this.entityManager.find(WaTemplate.class, identifier);
-    With<WaTemplate> with = new With<>(page);
-    consumer.accept(with);
-  }
-
-  public static class With<E> {
-    private final E entity;
-
-    private With(final E entity) {
-      this.entity = entity;
+    if (page != null) {
+      consumer.accept(page);
+    } else {
+      throw new PageNotFoundException(identifier);
     }
-
-    public With<E> use(final Consumer<E> consumer) {
-      consumer.accept(this.entity);
-      return this;
-    }
-
   }
 
 }

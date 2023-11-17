@@ -68,6 +68,8 @@ testing {
                 implementation project(':testing:auth')
                 implementation project(':testing:auth-cucumber')
                 implementation project(':testing:http-interaction')
+                implementation project(':testing:classic-interaction-cucumber')
+
             }
 
             targets {
@@ -94,6 +96,8 @@ dependencies {
     implementation project(':accumulation')
     implementation project(':audit')
     implementation project(':id-generator')
+    implementation(project(':libs:web'))
+    implementation(project(':libs:classic-interaction'))
 
     implementation libs.snake.yaml
     implementation libs.guava
@@ -129,6 +133,9 @@ dependencies {
     // itext pdf generation
     implementation libs.itextpdf
 
+    implementation 'org.apache.poi:poi:4.1.2'
+    implementation 'org.apache.poi:poi-ooxml:4.1.2'
+
 }
 
 compileJava {
@@ -146,4 +153,9 @@ tasks.withType(JavaExec).configureEach {
                 .map(Integer::parseInt)
                 .orElse(18095)
     }
+}
+
+bootRun {
+
+    systemProperty('spring.profiles.active', 'default,development');
 }

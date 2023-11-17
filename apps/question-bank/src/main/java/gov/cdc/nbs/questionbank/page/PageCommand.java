@@ -15,6 +15,7 @@ public sealed interface PageCommand {
   ) implements PageCommand {
   }
 
+
   record ChangeName(
       String name,
       long requester,
@@ -23,6 +24,7 @@ public sealed interface PageCommand {
 
   }
 
+
   record ChangeDatamart(
       String datamart,
       long requester,
@@ -30,6 +32,7 @@ public sealed interface PageCommand {
   ) implements PageCommand {
 
   }
+
 
   record RelateCondition(
       String condition,
@@ -55,4 +58,15 @@ public sealed interface PageCommand {
   ) implements PageCommand {
 
   }
+
+
+  record CreateTemplate(
+      String name,
+      String description,
+      long requester,
+      Instant requestedOn
+  ) implements PageCommand {
+
+  }
+
 }

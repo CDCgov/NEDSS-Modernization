@@ -3,6 +3,7 @@ package gov.cdc.nbs.testing.interaction.http;
 import gov.cdc.nbs.authentication.NBSToken;
 import gov.cdc.nbs.authentication.NBSUserDetailsResolver;
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
@@ -23,15 +24,19 @@ import java.util.function.Supplier;
 @Component
 public class Authenticated {
 
-  private final Active<ActiveUser> active;
+  private final Active<ActiveUser> activeUser;
+  private final Active<SessionCookie> activeSession;
   private final NBSUserDetailsResolver resolver;
   private final EntityManager entityManager;
 
   public Authenticated(
-      final Active<ActiveUser> active,
+      final Active<ActiveUser> activeUser,
+      final Active<SessionCookie> activeSession,
       final NBSUserDetailsResolver resolver,
-      final EntityManager entityManager) {
-    this.active = active;
+      final EntityManager entityManager
+  ) {
+    this.activeUser = activeUser;
+    this.activeSession = activeSession;
     this.resolver = resolver;
     this.entityManager = entityManager;
   }
@@ -41,14 +46,15 @@ public class Authenticated {
   }
 
   private Optional<NbsUserDetails> userDetails() {
-    return this.active.maybeActive()
-        .map(activeUser -> this.entityManager.find(AuthUser.class, activeUser.id()))
+    return this.activeUser.maybeActive()
+        .map(user -> this.entityManager.find(AuthUser.class, user.id()))
         .map(resolver::resolve);
   }
 
   private Optional<Authentication> authentication() {
     return userDetails()
-        .map(details -> new PreAuthenticatedAuthenticationToken(
+        .map(
+            details -> new PreAuthenticatedAuthenticationToken(
                 details,
                 null,
                 details.getAuthorities()
@@ -95,13 +101,23 @@ public class Authenticated {
   }
 
   public MockHttpServletRequestBuilder withUser(final MockHttpServletRequestBuilder builder) {
-    String authorization = active.maybeActive()
+    String authorization = activeUser.maybeActive()
         .map(ActiveUser::token)
         .map(NBSToken::value)
         .map(token -> "Bearer " + token)
         .orElse("NOPE");
 
-    return builder.header(HttpHeaders.AUTHORIZATION, authorization);
+    return withSession(builder)
+        .header(HttpHeaders.AUTHORIZATION, authorization);
+
+  }
+
+  public MockHttpServletRequestBuilder withSession(final MockHttpServletRequestBuilder builder) {
+
+    this.activeSession.maybeActive().map(SessionCookie::asCookie)
+        .ifPresent(builder::cookie);
+
+    return builder;
 
   }
 }

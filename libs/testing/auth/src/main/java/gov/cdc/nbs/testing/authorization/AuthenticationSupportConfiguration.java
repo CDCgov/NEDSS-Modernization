@@ -1,5 +1,6 @@
 package gov.cdc.nbs.testing.authorization;
 
+import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,4 +33,8 @@ class AuthenticationSupportConfiguration {
     return new Active<>();
   }
 
+  @Bean
+  Active<SessionCookie> activeSession() {
+    return new Active<>();
+  }
 }
