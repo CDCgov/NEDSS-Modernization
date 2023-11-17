@@ -48,10 +48,7 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
     const dateOptions: Intl.DateTimeFormatOptions = {
         year: 'numeric',
         month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
+        day: '2-digit'
     };
 
     const asTableRow = (page: PageSummary): TableBody => ({
@@ -82,7 +79,7 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
             { id: 4, title: page?.status || null },
             {
                 id: 5,
-                title: page?.lastUpdate ? asLocalDate(page.lastUpdate).toLocaleString('en-US', dateOptions) : null
+                title: page?.lastUpdate ? asLocalDate(page.lastUpdate).toLocaleDateString('en-US', dateOptions) : null
             },
             { id: 6, title: page?.lastUpdateBy || null }
         ]
