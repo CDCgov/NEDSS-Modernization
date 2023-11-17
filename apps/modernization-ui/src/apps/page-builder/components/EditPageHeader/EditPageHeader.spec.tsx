@@ -38,4 +38,13 @@ describe('when EditPageHeader renders', () => {
 
         expect(header[0].innerHTML).toEqual('Test Page description');
     });
+
+    it('should display link to classic preview', () => {
+        const { container } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
+
+        const anchor = container.getElementsByTagName('a')[0];
+        expect(anchor.href).toBe('http://localhost/nbs/PreviewPage.do?from=L&waTemplateUid=123456&method=viewPageLoad');
+        expect(anchor.target).toBe('_blank');
+        expect(anchor.rel).toBe('noreferrer');
+    });
 });
