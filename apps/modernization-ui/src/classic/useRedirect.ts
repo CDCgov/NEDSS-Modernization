@@ -46,15 +46,17 @@ const useRedirect = ({ destination = 'current' }: Props) => {
                     dispatch({ type: 'redirected', location });
                 }
             });
-        } else if (state.status == 'redirected') {
+        } else if (state.status == 'redirected' && destination != 'none') {
             navigate(destination, state.location);
+            dispatch({ type: 'reset' });
         }
     }, [state.status]);
 
     return {
         redirecting: state.status === 'redirecting',
         location: state.status === 'redirected' && state.location,
-        redirect: (url: string) => dispatch({ type: 'redirect', url })
+        redirect: (url: string) => dispatch({ type: 'redirect', url }),
+        reset: () => dispatch({ type: 'reset' })
     };
 };
 
