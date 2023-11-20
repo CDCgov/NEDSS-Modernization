@@ -1,27 +1,26 @@
+import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
+import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
+import ConditionLibrary from 'apps/page-builder/pages/ConditionLibrary/ConditionLibrary';
+import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
+import { PageLibrary } from 'apps/page-builder/pages/PageLibrary/PageLibrary';
+import { Spinner } from 'components/Spinner/Spinner';
+import { Config } from 'config';
+import { useConfiguration } from 'configuration';
+import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
+import { AddPatient } from 'pages/addPatient/AddPatient';
+import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
+import { UserContext } from 'providers/UserContext';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase/ConditionalCase';
+import { CreateCondition } from '../apps/page-builder/components/CreateCondition/CreateCondition';
+import { CreateQuestion } from '../apps/page-builder/components/CreateQuestion/CreateQuestion';
+import { BusinessRulesLibrary } from '../apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
+import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
+import { ValuesetLibrary } from '../apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
 import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
 import { PatientProfile } from '../pages/patient/profile';
-import { AddPatient } from 'pages/addPatient/AddPatient';
-import { PageLibrary } from 'apps/page-builder/pages/PageLibrary/PageLibrary';
-import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { UserContext } from 'providers/UserContext';
-import { Spinner } from 'components/Spinner/Spinner';
-import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
-import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
-import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
-import { CreateCondition } from '../apps/page-builder/components/CreateCondition/CreateCondition';
-import { CreateQuestion } from '../apps/page-builder/components/CreateQuestion/CreateQuestion';
-import { Config } from 'config';
-import { ValuesetLibrary } from '../apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
-import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase/ConditionalCase';
-import { ImportTemplate } from '../apps/page-builder/components/ImportTemplate/ImportTemplate';
-import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
-import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
-import { BusinessRulesLibrary } from '../apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import { useConfiguration } from 'configuration';
-import ConditionLibrary from 'apps/page-builder/pages/ConditionLibrary/ConditionLibrary';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -83,7 +82,6 @@ export const AppRoutes = () => {
                                     </Route>
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />
-                                        <Route path="import-template" element={<ImportTemplate />} />
                                         <Route path="condition" element={<CreateCondition />} />
                                         <Route path="conditional-case" element={<ConditionalCase />} />
                                         <Route path="question" element={<CreateQuestion />} />

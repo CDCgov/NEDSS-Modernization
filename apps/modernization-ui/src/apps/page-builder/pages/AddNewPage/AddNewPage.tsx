@@ -1,5 +1,6 @@
 import { Button, Form, Modal, ModalRef } from '@trussworks/react-uswds';
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
+import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditionLookup/QuickConditionLookup';
 import { Concept, Condition, Template } from 'apps/page-builder/generated';
@@ -15,7 +16,7 @@ import { UserContext } from 'user';
 import './AddNewPage.scss';
 import { AddNewPageFields } from './AddNewPageFields';
 
-type FormValues = {
+export type FormValues = {
     conditionIds: string[];
     dataMartName?: string;
     eventType: string;
@@ -37,19 +38,20 @@ const eventType = [
 export const AddNewPage = () => {
     const conditionLookupModal = useRef<ModalRef>(null);
     const createConditionModal = useRef<ModalRef>(null);
+    const importTemplateModal = useRef<ModalRef>(null);
     const navigate = useNavigate();
     const { state } = useContext(UserContext);
-    const token = `Bearer ${state.getToken()}`;
     const [conditions, setConditions] = useState<Condition[]>([]);
-    const [mmgs, setMMGs] = useState<Concept[]>([]);
+    const [mmgs, setMmgs] = useState<Concept[]>([]);
     const [templates, setTemplates] = useState<Template[]>([]);
     const form = useForm<FormValues>({ mode: 'onBlur' });
     const watch = useWatch({ control: form.control });
 
     useEffect(() => {
+        const token = `Bearer ${state.getToken()}`;
         fetchMMGOptions(token)
             .then((data) => {
-                setMMGs(data);
+                setMmgs(data);
             })
             .catch((error: any) => {
                 console.log('Error', error);
@@ -60,7 +62,7 @@ export const AddNewPage = () => {
         fetchTemplates(token).then((data) => {
             setTemplates(data);
         });
-    }, [token]);
+    }, []);
 
     const handleAddConditions = (conditions: string[]) => {
         form.setValue('conditionIds', conditions.concat(form.getValues('conditionIds')));
@@ -68,7 +70,7 @@ export const AddNewPage = () => {
 
     const onSubmit = form.handleSubmit(async (data) => {
         await createPage(
-            token,
+            `Bearer ${state.getToken()}`,
             data.conditionIds.filter(Boolean),
             data.eventType,
             data.messageMappingGuide,
@@ -90,9 +92,9 @@ export const AddNewPage = () => {
     };
 
     const eventTypeName = (value: string): string => {
-        for (let i = 0; i < eventType.length; i++) {
-            if (eventType[i].value === value) {
-                return eventType[i].name;
+        for (const element of eventType) {
+            if (element.value === value) {
+                return element.name;
             }
         }
         return '';
@@ -108,6 +110,13 @@ export const AddNewPage = () => {
         } else {
             onSubmit();
         }
+    };
+
+    const handleTemplateImported = (template: Template) => {
+        const temp = [...templates, template];
+        temp.sort((a, b) => a.templateNm.localeCompare(b.templateNm));
+        setTemplates(temp);
+        form.setValue('templateId', template.id);
     };
 
     return (
@@ -151,6 +160,7 @@ export const AddNewPage = () => {
                                             mmgs={mmgs}
                                             createConditionModal={createConditionModal}
                                             conditionLookupModal={conditionLookupModal}
+                                            importTemplateModal={importTemplateModal}
                                         />
                                     </FormProvider>
                                 ) : (
@@ -176,6 +186,9 @@ export const AddNewPage = () => {
 
             <Modal id="create-condition-modal" isLarge ref={createConditionModal}>
                 <CreateCondition conditionCreated={handleConditionCreated} modal={createConditionModal} />
+            </Modal>
+            <Modal id="import-template-modal" isLarge ref={importTemplateModal}>
+                <ImportTemplate modal={importTemplateModal} onTemplateCreated={handleTemplateImported} />
             </Modal>
             <QuickConditionLookup modal={conditionLookupModal} addConditions={handleAddConditions} />
         </div>
