@@ -7,8 +7,8 @@ import type { PagesTab } from './PagesTab';
 
 export type PagesResponse = {
     description?: string;
-    id?: number;
-    name?: string;
+    id: number;
+    name: string;
     root?: number;
     rules?: Array<PageRule>;
     tabs?: Array<PagesTab>;

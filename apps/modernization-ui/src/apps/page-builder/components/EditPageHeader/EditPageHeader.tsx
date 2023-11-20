@@ -1,9 +1,10 @@
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import './EditPageHeader.scss';
 import { useRef, useState } from 'react';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { SaveTemplates } from '../SaveTemplate/SaveTemplate';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { PagesResponse } from 'apps/page-builder/generated';
+import { SaveTemplates } from 'apps/page-builder/components/SaveTemplate/SaveTemplate';
+import './EditPageHeader.scss';
+import { ClassicButton } from 'classic';
 
 type PageProps = {
     page: PagesResponse;
@@ -41,6 +42,9 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                 <Button type="button" outline>
                     {isSaveTemplate ? 'Edit' : 'Cancel'}
                 </Button>
+                <ClassicButton outline url={`/nbs/page-builder/api/v1/pages/${page.id}/print`}>
+                    <Icon.Print />
+                </ClassicButton>
                 <Button type="button" onClick={() => setIsSaveTemplate(!isSaveTemplate)}>
                     {isSaveTemplate ? 'Publish' : 'Submit'}
                 </Button>

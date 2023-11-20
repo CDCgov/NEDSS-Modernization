@@ -1,29 +1,24 @@
 import { useEffect, useReducer } from 'react';
 import { useUser } from 'user';
+import { Destination } from './Destination';
 
-enum Status {
-    Idle,
-    Redirecting,
-    Redirected
-}
-
-type Redirect = {
-    status: Status;
-    url: string | null;
-    location: string | null;
-};
+type Redirect =
+    | { status: 'idle' }
+    | { status: 'redirecting'; url: string }
+    | { status: 'redirected'; location: string };
 
 type Action = { type: 'redirect'; url: string } | { type: 'redirected'; location: string } | { type: 'reset' };
-type Dispatch = (action: Action) => void;
 
-const redirectReducer = (state: Redirect, action: Action) => {
+const initial: Redirect = { status: 'idle' };
+
+const reducer = (_state: Redirect, action: Action): Redirect => {
     switch (action.type) {
         case 'redirect':
-            return { status: Status.Redirecting, url: action.url, location: null };
+            return { status: 'redirecting', url: action.url };
         case 'redirected':
-            return { status: Status.Redirected, url: null, location: action.location };
+            return { status: 'redirected', location: action.location };
         default:
-            return state;
+            return initial;
     }
 };
 
@@ -33,30 +28,52 @@ const resolveRedirect = (token: () => string | undefined, url: string) => {
     );
 };
 
-const useRedirect = () => {
+type Props = {
+    destination?: Destination;
+};
+
+const useRedirect = ({ destination = 'current' }: Props) => {
     const {
         state: { getToken }
     } = useUser();
 
-    const initial = { status: Status.Idle, url: '', location: null };
-
-    const [redirect, dispatch] = useReducer(redirectReducer, initial);
+    const [state, dispatch] = useReducer(reducer, initial);
 
     useEffect(() => {
-        if (redirect.url) {
-            resolveRedirect(getToken, redirect.url).then((location) => {
+        if (state.status === 'redirecting') {
+            resolveRedirect(getToken, state.url).then((location) => {
                 if (location) {
                     dispatch({ type: 'redirected', location });
                 }
             });
+        } else if (state.status == 'redirected') {
+            navigate(destination, state.location);
         }
-    }, [redirect.url]);
+    }, [state.status]);
 
-    return { redirect, dispatch };
+    return {
+        redirecting: state.status === 'redirecting',
+        location: state.status === 'redirected' && state.location,
+        redirect: (url: string) => dispatch({ type: 'redirect', url })
+    };
 };
-
-const redirectTo = (url: string, dispatch: Dispatch) => dispatch({ type: 'redirect', url });
 
 const navigateTo = (location: string) => (window.location.href = location);
 
-export { useRedirect, redirectTo, navigateTo, Status };
+const open = (location: string) => {
+    window.open(location, '_blank', 'noreferrer');
+};
+
+export { useRedirect };
+
+const navigate = (destination: Destination, location: string) => {
+    if (location) {
+        switch (destination) {
+            case 'current':
+                navigateTo(location);
+                break;
+            case 'window':
+                open(location);
+        }
+    }
+};
