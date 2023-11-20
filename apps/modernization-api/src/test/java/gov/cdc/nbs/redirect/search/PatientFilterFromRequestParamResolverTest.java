@@ -1,15 +1,19 @@
 package gov.cdc.nbs.redirect.search;
 
-import gov.cdc.nbs.patient.search.PatientFilter;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.patient.search.PatientFilter;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class PatientFilterFromRequestParamResolverTest {
-
   @Test
   void should_resolve_first_name() {
 
@@ -43,16 +47,48 @@ class PatientFilterFromRequestParamResolverTest {
 
   }
 
-  @Test
-  void should_resolve_gender() {
+  @ParameterizedTest
+  @MethodSource("searchableGenders")
+  void should_resolve_gender(final String gender, final String expected) {
 
-    Map<String, String> parameters = Map.of("patientSearchVO.currentSex", "F");
+    Map<String, String> parameters = Map.of("patientSearchVO.currentSex", gender);
 
     PatientFilter actual = new PatientFilterFromRequestParamResolver().resolve(parameters);
 
-    assertThat(actual.getGender()).isEqualTo(Gender.F);
+    assertThat(actual.getGender()).isEqualTo(expected);
 
   }
+
+  public static Stream<Arguments> searchableGenders() {
+    return Stream.of(
+        arguments(Gender.F.value(), "F"),
+        arguments("f", "F"),
+        arguments(Gender.M.value(), "M"),
+        arguments("m", "M"),
+        arguments(Gender.U.value(), "U"),
+        arguments("u", "U")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("unknownGenders")
+  void should_not_resolve_unknown_gender(final String gender) {
+
+    Map<String, String> parameters = Map.of("patientSearchVO.currentSex", gender);
+
+    PatientFilter actual = new PatientFilterFromRequestParamResolver().resolve(parameters);
+
+    assertThat(actual.getGender()).isNull();
+
+  }
+
+  public static Stream<Arguments> unknownGenders() {
+    return Stream.of(
+        arguments(""),
+        arguments((String) null)
+    );
+  }
+
 
   @Test
   void should_resolve_id() {
