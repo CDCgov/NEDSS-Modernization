@@ -169,7 +169,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         closer
                         onClick={handleAddConditions}
                         data-testid="condition-add-btn">
-                        Add Condition
+                        Create new condition
                     </ModalToggleButton>
                 </div>
                 {conditions?.length ? (
@@ -204,7 +204,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         closer
                         onClick={handleAddConditions}
                         data-testid="modal-condition-add-btn">
-                        Add Condition
+                        Create new condition
                     </ModalToggleButton>
                 </ButtonGroup>
             </ModalFooter>

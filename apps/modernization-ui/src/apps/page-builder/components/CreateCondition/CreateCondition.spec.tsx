@@ -10,7 +10,7 @@ describe('General information component tests', () => {
                 <CreateCondition />
             </AlertProvider>
         );
-        expect(getByTestId('header-title').innerHTML).toBe('Create a new Condition');
+        expect(getByTestId('header-title').innerHTML).toBe('Condition details');
     });
 });
 

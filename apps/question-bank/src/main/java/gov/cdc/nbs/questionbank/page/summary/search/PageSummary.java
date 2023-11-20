@@ -2,7 +2,7 @@ package gov.cdc.nbs.questionbank.page.summary.search;
 
 import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collection;
 
 public record PageSummary(
@@ -11,7 +11,7 @@ public record PageSummary(
     String name,
     String status,
     Collection<ConditionSummary> conditions,
-    Instant lastUpdate,
+    LocalDate lastUpdate,
     String lastUpdateBy
 ) {
 

@@ -2,7 +2,7 @@ package gov.cdc.nbs.redirect.search;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.exception.RedirectionException;
-import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.patient.search.PatientFilter;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.time.FlexibleLocalDateConverter;
 import org.springframework.stereotype.Component;
@@ -39,7 +39,7 @@ public class PatientFilterFromRequestParamResolver {
                 filter.setDateOfBirth(FlexibleLocalDateConverter.fromString(map.get(NBS_DATE_OF_BIRTH)));
             }
             if (StringUtils.hasText(map.get(NBS_SEX))) {
-                filter.setGender(Gender.valueOf(map.get(NBS_SEX)));
+                filter.setGender(Gender.resolve(map.get(NBS_SEX)).value());
             }
             if (StringUtils.hasText(map.get(NBS_ID))) {
                 filter.setId(map.get(NBS_ID));

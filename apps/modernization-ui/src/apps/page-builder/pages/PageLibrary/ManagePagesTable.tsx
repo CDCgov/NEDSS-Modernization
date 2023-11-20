@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { PageControllerService, PageSummary } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { asLocalDate } from 'date';
+import { internalizeDate } from 'date';
 import { useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import './ManagePagesTable.scss';
@@ -71,7 +71,10 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
                     ) || null
             },
             { id: 4, title: page?.status || null },
-            { id: 5, title: page?.lastUpdate ? asLocalDate(page.lastUpdate).toLocaleString() : null },
+            {
+                id: 5,
+                title: page?.lastUpdate ? internalizeDate(page.lastUpdate) : null
+            },
             { id: 6, title: page?.lastUpdateBy || null }
         ]
     });
