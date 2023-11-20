@@ -31,6 +31,8 @@ class PageSummaryMapperTest {
     Integer version = "null".equals(versionNbr) ? null : Integer.parseInt(versionNbr);
     when(tuple.get(this.tables.page().publishVersionNbr)).thenReturn(version);
 
+    // when(tuple.get(this.tables.page().lastChgTime)).thenReturn(Instant.parse("9999-99-99T00:00:00Z"));
+
     PageSummary summary = mapper.map(tuple);
 
     assertThat(summary.status()).isEqualTo(expected);
@@ -61,7 +63,7 @@ class PageSummaryMapperTest {
     assertThat(actual.eventType().name()).isEqualTo("Investigation");
 
     assertThat(actual.lastUpdateBy()).isEqualTo("first last");
-    assertThat(actual.lastUpdate()).isEqualTo("2023-10-17T15:27:13Z");
+    assertThat(actual.lastUpdate()).isEqualTo("2023-10-17");
 
   }
 
