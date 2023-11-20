@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { PageControllerService, PageSummary } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { asLocalDate } from 'date';
+import { internalizeDate } from 'date';
 import { useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import './ManagePagesTable.scss';
@@ -45,12 +45,6 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
     const setSearchParams = searchParams[1];
     const token = `Bearer ${state.getToken()}`;
 
-    const dateOptions: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    };
-
     const asTableRow = (page: PageSummary): TableBody => ({
         id: page.name,
         expanded: false,
@@ -79,7 +73,7 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
             { id: 4, title: page?.status || null },
             {
                 id: 5,
-                title: page?.lastUpdate ? asLocalDate(page.lastUpdate).toLocaleDateString('en-US', dateOptions) : null
+                title: page?.lastUpdate ? internalizeDate(page.lastUpdate) : null
             },
             { id: 6, title: page?.lastUpdateBy || null }
         ]
