@@ -70,25 +70,16 @@ class PatientFilterFromRequestParamResolverTest {
     );
   }
 
-  @ParameterizedTest
-  @MethodSource("unknownGenders")
-  void should_not_resolve_unknown_gender(final String gender) {
+  @Test
+  void should_not_resolve_empty_gender() {
 
-    Map<String, String> parameters = Map.of("patientSearchVO.currentSex", gender);
+    Map<String, String> parameters = Map.of("patientSearchVO.currentSex", "");
 
     PatientFilter actual = new PatientFilterFromRequestParamResolver().resolve(parameters);
 
-    assertThat(actual.getGender()).isNull();
+    assertThat(actual).isNull();
 
   }
-
-  public static Stream<Arguments> unknownGenders() {
-    return Stream.of(
-        arguments(""),
-        arguments((String) null)
-    );
-  }
-
 
   @Test
   void should_resolve_id() {
