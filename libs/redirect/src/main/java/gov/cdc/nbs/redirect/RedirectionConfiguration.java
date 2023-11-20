@@ -11,8 +11,8 @@ class RedirectionConfiguration {
 
   @Bean
   DefaultRedirectionPath redirectConfiguration(
-      @Value("${nbs.redirect.default:/advanced-search}") final String defaultUrl) {
-    return new DefaultRedirectionPath(defaultUrl);
+      @Value("${nbs.redirect.default:/advanced-search}") final String defaultPath) {
+    return new DefaultRedirectionPath(defaultPath);
   }
 
 }
