@@ -184,7 +184,7 @@ export const AddNewPage = () => {
                 </div>
             </Form>
 
-            <Modal id="create-condition-modal" isLarge ref={createConditionModal}>
+            <Modal id="create-condition-modal" isLarge ref={createConditionModal} title="Create new condition">
                 <CreateCondition conditionCreated={handleConditionCreated} modal={createConditionModal} />
             </Modal>
             <Modal id="import-template-modal" isLarge ref={importTemplateModal}>
