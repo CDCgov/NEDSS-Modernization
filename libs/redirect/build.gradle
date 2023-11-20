@@ -1,0 +1,25 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    alias libs.plugins.springBoot apply false
+}
+
+group = 'gov.cdc.nbs.redirect'
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation.bundle(libs.bundles.testing)
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation(platform(SpringBootPlugin.BOM_COORDINATES))
+    implementation(libs.springBoot.web)
+    implementation libs.bundles.swagger
+}

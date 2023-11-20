@@ -98,6 +98,7 @@ dependencies {
     implementation project(':id-generator')
     implementation(project(':libs:web'))
     implementation(project(':libs:classic-interaction'))
+    implementation(project(':libs:redirect'))
 
     implementation libs.snake.yaml
     implementation libs.guava
@@ -132,6 +133,9 @@ dependencies {
 
     // itext pdf generation
     implementation libs.itextpdf
+
+    implementation 'org.apache.poi:poi:4.1.2'
+    implementation 'org.apache.poi:poi-ooxml:4.1.2'
 
 }
 
