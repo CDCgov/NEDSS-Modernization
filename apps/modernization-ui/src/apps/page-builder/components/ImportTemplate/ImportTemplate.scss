@@ -1,7 +1,16 @@
-@import '../../../../settings';
+@use 'settings.scss';
 
 .import-template {
-    padding: 5px 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .banner {
+        padding: 1rem 3rem 0 3rem;
+    }
+    .spinner {
+        height: 100%;
+    }
     .field-space {
         margin-top: 10px;
         margin-bottom: 30px;
@@ -17,7 +26,7 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            label{
+            label {
                 color: var(--base-black, #000);
                 font-family: Public Sans;
                 font-size: 16px;
@@ -36,10 +45,15 @@
             margin: 24px;
             cursor: pointer;
             border-radius: 8px;
-            border: 1px dashed var(--base-light, #A9AEB1);
+            border: 1px dashed var(--base-light, #a9aeb1);
+            transition: background-color 0.5s ease;
+
+            &.dragged {
+                background-color: settings.$color-gray-10;
+            }
             svg {
                 transform: rotate(-90deg);
-                color: #A9AEB1;
+                color: #a9aeb1;
             }
             .gap-10 {
                 gap: 10px;
@@ -50,8 +64,8 @@
                 gap: 8px;
                 padding: 4px 6px 4px 2px;
                 border-radius: 2px;
-                color: #FFFFFF;
-                background: #005EA2;
+                color: #ffffff;
+                background: #005ea2;
                 .usa-icon {
                     cursor: pointer;
                 }
@@ -64,7 +78,7 @@
                 font-weight: 400;
                 line-height: 162%; /* 25.92px */
                 span {
-                    color: var(--primary-primary, #005EA2);
+                    color: var(--primary-primary, #005ea2);
                     font-family: Public Sans;
                     font-size: 16px;
                     font-style: normal;
@@ -76,35 +90,30 @@
         }
     }
 
-    .submit-btn {
-        float: right;
-        margin-right: 20px;
-        border: 2px solid #005EA2;
-        border-radius: 4px;
+    .button-container {
+        padding: 1.5rem;
+        border: 1px solid var(--base-lightest, #f0f0f0);
+
+        .submit-btn {
+            float: right;
+            border: 2px solid #005ea2;
+            border-radius: 0.25rem;
+        }
+        .cancel-btn {
+            float: right;
+            margin-right: 0.5rem;
+            border: 2px solid #005ea2;
+            background: #fff;
+            color: #005ea2;
+            border-radius: 0.25rem;
+        }
     }
-    .cancel-btn {
-        float: right;
-        margin-right: 20px;
-        margin-bottom: 80px;
-        border: 2px solid #005EA2;
-        background: #fff;
-        color: #005EA2;
-        border-radius: 4px;
-    }
-    .back-btn {
-        margin-right: 10px;
-        color: #1b1b1b;
-    }
-    .close-btn {
-        float: right;
-        font-size: 32px;
-        color: #1b1b1b;
-        margin: 15px auto;
-    }
+
     .usa-button {
         &:disabled {
-            border: 2px solid #C9C9C9;;
-            background: #C9C9C9;
+            border: 2px solid #c9c9c9;
+            background: var(--disabled-disabled, #c9c9c9);
+            color: #fff;
         }
     }
 }
