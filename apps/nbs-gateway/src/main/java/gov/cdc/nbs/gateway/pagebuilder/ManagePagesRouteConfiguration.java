@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpHeaders;
 
 @Configuration
 @ConditionalOnProperty(prefix = "nbs.gateway.pagebuilder", name = "enabled", havingValue = "true")
@@ -28,8 +29,8 @@ public class ManagePagesRouteConfiguration {
                 .and()
                 .query("initLoad", "true")
                 .filters(
-                    filter -> filter.setPath("/nbs/redirect")
-                        .setRequestHeader("NBS_REDIRECT", "/page-builder/manage/pages")
+                    filter -> filter.setPath("/nbs/page-builder/redirect")
+                        .setRequestHeader(HttpHeaders.LOCATION, "/page-builder/manage/pages")
                         .filter(globalFilter))
                 .uri(service.uri()))
         .build();
