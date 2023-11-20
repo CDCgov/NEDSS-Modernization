@@ -62,6 +62,9 @@ project(':libs:web').projectDir = new File('libs/web')
 include ':libs:classic-interaction'
 project(':libs:classic-interaction').projectDir = new File('libs/classic-interaction')
 
+include ':libs:redirect'
+project(':libs:redirect').projectDir = new File('libs/redirect')
+
 //  testing libraries
 include ':testing:support'
 project(':testing:support').projectDir = new File('libs/testing/support')
