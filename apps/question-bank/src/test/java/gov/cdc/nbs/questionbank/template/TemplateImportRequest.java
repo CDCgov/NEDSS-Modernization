@@ -23,7 +23,7 @@ class TemplateImportRequest {
 
   ResultActions send(TemplateXml xml) throws Exception {
     MockHttpServletRequestBuilder builder =
-        multipart("/api/v1/template/import").file("fileInput", xml.xml().getBytes());
+        multipart("/api/v1/template/import").file("file", xml.xml().getBytes());
     return mvc.perform(this.authenticated.withUser(builder)).andDo(print());
   }
 }
