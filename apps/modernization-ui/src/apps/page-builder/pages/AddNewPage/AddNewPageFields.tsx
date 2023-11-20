@@ -3,6 +3,7 @@ import { Concept, Condition, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
+import { validPageNameRule } from 'validation/entry';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
@@ -16,21 +17,6 @@ type AddNewPageFieldProps = {
 };
 export const AddNewPageFields = (props: AddNewPageFieldProps) => {
     const form = useFormContext();
-
-
-    // input?.addEventListener("keyup", e => {
-    //     const position = e?.target?.selectionStart
-    //     input.value = input.value.substring(0, position-1) + input.value.substring(position+1)
-    //   })
-
-    const onKeyCheckCharacter = () => {
-        console.log('hello');
-
-        var input = document.querySelector('#pageName');
-
-
-        
-    };
 
     return (
         <>
@@ -66,15 +52,11 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 name="name"
                 rules={{
                     required: { value: true, message: 'Name is required.' },
-                    pattern: {
-                        value: /[a-zA-Z*()_+\-=;:/.,0-9]+$/,
-                        message: 'Only certain special characters accepted'
-                    }
+                    ...validPageNameRule
                 }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
-                        onKeyUp={onKeyCheckCharacter}
                         defaultValue={value}
                         label="Page name"
                         className="pageName"
