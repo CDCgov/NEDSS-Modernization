@@ -17,6 +17,21 @@ type AddNewPageFieldProps = {
 export const AddNewPageFields = (props: AddNewPageFieldProps) => {
     const form = useFormContext();
 
+
+    // input?.addEventListener("keyup", e => {
+    //     const position = e?.target?.selectionStart
+    //     input.value = input.value.substring(0, position-1) + input.value.substring(position+1)
+    //   })
+
+    const onKeyCheckCharacter = () => {
+        console.log('hello');
+
+        var input = document.querySelector('#pageName');
+
+
+        
+    };
+
     return (
         <>
             <Controller
@@ -59,8 +74,10 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
+                        onKeyUp={onKeyCheckCharacter}
                         defaultValue={value}
                         label="Page name"
+                        className="pageName"
                         type="text"
                         error={error?.message}
                         required
