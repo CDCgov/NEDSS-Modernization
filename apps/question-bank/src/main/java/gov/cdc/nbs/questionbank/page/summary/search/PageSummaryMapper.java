@@ -24,6 +24,7 @@ class PageSummaryMapper {
 
     String lastUpdateBy = tuple.get(this.tables.lastUpdatedBy());
     Instant lastUpdate = tuple.get(this.tables.page().lastChgTime);
+    LocalDate lastUpdateDate = (lastUpdate != null) ? LocalDate.ofInstant(lastUpdate, ZoneId.systemDefault()) : null;
     String name = tuple.get(this.tables.page().templateNm);
     return new PageSummary(
         identifier,
@@ -31,7 +32,7 @@ class PageSummaryMapper {
         name,
         getStatus(tuple),
         conditions,
-        LocalDate.ofInstant(lastUpdate, ZoneId.systemDefault()),
+        lastUpdateDate,
         lastUpdateBy
     );
   }
