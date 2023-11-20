@@ -12,10 +12,10 @@ http:
       rule: "PathPrefix(`/`)"
     modernization-nbs-api:
       service: modernization-api
-      rule: "PathPrefix(`/nbs/api`) || PathPrefix(`/nbs/redirect`)"
+      rule: "PathPrefix(`/nbs/api`)"
     pagebuilder-api:
       service: pagebuilder-api
-      rule: "PathPrefix(`/nbs/page-builder/api`)"
+      rule: "PathPrefix(`/nbs/page-builder/api`) || PathPrefix(`/nbs/page-builder/redirect`)"
     # Base /nbs forward
     nbsForward:
       service: nbs-gateway
