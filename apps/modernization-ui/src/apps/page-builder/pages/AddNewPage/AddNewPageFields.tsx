@@ -71,12 +71,15 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="templateId"
-                rules={{ required: { value: true, message: 'Template is required.' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                rules={{
+                    required: { value: true, message: 'Template is required.' }
+                }}
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="Templates"
                         defaultValue={value}
                         onChange={onChange}
+                        onBlur={onBlur}
                         options={props.templates.map((template) => {
                             return {
                                 name: template.templateNm ?? '',
@@ -98,11 +101,12 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 control={form.control}
                 name="messageMappingGuide"
                 rules={{ required: { value: true, message: 'MMG is required.' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="MMG"
                         name="messageMappingGuide"
                         onChange={onChange}
+                        onBlur={onBlur}
                         defaultValue={value}
                         options={props.mmgs.map((m) => {
                             return {
