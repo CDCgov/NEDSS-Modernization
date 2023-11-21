@@ -40,7 +40,7 @@ public interface ObservationRepository
             @Param("observationUid") Long observationUid);
 
     @Query(value = """
-            SELECT
+                SELECT
                 act.class_cd classCd,
                 act.mood_cd moodCd,
                 act.act_uid actUid,
@@ -51,7 +51,7 @@ public interface ObservationRepository
                 o.program_jurisdiction_oid programJurisdictionOid,
                 o.prog_area_cd programAreaCd,
                 o.jurisdiction_cd jurisdictionCd,
-                jc.jurisdiction_code_desc_txt jurisdictionCodeDescTxt,
+                jc.code_desc_txt  jurisdictionCodeDescTxt,
                 o.pregnant_ind_cd pregnantIndCd,
                 o.local_id localId,
                 o.activity_to_time activityToTime,
@@ -63,22 +63,17 @@ public interface ObservationRepository
                 o.add_user_id addUserId,
                 o.last_chg_user_id lastChgUserId
             FROM observation o
-                inner join act_relationship act  on o.observation_uid = act.target_act_uid
-                inner join observation o2 on act.source_act_uid = o2.observation_uid
-                inner join Participation part on part.act_uid = o.observation_uid
-                inner join person p on p.person_uid = part.subject_entity_uid
+                JOIN act on o.observation_uid =act.act_uid
+                JOIN Participation par on par.act_uid = o.observation_uid
+                JOIN person p on p.person_uid = par.subject_entity_uid
                 LEFT JOIN nbs_srte.dbo.jurisdiction_code jc ON o.jurisdiction_cd = jc.code
-                AND o2.obs_domain_cd_st_1 = 'Result'
-                AND act.source_act_uid = o2.observation_uid
-                AND act.target_class_cd = 'OBS'
-                AND act.type_cd = 'COMP'
-                AND act.source_class_cd = 'OBS'
-                AND act.record_status_cd = 'ACTIVE'
+                AND o.obs_domain_cd_st_1 = 'Result'
                 and o.record_status_cd in ('PROCESSED', 'UNPROCESSED')
                 and o.ctrl_cd_display_form = 'LabReport'
             WHERE
-                p.person_uid = :personUid
-                """, nativeQuery = true)
+                p.person_parent_uid = :personUid
+                            """, nativeQuery = true)
+
     List<LabReport2> findAllLabReportsByPersonUid(
             @Param("personUid") Long personUid);
 }

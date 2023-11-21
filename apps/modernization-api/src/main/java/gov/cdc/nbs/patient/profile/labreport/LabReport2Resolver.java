@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import java.util.List;
 import gov.cdc.nbs.entity.projections.LabReport2;
+import org.springframework.graphql.data.method.annotation.Argument;
 
 @Controller
 class LabReport2Resolver {
@@ -17,7 +18,7 @@ class LabReport2Resolver {
 
     @QueryMapping(name = "findAllLabReportsByPersonUid")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    List<LabReport2> resolve(final long personUid) {
+    List<LabReport2> resolve(@Argument("personUid") final long personUid) {
         return observationRepository.findAllLabReportsByPersonUid(personUid);
     }
 }
