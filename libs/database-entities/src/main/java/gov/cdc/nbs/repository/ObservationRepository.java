@@ -7,6 +7,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.entity.projections.LabReport2;
+import gov.cdc.nbs.entity.projections.Observation2;
 
 public interface ObservationRepository
         extends JpaRepository<Observation, Long>, QuerydslPredicateExecutor<Observation> {
@@ -37,7 +38,7 @@ public interface ObservationRepository
                     ar.target_act_uid = :observationUid
                 )
                     """, nativeQuery = true)
-    List<Observation> findAllObservationsAssociatedWithAnObservation(
+    List<Observation2> findAllObservationsAssociatedWithAnObservation(
             @Param("observationUid") Long observationUid);
 
     @Query(value = """
