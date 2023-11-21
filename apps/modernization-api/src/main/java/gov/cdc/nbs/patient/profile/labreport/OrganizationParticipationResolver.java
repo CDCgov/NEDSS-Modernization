@@ -1,3 +1,4 @@
+
 package gov.cdc.nbs.patient.profile.labreport;
 
 import gov.cdc.nbs.entity.projections.OrganizationParticipation2;
@@ -17,7 +18,8 @@ class OrganizationParticipationResolver {
 
     @SchemaMapping(typeName = "LabReport2", field = "organizationParticipations2")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    List<OrganizationParticipation2> resolve(final long observationUid) {
-        return organizationParticipationRepository.findAllOrganizationParticipationsByObservationUid(observationUid);
+    List<OrganizationParticipation2> resolve(LabReport2 labreport) {
+        return organizationParticipationRepository
+                .findAllOrganizationParticipationsByObservationUid(labreport.observationUid());
     }
 }

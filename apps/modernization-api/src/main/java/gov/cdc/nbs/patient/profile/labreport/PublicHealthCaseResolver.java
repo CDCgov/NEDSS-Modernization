@@ -1,3 +1,4 @@
+
 package gov.cdc.nbs.patient.profile.labreport;
 
 import gov.cdc.nbs.entity.projections.Investigation2;
@@ -17,7 +18,7 @@ class PublicHealthCaseResolver {
 
     @SchemaMapping(typeName = "LabReport2", field = "associatedInvestigations2")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    List<Investigation2> resolve(final long observationUid) {
-        return investigationRepository.findAllInvestigationsByObservationUid(observationUid);
+    List<Investigation2> resolve(LabReport2 labreport) {
+        return investigationRepository.findAllInvestigationsByObservationUid(labreport.observationUid());
     }
 }

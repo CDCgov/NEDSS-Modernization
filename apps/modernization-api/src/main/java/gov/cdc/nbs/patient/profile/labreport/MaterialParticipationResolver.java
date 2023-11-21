@@ -17,7 +17,8 @@ class MaterialParticipationResolver {
 
     @SchemaMapping(typeName = "LabReport2", field = "materialParticipations2")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    List<MaterialParticipation2> resolve(final long observationUid) {
-        return materialParticipationRepository.findAllMaterialParticipationsByObservationUid(observationUid);
+    List<MaterialParticipation2> resolve(LabReport2 labreport) {
+        return materialParticipationRepository
+                .findAllMaterialParticipationsByObservationUid(labreport.observationUid());
     }
 }
