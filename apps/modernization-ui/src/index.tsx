@@ -8,6 +8,7 @@ import { AppRoutes } from './routes/AppRoutes';
 import './settings.scss';
 import NavBar from './shared/header/NavBar';
 import { AlertProvider } from 'alert';
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -15,8 +16,10 @@ ReactDOM.render(
             <BrowserRouter>
                 <UserContextProvider>
                     <ApolloWrapper>
-                        <NavBar />
-                        <AppRoutes />
+                        <SkipLinkProvider>
+                            <NavBar />
+                            <AppRoutes />
+                        </SkipLinkProvider>
                     </ApolloWrapper>
                 </UserContextProvider>
             </BrowserRouter>
