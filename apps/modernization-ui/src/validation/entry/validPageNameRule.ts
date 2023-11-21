@@ -6,8 +6,8 @@ import { maxLengthRule } from './maxLengthRule';
 const validPageNameRule = {
     ...maxLengthRule(),
     pattern: {
-        value: /^[\w*()_+\-=;:/.,\d\s]+$/gm,
-        message: 'Only alphabets, digits, and some special character allowed such as ( ) _ + - = ; : / . ,'
+        value: /^[\w*()+\-=;:/.,\s]+$/gm,
+        message: 'Valid characters are A-Z, a-z, 0-9, or ( ) _ + - = ; : / . ,'
     }
 };
 

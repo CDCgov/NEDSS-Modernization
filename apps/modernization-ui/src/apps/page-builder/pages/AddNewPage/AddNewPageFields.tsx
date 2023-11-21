@@ -55,9 +55,10 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                     required: { value: true, message: 'Name is required.' },
                     ...validPageNameRule
                 }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
+                        onBlur={onBlur}
                         defaultValue={value}
                         label="Page name"
                         className="pageName"
