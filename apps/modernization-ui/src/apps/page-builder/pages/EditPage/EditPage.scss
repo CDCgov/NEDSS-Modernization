@@ -6,11 +6,14 @@
         border-radius: 0.35rem;
         background-color: $color-white;
         border: $border-medium;
+        padding-top: 1.5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
     }
     .edit-page__container {
         height: 100%;
         width: 100%;
-        min-height: calc( 100vh - 30rem );
+        min-height: calc(100vh - 30rem);
         display: flex;
         justify-content: flex-start;
         flex-direction: column;

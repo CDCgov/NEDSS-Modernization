@@ -7,18 +7,18 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
-class ClassicManagePageRequester {
+public class ClassicManagePageRequester {
 
   private static final String LOCATION = "/ManagePage.do";
 
   private final RestTemplate template;
 
-  ClassicManagePageRequester(
+  public ClassicManagePageRequester(
       @Qualifier("classic") final RestTemplate template) {
     this.template = template;
   }
 
-  void request() {
+  public void request() {
     String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
         .queryParam("method", "list")
         .queryParam("initLoad", true)

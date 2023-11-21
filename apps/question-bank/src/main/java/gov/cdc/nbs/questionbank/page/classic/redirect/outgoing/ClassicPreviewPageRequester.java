@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page.classic;
+package gov.cdc.nbs.questionbank.page.classic.redirect.outgoing;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.RequestEntity;

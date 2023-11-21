@@ -26,17 +26,15 @@ describe('when EditPageHeader renders', () => {
     const mockFunction = jest.fn();
 
     it('should display Page name', () => {
-        const { container } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
-        const header = container.getElementsByTagName('h2');
+        const { getByText } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
 
-        expect(header[0].innerHTML).toEqual('Test Page');
+        expect(getByText('Test Page')).toBeInTheDocument();
     });
 
     it('should display Page description', () => {
-        const { container } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
-        const header = container.getElementsByTagName('h4');
+        const { getByText } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
 
-        expect(header[0].innerHTML).toEqual('Test Page description');
+        expect(getByText('Test Page description')).toBeInTheDocument();
     });
 
     it('should display link to classic preview', () => {
