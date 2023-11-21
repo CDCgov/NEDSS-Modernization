@@ -241,7 +241,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                     <Controller
                         control={control}
                         name="contactTracingEnableInd"
-                        defaultValue="N"
+                        defaultValue="Y"
                         render={({ field: { onChange, value } }) => (
                             <div className="radio-group">
                                 <Radio
