@@ -47,6 +47,7 @@ public interface ObservationRepository
                 act.class_cd classCd,
                 act.mood_cd moodCd,
                 act.act_uid actUid,
+                o.last_chg_time lastChange,
                 o.last_chg_time observationLastChgTime,
                 o.observation_uid observationUid,
                 o.cd_desc_txt cdDescTxt,

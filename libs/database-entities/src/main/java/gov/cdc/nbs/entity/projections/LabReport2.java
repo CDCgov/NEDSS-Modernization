@@ -11,6 +11,8 @@ public interface LabReport2 {
 
     String getMoodCd();
 
+    Instant getLastChange();
+
     Instant getObservationLastChgTime();
 
     String getCdDescTxt();

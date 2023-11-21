@@ -7,17 +7,17 @@ public interface OrganizationParticipation2 {
 
     String getTypeCd();
 
-    Long getSubjectEntityUid();
+    Long getEntityId();
 
     String getSubjectClassCd();
 
-    String getRecordStatus();
-
     String getTypeDescTxt();
 
-    Instant getLastChgTime();
+    String getParticipationRecordStatus();
 
-    String getDisplayNm();
+    Instant getParticipationLastChangeTime();
 
-    Instant getOrgLastChgTime();
+    String getName();
+
+    Instant getOrganizationLastChangeTime();
 }
