@@ -35,6 +35,7 @@ public interface ObservationRepository
                     act_relationship ar
                 WHERE
                     ar.target_act_uid = :observationUid
+                )
                     """, nativeQuery = true)
     List<Observation> findAllObservationsAssociatedWithAnObservation(
             @Param("observationUid") Long observationUid);

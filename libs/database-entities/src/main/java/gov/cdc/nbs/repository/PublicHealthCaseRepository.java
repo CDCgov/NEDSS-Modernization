@@ -2,12 +2,11 @@ package gov.cdc.nbs.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-
 import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import gov.cdc.nbs.entity.projections.Investigation2;
+import gov.cdc.nbs.entity.projections.AssociatedInvestigation2;
 
 public interface PublicHealthCaseRepository
     extends JpaRepository<PublicHealthCase, Long>, QuerydslPredicateExecutor<PublicHealthCase> {
@@ -31,7 +30,8 @@ public interface PublicHealthCaseRepository
               ar.source_act_uid = :observationUid
               AND source_class_cd = 'OBS'
               AND target_class_cd = 'CASE'
+          )
       """, nativeQuery = true)
-  List<Investigation2> findAllInvestigationsByObservationUid(
+  List<AssociatedInvestigation2> findAllInvestigationsByObservationUid(
       @Param("observationUid") Long observationUid);
 }

@@ -11,6 +11,6 @@ import gov.cdc.nbs.entity.odse.ActIdId;
 import gov.cdc.nbs.entity.projections.ActId2;
 
 public interface ActIdRepository extends JpaRepository<ActId, ActIdId>, QuerydslPredicateExecutor<ActId> {
-    @Query(value = "SELECT * FROM act_id WHERE id=:actUid", nativeQuery = true)
+    @Query(value = "SELECT * FROM act_id WHERE act_uid=:actUid", nativeQuery = true)
     List<ActId2> findAllByActUid(@Param("actUid") long actUid);
 }
