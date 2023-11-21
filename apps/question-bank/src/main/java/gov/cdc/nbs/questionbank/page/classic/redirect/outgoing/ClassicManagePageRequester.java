@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page.template;
+package gov.cdc.nbs.questionbank.page.classic.redirect.outgoing;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.RequestEntity;
@@ -7,24 +7,22 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
-class ClassicPreviewPageRequester {
+public class ClassicManagePageRequester {
 
-  private static final String LOCATION = "/PreviewPage.do";
+  private static final String LOCATION = "/ManagePage.do";
 
   private final RestTemplate template;
 
-  ClassicPreviewPageRequester(
-      @Qualifier("classic")
-      final RestTemplate template
+  public ClassicManagePageRequester(
+      @Qualifier("classic") final RestTemplate template
   ) {
     this.template = template;
   }
 
-  void request(final long page) {
-
+  public void request() {
     String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-        .queryParam("method", "viewPageLoad")
-        .queryParam("waTemplateUid", page)
+        .queryParam("method", "list")
+        .queryParam("initLoad", true)
         .build()
         .toUriString();
 

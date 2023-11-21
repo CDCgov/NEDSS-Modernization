@@ -3,7 +3,7 @@
 .edit-page-tabs {
     display: flex;
     flex-direction: row;
-    padding: 0.6rem 1.2rem 0;
+
     gap: 3rem;
     .edit-page-tabs__tab {
         cursor: pointer;
@@ -46,7 +46,7 @@
             margin-bottom: 24px;
         }
         padding: 24px;
-        margin: 20px -29px ;
+        margin: 20px -29px;
         border-top: 1px solid #cbc9c985;
     }
 }
