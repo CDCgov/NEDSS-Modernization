@@ -37,7 +37,7 @@ public interface PersonRepository extends JpaRepository<Person, Long>, QuerydslP
         person.local_id localId,
         person.birth_time birthTime,
         person.curr_sex_cd currSexCd,
-        person.cd AS person_cd personCd,
+        person.cd personCd,
         person.person_parent_uid personParentUid,
         person.record_status_cd personRecordStatus,
         person.last_chg_time personLastChgTime
