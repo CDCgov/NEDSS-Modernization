@@ -61,9 +61,11 @@ describe('when at least one summary is available', () => {
 
     it('should display the questions summaries', async () => {
         const { container } = render(
-            <AlertProvider>
-                <QuestionLibraryTable summaries={summaries} />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <QuestionLibraryTable summaries={summaries} />
+                </AlertProvider>
+            </BrowserRouter>
         );
 
         const tableData = container.getElementsByClassName('table-data');

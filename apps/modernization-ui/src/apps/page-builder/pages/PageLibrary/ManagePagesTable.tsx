@@ -2,7 +2,7 @@
 import { PageControllerService, PageSummary } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { internalizeDate } from 'date';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import './ManagePagesTable.scss';
 import { TableMenu } from 'apps/page-builder/components/TableMenu/TableMenu';
@@ -141,14 +141,17 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
         }
     };
 
-    const handlePageClick = (page: number) => {
-        // saves the current page to a url param so that it persists on page refresh or navigating away
-        setSearchParams({ page: page.toString() });
+    const handlePageClick = useCallback(
+        (page: number) => {
+            // saves the current page to a url param so that it persists on page refresh or navigating away
+            setSearchParams({ page: page.toString(), size: pageSize.toString() });
 
-        if (setCurrentPage) {
-            setCurrentPage(page);
-        }
-    };
+            if (setCurrentPage) {
+                setCurrentPage(page);
+            }
+        },
+        [searchParams, currentPage, pageSize]
+    );
 
     return (
         <TableComponent

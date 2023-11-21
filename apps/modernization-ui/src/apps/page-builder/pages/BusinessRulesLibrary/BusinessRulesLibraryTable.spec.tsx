@@ -42,9 +42,11 @@ describe('when at least one summary is available', () => {
 
     it('should display the Business rules summaries', async () => {
         const { container } = render(
-            <AlertProvider>
-                <BusinessRulesLibraryTable summaries={summaries} />
-            </AlertProvider>
+            <BrowserRouter>
+                <AlertProvider>
+                    <BusinessRulesLibraryTable summaries={summaries} />
+                </AlertProvider>
+            </BrowserRouter>
         );
 
         const tableData = container.getElementsByClassName('table-data');

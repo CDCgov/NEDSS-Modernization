@@ -43,11 +43,13 @@ describe('when at least one summary is available', () => {
 
     it('should display the Concept details in table', async () => {
         const { container } = render(
-            <PageProvider>
-                <AlertProvider>
-                    <ConceptTable summaries={summaries} />
-                </AlertProvider>
-            </PageProvider>
+            <BrowserRouter>
+                <PageProvider>
+                    <AlertProvider>
+                        <ConceptTable summaries={summaries} />
+                    </AlertProvider>
+                </PageProvider>
+            </BrowserRouter>
         );
 
         const tableData = container.getElementsByClassName('table-data');
