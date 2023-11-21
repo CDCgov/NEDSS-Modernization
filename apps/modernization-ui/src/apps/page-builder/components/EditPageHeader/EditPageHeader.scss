@@ -1,0 +1,29 @@
+@use 'styles/colors.scss';
+
+.edit-page-header {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+        h2 {
+            font-size: 1.375rem;
+            margin-top: 0;
+        }
+        p {
+            font-weight: 400;
+            color: colors.$color-base-darkest;
+            line-height: 1.62rem;
+        }
+    }
+
+    .actions {
+        display: flex;
+
+        height: 2.5625rem;
+
+        button {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
