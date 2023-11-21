@@ -6,6 +6,7 @@ import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import java.util.List;
+import gov.cdc.nbs.entity.projections.LabReport2;
 
 @Controller
 class MaterialParticipationResolver {
@@ -19,6 +20,6 @@ class MaterialParticipationResolver {
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     List<MaterialParticipation2> resolve(LabReport2 labreport) {
         return materialParticipationRepository
-                .findAllMaterialParticipationsByObservationUid(labreport.observationUid());
+                .findAllMaterialParticipationsByObservationUid(labreport.getObservationUid());
     }
 }
