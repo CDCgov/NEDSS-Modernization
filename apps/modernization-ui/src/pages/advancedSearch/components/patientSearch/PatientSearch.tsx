@@ -1,17 +1,17 @@
-import { Accordion, Button, Checkbox, ErrorMessage, Form, FormGroup, Grid, Label } from '@trussworks/react-uswds';
-import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
-import { Input } from '../../../../components/FormInputs/Input';
-import { SelectInput } from '../../../../components/FormInputs/SelectInput';
-import { Gender, PersonFilter, RecordStatus } from '../../../../generated/graphql/schema';
+import { Accordion, Button, Checkbox, ErrorMessage, Form, FormGroup, Grid, Label } from '@trussworks/react-uswds';
+import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
+import { PersonFilter, RecordStatus } from 'generated/graphql/schema';
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { objectOrUndefined } from 'utils/objectOrUndefined';
+import { validNameRule } from 'validation/entry';
 import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
-import { objectOrUndefined } from 'utils/objectOrUndefined';
-import { validNameRule } from 'validation/entry';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -126,9 +126,9 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                                     label="Sex"
                                     id={name}
                                     options={[
-                                        { name: 'Male', value: Gender.M },
-                                        { name: 'Female', value: Gender.F },
-                                        { name: 'Other', value: Gender.U }
+                                        { name: 'Male', value: 'M' },
+                                        { name: 'Female', value: 'F' },
+                                        { name: 'Other', value: 'U' }
                                     ]}
                                 />
                             )}

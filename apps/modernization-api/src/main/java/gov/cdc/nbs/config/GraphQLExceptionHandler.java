@@ -14,7 +14,7 @@ import graphql.execution.DataFetcherExceptionHandlerResult;
 public class GraphQLExceptionHandler implements DataFetcherExceptionHandler {
 
     @Override
-    // propogates exception message instead of generic: Internal server error
+    // propagates exception message instead of generic: Internal server error
     public CompletableFuture<DataFetcherExceptionHandlerResult> handleException(
             DataFetcherExceptionHandlerParameters handlerParameters) {
 

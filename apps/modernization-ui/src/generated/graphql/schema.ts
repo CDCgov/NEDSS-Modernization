@@ -1754,7 +1754,7 @@ export type PersonFilter = {
   email?: InputMaybe<Scalars['String']['input']>;
   ethnicity?: InputMaybe<Scalars['String']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
-  gender?: InputMaybe<Gender>;
+  gender?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
   identification?: InputMaybe<IdentificationCriteria>;
   lastName?: InputMaybe<Scalars['String']['input']>;
@@ -1762,7 +1762,6 @@ export type PersonFilter = {
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
   race?: InputMaybe<Scalars['String']['input']>;
   recordStatus: Array<RecordStatus>;
-  ssn?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
   treatmentId?: InputMaybe<Scalars['String']['input']>;
   vaccinationId?: InputMaybe<Scalars['String']['input']>;
@@ -1962,7 +1961,6 @@ export type Query = {
   findLabReportsByFilter: LabReportResults;
   findMorbidityReportsForPatient?: Maybe<PatientMorbidityResults>;
   findNameSuffixes: KeyValuePairResults;
-  findOpenInvestigationsForPatient: InvestigationResults;
   findOrganizationById?: Maybe<Organization>;
   findOrganizationsByFilter: OrganizationResults;
   findPatientNamedByContact?: Maybe<PatientNamedByContactResults>;
@@ -2156,12 +2154,6 @@ export type QueryFindMorbidityReportsForPatientArgs = {
 
 export type QueryFindNameSuffixesArgs = {
   page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindOpenInvestigationsForPatientArgs = {
-  page?: InputMaybe<Page>;
-  patientId: Scalars['Int']['input'];
 };
 
 
@@ -2894,14 +2886,6 @@ export type FindNameSuffixesQueryVariables = Exact<{
 
 
 export type FindNameSuffixesQuery = { __typename?: 'Query', findNameSuffixes: { __typename?: 'KeyValuePairResults', total: number, content: Array<{ __typename?: 'KeyValuePair', key: string, value: string }> } };
-
-export type FindOpenInvestigationsForPatientQueryVariables = Exact<{
-  patientId: Scalars['Int']['input'];
-  page?: InputMaybe<Page>;
-}>;
-
-
-export type FindOpenInvestigationsForPatientQuery = { __typename?: 'Query', findOpenInvestigationsForPatient: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, recordStatus?: string | null, lastChangeTime?: any | null, publicHealthCaseUid?: number | null, caseClassCd?: string | null, outbreakName?: string | null, caseTypeCd?: string | null, cdDescTxt?: string | null, progAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, rptFormCmpltTime?: any | null, activityToTime?: any | null, activityFromTime?: any | null, addTime?: any | null, publicHealthCaseLastChgTime?: any | null, addUserId?: number | null, lastChangeUserId?: number | null, currProcessStateCd?: string | null, investigationStatusCd?: string | null, moodCd?: string | null, notificationLocalId?: string | null, notificationAddTime?: any | null, notificationRecordStatusCd?: string | null, notificationLastChgTime?: any | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null } | null> } };
 
 export type FindOrganizationByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -5761,109 +5745,6 @@ export function useFindNameSuffixesLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type FindNameSuffixesQueryHookResult = ReturnType<typeof useFindNameSuffixesQuery>;
 export type FindNameSuffixesLazyQueryHookResult = ReturnType<typeof useFindNameSuffixesLazyQuery>;
 export type FindNameSuffixesQueryResult = Apollo.QueryResult<FindNameSuffixesQuery, FindNameSuffixesQueryVariables>;
-export const FindOpenInvestigationsForPatientDocument = gql`
-    query findOpenInvestigationsForPatient($patientId: Int!, $page: Page) {
-  findOpenInvestigationsForPatient(patientId: $patientId, page: $page) {
-    content {
-      id
-      recordStatus
-      lastChangeTime
-      publicHealthCaseUid
-      caseClassCd
-      outbreakName
-      caseTypeCd
-      cdDescTxt
-      progAreaCd
-      jurisdictionCd
-      jurisdictionCodeDescTxt
-      pregnantIndCd
-      localId
-      rptFormCmpltTime
-      activityToTime
-      activityFromTime
-      addTime
-      publicHealthCaseLastChgTime
-      addUserId
-      lastChangeUserId
-      currProcessStateCd
-      investigationStatusCd
-      moodCd
-      notificationLocalId
-      notificationAddTime
-      notificationRecordStatusCd
-      notificationLastChgTime
-      personParticipations {
-        actUid
-        localId
-        typeCd
-        entityId
-        subjectClassCd
-        participationRecordStatus
-        typeDescTxt
-        participationLastChangeTime
-        firstName
-        lastName
-        birthTime
-        currSexCd
-        personCd
-        personParentUid
-        personRecordStatus
-        personLastChangeTime
-        shortId
-      }
-      organizationParticipations {
-        actUid
-        typeCd
-        entityId
-        subjectClassCd
-        typeDescTxt
-        participationRecordStatus
-        participationLastChangeTime
-        name
-        organizationLastChangeTime
-      }
-      actIds {
-        id
-        recordStatus
-        actIdSeq
-        rootExtensionTxt
-        typeCd
-        lastChangeTime
-      }
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindOpenInvestigationsForPatientQuery__
- *
- * To run a query within a React component, call `useFindOpenInvestigationsForPatientQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindOpenInvestigationsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindOpenInvestigationsForPatientQuery({
- *   variables: {
- *      patientId: // value for 'patientId'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindOpenInvestigationsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>(FindOpenInvestigationsForPatientDocument, options);
-      }
-export function useFindOpenInvestigationsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>(FindOpenInvestigationsForPatientDocument, options);
-        }
-export type FindOpenInvestigationsForPatientQueryHookResult = ReturnType<typeof useFindOpenInvestigationsForPatientQuery>;
-export type FindOpenInvestigationsForPatientLazyQueryHookResult = ReturnType<typeof useFindOpenInvestigationsForPatientLazyQuery>;
-export type FindOpenInvestigationsForPatientQueryResult = Apollo.QueryResult<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>;
 export const FindOrganizationByIdDocument = gql`
     query findOrganizationById($id: ID!) {
   findOrganizationById(id: $id) {

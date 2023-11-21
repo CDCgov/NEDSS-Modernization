@@ -2,13 +2,13 @@ package gov.cdc.nbs.patient.search;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.graphql.filter.PatientFilter.Identification;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
+import gov.cdc.nbs.patient.search.PatientFilter.Identification;
+import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -47,7 +48,7 @@ public class PatientSearchSteps {
   PatientShortIdentifierResolver resolver;
 
   @Autowired
-  PatientSearchRequest request;
+  PatientSearchRequester request;
 
   private final List<Person> available = new ArrayList<>();
   private final Active<Person> target = new Active<>();
@@ -106,6 +107,11 @@ public class PatientSearchSteps {
 
   }
 
+  @Given("I add the patient criteria for a gender of {gender}")
+  public void i_add_the_patient_criteria_for_a_gender(final String value) {
+    this.criteria.maybeActive().ifPresent(found -> found.withGender(Gender.resolve(value).value()));
+  }
+
   @Given("I add the patient criteria {string} {string}")
   public void i_add_the_patient_criteria(final String field, final String qualifier) {
 
@@ -127,7 +133,14 @@ public class PatientSearchSteps {
         filter.setDateOfBirth(resolveDateOfBirth(target, qualifier));
         filter.setDateOfBirthOperator(qualifier.toUpperCase());
       }
-      case "gender" -> filter.setGender(target.getCurrSexCd());
+      case "gender" -> {
+        Gender gender = target.getCurrSexCd();
+        if(gender != null ) {
+          filter.withGender(gender.value());
+        } else {
+          filter.withGender(null);
+        }
+      }
       case "deceased" -> filter.setDeceased(target.getDeceasedIndCd());
       case "address" -> {
         var locator = target.addresses().get(0).getLocator();
@@ -278,7 +291,7 @@ public class PatientSearchSteps {
         .andExpect(jsonPath("$.errors[*].message")
             .value(
                 hasItem(
-                    "User does not have permission to search by the specified RecordStatus"
+                    "User does not have permission to search for Inactive Patients"
                 )
             )
         );
@@ -296,7 +309,6 @@ public class PatientSearchSteps {
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
 
     this.results.active()
-        .andDo(print())
         .andExpect(pathMatcher.value(matchingValue(field, value)));
   }
 
@@ -308,6 +320,17 @@ public class PatientSearchSteps {
     this.results.active()
         .andDo(print())
         .andExpect(pathMatcher.value(matchingValue(field, value)));
+
+  }
+
+  @Then("the search results have a patient without a(n) {string} equal to {string}")
+  public void search_results_have_a_patient_without_a(final String field, final String value) throws Exception {
+
+    JsonPathResultMatchers pathMatcher = matchingPath(field, "*");
+
+    this.results.active()
+        .andDo(print())
+        .andExpect(pathMatcher.value(not(matchingValue(field, value))));
 
   }
 
@@ -325,6 +348,7 @@ public class PatientSearchSteps {
     return switch (field.toLowerCase()) {
       case "status" -> jsonPath("$.data.findPatientsByFilter.content[%s].status", position);
       case "birthday" -> jsonPath("$.data.findPatientsByFilter.content[%s].birthday", position);
+      case "gender" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
       case "first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].first", position);
       case "last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].last", position);
       case "legal first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.first", position);
@@ -380,12 +404,16 @@ public class PatientSearchSteps {
         );
   }
 
-  @Then("there is only one patient search result(s)")
+  @Then("there is only one patient search result")
   public void there_is_only_one_patient_search_result() throws Exception {
     this.results.active()
         .andExpect(jsonPath("$.data.findPatientsByFilter.total").value(1));
+  }
 
-
+  @Then("there are {int} patient search results")
+  public void there_is_are_x_patient_search_result(final int total) throws Exception {
+    this.results.active()
+        .andExpect(jsonPath("$.data.findPatientsByFilter.total").value(total));
   }
 
   @Then("the Patient Search Results are not accessible")
