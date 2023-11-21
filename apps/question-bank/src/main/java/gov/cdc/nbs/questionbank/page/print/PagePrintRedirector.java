@@ -39,7 +39,7 @@ class PagePrintRedirector {
 
   ResponseEntity<Void> redirect(final URI location) {
     return ResponseEntity
-        .status(HttpStatus.CREATED)
+        .status(HttpStatus.TEMPORARY_REDIRECT)
         .location(location)
         .build();
   }

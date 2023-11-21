@@ -69,7 +69,7 @@ public class PagePrintSteps {
         .orElse(0L);
 
     response.active()
-        .andExpect(status().isCreated())
+        .andExpect(status().isTemporaryRedirect())
         .andExpect(
             header()
                 .string(

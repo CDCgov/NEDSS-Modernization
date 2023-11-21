@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { PagesResponse } from 'apps/page-builder/generated';
-import { ClassicButton } from 'classic';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { PagesResponse } from 'apps/page-builder/generated';
 import { SaveTemplates } from 'apps/page-builder/components/SaveTemplate/SaveTemplate';
+import { LinkButton } from 'components/LinkButton';
 import './EditPageHeader.scss';
 
 type PageProps = {
@@ -42,9 +42,9 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                 <Button type="button" outline>
                     {isSaveTemplate ? 'Edit' : 'Cancel'}
                 </Button>
-                <ClassicButton outline destination="window" url={`/nbs/page-builder/api/v1/pages/${page.id}/print`}>
+                <LinkButton href={`/nbs/page-builder/api/v1/pages/${page.id}/print`} target="_blank" rel="noreferrer">
                     <Icon.Print size={3} />
-                </ClassicButton>
+                </LinkButton>
                 <Button type="button" onClick={() => setIsSaveTemplate(!isSaveTemplate)}>
                     {isSaveTemplate ? 'Publish' : 'Submit'}
                 </Button>
