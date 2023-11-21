@@ -1,0 +1,34 @@
+package gov.cdc.nbs.questionbank.page.print;
+
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
+import org.springframework.stereotype.Component;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+@Component
+class PagePrintRequester {
+
+  private final Authenticated authenticated;
+  private final MockMvc mvc;
+
+  PagePrintRequester(
+      final Authenticated authenticated,
+      final MockMvc mvc
+  ) {
+    this.authenticated = authenticated;
+    this.mvc = mvc;
+  }
+
+  ResultActions request(final long page) {
+    try {
+      return mvc.perform(
+          this.authenticated.withSession(get("/api/v1/pages/{page}/print", page))
+      );
+    } catch (Exception exception) {
+      throw new IllegalStateException("Unable to execute Page Print Request", exception);
+    }
+  }
+
+}

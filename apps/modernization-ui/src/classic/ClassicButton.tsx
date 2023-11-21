@@ -1,27 +1,26 @@
 import { Button } from '@trussworks/react-uswds';
-import { useRedirect, redirectTo, navigateTo } from './useRedirect';
-import { useEffect } from 'react';
-import React from 'react';
+import { useRedirect } from './useRedirect';
+import { Destination } from './Destination';
 
 type Props = {
     url: string;
+    className?: string;
+    outline?: boolean;
+    destination?: Destination;
 } & JSX.IntrinsicElements['button'];
 
-export const ClassicButton = ({ url, children, ...defaultProps }: Props) => {
-    const { redirect, dispatch } = useRedirect();
-
-    const handle = () => {
-        redirectTo(url, dispatch);
-    };
-
-    useEffect(() => {
-        if (redirect.location) {
-            navigateTo(redirect.location);
-        }
-    }, [redirect.location]);
+export const ClassicButton = ({
+    url,
+    className,
+    outline = false,
+    destination = 'current',
+    children,
+    ...defaultProps
+}: Props) => {
+    const { redirect } = useRedirect({ destination });
 
     return (
-        <Button type="button" className="grid-row" onClick={handle} {...defaultProps}>
+        <Button type="button" outline={outline} className={className} onClick={() => redirect(url)} {...defaultProps}>
             {children}
         </Button>
     );
