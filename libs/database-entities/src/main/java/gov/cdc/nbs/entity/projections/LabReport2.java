@@ -3,6 +3,8 @@ package gov.cdc.nbs.entity.projections;
 import java.time.Instant;
 
 public interface LabReport2 {
+    String getId();
+
     Long getObservationUid();
 
     String getClassCd();

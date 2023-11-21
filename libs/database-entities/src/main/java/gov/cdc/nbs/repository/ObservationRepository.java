@@ -43,6 +43,7 @@ public interface ObservationRepository
 
     @Query(value = """
                 SELECT
+                o.observation_uid id,
                 act.class_cd classCd,
                 act.mood_cd moodCd,
                 act.act_uid actUid,
