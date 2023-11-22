@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import {
-    AssociatedInvestigation,
-    FindLabReportsByFilterQuery,
-    LabReport,
-    OrganizationParticipation,
-    useFindLabReportsByFilterLazyQuery
+    FindAllLabReportsByPersonUidQuery,
+    LabReport2,
+    OrganizationParticipation2,
+    useFindAllLabReportsByPersonUidLazyQuery
 } from 'generated/graphql/schema';
 
 import { SortableTable } from 'components/Table/SortableTable';
@@ -19,7 +18,7 @@ type PatientLabReportTableProps = {
     allowAdd?: boolean;
 };
 
-export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientLabReportTableProps) => {
+export const LabReportTable = ({ patient, allowAdd = false }: PatientLabReportTableProps) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [labReportData, setLabReportData] = useState<any>([]);
@@ -34,15 +33,19 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         { name: 'Event #', sortable: true, sort: 'all' }
     ]);
 
-    const handleComplete = (data: FindLabReportsByFilterQuery) => {
-        setTotal(data?.findLabReportsByFilter?.total || 0);
-        setLabReportData(data.findLabReportsByFilter?.content);
+    const handleComplete = (data: FindAllLabReportsByPersonUidQuery) => {
+        setTotal(data?.findAllLabReportsByPersonUid?.length || 0);
+        setLabReportData(data.findAllLabReportsByPersonUid);
     };
 
-    const [getLabReport, { called, loading }] = useFindLabReportsByFilterLazyQuery({ onCompleted: handleComplete });
+    const [getLabReport, { called, loading }] = useFindAllLabReportsByPersonUidLazyQuery({
+        onCompleted: handleComplete
+    });
 
-    const getOrderingProviderName = (labReport: LabReport): string | undefined => {
-        const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
+    const getOrderingProviderName = (labReport: LabReport2): string | undefined => {
+        const provider = labReport.personParticipations2?.find(
+            (p: any) => p?.typeCd === 'ORD' && p?.personCd === 'PRV'
+        );
         if (provider) {
             return `${provider.firstName} ${provider.lastName}`;
         } else {
@@ -50,18 +53,18 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         }
     };
 
-    const getReportingFacility = (labReport: LabReport): OrganizationParticipation | undefined | null => {
-        return labReport.organizationParticipations?.find((o) => o?.typeCd === 'AUT');
+    const getReportingFacility = (labReport: LabReport2): OrganizationParticipation2 | undefined | null => {
+        return labReport.organizationParticipations2?.find((o: any) => o?.typeCd === 'AUT');
     };
 
-    const getOrderingFacility = (labReport: LabReport): OrganizationParticipation | undefined | null => {
-        return labReport.organizationParticipations?.find((o) => o?.typeCd === 'ORD');
+    const getOrderingFacility = (labReport: LabReport2): OrganizationParticipation2 | undefined | null => {
+        return labReport.organizationParticipations2?.find((o: any) => o?.typeCd === 'ORD');
     };
 
-    const getTestedResults = (labReport: LabReport) => {
+    const getTestedResults = (labReport: LabReport2) => {
         return (
-            labReport.observations?.map(
-                (o) =>
+            labReport.observations2?.map(
+                (o: any) =>
                     o?.domainCd === 'Result' && (
                         <div key={o.cdDescTxt}>
                             <strong>{o.cdDescTxt}:</strong>
@@ -74,27 +77,21 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         );
     };
 
-    const getSortableTestResult = (labReport: LabReport) => {
-        if (labReport?.observations?.find((o) => o?.domainCd === 'Result')) {
-            return labReport?.observations?.find((o) => o?.domainCd === 'Result')?.cdDescTxt;
+    const getSortableTestResult = (labReport: LabReport2) => {
+        if (labReport?.observations2?.find((o: any) => o?.domainCd === 'Result')) {
+            return labReport?.observations2?.find((o: any) => o?.domainCd === 'Result')?.cdDescTxt;
         }
     };
 
-    const getSortableAssociatedWith = (labReport: LabReport) => {
-        return labReport?.associatedInvestigations?.[0]?.cdDescTxt || '';
+    const getSortableAssociatedWith = (labReport: LabReport2) => {
+        return labReport?.associatedInvestigations2?.[0]?.cdDescTxt || '';
     };
 
     useEffect(() => {
         if (patient) {
             getLabReport({
                 variables: {
-                    filter: {
-                        patientId: +patient
-                    },
-                    page: {
-                        pageNumber: currentPage - 1,
-                        pageSize
-                    }
+                    personUid: +patient as any
                 }
             });
         }
@@ -142,8 +139,8 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
             case 'facility / provider':
                 setLabReportData(
                     labReportData?.slice().sort((a: any, b: any) => {
-                        const labA = getReportingFacility(a)?.name;
-                        const labB = getReportingFacility(b)?.name;
+                        const labA: any = getReportingFacility(a)?.name;
+                        const labB: any = getReportingFacility(b)?.name;
                         if (labA && labB) {
                             if (labA.toLowerCase() < labB.toLowerCase()) {
                                 return type === 'asc' ? -1 : 1;
@@ -159,8 +156,8 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
             case 'test results':
                 setLabReportData(
                     labReportData?.slice().sort((a: any, b: any) => {
-                        const labA = getSortableTestResult(a);
-                        const labB = getSortableTestResult(b);
+                        const labA: any = getSortableTestResult(a);
+                        const labB: any = getSortableTestResult(b);
                         if (labA && labB) {
                             if (labA.toLowerCase() < labB.toLowerCase()) {
                                 return type === 'asc' ? -1 : 1;
@@ -182,8 +179,8 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
             case 'associated with':
                 setLabReportData(
                     labReportData?.slice().sort((a: any, b: any) => {
-                        const labA = getSortableAssociatedWith(a);
-                        const labB = getSortableAssociatedWith(b);
+                        const labA: any = getSortableAssociatedWith(a);
+                        const labB: any = getSortableAssociatedWith(b);
                         if (labA && labB) {
                             if (labA.toLowerCase() < labB.toLowerCase()) {
                                 return type === 'asc' ? -1 : 1;
@@ -239,7 +236,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                         <>
                                             <strong>Reporting facility:</strong>
                                             <br />
-                                            <p className="margin-0">{getReportingFacility(report)?.name}</p>
+                                            <p className="margin-0">{getReportingFacility(report)?.name as any}</p>
                                             <br />
                                         </>
                                     )}
@@ -255,7 +252,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                         <>
                                             <strong>Ordering facility:</strong>
                                             <br />
-                                            <p className="margin-0">{getOrderingFacility(report)?.name}</p>
+                                            <p className="margin-0">{getOrderingFacility(report)?.name as any}</p>
                                         </>
                                     )}
                                 </div>
@@ -271,17 +268,15 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                     <NoData />
                                 ) : (
                                     <>
-                                        {report.associatedInvestigations?.map(
-                                            (investigation: AssociatedInvestigation, index: number) => (
-                                                <div key={index}>
-                                                    <ClassicLink
-                                                        url={`/nbs/api/profile/${patient}/investigation/${investigation.publicHealthCaseUid}`}>
-                                                        {investigation?.localId}
-                                                    </ClassicLink>
-                                                    <p className="margin-0">{investigation?.cdDescTxt}</p>
-                                                </div>
-                                            )
-                                        )}
+                                        {report.associatedInvestigations?.map((investigation: any, index: number) => (
+                                            <div key={index}>
+                                                <ClassicLink
+                                                    url={`/nbs/api/profile/${patient}/investigation/${investigation.publicHealthCaseUid}`}>
+                                                    {investigation?.localId}
+                                                </ClassicLink>
+                                                <p className="margin-0">{investigation?.cdDescTxt}</p>
+                                            </div>
+                                        ))}
                                     </>
                                 )}
                             </td>
