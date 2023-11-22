@@ -179,7 +179,11 @@ export const AddNewPage = () => {
                     <Button type="button" outline onClick={handleCancel}>
                         Cancel
                     </Button>
-                    <Button type="button" onClick={handleSubmit}>
+                    <Button
+                        type="button"
+                        className="createPage"
+                        onClick={handleSubmit}
+                        disabled={!form.formState.isValid}>
                         Create page
                     </Button>
                 </div>
