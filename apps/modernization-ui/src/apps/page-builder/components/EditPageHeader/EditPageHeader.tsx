@@ -1,9 +1,10 @@
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import './EditPageHeader.scss';
 import { useRef, useState } from 'react';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { SaveTemplates } from '../SaveTemplate/SaveTemplate';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { PagesResponse } from 'apps/page-builder/generated';
+import { SaveTemplates } from 'apps/page-builder/components/SaveTemplate/SaveTemplate';
+import { LinkButton } from 'components/LinkButton';
+import './EditPageHeader.scss';
 
 type PageProps = {
     page: PagesResponse;
@@ -16,11 +17,11 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
 
     return (
         <div className="edit-page-header">
-            <div className="edit-page-header__left">
+            <div className="title">
                 <h2>{page.name}</h2>
-                <h4>{page.description}</h4>
+                <p>{page.description}</p>
             </div>
-            <div className="edit-page-header__right">
+            <div className="actions">
                 {isSaveTemplate ? (
                     <>
                         <Button type="button" outline>
@@ -41,6 +42,13 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                 <Button type="button" outline>
                     {isSaveTemplate ? 'Edit' : 'Cancel'}
                 </Button>
+                <LinkButton
+                    href={`/nbs/page-builder/api/v1/pages/${page.id}/print`}
+                    label="open simplified page view for printing"
+                    target="_blank"
+                    rel="noreferrer">
+                    <Icon.Print size={3} />
+                </LinkButton>
                 <Button type="button" onClick={() => setIsSaveTemplate(!isSaveTemplate)}>
                     {isSaveTemplate ? 'Publish' : 'Submit'}
                 </Button>
