@@ -131,10 +131,12 @@ export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) =
                 modalBody={
                     <div className="edit-page-tabs__modal--body">
                         {addSuccess ? (
-                            <AlertBanner type="success">You've successfully Added a new tab!</AlertBanner>
+                            <AlertBanner type="success">You've successfully added a new tab!</AlertBanner>
                         ) : editSuccess ? (
                             <AlertBanner type="success" onClose={() => resetEditPageTabs()}>
-                                You've successfully saved your changes to <b>&nbsp;{tabDetails?.name}!</b>
+                                <p>
+                                    You've successfully saved your changes to <span>&nbsp;{tabDetails?.name}!</span>
+                                </p>
                             </AlertBanner>
                         ) : null}
                         {isAdding ? (
