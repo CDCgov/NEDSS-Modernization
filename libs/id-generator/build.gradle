@@ -1,8 +1,5 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
-
 plugins {
     alias libs.plugins.springBoot apply false
-    alias libs.plugins.springDependencies
 }
 
 group = 'gov.cdc'
@@ -19,13 +16,6 @@ testing {
         }
     }
 }
-
-dependencyManagement {
-    imports {
-        mavenBom SpringBootPlugin.BOM_COORDINATES
-    }
-}
-
 
 dependencies {
 
