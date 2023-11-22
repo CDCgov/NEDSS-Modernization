@@ -4,7 +4,7 @@ jackson = '2.13.5'
 queryDSL = '5.0.0'
 blaze-persistence = '1.6.8'
 graphql = '21.3'
-spring-kafka = '2.8.11'
+spring-kafka = '2.9.13'
 junit-jupiter = '5.8.2'
 cucumber = '7.14.0'
 assertj = '3.24.2'
@@ -20,6 +20,7 @@ springBoot-web = { module = 'org.springframework.boot:spring-boot-starter-web', 
 graphql = {module = 'com.graphql-java:graphql-java', version.ref = 'graphql'}
 springBoot-graphql = { module = 'org.springframework.boot:spring-boot-starter-graphql', version.ref = 'springBoot' }
 spring-kafka = { module = 'org.springframework.kafka:spring-kafka', version.ref= 'spring-kafka' }
+snappy = {module = 'org.xerial.snappy:snappy-java', version ='1.1.10.5'}
 spring-kafka-test = { module = 'org.springframework.kafka:spring-kafka-test', version.ref= 'spring-kafka'  }
 spring-elasticsearch = { module = 'org.springframework.data:spring-data-elasticsearch', version = '4.4.17' }
 spring-json = { module = 'org.springframework.boot:spring-boot-starter-json', version.ref = 'springBoot' }
@@ -33,9 +34,6 @@ queryDSL-apt = { module = 'com.querydsl:querydsl-apt', version.ref = 'queryDSL' 
 queryDSL-jpa = { module = 'com.querydsl:querydsl-jpa', version.ref = 'queryDSL' }
 lombok = { module = 'org.projectlombok:lombok', version = '1.18.30' }
 mssql-jdbc = { module = 'com.microsoft.sqlserver:mssql-jdbc', version = '10.2.1.jre17' }
-blaze-persistence-core = { module = 'com.blazebit:blaze-persistence-core-impl', version.ref = 'blaze-persistence' }
-blaze-persistence-queryDSL = { module = 'com.blazebit:blaze-persistence-integration-querydsl-expressions', version.ref = 'blaze-persistence' }
-blaze-persistence-hibernate = { module = 'com.blazebit:blaze-persistence-integration-hibernate-5.6', version.ref = 'blaze-persistence' }
 java-jwt = { module = 'com.auth0:java-jwt', version = '4.4.0' }
 itextpdf = {module='com.itextpdf:itextpdf', version='5.5.13.3'}
 assertj-core = { module = 'org.assertj:assertj-core', version.ref = 'assertj' }
@@ -57,15 +55,10 @@ graphql = ['graphql', 'springBoot-graphql']
 jackson = ['jackson-core', 'jackson-datatype-jsr310']
 jpa = ['springBoot', 'springBoot-jpa']
 elasticsearch = ['spring-elasticsearch']
-kafka = ['spring-kafka']
+kafka = ['spring-kafka','snappy']
 testing = ['assertj-core', 'mockito-inline']
 springtesting = ['spring-test', 'junit']
 queryDSL = ['queryDSL-apt', 'queryDSL-jpa']
-blaze-persistence-queryDSL = [
-    'blaze-persistence-core',
-    'blaze-persistence-queryDSL',
-    'blaze-persistence-hibernate',
-]
 swagger = ['springfox']
 testcontainers = ['testcontainers', 'testcontainers-junit']
 testcontainers-elasticsearch = [
@@ -83,5 +76,4 @@ cucumber = [
 ]
 
 [plugins]
-springDependencies = { id = 'io.spring.dependency-management', version = '1.0.12.RELEASE' }
 springBoot = { id = 'org.springframework.boot', version.ref = 'springBoot' }

@@ -1,8 +1,6 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     alias libs.plugins.springBoot apply false
-    alias libs.plugins.springDependencies
 }
 
 
@@ -21,8 +19,6 @@ testing {
 }
 
 dependencies {
-    implementation platform(SpringBootPlugin.BOM_COORDINATES)
-    annotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
 
     implementation project(':accumulation')
 
@@ -40,8 +36,6 @@ dependencies {
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
 
-    // blazebit for querydsl paging
-    implementation libs.bundles.blaze.persistence.queryDSL
     implementation libs.bundles.jackson
 
     // lombok
