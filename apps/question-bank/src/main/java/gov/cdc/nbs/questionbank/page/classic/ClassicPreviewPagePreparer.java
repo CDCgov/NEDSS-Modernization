@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page.classic;
 
 import org.springframework.stereotype.Component;
+import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePageRequester;
 
 @Component
 public class ClassicPreviewPagePreparer {

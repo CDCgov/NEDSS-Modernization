@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.http.ResponseEntity;
 import gov.cdc.nbs.questionbank.page.classic.ClassicPreviewPagePreparer;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,12 +22,13 @@ class ClassicPagePreviewRedirectorTest {
   @Test
   void should_redirect_to_preview() {
     // When a request is processed to preview 
-    RedirectView response = redirector.view(123L);
+    ResponseEntity<Void> response = redirector.view(123L);
 
     // Then classic is prepared
     verify(preparer).prepare();
 
     // And a redirect is issued to classic
-    assertEquals("/nbs/PreviewPage.do?from=L&method=viewPageLoad&waTemplateUid=123", response.getUrl());
+    String location = response.getHeaders().get("Location").get(0);
+    assertEquals("/nbs/PreviewPage.do?from=L&method=viewPageLoad&waTemplateUid=123", location);
   }
 }

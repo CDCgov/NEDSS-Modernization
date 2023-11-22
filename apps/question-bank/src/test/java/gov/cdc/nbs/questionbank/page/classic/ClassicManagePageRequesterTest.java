@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
+import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePageRequester;
 
 class ClassicManagePageRequesterTest {
   @Test
