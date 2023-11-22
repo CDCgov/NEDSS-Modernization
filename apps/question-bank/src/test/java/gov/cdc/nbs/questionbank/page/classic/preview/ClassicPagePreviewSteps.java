@@ -51,7 +51,7 @@ public class ClassicPagePreviewSteps {
     response.active(mvc.perform(
         this.authenticated.withUser(
             get(
-                "/pages/{page}/preview",
+                "/api/v1/pages/{page}/preview",
                 page.active().id()))));
   }
 
