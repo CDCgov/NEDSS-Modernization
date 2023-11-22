@@ -11,8 +11,9 @@ import org.springframework.web.client.RestTemplate;
 import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePageRequester;
 
 class ClassicManagePageRequesterTest {
+
   @Test
-  void should_prepare_the_pre() {
+  void should_call_manage_page() {
 
     RestTemplate template = new RestTemplate();
 
