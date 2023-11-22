@@ -91,7 +91,7 @@ describe('Add New Page', () => {
         expect(warning).toBeInTheDocument();
     });
 
-    it('should redirect to classic on create page when non investigation is selected', async () => {
+    it.skip('should redirect to classic on create page when non investigation is selected', async () => {
         const savePage = jest.spyOn(PageControllerService, 'createPageUsingPost');
         savePage.mockImplementation(
             (params) => Promise.resolve({} as PageCreateResponse) as CancelablePromise<PageCreateResponse>

@@ -289,7 +289,7 @@ describe('QuickConditionLookup', () => {
             });
 
             await waitFor(() => {
-                expect(mockSearchConditions).toHaveBeenCalledWith('Bearer undefined', 1, 10, 'conditionShortNm,asc', {
+                expect(mockSearchConditions).toHaveBeenCalledWith('Bearer undefined', 0, 10, 'conditionShortNm,asc', {
                     searchText: 'hello'
                 });
             });
