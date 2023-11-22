@@ -4,6 +4,7 @@ import { Concept, Condition, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
+import { validPageNameRule } from 'validation/entry';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormValues } from './AddNewPage';
 
@@ -50,12 +51,17 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="name"
-                rules={{ required: { value: true, message: 'Name is required.' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                rules={{
+                    required: { value: true, message: 'Name is required.' },
+                    ...validPageNameRule
+                }}
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
+                        onBlur={onBlur}
                         defaultValue={value}
                         label="Page name"
+                        className="pageName"
                         type="text"
                         error={error?.message}
                         required
@@ -65,12 +71,15 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="templateId"
-                rules={{ required: { value: true, message: 'Template is required.' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                rules={{
+                    required: { value: true, message: 'Template is required.' }
+                }}
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="Templates"
                         defaultValue={value}
                         onChange={onChange}
+                        onBlur={onBlur}
                         options={props.templates.map((template) => {
                             return {
                                 name: template.templateNm ?? '',
@@ -92,11 +101,12 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 control={form.control}
                 name="messageMappingGuide"
                 rules={{ required: { value: true, message: 'MMG is required.' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="MMG"
                         name="messageMappingGuide"
                         onChange={onChange}
+                        onBlur={onBlur}
                         defaultValue={value}
                         options={props.mmgs.map((m) => {
                             return {

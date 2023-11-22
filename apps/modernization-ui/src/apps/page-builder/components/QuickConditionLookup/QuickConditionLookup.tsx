@@ -165,15 +165,6 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                             <Icon.Search />
                         </Button>
                     </div>
-                    <Button type="button" outline style={{ height: '41px' }}>
-                        <Icon.FilterAlt />
-                        Filter
-                    </Button>
-                    {/* <NavLink to={'page-builder/add/condition'}>
-                        <Button type="button" style={{ height: '41px' }}>
-                            Add new condition
-                        </Button>
-                    </NavLink> */}
                     <ModalToggleButton
                         modalRef={modal}
                         closer
