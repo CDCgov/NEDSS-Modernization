@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 module.exports = {
     env: {
         browser: true,
@@ -8,11 +9,11 @@ module.exports = {
         JSX: 'readonly'
     },
     extends: [
-        'plugin:react/recommended',
         'google',
         'eslint:recommended',
         'plugin:react/recommended',
-        'plugin:prettier/recommended'
+        'plugin:prettier/recommended',
+        'plugin:react-hooks/recommended'
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -23,10 +24,11 @@ module.exports = {
     },
     plugins: ['react', '@typescript-eslint'],
     rules: {
-        'react/react-in-jsx-scope': 'off',
         'require-jsdoc': 'off',
-        'react/no-unescaped-entities': 0,
         'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': 'error'
+        '@typescript-eslint/no-unused-vars': 'error',
+        'react/react-in-jsx-scope': 'off',
+        'react/no-unescaped-entities': 'off',
+        'react-hooks/rules-of-hooks': 'warn'
     }
 };

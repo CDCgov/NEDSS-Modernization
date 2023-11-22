@@ -1,0 +1,19 @@
+@use 'design/system';
+
+.library {
+    border-radius: 5px;
+    background-color: system.$colors-base-white;
+    @include system.borders-bordered(system.$colors-base-lighter);
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.5rem;
+
+        h2 {
+            margin: 0;
+        }
+
+        @extend %thin-bottom;
+    }
+}

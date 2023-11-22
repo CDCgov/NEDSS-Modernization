@@ -6,7 +6,6 @@ describe('Table component', () => {
         const { container } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'Start Date', sortable: true },
                     { name: 'Condition', sortable: true },
@@ -41,7 +40,7 @@ describe('Table component', () => {
         const tableHeader = container.getElementsByClassName('table-header');
         const tableHead = container.getElementsByClassName('head-name');
         const tableData = container.getElementsByClassName('table-data');
-        expect(tableHeader[0].innerHTML).toBe('Test Table HeaderTest Sub Header');
+        expect(tableHeader[0].innerHTML).toBe('Test Table Header');
         expect(tableHead[0].innerHTML).toBe('Start Date');
         expect(tableData[0]).toHaveTextContent('10/05/2022');
     });
@@ -50,7 +49,6 @@ describe('Table component', () => {
         const { container } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'Start Date', sortable: true },
                     { name: 'Condition', sortable: true },
@@ -93,7 +91,6 @@ describe('when a table has a sortable header', () => {
         const { getAllByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'A', sortable: true },
                     { name: 'B', sortable: false }
@@ -127,7 +124,6 @@ describe('when a table has a sortable header', () => {
         const { getByRole, getAllByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'A', sortable: true },
                     { name: 'B', sortable: false }
@@ -161,10 +157,9 @@ describe('when a table has a sortable header', () => {
     });
 
     it('should activate ascending sort when button clicked while a descending sort is active', async () => {
-        const { container, getByRole, getAllByRole } = render(
+        const { getByRole, getAllByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'A', sortable: true },
                     { name: 'B', sortable: false }

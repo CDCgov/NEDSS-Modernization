@@ -56,6 +56,7 @@ export type { Page_Question_ } from './models/Page_Question_';
 export type { Page_ValueSet_ } from './models/Page_ValueSet_';
 export type { Page_ViewRuleResponse_ } from './models/Page_ViewRuleResponse_';
 export type { Pageable } from './models/Pageable';
+export type { PageBuilderOption } from './models/PageBuilderOption';
 export type { PageCreateRequest } from './models/PageCreateRequest';
 export type { PageCreateResponse } from './models/PageCreateResponse';
 export type { PageDeleteResponse } from './models/PageDeleteResponse';
@@ -108,6 +109,7 @@ export type { ValueSetUpdateShort } from './models/ValueSetUpdateShort';
 export type { ViewRuleResponse } from './models/ViewRuleResponse';
 
 export { ConditionControllerService } from './services/ConditionControllerService';
+export { PageBuilderOptionsService } from './services/PageBuilderOptionsService';
 export { PageControllerService } from './services/PageControllerService';
 export { PageInformationService } from './services/PageInformationService';
 export { PageQuestionControllerService } from './services/PageQuestionControllerService';

@@ -9,17 +9,12 @@
     button:disabled {
         cursor: text;
         .usa-icon {
-            color: #747474;
+            color: colors.$disabled-dark;
         }
     }
 }
-
-td {
-    font-size: 16px !important;
-}
-
-.show-length-text {
-    color: #71767a;
+.table__range {
+    color: colors.$base;
 }
 
 .pagination {
@@ -85,4 +80,13 @@ td.selection {
 table.usa-table thead tr {
     border-bottom-width: 2px;
     border-bottom-style: solid;
+}
+
+table.usa-table th,
+table.usa-table td {
+    font-size: 14px !important;
+}
+
+table.usa-table td {
+    white-space: pre-wrap;
 }
