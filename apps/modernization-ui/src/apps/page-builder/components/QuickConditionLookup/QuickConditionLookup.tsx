@@ -41,7 +41,6 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
     const { state } = useContext(UserContext);
     const { currentPage, setCurrentPage, pageSize, setPageSize } = useContext(ConditionsContext);
 
-    console.log('test', conditions);
     const handleSelectConditions = (event: ChangeEvent<HTMLInputElement>, condition: any) => {
         if (selectedConditions.includes(condition.id)) {
             const newSelectedConditions = selectedConditions.filter((c) => c !== condition.id);
