@@ -6,7 +6,7 @@ import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 import { QuestionsContext } from 'apps/page-builder/context/QuestionsContext';
 import { ValueSetsContext } from 'apps/page-builder/context/ValueSetContext';
 import { ContextData } from 'apps/page-builder/context/contextData';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 
 interface RangeToggleProps {
     contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates';
@@ -46,6 +46,8 @@ export const RangeToggle = ({ contextName }: RangeToggleProps) => {
         { name: '100', value: '100' }
     ];
 
+    const location = useLocation();
+
     useEffect(() => {
         if (range !== pageSize) {
             setCurrentPage(1);
@@ -55,10 +57,10 @@ export const RangeToggle = ({ contextName }: RangeToggleProps) => {
             setPageSize(range);
             setSearchParams({ size: range.toString(), page: currentPage.toString() });
         }
-    }, [range]);
+    }, [range, currentPage]);
 
     useEffect(() => {
-        if (searchParams.get('page') && parseInt(searchParams.get('page') || '')) {
+        if (searchParams.get('page')) {
             const pageFromQuery = searchParams.get('page');
             setCurrentPage(parseInt(pageFromQuery ?? '') || 1);
         }
@@ -68,7 +70,7 @@ export const RangeToggle = ({ contextName }: RangeToggleProps) => {
             setPageSize(parseInt(sizeFromQuery ?? ''));
             setRange(parseInt(sizeFromQuery ?? ''));
         }
-    }, []);
+    }, [location]);
 
     return (
         <div className="range-toggle">
