@@ -57,7 +57,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
         const authorization = `Bearer ${state.getToken()}`;
         const search: ReadConditionRequest = { searchText };
 
-        searchConditions(authorization, currentPage, pageSize, `${sortBy},${sortDirection}`, {
+        searchConditions(authorization, currentPage - 1, pageSize, `${sortBy},${sortDirection}`, {
             searchText: search.searchText
         })
             .then((response: any) => {
@@ -83,6 +83,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
     const asTableRow = (condition: Condition): TableBody => ({
         id: condition.id,
         expanded: false,
+        selectable: condition.investigationFormCd == undefined,
         tableDetails: [
             {
                 id: 1,
