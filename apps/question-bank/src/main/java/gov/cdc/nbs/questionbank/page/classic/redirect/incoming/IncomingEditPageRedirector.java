@@ -19,6 +19,7 @@ public class IncomingEditPageRedirector {
   private static final String EDIT_PAGE = "/page-builder/edit/page/";
   private static final String PAGE_LIBRARY = "/page-builder/manage/pages";
 
+  @SuppressWarnings("squid:S3752") // Allow GET and POST on same method
   @RequestMapping(path = "/api/v1/pages/return", method = {RequestMethod.GET, RequestMethod.POST})
   ResponseEntity<Void> returnToEdit(final HttpServletRequest request) {
     String location = ReturningPageCookie.resolve(request.getCookies())
