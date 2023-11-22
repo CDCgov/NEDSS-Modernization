@@ -9,7 +9,7 @@ type Props = {
 } & JSX.IntrinsicElements['a'];
 
 const LinkButton = ({ href, label, className, children, target = '_blank', rel = 'noreferrer' }: Props) => (
-    <a className={classnames('link-button', className)} href={href} target={target} rel={rel} aria-label={label}>
+    <a className={classnames(styles.outline, className)} href={href} target={target} rel={rel} aria-label={label}>
         {children}
     </a>
 );

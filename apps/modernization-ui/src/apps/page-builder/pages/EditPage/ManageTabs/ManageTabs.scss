@@ -1,11 +1,11 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .manage-tabs {
     .manage-tabs__tile {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        color: $color-black;
+        color: colors.$base-black;
         padding: 1rem 1.5rem;
     }
     .manage-tabs__label {
@@ -13,7 +13,7 @@
         gap: 1rem;
     }
     .manage-tabs__buttons {
-        color: $color-primary;
+        color: colors.$primary;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -21,15 +21,13 @@
         svg {
             cursor: pointer;
             &:hover {
-                color: $color-primary-light;
+                color: colors.$primary-light;
             }
             &:nth-of-type(2) {
                 &:hover {
-                    color: $color-alert-error;
+                    color: colors.$error;
                 }
             }
         }
     }
 }
-
-

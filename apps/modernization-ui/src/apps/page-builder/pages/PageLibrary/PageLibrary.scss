@@ -1,5 +1,4 @@
-@use 'styles/borders' as borders;
-@use 'styles/colors' as colors;
+@use 'design/system';
 
 .manage-pages {
     display: flex;
@@ -12,9 +11,9 @@
         flex-direction: row;
     }
     .manage-pages__table {
-        background-color: colors.$base-white;
+        background-color: system.$colors-base-white;
         border-radius: 3px;
-        border: 1px solid colors.$base-lightest;
+        @include system.borders-bordered(system.$colors-base-lightest);
         min-width: 96.5%;
         min-height: calc(100vh - 16rem);
         justify-content: center;
