@@ -21,8 +21,8 @@ import springfox.documentation.annotations.ApiIgnore;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ClassicPagePreviewRedirector {
 
-  private static final String LOCATION = "/nbs/PreviewPage.do";
-  private static final String EDIT_PAGE_LOCATION = "/page-builder/edit/page/";
+  private static final String PREVIEW = "/nbs/PreviewPage.do";
+  private static final String EDIT_PAGE = "/page-builder/edit/page/";
   private static final String PAGE_LIBRARY = "/page-builder/manage/pages";
 
   private final ClassicPreviewPagePreparer preparer;
@@ -36,7 +36,7 @@ public class ClassicPagePreviewRedirector {
     ReturningPageCookie pageCookie = new ReturningPageCookie(String.valueOf(page));
     preparer.prepare();
 
-    URI location = UriComponentsBuilder.fromPath(LOCATION)
+    URI location = UriComponentsBuilder.fromPath(PREVIEW)
         .queryParam("from", "L")
         .queryParam("method", "viewPageLoad")
         .queryParam("waTemplateUid", page)
@@ -52,7 +52,7 @@ public class ClassicPagePreviewRedirector {
   @RequestMapping(path = "/api/v1/pages/return", method = {RequestMethod.GET, RequestMethod.POST})
   ResponseEntity<Void> returnToEdit(final HttpServletRequest request) {
     String location = ReturningPageCookie.resolve(request.getCookies())
-        .map(c -> EDIT_PAGE_LOCATION + c.page())
+        .map(c -> EDIT_PAGE + c.page())
         .orElse(PAGE_LIBRARY);
 
     return ResponseEntity.status(HttpStatus.FOUND)
