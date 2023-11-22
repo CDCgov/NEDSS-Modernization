@@ -14,17 +14,17 @@ public interface ObservationRepository
     @Query(value = """
              SELECT
                 o2.cd,
-                o2.cd_desc_txt,
-                o2.obs_domain_cd_st_1,
-                o2.status_cd,
-                o2.alt_cd,
-                o2.alt_cd_desc_txt,
-                o2.alt_cd_system_cd,
-                ovc.display_name,
-                ovc.code AS ovc_code,
-                ovc.alt_cd AS ovc_alt_cd,
-                ovc.alt_cd_desc_txt AS ovc_alt_cd_desc_txt,
-                ovc.alt_cd_system_cd AS ovc_alt_cd_system_cd
+                o2.cd_desc_txt cdDescTxt,
+                o2.obs_domain_cd_st_1 domainCd,
+                o2.status_cd statusCd,
+                o2.alt_cd altCd,
+                o2.alt_cd_desc_txt altDescTxt,
+                o2.alt_cd_system_cd altCdSystemCd,
+                ovc.display_name displayName,
+                ovc.code AS ovcCode,
+                ovc.alt_cd ovcAltCode,
+                ovc.alt_cd_desc_txt ovcAltDescTxt,
+                ovc.alt_cd_system_cd ovcAltCdSystemCd
             FROM
                 observation o2
                 LEFT JOIN Obs_value_coded ovc ON ovc.observation_uid = o2.observation_uid
