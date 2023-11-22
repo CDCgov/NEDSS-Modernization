@@ -146,9 +146,9 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
             // saves the current page to a url param so that it persists on page refresh or navigating away
             setSearchParams({ page: page.toString(), size: pageSize.toString() });
 
-            if (setCurrentPage) {
-                setCurrentPage(page);
-            }
+            // if (setCurrentPage) {
+            //     setCurrentPage(page);
+            // }
         },
         [searchParams, currentPage, pageSize]
     );

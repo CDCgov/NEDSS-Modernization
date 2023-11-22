@@ -6,7 +6,7 @@ import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 import { QuestionsContext } from 'apps/page-builder/context/QuestionsContext';
 import { ValueSetsContext } from 'apps/page-builder/context/ValueSetContext';
 import { ContextData } from 'apps/page-builder/context/contextData';
-import { useSearchParams, useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 interface RangeToggleProps {
     contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates';
@@ -46,7 +46,20 @@ export const RangeToggle = ({ contextName }: RangeToggleProps) => {
         { name: '100', value: '100' }
     ];
 
-    const location = useLocation();
+    useEffect(() => {
+        const pageFromQuery = searchParams.get('page');
+        const sizeFromQuery = searchParams.get('size');
+
+        if (pageFromQuery && sizeFromQuery) {
+            setCurrentPage(parseInt(pageFromQuery ?? '') || 1);
+            setPageSize(parseInt(sizeFromQuery || ''));
+            setRange(parseInt(sizeFromQuery || ''));
+        } else {
+            setCurrentPage(1);
+            setPageSize(10);
+            setRange(10);
+        }
+    }, []);
 
     useEffect(() => {
         if (range !== pageSize) {
@@ -54,23 +67,13 @@ export const RangeToggle = ({ contextName }: RangeToggleProps) => {
             setPageSize(range);
             setSearchParams({ page: '1', size: range.toString() });
         } else {
-            setPageSize(range);
-            setSearchParams({ size: range.toString(), page: currentPage.toString() });
+            const page = searchParams.get('page');
+            const size = searchParams.get('size');
+            setCurrentPage(parseInt(page ?? '') || 1);
+            setRange(parseInt(size || '') || 10);
+            setPageSize(parseInt(size || '') || 10);
         }
     }, [range, currentPage]);
-
-    useEffect(() => {
-        if (searchParams.get('page')) {
-            const pageFromQuery = searchParams.get('page');
-            setCurrentPage(parseInt(pageFromQuery ?? '') || 1);
-        }
-
-        if (searchParams.get('size') && parseInt(searchParams.get('size') || '') > 0) {
-            const sizeFromQuery = searchParams.get('size');
-            setPageSize(parseInt(sizeFromQuery ?? ''));
-            setRange(parseInt(sizeFromQuery ?? ''));
-        }
-    }, [location]);
 
     return (
         <div className="range-toggle">
