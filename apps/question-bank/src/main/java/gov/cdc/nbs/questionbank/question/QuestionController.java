@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.question;
 
-import gov.cdc.nbs.questionbank.question.model.DisplayTypeOptions;
+import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -128,9 +128,9 @@ public class QuestionController {
         return question;
     }
 
-    @GetMapping("/displayTypeOptions")
-    public DisplayTypeOptions getDisplayTypeOptions() {
-        return questionManagementUtil.getDisplayTypeOptions();
+    @GetMapping("/displayControlOptions")
+    public DisplayControlOptions getDisplayControlOptions() {
+        return questionManagementUtil.getDisplayControlOptions();
     }
 
 }

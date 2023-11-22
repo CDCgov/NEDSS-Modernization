@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.question;
 
 import java.util.List;
+
+import gov.cdc.nbs.questionbank.question.request.*;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
@@ -9,8 +11,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.model.DisplayTypeOptions;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
 
 @Component
 public class QuestionManagementUtil {
@@ -66,12 +67,12 @@ public class QuestionManagementUtil {
         }
     }
 
-    public DisplayTypeOptions getDisplayTypeOptions() {
-        return new DisplayTypeOptions(
-                CreateQuestionRequest.CodedQuestionType.getDisplayOptions(),
-                CreateQuestionRequest.DateQuestionType.getDisplayOptions(),
-                CreateQuestionRequest.NumericQuestionType.getDisplayOptions(),
-                CreateQuestionRequest.TextQuestionType.getDisplayOptions()
+    public DisplayControlOptions getDisplayControlOptions() {
+        return new DisplayControlOptions(
+                CreateCodedQuestionRequest.CodedDisplayControl.getDisplayOptions(),
+                CreateDateQuestionRequest.DateDisplayControl.getDisplayOptions(),
+                CreateNumericQuestionRequest.NumericDisplayControl.getDisplayOptions(),
+                CreateTextQuestionRequest.TextDisplayControl.getDisplayOptions()
         );
     }
 }

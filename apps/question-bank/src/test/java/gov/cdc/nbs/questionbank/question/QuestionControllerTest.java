@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.question.model.DisplayOption;
-import gov.cdc.nbs.questionbank.question.model.DisplayTypeOptions;
+import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +21,6 @@ import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
 import java.util.Arrays;
-import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionControllerTest {
@@ -89,22 +88,22 @@ class QuestionControllerTest {
     }
 
     @Test
-    void should_return_displayTypeOptions() {
-        when(questionManagementUtil.getDisplayTypeOptions()).thenReturn(getDisplayTypeOptions());
-        DisplayTypeOptions result = controller.getDisplayTypeOptions();
+    void should_return_displayControlOptions() {
+        when(questionManagementUtil.getDisplayControlOptions()).thenReturn(getDisplayControlOptions());
+        DisplayControlOptions result = controller.getDisplayControlOptions();
         assertNotNull(result);
-        assertFalse(result.codedQuestionTypes().isEmpty());
-        assertFalse(result.dateQuestionTypes().isEmpty());
-        assertFalse(result.numericQuestionTypes().isEmpty());
-        assertFalse(result.textQuestionTypes().isEmpty());
+        assertFalse(result.codedDisplayControl().isEmpty());
+        assertFalse(result.dateDisplayControl().isEmpty());
+        assertFalse(result.numericDisplayControl().isEmpty());
+        assertFalse(result.textDisplayControl().isEmpty());
 
     }
 
-    private DisplayTypeOptions getDisplayTypeOptions() {
-        return new DisplayTypeOptions(
-                Arrays.asList(new DisplayOption(101l, "desc_101"), new DisplayOption(102l, "desc_102")),
-                Arrays.asList(new DisplayOption(201l, "desc_201"), new DisplayOption(202l, "desc_202")),
-                Arrays.asList(new DisplayOption(301l, "desc_301"), new DisplayOption(302l, "desc_302")),
-                Arrays.asList(new DisplayOption(401l, "desc_401"), new DisplayOption(401l, "desc_402")));
+    private DisplayControlOptions getDisplayControlOptions() {
+        return new DisplayControlOptions(
+                Arrays.asList(new DisplayOption(101l, "mock_101"), new DisplayOption(102l, "mock_102")),
+                Arrays.asList(new DisplayOption(201l, "mock_201"), new DisplayOption(202l, "mock_202")),
+                Arrays.asList(new DisplayOption(301l, "mock_301"), new DisplayOption(302l, "mock_302")),
+                Arrays.asList(new DisplayOption(401l, "mock_401"), new DisplayOption(401l, "mock_402")));
     }
 }

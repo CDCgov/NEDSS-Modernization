@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
-import gov.cdc.nbs.questionbank.question.model.DisplayTypeOptions;
+import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -139,12 +139,12 @@ class QuestionManagementUtilTest {
     }
 
     @Test
-    void should_return_displayTypeOptions() {
-        DisplayTypeOptions displayTypeOptions = questionManagementUtil.getDisplayTypeOptions();
-        assertNotNull(displayTypeOptions);
-        assertFalse(displayTypeOptions.codedQuestionTypes().isEmpty());
-        assertFalse(displayTypeOptions.dateQuestionTypes().isEmpty());
-        assertFalse(displayTypeOptions.numericQuestionTypes().isEmpty());
-        assertFalse(displayTypeOptions.textQuestionTypes().isEmpty());
+    void should_return_displayControlOptions() {
+        DisplayControlOptions displayControlOptions = questionManagementUtil.getDisplayControlOptions();
+        assertNotNull(displayControlOptions);
+        assertFalse(displayControlOptions.codedDisplayControl().isEmpty());
+        assertFalse(displayControlOptions.dateDisplayControl().isEmpty());
+        assertFalse(displayControlOptions.numericDisplayControl().isEmpty());
+        assertFalse(displayControlOptions.textDisplayControl().isEmpty());
     }
 }
