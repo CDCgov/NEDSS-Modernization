@@ -11,15 +11,15 @@ public interface PersonParticipation2 {
 
     String getSubjectClassCd();
 
-    String getRecordStatus();
+    String getParticipationRecordStatus();
 
     Instant getLastChgTime();
 
     String getTypeDescTxt();
 
-    String getFirstNm();
+    String getFirstName();
 
-    String getLastNm();
+    String getLastName();
 
     String getLocalId();
 
