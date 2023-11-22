@@ -59,6 +59,7 @@ export const Input = ({
                 {!multiline ? (
                     mask ? (
                         <TextInputMask
+                            autoComplete="off"
                             inputMode={inputMode}
                             placeholder={placeholder}
                             {...props}
@@ -76,6 +77,7 @@ export const Input = ({
                         />
                     ) : (
                         <TextInput
+                            autoComplete="off"
                             inputMode={inputMode}
                             placeholder={placeholder}
                             {...props}
@@ -92,6 +94,7 @@ export const Input = ({
                     )
                 ) : (
                     <Textarea
+                        autoComplete="off"
                         placeholder={placeholder}
                         id={id}
                         onChange={onChange}
