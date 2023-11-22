@@ -1,8 +1,5 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
-
 plugins {
     alias libs.plugins.springBoot apply false
-    alias libs.plugins.springDependencies
 }
 
 group = 'gov.cdc.nbs.testing.auth'
@@ -20,8 +17,6 @@ testing {
 }
 
 dependencies {
-
-    implementation platform(SpringBootPlugin.BOM_COORDINATES)
     implementation libs.springBoot
 
     implementation libs.bundles.jpa
