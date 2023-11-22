@@ -14,6 +14,9 @@
     margin-bottom: 1rem;
     align-items: center;
     position: relative;
+    &.hidden {
+        display: none;
+    }
     &.success {
         @include indicator(colors.$success-lighter, colors.$success);
     }
@@ -42,6 +45,7 @@
     }
     p {
         margin: 0;
+        font-size: 0.8rem;
         span {
             font-weight: 700;
         }

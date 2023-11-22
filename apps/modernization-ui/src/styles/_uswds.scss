@@ -63,7 +63,7 @@ button.usa-button {
         vertical-align: bottom;
     }
 }
-
+.usa-button:disabled,
 .usa-button--outline-disabled,
 .usa-button--outline:disabled {
     color: colors.$base-white !important;
