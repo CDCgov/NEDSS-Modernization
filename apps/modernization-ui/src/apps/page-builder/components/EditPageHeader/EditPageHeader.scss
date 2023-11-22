@@ -1,23 +1,29 @@
-@import 'settings.scss';
+@use 'styles/colors.scss';
 
 .edit-page-header {
     display: flex;
-    padding: 0 1.2rem;
     justify-content: space-between;
-    .edit-page-header__left {
-        width: 50%;
+
+    .title {
         h2 {
             font-size: 1.375rem;
-            margin-bottom: 0.6rem;
+            margin-top: 0;
         }
-        h4 {
+        p {
             font-weight: 400;
-            margin-top: 0.25rem;
-            color: $color-base-light;
+            color: colors.$color-base-darkest;
+            line-height: 1.62rem;
         }
     }
-    .edit-page-header__right {
+
+    .actions {
         display: flex;
-        align-items: center;
+
+        height: 2.5625rem;
+
+        button {
+            display: flex;
+            align-items: center;
+        }
     }
 }

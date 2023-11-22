@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.template;
 
+import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePageRequester;
+import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicPreviewPageRequester;
 import org.springframework.stereotype.Component;
 
 @Component
