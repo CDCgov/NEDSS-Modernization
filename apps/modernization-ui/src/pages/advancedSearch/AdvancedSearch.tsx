@@ -75,10 +75,10 @@ export const AdvancedSearch = () => {
     const [resultStartCount, setResultStartCount] = useState<number>(0);
     const [resultEndCount, setResultEndCount] = useState<number>(0);
     const [resultTotal, setResultTotal] = useState<number>(0);
-    const { setId } = useSkipLink();
+    const { skipTo } = useSkipLink();
 
     useEffect(() => {
-        setId('perform-search');
+        skipTo('perform-search');
     }, []);
 
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 
 interface SkipLinkContextType {
-    setId: (id: string) => void;
+    skipTo: (id: string) => void;
 }
 
 // Create the context
@@ -20,17 +20,17 @@ interface SkipLinkProviderProps {
     children: React.ReactNode;
 }
 
-export const SkipLinkProvider: React.FC<SkipLinkProviderProps> = ({ children }: SkipLinkProviderProps) => {
-    const [id, setId] = useState<string | undefined>(undefined);
+export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {
+    const [id, skipTo] = useState<string | undefined>(undefined);
 
     // Setting up the id to pass it to the anchor tag
     const contextValue: SkipLinkContextType = {
-        setId
+        skipTo
     };
 
     return (
         <SkipLinkContext.Provider value={contextValue}>
-            <a href={'#' + id}>Skip to main content</a>
+            {id && <a href={'#' + id}>Skip to main content</a>}
             {children}
         </SkipLinkContext.Provider>
     );
