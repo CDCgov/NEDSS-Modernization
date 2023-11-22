@@ -56,3 +56,8 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+.edit-page-tabs__modal--body {
+    height: 39rem;
+    overflow-y: auto;
+}

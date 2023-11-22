@@ -1,0 +1,13 @@
+.add-edit-tab {
+    padding: 1.2rem 1.4rem;
+    .add-edit-tab__toggle {
+        display: flex;
+        flex-direction: row;
+        margin-top: 1.4rem;
+        gap: 1rem;
+        label {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+    }
+}
