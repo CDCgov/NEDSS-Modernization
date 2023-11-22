@@ -13,7 +13,7 @@ public interface PersonParticipation2 {
 
     String getParticipationRecordStatus();
 
-    Instant getLastChgTime();
+    Instant getParticipationLastChangeTime();
 
     String getTypeDescTxt();
 
@@ -33,5 +33,5 @@ public interface PersonParticipation2 {
 
     String getPersonRecordStatus();
 
-    Instant getPersonLastChgTime();
+    Instant getPersonLastChangeTime();
 }

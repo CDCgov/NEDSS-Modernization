@@ -7,7 +7,7 @@ public interface MaterialParticipation2 {
 
     String getTypeCd();
 
-    Long getSubjectEntityUid();
+    Long getSubjectEntityId();
 
     String getSubjectClassCd();
 
@@ -17,7 +17,7 @@ public interface MaterialParticipation2 {
 
     Instant getLastChgTime();
 
-    String getMaterialCd();
+    String getCd();
 
-    String getMaterialCdDescTxt();
+    String getCdDescTxt();
 }

@@ -26,13 +26,13 @@ public interface ParticipationRepository
                         SELECT
                         p.act_uid actUid,
                         p.type_cd typeCd,
-                        p.subject_entity_uid subjectEntityUid,
+                        p.subject_entity_uid entityId,
                         p.subject_class_cd subjectClassCd,
                         p.record_status_cd recordStatus,
                         p.type_desc_txt typeDescTxt,
                         p.last_chg_time lastChgTime,
-                        m.cd AS material_cd,
-                        m.cd_desc_txt AS material_cd_desc_txt
+                        m.cd AS cd,
+                        m.cd_desc_txt AS cdDescTxt
                                       FROM
                                           participation p
                                       JOIN material m ON m.material_uid = p.subject_entity_uid
@@ -46,12 +46,12 @@ public interface ParticipationRepository
                         SELECT
                         p.act_uid actUid,
                         p.type_cd typeCd,
-                        p.subject_entity_uid subjectEntityUid,
+                        p.subject_entity_uid entityId,
                         p.subject_class_cd subjectClassCd,
                         p.record_status_cd recordStatus,
                         p.type_desc_txt typeDescTxt,
                         p.last_chg_time lastChgTime,
-                        org.display_nm displayNm,
+                        org.display_nm name,
                         org.last_chg_time orgLastChangeTime
                                 FROM
                                   participation p

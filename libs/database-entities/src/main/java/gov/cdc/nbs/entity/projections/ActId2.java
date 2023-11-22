@@ -3,7 +3,9 @@ package gov.cdc.nbs.entity.projections;
 import java.time.Instant;
 
 public interface ActId2 {
-    Long getActUid();
+    Long getId();
+
+    Long getActIdSeq();
 
     String getAddReasonCd();
 
@@ -25,7 +27,7 @@ public interface ActId2 {
 
     Long getLastChgUserId();
 
-    String getRecordStatusCd();
+    String getRecordStatus();
 
     Instant getRecordStatusTime();
 
@@ -45,3 +47,4 @@ public interface ActId2 {
 
     Instant getValidToTime();
 }
+

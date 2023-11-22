@@ -30,7 +30,7 @@ public interface PersonRepository extends JpaRepository<Person, Long>, QuerydslP
         p.subject_entity_uid entityId,
         p.subject_class_cd subjectClassCd,
         p.record_status_cd participationRecordStatus,
-        p.last_chg_time lastChgTime,
+        p.last_chg_time participationLastChgTime,
         p.type_desc_txt typeDescTxt,
         person.first_nm firstName,
         person.last_nm lastName,
@@ -40,7 +40,7 @@ public interface PersonRepository extends JpaRepository<Person, Long>, QuerydslP
         person.cd personCd,
         person.person_parent_uid personParentUid,
         person.record_status_cd personRecordStatus,
-        person.last_chg_time personLastChgTime
+        person.last_chg_time personLastChangeTime
       FROM
         participation p
         JOIN person ON person.person_uid = (
@@ -64,7 +64,7 @@ public interface PersonRepository extends JpaRepository<Person, Long>, QuerydslP
         p.subject_entity_uid entityId,
         p.subject_class_cd subjectClassCd,
         p.record_status_cd participationRecordStatus,
-        p.last_chg_time lastChgTime,
+        p.last_chg_time participationLastChgTime,
         p.type_desc_txt typeDescTxt,
         person.first_nm firstName,
         person.last_nm lastName,
@@ -74,7 +74,7 @@ public interface PersonRepository extends JpaRepository<Person, Long>, QuerydslP
         person.cd AS person_cd personCd,
         person.person_parent_uid personParentUid,
         person.record_status_cd personRecordStatus,
-        person.last_chg_time personLastChgTime
+        person.last_chg_time personLastChangeTime
       FROM
         participation p
         JOIN person ON person.person_parent_uid = p.subject_entity_uid
