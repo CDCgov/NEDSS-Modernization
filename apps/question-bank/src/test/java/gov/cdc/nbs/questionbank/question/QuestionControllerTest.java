@@ -1,8 +1,12 @@
 package gov.cdc.nbs.questionbank.question;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+
+import gov.cdc.nbs.questionbank.question.model.DisplayOption;
+import gov.cdc.nbs.questionbank.question.model.DisplayTypeOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +20,9 @@ import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
+import java.util.Arrays;
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 class QuestionControllerTest {
 
@@ -24,6 +31,9 @@ class QuestionControllerTest {
 
     @Mock
     private UserDetailsProvider provider;
+
+    @Mock
+    private QuestionManagementUtil questionManagementUtil;
 
     @InjectMocks
     private QuestionController controller;
@@ -76,5 +86,25 @@ class QuestionControllerTest {
                 null,
                 null,
                 true);
+    }
+
+    @Test
+    void should_return_displayTypeOptions() {
+        when(questionManagementUtil.getDisplayTypeOptions()).thenReturn(getDisplayTypeOptions());
+        DisplayTypeOptions result = controller.getDisplayTypeOptions();
+        assertNotNull(result);
+        assertFalse(result.codedQuestionTypes().isEmpty());
+        assertFalse(result.dateQuestionTypes().isEmpty());
+        assertFalse(result.numericQuestionTypes().isEmpty());
+        assertFalse(result.textQuestionTypes().isEmpty());
+
+    }
+
+    private DisplayTypeOptions getDisplayTypeOptions() {
+        return new DisplayTypeOptions(
+                Arrays.asList(new DisplayOption(101l, "desc_101"), new DisplayOption(102l, "desc_102")),
+                Arrays.asList(new DisplayOption(201l, "desc_201"), new DisplayOption(202l, "desc_202")),
+                Arrays.asList(new DisplayOption(301l, "desc_301"), new DisplayOption(302l, "desc_302")),
+                Arrays.asList(new DisplayOption(401l, "desc_401"), new DisplayOption(401l, "desc_402")));
     }
 }

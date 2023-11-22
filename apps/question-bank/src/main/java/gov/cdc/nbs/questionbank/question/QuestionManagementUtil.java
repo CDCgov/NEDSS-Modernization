@@ -9,6 +9,8 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
+import gov.cdc.nbs.questionbank.question.model.DisplayTypeOptions;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 
 @Component
 public class QuestionManagementUtil {
@@ -62,5 +64,14 @@ public class QuestionManagementUtil {
             throw new UniqueQuestionException(
                     "One of the following fields was not unique: questionNm, questionIdentifier, userDefinedColmnNm, rdbColumnNm");
         }
+    }
+
+    public DisplayTypeOptions getDisplayTypeOptions() {
+        return new DisplayTypeOptions(
+                CreateQuestionRequest.CodedQuestionType.getDisplayOptions(),
+                CreateQuestionRequest.DateQuestionType.getDisplayOptions(),
+                CreateQuestionRequest.NumericQuestionType.getDisplayOptions(),
+                CreateQuestionRequest.TextQuestionType.getDisplayOptions()
+        );
     }
 }

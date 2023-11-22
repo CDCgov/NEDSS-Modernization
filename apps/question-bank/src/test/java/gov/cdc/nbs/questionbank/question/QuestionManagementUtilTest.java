@@ -1,11 +1,15 @@
 package gov.cdc.nbs.questionbank.question;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
+
+import gov.cdc.nbs.questionbank.question.model.DisplayTypeOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -132,5 +136,15 @@ class QuestionManagementUtilTest {
                         true,
                         codeSystem,
                         codeSet));
+    }
+
+    @Test
+    void should_return_displayTypeOptions() {
+        DisplayTypeOptions displayTypeOptions = questionManagementUtil.getDisplayTypeOptions();
+        assertNotNull(displayTypeOptions);
+        assertFalse(displayTypeOptions.codedQuestionTypes().isEmpty());
+        assertFalse(displayTypeOptions.dateQuestionTypes().isEmpty());
+        assertFalse(displayTypeOptions.numericQuestionTypes().isEmpty());
+        assertFalse(displayTypeOptions.textQuestionTypes().isEmpty());
     }
 }
