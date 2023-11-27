@@ -1,4 +1,4 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .edit-page-tabs {
     display: flex;
@@ -8,23 +8,23 @@
     .edit-page-tabs__tab {
         cursor: pointer;
         padding: 0.6rem 0 0.2rem;
-        color: $color-base;
+        color: colors.$base;
         height: 2.75rem;
         h4 {
             font-weight: 300;
             margin: 0;
         }
         &.active {
-            border-bottom: 6px solid $color-primary-dark;
+            border-bottom: 6px solid colors.$primary-dark;
             h4 {
                 font-weight: 600;
-                color: $color-base-darkest;
+                color: colors.$base-darkest;
             }
         }
         &.add {
             display: flex;
             align-items: flex-start;
-            color: $color-primary;
+            color: colors.$primary;
             width: unset;
             svg {
                 height: 20px;

@@ -1,5 +1,3 @@
-@import '../../../../settings';
-
 .create-question {
     padding: 5px 30px;
     .field-space {
@@ -9,7 +7,8 @@
     .main-header-title {
         font-size: 22px;
     }
-    input, select {
+    input,
+    select {
         width: 480px;
         height: 40px;
         border: 1px solid #171717;
@@ -17,11 +16,11 @@
     select {
         padding-left: 10px;
     }
-    input[type="radio"],
-    input[type="checkbox"] {
+    input[type='radio'],
+    input[type='checkbox'] {
         width: 24px;
         height: 24px;
-        accent-color: #005EA2;
+        accent-color: #005ea2;
         outline: none;
         line-height: 2;
     }
@@ -50,35 +49,35 @@
             font-size: 16px;
         }
         .fields-info {
-            color: #71767A;
+            color: #71767a;
         }
         .fields-help-text {
-            color: #71767A;
+            color: #71767a;
             font-size: 12px;
         }
         .mandatory-indicator {
-            color: #D83933;
+            color: #d83933;
         }
     }
     .submit-btn {
         float: right;
         margin-right: 20px;
-        border: 2px solid #005EA2;
+        border: 2px solid #005ea2;
         border-radius: 4px;
     }
     .cancel-btn {
         float: right;
         margin-right: 20px;
         margin-bottom: 80px;
-        border: 2px solid #005EA2;
+        border: 2px solid #005ea2;
         background: #fff;
-        color: #005EA2;
+        color: #005ea2;
         border-radius: 4px;
     }
     .usa-button {
         &:disabled {
-            border: 2px solid #C9C9C9;;
-            background: #C9C9C9;
+            border: 2px solid #c9c9c9;
+            background: #c9c9c9;
         }
     }
     .error-text {
@@ -104,7 +103,7 @@
     .divider {
         margin-top: 40px;
         border-radius: 5px;
-        background: var(--base-lighter, #DCDEE0);
+        background: var(--base-lighter, #dcdee0);
         margin-bottom: 52px;
         height: 1px;
         margin-left: -10px;

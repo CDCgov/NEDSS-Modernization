@@ -8,7 +8,7 @@ import {
     PatientSummaryIdentification,
     PatientSummaryPhone
 } from 'generated/graphql/schema';
-import { Spinner } from '@cmsgov/design-system';
+import { Loading } from 'components/Spinner';
 import { internalizeDate } from 'date';
 import { Patient } from 'pages/patient/profile';
 import { displayAddress } from 'address/display/displayAddress';
@@ -83,7 +83,7 @@ export const PatientProfileSummary = ({ patient }: Props) => {
         <div className="common-card patient-summary">
             {!patient || !summary ? (
                 <div className="text-center margin-y-6">
-                    <Spinner className="sortable-table-spinner" />
+                    <Loading />
                 </div>
             ) : (
                 <>
