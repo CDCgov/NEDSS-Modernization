@@ -9,6 +9,7 @@ import { fireEvent, render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
 import { expect } from '@jest/globals';
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 
 describe('AdvancedSearch component tests', () => {
     it('should render filter to do advance search', () => {});
@@ -17,7 +18,9 @@ describe('AdvancedSearch component tests', () => {
             const { container } = render(
                 <MockedProvider>
                     <BrowserRouter>
-                        <AdvancedSearch />
+                        <SkipLinkProvider>
+                            <AdvancedSearch />
+                        </SkipLinkProvider>
                     </BrowserRouter>
                 </MockedProvider>
             );
