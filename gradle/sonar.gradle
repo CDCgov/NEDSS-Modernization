@@ -7,6 +7,7 @@ sonar {
         property "sonar.coverage.jacoco.xmlReportPaths", "$project.rootDir/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
     }
 }
+System.setProperty("sonar.gradle.skipCompile", "true")
 
 // See here for more info: https://docs.gradle.org/6.4-rc-1/samples/sample_jvm_multi_project_with_code_coverage.html
 //

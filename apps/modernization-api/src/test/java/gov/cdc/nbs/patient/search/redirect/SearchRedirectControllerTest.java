@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.springframework.web.servlet.view.RedirectView;
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.event.search.LabReportFilter;
-import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.patient.search.PatientFilter;
 import gov.cdc.nbs.redirect.search.EventFilterResolver;
 import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
 import gov.cdc.nbs.service.EncryptionService;

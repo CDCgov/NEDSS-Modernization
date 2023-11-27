@@ -15,15 +15,15 @@ A pull requests should correspond to a single Jira ticket, except in the case of
    - To verify backend tests, run `./gradlew test` from the root folder
 1. Verify all tests pass
 1. Verify the [Jacoco report](../build/reports/jacoco/codeCoverageReport/html/index.html) shows proper test coverage
+1. Verify all checks (CI/CD) have passed (Green checkmark) on a Draft PR, before marking it "ready for review"
 
-It is recommended to create all new pull requests as a `Draft` and perform a self review prior to notifying a reviewer. Once the self review is complete, verify the sonar scans have completed successfully. At this point the PR should be marked as `ready for review` and the appropriate reviewer notified.
+NOTE: It is recommended to create all new pull requests as a `Draft` and perform a self review prior to notifying a reviewer. Once the self review is complete, verify the sonar scans have completed successfully. At this point the PR should be marked as `ready for review` and the appropriate reviewer notified.
 
 ## Reviewing a Pull Request
 
 When a pull request is marked as `ready for review` and you are marked as a reviewer:
 
-1. Verify the sonar scans
-1. Verify the code coverage
+1. Verify all checks (CI/CD) have passed (Green checkmark)
 1. **Run the code** and validate that the Jira issue acceptance criteria has been met
 1. Look for optimizations
 

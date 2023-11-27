@@ -35,7 +35,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         labelInMessage: '',
         codeSystem: '',
         hl7DataType: ',',
-        HL7Segment: ',',
         requiredInMessage: false,
         dataMartColumnName: '',
         adminComments: '',
@@ -834,19 +833,17 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     <option>-Select-</option>
                     {buildOptions(groupOptions)}
                 </Dropdown>
-                <label>
+                <label htmlFor="hl7Segment">
                     HL7 Segment <span className="mandatory-indicator">*</span>
                 </label>
                 <br></br>
                 <Dropdown
-                    className="field-space"
-                    name="hl7DataType"
-                    id="hl7DataType"
-                    defaultValue={questionData.HL7Segment}
-                    disabled={!questionData.includedInMessage}
-                    onChange={handleQuestionInput}>
-                    <option>-Select-</option>
-                    {buildOptions(groupOptions)}
+                    className="hl7-segment"
+                    name="hl7Segment"
+                    id="hl7Segment"
+                    defaultValue={'OBX-3.0'}
+                    disabled={true}>
+                    <option className="obx-30">OBX-3.0</option>
                 </Dropdown>
                 <hr className="divider" />
                 <h4>Administrative</h4>

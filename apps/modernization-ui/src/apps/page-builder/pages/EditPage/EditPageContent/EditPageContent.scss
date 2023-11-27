@@ -1,0 +1,9 @@
+.edit-page-content {
+    width: 100%;
+    max-width: 960px;
+    &__sections {
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
+    }
+}

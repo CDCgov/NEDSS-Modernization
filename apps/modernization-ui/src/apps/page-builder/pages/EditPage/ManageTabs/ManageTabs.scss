@@ -1,0 +1,33 @@
+@use 'styles/colors';
+
+.manage-tabs {
+    .manage-tabs__tile {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        color: colors.$base-black;
+        padding: 1rem 1.5rem;
+    }
+    .manage-tabs__label {
+        display: flex;
+        gap: 1rem;
+    }
+    .manage-tabs__buttons {
+        color: colors.$primary;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
+        svg {
+            cursor: pointer;
+            &:hover {
+                color: colors.$primary-light;
+            }
+            &:nth-of-type(2) {
+                &:hover {
+                    color: colors.$error;
+                }
+            }
+        }
+    }
+}

@@ -157,7 +157,7 @@ export const PageFilterModal = () => {
                     <SelectControl
                         control={control}
                         name="selectedField"
-                        label="Selected Field"
+                        label="Select a field"
                         onChangeMethod={handleOnChange}
                         options={pageFieldList}
                     />
@@ -191,7 +191,7 @@ export const PageFilterModal = () => {
                             onChange={handleSelect}
                             name="condition"
                             placeholder=""
-                            label="Type a Value (multiple allowed)"
+                            label="Type a value (multiple allowed)"
                             options={getConditionOption(selectedField)}
                         />
                     )}

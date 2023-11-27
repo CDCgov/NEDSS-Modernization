@@ -1,14 +1,14 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
+    id 'distribution'
     alias libs.plugins.springBoot
-    alias libs.plugins.springDependencies
 }
+apply from: "${rootDir}/gradle/cucumber-logging.gradle"
 
 group = 'gov.cdc.nbs.page.builder'
 version = '0.0.1-SNAPSHOT'
 
-apply from: "${rootDir}/gradle/cucumber-logging.gradle"
 
 springBoot {
     buildInfo {
@@ -68,6 +68,8 @@ testing {
                 implementation project(':testing:auth')
                 implementation project(':testing:auth-cucumber')
                 implementation project(':testing:http-interaction')
+                implementation project(':testing:classic-interaction-cucumber')
+
             }
 
             targets {
@@ -94,6 +96,9 @@ dependencies {
     implementation project(':accumulation')
     implementation project(':audit')
     implementation project(':id-generator')
+    implementation(project(':libs:web'))
+    implementation(project(':libs:classic-interaction'))
+    implementation(project(':libs:redirect'))
 
     implementation libs.snake.yaml
     implementation libs.guava
@@ -111,8 +116,6 @@ dependencies {
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
 
-    // blazebit for querydsl paging
-    implementation libs.bundles.blaze.persistence.queryDSL
     implementation libs.bundles.jackson
 
     // database
@@ -124,10 +127,13 @@ dependencies {
 
 
     // csv
-    implementation "org.apache.commons:commons-csv:1.9.0"
+    implementation "org.apache.commons:commons-csv:1.10.0"
 
     // itext pdf generation
     implementation libs.itextpdf
+
+    implementation 'org.apache.poi:poi:5.2.4'
+    implementation 'org.apache.poi:poi-ooxml:5.2.4'
 
 }
 
@@ -145,5 +151,20 @@ tasks.withType(JavaExec).configureEach {
                 .map(Object::toString)
                 .map(Integer::parseInt)
                 .orElse(18095)
+    }
+}
+
+bootRun {
+    systemProperty('spring.profiles.active', 'default,development');
+}
+
+distributions {
+    main {
+        contents {
+            from jar
+            into ('lib') {
+                from(project.configurations.runtimeClasspath)
+            }
+        }
     }
 }

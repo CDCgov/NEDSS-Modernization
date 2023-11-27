@@ -11,9 +11,9 @@ import {
     PageControllerService,
     PageCreateResponse,
     Page_Condition_,
-    Page_Template_,
     ProgramArea,
     ProgramAreaControllerService,
+    Template,
     TemplateControllerService,
     ValueSetControllerService
 } from 'apps/page-builder/generated';
@@ -26,7 +26,7 @@ beforeEach(() => {
         Promise.resolve([{ conceptCode: 'concept' }] as Concept[]) as CancelablePromise<Concept[]>
     );
     jest.spyOn(TemplateControllerService, 'findAllTemplatesUsingGet').mockReturnValue(
-        Promise.resolve({ content: [{ id: 2 }] }) as CancelablePromise<Page_Template_>
+        Promise.resolve([{ id: 2 }]) as CancelablePromise<Template[]>
     );
     jest.spyOn(ConditionControllerService, 'searchConditionsUsingPost').mockReturnValue(
         Promise.resolve({}) as CancelablePromise<Page_Condition_>

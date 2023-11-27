@@ -1,9 +1,6 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
-
 plugins {
 
     alias libs.plugins.springBoot apply false
-    alias libs.plugins.springDependencies
 }
 
 group = 'gov.cdc'
@@ -20,12 +17,6 @@ testing {
                 implementation libs.spring.kafka.test
             }
         }
-    }
-}
-
-dependencyManagement {
-    imports {
-        mavenBom SpringBootPlugin.BOM_COORDINATES
     }
 }
 

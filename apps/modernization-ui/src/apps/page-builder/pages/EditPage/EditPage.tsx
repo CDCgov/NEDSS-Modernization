@@ -1,12 +1,12 @@
-import { EditPageHeader } from 'apps/page-builder/components/EditPageHeader/EditPageHeader';
-import { EditPageTabs } from 'apps/page-builder/components/EditPageTabs/EditPageTabs';
+import { EditPageHeader } from 'apps/page-builder/pages/EditPage/EditPageHeader/EditPageHeader';
+import { EditPageTabs } from 'apps/page-builder/pages/EditPage/EditPageTabs/EditPageTabs';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import { useParams } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState } from 'react';
 import './EditPage.scss';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
-import { EditPageContentComponent } from 'apps/page-builder/components/EditPageContent/EditPageContent';
-import { EditPageSidebar } from 'apps/page-builder/components/EditPageSidebar/EditPageSidebar';
+import { EditPageContentComponent } from 'apps/page-builder/pages/EditPage/EditPageContent/EditPageContent';
+import { EditPageSidebar } from 'apps/page-builder/pages/EditPage/EditPageSidebar/EditPageSidebar';
 import { fetchPageDetails, savePageAsDraft } from 'apps/page-builder/services/pagesAPI';
 import { UserContext } from 'user';
 import { PagesResponse } from 'apps/page-builder/generated';
@@ -56,7 +56,7 @@ export const EditPage = () => {
 
     return (
         <PageBuilder>
-            {page ? (
+            {page && page.id ? (
                 <DragDropProvider data={page.tabs?.[active]} pageDropId={page.id!} tabId={page.tabs![active].id!}>
                     <div className="edit-page">
                         <PagesBreadcrumb currentPage={page.name} />

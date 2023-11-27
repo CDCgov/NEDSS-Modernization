@@ -9,8 +9,6 @@ public class PageConstants {
 	public static final String SAVE_DRAFT_NOCHANGE = "Page already has draft.";
 	public static final String SAVE_DRAFT_FAIL = " Failed to update to draft status: ";
 	public static final String DELETE_DRAFT_FAIL = " Failed to delete page draft. ";
-	public static final String PAGE_NOT_FOUND = " Could not find page with given id.";
-	public static final String DRAFT_NOT_FOUND = " Page does not have draft.";
 	public static final String DRAFT_DELETE_SUCCESS = "page draft has been successfully deleted.";
 	public static final String PUBLISHED_WITH_DRAFT = "Published With Draft";
 	public static final String DRAFT = "Draft";
@@ -39,8 +37,6 @@ public class PageConstants {
 	
 	
 	// General
-	public static final String NOT_EXISTS= "Could not find template with given Id";
-	public static final String PAGE_NOT_EXISTS= "Could not find page with given Id: ";
 	public static final String BAD_REQUEST= "Could not process request. ";
 	
 

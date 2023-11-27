@@ -23,6 +23,8 @@ spring:
             - Path=/favicon.ico
 nbs:
   gateway:
+    log:
+      level: INFO
     defaults:
       protocol: 'http'
     classic: '${nbs.gateway.defaults.protocol}://localhost:7001'
@@ -36,3 +38,7 @@ nbs:
     pagebuilder:
       enabled: false
       service: 'localhost:8080'
+
+logging:
+  level:
+    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level}

@@ -36,7 +36,7 @@ export class ValueSetControllerService {
     }): CancelablePromise<Page_ValueSet_> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/valueset/',
+            url: '/nbs/page-builder/api/v1/valueset',
             headers: {
                 'Authorization': authorization,
             },
@@ -71,7 +71,7 @@ export class ValueSetControllerService {
     }): CancelablePromise<CreateValueSetResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/valueset/',
+            url: '/nbs/page-builder/api/v1/valueset',
             headers: {
                 'Authorization': authorization,
             },
