@@ -6,9 +6,11 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -58,13 +60,15 @@ public class ClassicPagePreviewSteps {
   @Then("the NBS Classic page preview is loaded")
   public void the_nbs_classic_page_preview_is_loaded() throws Exception {
     server.verify();
-    String location = response.active()
+    MockHttpServletResponse servletResponse = response.active()
         .andExpect(status().is3xxRedirection())
         .andReturn()
-        .getResponse()
-        .getHeader("Location");
+        .getResponse();
+    String location = servletResponse.getHeader("Location");
     String expectedUrl = "/nbs/PreviewPage.do?from=L&method=viewPageLoad&waTemplateUid=" + page.active().id();
     assertEquals(expectedUrl, location);
+    Cookie returnPageCookie = servletResponse.getCookie("Return-Page");
+    assertEquals(String.valueOf(page.active().id()), returnPageCookie.getValue());
   }
 
 }

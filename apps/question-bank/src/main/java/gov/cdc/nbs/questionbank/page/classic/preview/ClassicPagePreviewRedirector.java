@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page.classic.preview;
 
-import java.net.URI;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,15 +30,15 @@ public class ClassicPagePreviewRedirector {
     ReturningPageCookie pageCookie = new ReturningPageCookie(String.valueOf(page));
     preparer.prepare();
 
-    URI location = UriComponentsBuilder.fromPath(PREVIEW)
+    String location = UriComponentsBuilder.fromPath(PREVIEW)
         .queryParam("from", "L")
         .queryParam("method", "viewPageLoad")
         .queryParam("waTemplateUid", page)
         .build()
-        .toUri();
+        .toUriString();
 
     return ResponseEntity.status(HttpStatus.FOUND)
-        .header(HttpHeaders.LOCATION, location.toString())
+        .header(HttpHeaders.LOCATION, location)
         .headers(pageCookie.apply())
         .build();
   }

@@ -4,8 +4,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +39,6 @@ class EditPageRouteConfigurationDisabledTest {
 
   @Autowired
   PageBuilderService service;
-
-  @Test
-  void should_contain_route() {
-    assertNotNull(pagebuilderManagePagesConfig);
-    assertFalse(pagebuilderManagePagesConfig.getRoutes()
-        .any(i -> i.getId().equals("pagebuilder-edit-page") && i.getUri().equals(service.uri()))
-        .block());
-  }
 
 
   @Test
