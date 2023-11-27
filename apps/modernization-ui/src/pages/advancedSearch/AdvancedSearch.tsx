@@ -36,6 +36,7 @@ import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { EventSearch } from './components/eventSearch/EventSearch';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
+import { useSkipLink } from 'SkipLink/SkipLinkContext';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -74,6 +75,11 @@ export const AdvancedSearch = () => {
     const [resultStartCount, setResultStartCount] = useState<number>(0);
     const [resultEndCount, setResultEndCount] = useState<number>(0);
     const [resultTotal, setResultTotal] = useState<number>(0);
+    const { skipTo } = useSkipLink();
+
+    useEffect(() => {
+        skipTo('perform-search');
+    }, []);
 
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
     const [
@@ -504,7 +510,9 @@ export const AdvancedSearch = () => {
                                     />
                                 </div>
                             ) : (
-                                <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
+                                <p id="perform-search" className="margin-0 font-sans-md margin-top-05 text-normal">
+                                    Perform a search
+                                </p>
                             )}
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className="button-group">
