@@ -83,7 +83,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
     const asTableRow = (condition: Condition): TableBody => ({
         id: condition.id,
         expanded: false,
-        selectable: condition.investigationFormCd == undefined,
+        selectable: true,
         tableDetails: [
             {
                 id: 1,
