@@ -19,29 +19,29 @@ public class PageHistoryFinder {
             .withZone(ZoneId.of("UTC"));
 
     private static final String QUERY = """
-        SELECT
-        hist.publish_version_nbr AS publishVersionNbr,
-        hist.last_chg_time AS lastUpdatedDate,
-        userProfile.first_nm || ' ' || userProfile.last_nm AS lastUpdatedBy,
-        hist.version_note AS notes
-      FROM
-        WA_template_hist hist
-        LEFT OUTER JOIN user_profile userProfile ON hist.last_chg_user_id = userProfile.nedss_entry_id
-      WHERE
-        hist.wa_template_uid = ?
-      UNION
-      SELECT
-        tem.publish_version_nbr AS publishVersionNbr,
-        tem.last_chg_time AS lastUpdatedDate,
-        userProfile.first_nm || ' ' || userProfile.last_nm AS lastUpdatedBy,
-        tem.version_note AS notes
-      FROM
-        WA_template tem
-        LEFT OUTER JOIN user_profile userProfile ON tem.last_chg_user_id = userProfile.nedss_entry_id
-      WHERE
-        tem.wa_template_uid = ?
-        AND tem.template_type IN('Published With Draft', 'Published');
-          """;
+            SELECT
+                      hist.publish_version_nbr AS publishVersionNbr,
+                      hist.last_chg_time AS lastUpdatedDate,
+                      CONCAT(userProfile.first_nm, ' ', userProfile.last_nm) AS lastUpdatedBy,
+                      hist.version_note AS notes
+                    FROM
+                      WA_template_hist hist
+                      LEFT OUTER JOIN user_profile userProfile ON hist.last_chg_user_id = userProfile.nedss_entry_id
+                    WHERE
+                      hist.wa_template_uid = ?
+                    UNION
+                    SELECT
+                      tem.publish_version_nbr AS publishVersionNbr,
+                      tem.last_chg_time AS lastUpdatedDate,
+                      CONCAT(userProfile.first_nm, ' ', userProfile.last_nm) AS lastUpdatedBy,
+                      tem.version_note AS notes
+                    FROM
+                      WA_template tem
+                      LEFT OUTER JOIN user_profile userProfile ON tem.last_chg_user_id = userProfile.nedss_entry_id
+                    WHERE
+                      tem.wa_template_uid = ?
+                      AND tem.template_type IN('Published With Draft', 'Published');
+                        """;
 
     public List<PageHistory> getPageHistory(Long pageId) {
         return jdbcTemplate.query(QUERY, setter -> {
