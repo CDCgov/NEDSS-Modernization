@@ -21,4 +21,4 @@ logging:
               WIRE: TRACE
     nbs:
       classic:
-        outgoing: DEBUG   # Logs any RestTemplate interactions with NBC Classic
+        outgoing: INFO   # Logs any RestTemplate interactions with NBC Classic

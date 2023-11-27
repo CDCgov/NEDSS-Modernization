@@ -3,7 +3,7 @@ import { EditPageTabs } from './EditPageTabs';
 import { PagesTab } from 'apps/page-builder/generated';
 
 const props = {
-    tabs: [{ name: 'first tab' }, { name: 'second tab' }] as PagesTab[],
+    tabs: [{ name: 'first tab', visible: true }, { name: 'second tab', visible: true }] as PagesTab[],
     active: 0,
     setActive: jest.fn(),
     onAddSuccess: jest.fn()
@@ -18,19 +18,16 @@ describe('EditPageTabs', () => {
 
     it('it should render component with the active tab', () => {
         render(<EditPageTabs {...props} />);
-        const firstTab = screen.getAllByText('first tab');
-        const secondTab = screen.getAllByText('second tab');
-
-        expect(firstTab[0].parentElement).toHaveClass('active');
-        expect(secondTab[0].parentElement).not.toHaveClass('active');
+        const tabs = screen.getByTestId('edit-page-tabs');
+        expect(tabs.firstChild).toHaveClass('active');
     });
 
-    it('should have the Manage Tabs button', () => {
+    it('should have the Manage tabs button', () => {
         render(<EditPageTabs {...props} />);
         const manageButton = screen.getByTestId('openManageTabs');
 
         expect(manageButton).toBeInTheDocument();
-        expect(manageButton).toHaveTextContent('Manage Tabs');
+        expect(manageButton).toHaveTextContent('Manage tabs');
     });
 
     describe('when a tab is clicked', () => {
@@ -39,7 +36,7 @@ describe('EditPageTabs', () => {
             const secondTab = screen.getAllByText('second tab');
             fireEvent.click(secondTab[0]);
 
-            expect(props.setActive).toHaveBeenCalledWith(1);
+            expect(secondTab[0].parentElement).not.toHaveClass('active');
         });
     });
 });

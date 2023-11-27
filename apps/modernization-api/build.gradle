@@ -1,6 +1,7 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
+    id 'distribution'
     alias libs.plugins.springBoot
 }
 apply from: "${rootDir}/gradle/cucumber-logging.gradle"
@@ -150,4 +151,15 @@ processResources {
 
 bootRun {
     systemProperty('spring.profiles.active', 'default,development');
+}
+
+distributions {
+    main {
+        contents {
+            from jar
+            into ('lib') {
+                from(project.configurations.runtimeClasspath)
+            }
+        }
+    }
 }
