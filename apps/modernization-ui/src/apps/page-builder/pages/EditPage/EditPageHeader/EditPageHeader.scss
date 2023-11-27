@@ -1,4 +1,4 @@
-@use 'styles/colors.scss';
+@use 'styles/colors';
 
 .edit-page-header {
     display: flex;
@@ -11,7 +11,7 @@
         }
         p {
             font-weight: 400;
-            color: colors.$color-base-darkest;
+            color: colors.$base-darkest;
             line-height: 1.62rem;
         }
     }

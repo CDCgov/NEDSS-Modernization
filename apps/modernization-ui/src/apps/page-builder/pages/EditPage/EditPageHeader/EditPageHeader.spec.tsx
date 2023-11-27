@@ -36,4 +36,13 @@ describe('when EditPageHeader renders', () => {
 
         expect(getByText('Test Page description')).toBeInTheDocument();
     });
+
+    it('should display link to classic preview', () => {
+        const { container } = render(<EditPageHeader page={page} handleSaveDraft={mockFunction} />);
+
+        const anchor = container.getElementsByTagName('a')[0];
+        expect(anchor.href).toBe('http://localhost/nbs/page-builder/api/v1/pages/123456/preview');
+        expect(anchor.target).toBe('_blank');
+        expect(anchor.rel).toBe('noreferrer');
+    });
 });

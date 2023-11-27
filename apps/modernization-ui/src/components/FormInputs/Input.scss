@@ -1,7 +1,7 @@
-@import '../../settings.scss';
+@use 'styles/colors';
 
 .input--error {
-    border-left: 2px solid $color-secondary-dark;
+    border-left: 2px solid colors.$secondary-dark;
     padding-left: 1rem;
 }
 input.usa-input--error:focus {
@@ -12,7 +12,7 @@ input.usa-input--error:focus {
         display: none;
     }
     .masked-input {
-        background-color: white;
+        background-color: colors.$base-white;
         cursor: text;
     }
 }

@@ -1,8 +1,9 @@
-@import 'settings';
+@use 'styles/borders' as borders;
+@use 'styles/colors';
 
 .edit-page-sidebar {
-    background-color: $color-white;
-    border: $border-medium;
+    background-color: colors.$base-white;
+    @extend %thin;
     border-radius: 0.45rem;
     position: absolute;
     top: 1.2rem;
