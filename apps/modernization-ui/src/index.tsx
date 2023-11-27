@@ -5,7 +5,7 @@ import ApolloWrapper from './providers/ApolloContext';
 import { UserContextProvider } from './providers/UserContext';
 import reportWebVitals from './reportWebVitals';
 import { AppRoutes } from './routes/AppRoutes';
-import './settings.scss';
+import 'styles/global.scss';
 import NavBar from './shared/header/NavBar';
 import { AlertProvider } from 'alert';
 

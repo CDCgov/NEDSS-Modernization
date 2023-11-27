@@ -1,14 +1,14 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
+    id 'distribution'
     alias libs.plugins.springBoot
-    alias libs.plugins.springDependencies
 }
+apply from: "${rootDir}/gradle/cucumber-logging.gradle"
 
 group = 'gov.cdc.nbs.page.builder'
 version = '0.0.1-SNAPSHOT'
 
-apply from: "${rootDir}/gradle/cucumber-logging.gradle"
 
 springBoot {
     buildInfo {
@@ -116,8 +116,6 @@ dependencies {
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
 
-    // blazebit for querydsl paging
-    implementation libs.bundles.blaze.persistence.queryDSL
     implementation libs.bundles.jackson
 
     // database
@@ -129,13 +127,13 @@ dependencies {
 
 
     // csv
-    implementation "org.apache.commons:commons-csv:1.9.0"
+    implementation "org.apache.commons:commons-csv:1.10.0"
 
     // itext pdf generation
     implementation libs.itextpdf
 
-    implementation 'org.apache.poi:poi:4.1.2'
-    implementation 'org.apache.poi:poi-ooxml:4.1.2'
+    implementation 'org.apache.poi:poi:5.2.4'
+    implementation 'org.apache.poi:poi-ooxml:5.2.4'
 
 }
 
@@ -157,6 +155,16 @@ tasks.withType(JavaExec).configureEach {
 }
 
 bootRun {
-
     systemProperty('spring.profiles.active', 'default,development');
+}
+
+distributions {
+    main {
+        contents {
+            from jar
+            into ('lib') {
+                from(project.configurations.runtimeClasspath)
+            }
+        }
+    }
 }

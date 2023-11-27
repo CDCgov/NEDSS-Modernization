@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.question;
 
+import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -40,15 +41,19 @@ public class QuestionController {
     private final QuestionUpdater updater;
     private final QuestionFinder finder;
 
+    private final QuestionManagementUtil questionManagementUtil;
+
     public QuestionController(
             QuestionCreator creator,
             UserDetailsProvider userDetailsProvider,
             QuestionUpdater updater,
-            QuestionFinder finder) {
+            QuestionFinder finder,
+            QuestionManagementUtil questionManagementUtil) {
         this.creator = creator;
         this.userDetailsProvider = userDetailsProvider;
         this.updater = updater;
         this.finder = finder;
+        this.questionManagementUtil = questionManagementUtil;
     }
 
     @GetMapping
@@ -121,6 +126,11 @@ public class QuestionController {
         Question question = updater.setStatus(userId, id, request.active());
         log.debug("Successfully updated question status");
         return question;
+    }
+
+    @GetMapping("/displayControlOptions")
+    public DisplayControlOptions getDisplayControlOptions() {
+        return questionManagementUtil.getDisplayControlOptions();
     }
 
 }

@@ -1,21 +1,25 @@
-@import 'settings.scss';
+@use 'styles/borders' as borders;
+@use 'styles/colors';
 
 .subsection {
     border-radius: 0.25rem;
-    border: $border-medium;
+    @extend %thin;
+
     .subsection__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: $color-accent-cool-lighter;
+        background-color: colors.$primary-lighter;
         padding: 0 1.6rem;
-        border-bottom: $border-medium;
-        &--left, &--right {
+        @extend %thin-bottom;
+
+        &--left,
+        &--right {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             svg {
-                color: $color-primary;
+                color: colors.$primary;
                 cursor: pointer;
                 gap: 0.8rem;
             }

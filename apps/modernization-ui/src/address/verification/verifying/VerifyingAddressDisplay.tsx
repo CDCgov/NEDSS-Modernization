@@ -1,8 +1,8 @@
-import { Spinner } from '@cmsgov/design-system';
+import { Loading } from 'components/Spinner';
 
 const VerifyingAddressDisplay = () => (
     <div>
-        <Spinner className="sortable-table-spinner" />
+        <Loading />
     </div>
 );
 

@@ -2,8 +2,8 @@ import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
-import { Spinner } from '@cmsgov/design-system';
 import { NoData } from 'components/NoData';
+import { Loading } from 'components/Spinner';
 import { SortHandler, Sorting, useTableSorting } from './useTableSorting';
 import { TableHeader } from './TableHeader';
 import classNames from 'classnames';
@@ -158,7 +158,7 @@ export const TableComponent = ({
             <Table bordered={false} fullWidth>
                 <TableHeaders sorting={sorting} columns={columns} />
                 <tbody>
-                    {isLoading ? <Loading columns={columns.length} /> : renderRows(sorting, tableBody, selectable)}
+                    {isLoading ? <LoadingRow columns={columns.length} /> : renderRows(sorting, tableBody, selectable)}
                 </tbody>
             </Table>
             <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">
@@ -222,10 +222,10 @@ const SelectionHeader = () => (
 type LoadingProps = {
     columns: number;
 };
-const Loading = ({ columns }: LoadingProps) => (
+const LoadingRow = ({ columns }: LoadingProps) => (
     <tr className="text-center not-available">
         <td colSpan={columns}>
-            <Spinner className="sortable-table-spinner" />
+            <Loading />
         </td>
     </tr>
 );
