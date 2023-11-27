@@ -475,6 +475,7 @@ export const AdvancedSearch = () => {
                                     onSearch={handleSubmit}
                                     investigationFilter={investigationFilter}
                                     labReportFilter={labReportFilter}
+                                    clearAll={handleClearAll}
                                 />
                             )}
                         </div>

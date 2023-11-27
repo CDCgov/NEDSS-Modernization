@@ -10,6 +10,6 @@ describe('when given an address', () => {
             zipcode: '10013'
         };
 
-        const actual = expect(displayAddress(address)).toBe('14 North Moore St, Suite A\nNew York, NY, 10013');
+        const actual = expect(displayAddress(address)).toBe('14 North Moore St, Suite A\nNew York, NY 10013');
     });
 });
