@@ -30,7 +30,7 @@ export const EditableCard = ({ title, data, children, editing = false, onEdit, r
             <div className="padding-2">
                 {!editing &&
                     data?.map((item, index) => (
-                        <Grid row key={index} className="padding-x-2 padding-y-3 border-bottom wall-design">
+                        <Grid row key={index} className="padding-x-2 padding-y-3 border-bottom border-base-lighter wall-design">
                             <Grid className="text-bold" col={6}>
                                 {item.title}
                             </Grid>
