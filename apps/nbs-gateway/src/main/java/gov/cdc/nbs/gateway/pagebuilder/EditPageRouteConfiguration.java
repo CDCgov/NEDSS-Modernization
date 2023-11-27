@@ -8,27 +8,26 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpHeaders;
 
 @Configuration
 @ConditionalOnProperty(prefix = "nbs.gateway.pagebuilder", name = "enabled", havingValue = "true")
-public class ManagePagesRouteConfiguration {
+public class EditPageRouteConfiguration {
+
   @Bean
-  RouteLocator pagebuilderManagePagesConfig(
+  RouteLocator pagebuilderEditPageConfig(
       final RouteLocatorBuilder builder,
       @Qualifier("default") final GatewayFilter globalFilter,
       final PageBuilderService service) {
     return builder.routes()
         .route(
-            "pagebuilder-manage-pages",
+            "pagebuilder-edit-page",
             route -> route
                 .order(Ordered.HIGHEST_PRECEDENCE)
                 .path("/nbs/ManagePage.do")
                 .and()
-                .query("method", "list")
+                .query("method", "editPageContentsLoad")
                 .filters(
-                    filter -> filter.setPath("/nbs/page-builder/redirect")
-                        .setRequestHeader(HttpHeaders.LOCATION, "/page-builder/manage/pages")
+                    filter -> filter.setPath("/nbs/page-builder/api/v1/pages/return")
                         .filter(globalFilter))
                 .uri(service.uri()))
         .build();

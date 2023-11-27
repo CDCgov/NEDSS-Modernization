@@ -1,11 +1,11 @@
-package gov.cdc.nbs.questionbank.page.template;
+package gov.cdc.nbs.questionbank.page.classic;
 
 import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePageRequester;
 import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicPreviewPageRequester;
 import org.springframework.stereotype.Component;
 
 @Component
-class ClassicCreateTemplatePreparer {
+public class ClassicCreateTemplatePreparer {
 
   private final ClassicManagePageRequester managePagePreparer;
   private final ClassicPreviewPageRequester previewPagePreparer;
@@ -14,14 +14,13 @@ class ClassicCreateTemplatePreparer {
   ClassicCreateTemplatePreparer(
       final ClassicManagePageRequester managePagePreparer,
       final ClassicPreviewPageRequester previewPagePreparer,
-      final ClassicSaveAsTemplateLoadRequester templateLoadPreparer
-  ) {
+      final ClassicSaveAsTemplateLoadRequester templateLoadPreparer) {
     this.managePagePreparer = managePagePreparer;
     this.previewPagePreparer = previewPagePreparer;
     this.templateLoadPreparer = templateLoadPreparer;
   }
 
-  void prepare(final long page) {
+  public void prepare(final long page) {
     //  simulates navigating to Manage Pages
     this.managePagePreparer.request();
     //  simulates previewing a page for edit

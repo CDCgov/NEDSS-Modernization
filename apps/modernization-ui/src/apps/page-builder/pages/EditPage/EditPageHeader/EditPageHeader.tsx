@@ -39,14 +39,17 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                         Save draft
                     </Button>
                 )}
+                <LinkButton
+                    href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}
+                    label="open a preview of the current page">
+                    <Icon.Visibility size={3} />
+                </LinkButton>
                 <Button type="button" outline>
                     {isSaveTemplate ? 'Edit' : 'Cancel'}
                 </Button>
                 <LinkButton
                     href={`/nbs/page-builder/api/v1/pages/${page.id}/print`}
-                    label="open simplified page view for printing"
-                    target="_blank"
-                    rel="noreferrer">
+                    label="open simplified page view for printing">
                     <Icon.Print size={3} />
                 </LinkButton>
                 <Button type="button" onClick={() => setIsSaveTemplate(!isSaveTemplate)}>

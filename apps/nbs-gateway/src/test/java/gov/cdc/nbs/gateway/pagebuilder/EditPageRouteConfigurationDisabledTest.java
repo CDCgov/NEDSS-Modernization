@@ -19,7 +19,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
         "nbs.gateway.pagebuilder.service=localhost:10002",
         "nbs.gateway.pagebuilder.enabled=false"
     })
-class ManagePagesRouteConfigurationDisabledTest {
+class EditPageRouteConfigurationDisabledTest {
 
   @RegisterExtension
   static WireMockExtension classic = WireMockExtension.newInstance()
@@ -27,7 +27,7 @@ class ManagePagesRouteConfigurationDisabledTest {
       .build();
 
   @RegisterExtension
-  static WireMockExtension pagebuilderApi = WireMockExtension.newInstance()
+  static WireMockExtension pagebuilder = WireMockExtension.newInstance()
       .options(wireMockConfig().port(10002))
       .build();
 
@@ -40,15 +40,16 @@ class ManagePagesRouteConfigurationDisabledTest {
   @Autowired
   PageBuilderService service;
 
+
   @Test
   void should_not_route_to_modernized() {
-    pagebuilderApi.stubFor(get(urlPathMatching("/nbs/redirect/pagebuilder/manage/pages")).willReturn(ok()));
+    pagebuilder.stubFor(get(urlPathMatching("/nbs/page-builder/api/v1/pages/return")).willReturn(ok()));
 
     webClient
         .get().uri(
             builder -> builder
                 .path("/nbs/ManagePage.do")
-                .queryParam("method", "list")
+                .queryParam("method", "editPageContentsLoad")
                 .build())
         .exchange()
         .expectStatus()

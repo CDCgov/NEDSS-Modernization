@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page.template;
+package gov.cdc.nbs.questionbank.page.classic;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.RequestEntity;
@@ -14,8 +14,7 @@ class ClassicSaveAsTemplateLoadRequester {
   private final RestTemplate template;
 
   ClassicSaveAsTemplateLoadRequester(
-      @Qualifier("classic") final RestTemplate template
-  ) {
+      @Qualifier("classic") final RestTemplate template) {
     this.template = template;
   }
 
