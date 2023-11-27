@@ -12,8 +12,8 @@
     }
 }
 
-td {
-    font-size: 16px !important;
+td, th {
+    font-size: 14px !important;
 }
 
 .show-length-text {
@@ -83,8 +83,4 @@ td.selection {
 table.usa-table thead tr {
     border-bottom-width: 2px;
     border-bottom-style: solid;
-}
-
-table.usa-table .head-name {
-    font-size: 14px;
 }
