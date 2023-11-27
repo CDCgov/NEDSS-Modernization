@@ -1,6 +1,8 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .modal {
+    $modal-border-color: colors.$border;
+
     padding: 0;
 
     .modal-content {
@@ -9,9 +11,9 @@
 
         .warning {
             border-left-width: 8px;
-            border-left-color: $color-warning;
+            border-left-color: colors.$warning;
             border-left-style: solid;
-            color: $color-warning;
+            color: colors.$warning;
         }
     }
 
@@ -32,7 +34,7 @@
     .modal-actions {
         margin-top: 1.5rem;
         padding: 1rem;
-        border-top-color: $color-gray-7;
+        border-top-color: $modal-border-color;
         border-top-style: solid;
         border-top-width: 1px;
     }
