@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from 'react';
-import './SkipLink.scss';
 
 interface SkipLinkContextType {
     skipTo: (id: string) => void;
@@ -23,20 +22,31 @@ interface SkipLinkProviderProps {
 
 export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {
     const [id, skipTo] = useState<string | undefined>(undefined);
+    const [showSkipLink, setShowSkipLink] = useState(false);
+    const [skipLink, setSkipLink] = useState(true);
 
     // Setting up the id to pass it to the anchor tag
     const contextValue: SkipLinkContextType = {
         skipTo
     };
 
+    const handleKeyDown = (e: { key: string }) => {
+        if (e.key === 'Tab' && !showSkipLink && skipLink) {
+            setShowSkipLink(true);
+            setSkipLink(true);
+        }
+    };
+
     return (
         <SkipLinkContext.Provider value={contextValue}>
-            {id && (
-                <a href={'#' + id} className="hidden-link">
-                    Skip to main content
-                </a>
-            )}
-            {children}
+            <div onKeyDown={handleKeyDown} tabIndex={0}>
+                {id && showSkipLink && skipLink && (
+                    <a href={`#${id}`} onClick={() => setSkipLink(false)}>
+                        Skip to main content
+                    </a>
+                )}
+                {children}
+            </div>
         </SkipLinkContext.Provider>
     );
 };
