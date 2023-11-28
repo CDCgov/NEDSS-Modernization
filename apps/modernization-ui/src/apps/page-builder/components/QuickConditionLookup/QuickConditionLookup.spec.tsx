@@ -56,11 +56,16 @@ afterEach(() => {
 describe('QuickConditionLookup', () => {
     it('should render successfully', async () => {
         const modal = { current: null };
+        const createConditionModal = { current: null };
 
         const { baseElement } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                    <QuickConditionLookup
+                        modal={modal}
+                        addConditions={addConditions}
+                        createConditionModal={createConditionModal}
+                    />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -72,10 +77,16 @@ describe('QuickConditionLookup', () => {
 
     it('should fetch  the conditions when mounted', async () => {
         const modal = { current: null };
+        const createConditionModal = { current: null };
+
         const { container } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                    <QuickConditionLookup
+                        modal={modal}
+                        addConditions={addConditions}
+                        createConditionModal={createConditionModal}
+                    />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -87,10 +98,16 @@ describe('QuickConditionLookup', () => {
 
     it('has the correct title', async () => {
         const modal = { current: null };
+        const createConditionModal = { current: null };
+
         const { getByText } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                    <QuickConditionLookup
+                        modal={modal}
+                        addConditions={addConditions}
+                        createConditionModal={createConditionModal}
+                    />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -104,10 +121,16 @@ describe('QuickConditionLookup', () => {
 
     it('has a search bar', async () => {
         const modal = { current: null };
+        const createConditionModal = { current: null };
+
         const { container } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                    <QuickConditionLookup
+                        modal={modal}
+                        addConditions={addConditions}
+                        createConditionModal={createConditionModal}
+                    />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -121,10 +144,16 @@ describe('QuickConditionLookup', () => {
 
     it('has a search button', async () => {
         const modal = { current: null };
+        const createConditionModal = { current: null };
+
         const { container } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                    <QuickConditionLookup
+                        modal={modal}
+                        addConditions={addConditions}
+                        createConditionModal={createConditionModal}
+                    />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -138,10 +167,16 @@ describe('QuickConditionLookup', () => {
 
     it('should display the correct table headers', async () => {
         const modal = { current: null };
+        const createConditionModal = { current: null };
+
         const { container } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                    <QuickConditionLookup
+                        modal={modal}
+                        addConditions={addConditions}
+                        createConditionModal={createConditionModal}
+                    />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -165,10 +200,16 @@ describe('QuickConditionLookup', () => {
 
     it('should display the correct table data', async () => {
         const modal = { current: null };
+        const createConditionModal = { current: null };
+
         const {} = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                    <QuickConditionLookup
+                        modal={modal}
+                        addConditions={addConditions}
+                        createConditionModal={createConditionModal}
+                    />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -190,10 +231,16 @@ describe('QuickConditionLookup', () => {
 
     it('should have a cancel button', async () => {
         const modal = { current: null };
+        const createConditionModal = { current: null };
+
         const { getByTestId } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                    <QuickConditionLookup
+                        modal={modal}
+                        addConditions={addConditions}
+                        createConditionModal={createConditionModal}
+                    />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -207,10 +254,16 @@ describe('QuickConditionLookup', () => {
 
     it('should have an add condition button', async () => {
         const modal = { current: null };
+        const createConditionModal = { current: null };
+
         const { getByTestId } = render(
             <BrowserRouter>
                 <PagesContext.Provider value={pageContext}>
-                    <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                    <QuickConditionLookup
+                        modal={modal}
+                        addConditions={addConditions}
+                        createConditionModal={createConditionModal}
+                    />
                 </PagesContext.Provider>
             </BrowserRouter>
         );
@@ -225,10 +278,16 @@ describe('QuickConditionLookup', () => {
     describe('when the cancel button is clicked', () => {
         it('should close the modal', async () => {
             const modal: React.RefObject<ModalRef> = { current: null };
+            const createConditionModal = { current: null };
+
             const { getByTestId } = render(
                 <BrowserRouter>
                     <PagesContext.Provider value={pageContext}>
-                        <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                        <QuickConditionLookup
+                            modal={modal}
+                            addConditions={addConditions}
+                            createConditionModal={createConditionModal}
+                        />
                     </PagesContext.Provider>
                 </BrowserRouter>
             );
@@ -247,10 +306,16 @@ describe('QuickConditionLookup', () => {
     describe('when the search button is clicked', () => {
         it('should search for the condition', async () => {
             const modal = { current: null };
+            const createConditionModal = { current: null };
+
             const { getByTestId } = render(
                 <BrowserRouter>
                     <PagesContext.Provider value={pageContext}>
-                        <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                        <QuickConditionLookup
+                            modal={modal}
+                            addConditions={addConditions}
+                            createConditionModal={createConditionModal}
+                        />
                     </PagesContext.Provider>
                 </BrowserRouter>
             );
@@ -267,10 +332,16 @@ describe('QuickConditionLookup', () => {
 
         it('should call the searchConditionUsingPost with the correct parameters', async () => {
             const modal = { current: null };
+            const createConditionModal = { current: null };
+
             const { container, getByTestId } = render(
                 <BrowserRouter>
                     <PagesContext.Provider value={pageContext}>
-                        <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                        <QuickConditionLookup
+                            modal={modal}
+                            addConditions={addConditions}
+                            createConditionModal={createConditionModal}
+                        />
                     </PagesContext.Provider>
                 </BrowserRouter>
             );
@@ -304,10 +375,16 @@ describe('QuickConditionLookup', () => {
     describe('when the add button is clicked', () => {
         it('should add the selected conditions', async () => {
             const modal = { current: null };
+            const createConditionModal = { current: null };
+
             const { getByTestId } = render(
                 <BrowserRouter>
                     <PagesContext.Provider value={pageContext}>
-                        <QuickConditionLookup modal={modal} addConditions={addConditions} />
+                        <QuickConditionLookup
+                            modal={modal}
+                            addConditions={addConditions}
+                            createConditionModal={createConditionModal}
+                        />
                     </PagesContext.Provider>
                 </BrowserRouter>
             );
