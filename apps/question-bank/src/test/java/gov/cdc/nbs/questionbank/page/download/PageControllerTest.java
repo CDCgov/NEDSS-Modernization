@@ -8,14 +8,21 @@ import gov.cdc.nbs.questionbank.page.PageStateChanger;
 import gov.cdc.nbs.questionbank.page.model.PageHistory;
 import gov.cdc.nbs.questionbank.page.service.PageHistoryFinder;
 import org.junit.jupiter.api.BeforeEach;
+import gov.cdc.nbs.questionbank.page.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import java.util.Arrays;
 import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -31,6 +38,10 @@ class PageControllerTest {
     private PageDownloader pageDownloader;
     @Mock
     private UserDetailsProvider userDetailsProvider;
+    @Mock
+    private PageDeletor pageDeletor;
+    @Mock
+    private PageMetaDataDownloader pageMetaDataDownloader;
 
     @Mock
     private PageHistoryFinder pageHistoryFinder;
@@ -39,7 +50,7 @@ class PageControllerTest {
 
     @BeforeEach
     void setUp() {
-        pageController = new PageController(creator, stateChange, pageDownloader, userDetailsProvider, pageHistoryFinder);
+        pageController = new PageController(creator, stateChange, pageDownloader, userDetailsProvider, pageDeletor,pageMetaDataDownloader,pageHistoryFinder);
     }
 
     @Test
@@ -70,5 +81,25 @@ class PageControllerTest {
         assertTrue(exception.getMessage().contains("Error Fetching Page-History by Template_nm From the Database"));
     }
 
+    void downloadPageMetadataTest() throws IOException {
+        Long waTemplateUid = 1L;
+        when(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid))
+                .thenReturn(new ByteArrayInputStream("test,csv,data".getBytes()));
+        ResponseEntity<Resource> response = pageController.downloadPageMetadata(waTemplateUid);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("attachment; filename=PageMetadata.xlsx", response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION));
+        assertEquals(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), response.getHeaders().getContentType());
+    }
 
+    @Test
+    void downloadPageMetadataExceptionTest() throws IOException {
+        Long waTemplateUid = 1L;
+        when(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid))
+                .thenReturn(new ByteArrayInputStream("test,csv,data".getBytes()));
+        when(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid))
+                .thenThrow(new IOException("Error Downloading Page History"));
+        var exception = assertThrows(IOException.class, () -> pageController.downloadPageMetadata(waTemplateUid));
+        assertTrue(exception.getMessage().contains("Error Downloading Page History"));
+
+    }
 }

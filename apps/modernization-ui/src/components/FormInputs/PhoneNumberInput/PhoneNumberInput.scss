@@ -1,6 +1,8 @@
+@use 'styles/colors';
+
 .phone-number-input {
     &.error {
-        border-left: 2px solid #b51d09;
+        border-left: 2px solid colors.$secondary-dark;
         padding-left: 1em;
     }
     .usa-input-mask {
@@ -8,7 +10,7 @@
             display: none;
         }
         .masked-input {
-            background-color: white;
+            background-color: colors.$base-white;
             cursor: text;
         }
     }

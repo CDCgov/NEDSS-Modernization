@@ -4,6 +4,8 @@ import com.querydsl.core.Tuple;
 import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +24,7 @@ class PageSummaryMapper {
 
     String lastUpdateBy = tuple.get(this.tables.lastUpdatedBy());
     Instant lastUpdate = tuple.get(this.tables.page().lastChgTime);
+    LocalDate lastUpdateDate = (lastUpdate != null) ? LocalDate.ofInstant(lastUpdate, ZoneId.systemDefault()) : null;
     String name = tuple.get(this.tables.page().templateNm);
     return new PageSummary(
         identifier,
@@ -29,7 +32,7 @@ class PageSummaryMapper {
         name,
         getStatus(tuple),
         conditions,
-        lastUpdate,
+        lastUpdateDate,
         lastUpdateBy
     );
   }

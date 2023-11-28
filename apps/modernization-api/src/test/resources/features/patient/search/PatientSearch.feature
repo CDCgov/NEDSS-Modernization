@@ -162,6 +162,38 @@ Feature: Patient Search
     When I search for patients
     Then the patient is not in the search results
 
+  Scenario Outline: I can search for a Patient with a specified Gender
+    Given the patient has the gender Male
+    And I have another patient
+    And the patient has the gender Female
+    And I have another patient
+    And the patient has the gender Unknown
+    And I add the patient criteria for a gender of <gender>
+    When I search for patients
+    Then there is only one patient search result
+    And the search results have a patient with a "gender" equal to "<gender>"
+
+    Examples:
+      | gender  |
+      | Male    |
+      | Female  |
+      | Unknown |
+
+
+  Scenario: I can search for a Patient with an unknown Gender
+    Given the patient has the gender Male
+    And I have another patient
+    And the patient has the gender Female
+    And I have another patient
+    And the patient has the gender Unknown
+    And I have another patient
+    And I add the patient criteria for a gender of Unknown
+    When I search for patients
+    Then the search results have a patient with a "gender" equal to "Unknown"
+    And the search results have a patient without a "gender" equal to "Female"
+    And the search results have a patient without a "gender" equal to "Male"
+    And there are 2 patient search results
+
   Scenario: BUG: CNFT1-1560 Patients with only a country code are searchable
     Given the patient has a "country code" of "+32"
     And the patient has a "first name" of "Eva"
@@ -169,9 +201,10 @@ Feature: Patient Search
     When I search for patients
     Then the search results have a patient with a "first name" equal to "Eva"
 
-  Scenario: BUG: CNFT1-1560 Patients only an extension are searchable
+  Scenario: BUG: CNFT1-1560 Patients with only an extension are searchable
     Given the patient has an "extension" of "3943"
     And the patient has a "first name" of "Liam"
     And I add the patient criteria for an "first name" equal to "Liam"
     When I search for patients
     Then the search results have a patient with a "first name" equal to "Liam"
+

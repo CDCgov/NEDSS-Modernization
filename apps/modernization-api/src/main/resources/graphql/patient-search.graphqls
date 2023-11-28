@@ -11,12 +11,11 @@ input PersonFilter {
     firstName: String
     race: String
     identification: IdentificationCriteria
-    ssn: String
     phoneNumber: String
     email: String
     dateOfBirth: Date
     dateOfBirthOperator: Operator
-    gender: Gender
+    gender: String
     deceased: Deceased
     address: String
     city: String
@@ -94,7 +93,7 @@ type PatientSearchResults {
     total: Int!
 }
 
-extend type Query {
+type Query {
     findPatientsByFilter(
         filter: PersonFilter!
         page: SortablePage

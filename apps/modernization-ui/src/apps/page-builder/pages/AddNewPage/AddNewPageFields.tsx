@@ -1,21 +1,23 @@
+import React from 'react';
 import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Concept, Condition, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
-import React from 'react';
+import { validPageNameRule } from 'validation/entry';
 import { Controller, useFormContext } from 'react-hook-form';
-import { NavLink } from 'react-router-dom';
+import { FormValues } from './AddNewPage';
 
 type AddNewPageFieldProps = {
     conditions: Condition[];
     conditionLookupModal: React.RefObject<ModalRef>;
     createConditionModal: React.RefObject<ModalRef>;
+    importTemplateModal: React.RefObject<ModalRef>;
     templates: Template[];
     mmgs: Concept[];
 };
 export const AddNewPageFields = (props: AddNewPageFieldProps) => {
-    const form = useFormContext();
+    const form = useFormContext<FormValues>();
 
     return (
         <>
@@ -49,12 +51,17 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="name"
-                rules={{ required: { value: true, message: 'Name is required.' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                rules={{
+                    required: { value: true, message: 'Name is required.' },
+                    ...validPageNameRule
+                }}
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
+                        onBlur={onBlur}
                         defaultValue={value}
                         label="Page name"
+                        className="pageName"
                         type="text"
                         error={error?.message}
                         required
@@ -64,12 +71,15 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="templateId"
-                rules={{ required: { value: true, message: 'Template is required.' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                rules={{
+                    required: { value: true, message: 'Template is required.' }
+                }}
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="Templates"
                         defaultValue={value}
                         onChange={onChange}
+                        onBlur={onBlur}
                         options={props.templates.map((template) => {
                             return {
                                 name: template.templateNm ?? '',
@@ -83,17 +93,20 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <p>
                 Can't find the template you're looking for?
                 <br />
-                <NavLink to={'add/template'}>Import a new template here</NavLink>
+                <ModalToggleButton modalRef={props.importTemplateModal} unstyled>
+                    <p>Import a new template here</p>
+                </ModalToggleButton>
             </p>
             <Controller
                 control={form.control}
                 name="messageMappingGuide"
                 rules={{ required: { value: true, message: 'MMG is required.' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="MMG"
                         name="messageMappingGuide"
                         onChange={onChange}
+                        onBlur={onBlur}
                         defaultValue={value}
                         options={props.mmgs.map((m) => {
                             return {

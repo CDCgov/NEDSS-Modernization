@@ -10,7 +10,8 @@ type DisplayableAddress = {
 
 const displayAddress = ({ address, address2, city, state, zipcode }: DisplayableAddress) => {
     const street = [address, address2].filter(exists).join(', ');
-    const location = [city, state, zipcode].filter(exists).join(', ');
+    let location = [city, state].filter(exists).join(', ');
+    location = [location, zipcode].filter(exists).join(' ');
     return [street, location].filter(exists).join('\n');
 };
 

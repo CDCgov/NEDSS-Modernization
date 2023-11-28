@@ -2,8 +2,8 @@ import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
-import { Spinner } from '@cmsgov/design-system';
 import { NoData } from 'components/NoData';
+import { Loading } from 'components/Spinner';
 import { SortHandler, Sorting, useTableSorting } from './useTableSorting';
 import { TableHeader } from './TableHeader';
 import classNames from 'classnames';
@@ -104,44 +104,46 @@ export const TableComponent = ({
 
         const offset = selectable ? 1 : 0;
 
-        return rows.map((row: TableBody, index: number) => (
-            <Fragment key={index}>
-                <tr>
-                    {selectable && (
-                        <td className="table-data selection">
-                            <Checkbox
-                                disabled={!row.selectable}
-                                key={`selection-${index}`}
-                                id={`selection-${index}`}
-                                name={'selection'}
-                                label=""
-                                onChange={handleRowSelection(row, handleSelected)}
-                            />
-                        </td>
-                    )}
-                    {row.tableDetails.map((detail: Cell, column: number) => {
-                        const isSorting = sorting.isSorting(columns[offset + column].name);
-                        const className = classNames('table-data', { 'sort-td': isSorting });
-                        return (
-                            <td className={className} key={column}>
-                                {detail.title ? (
-                                    <span className={'table-span'}>{detail.title}</span>
-                                ) : (
-                                    <NoData key={column} className={className} />
-                                )}
-                            </td>
-                        );
-                    })}
-                </tr>
-                {row.expanded && (
+        return rows.map((row: TableBody, index: number) => {
+            return (
+                <Fragment key={index}>
                     <tr>
-                        <td colSpan={columns.length}>
-                            <div>{row.expandedViewComponent}</div>
-                        </td>
+                        {selectable && (
+                            <td className="table-data selection">
+                                <Checkbox
+                                    disabled={!row.selectable}
+                                    key={`selection-${index}`}
+                                    id={`selection-${index}`}
+                                    name={'selection'}
+                                    label=""
+                                    onChange={handleRowSelection(row, handleSelected)}
+                                />
+                            </td>
+                        )}
+                        {row.tableDetails.map((detail: Cell, column: number) => {
+                            const isSorting = sorting.isSorting(columns[offset + column].name);
+                            const className = classNames('table-data', { 'sort-td': isSorting });
+                            return (
+                                <td className={className} key={column}>
+                                    {detail.title ? (
+                                        <span className={'table-span'}>{detail.title}</span>
+                                    ) : (
+                                        <NoData key={column} className={className} />
+                                    )}
+                                </td>
+                            );
+                        })}
                     </tr>
-                )}
-            </Fragment>
-        ));
+                    {row.expanded && (
+                        <tr>
+                            <td colSpan={columns.length}>
+                                <div>{row.expandedViewComponent}</div>
+                            </td>
+                        </tr>
+                    )}
+                </Fragment>
+            );
+        });
     };
 
     return (
@@ -156,7 +158,7 @@ export const TableComponent = ({
             <Table bordered={false} fullWidth>
                 <TableHeaders sorting={sorting} columns={columns} />
                 <tbody>
-                    {isLoading ? <Loading columns={columns.length} /> : renderRows(sorting, tableBody, selectable)}
+                    {isLoading ? <LoadingRow columns={columns.length} /> : renderRows(sorting, tableBody, selectable)}
                 </tbody>
             </Table>
             <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">
@@ -220,10 +222,10 @@ const SelectionHeader = () => (
 type LoadingProps = {
     columns: number;
 };
-const Loading = ({ columns }: LoadingProps) => (
+const LoadingRow = ({ columns }: LoadingProps) => (
     <tr className="text-center not-available">
         <td colSpan={columns}>
-            <Spinner className="sortable-table-spinner" />
+            <Loading />
         </td>
     </tr>
 );

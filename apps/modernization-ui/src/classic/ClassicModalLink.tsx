@@ -1,20 +1,22 @@
 import { Status, useClassicModal } from 'classic';
-import { useRedirect, redirectTo } from './useRedirect';
+import { useRedirect } from './useRedirect';
 import { KeyboardEvent, MouseEvent, useEffect } from 'react';
+import { Destination } from './Destination';
 
 type Props = {
     url: string;
+    destination?: Destination;
     onClose?: () => void;
 } & JSX.IntrinsicElements['a'];
 
-export const ClassicModalLink = ({ url, onClose, children, ...defaultProps }: Props) => {
-    const { redirect, dispatch } = useRedirect();
+export const ClassicModalLink = ({ url, destination = 'current', onClose, children, ...defaultProps }: Props) => {
+    const { location, redirect } = useRedirect({ destination });
 
     const { state, open, reset } = useClassicModal();
 
     const handleClick = (event: MouseEvent) => {
         event.preventDefault();
-        redirectTo(url, dispatch);
+        redirect(url);
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -22,16 +24,16 @@ export const ClassicModalLink = ({ url, onClose, children, ...defaultProps }: Pr
             case 'enter':
             case 'space': {
                 event.preventDefault();
-                redirectTo(url, dispatch);
+                redirect(url);
             }
         }
     };
 
     useEffect(() => {
-        if (redirect.location) {
-            open(redirect.location);
+        if (location) {
+            open(location);
         }
-    }, [redirect.location]);
+    }, [location]);
 
     useEffect(() => {
         if (state.status === Status.Closed) {

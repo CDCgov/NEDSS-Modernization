@@ -1,0 +1,29 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    alias libs.plugins.springBoot apply false
+}
+
+group = 'gov.cdc.web'
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation.bundle(libs.bundles.testing)
+                implementation libs.spring.test
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation(platform(SpringBootPlugin.BOM_COORDINATES))
+    annotationProcessor(platform(SpringBootPlugin.BOM_COORDINATES))
+
+    implementation(libs.springBoot.web)
+
+
+}

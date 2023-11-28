@@ -1,23 +1,19 @@
-import { useRedirect, redirectTo, navigateTo } from './useRedirect';
-import { MouseEvent, useEffect } from 'react';
+import { useRedirect } from './useRedirect';
+import { MouseEvent } from 'react';
+import { Destination } from './Destination';
 
 type Props = {
     url: string;
+    destination?: Destination;
 } & JSX.IntrinsicElements['a'];
 
-export const ClassicLink = ({ url, children, ...defaultProps }: Props) => {
-    const { redirect, dispatch } = useRedirect();
+export const ClassicLink = ({ url, destination, children, ...defaultProps }: Props) => {
+    const { redirect } = useRedirect({ destination });
 
     const handle = (event: MouseEvent) => {
         event.preventDefault();
-        redirectTo(url, dispatch);
+        redirect(url);
     };
-
-    useEffect(() => {
-        if (redirect.location) {
-            navigateTo(redirect.location);
-        }
-    }, [redirect.location]);
 
     return (
         <a href="#" onClick={handle} {...defaultProps}>

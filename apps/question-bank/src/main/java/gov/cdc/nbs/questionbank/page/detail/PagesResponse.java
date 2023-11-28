@@ -1,10 +1,14 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Collection;
 import java.util.List;
 
 public record PagesResponse(
+    @ApiModelProperty(required = true)
     long id,
+    @ApiModelProperty(required = true)
     String name,
     String description,
     long root,

@@ -35,4 +35,13 @@ public abstract class CreateQuestionRequest {
             String hl7DataType) {
     }
 
+
+
+
+
+
+
+
+
+
 }

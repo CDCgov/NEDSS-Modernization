@@ -1,9 +1,9 @@
 import ReactSelect, { MultiValue, components } from 'react-select';
-import React, { FocusEventHandler, useEffect, useMemo, useState } from 'react';
-import './MultiSelectInput.scss';
-import { mapNonNull } from 'utils';
+import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
 import { Label, ErrorMessage } from '@trussworks/react-uswds';
+import { mapNonNull } from 'utils';
 import classNames from 'classnames';
+import './MultiSelectInput.scss';
 
 const CheckedOption = (props: any) => {
     return (
@@ -14,13 +14,6 @@ const CheckedOption = (props: any) => {
         </div>
     );
 };
-
-const USWDSDropdownIndicator = (props: any) => (
-    // Replaces the default arrow indicator from react-select with the select indicator from USDWS
-    <components.DropdownIndicator {...props}>
-        <div className="multi-select select-indicator" />
-    </components.DropdownIndicator>
-);
 
 const asSelectable = (selectables: Selectable[]) => (item: string) =>
     selectables.find((option) => option.value === item) || null;
@@ -76,7 +69,7 @@ export const MultiSelectInput = ({
     const Input = (props: any) => <components.Input {...props} maxLength={50} />;
 
     return (
-        <div className={`multi-select-input ${required ? 'required' : ''}`}>
+        <div className={classNames('multi-select-input', { required: required })}>
             {label && (
                 <Label className={classNames({ required })} htmlFor={label}>
                     {label}
@@ -84,7 +77,8 @@ export const MultiSelectInput = ({
             )}
             <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
             <ReactSelect
-                isMulti={true}
+                isMulti
+                isClearable
                 id={id}
                 name={name}
                 value={selectedOptions}
@@ -96,7 +90,7 @@ export const MultiSelectInput = ({
                 onChange={handleOnChange}
                 onBlur={onBlur}
                 options={selectableOptions}
-                components={{ Input, Option: CheckedOption, DropdownIndicator: USWDSDropdownIndicator }}
+                components={{ Input, Option: CheckedOption }}
             />
         </div>
     );

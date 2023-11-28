@@ -11,16 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class PatientProfileViewInvestigationSteps {
 
@@ -40,7 +40,7 @@ public class PatientProfileViewInvestigationSteps {
   MockMvc mvc;
 
   @Autowired
-  Active<MockHttpServletResponse> activeResponse;
+  Active<ResultActions> response;
 
   @Autowired
   @Qualifier("classic")
@@ -56,7 +56,7 @@ public class PatientProfileViewInvestigationSteps {
     long patient = patients.one();
 
     server.expect(
-        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+            requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
@@ -71,10 +71,9 @@ public class PatientProfileViewInvestigationSteps {
         patient,
         investigation);
 
-    activeResponse.active(
+    response.active(
         mvc.perform(authenticated.withUser(MockMvcRequestBuilders.get(request)))
-            .andReturn()
-            .getResponse());
+    );
   }
 
   @Then("the classic profile is prepared to view an investigation")
@@ -83,28 +82,22 @@ public class PatientProfileViewInvestigationSteps {
   }
 
   @Then("I am redirected to Classic NBS to view an Investigation")
-  public void i_am_redirected_to_classic_nbs_to_view_an_investigation() {
+  public void i_am_redirected_to_classic_nbs_to_view_an_investigation() throws Exception {
     long patient = patients.one();
     long investigation = investigations.one();
 
     String expected = "/nbs/ViewFile1.do?ContextAction=InvestigationIDOnSummary&publicHealthCaseUID="
         + investigation;
 
-    MockHttpServletResponse response = activeResponse.active();
-
-    assertThat(response.getRedirectedUrl()).contains(expected);
-
-    assertThat(response.getCookies())
-        .satisfiesOnlyOnce(cookie -> {
-          assertThat(cookie.getName()).isEqualTo("Return-Patient");
-          assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-        });
+    this.response.active()
+        .andExpect(status().isCreated())
+        .andExpect(header().string("Location", containsString(expected)))
+        .andExpect(cookie().value("Return-Patient", String.valueOf(patient)))
+    ;
   }
 
   @Then("I am not allowed to view a Classic NBS Investigation")
-  public void i_am_not_allowed_to_view_a_classic_nbs_investigation() {
-    MockHttpServletResponse response = activeResponse.active();
-
-    assertThat(response.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
+  public void i_am_not_allowed_to_view_a_classic_nbs_investigation() throws Exception {
+    this.response.active().andExpect(status().isForbidden());
   }
 }

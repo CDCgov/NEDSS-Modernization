@@ -28,7 +28,7 @@ RUN jlink \
     --no-man-pages \
     --output gateway/runtime
 
-FROM debian:12-slim
+FROM redhat/ubi9-micro:latest
 
 COPY --from=builder /usr/src/nbs/gateway/runtime /deployment/runtime
 

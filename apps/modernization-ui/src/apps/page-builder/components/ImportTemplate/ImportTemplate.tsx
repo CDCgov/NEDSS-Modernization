@@ -1,70 +1,101 @@
-import React, { useState } from 'react';
-import { Button, Icon, Tag } from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef, Tag } from '@trussworks/react-uswds';
+import { Template } from 'apps/page-builder/generated';
+import { useImportTemplate } from 'apps/page-builder/services/useImportTemplate';
+import { Spinner } from 'components/Spinner/Spinner';
+import React, { useEffect, useState } from 'react';
+import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
 
-export const ImportTemplate = () => {
-    const [file, setFile] = useState(null);
-    const [files, setFiles] = useState<any>([]);
-    const [isError, setIsError] = useState(false);
-    const [errorMsg, setErrorMsg] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+type ImportTemplateProps = {
+    onTemplateCreated: (template: Template) => void;
+    modal: React.RefObject<ModalRef>;
+};
+export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps) => {
+    const [file, setFile] = useState<File | undefined>();
+    const [fileDrag, setFileDrag] = useState(false);
+    const { error, isLoading, imported, reset, importTemplate } = useImportTemplate();
 
-    const handleFileChange = (event: any) => {
-        const selectedFile = event.target.files[0];
-        setIsSuccess(false);
-        // Checking if the file type is allowed or not
-        const allowedTypes = ['xml'];
-        if (!allowedTypes.includes(selectedFile?.type)) {
-            setIsError(true);
-            setErrorMsg('Only XML files are allowed.');
+    useEffect(() => {
+        if (imported) {
+            onTemplateCreated(imported);
+            reset();
+            modal.current?.toggleModal(undefined, false);
         }
-        setIsError(false);
-        setFiles([...files, selectedFile]);
-        setFile(selectedFile);
+    }, [imported]);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files == null) {
+            setFile(undefined);
+        } else {
+            setFile(files[0]);
+        }
     };
 
-    const handleSubmit = (event: any) => {
-        event.preventDefault();
-
-        if (isError) return;
-        setErrorMsg('');
-
-        // Checking if the file has been selected
-        if (!file) {
-            setIsError(true);
-            setErrorMsg('Please select a file.');
+    const handleSubmit = () => {
+        if (file == undefined) {
             return;
         }
+        importTemplate(file);
+    };
 
-        setIsError(false);
-        setIsSuccess(true);
+    const handleCancel = () => {
+        setFile(undefined);
+        reset();
+        modal.current?.toggleModal();
+    };
+
+    const handleDragEnd = (ev: React.DragEvent<HTMLDivElement>) => {
+        ev.preventDefault();
+        setFileDrag(false);
+    };
+
+    const handleDragOver = (ev: React.DragEvent<HTMLDivElement>) => {
+        ev.preventDefault();
+        setFileDrag(true);
+    };
+
+    const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        setFileDrag(false);
+        setFile(event.dataTransfer.files[0]);
     };
 
     return (
         <div className="import-template">
-            <Button className="usa-button--unstyled close-btn" type={'button'} onClick={() => {}}>
-                <Icon.Close />
-            </Button>
-            <h3 className="main-header-title">
-                <Button className="usa-button--unstyled back-btn" type={'button'} onClick={() => {}}>
-                    <Icon.ArrowBack />
-                </Button>
-                <span data-testid="header-title">Import template</span>
-            </h3>
-            <div className="drop-container">
+            {isLoading ? <Spinner /> : null}
+            <div
+                className="drop-container"
+                onDragLeave={handleDragEnd}
+                onDragOver={handleDragOver}
+                onDrop={handleFileDrop}>
+                {error ? (
+                    <div className="banner">
+                        <AlertBanner type="error">{error}</AlertBanner>
+                    </div>
+                ) : null}
+
                 <div className="heading">
                     <label>Import a new template</label>
                 </div>
-                <label onChange={handleFileChange} htmlFor="importTempId">
-                    <input name="" type="file" id="importTempId" accept="text/xml" hidden />
+                <label htmlFor="importTempId">
+                    <input
+                        value={''}
+                        onChange={handleFileChange}
+                        name="fileInput"
+                        type="file"
+                        id="importTempId"
+                        accept="text/xml"
+                        hidden
+                    />
 
-                    <div className="drop-area">
+                    <div className={`drop-area ${fileDrag ? 'dragged' : ''}`}>
                         <div className="display-flex gap-10">
-                            {files.map((fil: any, index: number) => (
-                                <div className="tag-cover" key={index}>
-                                    <Tag background="#005EA2">{fil?.name}</Tag>
+                            {file ? (
+                                <div className="tag-cover">
+                                    <Tag background="#005EA2">{file?.name}</Tag>
                                 </div>
-                            ))}
+                            ) : null}
                         </div>
                         <Icon.Logout size={4} />
                         <label htmlFor="importTempId">
@@ -73,15 +104,17 @@ export const ImportTemplate = () => {
                     </div>
                 </label>
             </div>
-            <div>
-                {isError && <div className="error-text">{errorMsg}</div>}
-                <Button className="submit-btn" type="button" onClick={handleSubmit}>
+            <div className="button-container">
+                <Button
+                    disabled={file === undefined || isLoading}
+                    className="submit-btn"
+                    type="button"
+                    onClick={handleSubmit}>
                     Import
                 </Button>
-                <Button className="cancel-btn" type="button">
+                <Button className="cancel-btn" type="button" onClick={handleCancel}>
                     Cancel
                 </Button>
-                {isSuccess && <div className="success-text">Valid File Type</div>}
             </div>
         </div>
     );

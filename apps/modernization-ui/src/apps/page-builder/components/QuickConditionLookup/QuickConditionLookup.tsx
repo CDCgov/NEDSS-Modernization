@@ -9,13 +9,13 @@ import {
     ModalToggleButton,
     TextInput
 } from '@trussworks/react-uswds';
-import { ChangeEvent, RefObject, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, RefObject, useCallback, useContext, useEffect, useState } from 'react';
 import './QuickConditionLookup.scss';
 import { TableComponent, TableBody } from 'components/Table/Table';
-import { ConditionControllerService, ReadConditionRequest } from 'apps/page-builder/generated';
+import { Condition, ConditionControllerService, ReadConditionRequest } from 'apps/page-builder/generated';
 import { UserContext } from 'user';
-import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { NoData } from 'components/NoData';
+import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -23,23 +23,23 @@ type Props = {
 };
 
 const tableHeaders = [
-    { name: 'Condition', sortable: true, className: 'asdf' },
+    { name: 'Condition', sortable: true },
     { name: 'Code', sortable: true },
     { name: 'Program area', sortable: true },
     { name: 'Condition Family', sortable: true },
-    { name: 'Investigateion page', sortable: true },
+    { name: 'Investigation page', sortable: true },
     { name: 'Status', sortable: true }
 ];
 
 export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
-    const [conditions, setConditions] = useState<any[]>([]);
+    const [conditions, setConditions] = useState<Condition[]>([]);
     const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
     const [searchText, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
     const [totalConditions, setTotalConditions] = useState(0);
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const { state } = useContext(UserContext);
-    const { currentPage, setCurrentPage } = useContext(PagesContext);
+    const { currentPage, setCurrentPage, pageSize, setPageSize } = useContext(ConditionsContext);
 
     const handleSelectConditions = (event: ChangeEvent<HTMLInputElement>, condition: any) => {
         if (selectedConditions.includes(condition.id)) {
@@ -58,30 +58,34 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
         addConditions(selectedConditions);
     };
 
-    const handleSubmitSearch = (page: number) => {
-        setLoading(true);
-        const authorization = `Bearer ${state.getToken()}`;
-        const search: ReadConditionRequest = { searchText };
+    const handleSubmitSearch = useCallback(
+        (page: number) => {
+            setLoading(true);
+            const authorization = `Bearer ${state.getToken()}`;
+            const search: ReadConditionRequest = { searchText };
 
-        ConditionControllerService.searchConditionsUsingPost({
-            authorization,
-            search,
-            page,
-            size: 10
-        })
-            .then((response: any) => {
-                setLoading(false);
-                setConditions(response.content);
-                setTotalConditions(response.totalElements);
+            ConditionControllerService.searchConditionsUsingPost({
+                authorization,
+                search,
+                page: page,
+                size: pageSize
             })
-            .catch((error: any) => {
-                console.error('Error', error);
-            });
-    };
+                .then((response: any) => {
+                    setLoading(false);
+                    setConditions(response.content);
+                    setTotalConditions(response.totalElements);
+                    setPageSize(pageSize);
+                })
+                .catch((error: any) => {
+                    console.error('Error', error);
+                });
+        },
+        [currentPage, pageSize, searchText]
+    );
 
     useEffect(() => {
-        handleSubmitSearch(currentPage);
-    }, [currentPage]);
+        handleSubmitSearch(currentPage - 1);
+    }, [currentPage, pageSize]);
 
     useEffect(() => {
         addConditions(selectedConditions);
@@ -90,7 +94,8 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
 
     const asTableRow = (condition: any): TableBody => ({
         id: condition.id,
-        expanded: true,
+        expanded: false,
+        selectable: true,
         tableDetails: [
             {
                 id: 1,
@@ -135,7 +140,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                 </div>
             </ModalHeading>
             <div className="condition-lookup-modal-body">
-                <p className="description">You can search for existing condition(s) or create a new one</p>
+                <p className="description">You can search for existing condition(s) or create a new one.</p>
                 <div className="search-container">
                     <div style={{ display: 'flex' }}>
                         <TextInput
@@ -160,21 +165,12 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                             <Icon.Search />
                         </Button>
                     </div>
-                    <Button type="button" outline style={{ height: '41px' }}>
-                        <Icon.FilterAlt />
-                        Filter
-                    </Button>
-                    {/* <NavLink to={'page-builder/add/condition'}>
-                        <Button type="button" style={{ height: '41px' }}>
-                            Add new condition
-                        </Button>
-                    </NavLink> */}
                     <ModalToggleButton
                         modalRef={modal}
                         closer
-                        onClick={() => handleAddConditions()}
+                        onClick={handleAddConditions}
                         data-testid="condition-add-btn">
-                        Add Condition
+                        Create new condition
                     </ModalToggleButton>
                 </div>
                 {conditions?.length ? (
@@ -184,11 +180,13 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         tableHead={tableHeaders}
                         tableBody={tableRows}
                         isPagination={true}
-                        pageSize={10}
+                        pageSize={pageSize}
                         totalResults={totalConditions}
                         currentPage={currentPage}
                         handleNext={setCurrentPage}
-                        selectable
+                        selectable={true}
+                        contextName="conditions"
+                        rangeSelector={true}
                         handleSelected={handleSelectConditions}
                     />
                 ) : (
@@ -205,7 +203,7 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         closer
                         onClick={() => handleAddConditions()}
                         data-testid="modal-condition-add-btn">
-                        Add Condition
+                        Create new condition
                     </ModalToggleButton>
                 </ButtonGroup>
             </ModalFooter>
