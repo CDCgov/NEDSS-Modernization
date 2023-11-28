@@ -1,6 +1,6 @@
-.usa-modal__content {
-    overflow-y: hidden;
-    max-height: 1050px;
+.usa-modal__main {
+    overflow-y: auto;
+    max-height: 80vh;
 }
 
 .header {
@@ -23,8 +23,8 @@
 
 .condition-lookup-modal-body {
     padding: 24px;
-    max-height: 642px;
-    overflow-y: scroll;
+    height: 70%;
+    overflow-y: auto;
 
     thead th {
         &:nth-of-type(1) {
