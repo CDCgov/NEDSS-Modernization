@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
@@ -45,7 +46,9 @@ public class PageRuleSteps {
     public void i_make_a_request_to_add_a_rule_to_a_page() {
 
         try {
-            ruleResponse = pageRuleController.createBusinessRule(ruleRequest(),123456L);
+            NbsUserDetails nbsUserDetails =
+                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+            ruleResponse = pageRuleController.createBusinessRule(ruleRequest(),123456L, nbsUserDetails);
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -84,7 +87,9 @@ public class PageRuleSteps {
     @When("I make a request to delete a rule to a page")
     public void i_make_a_request_to_delete_a_rule_to_a_page() {
         try{
-            ruleResponse = pageRuleController.createBusinessRule(ruleRequest(),123456L);
+            NbsUserDetails nbsUserDetails =
+                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+            ruleResponse = pageRuleController.createBusinessRule(ruleRequest(),123456L, nbsUserDetails);
             ruleResponse = pageRuleController.deletePageRule(ruleResponse.ruleId());
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);

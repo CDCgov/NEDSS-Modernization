@@ -1,10 +1,13 @@
 package gov.cdc.nbs.questionbank.entity.pagerule;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import gov.cdc.nbs.questionbank.pagerules.command.PageRuleCommand;
+import gov.cdc.nbs.questionbank.pagerules.command.PageRuleCommand.AddPageRule;
 import java.time.Instant;
 
 @NoArgsConstructor
@@ -13,6 +16,9 @@ import java.time.Instant;
 @Entity
 @Table(name = "WA_rule_metadata", catalog = "NBS_ODSE")
 public class WaRuleMetadata {
+    private static final String ACTIVE = "ACTIVE";
+
+
     @Id
     @Column(name = "wa_rule_metadata_uid", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +30,7 @@ public class WaRuleMetadata {
     @Column(name = "rule_cd", length = 50)
     private String ruleCd;
 
-    @Column(name = "rule_expression", length =4000)
+    @Column(name = "rule_expression", length = 4000)
     private String ruleExpression;
 
     @Column(name = "err_msg_txt", length = 4000)
@@ -54,13 +60,13 @@ public class WaRuleMetadata {
     @Column(name = "last_chg_user_id", length = 19)
     private Long lastChgUserId;
 
-    @Column(name = "rule_desc_txt", length =4000)
+    @Column(name = "rule_desc_txt", length = 4000)
     private String ruleDescText;
 
     @Column(name = "javascript_function")
     private String jsFunction;
 
-    @Column(name= "javascript_function_nm", length = 100)
+    @Column(name = "javascript_function_nm", length = 100)
     private String jsFunctionName;
 
     @Column(name = "user_rule_id", length = 50)
@@ -74,5 +80,27 @@ public class WaRuleMetadata {
 
     @Column(name = "target_type", length = 50)
     private String targetType;
+
+
+    public void addPageRule(PageRuleCommand.AddPageRule command) {
+        this.ruleCd = command.ruleRequest().ruleFunction();
+        this.ruleDescText = command.ruleRequest().ruleDescription();
+        this.sourceValues = command.ruleData().sourceValues();
+        this.logic = command.ruleRequest().comparator();
+        this.sourceQuestionIdentifier = command.ruleData().sourceIdentifier();
+        this.targetQuestionIdentifier = command.ruleData().targetIdentifiers();
+        this.targetType = command.ruleRequest().targetType();
+        this.addTime = command.addTime();
+        this.addUserId = command.userId();
+        this.lastChgTime = command.lastChangeTime();
+        this.recordStatusCd = ACTIVE;
+        this.lastChgUserId = command.userId();
+        this.recordStatusTime = command.recordStatusTime();
+        this.errormsgText = command.ruleData().errorMsgText();
+        this.jsFunction = command.ruleData().jsFunctionNameHelper().jsFunction();
+        this.jsFunctionName = command.ruleData().jsFunctionNameHelper().jsFunctionName();
+        this.waTemplateUid = command.page();
+        this.ruleExpression = command.ruleData().ruleExpression();
+    }
 
 }

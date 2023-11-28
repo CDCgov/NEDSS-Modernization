@@ -41,13 +41,13 @@ class PageRuleControllerTest {
                 NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
         Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest,123456L))
                 .thenReturn(new CreateRuleResponse(999L, "Rule Created Successfully"));
-        Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
-        CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest,123456L);
+        // Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
+        CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest,123456L, nbsUserDetails);
         assertEquals(999L, ruleResponse.ruleId());
 
         Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest,123456L))
                 .thenThrow(new RuleException("",0));
-        ruleResponse = pageRuleController.createBusinessRule(ruleRequest,123456L);
+        ruleResponse = pageRuleController.createBusinessRule(ruleRequest,123456L, nbsUserDetails);
         assertNull(ruleResponse.ruleId());
 
     }
