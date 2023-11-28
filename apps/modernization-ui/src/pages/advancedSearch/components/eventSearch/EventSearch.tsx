@@ -13,8 +13,9 @@ type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;
     investigationFilter?: InvestigationFilter;
     labReportFilter?: LabReportFilter;
+    clearAll: () => void;
 };
-export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: EventSearchProps) => {
+export const EventSearch = ({ investigationFilter, labReportFilter, onSearch, clearAll }: EventSearchProps) => {
     const [searchType, setSearchType] = useState<SearchType>();
     const investigationForm = useForm<InvestigationFilter>({ defaultValues: {}, mode: 'onBlur' });
     const labReportForm = useForm<LabReportFilter>({
@@ -56,6 +57,7 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch }: 
     const handleClearAll = () => {
         investigationForm.reset({}, { keepDefaultValues: true });
         labReportForm.reset(initialLabForm(), { keepDefaultValues: true });
+        clearAll();
     };
 
     /**

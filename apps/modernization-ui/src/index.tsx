@@ -5,9 +5,10 @@ import ApolloWrapper from './providers/ApolloContext';
 import { UserContextProvider } from './providers/UserContext';
 import reportWebVitals from './reportWebVitals';
 import { AppRoutes } from './routes/AppRoutes';
-import './settings.scss';
+import 'styles/global.scss';
 import NavBar from './shared/header/NavBar';
 import { AlertProvider } from 'alert';
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -15,8 +16,10 @@ ReactDOM.render(
             <BrowserRouter>
                 <UserContextProvider>
                     <ApolloWrapper>
-                        <NavBar />
-                        <AppRoutes />
+                        <SkipLinkProvider>
+                            <NavBar />
+                            <AppRoutes />
+                        </SkipLinkProvider>
                     </ApolloWrapper>
                 </UserContextProvider>
             </BrowserRouter>

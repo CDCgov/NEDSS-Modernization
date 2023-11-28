@@ -1,10 +1,11 @@
-@import 'settings.scss';
+@use 'styles/borders' as borders;
+@use 'styles/colors';
 
 .question {
     display: flex;
-    background-color: $color-white;
+    background-color: colors.$base-white;
     border-radius: 0.25rem;
-    border: $border-medium;
+    @extend %thin;
     padding: 0.8rem 1.6rem;
     gap: 1.4rem;
     &__name {
@@ -22,7 +23,9 @@
     &__field {
         display: flex;
         align-items: center;
-        .usa-select, .usa-date-picker__external-input, button {
+        .usa-select,
+        .usa-date-picker__external-input,
+        button {
             margin: 0;
         }
         .date-picker-input {

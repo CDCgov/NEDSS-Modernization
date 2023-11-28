@@ -1,5 +1,5 @@
-@import '../../../../settings';
+@use 'styles/colors';
 
 .condition-local-library {
-    background-color: #fff;
+    background-color: colors.$base-white;
 }

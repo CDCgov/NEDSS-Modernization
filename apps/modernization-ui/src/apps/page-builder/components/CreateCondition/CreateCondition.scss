@@ -1,5 +1,3 @@
-@import '../../../../settings';
-
 .create-condition {
     padding: 5px 30px;
     margin-bottom: 8rem;
@@ -14,7 +12,7 @@
         position: relative;
         width: 100%;
         .mandatory-indicator {
-            color: #D83933;
+            color: #d83933;
         }
         label {
             margin-top: 1rem;
@@ -37,13 +35,13 @@
             margin: 0;
         }
         .cancel-btn {
-            border: 2px solid #005EA2;
+            border: 2px solid #005ea2;
             background: #fff;
-            color: #005EA2;
+            color: #005ea2;
             border-radius: 4px;
         }
         .submit-btn {
-            border: 2px solid #005EA2;
+            border: 2px solid #005ea2;
             border-radius: 4px;
         }
     }
