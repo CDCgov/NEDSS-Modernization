@@ -9,7 +9,7 @@ describe('EventSearch component tests', () => {
         const { getByTestId } = render(
             <MockedProvider>
                 <BrowserRouter>
-                    <EventSearch onSearch={() => {}} />
+                    <EventSearch onSearch={() => {}} clearAll={() => {}} />
                 </BrowserRouter>
             </MockedProvider>
         );
@@ -49,7 +49,7 @@ describe('EventSearch component tests', () => {
         const { getByTestId } = render(
             <MockedProvider>
                 <BrowserRouter>
-                    <EventSearch onSearch={() => {}} />
+                    <EventSearch onSearch={() => {}} clearAll={() => {}} />
                 </BrowserRouter>
             </MockedProvider>
         );
@@ -77,7 +77,7 @@ describe('EventSearch component tests', () => {
         const { getByTestId } = render(
             <MockedProvider>
                 <BrowserRouter>
-                    <EventSearch onSearch={() => {}} />
+                    <EventSearch onSearch={() => {}} clearAll={() => {}} />
                 </BrowserRouter>
             </MockedProvider>
         );

@@ -42,7 +42,7 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
                         <Controller
                             control={control}
                             name="comments"
-                            rules={maxLengthRule(20)}
+                            rules={maxLengthRule(2000)}
                             render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
                                 <>
                                     <Label htmlFor={name}>Comments</Label>
