@@ -12,7 +12,10 @@ export const ContactForm = ({ control, errors }: any) => {
                     name="phoneNumber"
                     rules={{
                         validate: {
-                            properNumber: (value) => validatePhoneNumber(value)
+                            properNumber: (value) => {
+                                return validatePhoneNumber(value);
+                                // return true;
+                            }
                         }
                     }}
                     render={({ field: { onChange, value } }) => (
@@ -25,7 +28,7 @@ export const ContactForm = ({ control, errors }: any) => {
                             label="Phone number"
                             defaultValue={value}
                             mask="___-___-____"
-                            pattern="\d{3}-\d{3}-\d{4}"
+                            // pattern="\d{3}-\d{3}-\d{0,4}|\d{3}-\d{0,3}|\d{0,3}"
                             error={
                                 errors &&
                                 errors.phoneNumber &&

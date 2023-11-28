@@ -1,4 +1,4 @@
-@import "settings.scss";
+@use 'styles/colors';
 
 .counter {
     width: 1.4rem;
@@ -6,8 +6,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $color-base-light;
-    color: $color-white;
+    background-color: colors.$base-light;
+    color: colors.$base-white;
     border-radius: 0.25rem;
     font-weight: 700;
 }

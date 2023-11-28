@@ -31,7 +31,7 @@ class ManagePagesRouteConfigurationTest {
       .build();
 
   @RegisterExtension
-  static WireMockExtension modernizationApi = WireMockExtension.newInstance()
+  static WireMockExtension pagebuilderApi = WireMockExtension.newInstance()
       .options(wireMockConfig().port(10002))
       .build();
 
@@ -52,11 +52,27 @@ class ManagePagesRouteConfigurationTest {
         .block());
   }
 
-
   @Test
   void should_route_to_modernized() {
 
-    modernizationApi.stubFor(get(urlPathMatching("/nbs/page-builder/redirect"))
+    pagebuilderApi.stubFor(get(urlPathMatching("/nbs/page-builder/redirect"))
+        .withHeader("Location", equalTo("/page-builder/manage/pages"))
+        .willReturn(ok()));
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/nbs/ManagePage.do")
+                .queryParam("method", "list")
+                .build())
+        .exchange()
+        .expectStatus()
+        .isOk();
+  }
+
+  @Test
+  void should_route_to_modernized_initLoad() {
+
+    pagebuilderApi.stubFor(get(urlPathMatching("/nbs/page-builder/redirect"))
         .withHeader("Location", equalTo("/page-builder/manage/pages"))
         .willReturn(ok()));
     webClient

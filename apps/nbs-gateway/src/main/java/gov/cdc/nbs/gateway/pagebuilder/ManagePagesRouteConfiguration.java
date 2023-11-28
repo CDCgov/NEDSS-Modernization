@@ -26,8 +26,6 @@ public class ManagePagesRouteConfiguration {
                 .path("/nbs/ManagePage.do")
                 .and()
                 .query("method", "list")
-                .and()
-                .query("initLoad", "true")
                 .filters(
                     filter -> filter.setPath("/nbs/page-builder/redirect")
                         .setRequestHeader(HttpHeaders.LOCATION, "/page-builder/manage/pages")

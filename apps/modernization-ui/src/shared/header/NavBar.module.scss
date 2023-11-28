@@ -1,0 +1,129 @@
+@use 'styles/colors';
+
+.navbar {
+    $classic-navigation-background: #003470;
+    $classic-navigation-color: colors.$base-white;
+    $classic-logo-color: #005ea2;
+    $classic-page-header-color: black;
+    $classic-page-header-background: #dcdcdc;
+    $classic-active-navigation-item-background: #a9aeb1;
+    $classic-active-navigation-item-color: #1b1b1b;
+
+    .usa-logo__text,
+    .usa-accordion__button {
+        color: $classic-navigation-color;
+    }
+
+    .title {
+        .usa-logo__text {
+            background-image: linear-gradient(rgb(53, 113, 165), rgb(76, 103, 143), $classic-logo-color);
+            width: fit-content;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: solid 2px $classic-logo-color;
+        }
+    }
+
+    .usa-nav {
+        padding: 0 !important;
+        .usa-nav-item {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            &.active {
+                background-color: $classic-active-navigation-item-background;
+                color: $classic-active-navigation-item-color;
+            }
+        }
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    table.nedssNavTable {
+        width: 100%;
+        border: 0;
+        background: $classic-navigation-background;
+
+        tr td {
+            text-align: center;
+            padding: 3px;
+            &.navLink a {
+                color: $classic-navigation-color;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 10pt;
+                font-family: Arial, sans-serif;
+                padding: 0.15em;
+                &:focus {
+                    background-color: $classic-active-navigation-item-background;
+                    color: $classic-active-navigation-item-color;
+                    outline: none;
+                }
+            }
+            a {
+                color: $classic-navigation-color;
+                text-decoration: none;
+                font-weight: bold;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+
+                &:focus {
+                    outline: none;
+                    background-color: $classic-navigation-background;
+                }
+            }
+        }
+
+        span {
+            color: $classic-navigation-color;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nedssPageHeaderAndLogoTable {
+            width: 100%;
+            border: 0;
+            background: $classic-navigation-background;
+            margin-bottom: 0.5em;
+        }
+    }
+
+    .nedssPageHeaderAndLogoTable {
+        width: 100%;
+        border: 0;
+        background: $classic-navigation-background;
+
+        tr td {
+            text-align: right;
+            color: $classic-page-header-color;
+            padding: 0px 3px 0px 3px;
+            &.pageHeader {
+                text-align: left;
+                background: $classic-page-header-background;
+                font-size: 1.3em;
+                font-weight: bold;
+                a {
+                    color: $classic-page-header-color;
+                    text-decoration: none;
+                }
+            }
+
+            &.currentUser {
+                color: $classic-navigation-color;
+                text-align: right;
+                font-weight: bold;
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+            }
+
+            &.logo {
+                text-align: right;
+                width: 100px;
+            }
+        }
+    }
+}
