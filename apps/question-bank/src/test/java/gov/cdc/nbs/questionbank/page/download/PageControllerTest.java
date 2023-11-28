@@ -19,18 +19,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-<<<<<<< HEAD
-=======
-
->>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
 import java.util.Arrays;
 import java.util.List;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-<<<<<<< HEAD
-=======
-
->>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -70,13 +62,8 @@ class PageControllerTest {
         assertNotNull(actual);
     }
 
-
     @Test
-<<<<<<< HEAD
     void getPageHistoryTest()  {
-=======
-    void getPageHistoryTest() {
->>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
         List<PageHistory> expectedPageHistory = Arrays.asList(
                 new PageHistory("1", "09/25/2019", "User1", "Note1"),
                 new PageHistory("2", "09/25/2019", "User2", "Note2")
@@ -87,26 +74,17 @@ class PageControllerTest {
     }
 
     @Test
-    void getPageHistoryException() {
+    void getPageHistoryException()  {
         when(pageHistoryFinder.getPageHistory(100l)).
                 thenThrow(new RuntimeException("Error Fetching Page-History by Template_nm From the Database"));
         var exception = assertThrows(RuntimeException.class, () -> pageController.getPageHistory(100l));
         assertTrue(exception.getMessage().contains("Error Fetching Page-History by Template_nm From the Database"));
     }
 
-<<<<<<< HEAD
-=======
-    @Test
->>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
     void downloadPageMetadataTest() throws IOException {
         Long waTemplateUid = 1L;
         when(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid))
                 .thenReturn(new ByteArrayInputStream("test,csv,data".getBytes()));
-<<<<<<< HEAD
-=======
-        PageController pageController = new PageController(creator, stateChange,
-                pageDownloader, userDetailsProvider, pageDeletor, pageMetaDataDownloader,pageHistoryFinder);
->>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
         ResponseEntity<Resource> response = pageController.downloadPageMetadata(waTemplateUid);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("attachment; filename=PageMetadata.xlsx", response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION));
@@ -118,11 +96,6 @@ class PageControllerTest {
         Long waTemplateUid = 1L;
         when(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid))
                 .thenReturn(new ByteArrayInputStream("test,csv,data".getBytes()));
-<<<<<<< HEAD
-=======
-        PageController pageController = new PageController(creator, stateChange,
-                pageDownloader, userDetailsProvider, pageDeletor, pageMetaDataDownloader,pageHistoryFinder);
->>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
         when(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid))
                 .thenThrow(new IOException("Error Downloading Page History"));
         var exception = assertThrows(IOException.class, () -> pageController.downloadPageMetadata(waTemplateUid));
