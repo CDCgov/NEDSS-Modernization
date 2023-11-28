@@ -4,6 +4,11 @@
         margin-top: 10px;
         margin-bottom: 24px;
     }
+    .radio-group {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.8rem;
+    }
     .main-header-title {
         font-size: 22px;
     }
@@ -36,7 +41,12 @@
     .right-radio {
         margin-left: 15px;
     }
+    form.usa-form {
+        width: unset !important;
+        display: contents !important;
+    }
     .create-question__container {
+
         width: 500px;
         margin: 28px auto;
         .header-title {
