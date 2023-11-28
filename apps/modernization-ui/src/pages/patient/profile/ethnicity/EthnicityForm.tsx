@@ -45,7 +45,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
 
     return (
         <>
-            <Grid row className="flex-justify flex-align-center padding-2">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 label-text">
                     <label className="required text-bold" htmlFor="asOf">
                         As of:
@@ -96,7 +96,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                 </Grid>
             </Grid>
             {selectedEthinicity === HISPANIC && (
-                <Grid row className="flex-justify flex-align-center padding-2">
+                <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                     <Grid col={6} className="margin-top-1 text-bold">
                         Spanish origin:
                     </Grid>
@@ -119,7 +119,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                 </Grid>
             )}
             {selectedEthinicity === UNKNOWN && (
-                <Grid row className="flex-justify flex-align-center padding-2">
+                <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                     <Grid col={6} className="margin-top-1 text-bold">
                         Reason unknown:
                     </Grid>
