@@ -1,3 +1,5 @@
+@use 'styles/colors';
+
 .table-head {
     display: flex;
     justify-content: space-between;
@@ -34,7 +36,7 @@ td, th {
     }
 
     .link {
-        color: #005ea2;
+        color: colors.$primary;
         text-decoration: underline;
         cursor: pointer;
     }
@@ -45,8 +47,8 @@ td, th {
 }
 
 .actions-card {
-    background: white;
-    border: 1px solid #dfe1e2;
+    background: colors.$base-white;
+    border: 1px solid colors.$border;
     border-radius: 5px;
     position: absolute;
     min-width: 130px;
@@ -54,7 +56,7 @@ td, th {
     left: 0;
 
     button:hover {
-        border-bottom: 1px solid #dfe1e2;
+        border-bottom: 1px solid colors.$border;
     }
 }
 
@@ -65,11 +67,11 @@ td, th {
 }
 
 .sort-header {
-    background-color: #97d4ea !important;
+    background-color: colors.$cool-accent-light !important;
 }
 
 .sort-td {
-    background-color: #e1f3f8 !important;
+    background-color: colors.$cool-accent-lighter !important;
 }
 
 th.selection {

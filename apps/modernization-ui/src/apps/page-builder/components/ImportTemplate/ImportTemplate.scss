@@ -1,4 +1,5 @@
-@use 'settings.scss';
+@use 'styles/colors.scss';
+@use 'styles/borders.scss';
 
 .import-template {
     display: flex;
@@ -27,7 +28,7 @@
             align-items: center;
             gap: 4px;
             label {
-                color: var(--base-black, #000);
+                color: colors.$base-black;
                 font-family: Public Sans;
                 font-size: 16px;
                 font-style: normal;
@@ -45,15 +46,15 @@
             margin: 24px;
             cursor: pointer;
             border-radius: 8px;
-            border: 1px dashed var(--base-light, #a9aeb1);
+            border: 1px dashed colors.$base-light;
             transition: background-color 0.5s ease;
 
             &.dragged {
-                background-color: settings.$color-gray-10;
+                background-color: colors.$disabled-light;
             }
             svg {
                 transform: rotate(-90deg);
-                color: #a9aeb1;
+                color: colors.$base-light;
             }
             .gap-10 {
                 gap: 10px;
@@ -64,8 +65,8 @@
                 gap: 8px;
                 padding: 4px 6px 4px 2px;
                 border-radius: 2px;
-                color: #ffffff;
-                background: #005ea2;
+                color: colors.$base-white;
+                background: colors.$primary;
                 .usa-icon {
                     cursor: pointer;
                 }
@@ -78,7 +79,7 @@
                 font-weight: 400;
                 line-height: 162%; /* 25.92px */
                 span {
-                    color: var(--primary-primary, #005ea2);
+                    color: colors.$primary;
                     font-family: Public Sans;
                     font-size: 16px;
                     font-style: normal;
@@ -92,28 +93,28 @@
 
     .button-container {
         padding: 1.5rem;
-        border: 1px solid var(--base-lightest, #f0f0f0);
+        @include borders.bordered($color: colors.$base-lightest);
 
         .submit-btn {
             float: right;
-            border: 2px solid #005ea2;
+            border: 2px solid colors.$primary;
             border-radius: 0.25rem;
         }
         .cancel-btn {
             float: right;
             margin-right: 0.5rem;
-            border: 2px solid #005ea2;
-            background: #fff;
-            color: #005ea2;
+            border: 2px solid colors.$primary;
+            background: colors.$base-white;
+            color: colors.$primary;
             border-radius: 0.25rem;
         }
     }
 
     .usa-button {
         &:disabled {
-            border: 2px solid #c9c9c9;
-            background: var(--disabled-disabled, #c9c9c9);
-            color: #fff;
+            border: 2px solid colors.$disabled;
+            background: colors.$disabled;
+            color: colors.$base-white;
         }
     }
 }
