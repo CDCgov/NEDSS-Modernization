@@ -40,6 +40,10 @@ public class PageController {
     private final PageDeletor pageDeletor;
     private final PageMetaDataDownloader pageMetaDataDownloader;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
     public PageController(
             final PageCreator creator,
             final PageStateChanger stateChange,
@@ -53,9 +57,15 @@ public class PageController {
         this.stateChange = stateChange;
         this.pageDownloader = pageDownloader;
         this.userDetailsProvider = userDetailsProvider;
+<<<<<<< HEAD
         this.pageDeletor = pageDeletor;
         this.pageMetaDataDownloader = pageMetaDataDownloader;
         this.pageHistoryFinder = pageHistoryFinder;
+=======
+        this.pageHistoryFinder = pageHistoryFinder;
+        this.pageDeletor = pageDeletor;
+        this.pageMetaDataDownloader = pageMetaDataDownloader;
+>>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
     }
 
     @PostMapping
@@ -64,11 +74,14 @@ public class PageController {
         return creator.createPage(request, userId);
     }
 
+<<<<<<< HEAD
     @GetMapping("{id}/page-history")
     public List<PageHistory> getPageHistory(@PathVariable("id") Long pageId) {
         return pageHistoryFinder.getPageHistory(pageId);
     }
 
+=======
+>>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
     @PutMapping("{id}/draft")
     public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
         return stateChange.savePageAsDraft(pageId);
@@ -98,18 +111,33 @@ public class PageController {
     }
 
     @DeleteMapping("{id}/delete-draft")
+<<<<<<< HEAD
     public PageDeleteResponse deletePageDraft(@PathVariable("id") Long pageId) {
         return pageDeletor.deletePageDraft(pageId);
+=======
+    public PageStateResponse deletePageDraft(@PathVariable("id") Long pageId) {
+        return stateChange.deletePageDraft(pageId);
+    }
+
+    @GetMapping("{id}/page-history")
+    public List<PageHistory> getPageHistory(@PathVariable("id") Long pageId) {
+        return pageHistoryFinder.getPageHistory(pageId);
+>>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
     }
 
     @GetMapping("{waTemplateUid}/download-metadata")
-    public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("waTemplateUid") Long waTemplateUid) throws IOException {
+    public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("waTemplateUid") Long waTemplateUid) throws
+            IOException {
         String fileName = "PageMetadata.xlsx";
         InputStreamResource file = new InputStreamResource(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid));
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(file);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5f7321b51d1f59b081f035f73cbedc34270594d3
     }
 
 }
