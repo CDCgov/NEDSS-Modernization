@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.question.response;
 
-public record AddQuestionResponse(Long componentId) {
+import java.util.List;
+
+public record AddQuestionResponse(List<Long> componentIds) {
 
 }

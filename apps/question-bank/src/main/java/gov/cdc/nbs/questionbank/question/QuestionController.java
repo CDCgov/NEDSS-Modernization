@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
@@ -36,101 +36,100 @@ import lombok.extern.slf4j.Slf4j;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class QuestionController {
 
-    private final QuestionCreator creator;
-    private final UserDetailsProvider userDetailsProvider;
-    private final QuestionUpdater updater;
-    private final QuestionFinder finder;
+  private final QuestionCreator creator;
+  private final UserDetailsProvider userDetailsProvider;
+  private final QuestionUpdater updater;
+  private final QuestionFinder finder;
+  private final QuestionManagementUtil questionManagementUtil;
 
-    private final QuestionManagementUtil questionManagementUtil;
+  public QuestionController(
+      QuestionCreator creator,
+      UserDetailsProvider userDetailsProvider,
+      QuestionUpdater updater,
+      QuestionFinder finder,
+      QuestionManagementUtil questionManagementUtil) {
+    this.creator = creator;
+    this.userDetailsProvider = userDetailsProvider;
+    this.updater = updater;
+    this.finder = finder;
+    this.questionManagementUtil = questionManagementUtil;
+  }
 
-    public QuestionController(
-            QuestionCreator creator,
-            UserDetailsProvider userDetailsProvider,
-            QuestionUpdater updater,
-            QuestionFinder finder,
-            QuestionManagementUtil questionManagementUtil) {
-        this.creator = creator;
-        this.userDetailsProvider = userDetailsProvider;
-        this.updater = updater;
-        this.finder = finder;
-        this.questionManagementUtil = questionManagementUtil;
-    }
+  @GetMapping
+  public Page<Question> findAllQuestions(@PageableDefault(size = 25) Pageable pageable) {
+    log.debug("Received find all question request");
+    Page<Question> results = finder.find(pageable);
+    log.debug("Completed find all question request");
+    return results;
+  }
 
-    @GetMapping
-    public Page<Question> findAllQuestions(@PageableDefault(size = 25) Pageable pageable) {
-        log.debug("Received find all question request");
-        Page<Question> results = finder.find(pageable);
-        log.debug("Completed find all question request");
-        return results;
-    }
+  @PostMapping("search")
+  public Page<Question> findQuestions(
+      @RequestBody FindQuestionRequest request,
+      @PageableDefault(size = 25) Pageable pageable) {
+    log.debug("Received find question request");
+    Page<Question> results = finder.find(request, pageable);
+    log.debug("Found {} questions", results.getTotalElements());
+    return results;
+  }
 
-    @PostMapping("search")
-    public Page<Question> findQuestions(
-            @RequestBody FindQuestionRequest request,
-            @PageableDefault(size = 25) Pageable pageable) {
-        log.debug("Received find question request");
-        Page<Question> results = finder.find(request, pageable);
-        log.debug("Found {} questions", results.getTotalElements());
-        return results;
-    }
+  @PostMapping("text")
+  @ResponseStatus(HttpStatus.CREATED)
+  public TextQuestion createTextQuestion(@RequestBody CreateTextQuestionRequest request) {
+    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+    return creator.create(userId, request);
+  }
 
-    @PostMapping("text")
-    @ResponseStatus(HttpStatus.CREATED)
-    public TextQuestion createTextQuestion(@RequestBody CreateTextQuestionRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return creator.create(userId, request);
-    }
+  @PostMapping("numeric")
+  @ResponseStatus(HttpStatus.CREATED)
+  public NumericQuestion createNumericQuestion(@RequestBody CreateNumericQuestionRequest request) {
+    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+    return creator.create(userId, request);
+  }
 
-    @PostMapping("numeric")
-    @ResponseStatus(HttpStatus.CREATED)
-    public NumericQuestion createNumericQuestion(@RequestBody CreateNumericQuestionRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return creator.create(userId, request);
-    }
+  @PostMapping("coded")
+  @ResponseStatus(HttpStatus.CREATED)
+  public CodedQuestion createCodedQuestion(@RequestBody CreateCodedQuestionRequest request) {
+    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+    return creator.create(userId, request);
+  }
 
-    @PostMapping("coded")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CodedQuestion createCodedQuestion(@RequestBody CreateCodedQuestionRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return creator.create(userId, request);
-    }
+  @PostMapping("date")
+  @ResponseStatus(HttpStatus.CREATED)
+  public DateQuestion createDateQuestion(@RequestBody CreateDateQuestionRequest request) {
+    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+    return creator.create(userId, request);
+  }
 
-    @PostMapping("date")
-    @ResponseStatus(HttpStatus.CREATED)
-    public DateQuestion createDateQuestion(@RequestBody CreateDateQuestionRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return creator.create(userId, request);
-    }
+  @PutMapping("{id}")
+  public Question updateQuestion(@PathVariable("id") Long id, @RequestBody UpdateQuestionRequest request) {
+    log.debug("Received update question request");
+    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+    Question question = updater.update(userId, id, request);
+    log.debug("Completed update question request");
+    return question;
+  }
 
-    @PutMapping("{id}")
-    public Question updateQuestion(@PathVariable("id") Long id, @RequestBody UpdateQuestionRequest request) {
-        log.debug("Received update question request");
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Question question = updater.update(userId, id, request);
-        log.debug("Completed update question request");
-        return question;
-    }
+  @GetMapping("{id}")
+  public GetQuestionResponse getQuestion(@PathVariable("id") Long id) {
+    log.debug("Receive get question request");
+    GetQuestionResponse question = finder.find(id);
+    log.debug("Found question");
+    return question;
+  }
 
-    @GetMapping("{id}")
-    public GetQuestionResponse getQuestion(@PathVariable("id") Long id) {
-        log.debug("Receive get question request");
-        GetQuestionResponse question = finder.find(id);
-        log.debug("Found question");
-        return question;
-    }
+  @PutMapping("{id}/status")
+  public Question setQuestionStatus(@PathVariable("id") Long id, @RequestBody QuestionStatusRequest request) {
+    log.debug("Received update question status request");
+    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+    Question question = updater.setStatus(userId, id, request.active());
+    log.debug("Successfully updated question status");
+    return question;
+  }
 
-    @PutMapping("{id}/status")
-    public Question setQuestionStatus(@PathVariable("id") Long id, @RequestBody QuestionStatusRequest request) {
-        log.debug("Received update question status request");
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Question question = updater.setStatus(userId, id, request.active());
-        log.debug("Successfully updated question status");
-        return question;
-    }
-
-    @GetMapping("/displayControlOptions")
-    public DisplayControlOptions getDisplayControlOptions() {
-        return questionManagementUtil.getDisplayControlOptions();
-    }
+  @GetMapping("/displayControlOptions")
+  public DisplayControlOptions getDisplayControlOptions() {
+    return questionManagementUtil.getDisplayControlOptions();
+  }
 
 }

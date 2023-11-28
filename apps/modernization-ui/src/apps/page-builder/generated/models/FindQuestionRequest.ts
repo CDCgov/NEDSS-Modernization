@@ -3,7 +3,6 @@
 /* eslint-disable */
 
 export type FindQuestionRequest = {
-    questionType?: string;
     search?: string;
 };
 

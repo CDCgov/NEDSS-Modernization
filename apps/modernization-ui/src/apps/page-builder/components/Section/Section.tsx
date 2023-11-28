@@ -8,7 +8,12 @@ import AddSectionModal from '../AddSection/AddSectionModal';
 import { useParams } from 'react-router-dom';
 import { MoreOptions } from '../MoreOptions/MoreOptions';
 
-export const SectionComponent = ({ section, onAddSection }: { section: PagesSection; onAddSection: () => void }) => {
+type Props = {
+    section: PagesSection;
+    onAddSection: () => void;
+    onShowAddQuestion?: (subsection: number) => void;
+};
+export const SectionComponent = ({ section, onAddSection, onShowAddQuestion }: Props) => {
     const [open, setOpen] = useState(true);
     const { pageId } = useParams();
     const addSectionModalRef = useRef<ModalRef>(null);
@@ -19,7 +24,7 @@ export const SectionComponent = ({ section, onAddSection }: { section: PagesSect
                 <div className="section__header">
                     <div className="section__header--left">
                         <h2>{section.name}</h2>
-                        <Counter count={section.subSections?.length || 0} />
+                        <Counter count={section.subSections?.length ?? 0} />
                     </div>
                     <div className="section__header--right">
                         <ModalToggleButton type="button" outline modalRef={addSectionModalRef} opener>
@@ -44,7 +49,15 @@ export const SectionComponent = ({ section, onAddSection }: { section: PagesSect
                     <div className="section__body">
                         {section.subSections?.map((subsection, i) => {
                             if (subsection.visible) {
-                                return <Subsection key={i} subsection={subsection} />;
+                                return (
+                                    <Subsection
+                                        key={i}
+                                        onShowAddQuestion={() =>
+                                            onShowAddQuestion ? onShowAddQuestion(subsection.id ?? -1) : {}
+                                        }
+                                        subsection={subsection}
+                                    />
+                                );
                             } else {
                                 return;
                             }

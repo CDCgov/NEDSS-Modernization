@@ -65,7 +65,7 @@ public class QuestionSearchSteps {
     @Given("I search for questions")
     public void i_search_for_questions() {
         try {
-            Page<Question> results = controller.findQuestions(new FindQuestionRequest("",""), PageRequest.ofSize(20));
+            Page<Question> results = controller.findQuestions(new FindQuestionRequest(""), PageRequest.ofSize(20));
             searchHolder.setQuestionResults(results);
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -103,7 +103,7 @@ public class QuestionSearchSteps {
                 throw new IllegalArgumentException("Invalid search type specified");
         }
         try {
-            Page<Question> results = controller.findQuestions(new FindQuestionRequest(search,"LOCAL"), PageRequest.ofSize(20));
+            Page<Question> results = controller.findQuestions(new FindQuestionRequest(search), PageRequest.ofSize(20));
             searchHolder.setQuestionResults(results);
             searchHolder.setSearchQuestion(searchQuestion);
         } catch (AccessDeniedException e) {

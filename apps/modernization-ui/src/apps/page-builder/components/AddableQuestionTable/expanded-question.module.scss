@@ -1,0 +1,38 @@
+@use 'styles/colors';
+
+.expandedQuestion {
+    padding: 1.5rem;
+
+    .buttonBar {
+        padding-bottom: 1.5rem;
+    }
+
+    .content {
+        display: flex;
+        padding: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-shrink: 0;
+        border-radius: 0.3125rem;
+        border: 1px solid colors.$base-lighter;
+
+        .fieldHeading {
+            color: colors.$base-black;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.4175rem;
+            width: 14rem;
+        }
+
+        .fieldValue {
+            color: colors.$base;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.4175rem;
+        }
+    }
+}

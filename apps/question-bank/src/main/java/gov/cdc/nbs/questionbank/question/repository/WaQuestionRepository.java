@@ -11,21 +11,20 @@ import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 
 public interface WaQuestionRepository extends JpaRepository<WaQuestion, Long> {
 
-    @Query("Select q from WaQuestion q WHERE q.questionNm=:questionNm OR q.questionIdentifier=:questionIdentifier OR q.userDefinedColumnNm=:userDefinedColumnNm OR q.rdbColumnNm=:rdbColumnNm")
-    public List<WaQuestion> findAllByUniqueFields(
-            @Param("questionNm") String questionNm,
-            @Param("questionIdentifier") String questionIdentifier,
-            @Param("userDefinedColumnNm") String userDefinedColumnNm,
-            @Param("rdbColumnNm") String rdbColumnNm);
+  @Query("Select q from WaQuestion q WHERE q.questionNm=:questionNm OR q.questionIdentifier=:questionIdentifier OR q.userDefinedColumnNm=:userDefinedColumnNm OR q.rdbColumnNm=:rdbColumnNm")
+  public List<WaQuestion> findAllByUniqueFields(
+      @Param("questionNm") String questionNm,
+      @Param("questionIdentifier") String questionIdentifier,
+      @Param("userDefinedColumnNm") String userDefinedColumnNm,
+      @Param("rdbColumnNm") String rdbColumnNm);
 
-    @Query("Select q from WaQuestion q WHERE (q.questionNm LIKE %:search% OR q.questionIdentifier LIKE %:search% OR q.questionLabel LIKE %:search% OR q.subGroupNm LIKE %:search% OR q.id =:searchId) AND q.questionType LIKE %:questionType%")
-    public Page<WaQuestion> findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(
-            @Param("search") String search,
-            @Param("searchId") Long id,
-            @Param("questionType") String questionType,
-            Pageable pageable);
+  @Query("Select q from WaQuestion q WHERE (q.questionNm LIKE %:search% OR q.questionIdentifier LIKE %:search% OR q.questionLabel LIKE %:search% OR q.subGroupNm LIKE %:search% OR q.id =:searchId)")
+  public Page<WaQuestion> findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(
+      @Param("search") String search,
+      @Param("searchId") Long id,
+      Pageable pageable);
 
-    @Modifying
-    @Query("Update WaQuestion SET data_type =:type WHERE id=:id")
-    public void setDataType(@Param("type") String type, @Param("id") Long id);
+  @Modifying
+  @Query("Update WaQuestion SET data_type =:type WHERE id=:id")
+  public void setDataType(@Param("type") String type, @Param("id") Long id);
 }

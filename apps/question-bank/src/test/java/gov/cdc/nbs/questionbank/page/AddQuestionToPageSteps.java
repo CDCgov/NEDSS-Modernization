@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.page;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -57,7 +58,7 @@ public class AddQuestionToPageSteps {
                 .filter(ui -> ui.getNbsUiComponentUid() == 1016l)
                 .findFirst()
                 .orElseThrow();
-        var request = new AddQuestionRequest(question.getId(), subsection.getId());
+        var request = new AddQuestionRequest(Collections.singletonList(question.getId()), subsection.getId());
         try {
             response = pageQuestionController.addQuestionToPage(page.getId(), request, user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
@@ -70,8 +71,8 @@ public class AddQuestionToPageSteps {
     @Then("the question is added to the page")
     public void the_question_is_added_to_the_page() {
         assertNull(exceptionHolder.getException());
-        assertNotNull(response.componentId());
-        WaUiMetadata metadata = repository.findById(response.componentId())
+        assertNotNull(response.componentIds());
+        WaUiMetadata metadata = repository.findById(response.componentIds().get(0))
                 .orElseThrow(() -> new RuntimeException("Failed to find inserted metadata"));
         assertEquals(5, metadata.getOrderNbr().intValue());
     }

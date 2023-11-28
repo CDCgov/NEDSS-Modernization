@@ -20,6 +20,7 @@ export class PageQuestionControllerService {
         authorization,
         page,
         request,
+        subsection,
     }: {
         authorization: string,
         /**
@@ -30,12 +31,17 @@ export class PageQuestionControllerService {
          * request
          */
         request: AddQuestionRequest,
+        /**
+         * subsection
+         */
+        subsection: number,
     }): CancelablePromise<AddQuestionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/',
+            url: '/nbs/page-builder/api/v1/pages/{page}/subsection/{subsection}/questions/',
             path: {
                 'page': page,
+                'subsection': subsection,
             },
             headers: {
                 'Authorization': authorization,

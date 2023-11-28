@@ -28,11 +28,10 @@ export type Header = {
 };
 
 export type TableBody = {
-    key?: number | string | undefined;
+    key?: number | string;
     checkbox?: boolean;
-    id: number | string | undefined | null;
+    id?: number | string | null;
     tableDetails: Cell[];
-    data?: any;
     expanded?: boolean;
     expandedViewComponent?: ReactNode;
     selectable?: boolean | (() => boolean);

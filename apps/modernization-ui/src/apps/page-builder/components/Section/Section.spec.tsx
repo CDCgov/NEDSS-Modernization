@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { PagesSection } from 'apps/page-builder/generated';
 import { SectionComponent } from './Section';
+import { PageProvider } from 'page';
 
 describe('when Section renders', () => {
     const section: PagesSection = {
@@ -24,7 +25,11 @@ describe('when Section renders', () => {
     };
     const mockFunction = jest.fn();
 
-    const { container } = render(<SectionComponent section={section} onAddSection={mockFunction} />);
+    const { container } = render(
+        <PageProvider>
+            <SectionComponent section={section} onAddSection={mockFunction} />
+        </PageProvider>
+    );
 
     it('should display the Section name', () => {
         const name = container.getElementsByTagName('h2');

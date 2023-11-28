@@ -1,13 +1,17 @@
-import { Counter } from '../Counter/Counter';
 import { Button, Icon } from '@trussworks/react-uswds';
-import { useState } from 'react';
-import './Subsection.scss';
-import { Question } from '../Question/Question';
 import { PagesSubSection } from 'apps/page-builder/generated';
-import { MoreOptions } from '../MoreOptions/MoreOptions';
 import { Icon as IconComponent } from 'components/Icon/Icon';
+import { useState } from 'react';
+import { Counter } from '../Counter/Counter';
+import { MoreOptions } from '../MoreOptions/MoreOptions';
+import { Question } from '../Question/Question';
+import './Subsection.scss';
 
-export const SubsectionComponent = ({ subsection }: { subsection: PagesSubSection }) => {
+type Props = {
+    subsection: PagesSubSection;
+    onShowAddQuestion?: () => void;
+};
+export const SubsectionComponent = ({ subsection, onShowAddQuestion }: Props) => {
     const [open, setOpen] = useState(true);
 
     return (
@@ -15,20 +19,20 @@ export const SubsectionComponent = ({ subsection }: { subsection: PagesSubSectio
             <div className="subsection__header">
                 <div className="subsection__header--left">
                     <h2>{subsection.name}</h2>
-                    <Counter count={subsection.questions?.length || 0} />
+                    <Counter count={subsection.questions?.length ?? 0} />
                 </div>
                 <div className="subsection__header--right">
-                    <Button type="button" outline>
+                    <Button type="button" outline onClick={onShowAddQuestion}>
                         Add question
                     </Button>
                     <MoreOptions header={<Icon.MoreVert size={4} />}>
-                        <Button type="button" onClick={() => console.log('BLAH')}>
+                        <Button type="button" onClick={() => {}}>
                             <Icon.Edit size={3} /> Edit Subsection
                         </Button>
-                        <Button type="button" onClick={() => console.log('BLAH')}>
+                        <Button type="button" onClick={() => {}}>
                             <IconComponent name={'group'} size={'s'} /> Group Subsection
                         </Button>
-                        <Button type="button" onClick={() => console.log('BLAH')}>
+                        <Button type="button" onClick={() => {}}>
                             <Icon.Delete size={3} /> Delete
                         </Button>
                     </MoreOptions>

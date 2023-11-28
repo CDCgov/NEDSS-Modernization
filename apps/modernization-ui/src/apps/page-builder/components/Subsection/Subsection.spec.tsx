@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { PagesSubSection } from 'apps/page-builder/generated';
 import { SubsectionComponent } from './Subsection';
+import { PageProvider } from 'page';
 
 describe('when Subsection renders', () => {
     const subsection: PagesSubSection = {
@@ -9,9 +10,12 @@ describe('when Subsection renders', () => {
         questions: [],
         visible: true
     };
-    const mockFunction = jest.fn();
 
-    const { container } = render(<SubsectionComponent subsection={subsection} />);
+    const { container } = render(
+        <PageProvider>
+            <SubsectionComponent subsection={subsection} />
+        </PageProvider>
+    );
 
     it('should display Subsection name', () => {
         const name = container.getElementsByTagName('h2');

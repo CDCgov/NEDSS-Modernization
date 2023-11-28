@@ -1,0 +1,52 @@
+@use 'styles/borders';
+@use 'styles/colors';
+
+.content {
+    padding: 0 1.5rem;
+    display: flex;
+    min-height: 100px;
+    flex-direction: column;
+    flex-shrink: 1;
+    flex-grow: 1;
+    overflow: hidden;
+    overflow-y: scroll;
+
+    .subHeading {
+        display: inline-flex;
+        padding: 1.5rem 0rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        flex-shrink: 0;
+
+        .helpText {
+            color: colors.$base-black;
+            text-align: center;
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+    }
+}
+
+.createNewNotification {
+    display: flex;
+    padding: 1.5rem 0rem;
+    margin-top: 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    align-self: stretch;
+    border-radius: 0.3125rem;
+    @extend %thin;
+
+    .message {
+        color: colors.$base-black;
+        text-align: center;
+        font-size: 1.375rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+}

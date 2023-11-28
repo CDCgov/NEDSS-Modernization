@@ -1,21 +1,12 @@
 /* eslint-disable camelcase */
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
-import {
-    CodedQuestion,
-    DateQuestion,
-    NumericQuestion,
-    PageQuestionControllerService,
-    PageSummary,
-    TextQuestion
-} from 'apps/page-builder/generated';
+import { CodedQuestion, DateQuestion, NumericQuestion, PageSummary, TextQuestion } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { UserContext } from '../../../../providers/UserContext';
-import { QuestionsContext } from '../../context/QuestionsContext';
 import { CreateQuestion } from '../../components/CreateQuestion/CreateQuestion';
+import { QuestionsContext } from '../../context/QuestionsContext';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
 
@@ -43,13 +34,9 @@ type Props = {
 };
 
 export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
-    const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(QuestionsContext);
-
-    const { state } = useContext(UserContext);
-    const authorization = `Bearer ${state.getToken()}`;
     const asTableRow = (page: Question): TableBody => ({
         id: page.id,
         key: page.id,
@@ -124,25 +111,6 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
         }
     };
 
-    const handleAddQsntoPage = async () => {
-        // TODO need to add logic for find orderNumber and Id
-        const id: number = 0;
-        const request = {
-            orderNumber: 1,
-            questionId: id
-        };
-
-        PageQuestionControllerService.addQuestionToPageUsingPost({
-            authorization,
-            page: id,
-            request
-        }).then((response: any) => {
-            setSelectedQuestion({});
-            showAlert({ type: 'success', header: 'Add', message: 'Add Question successfully on page' });
-            return response;
-        });
-    };
-
     const footerActionBtn = (
         <div className="question-action-btn">
             <ModalToggleButton
@@ -157,7 +125,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
                 className="submit-btn"
                 modalRef={qtnModalRef}
                 type="button"
-                onClick={handleAddQsntoPage}
+                onClick={() => {}}
                 disabled={!Object.keys(selectedQuestion).length}>
                 Add to page
             </ModalToggleButton>

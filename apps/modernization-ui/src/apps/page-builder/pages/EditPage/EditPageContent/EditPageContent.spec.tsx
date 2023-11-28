@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { PagesTab } from 'apps/page-builder/generated';
 import { EditPageContentComponent } from './EditPageContent';
+import { PageProvider } from 'page';
 
 describe('when EditPageContent renders', () => {
     const content: PagesTab = {
@@ -25,7 +26,11 @@ describe('when EditPageContent renders', () => {
     const mockFunction = jest.fn();
 
     it('should display two sections', () => {
-        const { container } = render(<EditPageContentComponent content={content} onAddSection={mockFunction} />);
+        const { container } = render(
+            <PageProvider>
+                <EditPageContentComponent content={content} onContentChange={mockFunction} />
+            </PageProvider>
+        );
         const sections = container.getElementsByClassName('section');
 
         expect(sections.length).toEqual(2);

@@ -1,0 +1,11 @@
+@use 'styles/borders';
+@use 'styles/colors';
+
+.buttonBar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    flex-shrink: 0;
+    background: colors.$base-white;
+    @extend %thin;
+}

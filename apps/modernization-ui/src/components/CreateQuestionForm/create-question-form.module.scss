@@ -1,0 +1,35 @@
+@use 'styles/colors';
+
+.form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+
+    .heading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 2rem;
+        flex-direction: column;
+
+        color: colors.$base-black;
+        text-align: center;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+    .subtext {
+        color: colors.$base;
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.4175rem;
+    }
+
+    .formFields {
+        width: 30rem;
+    }
+}

@@ -56,10 +56,10 @@ public class QuestionCommandMother {
                 DateMask.DATE,
                 true,
                 new QuestionCommand.QuestionData(
-                        CodeSet.LOCAL,
+                        CodeSet.PHIN,
                         "TEST9900002",
                         "Date Question Unique Name",
-                        "ADMN",
+                        "INV",
                         "Date question description",
                         "Date question label",
                         "Date question tooltip",

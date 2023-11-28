@@ -1,6 +1,6 @@
 import { Button, Icon, ModalRef, Tag } from '@trussworks/react-uswds';
 import { Template } from 'apps/page-builder/generated';
-import { useImportTemplate } from 'apps/page-builder/services/useImportTemplate';
+import { useImportTemplate } from 'apps/page-builder/hooks/api/useImportTemplate';
 import { Spinner } from 'components/Spinner/Spinner';
 import React, { useEffect, useState } from 'react';
 import { AlertBanner } from '../AlertBanner/AlertBanner';
