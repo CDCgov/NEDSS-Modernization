@@ -1,4 +1,4 @@
-name: Release modernization-api image
+name: Container Build and Deployment Preparation
 on:
   workflow_dispatch:
     inputs:
