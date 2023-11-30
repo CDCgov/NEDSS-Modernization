@@ -15,7 +15,7 @@ on:
 
 
 jobs:
-  call-build-microservice-container-workflow:
+  build-nbs-gateway-release-candidate:
     name: Build NBS Gateway Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
@@ -29,7 +29,7 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  call-update-helm:
+  prepare-nbs-gateway-release-candidate:
     name: Prepare NBS Gateway Release Candidate Deployment
     needs: call-build-microservice-container-workflow
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
@@ -41,7 +41,7 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  call-build-microservice-container-workflow:
+  build-modernization-api-release-candidate:
     name: Build Modernization API Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
@@ -55,7 +55,7 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  call-update-helm:
+  prepare-modernization-api-release-candidate:
     name: Prepare Modernization API Candidate Deployment
     needs: call-build-microservice-container-workflow
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
@@ -67,7 +67,7 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}      
-  call-build-microservice-container-workflow:
+  build-elasticsearch-release-candidate:
     name: Build Elasticsearch Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
@@ -81,7 +81,7 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  call-update-helm:
+  prepare-elasticsearch-release-candidate:
     name: Prepare Elasticsearch Release Candidate Deployment
     needs: call-build-microservice-container-workflow
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
@@ -93,7 +93,7 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}        
-  call-build-microservice-container-workflow:
+  build-nifi-release-candidate:
     name: Build NiFi Release Candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
     with:
@@ -107,7 +107,7 @@ jobs:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
-  call-update-helm:
+  prepare-nifi-release-candidate:
     name: Prepare NiFi Release Candidate Deployment
     needs: call-build-microservice-container-workflow
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
