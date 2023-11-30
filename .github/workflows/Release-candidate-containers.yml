@@ -87,7 +87,7 @@ jobs:
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
     with:
       microservice_name: elasticsearch
-      values_file_with_path: charts/elasticsearch/values_${{inputs.environment}}.yaml
+      values_file_with_path: charts/elasticsearch-efs/values_${{inputs.environment}}.yaml
       new_image_tag: ${{ needs.call-build-microservice-container-workflow.outputs.output_image_tag }}
     secrets:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
@@ -113,7 +113,7 @@ jobs:
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
     with:
       microservice_name: nifi
-      values_file_with_path: charts/nifi/values_${{inputs.environment}}.yaml
+      values_file_with_path: charts/nifi-efs/values_${{inputs.environment}}.yaml
       new_image_tag: ${{ needs.call-build-microservice-container-workflow.outputs.output_image_tag }}
     secrets:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
