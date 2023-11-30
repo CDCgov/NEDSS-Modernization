@@ -6,7 +6,7 @@ on:
           description: Metadata to append to application version (A setting of NONE, indicates all metadata to be stripped). Ex. if version=1.0.0, and classifier=SNAPSHOT result will be 1.0.0-SNAPSHOT.<githubsha>. If version=1.0.0, and classifier=NONE result will be 1.0.0.
           required: true
           type: string
-          default: NONE
+          default: release-7.<minor>.<patch>
         environment:
           type: choice
           required: true
@@ -31,7 +31,7 @@ jobs:
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   prepare-nbs-gateway-release-candidate:
     name: Prepare NBS Gateway Release Candidate Deployment
-    needs: call-build-microservice-container-workflow
+    needs: build-nbs-gateway-release-candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
     with:
       microservice_name: nbs-gateway
@@ -57,7 +57,7 @@ jobs:
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   prepare-modernization-api-release-candidate:
     name: Prepare Modernization API Candidate Deployment
-    needs: call-build-microservice-container-workflow
+    needs: build-modernization-api-release-candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
     with:
       microservice_name: modernization-api
@@ -83,7 +83,7 @@ jobs:
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   prepare-elasticsearch-release-candidate:
     name: Prepare Elasticsearch Release Candidate Deployment
-    needs: call-build-microservice-container-workflow
+    needs: build-elasticsearch-release-candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
     with:
       microservice_name: elasticsearch
@@ -109,7 +109,7 @@ jobs:
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   prepare-nifi-release-candidate:
     name: Prepare NiFi Release Candidate Deployment
-    needs: call-build-microservice-container-workflow
+    needs: build-nifi-release-candidate
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
     with:
       microservice_name: nifi
