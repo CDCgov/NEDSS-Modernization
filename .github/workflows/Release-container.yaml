@@ -1,4 +1,4 @@
-name: Release container
+name: Container Build and Deployment Preparation
 on:
   workflow_dispatch:
     inputs:
