@@ -71,14 +71,16 @@ public class RuleRequestMother {
     }
 
     public static CreateRuleRequest EnableRuleRequest() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
         List<String> sourceValueId = new ArrayList<>();
         List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("Y");
-        sourceValueText.add("Yes");
-        List<String> targetValuesList = new ArrayList<>();
-        targetValuesList.add("Weeks");
-        List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("NBS128");
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
         List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         CreateRuleRequest.SourceValues sourceDetails =
                 new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
@@ -86,9 +88,9 @@ public class RuleRequestMother {
 
         return new CreateRuleRequest(
                 "Enable",
-                "If the Patient Pregnant(INV178) is Yes, enable Weeks (NBS128)",
-                "Is the patient pregnant?",
-                "INV178",
+                "Enable",
+                "Current Sex",
+                "DEM113",
                 sourceValues,
                 false,
                 "=",
@@ -122,16 +124,16 @@ public class RuleRequestMother {
     }
 
     public static CreateRuleRequest HideRuleRequest() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
         List<String> sourceValueId = new ArrayList<>();
         List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("D");
-        sourceValueText.add("Days");
-        List<String> targetValuesList = new ArrayList<>();
-        targetValuesList.add("Additional Gender");
-        //        targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("NBS213");
-        //        targetIdentifiers.add("test234");
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
         List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         CreateRuleRequest.SourceValues sourceDetails =
                 new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
@@ -139,32 +141,44 @@ public class RuleRequestMother {
 
         return new CreateRuleRequest(
                 "Hide",
-                "Testing hide Function",
-                "Age at Onset Units",
-                "INV144",
+                "Testing hid Function",
+                "Current Sex",
+                "DEM113",
                 sourceValues,
                 false,
                 "=",
-                "QUESTION",
+                "Question",
                 targetValuesList,
                 targetIdentifiers);
     }
 
-    public static CreateRuleRequest RequireIfRuleTestData() {
+    public static CreateRuleRequest RequireIfRuleRequest() {
         List<String> targetValuesList = new ArrayList<>();
-        targetValuesList.add("Named");
+        targetValuesList.add("Age at Onset");
         List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("CON143");
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+        sourceValueId.add("F");
+        sourceValueText.add("Female");
+
+        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
                 "Require If",
-                "If the Naming Between question is answered, require the Named dropdown",
-                "Relationship with Patient/Other infected Patient?",
-                "CON141",
-                null,
-                true,
+                "Require If",
+                "Current Sex",
+                "DEM113",
+                sourceValues,
+                false,
                 "=",
-                null,
+                "Question",
                 targetValuesList,
                 targetIdentifiers);
     }
@@ -193,17 +207,15 @@ public class RuleRequestMother {
 
     public static CreateRuleRequest RequireIfRuleTestDataAnySourceIsTrue() {
         List<String> targetValuesList = new ArrayList<>();
-        targetValuesList.add("Admission Date");
-        targetValuesList.add("Discharge Date");
+        targetValuesList.add("Age at Onset");
         List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("test123");
-        targetIdentifiers.add("test234");
+        targetIdentifiers.add("INV143");
 
         return new CreateRuleRequest(
                 "Require If",
-                "require if ",
-                "test",
-                "INV123",
+                "Require If",
+                "Current Sex",
+                "DEM113",
                 null,
                 true,
                 "=",
@@ -214,16 +226,15 @@ public class RuleRequestMother {
 
     public static CreateRuleRequest HideRuleTestDataAnySourceIsTrue() {
         List<String> targetValuesList = new ArrayList<>();
-        targetValuesList.add("Admission Date");
-        targetValuesList.add("Discharge Date");
+        targetValuesList.add("Age at Onset");
         List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("test123");
-        targetIdentifiers.add("test234");
+        targetIdentifiers.add("INV143");
+
         return new CreateRuleRequest(
                 "Hide",
                 "Hide",
-                "test",
-                "INV123",
+                "Current Sex",
+                "DEM113",
                 null,
                 true,
                 "=",
@@ -234,17 +245,15 @@ public class RuleRequestMother {
 
     public static CreateRuleRequest EnableRuleTestDataAnySourceIsTrue() {
         List<String> targetValuesList = new ArrayList<>();
-        targetValuesList.add("Admission Date");
-        targetValuesList.add("Discharge Date");
+        targetValuesList.add("Age at Onset");
         List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("test123");
-        targetIdentifiers.add("test234");
+        targetIdentifiers.add("INV143");
 
         return new CreateRuleRequest(
                 "Enable",
                 "Enable",
-                "test",
-                "INV123",
+                "Current Sex",
+                "DEM113",
                 null,
                 true,
                 "=",
@@ -255,16 +264,14 @@ public class RuleRequestMother {
 
     public static CreateRuleRequest DisableRuleTestDataAnySourceIsTrue() {
         List<String> targetValuesList = new ArrayList<>();
-        targetValuesList.add("Admission Date");
-        targetValuesList.add("Discharge Date");
+        targetValuesList.add("Age at Onset");
         List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("test123");
-        targetIdentifiers.add("test234");
+        targetIdentifiers.add("INV143");
         return new CreateRuleRequest(
                 "Disable",
                 "Disable",
-                "test",
-                "INV123",
+                "Current Sex",
+                "DEM113",
                 null,
                 true,
                 "=",
@@ -275,20 +282,25 @@ public class RuleRequestMother {
 
     public static CreateRuleRequest UnhideRuleRequest() {
         List<String> targetValuesList = new ArrayList<>();
-        targetValuesList.add("Admission Date");
-        targetValuesList.add("Discharge Date");
+        targetValuesList.add("Age at Onset");
         List<String> targetIdentifiers = new ArrayList<>();
-        targetIdentifiers.add("test123");
-        targetIdentifiers.add("test234");
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
         List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
-        CreateRuleRequest.SourceValues sourceDetails = testData();
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
         sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
                 "Unhide",
                 "Unhide",
-                "test",
-                "INV123",
+                "Current Sex",
+                "DEM113",
                 sourceValues,
                 false,
                 "<>",

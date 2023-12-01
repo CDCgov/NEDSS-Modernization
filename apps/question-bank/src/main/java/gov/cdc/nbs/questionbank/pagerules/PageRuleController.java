@@ -49,11 +49,8 @@ public class PageRuleController {
             @RequestBody CreateRuleRequest request,
             @PathVariable Long page,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-        log.info("Request for Business Rule Creation");
         try {
-            CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(details.getId(), request, page);
-            log.debug("Successfully added business rule with Id: {}", ruleResponse.ruleId());
-            return ruleResponse;
+            return pageRuleCreator.createPageRule(details.getId(), request, page);
         } catch (RuleException e) {
             return new CreateRuleResponse(null, "Error in Creating a Rules");
         }

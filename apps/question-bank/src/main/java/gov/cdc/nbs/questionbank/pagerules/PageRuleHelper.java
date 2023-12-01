@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +35,7 @@ public class PageRuleHelper {
 
     public RuleData createRuleData(
             CreateRuleRequest request,
-            WaRuleMetadata ruleMetadata) {
+            long ruleMetadata) {
         SourceValuesHelper sourceValuesHelper = sourceValuesHelper(request);
         TargetValuesHelper targetValuesHelper = targetValuesHelper(request);
         RuleExpressionHelper expressionValues = null;
@@ -74,11 +73,11 @@ public class PageRuleHelper {
         }
     }
 
-    public RuleExpressionHelper unHideFunction(
+    private RuleExpressionHelper unHideFunction(
             CreateRuleRequest request,
             SourceValuesHelper sourceValuesHelper,
             TargetValuesHelper targetValuesHelper,
-            WaRuleMetadata ruleMetadata) {
+            long ruleMetadata) {
         String ruleExpression;
         List<String> errorMessageList = new ArrayList<>();
         String sourceIdentifier = sourceValuesHelper.sourceIdentifiers();
@@ -157,7 +156,7 @@ public class PageRuleHelper {
             CreateRuleRequest request,
             SourceValuesHelper sourceValuesHelper,
             TargetValuesHelper targetValuesHelper,
-            WaRuleMetadata ruleMetadata) {
+            long ruleMetadata) {
         List<String> errorMessageList = new ArrayList<>();
         String sourceIdentifier = sourceValuesHelper.sourceIdentifiers();
         String sourceText = sourceValuesHelper.sourceText();
@@ -190,11 +189,11 @@ public class PageRuleHelper {
                         jsFunctionNameHelper.jsFunctionName()));
     }
 
-    public RuleExpressionHelper enableOrDisableFunction(
+    private RuleExpressionHelper enableOrDisableFunction(
             CreateRuleRequest request,
             SourceValuesHelper sourceValuesHelper,
             TargetValuesHelper targetValuesHelper,
-            WaRuleMetadata ruleMetadata) {
+            long ruleMetadata) {
         String ruleExpression;
         List<String> errorMessageList = new ArrayList<>();
         String sourceIdentifier = sourceValuesHelper.sourceIdentifiers();
@@ -256,11 +255,11 @@ public class PageRuleHelper {
                         jsFunctionNameHelper.jsFunctionName()));
     }
 
-    public RuleExpressionHelper requireIfFunction(
+    private RuleExpressionHelper requireIfFunction(
             CreateRuleRequest request,
             SourceValuesHelper sourceValuesHelper,
             TargetValuesHelper targetValuesHelper,
-            WaRuleMetadata ruleMetadata) {
+            long ruleMetadata) {
         String ruleExpression;
         List<String> errorMessageList = new ArrayList<>();
         String sourceIdentifier = sourceValuesHelper.sourceIdentifiers();
@@ -323,12 +322,12 @@ public class PageRuleHelper {
             CreateRuleRequest request,
             SourceValuesHelper sourceValuesHelper,
             TargetValuesHelper targetValuesHelper,
-            WaRuleMetadata ruleMetadata) {
+            long ruleMetadata) {
         StringBuilder stringBuffer = new StringBuilder();
         StringBuilder firstSB = new StringBuilder();
         StringBuilder secondSB = new StringBuilder();
         String sourceQuestionIdentifier = request.sourceIdentifier();
-        String jsFunctionName = "ruleDComp" + sourceQuestionIdentifier + ruleMetadata.getId();
+        String jsFunctionName = "ruleDComp" + sourceQuestionIdentifier + ruleMetadata;
         stringBuffer.append(FUNCTION + jsFunctionName + "() {\n");
         stringBuffer.append("    var i = 0;\n    var errorElts = new Array(); \n    var errorMsgs = new Array(); \n");
         firstSB.append("\n if ((getElementByIdOrByName(\"").append(sourceValuesHelper.sourceIdentifiers())
@@ -382,14 +381,12 @@ public class PageRuleHelper {
         return new JSFunctionNameHelper(stringBuffer.toString(), jsFunctionName + "()");
     }
 
-
-
     public JSFunctionNameHelper jsForEnableAndDisable(
             CreateRuleRequest request,
             SourceValuesHelper sourceValuesHelper,
-            WaRuleMetadata ruleMetadata) {
+            long ruleMetadata) {
         StringBuilder builder = new StringBuilder();
-        String functionName = "ruleEnDis" + sourceValuesHelper.sourceIdentifiers() + ruleMetadata.getId();
+        String functionName = "ruleEnDis" + sourceValuesHelper.sourceIdentifiers() + ruleMetadata;
         builder.append(FUNCTION).append(functionName).append(ACTION_1);
         builder.append("\n var foo = [];\n");
         builder.append(DOLLARCLOSING).append(request.sourceIdentifier()).append(SELECTED);
@@ -413,6 +410,7 @@ public class PageRuleHelper {
     private StringBuilder firstPartForEnDs(CreateRuleRequest request, SourceValuesHelper sourceValuesHelper,
             StringBuilder stringBuilder) {
         String sourceValues = sourceValuesHelper.sourceValueIds();
+        String sourceValuesText = sourceValuesHelper.sourceValueText();
         if (sourceValues == null) {
             log.info("Any SourceValue is true for this request");
             sourceValues = ",";
@@ -421,11 +419,13 @@ public class PageRuleHelper {
         if (request.anySourceValue()) {
             stringBuilder.append("if(foo.length>0 && foo[0] != '') {\n"); //anything selected
         } else {
+            List<String> sourceValueTextList = Arrays.asList(sourceValuesText.split(","));
             stringBuilder.append(IF);
             for (int i = 0; i < sourceValueList.size(); i++) {
                 String sourceId = sourceValueList.get(i);
+                String sourceValueText = sourceValueTextList.get(i);
                 stringBuilder.append(ARRAY).append(sourceId).append("',foo) > -1)");
-                stringBuilder.append(" || ($j.inArray('").append(sourceId)
+                stringBuilder.append(" || ($j.inArray('").append(sourceValueText)
                         .append("'.replace(/^\\s+|\\s+$/g,''),foo) > -1)");//added for the business rule view
                 try {
                     sourceValueList.get(i + 1);
@@ -465,11 +465,11 @@ public class PageRuleHelper {
         return stringBuilder;
     }
 
-    public RuleExpressionHelper hideFunction(
+    private RuleExpressionHelper hideFunction(
             CreateRuleRequest request,
             SourceValuesHelper sourceValuesHelper,
             TargetValuesHelper targetValuesHelper,
-            WaRuleMetadata ruleMetadata) {
+            long ruleMetadata) {
         String ruleExpression;
         List<String> errorMessageList = new ArrayList<>();
         String sourceIdentifier = sourceValuesHelper.sourceIdentifiers();
@@ -527,9 +527,9 @@ public class PageRuleHelper {
     public JSFunctionNameHelper requireIfJsFunction(
             CreateRuleRequest request,
             SourceValuesHelper sourceValuesHelper,
-            WaRuleMetadata ruleMetadata,
+            long ruleMetadata,
             TargetValuesHelper targetValuesHelper) {
-        String functionName = "ruleRequireIf" + request.sourceIdentifier() + ruleMetadata.getId();
+        String functionName = "ruleRequireIf" + request.sourceIdentifier() + ruleMetadata;
         StringBuilder buffer = new StringBuilder();
         buffer.append(FUNCTION + functionName + ACTION_1);
         buffer.append("\n var foo = [];\n");
@@ -537,15 +537,23 @@ public class PageRuleHelper {
         buffer.append("\n foo[i] = $j(selected).val();\n");
         buffer.append(LINESEPERATOR_PARANTHESIS);
         if (request.sourceIdentifier() != null) {
-
-            String sourceValueText = sourceValuesHelper.sourceValueText();
-
             if (request.anySourceValue()) {
                 buffer.append("if(foo.length>0 && foo[0] != '') {\n");
             } else {
+                List<String> sourceIDs = Arrays.asList(sourceValuesHelper.sourceValueIds().split(","));
+                String sourceValueID = sourceValuesHelper.sourceValueIds();
                 buffer.append("if(foo.length==0) return;\n");
                 buffer.append(IF);
-                buffer.append(ARRAY).append(sourceValueText.toUpperCase(), 0, 3).append("',foo) > -1)");
+                if (sourceIDs.size() > 1) {
+                    buffer.append(ARRAY).append(sourceIDs.get(0)).append("',foo) > -1)");
+                    for (int counter = 1; counter < sourceIDs.size(); counter++) {
+                        buffer.append(" || ");
+                        buffer.append(ARRAY).append(sourceIDs.get(counter)).append("',foo) > -1)");
+                    }
+                } else {
+                    buffer.append(ARRAY).append(sourceValueID).append("',foo) > -1)");
+
+                }
                 buffer.append("){\n");
             }
             String secondPart = frameSecondPartOfRequireIf(request, targetValuesHelper);
@@ -578,7 +586,7 @@ public class PageRuleHelper {
     public JSFunctionNameHelper jsForHideAndUnhide(
             CreateRuleRequest request,
             SourceValuesHelper sourceValuesHelper,
-            WaRuleMetadata ruleMetadata) {
+            long ruleMetadata) {
         String sourceText = sourceValuesHelper.sourceValueText();
         if (sourceText == null) {
             log.info("Any SourceValue is true for this request");
@@ -586,7 +594,7 @@ public class PageRuleHelper {
         }
         List<String> sourceValueTextList = Arrays.asList(sourceText.split(","));
         StringBuilder stringBuilder = new StringBuilder();
-        String functionName = "ruleHideUnh" + request.sourceIdentifier() + ruleMetadata.getId();
+        String functionName = "ruleHideUnh" + request.sourceIdentifier() + ruleMetadata;
         stringBuilder.append(FUNCTION).append(functionName).append(ACTION_1);
         ruleLeftAndRightInvestigation(request, stringBuilder, "", sourceValueTextList);
         ruleLeftAndRightInvestigation(request, stringBuilder, "_2", sourceValueTextList);

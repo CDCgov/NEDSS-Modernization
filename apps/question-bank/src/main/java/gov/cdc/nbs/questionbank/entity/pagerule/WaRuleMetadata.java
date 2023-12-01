@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import gov.cdc.nbs.questionbank.pagerules.command.PageRuleCommand;
-import gov.cdc.nbs.questionbank.pagerules.command.PageRuleCommand.AddPageRule;
 import java.time.Instant;
 
 @NoArgsConstructor
@@ -17,7 +16,6 @@ import java.time.Instant;
 @Table(name = "WA_rule_metadata", catalog = "NBS_ODSE")
 public class WaRuleMetadata {
     private static final String ACTIVE = "ACTIVE";
-
 
     @Id
     @Column(name = "wa_rule_metadata_uid", nullable = false)
@@ -82,7 +80,7 @@ public class WaRuleMetadata {
     private String targetType;
 
 
-    public void addPageRule(PageRuleCommand.AddPageRule command) {
+    public WaRuleMetadata(PageRuleCommand.AddPageRule command) {
         this.ruleCd = command.ruleRequest().ruleFunction();
         this.ruleDescText = command.ruleRequest().ruleDescription();
         this.sourceValues = command.ruleData().sourceValues();
@@ -101,6 +99,7 @@ public class WaRuleMetadata {
         this.jsFunctionName = command.ruleData().jsFunctionNameHelper().jsFunctionName();
         this.waTemplateUid = command.page();
         this.ruleExpression = command.ruleData().ruleExpression();
+        this.userRuleId = "Rule"+this.id;
     }
 
 }
