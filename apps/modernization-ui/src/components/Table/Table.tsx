@@ -1,4 +1,4 @@
-import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
+import { Table, Pagination, Checkbox, Button, Icon } from '@trussworks/react-uswds';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
@@ -9,6 +9,7 @@ import { TableHeader } from './TableHeader';
 import classNames from 'classnames';
 import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
 import { Column, resolveColumns } from './resolveColumns';
+import { Patient } from 'pages/patient/profile';
 
 type SelectionMode = 'select' | 'deselect';
 
@@ -19,6 +20,7 @@ type OldSelectionHandler = (event: ChangeEvent<HTMLInputElement>, item: any) => 
 export type Cell = {
     id: string | number;
     title: ReactNode | ReactNode[] | string;
+    actions?: any;
 };
 
 export type Header = {
@@ -56,6 +58,8 @@ export type Props = {
     handleSelected?: OldSelectionHandler;
     isLoading?: boolean;
     contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates';
+    patient?: Patient | undefined;
+    setIndex?: (index: number) => void;
 };
 
 export const TableComponent = ({
@@ -75,7 +79,9 @@ export const TableComponent = ({
     selectable = false,
     handleSelected,
     isLoading = false,
-    contextName
+    contextName,
+    patient,
+    setIndex
 }: Props) => {
     const sorting = useTableSorting({ enabled: tableBody && tableBody.length > 1, onSort: sortData });
 
@@ -126,7 +132,25 @@ export const TableComponent = ({
                             return (
                                 <td className={className} key={column}>
                                     {detail.title ? (
-                                        <span className={'table-span'}>{detail.title}</span>
+                                        <>
+                                            {detail.title === 'actions' && (
+                                                <div className="table-span">
+                                                    <Button
+                                                        type="button"
+                                                        unstyled
+                                                        disabled={patient?.status !== 'ACTIVE'}
+                                                        onClick={() => {
+                                                            setIndex?.(index);
+                                                        }}>
+                                                        <Icon.MoreHoriz className="font-sans-lg" />
+                                                    </Button>
+                                                    {detail?.actions}
+                                                </div>
+                                            )}
+                                            {detail.title !== 'actions' && (
+                                                <span className={'table-span'}>{detail.title}</span>
+                                            )}
+                                        </>
                                     ) : (
                                         <NoData key={column} className={className} />
                                     )}

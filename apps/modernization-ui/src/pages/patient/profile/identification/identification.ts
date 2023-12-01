@@ -6,3 +6,11 @@ export type IdentificationEntry = {
     state: string | null;
     sequence?: number;
 };
+
+export enum Headers {
+    AsOf = 'As of',
+    Type = 'Type',
+    Authority = 'Authority',
+    Value = 'Value',
+    Actions = 'Actions'
+}
