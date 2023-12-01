@@ -18,6 +18,7 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSubsection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -522,6 +523,33 @@ public class WaUiMetadata {
 
   private void setVisible(boolean visible) {
     this.displayInd = visible ? "T" : "F";
+  }
+
+  public void update(PageContentCommand.GroupSubsection command) {
+    setBlockNm(command.blockName());
+    updated(command);
+  }
+
+  public void updateQuestionBatch(PageContentCommand.GroupSubsection command) {
+    setBlockNm(command.blockName());
+    GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst().get();
+    setBatchTableAppearIndCd(batch.batchTableAppearIndCd());
+    setBatchTableHeader(batch.batchTableHeader());
+    setBatchTableColumnWidth(batch.batchTableColumnWidth());
+    updated(command);
+  }
+
+  public void update(PageContentCommand.UnGroupSubsection command) {
+    setBlockNm(null);
+    updated(command);
+  }
+
+  public void updateQuestionBatch(PageContentCommand.UnGroupSubsection command) {
+    setBlockNm(null);
+    setBatchTableAppearIndCd(null);
+    setBatchTableHeader(null);
+    setBatchTableColumnWidth(null);
+    updated(command);
   }
 
   @Override
