@@ -1,6 +1,9 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
 
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectionRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,14 +28,18 @@ public class SubSectionController {
     private final SubSectionCreator creator;
     private final SubSectionUpdater updater;
     private final SubSectionDeleter deleter;
+    private final SubSectionGrouper grouper;
 
     public SubSectionController(
             final SubSectionCreator createSubSectionService,
             final SubSectionDeleter deleter,
-            final SubSectionUpdater updater) {
+            final SubSectionUpdater updater,
+            final SubSectionGrouper grouper) {
+
         this.deleter = deleter;
         this.updater = updater;
         this.creator = createSubSectionService;
+        this.grouper = grouper;
     }
 
     @PostMapping
@@ -60,5 +67,22 @@ public class SubSectionController {
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         return updater.update(page, subSectionId, request, details.getId());
     }
+
+    @PostMapping("/group")
+    public ResponseEntity<String> groupSubSection(
+            @PathVariable("page") Long page,
+            @RequestBody GroupSubSectionRequest request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        return grouper.group(page, request, details.getId());
+    }
+
+    @PostMapping("/un-group")
+    public ResponseEntity<String> unGroupSubSection(
+            @PathVariable("page") Long page,
+            @RequestBody UnGroupSubSectionRequest request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        return grouper.unGroup(page, request, details.getId());
+    }
+
 
 }
