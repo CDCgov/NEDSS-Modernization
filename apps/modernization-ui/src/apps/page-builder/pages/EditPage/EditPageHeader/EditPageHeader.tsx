@@ -3,7 +3,7 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { PagesResponse } from 'apps/page-builder/generated';
 import { SaveTemplates } from 'apps/page-builder/components/SaveTemplate/SaveTemplate';
-import { LinkButton } from 'components/LinkButton';
+import { LinkButton } from 'components/button';
 import './EditPageHeader.scss';
 
 type PageProps = {

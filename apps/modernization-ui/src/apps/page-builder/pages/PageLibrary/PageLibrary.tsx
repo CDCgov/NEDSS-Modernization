@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@trussworks/react-uswds';
 import { authorization } from 'authorization';
 import { PageProvider } from 'page';
 import { SortingProvider, useSorting } from 'sorting';
@@ -18,6 +16,7 @@ import { PageLibraryTable } from './table/PageLibraryTable';
 import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 
 import styles from './page-library.module.scss';
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 
 type PageLibraryProps = {
     pageSize?: number;
@@ -34,18 +33,12 @@ const PageLibrary = (props?: PageLibraryProps) => {
 };
 
 const PageLibraryContent = () => {
-    const navigate = useNavigate();
     const { sortBy } = useSorting();
 
     const { pages, search, filter } = usePageSummarySearch();
     const { properties } = usePageLibraryProperties();
 
     const [filters, setFilters] = useState<Filter[]>([]);
-
-    const handleAddnew = () => {
-        // this should be a NavLinkButton
-        navigate(`/page-builder/add/page`);
-    };
 
     const handleFilter = (filters: Filter[]) => {
         setFilters(filters);
@@ -59,9 +52,7 @@ const PageLibraryContent = () => {
                 <section className={styles.library}>
                     <header>
                         <h2>Page library</h2>
-                        <Button type="button" onClick={handleAddnew}>
-                            Create new page
-                        </Button>
+                        <NavLinkButton to={'/page-builder/add/page'}>Create new page</NavLinkButton>
                     </header>
                     <PageLibraryMenu
                         properties={properties}
