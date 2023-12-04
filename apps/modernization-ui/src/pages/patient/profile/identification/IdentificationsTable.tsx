@@ -10,15 +10,7 @@ import {
     useDeletePatientIdentificationMutation,
     useUpdatePatientIdentificationMutation
 } from 'generated/graphql/schema';
-import {
-    Comparator,
-    Direction,
-    descending,
-    sortByAlpha,
-    sortByDate,
-    sortByNestedProperty,
-    withDirection
-} from 'sorting/Sort';
+import { Direction } from 'sorting/Sort';
 import {
     PatientIdentificationResult,
     useFindPatientProfileIdentifications
@@ -36,6 +28,7 @@ import { orNull } from 'utils';
 import { Patient } from '../Patient';
 import { TableBody, TableComponent } from 'components/Table';
 import { transform } from './identificationTransformer';
+import { sort } from './identificationSorter';
 
 const asEntry = (identification: PatientIdentification): IdentificationEntry => ({
     patient: identification.patient,
@@ -47,10 +40,10 @@ const asEntry = (identification: PatientIdentification): IdentificationEntry => 
 });
 
 const asDetail = (data: PatientIdentification): Detail[] => [
-    { name: 'As of', value: internalizeDate(data.asOf) },
-    { name: 'Type', value: maybeDescription(data.type) },
-    { name: 'Authority', value: maybeDescription(data.authority) },
-    { name: 'Value', value: data.value }
+    { name: Headers.AsOf, value: internalizeDate(data.asOf) },
+    { name: Headers.Type, value: maybeDescription(data.type) },
+    { name: Headers.Authority, value: maybeDescription(data.authority) },
+    { name: Headers.Value, value: data.value }
 ];
 
 const resolveInitialEntry = (patient: string): IdentificationEntry => ({
@@ -72,31 +65,6 @@ const headers = [
     { name: Headers.Value, sortable: true },
     { name: Headers.Actions, sortable: false }
 ];
-
-export type SortCriteria = {
-    name?: Headers;
-    type?: Direction;
-};
-
-export const sort = (investigations: PatientIdentification[], { name, type }: SortCriteria): PatientIdentification[] =>
-    investigations.slice().sort(withDirection(resolveComparator(name), type));
-
-const resolveComparator = (name: Headers): Comparator<PatientIdentification> => {
-    switch (name) {
-        case Headers.AsOf:
-            return sortByDate('asOf');
-        case Headers.Type:
-            return sortByNestedProperty('type');
-        case Headers.Authority:
-            return sortByNestedProperty('authority');
-        case Headers.Value:
-            return sortByAlpha('value');
-        default:
-            return defaultSort;
-    }
-};
-
-const defaultSort: Comparator<PatientIdentification> = descending(sortByDate('asOf'));
 
 export const IdentificationsTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
