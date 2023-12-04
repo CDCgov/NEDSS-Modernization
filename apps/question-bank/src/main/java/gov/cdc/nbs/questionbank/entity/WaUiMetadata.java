@@ -526,29 +526,29 @@ public class WaUiMetadata {
   }
 
   public void update(PageContentCommand.GroupSubsection command) {
-    setBlockNm(command.blockName());
+    this.blockNm = command.blockName();
     updated(command);
   }
 
   public void updateQuestionBatch(PageContentCommand.GroupSubsection command) {
-    setBlockNm(command.blockName());
+    this.blockNm = command.blockName();
     GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst().get();
-    setBatchTableAppearIndCd(batch.batchTableAppearIndCd());
-    setBatchTableHeader(batch.batchTableHeader());
-    setBatchTableColumnWidth(batch.batchTableColumnWidth());
+    this.batchTableAppearIndCd = batch.batchTableAppearIndCd();
+    this.batchTableHeader = batch.batchTableHeader();
+    this.batchTableColumnWidth = batch.batchTableColumnWidth();
     updated(command);
   }
 
   public void update(PageContentCommand.UnGroupSubsection command) {
-    setBlockNm(null);
+    this.blockNm =null;
     updated(command);
   }
 
   public void updateQuestionBatch(PageContentCommand.UnGroupSubsection command) {
-    setBlockNm(null);
-    setBatchTableAppearIndCd(null);
-    setBatchTableHeader(null);
-    setBatchTableColumnWidth(null);
+    this.blockNm=null;
+    this.batchTableAppearIndCd=null;
+    this.batchTableHeader=null;
+    this.batchTableColumnWidth=null;
     updated(command);
   }
 

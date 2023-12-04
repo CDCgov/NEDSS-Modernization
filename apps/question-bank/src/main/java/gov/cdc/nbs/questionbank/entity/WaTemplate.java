@@ -705,12 +705,12 @@ public class WaTemplate {
     changed(command);
 
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
-    List<WaUiMetadata> questionBatches = uiMetadata.stream()
-            .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
-    for (WaUiMetadata questionBatch : questionBatches) {
-      questionBatch.updateQuestionBatch(command);
-      changed(command);
-    }
+    uiMetadata.stream()
+            .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION)
+            .forEach(questionBatch ->{
+              questionBatch.updateQuestionBatch(command);
+              changed(command);
+            });
     return subsection;
   }
 

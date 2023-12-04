@@ -43,7 +43,6 @@ public class SubSectionGrouper {
             throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
         }
         WaUiMetadata section = page.groupSubSection(asCommand(userId, request));
-        entityManager.flush();
         return ResponseEntity.ok("Subsection " + section.getId() + " is  Grouped Successfully , Block Name is " + section.getBlockNm());
     }
 
