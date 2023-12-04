@@ -297,6 +297,114 @@ public class RuleRequestMother {
                 targetIdentifiers);
     }
 
+    public static CreateRuleRequest UnhideRuleRequestSubsectionType() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+
+        return new CreateRuleRequest(
+                "Unhide",
+                "Unhide",
+                "Current Sex",
+                "DEM113",
+                sourceDetails,
+                false,
+                "=",
+                "Subsection",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
+    public static CreateRuleRequest UnhideRuleRequestSubsectionTypeComparator() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+
+        return new CreateRuleRequest(
+                "Unhide",
+                "Unhide",
+                "Current Sex",
+                "DEM113",
+                sourceDetails,
+                false,
+                "<>",
+                "Subsection",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
+    public static CreateRuleRequest HideRuleRequestSubsectionType() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+
+        return new CreateRuleRequest(
+                "Hide",
+                "Hide",
+                "Current Sex",
+                "DEM113",
+                sourceDetails,
+                false,
+                "=",
+                "Subsection",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
+    public static CreateRuleRequest HideRuleRequestSubsectionTypeComparator() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+
+        return new CreateRuleRequest(
+                "Hide",
+                "Hide",
+                "Current Sex",
+                "DEM113",
+                sourceDetails,
+                false,
+                "<>",
+                "Subsection",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
     public static CreateRuleRequest UnhideRuleRequestIfAnySource() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");

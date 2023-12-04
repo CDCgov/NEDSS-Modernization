@@ -293,6 +293,46 @@ class PageRuleHelperTest {
     }
 
     @Test
+    void shouldGiveRuleExpressionInACorrectFormatForUnhideSubsection() throws RuleException {
+        CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequestSubsectionType();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("DEM113 (M) = ^ S (INV143)", ruleData.ruleExpression());
+        assertEquals("Current Sex =must be(Male) Age at Onset", ruleData.errorMsgText());
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForUnhideSubsectionComparator() throws RuleException {
+        CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequestSubsectionTypeComparator();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("DEM113 (M) <> ^ S (INV143)", ruleData.ruleExpression());
+        assertEquals("Current Sex <>must be(Male) Age at Onset", ruleData.errorMsgText());
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForHideSubsection() throws RuleException {
+        CreateRuleRequest ruleRequest = RuleRequestMother.HideRuleRequestSubsectionType();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("DEM113 (M) = ^ H (INV143)", ruleData.ruleExpression());
+        assertEquals("Current Sex = must be (Male) Age at Onset", ruleData.errorMsgText());
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForHideSubsectionComparator() throws RuleException {
+        CreateRuleRequest ruleRequest = RuleRequestMother.HideRuleRequestSubsectionTypeComparator();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("DEM113 (M) <> ^ H (INV143)", ruleData.ruleExpression());
+        assertEquals("Current Sex <> must be (Male) Age at Onset", ruleData.errorMsgText());
+    }
+
+    @Test
     void shouldGiveRuleExpressionInACorrectFormatForRequireIf() throws RuleException {
         CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleRequest();
 
