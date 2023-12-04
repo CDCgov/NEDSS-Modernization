@@ -4,7 +4,6 @@ import gov.cdc.nbs.questionbank.option.PageBuilderOption;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,8 +31,7 @@ class PageNameAutocompleteOptionsController {
   @GetMapping("/page/names/search")
   Collection<PageBuilderOption> all(
       @RequestParam
-      @Parameter(name = "criteria", required = true)
-      final String criteria,
+      @Parameter(name = "criteria", required = true) final String criteria,
       @RequestParam(defaultValue = "15") final int limit
   ) {
     return this.finder.resolve(criteria, limit);
