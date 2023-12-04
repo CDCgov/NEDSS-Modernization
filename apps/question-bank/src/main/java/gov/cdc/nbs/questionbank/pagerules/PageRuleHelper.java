@@ -32,6 +32,7 @@ public class PageRuleHelper {
     private static final String UNHIDE = "Unhide";
     private static final String MUST_BE = "must be";
     private static final String ANY_SOURCE_VALUE = "( Any Source Value )";
+    private static final String FOO_STRING = "',foo) > -1)";
 
     public RuleData createRuleData(
             CreateRuleRequest request,
@@ -422,7 +423,7 @@ public class PageRuleHelper {
             for (int i = 0; i < sourceValueList.size(); i++) {
                 String sourceId = sourceValueList.get(i);
                 String sourceValueText = sourceValueTextList.get(i);
-                stringBuilder.append(ARRAY).append(sourceId).append("',foo) > -1)");
+                stringBuilder.append(ARRAY).append(sourceId).append(FOO_STRING);
                 stringBuilder.append(" || ($j.inArray('").append(sourceValueText)
                         .append("'.replace(/^\\s+|\\s+$/g,''),foo) > -1)");//added for the business rule view
                 try {
@@ -543,13 +544,13 @@ public class PageRuleHelper {
                 buffer.append("if(foo.length==0) return;\n");
                 buffer.append(IF);
                 if (sourceIDs.size() > 1) {
-                    buffer.append(ARRAY).append(sourceIDs.get(0)).append("',foo) > -1)");
+                    buffer.append(ARRAY).append(sourceIDs.get(0)).append(FOO_STRING);
                     for (int counter = 1; counter < sourceIDs.size(); counter++) {
                         buffer.append(" || ");
-                        buffer.append(ARRAY).append(sourceIDs.get(counter)).append("',foo) > -1)");
+                        buffer.append(ARRAY).append(sourceIDs.get(counter)).append(FOO_STRING);
                     }
                 } else {
-                    buffer.append(ARRAY).append(sourceValueID).append("',foo) > -1)");
+                    buffer.append(ARRAY).append(sourceValueID).append(FOO_STRING);
 
                 }
                 buffer.append("){\n");
