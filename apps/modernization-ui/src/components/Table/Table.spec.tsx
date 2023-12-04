@@ -2,8 +2,8 @@ import { render, fireEvent } from '@testing-library/react';
 import { TableComponent } from './Table';
 
 describe('Table component', () => {
-    it('Should renders table component', async () => {
-        const { container } = render(
+    it('Should render table component', async () => {
+        const { getByRole, getAllByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
                 tableHead={[
@@ -37,12 +37,28 @@ describe('Table component', () => {
             />
         );
 
-        const tableHeader = container.getElementsByClassName('table-header');
-        const tableHead = container.getElementsByClassName('head-name');
-        const tableData = container.getElementsByClassName('table-data');
-        expect(tableHeader[0].innerHTML).toBe('Test Table Header');
-        expect(tableHead[0].innerHTML).toBe('Start Date');
+        expect(getByRole('heading', { name: 'Test Table Header' })).toBeInTheDocument();
+
+        const tableHead = getAllByRole('columnheader');
+        expect(tableHead[0]).toHaveTextContent('Start Date');
+        expect(tableHead[1]).toHaveTextContent('Condition');
+        expect(tableHead[2]).toHaveTextContent('Case status');
+        expect(tableHead[3]).toHaveTextContent('Notification');
+        expect(tableHead[4]).toHaveTextContent('Jurisdiction');
+        expect(tableHead[5]).toHaveTextContent('Investigator');
+        expect(tableHead[6]).toHaveTextContent('Investigation #');
+        expect(tableHead[7]).toHaveTextContent('Co-infection #');
+
+        const tableData = getAllByRole('cell');
+
         expect(tableData[0]).toHaveTextContent('10/05/2022');
+        expect(tableData[1]).toHaveTextContent('Test Desc Text');
+        expect(tableData[2]).toHaveTextContent('Record Status');
+        expect(tableData[3]).toHaveTextContent('Notification Status');
+        expect(tableData[4]).toHaveTextContent('jurisdictionCodeDescTxt');
+        expect(tableData[5]).toHaveTextContent('John Doe');
+        expect(tableData[6]).toHaveTextContent('100023');
+        expect(tableData[7]).toHaveTextContent('COIN1000XX01');
     });
 
     it('table with no data', async () => {
@@ -149,11 +165,11 @@ describe('when a table has a sortable header', () => {
 
         const sortableHeader = headers[0];
 
-        expect(sortableHeader).toHaveClass('sort-header');
+        expect(sortableHeader).toHaveClass('sorted');
         expect(sortableHeader).toHaveAttribute('aria-sort', 'descending');
 
         const nonSortableHeader = headers[1];
-        expect(nonSortableHeader).not.toHaveClass('sort-header');
+        expect(nonSortableHeader).not.toHaveClass('sorted');
     });
 
     it('should activate ascending sort when button clicked while a descending sort is active', async () => {
@@ -186,10 +202,10 @@ describe('when a table has a sortable header', () => {
 
         const sortableHeader = headers[0];
 
-        expect(sortableHeader).toHaveClass('sort-header');
+        expect(sortableHeader).toHaveClass('sorted');
         expect(sortableHeader).toHaveAttribute('aria-sort', 'ascending');
 
         const nonSortableHeader = headers[1];
-        expect(nonSortableHeader).not.toHaveClass('sort-header');
+        expect(nonSortableHeader).not.toHaveClass('sorted');
     });
 });

@@ -1,63 +1,62 @@
 import ConditionLibraryTable from './ConditionLibraryTable';
 import { render } from '@testing-library/react';
-import { Condition, PageSummary } from 'apps/page-builder/generated';
-import { BrowserRouter } from 'react-router-dom';
+import { Condition } from 'apps/page-builder/generated';
+import { MemoryRouter } from 'react-router-dom';
 
-describe('ConditionLibraryTabel', () => {
+describe('ConditionLibraryTable', () => {
     describe('when rendered', () => {
         it('should display sentence cased headers', async () => {
-            const { container } = render(
-                <BrowserRouter>
+            const { getByRole, getAllByRole } = render(
+                <MemoryRouter>
                     <ConditionLibraryTable
                         conditions={[]}
                         currentPage={1}
                         pageSize={10}
                         totalElements={50}></ConditionLibraryTable>
-                </BrowserRouter>
+                </MemoryRouter>
             );
 
-            const tableHeader = container.getElementsByClassName('table-header');
-            expect(tableHeader[0].innerHTML).toBe('Condition Library');
+            expect(getByRole('heading', { name: 'Condition Library' })).toBeInTheDocument();
 
-            const tableHeads = container.getElementsByClassName('head-name');
+            const tableHeads = getAllByRole('columnheader');
 
-            expect(tableHeads[0].innerHTML).toBe('Condition');
-            expect(tableHeads[1].innerHTML).toBe('Code');
-            expect(tableHeads[2].innerHTML).toBe('Program area');
-            expect(tableHeads[3].innerHTML).toBe('Condition family');
-            expect(tableHeads[4].innerHTML).toBe('Coinfection group');
-            expect(tableHeads[5].innerHTML).toBe('NND');
-            expect(tableHeads[6].innerHTML).toBe('Investigation page');
-            expect(tableHeads[7].innerHTML).toBe('Status');
+            expect(tableHeads[0]).toHaveTextContent('Condition');
+            expect(tableHeads[1]).toHaveTextContent('Code');
+            expect(tableHeads[2]).toHaveTextContent('Program area');
+            expect(tableHeads[3]).toHaveTextContent('Condition family');
+            expect(tableHeads[4]).toHaveTextContent('Coinfection group');
+            expect(tableHeads[5]).toHaveTextContent('NND');
+            expect(tableHeads[6]).toHaveTextContent('Investigation page');
+            expect(tableHeads[7]).toHaveTextContent('Status');
         });
     });
 
     describe('when at least one summary is available', () => {
-        const condition: Condition = {
-            coinfectionGrpCd: 'CCDD',
-            conditionShortNm: 'test condition',
-            familyCd: 'FCD',
-            id: '11234',
-            investigationFormCd: 'IFCD',
-            nndInd: 'NNDID',
-            progAreaCd: 'PACD',
-            statusCd: 'A'
-        };
-
-        const conditions = [condition];
-
         it('should display the page conditions', async () => {
-            const { container } = render(
-                <BrowserRouter>
+            const conditions = [
+                {
+                    coinfectionGrpCd: 'CCDD',
+                    conditionShortNm: 'test condition',
+                    familyCd: 'FCD',
+                    id: '11234',
+                    investigationFormCd: 'IFCD',
+                    nndInd: 'NNDID',
+                    progAreaCd: 'PACD',
+                    statusCd: 'A'
+                }
+            ];
+
+            const { findAllByRole } = render(
+                <MemoryRouter>
                     <ConditionLibraryTable
                         conditions={conditions}
                         currentPage={1}
                         pageSize={10}
                         totalElements={50}></ConditionLibraryTable>
-                </BrowserRouter>
+                </MemoryRouter>
             );
 
-            const tableData = container.getElementsByClassName('table-data');
+            const tableData = await findAllByRole('cell');
 
             expect(tableData[0]).toHaveTextContent('test condition');
             expect(tableData[1]).toHaveTextContent('11234');
@@ -69,27 +68,32 @@ describe('ConditionLibraryTabel', () => {
             expect(tableData[7]).toHaveTextContent('Active');
         });
 
-        it('should display "Inactive" when status is I', async () => {
-            conditions[0].statusCd = 'I';
-            const { container } = render(
-                <BrowserRouter>
+        it('should display "Inactive" when inactive', async () => {
+            const conditions = [
+                {
+                    coinfectionGrpCd: 'CCDD',
+                    conditionShortNm: 'test condition',
+                    familyCd: 'FCD',
+                    id: '11234',
+                    investigationFormCd: 'IFCD',
+                    nndInd: 'NNDID',
+                    progAreaCd: 'PACD',
+                    statusCd: 'I'
+                }
+            ];
+
+            const { findAllByRole } = render(
+                <MemoryRouter>
                     <ConditionLibraryTable
                         conditions={conditions}
                         currentPage={1}
                         pageSize={10}
                         totalElements={50}></ConditionLibraryTable>
-                </BrowserRouter>
+                </MemoryRouter>
             );
 
-            const tableData = container.getElementsByClassName('table-data');
+            const tableData = await findAllByRole('cell');
 
-            expect(tableData[0]).toHaveTextContent('test condition');
-            expect(tableData[1]).toHaveTextContent('11234');
-            expect(tableData[2]).toHaveTextContent('PACD');
-            expect(tableData[3]).toHaveTextContent('FCD');
-            expect(tableData[4]).toHaveTextContent('CCDD');
-            expect(tableData[5]).toHaveTextContent('NNDID');
-            expect(tableData[6]).toHaveTextContent('IFCD');
             expect(tableData[7]).toHaveTextContent('Inactive');
         });
     });
