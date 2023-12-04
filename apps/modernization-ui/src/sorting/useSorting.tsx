@@ -59,10 +59,13 @@ const toDirection = (value: string) => {
     }
 };
 
-type SortingProviderProps = {
-    children: ReactNode;
+type SortingSettings = {
     appendToUrl?: boolean;
 };
+
+type SortingProviderProps = {
+    children: ReactNode;
+} & SortingSettings;
 
 const SortingProvider = ({ appendToUrl = false, children }: SortingProviderProps) => {
     const [state, dispatch] = useReducer(reducer, undefined);
@@ -117,6 +120,6 @@ const useSorting = () => {
     return context;
 };
 
-export type { Sorting };
+export type { Sorting, SortingSettings };
 
 export { SortingProvider, useSorting };

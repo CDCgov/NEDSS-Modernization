@@ -1,5 +1,4 @@
 import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
-import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { NoData } from 'components/NoData';
@@ -9,6 +8,8 @@ import { TableHeader } from './TableHeader';
 import classNames from 'classnames';
 import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
 import { Column, resolveColumns } from './resolveColumns';
+
+import styles from './table.module.scss';
 
 type SelectionMode = 'select' | 'deselect';
 
@@ -39,6 +40,7 @@ export type TableBody = {
 };
 
 export type Props = {
+    display?: 'standard' | 'zebra';
     className?: string;
     tableHeader?: string;
     tableHead: Header[];
@@ -58,6 +60,7 @@ export type Props = {
 };
 
 export const TableComponent = ({
+    display = 'standard',
     className,
     tableHeader,
     tableHead,
@@ -103,7 +106,7 @@ export const TableComponent = ({
                 <Fragment key={index}>
                     <tr>
                         {selectable && (
-                            <td className="table-data selection">
+                            <td className={styles.selectable}>
                                 <Checkbox
                                     disabled={!row.selectable}
                                     key={`selection-${index}`}
@@ -116,14 +119,10 @@ export const TableComponent = ({
                         )}
                         {row.tableDetails.map((detail: Cell, column: number) => {
                             const isSorting = sorting.isSorting(columns[offset + column].name);
-                            const className = classNames('table-data', { 'sort-td': isSorting });
+                            const className = classNames({ [styles.sorted]: isSorting });
                             return (
                                 <td className={className} key={column}>
-                                    {detail.title ? (
-                                        <span className={'table-span'}>{detail.title}</span>
-                                    ) : (
-                                        <NoData key={column} className={className} />
-                                    )}
+                                    {detail.title ? detail.title : <NoData key={column} className={className} />}
                                 </td>
                             );
                         })}
@@ -141,21 +140,30 @@ export const TableComponent = ({
     };
 
     return (
-        <div>
+        <div className={styles.table}>
             {showHeader && (
-                <div className="grid-row flex-align-center flex-justify padding-x-2 search-box padding-y-3 border-bottom border-base-lighter">
-                    <p className="font-sans-lg text-bold margin-0 table-header">{tableHeader}</p>
+                <header>
+                    <h2>{tableHeader}</h2>
                     {buttons}
-                </div>
+                </header>
             )}
-            <Table bordered={false} fullWidth className={className}>
+            <Table
+                bordered={false}
+                fullWidth
+                className={classNames(
+                    {
+                        [styles.standard]: display === 'standard',
+                        [styles.zebra]: display === 'zebra'
+                    },
+                    className
+                )}>
                 <TableHeaders sorting={sorting} columns={columns} />
                 <tbody>
                     {isLoading ? <LoadingRow columns={columns.length} /> : renderRows(sorting, tableBody, selectable)}
                 </tbody>
             </Table>
-            <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">
-                <div className="table__range">
+            <footer>
+                <div className={styles.range}>
                     {!rangeSelector ? (
                         <>
                             Showing {tableBody?.length} of {totalResults}
@@ -168,7 +176,7 @@ export const TableComponent = ({
                 </div>
                 {isPagination && totalResults >= pageSize && (
                     <Pagination
-                        className="margin-0 pagination"
+                        className={styles.pagination}
                         totalPages={Math.ceil(totalResults / pageSize)}
                         currentPage={currentPage}
                         pathname={'/patient-profile'}
@@ -177,7 +185,7 @@ export const TableComponent = ({
                         onClickPageNumber={(_, page) => handleNext?.(page)}
                     />
                 )}
-            </div>
+            </footer>
         </div>
     );
 };
@@ -209,22 +217,16 @@ const TableHeaders = ({ sorting, columns }: TableHeadersProps) => (
     </thead>
 );
 
-const SelectionHeader = () => (
-    <th scope="col" className="selection">
-        <div className="table-head">
-            <span className="head-name" />
-        </div>
-    </th>
-);
+const SelectionHeader = () => <th scope="col" className={styles.selectable}></th>;
 
 //  Rows
 type LoadingProps = {
     columns: number;
 };
 const LoadingRow = ({ columns }: LoadingProps) => (
-    <tr className="text-center not-available">
+    <tr>
         <td colSpan={columns}>
-            <Loading />
+            <Loading center />
         </td>
     </tr>
 );

@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { authorization } from 'authorization';
-import { PageProvider } from 'page';
-import { SortingProvider, useSorting } from 'sorting';
+import { useSorting } from 'sorting';
 import { Filter } from 'filters';
 import { downloadAsCsv } from 'utils/downloadAsCsv';
 import { downloadPageLibraryPdf } from 'utils/ExportUtil';
 
 import { usePageSummarySearch } from './usePageSummarySearch';
 import { usePageLibraryProperties } from './usePageLibraryProperties';
+
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { TableProvider } from 'components/Table/TableProvider';
 
 import { PageControllerService } from 'apps/page-builder/generated';
 import { PageBuilder } from 'apps/page-builder/pages/PageBuilder/PageBuilder';
@@ -16,26 +18,19 @@ import { PageLibraryTable } from './table/PageLibraryTable';
 import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 
 import styles from './page-library.module.scss';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 
-type PageLibraryProps = {
-    pageSize?: number;
-};
-
-const PageLibrary = (props?: PageLibraryProps) => {
+const PageLibrary = () => {
     return (
-        <SortingProvider appendToUrl>
-            <PageProvider pageSize={props?.pageSize} appendToUrl>
-                <PageLibraryContent />
-            </PageProvider>
-        </SortingProvider>
+        <TableProvider>
+            <PageLibraryContent />
+        </TableProvider>
     );
 };
 
 const PageLibraryContent = () => {
     const { sortBy } = useSorting();
 
-    const { pages, search, filter } = usePageSummarySearch();
+    const { pages, searching, search, filter } = usePageSummarySearch();
     const { properties } = usePageLibraryProperties();
 
     const [filters, setFilters] = useState<Filter[]>([]);
@@ -62,7 +57,7 @@ const PageLibraryContent = () => {
                         onDownload={handleDownloadCSV}
                         onPrint={handleDownloadPDF}
                     />
-                    <PageLibraryTable summaries={pages} onSort={sortBy} />
+                    <PageLibraryTable summaries={pages} searching={searching} onSort={sortBy} />
                 </section>
             </PageBuilder>
         </>

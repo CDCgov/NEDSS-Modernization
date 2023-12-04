@@ -1,32 +1,30 @@
-import { useUser } from 'user';
 import { PageBuilderOptionsService } from 'apps/page-builder/generated';
+import { authorization } from 'authorization';
 import {
     AutocompleteOptionsResolver,
     PageBuilderOptionsAutocompletion,
     usePageBuilderOptionsAutocomplete
 } from 'apps/page-builder/options/usePageBuilderOptionsAutocomplete';
 
-type Options = {
+type Settings = {
     initialCriteria?: string;
     limit?: number;
 };
 
-const usePageNameOptionsAutocomplete = ({ initialCriteria = '', limit }: Options): PageBuilderOptionsAutocompletion => {
-    const {
-        state: { getToken }
-    } = useUser();
-
+const usePageNameOptionsAutocomplete = (
+    settings: Settings = { initialCriteria: '' }
+): PageBuilderOptionsAutocompletion => {
     const resolver: AutocompleteOptionsResolver = (criteria: string, limit?: number) =>
         PageBuilderOptionsService.pageNamesAutocomplete({
-            authorization: `Bearer ${getToken()}`,
+            authorization: authorization(),
             criteria,
             limit
         });
 
     const { criteria, options, suggest, complete, reset } = usePageBuilderOptionsAutocomplete({
         resolver,
-        criteria: initialCriteria,
-        limit
+        criteria: settings.initialCriteria,
+        limit: settings.limit
     });
 
     return {

@@ -9,8 +9,6 @@
     background-color: colors.$base-lightest;
     padding: 1rem 1.5rem;
 
-    @extend %thin-bottom;
-
     search {
         input {
             min-width: 36ch;

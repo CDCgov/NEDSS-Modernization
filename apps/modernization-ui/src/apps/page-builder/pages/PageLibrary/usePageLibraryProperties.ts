@@ -25,7 +25,7 @@ const completeByName = (options: Selectable[]) => (criteria: string) =>
     new Promise<Selectable[]>((resolve) => resolve(options.filter(startsWith(criteria.toLocaleLowerCase()))));
 
 const usePageLibraryProperties = () => {
-    const { complete } = usePageNameOptionsAutocomplete({});
+    const { complete } = usePageNameOptionsAutocomplete();
 
     const name: ValueProperty = {
         value: 'name',

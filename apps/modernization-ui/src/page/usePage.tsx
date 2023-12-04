@@ -52,11 +52,14 @@ type PageContextState = {
 
 const PageContext = createContext<PageContextState | undefined>(undefined);
 
-type PageProviderProps = {
-    pageSize?: number;
+type PagingSettings = {
     appendToUrl?: boolean;
-    children: ReactNode;
+    pageSize?: number;
 };
+
+type PageProviderProps = {
+    children: ReactNode;
+} & PagingSettings;
 
 const PageProvider = ({ pageSize = TOTAL_TABLE_DATA, appendToUrl = false, children }: PageProviderProps) => {
     const [page, dispatch] = useReducer(pageReducer, pageSize, initialize);
@@ -115,4 +118,4 @@ const usePageMaybe = () => {
 export { PageProvider, usePage, usePageMaybe };
 
 export { Status };
-export type { PageState as Page };
+export type { PageState as Page, PagingSettings };

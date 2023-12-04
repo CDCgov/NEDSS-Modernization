@@ -1,34 +1,23 @@
 import { PageLibraryTable } from './PageLibraryTable';
 import { render } from '@testing-library/react';
-import { PageSummary } from 'apps/page-builder/generated';
-import { BrowserRouter } from 'react-router-dom';
-import { PageProvider } from 'page';
-import { ReactNode } from 'react';
-
-type WithinContextProps = { pageSize?: number; children: ReactNode };
-
-const WithinContext = ({ pageSize = 10, children }: WithinContextProps) => (
-    <BrowserRouter>
-        <PageProvider pageSize={pageSize}>
-            <PageProvider>{children}</PageProvider>
-        </PageProvider>
-    </BrowserRouter>
-);
+import { WithinTableProvider } from 'components/Table/testing';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
-        const { getByRole } = render(
-            <WithinContext>
+        const { getAllByRole } = render(
+            <WithinTableProvider>
                 <PageLibraryTable summaries={[]} onSort={jest.fn()}></PageLibraryTable>
-            </WithinContext>
+            </WithinTableProvider>
         );
 
-        expect(getByRole('columnheader', { name: 'Page name' })).toBeInTheDocument();
-        expect(getByRole('columnheader', { name: 'Event name' })).toBeInTheDocument();
-        expect(getByRole('columnheader', { name: 'Related condition(s)' })).toBeInTheDocument();
-        expect(getByRole('columnheader', { name: 'Status' })).toBeInTheDocument();
-        expect(getByRole('columnheader', { name: 'Last updated' })).toBeInTheDocument();
-        expect(getByRole('columnheader', { name: 'Last updated by' })).toBeInTheDocument();
+        const tableHeads = getAllByRole('columnheader');
+
+        expect(tableHeads[0]).toHaveTextContent('Page name');
+        expect(tableHeads[1]).toHaveTextContent('Event name');
+        expect(tableHeads[2]).toHaveTextContent('Related condition(s)');
+        expect(tableHeads[3]).toHaveTextContent('Status');
+        expect(tableHeads[4]).toHaveTextContent('Last updated');
+        expect(tableHeads[5]).toHaveTextContent('Last updated by');
     });
 });
 
@@ -46,25 +35,27 @@ describe('when at least one summary is available', () => {
     ];
 
     it('should display the page summaries', async () => {
-        const { getByRole } = render(
-            <WithinContext>
+        const { findAllByRole } = render(
+            <WithinTableProvider>
                 <PageLibraryTable summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
-            </WithinContext>
+            </WithinTableProvider>
         );
 
-        expect(getByRole('cell', { name: 'test page' })).toBeInTheDocument();
-        expect(getByRole('cell', { name: 'Investigation' })).toBeInTheDocument();
-        expect(getByRole('cell', { name: 'condition display' })).toBeInTheDocument();
-        expect(getByRole('cell', { name: 'Draft' })).toBeInTheDocument();
-        expect(getByRole('cell', { name: '09/25/2019' })).toBeInTheDocument();
-        expect(getByRole('cell', { name: 'last-update-by-value' })).toBeInTheDocument();
+        const tableData = await findAllByRole('cell');
+
+        expect(tableData[0]).toHaveTextContent('test page');
+        expect(tableData[1]).toHaveTextContent('Investigation');
+        expect(tableData[2]).toHaveTextContent('condition display');
+        expect(tableData[3]).toHaveTextContent('Draft');
+        expect(tableData[4]).toHaveTextContent('09/25/2019');
+        expect(tableData[5]).toHaveTextContent('last-update-by-value');
     });
 
     it('should redirect to the edit page when the page name is clicked', async () => {
         const { getByRole } = render(
-            <WithinContext>
+            <WithinTableProvider>
                 <PageLibraryTable summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
-            </WithinContext>
+            </WithinTableProvider>
         );
 
         expect(getByRole('link', { name: 'test page' })).toHaveAttribute('href', '/page-builder/edit/page/1');

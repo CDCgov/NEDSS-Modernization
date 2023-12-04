@@ -1,25 +1,21 @@
-import { Option } from 'generated';
-import { useUser } from 'user';
+import { Selectable } from 'options';
 import { PageBuilderOptionsService } from 'apps/page-builder/generated';
 import { usePageBuilderOptions } from 'apps/page-builder/options/usePageBuilderOptions';
+import { authorization } from 'authorization';
 
 type ConceptOptions = {
-    options: Option[];
+    options: Selectable[];
     load: () => void;
 };
 
-type Parameters = {
+type Settings = {
     lazy?: boolean;
 };
 
-const usePageNameOptions = ({ lazy = true }: Parameters): ConceptOptions => {
-    const {
-        state: { getToken }
-    } = useUser();
-
+const usePageNameOptions = ({ lazy = true }: Settings): ConceptOptions => {
     const resolver = () =>
         PageBuilderOptionsService.pageNames({
-            authorization: `Bearer ${getToken()}`
+            authorization: authorization()
         });
 
     const { options, load } = usePageBuilderOptions({ lazy, resolver });

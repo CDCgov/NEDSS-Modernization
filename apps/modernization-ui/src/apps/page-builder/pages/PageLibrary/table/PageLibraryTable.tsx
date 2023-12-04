@@ -52,10 +52,11 @@ const asTableRows = (pages: PageSummary[]): TableBody[] => pages.map(asTableRow)
 
 type Props = {
     summaries: PageSummary[];
+    searching?: boolean;
     onSort: (name: string, direction: Direction) => void;
 };
 
-export const PageLibraryTable = ({ summaries, onSort }: Props) => {
+export const PageLibraryTable = ({ summaries, searching = false, onSort }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
 
     const {
@@ -74,6 +75,8 @@ export const PageLibraryTable = ({ summaries, onSort }: Props) => {
 
     return (
         <TableComponent
+            display="zebra"
+            isLoading={searching}
             className={styles.pages}
             tableHead={headers}
             tableBody={tableRows}
@@ -108,7 +111,7 @@ const resolveSortProperty = (name: string): string => {
             return 'lastUpdate';
 
         case Column.LastUpdatedBy:
-            return 'lastUpdateBy';
+            return 'lastUpdatedBy';
 
         default:
             return 'id';

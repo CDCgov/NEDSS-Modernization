@@ -1,8 +1,9 @@
-import ReactSelect, { MultiValue, components } from 'react-select';
 import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
-import './MultiSelectInput.scss';
+import ReactSelect, { MultiValue, components } from 'react-select';
 import { mapNonNull } from 'utils';
 import { EntryWrapper } from 'components/Entry';
+
+import './MultiSelectInput.scss';
 
 const CheckedOption = (props: any) => {
     return (

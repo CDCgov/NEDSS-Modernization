@@ -4,6 +4,8 @@ import { Direction } from 'sorting';
 import { Sorting } from './useTableSorting';
 import { Header } from './Table';
 
+import styles from './table.module.scss';
+
 type TableHeaderProps = {
     sorting: Sorting;
     header: Header;
@@ -15,11 +17,10 @@ const TableHeader = ({ sorting, header }: TableHeaderProps) => {
 
     return (
         <th
-            scope="col"
-            className={classNames({ 'sort-header': direction !== Direction.None })}
+            className={classNames({ [styles.sorted]: direction !== Direction.None })}
             {...(ariaSort && { 'aria-sort': ariaSort })}>
-            <div className="table-head">
-                <span className="head-name">{header.name}</span>
+            <div>
+                {header.name}
                 {header.sortable && (
                     <Button
                         disabled={!sorting.enabled}

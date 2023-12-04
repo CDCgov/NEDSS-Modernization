@@ -1,9 +1,9 @@
 import { useEffect, useReducer } from 'react';
-import { Option } from 'generated';
+import { Selectable } from 'options';
 
-type State = { status: 'idle' | 'loading' } | { status: 'loaded'; options: Option[] };
+type State = { status: 'idle' | 'loading' } | { status: 'loaded'; options: Selectable[] };
 
-type Action = { type: 'reset' } | { type: 'load' } | { type: 'loaded'; options: Option[] };
+type Action = { type: 'reset' } | { type: 'load' } | { type: 'loaded'; options: Selectable[] };
 
 const reducer = (_state: State, action: Action): State => {
     switch (action.type) {
@@ -20,26 +20,26 @@ const initial: State = {
     status: 'idle'
 };
 
-type PageBuilderOptionsResolver = () => Promise<Option[]>;
+type PageBuilderOptionsResolver = () => Promise<Selectable[]>;
 
 type PageBuilderOptions = {
-    options: Option[];
+    options: Selectable[];
     load: () => void;
 };
 
-type Parameters = {
+type Settings = {
     resolver: PageBuilderOptionsResolver;
     lazy?: boolean;
 };
 
-const usePageBuilderOptions = ({ resolver, lazy = true }: Parameters): PageBuilderOptions => {
+const usePageBuilderOptions = ({ resolver, lazy = true }: Settings): PageBuilderOptions => {
     const [state, dispatch] = useReducer(reducer, initial);
 
     useEffect(() => {
         if (!lazy) {
             dispatch({ type: 'load' });
         }
-    }, []);
+    }, [lazy]);
 
     useEffect(() => {
         if (state.status === 'loading') {
@@ -47,7 +47,7 @@ const usePageBuilderOptions = ({ resolver, lazy = true }: Parameters): PageBuild
                 .then((response) => response ?? [])
                 .then((options) => dispatch({ type: 'loaded', options }));
         }
-    }, [state.status]);
+    }, [resolver, state.status]);
 
     const options = state.status === 'loaded' ? state.options : [];
     const load = () => dispatch({ type: 'load' });

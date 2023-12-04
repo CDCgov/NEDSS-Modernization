@@ -3,17 +3,20 @@
 .library {
     border-radius: 5px;
     background-color: system.$colors-base-white;
-    @include system.borders-bordered(system.$colors-base-lighter);
+
+    @extend %thin;
 
     header {
         display: flex;
         justify-content: space-between;
         padding: 1.5rem;
 
+        @extend %thin-bottom;
+
         h2 {
             margin: 0;
         }
-
-        @extend %thin-bottom;
     }
+
+    @extend %thin-bottom;
 }
