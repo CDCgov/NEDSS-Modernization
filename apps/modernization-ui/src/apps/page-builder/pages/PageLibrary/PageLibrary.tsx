@@ -1,61 +1,81 @@
-import { PagesContext } from 'apps/page-builder/context/PagesContext';
-import { useContext, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { UserContext } from 'user';
-import { fetchPageSummaries } from '../../services/pagesAPI';
-import { PageBuilder } from '../PageBuilder/PageBuilder';
-import './PageLibrary.scss';
-import { ManagePagesTable } from './ManagePagesTable';
-import { PageSummary } from 'apps/page-builder/generated';
+import { useState } from 'react';
+import { authorization } from 'authorization';
+import { useSorting } from 'sorting';
+import { Filter } from 'filters';
+import { downloadAsCsv } from 'utils/downloadAsCsv';
+import { downloadPageLibraryPdf } from 'utils/ExportUtil';
+
+import { usePageSummarySearch } from './usePageSummarySearch';
+import { usePageLibraryProperties } from './usePageLibraryProperties';
+
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { TableProvider } from 'components/Table/TableProvider';
+
+import { PageControllerService } from 'apps/page-builder/generated';
+import { PageBuilder } from 'apps/page-builder/pages/PageBuilder/PageBuilder';
+import { PageLibraryMenu } from './menu/PageLibraryMenu';
+import { PageLibraryTable } from './table/PageLibraryTable';
 import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 
-export const PageLibrary = () => {
-    const [pages, setPages] = useState<PageSummary[]>([]);
-    const { searchQuery, sortBy, sortDirection, setCurrentPage, currentPage, pageSize, setIsLoading } =
-        useContext(PagesContext);
-    const { state } = useContext(UserContext);
-    const token = `Bearer ${state.getToken()}`;
-    const [totalElements, setTotalElements] = useState(0);
-    const [searchParams] = useSearchParams();
+import styles from './page-library.module.scss';
 
-    useEffect(() => {
-        setIsLoading(true);
+const PageLibrary = () => {
+    return (
+        <TableProvider>
+            <PageLibraryContent />
+        </TableProvider>
+    );
+};
 
-        // set current page from query param
-        if (searchParams.get('page') && parseInt(searchParams.get('page') || '') > 0) {
-            const pageFromQuery = searchParams.get('page');
-            setCurrentPage(parseInt(pageFromQuery ?? '') || 1);
-        }
+const PageLibraryContent = () => {
+    const { sortBy } = useSorting();
 
-        // get Pages
-        fetchPageSummaries(token, searchQuery, sortBy.toLowerCase() + ',' + sortDirection, currentPage, pageSize)
-            .then((data) => {
-                setPages(data.content ?? []);
-                setTotalElements(data.totalElements ?? 0);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
+    const { pages, searching, search, filter } = usePageSummarySearch();
+    const { properties } = usePageLibraryProperties();
+
+    const [filters, setFilters] = useState<Filter[]>([]);
+
+    const handleFilter = (filters: Filter[]) => {
+        setFilters(filters);
+        filter(filters);
+    };
 
     return (
         <>
             <CustomFieldAdminBanner />
             <PageBuilder nav>
-                <div className="manage-pages">
-                    <div className="manage-pages__container">
-                        <div className="manage-pages__table">
-                            <ManagePagesTable
-                                summaries={pages}
-                                currentPage={currentPage}
-                                pageSize={pageSize}
-                                totalElements={totalElements}
-                            />
-                        </div>
-                    </div>
-                </div>
+                <section className={styles.library}>
+                    <header>
+                        <h2>Page library</h2>
+                        <NavLinkButton to={'/page-builder/add/page'}>Create new page</NavLinkButton>
+                    </header>
+                    <PageLibraryMenu
+                        properties={properties}
+                        filters={filters}
+                        onSearch={search}
+                        onFilter={handleFilter}
+                        onDownload={handleDownloadCSV}
+                        onPrint={handleDownloadPDF}
+                    />
+                    <PageLibraryTable summaries={pages} searching={searching} onSort={sortBy} />
+                </section>
             </PageBuilder>
         </>
     );
 };
+
+const handleDownloadCSV = () => {
+    PageControllerService.downloadPageLibraryUsingGet({ authorization: authorization() }).then((file) =>
+        downloadAsCsv({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' })
+    );
+};
+
+const handleDownloadPDF = () => {
+    try {
+        downloadPageLibraryPdf(authorization());
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { PageLibrary };

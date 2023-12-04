@@ -1,0 +1,123 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.table {
+    table {
+        border-width: 0;
+        margin: 0;
+        font-size: 14px;
+        table-layout: fixed;
+
+        thead {
+            th {
+                div {
+                    font-size: 14px !important;
+                    display: flex;
+                    justify-content: space-between;
+                    border: none;
+                    align-items: center;
+                }
+                button:disabled {
+                    cursor: text;
+                    .usa-icon {
+                        color: colors.$disabled-dark;
+                    }
+                }
+
+                &.selectable {
+                    width: 3rem;
+                }
+
+                &.sorted {
+                    background-color: colors.$cool-accent-light !important;
+                }
+            }
+        }
+
+        td {
+            &.selectable {
+                vertical-align: baseline;
+
+                label {
+                    margin: 0 !important;
+                }
+            }
+
+            &.sorted {
+                background-color: colors.$cool-accent-lighter !important;
+            }
+        }
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        margin: 0;
+        padding: 1.5rem 1rem;
+
+        @extend %thin-bottom;
+
+        h2 {
+            margin: 0;
+        }
+    }
+
+    footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 1.5rem;
+
+        @extend %thin-top;
+
+        .range {
+            color: colors.$base;
+        }
+
+        .pagination {
+            justify-content: flex-end;
+        }
+    }
+}
+
+.standard {
+    thead {
+        tr {
+            border-bottom-width: 2px;
+            border-bottom-style: solid;
+            border-bottom-color: colors.$base-black;
+        }
+    }
+
+    td {
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: colors.$base-black;
+    }
+}
+
+.zebra {
+    thead {
+        tr {
+            border-style: none;
+            border-bottom-width: 2px;
+            border-bottom-style: solid;
+            border-bottom-color: colors.$base-lighter;
+        }
+    }
+
+    td {
+        border-style: none !important;
+    }
+
+    tr:nth-child(odd) {
+        td {
+            background-color: colors.$base-lightest;
+        }
+    }
+
+    @extend %thin-bottom;
+}

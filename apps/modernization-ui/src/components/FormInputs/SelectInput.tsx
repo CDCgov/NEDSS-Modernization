@@ -3,12 +3,12 @@ import { Dropdown } from '@trussworks/react-uswds';
 import { EntryWrapper } from 'components/Entry';
 import { useMemo } from 'react';
 
-type Option = { name: string; value: string };
+type Selectable = { name: string; value: string };
 
 type SelectProps = {
     htmlFor?: string;
     label?: string;
-    options: Option[];
+    options: Selectable[];
     dataTestid?: string;
     flexBox?: boolean;
     error?: string;
@@ -16,7 +16,7 @@ type SelectProps = {
     defaultValue?: string | number | undefined | null;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue'>;
 
-const renderOptions = (options: Option[]) => (
+const renderOptions = (options: Selectable[]) => (
     <>
         <option value="">- Select -</option>
         {options?.map((item, index) => (

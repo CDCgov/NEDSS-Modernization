@@ -51,7 +51,7 @@ export const AppRoutes = () => {
         if (!initializing && !state.isLoggedIn && !state.isLoginPending) {
             setLoading(false);
         }
-    }, [initializing]);
+    }, [initializing, state.isLoggedIn, state.isLoginPending]);
 
     // allow 1 second to initialize and send a login request
     setTimeout(() => {

@@ -1,30 +1,23 @@
 import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { AlertProvider } from '../../../../alert';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const dataSummary: any = {};
         const summaries = [dataSummary];
-        const { container } = render(
-            <BrowserRouter>
-                <AlertProvider>
-                    <BusinessRulesLibraryTable summaries={summaries} />
-                </AlertProvider>
-            </BrowserRouter>
-        );
+        const { getAllByRole } = render(<BusinessRulesLibraryTable summaries={summaries} />);
 
-        const tableHeads = container.getElementsByClassName('table-head');
+        const tableHeads = getAllByRole('columnheader');
 
-        expect(tableHeads[0]?.textContent).toBe('Source Fields');
-        expect(tableHeads[1]?.textContent).toBe('Logic');
-        expect(tableHeads[2].textContent).toBe('Values');
-        expect(tableHeads[3].textContent).toBe('Function');
-        expect(tableHeads[4].textContent).toBe('Target Fields');
-        expect(tableHeads[5].textContent).toBe('ID');
+        expect(tableHeads[0]).toHaveTextContent('Source Fields');
+        expect(tableHeads[1]).toHaveTextContent('Logic');
+        expect(tableHeads[2]).toHaveTextContent('Values');
+        expect(tableHeads[3]).toHaveTextContent('Function');
+        expect(tableHeads[4]).toHaveTextContent('Target Fields');
+        expect(tableHeads[5]).toHaveTextContent('ID');
     });
 });
+
 describe('when at least one summary is available', () => {
     const rulesSummary: any = {
         ruleId: 6376,
@@ -41,13 +34,9 @@ describe('when at least one summary is available', () => {
     const summaries = [rulesSummary];
 
     it('should display the Business rules summaries', async () => {
-        const { container } = render(
-            <AlertProvider>
-                <BusinessRulesLibraryTable summaries={summaries} />
-            </AlertProvider>
-        );
+        const { findAllByRole } = render(<BusinessRulesLibraryTable summaries={summaries} />);
 
-        const tableData = container.getElementsByClassName('table-data');
+        const tableData = await findAllByRole('cell');
         expect(tableData[0]).toHaveTextContent('ARB001');
         expect(tableData[1]).toHaveTextContent('Equal to');
         expect(tableData[2]).toHaveTextContent('Dengue virus');

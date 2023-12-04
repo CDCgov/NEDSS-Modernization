@@ -1,0 +1,7 @@
+%icon-button {
+    padding: 0.56rem 1rem !important;
+}
+
+.icon {
+    @extend %icon-button;
+}

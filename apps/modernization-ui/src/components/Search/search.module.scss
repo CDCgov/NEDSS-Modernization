@@ -1,0 +1,19 @@
+@use 'styles/buttons';
+
+.search {
+    display: flex;
+
+    input {
+        height: auto;
+    }
+
+    input:focus {
+        outline-offset: -0.25rem !important;
+    }
+
+    button {
+        @extend %icon-button;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}

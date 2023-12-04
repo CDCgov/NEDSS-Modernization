@@ -1,7 +1,7 @@
-import { PatientInvestigationsTable } from './PatientInvestigationsTable';
 import { render } from '@testing-library/react';
-import { FindInvestigationsForPatientDocument } from 'generated/graphql/schema';
 import { MockedProvider } from '@apollo/client/testing';
+import { FindInvestigationsForPatientDocument } from 'generated/graphql/schema';
+import { PatientInvestigationsTable } from './PatientInvestigationsTable';
 
 describe('when rendered', () => {
     it('should display sentence cased investigation headers', async () => {
@@ -28,16 +28,15 @@ describe('when rendered', () => {
             }
         };
 
-        const { container } = render(
+        const { getByRole, getAllByRole } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
                 <PatientInvestigationsTable patient={'patient'} pageSize={1}></PatientInvestigationsTable>
             </MockedProvider>
         );
 
-        const tableHeader = container.getElementsByClassName('table-header');
-        expect(tableHeader[0]).toHaveTextContent('Investigations');
+        expect(getByRole('heading', { name: 'Investigations' })).toBeInTheDocument();
 
-        const tableHeads = container.getElementsByClassName('head-name');
+        const tableHeads = getAllByRole('columnheader');
 
         expect(tableHeads[1]).toHaveTextContent('Start date');
         expect(tableHeads[2]).toHaveTextContent('Condition');
@@ -125,7 +124,7 @@ describe('when at least one investigation is available for a patient', () => {
     };
 
     it('should display the investigations', async () => {
-        const { container, findByText } = render(
+        const { findAllByRole, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
                 <PatientInvestigationsTable patient={'1823'} pageSize={5}></PatientInvestigationsTable>
             </MockedProvider>
@@ -135,7 +134,7 @@ describe('when at least one investigation is available for a patient', () => {
 
         const event = await findByText('event');
 
-        const tableData = container.getElementsByClassName('table-data');
+        const tableData = await findAllByRole('cell');
 
         expect(tableData[1]).toContainElement(await findByText('03/27/2023'));
         expect(tableData[2]).toHaveTextContent('condition');
