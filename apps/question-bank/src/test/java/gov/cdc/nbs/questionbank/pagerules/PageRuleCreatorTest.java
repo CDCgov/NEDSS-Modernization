@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -259,26 +258,6 @@ class PageRuleCreatorTest {
         CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully", ruleResponse.message());
-    }
-
-    @Test
-    void shouldThrowAnExceptionIfThereIsSomethingWrongInFunctionName() {
-        CreateRuleRequest ruleRequest = RuleRequestMother.InvalidRuleRequest();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
-
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
-
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
-
-        RuleException exception =
-                assertThrows(RuleException.class,
-                        () -> pageRuleCreator.createPageRule(userId, ruleRequest, 123456L));
-
-        assertEquals(
-                "gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException: Error in Creating Rule Expression and Error Message Text",
-                exception.toString());
     }
 
     @Test

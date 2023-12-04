@@ -42,7 +42,7 @@ public class PageRuleController {
         this.pageRuleCreator = pageRuleCreator;
     }
 
-    @PostMapping
+    @PostMapping("/create-business-rule")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public CreateRuleResponse createBusinessRule(
@@ -70,7 +70,7 @@ public class PageRuleController {
         return pageRuleService.updatePageRule(ruleId, request, userId, page);
     }
 
-    @GetMapping("/{ruleId}")
+    @GetMapping("/{ruleId}/view-rule-by-id")
     @ResponseBody
     public ViewRuleResponse viewRuleResponse(@PathVariable Long ruleId) {
         return pageRuleFinderService.getRuleResponse(ruleId);

@@ -16,7 +16,6 @@ public class RuleRequestMother {
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
 
-        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         List<String> sourceIds = new ArrayList<>();
         sourceIds.add("Test Id");
         sourceIds.add("Test Id2");
@@ -25,13 +24,12 @@ public class RuleRequestMother {
         sourceValueText.add("TestSource1");
         sourceValueText.add("TestSource2");
         CreateRuleRequest.SourceValues sourceValue = new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
-        sourceValues.add(sourceValue);
         return new CreateRuleRequest(
                 "Enable",
                 "TestDescription",
                 "testSource",
                 "INV214",
-                sourceValues,
+                sourceValue,
                 false,
                 ">=",
                 "testTargetValue",
@@ -81,17 +79,15 @@ public class RuleRequestMother {
         sourceValueId.add("M");
         sourceValueText.add("Male");
 
-        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         CreateRuleRequest.SourceValues sourceDetails =
                 new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
-        sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
                 "Enable",
                 "Enable",
                 "Current Sex",
                 "DEM113",
-                sourceValues,
+                sourceDetails,
                 false,
                 "=",
                 "QUESTION",
@@ -106,16 +102,14 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
-        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         CreateRuleRequest.SourceValues sourceDetails = testData();
-        sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
                 "Disable",
                 "Disable",
                 "test",
                 "INV123",
-                sourceValues,
+                sourceDetails,
                 false,
                 "<>",
                 "TestQuestion",
@@ -134,17 +128,15 @@ public class RuleRequestMother {
         sourceValueId.add("M");
         sourceValueText.add("Male");
 
-        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         CreateRuleRequest.SourceValues sourceDetails =
                 new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
-        sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
                 "Hide",
                 "Testing hid Function",
                 "Current Sex",
                 "DEM113",
-                sourceValues,
+                sourceDetails,
                 false,
                 "=",
                 "Question",
@@ -165,17 +157,15 @@ public class RuleRequestMother {
         sourceValueId.add("F");
         sourceValueText.add("Female");
 
-        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         CreateRuleRequest.SourceValues sourceDetails =
                 new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
-        sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
                 "Require If",
                 "Require If",
                 "Current Sex",
                 "DEM113",
-                sourceValues,
+                sourceDetails,
                 false,
                 "=",
                 "Question",
@@ -291,17 +281,15 @@ public class RuleRequestMother {
         sourceValueId.add("M");
         sourceValueText.add("Male");
 
-        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         CreateRuleRequest.SourceValues sourceDetails =
                 new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
-        sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
                 "Unhide",
                 "Unhide",
                 "Current Sex",
                 "DEM113",
-                sourceValues,
+                sourceDetails,
                 false,
                 "<>",
                 "TestQuestion",
@@ -337,16 +325,14 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
-        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
         CreateRuleRequest.SourceValues sourceDetails = testData();
-        sourceValues.add(sourceDetails);
 
         return new CreateRuleRequest(
                 "Invalid",
                 "Invalid",
                 "test",
                 "INV123",
-                sourceValues,
+                sourceDetails,
                 false,
                 "<>",
                 "TestQuestion",

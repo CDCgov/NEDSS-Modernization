@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
@@ -290,4 +291,18 @@ class PageRuleHelperTest {
         assertEquals("DEM113 (M,F) = ^ R (INV143)", ruleData.ruleExpression());
         assertEquals("Current Sex = (Male,Female) Age at Onset is required", ruleData.errorMsgText());
     }
+
+    @Test
+    void shouldThrowAnExceptionIfThereIsSomethingWrongInFunctionName() {
+        CreateRuleRequest ruleRequest = RuleRequestMother.InvalidRuleRequest();
+
+        RuleException exception =
+                assertThrows(RuleException.class,
+                        () -> pageRuleHelper.createRuleData(ruleRequest, 123456L));
+
+        assertEquals(
+                "gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException: Error in Creating Rule Expression and Error Message Text",
+                exception.toString());
+    }
+
 }
