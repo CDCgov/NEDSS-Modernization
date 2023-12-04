@@ -6,6 +6,7 @@ import gov.cdc.nbs.questionbank.page.PageNameVerifier;
 import gov.cdc.nbs.questionbank.page.TemplateNameVerifier;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
@@ -44,6 +45,7 @@ public class WaTemplate {
   private static final long TAB = 1010l;
   private static final long SECTION = 1015l;
   private static final long SUB_SECTION = 1016l;
+  private static final long QUESTION = 1007l;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -690,5 +692,46 @@ public class WaTemplate {
       String message = String.format("Another Template is named %s", name);
       throw new TemplateCreationException(message);
     }
+  }
+
+  public WaUiMetadata groupSubSection(PageContentCommand.GroupSubsection command) {
+    verifyDraftType();
+    WaUiMetadata subsection = uiMetadata.stream()
+            .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
+            .findFirst()
+            .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
+
+    subsection.update(command);
+    changed(command);
+
+    List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
+    List<WaUiMetadata> questionBatches = uiMetadata.stream()
+            .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
+    for (WaUiMetadata questionBatch : questionBatches) {
+      questionBatch.updateQuestionBatch(command);
+      changed(command);
+    }
+    return subsection;
+  }
+
+  public WaUiMetadata unGroupSubSection(PageContentCommand.UnGroupSubsection command) {
+    verifyDraftType();
+
+    WaUiMetadata subsection = uiMetadata.stream()
+            .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
+            .findFirst()
+            .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
+
+    subsection.update(command);
+    changed(command);
+
+    List<Long> batchIds = command.batches();
+    List<WaUiMetadata> questionBatches = uiMetadata.stream()
+            .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
+    for (WaUiMetadata questionBatch : questionBatches) {
+      questionBatch.updateQuestionBatch(command);
+      changed(command);
+    }
+    return subsection;
   }
 }

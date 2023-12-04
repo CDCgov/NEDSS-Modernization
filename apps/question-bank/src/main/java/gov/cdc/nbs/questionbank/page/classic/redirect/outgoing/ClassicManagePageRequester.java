@@ -14,8 +14,7 @@ public class ClassicManagePageRequester {
   private final RestTemplate template;
 
   public ClassicManagePageRequester(
-      @Qualifier("classic") final RestTemplate template
-  ) {
+      @Qualifier("classic") final RestTemplate template) {
     this.template = template;
   }
 

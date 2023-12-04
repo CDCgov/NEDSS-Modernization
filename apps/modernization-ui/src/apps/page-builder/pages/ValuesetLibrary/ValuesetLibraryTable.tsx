@@ -291,7 +291,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                     isPagination={true}
                     pageSize={pages?.pageSize || 0}
                     totalResults={pages?.totalElements || 0}
-                    currentPage={pages?.current || 0}
+                    currentPage={pages?.currentPage || 0}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     selectable

@@ -13,10 +13,9 @@ public class ClassicPreviewPageRequester {
 
   private final RestTemplate template;
 
+
   public ClassicPreviewPageRequester(
-      @Qualifier("classic")
-      final RestTemplate template
-  ) {
+      @Qualifier("classic") final RestTemplate template) {
     this.template = template;
   }
 

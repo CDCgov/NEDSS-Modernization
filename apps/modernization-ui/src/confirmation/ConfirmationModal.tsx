@@ -1,4 +1,4 @@
-import './ConfirmationModal.scss';
+import './_ConfirmationModal.scss';
 import { RefObject } from 'react';
 import { Button, ButtonGroup, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 

@@ -1,7 +1,7 @@
-@import '../../settings.scss';
-
 .no-data {
-    color: $color-gray-30;
+    $no-data-color: #adadad;
+
+    color: $no-data-color;
     margin: 0;
     font-style: italic;
 }

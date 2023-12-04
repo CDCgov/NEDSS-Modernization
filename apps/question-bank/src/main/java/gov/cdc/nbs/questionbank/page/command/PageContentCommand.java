@@ -1,10 +1,12 @@
 package gov.cdc.nbs.questionbank.page.command;
 
 import java.time.Instant;
+import java.util.List;
 
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 
 public sealed interface PageContentCommand {
         long userId();
@@ -129,4 +131,21 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
 
         }
+
+        public record GroupSubsection(
+                long subsection,
+                String blockName,
+                List<GroupSubSectionRequest.Batch> batches,
+                long userId,
+                Instant requestedOn) implements PageContentCommand {
+        }
+
+        public record UnGroupSubsection(
+                long subsection,
+                List<Long> batches,
+                long userId,
+                Instant requestedOn) implements PageContentCommand {
+        }
+
+
 }

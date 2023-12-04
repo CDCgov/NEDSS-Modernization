@@ -1,4 +1,4 @@
-@import 'styles/colors';
+@use 'styles/colors';
 
 .patient-summary {
     .patient-summary-title {
@@ -39,7 +39,7 @@
 
             .patient-summary-item-label {
                 display: block;
-                color: $color-gray-50;
+                color: colors.$base;
                 text-transform: uppercase;
                 font-weight: normal;
                 margin-bottom: 0.25rem;

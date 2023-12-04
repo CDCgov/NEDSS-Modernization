@@ -3,7 +3,7 @@ import React from 'react';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { Direction } from 'sorting';
-import { Spinner } from '@cmsgov/design-system';
+import { Loading } from 'components/Spinner';
 import { NoData } from 'components/NoData';
 
 export type TableDetail = {
@@ -111,7 +111,7 @@ export const SortableTable = ({
                     {isLoading ? (
                         <tr className="text-center not-available">
                             <td colSpan={tableHead.length}>
-                                <Spinner className="sortable-table-spinner" />
+                                <Loading />
                             </td>
                         </tr>
                     ) : tableBody ? (

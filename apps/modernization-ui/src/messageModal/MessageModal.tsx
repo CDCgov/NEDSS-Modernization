@@ -1,7 +1,6 @@
 import { RefObject } from 'react';
 import { Icon, Modal, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import { Note } from 'components/Note';
-import './MessageModal.scss';
 
 export type MessageModalContent = { message: string; detail?: string };
 

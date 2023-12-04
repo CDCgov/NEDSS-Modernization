@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.question;
 
 import java.util.List;
+
+import gov.cdc.nbs.questionbank.question.request.*;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
@@ -9,6 +11,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
+import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
 
 @Component
 public class QuestionManagementUtil {
@@ -62,5 +65,14 @@ public class QuestionManagementUtil {
             throw new UniqueQuestionException(
                     "One of the following fields was not unique: questionNm, questionIdentifier, userDefinedColmnNm, rdbColumnNm");
         }
+    }
+
+    public DisplayControlOptions getDisplayControlOptions() {
+        return new DisplayControlOptions(
+                CreateCodedQuestionRequest.CodedDisplayControl.getDisplayOptions(),
+                CreateDateQuestionRequest.DateDisplayControl.getDisplayOptions(),
+                CreateNumericQuestionRequest.NumericDisplayControl.getDisplayOptions(),
+                CreateTextQuestionRequest.TextDisplayControl.getDisplayOptions()
+        );
     }
 }
