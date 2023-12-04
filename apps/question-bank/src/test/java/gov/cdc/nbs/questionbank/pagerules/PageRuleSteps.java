@@ -6,20 +6,23 @@ import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-
+@Transactional
 public class PageRuleSteps {
 
     @Autowired
@@ -31,7 +34,6 @@ public class PageRuleSteps {
     @Autowired
     private ObjectMapper objectMapper;
 
-
     @Autowired
     private ExceptionHolder exceptionHolder;
 
@@ -41,7 +43,7 @@ public class PageRuleSteps {
 
     private final Active<ResultActions> detailResponse = new Active<>();
 
-    @BeforeEach
+    @Before("@create_business_rule")
     public void reset() {
         request.active(new CreateRuleRequest(
                 null,
@@ -77,16 +79,20 @@ public class PageRuleSteps {
     }
 
     @Given("the business rule has {string} of:")
-    public void the_business_rule_has(final String property, List<String> values) {
+    public void the_business_rule_has(final String property, List<List<String>> values) {
+        List<String> actValues = new ArrayList<>();
+        for(List<String> val : values) {
+            actValues.add(val.get(0));
+        }
         switch (property.toLowerCase()) {
             case "target values list" -> this.request
-                    .active(PageRuleCreateRequestHelper.withTargetValues(this.request.active(), values));
+                    .active(PageRuleCreateRequestHelper.withTargetValues(this.request.active(), actValues));
             case "target identifiers list" -> this.request
-                    .active(PageRuleCreateRequestHelper.withTargetIdentifiers(this.request.active(), values));
+                    .active(PageRuleCreateRequestHelper.withTargetIdentifiers(this.request.active(), actValues));
             case "source value ids" -> this.request
-                    .active(PageRuleCreateRequestHelper.withSourceValueId(this.request.active(), values));
+                    .active(PageRuleCreateRequestHelper.withSourceValueId(this.request.active(), actValues));
             case "source value texts" -> this.request
-                    .active(PageRuleCreateRequestHelper.withSourceValueText(this.request.active(), values));
+                    .active(PageRuleCreateRequestHelper.withSourceValueText(this.request.active(), actValues));
         }
     }
 
@@ -101,19 +107,39 @@ public class PageRuleSteps {
     @Then("I retrieve the information of the page rule")
     public void i_retrieve_the_information_of_the_page_rule() throws Exception {
         CreateRuleResponse test = objectMapper.readValue(
-            this.response.active().andReturn().getResponse().getContentAsString(), 
-            CreateRuleResponse.class);
+                this.response.active().andReturn().getResponse().getContentAsString(),
+                CreateRuleResponse.class);
 
         this.detailResponse.active(
-            this.requester.request(
-                this.page.active().id(), 
-                test.ruleId())
-        );
+                this.requester.request(
+                        this.page.active().id(),
+                        test.ruleId()));
     }
 
     @Then("the business rule should have {string} of {string}")
-    public void the_business_rule_should_have_of() {
+    public void the_business_rule_should_have_of(final String property, final String value) throws Exception {
+        switch (property.toLowerCase()) {
+            case "source identifier" -> this.detailResponse.active()
+                    .andExpect(jsonPath("$.sourceIdentifier", is(value)));
+            case "rule description" -> this.detailResponse.active()
+                    .andExpect(jsonPath("$.ruleDescription", is(value)));
+            case "function" -> this.detailResponse.active()
+                    .andExpect(jsonPath("$.ruleFunction", is(value)));
+            case "comparator" -> this.detailResponse.active()
+                    .andExpect(jsonPath("$.comparator", is(value)));
+            case "target type" -> this.detailResponse.active()
+                    .andExpect(jsonPath("$.targetType", is(value)));
+        }
+    }
 
+    @Then("the business rule should have {string} of:")
+    public void the_business_rule_should_have_of(final String property, final List<String> values) throws Exception {
+        switch (property.toLowerCase()) {
+            case "target identifiers list" -> this.detailResponse.active()
+                    .andExpect(jsonPath("$.targetValueIdentifier", is(values)));
+            case "source values" -> this.detailResponse.active()
+                    .andExpect(jsonPath("$.sourceValue", is(values)));
+        }
     }
 
     @Then("A no credentials found exception is thrown")
@@ -123,10 +149,10 @@ public class PageRuleSteps {
     }
 
 
-    @When("I make a request to update a rule to a page")
-    public void i_make_a_request_to_update_a_rule_to_a_page() {
+    // @When("I make a request to update a rule to a page")
+    // public void i_make_a_request_to_update_a_rule_to_a_page() {
 
-    }
+    // }
 
     @Then("an access denied exception is thrown")
     public void a_access_denied_exception_is_thrown() {
