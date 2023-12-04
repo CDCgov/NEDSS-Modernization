@@ -1,12 +1,7 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest.SourceValues;
-import gov.cdc.nbs.questionbank.page.PageMother;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
@@ -23,8 +18,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 public class PageRuleSteps {
@@ -120,7 +113,7 @@ public class PageRuleSteps {
 
     @Then("the business rule should have {string} of {string}")
     public void the_business_rule_should_have_of() {
-        
+
     }
 
     @Then("A no credentials found exception is thrown")
