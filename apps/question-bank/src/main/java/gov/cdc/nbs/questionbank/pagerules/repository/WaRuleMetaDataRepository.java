@@ -22,7 +22,7 @@ public interface WaRuleMetaDataRepository extends JpaRepository<WaRuleMetadata, 
 
 	public Page<WaRuleMetadata> findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase(String sourceValue,String targetValue,Pageable pageable);
 
-	@Query("select MAX(WaRuleMetadataUid) + 1 from WaRuleMetadata")
+	@Query("select MAX(id) + 1 from WaRuleMetadata")
 	Long findNextAvailableID(); 
 
 }

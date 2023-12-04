@@ -10,8 +10,8 @@ Feature: Create Business Rule
         And the page is a Draft
         And the business rule has "source text" of "Current Sex"
         And the business rule has "source identifier" of "DEM113"
-        And the business rule has "rule description" of "require if"
-        And the business rule has "function" of "require if"
+        And the business rule has "rule description" of "Require If"
+        And the business rule has "function" of "Require If"
         And the business rule has "target type" of "Question"
         And the business rule has "any source value" of "false"
         And the business rule has "comparator" of "="
@@ -27,9 +27,9 @@ Feature: Create Business Rule
             |Female|
         When I send the page rule create request
         Then I retrieve the information of the page rule
-        And the business rule should have "function" of "require if"
+        And the business rule should have "function" of "Require If"
         And the business rule should have "source identifier" of "DEM113"
-        And the business rule should have "rule description" of "require if"
+        And the business rule should have "rule description" of "Require If"
         And the business rule should have "comparator" of "="
         And the business rule should have "target type" of "Question"
         And the business rule should have "target identifiers list" of: 
