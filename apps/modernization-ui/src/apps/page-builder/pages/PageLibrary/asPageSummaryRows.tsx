@@ -21,7 +21,7 @@ const asTableRow = (page: PageSummary): TableBody => ({
                 <div>
                     {page.conditions?.map((c, index) => (
                         <div key={index}>{c.name}</div>
-                    ))}{' '}
+                    ))}
                 </div>
             )
         },
