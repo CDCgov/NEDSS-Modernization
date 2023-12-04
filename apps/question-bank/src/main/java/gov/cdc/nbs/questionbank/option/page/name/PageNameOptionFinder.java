@@ -15,7 +15,7 @@ class PageNameOptionFinder {
       select
           template_nm
       from wa_template [page]
-      where template_type not in ('LEGACY', 'TEMPLATE')
+      where template_type in ('Draft', 'Published')
       order by
           template_nm
             """;

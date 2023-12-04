@@ -20,7 +20,7 @@ class PageNameAutocompleteOptionFinder {
       select
           template_nm
       from WA_Template [page]
-      where template_type not in ('LEGACY', 'TEMPLATE')
+      where template_type in ('Draft', 'Published')
       and template_nm like :criteria
       order by
           template_nm
