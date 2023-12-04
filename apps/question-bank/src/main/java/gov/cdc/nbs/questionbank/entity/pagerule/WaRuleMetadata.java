@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.entity.pagerule;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
