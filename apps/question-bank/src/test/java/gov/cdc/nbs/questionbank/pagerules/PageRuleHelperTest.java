@@ -283,6 +283,16 @@ class PageRuleHelperTest {
     }
 
     @Test
+    void shouldGiveRuleExpressionInACorrectFormatForUnhideAnySource() throws RuleException {
+        CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequestIfAnySource();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("INV123 ( ) ^ S ( test123,test234 )", ruleData.ruleExpression());
+        assertEquals("test  must be (( Any Source Value )) Admission Date,Discharge Date", ruleData.errorMsgText());
+    }
+
+    @Test
     void shouldGiveRuleExpressionInACorrectFormatForRequireIf() throws RuleException {
         CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleRequest();
 
