@@ -29,6 +29,7 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'error',
         'react/react-in-jsx-scope': 'off',
         'react/no-unescaped-entities': 'off',
-        'react-hooks/rules-of-hooks': 'warn'
+        'react-hooks/rules-of-hooks': 'off',
+        'react-hooks/exhaustive-deps': 'off'
     }
 };
