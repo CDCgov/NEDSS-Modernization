@@ -532,7 +532,8 @@ public class WaUiMetadata {
 
   public void updateQuestionBatch(PageContentCommand.GroupSubsection command) {
     this.blockNm = command.blockName();
-    GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst().get();
+    GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
+            .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
     this.batchTableAppearIndCd = batch.batchTableAppearIndCd();
     this.batchTableHeader = batch.batchTableHeader();
     this.batchTableColumnWidth = batch.batchTableColumnWidth();

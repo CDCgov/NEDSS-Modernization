@@ -36,7 +36,6 @@ class SubsectionGrouperTest {
     void should_group_subsection() {
         WaTemplate page = mock(WaTemplate.class);
         when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-        doNothing().when(entityManager).flush();
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getValidBatchList());
         waUiMetadata.setId(request.id());
