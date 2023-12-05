@@ -20,8 +20,9 @@ import { AddValueset } from 'apps/page-builder/components/AddValueset/AddValuese
 import { Config } from 'config';
 import { ValuesetLibrary } from 'apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
 import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase/ConditionalCase';
-import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
-import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
+import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
+import { BusinessRulesLibrary } from '../apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
+import { EditBusinessRules } from '../apps/page-builder/pages/EditBusinessRules/EditBusinessRules';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -94,6 +95,14 @@ export const AppRoutes = () => {
                                             path="page/:pageId/business-rules-library"
                                             element={<BusinessRulesLibrary />}
                                         />
+                                        <Route
+                                            path="page/:pageId/business-rules-library/add"
+                                            element={<EditBusinessRules />}
+                                        />
+                                        <Route
+                                            path="page/:pageId/business-rules-library/edit/:ruleId"
+                                            element={<EditBusinessRules />}
+                                        />
                                     </Route>
                                 </Route>
                             ) : null}
@@ -105,7 +114,6 @@ export const AppRoutes = () => {
                             )}
                         </>
                     )}
-
                     {Config.enableLogin && (
                         <>
                             {!state.isLoggedIn && !state.isLoginPending && !loading && (

@@ -181,18 +181,21 @@ export class PageRuleControllerService {
     public static viewRuleResponseUsingGet({
         authorization,
         ruleId,
+        page,
     }: {
         authorization: string,
         /**
          * ruleId
          */
         ruleId: number,
+        page: number,
     }): CancelablePromise<ViewRuleResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/pages/{page}/rules/{ruleId}',
             path: {
                 'ruleId': ruleId,
+                'page': page,
             },
             headers: {
                 'Authorization': authorization,

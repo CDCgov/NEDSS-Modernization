@@ -13,5 +13,6 @@ export type ViewRuleResponse = {
     targetType?: string;
     targetValueIdentifier?: Array<string>;
     templateUid?: number;
+    anySourceValue?:boolean
 };
 

@@ -129,7 +129,10 @@
                     height: 0px;
                 }
             }
-
         }
     }
+}
+.usa-modal__footer.footer {
+    display: flex;
+    justify-content: flex-end;
 }

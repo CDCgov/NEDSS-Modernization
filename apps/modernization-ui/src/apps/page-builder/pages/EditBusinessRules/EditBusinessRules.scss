@@ -1,0 +1,127 @@
+@use 'styles/colors';
+
+.edit-rules {
+    background-color: #f1f6f9;
+    padding: 0 1.5rem 6rem;
+    min-height: 90vh;
+
+    .breadcrumb-wrap {
+        padding: 1.5rem 0;
+    }
+
+    form.usa-form {
+        max-width: unset;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .edit-rules__form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        max-width: 960px;
+        background-color: colors.$base-white;
+        margin: 1.2rem 0;
+        display: flex;
+        justify-content: center;
+
+        .pages-breadcrumb {
+            padding-top: 1.4rem;
+            padding-left: 1.4rem;
+        }
+        .inline-field {
+            margin-top: 24px;
+            align-items: baseline;
+        }
+        .edit-rules__content {
+            width: 60%;
+            padding: 2rem 0 4rem;
+            margin: 0 auto;
+            p {
+                font-size: 0.875rem;
+                line-height: 1.4rem;
+                margin-top: 0.5rem;
+                color: colors.$base-light;
+            }
+            h2 {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+            h4 {
+                font-weight: 400;
+                margin-bottom: 0;
+            }
+            a {
+                text-decoration: none;
+            }
+            .usa-button {
+                margin-top: 0.4rem;
+                font-size: 0.95rem;
+                text-decoration: none;
+                margin-top: 0;
+            }
+            button {
+                p {
+                    margin: 0;
+                    font-weight: 700;
+                    color: colors.$primary;
+                }
+            }
+            .clear-target {
+                right: 0;
+                position: absolute;
+                margin-top: 5px;
+            }
+            .que-valueset {
+                .target-edit-btn {
+                    padding-top: 4px;
+                    text-align: right;
+                    border-top: 1px solid #55595b4d;
+                    width: 100%;
+                }
+            }
+        }
+
+        .unsupported-event-type-message {
+            border: 4px solid var(--warm-accent-accent, #fa9441);
+            background: rgba(250, 243, 209, 0.44);
+            display: flex;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            color: var(--base-black, #000);
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.62rem;
+        }
+    }
+    .edit-rules__buttons {
+        position: fixed;
+        display: flex;
+        bottom: 0;
+        width: 100%;
+        padding: 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid var(--base-lightest, #f0f0f0);
+        background: var(--base-white, #fff);
+
+        .usa-button {
+            margin-top: 0 !important;
+            font-size: 16px;
+        }
+        .delete-btn {
+            background: var(--base-white, #fff);
+            color: colors.$error;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            &:hover {
+                background: colors.$base-white !important;
+            }
+        }
+    }
+}

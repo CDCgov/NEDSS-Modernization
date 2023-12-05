@@ -1,11 +1,16 @@
 import { render } from '@testing-library/react';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
+import { BrowserRouter } from 'react-router-dom';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const dataSummary: any = {};
         const summaries = [dataSummary];
-        const { getAllByRole } = render(<BusinessRulesLibraryTable summaries={summaries} />);
+        const { getAllByRole } = render(
+            <BrowserRouter>
+                <BusinessRulesLibraryTable summaries={summaries} />
+            </BrowserRouter>
+        );
 
         const tableHeads = getAllByRole('columnheader');
 
@@ -34,7 +39,11 @@ describe('when at least one summary is available', () => {
     const summaries = [rulesSummary];
 
     it('should display the Business rules summaries', async () => {
-        const { findAllByRole } = render(<BusinessRulesLibraryTable summaries={summaries} />);
+        const { findAllByRole } = render(
+            <BrowserRouter>
+                <BusinessRulesLibraryTable summaries={summaries} />
+            </BrowserRouter>
+        );
 
         const tableData = await findAllByRole('cell');
         expect(tableData[0]).toHaveTextContent('ARB001');

@@ -1,13 +1,12 @@
 /* eslint-disable camelcase */
-import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalToggleButton } from '@trussworks/react-uswds';
 import { PageSummary } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { BusinessRuleContext } from '../../context/BusinessContext';
 import { SearchBar } from './SearchBar';
-
+import { Link, useNavigate, useParams } from 'react-router-dom';
 export enum Column {
     SourceFields = 'Source Fields',
     Logic = 'Logic',
@@ -48,6 +47,8 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Rules>({});
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
+    const navigateTo = useNavigate();
+    const { pageId } = useParams();
 
     const mapLogic = ({ comparator, ruleFunction }: any) => {
         if (ruleFunction === 'Date Compare') {
@@ -70,12 +71,13 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             }
         }
     };
+    const redirectRuleURL = `/page-builder/edit/page/${pageId}/business-rules-library`;
     const asTableRow = (page: Rules): TableBody => ({
         id: page.templateUid,
         tableDetails: [
             {
                 id: 1,
-                title: <div className="page-name">{page?.sourceIdentifier}</div> || null
+                title: <Link to={`${redirectRuleURL}/edit/${page?.ruleId}`}>{page?.sourceIdentifier}</Link>
             },
             { id: 2, title: <div className="event-text">{mapLogic(page)}</div> || null },
             {
@@ -156,16 +158,20 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             </ModalToggleButton>
         </div>
     );
-    const modalRef = useRef<ModalRef>(null);
     const dataNotAvailableElement = (
         <div className="no-data-available">
             <label className="margin-bottom-1em no-text">
                 {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+            <Button
+                className="submit-btn"
+                type="button"
+                onClick={() => {
+                    navigateTo(`${redirectRuleURL}/add`);
+                }}
+                outline>
                 Create New
-            </ModalToggleButton>
-            <ModalComponent isLarge modalRef={modalRef} modalHeading={'Add business rules'} modalBody={<div />} />
+            </Button>
         </div>
     );
     const searchAvailableElement = (
@@ -175,22 +181,32 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 Please try searching in the local library before creating new
             </label>
             <div>
-                <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+                <Button
+                    className="submit-btn"
+                    type="button"
+                    onClick={() => {
+                        navigateTo(`${redirectRuleURL}/add`);
+                    }}
+                    outline>
                     Create New
-                </ModalToggleButton>
+                </Button>
             </div>
-            <ModalComponent
-                isLarge
-                modalRef={modalRef}
-                modalHeading={'Add Business Rules'}
-                modalBody={<div> Business Rules </div>}
-            />
         </div>
     );
 
     return (
         <div>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
+            <div className="add-business-rules-block">
+                <Button
+                    className="submit-btn"
+                    type="button"
+                    onClick={() => {
+                        navigateTo(`${redirectRuleURL}/add`);
+                    }}>
+                    Create new business rules
+                </Button>
+            </div>
             {summaries?.length ? (
                 <TableComponent
                     contextName="businessRules"

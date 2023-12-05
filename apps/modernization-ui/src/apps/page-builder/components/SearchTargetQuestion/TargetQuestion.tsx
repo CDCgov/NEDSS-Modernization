@@ -20,13 +20,17 @@ type CommonProps = {
     modalRef: RefObject<ModalRef>;
     pageId: string;
     getList?: (data: any) => void;
+    multiSelected?: boolean;
+    header?: string;
 };
 type QuestionProps = {
     id: number;
+    question: string;
     name: string;
     selected: boolean;
+    valueSet: string;
 };
-const TargetQuestion = ({ modalRef, pageId, getList }: CommonProps) => {
+const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = true }: CommonProps) => {
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
     const [activeTab, setActiveTab] = useState(0);
@@ -58,12 +62,29 @@ const TargetQuestion = ({ modalRef, pageId, getList }: CommonProps) => {
     };
 
     const handleSelect = (e: any, key: number) => {
-        const updateList = [...sourceList];
+        let updateList = [...sourceList];
+
+        if (!multiSelected) {
+            updateList = updateList.map((qtn: QuestionProps) => ({
+                name: qtn.name,
+                id: qtn.id,
+                question: qtn.question,
+                valueSet: qtn.valueSet,
+                selected: false
+            }));
+        }
         updateList[key] = { ...updateList[key], selected: e.target.checked };
+
         setSourceList(updateList);
     };
     const handleSourceList = (question: QuestionProps[]) => {
-        const newList = question.map((qtn: QuestionProps) => ({ name: qtn.name, id: qtn.id, selected: false }));
+        const newList = question.map((qtn: QuestionProps) => ({
+            name: qtn.name,
+            id: qtn.id,
+            question: qtn.question,
+            valueSet: qtn.valueSet,
+            selected: false
+        }));
         setSourceList(newList);
     };
 
@@ -71,11 +92,11 @@ const TargetQuestion = ({ modalRef, pageId, getList }: CommonProps) => {
         <ModalComponent
             modalRef={modalRef}
             isLarge
-            modalHeading={'Target Questions'}
+            modalHeading={header || 'Target Questions'}
             modalBody={
                 <>
                     <div style={{ padding: '0 24px' }}>
-                        <h5>Please select targeted questions.</h5>
+                        <h5>{`{Please select ${header ? header.toLowerCase() : 'targeted questions'}.}`}</h5>
                         <div className="target-question-tabs">
                             <ul className="tabs">
                                 {page?.tabs?.map(({ name }, key) => (
@@ -145,13 +166,15 @@ const TargetQuestion = ({ modalRef, pageId, getList }: CommonProps) => {
                                     ))}
                             </div>
                             <div className="list-section">
-                                <Checkbox
-                                    onChange={handleSelectAll}
-                                    id="hots1"
-                                    checked={isSelectedAll}
-                                    name={'race1'}
-                                    label="Select All"
-                                />
+                                {multiSelected && (
+                                    <Checkbox
+                                        onChange={handleSelectAll}
+                                        id="hots1"
+                                        checked={isSelectedAll}
+                                        name={'race1'}
+                                        label="Select All"
+                                    />
+                                )}
                                 <br />
                                 {sourceList.map((list: any, index) => {
                                     return (
@@ -177,7 +200,9 @@ const TargetQuestion = ({ modalRef, pageId, getList }: CommonProps) => {
                                 modalRef={modalRef}
                                 closer
                                 data-testid="section-add-btn"
-                                onClick={() => getList !== undefined && getList(selectedRecord)}>
+                                onClick={() => {
+                                    getList !== undefined && getList(selectedRecord);
+                                }}>
                                 continue
                             </ModalToggleButton>
                         </ButtonGroup>

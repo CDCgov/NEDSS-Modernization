@@ -302,6 +302,35 @@ const logicList = [
         value: '!='
     }
 ];
+const nonDateCompare = [
+    {
+        name: 'Equal to',
+        value: '='
+    },
+    {
+        name: 'No equal to',
+        value: '!='
+    }
+];
+
+const dateCompare = [
+    {
+        name: 'Less than',
+        value: '<'
+    },
+    {
+        name: 'Less or equal to',
+        value: '<='
+    },
+    {
+        name: 'Greater or equal to',
+        value: '>='
+    },
+    {
+        name: 'Greater than',
+        value: '>'
+    }
+];
 
 const dateOperator = [
     {
@@ -341,5 +370,7 @@ export {
     questionFieldList,
     valueSetFieldList,
     conditionFieldList,
+    nonDateCompare,
+    dateCompare,
     logicList
 };
