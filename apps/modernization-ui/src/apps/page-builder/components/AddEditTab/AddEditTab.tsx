@@ -2,28 +2,24 @@ import { useEffect, useState } from 'react';
 import { TextInput } from '@trussworks/react-uswds';
 import { ToggleButton } from '../ToggleButton';
 import './AddEditTab.scss';
-import { PagesTab } from 'apps/page-builder/generated';
+
+type TabEntry = { name: string; visible: boolean; order: number };
 
 type Props = {
-    tabData?: PagesTab;
-    setTabDetails: (arg: { name: string; visible: boolean }) => void;
+    tabData: TabEntry;
+    onChanged: (change: TabEntry) => void;
 };
 
 // Adding or Managing Tabs
 // we are moving the adding/moving logic into EditPageTabs to make children 'dumber' components
 
-export const AddEditTab = ({ tabData, setTabDetails }: Props) => {
-    const [name, setName] = useState('');
-    const [visible, setVisible] = useState<boolean>(true);
+export const AddEditTab = ({ tabData, onChanged }: Props) => {
+    const [name, setName] = useState(tabData?.name);
+    const [visible, setVisible] = useState<boolean>(tabData?.visible);
 
     useEffect(() => {
-        setName(tabData?.name ?? '');
-        setVisible(tabData?.visible ?? true);
-    }, [tabData]);
-
-    useEffect(() => {
-        setTabDetails({ name: name, visible: visible });
-    }, [name, visible]);
+        onChanged({ ...tabData, name: name, visible: visible });
+    }, [name, onChanged, tabData, visible]);
 
     return (
         <div className="add-edit-tab">
@@ -41,15 +37,11 @@ export const AddEditTab = ({ tabData, setTabDetails }: Props) => {
             </div>
             <div className="add-edit-tab__toggle">
                 <label> Not Visible</label>
-                <ToggleButton
-                    checked={visible}
-                    name="visible"
-                    onChange={() => {
-                        setVisible(!visible);
-                    }}
-                />
+                <ToggleButton checked={visible} name="visible" onChange={() => setVisible((existing) => !existing)} />
                 <label> Visible</label>
             </div>
         </div>
     );
 };
+
+export type { TabEntry };

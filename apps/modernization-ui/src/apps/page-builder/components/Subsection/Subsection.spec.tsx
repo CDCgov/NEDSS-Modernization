@@ -6,10 +6,10 @@ describe('when Subsection renders', () => {
     const subsection: PagesSubSection = {
         id: 123456,
         name: 'Test Subsection',
-        questions: [],
-        visible: true
+        visible: true,
+        order: 1,
+        questions: []
     };
-    const mockFunction = jest.fn();
 
     const { container } = render(<SubsectionComponent subsection={subsection} />);
 
