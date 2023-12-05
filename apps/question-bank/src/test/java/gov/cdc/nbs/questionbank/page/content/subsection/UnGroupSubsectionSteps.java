@@ -43,7 +43,7 @@ public class UnGroupSubsectionSteps {
         WaTemplate page = pageMother.one();
 
         WaUiMetadata section = page.getUiMetadata().stream()
-                .filter(u -> u.getNbsUiComponentUid() == 1015L)
+                .filter(u -> u.getNbsUiComponentUid() == 1016l)
                 .findFirst()
                 .orElseThrow();
         List<Long> batches = Arrays.asList(101l, 102l);

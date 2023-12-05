@@ -41,7 +41,7 @@ public class GroupSubsectionSteps {
     public void i_send_a_group_subsection_request() {
         WaTemplate page = pageMother.one();
         WaUiMetadata section = page.getUiMetadata().stream()
-                .filter(u -> u.getNbsUiComponentUid() == 1015L)
+                .filter(u -> u.getNbsUiComponentUid() == 1016l)
                 .findFirst()
                 .orElseThrow();
         try {
