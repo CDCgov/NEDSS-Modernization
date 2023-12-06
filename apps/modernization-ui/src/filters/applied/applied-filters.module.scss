@@ -1,0 +1,32 @@
+@use 'styles/colors';
+
+.applied {
+    margin: 0;
+
+    .title {
+        display: block;
+        color: colors.$primary;
+        background-color: #dee7f5;
+        padding: 0.25rem 0.5rem;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0.5rem 0;
+        li {
+            color: colors.$base-white;
+            background-color: colors.$primary;
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            svg {
+                vertical-align: bottom;
+                cursor: pointer;
+            }
+        }
+    }
+}

@@ -1,29 +1,29 @@
 import { render } from '@testing-library/react';
-import { PageProvider } from 'page';
 import { PatientVaccinationTable } from './PatientVaccinationTable';
 import { ClassicModalProvider } from 'classic/ClassicModalContext';
+import { WithinTableProvider } from 'components/Table/testing';
 
 describe('when rendered', () => {
     it('should display sentence cased contact headers', async () => {
-        const { container } = render(
+        const { getAllByRole, getByRole } = render(
             <ClassicModalProvider>
-                <PageProvider>
+                <WithinTableProvider>
                     <PatientVaccinationTable patient={'patient'} vaccinations={[]}></PatientVaccinationTable>
-                </PageProvider>
+                </WithinTableProvider>
             </ClassicModalProvider>
         );
 
-        const tableHeader = container.getElementsByClassName('table-header');
-        expect(tableHeader[0].innerHTML).toBe('Vaccinations');
+        const tableHeader = getByRole('heading');
+        expect(tableHeader).toHaveTextContent('Vaccinations');
 
-        const tableHeads = container.getElementsByClassName('head-name');
+        const tableHeads = getAllByRole('columnheader');
 
-        expect(tableHeads[0].innerHTML).toBe('Date created');
-        expect(tableHeads[1].innerHTML).toBe('Provider');
-        expect(tableHeads[2].innerHTML).toBe('Date administered');
-        expect(tableHeads[3].innerHTML).toBe('Vaccine administered');
-        expect(tableHeads[4].innerHTML).toBe('Associated with');
-        expect(tableHeads[5].innerHTML).toBe('Event #');
+        expect(tableHeads[0]).toHaveTextContent('Date created');
+        expect(tableHeads[1]).toHaveTextContent('Provider');
+        expect(tableHeads[2]).toHaveTextContent('Date administered');
+        expect(tableHeads[3]).toHaveTextContent('Vaccine administered');
+        expect(tableHeads[4]).toHaveTextContent('Associated with');
+        expect(tableHeads[5]).toHaveTextContent('Event #');
     });
 });
 
@@ -45,15 +45,15 @@ describe('when at least one contact is available for a patient', () => {
     ];
 
     it('should display the contact', async () => {
-        const { container, findByText } = render(
+        const { findAllByRole, findByText } = render(
             <ClassicModalProvider>
-                <PageProvider>
+                <WithinTableProvider>
                     <PatientVaccinationTable patient={'patient'} vaccinations={vaccinations}></PatientVaccinationTable>
-                </PageProvider>
+                </WithinTableProvider>
             </ClassicModalProvider>
         );
 
-        const tableData = container.getElementsByClassName('table-data');
+        const tableData = await findAllByRole('cell');
 
         const dateCreated = await findByText(/03\/17\/2023/);
 

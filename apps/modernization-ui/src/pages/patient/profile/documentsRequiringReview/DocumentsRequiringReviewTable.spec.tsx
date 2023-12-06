@@ -1,40 +1,39 @@
-import { PageProvider } from 'page';
 import { DocumentsRequiringReviewTable } from './DocumentRequiringReviewTable';
 import { render } from '@testing-library/react';
+import { WithinTableProvider } from 'components/Table/testing';
 
 describe('when rendered', () => {
     it('should display sentence cased document headers', async () => {
-        const { container } = render(
-            <PageProvider>
+        const { getByRole, getAllByRole } = render(
+            <WithinTableProvider>
                 <DocumentsRequiringReviewTable
                     setSort={() => {}}
                     patient={'patient'}
                     documents={[]}></DocumentsRequiringReviewTable>
-            </PageProvider>
+            </WithinTableProvider>
         );
 
-        const tableHeader = container.getElementsByClassName('table-header');
-        expect(tableHeader[0].innerHTML).toBe('Documents requiring review');
+        expect(getByRole('heading', { name: 'Documents requiring review' })).toBeInTheDocument();
 
-        const tableHeads = container.getElementsByClassName('head-name');
-        expect(tableHeads[0].innerHTML).toBe('Document type');
-        expect(tableHeads[1].innerHTML).toBe('Date received');
-        expect(tableHeads[2].innerHTML).toBe('Reporting facility / provider');
-        expect(tableHeads[3].innerHTML).toBe('Event date');
-        expect(tableHeads[4].innerHTML).toBe('Description');
-        expect(tableHeads[5].innerHTML).toBe('Event #');
+        const tableHeads = getAllByRole('columnheader');
+        expect(tableHeads[0]).toHaveTextContent('Document type');
+        expect(tableHeads[1]).toHaveTextContent('Date received');
+        expect(tableHeads[2]).toHaveTextContent('Reporting facility / provider');
+        expect(tableHeads[3]).toHaveTextContent('Event date');
+        expect(tableHeads[4]).toHaveTextContent('Description');
+        expect(tableHeads[5]).toHaveTextContent('Event #');
     });
 });
 
 describe('when no documents are available for a patient', () => {
     it('should display No Data', async () => {
         const { findByText } = render(
-            <PageProvider>
+            <WithinTableProvider>
                 <DocumentsRequiringReviewTable
                     setSort={() => {}}
                     patient={'patient'}
                     documents={[]}></DocumentsRequiringReviewTable>
-            </PageProvider>
+            </WithinTableProvider>
         );
 
         expect(await findByText('No Data')).toBeInTheDocument();
@@ -58,20 +57,20 @@ describe('when at least one document is available for a patient', () => {
     ];
 
     it('should display the documents', async () => {
-        const { container, findByText } = render(
-            <PageProvider>
+        const { getByText, getAllByRole } = render(
+            <WithinTableProvider>
                 <DocumentsRequiringReviewTable
                     setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
-            </PageProvider>
+            </WithinTableProvider>
         );
 
-        const tableData = container.getElementsByClassName('table-data');
+        const tableData = getAllByRole('cell');
 
         expect(tableData[0]).toHaveTextContent('Lab Report(Electronic)');
 
-        const dateReceived = await findByText(/10\/07\/2021/);
+        const dateReceived = getByText(/10\/07\/2021/);
         expect(dateReceived).toHaveTextContent('10/07/2021 10:01 am');
         expect(tableData[1]).toContainElement(dateReceived);
         expect(tableData[2]).toHaveTextContent('Reporting facilitysome hospital');

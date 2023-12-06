@@ -97,7 +97,7 @@ public class PageSteps {
         );
   }
 
-  @ParameterType("(?i)(draft|published with draft|initial draft|published|template)")
+  @ParameterType("(?i)(draft|published with draft|initial draft|published|template|legacy)")
   public String pageStatus(final String value) {
     return value;
   }
@@ -110,6 +110,7 @@ public class PageSteps {
       case "published with draft" -> ((Consumer<PageIdentifier>) mother::published).andThen(mother::draft);
       case "published" -> mother::published;
       case "template" -> mother::template;
+      case "legacy" -> mother::legacy;
       default -> page -> {
       };  //  NOOP
     };

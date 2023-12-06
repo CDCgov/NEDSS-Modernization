@@ -1,17 +1,16 @@
 import { render, screen, act, fireEvent, waitFor } from '@testing-library/react';
 import { QuickConditionLookup } from './QuickConditionLookup';
-import { PagesContext } from 'apps/page-builder/context/PagesContext';
+import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 import { Direction } from 'sorting';
-import { Column } from 'apps/page-builder/pages/PageLibrary/ManagePagesTable';
 import { BrowserRouter } from 'react-router-dom';
 import { ConditionControllerService } from 'apps/page-builder/generated/services/ConditionControllerService';
 import { ModalRef } from '@trussworks/react-uswds';
 
-const pageContext = {
+const context = {
     currentPage: 1,
     filter: '',
     setFilter: jest.fn(),
-    sortBy: Column.PageName,
+    sortBy: '',
     setSortBy: jest.fn(),
     sortDirection: Direction.Ascending,
     setSortDirection: jest.fn(),
@@ -60,13 +59,13 @@ describe('QuickConditionLookup', () => {
 
         const { baseElement } = render(
             <BrowserRouter>
-                <PagesContext.Provider value={pageContext}>
+                <ConditionsContext.Provider value={context}>
                     <QuickConditionLookup
                         modal={modal}
                         addConditions={addConditions}
                         createConditionModal={createConditionModal}
                     />
-                </PagesContext.Provider>
+                </ConditionsContext.Provider>
             </BrowserRouter>
         );
 
@@ -81,13 +80,13 @@ describe('QuickConditionLookup', () => {
 
         const { container } = render(
             <BrowserRouter>
-                <PagesContext.Provider value={pageContext}>
+                <ConditionsContext.Provider value={context}>
                     <QuickConditionLookup
                         modal={modal}
                         addConditions={addConditions}
                         createConditionModal={createConditionModal}
                     />
-                </PagesContext.Provider>
+                </ConditionsContext.Provider>
             </BrowserRouter>
         );
 
@@ -102,13 +101,13 @@ describe('QuickConditionLookup', () => {
 
         const { getByText } = render(
             <BrowserRouter>
-                <PagesContext.Provider value={pageContext}>
+                <ConditionsContext.Provider value={context}>
                     <QuickConditionLookup
                         modal={modal}
                         addConditions={addConditions}
                         createConditionModal={createConditionModal}
                     />
-                </PagesContext.Provider>
+                </ConditionsContext.Provider>
             </BrowserRouter>
         );
 
@@ -125,13 +124,13 @@ describe('QuickConditionLookup', () => {
 
         const { container } = render(
             <BrowserRouter>
-                <PagesContext.Provider value={pageContext}>
+                <ConditionsContext.Provider value={context}>
                     <QuickConditionLookup
                         modal={modal}
                         addConditions={addConditions}
                         createConditionModal={createConditionModal}
                     />
-                </PagesContext.Provider>
+                </ConditionsContext.Provider>
             </BrowserRouter>
         );
 
@@ -148,13 +147,13 @@ describe('QuickConditionLookup', () => {
 
         const { container } = render(
             <BrowserRouter>
-                <PagesContext.Provider value={pageContext}>
+                <ConditionsContext.Provider value={context}>
                     <QuickConditionLookup
                         modal={modal}
                         addConditions={addConditions}
                         createConditionModal={createConditionModal}
                     />
-                </PagesContext.Provider>
+                </ConditionsContext.Provider>
             </BrowserRouter>
         );
 
@@ -171,13 +170,13 @@ describe('QuickConditionLookup', () => {
 
         const { container } = render(
             <BrowserRouter>
-                <PagesContext.Provider value={pageContext}>
+                <ConditionsContext.Provider value={context}>
                     <QuickConditionLookup
                         modal={modal}
                         addConditions={addConditions}
                         createConditionModal={createConditionModal}
                     />
-                </PagesContext.Provider>
+                </ConditionsContext.Provider>
             </BrowserRouter>
         );
 
@@ -204,13 +203,13 @@ describe('QuickConditionLookup', () => {
 
         const {} = render(
             <BrowserRouter>
-                <PagesContext.Provider value={pageContext}>
+                <ConditionsContext.Provider value={context}>
                     <QuickConditionLookup
                         modal={modal}
                         addConditions={addConditions}
                         createConditionModal={createConditionModal}
                     />
-                </PagesContext.Provider>
+                </ConditionsContext.Provider>
             </BrowserRouter>
         );
 
@@ -235,13 +234,13 @@ describe('QuickConditionLookup', () => {
 
         const { getByTestId } = render(
             <BrowserRouter>
-                <PagesContext.Provider value={pageContext}>
+                <ConditionsContext.Provider value={context}>
                     <QuickConditionLookup
                         modal={modal}
                         addConditions={addConditions}
                         createConditionModal={createConditionModal}
                     />
-                </PagesContext.Provider>
+                </ConditionsContext.Provider>
             </BrowserRouter>
         );
 
@@ -258,13 +257,13 @@ describe('QuickConditionLookup', () => {
 
         const { getByTestId } = render(
             <BrowserRouter>
-                <PagesContext.Provider value={pageContext}>
+                <ConditionsContext.Provider value={context}>
                     <QuickConditionLookup
                         modal={modal}
                         addConditions={addConditions}
                         createConditionModal={createConditionModal}
                     />
-                </PagesContext.Provider>
+                </ConditionsContext.Provider>
             </BrowserRouter>
         );
 
@@ -282,13 +281,13 @@ describe('QuickConditionLookup', () => {
 
             const { getByTestId } = render(
                 <BrowserRouter>
-                    <PagesContext.Provider value={pageContext}>
+                    <ConditionsContext.Provider value={context}>
                         <QuickConditionLookup
                             modal={modal}
                             addConditions={addConditions}
                             createConditionModal={createConditionModal}
                         />
-                    </PagesContext.Provider>
+                    </ConditionsContext.Provider>
                 </BrowserRouter>
             );
 
@@ -310,13 +309,13 @@ describe('QuickConditionLookup', () => {
 
             const { getByTestId } = render(
                 <BrowserRouter>
-                    <PagesContext.Provider value={pageContext}>
+                    <ConditionsContext.Provider value={context}>
                         <QuickConditionLookup
                             modal={modal}
                             addConditions={addConditions}
                             createConditionModal={createConditionModal}
                         />
-                    </PagesContext.Provider>
+                    </ConditionsContext.Provider>
                 </BrowserRouter>
             );
 
@@ -336,13 +335,13 @@ describe('QuickConditionLookup', () => {
 
             const { container, getByTestId } = render(
                 <BrowserRouter>
-                    <PagesContext.Provider value={pageContext}>
+                    <ConditionsContext.Provider value={context}>
                         <QuickConditionLookup
                             modal={modal}
                             addConditions={addConditions}
                             createConditionModal={createConditionModal}
                         />
-                    </PagesContext.Provider>
+                    </ConditionsContext.Provider>
                 </BrowserRouter>
             );
 
@@ -379,13 +378,13 @@ describe('QuickConditionLookup', () => {
 
             const { getByTestId } = render(
                 <BrowserRouter>
-                    <PagesContext.Provider value={pageContext}>
+                    <ConditionsContext.Provider value={context}>
                         <QuickConditionLookup
                             modal={modal}
                             addConditions={addConditions}
                             createConditionModal={createConditionModal}
                         />
-                    </PagesContext.Provider>
+                    </ConditionsContext.Provider>
                 </BrowserRouter>
             );
 
