@@ -7,7 +7,7 @@ import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import java.util.Optional;
-import gov.cdc.nbs.entity.projections.LabReport2;
+import gov.cdc.nbs.entity.projections.PatientLabReport;
 
 @Controller
 class ObservationResolver {
@@ -17,9 +17,9 @@ class ObservationResolver {
         this.observationRepository = observationRepository;
     }
 
-    @SchemaMapping(typeName = "LabReport2", field = "observation2")
+    @SchemaMapping(typeName = "PatientLabReport", field = "observation2")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    Optional<Observation> resolve(LabReport2 labreport) {
+    Optional<Observation> resolve(PatientLabReport labreport) {
         return observationRepository.findById(labreport.getObservationUid());
     }
 }

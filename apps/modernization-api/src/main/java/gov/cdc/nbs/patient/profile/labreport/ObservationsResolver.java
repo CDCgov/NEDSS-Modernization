@@ -4,7 +4,7 @@ import gov.cdc.nbs.repository.ObservationRepository;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import gov.cdc.nbs.entity.projections.LabReport2;
+import gov.cdc.nbs.entity.projections.PatientLabReport;
 import gov.cdc.nbs.entity.projections.Observation2;
 import java.util.List;
 
@@ -17,9 +17,9 @@ class ObservationsResolver {
         this.observationRepository = observationRepository;
     }
 
-    @SchemaMapping(typeName = "LabReport2", field = "observations2")
+    @SchemaMapping(typeName = "PatientLabReport", field = "observations2")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    List<Observation2> resolve(LabReport2 labreport) {
+    List<Observation2> resolve(PatientLabReport labreport) {
         return observationRepository.findAllObservationsAssociatedWithAnObservation(labreport.getObservationUid());
     }
 }

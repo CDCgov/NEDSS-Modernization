@@ -5,20 +5,20 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import java.util.List;
-import gov.cdc.nbs.entity.projections.LabReport2;
+import gov.cdc.nbs.entity.projections.PatientLabReport;
 import org.springframework.graphql.data.method.annotation.Argument;
 
 @Controller
-class LabReport2Resolver {
+class PatientLabReportResolver {
     private final ObservationRepository observationRepository;
 
-    LabReport2Resolver(final ObservationRepository observationRepository) {
+    PatientLabReportResolver(final ObservationRepository observationRepository) {
         this.observationRepository = observationRepository;
     }
 
     @QueryMapping(name = "findAllLabReportsByPersonUid")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    List<LabReport2> resolve(@Argument("personUid") final long personUid) {
+    List<PatientLabReport> resolve(@Argument("personUid") final long personUid) {
         return observationRepository.findAllLabReportsByPersonUid(personUid);
     }
 }

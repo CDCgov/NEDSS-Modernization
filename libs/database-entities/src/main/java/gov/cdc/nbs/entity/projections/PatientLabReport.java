@@ -2,7 +2,7 @@ package gov.cdc.nbs.entity.projections;
 
 import java.time.Instant;
 
-public interface LabReport2 {
+public interface PatientLabReport {
     String getId();
 
     Long getObservationUid();

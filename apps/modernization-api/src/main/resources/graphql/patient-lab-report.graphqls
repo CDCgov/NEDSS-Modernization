@@ -1,20 +1,20 @@
 extend type Query {
-    findAllLabReportsByPersonUid(personUid: Int!): [LabReport2]!
+  findAllLabReportsByPersonUid(personUid: Int!): [PatientLabReport]!
 }
 
 extend type Query {
   findLabReports2ByFilter(
-    filter: LabReport2Filter!
+    filter: PatientLabReportFilter!
     page: SortablePage
-  ): LabReport2Results!
+  ): PatientLabReportResults!
 }
 
-type LabReport2Results {
-  content: [LabReport2]!
+type PatientLabReportResults {
+  content: [PatientLabReport]!
   total: Int!
 }
 
-input LabReport2Filter {
+input PatientLabReportFilter {
   patientId: Int
   programAreas: [String]
   jurisdictions: [ID]
@@ -32,7 +32,7 @@ input LabReport2Filter {
   codedResult: String
 }
 
-type LabReport2 {
+type PatientLabReport {
   id: String
   observationUid: Int
   lastChange: DateTime
@@ -96,4 +96,3 @@ type AssociatedInvestigation2 {
   lastChgTime: DateTime
   actRelationshipLastChgTime: DateTime
 }
-

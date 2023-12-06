@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import gov.cdc.nbs.entity.odse.Observation;
-import gov.cdc.nbs.entity.projections.LabReport2;
+import gov.cdc.nbs.entity.projections.PatientLabReport;
 import gov.cdc.nbs.entity.projections.Observation2;
 
 public interface ObservationRepository
@@ -78,6 +78,6 @@ public interface ObservationRepository
                 p.person_parent_uid = :personUid
                             """, nativeQuery = true)
 
-    List<LabReport2> findAllLabReportsByPersonUid(
+    List<PatientLabReport> findAllLabReportsByPersonUid(
             @Param("personUid") Long personUid);
 }

@@ -6,7 +6,7 @@ import gov.cdc.nbs.repository.ParticipationRepository;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import gov.cdc.nbs.entity.projections.LabReport2;
+import gov.cdc.nbs.entity.projections.PatientLabReport;
 import java.util.List;
 
 @Controller
@@ -17,9 +17,9 @@ class OrganizationParticipationResolver {
         this.organizationParticipationRepository = organizationParticipationRepository;
     }
 
-    @SchemaMapping(typeName = "LabReport2", field = "organizationParticipations2")
+    @SchemaMapping(typeName = "PatientLabReport", field = "organizationParticipations2")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    List<OrganizationParticipation2> resolve(LabReport2 labreport) {
+    List<OrganizationParticipation2> resolve(PatientLabReport labreport) {
         return organizationParticipationRepository
                 .findAllOrganizationParticipationsByObservationUid(labreport.getObservationUid());
     }

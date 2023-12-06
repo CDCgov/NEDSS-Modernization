@@ -15,7 +15,7 @@ class ActResolver {
         this.actRepository = actRepository;
     }
 
-    @SchemaMapping(typeName = "LabReport2", field = "act")
+    @SchemaMapping(typeName = "PatientLabReport", field = "act")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     Optional<Act> resolve(final long actId) {
         return actRepository.findById(actId);

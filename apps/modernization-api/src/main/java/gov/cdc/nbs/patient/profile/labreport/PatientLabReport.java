@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.labreport;
 import java.time.Instant;
 import java.util.Collection;
 
-record LabReport2(
+record PatientLabReport(
                 long patient,
                 long observationUid,
                 Instant lastChange,

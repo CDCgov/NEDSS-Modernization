@@ -1,6 +1,6 @@
-query findLabReports2ByFilter($filter: LabReport2Filter!, $page: SortablePage){
-    findLabReports2ByFilter(filter: $filter, page: $page){
-        content{
+query findLabReports2ByFilter($filter: PatientLabReportFilter!, $page: SortablePage) {
+    findLabReports2ByFilter(filter: $filter, page: $page) {
+        content {
             id
             observationUid
             lastChange
@@ -22,7 +22,7 @@ query findLabReports2ByFilter($filter: LabReport2Filter!, $page: SortablePage){
             versionCtrlNbr
             addUserId
             lastChgUserId
-            personParticipations2{
+            personParticipations2 {
                 actUid
                 localId
                 typeCd
@@ -41,7 +41,7 @@ query findLabReports2ByFilter($filter: LabReport2Filter!, $page: SortablePage){
                 personLastChangeTime
                 shortId
             }
-            organizationParticipations2{
+            organizationParticipations2 {
                 actUid
                 typeCd
                 entityId
@@ -52,7 +52,7 @@ query findLabReports2ByFilter($filter: LabReport2Filter!, $page: SortablePage){
                 name
                 organizationLastChangeTime
             }
-            materialParticipations2{
+            materialParticipations2 {
                 actUid
                 typeCd
                 entityId
@@ -63,7 +63,7 @@ query findLabReports2ByFilter($filter: LabReport2Filter!, $page: SortablePage){
                 cd
                 cdDescTxt
             }
-            observations2{
+            observations2 {
                 cd
                 cdDescTxt
                 domainCd
@@ -77,7 +77,7 @@ query findLabReports2ByFilter($filter: LabReport2Filter!, $page: SortablePage){
                 ovcAltDescTxt
                 ovcAltCdSystemCd
             }
-            actIds2{
+            actIds2 {
                 id
                 recordStatus
                 actIdSeq
@@ -85,7 +85,7 @@ query findLabReports2ByFilter($filter: LabReport2Filter!, $page: SortablePage){
                 typeCd
                 lastChangeTime
             }
-            associatedInvestigations2{
+            associatedInvestigations2 {
                 publicHealthCaseUid
                 cdDescTxt
                 localId
