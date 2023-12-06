@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 
 export interface ContextData {
     filter: any;
@@ -16,3 +16,23 @@ export interface ContextData {
     isLoading: boolean;
     setIsLoading: (status: boolean) => void;
 }
+
+const noop: ContextData & { type: 'noop' } = {
+    type: 'noop',
+    filter: '',
+    setFilter: () => {},
+    searchQuery: '',
+    setSearchQuery: () => {},
+    currentPage: 1,
+    setCurrentPage: () => {},
+    sortBy: 'name',
+    setSortBy: () => {},
+    sortDirection: 'asc',
+    setSortDirection: () => {},
+    pageSize: 10,
+    setPageSize: () => {},
+    isLoading: false,
+    setIsLoading: () => {}
+};
+
+export const NoopContext = createContext<ContextData>(noop);

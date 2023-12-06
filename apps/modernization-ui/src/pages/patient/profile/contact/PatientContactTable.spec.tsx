@@ -1,9 +1,8 @@
 import { render } from '@testing-library/react';
-import { PageProvider } from 'page';
+import { ClassicModalProvider } from 'classic/ClassicModalContext';
+import { WithinTableProvider } from 'components/Table/testing';
 import { Headers } from './PatientContacts';
 import { PatientContactTable } from './PatientContactTable';
-import { MemoryRouter } from 'react-router-dom';
-import { ClassicModalProvider } from 'classic/ClassicModalContext';
 
 const headings = [
     { name: Headers.DateCreated, sortable: true },
@@ -16,9 +15,9 @@ const headings = [
 
 describe('when rendered', () => {
     it('should display sentence cased contact headers', async () => {
-        const { container } = render(
+        const { getByRole, getAllByRole } = render(
             <ClassicModalProvider>
-                <PageProvider>
+                <WithinTableProvider>
                     <PatientContactTable
                         patient={'patient'}
                         tracings={[]}
@@ -32,22 +31,21 @@ describe('when rendered', () => {
                             { name: Headers.AssociatedWith, sortable: true },
                             { name: Headers.Event, sortable: true }
                         ]}></PatientContactTable>
-                </PageProvider>
+                </WithinTableProvider>
             </ClassicModalProvider>
         );
 
-        const tableHeader = container.getElementsByClassName('table-header');
-        expect(tableHeader[0].innerHTML).toBe('title-value');
+        expect(getByRole('heading', { name: 'title-value' })).toBeInTheDocument();
 
-        const tableHeads = container.getElementsByClassName('head-name');
+        const tableHeads = getAllByRole('columnheader');
 
-        expect(tableHeads[0].innerHTML).toBe('Date created');
-        expect(tableHeads[1].innerHTML).toBe('Contacts named');
-        expect(tableHeads[2].innerHTML).toBe('Named by');
-        expect(tableHeads[3].innerHTML).toBe('Date named');
-        expect(tableHeads[4].innerHTML).toBe('Description');
-        expect(tableHeads[5].innerHTML).toBe('Associated with');
-        expect(tableHeads[6].innerHTML).toBe('Event #');
+        expect(tableHeads[0]).toHaveTextContent('Date created');
+        expect(tableHeads[1]).toHaveTextContent('Contacts named');
+        expect(tableHeads[2]).toHaveTextContent('Named by');
+        expect(tableHeads[3]).toHaveTextContent('Date named');
+        expect(tableHeads[4]).toHaveTextContent('Description');
+        expect(tableHeads[5]).toHaveTextContent('Associated with');
+        expect(tableHeads[6]).toHaveTextContent('Event #');
     });
 });
 
@@ -55,13 +53,13 @@ describe('when contacts are No Data for a patient', () => {
     it('should display No Data', async () => {
         const { findByText } = render(
             <ClassicModalProvider>
-                <PageProvider>
+                <WithinTableProvider>
                     <PatientContactTable
                         patient={'patient'}
                         tracings={[]}
                         title="title-value"
                         headings={headings}></PatientContactTable>
-                </PageProvider>
+                </WithinTableProvider>
             </ClassicModalProvider>
         );
 
@@ -92,21 +90,19 @@ describe('when at least one contact is available for a patient', () => {
     ];
 
     it('should display the contact', async () => {
-        const { container, findByText } = render(
-            <MemoryRouter>
-                <ClassicModalProvider>
-                    <PageProvider>
-                        <PatientContactTable
-                            patient={'patient'}
-                            tracings={tracings}
-                            title="title-value"
-                            headings={headings}></PatientContactTable>
-                    </PageProvider>
-                </ClassicModalProvider>
-            </MemoryRouter>
+        const { findByText, findAllByRole } = render(
+            <ClassicModalProvider>
+                <WithinTableProvider>
+                    <PatientContactTable
+                        patient={'patient'}
+                        tracings={tracings}
+                        title="title-value"
+                        headings={headings}></PatientContactTable>
+                </WithinTableProvider>
+            </ClassicModalProvider>
         );
 
-        const tableData = container.getElementsByClassName('table-data');
+        const tableData = await findAllByRole('cell');
 
         const dateCreated = await findByText(/03\/17\/2023/);
 

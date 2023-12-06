@@ -9,7 +9,7 @@
     button:disabled {
         cursor: text;
         .usa-icon {
-            color: #747474;
+            color: colors.$disabled-dark;
         }
     }
 }
@@ -20,6 +20,9 @@ td, th {
 
 .show-length-text {
     color: #71767a;
+
+.table__range {
+    color: colors.$base;
 }
 
 .pagination {
@@ -29,10 +32,6 @@ td, th {
 .table-data {
     .usa-checkbox__label {
         margin: 0 !important;
-    }
-
-    .check-title {
-        margin-left: 30px;
     }
 
     .link {
@@ -85,4 +84,17 @@ td.selection {
 table.usa-table thead tr {
     border-bottom-width: 2px;
     border-bottom-style: solid;
+}
+
+table.usa-table {
+    margin: 0;
+}
+
+table.usa-table th,
+table.usa-table td {
+    font-size: 14px !important;
+}
+
+table.usa-table td {
+    white-space: pre-wrap;
 }

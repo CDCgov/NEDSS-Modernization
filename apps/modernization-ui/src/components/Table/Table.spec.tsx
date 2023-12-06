@@ -2,11 +2,10 @@ import { render, fireEvent } from '@testing-library/react';
 import { TableComponent } from './Table';
 
 describe('Table component', () => {
-    it('Should renders table component', async () => {
-        const { container } = render(
+    it('Should render table component', async () => {
+        const { getByRole, getAllByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'Start Date', sortable: true },
                     { name: 'Condition', sortable: true },
@@ -38,19 +37,34 @@ describe('Table component', () => {
             />
         );
 
-        const tableHeader = container.getElementsByClassName('table-header');
-        const tableHead = container.getElementsByClassName('head-name');
-        const tableData = container.getElementsByClassName('table-data');
-        expect(tableHeader[0].innerHTML).toBe('Test Table HeaderTest Sub Header');
-        expect(tableHead[0].innerHTML).toBe('Start Date');
+        expect(getByRole('heading', { name: 'Test Table Header' })).toBeInTheDocument();
+
+        const tableHead = getAllByRole('columnheader');
+        expect(tableHead[0]).toHaveTextContent('Start Date');
+        expect(tableHead[1]).toHaveTextContent('Condition');
+        expect(tableHead[2]).toHaveTextContent('Case status');
+        expect(tableHead[3]).toHaveTextContent('Notification');
+        expect(tableHead[4]).toHaveTextContent('Jurisdiction');
+        expect(tableHead[5]).toHaveTextContent('Investigator');
+        expect(tableHead[6]).toHaveTextContent('Investigation #');
+        expect(tableHead[7]).toHaveTextContent('Co-infection #');
+
+        const tableData = getAllByRole('cell');
+
         expect(tableData[0]).toHaveTextContent('10/05/2022');
+        expect(tableData[1]).toHaveTextContent('Test Desc Text');
+        expect(tableData[2]).toHaveTextContent('Record Status');
+        expect(tableData[3]).toHaveTextContent('Notification Status');
+        expect(tableData[4]).toHaveTextContent('jurisdictionCodeDescTxt');
+        expect(tableData[5]).toHaveTextContent('John Doe');
+        expect(tableData[6]).toHaveTextContent('100023');
+        expect(tableData[7]).toHaveTextContent('COIN1000XX01');
     });
 
     it('table with no data', async () => {
         const { container } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'Start Date', sortable: true },
                     { name: 'Condition', sortable: true },
@@ -93,7 +107,6 @@ describe('when a table has a sortable header', () => {
         const { getAllByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'A', sortable: true },
                     { name: 'B', sortable: false }
@@ -127,7 +140,6 @@ describe('when a table has a sortable header', () => {
         const { getByRole, getAllByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'A', sortable: true },
                     { name: 'B', sortable: false }
@@ -153,18 +165,17 @@ describe('when a table has a sortable header', () => {
 
         const sortableHeader = headers[0];
 
-        expect(sortableHeader).toHaveClass('sort-header');
+        expect(sortableHeader).toHaveClass('sorted');
         expect(sortableHeader).toHaveAttribute('aria-sort', 'descending');
 
         const nonSortableHeader = headers[1];
-        expect(nonSortableHeader).not.toHaveClass('sort-header');
+        expect(nonSortableHeader).not.toHaveClass('sorted');
     });
 
     it('should activate ascending sort when button clicked while a descending sort is active', async () => {
-        const { container, getByRole, getAllByRole } = render(
+        const { getByRole, getAllByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
-                tableSubHeader="Test Sub Header"
                 tableHead={[
                     { name: 'A', sortable: true },
                     { name: 'B', sortable: false }
@@ -191,10 +202,10 @@ describe('when a table has a sortable header', () => {
 
         const sortableHeader = headers[0];
 
-        expect(sortableHeader).toHaveClass('sort-header');
+        expect(sortableHeader).toHaveClass('sorted');
         expect(sortableHeader).toHaveAttribute('aria-sort', 'ascending');
 
         const nonSortableHeader = headers[1];
-        expect(nonSortableHeader).not.toHaveClass('sort-header');
+        expect(nonSortableHeader).not.toHaveClass('sorted');
     });
 });
