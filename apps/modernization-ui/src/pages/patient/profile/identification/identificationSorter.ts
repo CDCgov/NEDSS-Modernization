@@ -1,4 +1,3 @@
-import { PatientIdentification } from 'generated/graphql/schema';
 import {
     Comparator,
     Direction,
@@ -8,29 +7,29 @@ import {
     sortByNestedProperty,
     withDirection
 } from 'sorting';
-import { Headers } from './identification';
+import { Column, Identification } from './identification';
 
 export type SortCriteria = {
-    name?: Headers;
+    name?: Column;
     type?: Direction;
 };
 
-export const sort = (identifications: PatientIdentification[], { name, type }: SortCriteria): PatientIdentification[] =>
+export const sort = (identifications: Identification[], { name, type }: SortCriteria): Identification[] =>
     identifications.slice().sort(withDirection(resolveComparator(name), type));
 
-const resolveComparator = (name: Headers | undefined): Comparator<PatientIdentification> => {
+const resolveComparator = (name: Column | undefined): Comparator<Identification> => {
     switch (name) {
-        case Headers.AsOf:
+        case Column.AsOf:
             return sortByDate('asOf');
-        case Headers.Type:
+        case Column.Type:
             return sortByNestedProperty('type');
-        case Headers.Authority:
+        case Column.Authority:
             return sortByNestedProperty('authority');
-        case Headers.Value:
+        case Column.Value:
             return sortByAlpha('value');
         default:
             return defaultSort;
     }
 };
 
-const defaultSort: Comparator<PatientIdentification> = descending(sortByDate('asOf'));
+const defaultSort: Comparator<Identification> = descending(sortByDate('asOf'));

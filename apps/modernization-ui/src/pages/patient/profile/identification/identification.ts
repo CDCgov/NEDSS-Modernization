@@ -1,3 +1,5 @@
+import { PatientIdentificationAuthority, PatientIdentificationType } from 'generated/graphql/schema';
+
 export type IdentificationEntry = {
     patient: number;
     asOf: string | null;
@@ -7,10 +9,21 @@ export type IdentificationEntry = {
     sequence?: number;
 };
 
-export enum Headers {
+export enum Column {
     AsOf = 'As of',
     Type = 'Type',
     Authority = 'Authority',
     Value = 'Value',
     Actions = 'Actions'
 }
+
+export type Identification = {
+    __typename?: string | null;
+    asOf: Date;
+    type: PatientIdentificationType | null;
+    authority?: PatientIdentificationAuthority | null;
+    value?: string | null;
+    patient: number;
+    sequence: number;
+    version: number | null;
+};

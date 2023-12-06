@@ -1,8 +1,9 @@
 import { PatientIdentification } from 'generated/graphql/schema';
 import { PatientIdentificationResult } from './useFindPatientProfileIdentifications';
 import { asLocalDate } from 'date';
+import { Identification } from './identification';
 
-const internalized = (content: PatientIdentification): PatientIdentification | null => {
+const internalized = (content: PatientIdentification): Identification | null => {
     return (
         content && {
             ...content,
@@ -11,10 +12,10 @@ const internalized = (content: PatientIdentification): PatientIdentification | n
     );
 };
 
-export const transform = (result: PatientIdentificationResult['findPatientProfile']): PatientIdentification[] => {
+export const transform = (result: PatientIdentificationResult['findPatientProfile'] | null): Identification[] => {
     if (result) {
         return result.identification.content.reduce(
-            (existing: PatientIdentification[], next: PatientIdentification | null) => {
+            (existing: Identification[], next: PatientIdentification | null) => {
                 if (next) {
                     const doc = internalized(next);
                     if (doc) {
