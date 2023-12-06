@@ -1,0 +1,10 @@
+table.pages {
+    thead tr th {
+        &:nth-of-type(2) {
+            width: 150px;
+        }
+        &:nth-of-type(4) {
+            width: 22ch;
+        }
+    }
+}

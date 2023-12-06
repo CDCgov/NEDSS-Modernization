@@ -58,6 +58,10 @@ table.usa-table {
 // Default button styling
 button.usa-button {
     font-size: 1rem;
+
+    svg {
+        vertical-align: bottom;
+    }
 }
 
 .usa-button--outline-disabled,

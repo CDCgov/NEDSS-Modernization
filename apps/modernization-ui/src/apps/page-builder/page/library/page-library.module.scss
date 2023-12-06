@@ -1,0 +1,22 @@
+@use 'design/system';
+
+.library {
+    border-radius: 5px;
+    background-color: system.$colors-base-white;
+
+    @extend %thin;
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.5rem;
+
+        @extend %thin-bottom;
+
+        h2 {
+            margin: 0;
+        }
+    }
+
+    @extend %thin-bottom;
+}

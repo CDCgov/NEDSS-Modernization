@@ -1,6 +1,5 @@
 import { ConceptOptionsService, Option } from 'generated';
-import debounce from 'lodash.debounce';
-import { useCallback, useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { useUser } from 'user';
 
 type State = { status: 'idle' | 'loading' } | { status: 'loaded'; options: Option[] };
