@@ -16,7 +16,7 @@ class ActIdResolver {
         this.actIdRepository = actIdRepository;
     }
 
-    @SchemaMapping(typeName = "PatientLabReport", field = "actIds2")
+    @SchemaMapping(typeName = "PatientLabReport", field = "actIds")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     List<ActId2> resolve(PatientLabReport labreport) {
         return actIdRepository.findAllByActUid(labreport.getObservationUid());

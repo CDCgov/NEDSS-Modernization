@@ -26,12 +26,12 @@ record PatientLabReport(
                 long addUserId,
                 long lastChgUserId,
                 Act act,
-                Collection<PersonParticipation2> personParticipations2,
-                Collection<OrganizationParticipation2> organizationParticipations2,
-                Collection<MaterialParticipation2> materialParticipations2,
-                Collection<Observation2> observations2,
-                Collection<ActId2> actIds2,
-                Collection<AssociatedInvestigation2> associatedInvestigations2) {
+                Collection<PersonParticipation2> personParticipations,
+                Collection<OrganizationParticipation2> organizationParticipations,
+                Collection<MaterialParticipation2> materialParticipations,
+                Collection<Observation2> observations,
+                Collection<ActId2> actIds,
+                Collection<AssociatedInvestigation2> associatedInvestigations) {
         record PersonParticipation2(
                         long actUid,
                         String localId,

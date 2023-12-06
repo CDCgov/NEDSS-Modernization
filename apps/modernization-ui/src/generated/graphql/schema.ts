@@ -473,11 +473,11 @@ export type LabReport = {
 
 export type PatientLabReport = {
   __typename?: 'PatientLabReport';
-  actIds2?: Maybe<Array<Maybe<ActId2>>>;
+  actIds?: Maybe<Array<Maybe<ActId2>>>;
   activityToTime?: Maybe<Scalars['DateTime']>;
   addTime?: Maybe<Scalars['DateTime']>;
   addUserId?: Maybe<Scalars['Int']>;
-  associatedInvestigations2?: Maybe<Array<Maybe<AssociatedInvestigation2>>>;
+  associatedInvestigations?: Maybe<Array<Maybe<AssociatedInvestigation2>>>;
   cdDescTxt?: Maybe<Scalars['String']>;
   classCd?: Maybe<Scalars['String']>;
   effectiveFromTime?: Maybe<Scalars['DateTime']>;
@@ -488,13 +488,13 @@ export type PatientLabReport = {
   lastChange?: Maybe<Scalars['DateTime']>;
   lastChgUserId?: Maybe<Scalars['Int']>;
   localId?: Maybe<Scalars['String']>;
-  materialParticipations2?: Maybe<Array<Maybe<MaterialParticipation2>>>;
+  materialParticipations?: Maybe<Array<Maybe<MaterialParticipation2>>>;
   moodCd?: Maybe<Scalars['String']>;
   observationLastChgTime?: Maybe<Scalars['DateTime']>;
   observationUid?: Maybe<Scalars['Int']>;
-  observations2?: Maybe<Array<Maybe<Observation2>>>;
-  organizationParticipations2?: Maybe<Array<Maybe<OrganizationParticipation2>>>;
-  personParticipations2?: Maybe<Array<Maybe<PersonParticipation2>>>;
+  observations?: Maybe<Array<Maybe<Observation2>>>;
+  organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation2>>>;
+  personParticipations?: Maybe<Array<Maybe<PersonParticipation2>>>;
   pregnantIndCd?: Maybe<Scalars['String']>;
   programAreaCd?: Maybe<Scalars['String']>;
   recordStatusCd?: Maybe<Scalars['String']>;
@@ -2879,7 +2879,7 @@ export type FindAllLabReportsByPersonUidQueryVariables = Exact<{
 }>;
 
 
-export type FindAllLabReportsByPersonUidQuery = { __typename?: 'Query', findAllLabReportsByPersonUid: Array<{ __typename?: 'PatientLabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations2?: Array<{ __typename?: 'PersonParticipation2', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations2?: Array<{ __typename?: 'OrganizationParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations2?: Array<{ __typename?: 'MaterialParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations2?: Array<{ __typename?: 'Observation2', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds2?: Array<{ __typename?: 'ActId2', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations2?: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> };
+export type FindAllLabReportsByPersonUidQuery = { __typename?: 'Query', findAllLabReportsByPersonUid: Array<{ __typename?: 'PatientLabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation2', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation2', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId2', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations?: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> };
 
 export type FindAllNamePrefixesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -3027,7 +3027,7 @@ export type FindLabReports2ByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindLabReports2ByFilterQuery = { __typename?: 'Query', findLabReports2ByFilter: { __typename?: 'PatientLabReportResults', total: number, content: Array<{ __typename?: 'PatientLabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations2?: Array<{ __typename?: 'PersonParticipation2', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations2?: Array<{ __typename?: 'OrganizationParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations2?: Array<{ __typename?: 'MaterialParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations2?: Array<{ __typename?: 'Observation2', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds2?: Array<{ __typename?: 'ActId2', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations2?: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> } };
+export type FindLabReports2ByFilterQuery = { __typename?: 'Query', findLabReports2ByFilter: { __typename?: 'PatientLabReportResults', total: number, content: Array<{ __typename?: 'PatientLabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation2', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation2', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId2', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations?: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> } };
 
 export type FindLabReportsByFilterQueryVariables = Exact<{
   filter: LabReportFilter;
@@ -4838,7 +4838,7 @@ export const FindAllLabReportsByPersonUidDocument = gql`
     versionCtrlNbr
     addUserId
     lastChgUserId
-    personParticipations2 {
+    personParticipations {
       actUid
       localId
       typeCd
@@ -4857,7 +4857,7 @@ export const FindAllLabReportsByPersonUidDocument = gql`
       personLastChangeTime
       shortId
     }
-    organizationParticipations2 {
+    organizationParticipations {
       actUid
       typeCd
       entityId
@@ -4868,7 +4868,7 @@ export const FindAllLabReportsByPersonUidDocument = gql`
       name
       organizationLastChangeTime
     }
-    materialParticipations2 {
+    materialParticipations {
       actUid
       typeCd
       entityId
@@ -4879,7 +4879,7 @@ export const FindAllLabReportsByPersonUidDocument = gql`
       cd
       cdDescTxt
     }
-    observations2 {
+    observations {
       cd
       cdDescTxt
       domainCd
@@ -4893,7 +4893,7 @@ export const FindAllLabReportsByPersonUidDocument = gql`
       ovcAltDescTxt
       ovcAltCdSystemCd
     }
-    actIds2 {
+    actIds {
       id
       recordStatus
       actIdSeq
@@ -4901,7 +4901,7 @@ export const FindAllLabReportsByPersonUidDocument = gql`
       typeCd
       lastChangeTime
     }
-    associatedInvestigations2 {
+    associatedInvestigations {
       publicHealthCaseUid
       cdDescTxt
       localId
@@ -6023,7 +6023,7 @@ export const FindLabReports2ByFilterDocument = gql`
       versionCtrlNbr
       addUserId
       lastChgUserId
-      personParticipations2 {
+      personParticipations {
         actUid
         localId
         typeCd
@@ -6042,7 +6042,7 @@ export const FindLabReports2ByFilterDocument = gql`
         personLastChangeTime
         shortId
       }
-      organizationParticipations2 {
+      organizationParticipations {
         actUid
         typeCd
         entityId
@@ -6053,7 +6053,7 @@ export const FindLabReports2ByFilterDocument = gql`
         name
         organizationLastChangeTime
       }
-      materialParticipations2 {
+      materialParticipations {
         actUid
         typeCd
         entityId
@@ -6064,7 +6064,7 @@ export const FindLabReports2ByFilterDocument = gql`
         cd
         cdDescTxt
       }
-      observations2 {
+      observations {
         cd
         cdDescTxt
         domainCd
@@ -6078,7 +6078,7 @@ export const FindLabReports2ByFilterDocument = gql`
         ovcAltDescTxt
         ovcAltCdSystemCd
       }
-      actIds2 {
+      actIds {
         id
         recordStatus
         actIdSeq
@@ -6086,7 +6086,7 @@ export const FindLabReports2ByFilterDocument = gql`
         typeCd
         lastChangeTime
       }
-      associatedInvestigations2 {
+      associatedInvestigations {
         publicHealthCaseUid
         cdDescTxt
         localId

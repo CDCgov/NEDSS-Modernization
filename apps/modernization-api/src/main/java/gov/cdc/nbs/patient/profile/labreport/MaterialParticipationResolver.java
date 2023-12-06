@@ -16,7 +16,7 @@ class MaterialParticipationResolver {
         this.materialParticipationRepository = materialParticipationRepository;
     }
 
-    @SchemaMapping(typeName = "PatientLabReport", field = "materialParticipations2")
+    @SchemaMapping(typeName = "PatientLabReport", field = "materialParticipations")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     List<MaterialParticipation2> resolve(PatientLabReport labreport) {
         return materialParticipationRepository

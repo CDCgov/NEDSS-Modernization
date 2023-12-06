@@ -17,7 +17,7 @@ class PersonParticipationResolver {
         this.personParticipationRepository = personParticipationRepository;
     }
 
-    @SchemaMapping(typeName = "PatientLabReport", field = "personParticipations2")
+    @SchemaMapping(typeName = "PatientLabReport", field = "personParticipations")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     List<PersonParticipation2> resolve(PatientLabReport labreport) {
         return personParticipationRepository.findAllPersonParticipationsByObservationUid(labreport.getObservationUid());

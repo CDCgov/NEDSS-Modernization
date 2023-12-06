@@ -625,12 +625,12 @@ type PatientLabReport {
     versionCtrlNbr: Int
     addUserId: Int
     lastChgUserId: Int
-    personParticipations2: [PersonParticipation2]
-    organizationParticipations2: [OrganizationParticipation2]
-    materialParticipations2: [MaterialParticipation2]
-    observations2: [Observation2]
-    actIds2: [ActId2]
-    associatedInvestigations2: [AssociatedInvestigation2]
+    personParticipations: [PersonParticipation2]
+    organizationParticipations: [OrganizationParticipation2]
+    materialParticipations: [MaterialParticipation2]
+    observations: [Observation2]
+    actIds: [ActId2]
+    associatedInvestigations: [AssociatedInvestigation2]
 }
 
 type MaterialParticipation2 {

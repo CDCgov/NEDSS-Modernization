@@ -43,9 +43,7 @@ export const LabReportTable = ({ patient, allowAdd = false }: PatientLabReportTa
     });
 
     const getOrderingProviderName = (labReport: PatientLabReport): string | undefined => {
-        const provider = labReport.personParticipations2?.find(
-            (p: any) => p?.typeCd === 'ORD' && p?.personCd === 'PRV'
-        );
+        const provider = labReport.personParticipations?.find((p: any) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
         if (provider) {
             return `${provider.firstName} ${provider.lastName}`;
         } else {
@@ -54,16 +52,16 @@ export const LabReportTable = ({ patient, allowAdd = false }: PatientLabReportTa
     };
 
     const getReportingFacility = (labReport: PatientLabReport): OrganizationParticipation2 | undefined | null => {
-        return labReport.organizationParticipations2?.find((o: any) => o?.typeCd === 'AUT');
+        return labReport.organizationParticipations?.find((o: any) => o?.typeCd === 'AUT');
     };
 
     const getOrderingFacility = (labReport: PatientLabReport): OrganizationParticipation2 | undefined | null => {
-        return labReport.organizationParticipations2?.find((o: any) => o?.typeCd === 'ORD');
+        return labReport.organizationParticipations?.find((o: any) => o?.typeCd === 'ORD');
     };
 
     const getTestedResults = (labReport: PatientLabReport) => {
         return (
-            labReport.observations2?.map(
+            labReport.observations?.map(
                 (o: any) =>
                     o?.domainCd === 'Result' && (
                         <div key={o.cdDescTxt}>
@@ -78,13 +76,13 @@ export const LabReportTable = ({ patient, allowAdd = false }: PatientLabReportTa
     };
 
     const getSortableTestResult = (labReport: PatientLabReport) => {
-        if (labReport?.observations2?.find((o: any) => o?.domainCd === 'Result')) {
-            return labReport?.observations2?.find((o: any) => o?.domainCd === 'Result')?.cdDescTxt;
+        if (labReport?.observations?.find((o: any) => o?.domainCd === 'Result')) {
+            return labReport?.observations?.find((o: any) => o?.domainCd === 'Result')?.cdDescTxt;
         }
     };
 
     const getSortableAssociatedWith = (labReport: PatientLabReport) => {
-        return labReport?.associatedInvestigations2?.[0]?.cdDescTxt || '';
+        return labReport?.associatedInvestigations?.[0]?.cdDescTxt || '';
     };
 
     useEffect(() => {

@@ -17,7 +17,7 @@ class PublicHealthCaseResolver {
         this.investigationRepository = investigationRepository;
     }
 
-    @SchemaMapping(typeName = "PatientLabReport", field = "associatedInvestigations2")
+    @SchemaMapping(typeName = "PatientLabReport", field = "associatedInvestigations")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     List<AssociatedInvestigation2> resolve(PatientLabReport labreport) {
         return investigationRepository.findAllInvestigationsByObservationUid(labreport.getObservationUid());

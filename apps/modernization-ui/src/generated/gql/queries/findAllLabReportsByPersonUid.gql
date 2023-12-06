@@ -1,5 +1,5 @@
-query findAllLabReportsByPersonUid($personUid: Int!){
-    findAllLabReportsByPersonUid(personUid: $personUid){
+query findAllLabReportsByPersonUid($personUid: Int!) {
+    findAllLabReportsByPersonUid(personUid: $personUid) {
         id
         observationUid
         lastChange
@@ -21,7 +21,7 @@ query findAllLabReportsByPersonUid($personUid: Int!){
         versionCtrlNbr
         addUserId
         lastChgUserId
-        personParticipations2{
+        personParticipations {
             actUid
             localId
             typeCd
@@ -40,7 +40,7 @@ query findAllLabReportsByPersonUid($personUid: Int!){
             personLastChangeTime
             shortId
         }
-        organizationParticipations2{
+        organizationParticipations {
             actUid
             typeCd
             entityId
@@ -51,7 +51,7 @@ query findAllLabReportsByPersonUid($personUid: Int!){
             name
             organizationLastChangeTime
         }
-        materialParticipations2{
+        materialParticipations {
             actUid
             typeCd
             entityId
@@ -62,7 +62,7 @@ query findAllLabReportsByPersonUid($personUid: Int!){
             cd
             cdDescTxt
         }
-        observations2{
+        observations {
             cd
             cdDescTxt
             domainCd
@@ -76,7 +76,7 @@ query findAllLabReportsByPersonUid($personUid: Int!){
             ovcAltDescTxt
             ovcAltCdSystemCd
         }
-        actIds2{
+        actIds {
             id
             recordStatus
             actIdSeq
@@ -84,7 +84,7 @@ query findAllLabReportsByPersonUid($personUid: Int!){
             typeCd
             lastChangeTime
         }
-        associatedInvestigations2{
+        associatedInvestigations {
             publicHealthCaseUid
             cdDescTxt
             localId

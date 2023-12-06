@@ -17,7 +17,7 @@ class ObservationsResolver {
         this.observationRepository = observationRepository;
     }
 
-    @SchemaMapping(typeName = "PatientLabReport", field = "observations2")
+    @SchemaMapping(typeName = "PatientLabReport", field = "observations")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     List<Observation2> resolve(PatientLabReport labreport) {
         return observationRepository.findAllObservationsAssociatedWithAnObservation(labreport.getObservationUid());
