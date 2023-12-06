@@ -2,7 +2,6 @@
 import { Condition } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { useContext } from 'react';
-import { Direction } from 'sorting';
 import './ConditionLibraryTable.scss';
 import { Link } from 'react-router-dom';
 import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
@@ -14,28 +13,6 @@ interface ConditionLibraryTableProps {
     pageSize: number;
     totalElements: number;
 }
-
-enum Column {
-    Condition = 'Condition',
-    Code = 'Code',
-    ProgramArea = 'Program area',
-    ConditionFamily = 'Condition family',
-    CoinfectionGroup = 'Coinfection group',
-    NND = 'NND',
-    InvestigationPage = 'Investigation page',
-    Status = 'Status'
-}
-
-const tableColumns = [
-    { name: Column.Condition, sortable: true },
-    { name: Column.Code, sortable: true },
-    { name: Column.ProgramArea, sortable: true },
-    { name: Column.ConditionFamily, sortable: true },
-    { name: Column.CoinfectionGroup, sortable: false },
-    { name: Column.NND, sortable: true },
-    { name: Column.InvestigationPage, sortable: true },
-    { name: Column.Status, sortable: true }
-];
 
 const asTableRow = (condition: Condition): TableBody => ({
     id: condition.id,
