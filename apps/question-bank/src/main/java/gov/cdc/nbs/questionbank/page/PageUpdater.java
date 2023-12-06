@@ -30,7 +30,7 @@ public class PageUpdater {
     public PagePublishResponse publishPage(Long pageId, PagePublishRequest publishRequest) {
         WaTemplate page = entityManager.find(WaTemplate.class, pageId);
 
-        if(page.getTemplateType().equals(PageConstants.PUBLISHED)) {
+        if(!page.getTemplateType().equals(PageConstants.DRAFT)) {
             throw new PagePublishException("cannot publish a published page");
         }
 
@@ -38,7 +38,14 @@ public class PageUpdater {
 
         publishPageRequester.request(publishRequest.versionNotes());
 
-        return new PagePublishResponse();
+        page = entityManager.find(WaTemplate.class, pageId);
+
+
+        if(page.getTemplateType().equals(PageConstants.PUBLISHED)) {
+            return new PagePublishResponse("success");
+        }else{
+            throw new PagePublishException("unable to publish page");
+        }
     }
 
 }

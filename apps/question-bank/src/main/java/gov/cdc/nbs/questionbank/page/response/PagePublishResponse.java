@@ -1,5 +1,5 @@
 package gov.cdc.nbs.questionbank.page.response;
 
-public record PagePublishResponse() {
+public record PagePublishResponse(String message) {
     
 }

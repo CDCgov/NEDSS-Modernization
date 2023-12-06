@@ -69,9 +69,7 @@ public class PageController {
     public PagePublishResponse publishPage(@PathVariable("id") Long pageId,
             @RequestBody PagePublishRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-        pageUpdater.publishPage(pageId, request);
-        
-        return new PagePublishResponse();
+        return pageUpdater.publishPage(pageId, request);
     }
 
     @PutMapping("{id}/draft")
