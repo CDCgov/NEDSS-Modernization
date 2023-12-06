@@ -1,5 +1,5 @@
 extend type Query {
-  findAllLabReportsByPersonUid(personUid: Int!): [PatientLabReport]!
+  findLabReportsForPatient(personUid: Int!): [PatientLabReport]!
 }
 
 extend type Query {

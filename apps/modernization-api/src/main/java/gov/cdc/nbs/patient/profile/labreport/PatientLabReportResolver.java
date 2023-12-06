@@ -16,9 +16,9 @@ class PatientLabReportResolver {
         this.observationRepository = observationRepository;
     }
 
-    @QueryMapping(name = "findAllLabReportsByPersonUid")
+    @QueryMapping(name = "findLabReportsForPatient")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     List<PatientLabReport> resolve(@Argument("personUid") final long personUid) {
-        return observationRepository.findAllLabReportsByPersonUid(personUid);
+        return observationRepository.findLabReportsForPatient(personUid);
     }
 }

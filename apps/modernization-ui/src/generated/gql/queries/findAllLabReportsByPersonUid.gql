@@ -1,5 +1,5 @@
-query findAllLabReportsByPersonUid($personUid: Int!) {
-    findAllLabReportsByPersonUid(personUid: $personUid) {
+query findLabReportsForPatient($personUid: Int!) {
+    findLabReportsForPatient(personUid: $personUid) {
         id
         observationUid
         lastChange

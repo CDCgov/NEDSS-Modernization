@@ -34,8 +34,8 @@ export const LabReportTable = ({ patient, allowAdd = false }: PatientLabReportTa
     ]);
 
     const handleComplete = (data: FindAllLabReportsByPersonUidQuery) => {
-        setTotal(data?.findAllLabReportsByPersonUid?.length || 0);
-        setLabReportData(data.findAllLabReportsByPersonUid);
+        setTotal(data?.findLabReportsForPatient?.length || 0);
+        setLabReportData(data.findLabReportsForPatient);
     };
 
     const [getLabReport, { called, loading }] = useFindAllLabReportsByPersonUidLazyQuery({

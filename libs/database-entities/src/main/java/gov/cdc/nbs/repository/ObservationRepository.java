@@ -78,6 +78,6 @@ public interface ObservationRepository
                 p.person_parent_uid = :personUid
                             """, nativeQuery = true)
 
-    List<PatientLabReport> findAllLabReportsByPersonUid(
+    List<PatientLabReport> findLabReportsForPatient(
             @Param("personUid") Long personUid);
 }
