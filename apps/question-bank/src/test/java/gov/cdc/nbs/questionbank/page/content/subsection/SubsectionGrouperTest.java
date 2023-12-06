@@ -95,8 +95,8 @@ class SubsectionGrouperTest {
         PageContentCommand.GroupSubsection command = mock(PageContentCommand.GroupSubsection.class);
         when(command.batches()).thenReturn(getValidBatchList());
         when(command.subsection()).thenReturn(1L);
-        WaUiMetadata questionBatch1 = createQuestionBatch(2L);
-        WaUiMetadata questionBatch2 = createQuestionBatch(3L);
+        WaUiMetadata questionBatch1 = createQuestionBatch(101l);
+        WaUiMetadata questionBatch2 = createQuestionBatch(102l);
         List<WaUiMetadata> uiMetadata = Arrays.asList(subsection, questionBatch1, questionBatch2);
         WaTemplate waTemplate = new WaTemplate();
         waTemplate.setUiMetadata(uiMetadata);
