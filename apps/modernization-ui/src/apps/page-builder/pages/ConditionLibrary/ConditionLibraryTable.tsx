@@ -67,55 +67,7 @@ const asTableRows = (conditions: Condition[]): TableBody[] => conditions.map(asT
 
 const ConditionLibraryTable = ({ conditions, currentPage, pageSize, totalElements }: ConditionLibraryTableProps) => {
     const tableRows = asTableRows(conditions);
-    const { setCurrentPage, setSortBy, setSortDirection } = useContext(ConditionsContext);
-
-    /*
-     * Converts header and Direction to API compatible sort string such as "name,asc"
-     */
-    const toSortString = (name: string) => {
-        if (name) {
-            switch (name) {
-                case Column.Condition:
-                    setSortBy(`conditionShortNm`);
-                    break;
-                case Column.Code:
-                    setSortBy(`id`);
-                    break;
-                case Column.ProgramArea:
-                    setSortBy(`progAreaCd`);
-                    break;
-                case Column.ConditionFamily:
-                    setSortBy(`familyCd`);
-                    break;
-                case Column.NND:
-                    setSortBy(`nndInd`);
-                    break;
-                case Column.InvestigationPage:
-                    setSortBy(`investigationFormCd`);
-                    break;
-                case Column.Status:
-                    setSortBy(`statusCd`);
-                    break;
-                default:
-                    setSortBy('conditionShortNm');
-                    break;
-            }
-        }
-    };
-
-    const handleSort = (name: string, direction: Direction): void => {
-        if (currentPage > 1 && setCurrentPage) {
-            setCurrentPage(1);
-        }
-
-        if (direction === Direction.None) {
-            toSortString(Column.Condition);
-            setSortDirection(Direction.Ascending);
-        } else {
-            toSortString(name);
-            setSortDirection(direction);
-        }
-    };
+    const { setCurrentPage, handleSort } = useContext(ConditionsContext);
 
     return (
         <TableComponent

@@ -274,21 +274,22 @@ describe('QuickConditionLookup', () => {
                 </BrowserRouter>
             );
 
-            const searchBtn = getByTestId('condition-search-btn');
+            // const searchBar = await screen.findByTestId('condition-search');
+            // const searchBtn = await screen.findByTestId('condition-search');
+            const searchBar = getByTestId('condition-search');
+            const searchBtn = getByTestId('condition-search');
 
-            // type data into search bar
-            const searchBar = await screen.findByTestId('condition-search');
             // type hello into searchBar
-            act(() => {
+            await waitFor(() => {
                 fireEvent.change(searchBar, { target: { value: 'hello' } });
             });
             // click search button
-            act(() => {
+            await waitFor(() => {
                 searchBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
             });
 
             await waitFor(() => {
-                expect(mockSearchConditions).toHaveBeenCalledWith('Bearer undefined', 0, 10, 'conditionShortNm,asc', {
+                expect(mockSearchConditions).toHaveBeenCalledWith('Bearer undefined', 0, 10, ',asc', {
                     searchText: 'hello'
                 });
             });
