@@ -1,6 +1,6 @@
-query findLabReports2ByFilter($filter: PatientLabReportFilter!, $page: SortablePage) {
-    findLabReports2ByFilter(filter: $filter, page: $page) {
-        content {
+query findLabReports2ByFilter($filter: PatientLabReportFilter!, $page: SortablePage){
+    findLabReports2ByFilter(filter: $filter, page: $page){
+        content{
             id
             observationUid
             lastChange
@@ -22,7 +22,7 @@ query findLabReports2ByFilter($filter: PatientLabReportFilter!, $page: SortableP
             versionCtrlNbr
             addUserId
             lastChgUserId
-            personParticipations {
+            personParticipations{
                 actUid
                 localId
                 typeCd
@@ -41,7 +41,7 @@ query findLabReports2ByFilter($filter: PatientLabReportFilter!, $page: SortableP
                 personLastChangeTime
                 shortId
             }
-            organizationParticipations {
+            organizationParticipations{
                 actUid
                 typeCd
                 entityId
@@ -52,7 +52,7 @@ query findLabReports2ByFilter($filter: PatientLabReportFilter!, $page: SortableP
                 name
                 organizationLastChangeTime
             }
-            materialParticipations {
+            materialParticipations{
                 actUid
                 typeCd
                 entityId
@@ -63,7 +63,7 @@ query findLabReports2ByFilter($filter: PatientLabReportFilter!, $page: SortableP
                 cd
                 cdDescTxt
             }
-            observations {
+            observations{
                 cd
                 cdDescTxt
                 domainCd
@@ -77,7 +77,7 @@ query findLabReports2ByFilter($filter: PatientLabReportFilter!, $page: SortableP
                 ovcAltDescTxt
                 ovcAltCdSystemCd
             }
-            actIds {
+            actIds{
                 id
                 recordStatus
                 actIdSeq
@@ -85,7 +85,7 @@ query findLabReports2ByFilter($filter: PatientLabReportFilter!, $page: SortableP
                 typeCd
                 lastChangeTime
             }
-            associatedInvestigations {
+            associatedInvestigations{
                 publicHealthCaseUid
                 cdDescTxt
                 localId
