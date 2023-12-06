@@ -18,6 +18,7 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSubsection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
