@@ -12,7 +12,6 @@ type ModalProps = {
 };
 
 export const ModalComponent = ({ modalRef, modalBody, modalHeading, modalFooter, isLarge, size }: ModalProps) => {
-    // @ts-ignore
     return (
         <Modal
             ref={modalRef}

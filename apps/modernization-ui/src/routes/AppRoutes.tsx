@@ -1,26 +1,26 @@
+import { ReactNode, useContext, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Config } from 'config';
+import { useConfiguration } from 'configuration';
+import { UserContext } from 'providers/UserContext';
+import { Spinner } from 'components/Spinner';
+import { Login } from 'pages/login/Login';
+import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
+import { PatientProfile } from 'pages/patient/profile';
+import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
+import { AddPatient } from 'pages/addPatient/AddPatient';
+import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
 import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
 import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
 import ConditionLibrary from 'apps/page-builder/pages/ConditionLibrary/ConditionLibrary';
 import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
-import { PageLibrary } from 'apps/page-builder/pages/PageLibrary/PageLibrary';
-import { Spinner } from 'components/Spinner/Spinner';
-import { Config } from 'config';
-import { useConfiguration } from 'configuration';
-import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
-import { AddPatient } from 'pages/addPatient/AddPatient';
-import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
-import { UserContext } from 'providers/UserContext';
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase/ConditionalCase';
-import { CreateCondition } from '../apps/page-builder/components/CreateCondition/CreateCondition';
-import { CreateQuestion } from '../apps/page-builder/components/CreateQuestion/CreateQuestion';
-import { BusinessRulesLibrary } from '../apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
-import { ValuesetLibrary } from '../apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
-import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
-import { Login } from '../pages/login/Login';
-import { PatientProfile } from '../pages/patient/profile';
+import { PageLibrary } from 'apps/page-builder/page/library/PageLibrary';
+import { ConditionalCase } from 'apps/page-builder/components/ConditionalCase/ConditionalCase';
+import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
+import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/CreateQuestion';
+import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
+import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
+import { ValuesetLibrary } from 'apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -51,7 +51,7 @@ export const AppRoutes = () => {
         if (!initializing && !state.isLoggedIn && !state.isLoginPending) {
             setLoading(false);
         }
-    }, [initializing]);
+    }, [initializing, state.isLoggedIn, state.isLoginPending]);
 
     // allow 1 second to initialize and send a login request
     setTimeout(() => {

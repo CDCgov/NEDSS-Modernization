@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import java.util.Collection;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = FilterJSON.Date.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(FilterJSON.Date.class),
     @JsonSubTypes.Type(FilterJSON.DateRange.class),
@@ -69,18 +69,12 @@ public sealed interface FilterJSON {
       @ApiModelProperty(required = true)
       String property,
       @ApiModelProperty(required = true)
-      DateFilter.Operator operator,
-      @ApiModelProperty(required = true)
-      LocalDate from
+      DateFilter.Operator operator
   ) implements FilterJSON {
-
-    public Date(String property, DateFilter.Operator operator) {
-      this(property, operator, LocalDate.now());
-    }
 
     @Override
     public Filter asFilter() {
-      return new DateFilter(property, operator, from);
+      return new DateFilter(property, operator);
     }
 
   }

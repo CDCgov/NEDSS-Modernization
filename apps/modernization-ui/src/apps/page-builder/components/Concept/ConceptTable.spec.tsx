@@ -1,28 +1,22 @@
-import { PageProvider } from 'page';
 import { ConceptTable } from './ConceptTable';
 import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { AlertProvider } from '../../../../alert';
 import { Concept } from './Concept';
+import { WithinTableProvider } from 'components/Table/testing';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
-        const { container } = render(
-            <BrowserRouter>
-                <PageProvider>
-                    <AlertProvider>
-                        <ConceptTable summaries={[]} />
-                    </AlertProvider>
-                </PageProvider>
-            </BrowserRouter>
+        const { findAllByRole } = render(
+            <WithinTableProvider>
+                <ConceptTable summaries={[]} />
+            </WithinTableProvider>
         );
 
-        const tableHeads = container.getElementsByClassName('head-name');
+        const tableHeads = await findAllByRole('columnheader');
 
-        expect(tableHeads[0].innerHTML).toBe('Local Code');
-        expect(tableHeads[1].innerHTML).toBe('UI display Name');
-        expect(tableHeads[2].innerHTML).toBe('Concept Code');
-        expect(tableHeads[3].innerHTML).toBe('Effective Date');
+        expect(tableHeads[0]).toHaveTextContent('Local Code');
+        expect(tableHeads[1]).toHaveTextContent('UI display Name');
+        expect(tableHeads[2]).toHaveTextContent('Concept Code');
+        expect(tableHeads[3]).toHaveTextContent('Effective Date');
     });
 });
 
@@ -42,15 +36,13 @@ describe('when at least one summary is available', () => {
     const summaries = [questionsSummary];
 
     it('should display the Concept details in table', async () => {
-        const { container } = render(
-            <PageProvider>
-                <AlertProvider>
-                    <ConceptTable summaries={summaries} />
-                </AlertProvider>
-            </PageProvider>
+        const { findAllByRole } = render(
+            <WithinTableProvider>
+                <ConceptTable summaries={summaries} />
+            </WithinTableProvider>
         );
 
-        const tableData = container.getElementsByClassName('table-data');
+        const tableData = await findAllByRole('cell');
         expect(tableData[0]).toHaveTextContent('ARBO');
         expect(tableData[1]).toHaveTextContent('Arboviral');
         expect(tableData[2]).toHaveTextContent('ARBO');
@@ -59,11 +51,7 @@ describe('when at least one summary is available', () => {
 });
 describe('Concept component tests', () => {
     it('should render a grid with 5 inputs labels which are Local code, UI Display name, Concept Code, Always Effective and Effective Until', () => {
-        const { getByText } = render(
-            <AlertProvider>
-                <Concept />
-            </AlertProvider>
-        );
+        const { getByText } = render(<Concept />);
         expect(
             getByText('No value set concept is displayed. Please click the button below to add new value set concept.')
         ).toBeInTheDocument();
