@@ -27,7 +27,7 @@ import { Patient } from '../Patient';
 import { sort } from './identificationSorter';
 import { TableBody, TableComponent } from 'components/Table';
 import { transform } from './identificationTransformer';
-import { ActionsComponent } from '../ActionsComponent';
+import { TableActions } from '../TableActions';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -76,11 +76,11 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const initial = resolveInitialEntry(patient?.id || '');
     const { changed } = useProfileContext();
 
-    const [isActions, setIsActions] = useState<number | null>(null);
+    const [actionIndex, setActionIndex] = useState<number | null>(null);
 
     const asTableBodies = (idenitifications: Identification[]): TableBody[] =>
         idenitifications?.map((identification, index) => ({
-            id: identification.__typename,
+            id: identification.value,
             tableDetails: [
                 {
                     id: 1,
@@ -92,14 +92,14 @@ export const IdentificationsTable = ({ patient }: Props) => {
                 {
                     id: 5,
                     title: (
-                        <ActionsComponent
-                            setIsActions={setIsActions}
-                            isActions={isActions}
+                        <TableActions
+                            setActionIndex={setActionIndex}
+                            actionIndex={actionIndex}
                             index={index}
                             patient={patient}
                             handleAction={(type: string) => {
                                 tableActionStateAdapter(actions, identification)(type);
-                                setIsActions(null);
+                                setActionIndex(null);
                             }}
                         />
                     )
@@ -224,7 +224,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     useEffect(() => {
         const sorted = sort(items, {});
         setBodies(asTableBodies(sorted));
-    }, [isActions]);
+    }, [actionIndex]);
 
     return (
         <>

@@ -18,9 +18,8 @@ export enum Column {
 }
 
 export type Identification = {
-    __typename?: string | null;
     asOf: Date;
-    type: PatientIdentificationType | null;
+    type: PatientIdentificationType;
     authority?: PatientIdentificationAuthority | null;
     value?: string | null;
     patient: number;
