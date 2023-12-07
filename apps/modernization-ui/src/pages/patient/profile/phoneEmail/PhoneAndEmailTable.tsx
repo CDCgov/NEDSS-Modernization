@@ -11,7 +11,7 @@ import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sor
 import { externalizeDateTime, internalizeDate } from 'date';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { orNull } from 'utils/orNull';
-import { SortableTable } from 'components/Table/SortableTable';
+import { TableBody, TableComponent } from 'components/Table';
 import { Actions } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
@@ -237,28 +237,22 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
         }
     };
 
-    return (
-        <>
-            <SortableTable
-                isLoading={!called || loading}
-                isPagination={true}
-                buttons={
-                    <div className="grid-row">
-                        <Button
-                            disabled={patient?.status !== 'ACTIVE'}
-                            type="button"
-                            onClick={actions.prepareForAdd}
-                            className="display-inline-flex">
-                            <Icon.Add className="margin-right-05" />
-                            Add phone & email
-                        </Button>
-                    </div>
-                }
-                tableHeader={'Phone & email'}
-                tableHead={tableHead}
-                tableBody={phoneEmail?.map((phone, index: number) => (
-                    <tr key={index}>
-                        <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
+    /**
+     * Formats the Phone and Email object into TableComponent compatible TableBody object which represents a single row.
+     * Each "title" in the tableDetails is a template of each column cell of the row being created.
+     * @param {PatientPhone} phone, each item of the morbidity response data
+     * @param {number} index, index of the array item
+     * @return {TableBody}
+     */
+
+    const generateTableRow = (phone: PatientPhone, index: number): TableBody => {
+        return {
+            id: index,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: (
+                        <span className={`font-sans-1xs table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                             {phone?.asOf ? (
                                 <span>
                                     {format(new Date(phone?.asOf), 'MM/dd/yyyy')} <br />{' '}
@@ -266,8 +260,13 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                             ) : (
                                 <NoData />
                             )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
+                        </span>
+                    )
+                },
+                {
+                    id: 2,
+                    title: (
+                        <span className={`font-sans-1xs table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                             {phone?.type ? (
                                 <span>
                                     {phone?.type.description}
@@ -276,14 +275,29 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                             ) : (
                                 <NoData />
                             )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
+                        </span>
+                    )
+                },
+                {
+                    id: 3,
+                    title: (
+                        <span className={`font-sans-1xs table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                             {phone?.number ? <span>{phone?.number}</span> : <NoData />}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
+                        </span>
+                    )
+                },
+                {
+                    id: 4,
+                    title: (
+                        <span className={`font-sans-1xs table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                             {phone?.email ? <span>{phone?.email}</span> : <NoData />}
-                        </td>
-                        <td>
+                        </span>
+                    )
+                },
+                {
+                    id: 5,
+                    title: (
+                        <span>
                             <div className="table-span">
                                 <Button
                                     type="button"
@@ -303,13 +317,45 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                                     />
                                 )}
                             </div>
-                        </td>
-                    </tr>
-                ))}
+                        </span>
+                    )
+                }
+            ]
+        };
+    };
+
+    /**
+     *
+     * @return {TableBody[]} list of TableBody each created from Phone And Email
+     */
+    const generateTableBody = () => {
+        return (phoneEmail?.length > 0 && phoneEmail.map(generateTableRow)) || [];
+    };
+
+    return (
+        <>
+            <TableComponent
+                isLoading={!called || loading}
+                isPagination={true}
+                buttons={
+                    <div className="grid-row">
+                        <Button
+                            disabled={patient?.status !== 'ACTIVE'}
+                            type="button"
+                            onClick={actions.prepareForAdd}
+                            className="display-inline-flex">
+                            <Icon.Add className="margin-right-05" />
+                            Add phone & email
+                        </Button>
+                    </div>
+                }
+                tableHeader={'Phone & email'}
+                tableHead={tableHead}
+                tableBody={generateTableBody()}
                 totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
-                sortDirectionData={handleSort}
+                sortData={handleSort}
             />
             {selected?.type === 'add' && (
                 <EntryModal
