@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page;
 
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.classic.ClassicPublishPagePreparer;
 import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicPublishPageRequester;
@@ -38,6 +39,8 @@ public class PageUpdater {
 
         publishPageRequester.request(publishRequest.versionNotes());
 
+        entityManager.clear();
+
         page = entityManager.find(WaTemplate.class, pageId);
 
 
@@ -47,5 +50,4 @@ public class PageUpdater {
             throw new PagePublishException("unable to publish page");
         }
     }
-
 }

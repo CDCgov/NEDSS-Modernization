@@ -23,7 +23,7 @@ public class ClassicPublishPageRequester {
 
   public void request(final String versionNotes) {
 
-    MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
+    MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
     data.add("selection.versionNote", versionNotes);
 
     String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
@@ -31,7 +31,7 @@ public class ClassicPublishPageRequester {
         .build()
         .toUriString();
 
-    RequestEntity<MultiValueMap<String, Object>> publishPageRequest = RequestEntity
+    RequestEntity<MultiValueMap<String, String>> publishPageRequest = RequestEntity
         .post(pageLocation)
         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         .body(data);
