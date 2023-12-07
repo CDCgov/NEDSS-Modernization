@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/v1/questions/page/{pageId}")
@@ -20,7 +21,11 @@ public class AddableQuestionController {
     this.addableQuestionFinder = addableQuestionFinder;
   }
 
-  @PostMapping(path = "search", produces = {"application/json"})
+  @ApiOperation(
+      value = "Search addable questions",
+      notes = "Searches for questions that can be added to the given page",
+      tags = "Page")
+  @PostMapping(path = "search")
   public Page<AddableQuestion> findAddableQuestions(
       @RequestBody AddableQuestionCriteria request,
       @PathVariable("pageId") Long pageId,

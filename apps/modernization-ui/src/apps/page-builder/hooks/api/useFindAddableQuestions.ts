@@ -2,10 +2,10 @@
 import { useContext, useEffect, useReducer } from 'react';
 import { UserContext } from 'user';
 import {
-    AddableQuestionControllerService,
     CodedQuestion,
     DateQuestion,
     NumericQuestion,
+    PageService,
     Page_AddableQuestion_,
     TextQuestion
 } from '../../generated';
@@ -70,7 +70,7 @@ export const useFindAddableQuestions = () => {
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : undefined;
 
-            AddableQuestionControllerService.findAddableQuestionsUsingPost({
+            PageService.findAddableQuestionsUsingPost({
                 authorization: `Bearer ${getToken()}`,
                 request: { query: state.search.searchText ?? '' },
                 pageId: state.search.pageId,

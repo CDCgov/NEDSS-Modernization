@@ -116,8 +116,8 @@ export type { ValueSetUpdateRequest } from './models/ValueSetUpdateRequest';
 export type { ValueSetUpdateShort } from './models/ValueSetUpdateShort';
 export type { ViewRuleResponse } from './models/ViewRuleResponse';
 
-export { AddableQuestionControllerService } from './services/AddableQuestionControllerService';
 export { ConditionControllerService } from './services/ConditionControllerService';
+export { PageService } from './services/PageService';
 export { PageBuilderOptionsService } from './services/PageBuilderOptionsService';
 export { PageControllerService } from './services/PageControllerService';
 export { PageInformationService } from './services/PageInformationService';

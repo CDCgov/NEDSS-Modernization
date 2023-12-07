@@ -8,10 +8,11 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class AddableQuestionControllerService {
+export class PageService {
 
     /**
-     * findAddableQuestions
+     * Search addable questions
+     * Searches for questions that can be added to the given page
      * @returns Page_AddableQuestion_ OK
      * @returns any Created
      * @throws ApiError

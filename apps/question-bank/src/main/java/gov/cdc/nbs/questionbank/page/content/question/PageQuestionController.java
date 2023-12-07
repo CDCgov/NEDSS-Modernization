@@ -13,15 +13,14 @@ import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionRespon
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@RequestMapping("/api/v1/pages/{page}/subsection/{subsection}/questions/")
+@RequestMapping("/api/v1/pages/{page}/subsection/{subsection}/questions")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class PageQuestionController {
 
-  private final PageQuestionCreator creator;
+  private final PageQuestionAdder adder;
 
-
-  public PageQuestionController(final PageQuestionCreator contentManager) {
-    this.creator = contentManager;
+  public PageQuestionController(final PageQuestionAdder adder) {
+    this.adder = adder;
   }
 
   @PostMapping
@@ -30,6 +29,6 @@ public class PageQuestionController {
       @PathVariable("subsection") Long subsection,
       @RequestBody AddQuestionRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-    return creator.addQuestions(pageId, subsection, request, details.getId());
+    return adder.addQuestions(pageId, subsection, request, details.getId());
   }
 }
