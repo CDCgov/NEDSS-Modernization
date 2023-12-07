@@ -93,7 +93,7 @@ public interface ObservationRepository
             WHERE
                 p.person_parent_uid = :personUid
                 ORDER BY id
-                OFFSET (:pageNumber-1) * :pageSize ROWS
+                OFFSET :pageNumber * :pageSize ROWS
                 FETCH NEXT :pageSize ROWS ONLY
                             """, nativeQuery = true)
 
