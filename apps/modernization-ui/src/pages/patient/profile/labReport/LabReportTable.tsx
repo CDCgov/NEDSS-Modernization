@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import {
-    FindAllLabReportsByPersonUidQuery,
+    FindLabReportsForPatientQuery,
     PatientLabReport,
     OrganizationParticipation2,
-    useFindAllLabReportsByPersonUidLazyQuery
+    useFindLabReportsForPatientLazyQuery
 } from 'generated/graphql/schema';
 
 import { SortableTable } from 'components/Table/SortableTable';
@@ -18,7 +18,7 @@ type PatientLabReportTableProps = {
     allowAdd?: boolean;
 };
 
-export const LabReportTable = ({ patient, allowAdd = false }: PatientLabReportTableProps) => {
+export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientLabReportTableProps) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [labReportData, setLabReportData] = useState<any>([]);
@@ -33,12 +33,12 @@ export const LabReportTable = ({ patient, allowAdd = false }: PatientLabReportTa
         { name: 'Event #', sortable: true, sort: 'all' }
     ]);
 
-    const handleComplete = (data: FindAllLabReportsByPersonUidQuery) => {
+    const handleComplete = (data: FindLabReportsForPatientQuery) => {
         setTotal(data?.findLabReportsForPatient?.length || 0);
         setLabReportData(data.findLabReportsForPatient);
     };
 
-    const [getLabReport, { called, loading }] = useFindAllLabReportsByPersonUidLazyQuery({
+    const [getLabReport, { called, loading }] = useFindLabReportsForPatientLazyQuery({
         onCompleted: handleComplete
     });
 
@@ -89,7 +89,11 @@ export const LabReportTable = ({ patient, allowAdd = false }: PatientLabReportTa
         if (patient) {
             getLabReport({
                 variables: {
-                    personUid: +patient as any
+                    personUid: +patient as any,
+                    page: {
+                        pageNumber: (currentPage - 1) as any,
+                        pageSize: pageSize as any
+                    }
                 }
             });
         }
