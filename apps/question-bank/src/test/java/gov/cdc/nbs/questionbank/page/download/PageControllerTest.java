@@ -28,6 +28,8 @@ class PageControllerTest {
     @Mock
     private PageDownloader pageDownloader;
     @Mock
+    private PageUpdater pageUpdater;
+    @Mock
     private UserDetailsProvider userDetailsProvider;
     @Mock
     private PageDeletor pageDeletor;
@@ -38,7 +40,7 @@ class PageControllerTest {
     @Test
     void downloadPageLibraryPDFTest() throws Exception {
         PageController pageController = new PageController(creator, stateChange,
-                pageDownloader, userDetailsProvider, pageDeletor, pageMetaDataDownloader);
+                pageDownloader, userDetailsProvider, pageDeletor, pageMetaDataDownloader, pageUpdater);
         byte[] resp = "pagedownloader".getBytes();
         Mockito.when(pageDownloader.downloadLibraryPDF())
                 .thenReturn(resp);
@@ -52,7 +54,7 @@ class PageControllerTest {
         when(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid))
                 .thenReturn(new ByteArrayInputStream("test,csv,data".getBytes()));
         PageController pageController = new PageController(creator, stateChange,
-                pageDownloader, userDetailsProvider, pageDeletor, pageMetaDataDownloader);
+                pageDownloader, userDetailsProvider, pageDeletor, pageMetaDataDownloader, pageUpdater);
         ResponseEntity<Resource> response = pageController.downloadPageMetadata(waTemplateUid);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("attachment; filename=PageMetadata.xlsx", response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION));
@@ -65,7 +67,7 @@ class PageControllerTest {
         when(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid))
                 .thenReturn(new ByteArrayInputStream("test,csv,data".getBytes()));
         PageController pageController = new PageController(creator, stateChange,
-                pageDownloader, userDetailsProvider, pageDeletor, pageMetaDataDownloader);
+                pageDownloader, userDetailsProvider, pageDeletor, pageMetaDataDownloader, pageUpdater);
         when(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid))
                 .thenThrow(new IOException("Error Downloading Page History"));
         var exception = assertThrows(IOException.class, () -> pageController.downloadPageMetadata(waTemplateUid));

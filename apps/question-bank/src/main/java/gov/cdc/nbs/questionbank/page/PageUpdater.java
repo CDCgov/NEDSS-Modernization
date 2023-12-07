@@ -41,7 +41,7 @@ public class PageUpdater {
 
         entityManager.clear();
 
-        page = entityManager.find(WaTemplate.class, pageId);
+        page = entityManager.find(WaTemplate.class, page.getId());
 
 
         if(page.getTemplateType().equals(PageConstants.PUBLISHED)) {
