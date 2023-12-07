@@ -12,7 +12,7 @@ import { Direction, sortByNestedProperty, withDirection } from 'sorting';
 import { internalizeDate } from 'date';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
-import { SortableTable } from 'components/Table/SortableTable';
+import { TableBody, TableComponent } from 'components/Table';
 import { Actions } from 'components/Table/Actions';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
@@ -212,28 +212,22 @@ export const RacesTable = ({ patient }: Props) => {
         }
     };
 
-    return (
-        <>
-            <SortableTable
-                isLoading={!called || loading}
-                isPagination={true}
-                buttons={
-                    <div className="grid-row">
-                        <Button
-                            disabled={patient?.status !== 'ACTIVE'}
-                            type="button"
-                            onClick={actions.prepareForAdd}
-                            className="display-inline-flex">
-                            <Icon.Add className="margin-right-05" />
-                            Add race
-                        </Button>
-                    </div>
-                }
-                tableHeader={'Races'}
-                tableHead={tableHead}
-                tableBody={races?.map((race, index: number) => (
-                    <tr key={index}>
-                        <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
+    /**
+     * Formats the race object into TableComponent compatible TableBody object which represents a single row.
+     * Each "title" in the tableDetails is a template of each column cell of the row being created.
+     * @param {PatientRace} race, each item of the morbidity response data
+     * @param {number} index, index of the array item
+     * @return {TableBody}
+     */
+
+    const generateTableRow = (race: PatientRace, index: number): TableBody => {
+        return {
+            id: index,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: (
+                        <span className={`font-sans-1xs table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                             {race?.asOf ? (
                                 <span>
                                     {format(new Date(race?.asOf), 'MM/dd/yyyy')} <br />{' '}
@@ -241,14 +235,29 @@ export const RacesTable = ({ patient }: Props) => {
                             ) : (
                                 <NoData />
                             )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
+                        </span>
+                    )
+                },
+                {
+                    id: 2,
+                    title: (
+                        <span className={`font-sans-1xs table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                             {race?.category?.description ? <span>{race?.category?.description}</span> : <NoData />}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
+                        </span>
+                    )
+                },
+                {
+                    id: 3,
+                    title: (
+                        <span className={`font-sans-1xs table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                             {maybeDescriptions(race.detailed).join(' | ') || <NoData />}
-                        </td>
-                        <td>
+                        </span>
+                    )
+                },
+                {
+                    id: 4,
+                    title: (
+                        <span>
                             <div className="table-span">
                                 <Button
                                     type="button"
@@ -268,13 +277,45 @@ export const RacesTable = ({ patient }: Props) => {
                                     />
                                 )}
                             </div>
-                        </td>
-                    </tr>
-                ))}
+                        </span>
+                    )
+                }
+            ]
+        };
+    };
+
+    /**
+     *
+     * @return {TableBody[]} list of TableBody each created from Races
+     */
+    const generateTableBody = () => {
+        return (races?.length > 0 && races.map(generateTableRow)) || [];
+    };
+
+    return (
+        <>
+            <TableComponent
+                isLoading={!called || loading}
+                isPagination={true}
+                buttons={
+                    <div className="grid-row">
+                        <Button
+                            disabled={patient?.status !== 'ACTIVE'}
+                            type="button"
+                            onClick={actions.prepareForAdd}
+                            className="display-inline-flex">
+                            <Icon.Add className="margin-right-05" />
+                            Add race
+                        </Button>
+                    </div>
+                }
+                tableHeader={'Races'}
+                tableHead={tableHead}
+                tableBody={generateTableBody()}
                 totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
-                sortDirectionData={handleSort}
+                sortData={handleSort}
             />
             {selected?.type === 'add' && (
                 <EntryModal
