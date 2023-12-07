@@ -31,12 +31,12 @@ export type ActId = {
 
 export type ActId2 = {
   __typename?: 'ActId2';
-  actIdSeq?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  lastChangeTime?: Maybe<Scalars['DateTime']>;
-  recordStatus?: Maybe<Scalars['String']>;
-  rootExtensionTxt?: Maybe<Scalars['String']>;
-  typeCd?: Maybe<Scalars['String']>;
+  actIdSeq?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  lastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  recordStatus?: Maybe<Scalars['String']['output']>;
+  rootExtensionTxt?: Maybe<Scalars['String']['output']>;
+  typeCd?: Maybe<Scalars['String']['output']>;
 };
 
 export type AddressType = {
@@ -92,11 +92,11 @@ export type AssociatedInvestigation = {
 
 export type AssociatedInvestigation2 = {
   __typename?: 'AssociatedInvestigation2';
-  actRelationshipLastChgTime?: Maybe<Scalars['DateTime']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['DateTime']>;
-  localId?: Maybe<Scalars['String']>;
-  publicHealthCaseUid?: Maybe<Scalars['Int']>;
+  actRelationshipLastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  lastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  localId?: Maybe<Scalars['String']['output']>;
+  publicHealthCaseUid?: Maybe<Scalars['Int']['output']>;
 };
 
 export enum CaseStatus {
@@ -471,61 +471,6 @@ export type LabReport = {
   versionCtrlNbr?: Maybe<Scalars['Int']['output']>;
 };
 
-export type PatientLabReport = {
-  __typename?: 'PatientLabReport';
-  actIds?: Maybe<Array<Maybe<ActId2>>>;
-  activityToTime?: Maybe<Scalars['DateTime']>;
-  addTime?: Maybe<Scalars['DateTime']>;
-  addUserId?: Maybe<Scalars['Int']>;
-  associatedInvestigations?: Maybe<Array<Maybe<AssociatedInvestigation2>>>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  classCd?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['DateTime']>;
-  electronicInd?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  jurisdictionCd?: Maybe<Scalars['Int']>;
-  jurisdictionCodeDescTxt?: Maybe<Scalars['String']>;
-  lastChange?: Maybe<Scalars['DateTime']>;
-  lastChgUserId?: Maybe<Scalars['Int']>;
-  localId?: Maybe<Scalars['String']>;
-  materialParticipations?: Maybe<Array<Maybe<MaterialParticipation2>>>;
-  moodCd?: Maybe<Scalars['String']>;
-  observationLastChgTime?: Maybe<Scalars['DateTime']>;
-  observationUid?: Maybe<Scalars['Int']>;
-  observations?: Maybe<Array<Maybe<Observation2>>>;
-  organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation2>>>;
-  personParticipations?: Maybe<Array<Maybe<PersonParticipation2>>>;
-  pregnantIndCd?: Maybe<Scalars['String']>;
-  programAreaCd?: Maybe<Scalars['String']>;
-  recordStatusCd?: Maybe<Scalars['String']>;
-  rptToStateTime?: Maybe<Scalars['DateTime']>;
-  versionCtrlNbr?: Maybe<Scalars['Int']>;
-};
-
-export type PatientLabReportFilter = {
-  codedResult?: InputMaybe<Scalars['String']>;
-  createdBy?: InputMaybe<Scalars['ID']>;
-  enteredBy?: InputMaybe<Array<InputMaybe<UserType>>>;
-  entryMethods?: InputMaybe<Array<InputMaybe<EntryMethod>>>;
-  eventDate?: InputMaybe<LaboratoryEventDateSearch>;
-  eventId?: InputMaybe<LabReportEventId>;
-  eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
-  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  lastUpdatedBy?: InputMaybe<Scalars['ID']>;
-  patientId?: InputMaybe<Scalars['Int']>;
-  pregnancyStatus?: InputMaybe<PregnancyStatus>;
-  processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
-  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  providerSearch?: InputMaybe<LabReportProviderSearch>;
-  resultedTest?: InputMaybe<Scalars['String']>;
-};
-
-export type PatientLabReportResults = {
-  __typename?: 'PatientLabReportResults';
-  content: Array<Maybe<PatientLabReport>>;
-  total: Scalars['Int'];
-};
-
 export type LabReportEventId = {
   labEventId: Scalars['String']['input'];
   labEventType: LaboratoryEventIdType;
@@ -599,15 +544,15 @@ export type MaterialParticipation = {
 
 export type MaterialParticipation2 = {
   __typename?: 'MaterialParticipation2';
-  actUid?: Maybe<Scalars['Int']>;
-  cd?: Maybe<Scalars['String']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  entityId?: Maybe<Scalars['String']>;
-  participationLastChangeTime?: Maybe<Scalars['DateTime']>;
-  participationRecordStatus?: Maybe<Scalars['String']>;
-  subjectClassCd?: Maybe<Scalars['String']>;
-  typeCd?: Maybe<Scalars['String']>;
-  typeDescTxt?: Maybe<Scalars['String']>;
+  actUid?: Maybe<Scalars['Int']['output']>;
+  cd?: Maybe<Scalars['String']['output']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  entityId?: Maybe<Scalars['String']['output']>;
+  participationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  participationRecordStatus?: Maybe<Scalars['String']['output']>;
+  subjectClassCd?: Maybe<Scalars['String']['output']>;
+  typeCd?: Maybe<Scalars['String']['output']>;
+  typeDescTxt?: Maybe<Scalars['String']['output']>;
 };
 
 export type MortalityInput = {
@@ -977,18 +922,18 @@ export type Observation = {
 
 export type Observation2 = {
   __typename?: 'Observation2';
-  altCd?: Maybe<Scalars['String']>;
-  altCdSystemCd?: Maybe<Scalars['String']>;
-  altDescTxt?: Maybe<Scalars['String']>;
-  cd?: Maybe<Scalars['String']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  displayName?: Maybe<Scalars['String']>;
-  domainCd?: Maybe<Scalars['String']>;
-  ovcAltCdSystemCd?: Maybe<Scalars['String']>;
-  ovcAltCode?: Maybe<Scalars['String']>;
-  ovcAltDescTxt?: Maybe<Scalars['String']>;
-  ovcCode?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
+  altCd?: Maybe<Scalars['String']['output']>;
+  altCdSystemCd?: Maybe<Scalars['String']['output']>;
+  altDescTxt?: Maybe<Scalars['String']['output']>;
+  cd?: Maybe<Scalars['String']['output']>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  displayName?: Maybe<Scalars['String']['output']>;
+  domainCd?: Maybe<Scalars['String']['output']>;
+  ovcAltCdSystemCd?: Maybe<Scalars['String']['output']>;
+  ovcAltCode?: Maybe<Scalars['String']['output']>;
+  ovcAltDescTxt?: Maybe<Scalars['String']['output']>;
+  ovcCode?: Maybe<Scalars['String']['output']>;
+  statusCd?: Maybe<Scalars['String']['output']>;
 };
 
 export enum Operator {
@@ -1068,15 +1013,15 @@ export type OrganizationParticipation = {
 
 export type OrganizationParticipation2 = {
   __typename?: 'OrganizationParticipation2';
-  actUid?: Maybe<Scalars['Int']>;
-  entityId?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  organizationLastChangeTime?: Maybe<Scalars['DateTime']>;
-  participationLastChangeTime?: Maybe<Scalars['DateTime']>;
-  participationRecordStatus?: Maybe<Scalars['String']>;
-  subjectClassCd?: Maybe<Scalars['String']>;
-  typeCd?: Maybe<Scalars['String']>;
-  typeDescTxt?: Maybe<Scalars['String']>;
+  actUid?: Maybe<Scalars['Int']['output']>;
+  entityId?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  organizationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  participationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  participationRecordStatus?: Maybe<Scalars['String']['output']>;
+  subjectClassCd?: Maybe<Scalars['String']['output']>;
+  typeCd?: Maybe<Scalars['String']['output']>;
+  typeDescTxt?: Maybe<Scalars['String']['output']>;
 };
 
 export type OrganizationResults = {
@@ -1421,6 +1366,61 @@ export type PatientInvestigationResults = {
   __typename?: 'PatientInvestigationResults';
   content: Array<Maybe<PatientInvestigation>>;
   number: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type PatientLabReport = {
+  __typename?: 'PatientLabReport';
+  actIds?: Maybe<Array<Maybe<ActId2>>>;
+  activityToTime?: Maybe<Scalars['DateTime']['output']>;
+  addTime?: Maybe<Scalars['DateTime']['output']>;
+  addUserId?: Maybe<Scalars['Int']['output']>;
+  associatedInvestigations?: Maybe<Array<Maybe<AssociatedInvestigation2>>>;
+  cdDescTxt?: Maybe<Scalars['String']['output']>;
+  classCd?: Maybe<Scalars['String']['output']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']['output']>;
+  electronicInd?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  jurisdictionCd?: Maybe<Scalars['Int']['output']>;
+  jurisdictionCodeDescTxt?: Maybe<Scalars['String']['output']>;
+  lastChange?: Maybe<Scalars['DateTime']['output']>;
+  lastChgUserId?: Maybe<Scalars['Int']['output']>;
+  localId?: Maybe<Scalars['String']['output']>;
+  materialParticipations?: Maybe<Array<Maybe<MaterialParticipation2>>>;
+  moodCd?: Maybe<Scalars['String']['output']>;
+  observationLastChgTime?: Maybe<Scalars['DateTime']['output']>;
+  observationUid?: Maybe<Scalars['Int']['output']>;
+  observations?: Maybe<Array<Maybe<Observation2>>>;
+  organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation2>>>;
+  personParticipations?: Maybe<Array<Maybe<PersonParticipation2>>>;
+  pregnantIndCd?: Maybe<Scalars['String']['output']>;
+  programAreaCd?: Maybe<Scalars['String']['output']>;
+  recordStatusCd?: Maybe<Scalars['String']['output']>;
+  rptToStateTime?: Maybe<Scalars['DateTime']['output']>;
+  versionCtrlNbr?: Maybe<Scalars['Int']['output']>;
+};
+
+export type PatientLabReportFilter = {
+  codedResult?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['ID']['input']>;
+  enteredBy?: InputMaybe<Array<InputMaybe<UserType>>>;
+  entryMethods?: InputMaybe<Array<InputMaybe<EntryMethod>>>;
+  eventDate?: InputMaybe<LaboratoryEventDateSearch>;
+  eventId?: InputMaybe<LabReportEventId>;
+  eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
+  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  lastUpdatedBy?: InputMaybe<Scalars['ID']['input']>;
+  patientId?: InputMaybe<Scalars['Int']['input']>;
+  pregnancyStatus?: InputMaybe<PregnancyStatus>;
+  processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
+  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  providerSearch?: InputMaybe<LabReportProviderSearch>;
+  resultedTest?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PatientLabReportResults = {
+  __typename?: 'PatientLabReportResults';
+  content: Array<Maybe<PatientLabReport>>;
   total: Scalars['Int']['output'];
 };
 
@@ -1926,23 +1926,23 @@ export type PersonParticipation = {
 
 export type PersonParticipation2 = {
   __typename?: 'PersonParticipation2';
-  actUid: Scalars['Int'];
-  birthTime?: Maybe<Scalars['DateTime']>;
-  currSexCd?: Maybe<Scalars['String']>;
-  entityId: Scalars['Int'];
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  localId?: Maybe<Scalars['String']>;
-  participationLastChangeTime?: Maybe<Scalars['DateTime']>;
-  participationRecordStatus?: Maybe<Scalars['String']>;
-  personCd: Scalars['String'];
-  personLastChangeTime?: Maybe<Scalars['DateTime']>;
-  personParentUid?: Maybe<Scalars['Int']>;
-  personRecordStatus: Scalars['String'];
-  shortId?: Maybe<Scalars['Int']>;
-  subjectClassCd?: Maybe<Scalars['String']>;
-  typeCd?: Maybe<Scalars['String']>;
-  typeDescTxt?: Maybe<Scalars['String']>;
+  actUid: Scalars['Int']['output'];
+  birthTime?: Maybe<Scalars['DateTime']['output']>;
+  currSexCd?: Maybe<Scalars['String']['output']>;
+  entityId: Scalars['Int']['output'];
+  firstName?: Maybe<Scalars['String']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  localId?: Maybe<Scalars['String']['output']>;
+  participationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  participationRecordStatus?: Maybe<Scalars['String']['output']>;
+  personCd: Scalars['String']['output'];
+  personLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
+  personParentUid?: Maybe<Scalars['Int']['output']>;
+  personRecordStatus: Scalars['String']['output'];
+  shortId?: Maybe<Scalars['Int']['output']>;
+  subjectClassCd?: Maybe<Scalars['String']['output']>;
+  typeCd?: Maybe<Scalars['String']['output']>;
+  typeDescTxt?: Maybe<Scalars['String']['output']>;
 };
 
 export type PhoneAndEmailType = {
@@ -2076,7 +2076,6 @@ export type Query = {
   findAllEthnicityValues: EthnicityResults;
   findAllIdentificationTypes: IdentificationTypesResults;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
-  findLabReportsForPatient: Array<Maybe<PatientLabReport>>;
   findAllNamePrefixes: NamePrefixResults;
   findAllNameTypes: NameTypeResults;
   findAllOrganizations: OrganizationResults;
@@ -2098,6 +2097,8 @@ export type Query = {
   findInvestigationsForPatient?: Maybe<PatientInvestigationResults>;
   findLabReports2ByFilter: PatientLabReportResults;
   findLabReportsByFilter: LabReportResults;
+  findLabReportsForPatient: Array<Maybe<PatientLabReport>>;
+  findLabReportsForPatientCount?: Maybe<Scalars['Int']['output']>;
   findMorbidityReportsForPatient?: Maybe<PatientMorbidityResults>;
   findNameSuffixes: KeyValuePairResults;
   findOrganizationById?: Maybe<Organization>;
@@ -2174,11 +2175,6 @@ export type QueryFindAllIdentificationTypesArgs = {
 
 export type QueryFindAllJurisdictionsArgs = {
   page?: InputMaybe<Page>;
-};
-
-
-export type QueryFindAllLabReportsByPersonUidArgs = {
-  personUid: Scalars['Int'];
 };
 
 
@@ -2293,6 +2289,17 @@ export type QueryFindLabReports2ByFilterArgs = {
 export type QueryFindLabReportsByFilterArgs = {
   filter: LabReportFilter;
   page?: InputMaybe<SortablePage>;
+};
+
+
+export type QueryFindLabReportsForPatientArgs = {
+  page?: InputMaybe<Page>;
+  personUid: Scalars['Int']['input'];
+};
+
+
+export type QueryFindLabReportsForPatientCountArgs = {
+  personUid: Scalars['Int']['input'];
 };
 
 
@@ -2874,13 +2881,6 @@ export type FindAllJurisdictionsQueryVariables = Exact<{
 
 export type FindAllJurisdictionsQuery = { __typename?: 'Query', findAllJurisdictions: Array<{ __typename?: 'Jurisdiction', id: string, typeCd: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, stateDomainCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeqNum?: number | null, nbsUid?: string | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null, exportInd?: string | null } | null> };
 
-export type FindAllLabReportsByPersonUidQueryVariables = Exact<{
-  personUid: Scalars['Int'];
-}>;
-
-
-export type FindAllLabReportsByPersonUidQuery = { __typename?: 'Query', findLabReportsForPatient: Array<{ __typename?: 'PatientLabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation2', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation2', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId2', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations?: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> };
-
 export type FindAllNamePrefixesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
@@ -3036,6 +3036,21 @@ export type FindLabReportsByFilterQueryVariables = Exact<{
 
 
 export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations?: Array<{ __typename?: 'AssociatedInvestigation', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> } };
+
+export type FindLabReportsForPatientQueryVariables = Exact<{
+  personUid: Scalars['Int']['input'];
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindLabReportsForPatientQuery = { __typename?: 'Query', findLabReportsForPatient: Array<{ __typename?: 'PatientLabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation2', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation2', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation2', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId2', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations?: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> };
+
+export type FindLabReportsForPatientCountQueryVariables = Exact<{
+  personUid: Scalars['Int']['input'];
+}>;
+
+
+export type FindLabReportsForPatientCountQuery = { __typename?: 'Query', findLabReportsForPatientCount?: number | null };
 
 export type FindMorbidityReportsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -4814,131 +4829,6 @@ export type FindAllJurisdictionsQueryHookResult = ReturnType<typeof useFindAllJu
 export type FindAllJurisdictionsLazyQueryHookResult = ReturnType<typeof useFindAllJurisdictionsLazyQuery>;
 export type FindAllJurisdictionsSuspenseQueryHookResult = ReturnType<typeof useFindAllJurisdictionsSuspenseQuery>;
 export type FindAllJurisdictionsQueryResult = Apollo.QueryResult<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>;
-export const FindAllLabReportsByPersonUidDocument = gql`
-    query findLabReportsForPatient($personUid: Int!) {
-  findLabReportsForPatient(personUid: $personUid) {
-    id
-    observationUid
-    lastChange
-    classCd
-    moodCd
-    observationLastChgTime
-    cdDescTxt
-    recordStatusCd
-    programAreaCd
-    jurisdictionCd
-    jurisdictionCodeDescTxt
-    pregnantIndCd
-    localId
-    activityToTime
-    effectiveFromTime
-    rptToStateTime
-    addTime
-    electronicInd
-    versionCtrlNbr
-    addUserId
-    lastChgUserId
-    personParticipations {
-      actUid
-      localId
-      typeCd
-      entityId
-      subjectClassCd
-      participationRecordStatus
-      typeDescTxt
-      participationLastChangeTime
-      firstName
-      lastName
-      birthTime
-      currSexCd
-      personCd
-      personParentUid
-      personRecordStatus
-      personLastChangeTime
-      shortId
-    }
-    organizationParticipations {
-      actUid
-      typeCd
-      entityId
-      subjectClassCd
-      typeDescTxt
-      participationRecordStatus
-      participationLastChangeTime
-      name
-      organizationLastChangeTime
-    }
-    materialParticipations {
-      actUid
-      typeCd
-      entityId
-      subjectClassCd
-      typeDescTxt
-      participationRecordStatus
-      participationLastChangeTime
-      cd
-      cdDescTxt
-    }
-    observations {
-      cd
-      cdDescTxt
-      domainCd
-      statusCd
-      altCd
-      altDescTxt
-      altCdSystemCd
-      displayName
-      ovcCode
-      ovcAltCode
-      ovcAltDescTxt
-      ovcAltCdSystemCd
-    }
-    actIds {
-      id
-      recordStatus
-      actIdSeq
-      rootExtensionTxt
-      typeCd
-      lastChangeTime
-    }
-    associatedInvestigations {
-      publicHealthCaseUid
-      cdDescTxt
-      localId
-      lastChgTime
-      actRelationshipLastChgTime
-    }
-  }
-}
-    `;
-
-/**
- * __useFindAllLabReportsByPersonUidQuery__
- *
- * To run a query within a React component, call `useFindAllLabReportsByPersonUidQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllLabReportsByPersonUidQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllLabReportsByPersonUidQuery({
- *   variables: {
- *      personUid: // value for 'personUid'
- *   },
- * });
- */
-export function useFindAllLabReportsByPersonUidQuery(baseOptions: Apollo.QueryHookOptions<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>(FindAllLabReportsByPersonUidDocument, options);
-      }
-export function useFindAllLabReportsByPersonUidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>(FindAllLabReportsByPersonUidDocument, options);
-        }
-export type FindAllLabReportsByPersonUidQueryHookResult = ReturnType<typeof useFindAllLabReportsByPersonUidQuery>;
-export type FindAllLabReportsByPersonUidLazyQueryHookResult = ReturnType<typeof useFindAllLabReportsByPersonUidLazyQuery>;
-export type FindAllLabReportsByPersonUidQueryResult = Apollo.QueryResult<FindAllLabReportsByPersonUidQuery, FindAllLabReportsByPersonUidQueryVariables>;
 export const FindAllNamePrefixesDocument = gql`
     query findAllNamePrefixes($page: Page) {
   findAllNamePrefixes(page: $page) {
@@ -6261,6 +6151,165 @@ export type FindLabReportsByFilterQueryHookResult = ReturnType<typeof useFindLab
 export type FindLabReportsByFilterLazyQueryHookResult = ReturnType<typeof useFindLabReportsByFilterLazyQuery>;
 export type FindLabReportsByFilterSuspenseQueryHookResult = ReturnType<typeof useFindLabReportsByFilterSuspenseQuery>;
 export type FindLabReportsByFilterQueryResult = Apollo.QueryResult<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>;
+export const FindLabReportsForPatientDocument = gql`
+    query findLabReportsForPatient($personUid: Int!, $page: Page) {
+  findLabReportsForPatient(personUid: $personUid, page: $page) {
+    id
+    observationUid
+    lastChange
+    classCd
+    moodCd
+    observationLastChgTime
+    cdDescTxt
+    recordStatusCd
+    programAreaCd
+    jurisdictionCd
+    jurisdictionCodeDescTxt
+    pregnantIndCd
+    localId
+    activityToTime
+    effectiveFromTime
+    rptToStateTime
+    addTime
+    electronicInd
+    versionCtrlNbr
+    addUserId
+    lastChgUserId
+    personParticipations {
+      actUid
+      localId
+      typeCd
+      entityId
+      subjectClassCd
+      participationRecordStatus
+      typeDescTxt
+      participationLastChangeTime
+      firstName
+      lastName
+      birthTime
+      currSexCd
+      personCd
+      personParentUid
+      personRecordStatus
+      personLastChangeTime
+      shortId
+    }
+    organizationParticipations {
+      actUid
+      typeCd
+      entityId
+      subjectClassCd
+      typeDescTxt
+      participationRecordStatus
+      participationLastChangeTime
+      name
+      organizationLastChangeTime
+    }
+    materialParticipations {
+      actUid
+      typeCd
+      entityId
+      subjectClassCd
+      typeDescTxt
+      participationRecordStatus
+      participationLastChangeTime
+      cd
+      cdDescTxt
+    }
+    observations {
+      cd
+      cdDescTxt
+      domainCd
+      statusCd
+      altCd
+      altDescTxt
+      altCdSystemCd
+      displayName
+      ovcCode
+      ovcAltCode
+      ovcAltDescTxt
+      ovcAltCdSystemCd
+    }
+    actIds {
+      id
+      recordStatus
+      actIdSeq
+      rootExtensionTxt
+      typeCd
+      lastChangeTime
+    }
+    associatedInvestigations {
+      publicHealthCaseUid
+      cdDescTxt
+      localId
+      lastChgTime
+      actRelationshipLastChgTime
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindLabReportsForPatientQuery__
+ *
+ * To run a query within a React component, call `useFindLabReportsForPatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindLabReportsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindLabReportsForPatientQuery({
+ *   variables: {
+ *      personUid: // value for 'personUid'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindLabReportsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>(FindLabReportsForPatientDocument, options);
+      }
+export function useFindLabReportsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>(FindLabReportsForPatientDocument, options);
+        }
+export type FindLabReportsForPatientQueryHookResult = ReturnType<typeof useFindLabReportsForPatientQuery>;
+export type FindLabReportsForPatientLazyQueryHookResult = ReturnType<typeof useFindLabReportsForPatientLazyQuery>;
+export type FindLabReportsForPatientQueryResult = Apollo.QueryResult<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>;
+export const FindLabReportsForPatientCountDocument = gql`
+    query findLabReportsForPatientCount($personUid: Int!) {
+  findLabReportsForPatientCount(personUid: $personUid)
+}
+    `;
+
+/**
+ * __useFindLabReportsForPatientCountQuery__
+ *
+ * To run a query within a React component, call `useFindLabReportsForPatientCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindLabReportsForPatientCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindLabReportsForPatientCountQuery({
+ *   variables: {
+ *      personUid: // value for 'personUid'
+ *   },
+ * });
+ */
+export function useFindLabReportsForPatientCountQuery(baseOptions: Apollo.QueryHookOptions<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>(FindLabReportsForPatientCountDocument, options);
+      }
+export function useFindLabReportsForPatientCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>(FindLabReportsForPatientCountDocument, options);
+        }
+export type FindLabReportsForPatientCountQueryHookResult = ReturnType<typeof useFindLabReportsForPatientCountQuery>;
+export type FindLabReportsForPatientCountLazyQueryHookResult = ReturnType<typeof useFindLabReportsForPatientCountLazyQuery>;
+export type FindLabReportsForPatientCountQueryResult = Apollo.QueryResult<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>;
 export const FindMorbidityReportsForPatientDocument = gql`
     query findMorbidityReportsForPatient($patient: ID!, $page: Page) {
   findMorbidityReportsForPatient(patient: $patient, page: $page) {
