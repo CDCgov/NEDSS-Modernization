@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
-import { Actions as ActionState } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { Column, Identification, IdentificationEntry } from './identification';
 import {
@@ -28,6 +27,7 @@ import { Patient } from '../Patient';
 import { sort } from './identificationSorter';
 import { TableBody, TableComponent } from 'components/Table';
 import { transform } from './identificationTransformer';
+import { ActionsComponent } from '../ActionsComponent';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -76,11 +76,10 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const initial = resolveInitialEntry(patient?.id || '');
     const { changed } = useProfileContext();
 
-    const [isActions, setIsActions] = useState<any>(null);
+    const [isActions, setIsActions] = useState<number | null>(null);
 
-    const asTableBody =
-        (index?: number) =>
-        (identification: Identification): TableBody => ({
+    const asTableBodies = (idenitifications: Identification[]): TableBody[] =>
+        idenitifications?.map((identification, index) => ({
             id: identification.__typename,
             tableDetails: [
                 {
@@ -93,31 +92,20 @@ export const IdentificationsTable = ({ patient }: Props) => {
                 {
                     id: 5,
                     title: (
-                        <div className="table-span">
-                            <Button
-                                type="button"
-                                unstyled
-                                disabled={patient?.status !== 'ACTIVE'}
-                                onClick={() => setIsActions(isActions === index ? null : index)}>
-                                <Icon.MoreHoriz className="font-sans-lg" />
-                            </Button>
-                            {isActions === index && (
-                                <ActionState
-                                    handleOutsideClick={() => setIsActions(null)}
-                                    handleAction={(type: string) => {
-                                        tableActionStateAdapter(actions, identification)(type);
-                                        setIsActions(null);
-                                    }}
-                                />
-                            )}
-                        </div>
+                        <ActionsComponent
+                            setIsActions={setIsActions}
+                            isActions={isActions}
+                            index={index}
+                            patient={patient}
+                            handleAction={(type: string) => {
+                                tableActionStateAdapter(actions, identification)(type);
+                                setIsActions(null);
+                            }}
+                        />
                     )
                 }
             ]
-        });
-
-    const asTableBodies = (idenitifications: Identification[]): TableBody[] =>
-        idenitifications?.map((item, index) => asTableBody(index)(item)) || [];
+        })) || [];
 
     const handleComplete = (data: PatientIdentificationResult) => {
         setTotal(data?.findPatientProfile.identification?.total ?? 0);
@@ -258,7 +246,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                 tableHead={headers}
                 tableBody={bodies}
                 isPagination={true}
-                pageSize={10}
+                pageSize={TOTAL_TABLE_DATA}
                 totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}

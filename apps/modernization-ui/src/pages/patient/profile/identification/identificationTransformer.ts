@@ -19,7 +19,7 @@ export const transform = (result: PatientIdentificationResult['findPatientProfil
                 if (next) {
                     const doc = internalized(next);
                     if (doc) {
-                        return [...existing, doc];
+                        existing.push(doc);
                     }
                 }
 
