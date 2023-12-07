@@ -2,6 +2,8 @@ import { render } from '@testing-library/react';
 import { PagesTab } from 'apps/page-builder/generated';
 import { EditPageContentComponent } from './EditPageContent';
 import { PageProvider } from 'page';
+import { MemoryRouter } from 'react-router-dom';
+import { AlertProvider } from 'alert';
 
 describe('when EditPageContent renders', () => {
     const content: PagesTab = {
@@ -27,9 +29,13 @@ describe('when EditPageContent renders', () => {
 
     it('should display two sections', () => {
         const { container } = render(
-            <PageProvider>
-                <EditPageContentComponent content={content} onContentChange={mockFunction} />
-            </PageProvider>
+            <MemoryRouter>
+                <PageProvider>
+                    <AlertProvider>
+                        <EditPageContentComponent content={content} onContentChange={mockFunction} />
+                    </AlertProvider>
+                </PageProvider>
+            </MemoryRouter>
         );
         const sections = container.getElementsByClassName('section');
 

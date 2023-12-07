@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { PagesSubSection } from 'apps/page-builder/generated';
 import { SubsectionComponent } from './Subsection';
 import { PageProvider } from 'page';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('when Subsection renders', () => {
     const subsection: PagesSubSection = {
@@ -12,9 +13,11 @@ describe('when Subsection renders', () => {
     };
 
     const { container } = render(
-        <PageProvider>
-            <SubsectionComponent subsection={subsection} />
-        </PageProvider>
+        <MemoryRouter>
+            <PageProvider>
+                <SubsectionComponent subsection={subsection} />
+            </PageProvider>
+        </MemoryRouter>
     );
 
     it('should display Subsection name', () => {

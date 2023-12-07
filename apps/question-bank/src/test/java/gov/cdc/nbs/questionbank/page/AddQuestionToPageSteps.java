@@ -25,55 +25,55 @@ import io.cucumber.java.en.Then;
 @Transactional
 public class AddQuestionToPageSteps {
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+  @Autowired
+  private ExceptionHolder exceptionHolder;
 
-    @Autowired
-    private PageQuestionController pageQuestionController;
+  @Autowired
+  private PageQuestionController pageQuestionController;
 
-    @Autowired
-    private WaUiMetadataRepository repository;
+  @Autowired
+  private WaUiMetadataRepository repository;
 
-    @Autowired
-    private QuestionMother questionMother;
+  @Autowired
+  private QuestionMother questionMother;
 
-    @Autowired
-    private PageMother pageMother;
+  @Autowired
+  private PageMother pageMother;
 
-    @Autowired
-    private UserDetailsProvider user;
+  @Autowired
+  private UserDetailsProvider user;
 
-    private AddQuestionResponse response;
+  private AddQuestionResponse response;
 
-    @Before
-    public void clearExceptions() {
-        exceptionHolder.clear();
+  @Before
+  public void clearExceptions() {
+    exceptionHolder.clear();
+  }
+
+  @Given("I add a question to a page")
+  public void i_add_a_question_to_a_page() {
+    WaQuestion question = questionMother.one();
+    WaTemplate page = pageMother.one();
+    WaUiMetadata subsection = page.getUiMetadata().stream()
+        .filter(ui -> ui.getNbsUiComponentUid() == 1016l)
+        .findFirst()
+        .orElseThrow();
+    var request = new AddQuestionRequest(Collections.singletonList(question.getId()), subsection.getId());
+    try {
+      response = pageQuestionController.addQuestionToPage(page.getId(), request, user.getCurrentUserDetails());
+    } catch (AccessDeniedException e) {
+      exceptionHolder.setException(e);
+    } catch (AuthenticationCredentialsNotFoundException e) {
+      exceptionHolder.setException(e);
     }
+  }
 
-    @Given("I add a question to a page")
-    public void i_add_a_question_to_a_page() {
-        WaQuestion question = questionMother.one();
-        WaTemplate page = pageMother.one();
-        WaUiMetadata subsection = page.getUiMetadata().stream()
-                .filter(ui -> ui.getNbsUiComponentUid() == 1016l)
-                .findFirst()
-                .orElseThrow();
-        var request = new AddQuestionRequest(Collections.singletonList(question.getId()), subsection.getId());
-        try {
-            response = pageQuestionController.addQuestionToPage(page.getId(), request, user.getCurrentUserDetails());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
-
-    @Then("the question is added to the page")
-    public void the_question_is_added_to_the_page() {
-        assertNull(exceptionHolder.getException());
-        assertNotNull(response.componentIds());
-        WaUiMetadata metadata = repository.findById(response.componentIds().get(0))
-                .orElseThrow(() -> new RuntimeException("Failed to find inserted metadata"));
-        assertEquals(5, metadata.getOrderNbr().intValue());
-    }
+  @Then("the question is added to the page")
+  public void the_question_is_added_to_the_page() {
+    assertNull(exceptionHolder.getException());
+    assertNotNull(response.ids());
+    WaUiMetadata metadata = repository.findById(response.ids().get(0))
+        .orElseThrow(() -> new RuntimeException("Failed to find inserted metadata"));
+    assertEquals(5, metadata.getOrderNbr().intValue());
+  }
 }

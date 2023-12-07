@@ -1,4 +1,5 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { TabbedButtonBar } from './TabbedButtonBar';
 
 describe('Tabbed button bar', () => {
@@ -14,8 +15,8 @@ describe('Tabbed button bar', () => {
         const mockFn = jest.fn();
         const { getAllByRole } = render(<TabbedButtonBar entries={['1', '2']} onChange={mockFn} />);
         const buttons = getAllByRole('button');
-        await waitFor(() => {
-            fireEvent.click(buttons[1]);
+        act(() => {
+            userEvent.click(buttons[1]);
         });
         expect(mockFn).toBeCalledWith('2');
     });
@@ -25,8 +26,8 @@ describe('Tabbed button bar', () => {
         const buttons = getAllByRole('button');
         expect(buttons[0]).toHaveClass('active');
         expect(buttons[1]).not.toHaveClass('active');
-        await waitFor(() => {
-            fireEvent.click(buttons[1]);
+        act(() => {
+            userEvent.click(buttons[1]);
         });
         expect(buttons[0]).not.toHaveClass('active');
         expect(buttons[1]).toHaveClass('active');

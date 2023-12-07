@@ -5,30 +5,28 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Collections;
+import java.util.List;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
-import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
-import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 @ExtendWith(MockitoExtension.class)
 class PageQuestionCreatorTest {
 
   @Mock
   private EntityManager entityManager;
+
+  @Mock
+  private WaUiMetadataCreator uiCreator;
 
   @InjectMocks
   private PageQuestionCreator creator;
@@ -39,60 +37,58 @@ class PageQuestionCreatorTest {
     WaTemplate page = Mockito.mock(WaTemplate.class);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
 
-    // And a working WaTemplate
-    WaUiMetadata meta = new WaUiMetadata();
-    meta.setId(97l);
-    when(page.addQuestion(Mockito.any())).thenReturn(meta);
+    // And a question id
+    List<Long> questions = Collections.singletonList(3l);
 
-    // And a question
-    TextQuestionEntity textQuestion = QuestionEntityMother.textQuestion();
-    when(entityManager.find(WaQuestion.class, 3l)).thenReturn(textQuestion);
+    // And a work uiCreator
+    WaUiMetadata metadata = new WaUiMetadata();
+    metadata.setId(97l);
+    when(uiCreator.createUiMetadata(questions, page, 2l, 3l))
+        .thenReturn(Collections.singletonList(metadata));
 
     // When a request is processed to add a question 
     AddQuestionResponse response = creator.addQuestions(
         1l,
-        new AddQuestionRequest(Collections.singletonList(3l), 4l),
-        2l);
+        2l,
+        new AddQuestionRequest(questions),
+        3l);
 
     // Then the question is created
-    ArgumentCaptor<PageContentCommand.AddQuestion> captor =
-        ArgumentCaptor.forClass(PageContentCommand.AddQuestion.class);
-    verify(page).addQuestion(captor.capture());
-    assertEquals(textQuestion.getQuestionIdentifier(), captor.getValue().question().getQuestionIdentifier());
-    assertEquals(4l, captor.getValue().subsection());
-    assertEquals(97l, response.componentIds().get(0).longValue());
+    verify(uiCreator).createUiMetadata(questions, page, 2l, 3l);
+    assertEquals(97l, response.ids().get(0).longValue());
+    assertEquals(1, response.ids().size());
   }
 
   @Test
-    void should_not_question_to_page_no_page_found() {
-        // Given a null page
-        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
+  void should_not_add_missing_page() {
+    // Given a page does not exist
+    when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
 
-        // When a request is processed to add a question 
-        // Then an exception is thrown
-        AddQuestionRequest request = new AddQuestionRequest(Collections.singletonList(3l), 4l);
-        assertThrows(AddQuestionException.class, () -> creator.addQuestions(
-                1l,
-                request,
-                2l));
-    }
-
-  @Test
-  void should_not_question_to_page_no_question_found() {
-    // Given a page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
-    when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-
-    // And a null question
-    when(entityManager.find(WaQuestion.class, 3l)).thenReturn(null);
+    // And a request to add a question
+    AddQuestionRequest request = new AddQuestionRequest(Collections.singletonList(1l));
 
     // When a request is processed to add a question 
     // Then an exception is thrown
-    AddQuestionRequest request = new AddQuestionRequest(Collections.singletonList(3l), 4l);
-    assertThrows(QuestionNotFoundException.class, () -> creator.addQuestions(
+    assertThrows(AddQuestionException.class, () -> creator.addQuestions(
         1l,
+        2l,
         request,
-        2l));
+        3l));
   }
+
+  @Test
+  void should_not_add_bad_request() {
+    // Given a null request to add a question
+    AddQuestionRequest request = null;
+
+    // When a request is processed to add a question 
+    // Then an exception is thrown
+    assertThrows(AddQuestionException.class, () -> creator.addQuestions(
+        1l,
+        2l,
+        request,
+        3l));
+  }
+
 
 }

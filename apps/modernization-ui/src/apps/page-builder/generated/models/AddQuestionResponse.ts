@@ -3,6 +3,6 @@
 /* eslint-disable */
 
 export type AddQuestionResponse = {
-    componentIds?: Array<number>;
+    ids?: Array<number>;
 };
 

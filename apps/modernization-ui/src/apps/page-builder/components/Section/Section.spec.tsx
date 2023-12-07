@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { PagesSection } from 'apps/page-builder/generated';
 import { SectionComponent } from './Section';
 import { PageProvider } from 'page';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('when Section renders', () => {
     const section: PagesSection = {
@@ -26,9 +27,11 @@ describe('when Section renders', () => {
     const mockFunction = jest.fn();
 
     const { container } = render(
-        <PageProvider>
-            <SectionComponent section={section} onAddSection={mockFunction} />
-        </PageProvider>
+        <MemoryRouter>
+            <PageProvider>
+                <SectionComponent section={section} onAddSection={mockFunction} />
+            </PageProvider>
+        </MemoryRouter>
     );
 
     it('should display the Section name', () => {
