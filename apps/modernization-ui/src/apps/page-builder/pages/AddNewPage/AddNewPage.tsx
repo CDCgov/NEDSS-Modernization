@@ -194,7 +194,11 @@ export const AddNewPage = () => {
             <Modal id="import-template-modal" isLarge ref={importTemplateModal}>
                 <ImportTemplate modal={importTemplateModal} onTemplateCreated={handleTemplateImported} />
             </Modal>
-            <QuickConditionLookup modal={conditionLookupModal} addConditions={handleAddConditions} />
+            <QuickConditionLookup
+                modal={conditionLookupModal}
+                addConditions={handleAddConditions}
+                createConditionModal={createConditionModal}
+            />
         </div>
     );
 };
