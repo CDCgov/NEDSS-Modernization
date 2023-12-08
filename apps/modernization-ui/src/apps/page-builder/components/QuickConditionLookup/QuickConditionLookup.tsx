@@ -25,7 +25,7 @@ type Props = {
     addConditions: (conditions: string[]) => void;
 };
 
-export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
+export const QuickConditionLookup = ({ modal, addConditions, createConditionModal }: Props) => {
     const [conditions, setConditions] = useState<Condition[]>([]);
     const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
     const [searchText, setSearchTerm] = useState('');
