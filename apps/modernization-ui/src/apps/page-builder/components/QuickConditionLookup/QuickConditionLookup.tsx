@@ -21,6 +21,7 @@ import { searchConditions } from 'apps/page-builder/services/conditionAPI';
 
 type Props = {
     modal: RefObject<ModalRef>;
+    createConditionModal: RefObject<ModalRef>;
     addConditions: (conditions: string[]) => void;
 };
 
@@ -157,9 +158,8 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         </Button>
                     </div>
                     <ModalToggleButton
-                        modalRef={modal}
-                        closer
-                        onClick={handleAddConditions}
+                        modalRef={createConditionModal}
+                        onClick={() => modal.current?.toggleModal(undefined, false)}
                         data-testid="condition-add-btn">
                         Create new condition
                     </ModalToggleButton>
