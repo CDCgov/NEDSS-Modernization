@@ -1,9 +1,15 @@
 package gov.cdc.nbs.option;
 
-public record Option(String value, String name, String label, int order) {
+import io.swagger.v3.oas.annotations.media.Schema;
 
-  public Option(String value, String name, int order) {
-    this(value, name, name, order);
-  }
+public record Option(
+    @Schema(required = true)
+    String value,
+    @Schema(required = true)
+    String name,
+    @Schema(required = true)
+    String label,
+    int order
+) {
 
 }
