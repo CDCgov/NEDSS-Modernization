@@ -1,7 +1,6 @@
 package gov.cdc.nbs.option.jdbc;
 
 import gov.cdc.nbs.option.Option;
-import gov.cdc.nbs.option.concept.ConceptOption;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 
