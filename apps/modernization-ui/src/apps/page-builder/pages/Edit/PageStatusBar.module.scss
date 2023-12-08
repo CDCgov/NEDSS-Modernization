@@ -1,4 +1,23 @@
+@use 'styles/colors';
+
 .statusBar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    .pageMode {
+        display: flex;
+        align-items: center;
+        color: colors.$base-black;
+
+        .text {
+            padding: 0.25rem 0.5rem;
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            border-radius: 0.125rem;
+            background: colors.$warning;
+            white-space: nowrap;
+        }
+    }
 }

@@ -1,0 +1,24 @@
+@use 'styles/colors';
+
+.tabs {
+    display: flex;
+    gap: 2.5rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    .tab {
+        padding-bottom: 0.62rem;
+        background: unset;
+        border: none;
+        color: colors.$base-black;
+        font-size: 1rem;
+        font-weight: 400;
+        cursor: pointer;
+
+        &.selected {
+            border-bottom: solid 0.4375rem colors.$primary;
+            font-weight: 700;
+        }
+    }
+}

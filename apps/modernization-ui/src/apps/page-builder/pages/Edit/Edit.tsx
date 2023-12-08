@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './Edit.module.scss';
 import { PageStatusBar } from './PageStatusBar';
+import { PageHeader } from './PageHeader';
 
 export const Edit = () => {
     const { fetch, pageDetails } = useGetPageDetails();
@@ -17,6 +18,7 @@ export const Edit = () => {
     return (
         <div className={styles.editPage}>
             <PageStatusBar name={pageDetails?.name} pageStatus="EDIT MODE" />
+            {pageDetails && <PageHeader pageDetails={pageDetails} />}
         </div>
     );
 };
