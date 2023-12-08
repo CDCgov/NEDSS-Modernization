@@ -1,8 +1,6 @@
 package gov.cdc.nbs.questionbank.page.publish;
 
 import javax.persistence.EntityManager;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.classic.ClassicPublishPagePreparer;
