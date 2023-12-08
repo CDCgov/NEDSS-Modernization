@@ -20,7 +20,6 @@ type OldSelectionHandler = (event: ChangeEvent<HTMLInputElement>, item: any) => 
 export type Cell = {
     id: string | number;
     title: ReactNode | ReactNode[] | string;
-    actions?: any;
 };
 
 export type Header = {
