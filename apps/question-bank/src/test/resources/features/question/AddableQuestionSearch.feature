@@ -21,6 +21,7 @@ Feature: Addable Question Search
       | Question Unique Name | uniqueName | descending | TEST9900001,TEST9900002 |
       | Question Unique Name | subgroup   | ascending  | TEST9900001,TEST9900002 |
       | Question Unique Name | subgroup   | descending | TEST9900002,TEST9900001 |
+      | Question Unique Name | none       | ascending  | TEST9900002,TEST9900001 |
 
   Scenario: I can search for questions to add to a page on multiple fields
     When I search for addable questions by "<query>"

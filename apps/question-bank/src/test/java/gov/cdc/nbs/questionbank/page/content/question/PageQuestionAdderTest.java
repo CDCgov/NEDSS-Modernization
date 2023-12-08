@@ -19,6 +19,7 @@ import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
+import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
@@ -60,6 +61,20 @@ class PageQuestionAdderTest {
     assertEquals(textQuestion.getQuestionIdentifier(), captor.getValue().question().getQuestionIdentifier());
     assertEquals(2l, captor.getValue().subsection());
     assertEquals(97l, response.ids().get(0).longValue());
+  }
+
+  @Test
+  void should_not_question_to_page_null_request() {
+    // Given a null request
+    AddQuestionRequest request = null;
+
+    // When a request is processed to add a question 
+    // Then an exception is thrown    
+    assertThrows(AddQuestionException.class, () -> adder.addQuestions(
+        1l,
+        2l,
+        request,
+        3l));
   }
 
   @Test

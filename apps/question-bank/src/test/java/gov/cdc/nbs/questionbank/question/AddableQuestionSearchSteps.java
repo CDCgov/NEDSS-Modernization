@@ -28,12 +28,20 @@ public class AddableQuestionSearchSteps {
   }
 
   @When("I search for addable questions by {string} and sorted by {string} {direction}")
-  public void i_search_for_addable_questions(String query, String field, final Sort.Direction direction)
-      throws Exception {
+  public void i_search_for_addable_questions(
+      String query,
+      String field,
+      final Sort.Direction direction) throws Exception {
+    PageRequest pageRequest = PageRequest.of(0, 2);
+
+    if (!"none".equals(field)) {
+      pageRequest = pageRequest.withSort((Sort.by(direction, field)));
+    }
+
     response.active(
         requester.request(
             pageMother.one().getId(),
-            PageRequest.of(0, 2).withSort(Sort.by(direction, field)),
+            pageRequest,
             new AddableQuestionCriteria(query)));
   }
 
