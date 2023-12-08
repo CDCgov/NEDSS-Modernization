@@ -32,7 +32,7 @@ public class PageUpdater {
         WaTemplate page = entityManager.find(WaTemplate.class, pageId);
 
         if(!page.getTemplateType().equals(PageConstants.DRAFT)) {
-            throw new PagePublishException("cannot publish a published page");
+            throw new PagePublishException("cannot only publish a draft page");
         }
 
         publishPagePreparer.prepare(page.getId());
