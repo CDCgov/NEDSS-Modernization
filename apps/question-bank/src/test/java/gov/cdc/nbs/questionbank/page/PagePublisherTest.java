@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -14,14 +13,14 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.classic.ClassicPublishPagePreparer;
 import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicPublishPageRequester;
 import gov.cdc.nbs.questionbank.page.exception.PagePublishException;
+import gov.cdc.nbs.questionbank.page.publish.PagePublisher;
 import gov.cdc.nbs.questionbank.page.request.PagePublishRequest;
-import gov.cdc.nbs.questionbank.page.response.PagePublishResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 
 @ExtendWith(MockitoExtension.class)
-class PageUpdaterTest {
+class PagePublisherTest {
     @InjectMocks
-    private PageUpdater pageUpdater;
+    private PagePublisher pageUpdater;
 
     @Mock
     private EntityManager entityManager;
@@ -54,9 +53,7 @@ class PageUpdaterTest {
         when(entityManager.find(WaTemplate.class, 213L)).thenReturn(newPage);
 
 
-        PagePublishResponse response = pageUpdater.publishPage(123L, request);
-
-        assertEquals("success", response.message());
+        pageUpdater.publishPage(123L, request);
 
     }
 

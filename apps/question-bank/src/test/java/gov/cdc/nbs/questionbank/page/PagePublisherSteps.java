@@ -5,7 +5,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 @Transactional
-public class PageUpdaterSteps {
+public class PagePublisherSteps {
 
     @Value("${nbs.wildfly.url:http://wildfly:7001}")
     String classicUrl;
@@ -49,7 +49,7 @@ public class PageUpdaterSteps {
     private Active<PagePublishRequest> request = new Active<>();
     private Active<PageIdentifier> page;
 
-    public PageUpdaterSteps(final Active<PageIdentifier> page,
+    public PagePublisherSteps(final Active<PageIdentifier> page,
             final Active<ActiveUser> user) {
         this.page = page;
         this.user = user;
@@ -102,7 +102,7 @@ public class PageUpdaterSteps {
 
     @Then("the response of request is success")
     public void the_response_of_request_is_success() throws Exception {
-        this.response.active().andExpect(jsonPath("$.message").value("success"));
+        this.response.active().andExpect(status().isOk());
     }
 
 }

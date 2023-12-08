@@ -1,15 +1,11 @@
 package gov.cdc.nbs.questionbank.page;
 
 import com.itextpdf.text.DocumentException;
-import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
-import gov.cdc.nbs.questionbank.page.request.PagePublishRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.response.PageDeleteResponse;
-import gov.cdc.nbs.questionbank.page.response.PagePublishResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
-import springfox.documentation.annotations.ApiIgnore;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -17,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +35,6 @@ public class PageController {
     private final UserDetailsProvider userDetailsProvider;
     private final PageDeletor pageDeletor;
     private final PageMetaDataDownloader pageMetaDataDownloader;
-    private final PageUpdater pageUpdater;
 
     public PageController(
             final PageCreator creator,
@@ -48,15 +42,13 @@ public class PageController {
             final PageDownloader pageDownloader,
             final UserDetailsProvider userDetailsProvider,
             final PageDeletor pageDeletor,
-            final PageMetaDataDownloader pageMetaDataDownloader,
-            final PageUpdater pageUpdater) {
+            final PageMetaDataDownloader pageMetaDataDownloader) {
         this.creator = creator;
         this.stateChange = stateChange;
         this.pageDownloader = pageDownloader;
         this.userDetailsProvider = userDetailsProvider;
         this.pageDeletor = pageDeletor;
         this.pageMetaDataDownloader = pageMetaDataDownloader;
-        this.pageUpdater = pageUpdater;
     }
 
     @PostMapping
@@ -65,13 +57,7 @@ public class PageController {
         return creator.createPage(request, userId);
     }
 
-    @PutMapping("{id}/publish")
-    public PagePublishResponse publishPage(@PathVariable("id") Long pageId,
-            @RequestBody PagePublishRequest request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-        return pageUpdater.publishPage(pageId, request);
-    }
-
+    
     @PutMapping("{id}/draft")
     public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
         return stateChange.savePageAsDraft(pageId);
