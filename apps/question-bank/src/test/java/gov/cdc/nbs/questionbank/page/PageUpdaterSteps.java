@@ -7,6 +7,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -25,6 +26,7 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.request.PagePublishRequest;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
+import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -49,12 +51,15 @@ public class PageUpdaterSteps {
     @Autowired
     private PageRequest pageRequest;
 
+    private Active<ActiveUser> user;
     private Active<ResultActions> response = new Active<>();
     private Active<PagePublishRequest> request = new Active<>();
     private Active<PageIdentifier> page;
 
-    public PageUpdaterSteps(final Active<PageIdentifier> page) {
+    public PageUpdaterSteps(final Active<PageIdentifier> page,
+            final Active<ActiveUser> user) {
         this.page = page;
+        this.user = user;
     }
 
     @Given("the publish page request has version notes of {string}")
@@ -86,13 +91,13 @@ public class PageUpdaterSteps {
         if (request.versionNotes() != null) {
             form.put("selection.versionNote", request.versionNotes());
         }
-        
+
         server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=publishPage"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(content().formDataContains(form))
                 .andRespond(req -> {
                     WaTemplate tempPage = entityManager.find(WaTemplate.class, page);
-                    tempPage.setTemplateType(PageConstants.PUBLISHED);
+                    tempPage.publish(new PageCommand.Publish(user.active().id(), Instant.now()));
                     // need to flush to mock behavior done by classic
                     entityManager.flush();
                     DefaultResponseCreator response = withStatus(HttpStatus.FOUND);
