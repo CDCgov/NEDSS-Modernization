@@ -2,8 +2,9 @@ import { transform } from './identificationTransformer';
 
 describe('transform function', () => {
     it('should return an empty array when input is null', () => {
-        const result = transform(null);
-        expect(result).toEqual([]);
+        const actual = transform(null);
+
+        expect(actual).toHaveLength(0);
     });
 
     it('should correctly transform patient identification data', () => {
@@ -14,7 +15,7 @@ describe('transform function', () => {
                         patient: 10000001,
                         sequence: 1,
                         version: 7,
-                        asOf: '2015-09-19T18:30:00.000Z',
+                        asOf: '2023-01-17T00:00:00Z',
                         authority: {
                             id: 'CA',
                             description: 'CA'
@@ -26,36 +27,32 @@ describe('transform function', () => {
                         }
                     }
                 ],
-                total: 3,
+                total: 1,
                 number: 0,
                 size: 10
             }
         };
 
         const result = transform(mockInput);
-        const resultWithIsoDates = result.map((item) => ({
-            ...item,
-            asOf: item.asOf.toISOString()
-        }));
 
-        const expectedOutput = [
-            {
-                asOf: new Date('2015-09-19T23:30:00.000Z').toISOString(),
-                type: {
-                    id: 'AN',
-                    description: 'Account number'
-                },
-                authority: {
-                    id: 'CA',
-                    description: 'CA'
-                },
-                value: '234',
-                patient: 10000001,
-                sequence: 1,
-                version: 7
-            }
-        ];
-
-        expect(resultWithIsoDates).toEqual(expectedOutput);
+        expect(result).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    asOf: new Date('2023-01-17T05:00:00Z'),
+                    type: {
+                        id: 'AN',
+                        description: 'Account number'
+                    },
+                    authority: {
+                        id: 'CA',
+                        description: 'CA'
+                    },
+                    value: '234',
+                    patient: 10000001,
+                    sequence: 1,
+                    version: 7
+                })
+            ])
+        );
     });
 });

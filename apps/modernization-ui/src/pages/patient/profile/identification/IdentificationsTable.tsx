@@ -27,7 +27,7 @@ import { Patient } from '../Patient';
 import { sort } from './identificationSorter';
 import { TableBody, TableComponent } from 'components/Table';
 import { transform } from './identificationTransformer';
-import { TableActions } from '../TableActions';
+import { PatientTableActions } from '../PatientTableActions';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -76,7 +76,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const initial = resolveInitialEntry(patient?.id || '');
     const { changed } = useProfileContext();
 
-    const [actionIndex, setActionIndex] = useState<number | null>(null);
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     const asTableBodies = (idenitifications: Identification[]): TableBody[] =>
         idenitifications?.map((identification, index) => ({
@@ -84,7 +84,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
             tableDetails: [
                 {
                     id: 1,
-                    title: format(identification.asOf, 'MM/dd/yyyy')
+                    title: identification.asOf ? format(identification.asOf, 'MM/dd/yyyy') : null
                 },
                 { id: 2, title: identification?.type?.description || null },
                 { id: 3, title: identification?.authority?.description || null },
@@ -92,14 +92,14 @@ export const IdentificationsTable = ({ patient }: Props) => {
                 {
                     id: 5,
                     title: (
-                        <TableActions
-                            setActionIndex={setActionIndex}
-                            actionIndex={actionIndex}
+                        <PatientTableActions
+                            setActiveIndex={setActiveIndex}
+                            activeIndex={activeIndex}
                             index={index}
-                            patient={patient}
+                            disabled={patient?.status !== 'ACTIVE'}
                             handleAction={(type: string) => {
                                 tableActionStateAdapter(actions, identification)(type);
-                                setActionIndex(null);
+                                setActiveIndex(null);
                             }}
                         />
                     )
@@ -224,7 +224,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     useEffect(() => {
         const sorted = sort(items, {});
         setBodies(asTableBodies(sorted));
-    }, [actionIndex]);
+    }, [activeIndex]);
 
     return (
         <>
