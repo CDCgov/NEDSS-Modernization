@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.page;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ import gov.cdc.nbs.questionbank.page.response.PagePublishResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 
 @ExtendWith(MockitoExtension.class)
-public class PageUpdaterTest {
+class PageUpdaterTest {
     @InjectMocks
     private PageUpdater pageUpdater;
 

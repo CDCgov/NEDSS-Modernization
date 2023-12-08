@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page;
 
-import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -16,15 +15,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.client.ResponseCreator;
 import org.springframework.test.web.client.response.DefaultResponseCreator;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.request.PagePublishRequest;
-import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
@@ -44,9 +40,6 @@ public class PageUpdaterSteps {
 
     @Autowired
     private EntityManager entityManager;
-
-    @Autowired
-    private PageMother pageMother;
 
     @Autowired
     private PageRequest pageRequest;
