@@ -26,6 +26,7 @@ export type { PageBuilder } from './models/PageBuilder';
 export { ProviderFacilitySearch } from './models/ProviderFacilitySearch';
 
 export { ConceptOptionsService } from './services/ConceptOptionsService';
+export { ConditionOptionsService } from './services/ConditionOptionsService';
 export { ConfigurationControllerService } from './services/ConfigurationControllerService';
 export { EncryptionControllerService } from './services/EncryptionControllerService';
 export { ExportControllerService } from './services/ExportControllerService';
