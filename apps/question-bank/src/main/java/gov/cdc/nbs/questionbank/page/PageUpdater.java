@@ -43,7 +43,6 @@ public class PageUpdater {
 
         page = entityManager.find(WaTemplate.class, page.getId());
 
-
         if(page.getTemplateType().equals(PageConstants.PUBLISHED)) {
             return new PagePublishResponse("success");
         }else{
