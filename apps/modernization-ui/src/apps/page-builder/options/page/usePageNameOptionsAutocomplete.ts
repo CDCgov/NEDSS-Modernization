@@ -1,19 +1,14 @@
 import { PageBuilderOptionsService } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
-import {
-    AutocompleteOptionsResolver,
-    PageBuilderOptionsAutocompletion,
-    usePageBuilderOptionsAutocomplete
-} from 'apps/page-builder/options/usePageBuilderOptionsAutocomplete';
+
+import { AutocompleteOptionsResolver, SelectableAutocompletion, useSelectableAutocomplete } from 'options/autocompete';
 
 type Settings = {
     initialCriteria?: string;
     limit?: number;
 };
 
-const usePageNameOptionsAutocomplete = (
-    settings: Settings = { initialCriteria: '' }
-): PageBuilderOptionsAutocompletion => {
+const usePageNameOptionsAutocomplete = (settings: Settings = { initialCriteria: '' }): SelectableAutocompletion => {
     const resolver: AutocompleteOptionsResolver = (criteria: string, limit?: number) =>
         PageBuilderOptionsService.pageNamesAutocomplete({
             authorization: authorization(),
@@ -21,7 +16,7 @@ const usePageNameOptionsAutocomplete = (
             limit
         });
 
-    const { criteria, options, suggest, complete, reset } = usePageBuilderOptionsAutocomplete({
+    const { criteria, options, suggest, complete, reset } = useSelectableAutocomplete({
         resolver,
         criteria: settings.initialCriteria,
         limit: settings.limit
