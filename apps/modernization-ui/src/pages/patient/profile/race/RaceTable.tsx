@@ -232,9 +232,7 @@ export const RacesTable = ({ patient }: Props) => {
                                 <span>
                                     {format(new Date(race?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
-                            ) : (
-                                <NoData />
-                            )}
+                            ) : null}
                         </span>
                     )
                 },
@@ -242,7 +240,7 @@ export const RacesTable = ({ patient }: Props) => {
                     id: 2,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {race?.category?.description ? <span>{race?.category?.description}</span> : <NoData />}
+                            {race?.category?.description ? <span>{race?.category?.description}</span> : null}
                         </span>
                     )
                 },
@@ -250,7 +248,7 @@ export const RacesTable = ({ patient }: Props) => {
                     id: 3,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {maybeDescriptions(race.detailed).join(' | ') || <NoData />}
+                            {maybeDescriptions(race.detailed).join(' | ') || null}
                         </span>
                     )
                 },
