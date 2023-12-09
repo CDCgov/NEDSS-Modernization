@@ -21,7 +21,6 @@ import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPa
 import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
 import { useAlert } from 'alert/useAlert';
-import { NoData } from 'components/NoData';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
