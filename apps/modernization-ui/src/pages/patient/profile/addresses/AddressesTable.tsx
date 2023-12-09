@@ -22,7 +22,6 @@ import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from '.
 import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
 import { useAlert } from 'alert/useAlert';
-import { NoData } from 'components/NoData';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
@@ -297,9 +296,7 @@ export const AddressesTable = ({ patient }: Props) => {
                                 <span>
                                     {format(new Date(address?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
-                            ) : (
-                                <NoData />
-                            )}
+                            ) : null}
                         </span>
                     )
                 },
@@ -312,9 +309,7 @@ export const AddressesTable = ({ patient }: Props) => {
                                     {address?.type.description}
                                     {address.use?.description ? `/${address.use?.description}` : ''}
                                 </span>
-                            ) : (
-                                <NoData />
-                            )}
+                            ) : null}
                         </span>
                     )
                 },
@@ -322,7 +317,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     id: 3,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {address?.address1 || address?.address2 ? <span>{getAddress(address)}</span> : <NoData />}
+                            {address?.address1 || address?.address2 ? <span>{getAddress(address)}</span> : null}
                         </span>
                     )
                 },
@@ -330,7 +325,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     id: 4,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {address?.city ? <span>{address?.city}</span> : <NoData />}
+                            {address?.city ? <span>{address?.city}</span> : null}
                         </span>
                     )
                 },
@@ -338,7 +333,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     id: 5,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                            {address?.state ? <span>{address?.state?.description}</span> : <NoData />}
+                            {address?.state ? <span>{address?.state?.description}</span> : null}
                         </span>
                     )
                 },
@@ -346,7 +341,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     id: 6,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                            {address?.zipcode ? <span>{address?.zipcode}</span> : <NoData />}
+                            {address?.zipcode ? <span>{address?.zipcode}</span> : null}
                         </span>
                     )
                 },
