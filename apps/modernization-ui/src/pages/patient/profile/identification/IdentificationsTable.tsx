@@ -1,17 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
-import { SortableTable } from 'components/Table/SortableTable';
-import { Actions as ActionState } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
-import { IdentificationEntry } from './identification';
+import { Column, Identification, IdentificationEntry } from './identification';
 import {
-    PatientIdentification,
     useAddPatientIdentificationMutation,
     useDeletePatientIdentificationMutation,
     useUpdatePatientIdentificationMutation
 } from 'generated/graphql/schema';
-import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
+import { Direction } from 'sorting/Sort';
 import {
     PatientIdentificationResult,
     useFindPatientProfileIdentifications
@@ -24,13 +21,15 @@ import { IdentificationEntryForm } from './IdentificationEntryForm';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { useAlert } from 'alert/useAlert';
-import { NoData } from 'components/NoData';
 import { useProfileContext } from '../ProfileContext';
-import { sortingByDate } from 'sorting/sortingByDate';
 import { orNull } from 'utils';
 import { Patient } from '../Patient';
+import { sort } from './identificationSorter';
+import { TableBody, TableComponent } from 'components/Table';
+import { transform } from './identificationTransformer';
+import { PatientTableActions } from '../PatientTableActions';
 
-const asEntry = (identification: PatientIdentification): IdentificationEntry => ({
+const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
     asOf: internalizeDate(identification.asOf),
     type: maybeId(identification.type),
@@ -39,11 +38,11 @@ const asEntry = (identification: PatientIdentification): IdentificationEntry => 
     sequence: identification.sequence
 });
 
-const asDetail = (data: PatientIdentification): Detail[] => [
-    { name: 'As of', value: internalizeDate(data.asOf) },
-    { name: 'Type', value: maybeDescription(data.type) },
-    { name: 'Authority', value: maybeDescription(data.authority) },
-    { name: 'Value', value: data.value }
+const asDetail = (data: Identification): Detail[] => [
+    { name: Column.AsOf, value: internalizeDate(data.asOf) },
+    { name: Column.Type, value: maybeDescription(data.type) },
+    { name: Column.Authority, value: maybeDescription(data.authority) },
+    { name: Column.Value, value: data.value }
 ];
 
 const resolveInitialEntry = (patient: string): IdentificationEntry => ({
@@ -58,15 +57,18 @@ type Props = {
     patient: Patient | undefined;
 };
 
+const headers = [
+    { name: Column.AsOf, sortable: true },
+    { name: Column.Type, sortable: true },
+    { name: Column.Authority, sortable: true },
+    { name: Column.Value, sortable: true },
+    { name: Column.Actions, sortable: false }
+];
+
 export const IdentificationsTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true, sort: 'all' },
-        { name: 'Type', sortable: true, sort: 'all' },
-        { name: 'Authority', sortable: true, sort: 'all' },
-        { name: 'Value', sortable: true, sort: 'all' },
-        { name: 'Actions', sortable: false }
-    ]);
+    const [bodies, setBodies] = useState<TableBody[]>([]);
+    const [items, setItems] = useState<Identification[]>([]);
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -74,14 +76,43 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const initial = resolveInitialEntry(patient?.id || '');
     const { changed } = useProfileContext();
 
-    const [isActions, setIsActions] = useState<any>(null);
-    const [identifications, setIdentifications] = useState<PatientIdentification[]>([]);
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+    const asTableBodies = (idenitifications: Identification[]): TableBody[] =>
+        idenitifications?.map((identification, index) => ({
+            id: identification.value,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: identification.asOf ? format(identification.asOf, 'MM/dd/yyyy') : null
+                },
+                { id: 2, title: identification?.type?.description || null },
+                { id: 3, title: identification?.authority?.description || null },
+                { id: 4, title: identification?.value || null },
+                {
+                    id: 5,
+                    title: (
+                        <PatientTableActions
+                            setActiveIndex={setActiveIndex}
+                            activeIndex={activeIndex}
+                            index={index}
+                            disabled={patient?.status !== 'ACTIVE'}
+                            handleAction={(type: string) => {
+                                tableActionStateAdapter(actions, identification)(type);
+                                setActiveIndex(null);
+                            }}
+                        />
+                    )
+                }
+            ]
+        })) || [];
 
     const handleComplete = (data: PatientIdentificationResult) => {
         setTotal(data?.findPatientProfile.identification?.total ?? 0);
-        setIdentifications(
-            sortingByDate(data?.findPatientProfile?.identification?.content || []) as Array<PatientIdentification>
-        );
+        const content = transform(data?.findPatientProfile);
+        setItems(content);
+        const sorted = sort(content, {});
+        setBodies(asTableBodies(sorted));
     };
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
@@ -89,7 +120,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const [update] = useUpdatePatientIdentificationMutation();
     const [remove] = useDeletePatientIdentificationMutation();
 
-    const { selected, actions } = useTableActionState<PatientIdentification>();
+    const { selected, actions } = useTableActionState<Identification>();
     const modal = useRef<ModalRef>(null);
 
     useEffect(() => {
@@ -184,52 +215,20 @@ export const IdentificationsTable = ({ patient }: Props) => {
         }
     };
 
-    const tableHeadChanges = (name: string, type: string) => {
-        tableHead.map((item) => {
-            if (item.name.toLowerCase() === name.toLowerCase()) {
-                item.sort = type;
-            } else {
-                item.sort = 'all';
-            }
-        });
-        setTableHead(tableHead);
+    const handleSort = (name: string, direction: string): void => {
+        const criteria = { name: name as Column, type: direction as Direction };
+        const sorted = sort(items, criteria);
+        setBodies(asTableBodies(sorted));
     };
 
-    const handleSort = (name: string, type: Direction): any => {
-        tableHeadChanges(name, type);
-        switch (name.toLowerCase()) {
-            case 'as of':
-                setIdentifications(
-                    identifications?.slice().sort((a: PatientIdentification, b: PatientIdentification) => {
-                        const dateA: any = new Date(a?.asOf);
-                        const dateB: any = new Date(b?.asOf);
-                        return type === 'asc' ? dateB - dateA : dateA - dateB;
-                    })
-                );
-                break;
-            case 'type':
-                setIdentifications(identifications.slice().sort(withDirection(sortByNestedProperty('type'), type)));
-                break;
-            case 'authority':
-                setIdentifications(
-                    identifications.slice().sort(withDirection(sortByNestedProperty('authority'), type))
-                );
-                break;
-            case 'value':
-                setIdentifications(identifications.slice().sort(withDirection(sortByAlpha('value') as any, type)));
-                break;
-        }
-    };
+    useEffect(() => {
+        const sorted = sort(items, {});
+        setBodies(asTableBodies(sorted));
+    }, [activeIndex]);
 
     return (
         <>
-            <SortableTable
-                isLoading={!called || loading}
-                isPagination={true}
-                totalResults={total}
-                currentPage={currentPage}
-                handleNext={setCurrentPage}
-                sortDirectionData={handleSort}
+            <TableComponent
                 buttons={
                     <div className="grid-row">
                         <Button
@@ -242,54 +241,16 @@ export const IdentificationsTable = ({ patient }: Props) => {
                         </Button>
                     </div>
                 }
+                isLoading={!called || loading}
                 tableHeader={'Identifications'}
-                tableHead={tableHead}
-                tableBody={identifications?.map((identification, index: number) => (
-                    <tr key={index}>
-                        <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                            {identification?.asOf ? (
-                                <span>
-                                    {format(new Date(identification?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </span>
-                            ) : (
-                                <NoData />
-                            )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {identification?.type ? <span>{identification?.type.description}</span> : <NoData />}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {identification?.authority ? (
-                                <span>{identification?.authority.description}</span>
-                            ) : (
-                                <NoData />
-                            )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {identification?.value ? <span>{identification?.value}</span> : <NoData />}
-                        </td>
-                        <td>
-                            <div className="table-span">
-                                <Button
-                                    type="button"
-                                    unstyled
-                                    disabled={patient?.status !== 'ACTIVE'}
-                                    onClick={() => setIsActions(isActions === index ? null : index)}>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
-                                {isActions === index && (
-                                    <ActionState
-                                        handleOutsideClick={() => setIsActions(null)}
-                                        handleAction={(type: string) => {
-                                            tableActionStateAdapter(actions, identification)(type);
-                                            setIsActions(null);
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </td>
-                    </tr>
-                ))}
+                tableHead={headers}
+                tableBody={bodies}
+                isPagination={true}
+                pageSize={TOTAL_TABLE_DATA}
+                totalResults={total}
+                currentPage={currentPage}
+                handleNext={setCurrentPage}
+                sortData={handleSort}
             />
 
             {selected?.type === 'add' && (
