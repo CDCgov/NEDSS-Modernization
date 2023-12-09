@@ -8,7 +8,6 @@ import {
 } from 'generated/graphql/schema';
 
 import { ClassicButton, ClassicLink } from 'classic';
-import { NoData } from 'components/NoData';
 import { TableBody, TableComponent } from 'components/Table/Table';
 
 export type PatientMorbidities = FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'];
@@ -116,9 +115,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                                     {format(new Date(morbidity?.receivedOn), 'MM/dd/yyyy')} <br />{' '}
                                     {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
                                 </ClassicLink>
-                            ) : (
-                                <NoData />
-                            )}
+                            ) : null}
                         </span>
                     )
                 },
@@ -133,9 +130,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                                     <span>{morbidity.provider}</span>
                                     <br />
                                 </>
-                            ) : (
-                                <NoData />
-                            )}
+                            ) : null}
                         </span>
                     )
                 },
@@ -148,9 +143,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                                     {format(new Date(morbidity?.reportedOn), 'MM/dd/yyyy')} <br />{' '}
                                     {format(new Date(morbidity?.reportedOn), 'hh:mm a')}
                                 </span>
-                            ) : (
-                                <NoData />
-                            )}
+                            ) : null}
                         </span>
                     )
                 },
@@ -158,7 +151,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                     id: 4,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {morbidity?.condition ? <span>{morbidity?.condition}</span> : <NoData />}
+                            {morbidity?.condition ? <span>{morbidity?.condition}</span> : null}
                         </span>
                     )
                 },
@@ -166,7 +159,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                     id: 5,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                            {morbidity?.jurisdiction ? <span>{morbidity?.jurisdiction}</span> : <NoData />}
+                            {morbidity?.jurisdiction ? <span>{morbidity?.jurisdiction}</span> : null}
                         </span>
                     )
                 },
@@ -174,9 +167,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                     id: 6,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                            {!morbidity || !morbidity?.associatedWith ? (
-                                <NoData />
-                            ) : (
+                            {!morbidity || !morbidity?.associatedWith ? null : (
                                 <div>
                                     <ClassicLink
                                         url={`/nbs/api/profile/${patient}/investigation/${morbidity?.associatedWith.id}`}>
@@ -192,7 +183,7 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                     id: 7,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
-                            {morbidity?.event ? <span>{morbidity?.event}</span> : <NoData />}
+                            {morbidity?.event ? <span>{morbidity?.event}</span> : null}
                         </span>
                     )
                 }
