@@ -25,7 +25,6 @@ import {
 import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
 import { useAlert } from 'alert/useAlert';
-import { NoData } from 'components/NoData';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
@@ -257,9 +256,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                                 <span>
                                     {format(new Date(phone?.asOf), 'MM/dd/yyyy')} <br />{' '}
                                 </span>
-                            ) : (
-                                <NoData />
-                            )}
+                            ) : null}
                         </span>
                     )
                 },
@@ -272,9 +269,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                                     {phone?.type.description}
                                     {phone.use?.description ? `/${phone.use?.description}` : ''}
                                 </span>
-                            ) : (
-                                <NoData />
-                            )}
+                            ) : null}
                         </span>
                     )
                 },
@@ -282,7 +277,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     id: 3,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.number ? <span>{phone?.number}</span> : <NoData />}
+                            {phone?.number ? <span>{phone?.number}</span> : null}
                         </span>
                     )
                 },
@@ -290,7 +285,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     id: 4,
                     title: (
                         <span className={`font-sans-1xs table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.email ? <span>{phone?.email}</span> : <NoData />}
+                            {phone?.email ? <span>{phone?.email}</span> : null}
                         </span>
                     )
                 },
