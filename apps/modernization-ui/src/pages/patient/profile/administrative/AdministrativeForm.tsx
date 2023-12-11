@@ -1,7 +1,7 @@
 import { Button, Grid, Label, ModalFooter, Textarea, ErrorMessage } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
-import { AdministrativeEntry } from './AdminstrativeEntry';
+import { AdministrativeEntry } from './administrative';
 import { maxLengthRule } from 'validation/entry';
 
 type EntryProps = {
@@ -20,8 +20,9 @@ export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
 
     const onSubmit = (entered: FieldValues) => {
         onChange({
-            asOf: entered.asOf,
-            comment: entered.comment
+            patient: entry.patient,
+            asOf: entered?.asOf,
+            comment: entered?.comment
         });
     };
 

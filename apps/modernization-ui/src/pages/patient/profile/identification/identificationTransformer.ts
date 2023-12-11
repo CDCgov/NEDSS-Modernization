@@ -14,6 +14,7 @@ const internalized = (content: PatientIdentification): Identification | null => 
 
 export const transform = (result: PatientIdentificationResult['findPatientProfile'] | null): Identification[] => {
     if (result) {
+        debugger
         return result.identification.content.reduce(
             (existing: Identification[], next: PatientIdentification | null) => {
                 if (next) {

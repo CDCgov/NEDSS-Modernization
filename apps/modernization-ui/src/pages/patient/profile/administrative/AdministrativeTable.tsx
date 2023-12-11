@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
-import { SortableTable } from 'components/Table/SortableTable';
-import { Actions as ActionState } from 'components/Table/Actions';
+import { TableBody, TableComponent } from 'components/Table';
 import { TOTAL_TABLE_DATA } from 'utils/util';
-import { PatientAdministrative, useUpdatePatientAdministrativeMutation } from 'generated/graphql/schema';
-import { Direction, sortByAlpha, withDirection } from 'sorting/Sort';
-import { AdministrativeEntry } from './AdminstrativeEntry';
+import { useUpdatePatientAdministrativeMutation } from 'generated/graphql/schema';
+import { Direction } from 'sorting/Sort';
+import { Column, AdministrativeEntry, Administrative } from './administrative';
 import {
     PatientProfileAdministrativeResult,
     useFindPatientProfileAdministrative
@@ -15,58 +14,95 @@ import { externalizeDateTime, internalizeDate } from 'date';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import EntryModal from 'pages/patient/profile/entry';
-import { AdministrativeForm } from './AdminstrativeForm';
+import { AdministrativeForm } from './AdministrativeForm';
 import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert/useAlert';
-import { NoData } from 'components/NoData';
-import { sortingByDate } from 'sorting/sortingByDate';
+import { useProfileContext } from '../ProfileContext';
 import { Patient } from '../Patient';
+import { sort } from './administrativeSorter';
+import { transform } from './administrativeTransformer';
+import { PatientTableActions } from '../PatientTableActions';
 
-const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
-    asOf: internalizeDate(addministrative?.asOf),
-    comment: addministrative.comment || ''
+const asEntry = (administrative: Administrative): AdministrativeEntry => ({
+    asOf: internalizeDate(administrative?.asOf),
+    patient: administrative.patient,
+    comment: administrative.comment || ''
 });
 
-const asDetail = (data: PatientAdministrative): Detail[] => [
+const asDetail = (data: Administrative): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
     { name: 'Additional comments', value: data.comment }
 ];
 
-const initial: AdministrativeEntry = {
+const resolveInitialEntry = (patient: string): AdministrativeEntry => ({
+    patient: +patient,
     asOf: internalizeDate(new Date()),
     comment: null
-};
+});
 
 type Props = {
     patient: Patient | undefined;
 };
 
+const headers = [
+    { name: Column.AsOf, sortable: true },
+    { name: Column.Comment, sortable: true },
+    { name: Column.Actions, sortable: false }
+];
+
 export const AdministrativeTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true, sort: 'all' },
-        { name: 'General comment', sortable: true, sort: 'all' },
-        { name: 'Actions', sortable: false }
-    ]);
+
+    const [bodies, setBodies] = useState<TableBody[]>([]);
+    const [items, setItems] = useState<Administrative[]>([]);
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const [isActions, setIsActions] = useState<any>(null);
+    const initial = resolveInitialEntry(patient?.id || '');
+    const { changed } = useProfileContext();
 
-    const [administratives, setAdministratives] = useState<PatientAdministrative[]>([]);
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+    const asTableBodies = (administratives: Administrative[]): TableBody[] =>
+        administratives?.map((administrative, index) => ({
+            id: administrative.comment,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: administrative.asOf ? format(administrative.asOf, 'MM/dd/yyyy') : null
+                },
+                { id: 2, title: administrative?.comment || null },
+                {
+                    id: 3,
+                    title: (
+                        <PatientTableActions
+                            setActiveIndex={setActiveIndex}
+                            activeIndex={activeIndex}
+                            index={index}
+                            disabled={patient?.status !== 'ACTIVE'}
+                            handleAction={(type: string) => {
+                                tableActionStateAdapter(actions, administrative)(type);
+                                setActiveIndex(null);
+                            }}
+                        />
+                    )
+                }
+            ]
+        })) || [];
 
     const handleComplete = (data: PatientProfileAdministrativeResult) => {
         setTotal(data?.findPatientProfile?.administrative?.total ?? 0);
-        setAdministratives(
-            sortingByDate(data?.findPatientProfile?.administrative?.content || []) as Array<PatientAdministrative>
-        );
+        const content = transform(data?.findPatientProfile);
+        setItems(content);
+        const sorted = sort(content, {});
+        setBodies(asTableBodies(sorted));
     };
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfileAdministrative({ onCompleted: handleComplete });
     const [update] = useUpdatePatientAdministrativeMutation();
 
-    const { selected, actions } = useTableActionState<PatientAdministrative>();
+    const { selected, actions } = useTableActionState<Administrative>();
     const modal = useRef<ModalRef>(null);
 
     useEffect(() => {
@@ -86,59 +122,46 @@ export const AdministrativeTable = ({ patient }: Props) => {
             });
     }, [currentPage, patient]);
 
+
     const onChanged = (entry: AdministrativeEntry) => {
-        patient &&
             update({
                 variables: {
                     input: {
-                        patient: +patient.id,
+                        patient: entry.patient,
                         asOf: externalizeDateTime(entry.asOf),
                         comment: entry.comment
                     }
                 }
             })
                 .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated Comment`
+                    });
                     refetch();
-                    showAlert({ type: 'success', header: 'success', message: 'Updated Comment' });
+                    changed();
                 })
-                .then(() => actions.reset());
+                .then(actions.reset);
+        
     };
 
-    const tableHeadChanges = (name: string, type: string) => {
-        tableHead.map((item) => {
-            if (item.name.toLowerCase() === name.toLowerCase()) {
-                item.sort = type;
-            } else {
-                item.sort = 'all';
-            }
-        });
-        setTableHead(tableHead);
+    const handleSort = (name: string, direction: string): void => {
+        const criteria = { name: name as Column, type: direction as Direction };
+        const sorted = sort(items, criteria);
+        setBodies(asTableBodies(sorted));
     };
 
-    const handleSort = (name: string, type: Direction): any => {
-        tableHeadChanges(name, type);
-        switch (name.toLowerCase()) {
-            case 'as of':
-                setAdministratives(
-                    administratives?.slice().sort((a: PatientAdministrative, b: PatientAdministrative) => {
-                        const dateA: any = new Date(a?.asOf);
-                        const dateB: any = new Date(b?.asOf);
-                        return type === 'asc' ? dateB - dateA : dateA - dateB;
-                    })
-                );
-                break;
-            case 'general comment':
-                setAdministratives(administratives.slice().sort(withDirection(sortByAlpha('comment') as any, type)));
-                break;
-        }
-    };
+    useEffect(() => {
+        const sorted = sort(items, {});
+        setBodies(asTableBodies(sorted));
+    }, [activeIndex]);
+
     return (
         <>
-            <SortableTable
-                isLoading={!called || loading}
-                isPagination={true}
+            <TableComponent
                 buttons={
-                    administratives?.length < 1 && (
+      
                         <div className="grid-row">
                             <Button
                                 disabled={patient?.status !== 'ACTIVE'}
@@ -149,58 +172,25 @@ export const AdministrativeTable = ({ patient }: Props) => {
                                 Add comment
                             </Button>
                         </div>
-                    )
+
                 }
+                isLoading={!called || loading}
+                isPagination={true}
                 tableHeader={'Administrative'}
-                tableHead={tableHead}
-                tableBody={administratives?.map((administrative, index: number) => (
-                    <tr key={index}>
-                        <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                            {administrative?.asOf ? (
-                                <span>
-                                    {format(new Date(administrative?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </span>
-                            ) : (
-                                <NoData />
-                            )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {administrative?.comment ? <span>{administrative?.comment}</span> : <NoData />}
-                        </td>
-                        <td>
-                            <div className="table-span">
-                                <Button
-                                    type="button"
-                                    unstyled
-                                    disabled={patient?.status !== 'ACTIVE'}
-                                    onClick={() => setIsActions(isActions === index ? null : index)}>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
-                                {isActions === index && (
-                                    <ActionState
-                                        notDeletable
-                                        handleOutsideClick={() => setIsActions(null)}
-                                        handleAction={(type: string) => {
-                                            tableActionStateAdapter(actions, administrative)(type);
-                                            setIsActions(null);
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </td>
-                    </tr>
-                ))}
+                tableHead={headers}
+                tableBody={bodies}
+                pageSize={TOTAL_TABLE_DATA}
                 totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
-                sortDirectionData={handleSort}
+                sortData={handleSort}
             />
 
             {selected?.type === 'add' && (
                 <EntryModal
                     onClose={actions.reset}
                     modal={modal}
-                    id="add-patient-identification-modal"
+                    id="add-patient-administrative-modal"
                     title="Add - Administrative">
                     <AdministrativeForm action={'Add'} entry={initial} onChange={onChanged} />
                 </EntryModal>
@@ -210,7 +200,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                 <EntryModal
                     onClose={actions.reset}
                     modal={modal}
-                    id="edit-patient-identification-modal"
+                    id="edit-patient-administrative-modal"
                     title="Edit - Administrative">
                     <AdministrativeForm
                         action={'Edit'}
@@ -224,7 +214,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                 <ConfirmationModal
                     modal={modal}
                     title="Delete address"
-                    message="Are you sure you want to delete this adminstrative record?"
+                    message="Are you sure you want to delete this administrative record?"
                     confirmText="Yes, delete"
                     onConfirm={() => onChanged(initial)}
                     onCancel={actions.reset}
