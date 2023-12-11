@@ -9,7 +9,7 @@ type Props = {
 export const PageStatusBar = ({ name, pageStatus }: Props) => {
     return (
         <div className={styles.statusBar}>
-            <PagesBreadcrumb currentPage={name} />
+            <PagesBreadcrumb currentPage={name} path="/page-builder/manage/pages" />
             <div className={styles.pageMode}>
                 <span className={styles.text}>{pageStatus}</span>
             </div>
