@@ -122,28 +122,26 @@ export const AdministrativeTable = ({ patient }: Props) => {
             });
     }, [currentPage, patient]);
 
-
     const onChanged = (entry: AdministrativeEntry) => {
-            update({
-                variables: {
-                    input: {
-                        patient: entry.patient,
-                        asOf: externalizeDateTime(entry.asOf),
-                        comment: entry.comment
-                    }
+        update({
+            variables: {
+                input: {
+                    patient: entry.patient,
+                    asOf: externalizeDateTime(entry.asOf),
+                    comment: entry.comment
                 }
+            }
+        })
+            .then(() => {
+                showAlert({
+                    type: 'success',
+                    header: 'success',
+                    message: `Updated Comment`
+                });
+                refetch();
+                changed();
             })
-                .then(() => {
-                    showAlert({
-                        type: 'success',
-                        header: 'success',
-                        message: `Updated Comment`
-                    });
-                    refetch();
-                    changed();
-                })
-                .then(actions.reset);
-        
+            .then(actions.reset);
     };
 
     const handleSort = (name: string, direction: string): void => {
@@ -161,18 +159,16 @@ export const AdministrativeTable = ({ patient }: Props) => {
         <>
             <TableComponent
                 buttons={
-      
-                        <div className="grid-row">
-                            <Button
-                                disabled={patient?.status !== 'ACTIVE'}
-                                type="button"
-                                onClick={actions.prepareForAdd}
-                                className="display-inline-flex">
-                                <Icon.Add className="margin-right-05" />
-                                Add comment
-                            </Button>
-                        </div>
-
+                    <div className="grid-row">
+                        <Button
+                            disabled={patient?.status !== 'ACTIVE'}
+                            type="button"
+                            onClick={actions.prepareForAdd}
+                            className="display-inline-flex">
+                            <Icon.Add className="margin-right-05" />
+                            Add comment
+                        </Button>
+                    </div>
                 }
                 isLoading={!called || loading}
                 isPagination={true}

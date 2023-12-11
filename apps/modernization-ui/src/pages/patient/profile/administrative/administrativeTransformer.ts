@@ -16,7 +16,6 @@ export const transform = (
     result: PatientProfileAdministrativeResult['findPatientProfile'] | null
 ): Administrative[] => {
     if (result) {
-        debugger
         return result.administrative.content.reduce(
             (existing: Administrative[], next: PatientAdministrative | null) => {
                 if (next) {
