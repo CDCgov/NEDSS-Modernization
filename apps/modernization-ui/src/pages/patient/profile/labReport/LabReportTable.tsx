@@ -43,7 +43,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
     });
 
     const getOrderingProviderName = (labReport: PatientLabReport): string | undefined => {
-        const provider = labReport.personParticipations?.find((p: any) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
+        const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
         if (provider) {
             return `${provider.firstName} ${provider.lastName}`;
         } else {
@@ -52,11 +52,11 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
     };
 
     const getReportingFacility = (labReport: PatientLabReport): OrganizationParticipation2 | undefined | null => {
-        return labReport.organizationParticipations?.find((o: any) => o?.typeCd === 'AUT');
+        return labReport.organizationParticipations?.find((o) => o?.typeCd === 'AUT');
     };
 
     const getOrderingFacility = (labReport: PatientLabReport): OrganizationParticipation2 | undefined | null => {
-        return labReport.organizationParticipations?.find((o: any) => o?.typeCd === 'ORD');
+        return labReport.organizationParticipations?.find((o) => o?.typeCd === 'ORD');
     };
 
     const getTestedResults = (labReport: PatientLabReport) => {
@@ -76,8 +76,8 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
     };
 
     const getSortableTestResult = (labReport: PatientLabReport) => {
-        if (labReport?.observations?.find((o: any) => o?.domainCd === 'Result')) {
-            return labReport?.observations?.find((o: any) => o?.domainCd === 'Result')?.cdDescTxt;
+        if (labReport?.observations?.find((o) => o?.domainCd === 'Result')) {
+            return labReport?.observations?.find((o) => o?.domainCd === 'Result')?.cdDescTxt;
         }
     };
 
@@ -89,10 +89,10 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         if (patient) {
             getLabReport({
                 variables: {
-                    personUid: +patient as any,
+                    personUid: +patient,
                     page: {
-                        pageNumber: (currentPage - 1) as any,
-                        pageSize: pageSize as any
+                        pageNumber: currentPage - 1,
+                        pageSize: pageSize as number
                     }
                 }
             });
