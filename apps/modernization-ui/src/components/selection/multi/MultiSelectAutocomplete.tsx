@@ -23,6 +23,9 @@ const USWDSDropdownIndicator = (props: any) => (
     </components.DropdownIndicator>
 );
 
+const asSelectableValue = (selectable: Selectable) => selectable.value;
+const asSelectableDisplay = (selectable: Selectable) => selectable.name;
+
 type Complete = (criteria: string) => Promise<Selectable[]>;
 
 type MultiSelectInputProps = {
@@ -36,6 +39,8 @@ type MultiSelectInputProps = {
     value?: Selectable[];
     onChange?: (value: any) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
+    asValue?: (selectable: Selectable) => string;
+    asDisplay?: (selectable: Selectable) => string;
     required?: boolean;
     error?: string;
 };
@@ -52,14 +57,16 @@ const MultiSelectAutocomplete = ({
     required,
     error,
     placeholder,
-    orientation = 'vertical'
+    orientation = 'vertical',
+    asValue = asSelectableValue,
+    asDisplay = asSelectableDisplay
 }: MultiSelectInputProps) => {
     const [selectedOptions, setSelectedOptions] = useState<Selectable[]>(value);
 
     const handleOnChange = (newValue: MultiValue<Selectable>) => {
         setSelectedOptions([...newValue]);
         if (onChange) {
-            const values = newValue.map((item) => item.value);
+            const values = newValue.map(asValue);
             onChange(values);
         }
     };
@@ -88,6 +95,8 @@ const MultiSelectAutocomplete = ({
                     loadOptions={complete}
                     defaultOptions={options}
                     components={{ Input, Option: CheckedOption, DropdownIndicator: USWDSDropdownIndicator }}
+                    getOptionValue={asValue}
+                    getOptionLabel={asDisplay}
                 />
             </EntryWrapper>
         </div>
