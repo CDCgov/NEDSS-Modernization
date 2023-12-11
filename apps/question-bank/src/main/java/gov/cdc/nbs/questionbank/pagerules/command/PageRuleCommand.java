@@ -9,12 +9,12 @@ public sealed interface PageRuleCommand {
 
         long page();
 
+        Instant requestedOn();
+
         public record AddPageRule(
                         RuleData ruleData,
                         CreateRuleRequest ruleRequest,
-                        Instant addTime,
-                        Instant lastChangeTime,
-                        Instant recordStatusTime,
+                        Instant requestedOn,
                         long userId,
                         long page) implements PageRuleCommand {
         }

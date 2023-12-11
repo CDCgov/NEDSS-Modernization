@@ -148,12 +148,6 @@ public class PageRuleSteps {
         assertTrue(exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
     }
 
-
-    // @When("I make a request to update a rule to a page")
-    // public void i_make_a_request_to_update_a_rule_to_a_page() {
-
-    // }
-
     @Then("an access denied exception is thrown")
     public void a_access_denied_exception_is_thrown() {
         assertNotNull(exceptionHolder.getException());

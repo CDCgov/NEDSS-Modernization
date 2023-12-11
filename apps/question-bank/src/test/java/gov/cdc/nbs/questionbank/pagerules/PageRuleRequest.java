@@ -26,7 +26,7 @@ public class PageRuleRequest {
     ResultActions createBusinessRule(final long page, CreateRuleRequest requests) {
         try {
             return mvc.perform(
-                    this.authenticated.withUser(post("/api/v1/pages/{page}/rules/create-business-rule", page))
+                    this.authenticated.withUser(post("/api/v1/pages/{page}/rules", page))
                             .content(asJsonString(requests))
                             .contentType(MediaType.APPLICATION_JSON));
         } catch (Exception exception) {
@@ -38,7 +38,7 @@ public class PageRuleRequest {
         try {
             return mvc.perform(
                     this.authenticated
-                            .withUser(get("/api/v1/pages/{page}/rules/{ruleId}/view-rule-by-id", page, ruleId)));
+                            .withUser(get("/api/v1/pages/{page}/rules/{ruleId}", page, ruleId)));
         } catch (Exception exception) {
             throw new IllegalStateException("Unable to execute page rule request", exception);
         }

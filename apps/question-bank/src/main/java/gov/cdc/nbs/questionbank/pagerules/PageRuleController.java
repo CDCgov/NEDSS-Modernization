@@ -7,7 +7,6 @@ import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 
-@Slf4j
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 @RequestMapping("/api/v1/pages/{page}/rules")
@@ -42,7 +40,7 @@ public class PageRuleController {
         this.pageRuleCreator = pageRuleCreator;
     }
 
-    @PostMapping("/create-business-rule")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public CreateRuleResponse createBusinessRule(
@@ -70,7 +68,7 @@ public class PageRuleController {
         return pageRuleService.updatePageRule(ruleId, request, userId, page);
     }
 
-    @GetMapping("/{ruleId}/view-rule-by-id")
+    @GetMapping("/{ruleId}")
     @ResponseBody
     public ViewRuleResponse viewRuleResponse(@PathVariable Long ruleId) {
         return pageRuleFinderService.getRuleResponse(ruleId);

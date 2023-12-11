@@ -87,12 +87,12 @@ public class WaRuleMetadata {
         this.sourceQuestionIdentifier = command.ruleData().sourceIdentifier();
         this.targetQuestionIdentifier = command.ruleData().targetIdentifiers();
         this.targetType = command.ruleRequest().targetType();
-        this.addTime = command.addTime();
+        this.addTime = command.requestedOn();
         this.addUserId = command.userId();
-        this.lastChgTime = command.lastChangeTime();
+        this.lastChgTime = command.requestedOn();
         this.recordStatusCd = ACTIVE;
         this.lastChgUserId = command.userId();
-        this.recordStatusTime = command.recordStatusTime();
+        this.recordStatusTime = command.requestedOn();
         this.errormsgText = command.ruleData().errorMsgText();
         this.jsFunction = command.ruleData().jsFunctionNameHelper().jsFunction();
         this.jsFunctionName = command.ruleData().jsFunctionNameHelper().jsFunctionName();

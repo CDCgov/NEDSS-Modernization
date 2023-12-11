@@ -39,6 +39,6 @@ public class PageRuleCreator {
                         CreateRuleRequest request,
                         long userId,
                         long page) {
-                return new PageRuleCommand.AddPageRule(ruleData, request, Instant.now(), Instant.now(), Instant.now(), userId, page);
+                return new PageRuleCommand.AddPageRule(ruleData, request, Instant.now(), userId, page);
         }
 }
