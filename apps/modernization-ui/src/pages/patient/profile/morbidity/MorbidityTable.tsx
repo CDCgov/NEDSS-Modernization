@@ -9,6 +9,7 @@ import {
 
 import { ClassicButton, ClassicLink } from 'classic';
 import { TableBody, TableComponent } from 'components/Table/Table';
+import { internalizeDate } from 'date';
 
 export type PatientMorbidities = FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'];
 
@@ -23,13 +24,13 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
     const [total, setTotal] = useState<number>(0);
     const [morbidityData, setMorbidityData] = useState<PatientMorbidity[]>([]);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'Date received', sortable: true, sort: 'all' },
-        { name: 'Provider', sortable: true, sort: 'all' },
-        { name: 'Report date', sortable: true, sort: 'all' },
-        { name: 'Condition', sortable: true, sort: 'all' },
-        { name: 'Jurisdiction', sortable: true, sort: 'all' },
-        { name: 'Associated with', sortable: true, sort: 'all' },
-        { name: 'Event #', sortable: true, sort: 'all' }
+        { name: 'Date received', sortable: true },
+        { name: 'Provider', sortable: true },
+        { name: 'Report date', sortable: true },
+        { name: 'Condition', sortable: true },
+        { name: 'Jurisdiction', sortable: true },
+        { name: 'Associated with', sortable: true },
+        { name: 'Event #', sortable: true }
     ]);
 
     const handleComplete = (data: FindMorbidityReportsForPatientQuery) => {
@@ -107,67 +108,58 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
             tableDetails: [
                 {
                     id: 1,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                            {morbidity?.receivedOn ? (
-                                <ClassicLink
-                                    url={`/nbs/api/profile/${patient}/report/morbidity/${morbidity.morbidity}`}>
-                                    {format(new Date(morbidity?.receivedOn), 'MM/dd/yyyy')} <br />{' '}
-                                    {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
-                                </ClassicLink>
-                            ) : null}
+                    title: morbidity?.receivedOn ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <ClassicLink url={`/nbs/api/profile/${patient}/report/morbidity/${morbidity.morbidity}`}>
+                                {internalizeDate(morbidity?.receivedOn)} <br />
+                                {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
+                            </ClassicLink>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 2,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {morbidity?.provider ? (
-                                <>
-                                    <strong>Reporting facility:</strong>
-                                    <br />
-                                    <span>{morbidity.provider}</span>
-                                    <br />
-                                </>
-                            ) : null}
+                    title: morbidity?.provider ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <strong>Reporting facility:</strong>
+                            <br />
+                            <span>{morbidity.provider}</span>
+                            <br />
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 3,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {morbidity?.reportedOn ? (
-                                <span className="table-span">
-                                    {format(new Date(morbidity?.reportedOn), 'MM/dd/yyyy')} <br />{' '}
-                                    {format(new Date(morbidity?.reportedOn), 'hh:mm a')}
-                                </span>
-                            ) : null}
+                    title: morbidity?.reportedOn ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span className="table-span">
+                                {internalizeDate(morbidity?.reportedOn)} <br />
+                                {format(new Date(morbidity?.reportedOn), 'hh:mm a')}
+                            </span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 4,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {morbidity?.condition ? <span>{morbidity?.condition}</span> : null}
+                    title: morbidity?.condition ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{morbidity?.condition}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 5,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                            {morbidity?.jurisdiction ? <span>{morbidity?.jurisdiction}</span> : null}
+                    title: morbidity?.jurisdiction ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{morbidity?.jurisdiction}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 6,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                            {!morbidity || !morbidity?.associatedWith ? null : (
+                    title:
+                        morbidity && morbidity?.associatedWith ? (
+                            <span className={`font-sans-1xs table-data`}>
                                 <div>
                                     <ClassicLink
                                         url={`/nbs/api/profile/${patient}/investigation/${morbidity?.associatedWith.id}`}>
@@ -175,17 +167,16 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                                     </ClassicLink>
                                     <p className="margin-0">{morbidity?.associatedWith?.condition}</p>
                                 </div>
-                            )}
-                        </span>
-                    )
+                            </span>
+                        ) : null
                 },
                 {
                     id: 7,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
-                            {morbidity?.event ? <span>{morbidity?.event}</span> : null}
+                    title: morbidity?.event ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{morbidity?.event}</span>
                         </span>
-                    )
+                    ) : null
                 }
             ]
         };
