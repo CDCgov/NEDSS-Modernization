@@ -2,10 +2,12 @@ import { useState, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button, Icon, TextInput } from '@trussworks/react-uswds';
 
 import styles from './search.module.scss';
+import classNames from 'classnames';
 
 type SearchProps = {
     id: string;
     name: string;
+    className?: string;
     placeholder?: string;
     value?: string;
     ariaLabel?: string;
@@ -27,7 +29,7 @@ const Search = (props: SearchProps) => {
     };
 
     return (
-        <search className={styles.search}>
+        <search className={classNames(styles.search, props.className)}>
             <label className="usa-sr-only" htmlFor={props.id}>
                 Search
             </label>
