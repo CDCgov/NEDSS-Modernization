@@ -79,7 +79,8 @@ export const AddNewPage = () => {
             data.pageDescription,
             data?.dataMartName
         ).then((response: any) => {
-            navigate(`/page-builder/edit/page/${response.pageId}`);
+            form.reset();
+            navigate(`/page-builder/pages/${response.pageId}/edit`);
         });
     });
 

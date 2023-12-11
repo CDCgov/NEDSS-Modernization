@@ -15,13 +15,15 @@ export const PageHeader = ({ pageDetails }: Props) => {
             <div className={styles.infoAndButtonWrapper}>
                 <div className={styles.pageInfo}>
                     <div className={styles.pageName}>{pageDetails.name}</div>
-                    <div className={styles.pageDescription}>{pageDetails.description}test!</div>
+                    <div className={styles.pageDescription}>{pageDetails.description}</div>
                 </div>
                 <div className={styles.buttons}>
-                    <Button type="button" outline>
+                    <Button type="button" outline disabled>
                         Business rules
                     </Button>
-                    <Button type="button">Preview</Button>
+                    <Button type="button" disabled>
+                        Preview
+                    </Button>
                 </div>
             </div>
             <PageTabs tabs={tabNames()} />
