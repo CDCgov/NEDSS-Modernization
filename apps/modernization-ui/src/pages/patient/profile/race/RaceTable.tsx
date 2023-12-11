@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
-import format from 'date-fns/format';
 import {
     PatientRace,
     useAddPatientRaceMutation,
@@ -52,9 +51,9 @@ type Props = {
 export const RacesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true, sort: 'all' },
-        { name: 'Race', sortable: true, sort: 'all' },
-        { name: 'Detailed race', sortable: true, sort: 'all' },
+        { name: 'As of', sortable: true },
+        { name: 'Race', sortable: true },
+        { name: 'Detailed race', sortable: true },
         { name: 'Actions', sortable: false }
     ]);
 
@@ -225,31 +224,27 @@ export const RacesTable = ({ patient }: Props) => {
             tableDetails: [
                 {
                     id: 1,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                            {race?.asOf ? (
-                                <span>
-                                    {format(new Date(race?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </span>
-                            ) : null}
+                    title: race?.asOf ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{internalizeDate(race?.asOf)}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 2,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {race?.category?.description ? <span>{race?.category?.description}</span> : null}
+                    title: race?.category?.description ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{race?.category?.description}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 3,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {maybeDescriptions(race.detailed).join(' | ') || null}
+                    title: race?.detailed?.length ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            {maybeDescriptions(race.detailed).join(' | ')}
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 4,
