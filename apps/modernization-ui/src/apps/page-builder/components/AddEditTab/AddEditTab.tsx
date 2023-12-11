@@ -17,13 +17,8 @@ export const AddEditTab = ({ tabData, setTabDetails }: Props) => {
     const [visible, setVisible] = useState<boolean>(true);
 
     useEffect(() => {
-        if (tabData) {
-            setName(tabData.name!);
-            setVisible(tabData.visible!);
-        } else {
-            setName('');
-            setVisible(true);
-        }
+        setName(tabData?.name ?? '');
+        setVisible(tabData?.visible ?? true);
     }, [tabData]);
 
     useEffect(() => {

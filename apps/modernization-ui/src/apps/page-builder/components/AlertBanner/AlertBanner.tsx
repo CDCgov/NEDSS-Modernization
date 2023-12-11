@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './AlertBanner.scss';
 import { Icon } from '@trussworks/react-uswds';
+import classNames from 'classnames';
 
 export type AlertBannerProps = {
     type?: string;
@@ -22,7 +23,7 @@ export const AlertBanner = ({ type, children, onClose, expiration }: AlertBanner
     }, []);
 
     return (
-        <div className={`alert-banner ${type} ${hidden ? 'hidden' : ''}`}>
+        <div className={classNames('alert-banner', type, hidden ? 'hidden' : '')}>
             <div className="alert-banner__left">
                 {type === 'success' && <Icon.CheckCircle size={3} />}
                 {type === 'warning' && <Icon.Warning size={3} />}

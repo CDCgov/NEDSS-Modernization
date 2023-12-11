@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 import { PagesTab } from 'apps/page-builder/generated';
 import './ManageTabs.scss';
 import { Icon } from '@trussworks/react-uswds';
@@ -35,7 +34,7 @@ const ManageTabs = ({
                         </div>
                         <div className="manage-tabs__label">
                             <IconComponent name="folder" />
-                            {tab.name} {tab.sections && tab.sections.length ? '(' + tab.sections!.length + ')' : '(0)'}
+                            {tab.name} {`(${tab.sections?.length ?? 0})`}
                         </div>
                         <div className={`manage-tabs__buttons ${tab.sections?.length !== 0 ? 'locked' : ''}`}>
                             <Icon.Edit
