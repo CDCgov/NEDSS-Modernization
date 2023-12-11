@@ -6,23 +6,44 @@ import { MockedProvider } from '@apollo/client/testing';
 
 describe('when rendered', () => {
     it('should display sentence cased treatment headers', async () => {
-        const { container } = render(
-            <MockedProvider addTypename={false}>
-                <PatientTreatmentTable pageSize={3}></PatientTreatmentTable>
+        const response = {
+            request: {
+                query: FindTreatmentsForPatientDocument,
+                variables: {
+                    patient: 'patient',
+                    openOnly: false,
+                    page: {
+                        pageNumber: 0,
+                        pageSize: 1
+                    }
+                }
+            },
+            result: {
+                data: {
+                    findInvestigationsForPatient: {
+                        content: [],
+                        total: 0,
+                        number: 0
+                    }
+                }
+            }
+        };
+
+        const { getByRole, getAllByRole } = render(
+            <MockedProvider mocks={[response]} addTypename={false}>
+                <PatientTreatmentTable patient={'patient'} pageSize={3}></PatientTreatmentTable>
             </MockedProvider>
         );
+        expect(getByRole('heading', { name: 'Treatments' })).toBeInTheDocument();
 
-        const tableHeader = container.getElementsByClassName('table-header');
-        expect(tableHeader[0].innerHTML).toBe('Treatments');
+        const tableHeads = getAllByRole('columnheader');
 
-        const tableHeads = container.getElementsByClassName('head-name');
-
-        expect(tableHeads[0].innerHTML).toBe('Date created');
-        expect(tableHeads[1].innerHTML).toBe('Provider');
-        expect(tableHeads[2].innerHTML).toBe('Treatment date');
-        expect(tableHeads[3].innerHTML).toBe('Treatment');
-        expect(tableHeads[4].innerHTML).toBe('Associated with');
-        expect(tableHeads[5].innerHTML).toBe('Event #');
+        expect(tableHeads[0]).toHaveTextContent('Date created');
+        expect(tableHeads[1]).toHaveTextContent('Provider');
+        expect(tableHeads[2]).toHaveTextContent('Treatment date');
+        expect(tableHeads[3]).toHaveTextContent('Treatment');
+        expect(tableHeads[4]).toHaveTextContent('Associated with');
+        expect(tableHeads[5]).toHaveTextContent('Event #');
     });
 });
 
@@ -81,7 +102,7 @@ describe('when treatments are available for a patient', () => {
                             createdOn: '2023-03-20T15:36:16.317Z',
                             provider: 'DR Indiana Jones',
                             treatedOn: '2023-03-01T05:00:00Z',
-                            description: 'treatment-description',
+                            description: 'description',
                             event: 'TRT10000000GA01',
                             associatedWith: {
                                 id: '10000013',
@@ -98,7 +119,7 @@ describe('when treatments are available for a patient', () => {
     };
 
     it('should display the treatments', async () => {
-        const { container, findByText } = render(
+        const { findAllByRole, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
                 <PatientTreatmentTable patient={'1823'} pageSize={5}></PatientTreatmentTable>
             </MockedProvider>
@@ -106,17 +127,17 @@ describe('when treatments are available for a patient', () => {
 
         expect(await findByText('Showing 1 of 1')).toBeInTheDocument();
 
-        const tableData = container.getElementsByClassName('table-data');
+        const tableData = await findAllByRole('cell');
 
         const dateCreated = await findByText(/03\/20\/2023/);
 
-        expect(dateCreated).toHaveTextContent('10:36 AM');
+        expect(dateCreated).toHaveTextContent('03/20/2023');
 
         expect(tableData[0]).toContainElement(dateCreated);
 
         expect(tableData[1]).toHaveTextContent('DR Indiana Jones');
         expect(tableData[2]).toHaveTextContent('03/01/2023');
-        expect(tableData[3]).toHaveTextContent('treatment-description');
+        expect(tableData[3]).toHaveTextContent('description');
 
         //  Associated With
         const association = await findByText('CAS10000000GA01');
