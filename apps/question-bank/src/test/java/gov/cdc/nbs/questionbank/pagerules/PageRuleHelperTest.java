@@ -135,6 +135,34 @@ class PageRuleHelperTest {
     }
 
     @Test
+    void shouldCreateJsForRequireIfFunctionOneSourceID() {
+        CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleRequestOneSource();
+        SourceValuesHelper sourceValuesHelper =
+                new SourceValuesHelper("M", "Male", "Current Sex", "DEM113");
+        List<String> targetTextList = new ArrayList<>();
+        targetTextList.add("Male");
+        TargetValuesHelper targetValuesHelper = new TargetValuesHelper("INV143", targetTextList);
+        JSFunctionNameHelper jsFunctionNameHelper = pageRuleHelper.requireIfJsFunction(ruleRequest,
+                sourceValuesHelper, 1L, targetValuesHelper);
+        assertNotNull(jsFunctionNameHelper);
+        String jsonString = "function ruleRequireIfDEM1131()\n" +
+                "{\n" +
+                " var foo = [];\n" +
+                "$j('#DEM113 :selected').each(function(i, selected){\n" +
+                " foo[i] = $j(selected).val();\n" +
+                " });\n" +
+                "if(foo.length==0) return;\n" + //
+                "\n" + //
+                " if(($j.inArray('M',foo) > -1)){\n" +
+                "pgRequireNotElement('INV143');\n" +
+                " } else { \n" +
+                "pgRequireElement('INV143');\n" +
+                " }   \n" +
+                "}";
+        Assert.assertEquals(jsonString, jsFunctionNameHelper.jsFunction());
+    }
+
+    @Test
     void shouldCreateJsForEnableAndDisableFunction() {
         CreateRuleRequest ruleRequest = RuleRequestMother.EnableRuleRequest();
         SourceValuesHelper sourceValuesHelper =

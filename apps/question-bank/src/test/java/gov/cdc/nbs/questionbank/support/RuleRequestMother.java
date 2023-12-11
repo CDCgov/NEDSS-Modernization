@@ -173,6 +173,33 @@ public class RuleRequestMother {
                 targetIdentifiers);
     }
 
+    public static CreateRuleRequest RequireIfRuleRequestOneSource() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+
+        return new CreateRuleRequest(
+                "Require If",
+                "Require If",
+                "Current Sex",
+                "DEM113",
+                sourceDetails,
+                false,
+                "<>",
+                "Question",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
     public static CreateRuleRequest RequireIfRuleTestData_othercomparator() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
