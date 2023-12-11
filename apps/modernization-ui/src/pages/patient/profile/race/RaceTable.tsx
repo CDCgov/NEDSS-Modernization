@@ -203,7 +203,7 @@ export const RacesTable = ({ patient }: Props) => {
                     races?.slice().sort((a: PatientRace, b: PatientRace) => {
                         const detailedA: any = a?.detailed?.[0]?.description;
                         const detailedB: any = b?.detailed?.[0]?.description;
-                        return type === 'asc' ? detailedB - detailedA : detailedA - detailedB;
+                        return type === 'asc' ? detailedA.localeCompare(detailedB) : detailedB.localeCompare(detailedA);
                     })
                 );
                 break;
