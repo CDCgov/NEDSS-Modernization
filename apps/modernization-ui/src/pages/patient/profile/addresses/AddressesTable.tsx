@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import format from 'date-fns/format';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import {
     PatientAddress,
@@ -83,12 +82,12 @@ export const AddressesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
 
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true, sort: 'all' },
-        { name: 'Type', sortable: true, sort: 'all' },
-        { name: 'Address', sortable: true, sort: 'all' },
-        { name: 'City', sortable: true, sort: 'all' },
-        { name: 'State', sortable: true, sort: 'all' },
-        { name: 'Zip', sortable: true, sort: 'all' },
+        { name: 'As of', sortable: true },
+        { name: 'Type', sortable: true },
+        { name: 'Address', sortable: true },
+        { name: 'City', sortable: true },
+        { name: 'State', sortable: true },
+        { name: 'Zip', sortable: true },
         { name: 'Actions', sortable: false }
     ]);
 
@@ -290,60 +289,55 @@ export const AddressesTable = ({ patient }: Props) => {
             tableDetails: [
                 {
                     id: 1,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                            {address?.asOf ? (
-                                <span>
-                                    {format(new Date(address?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </span>
-                            ) : null}
+                    title: address?.asOf ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{internalizeDate(address?.asOf)}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 2,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {address?.type ? (
-                                <span>
-                                    {address?.type.description}
-                                    {address.use?.description ? `/${address.use?.description}` : ''}
-                                </span>
-                            ) : null}
+                    title: address?.type ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>
+                                {address?.type.description}
+                                {address.use?.description ? `/${address.use?.description}` : ''}
+                            </span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 3,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {address?.address1 || address?.address2 ? <span>{getAddress(address)}</span> : null}
-                        </span>
-                    )
+                    title:
+                        address?.address1 || address?.address2 ? (
+                            <span className={`font-sans-1xs table-data`}>
+                                <span>{getAddress(address)}</span>
+                            </span>
+                        ) : null
                 },
                 {
                     id: 4,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {address?.city ? <span>{address?.city}</span> : null}
+                    title: address?.city ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{address?.city}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 5,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                            {address?.state ? <span>{address?.state?.description}</span> : null}
+                    title: address?.state ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{address?.state?.description}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 6,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                            {address?.zipcode ? <span>{address?.zipcode}</span> : null}
+                    title: address?.zipcode ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{address?.zipcode}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 7,
