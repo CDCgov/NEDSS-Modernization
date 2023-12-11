@@ -3,6 +3,7 @@ import { DateProperty, Property, ValueProperty } from 'filters/properties';
 import { Selectable } from 'options';
 import { useConceptOptions } from 'options/concepts';
 import { useConditionOptionsAutocomplete } from 'options/condition';
+import { useUserOptionsAutocomplete } from 'options/users';
 
 const statusOptions: Selectable[] = [
     { label: 'Draft', value: 'Draft', name: 'Draft' },
@@ -59,10 +60,13 @@ const usePageLibraryProperties = () => {
         type: 'date'
     };
 
+    const { complete: completeLastUpdatedBy } = useUserOptionsAutocomplete();
+
     const lastUpdatedBy: ValueProperty = {
         value: 'lastUpdatedBy',
         name: 'Last updated by',
-        type: 'value'
+        type: 'value',
+        complete: (criteria: string) => completeLastUpdatedBy(criteria)
     };
 
     const properties: Property[] = [name, eventType, conditions, status, lastUpdated, lastUpdatedBy];

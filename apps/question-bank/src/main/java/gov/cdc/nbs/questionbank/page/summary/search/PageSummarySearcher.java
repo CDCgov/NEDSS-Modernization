@@ -128,11 +128,18 @@ class PageSummarySearcher {
       case "eventtype", "event-type" -> Stream.of(this.tables.eventType().codeShortDescTxt);
       case "condition", "conditions" -> Stream.of(this.tables.condition().conditionShortNm);
       case "status" -> Stream.of(this.tables.page().templateType, this.tables.page().publishVersionNbr);
-      case "lastupdatedby" -> Stream.of(this.tables.authUser().userFirstNm, this.tables.authUser().userLastNm);
+      case "lastupdatedby" -> Stream.of(this.tables.lastUpdatedBy());
       case "lastupdate" -> Stream.of(this.tables.page().lastChgTime);
       default -> Stream.empty();
     };
+  }
 
+  private Stream<Expression<?>> resolveSortProperty(final String property) {
+    if (Objects.equals(property.toLowerCase(), "lastupdatedby")) {
+      return Stream.of(this.tables.authUser().userFirstNm, this.tables.authUser().userLastNm);
+    } else {
+      return resolveProperty(property);
+    }
   }
 
   /**
@@ -142,7 +149,7 @@ class PageSummarySearcher {
   private OrderSpecifier<?>[] resolveOrdering(final Pageable pageable) {
     return Stream.concat(
             QueryDSLOrderResolver.resolve(
-                this::resolveProperty,
+                this::resolveSortProperty,
                 pageable
             ),
             Stream.of(this.tables.page().id.desc())

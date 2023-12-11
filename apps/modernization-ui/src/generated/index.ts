@@ -32,3 +32,4 @@ export { EncryptionControllerService } from './services/EncryptionControllerServ
 export { ExportControllerService } from './services/ExportControllerService';
 export { UserService } from './services/UserService';
 export { UserControllerService } from './services/UserControllerService';
+export { UserOptionsService } from './services/UserOptionsService';
