@@ -2,6 +2,11 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { MultiSelectAutocomplete } from 'components/selection/multi';
 import { FilterEntry } from './FilterEntry';
 import { ValueProperty } from 'filters/properties';
+import { Selectable } from 'options';
+
+const asFilterValue = (selectable: Selectable) => {
+    return selectable.name;
+};
 
 type MultiValueEntryFormProps = {
     property: ValueProperty;
@@ -28,6 +33,7 @@ const MultiValueEntryForm = ({ property }: MultiValueEntryFormProps) => {
                     onBlur={onBlur}
                     onChange={onChange}
                     error={error?.message}
+                    asValue={asFilterValue}
                 />
             )}
         />

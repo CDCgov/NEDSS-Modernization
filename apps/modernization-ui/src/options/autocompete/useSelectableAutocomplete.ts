@@ -37,7 +37,7 @@ type SuggestRequester = (criteria: string, limit?: number) => void;
 
 type AutocompleteOptionsResolver = (criteria: string, limit?: number) => Promise<Selectable[]>;
 
-type PageBuilderOptionsAutocompletion = {
+type SelectableAutocompletion = {
     criteria?: string;
     options: Selectable[];
     suggest: SuggestRequester;
@@ -45,17 +45,17 @@ type PageBuilderOptionsAutocompletion = {
     complete: AutocompleteOptionsResolver;
 };
 
-type PageBuilderOptionsAutocompleteParameters = {
+type SelectableAutocompleteParameters = {
     resolver: AutocompleteOptionsResolver;
     criteria?: string;
     limit?: number;
 };
 
-const usePageBuilderOptionsAutocomplete = ({
+const useSelectableAutocomplete = ({
     resolver,
     criteria = '',
     limit
-}: PageBuilderOptionsAutocompleteParameters): PageBuilderOptionsAutocompletion => {
+}: SelectableAutocompleteParameters): SelectableAutocompletion => {
     const [state, dispatch] = useReducer(reducer, criteria, initial);
 
     useEffect(() => {
@@ -79,5 +79,5 @@ const usePageBuilderOptionsAutocomplete = ({
     };
 };
 
-export { usePageBuilderOptionsAutocomplete };
-export type { PageBuilderOptionsAutocompletion, AutocompleteOptionsResolver };
+export { useSelectableAutocomplete };
+export type { SelectableAutocompletion, AutocompleteOptionsResolver };

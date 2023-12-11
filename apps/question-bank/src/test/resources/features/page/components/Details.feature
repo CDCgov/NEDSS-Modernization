@@ -6,12 +6,26 @@ Feature: Page Components
     And I can "LDFAdministration" any "System"
     And I have a page
 
-  Scenario: I can retrieve a Page
+  Scenario: I can retrieve a draft Page
     Given I have a page named "Front Page"
     And the page has a "description" of "description value"
     When I view the components of a page
     Then the page should have a "name" equal to "Front Page"
+    And the page should have a "status" equal to "Draft"
+    And the page should have a "description" equal to "description value"
     And the page should have a component root
+
+  Scenario: I can retrieve a published Page
+    Given I have a page named "Front Page"
+    And the page is Published
+    When I view the components of a page
+    Then the page should have a "status" equal to "Published"
+
+  Scenario: I can retrieve a draft of a published Page
+    Given I have a page named "Front Page"
+    And the page is Published with draft
+    When I view the components of a page
+    Then the page should have a "status" equal to "Draft"
 
   Scenario: I can retrieve the tabs of a Page
     Given the page has a tab
