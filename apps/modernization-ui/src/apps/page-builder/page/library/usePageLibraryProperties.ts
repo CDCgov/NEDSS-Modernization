@@ -2,6 +2,7 @@ import { usePageNameOptionsAutocomplete } from 'apps/page-builder/options/page';
 import { DateProperty, Property, ValueProperty } from 'filters/properties';
 import { Selectable } from 'options';
 import { useConceptOptions } from 'options/concepts';
+import { useConditionOptionsAutocomplete } from 'options/condition';
 
 const statusOptions: Selectable[] = [
     { label: 'Draft', value: 'Draft', name: 'Draft' },
@@ -35,10 +36,13 @@ const usePageLibraryProperties = () => {
         all: eventTypeOptions
     };
 
+    const { complete: completeConditions } = useConditionOptionsAutocomplete();
+
     const conditions: ValueProperty = {
         value: 'conditions',
         name: 'Related Condition(s)',
-        type: 'value'
+        type: 'value',
+        complete: (criteria: string) => completeConditions(criteria)
     };
 
     const status: ValueProperty = {
