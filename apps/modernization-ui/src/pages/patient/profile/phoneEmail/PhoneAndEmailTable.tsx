@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import format from 'date-fns/format';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import {
     PatientPhone,
@@ -75,10 +74,10 @@ type Props = {
 export const PhoneAndEmailTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true, sort: 'all' },
-        { name: 'Type', sortable: true, sort: 'all' },
-        { name: 'Phone number', sortable: true, sort: 'all' },
-        { name: 'Email address', sortable: true, sort: 'all' },
+        { name: 'As of', sortable: true },
+        { name: 'Type', sortable: true },
+        { name: 'Phone number', sortable: true },
+        { name: 'Email address', sortable: true },
         { name: 'Actions', sortable: false }
     ]);
     const [total, setTotal] = useState<number>(0);
@@ -250,44 +249,38 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
             tableDetails: [
                 {
                     id: 1,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.asOf ? (
-                                <span>
-                                    {format(new Date(phone?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </span>
-                            ) : null}
+                    title: phone?.asOf ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{internalizeDate(phone?.asOf)}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 2,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.type ? (
-                                <span>
-                                    {phone?.type.description}
-                                    {phone.use?.description ? `/${phone.use?.description}` : ''}
-                                </span>
-                            ) : null}
+                    title: phone?.type ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>
+                                {phone?.type.description}
+                                {phone.use?.description ? `/${phone.use?.description}` : ''}
+                            </span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 3,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.number ? <span>{phone?.number}</span> : null}
+                    title: phone?.number ? (
+                        <span className={`font-sans-1xs table-data}`}>
+                            <span>{phone?.number}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 4,
-                    title: (
-                        <span className={`font-sans-1xs table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.email ? <span>{phone?.email}</span> : null}
+                    title: phone?.email ? (
+                        <span className={`font-sans-1xs table-data`}>
+                            <span>{phone?.email}</span>
                         </span>
-                    )
+                    ) : null
                 },
                 {
                     id: 5,
