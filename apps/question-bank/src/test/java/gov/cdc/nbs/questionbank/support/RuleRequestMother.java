@@ -95,6 +95,33 @@ public class RuleRequestMother {
                 targetIdentifiers);
     }
 
+    public static CreateRuleRequest EnableRuleRequestNotEq() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+
+        return new CreateRuleRequest(
+                "Enable",
+                "Enable",
+                "Current Sex",
+                "DEM113",
+                sourceDetails,
+                false,
+                "<>",
+                "QUESTION",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
     public static CreateRuleRequest DisableRuleRequest() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
@@ -167,6 +194,64 @@ public class RuleRequestMother {
                 "DEM113",
                 sourceDetails,
                 false,
+                "=",
+                "Question",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
+    public static CreateRuleRequest RequireIfRuleRequestAnyOtherComp() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+        sourceValueId.add("F");
+        sourceValueText.add("Female");
+
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+
+        return new CreateRuleRequest(
+                "Require If",
+                "Require If",
+                "Current Sex",
+                "DEM113",
+                sourceDetails,
+                true,
+                "<>",
+                "Question",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
+    public static CreateRuleRequest RequireIfRuleRequestAny() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+        sourceValueId.add("F");
+        sourceValueText.add("Female");
+
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+
+        return new CreateRuleRequest(
+                "Require If",
+                "Require If",
+                "Current Sex",
+                "DEM113",
+                sourceDetails,
+                true,
                 "=",
                 "Question",
                 targetValuesList,
@@ -324,6 +409,33 @@ public class RuleRequestMother {
                 targetIdentifiers);
     }
 
+    public static CreateRuleRequest UnhideRuleRequestEq() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Age at Onset");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("INV143");
+
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
+        sourceValueId.add("M");
+        sourceValueText.add("Male");
+
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+
+        return new CreateRuleRequest(
+                "Unhide",
+                "Unhide",
+                "Current Sex",
+                "DEM113",
+                sourceDetails,
+                false,
+                "=",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
     public static CreateRuleRequest UnhideRuleRequestSubsectionType() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Age at Onset");
@@ -448,6 +560,27 @@ public class RuleRequestMother {
                 null,
                 true,
                 "=",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
+    public static CreateRuleRequest UnhideRuleRequestIfAnySourceComp() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Admission Date");
+        targetValuesList.add("Discharge Date");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("test123");
+        targetIdentifiers.add("test234");
+
+        return new CreateRuleRequest(
+                "Unhide",
+                "Unhide",
+                "test",
+                "INV123",
+                null,
+                true,
+                "<>",
                 "TestQuestion",
                 targetValuesList,
                 targetIdentifiers);

@@ -265,6 +265,18 @@ class PageRuleHelperTest {
     }
 
     @Test
+    void shouldGiveRuleExpressionInACorrectFormatForEnableNotEq() throws RuleException {
+
+        CreateRuleRequest ruleRequest = RuleRequestMother.EnableRuleRequestNotEq();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("DEM113 (M) <> ^ E (INV143)", ruleData.ruleExpression());
+        assertEquals("Current Sex <> must be (Male) Age at Onset", ruleData.errorMsgText());
+
+    }
+
+    @Test
     void shouldGiveRuleExpressionInACorrectFormatForHide() throws RuleException {
 
         CreateRuleRequest ruleRequest = RuleRequestMother.HideRuleRequest();
@@ -300,6 +312,8 @@ class PageRuleHelperTest {
 
     }
 
+    
+
     @Test
     void shouldGiveRuleExpressionInACorrectFormatForUnhide() throws RuleException {
         CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequest();
@@ -311,6 +325,16 @@ class PageRuleHelperTest {
     }
 
     @Test
+    void shouldGiveRuleExpressionInACorrectFormatForUnhideEq() throws RuleException {
+        CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequestEq();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("DEM113 (M) = ^ S (INV143)", ruleData.ruleExpression());
+        assertEquals("Current Sex =must be(Male) Age at Onset", ruleData.errorMsgText());
+    }
+
+    @Test
     void shouldGiveRuleExpressionInACorrectFormatForUnhideAnySource() throws RuleException {
         CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequestIfAnySource();
 
@@ -318,6 +342,16 @@ class PageRuleHelperTest {
 
         assertEquals("INV123 ( ) ^ S ( test123,test234 )", ruleData.ruleExpression());
         assertEquals("test  must be (( Any Source Value )) Admission Date,Discharge Date", ruleData.errorMsgText());
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForUnhideAnySourceComp() throws RuleException {
+        CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequestIfAnySourceComp();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("INV123 (null) <> ^ S (test123,test234)", ruleData.ruleExpression());
+        assertEquals("test <>must be(null) Admission Date,Discharge Date", ruleData.errorMsgText());
     }
 
     @Test
@@ -368,6 +402,26 @@ class PageRuleHelperTest {
 
         assertEquals("DEM113 (M,F) = ^ R (INV143)", ruleData.ruleExpression());
         assertEquals("Current Sex = (Male,Female) Age at Onset is required", ruleData.errorMsgText());
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForRequireIfAny() throws RuleException {
+        CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleRequestAny();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("DEM113 ( ) ^ R ( INV143 )", ruleData.ruleExpression());
+        assertEquals("Current Sex   ( Any Source Value ) Age at Onset is required", ruleData.errorMsgText());
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForRequireIfAnyOtherComp() throws RuleException {
+        CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleRequestAnyOtherComp();
+
+        RuleData ruleData = pageRuleHelper.createRuleData(ruleRequest, 123456L);
+
+        assertEquals("DEM113 (M,F) <> ^ R (INV143)", ruleData.ruleExpression());
+        assertEquals("Current Sex <> (Male,Female) Age at Onset is required", ruleData.errorMsgText());
     }
 
     @Test
