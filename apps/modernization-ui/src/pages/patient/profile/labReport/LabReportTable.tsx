@@ -141,8 +141,8 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
             case 'facility / provider':
                 setLabReportData(
                     labReportData?.slice().sort((a: any, b: any) => {
-                        const labA: any = getReportingFacility(a)?.name;
-                        const labB: any = getReportingFacility(b)?.name;
+                        const labA = getReportingFacility(a)?.name;
+                        const labB = getReportingFacility(b)?.name;
                         if (labA && labB) {
                             if (labA.toLowerCase() < labB.toLowerCase()) {
                                 return type === 'asc' ? -1 : 1;
@@ -158,8 +158,8 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
             case 'test results':
                 setLabReportData(
                     labReportData?.slice().sort((a: any, b: any) => {
-                        const labA: any = getSortableTestResult(a);
-                        const labB: any = getSortableTestResult(b);
+                        const labA = getSortableTestResult(a);
+                        const labB = getSortableTestResult(b);
                         if (labA && labB) {
                             if (labA.toLowerCase() < labB.toLowerCase()) {
                                 return type === 'asc' ? -1 : 1;
@@ -181,8 +181,8 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
             case 'associated with':
                 setLabReportData(
                     labReportData?.slice().sort((a: any, b: any) => {
-                        const labA: any = getSortableAssociatedWith(a);
-                        const labB: any = getSortableAssociatedWith(b);
+                        const labA = getSortableAssociatedWith(a);
+                        const labB = getSortableAssociatedWith(b);
                         if (labA && labB) {
                             if (labA.toLowerCase() < labB.toLowerCase()) {
                                 return type === 'asc' ? -1 : 1;
