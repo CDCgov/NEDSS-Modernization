@@ -21,6 +21,7 @@ class PagesResponseMapper {
     return new PagesResponse(
         detailed.identifier(),
         detailed.name(),
+        detailed.status(),
         detailed.description(),
         0,
         mapAll(this::asRule, rules)
@@ -40,6 +41,7 @@ class PagesResponseMapper {
     return new PagesResponse(
         detailed.identifier(),
         detailed.name(),
+        detailed.status(),
         detailed.description(),
         component.identifier(),
         tabs,

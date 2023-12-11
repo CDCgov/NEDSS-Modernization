@@ -485,7 +485,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"filters\":[{\"property\":\"condition\",\"operator\":\"contains\",\"value\":\"type\"}]\n}",
+									"raw": "{\n    \"filters\":[{\"property\":\"conditions\",\"operator\":\"contains\",\"value\":\"type\"}]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -523,7 +523,7 @@
 							"response": []
 						},
 						{
-							"name": "Filtering with single value filter Copy",
+							"name": "Filtering with single value filter equals",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -535,7 +535,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"filters\":[{\"property\":\"condition\",\"operator\":\"contains\",\"value\":\"type\"}]\n}",
+									"raw": "{\n    \"filters\":[{\"property\":\"conditions\",\"operator\":\"equals\",\"value\":\"hiv\"}]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -585,7 +585,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"filters\":[{\"property\":\"condition\",\"operator\":\"contains\",\"values\":[\"type\", \"sec\"]}]\n}",
+									"raw": "{\n    \"filters\":[{\"property\":\"conditions\",\"operator\":\"contains\",\"values\":[\"type\", \"sec\"]}]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -771,6 +771,56 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Filtering with date between",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"lastUpdate\", \"after\":\"2023-10-01\",\"before\":\"2023-10-31\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -859,7 +909,7 @@
 					]
 				},
 				{
-					"name": "Pages",
+					"name": "Page Details",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -869,40 +919,6 @@
 								"type": "text"
 							}
 						],
-						"url": {
-							"raw": "{{page-builder}}/page-builder/api/v1/pages?page=0&size=25&sort=id,ASC",
-							"host": [
-								"{{page-builder}}"
-							],
-							"path": [
-								"page-builder",
-								"api",
-								"v1",
-								"pages"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "25"
-								},
-								{
-									"key": "sort",
-									"value": "id,ASC"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Details",
-					"request": {
-						"method": "GET",
-						"header": [],
 						"url": {
 							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page",
 							"host": [
@@ -914,13 +930,6 @@
 								"v1",
 								"pages",
 								":page"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1000319",
-									"disabled": true
-								}
 							],
 							"variable": [
 								{
@@ -1103,6 +1112,34 @@
 								"api",
 								"v1",
 								"pages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/page-history",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page",
+								"page-history"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "{{page}}"
+								}
 							]
 						}
 					},
