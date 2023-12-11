@@ -47,6 +47,9 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                 <Button type="button" outline>
                     {isSaveTemplate ? 'Edit' : 'Cancel'}
                 </Button>
+                <LinkButton href={`/nbs/page-builder/api/v1/pages/${page.id}/clone`} label="clone the current page">
+                    <Icon.ContentCopy size={3} />
+                </LinkButton>
                 <LinkButton
                     href={`/nbs/page-builder/api/v1/pages/${page.id}/print`}
                     label="open simplified page view for printing">
