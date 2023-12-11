@@ -20,5 +20,9 @@
             border-bottom: solid 0.4375rem colors.$primary;
             font-weight: 700;
         }
+
+        &:focus {
+            outline: none;
+        }
     }
 }

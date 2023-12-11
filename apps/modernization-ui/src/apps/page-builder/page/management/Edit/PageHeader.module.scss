@@ -25,6 +25,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-self: stretch;
+            padding-right: 1.5rem;
 
             .pageName {
                 color: colors.$base-black;
@@ -42,6 +43,10 @@
                 font-weight: 400;
                 line-height: 1.62rem;
             }
+        }
+
+        .buttons {
+            flex-shrink: 0;
         }
     }
 }

@@ -17,7 +17,7 @@ export const PageHeader = ({ pageDetails }: Props) => {
                     <div className={styles.pageName}>{pageDetails.name}</div>
                     <div className={styles.pageDescription}>{pageDetails.description}test!</div>
                 </div>
-                <div>
+                <div className={styles.buttons}>
                     <Button type="button" outline>
                         Business rules
                     </Button>

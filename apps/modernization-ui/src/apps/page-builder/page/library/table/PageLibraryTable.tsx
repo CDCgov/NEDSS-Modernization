@@ -32,7 +32,7 @@ const asTableRow = (page: PageSummary): TableBody => ({
     tableDetails: [
         {
             id: 1,
-            title: <Link to={`/page-builder/edit/page/${page.id}`}>{page?.name}</Link>
+            title: <Link to={`/page-builder/pages/${page.id}/edit`}>{page?.name}</Link>
         },
         { id: 2, title: page.eventType?.name },
         {
