@@ -5,7 +5,8 @@ import {
     FindLabReportsForPatientQuery,
     PatientLabReport,
     OrganizationParticipation2,
-    useFindLabReportsForPatientLazyQuery
+    useFindLabReportsForPatientLazyQuery,
+    AssociatedInvestigation2
 } from 'generated/graphql/schema';
 
 import { SortableTable } from 'components/Table/SortableTable';
@@ -62,7 +63,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
     const getTestedResults = (labReport: PatientLabReport) => {
         return (
             labReport.observations?.map(
-                (o: any) =>
+                (o) =>
                     o?.domainCd === 'Result' && (
                         <div key={o.cdDescTxt}>
                             <strong>{o.cdDescTxt}:</strong>
@@ -270,15 +271,17 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                     <NoData />
                                 ) : (
                                     <>
-                                        {report.associatedInvestigations?.map((investigation: any, index: number) => (
-                                            <div key={index}>
-                                                <ClassicLink
-                                                    url={`/nbs/api/profile/${patient}/investigation/${investigation.publicHealthCaseUid}`}>
-                                                    {investigation?.localId}
-                                                </ClassicLink>
-                                                <p className="margin-0">{investigation?.cdDescTxt}</p>
-                                            </div>
-                                        ))}
+                                        {report.associatedInvestigations?.map(
+                                            (investigation: AssociatedInvestigation2, index: number) => (
+                                                <div key={index}>
+                                                    <ClassicLink
+                                                        url={`/nbs/api/profile/${patient}/investigation/${investigation.publicHealthCaseUid}`}>
+                                                        {investigation?.localId}
+                                                    </ClassicLink>
+                                                    <p className="margin-0">{investigation?.cdDescTxt}</p>
+                                                </div>
+                                            )
+                                        )}
                                     </>
                                 )}
                             </td>
