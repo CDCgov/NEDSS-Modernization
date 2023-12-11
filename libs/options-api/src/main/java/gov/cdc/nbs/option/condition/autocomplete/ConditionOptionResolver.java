@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConditionOptionResolver extends SQLBasedOptionResolver {
+class ConditionOptionResolver extends SQLBasedOptionResolver {
 
   private static final String QUERY = """
       select
@@ -23,7 +23,7 @@ public class ConditionOptionResolver extends SQLBasedOptionResolver {
       fetch next :limit rows only
       """;
 
-  public ConditionOptionResolver(final NamedParameterJdbcTemplate template) {
+  ConditionOptionResolver(final NamedParameterJdbcTemplate template) {
     super(QUERY, template);
   }
 }
