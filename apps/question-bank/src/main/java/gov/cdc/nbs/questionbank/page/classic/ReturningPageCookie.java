@@ -1,14 +1,20 @@
 package gov.cdc.nbs.questionbank.page.classic;
 
-import java.util.Optional;
-import java.util.function.Consumer;
-import javax.servlet.http.Cookie;
-import org.springframework.http.HttpHeaders;
 import gov.cdc.nbs.web.AddCookie;
 import gov.cdc.nbs.web.FindCookie;
 import gov.cdc.nbs.web.RemoveCookie;
+import org.springframework.http.HttpHeaders;
+
+import javax.servlet.http.Cookie;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public record ReturningPageCookie(String page) {
+
+  public ReturningPageCookie(long page) {
+    this(String.valueOf(page));
+  }
+
   private static final String COOKIE_NAME = "Return-Page";
 
   private static final ReturningPageCookie EMPTY = new ReturningPageCookie(null);
