@@ -1,21 +1,19 @@
 import { Button } from '@trussworks/react-uswds';
-import { PagesResponse } from 'apps/page-builder/generated';
 import styles from './PageHeader.module.scss';
 import { PageTabs } from './PageTabs';
 
 type Props = {
-    pageDetails: PagesResponse;
+    tabs: string[];
+    name: string;
+    description?: string;
 };
-export const PageHeader = ({ pageDetails }: Props) => {
-    const tabNames = (): string[] => {
-        return pageDetails.tabs?.map((t) => t.name ?? '') ?? [];
-    };
+export const PageHeader = ({ name, description, tabs }: Props) => {
     return (
         <div className={styles.header}>
             <div className={styles.infoAndButtonWrapper}>
                 <div className={styles.pageInfo}>
-                    <div className={styles.pageName}>{pageDetails.name}</div>
-                    <div className={styles.pageDescription}>{pageDetails.description}</div>
+                    <div className={styles.pageName}>{name}</div>
+                    <div className={styles.pageDescription}>{description}</div>
                 </div>
                 <div className={styles.buttons}>
                     <Button type="button" outline disabled>
@@ -26,7 +24,7 @@ export const PageHeader = ({ pageDetails }: Props) => {
                     </Button>
                 </div>
             </div>
-            <PageTabs tabs={tabNames()} />
+            <PageTabs tabs={tabs} />
         </div>
     );
 };

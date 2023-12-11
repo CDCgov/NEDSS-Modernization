@@ -9,6 +9,10 @@ export const Edit = () => {
     const { fetch, pageDetails } = useGetPageDetails();
     const { pageId } = useParams();
 
+    const tabNames = (): string[] => {
+        return pageDetails?.tabs?.map((t) => t.name ?? '') ?? [];
+    };
+
     useEffect(() => {
         if (pageId) {
             fetch(+pageId);
@@ -18,7 +22,9 @@ export const Edit = () => {
     return (
         <div className={styles.editPage}>
             <PageStatusBar name={pageDetails?.name} pageStatus="EDIT MODE" />
-            {pageDetails && <PageHeader pageDetails={pageDetails} />}
+            {pageDetails && (
+                <PageHeader name={pageDetails.name} description={pageDetails.description} tabs={tabNames()} />
+            )}
         </div>
     );
 };
