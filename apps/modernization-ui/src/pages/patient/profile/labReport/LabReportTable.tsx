@@ -238,7 +238,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                         <>
                                             <strong>Reporting facility:</strong>
                                             <br />
-                                            <p className="margin-0">{getReportingFacility(report)?.name as any}</p>
+                                            <p className="margin-0">{getReportingFacility(report)?.name}</p>
                                             <br />
                                         </>
                                     )}
@@ -254,7 +254,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                         <>
                                             <strong>Ordering facility:</strong>
                                             <br />
-                                            <p className="margin-0">{getOrderingFacility(report)?.name as any}</p>
+                                            <p className="margin-0">{getOrderingFacility(report)?.name}</p>
                                         </>
                                     )}
                                 </div>
