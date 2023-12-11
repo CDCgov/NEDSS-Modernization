@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.download;
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.*;
+import gov.cdc.nbs.questionbank.page.publish.PagePublisher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

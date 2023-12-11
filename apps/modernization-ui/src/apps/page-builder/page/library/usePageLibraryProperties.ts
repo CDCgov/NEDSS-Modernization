@@ -1,21 +1,14 @@
 import { usePageNameOptionsAutocomplete } from 'apps/page-builder/options/page';
 import { DateProperty, Property, ValueProperty } from 'filters/properties';
 import { Selectable } from 'options';
+import { useConceptOptions } from 'options/concepts';
+import { useConditionOptionsAutocomplete } from 'options/condition';
+import { useUserOptionsAutocomplete } from 'options/users';
 
 const statusOptions: Selectable[] = [
     { label: 'Draft', value: 'Draft', name: 'Draft' },
     { label: 'Published', value: 'Published', name: 'Published' },
     { label: 'Published with draft', value: 'Published with draft', name: 'Published with draft' }
-];
-
-const eventTypeOptions = [
-    { label: 'Investigation', name: 'Investigation', value: 'INV' },
-    { label: 'Contact Record', name: 'Contact Record', value: 'CON' },
-    { label: 'Interview', name: 'Interview', value: 'IXS' },
-    { label: 'Lab Isolate tracking', name: 'Lab Isolate Tracking', value: 'ISO' },
-    { label: 'Lab Report', name: 'Lab Report', value: 'LAB' },
-    { label: 'Lab Susceptibility', name: 'Lab Susceptibility', value: 'SUS' },
-    { label: 'Vaccination', name: 'Vaccination', value: 'VAC' }
 ];
 
 const startsWith = (criteria: string) => (option: Selectable) =>
@@ -25,14 +18,16 @@ const completeByName = (options: Selectable[]) => (criteria: string) =>
     new Promise<Selectable[]>((resolve) => resolve(options.filter(startsWith(criteria.toLocaleLowerCase()))));
 
 const usePageLibraryProperties = () => {
-    const { complete } = usePageNameOptionsAutocomplete();
+    const { complete: completePageName } = usePageNameOptionsAutocomplete();
 
     const name: ValueProperty = {
         value: 'name',
         name: 'Page name',
         type: 'value',
-        complete: (criteria: string) => complete(criteria)
+        complete: (criteria: string) => completePageName(criteria)
     };
+
+    const { options: eventTypeOptions } = useConceptOptions('BUS_OBJ_TYPE', { lazy: false });
 
     const eventType: ValueProperty = {
         value: 'event-type',
@@ -42,10 +37,13 @@ const usePageLibraryProperties = () => {
         all: eventTypeOptions
     };
 
+    const { complete: completeConditions } = useConditionOptionsAutocomplete();
+
     const conditions: ValueProperty = {
         value: 'conditions',
         name: 'Related Condition(s)',
-        type: 'value'
+        type: 'value',
+        complete: (criteria: string) => completeConditions(criteria)
     };
 
     const status: ValueProperty = {
@@ -62,10 +60,13 @@ const usePageLibraryProperties = () => {
         type: 'date'
     };
 
+    const { complete: completeLastUpdatedBy } = useUserOptionsAutocomplete();
+
     const lastUpdatedBy: ValueProperty = {
         value: 'lastUpdatedBy',
         name: 'Last updated by',
-        type: 'value'
+        type: 'value',
+        complete: (criteria: string) => completeLastUpdatedBy(criteria)
     };
 
     const properties: Property[] = [name, eventType, conditions, status, lastUpdated, lastUpdatedBy];

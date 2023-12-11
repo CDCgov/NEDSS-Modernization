@@ -19,6 +19,7 @@ import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 
 type Props = {
     modal: RefObject<ModalRef>;
+    createConditionModal: RefObject<ModalRef>;
     addConditions: (conditions: string[]) => void;
 };
 
@@ -31,7 +32,7 @@ const tableHeaders = [
     { name: 'Status', sortable: true }
 ];
 
-export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
+export const QuickConditionLookup = ({ modal, addConditions, createConditionModal }: Props) => {
     const [conditions, setConditions] = useState<Condition[]>([]);
     const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
     const [searchText, setSearchTerm] = useState('');
@@ -166,9 +167,8 @@ export const QuickConditionLookup = ({ modal, addConditions }: Props) => {
                         </Button>
                     </div>
                     <ModalToggleButton
-                        modalRef={modal}
-                        closer
-                        onClick={handleAddConditions}
+                        modalRef={createConditionModal}
+                        onClick={() => modal.current?.toggleModal(undefined, false)}
                         data-testid="condition-add-btn">
                         Create new condition
                     </ModalToggleButton>

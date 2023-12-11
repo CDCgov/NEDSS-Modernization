@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.mock;
 
 class PagesResponseMapperTest {
 
@@ -21,6 +22,7 @@ class PagesResponseMapperTest {
     PageDescription description = new PageDescription(
         1381L,
         "page-name-value",
+        "page-status-value",
         "page-description-value"
     );
 
@@ -30,17 +32,14 @@ class PagesResponseMapperTest {
 
     assertThat(response.id()).isEqualTo(1381L);
     assertThat(response.name()).isEqualTo("page-name-value");
+    assertThat(response.status()).isEqualTo("page-status-value");
     assertThat(response.description()).isEqualTo("page-description-value");
     assertThat(response.root()).isZero();
   }
 
   @Test
   void should_map_page_with_rules_to_response() {
-    PageDescription description = new PageDescription(
-        1381L,
-        "page-name-value",
-        "page-description-value"
-    );
+    PageDescription description = mock(PageDescription.class);
 
     List<PagesRule> rules = List.of(
         new PagesRule(
@@ -92,11 +91,7 @@ class PagesResponseMapperTest {
         )
     );
 
-    PageDescription description = new PageDescription(
-        1381L,
-        "page-name-value",
-        "page-description-value"
-    );
+    PageDescription description = mock(PageDescription.class);
 
     PagesResponseMapper mapper = new PagesResponseMapper();
 
@@ -145,11 +140,7 @@ class PagesResponseMapperTest {
         )
     );
 
-    PageDescription description = new PageDescription(
-        1381L,
-        "page-name-value",
-        "page-description-value"
-    );
+    PageDescription description = mock(PageDescription.class);
 
     PagesResponseMapper mapper = new PagesResponseMapper();
 
@@ -210,11 +201,7 @@ class PagesResponseMapperTest {
         )
     );
 
-    PageDescription description = new PageDescription(
-        1381L,
-        "page-name-value",
-        "page-description-value"
-    );
+    PageDescription description = mock(PageDescription.class);
 
     PagesResponseMapper mapper = new PagesResponseMapper();
 
@@ -302,11 +289,7 @@ class PagesResponseMapperTest {
         )
     );
 
-    PageDescription description = new PageDescription(
-        1381L,
-        "page-name-value",
-        "page-description-value"
-    );
+    PageDescription description = mock(PageDescription.class);
 
     PagesResponseMapper mapper = new PagesResponseMapper();
 

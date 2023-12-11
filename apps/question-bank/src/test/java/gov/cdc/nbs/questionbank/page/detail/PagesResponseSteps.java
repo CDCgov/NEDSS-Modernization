@@ -6,7 +6,6 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
@@ -17,13 +16,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PagesResponseSteps {
 
-  @Autowired
-  Active<PageIdentifier> page;
 
-  @Autowired
-  PagesRequest request;
+  private final Active<PageIdentifier> page;
+
+  private final PagesRequest request;
 
   private final Active<ResultActions> response = new Active<>();
+
+   PagesResponseSteps(
+       final Active<PageIdentifier> page,
+       final PagesRequest request
+   ) {
+    this.page = page;
+    this.request = request;
+  }
 
   @Before("@page-components")
   public void reset() {
@@ -58,6 +64,7 @@ public class PagesResponseSteps {
   private JsonPathResultMatchers resolvePageProperty(final String property) {
     return switch (property.toLowerCase()) {
       case "name" -> jsonPath("$.name");
+      case "status" -> jsonPath("$.status");
       case "description" -> jsonPath("$.description");
       default -> throw new AssertionError(String.format("Unexpected Page property %s", property));
     };
