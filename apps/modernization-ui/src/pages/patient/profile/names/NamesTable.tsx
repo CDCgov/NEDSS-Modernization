@@ -17,7 +17,6 @@ import EntryModal from 'pages/patient/profile/entry';
 import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
 import { PatientNameResult, useFindPatientProfileNames } from './useFindPatientProfileNames';
 import { NameEntryForm } from './NameEntryForm';
-
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
 import { useAlert } from 'alert/useAlert';
 import { useProfileContext } from '../ProfileContext';
@@ -26,19 +25,6 @@ import { sort } from './NameSorter';
 import { TableBody, TableComponent } from 'components/Table';
 import { transform } from './NameTransformer';
 import { PatientTableActions } from '../PatientTableActions';
-
-const asDetail = (data: Name): Detail[] => [
-    { name: 'As of', value: internalizeDate(data.asOf) },
-    { name: 'Type', value: maybeDescription(data.use) },
-    { name: 'Prefix', value: maybeDescription(data.prefix) },
-    { name: 'First name', value: data.first },
-    { name: 'Middle name', value: data.middle },
-    { name: 'Second middle name', value: data.secondMiddle },
-    { name: 'Last name', value: data.last },
-    { name: 'Second last name', value: data.secondLast },
-    { name: 'Suffix', value: maybeDescription(data.suffix) },
-    { name: 'Degree', value: maybeDescription(data.degree) }
-];
 
 const asEntry = (name: Name): NameEntry => ({
     patient: name.patient,
@@ -54,6 +40,19 @@ const asEntry = (name: Name): NameEntry => ({
     suffix: maybeId(name.suffix),
     degree: maybeId(name.degree)
 });
+
+const asDetail = (data: Name): Detail[] => [
+    { name: 'As of', value: internalizeDate(data.asOf) },
+    { name: 'Type', value: maybeDescription(data.use) },
+    { name: 'Prefix', value: maybeDescription(data.prefix) },
+    { name: 'First name', value: data.first },
+    { name: 'Middle name', value: data.middle },
+    { name: 'Second middle name', value: data.secondMiddle },
+    { name: 'Last name', value: data.last },
+    { name: 'Second last name', value: data.secondLast },
+    { name: 'Suffix', value: maybeDescription(data.suffix) },
+    { name: 'Degree', value: maybeDescription(data.degree) }
+];
 
 const resolveInitialEntry = (patient: string): NameEntry => ({
     patient: +patient,
@@ -178,7 +177,7 @@ export const NamesTable = ({ patient }: Props) => {
             },
             notifyOnNetworkStatusChange: true
         });
-    }, [currentPage]);
+    }, [currentPage, patient]);
 
     const onAdded = (entry: NameEntry) => {
         if (entry.type) {
@@ -233,12 +232,12 @@ export const NamesTable = ({ patient }: Props) => {
                 }
             })
                 .then(() => {
-                    refetch();
                     showAlert({
                         type: 'success',
                         header: 'success',
                         message: `Updated name`
                     });
+                    refetch();
                     changed();
                 })
                 .then(actions.reset);
@@ -256,12 +255,13 @@ export const NamesTable = ({ patient }: Props) => {
                 }
             })
                 .then(() => {
-                    refetch();
+
                     showAlert({
                         type: 'success',
                         header: 'success',
                         message: `Deleted name`
                     });
+                    refetch();                    
                     changed();
                 })
                 .then(actions.reset);
