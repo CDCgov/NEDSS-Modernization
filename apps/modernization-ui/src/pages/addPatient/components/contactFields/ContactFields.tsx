@@ -80,7 +80,7 @@ export default function ContactFields({ id, title }: Props) {
                             )}
                         />
                     </Grid>
-                    <Grid col={2}>
+                    <Grid className="ext-field" col={2}>
                         <Controller
                             control={control}
                             name="extension"

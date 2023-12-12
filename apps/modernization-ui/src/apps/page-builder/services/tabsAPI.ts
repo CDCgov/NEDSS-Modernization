@@ -21,3 +21,11 @@ export const updateTab = async (
         tabId: tabId
     });
 };
+
+export const deleteTab = async (token: string, page: number, tabId: number) => {
+    return await TabControllerService.deleteTabUsingDelete({
+        authorization: token,
+        page: page,
+        tabId: tabId
+    });
+};

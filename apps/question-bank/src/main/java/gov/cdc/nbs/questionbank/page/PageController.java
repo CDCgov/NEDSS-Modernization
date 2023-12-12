@@ -42,8 +42,7 @@ public class PageController {
             final PageDownloader pageDownloader,
             final UserDetailsProvider userDetailsProvider,
             final PageDeletor pageDeletor,
-            final PageMetaDataDownloader pageMetaDataDownloader
-    ) {
+            final PageMetaDataDownloader pageMetaDataDownloader) {
         this.creator = creator;
         this.stateChange = stateChange;
         this.pageDownloader = pageDownloader;
@@ -58,6 +57,7 @@ public class PageController {
         return creator.createPage(request, userId);
     }
 
+    
     @PutMapping("{id}/draft")
     public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
         return stateChange.savePageAsDraft(pageId);
@@ -92,12 +92,15 @@ public class PageController {
     }
 
     @GetMapping("{waTemplateUid}/download-metadata")
-    public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("waTemplateUid") Long waTemplateUid) throws IOException {
+    public ResponseEntity<Resource> downloadPageMetadata(@PathVariable("waTemplateUid") Long waTemplateUid)
+            throws IOException {
         String fileName = "PageMetadata.xlsx";
-        InputStreamResource file = new InputStreamResource(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid));
+        InputStreamResource file =
+                new InputStreamResource(pageMetaDataDownloader.downloadPageMetadataByWaTemplateUid(waTemplateUid));
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .contentType(
+                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(file);
     }
 

@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import {
+    PatientMorbidity,
     FindMorbidityReportsForPatientQuery,
     useFindMorbidityReportsForPatientLazyQuery
 } from 'generated/graphql/schema';
 
-import { SortableTable } from 'components/Table/SortableTable';
-
 import { ClassicButton, ClassicLink } from 'classic';
-import { NoData } from 'components/NoData';
+import { TableBody, TableComponent } from 'components/Table/Table';
+import { internalizeDate } from 'date';
 
 export type PatientMorbidities = FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'];
 
@@ -22,20 +22,20 @@ type PatientMoribidityTableProps = {
 export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientMoribidityTableProps) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
-    const [morbidityData, setMorbidityData] = useState<any>([]);
+    const [morbidityData, setMorbidityData] = useState<PatientMorbidity[]>([]);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'Date received', sortable: true, sort: 'all' },
-        { name: 'Provider', sortable: true, sort: 'all' },
-        { name: 'Report date', sortable: true, sort: 'all' },
-        { name: 'Condition', sortable: true, sort: 'all' },
-        { name: 'Jurisdiction', sortable: true, sort: 'all' },
-        { name: 'Associated with', sortable: true, sort: 'all' },
-        { name: 'Event #', sortable: true, sort: 'all' }
+        { name: 'Date received', sortable: true },
+        { name: 'Provider', sortable: true },
+        { name: 'Report date', sortable: true },
+        { name: 'Condition', sortable: true },
+        { name: 'Jurisdiction', sortable: true },
+        { name: 'Associated with', sortable: true },
+        { name: 'Event #', sortable: true }
     ]);
 
     const handleComplete = (data: FindMorbidityReportsForPatientQuery) => {
         setTotal(data?.findMorbidityReportsForPatient?.total || 0);
-        setMorbidityData(data.findMorbidityReportsForPatient?.content);
+        setMorbidityData(data.findMorbidityReportsForPatient?.content as unknown as PatientMorbidity[]);
     };
 
     const [getmorbidity, { called, loading }] = useFindMorbidityReportsForPatientLazyQuery({
@@ -95,6 +95,83 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
         );
     };
 
+    /**
+     * Formats the PatientMorbidity object into TableComponent compatible TableBody object which represents a single row.
+     * Each "title" in the tableDetails is a template of each column cell of the row being created.
+     * @param {PatientMorbidity} morbidity, each item of the morbidity response data
+     * @param {number} index, index of the array item
+     * @return {TableBody}
+     */
+    const generateTableRow = (morbidity: PatientMorbidity, index: number): TableBody => {
+        return {
+            id: index,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: morbidity?.receivedOn ? (
+                        <ClassicLink url={`/nbs/api/profile/${patient}/report/morbidity/${morbidity.morbidity}`}>
+                            {internalizeDate(morbidity?.receivedOn)} <br />
+                            {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
+                        </ClassicLink>
+                    ) : null
+                },
+                {
+                    id: 2,
+                    title: morbidity?.provider ? (
+                        <span>
+                            <strong>Reporting facility:</strong>
+                            <br />
+                            <span>{morbidity.provider}</span>
+                            <br />
+                        </span>
+                    ) : null
+                },
+                {
+                    id: 3,
+                    title: morbidity?.reportedOn ? (
+                        <span>
+                            {internalizeDate(morbidity?.reportedOn)} <br />
+                            {format(new Date(morbidity?.reportedOn), 'hh:mm a')}
+                        </span>
+                    ) : null
+                },
+                {
+                    id: 4,
+                    title: morbidity?.condition || null
+                },
+                {
+                    id: 5,
+                    title: morbidity?.jurisdiction || null
+                },
+                {
+                    id: 6,
+                    title:
+                        morbidity && morbidity?.associatedWith ? (
+                            <div>
+                                <ClassicLink
+                                    url={`/nbs/api/profile/${patient}/investigation/${morbidity?.associatedWith.id}`}>
+                                    {morbidity?.associatedWith?.local}
+                                </ClassicLink>
+                                <p className="margin-0">{morbidity?.associatedWith?.condition}</p>
+                            </div>
+                        ) : null
+                },
+                {
+                    id: 7,
+                    title: morbidity?.event || null
+                }
+            ]
+        };
+    };
+
+    /**
+     *
+     * @return {TableBody[]} list of TableBody each created from PatientMoribidity
+     */
+    const generateTableBody = () => {
+        return (morbidityData?.length > 0 && morbidityData.map(generateTableRow)) || [];
+    };
+
     const handleSort = (name: string, type: string) => {
         tableHeadChanges(name, type);
         switch (name.toLowerCase()) {
@@ -135,9 +212,17 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
     };
 
     return (
-        <SortableTable
+        <TableComponent
             isLoading={!called || loading}
+            tableHeader="Morbidity reports"
+            tableHead={tableHead}
+            tableBody={generateTableBody()}
             isPagination={true}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            totalResults={total}
+            handleNext={setCurrentPage}
+            sortData={handleSort}
             buttons={
                 allowAdd && (
                     <div className="grid-row">
@@ -148,76 +233,6 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                     </div>
                 )
             }
-            tableHeader={'Morbidity reports'}
-            tableHead={tableHead}
-            tableBody={
-                morbidityData?.length > 0 &&
-                morbidityData?.map((morbidity: any, index: number) => {
-                    return (
-                        <tr key={index}>
-                            <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                                {morbidity?.receivedOn ? (
-                                    <ClassicLink
-                                        url={`/nbs/api/profile/${patient}/report/morbidity/${morbidity.morbidity}`}>
-                                        {format(new Date(morbidity?.receivedOn), 'MM/dd/yyyy')} <br />{' '}
-                                        {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
-                                    </ClassicLink>
-                                ) : (
-                                    <NoData />
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                                {morbidity?.provider ? (
-                                    <>
-                                        <strong>Reporting facility:</strong>
-                                        <br />
-                                        <span>{morbidity.provider}</span>
-                                        <br />
-                                    </>
-                                ) : (
-                                    <NoData />
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                                {morbidity?.reportedOn ? (
-                                    <span className="table-span">
-                                        {format(new Date(morbidity?.reportedOn), 'MM/dd/yyyy')} <br />{' '}
-                                        {format(new Date(morbidity?.reportedOn), 'hh:mm a')}
-                                    </span>
-                                ) : (
-                                    <NoData />
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                                {morbidity?.condition ? <span>{morbidity?.condition}</span> : <NoData />}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                                {morbidity?.jurisdiction ? <span>{morbidity?.jurisdiction}</span> : <NoData />}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                                {!morbidity || !morbidity?.associatedWith ? (
-                                    <NoData />
-                                ) : (
-                                    <div>
-                                        <ClassicLink
-                                            url={`/nbs/api/profile/${patient}/investigation/${morbidity?.associatedWith.id}`}>
-                                            {morbidity?.associatedWith?.local}
-                                        </ClassicLink>
-                                        <p className="margin-0">{morbidity?.associatedWith?.condition}</p>
-                                    </div>
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
-                                {morbidity?.event ? <span>{morbidity?.event}</span> : <NoData />}
-                            </td>
-                        </tr>
-                    );
-                })
-            }
-            totalResults={total}
-            currentPage={currentPage}
-            handleNext={setCurrentPage}
-            sortData={handleSort}
         />
     );
 };

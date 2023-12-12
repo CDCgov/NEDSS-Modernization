@@ -19,6 +19,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, 
     return (
         <section className={styles.menu}>
             <Search
+                className={styles.search}
                 id="page-search"
                 name="search"
                 ariaLabel="search page name and  by keyword"

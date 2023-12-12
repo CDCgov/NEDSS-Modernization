@@ -1,9 +1,9 @@
-import { KeyboardEvent, useRef, useState, useEffect } from 'react';
-import { Option } from 'generated';
+import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect } from 'react';
 import { useConceptOptionsAutocomplete } from './useConceptOptionsAutocomplete';
 import { Suggestions } from 'suggestion/Suggestions';
+import { Selectable } from 'options/selectable';
 
-const renderSuggestion = (suggestion: Option) => <>{suggestion.name}</>;
+const renderSuggestion = (suggestion: Selectable) => <>{suggestion.name}</>;
 
 type Props = {
     id: string;
@@ -11,7 +11,7 @@ type Props = {
     valueSet: string;
     className?: string;
     placeholder?: string;
-    value?: Option;
+    value?: Selectable;
     onChange?: (value?: string) => void;
 };
 
@@ -19,7 +19,7 @@ const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const { options, autocomplete, reset } = useConceptOptionsAutocomplete({ valueSet });
+    const { options, suggest, reset } = useConceptOptionsAutocomplete(valueSet);
 
     const [entered, setEntered] = useState(value?.name || '');
 
@@ -29,13 +29,13 @@ const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange
 
     useEffect(() => {
         if (entered) {
-            autocomplete(entered);
+            suggest(entered);
         } else {
             reset();
         }
     }, [entered]);
 
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: ReactKeyboardEvent) => {
         if (event.key === 'ArrowDown') {
             event.preventDefault();
             suggestionRef.current?.focus();
@@ -45,7 +45,7 @@ const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange
         }
     };
 
-    const handleSelection = (option: Option) => {
+    const handleSelection = (option: Selectable) => {
         reset(option.name);
         setEntered(option.name ?? '');
         if (onChange) {

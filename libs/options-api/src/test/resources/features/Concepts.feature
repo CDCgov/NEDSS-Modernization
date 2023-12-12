@@ -14,17 +14,17 @@ Feature: Concept Options REST API
 
   Scenario: I can find concepts for a value set
     When I request all concepts for the "Specific" value set
-    Then there are 7 options included
-    And the option named "rubaboo" is included
-    And the option named "recense" is included
-    And the option named "philter" is included
-    And the option named "regrate" is included
-    And the option named "regulus" is included
-    And the option named "exergue" is included
-    And the option named "rhombos" is included
-    And the option named "silesia" is not included
-    And the option named "regreet" is not included
+    Then there are 7 concepts included
+    And the concept named "rubaboo" is included
+    And the concept named "recense" is included
+    And the concept named "philter" is included
+    And the concept named "regrate" is included
+    And the concept named "regulus" is included
+    And the concept named "exergue" is included
+    And the concept named "rhombos" is included
+    And the concept named "silesia" is not included
+    And the concept named "regreet" is not included
 
   Scenario: I cannot find concepts that do not exist
     When I request all concepts for the "non-existing" value set
-    Then there aren't any options
+    Then there aren't any concepts available

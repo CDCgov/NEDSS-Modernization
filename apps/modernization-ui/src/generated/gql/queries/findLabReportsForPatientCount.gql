@@ -1,0 +1,3 @@
+query findLabReportsForPatientCount($personUid: Int!){
+    findLabReportsForPatientCount(personUid: $personUid)
+}
