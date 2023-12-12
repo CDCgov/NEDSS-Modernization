@@ -21,7 +21,7 @@ import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/Crea
 import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 import { ValuesetLibrary } from 'apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
-import { Edit } from 'apps/page-builder/page/management/edit/Edit';
+import { Edit } from 'apps/page-builder/page/management/Edit/Edit';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
