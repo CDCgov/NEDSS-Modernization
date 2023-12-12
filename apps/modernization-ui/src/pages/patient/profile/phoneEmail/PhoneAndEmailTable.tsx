@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import format from 'date-fns/format';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import {
     PatientPhone,
@@ -11,7 +10,7 @@ import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sor
 import { externalizeDateTime, internalizeDate } from 'date';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { orNull } from 'utils/orNull';
-import { SortableTable } from 'components/Table/SortableTable';
+import { TableBody, TableComponent } from 'components/Table';
 import { Actions } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
@@ -25,7 +24,6 @@ import {
 import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
 import { useAlert } from 'alert/useAlert';
-import { NoData } from 'components/NoData';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
@@ -76,10 +74,10 @@ type Props = {
 export const PhoneAndEmailTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true, sort: 'all' },
-        { name: 'Type', sortable: true, sort: 'all' },
-        { name: 'Phone number', sortable: true, sort: 'all' },
-        { name: 'Email address', sortable: true, sort: 'all' },
+        { name: 'As of', sortable: true },
+        { name: 'Type', sortable: true },
+        { name: 'Phone number', sortable: true },
+        { name: 'Email address', sortable: true },
         { name: 'Actions', sortable: false }
     ]);
     const [total, setTotal] = useState<number>(0);
@@ -237,9 +235,78 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
         }
     };
 
+    /**
+     * Formats the Phone and Email object into TableComponent compatible TableBody object which represents a single row.
+     * Each "title" in the tableDetails is a template of each column cell of the row being created.
+     * @param {PatientPhone} phone, each item of the morbidity response data
+     * @param {number} index, index of the array item
+     * @return {TableBody}
+     */
+
+    const generateTableRow = (phone: PatientPhone, index: number): TableBody => {
+        return {
+            id: index,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: phone?.asOf ? internalizeDate(phone?.asOf) : null
+                },
+                {
+                    id: 2,
+                    title: phone?.type ? (
+                        <span>
+                            {phone?.type.description}
+                            {phone.use?.description ? `/${phone.use?.description}` : ''}
+                        </span>
+                    ) : null
+                },
+                {
+                    id: 3,
+                    title: phone?.number || null
+                },
+                {
+                    id: 4,
+                    title: phone?.email || null
+                },
+                {
+                    id: 5,
+                    title: (
+                        <div className="table-span">
+                            <Button
+                                type="button"
+                                unstyled
+                                disabled={patient?.status !== 'ACTIVE'}
+                                onClick={() => setIsActions(isActions === index ? null : index)}>
+                                <Icon.MoreHoriz className="font-sans-lg" />
+                            </Button>
+
+                            {isActions === index && (
+                                <Actions
+                                    handleOutsideClick={() => setIsActions(null)}
+                                    handleAction={(type: string) => {
+                                        tableActionStateAdapter(actions, phone)(type);
+                                        setIsActions(null);
+                                    }}
+                                />
+                            )}
+                        </div>
+                    )
+                }
+            ]
+        };
+    };
+
+    /**
+     *
+     * @return {TableBody[]} list of TableBody each created from Phone And Email
+     */
+    const generateTableBody = () => {
+        return (phoneEmail?.length > 0 && phoneEmail.map(generateTableRow)) || [];
+    };
+
     return (
         <>
-            <SortableTable
+            <TableComponent
                 isLoading={!called || loading}
                 isPagination={true}
                 buttons={
@@ -256,60 +323,11 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                 }
                 tableHeader={'Phone & email'}
                 tableHead={tableHead}
-                tableBody={phoneEmail?.map((phone, index: number) => (
-                    <tr key={index}>
-                        <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.asOf ? (
-                                <span>
-                                    {format(new Date(phone?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </span>
-                            ) : (
-                                <NoData />
-                            )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.type ? (
-                                <span>
-                                    {phone?.type.description}
-                                    {phone.use?.description ? `/${phone.use?.description}` : ''}
-                                </span>
-                            ) : (
-                                <NoData />
-                            )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.number ? <span>{phone?.number}</span> : <NoData />}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {phone?.email ? <span>{phone?.email}</span> : <NoData />}
-                        </td>
-                        <td>
-                            <div className="table-span">
-                                <Button
-                                    type="button"
-                                    unstyled
-                                    disabled={patient?.status !== 'ACTIVE'}
-                                    onClick={() => setIsActions(isActions === index ? null : index)}>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
-
-                                {isActions === index && (
-                                    <Actions
-                                        handleOutsideClick={() => setIsActions(null)}
-                                        handleAction={(type: string) => {
-                                            tableActionStateAdapter(actions, phone)(type);
-                                            setIsActions(null);
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </td>
-                    </tr>
-                ))}
+                tableBody={generateTableBody()}
                 totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
-                sortDirectionData={handleSort}
+                sortData={handleSort}
             />
             {selected?.type === 'add' && (
                 <EntryModal
