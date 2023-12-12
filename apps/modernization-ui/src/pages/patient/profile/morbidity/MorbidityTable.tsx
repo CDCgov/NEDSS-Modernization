@@ -109,18 +109,16 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                 {
                     id: 1,
                     title: morbidity?.receivedOn ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <ClassicLink url={`/nbs/api/profile/${patient}/report/morbidity/${morbidity.morbidity}`}>
-                                {internalizeDate(morbidity?.receivedOn)} <br />
-                                {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
-                            </ClassicLink>
-                        </span>
+                        <ClassicLink url={`/nbs/api/profile/${patient}/report/morbidity/${morbidity.morbidity}`}>
+                            {internalizeDate(morbidity?.receivedOn)} <br />
+                            {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
+                        </ClassicLink>
                     ) : null
                 },
                 {
                     id: 2,
                     title: morbidity?.provider ? (
-                        <span className={`font-sans-1xs table-data`}>
+                        <span>
                             <strong>Reporting facility:</strong>
                             <br />
                             <span>{morbidity.provider}</span>
@@ -131,52 +129,36 @@ export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientM
                 {
                     id: 3,
                     title: morbidity?.reportedOn ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span className="table-span">
-                                {internalizeDate(morbidity?.reportedOn)} <br />
-                                {format(new Date(morbidity?.reportedOn), 'hh:mm a')}
-                            </span>
+                        <span>
+                            {internalizeDate(morbidity?.reportedOn)} <br />
+                            {format(new Date(morbidity?.reportedOn), 'hh:mm a')}
                         </span>
                     ) : null
                 },
                 {
                     id: 4,
-                    title: morbidity?.condition ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{morbidity?.condition}</span>
-                        </span>
-                    ) : null
+                    title: morbidity?.condition || null
                 },
                 {
                     id: 5,
-                    title: morbidity?.jurisdiction ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{morbidity?.jurisdiction}</span>
-                        </span>
-                    ) : null
+                    title: morbidity?.jurisdiction || null
                 },
                 {
                     id: 6,
                     title:
                         morbidity && morbidity?.associatedWith ? (
-                            <span className={`font-sans-1xs table-data`}>
-                                <div>
-                                    <ClassicLink
-                                        url={`/nbs/api/profile/${patient}/investigation/${morbidity?.associatedWith.id}`}>
-                                        {morbidity?.associatedWith?.local}
-                                    </ClassicLink>
-                                    <p className="margin-0">{morbidity?.associatedWith?.condition}</p>
-                                </div>
-                            </span>
+                            <div>
+                                <ClassicLink
+                                    url={`/nbs/api/profile/${patient}/investigation/${morbidity?.associatedWith.id}`}>
+                                    {morbidity?.associatedWith?.local}
+                                </ClassicLink>
+                                <p className="margin-0">{morbidity?.associatedWith?.condition}</p>
+                            </div>
                         ) : null
                 },
                 {
                     id: 7,
-                    title: morbidity?.event ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{morbidity?.event}</span>
-                        </span>
-                    ) : null
+                    title: morbidity?.event || null
                 }
             ]
         };
