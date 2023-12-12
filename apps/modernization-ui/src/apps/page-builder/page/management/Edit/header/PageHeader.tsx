@@ -3,11 +3,12 @@ import styles from './PageHeader.module.scss';
 import { PageTabs } from './PageTabs';
 
 type Props = {
-    tabs: string[];
+    tabs: { name: string; id: number }[];
     name: string;
     description?: string;
+    onTabSelect?: (tab: number) => void;
 };
-export const PageHeader = ({ name, description, tabs }: Props) => {
+export const PageHeader = ({ name, description, tabs, onTabSelect }: Props) => {
     return (
         <div className={styles.header}>
             <div className={styles.infoAndButtonWrapper}>
@@ -16,15 +17,13 @@ export const PageHeader = ({ name, description, tabs }: Props) => {
                     <div className={styles.pageDescription}>{description}</div>
                 </div>
                 <div className={styles.buttons}>
-                    <Button type="button" outline disabled>
+                    <Button type="button" outline>
                         Business rules
                     </Button>
-                    <Button type="button" disabled>
-                        Preview
-                    </Button>
+                    <Button type="button">Preview</Button>
                 </div>
             </div>
-            <PageTabs tabs={tabs} />
+            <PageTabs tabs={tabs} onTabSelect={onTabSelect} />
         </div>
     );
 };
