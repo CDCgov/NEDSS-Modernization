@@ -289,80 +289,55 @@ export const AddressesTable = ({ patient }: Props) => {
             tableDetails: [
                 {
                     id: 1,
-                    title: address?.asOf ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{internalizeDate(address?.asOf)}</span>
-                        </span>
-                    ) : null
+                    title: address?.asOf ? internalizeDate(address?.asOf) : null
                 },
                 {
                     id: 2,
                     title: address?.type ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>
-                                {address?.type.description}
-                                {address.use?.description ? `/${address.use?.description}` : ''}
-                            </span>
+                        <span>
+                            {address?.type.description}
+                            {address.use?.description ? `/${address.use?.description}` : ''}
                         </span>
                     ) : null
                 },
                 {
                     id: 3,
-                    title:
-                        address?.address1 || address?.address2 ? (
-                            <span className={`font-sans-1xs table-data`}>
-                                <span>{getAddress(address)}</span>
-                            </span>
-                        ) : null
+                    title: ((address?.address1 || address?.address2) && getAddress(address)) || null
                 },
                 {
                     id: 4,
-                    title: address?.city ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{address?.city}</span>
-                        </span>
-                    ) : null
+                    title: address?.city || null
                 },
                 {
                     id: 5,
-                    title: address?.state ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{address?.state?.description}</span>
-                        </span>
-                    ) : null
+                    title: address?.state?.description || null
                 },
                 {
                     id: 6,
-                    title: address?.zipcode ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{address?.zipcode}</span>
-                        </span>
-                    ) : null
+                    title: address?.zipcode || null
                 },
                 {
                     id: 7,
                     title: (
-                        <span>
-                            <div className="table-span">
-                                <Button
-                                    type="button"
-                                    unstyled
-                                    disabled={patient?.status !== 'ACTIVE'}
-                                    onClick={() => setIsActions(isActions === index ? null : index)}>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
+                        <div className="table-span">
+                            <Button
+                                type="button"
+                                unstyled
+                                disabled={patient?.status !== 'ACTIVE'}
+                                onClick={() => setIsActions(isActions === index ? null : index)}>
+                                <Icon.MoreHoriz className="font-sans-lg" />
+                            </Button>
 
-                                {isActions === index && (
-                                    <Actions
-                                        handleOutsideClick={() => setIsActions(null)}
-                                        handleAction={(type: string) => {
-                                            tableActionStateAdapter(actions, address)(type);
-                                            setIsActions(null);
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </span>
+                            {isActions === index && (
+                                <Actions
+                                    handleOutsideClick={() => setIsActions(null)}
+                                    handleAction={(type: string) => {
+                                        tableActionStateAdapter(actions, address)(type);
+                                        setIsActions(null);
+                                    }}
+                                />
+                            )}
+                        </div>
                     )
                 }
             ]
