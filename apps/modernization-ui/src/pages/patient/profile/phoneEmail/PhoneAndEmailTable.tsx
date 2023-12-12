@@ -249,63 +249,47 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
             tableDetails: [
                 {
                     id: 1,
-                    title: phone?.asOf ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{internalizeDate(phone?.asOf)}</span>
-                        </span>
-                    ) : null
+                    title: phone?.asOf ? internalizeDate(phone?.asOf) : null
                 },
                 {
                     id: 2,
                     title: phone?.type ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>
-                                {phone?.type.description}
-                                {phone.use?.description ? `/${phone.use?.description}` : ''}
-                            </span>
+                        <span>
+                            {phone?.type.description}
+                            {phone.use?.description ? `/${phone.use?.description}` : ''}
                         </span>
                     ) : null
                 },
                 {
                     id: 3,
-                    title: phone?.number ? (
-                        <span className={`font-sans-1xs table-data}`}>
-                            <span>{phone?.number}</span>
-                        </span>
-                    ) : null
+                    title: phone?.number || null
                 },
                 {
                     id: 4,
-                    title: phone?.email ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{phone?.email}</span>
-                        </span>
-                    ) : null
+                    title: phone?.email || null
                 },
                 {
                     id: 5,
                     title: (
-                        <span>
-                            <div className="table-span">
-                                <Button
-                                    type="button"
-                                    unstyled
-                                    disabled={patient?.status !== 'ACTIVE'}
-                                    onClick={() => setIsActions(isActions === index ? null : index)}>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
+                        <div className="table-span">
+                            <Button
+                                type="button"
+                                unstyled
+                                disabled={patient?.status !== 'ACTIVE'}
+                                onClick={() => setIsActions(isActions === index ? null : index)}>
+                                <Icon.MoreHoriz className="font-sans-lg" />
+                            </Button>
 
-                                {isActions === index && (
-                                    <Actions
-                                        handleOutsideClick={() => setIsActions(null)}
-                                        handleAction={(type: string) => {
-                                            tableActionStateAdapter(actions, phone)(type);
-                                            setIsActions(null);
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </span>
+                            {isActions === index && (
+                                <Actions
+                                    handleOutsideClick={() => setIsActions(null)}
+                                    handleAction={(type: string) => {
+                                        tableActionStateAdapter(actions, phone)(type);
+                                        setIsActions(null);
+                                    }}
+                                />
+                            )}
+                        </div>
                     )
                 }
             ]
