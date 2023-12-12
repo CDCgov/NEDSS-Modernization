@@ -1,5 +1,5 @@
 import { Icon } from '@trussworks/react-uswds';
-import { Filter, Value } from 'filters';
+import { DateRange, Filter, Value } from 'filters';
 
 import styles from './applied-filters.module.scss';
 
@@ -47,7 +47,7 @@ const AppliedFilter = ({ filter, onRemove }: AppliedFilterProps) => (
         <span>
             {filter.property.name} {filter.operator.name} {display(filter)}
         </span>
-        <Icon.Close onClick={() => onRemove(filter.id)} />
+        <Icon.Close role="button" aria-label="close" onClick={() => onRemove(filter.id)} />
     </li>
 );
 
@@ -56,9 +56,13 @@ const display = (filter: Filter) => {
         return displayValue(filter.value);
     } else if ('values' in filter) {
         return filter.values.map(displayValue).join(' OR ');
+    } else if ('after' in filter && 'before' in filter) {
+        return displayRange(filter);
     }
 };
 
 const displayValue = (value: Value) => (typeof value === 'string' ? value : value.name);
+
+const displayRange = (range: DateRange) => `${range.after} and ${range.before}`;
 
 export { AppliedFilters };

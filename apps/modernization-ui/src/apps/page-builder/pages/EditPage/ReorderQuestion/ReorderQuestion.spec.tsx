@@ -1,28 +1,34 @@
 import { render } from '@testing-library/react';
 import { ReorderQuestion } from './ReorderQuestion';
-import { PagesQuestion, PagesTab } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesResponse } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 describe('when ReorderSubsection renders', () => {
-    const content: PagesTab = {
-        id: 123456,
+    const content: PagesResponse = {
+        id: 123,
         name: 'Test Page',
-        sections: [
+        tabs: [
             {
-                id: 1234,
-                name: 'Section1',
-                subSections: [],
-                visible: true
-            },
-            {
-                id: 5678,
-                name: 'Section2',
-                subSections: [],
+                id: 123456,
+                name: 'Test Page',
+                sections: [
+                    {
+                        id: 1234,
+                        name: 'Section1',
+                        subSections: [],
+                        visible: true
+                    },
+                    {
+                        id: 5678,
+                        name: 'Section2',
+                        subSections: [],
+                        visible: true
+                    }
+                ],
                 visible: true
             }
-        ],
-        visible: true
+        ]
     };
     const question: PagesQuestion = {
         allowFutureDates: true,
@@ -41,7 +47,7 @@ describe('when ReorderSubsection renders', () => {
         subGroup: 'asdf'
     };
     const { getByText } = render(
-        <DragDropProvider data={content} pageDropId={0} tabId={1}>
+        <DragDropProvider pageData={content} currentTab={0}>
             <DragDropContext onDragEnd={() => {}}>
                 <Droppable droppableId='testId'>
                     {(provided) => (

@@ -10,7 +10,7 @@ import {
 
 type MultiValue = { values: string[] };
 type SingleValue = { value: string };
-type DateRange = { after: string } | { before: string } | { after: string; before: string };
+type DateRange = { after: string; before: string };
 
 export type { MultiValue, SingleValue, DateRange };
 

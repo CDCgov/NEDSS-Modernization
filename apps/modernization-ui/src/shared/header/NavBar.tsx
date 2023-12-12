@@ -25,7 +25,7 @@ export default function NavBar() {
                 <tbody>
                     <tr>
                         <td>
-                            <table role="presentation" align="left">
+                            <table role="presentation">
                                 <tbody>
                                     <tr>
                                         <td className={styles.navLink}>

@@ -1,100 +1,50 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DragStart, DragUpdate, DraggableLocation, DropResult } from 'react-beautiful-dnd';
-import { PagesSection, PagesTab } from '../generated';
-import { moveSubsectionInArray, moveQuestionInArray } from '../helpers/moveObjectInArray';
+import { PagesResponse, PagesSection, PagesTab } from '../generated';
+import { moveSubsectionInArray, moveQuestionInArray, moveTabInArray } from '../helpers/moveObjectInArray';
 import { reorderObjects } from '../services/reorderObjectsAPI';
 import { UserContext } from 'user';
 
 type DragDropProps = (source: DraggableLocation, destination: DraggableLocation) => void;
 
-// handle the manipulation of placeholder for subsection
-type SubsectionDropshadowProps = (event: any, destinationIndex: number, sourceIndex: number) => void;
-
-// handle the manipulation of placeholder for section
-type SectionDropshadowProps = (event: any, destinationIndex: number, sourceIndex: number) => void;
-
-type SubsectionDropshadow = { marginTop: number; height: number };
-type SectionDropshadow = { marginLeft: number; height: number };
-
 type DragDropContextProps = {
     handleDragEnd: (result: DropResult) => void;
     handleDragStart: (event: DragStart) => void;
     handleDragUpdate: (event: DragUpdate) => void;
-    subsectionDropshadowProps: SubsectionDropshadow;
-    sectionDropshadowProps: SectionDropshadow;
+    tabs: PagesTab[];
     sections: PagesSection[];
     setSections: React.Dispatch<React.SetStateAction<PagesSection[]>>;
-    closeId: string;
+    closeId: { id: string; type: string };
+    dragTarget: { droppableId: string; index: number; source: number };
 };
 
 const DragDropContext = React.createContext<DragDropContextProps | undefined>(undefined);
 
-// grabbing element currently being dragged from the dom
-const getDraggedElement = (draggableId: string) => {
-    const queryAttr = 'data-rbd-drag-handle-draggable-id';
-    const domQuery = `[${queryAttr}='${draggableId}']`;
-    const draggedElement = document.querySelector(domQuery);
-    return draggedElement;
-};
-
-// updating the array of the placeholder by switching out the source and destination section Index
-const getUpdatedChildrenArray = (draggedElement: Element, destinationIndex: number, sourceIndex: number) => {
-    // grab children of the node
-    const child: Element[] = [...Array.from(draggedElement!.parentNode!.children)];
-
-    // if the indexes are the same (onDragStart) just return the dom array
-    if (destinationIndex === sourceIndex) return child;
-    // get the div of item being dragged
-    const draggedItem = child[sourceIndex];
-
-    // remove source
-    child.splice(sourceIndex, 1);
-
-    // return updated array by inputting dragged item
-    return child.splice(0, destinationIndex, draggedItem);
-};
-
-// isolate the number of style desired to pass as props
-const getStyle = (
-    updatedChildrenArray: Element[],
-    destinationIndex: number,
-    property: string,
-    clientDirection: 'clientHeight' | 'clientWidth'
-) =>
-    updatedChildrenArray.slice(0, destinationIndex).reduce((total, curr) => {
-        // get the style object of the item
-        const style = window.getComputedStyle(curr);
-        // isolate the # of the property desired
-        const prop = parseFloat(style.getPropertyValue(property));
-        return total + curr[clientDirection] + prop;
-    }, 0);
-
 const DragDropProvider: React.FC<{
     children: React.ReactNode;
-    data: PagesTab | undefined;
-    pageDropId: number;
-    tabId: number;
-}> = ({ children, data, pageDropId, tabId }) => {
+    pageData: PagesResponse | undefined;
+    currentTab: number;
+    successCallBack?: () => void;
+}> = ({ children, pageData, currentTab, successCallBack }) => {
     const [sections, setSections] = useState<PagesSection[]>([]);
-    const [sectionDropshadowProps, setSectionDropshadowProps] = useState<SectionDropshadow>({
-        marginLeft: 0,
-        height: 0
-    });
-    const [subsectionDropshadowProps, setSubsectionDropshadowProps] = useState<SubsectionDropshadow>({
-        marginTop: 0,
-        height: 0
-    });
-    const [closeId, setCloseId] = useState('');
+    const [tabs, setTabs] = useState<PagesTab[]>([]);
+    const [closeId, setCloseId] = useState({ id: '', type: '' });
+    const [dragTarget, setDragTarget] = useState({ droppableId: '', index: 999, source: 999 });
     const [moveId, setMoveId] = useState<number>(0);
     let afterId: number;
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
 
     useEffect(() => {
-        if (data && data.sections) {
-            setSections(data.sections);
+        if (pageData) {
+            if (pageData.tabs) {
+                setTabs(pageData.tabs);
+            }
+            if (pageData.tabs![currentTab]) {
+                setSections(pageData.tabs![currentTab].sections!);
+            }
         }
-    }, [data]);
+    }, [pageData, currentTab]);
 
     // handling movement of subsection in the same section
     const moveSubsectionWithinSection: DragDropProps = (source, destination) => {
@@ -109,10 +59,14 @@ const DragDropProvider: React.FC<{
         const findId = sections.filter((section) => {
             return section.id!.toString() === destination.droppableId;
         });
-        if (findId[0].subSections![destination.index - 1]) {
-            afterId = findId[0].subSections![destination.index - 1].id!;
-        } else {
+        if (destination.index === findId[0].subSections?.length! - 1) {
+            afterId = findId[0].subSections![findId[0].subSections?.length! - 1].id!;
+        } else if (destination.index === 0) {
             afterId = Number(destination.droppableId);
+        } else if (source.index < destination.index) {
+            afterId = findId[0].subSections![destination.index].id!;
+        } else {
+            afterId = findId[0].subSections![destination.index - 1].id!;
         }
         setSections(updatedSections);
     };
@@ -161,10 +115,14 @@ const DragDropProvider: React.FC<{
                 }
             })
         );
-        if (isolatedSubsection![0].questions![destination.index - 1]) {
-            afterId = isolatedSubsection![0].questions![destination.index - 1].id!;
-        } else {
+        if (destination.index === isolatedSubsection![0].questions!.length - 1) {
+            afterId = isolatedSubsection![0].questions![isolatedSubsection![0].questions!.length - 1].id!;
+        } else if (destination.index === 0) {
             afterId = isolatedSubsection![0].id!;
+        } else if (source.index < destination.index) {
+            afterId = isolatedSubsection![0].questions![destination.index].id!;
+        } else {
+            afterId = isolatedSubsection![0].questions![destination.index - 1].id!;
         }
         const updatedOrder = moveQuestionInArray(isolatedSubsection![0]!.questions!, source.index, destination.index);
 
@@ -261,91 +219,59 @@ const DragDropProvider: React.FC<{
         const reorderedSections = [...sections];
         const [removed] = reorderedSections.splice(source.index, 1);
         reorderedSections.splice(destination.index, 0, removed);
-        if (sections[destination.index - 1]) {
-            afterId = sections[destination.index - 1].id!;
+        if (destination.index === sections.length - 1) {
+            afterId = sections[sections.length - 1].id!;
+        } else if (destination.index === 0) {
+            afterId = pageData!.tabs![currentTab].id!;
+        } else if (source.index < destination.index) {
+            afterId = sections[destination.index].id!;
         } else {
-            afterId = tabId;
+            afterId = sections[destination.index - 1].id!;
         }
         setSections(reorderedSections);
     };
 
-    const handleDropshadowTile: SubsectionDropshadowProps = (event, destinationIndex, sourceIndex) => {
-        // isolating the element being dragged
-        const draggedElement = getDraggedElement(event.draggableId);
-        // if we aint draggin anything return
-        if (!draggedElement) return;
-        // isolate the height of element to determine the height of element being dragged
-        const { clientHeight } = draggedElement as Element;
-        // returning the manipulated array of dom elements
-        const updatedChildrenArray: Element[] = getUpdatedChildrenArray(
-            draggedElement as Element,
-            destinationIndex,
-            sourceIndex
-        );
-        // grabbing the # for marginTop
-        const marginTop = getStyle(updatedChildrenArray, destinationIndex, 'marginBottom', 'clientHeight');
-        // setting our props
-        setSubsectionDropshadowProps({
-            height: clientHeight + 2,
-            marginTop: marginTop + 2 * destinationIndex
-        });
-    };
-
-    const handleDropshadowSection: SectionDropshadowProps = (event, destinationIndex, sourceIndex) => {
-        // isolate element we are dragging
-        const draggedElement: Element | Node | null = getDraggedElement(event.draggableId)!.parentNode!.parentNode;
-        // if nothing is being dragged return
-        if (!draggedElement) return;
-        // isolate the height of element to determine the height of element being dragged
-        const { clientHeight } = draggedElement as Element;
-        // returning the manipulated array of dom elements
-        const updatedChildrenArray: Element[] = getUpdatedChildrenArray(
-            draggedElement as Element,
-            destinationIndex,
-            sourceIndex
-        );
-        // grabbing the # for marginLeft
-        const marginLeft = getStyle(updatedChildrenArray, destinationIndex, 'marginRight', 'clientWidth');
-        // setting props
-        setSectionDropshadowProps({
-            height: clientHeight,
-            marginLeft
-        });
+    const handleTabMove: DragDropProps = (source, destination) => {
+        const reorderedTabs = moveTabInArray(tabs, source.index, destination.index);
+        if (destination.index === tabs.length - 1) {
+            afterId = tabs[tabs.length - 1].id!;
+        } else if (destination.index === 0) {
+            afterId = pageData!.root!;
+        } else if (source.index < destination.index) {
+            afterId = tabs[destination.index].id!;
+        } else {
+            afterId = tabs[destination.index - 1].id!;
+        }
+        setTabs(reorderedTabs);
     };
 
     const handleDragUpdate = (event: DragUpdate) => {
-        const { source, destination } = event;
+        const { destination } = event;
         if (!destination) return;
-        if (event.type === 'section') {
-            handleDropshadowSection(event, destination.index, source.index);
-        } else {
-            handleDropshadowTile(event, destination.index, source.index);
-        }
+        setDragTarget({ droppableId: destination.droppableId, index: destination.index, source: destination.index });
     };
 
     const handleDragStart = (event: DragStart) => {
-        const { index } = event.source;
-        setCloseId(event.draggableId);
+        setCloseId({ id: event.draggableId, type: event.type });
         setMoveId(Number(event.draggableId));
-        if (event.type === 'section') {
-            handleDropshadowSection(event, index, index);
-        } else {
-            handleDropshadowTile(event, index, index);
-        }
     };
 
     const handleDragEnd = (result: DropResult) => {
-        setCloseId('');
+        setCloseId({ id: '', type: '' });
+        setDragTarget({ droppableId: '', index: 999, source: 999 });
         if (!result.destination) return;
         const { source, destination, type } = result;
         if (source.droppableId === 'all-sections') {
             handleSectionMove(source, destination);
         } else if (type === 'question') {
             handleQuestionMove(source, destination);
-        } else {
+        } else if (type === 'subsection') {
             handleSubsectionMove(source, destination);
+        } else {
+            handleTabMove(source, destination);
         }
-        reorderObjects(token, afterId, moveId, pageDropId);
+        setTimeout(() => reorderObjects(token, afterId, moveId, pageData!.id), 100);
+        setTimeout(() => successCallBack!(), 500);
     };
 
     return (
@@ -354,11 +280,11 @@ const DragDropProvider: React.FC<{
                 handleDragEnd,
                 handleDragStart,
                 handleDragUpdate,
-                subsectionDropshadowProps,
-                sectionDropshadowProps,
+                tabs,
                 sections,
                 setSections,
-                closeId
+                closeId,
+                dragTarget
             }}>
             {children}
         </DragDropContext.Provider>

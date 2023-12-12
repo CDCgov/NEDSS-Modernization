@@ -110,8 +110,8 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const handleComplete = (data: PatientIdentificationResult) => {
         setTotal(data?.findPatientProfile.identification?.total ?? 0);
         const content = transform(data?.findPatientProfile);
-        setItems(content);
         const sorted = sort(content, {});
+        setItems(sorted);
         setBodies(asTableBodies(sorted));
     };
 
@@ -218,12 +218,12 @@ export const IdentificationsTable = ({ patient }: Props) => {
     const handleSort = (name: string, direction: string): void => {
         const criteria = { name: name as Column, type: direction as Direction };
         const sorted = sort(items, criteria);
+        setItems(sorted);
         setBodies(asTableBodies(sorted));
     };
 
     useEffect(() => {
-        const sorted = sort(items, {});
-        setBodies(asTableBodies(sorted));
+        setBodies(asTableBodies(items));
     }, [activeIndex]);
 
     return (

@@ -41,7 +41,7 @@ const asFilter = (displayable: Filter): APIFilter => {
         return asSingleValueFilter(displayable);
     } else if ('values' in displayable) {
         return asMultiValueFilter(displayable);
-    } else if ('after' in displayable || 'before' in displayable) {
+    } else if ('after' in displayable && 'before' in displayable) {
         return asDateRangeFilter(displayable);
     }
 
@@ -79,14 +79,9 @@ const asDateRangeFilter = (displayable: DateRangeFilter): ExternalDateRangeFilte
     };
 };
 
-const asDateRange = (displayable: DateRangeFilter): DateRange => {
-    if ('after' in displayable && 'before' in displayable) {
-        return { after: externalizeDate(displayable.after), before: externalizeDate(displayable.before) };
-    } else if ('after' in displayable) {
-        return { after: externalizeDate(displayable.after) };
-    } else {
-        return { before: externalizeDate(displayable.before) };
-    }
-};
+const asDateRange = (displayable: DateRangeFilter): DateRange => ({
+    after: externalizeDate(displayable.after),
+    before: externalizeDate(displayable.before)
+});
 
 export { externalize };

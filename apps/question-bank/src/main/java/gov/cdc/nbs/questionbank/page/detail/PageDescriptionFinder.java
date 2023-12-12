@@ -13,6 +13,7 @@ class PageDescriptionFinder {
       select
           [template].wa_template_uid  as [identifier],
           [template].template_nm      as [name],
+          [template].template_type    as [status],
           [template].desc_txt         as [description]
       from WA_template [template]
       where [template].wa_template_uid = ?
