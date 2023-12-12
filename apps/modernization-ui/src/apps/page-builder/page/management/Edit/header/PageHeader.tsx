@@ -1,6 +1,6 @@
 import { Button } from '@trussworks/react-uswds';
 import styles from './PageHeader.module.scss';
-import { PageTabs } from './PageTabs';
+import { PageTabs } from '../../header/tabs/Tabs';
 
 type Props = {
     tabs: { name: string; id: number }[];

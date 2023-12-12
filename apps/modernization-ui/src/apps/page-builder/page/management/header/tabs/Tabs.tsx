@@ -1,6 +1,6 @@
-import { KeyboardEvent, useEffect, useState } from 'react';
-import styles from './PageTabs.module.scss';
 import classNames from 'classnames';
+import { KeyboardEvent, useEffect, useState } from 'react';
+import styles from './Tabs.module.scss';
 
 type Props = {
     tabs: { name: string; id: number }[];
@@ -15,8 +15,8 @@ export const PageTabs = ({ tabs, onTabSelect }: Props) => {
         }
     }, [selected]);
 
-    const handleKeyPress = (event: KeyboardEvent, tab: number) => {
-        if (event.code === 'Space' || event.code === 'Enter') {
+    const handleKeyPress = (tab: number) => (event: KeyboardEvent) => {
+        if (event.code === 'Enter') {
             setSelected(tab);
         }
     };
@@ -26,11 +26,11 @@ export const PageTabs = ({ tabs, onTabSelect }: Props) => {
             {tabs.map((tab, k) => (
                 <li
                     onClick={() => setSelected(tab.id)}
-                    onKeyDown={(e) => handleKeyPress(e, tab.id)}
+                    onKeyDown={handleKeyPress(tab.id)}
                     tabIndex={0}
-                    className={classNames(styles.tab, { [styles.selected]: selected === tab.id })}
+                    className={styles.tab}
                     key={k}>
-                    {tab.name}
+                    <a className={classNames(styles.tabLink, { [styles.selected]: selected === tab.id })}>{tab.name}</a>
                 </li>
             ))}
         </ul>

@@ -26,16 +26,17 @@ export const Section = ({ section, onAddQuestion, onAddSubsection }: Props) => {
                 onExpandedChange={handleExpandedChange}
                 isExpanded={isExpanded}
             />
-            <div className={styles.subsectionWrapper}>
-                {isExpanded &&
-                    section.subSections?.map((subsection, k) => (
+            {isExpanded && (
+                <div className={styles.subsectionWrapper}>
+                    {section.subSections?.map((subsection, k) => (
                         <Subsection
                             subsection={subsection}
                             key={k}
                             onAddQuestion={() => onAddQuestion(subsection.id!)}
                         />
                     ))}
-            </div>
+                </div>
+            )}
         </div>
     );
 };
