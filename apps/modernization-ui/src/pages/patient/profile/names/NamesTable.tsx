@@ -25,6 +25,7 @@ import { sort } from './NameSorter';
 import { TableBody, TableComponent } from 'components/Table';
 import { transform } from './NameTransformer';
 import { PatientTableActions } from '../PatientTableActions';
+import { displayName } from 'name';
 
 const asEntry = (name: Name): NameEntry => ({
     patient: name.patient,
@@ -97,24 +98,6 @@ export const NamesTable = ({ patient }: Props) => {
 
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-    function fullName(
-        first?: string | null | undefined,
-        middle?: string | null | undefined,
-        last?: string | null | undefined
-    ) {
-        if (first && middle && last) {
-            return first + ' ' + middle + ' ' + last;
-        } else if (first && !middle && last) {
-            return first + ' ' + last;
-        } else if (!first && !middle && last) {
-            return last;
-        } else if (first && !middle && !last) {
-            return first;
-        } else {
-            return null;
-        }
-    }
-
     const asTableBodies = (names: Name[]): TableBody[] =>
         names?.map((name, index) => ({
             id: index,
@@ -125,7 +108,7 @@ export const NamesTable = ({ patient }: Props) => {
                 },
                 { id: 2, title: name?.use?.description || null },
                 { id: 3, title: name?.prefix?.description || null },
-                { id: 4, title: fullName(name?.first, name?.middle, name?.last) || null },
+                { id: 4, title: displayName('full')(name) || null },
                 { id: 5, title: name?.suffix?.description || null },
                 { id: 6, title: name?.degree?.description || null },
                 {
@@ -255,13 +238,12 @@ export const NamesTable = ({ patient }: Props) => {
                 }
             })
                 .then(() => {
-
                     showAlert({
                         type: 'success',
                         header: 'success',
                         message: `Deleted name`
                     });
-                    refetch();                    
+                    refetch();
                     changed();
                 })
                 .then(actions.reset);
