@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import format from 'date-fns/format';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import {
     PatientAddress,
@@ -12,7 +11,6 @@ import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sor
 import { internalizeDate } from 'date';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { orNull } from 'utils/orNull';
-import { SortableTable } from 'components/Table/SortableTable';
 import { Actions } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
@@ -23,10 +21,10 @@ import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from '.
 import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
 import { useAlert } from 'alert/useAlert';
-import { NoData } from 'components/NoData';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
+import { TableBody, TableComponent } from 'components/Table';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -84,12 +82,12 @@ export const AddressesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
 
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true, sort: 'all' },
-        { name: 'Type', sortable: true, sort: 'all' },
-        { name: 'Address', sortable: true, sort: 'all' },
-        { name: 'City', sortable: true, sort: 'all' },
-        { name: 'State', sortable: true, sort: 'all' },
-        { name: 'Zip', sortable: true, sort: 'all' },
+        { name: 'As of', sortable: true },
+        { name: 'Type', sortable: true },
+        { name: 'Address', sortable: true },
+        { name: 'City', sortable: true },
+        { name: 'State', sortable: true },
+        { name: 'Zip', sortable: true },
         { name: 'Actions', sortable: false }
     ]);
 
@@ -278,9 +276,85 @@ export const AddressesTable = ({ patient }: Props) => {
         return `${name?.address1 ?? ''} ${name?.address2 ?? ''}`;
     };
 
+    /**
+     * Formats the Address object into TableComponent compatible TableBody object which represents a single row.
+     * Each "title" in the tableDetails is a template of each column cell of the row being created.
+     * @param {PatientAddress} address, each item of the morbidity response data
+     * @param {number} index, index of the array item
+     * @return {TableBody}
+     */
+    const generateTableRow = (address: PatientAddress, index: number): TableBody => {
+        return {
+            id: index,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: address?.asOf ? internalizeDate(address?.asOf) : null
+                },
+                {
+                    id: 2,
+                    title: address?.type ? (
+                        <span>
+                            {address?.type.description}
+                            {address.use?.description ? `/${address.use?.description}` : ''}
+                        </span>
+                    ) : null
+                },
+                {
+                    id: 3,
+                    title: ((address?.address1 || address?.address2) && getAddress(address)) || null
+                },
+                {
+                    id: 4,
+                    title: address?.city || null
+                },
+                {
+                    id: 5,
+                    title: address?.state?.description || null
+                },
+                {
+                    id: 6,
+                    title: address?.zipcode || null
+                },
+                {
+                    id: 7,
+                    title: (
+                        <div className="table-span">
+                            <Button
+                                type="button"
+                                unstyled
+                                disabled={patient?.status !== 'ACTIVE'}
+                                onClick={() => setIsActions(isActions === index ? null : index)}>
+                                <Icon.MoreHoriz className="font-sans-lg" />
+                            </Button>
+
+                            {isActions === index && (
+                                <Actions
+                                    handleOutsideClick={() => setIsActions(null)}
+                                    handleAction={(type: string) => {
+                                        tableActionStateAdapter(actions, address)(type);
+                                        setIsActions(null);
+                                    }}
+                                />
+                            )}
+                        </div>
+                    )
+                }
+            ]
+        };
+    };
+
+    /**
+     *
+     * @return {TableBody[]} list of TableBody each created from Address
+     */
+    const generateTableBody = () => {
+        return (addresses?.length > 0 && addresses.map(generateTableRow)) || [];
+    };
+
     return (
         <>
-            <SortableTable
+            <TableComponent
                 isLoading={!called || loading}
                 isPagination={true}
                 buttons={
@@ -297,66 +371,11 @@ export const AddressesTable = ({ patient }: Props) => {
                 }
                 tableHeader={'Address'}
                 tableHead={tableHead}
-                tableBody={addresses?.map((name, index: number) => (
-                    <tr key={index}>
-                        <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                            {name?.asOf ? (
-                                <span>
-                                    {format(new Date(name?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </span>
-                            ) : (
-                                <NoData />
-                            )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {name?.type ? (
-                                <span>
-                                    {name?.type.description}
-                                    {name.use?.description ? `/${name.use?.description}` : ''}
-                                </span>
-                            ) : (
-                                <NoData />
-                            )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {name?.address1 || name?.address2 ? <span>{getAddress(name)}</span> : <NoData />}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                            {name?.city ? <span>{name?.city}</span> : <NoData />}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                            {name?.state ? <span>{name?.state?.description}</span> : <NoData />}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                            {name?.zipcode ? <span>{name?.zipcode}</span> : <NoData />}
-                        </td>
-                        <td>
-                            <div className="table-span">
-                                <Button
-                                    type="button"
-                                    unstyled
-                                    disabled={patient?.status !== 'ACTIVE'}
-                                    onClick={() => setIsActions(isActions === index ? null : index)}>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
-
-                                {isActions === index && (
-                                    <Actions
-                                        handleOutsideClick={() => setIsActions(null)}
-                                        handleAction={(type: string) => {
-                                            tableActionStateAdapter(actions, name)(type);
-                                            setIsActions(null);
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </td>
-                    </tr>
-                ))}
+                tableBody={generateTableBody()}
                 totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
-                sortDirectionData={handleSort}
+                sortData={handleSort}
             />
             {selected?.type === 'add' && (
                 <EntryModal onClose={actions.reset} modal={modal} id="add-patient-address-modal" title="Add - Address">

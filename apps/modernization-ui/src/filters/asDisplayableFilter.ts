@@ -79,20 +79,6 @@ const asDateRange = (
             after: entry.after,
             before: entry.before
         };
-    } else if ('after' in entry) {
-        return {
-            id: crypto.randomUUID(),
-            property,
-            operator,
-            after: entry.after
-        };
-    } else if ('before' in entry) {
-        return {
-            id: crypto.randomUUID(),
-            property,
-            operator,
-            before: entry.before
-        };
     }
 
     return undefined;
