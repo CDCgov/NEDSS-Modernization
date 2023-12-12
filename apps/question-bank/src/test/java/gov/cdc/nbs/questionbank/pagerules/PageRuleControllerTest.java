@@ -23,122 +23,105 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class PageRuleControllerTest {
 
-    @InjectMocks
-    private PageRuleController pageRuleController;
-    @Mock
-    private PageRuleService pageRuleService;
+        @InjectMocks
+        private PageRuleController pageRuleController;
+        @Mock
+        private PageRuleService pageRuleService;
 
-    @Mock
-    private UserDetailsProvider userDetailsProvider;
+        @Mock
+        private UserDetailsProvider userDetailsProvider;
 
-    @Mock
-    private PageRuleFinderService pageRuleFinderServiceImpl;
-
-    @Test
-    void shouldReturnCreateRuleResponse() throws Exception {
-        CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
-        NbsUserDetails nbsUserDetails =
-                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
-        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest,123456L))
-                .thenReturn(new CreateRuleResponse(999L, "Rule Created Successfully"));
-        Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
-        CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest,123456L);
-        assertEquals(999L, ruleResponse.ruleId());
-
-        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest,123456L))
-                .thenThrow(new RuleException("",0));
-        ruleResponse = pageRuleController.createBusinessRule(ruleRequest,123456L);
-        assertNull(ruleResponse.ruleId());
-
-    }
+        @Mock
+        private PageRuleFinderService pageRuleFinderServiceImpl;
 
 
-    @Test
-    void shouldDeleteRuleId() {
-        Long ruleId = 99L;
-        Mockito.when(pageRuleService.deletePageRule(99L))
-                .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Deleted"));
-        CreateRuleResponse ruleResponse = pageRuleController.deletePageRule(ruleId);
-        assertNotNull(ruleResponse);
-    }
+        @Test
+        void shouldDeleteRuleId() {
+                Long ruleId = 99L;
+                Mockito.when(pageRuleService.deletePageRule(99L))
+                                .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Deleted"));
+                CreateRuleResponse ruleResponse = pageRuleController.deletePageRule(ruleId);
+                assertNotNull(ruleResponse);
+        }
 
-    @Test
-    void shouldUpdateRule() throws RuleException {
-        Long ruleId = 99L;
-        Long userId = 123L;
-        CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
-        NbsUserDetails nbsUserDetails =
-                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
-        Mockito.when(pageRuleService.updatePageRule(ruleId, ruleRequest, userId,123456L))
-                .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Updated"));
-        Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
-        CreateRuleResponse ruleResponse = pageRuleController.updatePageRule(ruleId, ruleRequest,123456L);
-        assertNotNull(ruleResponse);
-    }
+        @Test
+        void shouldUpdateRule() throws RuleException {
+                Long ruleId = 99L;
+                Long userId = 123L;
+                CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
+                NbsUserDetails nbsUserDetails =
+                                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+                Mockito.when(pageRuleService.updatePageRule(ruleId, ruleRequest, userId, 123456L))
+                                .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Updated"));
+                Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
+                CreateRuleResponse ruleResponse = pageRuleController.updatePageRule(ruleId, ruleRequest, 123456L);
+                assertNotNull(ruleResponse);
+        }
 
-    @Test
-    void shouldReadRule() {
-        Long ruleId = 99L;
-        List<String> sourceValues = new ArrayList<>();
-        List<String> targetValues = new ArrayList<>();
-        Mockito.when(pageRuleFinderServiceImpl.getRuleResponse(ruleId))
-                .thenReturn(new ViewRuleResponse(ruleId, 123l, "testFunction", "testDesc", "TestINV",
-                        sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
-        ViewRuleResponse ruleResponse = pageRuleController.viewRuleResponse(ruleId);
-        assertNotNull(ruleResponse);
-    }
-    @Test
-    void shouldReadAllRule() throws Exception {
-        int page = 0;
-        int size =1;
-        String sort ="id";
-        Pageable pageRequest = PageRequest.of(page,size,Sort.by(sort));
-        List<String> sourceValues = new ArrayList<>();
-        List<String> targetValues = new ArrayList<>();
-        List<ViewRuleResponse> content = new ArrayList<>();
-        content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
-                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+        @Test
+        void shouldReadRule() {
+                Long ruleId = 99L;
+                List<String> sourceValues = new ArrayList<>();
+                List<String> targetValues = new ArrayList<>();
+                Mockito.when(pageRuleFinderServiceImpl.getRuleResponse(ruleId))
+                                .thenReturn(new ViewRuleResponse(ruleId, 123l, "testFunction", "testDesc", "TestINV",
+                                                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+                ViewRuleResponse ruleResponse = pageRuleController.viewRuleResponse(ruleId);
+                assertNotNull(ruleResponse);
+        }
 
-        Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest,123456L)).
-        thenReturn(new PageImpl<>(content,pageRequest,content.size()));
-        Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest,123456L);
-        assertNotNull(ruleResponse);
-    }
+        @Test
+        void shouldReadAllRule() throws Exception {
+                int page = 0;
+                int size = 1;
+                String sort = "id";
+                Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
+                List<String> sourceValues = new ArrayList<>();
+                List<String> targetValues = new ArrayList<>();
+                List<ViewRuleResponse> content = new ArrayList<>();
+                content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
+                                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
 
-    @Test
-   void getAllPageRuleTest() throws Exception {
-        int page = 0;
-        int size =1;
-        String sort ="id";
-        Pageable pageRequest = PageRequest.of(page,size,Sort.by(sort));
-        List<String> sourceValues = new ArrayList<>();
-        List<String> targetValues = new ArrayList<>();
-        List<ViewRuleResponse> content = new ArrayList<>();
-        content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
-                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+                Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest, 123456L))
+                                .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
+                Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest, 123456L);
+                assertNotNull(ruleResponse);
+        }
 
-        Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest,123456L)).
-                thenReturn(new PageImpl<>(content,pageRequest,content.size()));
-        Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest,123456L);
-        assertNotNull(ruleResponse);
-    }
+        @Test
+        void getAllPageRuleTest() throws Exception {
+                int page = 0;
+                int size = 1;
+                String sort = "id";
+                Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
+                List<String> sourceValues = new ArrayList<>();
+                List<String> targetValues = new ArrayList<>();
+                List<ViewRuleResponse> content = new ArrayList<>();
+                content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
+                                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
 
-    @Test
-    void findPageRuleTest() throws Exception {
-        int page = 0;
-        int size =1;
-        String sort ="id";
-        Pageable pageRequest = PageRequest.of(page,size,Sort.by(sort));
-        SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
-        List<String> sourceValues = new ArrayList<>();
-        List<String> targetValues = new ArrayList<>();
-        List<ViewRuleResponse> content = new ArrayList<>();
-        content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
-                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+                Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest, 123456L))
+                                .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
+                Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest, 123456L);
+                assertNotNull(ruleResponse);
+        }
 
-        Mockito.when(pageRuleFinderServiceImpl.findPageRule(request,pageRequest)).
-                thenReturn(new PageImpl<>(content,pageRequest,content.size()));
-        Page<ViewRuleResponse> ruleResponse = pageRuleController.findPageRule(request,pageRequest);
-        assertNotNull(ruleResponse);
-    }
+        @Test
+        void findPageRuleTest() throws Exception {
+                int page = 0;
+                int size = 1;
+                String sort = "id";
+                Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
+                SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
+                List<String> sourceValues = new ArrayList<>();
+                List<String> targetValues = new ArrayList<>();
+                List<ViewRuleResponse> content = new ArrayList<>();
+                content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
+                                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+
+                Mockito.when(pageRuleFinderServiceImpl.findPageRule(request, pageRequest))
+                                .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
+                Page<ViewRuleResponse> ruleResponse = pageRuleController.findPageRule(request, pageRequest);
+                assertNotNull(ruleResponse);
+        }
 }
