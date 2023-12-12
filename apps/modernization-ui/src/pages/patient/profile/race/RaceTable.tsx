@@ -224,52 +224,38 @@ export const RacesTable = ({ patient }: Props) => {
             tableDetails: [
                 {
                     id: 1,
-                    title: race?.asOf ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{internalizeDate(race?.asOf)}</span>
-                        </span>
-                    ) : null
+                    title: race?.asOf ? internalizeDate(race?.asOf) : null
                 },
                 {
                     id: 2,
-                    title: race?.category?.description ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            <span>{race?.category?.description}</span>
-                        </span>
-                    ) : null
+                    title: race?.category?.description || null
                 },
                 {
                     id: 3,
-                    title: race?.detailed?.length ? (
-                        <span className={`font-sans-1xs table-data`}>
-                            {maybeDescriptions(race.detailed).join(' | ')}
-                        </span>
-                    ) : null
+                    title: race?.detailed?.length ? maybeDescriptions(race.detailed).join(' | ') : null
                 },
                 {
                     id: 4,
                     title: (
-                        <span>
-                            <div className="table-span">
-                                <Button
-                                    type="button"
-                                    unstyled
-                                    disabled={patient?.status !== 'ACTIVE'}
-                                    onClick={() => setIsActions(isActions === index ? null : index)}>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
+                        <div className="table-span">
+                            <Button
+                                type="button"
+                                unstyled
+                                disabled={patient?.status !== 'ACTIVE'}
+                                onClick={() => setIsActions(isActions === index ? null : index)}>
+                                <Icon.MoreHoriz className="font-sans-lg" />
+                            </Button>
 
-                                {isActions === index && (
-                                    <Actions
-                                        handleOutsideClick={() => setIsActions(null)}
-                                        handleAction={(type: string) => {
-                                            tableActionStateAdapter(actions, race)(type);
-                                            setIsActions(null);
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </span>
+                            {isActions === index && (
+                                <Actions
+                                    handleOutsideClick={() => setIsActions(null)}
+                                    handleAction={(type: string) => {
+                                        tableActionStateAdapter(actions, race)(type);
+                                        setIsActions(null);
+                                    }}
+                                />
+                            )}
+                        </div>
                     )
                 }
             ]
