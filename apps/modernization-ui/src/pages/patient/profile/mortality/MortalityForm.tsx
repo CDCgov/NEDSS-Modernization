@@ -52,7 +52,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
 
     return (
         <>
-            <Grid row className="flex-justify flex-align-center padding-2">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold required">
                     As of:
                 </Grid>
@@ -76,7 +76,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Is the patient deceased:
                 </Grid>
@@ -98,7 +98,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
             </Grid>
             {selectedDeceased && selectedDeceased === Indicator.Yes && (
                 <>
-                    <Grid row className="flex-justify flex-align-center padding-2">
+                    <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                         <Grid col={6} className="margin-top-1 text-bold">
                             Date of death:
                         </Grid>
@@ -119,7 +119,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                             />
                         </Grid>
                     </Grid>
-                    <Grid row className="flex-justify flex-align-center padding-2">
+                    <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                         <Grid col={6} className="margin-top-1 text-bold">
                             City of death:
                         </Grid>
@@ -143,7 +143,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                             />
                         </Grid>
                     </Grid>
-                    <Grid row className="flex-justify flex-align-center padding-2">
+                    <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                         <Grid col={6} className="margin-top-1 text-bold">
                             State of death:
                         </Grid>
@@ -163,7 +163,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                             />
                         </Grid>
                     </Grid>
-                    <Grid row className="flex-justify flex-align-center padding-2">
+                    <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                         <Grid col={6} className="margin-top-1 text-bold">
                             County of death:
                         </Grid>
@@ -183,7 +183,7 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                             />
                         </Grid>
                     </Grid>
-                    <Grid row className="flex-justify flex-align-center padding-2">
+                    <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                         <Grid col={6} className="margin-top-1 text-bold">
                             Country of death:
                         </Grid>
