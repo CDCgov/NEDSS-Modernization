@@ -18,7 +18,6 @@ type ReorderProps = {
 export const ReorderModal = ({ modalRef, pageName, alertMessage }: ReorderProps) => {
     const [loading] = useState(false);
     const { sections, handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
-
     return (
         <ModalComponent
             modalRef={modalRef}
