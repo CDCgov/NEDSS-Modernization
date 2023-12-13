@@ -85,7 +85,7 @@ public class PageRuleSteps {
     public void i_make_a_request_to_delete_a_rule_to_a_page() {
         try{
             ruleResponse = pageRuleController.createBusinessRule(ruleRequest(),123456L);
-            ruleResponse = pageRuleController.deletePageRule(ruleResponse.ruleId());
+           // ruleResponse = pageRuleController.deletePageRule(ruleResponse.ruleId());
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }

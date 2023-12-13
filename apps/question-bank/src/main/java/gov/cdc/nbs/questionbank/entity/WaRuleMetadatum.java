@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.time.Instant;
 @Table(name = "WA_rule_metadata", catalog = "NBS_ODSE")
 public class WaRuleMetadatum {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wa_rule_metadata_uid", nullable = false)
     private Long id;
 
@@ -78,5 +80,23 @@ public class WaRuleMetadatum {
 
     @Column(name = "target_type", length = 50)
     private String targetType;
+
+    WaRuleMetadatum (WaTemplate page ,PageContentCommand.AddRule command){
+        this.waTemplateUid = page;
+        this.ruleCd= command.ruleCd();
+        this.errMsgTxt= command.errMsgTxt();
+        this.javascriptFunction= command.javascriptFunction();
+        this.javascriptFunctionNm= command.javascriptFunctionNm();
+        this.recordStatusCd= command.recordStatusCd();
+        added(command);
+    }
+    private void added(PageContentCommand command) {
+        this.addTime = command.requestedOn();
+        this.addUserId = command.userId();
+        this.lastChgTime = command.requestedOn();
+        this.lastChgUserId = command.userId();
+        this.recordStatusTime = command.requestedOn();
+
+    }
 
 }

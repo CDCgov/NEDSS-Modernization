@@ -1,8 +1,10 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
+import gov.cdc.nbs.questionbank.page.content.rule.RuleDeleter;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
@@ -12,8 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
+import springfox.documentation.annotations.ApiIgnore;
 
 
 @Slf4j
@@ -28,10 +31,14 @@ public class PageRuleController {
 
     private final PageRuleFinderService pageRuleFinderService;
 
-    public PageRuleController(PageRuleService pageRuleService, UserDetailsProvider userDetailsProvider,PageRuleFinderService pageRuleFinderService) {
+    private final RuleDeleter ruleDeleter;
+
+    public PageRuleController(PageRuleService pageRuleService, UserDetailsProvider userDetailsProvider,
+                              PageRuleFinderService pageRuleFinderService , RuleDeleter ruleDeleter) {
         this.userDetailsProvider = userDetailsProvider;
         this.pageRuleService = pageRuleService;
         this.pageRuleFinderService = pageRuleFinderService;
+        this.ruleDeleter = ruleDeleter;
     }
 
     @PostMapping
@@ -51,8 +58,12 @@ public class PageRuleController {
 
     @DeleteMapping("/{ruleId}")
     @ResponseBody
-    public CreateRuleResponse deletePageRule(@PathVariable Long ruleId) {
-        return pageRuleService.deletePageRule(ruleId);
+    public void deletePageRule(
+            @PathVariable("page") Long page,
+            @PathVariable Long ruleId,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
+            ) {
+         ruleDeleter.delete(page,ruleId,details.getId());
     }
 
     @PutMapping("/{ruleId}")
