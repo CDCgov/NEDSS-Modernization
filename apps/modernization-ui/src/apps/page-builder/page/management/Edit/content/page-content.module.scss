@@ -1,0 +1,35 @@
+@use 'styles/colors';
+
+.pageContent {
+    display: flex;
+    width: 100%;
+
+    justify-content: space-between;
+    gap: 1.5rem;
+
+    .invisible {
+        width: 7.25rem;
+    }
+
+    .sideMenu {
+        .list {
+            border-radius: 0.3125rem;
+            border: 1px solid colors.$base-lighter;
+            background: colors.$base-white;
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 0;
+            margin: 0;
+
+            li {
+                display: flex;
+                padding: 1rem 1.5rem;
+                align-items: center;
+                gap: 1rem;
+                cursor: pointer;
+            }
+        }
+    }
+}

@@ -17,28 +17,30 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
     const [questions, setQuestions] = useState<PagesQuestion[]>([]);
     const [questionsOpen, setQuestionsOpen] = useState(true);
     const { closeId } = useDragDrop();
-
     useEffect(() => {
         if (!subsection.questions) return;
         setQuestions(subsection.questions);
     }, [subsection]);
 
     useEffect(() => {
-        if (closeId === subsection.id!.toString()) {
+        if (closeId.id === subsection.id!.toString()) {
             setQuestionsOpen(false);
         } else setQuestionsOpen(true);
     }, [closeId]);
 
     return (
-        <div className={`reorder-subsection ${visible ? '' : 'hidden'}`}>
-            <Draggable draggableId={subsection.id!.toString()} index={index}>
-                {(provided: DraggableProvided) => (
-                    <div className="reorder-subsection__tile" ref={provided.innerRef} {...provided.draggableProps}>
+        <Draggable draggableId={subsection.id!.toString()} index={index}>
+            {(provided: DraggableProvided) => (
+                <div
+                    className={`reorder-subsection ${visible ? '' : 'hidden'}`}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}>
+                    <div className={`reorder-subsection__tile`}>
                         <div className="reorder-section__toggle" onClick={() => setQuestionsOpen(!questionsOpen)}>
-                            {questionsOpen ? (
-                                <Icon name={'expand-more'} size="xs" />
-                            ) : (
+                            {!questionsOpen ? (
                                 <Icon name={'navigate-next'} size="xs" />
+                            ) : (
+                                <Icon name={'expand-more'} size="xs" />
                             )}
                         </div>
                         <div className="reorder-subsection__handle" {...provided.dragHandleProps}>
@@ -47,29 +49,29 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
                         <Icon name={'subsection'} size={'m'} />
                         {subsection.name}
                     </div>
-                )}
-            </Draggable>
-            <div className={`reorder-subsection__questions ${!questionsOpen ? 'closed' : ''}`}>
-                <Droppable droppableId={subsection.id!.toString()} type="question">
-                    {(prov) => (
-                        <div {...prov.droppableProps} ref={prov.innerRef} className="reorder-questions__tiles">
-                            {questions
-                                ? questions.map((question: any, i: number) => {
-                                      return (
-                                          <ReorderQuestion
-                                              question={question}
-                                              key={question.id.toString()}
-                                              index={i}
-                                              visible={question.display}
-                                          />
-                                      );
-                                  })
-                                : null}
-                            {prov.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </div>
-        </div>
+                    <div className={`reorder-subsection__questions ${!questionsOpen ? 'closed' : ''}`}>
+                        <Droppable droppableId={subsection.id!.toString()} type="question">
+                            {(prov) => (
+                                <div {...prov.droppableProps} ref={prov.innerRef} className="reorder-questions__tiles">
+                                    {questions
+                                        ? questions.map((question: any, i: number) => {
+                                              return (
+                                                  <ReorderQuestion
+                                                      question={question}
+                                                      key={question.id.toString()}
+                                                      index={i}
+                                                      visible={question.display}
+                                                  />
+                                              );
+                                          })
+                                        : null}
+                                    {prov.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </div>
+                </div>
+            )}
+        </Draggable>
     );
 };

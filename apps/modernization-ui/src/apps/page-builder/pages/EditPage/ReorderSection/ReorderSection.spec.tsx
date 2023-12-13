@@ -1,35 +1,41 @@
 import { render } from '@testing-library/react';
 import { ReorderSection } from './ReorderSection';
-import { PagesSection, PagesTab } from 'apps/page-builder/generated';
+import { PagesSection, PagesResponse } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 describe('when ReorderSection renders', () => {
-    const content: PagesTab = {
-        id: 123456,
+    const content: PagesResponse = {
+        id: 123,
         name: 'Test Page',
-        sections: [
+        tabs: [
             {
-        id: 123456,
-        name: 'Test Section',
-        subSections: [
-            {
-                id: 123,
-                name: 'Subsection1',
-                questions: [],
-                visible: true
-            },
-            {
-                id: 456,
-                name: 'Subsection2',
-                questions: [],
+                id: 123456,
+                name: 'Test Page',
+                sections: [
+                    {
+                id: 123456,
+                name: 'Test Section',
+                subSections: [
+                    {
+                        id: 123,
+                        name: 'Subsection1',
+                        questions: [],
+                        visible: true
+                    },
+                    {
+                        id: 456,
+                        name: 'Subsection2',
+                        questions: [],
+                        visible: true
+                    }
+                ],
                 visible: true
             }
-        ],
-        visible: true
-    }
-        ],
-        visible: true
+                ],
+                visible: true
+            }
+        ]
     };
     const section: PagesSection = {
         id: 123456,
@@ -52,7 +58,7 @@ describe('when ReorderSection renders', () => {
     };
     it('should display Subsections', () => {
         const { container } = render(
-            <DragDropProvider data={content} pageDropId={0} tabId={1}>
+            <DragDropProvider pageData={content} currentTab={0}>
                 <DragDropContext onDragEnd={() => {}}>
                     <Droppable droppableId='testId'>
                         {(provided) => (

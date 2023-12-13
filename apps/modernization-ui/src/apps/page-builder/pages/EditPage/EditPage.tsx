@@ -36,10 +36,8 @@ export const EditPage = () => {
         }
     }, [pageId]);
 
-    const handleAddSuccess = () => {
-        if (pageId) {
-            fetchPageDetails(token, Number(pageId)).then(setPage);
-        }
+    const handleUpdateSuccess = () => {
+        fetchPageDetails(token, Number(pageId)).then((data) => setPage(data));
     };
 
     const handleSaveDraft = () => {
@@ -57,7 +55,7 @@ export const EditPage = () => {
     return (
         <PageBuilder>
             {page && page.id ? (
-                <DragDropProvider data={page.tabs?.[active]} pageDropId={page.id!} tabId={page.tabs![active].id!}>
+                <DragDropProvider pageData={page} currentTab={active} successCallBack={handleUpdateSuccess}>
                     <div className="edit-page">
                         <PagesBreadcrumb currentPage={page.name} />
                         {alertMessage ? <AlertBanner type={alertType}>{alertMessage}</AlertBanner> : null}
@@ -68,7 +66,7 @@ export const EditPage = () => {
                                     tabs={page.tabs}
                                     active={active}
                                     setActive={setActive}
-                                    onAddSuccess={handleAddSuccess}
+                                    onAddSuccess={handleUpdateSuccess}
                                 />
                             ) : null}
                         </div>
@@ -77,7 +75,7 @@ export const EditPage = () => {
                                 {page.tabs?.[active] ? (
                                     <EditPageContentComponent
                                         content={page.tabs[active]}
-                                        onAddSection={handleAddSuccess}
+                                        onAddSection={handleUpdateSuccess}
                                     />
                                 ) : null}
 
@@ -93,7 +91,7 @@ export const EditPage = () => {
                             modalRef={addSectionModalRef}
                             pageId={pageId}
                             tabId={page.tabs[active]?.id}
-                            onAddSection={handleAddSuccess}
+                            onAddSection={handleUpdateSuccess}
                         />
                     ) : null}
                     {page.name && page.tabs?.[active] ? (

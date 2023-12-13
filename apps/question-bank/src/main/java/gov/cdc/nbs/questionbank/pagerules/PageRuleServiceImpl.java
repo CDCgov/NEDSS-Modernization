@@ -115,14 +115,12 @@ public class PageRuleServiceImpl implements PageRuleService {
     private SourceValuesHelper sourceValuesHelper(CreateRuleRequest request) {
         String sourceText = request.sourceText();
         String sourceIdentifier = request.sourceIdentifier();
-        List<CreateRuleRequest.SourceValues> sourceValueList = request.sourceValue();
+        CreateRuleRequest.SourceValues sourceValues = request.sourceValue();
         String sourceIds = null;
         String sourceValueText = null;
         if (request.sourceValue() != null) {
-            for (CreateRuleRequest.SourceValues sourceValues : sourceValueList) {
-                sourceIds = String.join(",", sourceValues.sourceValueId());
-                sourceValueText = String.join(",", sourceValues.sourceValueText());
-            }
+            sourceIds = String.join(",", sourceValues.sourceValueId());
+            sourceValueText = String.join(",", sourceValues.sourceValueText());
         }
         return new SourceValuesHelper(sourceIds, sourceValueText, sourceText, sourceIdentifier);
     }
