@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
 import {
     CodedQuestion,
@@ -18,12 +18,14 @@ import { QuestionsContext } from '../../context/QuestionsContext';
 import { CreateQuestion } from '../../components/CreateQuestion/CreateQuestion';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export enum Column {
     Type = 'Type',
     UniqueId = 'Unique ID',
     UniqueName = 'Unique name',
-    SubGroup = 'Subgroup'
+    SubGroup = 'Subgroup',
+    Status = 'Status'
 }
 
 const tableColumns = [
@@ -31,7 +33,7 @@ const tableColumns = [
     { name: Column.UniqueId, sortable: true },
     { name: Column.UniqueName, sortable: true },
     { name: Column.SubGroup, sortable: true },
-    { name: '', sortable: false }
+    { name: Column.Status, sortable: true }
 ];
 
 type Question = TextQuestion | DateQuestion | NumericQuestion | CodedQuestion;
@@ -44,16 +46,18 @@ type Props = {
 
 export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
     const { showAlert } = useAlert();
+    const navigateTo = useNavigate();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(QuestionsContext);
-
+    const { pageId, subsectionId } = useParams();
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
     const asTableRow = (page: Question): TableBody => ({
         id: page.id,
         key: page.id,
         checkbox: true,
+        selectable: true,
         tableDetails: [
             {
                 id: 1,
@@ -70,12 +74,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             },
             {
                 id: 5,
-                title:
-                    (
-                        <div className="ds-u-text-align--right">
-                            <Icon.ExpandMore style={{ cursor: 'pointer' }} size={4} color="black" />
-                        </div>
-                    ) || null
+                title: <div>{page?.status}</div> || null
             }
         ]
     });
@@ -103,6 +102,8 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
                     return `uniqueName,${direction}`;
                 case Column.SubGroup:
                     return `subgroup,${direction}`;
+                case Column.Status:
+                    return `status,${direction}`;
                 default:
                     return '';
             }
@@ -125,42 +126,42 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
     };
 
     const handleAddQsntoPage = async () => {
-        // TODO need to add logic for find orderNumber and Id
-        const id: number = 0;
         const request = {
-            orderNumber: 1,
-            questionId: id
+            orderNumber: subsectionId,
+            questionId: selectedQuestion.id
         };
+        history.go(-1);
 
         PageQuestionControllerService.addQuestionToPageUsingPost({
             authorization,
-            page: id,
+            page: Number(pageId),
             request
         }).then((response: any) => {
             setSelectedQuestion({});
             showAlert({ type: 'success', header: 'Add', message: 'Add Question successfully on page' });
+            history.go(-1);
             return response;
         });
     };
 
     const footerActionBtn = (
         <div className="question-action-btn">
-            <ModalToggleButton
-                closer
-                className="cancel-btn"
-                type="button"
-                modalRef={qtnModalRef}
-                onClick={() => setSelectedQuestion({})}>
-                Cancel
-            </ModalToggleButton>
-            <ModalToggleButton
+            {qtnModalRef ? (
+                <ModalToggleButton className="cancel-btn" modalRef={qtnModalRef}>
+                    Cancel
+                </ModalToggleButton>
+            ) : (
+                <Button className="cancel-btn" type="button" onClick={() => setSelectedQuestion({})}>
+                    Cancel
+                </Button>
+            )}
+            <Button
                 className="submit-btn"
-                modalRef={qtnModalRef}
                 type="button"
                 onClick={handleAddQsntoPage}
                 disabled={!Object.keys(selectedQuestion).length}>
                 Add to page
-            </ModalToggleButton>
+            </Button>
         </div>
     );
 
@@ -171,7 +172,16 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             <label className="margin-bottom-1em no-text">
                 {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+            <Button
+                className="submit-btn"
+                type="button"
+                onClick={() => {
+                    navigateTo('/page-builder/add/question');
+                }}
+                outline>
+                Create New
+            </Button>
+            <ModalToggleButton className="submit-btn display-none" type="button" modalRef={modalRef} outline>
                 Create New
             </ModalToggleButton>
             <ModalComponent
@@ -208,6 +218,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
 
     return (
         <div>
+            <h3 className="h3-label"> you can search for an existing question or create new one</h3>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
             {summaries?.length ? (
                 <TableComponent
