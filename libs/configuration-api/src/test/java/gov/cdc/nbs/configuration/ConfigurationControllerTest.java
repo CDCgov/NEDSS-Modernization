@@ -9,27 +9,35 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.configuration.Configuration.Features;
 import gov.cdc.nbs.configuration.Configuration.Features.Address;
 import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder;
+import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder.Page;
+import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder.Page.Library;
+import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder.Page.Management;
 
 @ExtendWith(MockitoExtension.class)
 class ConfigurationControllerTest {
 
-    @Spy
-    Configuration configuration =
-            new Configuration(
-                    new Features(
-                            new Address(true, true),
-                            new PageBuilder(true)));
+  @Spy
+  Configuration configuration =
+      new Configuration(
+          new Features(
+              new Address(true, true),
+              new PageBuilder(true,
+                  new Page(new Library(true), new Management(true)))));
 
-    @InjectMocks
-    ConfigurationController controller;
+  @InjectMocks
+  ConfigurationController controller;
 
-    @Test
-    void should_return_proper_configuration() {
-        Configuration config = controller.getConfiguration();
+  @Test
+  void should_return_proper_configuration() {
+    Configuration config = controller.getConfiguration();
 
-        assertEquals(config, configuration);
-        assertEquals(config.features().address().autocomplete(), configuration.features().address().autocomplete());
-        assertEquals(config.features().address().verification(), configuration.features().address().verification());
-        assertEquals(config.features().pageBuilder().enabled(), configuration.features().pageBuilder().enabled());
-    }
+    assertEquals(config, configuration);
+    assertEquals(config.features().address().autocomplete(), configuration.features().address().autocomplete());
+    assertEquals(config.features().address().verification(), configuration.features().address().verification());
+    assertEquals(config.features().pageBuilder().enabled(), configuration.features().pageBuilder().enabled());
+    assertEquals(config.features().pageBuilder().page().library().enabled(),
+        configuration.features().pageBuilder().page().library().enabled());
+    assertEquals(config.features().pageBuilder().page().management().enabled(),
+        configuration.features().pageBuilder().page().management().enabled());
+  }
 }
