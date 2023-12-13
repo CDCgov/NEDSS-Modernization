@@ -83,7 +83,7 @@ class RuleDeleterTest {
                 null
         );
         waTemplate.addRule(command);
-        assertEquals(waTemplate.getWaRuleMetadatums().size(),1);
+        assertEquals(1,waTemplate.getWaRuleMetadatums().size());
     }
 
 }
