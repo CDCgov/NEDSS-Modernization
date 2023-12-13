@@ -4,7 +4,7 @@ import { Actions as ActionState } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { PatientAdministrative, useUpdatePatientAdministrativeMutation } from 'generated/graphql/schema';
 import { Direction, sortByAlpha, withDirection } from 'sorting/Sort';
-import { AdministrativeEntry } from './AdminstrativeEntry';
+import { AdministrativeEntry, Column } from './AdministrativeEntry';
 import {
     PatientProfileAdministrativeResult,
     useFindPatientProfileAdministrative
@@ -13,21 +13,21 @@ import { externalizeDateTime, internalizeDate } from 'date';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import EntryModal from 'pages/patient/profile/entry';
-import { AdministrativeForm } from './AdminstrativeForm';
+import { AdministrativeForm } from './AdministrativeForm';
 import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert/useAlert';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
 import { TableBody, TableComponent } from 'components/Table';
 
-const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
-    asOf: internalizeDate(addministrative?.asOf),
-    comment: addministrative.comment || ''
+const asEntry = (administrative: PatientAdministrative): AdministrativeEntry => ({
+    asOf: internalizeDate(administrative?.asOf),
+    comment: administrative.comment || ''
 });
 
 const asDetail = (data: PatientAdministrative): Detail[] => [
-    { name: 'As of', value: internalizeDate(data.asOf) },
-    { name: 'Additional comments', value: data.comment }
+    { name: Column.AsOf, value: internalizeDate(data.asOf) },
+    { name: Column.Comment, value: data.comment }
 ];
 
 const initial: AdministrativeEntry = {
@@ -39,13 +39,15 @@ type Props = {
     patient: Patient | undefined;
 };
 
+const headers = [
+    { name: Column.AsOf, sortable: true },
+    { name: Column.Comment, sortable: true },
+    { name: Column.Actions, sortable: false }
+];
+
 export const AdministrativeTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true },
-        { name: 'General comment', sortable: true },
-        { name: 'Actions', sortable: false }
-    ]);
+    const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>(headers);
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
