@@ -13,9 +13,9 @@ public record Configuration(Features features) {
     public record PageBuilder(boolean enabled, Page page) {
 
       public record Page(Library library, Management management) {
-        public record Library(boolean eneabled) {
+        public record Library(boolean enabled) {
         }
-        public record Management(boolean eneabled) {
+        public record Management(boolean enabled) {
         }
       }
     }

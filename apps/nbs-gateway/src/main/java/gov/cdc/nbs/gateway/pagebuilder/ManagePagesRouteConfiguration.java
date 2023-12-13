@@ -1,7 +1,7 @@
 package gov.cdc.nbs.gateway.pagebuilder;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -11,7 +11,7 @@ import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 
 @Configuration
-@ConditionalOnProperty(prefix = "nbs.gateway.pagebuilder", name = "enabled", havingValue = "true")
+@ConditionalOnExpression("${nbs.gateway.pagebuilder.enabled} and ${nbs.gateway.pagebuilder.page.library.enabled}")
 public class ManagePagesRouteConfiguration {
   @Bean
   RouteLocator pagebuilderManagePagesConfig(

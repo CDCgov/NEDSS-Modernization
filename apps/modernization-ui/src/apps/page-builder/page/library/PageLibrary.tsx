@@ -18,6 +18,8 @@ import { PageLibraryTable } from './table/PageLibraryTable';
 import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 
 import styles from './page-library.module.scss';
+import { useConfiguration } from 'configuration';
+import { Button } from '@trussworks/react-uswds';
 
 const PageLibrary = () => {
     return (
@@ -29,6 +31,7 @@ const PageLibrary = () => {
 
 const PageLibraryContent = () => {
     const { sortBy } = useSorting();
+    const config = useConfiguration();
 
     const { pages, searching, search, filter } = usePageSummarySearch();
     const { properties } = usePageLibraryProperties();
@@ -47,7 +50,15 @@ const PageLibraryContent = () => {
                 <section className={styles.library}>
                     <header>
                         <h2>Page library</h2>
-                        <NavLinkButton to={'/page-builder/add/page'}>Create new page</NavLinkButton>
+                        {config.features.pageBuilder.page.management.enabled ? (
+                            <NavLinkButton to={'/page-builder/add/page'}>Create new page</NavLinkButton>
+                        ) : (
+                            <Button
+                                type="button"
+                                onClick={() => (window.location.href = '/nbs/ManagePage.do?method=addPageLoad')}>
+                                Create new page
+                            </Button>
+                        )}
                     </header>
                     <PageLibraryMenu
                         properties={properties}
