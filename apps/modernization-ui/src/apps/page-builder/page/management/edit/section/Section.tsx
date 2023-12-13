@@ -11,9 +11,17 @@ type Props = {
     onAddSubsection: (section: number) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     addQuestionModalRef: RefObject<ModalRef>;
+    editQuestionModalRef: RefObject<ModalRef>;
 };
 
-export const Section = ({ section, onAddSubsection, onAddQuestion, addQuestionModalRef, onEditQuestion }: Props) => {
+export const Section = ({
+    section,
+    onAddSubsection,
+    onAddQuestion,
+    addQuestionModalRef,
+    editQuestionModalRef,
+    onEditQuestion
+}: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
     const handleExpandedChange = (expanded: boolean) => {
@@ -37,6 +45,7 @@ export const Section = ({ section, onAddSubsection, onAddQuestion, addQuestionMo
                             key={k}
                             onEditQuestion={onEditQuestion}
                             addQuestionModalRef={addQuestionModalRef}
+                            editQuestionModalRef={editQuestionModalRef}
                             onAddQuestion={() => onAddQuestion(subsection.id!)}
                         />
                     ))}

@@ -12,6 +12,7 @@ import { SearchBar } from './SearchBar';
 import './ValuesetLibraryTable.scss';
 import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
 import { ValueSetsContext } from '../../context/ValueSetContext';
+import { QuestionsContext } from '../../context/QuestionsContext';
 
 export enum Column {
     Type = 'Type',
@@ -37,14 +38,15 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(ValueSetsContext);
+    const { setSearchValueSet } = useContext(QuestionsContext);
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
-
     // @ts-ignore
     const asTableRow = (valueSet: ValueSet): TableBody => ({
         id: valueSet.nbsUid,
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
         expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
+        selectable: true,
         tableDetails: [
             {
                 id: 1,
@@ -113,8 +115,9 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
 
     const handleSelected = ({ target }: any, item: any) => {
         if (target.checked) {
-            const value: any = summaries.filter((val: any) => item.id === val.nbsUid);
+            const value = summaries.find((val: ValueSet) => item.id === val.nbsUid) || {};
             setSelectedValueSet(value);
+            setSearchValueSet?.(value?.nbsUid!);
         } else {
             setSelectedValueSet({});
         }
@@ -157,6 +160,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     const handleAddQsn = async () => {
         // @ts-ignore
         const id: number = parseInt(localStorage.getItem('selectedQuestion'));
+        if (!id) return;
         const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
             authorization,
             id

@@ -5,8 +5,10 @@ import styles from './page-content.module.scss';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { EditStaticElement } from '../staticelement/EditStaticElement';
 import { ModalRef } from '@trussworks/react-uswds';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AddQuestionModal } from '../../../../components/Subsection/AddQuestionModal/AddQuestionModal';
+import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
+import { Heading } from '../../../../../../components/heading';
 
 type Props = {
     tab: PagesTab;
@@ -26,6 +28,7 @@ export const PageContent = ({ tab, refresh }: Props) => {
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
     const [subsectionId, setSubsectionId] = useState(0);
     const addQuestionModalRef = useRef<ModalRef>(null);
+    const editQuestionModalRef = useRef<ModalRef>(null);
     const handleAddSubsection = (section: number) => {
         console.log('add subsection not yet implemented', section);
     };
@@ -55,6 +58,7 @@ export const PageContent = ({ tab, refresh }: Props) => {
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={setSubsectionId}
                 addQuestionModalRef={addQuestionModalRef}
+                editQuestionModalRef={editQuestionModalRef}
             />
             <PageSideMenu />
             <ModalComponent
@@ -71,6 +75,17 @@ export const PageContent = ({ tab, refresh }: Props) => {
                 }
             />
             <AddQuestionModal subsectionId={subsectionId} modalRef={addQuestionModalRef} />
+            <ModalComponent
+                isLarge
+                modalRef={editQuestionModalRef}
+                close
+                modalHeading={
+                    <div className="edit-question-header">
+                        <Heading level={2}>Edit question</Heading>
+                    </div>
+                }
+                modalBody={<CreateQuestion modalRef={editQuestionModalRef} question={currentEditQuestion} />}
+            />
         </div>
     );
 };
