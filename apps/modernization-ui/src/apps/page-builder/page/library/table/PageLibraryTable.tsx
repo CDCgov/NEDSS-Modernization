@@ -4,7 +4,7 @@ import { internalizeDate } from 'date';
 import { Direction } from 'sorting';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { PageSummary } from 'apps/page-builder/generated';
-
+import { useConfiguration } from 'configuration';
 import { usePage } from 'page';
 
 import styles from './page-library-table.module.scss';
@@ -27,12 +27,16 @@ const headers = [
     { name: Column.LastUpdatedBy, sortable: true }
 ];
 
-const asTableRow = (page: PageSummary): TableBody => ({
+const asTableRow = (page: PageSummary, isManagementEnabled: boolean): TableBody => ({
     id: page.id,
     tableDetails: [
         {
             id: 1,
-            title: <Link to={`/page-builder/pages/${page.id}/edit`}>{page?.name}</Link>
+            title: isManagementEnabled ? (
+                <Link to={`/page-builder/pages/${page.id}/edit`}>{page?.name}</Link>
+            ) : (
+                <a href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}>{page?.name}</a>
+            )
         },
         { id: 2, title: page.eventType?.name },
         {
@@ -48,7 +52,8 @@ const asTableRow = (page: PageSummary): TableBody => ({
     ]
 });
 
-const asTableRows = (pages: PageSummary[]): TableBody[] => pages.map(asTableRow);
+const asTableRows = (pages: PageSummary[], isMangementEnabled: boolean): TableBody[] =>
+    pages.map((p) => asTableRow(p, isMangementEnabled));
 
 type Props = {
     summaries: PageSummary[];
@@ -58,6 +63,8 @@ type Props = {
 
 export const PageLibraryTable = ({ summaries, searching = false, onSort }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
+    const config = useConfiguration();
+    const isMangementEnabled = config.features.pageBuilder.page.management.enabled;
 
     const {
         page: { pageSize, total, current },
@@ -65,7 +72,7 @@ export const PageLibraryTable = ({ summaries, searching = false, onSort }: Props
     } = usePage();
 
     useEffect(() => {
-        setTableRows(asTableRows(summaries));
+        setTableRows(asTableRows(summaries, isMangementEnabled));
     }, [summaries]);
 
     const handleSort = (name: string, direction: Direction): void => {
