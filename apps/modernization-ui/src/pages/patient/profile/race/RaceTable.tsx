@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
-import format from 'date-fns/format';
 import {
     PatientRace,
     useAddPatientRaceMutation,
@@ -12,7 +11,7 @@ import { Direction, sortByNestedProperty, withDirection } from 'sorting';
 import { internalizeDate } from 'date';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
-import { SortableTable } from 'components/Table/SortableTable';
+import { TableBody, TableComponent } from 'components/Table';
 import { Actions } from 'components/Table/Actions';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
@@ -21,7 +20,6 @@ import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPa
 import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
 import { useAlert } from 'alert/useAlert';
-import { NoData } from 'components/NoData';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
@@ -53,9 +51,9 @@ type Props = {
 export const RacesTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true, sort: 'all' },
-        { name: 'Race', sortable: true, sort: 'all' },
-        { name: 'Detailed race', sortable: true, sort: 'all' },
+        { name: 'As of', sortable: true },
+        { name: 'Race', sortable: true },
+        { name: 'Detailed race', sortable: true },
         { name: 'Actions', sortable: false }
     ]);
 
@@ -205,16 +203,76 @@ export const RacesTable = ({ patient }: Props) => {
                     races?.slice().sort((a: PatientRace, b: PatientRace) => {
                         const detailedA: any = a?.detailed?.[0]?.description;
                         const detailedB: any = b?.detailed?.[0]?.description;
-                        return type === 'asc' ? detailedB - detailedA : detailedA - detailedB;
+                        return type === 'asc' ? detailedA.localeCompare(detailedB) : detailedB.localeCompare(detailedA);
                     })
                 );
                 break;
         }
     };
 
+    /**
+     * Formats the race object into TableComponent compatible TableBody object which represents a single row.
+     * Each "title" in the tableDetails is a template of each column cell of the row being created.
+     * @param {PatientRace} race, each item of the morbidity response data
+     * @param {number} index, index of the array item
+     * @return {TableBody}
+     */
+
+    const generateTableRow = (race: PatientRace, index: number): TableBody => {
+        return {
+            id: index,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: race?.asOf ? internalizeDate(race?.asOf) : null
+                },
+                {
+                    id: 2,
+                    title: race?.category?.description || null
+                },
+                {
+                    id: 3,
+                    title: race?.detailed?.length ? maybeDescriptions(race.detailed).join(' | ') : null
+                },
+                {
+                    id: 4,
+                    title: (
+                        <div className="table-span">
+                            <Button
+                                type="button"
+                                unstyled
+                                disabled={patient?.status !== 'ACTIVE'}
+                                onClick={() => setIsActions(isActions === index ? null : index)}>
+                                <Icon.MoreHoriz className="font-sans-lg" />
+                            </Button>
+
+                            {isActions === index && (
+                                <Actions
+                                    handleOutsideClick={() => setIsActions(null)}
+                                    handleAction={(type: string) => {
+                                        tableActionStateAdapter(actions, race)(type);
+                                        setIsActions(null);
+                                    }}
+                                />
+                            )}
+                        </div>
+                    )
+                }
+            ]
+        };
+    };
+
+    /**
+     *
+     * @return {TableBody[]} list of TableBody each created from Races
+     */
+    const generateTableBody = () => {
+        return (races?.length > 0 && races.map(generateTableRow)) || [];
+    };
+
     return (
         <>
-            <SortableTable
+            <TableComponent
                 isLoading={!called || loading}
                 isPagination={true}
                 buttons={
@@ -231,50 +289,11 @@ export const RacesTable = ({ patient }: Props) => {
                 }
                 tableHeader={'Races'}
                 tableHead={tableHead}
-                tableBody={races?.map((race, index: number) => (
-                    <tr key={index}>
-                        <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                            {race?.asOf ? (
-                                <span>
-                                    {format(new Date(race?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </span>
-                            ) : (
-                                <NoData />
-                            )}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                            {race?.category?.description ? <span>{race?.category?.description}</span> : <NoData />}
-                        </td>
-                        <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {maybeDescriptions(race.detailed).join(' | ') || <NoData />}
-                        </td>
-                        <td>
-                            <div className="table-span">
-                                <Button
-                                    type="button"
-                                    unstyled
-                                    disabled={patient?.status !== 'ACTIVE'}
-                                    onClick={() => setIsActions(isActions === index ? null : index)}>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
-
-                                {isActions === index && (
-                                    <Actions
-                                        handleOutsideClick={() => setIsActions(null)}
-                                        handleAction={(type: string) => {
-                                            tableActionStateAdapter(actions, race)(type);
-                                            setIsActions(null);
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </td>
-                    </tr>
-                ))}
+                tableBody={generateTableBody()}
                 totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
-                sortDirectionData={handleSort}
+                sortData={handleSort}
             />
             {selected?.type === 'add' && (
                 <EntryModal

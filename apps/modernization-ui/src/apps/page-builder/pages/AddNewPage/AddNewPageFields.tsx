@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Concept, Condition, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -37,17 +37,16 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         label="Condition(s)"></MultiSelectInput>
                 )}
             />
-            <p>
-                Can't find the condition you're looking for?
-                <br />
-                <ModalToggleButton modalRef={props.conditionLookupModal} unstyled>
-                    <p>Search and add condition(s)</p>
-                </ModalToggleButton>
-                &nbsp; or &nbsp;
-                <ModalToggleButton modalRef={props.createConditionModal} unstyled>
-                    <p>create a new condition here</p>
-                </ModalToggleButton>
-            </p>
+            <p>Can't find the condition you're looking for?</p>
+            <ModalToggleButton modalRef={props.conditionLookupModal} outline>
+                <p>
+                    <Icon.Search size={3} />
+                    Advanced condition search
+                </p>
+            </ModalToggleButton>
+            <ModalToggleButton modalRef={props.createConditionModal} unstyled>
+                <p>Create a new condition here</p>
+            </ModalToggleButton>
             <Controller
                 control={form.control}
                 name="name"

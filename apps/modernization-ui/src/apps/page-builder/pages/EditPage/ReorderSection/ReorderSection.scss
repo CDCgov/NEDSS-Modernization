@@ -16,17 +16,13 @@
         align-items: center;
         gap: 1rem;
         padding: 0.9rem 1.5rem;
+        z-index: 500;
     }
     .reorder-section__subsections {
-        height: auto;
-        max-height: 400vh;
-        opacity: 100;
         margin-left: 1rem;
-        transition: animation.$transition-1;
         &.closed {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
+            height: 0;
+            display: none;
         }
     }
 }

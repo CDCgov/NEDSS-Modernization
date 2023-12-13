@@ -7,7 +7,7 @@ public record CreateRuleRequest(
         String ruleDescription,
         String sourceText,
         String sourceIdentifier,
-        List<SourceValues> sourceValue,
+        SourceValues sourceValue,
 
         boolean anySourceValue,
         String comparator,
@@ -15,6 +15,6 @@ public record CreateRuleRequest(
         List<String> targetValueText,
 
         List<String> targetValueIdentifier) {
-    public record SourceValues(List<String> sourceValueId, List<String> sourceValueText) {
-    }
+
+    public record SourceValues(List<String> sourceValueId, List<String> sourceValueText) {}
 }

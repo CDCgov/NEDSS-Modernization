@@ -131,7 +131,7 @@ export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) =
                 modalHeading={
                     !isAdding && !isEditing ? (
                         <div className="manage-tabs-header">
-                            <div>Manage tabs</div>
+                            <h3>Manage tabs</h3>
                             <Button
                                 type="button"
                                 onClick={() => {
@@ -182,8 +182,10 @@ export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) =
                         ) : null}
                         {selectedForDelete ? (
                             <AlertBanner type="warning">
-                                Are you sure you want to delete this tab? All sections, subsections, and questions
-                                within this tab will also be deleted and cannot be undone.
+                                <p>
+                                    Are you sure you want to delete this tab? All sections, subsections, and questions
+                                    within this tab will also be deleted and cannot be undone.
+                                </p>
                             </AlertBanner>
                         ) : null}
                         {isAdding ? (
@@ -192,7 +194,6 @@ export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) =
                             <AddEditTab tabData={tabs[selectedTabIndex!]} setTabDetails={setTabDetails} />
                         ) : tabs ? (
                             <ManageTabs
-                                tabs={tabs}
                                 setSelectedEditTab={handleEditTab}
                                 selectedForDelete={selectedForDelete}
                                 setSelectedForDelete={setSelectedForDelete}
@@ -213,18 +214,18 @@ export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) =
                             <Button className="submit-btn" onClick={handleAddTab} type="button">
                                 Add tab
                             </Button>
-                            <ModalToggleButton modalRef={modalRef} outline onClick={() => resetEditPageTabs()} closer>
+                            <Button type="button" outline onClick={() => resetEditPageTabs()}>
                                 Cancel
-                            </ModalToggleButton>
+                            </Button>
                         </div>
                     ) : isEditing ? (
                         <>
                             <Button type="button" onClick={() => handleUpdateTab()}>
                                 Save
                             </Button>
-                            <ModalToggleButton modalRef={modalRef} outline onClick={() => resetEditPageTabs()} closer>
+                            <Button type="button" outline onClick={() => resetEditPageTabs()}>
                                 Cancel
-                            </ModalToggleButton>
+                            </Button>
                         </>
                     ) : (
                         <ModalToggleButton
