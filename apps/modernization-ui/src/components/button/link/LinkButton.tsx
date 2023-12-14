@@ -4,7 +4,7 @@ import classnames from 'classnames';
 type Props = {
     href: string;
     label?: string;
-    type?: 'outline';
+    type?: 'outline' | 'solid';
     children: ReactNode;
 } & JSX.IntrinsicElements['a'];
 

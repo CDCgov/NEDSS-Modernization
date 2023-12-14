@@ -1,25 +1,25 @@
-import { useState } from 'react';
 import { authorization } from 'authorization';
-import { useSorting } from 'sorting';
 import { Filter } from 'filters';
+import { useState } from 'react';
+import { useSorting } from 'sorting';
 import { downloadAsCsv } from 'utils/downloadAsCsv';
 import { downloadPageLibraryPdf } from 'utils/ExportUtil';
 
-import { usePageSummarySearch } from './usePageSummarySearch';
 import { usePageLibraryProperties } from './usePageLibraryProperties';
+import { usePageSummarySearch } from './usePageSummarySearch';
 
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { TableProvider } from 'components/Table/TableProvider';
 
 import { PageControllerService } from 'apps/page-builder/generated';
 import { PageBuilder } from 'apps/page-builder/pages/PageBuilder/PageBuilder';
+import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 import { PageLibraryMenu } from './menu/PageLibraryMenu';
 import { PageLibraryTable } from './table/PageLibraryTable';
-import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 
-import styles from './page-library.module.scss';
-import { useConfiguration } from 'configuration';
 import { LinkButton } from 'components/button';
+import { useConfiguration } from 'configuration';
+import styles from './page-library.module.scss';
 
 const PageLibrary = () => {
     return (
@@ -53,7 +53,9 @@ const PageLibraryContent = () => {
                         {config.features.pageBuilder.page.management.enabled ? (
                             <NavLinkButton to={'/page-builder/add/page'}>Create new page</NavLinkButton>
                         ) : (
-                            <LinkButton href="/nbs/ManagePage.do?method=addPageLoad">Create new page</LinkButton>
+                            <LinkButton type="solid" target="_self" href="/nbs/ManagePage.do?method=addPageLoad">
+                                Create new page
+                            </LinkButton>
                         )}
                     </header>
                     <PageLibraryMenu

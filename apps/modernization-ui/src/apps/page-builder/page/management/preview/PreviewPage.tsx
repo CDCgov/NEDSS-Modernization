@@ -13,6 +13,7 @@ import { PageInformation } from './information/PageInformation';
 
 import styles from './preview-page.module.scss';
 import { PreviewTab } from './tab';
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 
 const PreviewPage = () => {
     const { page } = useGetPageDetails();
@@ -45,9 +46,9 @@ const PreviewPageContent = () => {
                     <Button type="button" outline>
                         Delete draft
                     </Button>
-                    <Button type="button" outline>
+                    <NavLinkButton type="outline" to="edit">
                         Edit draft
-                    </Button>
+                    </NavLinkButton>
                     <LinkButton
                         href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}
                         label="open a preview of the page">

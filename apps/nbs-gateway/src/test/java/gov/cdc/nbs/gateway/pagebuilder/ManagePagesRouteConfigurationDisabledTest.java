@@ -42,7 +42,7 @@ class ManagePagesRouteConfigurationDisabledTest {
 
   @Test
   void should_not_route_to_modernized() {
-    pagebuilderApi.stubFor(get(urlPathMatching("/nbs/redirect/pagebuilder/manage/pages")).willReturn(ok()));
+    pagebuilderApi.stubFor(get(urlPathMatching("/nbs/redirect/pagebuilder/pages")).willReturn(ok()));
 
     webClient
         .get().uri(

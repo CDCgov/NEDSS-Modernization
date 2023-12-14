@@ -33,7 +33,7 @@ const asTableRow = (page: PageSummary, isManagementEnabled: boolean): TableBody 
         {
             id: 1,
             title: isManagementEnabled ? (
-                <Link to={`/page-builder/pages/${page.id}/edit`}>{page?.name}</Link>
+                <Link to={`/page-builder/pages/${page.id}`}>{page?.name}</Link>
             ) : (
                 <a href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}>{page?.name}</a>
             )
