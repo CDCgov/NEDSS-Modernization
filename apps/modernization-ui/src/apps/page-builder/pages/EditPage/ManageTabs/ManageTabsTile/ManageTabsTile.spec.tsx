@@ -7,25 +7,29 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 const content: PagesResponse = {
     id: 123,
     name: 'Test Page',
+    status: 'status',
     tabs: [
         {
             id: 123456,
             name: 'Test Tab',
+            visible: true,
+            order: 1,
             sections: [
                 {
                     id: 1234,
                     name: 'Section1',
-                    subSections: [],
-                    visible: true
+                    visible: true,
+                    order: 1,
+                    subSections: []
                 },
                 {
                     id: 5678,
                     name: 'Section2',
-                    subSections: [],
-                    visible: true
+                    visible: true,
+                    order: 2,
+                    subSections: []
                 }
-            ],
-            visible: true
+            ]
         }
     ]
 };
@@ -38,22 +42,21 @@ const props = {
     selectedForDelete: content.tabs![0],
     setSelectedForDelete: jest.fn(),
     reset: jest.fn()
-}
+};
 
-    const { container } = render(
-        <DragDropProvider pageData={content} currentTab={0}>
-            <DragDropContext onDragEnd={() => {}}>
-                <Droppable droppableId='testId'>
-                    {(provided) => (
-                        <div
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}>
-                            <ManageTabsTile {...props}></ManageTabsTile>
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
-        </DragDropProvider>);
+const { container } = render(
+    <DragDropProvider pageData={content} currentTab={0}>
+        <DragDropContext onDragEnd={() => {}}>
+            <Droppable droppableId="testId">
+                {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                        <ManageTabsTile {...props}></ManageTabsTile>
+                    </div>
+                )}
+            </Droppable>
+        </DragDropContext>
+    </DragDropProvider>
+);
 
 describe('when ManageTabsTile renders', () => {
     it('should display Tab name', () => {

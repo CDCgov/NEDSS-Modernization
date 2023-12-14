@@ -73,22 +73,21 @@ const DragDropProvider: React.FC<{
 
     // handling movement of subsection between sections
     const moveSubsectionDifferentSection: DragDropProps = (source, destination) => {
-        const sourceOrder = sections.find((section) => section.id!.toString() === source.droppableId)?.subSections;
-        const destinationOrder = sections.find(
-            (section) => section.id!.toString() === destination.droppableId
-        )?.subSections;
+        const sourceOrder = sections.find((section) => section.id.toString() === source.droppableId)?.subSections || [];
+        const destinationOrder =
+            sections.find((section) => section.id.toString() === destination.droppableId)?.subSections || [];
         const [removed] = sourceOrder!.splice(source.index, 1);
         destinationOrder!.splice(destination.index, 0, removed);
 
         const updatedSections = sections.map((section) =>
-            section.id!.toString() === source.droppableId
+            section.id.toString() === source.droppableId
                 ? { ...section, subSections: sourceOrder }
-                : section.id!.toString() === destination.droppableId
+                : section.id.toString() === destination.droppableId
                 ? { ...section, subSections: destinationOrder }
                 : section
         );
         const findId = sections.filter((section) => {
-            return section.id!.toString() === destination.droppableId;
+            return section.id.toString() === destination.droppableId;
         });
         if (findId[0].subSections![destination.index - 1]) {
             afterId = findId[0].subSections![destination.index - 1].id!;
@@ -170,12 +169,11 @@ const DragDropProvider: React.FC<{
             }
         });
 
-        const sourceOrder = sourceSubsection.find(
-            (subsection) => subsection.id!.toString() === source.droppableId
-        )?.questions;
-        const destinationOrder = destinationSubsection.find(
-            (subsection) => subsection.id!.toString() === destination.droppableId
-        )?.questions;
+        const sourceOrder =
+            sourceSubsection.find((subsection) => subsection.id!.toString() === source.droppableId)?.questions || [];
+        const destinationOrder =
+            destinationSubsection.find((subsection) => subsection.id!.toString() === destination.droppableId)
+                ?.questions || [];
         const [removed] = sourceOrder!.splice(source.index, 1);
         destinationOrder!.splice(destination.index, 0, removed);
         if (destinationOrder![destination.index - 1]) {

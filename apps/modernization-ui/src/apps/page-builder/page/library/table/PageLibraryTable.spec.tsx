@@ -58,6 +58,6 @@ describe('when at least one summary is available', () => {
             </WithinTableProvider>
         );
 
-        expect(getByRole('link', { name: 'test page' })).toHaveAttribute('href', '/page-builder/pages/1/edit');
+        expect(getByRole('link', { name: 'test page' })).toHaveAttribute('href', '/page-builder/pages/1');
     });
 });
