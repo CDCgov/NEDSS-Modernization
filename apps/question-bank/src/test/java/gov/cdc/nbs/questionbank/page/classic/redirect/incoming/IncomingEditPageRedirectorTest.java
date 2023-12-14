@@ -43,6 +43,6 @@ class IncomingEditPageRedirectorTest {
 
     // Then a redirect is issued for the edit page
     String location = response.getHeaders().get("Location").get(0);
-    assertEquals("/page-builder/manage/pages", location);
+    assertEquals("/page-builder/pages", location);
   }
 }
