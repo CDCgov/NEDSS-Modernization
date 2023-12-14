@@ -74,7 +74,7 @@ class ManagePagesRouteConfigurationTest {
   void should_route_to_modernized_initLoad() {
 
     pagebuilderApi.stubFor(get(urlPathMatching("/nbs/page-builder/redirect"))
-        .withHeader("Location", equalTo("/page-builder/manage/pages"))
+        .withHeader("Location", equalTo("/page-builder/pages"))
         .willReturn(ok()));
     webClient
         .get().uri(

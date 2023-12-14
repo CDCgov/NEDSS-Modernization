@@ -17,7 +17,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class IncomingEditPageRedirector {
   private static final String EDIT_PAGE = "/page-builder/edit/page/";
-  private static final String PAGE_LIBRARY = "/page-builder/manage/pages";
+  private static final String PAGE_LIBRARY = "/page-builder/pages";
 
   @SuppressWarnings("squid:S3752") // Allow GET and POST on same method
   @RequestMapping(path = "/api/v1/pages/return", method = {RequestMethod.GET, RequestMethod.POST})
