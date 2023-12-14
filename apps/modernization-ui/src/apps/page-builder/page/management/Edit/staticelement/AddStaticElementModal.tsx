@@ -1,5 +1,10 @@
 import { ButtonGroup, ModalFooter, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { AddDefault, AddHyperlink, AddReadOnlyComments } from 'apps/page-builder/generated';
+import {
+    AddDefault,
+    AddHyperlink,
+    AddReadOnlyComments,
+    PageStaticControllerService
+} from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
@@ -8,8 +13,8 @@ import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry/maxLengthRule';
 import { HyperlinkFields } from './HyperlinkFields';
 import { CommentsFields } from './CommentsFields';
-import { usePage } from 'page';
-import { useParams } from 'react-router-dom';
+import { authorization } from 'authorization';
+import { usePageManagement } from '../../usePageManagement';
 
 const staticType = [
     { value: 'LIN', name: 'Line separator' },
@@ -21,6 +26,7 @@ const staticType = [
 
 type AddStaticElementModalProps = {
     modalRef: RefObject<ModalRef>;
+    subsectionId: number;
 };
 
 type StaticElementType = {
@@ -29,12 +35,70 @@ type StaticElementType = {
 
 type StaticElementFormValues = (AddReadOnlyComments | AddHyperlink | AddDefault) & StaticElementType;
 
-const AddStaticElementModal = ({ modalRef }: AddStaticElementModalProps) => {
+const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModalProps) => {
     const form = useForm<StaticElementFormValues>({
         mode: 'onBlur'
     });
     const watch = useWatch({ control: form.control });
-    const { pageId } = useParams();
+    const { page } = usePageManagement();
+
+    const handleSubmit = () => {
+        onSubmit();
+    };
+    const onSubmit = form.handleSubmit(async (data) => {
+        switch (data.type) {
+            case 'HYP': {
+                data.subSectionId = subsectionId;
+                PageStaticControllerService.addStaticHyperLinkUsingPost({
+                    authorization: authorization(),
+                    page: page.id,
+                    request: data
+                });
+                form.reset();
+                break;
+            }
+            case 'COM': {
+                data.subSectionId = subsectionId;
+                PageStaticControllerService.addStaticReadOnlyCommentsUsingPost({
+                    authorization: authorization(),
+                    page: page.id,
+                    request: data
+                });
+                form.reset();
+                break;
+            }
+            case 'LIN': {
+                data.subSectionId = subsectionId;
+                PageStaticControllerService.addStaticLineSeparatorUsingPost({
+                    authorization: authorization(),
+                    page: page.id,
+                    request: data
+                });
+                form.reset();
+                break;
+            }
+            case 'ELE': {
+                data.subSectionId = subsectionId;
+                PageStaticControllerService.addStaticOriginalElectronicDocListUsingPost({
+                    authorization: authorization(),
+                    page: page.id,
+                    request: data
+                });
+                form.reset();
+                break;
+            }
+            case 'PAR': {
+                data.subSectionId = subsectionId;
+                PageStaticControllerService.addStaticReadOnlyParticipantsListUsingPost({
+                    authorization: authorization(),
+                    page: page.id,
+                    request: data
+                });
+                form.reset();
+                break;
+            }
+        }
+    });
 
     return (
         <ModalComponent
@@ -100,7 +164,11 @@ const AddStaticElementModal = ({ modalRef }: AddStaticElementModalProps) => {
                             <ModalToggleButton modalRef={modalRef} closer outline onClick={() => form.reset()}>
                                 Cancel
                             </ModalToggleButton>
-                            <ModalToggleButton modalRef={modalRef} closer disabled={!form.formState.isValid}>
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                closer
+                                disabled={!form.formState.isValid}
+                                onClick={handleSubmit}>
                                 Save Changes
                             </ModalToggleButton>
                         </ButtonGroup>

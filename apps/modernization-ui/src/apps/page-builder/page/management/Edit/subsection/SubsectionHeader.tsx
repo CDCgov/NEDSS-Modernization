@@ -7,13 +7,14 @@ import AddStaticElementModal from '../staticelement/AddStaticElementModal';
 
 type Props = {
     name: string;
+    id: number;
     questionCount: number;
     onAddQuestion: () => void;
     isExpanded: boolean;
     onExpandedChange: (isExpanded: boolean) => void;
 };
 
-export const SubsectionHeader = ({ name, questionCount, isExpanded, onExpandedChange, onAddQuestion }: Props) => {
+export const SubsectionHeader = ({ name, id, questionCount, isExpanded, onExpandedChange, onAddQuestion }: Props) => {
     const addStaticElementModalRef = useRef<ModalRef>(null);
 
     return (
@@ -46,7 +47,7 @@ export const SubsectionHeader = ({ name, questionCount, isExpanded, onExpandedCh
                     <Icon.ExpandMore size={4} onClick={() => onExpandedChange(true)} />
                 )}
             </div>
-            <AddStaticElementModal modalRef={addStaticElementModalRef} />
+            <AddStaticElementModal modalRef={addStaticElementModalRef} subsectionId={id} />
         </div>
     );
 };
