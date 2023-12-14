@@ -16,6 +16,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import lombok.Setter;
 import org.hibernate.annotations.Where;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.CreateQuestionCommand;
@@ -24,6 +26,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 @Where(clause = "data_type in ('DATE', 'TEXT', 'NUMERIC', 'CODED')")
 @Table(name = "WA_question", catalog = "NBS_ODSE")
@@ -320,6 +323,9 @@ public abstract class WaQuestion {
                             " Only alphanumeric and underscore characters are supported for RDB Column Name, and Data Mart Column Name."
                             + " Supplied value: " + s);
         }
+    }
+    public boolean isStandard(){
+        return standardQuestionIndCd=='T';
     }
 
 }
