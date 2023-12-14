@@ -1,30 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { StrictMode } from 'react';
+import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import ApolloWrapper from './providers/ApolloContext';
 import { UserContextProvider } from './providers/UserContext';
 import reportWebVitals from './reportWebVitals';
-import { AppRoutes } from './routes/AppRoutes';
+import { AppRoutes } from 'routes/AppRoutes';
 import 'styles/global.scss';
-import NavBar from './shared/header/NavBar';
-import { AlertProvider } from 'alert';
-import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 
-ReactDOM.render(
-    <React.StrictMode>
-        <AlertProvider>
-            <BrowserRouter>
-                <UserContextProvider>
-                    <ApolloWrapper>
-                        <SkipLinkProvider>
-                            <NavBar />
-                            <AppRoutes />
-                        </SkipLinkProvider>
-                    </ApolloWrapper>
-                </UserContextProvider>
-            </BrowserRouter>
-        </AlertProvider>
-    </React.StrictMode>,
+render(
+    <StrictMode>
+        <BrowserRouter>
+            <UserContextProvider>
+                <AppRoutes />
+            </UserContextProvider>
+        </BrowserRouter>
+    </StrictMode>,
     document.getElementById('root')
 );
 

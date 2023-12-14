@@ -1,123 +1,151 @@
-import { SetStateAction, useRef, useState, useContext } from 'react';
-import './EditPageTabs.scss';
+import { ReactNode, SetStateAction, useRef, useState } from 'react';
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { ModalComponent } from '../../../../../components/ModalComponent/ModalComponent';
-import { AddEditTab } from '../../../components/AddEditTab/AddEditTab';
-import ManageTabs from '../ManageTabs/ManageTabs';
-import { PagesTab, Tab } from 'apps/page-builder/generated';
-import { useParams } from 'react-router-dom';
-import { UserContext } from 'user';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { PagesTab } from 'apps/page-builder/generated';
 import { addTab, deleteTab, updateTab } from 'apps/page-builder/services/tabsAPI';
+import ManageTabs from 'apps/page-builder/pages/EditPage/ManageTabs/ManageTabs';
+import { AddEditTab, TabEntry } from 'apps/page-builder/components/AddEditTab/AddEditTab';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+import './EditPageTabs.scss';
+import classNames from 'classnames';
+
+type AlertMessage = { type: 'warning' | 'success'; message: string | ReactNode; expiration: number };
+
+type ViewTabs = { type: 'view' };
+type AddTab = { type: 'add'; entry: TabEntry };
+type EditTab = { type: 'edit'; identifier: number; entry: TabEntry };
+type DeleteTab = { type: 'delete'; tab: PagesTab };
+
+type Actions = ViewTabs | AddTab | EditTab | DeleteTab;
 
 type Props = {
-    tabs: Tab[];
+    page: number;
+    tabs: PagesTab[];
     active: number;
     setActive: SetStateAction<any>;
     onAddSuccess: () => void;
 };
 
-export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) => {
-    const [isAdding, setIsAdding] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
-    const [addSuccess, setAddSuccess] = useState(false);
-    const [editSuccess, setEditSuccess] = useState(false);
-    const [deleteSuccess, setDeleteSuccess] = useState(false);
-    const [selectedEditTab, setSelectedEditTab] = useState<PagesTab | undefined>(undefined);
-    const [selectedTabIndex, setSelectedIndex] = useState<number | undefined>(undefined);
-    const [selectedForDelete, setSelectedForDelete] = useState<PagesTab | undefined>(undefined);
+export const EditPageTabs = ({ page, tabs, active, setActive, onAddSuccess }: Props) => {
     const modalRef = useRef<ModalRef>(null);
-    const { state } = useContext(UserContext);
-    const { pageId } = useParams();
-    const token = `Bearer ${state.getToken()}`;
-    const [tabDetails, setTabDetails] = useState({ name: '', visible: true });
 
-    const handleEditTab = (tab: PagesTab, index: number) => {
-        setSelectedEditTab(tab);
-        setSelectedIndex(index);
-        setIsEditing(true);
+    const [action, setAction] = useState<Actions>({ type: 'view' });
+
+    const [message, setMessage] = useState<AlertMessage | undefined>(undefined);
+
+    const selectForAdd = () => {
+        setAction({ type: 'add', entry: { name: '', visible: true, order: tabs.length } });
     };
 
-    const handleAddTab = async () => {
-        setSelectedEditTab(tabDetails);
-        if (pageId) {
-            addTab(token, parseInt(pageId), {
-                name: tabDetails.name,
-                visible: tabDetails.visible
+    const selectForEdit = (tab: PagesTab) => {
+        setAction({ type: 'edit', identifier: tab.id, entry: tab });
+    };
+
+    const selectForDelete = (tab?: PagesTab) => {
+        if (tab) {
+            setAction({ type: 'delete', tab });
+        } else {
+            setAction({ type: 'view' });
+        }
+    };
+
+    const handleChanged = (changed: TabEntry) => {
+        setAction((current) => {
+            if (action.type === 'add' || action.type === 'edit') {
+                return { ...current, entry: changed };
+            }
+
+            return current;
+        });
+    };
+
+    const handleAdd = () => {
+        if (action.type === 'add') {
+            addTab(page, {
+                name: action.entry.name,
+                visible: action.entry.visible
             })
-                .then(() => {
-                    setAddSuccess(true);
-                    setIsAdding(false);
-                    onAddSuccess();
-                })
                 .catch((e) => {
                     console.error(e);
+                })
+                .then(() => {
+                    setMessage({
+                        type: 'success',
+                        expiration: 3000,
+                        message: (
+                            <p>
+                                You've successfully added <span>{action.entry.name}!</span>
+                            </p>
+                        )
+                    });
+                    resetEditPageTabs();
+                    onAddSuccess();
                 });
         }
     };
 
-    const handleUpdateTab = async () => {
-        if (pageId) {
+    const handleUpdate = () => {
+        if (action.type === 'edit') {
             updateTab(
-                token,
-                parseInt(pageId),
+                page,
                 {
-                    name: tabDetails.name,
-                    visible: tabDetails.visible
+                    name: action.entry.name,
+                    visible: action.entry.visible
                 },
-                selectedEditTab!.id!
+                action.identifier
             )
-                .then(() => {
-                    setEditSuccess(true);
-                    setIsEditing(false);
-                    onAddSuccess();
-                })
                 .catch((e) => {
                     console.error(e);
+                })
+                .then(() => {
+                    setMessage({
+                        type: 'success',
+                        expiration: 3000,
+                        message: (
+                            <p>
+                                You've successfully edited <span>{action.entry.name}!</span>
+                            </p>
+                        )
+                    });
+                    resetEditPageTabs();
+                    onAddSuccess();
                 });
         }
     };
 
-    const handleDeleteTab = async (tab: PagesTab) => {
-        setSelectedForDelete(undefined);
-        setSelectedEditTab(tab);
-        if (pageId) {
-            deleteTab(token, parseInt(pageId), tab.id!)
-                .then(() => {
-                    setDeleteSuccess(true);
-                    setIsEditing(false);
-                    onAddSuccess();
-                })
-                .then(() => setTimeout(() => resetEditPageTabs(), 3000));
-        }
+    const handleDelete = (tab: PagesTab) => {
+        deleteTab(Number(page), tab.id!)
+            .then(() => {
+                setMessage({
+                    type: 'success',
+                    expiration: 3000,
+                    message: (
+                        <p>
+                            Successfuly deleted <span>{tab?.name}!</span>
+                        </p>
+                    )
+                });
+                resetEditPageTabs();
+                onAddSuccess();
+            })
+            .then(() => setTimeout(() => resetEditPageTabs(), 3000));
     };
 
-    const resetEditPageTabs = () => {
-        setSelectedEditTab(undefined);
-        setSelectedForDelete(undefined);
-        setIsAdding(false);
-        setIsEditing(false);
-        setAddSuccess(false);
-        setEditSuccess(false);
-        setDeleteSuccess(false);
-    };
+    const resetEditPageTabs = () => setAction({ type: 'view' });
 
     return (
         <>
             <div className="edit-page-tabs" data-testid="edit-page-tabs">
-                {tabs &&
-                    tabs.map((tab, i) => {
-                        return (
-                            tab.visible && (
-                                <div
-                                    key={i}
-                                    className={`edit-page-tabs__tab ${active === i ? 'active' : ''}`}
-                                    onClick={() => setActive(i)}>
-                                    <h4>{tab.name}</h4>
-                                </div>
-                            )
-                        );
-                    })}
+                {tabs.map((tab, i) => {
+                    return (
+                        <div
+                            key={i}
+                            className={classNames('edit-page-tabs__tab', { active: active === i })}
+                            onClick={() => setActive(i)}>
+                            <h4>{tab.name}</h4>
+                        </div>
+                    );
+                })}
                 <ModalToggleButton unstyled type="button" modalRef={modalRef} data-testid="openManageTabs">
                     <div className="edit-page-tabs__tab add">
                         <Icon.Edit />
@@ -129,113 +157,82 @@ export const EditPageTabs = ({ tabs, active, setActive, onAddSuccess }: Props) =
                 size={'tall'}
                 modalRef={modalRef}
                 modalHeading={
-                    !isAdding && !isEditing ? (
-                        <div className="manage-tabs-header">
-                            <h3>Manage tabs</h3>
-                            <Button
-                                type="button"
-                                onClick={() => {
-                                    resetEditPageTabs();
-                                    setIsAdding(true);
-                                }}
-                                disabled={selectedForDelete ? true : false}>
-                                <Icon.Add className="margin-right-05em add-tab-icon" />
-                                <span>Add new tab</span>
-                            </Button>
-                        </div>
-                    ) : (
-                        'Manage tabs'
-                    )
+                    <>
+                        {action.type === 'add' ||
+                            (action.type === 'edit' && (
+                                <div className="manage-tabs-header">
+                                    <h3>Manage tabs</h3>
+                                    <Button type="button" onClick={selectForAdd}>
+                                        <Icon.Add className="margin-right-05em add-tab-icon" />
+                                        <span>Add new tab</span>
+                                    </Button>
+                                </div>
+                            ))}
+                        {action.type === 'view' || (action.type === 'delete' && 'Manage tabs')}
+                    </>
                 }
                 modalBody={
                     <div className="edit-page-tabs__modal--body">
-                        {!isEditing &&
-                        !isAdding &&
-                        !selectedForDelete &&
-                        !addSuccess &&
-                        !editSuccess &&
-                        !deleteSuccess ? (
-                            <AlertBanner type="warning" expiration={5000}>
-                                <p>Tabs with content cannot be deleted.</p>
+                        {message && (
+                            <AlertBanner type={message.type} expiration={message.expiration}>
+                                {message.message}
                             </AlertBanner>
-                        ) : null}
-                        {addSuccess ? (
-                            <AlertBanner type="success" expiration={3000}>
-                                <p>
-                                    You've successfully added <span>{tabDetails.name}!</span>
-                                </p>
-                            </AlertBanner>
-                        ) : null}
-                        {editSuccess ? (
-                            <AlertBanner type="success" onClose={() => resetEditPageTabs()} expiration={3000}>
-                                <p>
-                                    Successfully edited <span>{tabDetails.name}!</span>
-                                </p>
-                            </AlertBanner>
-                        ) : null}
-                        {deleteSuccess ? (
-                            <AlertBanner type="success" onClose={() => resetEditPageTabs()} expiration={3000}>
-                                <p>
-                                    Successfuly deleted <span>{selectedEditTab?.name}!</span>
-                                </p>
-                            </AlertBanner>
-                        ) : null}
-                        {selectedForDelete ? (
+                        )}
+                        {action.type === 'delete' && (
                             <AlertBanner type="warning">
                                 <p>
                                     Are you sure you want to delete this tab? All sections, subsections, and questions
                                     within this tab will also be deleted and cannot be undone.
                                 </p>
                             </AlertBanner>
-                        ) : null}
-                        {isAdding ? (
-                            <AddEditTab setTabDetails={setTabDetails} />
-                        ) : isEditing ? (
-                            <AddEditTab tabData={tabs[selectedTabIndex!]} setTabDetails={setTabDetails} />
-                        ) : tabs ? (
-                            <ManageTabs
-                                setSelectedEditTab={handleEditTab}
-                                selectedForDelete={selectedForDelete}
-                                setSelectedForDelete={setSelectedForDelete}
-                                setDeleteTab={handleDeleteTab}
-                                reset={resetEditPageTabs}
-                            />
-                        ) : (
+                        )}
+                        {action.type === 'add' && <AddEditTab tabData={action.entry} onChanged={handleChanged} />}
+                        {action.type === 'edit' && <AddEditTab tabData={action.entry} onChanged={handleChanged} />}
+                        {action.type === 'view' && tabs.length > 0 && (
                             <>
                                 <p>No manageable tabs to show</p>
                                 <p>Add a new tab using the button above</p>
                             </>
                         )}
+                        {(action.type === 'view' || action.type === 'delete') && tabs.length === 0 && (
+                            <ManageTabs
+                                setSelectedEditTab={selectForEdit}
+                                selectedForDelete={action.type === 'delete' ? action.tab : undefined}
+                                setSelectedForDelete={selectForDelete}
+                                setDeleteTab={handleDelete}
+                                reset={resetEditPageTabs}
+                            />
+                        )}
                     </div>
                 }
                 modalFooter={
-                    isAdding ? (
-                        <div className="margin-bottom-1em add-tab-modal ds-u-text-align--right ">
-                            <Button className="submit-btn" onClick={handleAddTab} type="button">
-                                Add tab
-                            </Button>
-                            <Button type="button" outline onClick={() => resetEditPageTabs()}>
-                                Cancel
-                            </Button>
-                        </div>
-                    ) : isEditing ? (
-                        <>
-                            <Button type="button" onClick={() => handleUpdateTab()}>
-                                Save
-                            </Button>
-                            <Button type="button" outline onClick={() => resetEditPageTabs()}>
-                                Cancel
-                            </Button>
-                        </>
-                    ) : (
-                        <ModalToggleButton
-                            modalRef={modalRef}
-                            onClick={() => resetEditPageTabs()}
-                            closer
-                            disabled={selectedForDelete ? true : false}>
-                            Close
-                        </ModalToggleButton>
-                    )
+                    <>
+                        {action.type === 'view' && (
+                            <ModalToggleButton modalRef={modalRef} onClick={() => resetEditPageTabs()} closer>
+                                Close
+                            </ModalToggleButton>
+                        )}
+                        {action.type === 'add' && (
+                            <div className="margin-bottom-1em add-tab-modal ds-u-text-align--right ">
+                                <Button className="submit-btn" onClick={handleAdd} type="button">
+                                    Add tab
+                                </Button>
+                                <Button type="button" outline onClick={() => resetEditPageTabs()}>
+                                    Cancel
+                                </Button>
+                            </div>
+                        )}
+                        {action.type === 'edit' && (
+                            <>
+                                <Button type="button" onClick={handleUpdate}>
+                                    Save
+                                </Button>
+                                <Button type="button" outline onClick={() => resetEditPageTabs()}>
+                                    Cancel
+                                </Button>
+                            </>
+                        )}
+                    </>
                 }
             />
         </>

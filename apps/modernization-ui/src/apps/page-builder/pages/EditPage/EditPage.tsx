@@ -2,13 +2,12 @@ import { EditPageHeader } from 'apps/page-builder/pages/EditPage/EditPageHeader/
 import { EditPageTabs } from 'apps/page-builder/pages/EditPage/EditPageTabs/EditPageTabs';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import { useParams } from 'react-router-dom';
-import { useContext, useEffect, useRef, useState } from 'react';
-import './EditPage.scss';
+import { useEffect, useRef, useState } from 'react';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { EditPageContentComponent } from 'apps/page-builder/pages/EditPage/EditPageContent/EditPageContent';
 import { EditPageSidebar } from 'apps/page-builder/pages/EditPage/EditPageSidebar/EditPageSidebar';
 import { fetchPageDetails, savePageAsDraft } from 'apps/page-builder/services/pagesAPI';
-import { UserContext } from 'user';
+
 import { PagesResponse } from 'apps/page-builder/generated';
 import AddSectionModal from 'apps/page-builder/components/AddSection/AddSectionModal';
 import { ModalRef } from '@trussworks/react-uswds';
@@ -16,11 +15,12 @@ import { Spinner } from 'components/Spinner/Spinner';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ReorderModal } from './ReorderModal/ReorderModal';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import './EditPage.scss';
+import { authorization } from 'authorization';
 
 export const EditPage = () => {
     const { pageId } = useParams();
-    const { state } = useContext(UserContext);
-    const token = `Bearer ${state.getToken()}`;
+
     const [page, setPage] = useState<PagesResponse>();
     const [active, setActive] = useState(0);
     const addSectionModalRef = useRef<ModalRef>(null);
@@ -30,18 +30,18 @@ export const EditPage = () => {
 
     useEffect(() => {
         if (pageId) {
-            fetchPageDetails(token, Number(pageId)).then((data) => {
+            fetchPageDetails(authorization(), Number(pageId)).then((data) => {
                 setPage(data);
             });
         }
     }, [pageId]);
 
     const handleUpdateSuccess = () => {
-        fetchPageDetails(token, Number(pageId)).then((data) => setPage(data));
+        fetchPageDetails(authorization(), Number(pageId)).then((data) => setPage(data));
     };
 
     const handleSaveDraft = () => {
-        savePageAsDraft(token, Number(pageId))
+        savePageAsDraft(authorization(), Number(pageId))
             .then(() => {
                 setAlertMessage('Page successfully saved as Draft');
                 setAlertType('success');
@@ -63,6 +63,7 @@ export const EditPage = () => {
                             <EditPageHeader page={page} handleSaveDraft={handleSaveDraft} />
                             {page.tabs ? (
                                 <EditPageTabs
+                                    page={page.id}
                                     tabs={page.tabs}
                                     active={active}
                                     setActive={setActive}

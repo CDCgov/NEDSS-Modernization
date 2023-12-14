@@ -1,0 +1,15 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.preview {
+    display: grid;
+    grid-template-columns: minmax(25.5rem, 1fr) 3fr;
+    gap: 1.5rem;
+
+    aside,
+    main {
+        background-color: colors.$base-white;
+        @include borders.bordered();
+        @include borders.rounded();
+    }
+}

@@ -11,6 +11,7 @@ export type PagesResponse = {
     name: string;
     root?: number;
     rules?: Array<PageRule>;
+    status: string;
     tabs?: Array<PagesTab>;
 };
 
