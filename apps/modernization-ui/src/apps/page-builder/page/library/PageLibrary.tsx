@@ -19,7 +19,7 @@ import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 
 import styles from './page-library.module.scss';
 import { useConfiguration } from 'configuration';
-import { Button } from '@trussworks/react-uswds';
+import { LinkButton } from 'components/button';
 
 const PageLibrary = () => {
     return (
@@ -53,11 +53,7 @@ const PageLibraryContent = () => {
                         {config.features.pageBuilder.page.management.enabled ? (
                             <NavLinkButton to={'/page-builder/add/page'}>Create new page</NavLinkButton>
                         ) : (
-                            <Button
-                                type="button"
-                                onClick={() => (window.location.href = '/nbs/ManagePage.do?method=addPageLoad')}>
-                                Create new page
-                            </Button>
+                            <LinkButton href="/nbs/ManagePage.do?method=addPageLoad">Create new page</LinkButton>
                         )}
                     </header>
                     <PageLibraryMenu
