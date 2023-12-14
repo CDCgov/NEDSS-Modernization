@@ -4,13 +4,17 @@ import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { RefObject } from 'react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry/maxLengthRule';
+import { HyperlinkFields } from './HyperlinkFields';
+import { CommentsFields } from './CommentsFields';
+import { usePage } from 'page';
+import { useParams } from 'react-router-dom';
 
 const staticType = [
-    { value: 'HYP', name: 'Hyperlink' },
-    { value: 'COM', name: 'Comments' },
     { value: 'LIN', name: 'Line separator' },
+    { value: 'HYP', name: 'Hyperlink' },
+    { value: 'COM', name: 'Comments (read-only)' },
     { value: 'PAR', name: 'Participant list (read-only)' },
     { value: 'ELE', name: 'Electronic document list (read-only)' }
 ];
@@ -23,13 +27,14 @@ type StaticElementType = {
     type: 'HYP' | 'COM' | 'LIN' | 'PAR' | 'ELE';
 };
 
-type StaticElementFormValues = {
-    type: (AddReadOnlyComments | AddHyperlink | AddDefault) & StaticElementType;
-};
+type StaticElementFormValues = (AddReadOnlyComments | AddHyperlink | AddDefault) & StaticElementType;
 
 const AddStaticElementModal = ({ modalRef }: AddStaticElementModalProps) => {
-    const form = useForm<StaticElementFormValues>({ mode: 'onBlur' });
+    const form = useForm<StaticElementFormValues>({
+        mode: 'onBlur'
+    });
     const watch = useWatch({ control: form.control });
+    const { pageId } = useParams();
 
     return (
         <ModalComponent
@@ -39,7 +44,7 @@ const AddStaticElementModal = ({ modalRef }: AddStaticElementModalProps) => {
                 <>
                     <Controller
                         control={form.control}
-                        name="type.type"
+                        name="type"
                         rules={{ required: { value: true, message: 'Static element type is required.' } }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <SelectInput
@@ -52,86 +57,28 @@ const AddStaticElementModal = ({ modalRef }: AddStaticElementModalProps) => {
                                 error={error?.message}></SelectInput>
                         )}
                     />
-                    {watch.type?.type != ('HYP' || 'COM' || 'LIN' || 'PAR' || 'ELE') ? (
-                        <></>
-                    ) : (
+                    {watch.type != undefined && (
                         <>
-                            {watch.type.type == 'HYP' ? (
+                            {watch.type == 'HYP' ? (
                                 <>
-                                    <Controller
-                                        control={form.control}
-                                        name="type.label"
-                                        rules={{
-                                            required: { value: true, message: 'Label is required' },
-                                            ...maxLengthRule(50)
-                                        }}
-                                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                                            <Input
-                                                onChange={onChange}
-                                                onBlur={onBlur}
-                                                defaultValue={value}
-                                                label="Label"
-                                                type="text"
-                                                error={error?.message}
-                                                required
-                                            />
-                                        )}
-                                    />
-                                    <Controller
-                                        control={form.control}
-                                        name="type.linkUrl"
-                                        rules={{
-                                            required: { value: true, message: 'Link is required' },
-                                            ...maxLengthRule(50)
-                                        }}
-                                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                                            <Input
-                                                onChange={onChange}
-                                                onBlur={onBlur}
-                                                defaultValue={value}
-                                                label="Link URL"
-                                                type="text"
-                                                error={error?.message}
-                                                required
-                                            />
-                                        )}
-                                    />
+                                    <FormProvider {...form}>
+                                        <HyperlinkFields />
+                                    </FormProvider>
                                 </>
                             ) : (
-                                <></>
+                                <>
+                                    {watch.type == 'COM' && (
+                                        <>
+                                            <FormProvider {...form}>
+                                                <CommentsFields />
+                                            </FormProvider>
+                                        </>
+                                    )}
+                                </>
                             )}
-                            <>
-                                {watch.type.type == 'COM' ? (
-                                    <>
-                                        <Controller
-                                            control={form.control}
-                                            name="type.commentsText"
-                                            rules={{
-                                                required: { value: true, message: 'Comments is required' },
-                                                ...maxLengthRule(2000)
-                                            }}
-                                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                                                <Input
-                                                    onChange={onChange}
-                                                    onBlur={onBlur}
-                                                    defaultValue={value}
-                                                    label="Comments text"
-                                                    required
-                                                    type="text"
-                                                    error={error?.message}
-                                                    multiline
-                                                />
-                                            )}
-                                        />
-                                    </>
-                                ) : (
-                                    <> </>
-                                )}
-                            </>
-
                             <Controller
                                 control={form.control}
-                                name="type.adminComments"
+                                name="adminComments"
                                 rules={{ ...maxLengthRule(2000) }}
                                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                     <Input
@@ -150,7 +97,7 @@ const AddStaticElementModal = ({ modalRef }: AddStaticElementModalProps) => {
 
                     <ModalFooter className="padding-2 margin-left-auto footer">
                         <ButtonGroup className="flex-justify-end">
-                            <ModalToggleButton modalRef={modalRef} closer outline>
+                            <ModalToggleButton modalRef={modalRef} closer outline onClick={() => form.reset()}>
                                 Cancel
                             </ModalToggleButton>
                             <ModalToggleButton modalRef={modalRef} closer disabled={!form.formState.isValid}>

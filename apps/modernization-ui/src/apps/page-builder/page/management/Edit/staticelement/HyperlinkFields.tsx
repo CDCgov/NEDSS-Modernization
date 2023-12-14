@@ -1,19 +1,16 @@
-import { Controller } from "react-hook-form";
-import Input from "react-select/dist/declarations/src/components/Input";
-import { maxLengthRule } from "validation/entry";
+import { AddHyperlink } from 'apps/page-builder/generated';
+import { Controller, useFormContext } from 'react-hook-form';
+import { Input } from 'components/FormInputs/Input';
+import { maxLengthRule } from 'validation/entry';
 
-type HyperlinkFieldsProps = {
-    form : any;
-}
-
-export const HyperlinkFields = ( form ) : HyperlinkFieldsProps => {
-
+export const HyperlinkFields = () => {
+    const form = useFormContext<AddHyperlink>();
 
     return (
         <>
             <Controller
                 control={form.control}
-                name="type.label"
+                name="label"
                 rules={{
                     required: { value: true, message: 'Label is required' },
                     ...maxLengthRule(50)
@@ -30,9 +27,10 @@ export const HyperlinkFields = ( form ) : HyperlinkFieldsProps => {
                     />
                 )}
             />
+            Example: Click here to go to CDC News
             <Controller
                 control={form.control}
-                name="type.linkUrl"
+                name="linkUrl"
                 rules={{
                     required: { value: true, message: 'Link is required' },
                     ...maxLengthRule(50)
@@ -49,6 +47,7 @@ export const HyperlinkFields = ( form ) : HyperlinkFieldsProps => {
                     />
                 )}
             />
+            Example: http://www.cdc.gov/news
         </>
     );
 };
