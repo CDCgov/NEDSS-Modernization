@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -18,7 +19,8 @@ public class RedirectController {
     this.defaultRedirection = defaultRedirection;
   }
 
-  @RequestMapping(path = "/redirect")
+  @SuppressWarnings("squid:S3752") // Allow GET and POST on same method as requests forwarded from classic for redirection can be either
+  @RequestMapping(path = "/redirect", method = {RequestMethod.POST, RequestMethod.GET})
   public ResponseEntity<Void> redirect(HttpServletRequest request) {
     String location = request.getHeader(HttpHeaders.LOCATION);
     if (location == null) {
