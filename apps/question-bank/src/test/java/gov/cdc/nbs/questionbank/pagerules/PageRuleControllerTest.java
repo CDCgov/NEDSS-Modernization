@@ -39,7 +39,7 @@ class PageRuleControllerTest {
         void shouldDeleteRuleId() {
                 Long ruleId = 99L;
                 Mockito.when(pageRuleService.deletePageRule(99L))
-                                .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Deleted"));
+                        .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Deleted"));
                 CreateRuleResponse ruleResponse = pageRuleController.deletePageRule(ruleId);
                 assertNotNull(ruleResponse);
         }
@@ -50,9 +50,9 @@ class PageRuleControllerTest {
                 Long userId = 123L;
                 CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
                 NbsUserDetails nbsUserDetails =
-                                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+                        NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
                 Mockito.when(pageRuleService.updatePageRule(ruleId, ruleRequest, userId, 123456L))
-                                .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Updated"));
+                        .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Updated"));
                 Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
                 CreateRuleResponse ruleResponse = pageRuleController.updatePageRule(ruleId, ruleRequest, 123456L);
                 assertNotNull(ruleResponse);
@@ -62,10 +62,10 @@ class PageRuleControllerTest {
         void shouldReadRule() {
                 Long ruleId = 99L;
                 List<String> sourceValues = new ArrayList<>();
-                List<String> targetValues = new ArrayList<>();
+                List<QuestionInfo>  targetQuestions = new ArrayList<>();
                 Mockito.when(pageRuleFinderServiceImpl.getRuleResponse(ruleId))
-                                .thenReturn(new ViewRuleResponse(ruleId, 123l, "testFunction", "testDesc", "TestINV",
-                                                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+                        .thenReturn(new ViewRuleResponse(ruleId, 123l, "testFunction", "testDesc", "TestINV",
+                                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetQuestions));
                 ViewRuleResponse ruleResponse = pageRuleController.viewRuleResponse(ruleId);
                 assertNotNull(ruleResponse);
         }
@@ -77,13 +77,13 @@ class PageRuleControllerTest {
                 String sort = "id";
                 Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
                 List<String> sourceValues = new ArrayList<>();
-                List<String> targetValues = new ArrayList<>();
+                List<QuestionInfo> targetQuestions = new ArrayList<>();
                 List<ViewRuleResponse> content = new ArrayList<>();
                 content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
-                                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+                        sourceValues, "=>", "TestTargetType", "testErrorMsg", targetQuestions));
 
                 Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest, 123456L))
-                                .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
+                        .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
                 Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest, 123456L);
                 assertNotNull(ruleResponse);
         }
@@ -95,13 +95,13 @@ class PageRuleControllerTest {
                 String sort = "id";
                 Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
                 List<String> sourceValues = new ArrayList<>();
-                List<String> targetValues = new ArrayList<>();
+                List<QuestionInfo>  targetQuestions = new ArrayList<>();
                 List<ViewRuleResponse> content = new ArrayList<>();
                 content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
-                                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+                        sourceValues, "=>", "TestTargetType", "testErrorMsg", targetQuestions));
 
                 Mockito.when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest, 123456L))
-                                .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
+                        .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
                 Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest, 123456L);
                 assertNotNull(ruleResponse);
         }
@@ -114,13 +114,13 @@ class PageRuleControllerTest {
                 Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
                 SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
                 List<String> sourceValues = new ArrayList<>();
-                List<String> targetValues = new ArrayList<>();
+                List<QuestionInfo>  targetQuestions = new ArrayList<>();
                 List<ViewRuleResponse> content = new ArrayList<>();
                 content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
-                                sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+                        sourceValues, "=>", "TestTargetType", "testErrorMsg", targetQuestions));
 
                 Mockito.when(pageRuleFinderServiceImpl.findPageRule(request, pageRequest))
-                                .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
+                        .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
                 Page<ViewRuleResponse> ruleResponse = pageRuleController.findPageRule(request, pageRequest);
                 assertNotNull(ruleResponse);
         }
