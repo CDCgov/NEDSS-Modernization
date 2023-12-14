@@ -1,19 +1,19 @@
-import { MultiValue, SingleValue, DateRange } from 'filters';
-import { DatePeriodOperator, DateRangeOperator, MultiValueOperator, SingleValueOperator } from 'filters/operators';
+import { ExactValue, PartialValue, DateRange } from 'filters';
+import { DatePeriodOperator, DateRangeOperator, ExactValueOperator, PartialValueOperator } from 'filters/operators';
 
 type BaseFilterEntry = {
     property: string;
 };
 
-type MultiValueEntry = BaseFilterEntry & {
-    operator: MultiValueOperator;
-} & MultiValue;
+type ExactValueEntry = BaseFilterEntry & {
+    operator: ExactValueOperator;
+} & ExactValue;
 
-type SingleValueEntry = BaseFilterEntry & {
-    operator: SingleValueOperator;
-} & SingleValue;
+type PartialValueEntry = BaseFilterEntry & {
+    operator: PartialValueOperator;
+} & PartialValue;
 
-type ValueEntry = SingleValueEntry | MultiValueEntry;
+type ValueEntry = PartialValueEntry | ExactValueEntry;
 
 type DatePeriodFilterEntry = BaseFilterEntry & {
     operator: DatePeriodOperator;
@@ -28,8 +28,8 @@ type FilterEntry = ValueEntry | DateFilterEntry;
 export type {
     FilterEntry,
     ValueEntry,
-    SingleValueEntry,
-    MultiValueEntry,
+    PartialValueEntry,
+    ExactValueEntry,
     DateFilterEntry,
     DatePeriodFilterEntry,
     DateRangeFilterEntry

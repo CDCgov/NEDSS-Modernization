@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DateFilter, DateRangeFilter, Filter, MultiValueFilter, SingleValueFilter } from 'filters';
+import { DateFilter, DateRangeFilter, Filter, ExactValueFilter, PartialValueFilter } from 'filters';
 import { AppliedFilters } from './AppliedFilters';
 
 describe('when there are applied filters', () => {
@@ -44,7 +44,7 @@ describe('when there are applied filters', () => {
     });
 
     it('should display a single value filter when applied', () => {
-        const filter: SingleValueFilter = {
+        const filter: PartialValueFilter = {
             id: 'single-value-identifier',
             property: { value: 'single-value', name: 'Single Value', type: 'value' },
             operator: { name: 'Starts with', value: 'STARTS_WITH' },
@@ -57,7 +57,7 @@ describe('when there are applied filters', () => {
     });
 
     it('should display a multi value filter when applied', () => {
-        const filter: MultiValueFilter = {
+        const filter: ExactValueFilter = {
             id: 'multi-value-identifier',
             property: { value: 'multi-value', name: 'Multi Value', type: 'value' },
             operator: { name: 'equals', value: 'EQUALS' },
