@@ -1,4 +1,8 @@
-import { PageStaticControllerService, PagesSubSection } from 'apps/page-builder/generated';
+import {
+    PageStaticControllerService,
+    PagesSubSection,
+    PageQuestionControllerService
+} from 'apps/page-builder/generated';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
 import { useState } from 'react';
@@ -14,7 +18,6 @@ type Props = {
 export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, fetch } = usePageManagement();
-
     const { showAlert } = useAlert();
 
     const handleAlert = (message: string) => {
@@ -45,7 +48,14 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                 fetch(page.id);
             });
         } else {
-            console.log('delete question NYI', id);
+            PageQuestionControllerService.deleteQuestionUsingDelete({
+                authorization: authorization(),
+                page: page.id,
+                questionId: Number(id)
+            }).then(() => {
+                fetch(page.id);
+                handleAlert(`Question deleted successfully`);
+            });
         }
     };
 
