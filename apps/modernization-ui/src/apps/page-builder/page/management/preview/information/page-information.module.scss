@@ -1,0 +1,24 @@
+@use 'design/system';
+
+.information {
+    header {
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+
+        @extend %thin-bottom;
+    }
+
+    nav {
+        @extend %thin-bottom;
+    }
+}
+
+.content {
+    padding: 1.5rem;
+
+    footer {
+        padding-top: 1.5rem;
+        @extend %thin-top;
+    }
+}

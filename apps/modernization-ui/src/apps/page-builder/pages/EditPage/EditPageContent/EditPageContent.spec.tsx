@@ -6,18 +6,21 @@ describe('when EditPageContent renders', () => {
     const content: PagesTab = {
         id: 123456,
         name: 'Test Name',
+        order: 1,
         sections: [
             {
                 id: 1119232,
                 name: 'Patient',
-                subSections: [],
-                visible: true
+                visible: true,
+                order: 1,
+                subSections: []
             },
             {
                 id: 1119225,
                 name: 'Vaccination',
-                subSections: [],
-                visible: true
+                visible: true,
+                order: 2,
+                subSections: []
             }
         ],
         visible: true

@@ -6,18 +6,21 @@ describe('when Section renders', () => {
     const section: PagesSection = {
         id: 123456,
         name: 'Test Section',
+        order: 1,
         subSections: [
             {
                 id: 1234,
                 name: 'Sub 1',
-                questions: [],
-                visible: true
+                visible: true,
+                order: 1,
+                questions: []
             },
             {
                 id: 1234,
                 name: 'Sub 1',
-                questions: [],
-                visible: true
+                visible: true,
+                order: 2,
+                questions: []
             }
         ],
         visible: true
