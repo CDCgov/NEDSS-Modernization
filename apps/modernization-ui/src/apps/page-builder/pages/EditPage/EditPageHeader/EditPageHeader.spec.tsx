@@ -6,19 +6,22 @@ describe('when EditPageHeader renders', () => {
     const page: PagesResponse = {
         id: 123456,
         name: 'Test Page',
+        status: 'status-value',
         description: 'Test Page description',
         tabs: [
             {
                 id: 1119232,
                 name: 'Patient',
-                sections: [],
-                visible: true
+                visible: true,
+                order: 1,
+                sections: []
             },
             {
                 id: 1119225,
                 name: 'Vaccination',
-                sections: [],
-                visible: true
+                visible: true,
+                order: 2,
+                sections: []
             }
         ],
         rules: []

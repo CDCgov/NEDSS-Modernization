@@ -4,6 +4,10 @@
     #{$which}: 1px solid $color;
 }
 
+@mixin rounded() {
+    border-radius: 0.3125rem;
+}
+
 %thin {
     @include bordered();
 }

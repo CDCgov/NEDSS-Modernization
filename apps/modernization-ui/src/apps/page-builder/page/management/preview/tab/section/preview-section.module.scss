@@ -1,0 +1,17 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.section {
+    header {
+        padding: 1.5rem;
+
+        @extend %thin-bottom;
+        @include borders.rounded();
+
+        p {
+            color: colors.$base-darkest;
+            font-size: 0.875rem;
+            line-height: 1.4175rem;
+        }
+    }
+}

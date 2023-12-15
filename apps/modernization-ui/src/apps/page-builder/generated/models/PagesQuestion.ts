@@ -10,11 +10,11 @@ export type PagesQuestion = {
     description?: string;
     display?: boolean;
     enabled?: boolean;
-    id?: number;
+    id: number;
     isStandard?: boolean;
     mask?: string;
-    name?: string;
-    order?: number;
+    name: string;
+    order: number;
     question?: string;
     required?: boolean;
     standard?: string;
