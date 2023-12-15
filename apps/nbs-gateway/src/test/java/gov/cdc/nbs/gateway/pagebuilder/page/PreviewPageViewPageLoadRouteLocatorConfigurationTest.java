@@ -44,7 +44,7 @@ class PreviewPageViewPageLoadRouteLocatorConfigurationTest {
         .uri(
             builder -> builder
                 .path("/nbs/PreviewPage.do")
-                .queryParam("method", "viewPageLoad")
+                .queryParam("method", "editPageContentsLoad")
                 .build())
         .cookie("Return-Page", "3119")
         .exchange()

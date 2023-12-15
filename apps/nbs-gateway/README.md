@@ -47,18 +47,18 @@ Environment
 Variable,and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference/html/features.html#features.external-config).
 The default profile contains the following properties configuration most likely to change.
 
-| Name                                | Default                 | Description                                                                          |
-|-------------------------------------|-------------------------|--------------------------------------------------------------------------------------|
-| nbs.gateway.defaults.protocol       | `http`                  | The default protocol used to connect to services.  Intra-pod communication is `http` |
-| nbs.gateway.classic                 | `http://localhost:7001` | The URI location of the classic NBS Application                                      |
-| nbs.gateway.patient.search.enabled  | `true`                  | Enables the Patient Search routing                                                   |
-| nbs.gateway.patient.search.service  | `localhost:8080`        | The host name of the Patient Search service                                          |
-| nbs.gateway.patient.profile.enabled | `true`                  | Enables the Patient Profile routing                                                  |
-| nbs.gateway.patient.profile.service | `localhost:8080`        | The host name of the Patient Profile service                                         |
-| nbs.gateway.pagebuilder.enabled | `false`                  | Enables Page Builder routing                                                  |
-| nbs.gateway.pagebuilder.page.management.enabled | `false`                  | Enables the Page Builder Page Management routing                                                  |
-| nbs.gateway.pagebuilder.page.library.enabled | `false`                  | Enables the Page Builder Page Library routing                                                  |
-| nbs.gateway.pagebuilder.service | `localhost:8080`        | The host name of the service                                         |
+| Name                                            | Default                 | Description                                                                         |
+| ----------------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------- |
+| nbs.gateway.defaults.protocol                   | `http`                  | The default protocol used to connect to services. Intra-pod communication is `http` |
+| nbs.gateway.classic                             | `http://localhost:7001` | The URI location of the classic NBS Application                                     |
+| nbs.gateway.patient.search.enabled              | `true`                  | Enables the Patient Search routing                                                  |
+| nbs.gateway.patient.search.service              | `localhost:8080`        | The host name of the Patient Search service                                         |
+| nbs.gateway.patient.profile.enabled             | `true`                  | Enables the Patient Profile routing                                                 |
+| nbs.gateway.patient.profile.service             | `localhost:8080`        | The host name of the Patient Profile service                                        |
+| nbs.gateway.pagebuilder.enabled                 | `false`                 | Enables Page Builder routing                                                        |
+| nbs.gateway.pagebuilder.page.management.enabled | `false`                 | Enables the Page Builder Page Management routing                                    |
+| nbs.gateway.pagebuilder.page.library.enabled    | `false`                 | Enables the Page Builder Page Library routing                                       |
+| nbs.gateway.pagebuilder.service                 | `localhost:8080`        | The host name of the service                                                        |
 
 ### Configuring the Reverse Proxy to use local nbs-gateway
 
