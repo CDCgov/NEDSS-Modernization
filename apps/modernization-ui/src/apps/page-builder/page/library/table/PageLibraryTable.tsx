@@ -1,11 +1,10 @@
+import { PageSummary } from 'apps/page-builder/generated';
+import { TableBody, TableComponent } from 'components/Table/Table';
+import { internalizeDate } from 'date';
+import { usePage } from 'page';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { internalizeDate } from 'date';
 import { Direction } from 'sorting';
-import { TableBody, TableComponent } from 'components/Table/Table';
-import { PageSummary } from 'apps/page-builder/generated';
-import { useConfiguration } from 'configuration';
-import { usePage } from 'page';
 
 import styles from './page-library-table.module.scss';
 
@@ -59,12 +58,11 @@ type Props = {
     summaries: PageSummary[];
     searching?: boolean;
     onSort: (name: string, direction: Direction) => void;
+    enableManagement: boolean;
 };
 
-export const PageLibraryTable = ({ summaries, searching = false, onSort }: Props) => {
+export const PageLibraryTable = ({ enableManagement, summaries, searching = false, onSort }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const config = useConfiguration();
-    const isMangementEnabled = config.features.pageBuilder.page.management.enabled;
 
     const {
         page: { pageSize, total, current },
@@ -72,7 +70,7 @@ export const PageLibraryTable = ({ summaries, searching = false, onSort }: Props
     } = usePage();
 
     useEffect(() => {
-        setTableRows(asTableRows(summaries, isMangementEnabled));
+        setTableRows(asTableRows(summaries, enableManagement));
     }, [summaries]);
 
     const handleSort = (name: string, direction: Direction): void => {

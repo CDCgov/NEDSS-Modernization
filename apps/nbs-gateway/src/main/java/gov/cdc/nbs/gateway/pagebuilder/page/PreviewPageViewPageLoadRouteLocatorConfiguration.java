@@ -26,7 +26,7 @@ public class PreviewPageViewPageLoadRouteLocatorConfiguration {
                 .order(Ordered.HIGHEST_PRECEDENCE)
                 .path("/nbs/PreviewPage.do")
                 .and()
-                .query("method", "viewPageLoad")
+                .query("method", "editPageContentsLoad")
                 .and()
                 .cookie("Return-Page", "\\d+")
                 .filters(

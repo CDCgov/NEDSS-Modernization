@@ -1,19 +1,19 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import { Loading } from 'components/Spinner';
-import { LinkButton } from 'components/button';
 import {
+    PageHeader,
+    PageManagementLayout,
+    PageManagementMenu,
     PageManagementProvider,
     useGetPageDetails,
-    PageManagementLayout,
-    PageHeader,
-    PageManagementMenu,
     usePageManagement
 } from 'apps/page-builder/page/management';
+import { Loading } from 'components/Spinner';
+import { LinkButton } from 'components/button';
 import { PageInformation } from './information/PageInformation';
 
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import styles from './preview-page.module.scss';
 import { PreviewTab } from './tab';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 
 const PreviewPage = () => {
     const { page } = useGetPageDetails();
@@ -54,7 +54,7 @@ const PreviewPageContent = () => {
                         label="open a preview of the page">
                         <Icon.Visibility size={3} />
                     </LinkButton>
-                    <LinkButton href={'#'}>
+                    <LinkButton href={`/nbs/page-builder/api/v1/pages/${page.id}/clone`}>
                         <Icon.ContentCopy size={3} />
                     </LinkButton>
                     <LinkButton

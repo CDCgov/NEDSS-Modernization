@@ -1,53 +1,12 @@
-import { PageLibraryTable } from './PageLibraryTable';
 import { render } from '@testing-library/react';
 import { WithinTableProvider } from 'components/Table/testing';
-import * as config from 'configuration';
-
-jest.mock('configuration', () => ({
-    ...jest.requireActual('configuration'),
-    useConfiguration: jest.fn()
-}));
-
-afterEach(() => {
-    jest.resetAllMocks();
-});
-
-const setEnabled = (enabled: boolean) => {
-    beforeEach(() => {
-        jest.spyOn(config, 'useConfiguration').mockReturnValue({
-            settings: {
-                smarty: {
-                    key: '123'
-                }
-            },
-            features: {
-                address: {
-                    autocomplete: false,
-                    verification: false
-                },
-                pageBuilder: {
-                    enabled: enabled,
-                    page: {
-                        library: {
-                            enabled: enabled
-                        },
-                        management: {
-                            enabled: enabled
-                        }
-                    }
-                }
-            },
-            loading: false
-        });
-    });
-};
+import { PageLibraryTable } from './PageLibraryTable';
 
 describe('when rendered', () => {
-    setEnabled(true);
     it('should display sentence cased headers', async () => {
         const { getAllByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable summaries={[]} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableManagement={true} summaries={[]} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -63,8 +22,6 @@ describe('when rendered', () => {
 });
 
 describe('when at least one summary is available', () => {
-    setEnabled(true);
-
     const summaries = [
         {
             conditions: [{ id: 'Some condition', name: 'condition display' }],
@@ -80,7 +37,7 @@ describe('when at least one summary is available', () => {
     it('should display the page summaries', async () => {
         const { findAllByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableManagement={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -97,7 +54,7 @@ describe('when at least one summary is available', () => {
     it('should redirect to the edit page when the page name is clicked', async () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableManagement={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -106,8 +63,6 @@ describe('when at least one summary is available', () => {
 });
 
 describe('when rendered with mangement disabled', () => {
-    setEnabled(false);
-
     const summaries = [
         {
             conditions: [{ id: 'Some condition', name: 'condition display' }],
@@ -122,7 +77,7 @@ describe('when rendered with mangement disabled', () => {
     it('should redirect to the edit page when the page name is clicked', async () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableManagement={false} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 

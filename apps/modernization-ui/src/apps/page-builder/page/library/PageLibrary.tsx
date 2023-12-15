@@ -32,7 +32,6 @@ const PageLibrary = () => {
 const PageLibraryContent = () => {
     const { sortBy } = useSorting();
     const config = useConfiguration();
-
     const { pages, searching, search, filter } = usePageSummarySearch();
     const { properties } = usePageLibraryProperties();
 
@@ -50,8 +49,8 @@ const PageLibraryContent = () => {
                 <section className={styles.library}>
                     <header>
                         <h2>Page library</h2>
-                        {config.features.pageBuilder.page.management.enabled ? (
-                            <NavLinkButton to={'/page-builder/add/page'}>Create new page</NavLinkButton>
+                        {!config.loading && config.features.pageBuilder.page.management.enabled ? (
+                            <NavLinkButton to={'/page-builder/pages/add'}>Create new page</NavLinkButton>
                         ) : (
                             <LinkButton type="solid" target="_self" href="/nbs/ManagePage.do?method=addPageLoad">
                                 Create new page
@@ -66,7 +65,14 @@ const PageLibraryContent = () => {
                         onDownload={handleDownloadCSV}
                         onPrint={handleDownloadPDF}
                     />
-                    <PageLibraryTable summaries={pages} searching={searching} onSort={sortBy} />
+                    {!config.loading && (
+                        <PageLibraryTable
+                            enableManagement={config.features.pageBuilder.page.management.enabled}
+                            summaries={pages}
+                            searching={searching}
+                            onSort={sortBy}
+                        />
+                    )}
                 </section>
             </PageBuilder>
         </>
