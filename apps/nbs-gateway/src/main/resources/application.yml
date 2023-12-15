@@ -38,6 +38,11 @@ nbs:
     pagebuilder:
       enabled: false
       service: 'localhost:8080'
+      page:
+        library: 
+          enabled: false
+        management: 
+          enabled: false
 
 logging:
   level:

@@ -1,29 +1,21 @@
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
+import { PageLibrary } from 'apps/page-builder/page/library/PageLibrary';
+import { Edit } from 'apps/page-builder/page/management/edit/Edit';
+import { PreviewPage } from 'apps/page-builder/page/management/preview';
+import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
+import { Spinner } from 'components/Spinner';
 import { Config } from 'config';
 import { useConfiguration } from 'configuration';
-import { UserContext } from 'providers/UserContext';
-import { Spinner } from 'components/Spinner';
 import { Layout } from 'layout';
-import { Login } from 'pages/login/Login';
-import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
-import { PatientProfile } from 'pages/patient/profile';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddPatient } from 'pages/addPatient/AddPatient';
 import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
-import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
-import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
-import ConditionLibrary from 'apps/page-builder/pages/ConditionLibrary/ConditionLibrary';
-import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
-import { PageLibrary } from 'apps/page-builder/page/library/PageLibrary';
-import { ConditionalCase } from 'apps/page-builder/components/ConditionalCase/ConditionalCase';
-import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
-import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/CreateQuestion';
-import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
-import { ValuesetLibrary } from 'apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
-import { Edit } from 'apps/page-builder/page/management/Edit/Edit';
-import { PreviewPage } from 'apps/page-builder/page/management/preview';
+import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
+import { Login } from 'pages/login/Login';
+import { PatientProfile } from 'pages/patient/profile';
+import { UserContext } from 'providers/UserContext';
+import { ReactNode, useContext, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -61,6 +53,24 @@ export const AppRoutes = () => {
         setInitializing(false);
     }, 1000);
 
+    const pageLibraryRoutes = (enabled: boolean) => {
+        return enabled ? <Route index element={<PageLibrary />} /> : <Route index element={<Navigate to={'/'} />} />;
+    };
+
+    const pageManagementRoutes = (enabled: boolean) => {
+        return enabled ? (
+            <>
+                <Route path="add" element={<AddNewPage />} />
+                <Route path=":pageId">
+                    <Route index element={<PreviewPage />} />
+                    <Route path="edit" element={<Edit />} />
+                </Route>
+            </>
+        ) : (
+            <Route index element={<Navigate to={'/'} />} />
+        );
+    };
+
     return (
         <>
             {loading && <Spinner />}
@@ -77,31 +87,9 @@ export const AppRoutes = () => {
 
                                 {config.features.pageBuilder.enabled && (
                                     <Route path="/page-builder" element={<PageBuilderContextProvider />}>
-                                        <Route index element={<Navigate to="pages" />} />
-                                        <Route path="manage">
-                                            <Route index element={<Navigate to="pages" />} />
-                                            <Route path="pages" element={<Navigate to="pages" />} />
-                                            <Route path="valueset-library" element={<ValuesetLibrary />} />
-                                            <Route path="question-library" element={<QuestionLibrary />} />
-                                            <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
-                                            <Route path="condition-library" element={<ConditionLibrary />} />
-                                        </Route>
-                                        <Route path="add">
-                                            <Route path="page" element={<AddNewPage />} />
-                                            <Route path="condition" element={<CreateCondition />} />
-                                            <Route path="conditional-case" element={<ConditionalCase />} />
-                                            <Route path="question" element={<CreateQuestion />} />
-                                        </Route>
-                                        <Route path="edit">
-                                            <Route path="page/:pageId?" element={<EditPage />} />
-                                        </Route>
                                         <Route path="pages">
-                                            <Route index element={<PageLibrary />} />
-                                            <Route path="add" element={<AddNewPage />} />
-                                            <Route path=":pageId">
-                                                <Route index element={<PreviewPage />}></Route>
-                                                <Route path="edit" element={<Edit />} />
-                                            </Route>
+                                            {pageLibraryRoutes(config.features.pageBuilder.page.library.enabled)}
+                                            {pageManagementRoutes(config.features.pageBuilder.page.management.enabled)}
                                         </Route>
                                     </Route>
                                 )}
