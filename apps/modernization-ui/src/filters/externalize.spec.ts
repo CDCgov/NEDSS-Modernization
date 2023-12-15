@@ -1,9 +1,9 @@
-import { DateFilter, DateRangeFilter, MultiValueFilter, SingleValueFilter } from 'filters';
+import { DateFilter, DateRangeFilter, ExactValueFilter, PartialValueFilter } from 'filters';
 import { externalize } from './externalize';
 
 describe('when a filter is externalized', () => {
     it('should send a single value filter to the API', () => {
-        const filter: SingleValueFilter = {
+        const filter: PartialValueFilter = {
             id: 'single-value-identifier',
             property: { value: 'single-value', name: 'Single Value', type: 'value' },
             operator: { name: 'Starts with', value: 'STARTS_WITH' },
@@ -22,7 +22,7 @@ describe('when a filter is externalized', () => {
     });
 
     it('should send a multi value filter to the API', () => {
-        const filter: MultiValueFilter = {
+        const filter: ExactValueFilter = {
             id: 'multi-value-identifier',
             property: { value: 'multi-value', name: 'Multi Value', type: 'value' },
             operator: { name: 'equals', value: 'EQUALS' },

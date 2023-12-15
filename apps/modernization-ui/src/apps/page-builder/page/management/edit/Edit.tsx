@@ -9,6 +9,7 @@ import {
     PageHeader,
     usePageManagement
 } from 'apps/page-builder/page/management';
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 
 export const Edit = () => {
     const { page } = useGetPageDetails();
@@ -32,7 +33,7 @@ const EditPageContent = () => {
                     <Button type="button" outline>
                         Business rules
                     </Button>
-                    <Button type="button">Preview</Button>
+                    <NavLinkButton to={'..'}>Preview</NavLinkButton>
                 </PageManagementMenu>
             </PageHeader>
             {selected && <PageContent tab={selected} />}

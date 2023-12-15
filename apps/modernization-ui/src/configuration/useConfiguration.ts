@@ -15,6 +15,14 @@ type Features = {
     };
     pageBuilder: {
         enabled: boolean;
+        page: {
+            library: {
+                enabled: boolean;
+            };
+            management: {
+                enabled: boolean;
+            };
+        };
     };
 };
 
@@ -29,7 +37,15 @@ const defaultFeatures: Features = {
         verification: false
     },
     pageBuilder: {
-        enabled: false
+        enabled: false,
+        page: {
+            library: {
+                enabled: false
+            },
+            management: {
+                enabled: false
+            }
+        }
     }
 };
 

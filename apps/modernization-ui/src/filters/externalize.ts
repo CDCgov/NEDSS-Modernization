@@ -5,13 +5,13 @@ import {
     DateRange,
     DateRangeFilter,
     Filter,
-    MultiValue,
-    MultiValueFilter,
-    SingleValue,
-    SingleValueFilter,
+    ExactValue,
+    ExactValueFilter,
+    PartialValue,
+    PartialValueFilter,
     Value
 } from './filter';
-import { DatePeriodOperator, MultiValueOperator, SingleValueOperator } from './operators';
+import { DatePeriodOperator, ExactValueOperator, PartialValueOperator } from './operators';
 
 type Base = {
     property: string;
@@ -24,23 +24,23 @@ type ExternalDatePeriodFilter = {
 
 type ExternalDateRangeFilter = Base & DateRange;
 
-type ExternalSingleValueFilter = {
-    operator: SingleValueOperator;
+type ExternalPartialValueFilter = {
+    operator: PartialValueOperator;
 } & Base &
-    SingleValue;
+    PartialValue;
 
-type ExternalMultiValueFilter = {
-    operator: MultiValueOperator;
+type ExternalExactValueFilter = {
+    operator: ExactValueOperator;
 } & Base &
-    MultiValue;
+    ExactValue;
 
 const externalize = (displayables: Filter[]): APIFilter[] => displayables.map(asFilter);
 
 const asFilter = (displayable: Filter): APIFilter => {
     if ('value' in displayable) {
-        return asSingleValueFilter(displayable);
+        return asPartialValueFilter(displayable);
     } else if ('values' in displayable) {
-        return asMultiValueFilter(displayable);
+        return asExactValueFilter(displayable);
     } else if ('after' in displayable && 'before' in displayable) {
         return asDateRangeFilter(displayable);
     }
@@ -48,20 +48,20 @@ const asFilter = (displayable: Filter): APIFilter => {
     return asDatePeriodFilter(displayable);
 };
 
-const asSingleValue = (value: Value): string => (typeof value === 'string' ? value : value.value);
+const asPartialValue = (value: Value): string => (typeof value === 'string' ? value : value.value);
 
-const asSingleValueFilter = (displayable: SingleValueFilter): ExternalSingleValueFilter => ({
+const asPartialValueFilter = (displayable: PartialValueFilter): ExternalPartialValueFilter => ({
     property: displayable.property.value,
     operator: displayable.operator.value,
-    value: asSingleValue(displayable.value)
+    value: asPartialValue(displayable.value)
 });
 
-const asMultiValue = (values: Value[]): string[] => values.map(asSingleValue);
+const asExactValue = (values: Value[]): string[] => values.map(asPartialValue);
 
-const asMultiValueFilter = (displayable: MultiValueFilter): ExternalMultiValueFilter => ({
+const asExactValueFilter = (displayable: ExactValueFilter): ExternalExactValueFilter => ({
     property: displayable.property.value,
     operator: displayable.operator.value,
-    values: asMultiValue(displayable.values)
+    values: asExactValue(displayable.values)
 });
 
 const asDatePeriodFilter = (displayable: DatePeriodFilter): ExternalDatePeriodFilter => ({

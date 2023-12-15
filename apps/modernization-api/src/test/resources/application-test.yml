@@ -7,6 +7,11 @@ nbs:
         verification: false
       pageBuilder:
         enabled: true
+        page:
+          library: 
+            enabled: true
+          management: 
+            enabled: true
 
 spring:
   graphql:

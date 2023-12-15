@@ -9,9 +9,17 @@ type ActionProps = {
     setActiveIndex: (action: number | null) => void;
     activeIndex: number | null;
     disabled?: boolean;
+    notDeletable?: boolean;
 };
 
-export const PatientTableActions = ({ index, handleAction, setActiveIndex, activeIndex, disabled }: ActionProps) => {
+export const PatientTableActions = ({
+    index,
+    handleAction,
+    setActiveIndex,
+    activeIndex,
+    disabled,
+    notDeletable
+}: ActionProps) => {
     return (
         <div className="table-span">
             <Button
@@ -22,7 +30,11 @@ export const PatientTableActions = ({ index, handleAction, setActiveIndex, activ
                 <Icon.MoreHoriz className="font-sans-lg" />
             </Button>
             {activeIndex === index && (
-                <Actions handleOutsideClick={() => setActiveIndex(null)} handleAction={handleAction} />
+                <Actions
+                    handleOutsideClick={() => setActiveIndex(null)}
+                    handleAction={handleAction}
+                    notDeletable={notDeletable}
+                />
             )}
         </div>
     );

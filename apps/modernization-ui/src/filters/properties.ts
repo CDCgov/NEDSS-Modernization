@@ -9,6 +9,7 @@ type Complete = (criteria: string) => Promise<Selectable[]>;
 
 type ValueProperty = BaseProperty & {
     type: 'value';
+    exactOnly?: boolean;
     complete?: Complete;
     all?: Selectable[];
 };

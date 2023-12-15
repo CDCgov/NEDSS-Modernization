@@ -8,11 +8,11 @@ const asFilterValue = (selectable: Selectable) => {
     return selectable.name;
 };
 
-type MultiValueEntryFormProps = {
+type ExactValueEntryFormProps = {
     property: ValueProperty;
 };
 
-const MultiValueEntryForm = ({ property }: MultiValueEntryFormProps) => {
+const ExactValueEntryForm = ({ property }: ExactValueEntryFormProps) => {
     const { control } = useFormContext<FilterEntry, Partial<FilterEntry>>();
 
     return (
@@ -40,4 +40,4 @@ const MultiValueEntryForm = ({ property }: MultiValueEntryFormProps) => {
     );
 };
 
-export { MultiValueEntryForm };
+export { ExactValueEntryForm };
