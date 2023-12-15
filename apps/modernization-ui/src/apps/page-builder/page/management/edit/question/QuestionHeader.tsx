@@ -1,10 +1,13 @@
 import styles from './question-header.module.scss';
-import { Icon } from '@trussworks/react-uswds';
+import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import classNames from 'classnames';
 import { Heading } from 'components/heading';
 import DeleteQuestion from '../../../../components/DeleteQuestion/DeleteQuestion';
+import { ModalComponent } from '../../../../../../components/ModalComponent/ModalComponent';
+import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
+import React, { useRef } from 'react';
 
 type Props = {
     visible?: boolean;
@@ -20,13 +23,8 @@ const lineSeparatorId = 1012;
 const originalElecDocId = 1036;
 const readOnlyPartId = 1030;
 
-export const QuestionHeader = ({
-    question,
-    onRequiredChange,
-    onEditQuestion,
-    onDeleteQuestion,
-    visible = true
-}: Props) => {
+export const QuestionHeader = ({ question, onRequiredChange, onDeleteQuestion, visible = true }: Props) => {
+    const EditModalRef = useRef<ModalRef>(null);
     const getHeadingText = (displayComponent: number | undefined) => {
         switch (displayComponent) {
             case hyperlinkId:
@@ -43,6 +41,19 @@ export const QuestionHeader = ({
                 return 'Question';
         }
     };
+    const renderEditQuestionModal = () => (
+        <>
+            <ModalToggleButton modalRef={EditModalRef} unstyled outline>
+                <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" />
+            </ModalToggleButton>
+            <ModalComponent
+                isLarge
+                modalRef={EditModalRef}
+                modalHeading={'Edit question'}
+                modalBody={<CreateQuestion modalRef={EditModalRef} question={question} />}
+            />
+        </>
+    );
 
     return (
         <div className={classNames(styles.header, { [styles.visible]: visible })}>
@@ -51,7 +62,7 @@ export const QuestionHeader = ({
                 <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>
             </div>
             <div className={styles.questionButtons}>
-                <Icon.Edit onClick={onEditQuestion} />
+                {renderEditQuestionModal()}
                 {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Required</div>

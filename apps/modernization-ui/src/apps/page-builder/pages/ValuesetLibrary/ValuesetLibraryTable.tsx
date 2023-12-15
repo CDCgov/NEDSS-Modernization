@@ -43,6 +43,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     // @ts-ignore
     const asTableRow = (valueSet: ValueSet): TableBody => ({
         id: valueSet.nbsUid,
+        selectable: true,
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
         expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         tableDetails: [

@@ -16,6 +16,7 @@ import { PatientProfile } from 'apps/patient/profile';
 import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
 import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 import EditBusinessRules from 'apps/page-builder/pages/BusinessRulesLibrary/Edit/EditBusinessRules';
 
@@ -92,6 +93,8 @@ export const AppRoutes = () => {
 
                                 {config.features.pageBuilder.enabled && (
                                     <Route path="/page-builder" element={<PageBuilderContextProvider />}>
+                                        {/*  temp add this route for testing*/}
+                                        <Route path="page/:pageId?" element={<EditPage />} />
                                         <Route path="pages">
                                             {pageLibraryRoutes(config.features.pageBuilder.page.library.enabled)}
                                             {pageManagementRoutes(config.features.pageBuilder.page.management.enabled)}
