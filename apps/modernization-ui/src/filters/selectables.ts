@@ -1,29 +1,29 @@
 import {
     DatePeriodOperator,
     DateRangeOperator,
-    isMultiValueProperty,
-    isSingleValueProperty,
-    MultiValueOperator,
-    SingleValueOperator
+    isExactValueProperty,
+    isPartialValueProperty,
+    ExactValueOperator,
+    PartialValueOperator
 } from './operators';
-import { Property } from './properties';
+import { Property, ValueProperty } from './properties';
 
-type SelectableSinlgeValueOperator = { name: string; value: SingleValueOperator };
-type SelectableMultiValueOperator = { name: string; value: MultiValueOperator };
+type SelectableSinlgeValueOperator = { name: string; value: PartialValueOperator };
+type SelectableExactValueOperator = { name: string; value: ExactValueOperator };
 
-type SelectableValueOperator = SelectableSinlgeValueOperator | SelectableMultiValueOperator;
+type SelectableValueOperator = SelectableSinlgeValueOperator | SelectableExactValueOperator;
 
-const singleValueOperators: SelectableSinlgeValueOperator[] = [
+const partialValueOperators: SelectableSinlgeValueOperator[] = [
     { name: 'starts with', value: 'STARTS_WITH' },
     { name: 'contains', value: 'CONTAINS' }
 ];
 
-const multiValueOperators: SelectableMultiValueOperator[] = [
+const exactValueOperators: SelectableExactValueOperator[] = [
     { name: 'equals', value: 'EQUALS' },
     { name: 'not equal to', value: 'NOT_EQUAL_TO' }
 ];
 
-const valueOperators: SelectableValueOperator[] = [...singleValueOperators, ...multiValueOperators];
+const valueOperators: SelectableValueOperator[] = [...partialValueOperators, ...exactValueOperators];
 
 type SelectableDatePeriodOperator = { name: string; value: DatePeriodOperator };
 type SelectableDateRangeOperator = { name: string; value: DateRangeOperator };
@@ -42,7 +42,7 @@ type OperatorOption = SelectableValueOperator | SelectableDateOperator;
 
 export type {
     SelectableSinlgeValueOperator,
-    SelectableMultiValueOperator,
+    SelectableExactValueOperator,
     SelectableValueOperator,
     SelectableDateOperator,
     SelectableDatePeriodOperator,
@@ -52,25 +52,26 @@ export type {
 
 const operators: (property?: Property) => OperatorOption[] = (property) => {
     if (property) {
-        return property.type === 'value' ? valueOperators : dateOperators;
+        return property.type === 'value' ? resolveValueOperators(property) : dateOperators;
     }
-
     return [];
 };
 
+const resolveValueOperators = (property: ValueProperty) => (property.exactOnly ? exactValueOperators : valueOperators);
+
 const withValue = (value: string) => (option: OperatorOption) => option.value === value;
 
-const isSingleValueOption = (option?: SelectableValueOperator) => isSingleValueProperty(option?.value);
+const isPartialValueOption = (option?: SelectableValueOperator) => isPartialValueProperty(option?.value);
 
-const isMultiValueOption = (option?: SelectableValueOperator) => isMultiValueProperty(option?.value);
+const isExactValueOption = (option?: SelectableValueOperator) => isExactValueProperty(option?.value);
 
 export {
     valueOperators,
-    singleValueOperators,
-    multiValueOperators,
+    partialValueOperators as PartialValueOperators,
+    exactValueOperators as ExactValueOperators,
     dateOperators,
     withValue,
     operators,
-    isMultiValueOption,
-    isSingleValueOption
+    isExactValueOption,
+    isPartialValueOption
 };

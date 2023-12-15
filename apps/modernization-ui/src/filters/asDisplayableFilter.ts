@@ -1,12 +1,12 @@
 import { FilterEntry } from './entry/FilterEntry';
 import { DateFilter, DateRangeFilter, Filter, ValueFilter } from './filter';
-import { isMultiValueProperty, isSingleValueProperty } from './operators';
+import { isExactValueProperty, isPartialValueProperty } from './operators';
 import { DateProperty, Property, ValueProperty } from './properties';
 import {
     dateOperators,
-    multiValueOperators,
+    ExactValueOperators,
     SelectableDateRangeOperator,
-    singleValueOperators,
+    PartialValueOperators,
     withValue
 } from './selectables';
 
@@ -25,8 +25,8 @@ const asFilter =
     };
 
 const asValue = (property: ValueProperty, entry: FilterEntry): ValueFilter | undefined => {
-    if ('value' in entry && isSingleValueProperty(entry.operator)) {
-        const operator = singleValueOperators.find(withValue(entry.operator));
+    if ('value' in entry && isPartialValueProperty(entry.operator)) {
+        const operator = PartialValueOperators.find(withValue(entry.operator));
         return (
             operator && {
                 id: crypto.randomUUID(),
@@ -35,8 +35,8 @@ const asValue = (property: ValueProperty, entry: FilterEntry): ValueFilter | und
                 value: entry.value
             }
         );
-    } else if ('values' in entry && isMultiValueProperty(entry.operator)) {
-        const operator = multiValueOperators.find(withValue(entry.operator));
+    } else if ('values' in entry && isExactValueProperty(entry.operator)) {
+        const operator = ExactValueOperators.find(withValue(entry.operator));
         return (
             operator && {
                 id: crypto.randomUUID(),
