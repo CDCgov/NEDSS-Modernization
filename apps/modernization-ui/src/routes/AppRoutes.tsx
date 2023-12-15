@@ -94,6 +94,10 @@ export const AppRoutes = () => {
                                         </Route>
                                         <Route path="edit">
                                             <Route path="page/:pageId?" element={<EditPage />} />
+                                            <Route
+                                                path="page/:pageId/business-rules-library"
+                                                element={<BusinessRulesLibrary />}
+                                            />
                                         </Route>
                                         <Route path="pages">
                                             <Route index element={<PageLibrary />} />

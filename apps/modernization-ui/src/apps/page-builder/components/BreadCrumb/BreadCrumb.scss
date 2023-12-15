@@ -1,0 +1,32 @@
+@use 'styles/colors';
+
+.pages-breadcrumb {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 0 0rem 1.4rem;
+    color: colors.$primary;
+    h4 {
+        cursor: pointer;
+        margin: 0;
+    }
+    h5 {
+        margin: 0;
+        font-size: 1rem;
+        color: colors.$primary-darker;
+        &::before {
+            content: '/';
+            font-weight: 300;
+            color: colors.$base;
+            margin-right: 0.8rem;
+        }
+    }
+    svg {
+        margin-top: -0.25rem;
+        cursor: pointer;
+    }
+}
