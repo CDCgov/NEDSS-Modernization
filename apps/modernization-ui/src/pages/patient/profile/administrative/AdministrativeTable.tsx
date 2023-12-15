@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
-import { Actions as ActionState } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { PatientAdministrative, useUpdatePatientAdministrativeMutation } from 'generated/graphql/schema';
 import { Direction, sortByAlpha, withDirection } from 'sorting/Sort';
@@ -19,6 +18,7 @@ import { useAlert } from 'alert/useAlert';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
 import { TableBody, TableComponent } from 'components/Table';
+import { PatientTableActions } from '../PatientTableActions';
 
 const asEntry = (administrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(administrative?.asOf),
@@ -51,8 +51,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
-
-    const [isActions, setIsActions] = useState<any>(null);
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     const [administratives, setAdministratives] = useState<PatientAdministrative[]>([]);
 
@@ -148,26 +147,17 @@ export const AdministrativeTable = ({ patient }: Props) => {
                 {
                     id: 3,
                     title: (
-                        <div className="table-span">
-                            <Button
-                                type="button"
-                                unstyled
-                                disabled={patient?.status !== 'ACTIVE'}
-                                onClick={() => setIsActions(isActions === index ? null : index)}>
-                                <Icon.MoreHoriz className="font-sans-lg" />
-                            </Button>
-
-                            {isActions === index && (
-                                <ActionState
-                                    notDeletable
-                                    handleOutsideClick={() => setIsActions(null)}
-                                    handleAction={(type: string) => {
-                                        tableActionStateAdapter(actions, administrative)(type);
-                                        setIsActions(null);
-                                    }}
-                                />
-                            )}
-                        </div>
+                        <PatientTableActions
+                            setActiveIndex={setActiveIndex}
+                            activeIndex={activeIndex}
+                            index={index}
+                            disabled={patient?.status !== 'ACTIVE'}
+                            handleAction={(type: string) => {
+                                tableActionStateAdapter(actions, administrative)(type);
+                                setActiveIndex(null);
+                            }}
+                            notDeletable
+                        />
                     )
                 }
             ]
