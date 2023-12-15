@@ -14,7 +14,6 @@
     }
 
     & > a {
-        display: flex;
-        align-items: center;
+        @extend %icon-button;
     }
 }

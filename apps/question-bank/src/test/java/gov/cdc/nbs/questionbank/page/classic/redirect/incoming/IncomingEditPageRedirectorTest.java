@@ -29,7 +29,7 @@ class IncomingEditPageRedirectorTest {
 
     // Then a redirect is issued for the edit page
     String location = response.getHeaders().get("Location").get(0);
-    assertEquals("/page-builder/edit/page/1234", location);
+    assertEquals("/page-builder/pages/1234/edit", location);
   }
 
   @Test
