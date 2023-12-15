@@ -9,9 +9,8 @@ import {
     AssociatedInvestigation2
 } from 'generated/graphql/schema';
 
-import { SortableTable } from 'components/Table/SortableTable';
 import { ClassicButton, ClassicLink } from 'classic';
-import { NoData } from 'components/NoData';
+import { TableBody, TableComponent } from 'components/Table/Table';
 
 type PatientLabReportTableProps = {
     patient?: string;
@@ -24,14 +23,14 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
     const [total, setTotal] = useState<number>(0);
     const [labReportData, setLabReportData] = useState<any>([]);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'Date received', sortable: true, sort: 'all' },
-        { name: 'Facility / provider', sortable: true, sort: 'all' },
-        { name: 'Date collected', sortable: true, sort: 'all' },
-        { name: 'Test results', sortable: true, sort: 'all' },
-        { name: 'Associated with', sortable: true, sort: 'all' },
-        { name: 'Program area', sortable: true, sort: 'all' },
-        { name: 'Jurisdiction', sortable: true, sort: 'all' },
-        { name: 'Event #', sortable: true, sort: 'all' }
+        { name: 'Date received', sortable: true },
+        { name: 'Facility / provider', sortable: true },
+        { name: 'Date collected', sortable: true },
+        { name: 'Test results', sortable: true },
+        { name: 'Associated with', sortable: true },
+        { name: 'Program area', sortable: true },
+        { name: 'Jurisdiction', sortable: true },
+        { name: 'Event #', sortable: true }
     ]);
 
     const handleComplete = (data: FindLabReportsForPatientQuery) => {
@@ -47,6 +46,22 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
         if (provider) {
             return `${provider.firstName} ${provider.lastName}`;
+        } else {
+            return undefined;
+        }
+    };
+
+    const getAssociatedInvestigations = (labReport: any): string | undefined => {
+        const num = labReport?.associatedInvestigations?.length;
+        if (num) {
+            labReport?.associatedInvestigations?.map((investigation: AssociatedInvestigation2, index: number) => (
+                <div key={index}>
+                    <ClassicLink url={`/nbs/api/profile/${patient}/investigation/${investigation.publicHealthCaseUid}`}>
+                        {investigation?.localId}
+                    </ClassicLink>
+                    <p className="margin-0">{investigation?.cdDescTxt}</p>
+                </div>
+            ));
         } else {
             return undefined;
         }
@@ -72,7 +87,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                             <br />
                         </div>
                     )
-            ) || <NoData />
+            ) || null
         );
     };
 
@@ -201,8 +216,82 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         }
     };
 
+    const generateTableRow = (report: PatientLabReport, index: number): TableBody => {
+        return {
+            id: index,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: report?.addTime ? (
+                        <ClassicLink url={`/nbs/api/profile/${patient}/report/lab/${report.observationUid}`}>
+                            {format(new Date(report?.addTime), 'MM/dd/yyyy')} <br />{' '}
+                            {format(new Date(report?.addTime), 'hh:mm a')}
+                        </ClassicLink>
+                    ) : null
+                },
+                {
+                    id: 2,
+                    title: (
+                        <>
+                            {getReportingFacility(report) !== undefined && (
+                                <>
+                                    <strong>Reporting facility:</strong>
+                                    <br />
+                                    <p className="margin-0">{getReportingFacility(report)?.name}</p>
+                                </>
+                            )}
+                            {getOrderingProviderName(report) !== undefined && (
+                                <>
+                                    <strong>Reporting facility:</strong>
+                                    <br />
+                                    <p className="margin-0">{getOrderingProviderName(report)}</p>
+                                </>
+                            )}
+
+                            {getOrderingFacility(report) !== undefined && (
+                                <>
+                                    <strong>Reporting facility:</strong>
+                                    <br />
+                                    <p className="margin-0">{getOrderingFacility(report)?.name}</p>
+                                </>
+                            )}
+                        </>
+                    )
+                },
+                {
+                    id: 3,
+                    title: null
+                },
+                {
+                    id: 4,
+                    title: getTestedResults(report) || null
+                },
+                {
+                    id: 5,
+                    title: getAssociatedInvestigations(report) || null
+                },
+                {
+                    id: 6,
+                    title: report?.programAreaCd || null
+                },
+                {
+                    id: 7,
+                    title: report?.jurisdictionCd || null
+                },
+                {
+                    id: 8,
+                    title: report?.localId || null
+                }
+            ]
+        };
+    };
+
+    const generateTableBody = () => {
+        return (labReportData?.length > 0 && labReportData.map(generateTableRow)) || [];
+    };
+
     return (
-        <SortableTable
+        <TableComponent
             isLoading={!called || loading}
             isPagination={true}
             buttons={
@@ -217,87 +306,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
             }
             tableHeader={'Lab reports'}
             tableHead={tableHead}
-            tableBody={
-                labReportData?.length > 0 &&
-                labReportData?.map((report: any, index: number) => {
-                    return (
-                        <tr key={index}>
-                            <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                                {report?.addTime ? (
-                                    <ClassicLink
-                                        url={`/nbs/api/profile/${patient}/report/lab/${report.observationUid}`}>
-                                        {format(new Date(report?.addTime), 'MM/dd/yyyy')} <br />{' '}
-                                        {format(new Date(report?.addTime), 'hh:mm a')}
-                                    </ClassicLink>
-                                ) : (
-                                    <NoData />
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                                <div>
-                                    {getReportingFacility(report) && (
-                                        <>
-                                            <strong>Reporting facility:</strong>
-                                            <br />
-                                            <p className="margin-0">{getReportingFacility(report)?.name}</p>
-                                            <br />
-                                        </>
-                                    )}
-                                    {getOrderingProviderName(report) && (
-                                        <>
-                                            <strong>Ordering provider:</strong>
-                                            <br />
-                                            <p className="margin-0">{getOrderingProviderName(report) ?? ''}</p>
-                                            <br />
-                                        </>
-                                    )}
-                                    {getOrderingFacility(report) && (
-                                        <>
-                                            <strong>Ordering facility:</strong>
-                                            <br />
-                                            <p className="margin-0">{getOrderingFacility(report)?.name}</p>
-                                        </>
-                                    )}
-                                </div>
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                                <NoData />
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                                {getTestedResults(report) ? getTestedResults(report) : <NoData />}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                                {!report.associatedInvestigations ? (
-                                    <NoData />
-                                ) : (
-                                    <>
-                                        {report.associatedInvestigations?.map(
-                                            (investigation: AssociatedInvestigation2, index: number) => (
-                                                <div key={index}>
-                                                    <ClassicLink
-                                                        url={`/nbs/api/profile/${patient}/investigation/${investigation.publicHealthCaseUid}`}>
-                                                        {investigation?.localId}
-                                                    </ClassicLink>
-                                                    <p className="margin-0">{investigation?.cdDescTxt}</p>
-                                                </div>
-                                            )
-                                        )}
-                                    </>
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                                {report?.programAreaCd ? <span>{report?.programAreaCd}</span> : <NoData />}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
-                                {report?.jurisdictionCd ? <span>{report?.jurisdictionCd}</span> : <NoData />}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[7].sort !== 'all' && 'sort-td'}`}>
-                                {report?.localId ? <span>{report?.localId}</span> : <NoData />}
-                            </td>
-                        </tr>
-                    );
-                })
-            }
+            tableBody={generateTableBody()}
             totalResults={total}
             currentPage={currentPage}
             handleNext={setCurrentPage}
