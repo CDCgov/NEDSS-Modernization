@@ -29,11 +29,12 @@ export const PatientTableActions = ({
                 onClick={() => setActiveIndex(activeIndex === index ? null : index)}>
                 <Icon.MoreHoriz className="font-sans-lg" />
             </Button>
-            {activeIndex === index && !notDeletable && (
-                <Actions handleOutsideClick={() => setActiveIndex(null)} handleAction={handleAction} />
-            )}
-            {activeIndex === index && notDeletable && (
-                <Actions handleOutsideClick={() => setActiveIndex(null)} handleAction={handleAction} notDeletable />
+            {activeIndex === index && (
+                <Actions
+                    handleOutsideClick={() => setActiveIndex(null)}
+                    handleAction={handleAction}
+                    notDeletable={notDeletable}
+                />
             )}
         </div>
     );
