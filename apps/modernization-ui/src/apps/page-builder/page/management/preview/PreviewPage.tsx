@@ -52,7 +52,7 @@ const PreviewPageContent = () => {
                     <LinkButton
                         href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}
                         label="open a preview of the page">
-                        <Icon.Visibility />
+                        <Icon.Visibility size={3} />
                     </LinkButton>
                     <LinkButton href={`/nbs/page-builder/api/v1/pages/${page.id}/clone`}>
                         <Icon.ContentCopy size={3} />
