@@ -1,7 +1,7 @@
 import { Button, Grid, Label, ModalFooter, Textarea, ErrorMessage } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
-import { AdministrativeEntry } from './AdminstrativeEntry';
+import { AdministrativeEntry } from './AdministrativeEntry';
 import { maxLengthRule } from 'validation/entry';
 
 type EntryProps = {

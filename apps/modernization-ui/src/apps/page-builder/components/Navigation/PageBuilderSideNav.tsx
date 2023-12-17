@@ -4,7 +4,7 @@ import './PageBuilderSideNav.scss';
 
 export const PageBuilderSideNav = () => (
     <SideNavigation className="page-builder-side-nav" title="Page Management">
-        <NavigationEntry path="/page-builder/manage/pages">Page library</NavigationEntry>
+        <NavigationEntry path="/page-builder/pages">Page library</NavigationEntry>
         <LinkEntry href="/nbs/ManageCondition.do?method=ViewConditionLib&actionMode=Manage&initLoad=true">
             Condition library
         </LinkEntry>

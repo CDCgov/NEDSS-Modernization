@@ -5,7 +5,6 @@
 import type { Filter } from './Filter';
 
 export type DateFilter = (Filter & {
-    from: string;
     operator: DateFilter.operator;
     property: string;
 });

@@ -15,7 +15,8 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
     properties = {
         "nbs.gateway.classic=http://localhost:10000",
         "nbs.gateway.pagebuilder.service=localhost:10002",
-        "nbs.gateway.pagebuilder.enabled=true"
+        "nbs.gateway.pagebuilder.enabled=true",
+        "nbs.gateway.pagebuilder.page.management.enabled=true"
     })
 class ManagePageViewPageDetailsRouteLocatorConfigurationTest {
 
@@ -44,8 +45,7 @@ class ManagePageViewPageDetailsRouteLocatorConfigurationTest {
             builder -> builder
                 .path("/nbs/ManagePage.do")
                 .queryParam("method", "viewPageDetailsLoad")
-                .build()
-        )
+                .build())
         .cookie("Return-Page", "3119")
         .exchange()
         .expectStatus()
@@ -64,8 +64,7 @@ class ManagePageViewPageDetailsRouteLocatorConfigurationTest {
             builder -> builder
                 .path("/nbs/ManagePage.do")
                 .queryParam("method", "viewPageDetailsLoad")
-                .build()
-        )
+                .build())
         .exchange()
         .expectStatus()
         .isOk();

@@ -33,6 +33,7 @@ const usePageLibraryProperties = () => {
         value: 'event-type',
         name: 'Event type',
         type: 'value',
+        exactOnly: true,
         complete: completeByName(eventTypeOptions),
         all: eventTypeOptions
     };
@@ -50,6 +51,7 @@ const usePageLibraryProperties = () => {
         value: 'status',
         name: 'Status',
         type: 'value',
+        exactOnly: true,
         complete: completeByName(statusOptions),
         all: statusOptions
     };

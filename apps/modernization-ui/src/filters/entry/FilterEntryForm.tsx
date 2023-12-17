@@ -5,8 +5,8 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Property } from 'filters/properties';
 import { FilterEntry } from './FilterEntry';
 import { DataRangeEntryForm } from './DataRangeEntryForm';
-import { SingleValueEntryForm } from './SingleValueEntryForm';
-import { MultiValueEntryForm } from './MultiValueEntryForm';
+import { PartialValueEntryForm } from './PartialValueEntryForm';
+import { ExactValueEntryForm } from './ExactValueEntryForm';
 import styles from './filter-entry-form.module.scss';
 import { operators } from 'filters/selectables';
 
@@ -35,10 +35,10 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
 
     const selectedOperator = useWatch({ control, name: 'operator' });
 
-    const selectionEntry =
+    const exactEntry =
         property && property.type === 'value' && (selectedOperator === 'EQUALS' || selectedOperator === 'NOT_EQUAL_TO');
 
-    const criterialEntry =
+    const partialEntry =
         property &&
         property.type === 'value' &&
         (selectedOperator === 'CONTAINS' || selectedOperator === 'STARTS_WITH');
@@ -89,8 +89,8 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                         />
                     )}
                     {selectedOperator === 'BETWEEN' && <DataRangeEntryForm />}
-                    {criterialEntry && <SingleValueEntryForm />}
-                    {selectionEntry && <MultiValueEntryForm property={property} />}
+                    {partialEntry && <PartialValueEntryForm />}
+                    {exactEntry && <ExactValueEntryForm property={property} />}
                 </FormProvider>
             </section>
             <footer>

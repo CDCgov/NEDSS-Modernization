@@ -2,7 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { FilterEntry } from './FilterEntry';
 
-const SingleValueEntryForm = () => {
+const PartialValueEntryForm = () => {
     const { control } = useFormContext<FilterEntry, Partial<FilterEntry>>();
 
     return (
@@ -30,4 +30,4 @@ const SingleValueEntryForm = () => {
     );
 };
 
-export { SingleValueEntryForm };
+export { PartialValueEntryForm };
