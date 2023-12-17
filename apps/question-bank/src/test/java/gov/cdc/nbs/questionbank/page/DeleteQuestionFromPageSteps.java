@@ -55,6 +55,8 @@ public class DeleteQuestionFromPageSteps {
         WaUiMetadata waUiMetadata = page.getUiMetadata().stream().findFirst()
                 .orElseThrow(() -> new PageContentModificationException("the page does not contain questions"));
         waUiMetadata.setQuestionIdentifier(question.getQuestionIdentifier());
+        waUiMetadata.setStandardQuestionIndCd('F');
+        waUiMetadata.setOrderNbr(3);
 
         try {
             pageQuestionController.deleteQuestion(page.getId(), question.getId(), user.getCurrentUserDetails());

@@ -4,7 +4,6 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.exception.DeleteQuestionException;
-import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
@@ -27,11 +26,8 @@ public class PageQuestionDeleter {
         if (page == null) {
             throw new DeleteQuestionException("Failed to find page with id: " + pageId);
         }
-        WaQuestion question = entityManager.find(WaQuestion.class,questionId);
-        if (question == null) {
-            throw new QuestionNotFoundException(questionId);
-        }
-         page.deleteQuestion(new PageContentCommand.DeleteQuestion(pageId, question, user, Instant.now()));
+        WaQuestion question = entityManager.find(WaQuestion.class, questionId);
+        page.deleteQuestion(new PageContentCommand.DeleteQuestion(pageId, question, user, Instant.now()));
     }
 
 

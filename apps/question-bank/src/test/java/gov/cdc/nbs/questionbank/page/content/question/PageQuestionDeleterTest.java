@@ -6,14 +6,12 @@ import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.exception.DeleteQuestionException;
-import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -39,11 +37,13 @@ class PageQuestionDeleterTest {
         List<WaUiMetadata> waUiMetadataList = new ArrayList<>();
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         waUiMetadata.setQuestionIdentifier("q_identifier");
+        waUiMetadata.setStandardQuestionIndCd('F');
+        waUiMetadata.setOrderNbr(3);
         waUiMetadataList.add(waUiMetadata);
         page.setUiMetadata(waUiMetadataList);
 
         TextQuestionEntity textQuestion = QuestionEntityMother.textQuestion();
-        textQuestion.setQuestionIdentifier("q_identifier");
+        when(textQuestion.getQuestionIdentifier()).thenReturn("q_identifier");
         when(entityManager.find(WaQuestion.class, 2L)).thenReturn(textQuestion);
 
         Assertions.assertEquals(1, page.getUiMetadata().size());//before delete
@@ -64,7 +64,7 @@ class PageQuestionDeleterTest {
         page.setUiMetadata(waUiMetadataList);
 
         TextQuestionEntity textQuestion = QuestionEntityMother.textQuestion();
-        textQuestion.setQuestionIdentifier("q_identifier_200");
+        when(textQuestion.getQuestionIdentifier()).thenReturn("q_identifier_200");
         when(entityManager.find(WaQuestion.class, 2L)).thenReturn(textQuestion);
 
         PageContentModificationException exception = assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
@@ -81,12 +81,12 @@ class PageQuestionDeleterTest {
         List<WaUiMetadata> waUiMetadataList = new ArrayList<>();
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         waUiMetadata.setQuestionIdentifier("q_identifier_100");
+        waUiMetadata.setStandardQuestionIndCd('T');
         waUiMetadataList.add(waUiMetadata);
         page.setUiMetadata(waUiMetadataList);
 
         TextQuestionEntity textQuestion = QuestionEntityMother.textQuestion();
-        textQuestion.setQuestionIdentifier("q_identifier_100");
-        textQuestion.setStandardQuestionIndCd('T');
+        when(textQuestion.getQuestionIdentifier()).thenReturn("q_identifier_100");
         when(entityManager.find(WaQuestion.class, 2L)).thenReturn(textQuestion);
 
         PageContentModificationException exception = assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
@@ -102,15 +102,4 @@ class PageQuestionDeleterTest {
         // When a request is processed to delete a question , DeleteQuestionException is thrown
         assertThrows(DeleteQuestionException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
     }
-
-    @Test
-    void should_not_delete_question_from_page_no_question_found() {
-        // Given a page
-        WaTemplate page = Mockito.mock(WaTemplate.class);
-        when(entityManager.find(WaTemplate.class, 1L)).thenReturn(page);
-        // And a null question
-        when(entityManager.find(WaQuestion.class, 2L)).thenReturn(null);
-        assertThrows(QuestionNotFoundException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
-    }
-
 }

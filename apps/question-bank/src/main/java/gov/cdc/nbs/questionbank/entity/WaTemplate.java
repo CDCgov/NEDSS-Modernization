@@ -515,16 +515,21 @@ public class WaTemplate {
         // Can only modify Draft pages
         verifyDraftType();
 
-        //can not delete standard questions
-        if (command.question().isStandard()) {
-            throw new PageContentModificationException("Unable to delete standard question");
-        }
         // ensure page already contain question
-        WaUiMetadata waUiMetadata = uiMetadata.stream()
+        WaUiMetadata question = uiMetadata.stream()
                 .filter(e -> e.getQuestionIdentifier() != null
                         && e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier())).findFirst().orElseThrow(() ->
                         new PageContentModificationException("Unable to delete a question from a page, the page does not contain the question"));
-        this.uiMetadata.remove(waUiMetadata);
+
+        //can not delete standard questions
+        if (question.getStandardQuestionIndCd() == 'T') {
+            throw new PageContentModificationException("Unable to delete standard question");
+        }
+
+        // Remove question and adjust orderNbrs
+        this.uiMetadata.remove(question);
+        adjustingComponentsFrom(question.getOrderNbr());
+        changed(command);
     }
 
     private Optional<WaUiMetadata> findNextElementOfComponent(Integer start, List<Long> componentTypes) {
