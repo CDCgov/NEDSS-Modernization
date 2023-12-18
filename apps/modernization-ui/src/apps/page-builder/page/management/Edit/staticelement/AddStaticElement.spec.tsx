@@ -1,4 +1,4 @@
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router-dom';
 import AddStaticElement from './AddStaticElement';
@@ -24,7 +24,7 @@ describe('When page loads', () => {
             </BrowserRouter>
         );
 
-        expect(getByTestId('submit-btn').hasAttribute('disabled'));
+        expect(getByTestId('submit-btn')).toBeDisabled();
     });
 
     it('it should render with one select input', () => {
@@ -129,7 +129,7 @@ describe('When participants is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(getByText('Administrative Comments')).toBeTruthy();
+        expect(getByText('Administrative Comments')).toBeInTheDocument();
     });
 });
 
@@ -156,7 +156,7 @@ describe('When electronic doc list is chosen', () => {
 });
 
 describe('When all inputs are entered', () => {
-    it('button enables once all inputs are selected', () => {
+    it('button enables once all inputs are selected', async () => {
         const { getByTestId, container } = render(
             <BrowserRouter>
                 <AlertProvider>
@@ -170,16 +170,27 @@ describe('When all inputs are entered', () => {
         const staticTypeInput = getByTestId('staticType');
 
         act(() => {
-            userEvent.selectOptions(staticTypeInput, 'Electronic document list (read-only)' );
-            fireEvent.blur(staticTypeInput);
+            userEvent.selectOptions(staticTypeInput, 'Hyperlink' );
         });
 
-        const adminInput = getByTestId("adminComments");
         act(() => {
-            userEvent.type(adminInput, "Something comments");
-            fireEvent.blur(adminInput);
-        });
+            fireEvent.blur(staticTypeInput);
+        })
 
+        const labelInput = getByTestId('hyperlinkLabel');
+
+        act(()=> {userEvent.type(labelInput, "Something label")});
+
+        act(()=>{fireEvent.blur(labelInput)});
+
+        const linkInput = getByTestId('linkUrl');
+        act(()=> {userEvent.type(linkInput, "www.test.com")});
+
+        act(()=>{fireEvent.blur(linkInput)});
+
+        await waitFor(() => {
+            expect(getByTestId('submit-btn')).toBeEnabled();
+        })
 
     });
 });

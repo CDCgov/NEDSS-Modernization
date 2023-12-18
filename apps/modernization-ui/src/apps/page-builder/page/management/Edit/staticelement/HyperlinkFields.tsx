@@ -22,7 +22,7 @@ export const HyperlinkFields = () => {
                         defaultValue={value}
                         label="Label"
                         type="text"
-                        data-testid="label"
+                        data-testid="hyperlinkLabel"
                         error={error?.message}
                         required
                     />
