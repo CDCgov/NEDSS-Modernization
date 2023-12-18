@@ -62,7 +62,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                     request: data
                 });
                 form.reset();
-                handleAlert(`The element ' + ${(data as AddHyperlink).label} + ' has been successfully added.`);
+                handleAlert(`The element ${(data as AddHyperlink).label} has been successfully added.`);
                 break;
             }
             case 'COM': {
