@@ -11,7 +11,7 @@ type Sorting = {
     direction: 'asc' | 'desc';
 };
 
-type Status = 'initialize' | 'idle' | 'searching' | 'found' | 'resettingPage';
+type Status = 'initialize' | 'idle' | 'searching' | 'found' | 'resetPage';
 
 type State = { status: Status; keyword?: string; filters: APIFilter[]; sorting?: Sorting; pages: PageSummary[] };
 
@@ -19,6 +19,7 @@ type Action =
     | { type: 'reset' }
     | { type: 'sort'; sorting: Sorting }
     | { type: 'search'; keyword?: string }
+    | { type: 'doSearch'; keyword?: string }
     | { type: 'filter'; filters: APIFilter[] }
     | { type: 'found'; result: PageSummary[] }
     | { type: 'refresh' };
@@ -29,9 +30,11 @@ const reducer = (current: State, action: Action): State => {
             return { ...current, status: 'searching', sorting: action.sorting };
         case 'search': {
             return action.keyword !== current.keyword
-                ? { ...current, status: 'resettingPage', keyword: action.keyword, pages: [] }
+                ? { ...current, status: 'resetPage', keyword: action.keyword, pages: [] }
                 : current;
         }
+        case 'doSearch':
+            return { ...current, status: 'searching', keyword: action.keyword, pages: [] };
         case 'filter':
             return { ...current, status: 'searching', filters: action.filters, pages: [] };
         case 'found':
@@ -66,13 +69,23 @@ const usePageSummarySearch = () => {
     }, [sorting, dispatch]);
 
     useEffect(() => {
-        if (state.status === 'resettingPage') {
-            firstPage();
+        if (state.status === 'resetPage') {
+            if (page.current === 1) {
+                dispatch({ type: 'doSearch', keyword: state.keyword });
+            } else {
+                firstPage();
+            }
         }
     }, [state.status]);
 
     useEffect(() => {
-        if (state.status === 'searching' || (state.status === 'resettingPage' && page.current === 1)) {
+        if (state.status === 'resetPage' && page.current == 1) {
+            dispatch({ type: 'doSearch', keyword: state.keyword });
+        }
+    }, [page.current]);
+
+    useEffect(() => {
+        if (state.status === 'searching') {
             PageSummaryService.search({
                 authorization: authorization(),
                 page: page.current - 1,
