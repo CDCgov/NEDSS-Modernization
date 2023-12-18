@@ -22,3 +22,17 @@ logging:
     nbs:
       classic:
         outgoing: INFO   # Logs any RestTemplate interactions with NBC Classic
+
+nbs:
+  ui:
+    features:
+      address:
+          autocomplete: false
+          verification: false
+      pageBuilder:
+        enabled: true
+        page:
+          library: 
+            enabled: true
+          management: 
+            enabled: true

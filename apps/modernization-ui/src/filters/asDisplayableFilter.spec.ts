@@ -1,4 +1,4 @@
-import { DatePeriodFilterEntry, DateRangeFilterEntry, MultiValueEntry, SingleValueEntry } from './entry/FilterEntry';
+import { DatePeriodFilterEntry, DateRangeFilterEntry, ExactValueEntry, PartialValueEntry } from './entry/FilterEntry';
 import { Property } from './properties';
 import { asFilter } from './asDisplayableFilter';
 
@@ -12,7 +12,7 @@ describe('when a filter is submitted', () => {
     it('should create a single value filter from the entry', () => {
         const properties: Property[] = [{ value: 'single-value', name: 'Single Value', type: 'value' }];
 
-        const entry: SingleValueEntry = {
+        const entry: PartialValueEntry = {
             property: 'single-value',
             operator: 'STARTS_WITH',
             value: 'prefix-value'
@@ -32,7 +32,7 @@ describe('when a filter is submitted', () => {
     it('should create a multi value filter from the entry', () => {
         const properties: Property[] = [{ value: 'multi-value', name: 'Multi Value', type: 'value' }];
 
-        const entry: MultiValueEntry = {
+        const entry: ExactValueEntry = {
             property: 'multi-value',
             operator: 'EQUALS',
             values: ['value-one', 'value-two']

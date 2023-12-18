@@ -4,15 +4,15 @@ import { DateProperty, ValueProperty } from './properties';
 import {
     SelectableDatePeriodOperator,
     SelectableDateRangeOperator,
-    SelectableMultiValueOperator,
+    SelectableExactValueOperator,
     SelectableSinlgeValueOperator
 } from './selectables';
 
-type MultiValue = { values: string[] };
-type SingleValue = { value: string };
+type ExactValue = { values: string[] };
+type PartialValue = { value: string };
 type DateRange = { after: string; before: string };
 
-export type { MultiValue, SingleValue, DateRange };
+export type { ExactValue, PartialValue, DateRange };
 
 type Identifiable = {
     id: string;
@@ -20,19 +20,19 @@ type Identifiable = {
 
 type Value = string | Selectable;
 
-type SingleValueFilter = Identifiable & {
+type PartialValueFilter = Identifiable & {
     property: ValueProperty;
     operator: SelectableSinlgeValueOperator;
     value: Value;
 };
 
-type MultiValueFilter = Identifiable & {
+type ExactValueFilter = Identifiable & {
     property: ValueProperty;
-    operator: SelectableMultiValueOperator;
+    operator: SelectableExactValueOperator;
     values: Value[];
 };
 
-type ValueFilter = SingleValueFilter | MultiValueFilter;
+type ValueFilter = PartialValueFilter | ExactValueFilter;
 
 type DatePeriodFilter = Identifiable & {
     property: DateProperty;
@@ -50,8 +50,8 @@ type Filter = ValueFilter | DateFilter;
 
 export type {
     Value,
-    SingleValueFilter,
-    MultiValueFilter,
+    PartialValueFilter,
+    ExactValueFilter,
     ValueFilter,
     DatePeriodFilter,
     DateRangeFilter,
