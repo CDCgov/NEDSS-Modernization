@@ -43,7 +43,7 @@ describe('When page loads', () => {
 });
 
 describe('When line separator is chosen', () => {
-    it('only the comments input and static element type inputs should be displayed', () => {
+    it('only the comments input and static element type inputs should be displayed', async () => {
         const { getByTestId, getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
@@ -56,16 +56,21 @@ describe('When line separator is chosen', () => {
 
         const staticTypeInput = getByTestId('staticType');
         act(() => {
-            userEvent.selectOptions(staticTypeInput, 'Line separator' );
+            userEvent.selectOptions(staticTypeInput, 'Line separator');
+        });
+
+        act(() => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(getByText('Administrative Comments')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(getByText('Administrative Comments')).toBeInTheDocument();
+        });
     });
 });
 
 describe('When hyperlink is chosen', () => {
-    it('only label, linkURL and admin comments should display', () => {
+    it('only label, linkURL and admin comments should display', async () => {
         const { getByTestId, getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
@@ -78,17 +83,22 @@ describe('When hyperlink is chosen', () => {
 
         const staticTypeInput = getByTestId('staticType');
         act(() => {
-            userEvent.selectOptions(staticTypeInput, 'Hyperlink' );
+            userEvent.selectOptions(staticTypeInput, 'Hyperlink');
+        });
+
+        act(() => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(getByText('Administrative Comments')).toBeInTheDocument();
-        expect(getByText('Link URL')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(getByText('Administrative Comments')).toBeInTheDocument();
+            expect(getByText('Link URL')).toBeInTheDocument();
+        });
     });
 });
 
 describe('When comments is chosen', () => {
-    it('only displays comments text and admin comments', () => {
+    it('only displays comments text and admin comments', async () => {
         const { getByTestId, getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
@@ -102,16 +112,21 @@ describe('When comments is chosen', () => {
         const staticTypeInput = getByTestId('staticType');
         act(() => {
             userEvent.selectOptions(staticTypeInput, 'Comments (read-only)');
+        });
+
+        act(() => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(getByText('Administrative Comments')).toBeInTheDocument();
-        expect(getByText('Comments text')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(getByText('Administrative Comments')).toBeInTheDocument();
+            expect(getByText('Comments text')).toBeInTheDocument();
+        });
     });
 });
 
 describe('When participants is chosen', () => {
-    it('only displays admin comments', () => {
+    it('only displays admin comments', async () => {
         const { getByTestId, getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
@@ -125,16 +140,21 @@ describe('When participants is chosen', () => {
         const staticTypeInput = getByTestId('staticType');
 
         act(() => {
-            userEvent.selectOptions(staticTypeInput, 'Participant list (read-only)' );
+            userEvent.selectOptions(staticTypeInput, 'Participant list (read-only)');
+        });
+
+        act(() => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(getByText('Administrative Comments')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(getByText('Administrative Comments')).toBeInTheDocument();
+        });
     });
 });
 
 describe('When electronic doc list is chosen', () => {
-    it('only displays admin comments', () => {
+    it('only displays admin comments', async () => {
         const { getByTestId, getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
@@ -148,10 +168,15 @@ describe('When electronic doc list is chosen', () => {
         const staticTypeInput = getByTestId('staticType');
         act(() => {
             userEvent.selectOptions(staticTypeInput, 'Electronic document list (read-only)');
+        });
+
+        act(() => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(getByText('Administrative Comments')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(getByText('Administrative Comments')).toBeInTheDocument();
+        });
     });
 });
 
@@ -170,27 +195,34 @@ describe('When all inputs are entered', () => {
         const staticTypeInput = getByTestId('staticType');
 
         act(() => {
-            userEvent.selectOptions(staticTypeInput, 'Hyperlink' );
+            userEvent.selectOptions(staticTypeInput, 'Hyperlink');
         });
 
         act(() => {
             fireEvent.blur(staticTypeInput);
-        })
+        });
 
         const labelInput = getByTestId('hyperlinkLabel');
 
-        act(()=> {userEvent.type(labelInput, "Something label")});
+        act(() => {
+            userEvent.type(labelInput, 'Something label');
+        });
 
-        act(()=>{fireEvent.blur(labelInput)});
+        act(() => {
+            fireEvent.blur(labelInput);
+        });
 
         const linkInput = getByTestId('linkUrl');
-        act(()=> {userEvent.type(linkInput, "www.test.com")});
+        act(() => {
+            userEvent.type(linkInput, 'www.test.com');
+        });
 
-        act(()=>{fireEvent.blur(linkInput)});
+        act(() => {
+            fireEvent.blur(linkInput);
+        });
 
         await waitFor(() => {
             expect(getByTestId('submit-btn')).toBeEnabled();
-        })
-
+        });
     });
 });
