@@ -3,8 +3,8 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { useRef } from 'react';
-import { AddStaticElement } from '../edit/staticelement/AddStaticElement';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { AddStaticElement } from '../staticelement/AddStaticElement';
 
 type Props = {
     name: string;
