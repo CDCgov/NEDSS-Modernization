@@ -36,7 +36,7 @@ type StaticElementType = {
 
 type StaticElementFormValues = (AddReadOnlyComments | AddHyperlink | AddDefault) & StaticElementType;
 
-const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementModalProps) => {
+export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementModalProps) => {
     const form = useForm<StaticElementFormValues>({
         mode: 'onBlur'
     });
@@ -202,5 +202,3 @@ const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementModalProps
         </div>
     );
 };
-
-export default AddStaticElement;

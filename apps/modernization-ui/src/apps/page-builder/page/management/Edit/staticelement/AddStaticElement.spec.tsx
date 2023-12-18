@@ -1,7 +1,7 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router-dom';
-import AddStaticElement from './AddStaticElement';
+import { AddStaticElement } from './AddStaticElement';
 import { PageManagementProvider } from '../../usePageManagement';
 import { PagesResponse } from 'apps/page-builder/generated';
 import userEvent from '@testing-library/user-event';
