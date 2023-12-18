@@ -5,6 +5,8 @@ import styles from './page-content.module.scss';
 
 type Props = {
     tab: PagesTab;
+    alertMessage: (value: string) => void;
+    alertType: (value: string) => void;
 };
 export const PageContent = ({ tab }: Props) => {
     const handleAddQuestion = (subsection: number) => {

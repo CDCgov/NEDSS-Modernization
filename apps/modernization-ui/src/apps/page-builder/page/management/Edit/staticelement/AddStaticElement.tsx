@@ -1,4 +1,4 @@
-import { ButtonGroup, ModalFooter, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Form, ModalRef, Button, ModalToggleButton } from '@trussworks/react-uswds';
 import {
     AddDefault,
     AddHyperlink,
@@ -7,7 +7,6 @@ import {
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { RefObject } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry/maxLengthRule';
@@ -15,6 +14,8 @@ import { HyperlinkFields } from './HyperlinkFields';
 import { CommentsFields } from './CommentsFields';
 import { authorization } from 'authorization';
 import { usePageManagement } from '../../usePageManagement';
+import styles from './staticelement.module.scss';
+import { useAlert } from 'alert';
 
 const staticType = [
     { value: 'LIN', name: 'Line separator' },
@@ -25,26 +26,32 @@ const staticType = [
 ];
 
 type AddStaticElementModalProps = {
-    modalRef: RefObject<ModalRef>;
-    subsectionId: number;
+    modalRef?: RefObject<ModalRef>;
+    subsectionId?: number;
 };
 
 type StaticElementType = {
-    type: 'HYP' | 'COM' | 'LIN' | 'PAR' | 'ELE';
+    type: 'HYP' | 'COM' | 'LIN' | 'PAR' | 'ELE' | '';
 };
 
 type StaticElementFormValues = (AddReadOnlyComments | AddHyperlink | AddDefault) & StaticElementType;
 
-const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModalProps) => {
+const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementModalProps) => {
     const form = useForm<StaticElementFormValues>({
         mode: 'onBlur'
     });
     const watch = useWatch({ control: form.control });
     const { page } = usePageManagement();
+    const { showAlert } = useAlert();
 
     const handleSubmit = () => {
         onSubmit();
     };
+
+    const handleAlert = (message: string) => {
+        showAlert({message: message, type: "success"});
+    };
+
     const onSubmit = form.handleSubmit(async (data) => {
         switch (data.type) {
             case 'HYP': {
@@ -55,6 +62,7 @@ const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModal
                     request: data
                 });
                 form.reset();
+                handleAlert(`The element ' + ${(data as AddHyperlink).label} + ' has been successfully added.`);
                 break;
             }
             case 'COM': {
@@ -65,6 +73,7 @@ const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModal
                     request: data
                 });
                 form.reset();
+                handleAlert(`The comment element has been successfully added.`);
                 break;
             }
             case 'LIN': {
@@ -75,6 +84,7 @@ const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModal
                     request: data
                 });
                 form.reset();
+                handleAlert(`The line separator element has been successfully added.`);
                 break;
             }
             case 'ELE': {
@@ -85,6 +95,7 @@ const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModal
                     request: data
                 });
                 form.reset();
+                handleAlert(`The electronic document list has been successfully added.`);
                 break;
             }
             case 'PAR': {
@@ -95,35 +106,38 @@ const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModal
                     request: data
                 });
                 form.reset();
+                handleAlert(`The participant list has been successfully added.`);
                 break;
             }
         }
     });
 
     return (
-        <ModalComponent
-            modalRef={modalRef}
-            modalHeading={'Add static element'}
-            modalBody={
-                <>
-                    <Controller
-                        control={form.control}
-                        name="type"
-                        rules={{ required: { value: true, message: 'Static element type is required.' } }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <SelectInput
-                                label="Choose a static element"
-                                options={staticType}
-                                required
-                                defaultValue={value}
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                error={error?.message}></SelectInput>
-                        )}
-                    />
-                    {watch.type != undefined && (
+        <div className={styles.static_element}>
+            <Form onSubmit={onSubmit} className={styles.form}>
+                <div className={styles.container}>
+                    <div className={styles.staticType}>
+                        <Controller
+                            control={form.control}
+                            name="type"
+                            rules={{ required: { value: true, message: 'Static element type is required.' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                                <SelectInput
+                                    label="Choose a static element"
+                                    options={staticType}
+                                    required
+                                    defaultValue={value}
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    error={error?.message}
+                                    data-testid="staticType"
+                                    className={styles.select_input}></SelectInput>
+                            )}
+                        />
+                    </div>
+                    {watch.type != undefined && watch.type !== '' && (
                         <>
-                            {watch.type == 'HYP' ? (
+                            {watch.type === 'HYP' ? (
                                 <>
                                     <FormProvider {...form}>
                                         <HyperlinkFields />
@@ -131,7 +145,7 @@ const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModal
                                 </>
                             ) : (
                                 <>
-                                    {watch.type == 'COM' && (
+                                    {watch.type === 'COM' && (
                                         <>
                                             <FormProvider {...form}>
                                                 <CommentsFields />
@@ -151,6 +165,7 @@ const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModal
                                         defaultValue={value}
                                         label="Administrative Comments"
                                         type="text"
+                                        data-testid="adminComments"
                                         multiline
                                         error={error?.message}
                                     />
@@ -158,9 +173,11 @@ const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModal
                             />
                         </>
                     )}
+                </div>
 
-                    <ModalFooter className="padding-2 margin-left-auto footer">
-                        <ButtonGroup className="flex-justify-end">
+                <div className={styles.footer_buttons}>
+                    {modalRef ? (
+                        <>
                             <ModalToggleButton modalRef={modalRef} closer outline onClick={() => form.reset()}>
                                 Cancel
                             </ModalToggleButton>
@@ -168,14 +185,29 @@ const AddStaticElementModal = ({ modalRef, subsectionId }: AddStaticElementModal
                                 modalRef={modalRef}
                                 closer
                                 disabled={!form.formState.isValid}
-                                onClick={handleSubmit}>
-                                Save Changes
+                                onClick={handleSubmit}
+                                data-testid="submit-btn">
+                                Save changes
                             </ModalToggleButton>
-                        </ButtonGroup>
-                    </ModalFooter>
-                </>
-            }></ModalComponent>
+                        </>
+                    ) : (
+                        <>
+                            <Button outline onClick={() => form.reset()} type={'button'}>
+                                Cancel
+                            </Button>
+                            <Button
+                                disabled={!form.formState.isValid}
+                                onClick={handleSubmit}
+                                type={'button'}
+                                data-testid="submit-btn">
+                                Save changes
+                            </Button>
+                        </>
+                    )}
+                </div>
+            </Form>
+        </div>
     );
 };
 
-export default AddStaticElementModal;
+export default AddStaticElement;
