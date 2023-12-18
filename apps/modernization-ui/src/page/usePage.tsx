@@ -86,9 +86,19 @@ const PageProvider = ({ pageSize = TOTAL_TABLE_DATA, appendToUrl = false, childr
         }
     };
 
-    const requestFromDispatch = (page: number) => dispatch({ type: 'go-to', page });
+    const dispatchGoTo = (page: number) => {
+        if (appendToUrl) {
+            setSearchParams((current) => {
+                current.set(PAGE_PARAMETER, page.toString());
+                return current;
+            });
+        }
+        dispatch({ type: 'go-to', page });
+    };
 
-    const firstPage = () => dispatch({ type: 'go-to', page: 1 });
+    const requestFromDispatch = (page: number) => dispatchGoTo(page);
+
+    const firstPage = () => dispatchGoTo(1);
     const reload = () => dispatch({ type: 'reload' });
     const request = appendToUrl ? requestFromUrl : requestFromDispatch;
     const ready = (total: number, page: number) => dispatch({ type: 'ready', total, page });

@@ -11,7 +11,7 @@ type Sorting = {
     direction: 'asc' | 'desc';
 };
 
-type Status = 'initialize' | 'idle' | 'searching' | 'found';
+type Status = 'initialize' | 'idle' | 'searching' | 'found' | 'resettingPage';
 
 type State = { status: Status; keyword?: string; filters: APIFilter[]; sorting?: Sorting; pages: PageSummary[] };
 
@@ -29,7 +29,7 @@ const reducer = (current: State, action: Action): State => {
             return { ...current, status: 'searching', sorting: action.sorting };
         case 'search': {
             return action.keyword !== current.keyword
-                ? { ...current, status: 'searching', keyword: action.keyword, pages: [] }
+                ? { ...current, status: 'resettingPage', keyword: action.keyword, pages: [] }
                 : current;
         }
         case 'filter':
@@ -52,7 +52,7 @@ const initial: State = {
 const usePageSummarySearch = () => {
     const [state, dispatch] = useReducer(reducer, initial);
 
-    const { page, ready } = usePage();
+    const { page, firstPage, ready } = usePage();
     const { sorting } = useSorting();
 
     useEffect(() => {
@@ -66,7 +66,13 @@ const usePageSummarySearch = () => {
     }, [sorting, dispatch]);
 
     useEffect(() => {
-        if (state.status === 'searching') {
+        if (state.status === 'resettingPage') {
+            firstPage();
+        }
+    }, [state.status]);
+
+    useEffect(() => {
+        if (state.status === 'searching' || (state.status === 'resettingPage' && page.current === 1)) {
             PageSummaryService.search({
                 authorization: authorization(),
                 page: page.current - 1,
