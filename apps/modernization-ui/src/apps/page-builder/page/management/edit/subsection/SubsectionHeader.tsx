@@ -3,7 +3,7 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { useRef } from 'react';
-import AddStaticElementModal from '../staticelement/AddStaticElement';
+import AddStaticElement from '../staticelement/AddStaticElement';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 
 type Props = {
@@ -51,7 +51,7 @@ export const SubsectionHeader = ({ name, id, questionCount, isExpanded, onExpand
             <ModalComponent
                 modalRef={addStaticElementModalRef}
                 modalHeading={'Add static element'}
-                modalBody={<AddStaticElementModal modalRef={addStaticElementModalRef} subsectionId={id} />}
+                modalBody={<AddStaticElement modalRef={addStaticElementModalRef} subsectionId={id} />}
             />
         </div>
     );
