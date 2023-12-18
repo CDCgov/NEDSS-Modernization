@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
 import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.PageNameVerifier;
@@ -157,7 +158,7 @@ public class WaTemplate {
       CascadeType.MERGE,
       CascadeType.REMOVE
   }, orphanRemoval = true)
-  private List<WaRuleMetadatum> waRuleMetadatums;
+  private List<WaRuleMetadata> waRuleMetadata;
 
   public WaTemplate() {
     this.templateType = DRAFT;
@@ -511,33 +512,35 @@ public class WaTemplate {
     return questionEntry;
   }
 
-    public void deleteQuestion(PageContentCommand.DeleteQuestion command) {
-        // Can only modify Draft pages
-        verifyDraftType();
+  public void deleteQuestion(PageContentCommand.DeleteQuestion command) {
+    // Can only modify Draft pages
+    verifyDraftType();
 
-        // ensure page already contain question
-        WaUiMetadata question = uiMetadata.stream()
-                .filter(e -> e.getQuestionIdentifier() != null
-                        && e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier())).findFirst().orElseThrow(() ->
-                        new PageContentModificationException("Unable to delete a question from a page, the page does not contain the question"));
+    // ensure page already contain question
+    WaUiMetadata question = uiMetadata.stream()
+        .filter(e -> e.getQuestionIdentifier() != null
+            && e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier())).findFirst()
+        .orElseThrow(() ->
+            new PageContentModificationException(
+                "Unable to delete a question from a page, the page does not contain the question"));
 
-        //can not delete standard questions
-        if (question.getStandardQuestionIndCd() == 'T') {
-            throw new PageContentModificationException("Unable to delete standard question");
-        }
-
-        // Remove question and adjust orderNbrs
-        this.uiMetadata.remove(question);
-        adjustingComponentsFrom(question.getOrderNbr());
-        changed(command);
+    //can not delete standard questions
+    if (question.getStandardQuestionIndCd() == 'T') {
+      throw new PageContentModificationException("Unable to delete standard question");
     }
 
-    private Optional<WaUiMetadata> findNextElementOfComponent(Integer start, List<Long> componentTypes) {
-        return uiMetadata.stream()
-                .filter(ui -> ui.getOrderNbr() >= start)
-                .filter(ui -> componentTypes.contains(ui.getNbsUiComponentUid()))
-                .findFirst();
-    }
+    // Remove question and adjust orderNbrs
+    this.uiMetadata.remove(question);
+    adjustingComponentsFrom(question.getOrderNbr());
+    changed(command);
+  }
+
+  private Optional<WaUiMetadata> findNextElementOfComponent(Integer start, List<Long> componentTypes) {
+    return uiMetadata.stream()
+        .filter(ui -> ui.getOrderNbr() >= start)
+        .filter(ui -> componentTypes.contains(ui.getNbsUiComponentUid()))
+        .findFirst();
+  }
 
   private boolean isElementAtOrderNullOrOneOf(List<Long> validComponents, int orderNumber) {
     WaUiMetadata next = uiMetadata.stream()
@@ -658,8 +661,8 @@ public class WaTemplate {
     this.lastChgUserId = command.userId();
   }
 
-    public void update(final PageCommand.UpdateInformation updates) {
-        checkChangesAllowed();
+  public void update(final PageCommand.UpdateInformation updates) {
+    checkChangesAllowed();
 
     this.nndEntityIdentifier = updates.messageMappingGuide();
     this.descTxt = updates.description();
@@ -718,16 +721,16 @@ public class WaTemplate {
   public WaUiMetadata groupSubSection(PageContentCommand.GroupSubsection command) {
     verifyDraftType();
     WaUiMetadata subsection = uiMetadata.stream()
-            .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
-            .findFirst()
-            .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
+        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
 
     subsection.update(command);
     changed(command);
 
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
     List<WaUiMetadata> questionBatches = uiMetadata.stream()
-            .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
+        .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
     for (WaUiMetadata questionBatch : questionBatches) {
       questionBatch.updateQuestionBatch(command);
       changed(command);
@@ -739,41 +742,41 @@ public class WaTemplate {
     verifyDraftType();
 
     WaUiMetadata subsection = uiMetadata.stream()
-            .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
-            .findFirst()
-            .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
+        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
 
     subsection.update(command);
     changed(command);
 
-        List<Long> batchIds = command.batches();
-        List<WaUiMetadata> questionBatches = uiMetadata.stream()
-                .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
-        for (WaUiMetadata questionBatch : questionBatches) {
-            questionBatch.updateQuestionBatch(command);
-            changed(command);
-        }
-        return subsection;
+    List<Long> batchIds = command.batches();
+    List<WaUiMetadata> questionBatches = uiMetadata.stream()
+        .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
+    for (WaUiMetadata questionBatch : questionBatches) {
+      questionBatch.updateQuestionBatch(command);
+      changed(command);
     }
+    return subsection;
+  }
 
-    public WaRuleMetadatum addRule(PageContentCommand.AddRule command) {
-        // Can only modify Draft pages
-        verifyDraftType();
-        // create rule
-        WaRuleMetadatum rule = new WaRuleMetadatum(this,command);
-        this.waRuleMetadatums.add(rule);
-        changed(command);
-        return rule;
-    }
+  public WaRuleMetadata addRule(PageContentCommand.AddRule command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+    // create rule
+    WaRuleMetadata rule = new WaRuleMetadata(this.id, command);
+    this.waRuleMetadata.add(rule);
+    changed(command);
+    return rule;
+  }
 
-
-    public void deleteRule(PageContentCommand.DeleteRule command) {
-        verifyDraftType();
-        WaRuleMetadatum rule = waRuleMetadatums.stream().filter(e -> e.getId() == command.ruleId()).findFirst()
-                .orElseThrow(() -> new PageContentModificationException("Failed to find Page Rule with id: " + command.ruleId()));
-        waRuleMetadatums.remove(rule);
-        changed(command);
-    }
+  public void deleteRule(PageContentCommand.DeleteRule command) {
+    verifyDraftType();
+    WaRuleMetadata rule = waRuleMetadata.stream().filter(e -> e.getId() == command.ruleId()).findFirst()
+        .orElseThrow(
+            () -> new PageContentModificationException("Failed to find Page Rule with id: " + command.ruleId()));
+    waRuleMetadata.remove(rule);
+    changed(command);
+  }
 
 
 }
