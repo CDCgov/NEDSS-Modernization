@@ -138,19 +138,15 @@ const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementModalProps
                     {watch.type != undefined && watch.type !== '' && (
                         <>
                             {watch.type === 'HYP' ? (
-                                <>
-                                    <FormProvider {...form}>
-                                        <HyperlinkFields />
-                                    </FormProvider>
-                                </>
+                                <FormProvider {...form}>
+                                    <HyperlinkFields />
+                                </FormProvider>
                             ) : (
                                 <>
                                     {watch.type === 'COM' && (
-                                        <>
-                                            <FormProvider {...form}>
-                                                <CommentsFields />
-                                            </FormProvider>
-                                        </>
+                                        <FormProvider {...form}>
+                                            <CommentsFields />
+                                        </FormProvider>
                                     )}
                                 </>
                             )}
