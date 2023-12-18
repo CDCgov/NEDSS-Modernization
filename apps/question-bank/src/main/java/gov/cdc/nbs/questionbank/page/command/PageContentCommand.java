@@ -14,121 +14,121 @@ public sealed interface PageContentCommand {
         Instant requestedOn();
 
         public record AddLineSeparator(
-                WaTemplate page,
-                Integer orderNumber,
-                long userId,
-                String adminComments,
-                Instant requestedOn) implements PageContentCommand {
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String adminComments,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record AddReadOnlyParticipantsList(
-                WaTemplate page,
-                Integer orderNumber,
-                long userId,
-                String adminComments,
-                Instant requestedOn) implements PageContentCommand {
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String adminComments,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record AddOrignalElectronicDocList(
-                WaTemplate page,
-                Integer orderNumber,
-                long userId,
-                String adminComments,
-                Instant requestedOn) implements PageContentCommand {
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String adminComments,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record AddHyperLink(
-                WaTemplate page,
-                Integer orderNumber,
-                long userId,
-                String adminComments,
-                String label,
-                String linkUrl,
-                Instant requestedOn) implements PageContentCommand {
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String adminComments,
+                        String label,
+                        String linkUrl,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record AddReadOnlyComments(
-                WaTemplate page,
-                Integer orderNumber,
-                long userId,
-                String comments,
-                String adminComments,
-                Instant requestedOn) implements PageContentCommand {
+                        WaTemplate page,
+                        Integer orderNumber,
+                        long userId,
+                        String comments,
+                        String adminComments,
+                        Instant requestedOn) implements PageContentCommand {
         }
         public record AddQuestion(
-                Long page,
-                WaQuestion question,
-                long subsection,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        Long page,
+                        WaQuestion question,
+                        long subsection,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record AddTab(
-                String label,
-                boolean visible,
-                String identifier,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        String label,
+                        boolean visible,
+                        String identifier,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record UpdateTab(
-                String label,
-                boolean visible,
-                long tab,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        String label,
+                        boolean visible,
+                        long tab,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record DeleteTab(
-                long tabId,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        long tabId,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record AddSection(
-                String label,
-                boolean visible,
-                String identifier,
-                long tab,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        String label,
+                        boolean visible,
+                        String identifier,
+                        long tab,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record UpdateSection(
-                String label,
-                boolean visible,
-                long sectionId,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        String label,
+                        boolean visible,
+                        long sectionId,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record DeleteSection(
-                long setionId,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        long setionId,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record AddSubsection(
-                String label,
-                boolean visible,
-                String identifier,
-                long section,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        String label,
+                        boolean visible,
+                        String identifier,
+                        long section,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record UpdateSubsection(
-                String label,
-                boolean visible,
-                long subsection,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        String label,
+                        boolean visible,
+                        long subsection,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record DeleteSubsection(
-                long subsectionId,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        long subsectionId,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
 
         }
 
@@ -143,6 +143,13 @@ public sealed interface PageContentCommand {
         public record UnGroupSubsection(
                 long subsection,
                 List<Long> batches,
+                long userId,
+                Instant requestedOn) implements PageContentCommand {
+        }
+
+        public record DeleteQuestion(
+                Long page,
+                WaQuestion question,
                 long userId,
                 Instant requestedOn) implements PageContentCommand {
         }

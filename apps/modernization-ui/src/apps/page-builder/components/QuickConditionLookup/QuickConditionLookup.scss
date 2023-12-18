@@ -1,8 +1,17 @@
+.usa-modal__main {
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
-    padding: 24px;
+    padding: 0;
     align-items: center;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
     .close-btn {
         color: black;
 
@@ -14,33 +23,31 @@
 
 .condition-lookup-modal-body {
     padding: 24px;
+    height: 70%;
+    overflow-y: auto;
 
     thead th {
         &:nth-of-type(1) {
-            width: 56px;
+            min-width: 56px;
         }
         &:nth-of-type(2) {
-            width: 267px;
+            min-width: 267px;
         }
         &:nth-of-type(3) {
-            width: 103px;
+            min-width: 103px;
         }
         &:nth-of-type(4) {
-            width: 163px;
+            min-width: 163px;
         }
         &:nth-of-type(5) {
-            width: 182px;
+            min-width: 182px;
         }
         &:nth-of-type(6) {
             width: 189px;
         }
         &:nth-of-type(7) {
-            width: 101px;
+            min-width: 101px;
         }
-    }
-
-    tbody td {
-        width: 1%;
     }
 
     .table-data {
