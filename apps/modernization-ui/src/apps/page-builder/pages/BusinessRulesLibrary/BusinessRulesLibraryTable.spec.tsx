@@ -1,20 +1,33 @@
-import { render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { BrowserRouter } from 'react-router-dom';
 
 describe('BusinessRulesLibraryTable', () => {
+    const modalRef = { current: null };
+
     describe('when rendered', () => {
         it('should display sentence cased headers', async () => {
-            const dataSummary: any = {};
-            const summaries = [dataSummary];
-            const { getAllByRole } = render(
+            const rulesSummary: any = {
+                ruleId: 6376,
+                templateUid: 1000272,
+                ruleFunction: 'Enable',
+                ruleDescription: null,
+                sourceIdentifier: 'ARB001',
+                sourceValue: ['Dengue virus'],
+                comparator: '=',
+                targetType: 'QUESTION',
+                errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
+                targetValueIdentifier: ['404400']
+            };
+            const summaries = [rulesSummary];
+
+            render(
                 <BrowserRouter>
-                    <BusinessRulesLibraryTable summaries={summaries} />
+                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} />
                 </BrowserRouter>
             );
 
-            const tableHeads = getAllByRole('columnheader');
-
+            const tableHeads = await screen.findAllByRole('columnheader');
             expect(tableHeads[0]).toHaveTextContent('Source Fields');
             expect(tableHeads[1]).toHaveTextContent('Logic');
             expect(tableHeads[2]).toHaveTextContent('Values');
@@ -25,24 +38,23 @@ describe('BusinessRulesLibraryTable', () => {
     });
 
     describe('when at least one summary is available', () => {
-        const rulesSummary: any = {
-            ruleId: 6376,
-            templateUid: 1000272,
-            ruleFunction: 'Enable',
-            ruleDescription: null,
-            sourceIdentifier: 'ARB001',
-            sourceValue: ['Dengue virus'],
-            comparator: '=',
-            targetType: 'QUESTION',
-            errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
-            targetValueIdentifier: ['404400']
-        };
-        const summaries = [rulesSummary];
-
         it('should display the Business rules summaries', async () => {
+            const rulesSummary: any = {
+                ruleId: 6376,
+                templateUid: 1000272,
+                ruleFunction: 'Enable',
+                ruleDescription: null,
+                sourceIdentifier: 'ARB001',
+                sourceValue: ['Dengue virus'],
+                comparator: '=',
+                targetType: 'QUESTION',
+                errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
+                targetValueIdentifier: ['404400']
+            };
+            const summaries = [rulesSummary];
             const { findAllByRole } = render(
                 <BrowserRouter>
-                    <BusinessRulesLibraryTable summaries={summaries} />
+                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} />
                 </BrowserRouter>
             );
 

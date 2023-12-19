@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
-import { Button, ModalToggleButton } from '@trussworks/react-uswds';
-import { PageSummary } from 'apps/page-builder/generated';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { PageSummary, Pageable, ViewRuleResponse } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { useContext, useEffect, useState } from 'react';
+import { RefObject, useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import { BusinessRuleContext } from '../../context/BusinessContext';
 import { SearchBar } from './SearchBar';
@@ -41,9 +41,9 @@ type Rules = {
 };
 
 type Props = {
-    summaries: any;
+    summaries: Rules[];
     pages?: any;
-    qtnModalRef?: any;
+    qtnModalRef: RefObject<ModalRef>;
 };
 
 export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
@@ -105,7 +105,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     });
 
     // @ts-ignore
-    const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
+    const asTableRows = (pages: Rule[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
