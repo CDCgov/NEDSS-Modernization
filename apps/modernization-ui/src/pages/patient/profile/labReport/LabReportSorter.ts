@@ -14,19 +14,19 @@ const resolveComparator = (name?: Headers): Comparator<LabReport> => {
         case Headers.DateReceived:
             return sortByDate('addTime');
         case Headers.FacilityProvider:
-            return sortByAlphanumeric('addTime');
+            return sortByDate('addTime');
         case Headers.DateCollected:
-            return sortBy('addTime');
+            return sortByDate('addTime');
         case Headers.TestResults:
-            return sortBy('addTime');
+            return sortByDate('addTime');
         case Headers.AssociatedWith:
             return sortBy('addTime');
         case Headers.ProgramArea:
-            return sortBy('addTime');
+            return sortByAlphanumeric('programAreaCd');
         case Headers.Jurisdiction:
-            return sortByAlphanumeric('addTime');
+            return sortByAlphanumeric('jurisdictionCd');
         case Headers.EventID:
-            return sortByAlphanumeric('addTime');
+            return sortByAlphanumeric('localId');
         default:
             return defaultSort;
     }
