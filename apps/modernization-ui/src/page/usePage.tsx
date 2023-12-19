@@ -87,7 +87,7 @@ const PageProvider = ({ pageSize = TOTAL_TABLE_DATA, appendToUrl = false, childr
     };
 
     const requestFromDispatch = (page: number) => dispatch({ type: 'go-to', page });
-    const firstPage = appendToUrl ? () => requestFromUrl(1) : () => requestFromDispatch(1);
+    const firstPage = () => request(1);
     const reload = () => dispatch({ type: 'reload' });
     const request = appendToUrl ? requestFromUrl : requestFromDispatch;
     const ready = (total: number, page: number) => dispatch({ type: 'ready', total, page });
