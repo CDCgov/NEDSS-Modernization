@@ -6,8 +6,7 @@ type Result = FindLabReportsForPatientQuery['findLabReportsForPatient'];
 
 type Content = PatientLabReport;
 
-const internalized = (content: Content): LabReport | null => {  
-    return content
+const internalized = (content: Content): LabReport | null => {
     return (
         content && {
             ...content,

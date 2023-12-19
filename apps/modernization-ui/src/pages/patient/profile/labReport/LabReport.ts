@@ -21,7 +21,7 @@ export type LabReport = {
     observationLastChgTime?: Maybe<string> | undefined;
     cdDescTxt?: Maybe<string> | undefined;
     recordStatusCd?: Maybe<string> | undefined;
-    programAreaCd?:  Maybe<string> | undefined;
+    programAreaCd?: Maybe<string> | undefined;
     jurisdictionCd?: Maybe<number> | undefined;
     jurisdictionCodeDescTxt?: Maybe<string> | undefined;
     pregnantIndCd?: Maybe<string> | undefined;

@@ -157,20 +157,19 @@ type PatientLabReportTableProps = {
 export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientLabReportTableProps) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
-    // const [labReportData, setLabReportData] = useState<any>([]);
-
     const [items, setItems] = useState<LabReport[]>([]);
     const [bodies, setBodies] = useState<TableBody[]>([]);
 
     const handleComplete = (data: FindLabReportsForPatientQuery) => {
         setTotal(data?.findLabReportsForPatient?.length || 0);
-        
+
         const content = transform(data?.findLabReportsForPatient);
-        
+
         setItems(content);
 
-        setBodies(asTableBodies(content, patient));
+        const sorted = sort(content, {});
 
+        setBodies(asTableBodies(sorted, patient));
     };
 
     const [getLabReport, { called, loading }] = useFindLabReportsForPatientLazyQuery({
