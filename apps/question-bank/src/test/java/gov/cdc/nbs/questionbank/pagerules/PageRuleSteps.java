@@ -17,14 +17,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 
 @Transactional
 public class PageRuleSteps {
@@ -85,7 +82,7 @@ public class PageRuleSteps {
   @Given("the business rule has {string} of:")
   public void the_business_rule_has(final String property, List<List<String>> values) {
     List<String> actValues = new ArrayList<>();
-    for (List<String> val : values) {
+    for(List<String> val : values) {
       actValues.add(val.get(0));
     }
     switch (property.toLowerCase()) {
@@ -144,6 +141,18 @@ public class PageRuleSteps {
     }
   }
 
+  @Then("A no credentials found exception is thrown")
+  public void a_no_credentials_found_exception_is_thrown() {
+    assertNotNull(exceptionHolder.getException());
+    assertTrue(exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
+  }
+
+  @Then("an access denied exception is thrown")
+  public void a_access_denied_exception_is_thrown() {
+    assertNotNull(exceptionHolder.getException());
+    assertTrue(exceptionHolder.getException() instanceof AccessDeniedException);
+  }
+
   @Then("the business rule should have target questions list of:")
   public void the_business_rule_should_have_of(DataTable expectedDataTable) throws Exception {
     List<QuestionInfo> expectedQuestionInfoList = expectedDataTable.asMaps().stream()
@@ -155,17 +164,5 @@ public class PageRuleSteps {
           andExpect(jsonPath("$.targetQuestions[" + i + "].id", is(question.id())));
       i++;
     }
-  }
-
-  @Then("A no credentials found exception is thrown")
-  public void a_no_credentials_found_exception_is_thrown() {
-    assertNotNull(exceptionHolder.getException());
-    assertTrue(exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
-  }
-
-  @Then("an access denied exception is thrown")
-  public void a_access_denied_exception_is_thrown() {
-    assertNotNull(exceptionHolder.getException());
-    assertTrue(exceptionHolder.getException() instanceof AccessDeniedException);
   }
 }

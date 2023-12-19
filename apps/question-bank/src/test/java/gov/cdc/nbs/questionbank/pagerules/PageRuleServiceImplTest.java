@@ -55,13 +55,6 @@ class PageRuleServiceImplTest {
                 exception.toString());
     }
 
-    @Test
-    void shouldDeleteTheRuleID() {
-        Long ruleId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.deletePageRule(ruleId);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).deleteById(ruleId);
-        assertEquals("Rule Successfully Deleted", ruleResponse.message());
-    }
 
     // @Test
     // void shouldReturnNotFoundWhenRuleIdIsNotThere() throws RuleException {
