@@ -2,14 +2,14 @@
 @use 'styles/borders';
 
 .static_element {
-    height: 100%;
-    width: 100%;
-    min-width: 100%;
-    max-height: 500px;
+    height: auto;
+    width: auto;
+    min-width: auto;
+    max-height: auto;
     .form {
-        width: 100%;
+        width: auto;
         max-width: unset;
-        height: 100%;
+        height: auto;
         max-height: unset;
     }
     .container {
@@ -17,13 +17,13 @@
         flex-direction: column;
         padding: 1.5rem;
         padding-top: unset;
-        width: 100%;
+        width: auto;
         height: 400px;
         overflow: hidden;
         overflow-y: scroll;
     }
     .footer_buttons {
-        width: 100%;
+        width: auto;
         padding: 1.2rem;
         position: relative;
         padding-top: unset;
