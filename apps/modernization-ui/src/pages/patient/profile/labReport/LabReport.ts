@@ -1,3 +1,5 @@
+import { ActId2 } from 'generated/graphql/schema';
+
 type Maybe<T> = T | null;
 
 export enum Headers {
@@ -32,5 +34,5 @@ export type LabReport = {
     versionCtrlNbr?: Maybe<number> | undefined;
     addUserId?: Maybe<number> | undefined;
     lastChgUserId?: Maybe<number> | undefined;
-    actIds?: Maybe<string> | undefined | any;
+    actIds?: Maybe<Maybe<ActId2>[]> | undefined;
 };
