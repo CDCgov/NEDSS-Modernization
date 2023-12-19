@@ -150,7 +150,7 @@ export const NamesTable = ({ patient }: Props) => {
         setTotal(data?.findPatientProfile?.names?.total ?? 0);
         const content = transform(data?.findPatientProfile);
         const sorted = sort(content, {});
-        setItems(content);
+        setItems(sorted);
         setBodies(asTableBodies(sorted));
     };
 
