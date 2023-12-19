@@ -42,6 +42,7 @@ const Search = (props: SearchProps) => {
                 defaultValue={props.value}
                 onChange={(event) => setKeyword(event.target.value)}
                 onKeyDown={handleEnter}
+                maxLength={50}
             />
             <Button type="button" onClick={handleSearch}>
                 <Icon.Search size={3} name="Search" />
