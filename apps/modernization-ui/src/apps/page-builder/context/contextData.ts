@@ -1,3 +1,4 @@
+import { Direction } from 'sorting';
 import { createContext, Dispatch, SetStateAction } from 'react';
 
 export interface ContextData {
@@ -15,6 +16,7 @@ export interface ContextData {
     setPageSize: Dispatch<SetStateAction<number>>;
     isLoading: boolean;
     setIsLoading: (status: boolean) => void;
+    handleSort?: (name: string, direction: Direction) => void;
 }
 
 const noop: ContextData & { type: 'noop' } = {

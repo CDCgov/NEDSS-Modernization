@@ -147,5 +147,29 @@ public sealed interface PageContentCommand {
                 Instant requestedOn) implements PageContentCommand {
         }
 
+        public record DeleteQuestion(
+                Long page,
+                WaQuestion question,
+                long userId,
+                Instant requestedOn) implements PageContentCommand {
+        }
+
+        public record AddRule(
+                String ruleCd,
+                String errMsgTxt,
+                String recordStatusCd,
+                String javascriptFunction,
+                String javascriptFunctionNm,
+                long userId,
+                Instant requestedOn) implements PageContentCommand {
+        }
+
+        public record DeleteRule(
+                long ruleId,
+                long userId,
+                Instant requestedOn)implements PageContentCommand {
+        }
+
+
 
 }

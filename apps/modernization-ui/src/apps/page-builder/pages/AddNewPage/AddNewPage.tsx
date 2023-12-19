@@ -140,6 +140,7 @@ export const AddNewPage = () => {
                             rules={{ required: { value: true, message: 'Event type is required.' } }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
+                                    aria-labelledby="eventType"
                                     label="Event type"
                                     dataTestid="eventTypeDropdown"
                                     value={value}
