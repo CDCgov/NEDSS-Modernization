@@ -52,7 +52,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
         showAlert({ message: message, type: 'success' });
     };
 
-    const onSubmit = form.handleSubmit(async (data) => {
+    const onSubmit = form.handleSubmit((data) => {
         switch (data.type) {
             case 'HYP': {
                 data.subSectionId = subsectionId;
@@ -60,9 +60,10 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                     authorization: authorization(),
                     page: page.id,
                     request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The element ${(data as AddHyperlink).label} has been successfully added.`);
                 });
-                form.reset();
-                handleAlert(`The element ${(data as AddHyperlink).label} has been successfully added.`);
                 break;
             }
             case 'COM': {
@@ -71,9 +72,10 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                     authorization: authorization(),
                     page: page.id,
                     request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The comment element has been successfully added.`);
                 });
-                form.reset();
-                handleAlert(`The comment element has been successfully added.`);
                 break;
             }
             case 'LIN': {
@@ -82,9 +84,10 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                     authorization: authorization(),
                     page: page.id,
                     request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The line separator element has been successfully added.`);
                 });
-                form.reset();
-                handleAlert(`The line separator element has been successfully added.`);
                 break;
             }
             case 'ELE': {
@@ -93,9 +96,10 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                     authorization: authorization(),
                     page: page.id,
                     request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The electronic document list has been successfully added.`);
                 });
-                form.reset();
-                handleAlert(`The electronic document list has been successfully added.`);
                 break;
             }
             case 'PAR': {
@@ -104,9 +108,10 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                     authorization: authorization(),
                     page: page.id,
                     request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The participant list has been successfully added.`);
                 });
-                form.reset();
-                handleAlert(`The participant list has been successfully added.`);
                 break;
             }
         }
@@ -135,7 +140,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                             )}
                         />
                     </div>
-                    {watch.type != undefined && watch.type !== '' && (
+                    {watch.type && (
                         <>
                             {watch.type === 'HYP' && (
                                 <FormProvider {...form}>
