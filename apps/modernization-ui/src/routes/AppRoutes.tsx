@@ -9,7 +9,7 @@ import { useConfiguration } from 'configuration';
 import { Layout } from 'layout';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddPatient } from 'pages/addPatient/AddPatient';
-import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
+import { AddedPatient } from 'apps/patient/add/SuccessForm/AddedPatient';
 import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
 import { Login } from 'pages/login/Login';
 import { PatientProfile } from 'pages/patient/profile';

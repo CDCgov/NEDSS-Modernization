@@ -1,6 +1,6 @@
 import { externalizeDate, externalizeDateTime } from 'date';
 import { NameUseCd, NewPatientIdentification, NewPatientPhoneNumber, PersonInput } from 'generated/graphql/schema';
-import { NewPatientEntry } from 'pages/patient/add';
+import { NewPatientEntry } from 'apps/patient/add';
 
 function isEmpty(obj: any) {
     for (const key in obj) {
