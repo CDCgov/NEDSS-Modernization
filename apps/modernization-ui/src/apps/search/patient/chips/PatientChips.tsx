@@ -1,6 +1,6 @@
 import { PersonFilter } from 'generated/graphql/schema';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import Chip from './Chip';
+import Chip from '../../../../pages/advancedSearch/components/chips/Chip';
 
 type PatientChipsProps = {
     filter: PersonFilter;

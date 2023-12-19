@@ -1,7 +1,7 @@
 import { Pagination } from '@trussworks/react-uswds';
 import { useNavigate } from 'react-router';
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { PatientResult } from 'pages/patient/search';
+import { PatientResult } from 'apps/search/patient';
 
 type SearchItemsProps = {
     data: PatientSearchResult[];
