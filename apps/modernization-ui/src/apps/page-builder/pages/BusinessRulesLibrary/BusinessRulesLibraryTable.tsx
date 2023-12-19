@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { PageSummary, Pageable, ViewRuleResponse } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { RefObject, useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
@@ -105,7 +104,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     });
 
     // @ts-ignore
-    const asTableRows = (pages: Rule[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
+    const asTableRows = (pages: Rules[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
