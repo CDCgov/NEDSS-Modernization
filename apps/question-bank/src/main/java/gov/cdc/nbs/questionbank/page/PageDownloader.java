@@ -84,7 +84,7 @@ public class PageDownloader {
                 );
 				
 				List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
-						formatttedRelatedConditions(pageConditions), page.getLastChgTime().toString(),
+						formatttedRelatedConditions(pageConditions), null != page.getLastChgTime()? dateFormatter.format(page.getLastChgTime()):"",
 						getLastUpdatedUser(page.getLastChgUserId()));
 				csvPrinter.printRecord(data);
 
