@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 @Component
-class PageSummarySearcher {
+public class PageSummarySearcher {
 
   private final JPAQueryFactory factory;
   private final PageSummaryTables tables;
@@ -26,14 +26,13 @@ class PageSummarySearcher {
 
   PageSummarySearcher(
       final JPAQueryFactory factory,
-      final PageSummaryFinder finder
-  ) {
+      final PageSummaryFinder finder) {
     this.factory = factory;
     this.finder = finder;
     this.tables = new PageSummaryTables();
   }
 
-  Page<PageSummary> find(final PageSummaryCriteria criteria, final Pageable pageable) {
+  public Page<PageSummary> find(final PageSummaryCriteria criteria, final Pageable pageable) {
 
     // searches on page name and condition
     OrderSpecifier<?>[] ordering = resolveOrdering(pageable);
@@ -51,9 +50,7 @@ class PageSummarySearcher {
         .subList((int) pageable.getOffset(),
             Math.min(
                 total,
-                (int) pageable.getOffset() + pageable.getPageSize()
-            )
-        );
+                (int) pageable.getOffset() + pageable.getPageSize()));
 
     return total > 0
         ? resolvePage(ids, pageable, total)
@@ -66,21 +63,19 @@ class PageSummarySearcher {
 
   private JPAQuery<Tuple> findApplicableSummaries(final PageSummaryCriteria criteria) {
     return this.factory.selectDistinct(
-            this.tables.page().id,
-            this.tables.page().templateType,
-            this.tables.page().publishVersionNbr,
-            this.tables.page().templateNm,
-            this.tables.eventType().codeShortDescTxt,
-            this.tables.condition().conditionShortNm,
-            this.tables.page().lastChgTime,
-            this.tables.authUser().userFirstNm,
-            this.tables.authUser().userLastNm
-        )
+        this.tables.page().id,
+        this.tables.page().templateType,
+        this.tables.page().publishVersionNbr,
+        this.tables.page().templateNm,
+        this.tables.eventType().codeShortDescTxt,
+        this.tables.condition().conditionShortNm,
+        this.tables.page().lastChgTime,
+        this.tables.authUser().userFirstNm,
+        this.tables.authUser().userLastNm)
         .from(this.tables.page())
         .join(this.tables.eventType()).on(
             this.tables.eventType().id.codeSetNm.eq("BUS_OBJ_TYPE"),
-            this.tables.eventType().id.code.eq(this.tables.page().busObjType)
-        )
+            this.tables.eventType().id.code.eq(this.tables.page().busObjType))
         .leftJoin(this.tables.authUser())
         .on(this.tables.page().lastChgUserId.eq(this.tables.authUser().nedssEntryId))
         .leftJoin(this.tables.conditionMapping())
@@ -96,17 +91,14 @@ class PageSummarySearcher {
     BooleanExpression onlyPages = this.tables.page().templateType.in("Draft", "Published");
 
     return Stream.concat(
-            applySearch(criteria),
-            QueryDSLFilterApplier.apply(
-                this::resolveProperty,
-                criteria.filters()
-            )
-        )
+        applySearch(criteria),
+        QueryDSLFilterApplier.apply(
+            this::resolveProperty,
+            criteria.filters()))
         .reduce(
             onlyPages,
             BooleanExpression::and,
-            BooleanExpression::and
-        );
+            BooleanExpression::and);
   }
 
   private Stream<BooleanExpression> applySearch(final PageSummaryCriteria criteria) {
@@ -115,9 +107,7 @@ class PageSummarySearcher {
       return Stream.of(this.tables.page().templateNm.contains(criteria.search())
           .or(
               this.tables.condition().conditionShortNm.contains(criteria.search())
-                  .or(this.tables.page().id.like(criteria.search()))
-          )
-      );
+                  .or(this.tables.page().id.like(criteria.search()))));
     }
     return Stream.empty();
   }
@@ -148,12 +138,10 @@ class PageSummarySearcher {
    */
   private OrderSpecifier<?>[] resolveOrdering(final Pageable pageable) {
     return Stream.concat(
-            QueryDSLOrderResolver.resolve(
-                this::resolveSortProperty,
-                pageable
-            ),
-            Stream.of(this.tables.page().id.desc())
-        ).filter(Objects::nonNull)
+        QueryDSLOrderResolver.resolve(
+            this::resolveSortProperty,
+            pageable),
+        Stream.of(this.tables.page().id.desc())).filter(Objects::nonNull)
         .toArray(OrderSpecifier[]::new);
   }
 
@@ -163,8 +151,7 @@ class PageSummarySearcher {
   private Page<PageSummary> resolvePage(
       final List<Long> ids,
       final Pageable pageable,
-      int totalSize
-  ) {
+      int totalSize) {
     // get the summaries based on supplied Ids
     List<PageSummary> summaries = this.finder.findAll(ids);
     return new PageImpl<>(summaries, pageable, totalSize);

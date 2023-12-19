@@ -4,7 +4,7 @@ import gov.cdc.nbs.testing.support.Active;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//  Sometimes Spring gets confuses with autowired generics
+//  Spring gets confuses with autowired generics
 @Configuration
 class PatientProfileAddressChangeConfiguration {
 
