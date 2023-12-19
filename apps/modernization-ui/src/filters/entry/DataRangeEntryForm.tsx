@@ -1,9 +1,8 @@
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { FilterEntry } from './FilterEntry';
-import { isAfter } from 'date-fns';
-import { internalizeDate } from 'date';
 import { useEffect } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { isBefore } from 'validation/date';
+import { FilterEntry } from './FilterEntry';
 
 const DataRangeEntryForm = () => {
     const { control, trigger } = useFormContext<FilterEntry, Partial<FilterEntry>>();
@@ -15,19 +14,6 @@ const DataRangeEntryForm = () => {
         trigger('after');
     }, [before]);
 
-    const isBeforeTo =
-        (to: string) =>
-        (after: string): string | undefined => {
-            if (to && after) {
-                const toDate = new Date(to);
-                const afterDate = new Date(after);
-
-                if (isAfter(afterDate, toDate)) {
-                    return `Cannot be after 'To' date: ${internalizeDate(toDate)}`;
-                }
-            }
-        };
-
     return (
         <>
             <Controller
@@ -36,7 +22,7 @@ const DataRangeEntryForm = () => {
                 shouldUnregister
                 rules={{
                     required: { value: !before, message: 'From date is required when To is not picked.' },
-                    validate: isBeforeTo(before)
+                    validate: isBefore(before)
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
