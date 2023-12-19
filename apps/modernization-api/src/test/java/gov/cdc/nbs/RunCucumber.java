@@ -31,7 +31,7 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @CucumberContextConfiguration
 @SpringBootTest
 @Import(PatientLocalIdentifierGeneratorTestConfiguration.class)
-@ActiveProfiles({"default","test","development"})
+@ActiveProfiles({"default","test"})
 @AutoConfigureMockMvc
 @Testcontainers
 @EmbeddedNbsDatabase

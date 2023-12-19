@@ -1,6 +1,7 @@
 import { PagesResponse, PagesService } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
+import { useParams } from 'react-router-dom';
 
 type State =
     | { status: 'idle' }
@@ -28,8 +29,21 @@ const reducer = (_state: State, action: Action): State => {
     }
 };
 
-export const useGetPageDetails = () => {
+type Interaction = {
+    loading: boolean;
+    page: PagesResponse | undefined;
+    error?: string;
+};
+
+export const useGetPageDetails = (): Interaction => {
     const [state, dispatch] = useReducer(reducer, initial);
+    const { pageId } = useParams();
+
+    useEffect(() => {
+        if (pageId) {
+            dispatch({ type: 'fetch', page: Number(pageId) });
+        }
+    }, [pageId, dispatch]);
 
     useEffect(() => {
         if (state.status === 'fetching') {
@@ -46,12 +60,12 @@ export const useGetPageDetails = () => {
                     }
                 });
         }
-    }, [state.status]);
+    }, [state]);
 
     const value = {
         error: state.status === 'error' ? state.error : undefined,
-        isLoading: state.status === 'fetching',
-        pageDetails: state.status === 'complete' ? state.details : undefined,
+        loading: state.status === 'fetching',
+        page: state.status === 'complete' ? state.details : undefined,
         fetch: (page: number) => dispatch({ type: 'fetch', page })
     };
 

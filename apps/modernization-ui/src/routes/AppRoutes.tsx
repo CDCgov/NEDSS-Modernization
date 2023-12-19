@@ -1,27 +1,21 @@
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
+import { PageLibrary } from 'apps/page-builder/page/library/PageLibrary';
+import { Edit } from 'apps/page-builder/page/management/edit/Edit';
+import { PreviewPage } from 'apps/page-builder/page/management/preview';
+import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
+import { Spinner } from 'components/Spinner';
 import { Config } from 'config';
 import { useConfiguration } from 'configuration';
-import { UserContext } from 'providers/UserContext';
-import { Spinner } from 'components/Spinner';
-import { Login } from 'pages/login/Login';
-import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
-import { PatientProfile } from 'pages/patient/profile';
+import { Layout } from 'layout';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddPatient } from 'pages/addPatient/AddPatient';
 import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
-import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
-import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
-import ConditionLibrary from 'apps/page-builder/pages/ConditionLibrary/ConditionLibrary';
-import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
-import { PageLibrary } from 'apps/page-builder/page/library/PageLibrary';
-import { ConditionalCase } from 'apps/page-builder/components/ConditionalCase/ConditionalCase';
-import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
-import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/CreateQuestion';
-import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
-import { ValuesetLibrary } from 'apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
-import { Edit } from 'apps/page-builder/page/management/Edit/Edit';
+import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
+import { Login } from 'pages/login/Login';
+import { PatientProfile } from 'pages/patient/profile';
+import { UserContext } from 'providers/UserContext';
+import { ReactNode, useContext, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -59,70 +53,76 @@ export const AppRoutes = () => {
         setInitializing(false);
     }, 1000);
 
+    const pageLibraryRoutes = (enabled: boolean) => {
+        return enabled ? <Route index element={<PageLibrary />} /> : <Route index element={<Navigate to={'/'} />} />;
+    };
+
+    const pageManagementRoutes = (enabled: boolean) => {
+        return enabled ? (
+            <>
+                <Route path="add" element={<AddNewPage />} />
+                <Route path=":pageId">
+                    <Route index element={<PreviewPage />} />
+                    <Route path="edit" element={<Edit />} />
+                </Route>
+            </>
+        ) : (
+            <Route index element={<Navigate to={'/'} />} />
+        );
+    };
+
     return (
         <>
             {loading && <Spinner />}
             <ScrollToTop>
                 <Routes>
-                    {state.isLoggedIn && !loading && (
-                        <>
-                            <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
-                            <Route path="/patient-profile/:id" element={<PatientProfile />} />
-                            <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
-                            <Route path="/add-patient" element={<AddPatient />} />
-                            <Route path="/add-patient/patient-added" element={<AddedPatient />} />
+                    <Route element={<Layout />}>
+                        {state.isLoggedIn && !loading && (
+                            <>
+                                <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
+                                <Route path="/patient-profile/:id" element={<PatientProfile />} />
+                                <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
+                                <Route path="/add-patient" element={<AddPatient />} />
+                                <Route path="/add-patient/patient-added" element={<AddedPatient />} />
 
-                            {config.features.pageBuilder.enabled ? (
-                                <Route path="/page-builder" element={<PageBuilderContextProvider />}>
-                                    <Route path="manage">
-                                        <Route path="pages" element={<PageLibrary />} />
-                                        <Route path="valueset-library" element={<ValuesetLibrary />} />
-                                        <Route path="question-library" element={<QuestionLibrary />} />
-                                        <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
-                                        <Route path="condition-library" element={<ConditionLibrary />} />
-                                    </Route>
-                                    <Route path="add">
-                                        <Route path="page" element={<AddNewPage />} />
-                                        <Route path="condition" element={<CreateCondition />} />
-                                        <Route path="conditional-case" element={<ConditionalCase />} />
-                                        <Route path="question" element={<CreateQuestion />} />
-                                    </Route>
-                                    <Route path="edit">
-                                        <Route path="page/:pageId?" element={<EditPage />} />
-                                    </Route>
-                                    <Route path="pages">
-                                        <Route path=":pageId">
-                                            <Route path="edit/tab?/:tabId?" element={<Edit />} />
+                                {config.features.pageBuilder.enabled && (
+                                    <Route path="/page-builder" element={<PageBuilderContextProvider />}>
+                                        <Route path="pages">
+                                            {pageLibraryRoutes(config.features.pageBuilder.page.library.enabled)}
+                                            {pageManagementRoutes(config.features.pageBuilder.page.management.enabled)}
                                         </Route>
                                     </Route>
-                                </Route>
-                            ) : null}
-                            {!config.loading && (
-                                <>
-                                    <Route path="*" element={<Navigate to="/advanced-search" />} />
-                                    <Route path="/" element={<Navigate to="/advanced-search" />} />
-                                </>
-                            )}
-                        </>
-                    )}
+                                )}
+                                {!config.loading && (
+                                    <>
+                                        <Route path="*" element={<Navigate to="/advanced-search" />} />
+                                        <Route path="/" element={<Navigate to="/advanced-search" />} />
+                                    </>
+                                )}
+                            </>
+                        )}
 
-                    {Config.enableLogin && (
-                        <>
-                            {!state.isLoggedIn && !state.isLoginPending && !loading && (
-                                <>
-                                    <Route path="/dev/login" element={<Login />} />
-                                    <Route path="*" element={<Navigate to="/dev/login" />} />
-                                </>
-                            )}
-                        </>
-                    )}
-                    {!Config.enableLogin && (
-                        <>
-                            {!state.isLoggedIn && !state.isLoginPending && !loading && (
-                                <Route path="*" element={<>{(window.location.href = `${Config.nbsUrl}/login`)}</>} />
-                            )}
-                        </>
-                    )}
+                        {Config.enableLogin && (
+                            <>
+                                {!state.isLoggedIn && !state.isLoginPending && !loading && (
+                                    <>
+                                        <Route path="/dev/login" element={<Login />} />
+                                        <Route path="*" element={<Navigate to="/dev/login" />} />
+                                    </>
+                                )}
+                            </>
+                        )}
+                        {!Config.enableLogin && (
+                            <>
+                                {!state.isLoggedIn && !state.isLoginPending && !loading && (
+                                    <Route
+                                        path="*"
+                                        element={<>{(window.location.href = `${Config.nbsUrl}/login`)}</>}
+                                    />
+                                )}
+                            </>
+                        )}
+                    </Route>
                 </Routes>
             </ScrollToTop>
         </>

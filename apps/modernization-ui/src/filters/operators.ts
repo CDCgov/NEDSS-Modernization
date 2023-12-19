@@ -1,6 +1,6 @@
-type MultiValueOperator = 'EQUALS' | 'NOT_EQUAL_TO';
-type SingleValueOperator = 'STARTS_WITH' | 'CONTAINS';
-type ValueOperator = SingleValueOperator | MultiValueOperator;
+type ExactValueOperator = 'EQUALS' | 'NOT_EQUAL_TO';
+type PartialValueOperator = 'STARTS_WITH' | 'CONTAINS';
+type ValueOperator = PartialValueOperator | ExactValueOperator;
 
 type DatePeriodOperator = 'TODAY' | 'LAST_7_DAYS' | 'LAST_14_DAYS' | 'LAST_30_DAYS' | 'MORE_THAN_30_DAYS';
 type DateRangeOperator = 'BETWEEN';
@@ -11,14 +11,14 @@ export type {
     DateOperator,
     DatePeriodOperator,
     DateRangeOperator,
-    SingleValueOperator,
-    MultiValueOperator
+    PartialValueOperator,
+    ExactValueOperator
 };
 
-const isSingleValueProperty = (operator?: ValueOperator) =>
+const isPartialValueProperty = (operator?: ValueOperator) =>
     (operator && (operator === 'STARTS_WITH' || operator === 'CONTAINS')) || false;
 
-const isMultiValueProperty = (operator?: ValueOperator) =>
+const isExactValueProperty = (operator?: ValueOperator) =>
     (operator && (operator === 'EQUALS' || operator === 'NOT_EQUAL_TO')) || false;
 
-export { isSingleValueProperty, isMultiValueProperty };
+export { isPartialValueProperty, isExactValueProperty };

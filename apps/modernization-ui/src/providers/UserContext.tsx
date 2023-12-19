@@ -1,8 +1,10 @@
 import React, { ReactNode, useEffect, useReducer } from 'react';
-import { ApiError, Me, UserService } from '../generated';
-import { UserControllerService } from '../generated/services/UserControllerService';
-import { Config } from 'config';
 import { useNavigate } from 'react-router-dom';
+import { ApiError, Me, UserService } from 'generated';
+import { Config } from 'config';
+import { authorization } from 'authorization';
+import { UserControllerService } from 'generated/services/UserControllerService';
+
 const USER_ID = 'nbs_user=';
 const TOKEN = 'nbs_token=';
 
@@ -172,9 +174,7 @@ const UserContextProvider = ({ children }: Props) => {
         }
 
         if (state.status === 'logged-in') {
-            UserService.meUsingGet({ authorization: `Bearer ${state.getToken()}` })
-                .then(handleMeSuccess)
-                .catch(handleError);
+            UserService.meUsingGet({ authorization: authorization() }).then(handleMeSuccess).catch(handleError);
         }
     }, [state.status, state.username]);
 
