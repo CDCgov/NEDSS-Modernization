@@ -1,0 +1,20 @@
+@forward 'styles/buttons';
+@use 'styles/colors';
+@use 'styles/borders';
+
+.menu {
+    display: flex;
+    margin: 0;
+
+    height: 2.5625rem;
+
+    & > button {
+        display: flex;
+        align-items: center;
+    }
+
+    & > a {
+        display: flex;
+        align-items: center;
+    }
+}

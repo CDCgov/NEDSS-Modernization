@@ -1,5 +1,4 @@
 import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
-import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { NoData } from 'components/NoData';
@@ -9,6 +8,8 @@ import { TableHeader } from './TableHeader';
 import classNames from 'classnames';
 import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
 import { Column, resolveColumns } from './resolveColumns';
+
+import styles from './table.module.scss';
 
 type SelectionMode = 'select' | 'deselect';
 
@@ -39,8 +40,9 @@ export type TableBody = {
 };
 
 export type Props = {
+    display?: 'standard' | 'zebra';
+    className?: string;
     tableHeader?: string;
-    tableSubHeader?: ReactNode | ReactNode[] | string;
     tableHead: Header[];
     tableBody: TableBody[];
     isPagination?: boolean;
@@ -49,16 +51,17 @@ export type Props = {
     currentPage?: number;
     handleNext?: (page: number) => void;
     buttons?: ReactNode | ReactNode[];
-    dataNotAvailableElement?: ReactNode | ReactNode[];
     sortData?: SortHandler;
     rangeSelector?: boolean;
     selectable?: boolean;
     handleSelected?: OldSelectionHandler;
     isLoading?: boolean;
-    contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates';
+    contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets';
 };
 
 export const TableComponent = ({
+    display = 'standard',
+    className,
     tableHeader,
     tableHead,
     tableBody,
@@ -68,8 +71,6 @@ export const TableComponent = ({
     currentPage = 1,
     handleNext,
     buttons,
-    dataNotAvailableElement = <NoData />,
-    tableSubHeader,
     sortData,
     rangeSelector = false,
     selectable = false,
@@ -81,11 +82,7 @@ export const TableComponent = ({
 
     const columns = resolveColumns(selectable, tableHead);
 
-    const dataNotAvailalbe = (columns: number) => (
-        <tr className="text-center no-data not-available">
-            <td colSpan={columns}>{dataNotAvailableElement}</td>
-        </tr>
-    );
+    const showHeader = tableHeader || buttons;
 
     const handleRowSelection =
         (row: TableBody, handleSelected?: OldSelectionHandler): ChangeEventHandler<HTMLInputElement> =>
@@ -109,7 +106,7 @@ export const TableComponent = ({
                 <Fragment key={index}>
                     <tr>
                         {selectable && (
-                            <td className="table-data selection">
+                            <td className={styles.selectable}>
                                 <Checkbox
                                     disabled={!row.selectable}
                                     key={`selection-${index}`}
@@ -122,14 +119,10 @@ export const TableComponent = ({
                         )}
                         {row.tableDetails.map((detail: Cell, column: number) => {
                             const isSorting = sorting.isSorting(columns[offset + column].name);
-                            const className = classNames('table-data', { 'sort-td': isSorting });
+                            const className = classNames({ [styles.sorted]: isSorting });
                             return (
                                 <td className={className} key={column}>
-                                    {detail.title ? (
-                                        <span className={'table-span'}>{detail.title}</span>
-                                    ) : (
-                                        <NoData key={column} className={className} />
-                                    )}
+                                    {detail.title ? detail.title : <NoData key={column} className={className} />}
                                 </td>
                             );
                         })}
@@ -147,37 +140,43 @@ export const TableComponent = ({
     };
 
     return (
-        <div>
-            <div className="grid-row flex-align-center flex-justify padding-x-2 search-box padding-y-3 border-bottom border-base-lighter">
-                <p className="font-sans-lg text-bold margin-0 table-header">
-                    {tableHeader}
-                    {tableSubHeader}
-                </p>
-                {buttons}
-            </div>
-            <Table bordered={false} fullWidth>
+        <div className={styles.table}>
+            {showHeader && (
+                <header>
+                    <h2>{tableHeader}</h2>
+                    {buttons}
+                </header>
+            )}
+            <Table
+                bordered={false}
+                fullWidth
+                className={classNames(
+                    {
+                        [styles.standard]: display === 'standard',
+                        [styles.zebra]: display === 'zebra'
+                    },
+                    className
+                )}>
                 <TableHeaders sorting={sorting} columns={columns} />
                 <tbody>
                     {isLoading ? <LoadingRow columns={columns.length} /> : renderRows(sorting, tableBody, selectable)}
                 </tbody>
             </Table>
-            <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">
-                <div className="table__range">
+            <footer>
+                <div className={styles.range}>
                     {!rangeSelector ? (
-                        <p className="margin-0 show-length-text">
+                        <>
                             Showing {tableBody?.length} of {totalResults}
-                        </p>
+                        </>
                     ) : (
                         <>
-                            <span>Showing &nbsp;</span>
-                            <RangeToggle contextName={contextName} />
-                            <span> &nbsp;of {totalResults}</span>
+                            Showing <RangeToggle contextName={contextName} /> of {totalResults}
                         </>
                     )}
                 </div>
                 {isPagination && totalResults >= pageSize && (
                     <Pagination
-                        className="margin-0 pagination"
+                        className={styles.pagination}
                         totalPages={Math.ceil(totalResults / pageSize)}
                         currentPage={currentPage}
                         pathname={'/patient-profile'}
@@ -186,10 +185,18 @@ export const TableComponent = ({
                         onClickPageNumber={(_, page) => handleNext?.(page)}
                     />
                 )}
-            </div>
+            </footer>
         </div>
     );
 };
+
+const dataNotAvailalbe = (columns: number) => (
+    <tr className="text-center no-data not-available">
+        <td colSpan={columns}>
+            <NoData />
+        </td>
+    </tr>
+);
 
 // Header
 type TableHeadersProps = {
@@ -210,22 +217,16 @@ const TableHeaders = ({ sorting, columns }: TableHeadersProps) => (
     </thead>
 );
 
-const SelectionHeader = () => (
-    <th scope="col" className="selection">
-        <div className="table-head">
-            <span className="head-name" />
-        </div>
-    </th>
-);
+const SelectionHeader = () => <th scope="col" className={styles.selectable}></th>;
 
 //  Rows
 type LoadingProps = {
     columns: number;
 };
 const LoadingRow = ({ columns }: LoadingProps) => (
-    <tr className="text-center not-available">
+    <tr>
         <td colSpan={columns}>
-            <Loading />
+            <Loading center />
         </td>
     </tr>
 );

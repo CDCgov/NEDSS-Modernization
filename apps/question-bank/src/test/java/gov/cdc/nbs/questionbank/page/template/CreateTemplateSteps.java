@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.test.web.client.response.DefaultResponseCreator;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.HashMap;
@@ -109,16 +110,14 @@ public class CreateTemplateSteps {
 
     this.response.active()
         .andDo(print())
-        .andExpect(status().isAccepted())
-    ;
+        .andExpect(status().isAccepted());
   }
 
   @Then("the template cannot be changed because {string}")
   public void the_template_cannot_be_created_because(final String error) throws Exception {
     this.response.active()
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("$.message", equalToIgnoringCase(error)))
-    ;
+        .andExpect(jsonPath("$.message", equalToIgnoringCase(error)));
   }
 
 }

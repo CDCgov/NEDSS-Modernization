@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import {
-    AssociatedInvestigation,
-    FindLabReportsByFilterQuery,
-    LabReport,
-    OrganizationParticipation,
-    useFindLabReportsByFilterLazyQuery
+    FindLabReportsForPatientQuery,
+    PatientLabReport,
+    OrganizationParticipation2,
+    useFindLabReportsForPatientLazyQuery,
+    AssociatedInvestigation2
 } from 'generated/graphql/schema';
 
 import { SortableTable } from 'components/Table/SortableTable';
@@ -34,14 +34,16 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         { name: 'Event #', sortable: true, sort: 'all' }
     ]);
 
-    const handleComplete = (data: FindLabReportsByFilterQuery) => {
-        setTotal(data?.findLabReportsByFilter?.total || 0);
-        setLabReportData(data.findLabReportsByFilter?.content);
+    const handleComplete = (data: FindLabReportsForPatientQuery) => {
+        setTotal(data?.findLabReportsForPatient?.length || 0);
+        setLabReportData(data.findLabReportsForPatient);
     };
 
-    const [getLabReport, { called, loading }] = useFindLabReportsByFilterLazyQuery({ onCompleted: handleComplete });
+    const [getLabReport, { called, loading }] = useFindLabReportsForPatientLazyQuery({
+        onCompleted: handleComplete
+    });
 
-    const getOrderingProviderName = (labReport: LabReport): string | undefined => {
+    const getOrderingProviderName = (labReport: PatientLabReport): string | undefined => {
         const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
         if (provider) {
             return `${provider.firstName} ${provider.lastName}`;
@@ -50,15 +52,15 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         }
     };
 
-    const getReportingFacility = (labReport: LabReport): OrganizationParticipation | undefined | null => {
+    const getReportingFacility = (labReport: PatientLabReport): OrganizationParticipation2 | undefined | null => {
         return labReport.organizationParticipations?.find((o) => o?.typeCd === 'AUT');
     };
 
-    const getOrderingFacility = (labReport: LabReport): OrganizationParticipation | undefined | null => {
+    const getOrderingFacility = (labReport: PatientLabReport): OrganizationParticipation2 | undefined | null => {
         return labReport.organizationParticipations?.find((o) => o?.typeCd === 'ORD');
     };
 
-    const getTestedResults = (labReport: LabReport) => {
+    const getTestedResults = (labReport: PatientLabReport) => {
         return (
             labReport.observations?.map(
                 (o) =>
@@ -74,13 +76,13 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         );
     };
 
-    const getSortableTestResult = (labReport: LabReport) => {
+    const getSortableTestResult = (labReport: PatientLabReport) => {
         if (labReport?.observations?.find((o) => o?.domainCd === 'Result')) {
             return labReport?.observations?.find((o) => o?.domainCd === 'Result')?.cdDescTxt;
         }
     };
 
-    const getSortableAssociatedWith = (labReport: LabReport) => {
+    const getSortableAssociatedWith = (labReport: PatientLabReport) => {
         return labReport?.associatedInvestigations?.[0]?.cdDescTxt || '';
     };
 
@@ -88,12 +90,10 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         if (patient) {
             getLabReport({
                 variables: {
-                    filter: {
-                        patientId: +patient
-                    },
+                    personUid: +patient,
                     page: {
                         pageNumber: currentPage - 1,
-                        pageSize
+                        pageSize: pageSize as number
                     }
                 }
             });
@@ -272,7 +272,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
                                 ) : (
                                     <>
                                         {report.associatedInvestigations?.map(
-                                            (investigation: AssociatedInvestigation, index: number) => (
+                                            (investigation: AssociatedInvestigation2, index: number) => (
                                                 <div key={index}>
                                                     <ClassicLink
                                                         url={`/nbs/api/profile/${patient}/investigation/${investigation.publicHealthCaseUid}`}>

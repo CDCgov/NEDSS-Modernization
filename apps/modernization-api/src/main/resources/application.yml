@@ -78,3 +78,8 @@ nbs.ui:
           verification: false
       pageBuilder:
         enabled: false
+        page:
+          library: 
+            enabled: false
+          management: 
+            enabled: false

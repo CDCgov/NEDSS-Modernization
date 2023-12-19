@@ -5,7 +5,7 @@
 import type { Option } from './Option';
 
 export type ConceptOptionsResponse = {
-    options?: Array<Option>;
-    valueSet?: string;
+    options: Array<Option>;
+    valueSet: string;
 };
 

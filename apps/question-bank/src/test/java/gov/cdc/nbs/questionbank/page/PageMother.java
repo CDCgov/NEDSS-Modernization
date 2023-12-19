@@ -359,6 +359,17 @@ public class PageMother {
     );
   }
 
+  public void legacy(final PageIdentifier page) {
+    harness.with(page).use(
+        found -> {
+          //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
+          //  with that becoming the Active page
+          found.setTemplateType("LEGACY");
+          found.setPublishIndCd('F');
+        }
+    );
+  }
+
   public void published(final PageIdentifier page) {
     harness.with(page).use(
         found -> found.publish(

@@ -52,7 +52,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
 
     return (
         <>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold required">
                     As of:
                 </Grid>
@@ -76,7 +76,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Marital status:
                 </Grid>
@@ -96,7 +96,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Mother's maiden name:
                 </Grid>
@@ -121,7 +121,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Number of adults in residence:
                 </Grid>
@@ -146,7 +146,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Number of children in residence:
                 </Grid>
@@ -171,7 +171,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Primary occupation:
                 </Grid>
@@ -191,7 +191,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Highest level of education:
                 </Grid>
@@ -211,7 +211,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Primary language:
                 </Grid>
@@ -231,7 +231,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Speak english:
                 </Grid>
@@ -251,7 +251,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom">
+            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     State HIV case ID:
                 </Grid>

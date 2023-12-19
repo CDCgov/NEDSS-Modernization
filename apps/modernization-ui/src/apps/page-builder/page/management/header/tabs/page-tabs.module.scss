@@ -1,0 +1,36 @@
+@use 'styles/colors';
+
+.tabs {
+    display: flex;
+    gap: 2.5rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        cursor: pointer;
+
+        display: block;
+        color: colors.$base-black;
+        font-weight: 400;
+        padding: 0.6rem;
+        border-bottom-style: solid;
+        border-bottom-width: 0.4375rem;
+        border-bottom-color: colors.$clear;
+
+        &.selected {
+            border-bottom-color: colors.$primary;
+            font-weight: 700;
+        }
+
+        &:hover {
+            text-decoration: none;
+            border-bottom-color: colors.$primary;
+            color: colors.$primary;
+        }
+
+        &:focus {
+            outline: 0.25rem solid #2491ff;
+        }
+    }
+}

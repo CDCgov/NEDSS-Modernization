@@ -1,33 +1,43 @@
-import React from 'react';
-import { PagesTab, Tab } from 'apps/page-builder/generated';
+import { PagesTab } from 'apps/page-builder/generated';
 import './ManageTabs.scss';
-import { Icon } from '@trussworks/react-uswds';
-import { Icon as IconComponent } from 'components/Icon/Icon';
+import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { ManageTabsTile } from './ManageTabsTile/ManageTabsTile';
 
 type Props = {
-    tabs: Tab[];
     setSelectedEditTab: (tab: PagesTab, index: number) => void;
+    setDeleteTab: (tab: PagesTab) => void;
+    selectedForDelete: PagesTab | undefined;
+    setSelectedForDelete: (tab: PagesTab | undefined) => void;
+    reset: () => void;
 };
 
-const ManageTabs = ({ tabs, setSelectedEditTab }: Props) => {
+const ManageTabs = ({ setSelectedEditTab, setDeleteTab, selectedForDelete, setSelectedForDelete, reset }: Props) => {
+    const { tabs, handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
     return (
-        <div className="manage-tabs">
-            {tabs.map((tab, i) => {
-                return (
-                    <div key={i} className="manage-tabs__tile" style={{ listStyle: 'none' }}>
-                        <div className="manage-tabs__label">
-                            <IconComponent name="drag" />
-                            <IconComponent name="folder" />
-                            {tab.name}
-                        </div>
-                        <div className="manage-tabs__buttons">
-                            <Icon.Edit onClick={() => setSelectedEditTab(tab, i)} size={3} />
-                            <Icon.Delete size={3} />
-                        </div>
+        <DragDropContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragUpdate={handleDragUpdate}>
+            <Droppable droppableId="all-tabs" type="tabs">
+                {(provided) => (
+                    <div className="manage-tabs" {...provided.droppableProps} ref={provided.innerRef}>
+                        {tabs.map((tab, i) => {
+                            return (
+                                <ManageTabsTile
+                                    key={tab.id!.toString()}
+                                    tab={tab}
+                                    index={i}
+                                    setSelectedEditTab={setSelectedEditTab}
+                                    setDeleteTab={setDeleteTab}
+                                    selectedForDelete={selectedForDelete}
+                                    setSelectedForDelete={setSelectedForDelete}
+                                    reset={reset}
+                                />
+                            );
+                        })}
+                        {provided.placeholder}
                     </div>
-                );
-            })}
-        </div>
+                )}
+            </Droppable>
+        </DragDropContext>
     );
 };
 

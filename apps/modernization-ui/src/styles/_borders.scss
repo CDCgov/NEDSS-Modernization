@@ -1,7 +1,11 @@
 @use 'colors.scss';
 
 @mixin bordered($which: 'border', $color: colors.$base-lighter) {
-    #{border}: 1px solid $color;
+    #{$which}: 1px solid $color;
+}
+
+@mixin rounded() {
+    border-radius: 0.3125rem;
 }
 
 %thin {

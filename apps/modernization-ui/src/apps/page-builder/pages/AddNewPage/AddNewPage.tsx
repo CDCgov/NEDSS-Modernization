@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from 'user';
 import './AddNewPage.scss';
 import { AddNewPageFields } from './AddNewPageFields';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 
 export type FormValues = {
     conditionIds: string[];
@@ -79,7 +80,8 @@ export const AddNewPage = () => {
             data.pageDescription,
             data?.dataMartName
         ).then((response: any) => {
-            navigate(`/page-builder/edit/page/${response.pageId}`);
+            form.reset();
+            navigate(`/page-builder/pages/${response.pageId}/edit`);
         });
     });
 
@@ -138,6 +140,7 @@ export const AddNewPage = () => {
                             rules={{ required: { value: true, message: 'Event type is required.' } }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
+                                    aria-labelledby="eventType"
                                     label="Event type"
                                     dataTestid="eventTypeDropdown"
                                     value={value}
@@ -188,13 +191,20 @@ export const AddNewPage = () => {
                 </div>
             </Form>
 
-            <Modal id="create-condition-modal" isLarge ref={createConditionModal} title="Create new condition">
-                <CreateCondition conditionCreated={handleConditionCreated} modal={createConditionModal} />
-            </Modal>
+            <ModalComponent
+                isLarge
+                modalRef={createConditionModal}
+                modalHeading={'Create new condition'}
+                modalBody={<CreateCondition conditionCreated={handleConditionCreated} modal={createConditionModal} />}
+            />
             <Modal id="import-template-modal" isLarge ref={importTemplateModal}>
                 <ImportTemplate modal={importTemplateModal} onTemplateCreated={handleTemplateImported} />
             </Modal>
-            <QuickConditionLookup modal={conditionLookupModal} addConditions={handleAddConditions} />
+            <QuickConditionLookup
+                modal={conditionLookupModal}
+                addConditions={handleAddConditions}
+                createConditionModal={createConditionModal}
+            />
         </div>
     );
 };

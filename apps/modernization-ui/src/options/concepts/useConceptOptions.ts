@@ -1,13 +1,13 @@
-import { ConceptOptionsService, Option } from 'generated';
-import debounce from 'lodash.debounce';
-import { useCallback, useEffect, useReducer } from 'react';
-import { useUser } from 'user';
+import { useEffect, useReducer } from 'react';
+import { ConceptOptionsService } from 'generated';
+import { Selectable } from 'options/selectable';
+import { authorization } from 'authorization';
 
-type State = { status: 'idle' | 'loading' } | { status: 'loaded'; options: Option[] };
+type State = { status: 'idle' | 'loading' } | { status: 'loaded'; options: Selectable[] };
 
-type Action = { type: 'reset' } | { type: 'load' } | { type: 'loaded'; options: Option[] };
+type Action = { type: 'reset' } | { type: 'load' } | { type: 'loaded'; options: Selectable[] };
 
-const reducer = (state: State, action: Action): State => {
+const reducer = (_state: State, action: Action): State => {
     switch (action.type) {
         case 'load':
             return { ...initial, status: 'loading' };
@@ -23,20 +23,15 @@ const initial: State = {
 };
 
 type ConceptOptions = {
-    options: Option[];
+    options: Selectable[];
     load: () => void;
 };
 
-type Options = {
-    valueSet: string;
+type Settings = {
     lazy?: boolean;
 };
 
-const useConceptOptions = ({ valueSet, lazy = true }: Options): ConceptOptions => {
-    const {
-        state: { getToken }
-    } = useUser();
-
+const useConceptOptions = (valueSet: string, { lazy = true }: Settings): ConceptOptions => {
     const [state, dispatch] = useReducer(reducer, initial);
 
     useEffect(() => {
@@ -48,11 +43,9 @@ const useConceptOptions = ({ valueSet, lazy = true }: Options): ConceptOptions =
     useEffect(() => {
         if (state.status === 'loading') {
             ConceptOptionsService.allUsingGet({
-                authorization: `Bearer ${getToken()}`,
+                authorization: authorization(),
                 name: valueSet
-            })
-                .then((response) => response.options ?? [])
-                .then((options) => dispatch({ type: 'loaded', options }));
+            }).then((response) => dispatch({ type: 'loaded', options: response.options }));
         }
     }, [state.status]);
 

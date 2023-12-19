@@ -25,5 +25,7 @@ public class ConfigurationSteps {
         assertTrue(configuration.features().address().autocomplete());
         assertFalse(configuration.features().address().verification());
         assertTrue(configuration.features().pageBuilder().enabled());
+        assertTrue(configuration.features().pageBuilder().page().library().enabled());
+        assertTrue(configuration.features().pageBuilder().page().management().enabled());
     }
 }

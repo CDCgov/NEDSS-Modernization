@@ -11,18 +11,21 @@ type Props = {
 
 export const ReorderQuestion = ({ question, index, visible }: Props) => {
     return (
-        <div className={`reorder-question ${visible ? '' : 'hidden'}`}>
-            <Draggable draggableId={question.id!.toString()} index={index}>
-                {(prov: DraggableProvided) => (
-                    <div className="reorder-question__tile" ref={prov.innerRef} {...prov.draggableProps}>
+        <Draggable draggableId={question.id!.toString()} index={index}>
+            {(prov: DraggableProvided) => (
+                <div
+                    className={`reorder-question ${visible ? '' : 'hidden'}`}
+                    ref={prov.innerRef}
+                    {...prov.draggableProps}>
+                    <div className="reorder-question__tile">
                         <div className="reorder-question__handle" {...prov.dragHandleProps}>
                             <Icon name={'drag'} size={'m'} />
                         </div>
                         <Icon name={'question'} size={'m'} />
                         <p>{question.name}</p>
                     </div>
-                )}
-            </Draggable>
-        </div>
+                </div>
+            )}
+        </Draggable>
     );
 };

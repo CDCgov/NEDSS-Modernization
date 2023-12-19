@@ -1,0 +1,94 @@
+@use 'styles/colors';
+
+.manage-tabs-tile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: colors.$base-darkest;
+    padding: 1rem 1.5rem;
+    background-color: colors.$base-white;
+    .manage-tabs-tile__handle {
+        display: flex;
+        svg {
+            cursor: pointer;
+        }
+        p {
+            display: none;
+        }
+    }
+    .manage-tabs-tile__label {
+        display: flex;
+        align-items: center;
+        width: 75%;
+        gap: 1rem;
+        font-size: 1rem;
+        font-weight: 400;
+        img {
+            height: 1rem;
+        }
+    }
+    .manage-tabs-tile__buttons {
+        color: colors.$primary;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
+        svg {
+            height: 1.25rem;
+            cursor: pointer;
+            &:hover {
+                color: colors.$primary-light;
+            }
+            &:nth-of-type(2) {
+                &:hover {
+                    color: colors.$error;
+                }
+            }
+        }
+        .delete {
+            display: none;
+        }
+        &.locked {
+            svg:nth-of-type(2) {
+                color: colors.$disabled;
+                cursor: none;
+            }
+        }
+    }
+    &.delete {
+        background-color: colors.$warning-lighter;
+        border: 3px solid colors.$warning;
+        flex-direction: column;
+        .manage-tabs-tile__handle {
+            padding-bottom: 0.8rem;
+            img {
+                display: none;
+            }
+            p {
+                display: inline;
+                font-weight: 700;
+                font-size: 0.8rem;
+            }
+        }
+        .manage-tabs-tile__buttons {
+            display: flex;
+            svg {
+                display: none;
+            }
+            p {
+                cursor: pointer;
+            }
+        }.delete {
+            display: flex;
+            gap: 1.5rem;
+            width: 100%;
+            justify-content: flex-end;
+            p {
+                font-size: 0.8rem;
+                font-weight: 700;
+                margin: 0;
+                cursor: pointer;
+            }
+        }
+    }
+}

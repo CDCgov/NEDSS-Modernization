@@ -3,7 +3,7 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { PagesResponse } from 'apps/page-builder/generated';
 import { SaveTemplates } from 'apps/page-builder/components/SaveTemplate/SaveTemplate';
-import { LinkButton } from 'components/LinkButton';
+import { LinkButton } from 'components/button';
 import './EditPageHeader.scss';
 
 type PageProps = {
@@ -47,6 +47,9 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                 <Button type="button" outline>
                     {isSaveTemplate ? 'Edit' : 'Cancel'}
                 </Button>
+                <LinkButton href={`/nbs/page-builder/api/v1/pages/${page.id}/clone`} label="clone the current page">
+                    <Icon.ContentCopy size={3} />
+                </LinkButton>
                 <LinkButton
                     href={`/nbs/page-builder/api/v1/pages/${page.id}/print`}
                     label="open simplified page view for printing">
