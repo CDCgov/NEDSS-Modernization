@@ -13,6 +13,7 @@ import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElement
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.DeleteStaticResponse;
+import gov.cdc.nbs.questionbank.page.content.staticelement.response.UpdateStaticResponse;
 import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -25,13 +26,16 @@ import springfox.documentation.annotations.ApiIgnore;
 public class PageStaticController {
     private final PageStaticCreator pageStaticCreator;
     private final PageStaticDeletor pageStaticDeletor;
+    private final PageStaticUpdater pageStaticUpdater;
 
 
     public PageStaticController(
             final PageStaticCreator pageStaticCreator,
-            final PageStaticDeletor pageStaticDeletor) {
+            final PageStaticDeletor pageStaticDeletor,
+            final PageStaticUpdater pageStaticUpdater) {
         this.pageStaticCreator = pageStaticCreator;
         this.pageStaticDeletor = pageStaticDeletor;
+        this.pageStaticUpdater = pageStaticUpdater;
     }
 
 
@@ -93,5 +97,36 @@ public class PageStaticController {
         return pageStaticDeletor.deleteStaticElement(pageId, request) ? new DeleteStaticResponse("delete success")
                 : new DeleteStaticResponse("delete fail");
     }
+
+    @PostMapping("/{id}/update/hyperlink")
+    public UpdateStaticResponse updateHyperlink(
+            @PathVariable("page") Long pageId,
+            @PathVariable("id") Long componentId,
+            @RequestBody StaticContentRequests.UpdateHyperlink request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
+    ) {
+        return pageStaticUpdater.updateHyperlink(pageId, componentId, request, details.getId());
+    }
+
+    @PostMapping("/{id}/update/read-only-comments")
+    public UpdateStaticResponse updateHyperlink(
+            @PathVariable("page") Long pageId,
+            @PathVariable("id") Long componentId,
+            @RequestBody StaticContentRequests.UpdateReadOnlyComments request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
+    ) {
+        return pageStaticUpdater.updateReadOnlyComments(pageId, componentId, request, details.getId());
+    }
+
+    @PostMapping("/{id}/update/default")
+    public UpdateStaticResponse updateDefaultStaticElement(
+            @PathVariable("page") Long pageId,
+            @PathVariable("id") Long componentId,
+            @RequestBody StaticContentRequests.UpdateDefault request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
+    ) {
+        return pageStaticUpdater.updateDefaultStaticElement(pageId, componentId, request, details.getId());
+    }
+
 
 }
