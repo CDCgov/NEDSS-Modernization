@@ -12,7 +12,7 @@ import { AddPatient } from 'pages/addPatient/AddPatient';
 import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
 import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
 import { Login } from 'pages/login/Login';
-import { PatientProfile } from 'pages/patient/profile';
+import { PatientProfile } from 'apps/patient/profile';
 import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';

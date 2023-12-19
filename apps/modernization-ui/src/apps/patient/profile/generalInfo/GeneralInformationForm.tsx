@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
-import { usePatientGeneralCodedValues } from 'pages/patient/profile/generalInfo/usePatientGeneralCodedValues';
+import { usePatientGeneralCodedValues } from 'apps/patient/profile/generalInfo/usePatientGeneralCodedValues';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';

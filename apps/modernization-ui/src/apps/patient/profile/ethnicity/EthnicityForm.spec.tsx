@@ -10,8 +10,8 @@ const values = {
     detailedEthnicities: [{ value: 'detailed-ethnicity-1', name: 'Detailed Ethnicity 1', group: 'ethnicity-1' }]
 };
 
-jest.mock('pages/patient/profile/ethnicity', () => ({
-    ...jest.requireActual('pages/patient/profile/ethnicity'),
+jest.mock('apps/patient/profile/ethnicity', () => ({
+    ...jest.requireActual('apps/patient/profile/ethnicity'),
     usePatientEthnicityCodedValues: () => values
 }));
 

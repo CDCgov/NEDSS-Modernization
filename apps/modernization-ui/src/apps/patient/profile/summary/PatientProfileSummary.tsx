@@ -10,7 +10,7 @@ import {
 } from 'generated/graphql/schema';
 import { Loading } from 'components/Spinner';
 import { internalizeDate } from 'date';
-import { Patient } from 'pages/patient/profile';
+import { Patient } from 'apps/patient/profile';
 import { displayAddress } from 'address/display/displayAddress';
 import { NoData } from 'components/NoData';
 import { displayName } from 'name';

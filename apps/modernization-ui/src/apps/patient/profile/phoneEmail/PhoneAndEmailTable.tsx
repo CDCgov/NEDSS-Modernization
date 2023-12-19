@@ -14,9 +14,9 @@ import { TableBody, TableComponent } from 'components/Table';
 import { Actions } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
-import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
-import EntryModal from 'pages/patient/profile/entry';
-import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
+import { Detail, DetailsModal } from 'apps/patient/profile/DetailsModal';
+import EntryModal from 'apps/patient/profile/entry';
+import { maybeDescription, maybeId } from 'apps/patient/profile/coded';
 import {
     PatientProfilePhoneEmailResult,
     useFindPatientProfilePhoneAndEmail
