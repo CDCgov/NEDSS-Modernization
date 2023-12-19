@@ -2,11 +2,7 @@ package gov.cdc.nbs.questionbank.page.content.question;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
@@ -19,9 +15,12 @@ public class PageQuestionController {
 
     private final PageQuestionCreator creator;
 
+    private final PageQuestionDeleter deleter;
 
-    public PageQuestionController(final PageQuestionCreator contentManager) {
+
+    public PageQuestionController(final PageQuestionCreator contentManager, final PageQuestionDeleter deleter) {
         this.creator = contentManager;
+        this.deleter = deleter;
     }
 
     @PostMapping
@@ -30,5 +29,13 @@ public class PageQuestionController {
             @RequestBody AddQuestionRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         return creator.addQuestion(pageId, request, details.getId());
+    }
+
+    @DeleteMapping("{questionId}")
+    public void deleteQuestion(
+            @PathVariable("page") Long page,
+            @PathVariable("questionId") Long questionId,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        deleter.deleteQuestion(page, questionId, details.getId());
     }
 }

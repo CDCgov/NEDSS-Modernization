@@ -735,11 +735,6 @@ public class PageRuleServiceImpl implements PageRuleService {
         return stringBuilder;
     }
 
-    @Override
-    public CreateRuleResponse deletePageRule(Long ruleId) {
-        waRuleMetaDataRepository.deleteById(ruleId);
-        return new CreateRuleResponse(ruleId, "Rule Successfully Deleted");
-    }
 
     @Override
     public CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest request, Long userId,Long page) {

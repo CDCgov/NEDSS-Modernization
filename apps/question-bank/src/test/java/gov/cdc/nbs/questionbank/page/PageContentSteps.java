@@ -25,6 +25,12 @@ public class PageContentSteps {
     mother.withTab(active);
   }
 
+  @Given("the page has a(nother) rule")
+  public void the_page_has_a_rule() {
+    PageIdentifier active = page.active();
+    mother.withRule(active);
+  }
+
   @Given("the page has a tab named {string}")
   public void the_page_has_a_named_tab(final String name) {
     PageIdentifier active = page.active();
