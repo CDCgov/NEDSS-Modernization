@@ -1,0 +1,36 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.static_element {
+    height: auto;
+    width: auto;
+    min-width: auto;
+    max-height: auto;
+    .form {
+        width: auto;
+        max-width: unset;
+        height: auto;
+        max-height: unset;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        padding-top: unset;
+        width: auto;
+        height: 400px;
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+    .footer_buttons {
+        width: auto;
+        padding: 1.2rem;
+        position: relative;
+        padding-top: unset;
+        display: flex;
+        justify-content: flex-end;
+        background-color: colors.$base-white;
+        border-top: 1px solid colors.$base-lightest;
+        @include borders.rounded();
+    }
+}
