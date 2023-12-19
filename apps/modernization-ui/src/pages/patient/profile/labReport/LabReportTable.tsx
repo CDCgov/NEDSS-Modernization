@@ -3,7 +3,6 @@ import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import {
     FindLabReportsForPatientQuery,
-    PatientLabReport,
     OrganizationParticipation2,
     useFindLabReportsForPatientLazyQuery,
     AssociatedInvestigation2
@@ -16,7 +15,9 @@ import { TableBody, TableComponent } from 'components/Table/Table';
 import { Direction } from 'sorting';
 import { ClassicButton, ClassicLink } from 'classic';
 
-const getOrderingProviderName = (labReport: PatientLabReport): string | undefined => {
+type Maybe<T> = T | null;
+
+const getOrderingProviderName = (labReport: LabReport): string | undefined => {
     const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
     if (provider) {
         return `${provider.firstName} ${provider.lastName}`;
@@ -25,10 +26,10 @@ const getOrderingProviderName = (labReport: PatientLabReport): string | undefine
     }
 };
 
-const getAssociatedInvestigations = (labReport: any): string | undefined => {
+const getAssociatedInvestigations = (labReport: LabReport): string | undefined => {
     const num = labReport?.associatedInvestigations?.length;
     if (num) {
-        labReport?.associatedInvestigations?.map((investigation: AssociatedInvestigation2, index: number) => (
+        labReport?.associatedInvestigations?.map((investigation: Maybe<AssociatedInvestigation2>, index: number) => (
             <div key={index}>
                 <ClassicLink url={`/nbs/api/profile/${patient}/investigation/${investigation?.publicHealthCaseUid}`}>
                     {investigation?.localId}
@@ -41,15 +42,15 @@ const getAssociatedInvestigations = (labReport: any): string | undefined => {
     }
 };
 
-const getReportingFacility = (labReport: PatientLabReport): OrganizationParticipation2 | undefined | null => {
+const getReportingFacility = (labReport: LabReport): OrganizationParticipation2 | undefined | null => {
     return labReport.organizationParticipations?.find((o) => o?.typeCd === 'AUT');
 };
 
-const getOrderingFacility = (labReport: PatientLabReport): OrganizationParticipation2 | undefined | null => {
+const getOrderingFacility = (labReport: LabReport): OrganizationParticipation2 | undefined | null => {
     return labReport.organizationParticipations?.find((o) => o?.typeCd === 'ORD');
 };
 
-const getTestedResults = (labReport: PatientLabReport) => {
+const getTestedResults = (labReport: LabReport) => {
     return (
         labReport.observations?.map(
             (o) =>

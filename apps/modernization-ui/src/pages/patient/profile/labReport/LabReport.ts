@@ -1,4 +1,10 @@
-import { ActId2 } from 'generated/graphql/schema';
+import {
+    ActId2,
+    AssociatedInvestigation2,
+    OrganizationParticipation2,
+    PersonParticipation2,
+    Observation2
+} from 'generated/graphql/schema';
 
 type Maybe<T> = T | null;
 
@@ -19,11 +25,15 @@ export type LabReport = {
     classCd?: Maybe<string>;
     moodCd?: Maybe<string> | undefined;
     observationLastChgTime?: Maybe<string> | undefined;
+    observations?: Maybe<Array<Maybe<Observation2>>>;
+    organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation2>>>;
     cdDescTxt?: Maybe<string> | undefined;
     recordStatusCd?: Maybe<string> | undefined;
     programAreaCd?: Maybe<string> | undefined;
     jurisdictionCd?: Maybe<number> | undefined;
     jurisdictionCodeDescTxt?: Maybe<string> | undefined;
+    associatedInvestigations?: Maybe<Array<Maybe<AssociatedInvestigation2>>>;
+    personParticipations?: Maybe<Array<Maybe<PersonParticipation2>>>;
     pregnantIndCd?: Maybe<string> | undefined;
     localId?: Maybe<string> | undefined;
     activityToTime?: Maybe<string> | undefined;
