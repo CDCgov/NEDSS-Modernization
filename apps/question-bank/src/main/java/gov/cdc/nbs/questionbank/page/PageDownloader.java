@@ -62,7 +62,7 @@ public class PageDownloader {
 	
 	public ByteArrayInputStream downloadLibrary()  throws IOException {
 		final CSVFormat format = CSVFormat.Builder.create().setQuoteMode(QuoteMode.MINIMAL).setHeader("Event Type",
-				"Page Name", "Page State", "Related Conditions(s)", "Last Udated", "Last Udated By ").build();
+				"Page Name", "Page State", "Related Conditions(s)", "Last Updated", "Last Updated By ").build();
 		
 
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
