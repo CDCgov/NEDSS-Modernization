@@ -109,48 +109,47 @@ public class PageRuleSteps {
         CreateRuleResponse test = objectMapper.readValue(
                 this.response.active().andReturn().getResponse().getContentAsString(),
                 CreateRuleResponse.class);
+            this.detailResponse.active(
+                    this.requester.request(
+                            this.page.active().id(),
+                            test.ruleId()));
+        }
 
-        this.detailResponse.active(
-                this.requester.request(
-                        this.page.active().id(),
-                        test.ruleId()));
-    }
+        @Then("the business rule should have {string} of {string}")
+        public void the_business_rule_should_have_of(final String property, final String value) throws Exception {
+            switch (property.toLowerCase()) {
+                case "source identifier" -> this.detailResponse.active()
+                        .andExpect(jsonPath("$.sourceIdentifier", is(value)));
+                case "rule description" -> this.detailResponse.active()
+                        .andExpect(jsonPath("$.ruleDescription", is(value)));
+                case "function" -> this.detailResponse.active()
+                        .andExpect(jsonPath("$.ruleFunction", is(value)));
+                case "comparator" -> this.detailResponse.active()
+                        .andExpect(jsonPath("$.comparator", is(value)));
+                case "target type" -> this.detailResponse.active()
+                        .andExpect(jsonPath("$.targetType", is(value)));
+            }
+        }
 
-    @Then("the business rule should have {string} of {string}")
-    public void the_business_rule_should_have_of(final String property, final String value) throws Exception {
-        switch (property.toLowerCase()) {
-            case "source identifier" -> this.detailResponse.active()
-                    .andExpect(jsonPath("$.sourceIdentifier", is(value)));
-            case "rule description" -> this.detailResponse.active()
-                    .andExpect(jsonPath("$.ruleDescription", is(value)));
-            case "function" -> this.detailResponse.active()
-                    .andExpect(jsonPath("$.ruleFunction", is(value)));
-            case "comparator" -> this.detailResponse.active()
-                    .andExpect(jsonPath("$.comparator", is(value)));
-            case "target type" -> this.detailResponse.active()
-                    .andExpect(jsonPath("$.targetType", is(value)));
+        @Then("the business rule should have {string} of:")
+        public void the_business_rule_should_have_of(final String property, final List<String> values) throws Exception {
+            switch (property.toLowerCase()) {
+                case "target identifiers list" -> this.detailResponse.active()
+                        .andExpect(jsonPath("$.targetValueIdentifier", is(values)));
+                case "source values" -> this.detailResponse.active()
+                        .andExpect(jsonPath("$.sourceValue", is(values)));
+            }
+        }
+
+        @Then("A no credentials found exception is thrown")
+        public void a_no_credentials_found_exception_is_thrown() {
+            assertNotNull(exceptionHolder.getException());
+            assertTrue(exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
+        }
+
+        @Then("an access denied exception is thrown")
+        public void a_access_denied_exception_is_thrown() {
+            assertNotNull(exceptionHolder.getException());
+            assertTrue(exceptionHolder.getException() instanceof AccessDeniedException);
         }
     }
-
-    @Then("the business rule should have {string} of:")
-    public void the_business_rule_should_have_of(final String property, final List<String> values) throws Exception {
-        switch (property.toLowerCase()) {
-            case "target identifiers list" -> this.detailResponse.active()
-                    .andExpect(jsonPath("$.targetValueIdentifier", is(values)));
-            case "source values" -> this.detailResponse.active()
-                    .andExpect(jsonPath("$.sourceValue", is(values)));
-        }
-    }
-
-    @Then("A no credentials found exception is thrown")
-    public void a_no_credentials_found_exception_is_thrown() {
-        assertNotNull(exceptionHolder.getException());
-        assertTrue(exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
-    }
-
-    @Then("an access denied exception is thrown")
-    public void a_access_denied_exception_is_thrown() {
-        assertNotNull(exceptionHolder.getException());
-        assertTrue(exceptionHolder.getException() instanceof AccessDeniedException);
-    }
-}

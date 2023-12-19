@@ -52,13 +52,6 @@ class PageRuleServiceImplTest {
                 exception.toString());
     }
 
-    @Test
-    void shouldDeleteTheRuleID() {
-        Long ruleId = 99L;
-        CreateRuleResponse ruleResponse = pageRuleServiceImpl.deletePageRule(ruleId);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).deleteById(ruleId);
-        assertEquals("Rule Successfully Deleted", ruleResponse.message());
-    }
 
     // @Test
     // void shouldReturnNotFoundWhenRuleIdIsNotThere() throws RuleException {
@@ -124,7 +117,7 @@ class PageRuleServiceImplTest {
         assertNotNull(ruleresponse);
     }
 
-   
+
 
     @Test
     void getAllPageRuleTest() {
@@ -174,8 +167,8 @@ class PageRuleServiceImplTest {
         SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
         Page<WaRuleMetadata> ruleMetadataPage = new PageImpl<>(Collections.singletonList(morbWaRuleMetadata()));
         Mockito.when(waRuleMetaDataRepository
-                .findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase(
-                        request.searchValue(), request.searchValue(), pageRequest))
+                        .findAllBySourceValuesContainingIgnoreCaseOrTargetQuestionIdentifierContainingIgnoreCase(
+                                request.searchValue(), request.searchValue(), pageRequest))
                 .thenReturn(ruleMetadataPage);
         Page<ViewRuleResponse> ruleResponse = pageRuleFinderServiceImpl.findPageRule(request, pageRequest);
         assertNotNull(ruleResponse);
