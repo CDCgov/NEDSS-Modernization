@@ -1,6 +1,6 @@
 import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
 import { PageLibrary } from 'apps/page-builder/page/library/PageLibrary';
-import { Edit } from 'apps/page-builder/page/management/editPage/Edit';
+import { Edit } from 'apps/page-builder/page/management/edit/Edit';
 import { PreviewPage } from 'apps/page-builder/page/management/preview';
 import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
 import { Spinner } from 'components/Spinner';

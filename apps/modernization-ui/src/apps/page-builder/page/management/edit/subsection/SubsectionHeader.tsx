@@ -4,7 +4,7 @@ import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOption
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { useRef } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import { AddStaticElement } from 'apps/page-builder/page/management/editPage/staticelement/AddStaticElement';
+import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
 
 type Props = {
     name: string;
