@@ -99,6 +99,20 @@ services:
     #   - ./nifi/nifi_conf/conf:/opt/nifi/nifi-current/conf:rw
     networks:
       - nbs
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:latest
+    ports:
+      - "8100:8100"
+    volumes:
+      - ./keycloak/imports:/opt/keycloak/data/import
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: fake.1234
+    command: ["--http-port=8100"]
+    entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"      
+    networks:
+      - nbs
 volumes:
   nbs-mssql-data:
 networks:
