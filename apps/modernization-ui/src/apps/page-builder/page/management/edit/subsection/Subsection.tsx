@@ -1,4 +1,4 @@
-import { PagesSubSection } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesSubSection } from 'apps/page-builder/generated';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
 import { useState } from 'react';
@@ -9,6 +9,12 @@ type Props = {
 };
 export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
+
+    const tempPage: PagesQuestion = {
+        id: 1154585,
+        name: 'something label',
+        order: 7
+    };
 
     const handleExpandedChange = (expanded: boolean) => {
         setIsExpanded(expanded);
