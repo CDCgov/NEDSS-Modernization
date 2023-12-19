@@ -20,6 +20,7 @@ export enum Headers {
 }
 
 export type LabReport = {
+    id?: Maybe<string> | undefined;
     observationUid?: string | any;
     lastChange?: Date | null;
     classCd?: Maybe<string>;

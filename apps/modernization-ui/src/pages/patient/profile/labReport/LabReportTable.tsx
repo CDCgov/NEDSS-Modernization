@@ -68,8 +68,8 @@ const getTestedResults = (labReport: LabReport) => {
 
 const asTableBody =
     (patient?: string) =>
-    (report: any): TableBody => ({
-        id: report.report,
+    (report: LabReport): TableBody => ({
+        id: report.id,
         tableDetails: [
             {
                 id: 1,
