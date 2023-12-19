@@ -17,13 +17,14 @@ export enum Column {
     ID = 'ID'
 }
 
+// Sorting temporarily disabled until API is ready
 const tableColumns = [
-    { name: Column.SourceFields, sortable: true },
-    { name: Column.Logic, sortable: true },
-    { name: Column.Values, sortable: true },
-    { name: Column.Function, sortable: true },
-    { name: Column.Target, sortable: true },
-    { name: Column.ID, sortable: true }
+    { name: Column.SourceFields, sortable: false },
+    { name: Column.Logic, sortable: false },
+    { name: Column.Values, sortable: false },
+    { name: Column.Function, sortable: false },
+    { name: Column.Target, sortable: false },
+    { name: Column.ID, sortable: false }
 ];
 
 type Rules = {
@@ -74,7 +75,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         }
     };
 
-    const redirectRuleURL = `/page-builder/edit/page/${pageId}/business-rules-library`;
+    const redirectRuleURL = `/page-builder/pages/${pageId}/business-rules-library`;
 
     const asTableRow = (page: Rules): TableBody => ({
         id: page.templateUid,
@@ -112,7 +113,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         if (name && direction && direction !== Direction.None) {
             switch (name) {
                 case Column.SourceFields:
-                    return `SourceFields,${direction}`;
+                    return `sourceIdentifier,${direction}`;
                 case Column.Logic:
                     return `comparator,${direction}`;
                 case Column.Values:

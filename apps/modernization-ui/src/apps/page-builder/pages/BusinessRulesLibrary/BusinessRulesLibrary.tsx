@@ -14,23 +14,23 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const [totalElements, setTotalElements] = useState(0);
     const { state } = useContext(UserContext);
     const { pageId } = useParams();
+    console.log('pagesize', pageSize);
 
     // @ts-ignore
     useEffect(async () => {
         const token = `Bearer ${state.getToken()}`;
         setIsLoading(true);
-        if (pageId) {
-            const { content, totalElements } = await fetchBusinessRules(
-                token,
-                searchQuery,
-                pageId,
-                sortBy,
-                currentPage,
-                pageSize
-            );
-            setSummaries(content);
-            setTotalElements(totalElements);
-            setIsLoading(false);
+        try {
+            if (pageId) {
+                const response = await fetchBusinessRules(token, searchQuery, pageId, sortBy, currentPage, pageSize);
+                console.log('response', response);
+                const { content, totalElements } = response;
+                setSummaries(content);
+                setTotalElements(totalElements);
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.error('Error', error);
         }
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
 
