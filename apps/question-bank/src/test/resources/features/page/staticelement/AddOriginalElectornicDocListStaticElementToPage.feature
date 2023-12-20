@@ -18,15 +18,3 @@ Feature: Create Original Electronic Document List
             | adminComments      |
             | some comments      |
             | test comments      |
-
-    Scenario: I cannot create a original electronic document list static element without logging in
-        Given I am not logged in at all
-        And I create an original electronic document list with "<adminComments>"
-        When I send a original electronic document list request
-        Then an illegal state exception is thrown
-
-    Scenario: I cannot create a original electronic document list static element without permissions
-        Given I am a user without permissions
-        And I create an original electronic document list with "<adminComments>"
-        When I send a original electronic document list request
-        Then an illegal state exception is thrown

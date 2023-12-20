@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
@@ -12,6 +11,7 @@ import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElementRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.UpdateStaticRequests;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.page.PageMother;
@@ -41,6 +41,7 @@ public class LineSeparatorSteps {
     private final Active<ResultActions> addResponse = new Active<>();
     private final Active<ResultActions> deleteResponse = new Active<>();
     private final Active<StaticContentRequests.AddDefault> jsonRequestBody = new Active<>();
+    private final Active<UpdateStaticRequests.UpdateDefault> updateRequest = new Active<>();
     private final Active<WaTemplate> currPage = new Active<>();
 
     @Given("I create an add line separator request with {string}")
@@ -64,13 +65,6 @@ public class LineSeparatorSteps {
         } catch (Exception e) {
             exceptionHolder.setException(e);
         }
-    }
-
-    @Then("an illegal state exception is thrown")
-    public void an_illegal_state_exception_is_thrown() {
-        //  The illegal state exception no longer occurs. This should check the status of the active response.
-//        assertNotNull(exceptionHolder.getException());
-//        assertTrue(exceptionHolder.getException() instanceof IllegalStateException);
     }
 
     @Then("a line separator is created")

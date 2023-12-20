@@ -79,6 +79,7 @@ public class HyperLinkSteps {
         switch(key) {
             case("label") -> this.updateRequest.active(UpdateStaticRequestHelper.withLabel(this.updateRequest.active(), value));
             case("link") -> this.updateRequest.active(UpdateStaticRequestHelper.withLink(this.updateRequest.active(), value));
+            case("adminComments") -> this.updateRequest.active(UpdateStaticRequestHelper.withHyperlinkAdmin(this.updateRequest.active(), value));
         }
     }
 
@@ -96,6 +97,7 @@ public class HyperLinkSteps {
         switch(key) {
             case "label" -> this.updateResponse.active().andExpect(jsonPath("$.label").isString());
             case "link" -> this.updateResponse.active().andExpect(jsonPath("$.linkUrl").isString());
+            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").isString());
         }
     }
 
