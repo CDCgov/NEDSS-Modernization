@@ -2,8 +2,8 @@ import { render } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import { EthnicityForm } from './EthnicityForm';
-import { Race, Ethnicity } from '../../../../generated/graphql/schema';
-import { SearchCriteria, SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { Race, Ethnicity } from 'generated/graphql/schema';
+import { SearchCriteria, SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 describe('EthnicityForm component tests', () => {
     it('should render 2 dropdown Labels Ethnicity and Race', async () => {

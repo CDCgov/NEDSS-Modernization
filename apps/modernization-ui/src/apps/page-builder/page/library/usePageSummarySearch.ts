@@ -11,7 +11,7 @@ type Sorting = {
     direction: 'asc' | 'desc';
 };
 
-type Status = 'initialize' | 'idle' | 'searching' | 'found';
+type Status = 'initialize' | 'idle' | 'searching' | 'found' | 'new-search';
 
 type State = { status: Status; keyword?: string; filters: APIFilter[]; sorting?: Sorting; pages: PageSummary[] };
 
@@ -19,6 +19,7 @@ type Action =
     | { type: 'reset' }
     | { type: 'sort'; sorting: Sorting }
     | { type: 'search'; keyword?: string }
+    | { type: 'fetch'; keyword?: string }
     | { type: 'filter'; filters: APIFilter[] }
     | { type: 'found'; result: PageSummary[] }
     | { type: 'refresh' };
@@ -29,9 +30,11 @@ const reducer = (current: State, action: Action): State => {
             return { ...current, status: 'searching', sorting: action.sorting };
         case 'search': {
             return action.keyword !== current.keyword
-                ? { ...current, status: 'searching', keyword: action.keyword, pages: [] }
+                ? { ...current, status: 'new-search', keyword: action.keyword, pages: [] }
                 : current;
         }
+        case 'fetch':
+            return { ...current, status: 'searching', keyword: action.keyword, pages: [] };
         case 'filter':
             return { ...current, status: 'searching', filters: action.filters, pages: [] };
         case 'found':
@@ -52,7 +55,7 @@ const initial: State = {
 const usePageSummarySearch = () => {
     const [state, dispatch] = useReducer(reducer, initial);
 
-    const { page, ready } = usePage();
+    const { page, firstPage, ready } = usePage();
     const { sorting } = useSorting();
 
     useEffect(() => {
@@ -64,6 +67,22 @@ const usePageSummarySearch = () => {
     useEffect(() => {
         dispatch({ type: 'refresh' });
     }, [sorting, dispatch]);
+
+    useEffect(() => {
+        if (state.status === 'new-search') {
+            if (page.current === 1) {
+                dispatch({ type: 'fetch', keyword: state.keyword });
+            } else {
+                firstPage();
+            }
+        }
+    }, [state.status]);
+
+    useEffect(() => {
+        if (state.status === 'new-search' && page.current == 1) {
+            dispatch({ type: 'fetch', keyword: state.keyword });
+        }
+    }, [page.current]);
 
     useEffect(() => {
         if (state.status === 'searching') {

@@ -1,5 +1,4 @@
 import { Alert, Button, Grid, Icon, Pagination } from '@trussworks/react-uswds';
-import { externalize, internalize } from 'pages/patient/search';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Config } from '../../config';
@@ -33,10 +32,11 @@ import './AdvancedSearch.scss';
 import { AdvancedSearchChips } from './components/chips/AdvancedSearchChips';
 import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
-import { PatientResults } from './components/PatientResults';
 import { EventSearch } from './components/eventSearch/EventSearch';
-import { PatientSearch } from './components/patientSearch/PatientSearch';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
+import { externalize, internalize } from 'apps/search/patient';
+import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
+import { PatientResults } from 'apps/search/patient/PatientResults';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
