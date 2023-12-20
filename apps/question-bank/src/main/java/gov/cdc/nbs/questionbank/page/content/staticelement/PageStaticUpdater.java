@@ -21,7 +21,7 @@ public class PageStaticUpdater {
     }
 
     @Transactional
-    public UpdateStaticResponse updateHyperlink(Long componentId,
+    public UpdateStaticResponse.UpdateHyperlink updateHyperlink(Long componentId,
             UpdateStaticRequests.UpdateHyperlink request, Long user) {
 
         WaUiMetadata staticElement = entityManager.find(WaUiMetadata.class, componentId);
@@ -35,13 +35,14 @@ public class PageStaticUpdater {
                     "component with id " + componentId + " is not a hyperlink element");
         }
 
-        if(request.label() == null || request.linkUrl() == null) {
+        if (request.label() == null || request.linkUrl() == null) {
             throw new UpdateStaticElementException("label and link are required");
         }
 
         staticElement.update(asUpdateHyperlink(user, request.adminComments(), request.label(), request.linkUrl()));
 
-        return new UpdateStaticResponse(staticElement.getId());
+        return new UpdateStaticResponse.UpdateHyperlink(staticElement.getQuestionLabel(),
+                staticElement.getDefaultValue(), staticElement.getId(), staticElement.getAdminComment());
     }
 
     private PageContentCommand.UpdateHyperlink asUpdateHyperlink(
@@ -53,7 +54,7 @@ public class PageStaticUpdater {
     }
 
     @Transactional
-    public UpdateStaticResponse updateDefaultStaticElement(Long componentId,
+    public UpdateStaticResponse.UpdateDefault updateDefaultStaticElement(Long componentId,
             UpdateStaticRequests.UpdateDefault request, Long user) {
 
         WaUiMetadata staticElement = entityManager.find(WaUiMetadata.class, componentId);
@@ -69,7 +70,7 @@ public class PageStaticUpdater {
 
         staticElement.update(asUpdateDefaultStaticElement(user, request.adminComments()));
 
-        return new UpdateStaticResponse(staticElement.getId());
+        return new UpdateStaticResponse.UpdateDefault(staticElement.getId(), staticElement.getAdminComment());
     }
 
     private PageContentCommand.UpdateDefaultStaticElement asUpdateDefaultStaticElement(
@@ -79,7 +80,7 @@ public class PageStaticUpdater {
     }
 
     @Transactional
-    public UpdateStaticResponse updateReadOnlyComments(Long componentId,
+    public UpdateStaticResponse.UpdateReadOnlyComments updateReadOnlyComments(Long componentId,
             UpdateStaticRequests.UpdateReadOnlyComments request, Long user) {
 
         WaUiMetadata staticElement = entityManager.find(WaUiMetadata.class, componentId);
@@ -93,13 +94,13 @@ public class PageStaticUpdater {
                     "component with id " + componentId + " is not a read only comments element");
         }
 
-        if(request.commentsText() == null) {
+        if (request.commentsText() == null) {
             throw new UpdateStaticElementException("comments text is required");
         }
 
         staticElement.update(asUpdateReadOnlyComments(user, request.adminComments(), request.commentsText()));
 
-        return new UpdateStaticResponse(componentId);
+        return new UpdateStaticResponse.UpdateReadOnlyComments(staticElement.getId(), staticElement.getQuestionLabel(), staticElement.getAdminComment());
     }
 
     private PageContentCommand.UpdateReadOnlyComments asUpdateReadOnlyComments(Long userId, String adminComments,
