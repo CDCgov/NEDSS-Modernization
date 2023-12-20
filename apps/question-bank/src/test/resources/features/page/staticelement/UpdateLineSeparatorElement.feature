@@ -7,7 +7,7 @@ Feature: Update Line Separator Element
         And the page has a section in the 1st tab
         And the page has a sub-section named "sub-section" in the 1st section
 
-    Scenario: I can update the hyperlink element
+    Scenario: I can update the line separator element
         Given I am logged in 
         And I can "LDFAdministration" any "System"
         And I create an add line separator request with "admin comments"
