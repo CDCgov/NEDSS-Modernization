@@ -10,11 +10,10 @@ import {
 import { Loading } from 'components/Spinner';
 import { LinkButton } from 'components/button';
 import { PageInformation } from './information/PageInformation';
-
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import styles from './preview-page.module.scss';
 import { PreviewTab } from './tab';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const PreviewPage = () => {
     const { page } = useGetPageDetails();
@@ -30,22 +29,15 @@ const PreviewPage = () => {
 
 const PreviewPageContent = () => {
     const { page, selected } = usePageManagement();
-    const navigate = useNavigate();
     const { pageId } = useParams();
 
     return (
         <PageManagementLayout name={page.name} mode={'draft'}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
-                    <Button
-                        type="button"
-                        outline
-                        onClick={() => {
-                            console.log('clicked');
-                            navigate(`/page-builder/pages/${pageId}/business-rules-library`);
-                        }}>
-                        Business Rules
-                    </Button>
+                    <NavLinkButton to={`/page-builder/pages/${pageId}/business-rules-library`} type="outline">
+                        Business rules
+                    </NavLinkButton>
                     <Button outline type="button">
                         Save as Template
                     </Button>

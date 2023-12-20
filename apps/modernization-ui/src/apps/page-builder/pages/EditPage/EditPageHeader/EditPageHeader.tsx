@@ -31,7 +31,6 @@ export const EditPageHeader = ({ page, handleSaveDraft }: PageProps) => {
                             type="button"
                             outline
                             onClick={() => {
-                                console.log('clicked');
                                 navigate(`/page-builder/pages/${pageId}/business-rules-library`);
                             }}>
                             Business Rules
