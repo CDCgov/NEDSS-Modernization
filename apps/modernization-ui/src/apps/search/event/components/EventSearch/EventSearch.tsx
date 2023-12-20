@@ -4,10 +4,10 @@ import { SEARCH_TYPE } from 'pages/advancedSearch/AdvancedSearch';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { objectOrUndefined } from 'utils';
-import { EventTypeAccordion, SearchType } from './EventTypeAccordion';
-import { InvestigationAccordion } from './InvestigationSearch/InvestigationAccordion';
-import { initialLabForm } from './labReportSearch/DefaultLabReportForm';
-import { LabReportAccordion } from './labReportSearch/LabReportAccordion';
+import { EventTypeAccordion, SearchType } from 'apps/search/event/components/EventTypeAccordion/EventTypeAccordion';
+import { InvestigationAccordion } from '../InvestigationSearch/InvestigationAccordion';
+import { initialLabForm } from '../labReportSearch/DefaultLabReportForm';
+import { LabReportAccordion } from '../labReportSearch/LabReportAccordion';
 
 type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;
