@@ -1,4 +1,3 @@
-import { internalizeDate } from 'date';
 import { isAfter } from 'date-fns';
 
 const isBefore =
@@ -9,7 +8,7 @@ const isBefore =
             const currentDate = new Date(current);
 
             if (isAfter(currentDate, maxDate)) {
-                return `Date cannot be after: ${internalizeDate(maxDate)}`;
+                return `Date cannot be after: ${max}`;
             }
         }
     };

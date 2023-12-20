@@ -11,7 +11,9 @@ const DataRangeEntryForm = () => {
     const after = useWatch({ control, name: 'after' });
 
     useEffect(() => {
-        trigger('after');
+        if (before) {
+            trigger('after');
+        }
     }, [before]);
 
     return (
