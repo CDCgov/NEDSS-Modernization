@@ -62,7 +62,7 @@ public class PageDownloader {
 	
 	public ByteArrayInputStream downloadLibrary()  throws IOException {
 		final CSVFormat format = CSVFormat.Builder.create().setQuoteMode(QuoteMode.MINIMAL).setHeader("Event Type",
-				"Page Name", "Page State", "Related Conditions(s)", "Last Udated", "Last Udated By ").build();
+				"Page Name", "Page State", "Related Conditions(s)", "Last Updated", "Last Updated By ").build();
 		
 
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -84,7 +84,7 @@ public class PageDownloader {
                 );
 				
 				List<String> data = Arrays.asList(getEventType(page.getBusObjType()), page.getTemplateNm(), page.getTemplateType(),
-						formatttedRelatedConditions(pageConditions), page.getLastChgTime().toString(),
+						formatttedRelatedConditions(pageConditions), null != page.getLastChgTime()? dateFormatter.format(page.getLastChgTime()):"",
 						getLastUpdatedUser(page.getLastChgUserId()));
 				csvPrinter.printRecord(data);
 
