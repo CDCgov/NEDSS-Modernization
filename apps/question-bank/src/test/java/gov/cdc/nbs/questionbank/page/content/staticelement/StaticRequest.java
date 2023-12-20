@@ -81,6 +81,13 @@ class StaticRequest {
                         .contentType(MediaType.APPLICATION_JSON));
     }
 
+    ResultActions updateReadOnlyCommentsRequest(UpdateStaticRequests.UpdateReadOnlyComments request, final long page, final long componentId) throws Exception {
+        return mvc.perform(
+                this.authenticated.withUser(post("/api/v1/pages/{page}/content/static/{componentId}/update/read-only-comments", page, componentId))
+                        .content(asJsonString(request))
+                        .contentType(MediaType.APPLICATION_JSON));
+    }
+
     private static String asJsonString(final Object obj) throws Exception {
         return new ObjectMapper().writeValueAsString(obj);
     }

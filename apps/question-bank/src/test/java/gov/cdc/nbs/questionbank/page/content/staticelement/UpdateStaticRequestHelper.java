@@ -15,4 +15,12 @@ public class UpdateStaticRequestHelper {
     public static UpdateStaticRequests.UpdateHyperlink withHyperlinkAdmin(UpdateStaticRequests.UpdateHyperlink request, String adminComments) {
         return new UpdateStaticRequests.UpdateHyperlink(request.label(), request.linkUrl(), adminComments);
     }
+
+    public static UpdateStaticRequests.UpdateReadOnlyComments withComments(UpdateStaticRequests.UpdateReadOnlyComments request, String comments) {
+        return new UpdateStaticRequests.UpdateReadOnlyComments(comments, request.adminComments());
+    }
+
+    public static UpdateStaticRequests.UpdateReadOnlyComments withReadOnlyCommentsAdminComments(UpdateStaticRequests.UpdateReadOnlyComments request, String comments) {
+        return new UpdateStaticRequests.UpdateReadOnlyComments(request.commentsText(), comments);
+    }
 }
