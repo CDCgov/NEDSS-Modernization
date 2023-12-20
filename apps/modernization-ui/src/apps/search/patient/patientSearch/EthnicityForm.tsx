@@ -1,7 +1,7 @@
 import { Grid } from '@trussworks/react-uswds';
-import { SelectInput } from '../../../../components/FormInputs/SelectInput';
+import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
-import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 export const EthnicityForm = ({ control }: any) => {
     return (

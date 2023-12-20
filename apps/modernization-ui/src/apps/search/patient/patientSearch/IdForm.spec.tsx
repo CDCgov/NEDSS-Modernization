@@ -2,8 +2,8 @@ import { render } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import { IDForm } from './IdForm';
-import { IdentificationType, PersonFilter } from '../../../../generated/graphql/schema';
-import { SearchCriteria, SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { IdentificationType, PersonFilter } from 'generated/graphql/schema';
+import { SearchCriteria, SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 describe('IDForm component tests', () => {
     it('should render 1 Label for ID Type', () => {
