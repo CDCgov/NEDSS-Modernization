@@ -40,6 +40,7 @@ public class LineSeparatorSteps {
 
     private final Active<ResultActions> addResponse = new Active<>();
     private final Active<ResultActions> deleteResponse = new Active<>();
+    private final Active<ResultActions> updateResponse = new Active<>();
     private final Active<StaticContentRequests.AddDefault> jsonRequestBody = new Active<>();
     private final Active<UpdateStaticRequests.UpdateDefault> updateRequest = new Active<>();
     private final Active<WaTemplate> currPage = new Active<>();
@@ -97,13 +98,37 @@ public class LineSeparatorSteps {
 
 
             this.deleteResponse.active(request.deleteStaticElementRequest(
-                this.currPage.active().getId(), 
-                new DeleteElementRequest(staticResponse.componentId())));
+                    this.currPage.active().getId(),
+                    new DeleteElementRequest(staticResponse.componentId())));
 
         } catch (Exception e) {
             exceptionHolder.setException(e);
         }
-        
+
+    }
+
+    @When("I update a line separator with {string} of {string}")
+    public void i_update_a_line_separator_of(String key, String value) {
+        switch (key) {
+            case ("adminComments") -> this.updateRequest.active(new UpdateStaticRequests.UpdateDefault(value));
+        }
+    }
+
+    @Then("I send an update line separator request")
+    public void i_send_an_update_line_separator_request() throws Exception {
+        String res = this.addResponse.active().andReturn().getResponse().getContentAsString();
+        AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
+
+        this.updateResponse.active(
+                request.updateDefaultRequest(updateRequest.active(), currPage.active().getId(),
+                        staticResponse.componentId()));
+    }
+
+    @Then("the line separator should have {string} of {string}")
+    public void the_line_separator_should_have(String key, String value) throws Exception {
+        switch(key) {
+            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").isString());
+        }
     }
 
     @Then("a line separator is deleted")

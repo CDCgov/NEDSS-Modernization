@@ -74,6 +74,13 @@ class StaticRequest {
                         .contentType(MediaType.APPLICATION_JSON));
     }
 
+    ResultActions updateDefaultRequest(UpdateStaticRequests request, final long page, final long componentId) throws Exception {
+        return mvc.perform(
+                this.authenticated.withUser(post("/api/v1/pages/{page}/content/static/{componentId}/update/default", page, componentId))
+                        .content(asJsonString(request))
+                        .contentType(MediaType.APPLICATION_JSON));
+    }
+
     private static String asJsonString(final Object obj) throws Exception {
         return new ObjectMapper().writeValueAsString(obj);
     }
