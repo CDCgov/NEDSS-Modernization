@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
-import org.hibernate.sql.Update;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
