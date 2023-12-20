@@ -13,11 +13,6 @@ public sealed interface StaticContentRequests {
                         Long subSectionId) implements StaticContentRequests {
         }
 
-        public record UpdateDefault(
-                        @Nullable String adminComments,
-                        @Nullable Long subSectionId) implements StaticContentRequests {
-        }
-
         public record AddHyperlink(
                         String label,
                         String linkUrl,
@@ -25,22 +20,9 @@ public sealed interface StaticContentRequests {
                         Long subSectionId) implements StaticContentRequests {
         }
 
-        public record UpdateHyperlink(
-                        @Nullable String label,
-                        @Nullable String linkUrl,
-                        @Nullable String adminComments,
-                        @Nullable Long subSectionId) implements StaticContentRequests {
-        }
-
         public record AddReadOnlyComments(
                         String commentsText,
                         @Nullable String adminComments,
                         Long subSectionId) implements StaticContentRequests {
         }
-
-        public record UpdateReadOnlyComments(
-                        @Nullable String commentsText,
-                        @Nullable String adminComments,
-                        @Nullable Long subSectionId) implements StaticContentRequests {}
-
 }

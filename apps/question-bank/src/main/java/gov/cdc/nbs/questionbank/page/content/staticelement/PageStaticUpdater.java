@@ -2,11 +2,12 @@ package gov.cdc.nbs.questionbank.page.content.staticelement;
 
 import java.time.Instant;
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.UpdateStaticElementException;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.UpdateStaticRequests;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.UpdateStaticResponse;
 
 @Component
@@ -19,8 +20,9 @@ public class PageStaticUpdater {
         this.entityManager = entityManager;
     }
 
-    public UpdateStaticResponse updateHyperlink(Long pageId, Long componentId,
-            StaticContentRequests.UpdateHyperlink request, Long user) {
+    @Transactional
+    public UpdateStaticResponse updateHyperlink(Long componentId,
+            UpdateStaticRequests.UpdateHyperlink request, Long user) {
 
         WaUiMetadata staticElement = entityManager.find(WaUiMetadata.class, componentId);
 
@@ -28,8 +30,16 @@ public class PageStaticUpdater {
             throw new UpdateStaticElementException("could not find component with id " + componentId);
         }
 
+        if (staticElement.getNbsUiComponentUid() != 1003L) {
+            throw new UpdateStaticElementException(
+                    "component with id " + componentId + " is not a hyperlink element");
+        }
+
+        if(request.label() == null || request.linkUrl() == null) {
+            throw new UpdateStaticElementException("label and link are required");
+        }
+
         staticElement.update(asUpdateHyperlink(user, request.adminComments(), request.label(), request.linkUrl()));
-        entityManager.flush();
 
         return new UpdateStaticResponse(staticElement.getId());
     }
@@ -42,8 +52,9 @@ public class PageStaticUpdater {
         return new PageContentCommand.UpdateHyperlink(userId, adminComments, label, linkUrl, Instant.now());
     }
 
-    public UpdateStaticResponse updateDefaultStaticElement(Long pageId, Long componentId,
-            StaticContentRequests.UpdateDefault request, Long user) {
+    @Transactional
+    public UpdateStaticResponse updateDefaultStaticElement(Long componentId,
+            UpdateStaticRequests.UpdateDefault request, Long user) {
 
         WaUiMetadata staticElement = entityManager.find(WaUiMetadata.class, componentId);
 
@@ -51,8 +62,12 @@ public class PageStaticUpdater {
             throw new UpdateStaticElementException("could not find component with id " + componentId);
         }
 
+        if (staticElement.getNbsUiComponentUid() != 1012L && staticElement.getNbsUiComponentUid() != 1030L
+                && staticElement.getNbsUiComponentUid() != 1036L) {
+            throw new UpdateStaticElementException("component with id " + componentId + " is not static");
+        }
+
         staticElement.update(asUpdateDefaultStaticElement(user, request.adminComments()));
-        entityManager.flush();
 
         return new UpdateStaticResponse(staticElement.getId());
     }
@@ -63,21 +78,32 @@ public class PageStaticUpdater {
         return new PageContentCommand.UpdateDefaultStaticElement(userId, adminComments, Instant.now());
     }
 
-    public UpdateStaticResponse updateReadOnlyComments(Long pageId, Long componentId,
-            StaticContentRequests.UpdateReadOnlyComments request, Long user) {
-        
-        WaUiMetadata staticelement = entityManager.find(WaUiMetadata.class, componentId);
+    @Transactional
+    public UpdateStaticResponse updateReadOnlyComments(Long componentId,
+            UpdateStaticRequests.UpdateReadOnlyComments request, Long user) {
 
-        if(staticelement == null) {
+        WaUiMetadata staticElement = entityManager.find(WaUiMetadata.class, componentId);
+
+        if (staticElement == null) {
             throw new UpdateStaticElementException("could not find component with id " + componentId);
         }
 
-        staticelement.update(asUpdateReadOnlyComments(user, request.commentsText(), request.adminComments()));
+        if (staticElement.getNbsUiComponentUid() != 1014L) {
+            throw new UpdateStaticElementException(
+                    "component with id " + componentId + " is not a read only comments element");
+        }
+
+        if(request.commentsText() == null) {
+            throw new UpdateStaticElementException("comments text is required");
+        }
+
+        staticElement.update(asUpdateReadOnlyComments(user, request.adminComments(), request.commentsText()));
 
         return new UpdateStaticResponse(componentId);
     }
 
-    private PageContentCommand.UpdateReadOnlyComments asUpdateReadOnlyComments(Long userId, String adminComments, String comments) {
+    private PageContentCommand.UpdateReadOnlyComments asUpdateReadOnlyComments(Long userId, String adminComments,
+            String comments) {
         return new PageContentCommand.UpdateReadOnlyComments(userId, comments, adminComments, Instant.now());
     }
 }

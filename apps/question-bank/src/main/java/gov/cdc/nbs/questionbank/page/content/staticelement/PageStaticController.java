@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
+import org.hibernate.sql.Update;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElementRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.UpdateStaticRequests;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.DeleteStaticResponse;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.UpdateStaticResponse;
@@ -102,30 +104,30 @@ public class PageStaticController {
     public UpdateStaticResponse updateHyperlink(
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
-            @RequestBody StaticContentRequests.UpdateHyperlink request,
+            @RequestBody UpdateStaticRequests.UpdateHyperlink request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
     ) {
-        return pageStaticUpdater.updateHyperlink(pageId, componentId, request, details.getId());
+        return pageStaticUpdater.updateHyperlink(componentId, request, details.getId());
     }
 
     @PostMapping("/{id}/update/read-only-comments")
     public UpdateStaticResponse updateHyperlink(
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
-            @RequestBody StaticContentRequests.UpdateReadOnlyComments request,
+            @RequestBody UpdateStaticRequests.UpdateReadOnlyComments request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
     ) {
-        return pageStaticUpdater.updateReadOnlyComments(pageId, componentId, request, details.getId());
+        return pageStaticUpdater.updateReadOnlyComments(componentId, request, details.getId());
     }
 
     @PostMapping("/{id}/update/default")
     public UpdateStaticResponse updateDefaultStaticElement(
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
-            @RequestBody StaticContentRequests.UpdateDefault request,
+            @RequestBody UpdateStaticRequests.UpdateDefault request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
     ) {
-        return pageStaticUpdater.updateDefaultStaticElement(pageId, componentId, request, details.getId());
+        return pageStaticUpdater.updateDefaultStaticElement(componentId, request, details.getId());
     }
 
 
