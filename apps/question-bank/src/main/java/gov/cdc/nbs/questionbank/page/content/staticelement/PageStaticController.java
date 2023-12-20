@@ -111,7 +111,7 @@ public class PageStaticController {
     }
 
     @PostMapping("/{id}/update/read-only-comments")
-    public UpdateStaticResponse updateHyperlink(
+    public UpdateStaticResponse updateReadOnlyComments(
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
             @RequestBody UpdateStaticRequests.UpdateReadOnlyComments request,
