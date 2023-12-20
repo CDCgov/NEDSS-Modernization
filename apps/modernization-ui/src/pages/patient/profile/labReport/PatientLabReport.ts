@@ -17,7 +17,7 @@ type PatientLabReport = {
     orderingFacility: string | null;
     collectedOn: Date | null;
     results: TestResult[];
-    associatedWith: AssociatedWith | null;
+    associatedWith: AssociatedWith[];
     programArea: string;
     jurisdiction: string;
     event: string;

@@ -22,16 +22,12 @@ const getOrderingFacility = (content: GraphQLPatientLabReport): string | undefin
     return content.organizationParticipations?.find((o) => o?.typeCd === 'ORD')?.name;
 };
 
-const getAssociatedWith = (content: GraphQLPatientLabReport): AssociatedWith | null => {
-    if (content.associatedInvestigations.length > 0) {
-        const investigation = content.associatedInvestigations[0];
-        return {
-            id: String(investigation.publicHealthCaseUid),
-            local: investigation.localId,
-            condition: investigation.cdDescTxt
-        };
-    }
-    return null;
+const getAssociations = (content: GraphQLPatientLabReport): AssociatedWith[] => {
+    return content.associatedInvestigations.map((investigation) => ({
+        id: String(investigation.publicHealthCaseUid),
+        local: investigation.localId,
+        condition: investigation.cdDescTxt
+    }));
 };
 
 const getTestResults = (content: GraphQLPatientLabReport): TestResult[] => {
@@ -50,7 +46,7 @@ const internalized = (content: GraphQLPatientLabReport): PatientLabReport | null
             orderingFacility: orNull(getOrderingFacility(content)),
             collectedOn: asLocalDate(content.effectiveFromTime),
             results: getTestResults(content),
-            associatedWith: getAssociatedWith(content),
+            associatedWith: getAssociations(content),
             programArea: content.programAreaCd,
             jurisdiction: String(content.jurisdictionCodeDescTxt),
             event: content.localId

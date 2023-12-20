@@ -254,11 +254,13 @@ describe('when the result has content', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
-                    associatedWith: expect.objectContaining({
-                        id: '571',
-                        local: 'investigation-local',
-                        condition: 'condition-value'
-                    })
+                    associatedWith: expect.arrayContaining([
+                        expect.objectContaining({
+                            id: '571',
+                            local: 'investigation-local',
+                            condition: 'condition-value'
+                        })
+                    ])
                 })
             ])
         );
