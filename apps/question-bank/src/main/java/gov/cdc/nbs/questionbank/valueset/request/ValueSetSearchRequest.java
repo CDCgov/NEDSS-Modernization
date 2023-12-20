@@ -4,10 +4,8 @@ import lombok.Data;
 
 @Data
 public class ValueSetSearchRequest {
-	private String codeSetName;
-	private String valueSetNm;
-	private String valueSetCode;
-	private String valueSetTypeCd;
-	private String valueSetDescription;
+  private String valueSetNm;
+  private String valueSetCode;
+  private String valueSetDescription;
 
 }
