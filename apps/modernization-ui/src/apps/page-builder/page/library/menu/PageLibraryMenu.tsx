@@ -48,8 +48,8 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, 
                         />
                     )}
                 />
-                <Button type="button" className={styles.icon} outline>
-                    <Icon.Print size={3} onClick={onPrint} data-testid="print-icon" />
+                <Button type="button" onClick={onPrint} className={styles.icon} outline>
+                    <Icon.Print size={3} data-testid="print-icon" />
                 </Button>
                 <Button type="button" className={styles.icon} outline onClick={onDownload} data-testid="file-download">
                     <Icon.FileDownload size={3} />

@@ -46,7 +46,8 @@ const reducer = (current: State, action: Action): State => {
 const initial: State = {
     status: 'idle',
     filters: [],
-    pages: []
+    pages: [],
+    keyword: ''
 };
 
 const usePageSummarySearch = () => {
@@ -93,7 +94,8 @@ const usePageSummarySearch = () => {
         searching: state.status === 'searching',
         pages: state.pages,
         search: (keyword?: string) => dispatch({ type: 'search', keyword }),
-        filter: (filters: Filter[]) => dispatch({ type: 'filter', filters: externalize(filters) })
+        filter: (filters: Filter[]) => dispatch({ type: 'filter', filters: externalize(filters) }),
+        keyword: state.keyword
     };
 };
 

@@ -2,7 +2,7 @@ import { authorization } from 'authorization';
 import { externalize, Filter } from 'filters';
 import { useState } from 'react';
 import { useSorting } from 'sorting';
-import { download as downloadBase64File, downloadAsCsv } from 'utils/download';
+import { downloadAsCsv, download as downloadBase64File } from 'utils/download';
 
 import { usePageLibraryProperties } from './usePageLibraryProperties';
 import { usePageSummarySearch } from './usePageSummarySearch';
@@ -31,20 +31,14 @@ const PageLibrary = () => {
 const PageLibraryContent = () => {
     const { sorting, sortBy } = useSorting();
     const config = useConfiguration();
-    const { pages, searching, search, filter } = usePageSummarySearch();
+    const { keyword, pages, searching, search, filter } = usePageSummarySearch();
     const { properties } = usePageLibraryProperties();
 
     const [filters, setFilters] = useState<Filter[]>([]);
-    const [keyword, setKeyword] = useState<string>('');
 
     const handleFilter = (filters: Filter[]) => {
         setFilters(filters);
         filter(filters);
-    };
-
-    const handleSearch = (searchString?: string) => {
-        setKeyword(searchString ?? '');
-        search(searchString);
     };
 
     const handleDownloadCSV = () => {
@@ -89,7 +83,7 @@ const PageLibraryContent = () => {
                     <PageLibraryMenu
                         properties={properties}
                         filters={filters}
-                        onSearch={handleSearch}
+                        onSearch={search}
                         onFilter={handleFilter}
                         onDownload={handleDownloadCSV}
                         onPrint={handleDownloadPDF}
