@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,12 +23,13 @@ class PageStaticUpdaterTest {
     @Mock
     private EntityManager entityManager;
 
-    @Test
-    void testUpdateDefaultStaticElement() {
+    @ParameterizedTest
+    @ValueSource(longs = {1012L, 1030L, 1036L})
+    void testUpdateDefaultStaticElement(long number) {
 
         WaUiMetadata tempElement = new WaUiMetadata();
         tempElement.setAdminComment("old comments");
-        tempElement.setNbsUiComponentUid(1036L);
+        tempElement.setNbsUiComponentUid(number);
         tempElement.setId(2L);
 
         long componentId = 2L;
@@ -38,43 +41,6 @@ class PageStaticUpdaterTest {
 
         assertEquals("new admin comments", tempElement.getAdminComment());
     }
-
-    @Test
-    void testUpdateDefaultStaticElementOtherCompId() {
-
-        WaUiMetadata tempElement = new WaUiMetadata();
-        tempElement.setAdminComment("old comments");
-        tempElement.setNbsUiComponentUid(1012L);
-        tempElement.setId(2L);
-
-        long componentId = 2L;
-        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
-
-        var request = new UpdateStaticRequests.UpdateDefault("new admin comments");
-
-        pageStaticUpdater.updateDefaultStaticElement(componentId, request, 123L);
-
-        assertEquals("new admin comments", tempElement.getAdminComment());
-    }
-
-    @Test
-    void testUpdateDefaultStaticElementOtherCompId2() {
-
-        WaUiMetadata tempElement = new WaUiMetadata();
-        tempElement.setAdminComment("old comments");
-        tempElement.setNbsUiComponentUid(1030L);
-        tempElement.setId(2L);
-
-        long componentId = 2L;
-        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
-
-        var request = new UpdateStaticRequests.UpdateDefault("new admin comments");
-
-        pageStaticUpdater.updateDefaultStaticElement(componentId, request, 123L);
-
-        assertEquals("new admin comments", tempElement.getAdminComment());
-    }
-
 
     @Test
     void testUpdateDefaultStaticElementDoesNotExist() {
