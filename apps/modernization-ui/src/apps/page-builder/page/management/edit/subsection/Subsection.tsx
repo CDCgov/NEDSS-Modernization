@@ -2,12 +2,10 @@ import { PageStaticControllerService, PagesQuestion, PagesSubSection } from 'app
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
 import { useState } from 'react';
-import { Question } from 'apps/page-builder/components/Question/Question';
-import { Button, Icon } from '@trussworks/react-uswds';
+import { Question } from '../question/Question';
 import { useAlert } from 'alert';
 import { authorization } from 'authorization';
 import { usePageManagement } from '../../usePageManagement';
-import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 
 type Props = {
     subsection: PagesSubSection;
@@ -46,6 +44,17 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
         setIsExpanded(expanded);
     };
 
+    const handleEditQuestion = (id: number) => {
+        console.log('edit question NYI', id);
+    };
+    const handleDeleteQuestion = (id: number) => {
+        console.log('delete question NYI', id);
+    };
+
+    const handleRequiredChange = (id: number) => {
+        console.log('update question NYI', id);
+    };
+
     return (
         <div className={styles.subsection}>
             <SubsectionHeader
@@ -56,12 +65,15 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                 onExpandedChange={handleExpandedChange}
                 isExpanded={isExpanded}
             />
-            <Question question={tempQuestion} />
-            <MoreOptions header={<Icon.MoreVert size={4} />}>
-                <Button type="button" onClick={() => deleteQuestion(tempQuestion.id)}>
-                    <Icon.Delete size={3} /> Delete
-                </Button>
-            </MoreOptions>
+            {subsection.questions.map((q, k) => (
+                <Question
+                    question={q}
+                    key={k}
+                    onEditQuestion={handleEditQuestion}
+                    onDeleteQuestion={handleDeleteQuestion}
+                    onRequiredChange={handleRequiredChange}
+                />
+            ))}
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router-dom';
 import { AddStaticElement } from './AddStaticElement';
@@ -44,7 +44,7 @@ describe('When page loads', () => {
 
 describe('When line separator is chosen', () => {
     it('only the comments input and static element type inputs should be displayed', async () => {
-        const { getByTestId, getByText } = render(
+        const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <PageManagementProvider page={page}>
@@ -63,15 +63,13 @@ describe('When line separator is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        await waitFor(() => {
-            expect(getByText('Administrative Comments')).toBeInTheDocument();
-        });
+        expect(await findByText('Administrative Comments')).toBeInTheDocument();
     });
 });
 
 describe('When hyperlink is chosen', () => {
     it('only label, linkURL and admin comments should display', async () => {
-        const { getByTestId, getByText } = render(
+        const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <PageManagementProvider page={page}>
@@ -90,16 +88,16 @@ describe('When hyperlink is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        await waitFor(() => {
-            expect(getByText('Administrative Comments')).toBeInTheDocument();
-            expect(getByText('Link URL')).toBeInTheDocument();
-        });
+        expect(await findByText('Administrative Comments')).toBeInTheDocument()
+        expect(await findByText('Link URL')).toBeInTheDocument()
+
+        
     });
 });
 
 describe('When comments is chosen', () => {
     it('only displays comments text and admin comments', async () => {
-        const { getByTestId, getByText } = render(
+        const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <PageManagementProvider page={page}>
@@ -118,16 +116,15 @@ describe('When comments is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        await waitFor(() => {
-            expect(getByText('Administrative Comments')).toBeInTheDocument();
-            expect(getByText('Comments text')).toBeInTheDocument();
-        });
+        expect(await findByText('Administrative Comments')).toBeInTheDocument()
+        expect(await findByText('Comments text')).toBeInTheDocument()
+
     });
 });
 
 describe('When participants is chosen', () => {
     it('only displays admin comments', async () => {
-        const { getByTestId, getByText } = render(
+        const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <PageManagementProvider page={page}>
@@ -147,15 +144,14 @@ describe('When participants is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        await waitFor(() => {
-            expect(getByText('Administrative Comments')).toBeInTheDocument();
-        });
+        expect(await findByText('Administrative Comments')).toBeInTheDocument()
+
     });
 });
 
 describe('When electronic doc list is chosen', () => {
     it('only displays admin comments', async () => {
-        const { getByTestId, getByText } = render(
+        const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <PageManagementProvider page={page}>
@@ -174,15 +170,13 @@ describe('When electronic doc list is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        await waitFor(() => {
-            expect(getByText('Administrative Comments')).toBeInTheDocument();
-        });
+        expect(await findByText('Administrative Comments')).toBeInTheDocument()
     });
 });
 
 describe('When all inputs are entered', () => {
     it('button enables once all inputs are selected', async () => {
-        const { getByTestId, container } = render(
+        const { getByTestId, findByTestId } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <PageManagementProvider page={page}>
@@ -221,8 +215,6 @@ describe('When all inputs are entered', () => {
             fireEvent.blur(linkInput);
         });
 
-        await waitFor(() => {
-            expect(getByTestId('submit-btn')).toBeEnabled();
-        });
+        expect(await findByTestId('submit-btn')).toBeEnabled()
     });
 });

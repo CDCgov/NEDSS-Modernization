@@ -1,5 +1,4 @@
-import { Button } from '@trussworks/react-uswds';
-import { Icon } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import { OverlayPanel } from 'overlay';
 import { Filter, FilterPanel, Property } from 'filters';
 import { LinkButton } from 'components/button';

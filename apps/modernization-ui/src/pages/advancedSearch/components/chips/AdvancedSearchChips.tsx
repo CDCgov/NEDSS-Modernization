@@ -2,7 +2,7 @@ import { InvestigationFilter, LabReportFilter, PersonFilter } from 'generated/gr
 
 import { SEARCH_TYPE } from 'pages/advancedSearch/AdvancedSearch';
 import { InvestigationChips } from './InvestigationChips';
-import { PatientChips } from './PatientChips';
+import { PatientChips } from '../../../../apps/search/patient/chips/PatientChips';
 import { LabReportChips } from './LabReportChips';
 
 type ChipProps = {

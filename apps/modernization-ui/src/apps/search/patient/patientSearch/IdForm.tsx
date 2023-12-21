@@ -1,9 +1,9 @@
 import { Grid } from '@trussworks/react-uswds';
 import { PersonFilter } from 'generated/graphql/schema';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { Input } from '../../../../components/FormInputs/Input';
-import { SelectInput } from '../../../../components/FormInputs/SelectInput';
-import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 type IDFormProps = {
     control: UseFormReturn<PersonFilter>;
