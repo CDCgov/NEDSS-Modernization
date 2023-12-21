@@ -17,8 +17,8 @@ import { PageLibraryTable } from './table/PageLibraryTable';
 import { LinkButton } from 'components/button';
 import { useConfiguration } from 'configuration';
 import styles from './page-library.module.scss';
-import { downloadAsCsv } from 'utils/download';
 import { downloadPageLibraryPdf } from 'utils/ExportUtil';
+import { download } from 'utils/download';
 
 const PageLibrary = () => {
     return (
@@ -49,7 +49,7 @@ const PageLibraryContent = () => {
                 search: keyword,
                 filters: externalize(filters)
             }
-        }).then((file) => downloadAsCsv({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' }));
+        }).then((file) => download({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' }));
     };
 
     const handleDownloadPDF = () => {
