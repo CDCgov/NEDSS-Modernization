@@ -7,6 +7,7 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
 import { authorization } from 'authorization';
 import { usePageManagement } from '../../usePageManagement';
+import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 
 type Props = {
     subsection: PagesSubSection;
@@ -21,14 +22,17 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const tempQuestion: PagesQuestion = {
         id: 1154585,
         name: 'something label',
-        order: 7
+        order: 7,
+        
     };
 
     const handleAlert = (message: string) => {
         showAlert({ message: message, type: 'success' });
     };
 
-    const deleteStaticElement = (id: number) => {
+    const deleteQuestion = (id: number) => {
+
+
         PageStaticControllerService.deleteStaticElementUsingDelete({
             authorization: authorization(),
             page: page.id,
@@ -53,9 +57,11 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                 isExpanded={isExpanded}
             />
             <Question question={tempQuestion} />
-            <Button type="button" onClick={() => deleteStaticElement(tempQuestion.id)}>
-                <Icon.Delete size={3} /> Delete
-            </Button>
+            <MoreOptions header={<Icon.MoreVert size={4} />}>
+                <Button type="button" onClick={() => deleteQuestion(tempQuestion.id)}>
+                    <Icon.Delete size={3} /> Delete
+                </Button>
+            </MoreOptions>
         </div>
     );
 };
