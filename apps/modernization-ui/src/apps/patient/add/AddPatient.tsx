@@ -6,25 +6,24 @@ import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
 
 import { StateCodedValues, useLocationCodedValues } from 'location';
 import { ConfirmationModal } from 'confirmation';
-import { useAddPatientCodedValues } from './useAddPatientCodedValues';
-import { asPersonInput } from './asPersonInput';
+import { useAddPatientCodedValues } from 'apps/patient/add/useAddPatientCodedValues';
+import { asPersonInput } from 'apps/patient/add/asPersonInput';
 
-import { NameFields } from './components/nameFields/NameFields';
-import AddressFields from './components/addressFields/AddressFields';
-import ContactFields from './components/contactFields/ContactFields';
-import EthnicityFields from './components/ethnicityFields/EthnicityFields';
-import RaceFields from './components/Race/RaceFields';
-import GeneralInformation from './components/generalInformation/generalInformation';
-import { IdentificationFields } from './components/identificationFields/IdentificationFields';
-import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
-
+import { NameFields } from 'apps/patient/add/nameFields/NameFields';
+import AddressFields from 'apps/patient/add/addressFields/AddressFields';
+import ContactFields from 'apps/patient/add/contactFields/ContactFields';
+import EthnicityFields from 'apps/patient/add/ethnicityFields/EthnicityFields';
+import RaceFields from 'apps/patient/add/Race/RaceFields';
+import GeneralInformation from 'apps/patient/add/generalInformation/generalInformation';
+import { IdentificationFields } from 'apps/patient/add/identificationFields/IdentificationFields';
+import OtherInfoFields from 'apps/patient/add/otherInfoFields/OtherInfoFields';
 import './AddPatient.scss';
 import { VerifiableAdddress, AddressVerificationModal } from 'address/verification';
 import { orNull } from 'utils';
-import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'pages/patient/add';
-import { isMissingFields } from './isMissingFields';
-import { usePreFilled } from './usePreFilled';
-import { DataEntrySideNav } from './components/DataEntrySideNav/DataEntrySideNav';
+import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'apps/patient/add';
+import { isMissingFields } from 'apps/patient/add/isMissingFields';
+import { usePreFilled } from 'apps/patient/add/usePreFilled';
+import { DataEntrySideNav } from 'apps/patient/add/DataEntrySideNav/DataEntrySideNav';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //

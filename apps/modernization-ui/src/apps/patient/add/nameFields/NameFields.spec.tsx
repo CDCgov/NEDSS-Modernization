@@ -1,7 +1,7 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NameFields } from './NameFields';
-import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'pages/patient/add';
+import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'apps/patient/add';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ReactNode } from 'react';
 
