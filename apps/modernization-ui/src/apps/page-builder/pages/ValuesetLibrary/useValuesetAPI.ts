@@ -19,11 +19,13 @@ export const fetchValueSet = (
             return response || [];
         });
     } else {
-        // if (filter.newestToOldest || (!searchQuery && !filter?.questionType)) {
         return ValueSetControllerService.searchValueSetUsingPost({
             authorization,
             search: search
-                ? { valueSetNm: search, valueSetDescription: search, valueSetTypeCd: filter?.questionType }
+                ? {
+                      valueSetNm: search,
+                      valueSetDescription: search
+                  }
                 : { valueSetTypeCd: filter?.questionType || 'LOCAL' },
             page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
             size: pageSize,

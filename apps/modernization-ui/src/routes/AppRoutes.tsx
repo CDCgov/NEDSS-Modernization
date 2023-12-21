@@ -24,7 +24,6 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location]);
-
     return <>{children}</>;
 };
 
@@ -93,8 +92,8 @@ export const AppRoutes = () => {
                                 {config.features.pageBuilder.enabled && (
                                     <Route path="/page-builder" element={<PageBuilderContextProvider />}>
                                         <Route path="pages">
-                                            {pageLibraryRoutes(config.features.pageBuilder.page.library.enabled)}
-                                            {pageManagementRoutes(config.features.pageBuilder.page.management.enabled)}
+                                            {pageLibraryRoutes(config.features.pageBuilder.page?.library.enabled)}
+                                            {pageManagementRoutes(config.features.pageBuilder.page?.management.enabled)}
                                         </Route>
                                         <Route path="question-library" element={<QuestionLibrary />} />
                                     </Route>

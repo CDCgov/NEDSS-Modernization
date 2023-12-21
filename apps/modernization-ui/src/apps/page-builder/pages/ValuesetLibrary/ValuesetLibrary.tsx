@@ -1,29 +1,26 @@
 import { useContext, useEffect, useState } from 'react';
-import { UserContext } from 'user';
 import { ValueSetsContext } from '../../context/ValueSetContext';
 import './ValuesetLibrary.scss';
 import { ValuesetLibraryTable } from './ValuesetLibraryTable';
 import './ValuesetTabs.scss';
 import { fetchValueSet } from './useValuesetAPI';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
+import { authorization } from '../../../../authorization';
 
 export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     const [activeTab, setActiveTab] = useState(types || 'local');
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(ValueSetsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
-    const { state } = useContext(UserContext);
 
     const handleTab = (tab: string) => {
         setActiveTab(tab);
     };
     // @ts-ignore
     useEffect(async () => {
-        const token = `Bearer ${state.getToken()}`;
         setIsLoading(true);
-        setSummaries([]);
         const { content, totalElements }: any = await fetchValueSet(
-            token,
+            authorization(),
             searchQuery,
             sortBy,
             currentPage,

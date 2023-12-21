@@ -33,6 +33,7 @@
         .padding-x-2.search-box {
             display: none;
         }
+        .no-data-available{ flex-direction: column}
         background-color: colors.$base-white;
         border-radius: 3px;
         border: 1px solid colors.$base-lightest;
@@ -52,13 +53,19 @@
         }
         thead th {
             &:nth-of-type(1) .table-head {
-                margin-left: 66px;
+                margin-left: 10%;
             }
             &:nth-of-type(2) {
-                width: 250px;
+                width: 15%;
+            }
+            &:nth-of-type(3) {
+                width: 20%;
             }
             &:nth-of-type(4) {
-                width: 100px;
+               min-width: 50%;
+            }
+            &:nth-of-type(5) {
+                min-width: 5%;
             }
         }
         tbody tr {

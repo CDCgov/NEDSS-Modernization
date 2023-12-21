@@ -28,5 +28,8 @@ export type ValueSet = {
     valueSetStatusCd?: string;
     valueSetStatusTime?: string;
     valueSetTypeCd?: string;
+    valueSetDescription?: string;
+    type?: string;
+    valueSetName?: string;
 };
 
