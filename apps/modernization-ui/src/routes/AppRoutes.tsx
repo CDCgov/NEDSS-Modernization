@@ -3,6 +3,7 @@ import { PageLibrary } from 'apps/page-builder/page/library/PageLibrary';
 import { Edit } from 'apps/page-builder/page/management/edit/Edit';
 import { PreviewPage } from 'apps/page-builder/page/management/preview';
 import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
+import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import { Spinner } from 'components/Spinner';
 import { Config } from 'config';
 import { useConfiguration } from 'configuration';
@@ -65,6 +66,7 @@ export const AppRoutes = () => {
                 <Route path=":pageId">
                     <Route index element={<PreviewPage />} />
                     <Route path="edit" element={<Edit />} />
+                    <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
                 </Route>
             </>
         ) : (
