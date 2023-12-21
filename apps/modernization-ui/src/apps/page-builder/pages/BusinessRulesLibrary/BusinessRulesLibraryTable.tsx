@@ -210,7 +210,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     return (
         <div>
             <div className="add-business-rules-block">
-                <div>
+                <div className="business-rules-header">
                     <h3> {page?.name} | business rules </h3>
                 </div>
                 <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`}>

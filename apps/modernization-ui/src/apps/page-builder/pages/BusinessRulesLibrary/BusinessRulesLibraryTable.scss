@@ -7,4 +7,17 @@
     border-radius: 5px 5px 0px 0px;
     border: 1px solid var(--Base-lighter, #dcdee0);
     background: var(--Base-White, #fff);
+
+    .business-rules-header {
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+}
+
+thead tr th {
+    &:nth-of-type(6) {
+        width: 80px;
+    }
 }

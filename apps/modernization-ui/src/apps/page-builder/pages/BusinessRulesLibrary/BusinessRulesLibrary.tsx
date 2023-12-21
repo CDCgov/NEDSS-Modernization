@@ -42,14 +42,14 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
         <PageBuilder page="pages">
             <div className="business-rules-library padding-top-3">
                 {page && (
-                    <>
+                    <div className="padding-left-3">
                         <Breadcrumb
                             start="../.."
                             currentPage="Rules library"
                             crumbs={[{ name: page.name, position: 1, to: '..' }]}>
                             Page library
                         </Breadcrumb>
-                    </>
+                    </div>
                 )}
                 <div className="business-rules-library__container">
                     <div className="business-rules-library__table">
