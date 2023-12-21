@@ -14,7 +14,7 @@ export const PageSideMenu = () => {
                 </li>
                 <li>
                     <EQIcon name="reorder" />
-                    Add section
+                    Reorder
                 </li>
             </ul>
         </div>
