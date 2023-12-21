@@ -1,14 +1,14 @@
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import 'pages/patientProfile/style.scss';
+import 'apps/patient/profile/style.scss';
 import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Summary } from 'pages/patientProfile/Summary';
-import { Events } from 'pages/patientProfile/Events';
-import { Demographics } from 'pages/patientProfile/Demographics';
+import { Summary } from 'apps/patient/profile/Summary';
+import { Events } from 'apps/patient/profile/Events';
+import { Demographics } from 'apps/patient/profile/Demographics';
 import { Config } from 'config';
 import { usePatientProfile } from './usePatientProfile';
-import { PatientProfileSummary } from './summary';
+import { PatientProfileSummary } from './summary/PatientProfileSummary';
 import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 import { MessageModal } from 'messageModal';

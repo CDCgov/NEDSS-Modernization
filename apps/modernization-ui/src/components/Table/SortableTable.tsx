@@ -1,7 +1,7 @@
 import { Button, Icon, Table, Pagination } from '@trussworks/react-uswds';
 import React from 'react';
 import './style.scss';
-import { TOTAL_TABLE_DATA } from '../../utils/util';
+import { TOTAL_TABLE_DATA } from 'utils/util';
 import { Direction } from 'sorting';
 import { Loading } from 'components/Spinner';
 import { NoData } from 'components/NoData';
