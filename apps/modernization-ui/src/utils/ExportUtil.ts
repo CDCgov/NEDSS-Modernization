@@ -1,4 +1,4 @@
-import { Filter } from 'filters';
+import { Filter, externalize } from 'filters';
 import {
     ExportControllerService,
     InvestigationFilter as ExportInvestigation,
@@ -84,7 +84,7 @@ export const downloadPageLibraryPdf = (authorization: string, search: string, fi
             'Content-Type': 'application/json',
             Authorization: authorization
         },
-        body: JSON.stringify({ search: search, filters: filters })
+        body: JSON.stringify({ search: search, filters: externalize(filters) })
     })
         .then((response) => response.blob())
         .then((blob) => {
