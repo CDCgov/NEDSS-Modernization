@@ -120,7 +120,7 @@ public class PageStaticController {
         return pageStaticUpdater.updateReadOnlyComments(componentId, request, details.getId());
     }
 
-    @PutMapping({"/{id}/update/line-separator", "/{id}/update/participants-list/", "/{id}/update/elec-doc-list"})
+    @PutMapping({"/{id}/update/line-separator", "/{id}/update/participants-list", "/{id}/update/elec-doc-list"})
     public UpdateStaticResponse updateDefaultStaticElement(
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
