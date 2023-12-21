@@ -1,0 +1,18 @@
+.searchBar {
+    margin-bottom: 16px;
+    display: flex;
+    width: 100%;
+    padding: 16px 24px 16px 16px;
+    justify-content: flex-end;
+    align-items: center;
+    border-radius: 5px;
+    background: var(--Base-lightest, #f0f0f0);
+
+    .search-filter {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%;
+        flex-direction: row;
+    }
+}

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { PageRuleControllerService } from 'apps/page-builder/generated';
+import { PageRuleControllerService, Page_ViewRuleResponse_ } from 'apps/page-builder/generated';
 
 export const fetchBusinessRules = (
     authorization: string,
@@ -30,11 +30,12 @@ export const fetchBusinessRules = (
         return PageRuleControllerService.findPageRuleUsingPost({
             authorization,
             request,
+            pageId,
             page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
             size: pageSize,
             sort
         })
-            .then((response: any) => {
+            .then((response: Page_ViewRuleResponse_) => {
                 return response || [];
             })
             .catch((error: any) => {

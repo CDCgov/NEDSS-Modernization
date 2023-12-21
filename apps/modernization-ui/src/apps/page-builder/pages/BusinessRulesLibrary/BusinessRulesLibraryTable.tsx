@@ -5,9 +5,10 @@ import { RefObject, useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import { BusinessRuleContext } from '../../context/BusinessContext';
 import { SearchBar } from './SearchBar';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import './BusinessRulesLibraryTable.scss';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
 
 export enum Column {
     SourceFields = 'Source Fields',
@@ -57,7 +58,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Rules>({});
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
-    const { pageId } = useParams();
+    const { page } = useGetPageDetails();
 
     const mapLogic = ({ comparator, ruleFunction }: any) => {
         if (ruleFunction === 'Date Compare') {
@@ -81,7 +82,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         }
     };
 
-    const redirectRuleURL = `/page-builder/pages/${pageId}/business-rules-library`;
+    const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules-library`;
 
     const asTableRow = (rule: Rules): TableBody => ({
         id: rule.templateUid,
@@ -209,6 +210,9 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     return (
         <div>
             <div className="add-business-rules-block">
+                <div>
+                    <h3> {page?.name} | business rules </h3>
+                </div>
                 <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`}>
                     Add new business rule
                 </NavLinkButton>

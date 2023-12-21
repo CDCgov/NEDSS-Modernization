@@ -99,6 +99,7 @@ export class PageRuleControllerService {
     public static findPageRuleUsingPost({
         authorization,
         request,
+        pageId,
         page,
         size,
         sort
@@ -108,13 +109,14 @@ export class PageRuleControllerService {
          * request
          */
         request: SearchPageRuleRequest;
+        pageId: string;
         page?: number;
         size?: number;
         sort?: string;
     }): CancelablePromise<Page_ViewRuleResponse_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/rules/search',
+            url: `/nbs/page-builder/api/v1/pages/${pageId}/rules/search`,
             headers: {
                 Authorization: authorization
             },

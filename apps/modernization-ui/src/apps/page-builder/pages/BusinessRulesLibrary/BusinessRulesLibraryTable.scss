@@ -1,5 +1,11 @@
 .add-business-rules-block {
     // shift content to end of row
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    align-self: stretch;
+    border-radius: 5px 5px 0px 0px;
+    border: 1px solid var(--Base-lighter, #dcdee0);
+    background: var(--Base-White, #fff);
 }
