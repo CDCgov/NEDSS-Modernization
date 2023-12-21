@@ -39,7 +39,7 @@ const asTableBody =
                                 <br />
                                 <p className="margin0">{report.reportingFacility}</p>
                             </>
-                        )}                        
+                        )}
 
                         {report?.orderingFacility !== null && (
                             <>
@@ -57,9 +57,7 @@ const asTableBody =
                             </>
                         )}
                     </>
-
                 )
-
             },
             {
                 id: 3,
@@ -68,12 +66,15 @@ const asTableBody =
             {
                 id: 4,
                 title: (
-                        report?.associatedWith.length 
-                    )
+                    <>        
+                        {report?.results[0].test}
+                        {report?.results[0].result}
+                    </>
+                )
             },
             {
                 id: 5,
-                title: report?.associatedWith.length || null
+                title: report?.associatedWith || null
             },
             {
                 id: 6,
@@ -90,7 +91,8 @@ const asTableBody =
         ]
     });
 
-const asTableBodies = (reports: PatientLabReport[], patient?: string): TableBody[] => reports?.map(asTableBody(patient)) || [];
+const asTableBodies = (reports: PatientLabReport[], patient?: string): TableBody[] =>
+    reports?.map(asTableBody(patient)) || [];
 
 const headers = [
     { name: Headers.DateReceived, sortable: true },
