@@ -19,12 +19,6 @@ export const SearchBar = ({ onChange }: any) => {
         onChange(search);
     };
 
-    // const handleRemove = (removeTag: string) => {
-    //     setSearch('');
-    //     onChange('');
-    //     setSearchTags((preTag: string[]) => preTag.filter((tag) => tag !== removeTag));
-    // };
-
     return (
         <div className="searchBar">
             <div className="search-filter">
