@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 public class QueryDSLFilterApplier {
 
   public interface ExpressionResolver {
+    @SuppressWarnings("java:S1452")
     Stream<Expression<?>> resolve(final String property);
   }
 
@@ -23,10 +24,7 @@ public class QueryDSLFilterApplier {
       final ExpressionResolver expressionResolver,
       final Collection<Filter> filters
   ) {
-    return filters.stream()
-        .flatMap(applyFilter(expressionResolver, new DefaultQueryDSLCriteriaResolver()))
-        .reduce(BooleanExpression::and)
-        .stream();
+    return apply(expressionResolver, new DefaultQueryDSLCriteriaResolver(), filters);
   }
 
   public static Stream<BooleanExpression> apply(
