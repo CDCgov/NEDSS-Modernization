@@ -21,7 +21,11 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     onEditQuestion={() => onEditQuestion(question.id)}
                     onDeleteQuestion={() => onDeleteQuestion(question.id)}
                 />
-                <QuestionContent name={question.name} type={question.dataType ?? ''} />
+                <QuestionContent
+                    name={question.name}
+                    type={question.dataType ?? ''}
+                    displayComponent={question.displayComponent}
+                />
             </div>
         </div>
     );
