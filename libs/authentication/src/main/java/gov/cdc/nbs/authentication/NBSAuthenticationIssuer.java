@@ -1,14 +1,15 @@
 package gov.cdc.nbs.authentication;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
+import gov.cdc.nbs.authentication.token.NBSTokenCookieEnsurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
-import gov.cdc.nbs.authentication.token.NBSTokenCookieEnsurer;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 // Responsible for applying user authentication to a request
 @Component
@@ -21,7 +22,8 @@ public class NBSAuthenticationIssuer {
   public NBSAuthenticationIssuer(
       final NBSTokenCookieEnsurer cookieEnsurer,
       final UserService userService,
-      final SecurityProperties securityProperties) {
+      final SecurityProperties securityProperties
+  ) {
     this.cookieEnsurer = cookieEnsurer;
     this.userService = userService;
     this.securityProperties = securityProperties;
@@ -30,15 +32,15 @@ public class NBSAuthenticationIssuer {
 
   // Fetches the user from the database and sets the Spring security context and adds the necessary cookies
   public void issue(
-      String user,
-      HttpServletRequest request,
-      HttpServletResponse response) {
+      final String user,
+      final HttpServletRequest request,
+      final HttpServletResponse response
+  ) {
     NbsUserDetails userDetails = userService.loadUserByUsername(user);
-    Authentication auth = createSpringAuthentication(userDetails, request);
-    SecurityContextHolder.getContext().setAuthentication(auth);
+    Authentication authentication = createSpringAuthentication(userDetails, request);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
     cookieEnsurer.ensure(user, response);
-    NBSUserCookie userCookie = new NBSUserCookie(user);
-    userCookie.apply(securityProperties, response);
+    new NBSUserCookie(user).apply(securityProperties, response);
   }
 
   /**
@@ -47,7 +49,8 @@ public class NBSAuthenticationIssuer {
    */
   private Authentication createSpringAuthentication(
       final NbsUserDetails principal,
-      final HttpServletRequest request) {
+      final HttpServletRequest request
+  ) {
 
     var authentication = new PreAuthenticatedAuthenticationToken(principal, null, principal.getAuthorities());
     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
