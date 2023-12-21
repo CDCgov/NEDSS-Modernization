@@ -8,7 +8,7 @@ type Props = {
     question: PagesQuestion;
     onRequiredChange: (id: number) => void;
     onEditQuestion: (id: number) => void;
-    onDeleteQuestion: (id: number) => void;
+    onDeleteQuestion: (id: number, componentId: number) => void;
 };
 export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQuestion }: Props) => {
     return (
@@ -19,7 +19,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     isRequired={question.required ?? false}
                     onRequiredChange={() => onRequiredChange(question.id)}
                     onEditQuestion={() => onEditQuestion(question.id)}
-                    onDeleteQuestion={() => onDeleteQuestion(question.id)}
+                    onDeleteQuestion={() => onDeleteQuestion(question.id, question.displayComponent!)}
                 />
                 <QuestionContent
                     name={question.name}

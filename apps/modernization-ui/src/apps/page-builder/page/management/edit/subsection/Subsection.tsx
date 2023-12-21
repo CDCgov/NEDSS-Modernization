@@ -1,11 +1,11 @@
-import { PageStaticControllerService, PagesQuestion, PagesSubSection } from 'apps/page-builder/generated';
+import { PageStaticControllerService, PagesSubSection } from 'apps/page-builder/generated';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
 import { useState } from 'react';
 import { Question } from '../question/Question';
-import { useAlert } from 'alert';
-import { authorization } from 'authorization';
 import { usePageManagement } from '../../usePageManagement';
+import { authorization } from 'authorization/authorization';
+import { useAlert } from 'alert';
 
 type Props = {
     subsection: PagesSubSection;
@@ -17,29 +17,10 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
 
     const { showAlert } = useAlert();
 
-    const tempQuestion: PagesQuestion = {
-        id: 1154585,
-        name: 'something label',
-        order: 7,
-        
-    };
-
     const handleAlert = (message: string) => {
         showAlert({ message: message, type: 'success' });
     };
-
-    const deleteQuestion = (id: number) => {
-
-
-        PageStaticControllerService.deleteStaticElementUsingDelete({
-            authorization: authorization(),
-            page: page.id,
-            request: { componentId: id }
-        }).then(() => {
-            handleAlert(`deleted a static element`);
-        });
-    };
-
+    
     const handleExpandedChange = (expanded: boolean) => {
         setIsExpanded(expanded);
     };
@@ -47,8 +28,24 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const handleEditQuestion = (id: number) => {
         console.log('edit question NYI', id);
     };
-    const handleDeleteQuestion = (id: number) => {
-        console.log('delete question NYI', id);
+    const handleDeleteQuestion = (id: number, componentId: number) => {
+        if (
+            componentId == 1003 ||
+            componentId == 1036 ||
+            componentId == 1012 ||
+            componentId == 1014 ||
+            componentId == 1030
+        ) {
+            PageStaticControllerService.deleteStaticElementUsingDelete({
+                authorization: authorization(),
+                page: page.id,
+                request: { componentId: componentId }
+            }).then(() => {
+                handleAlert(`deleted a static element`);
+            });
+        } else {
+            console.log('delete question NYI', id);
+        }
     };
 
     const handleRequiredChange = (id: number) => {
