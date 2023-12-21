@@ -13,13 +13,13 @@ import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryRequest;
 import gov.cdc.nbs.questionbank.page.summary.search.PageSummarySearcher;
 
 @Service
-public class PageDownloader {
+public class PageSummaryDownloader {
 
   private final PageSummarySearcher searcher;
   private final PageSummaryCsvCreator csvCreator;
   private final PageSummaryPdfCreator pdfCreator;
 
-  public PageDownloader(
+  public PageSummaryDownloader(
       final PageSummarySearcher searcher,
       final PageSummaryCsvCreator csvCreator,
       final PageSummaryPdfCreator pdfCreator) {

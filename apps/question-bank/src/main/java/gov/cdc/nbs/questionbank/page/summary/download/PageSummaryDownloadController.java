@@ -25,13 +25,13 @@ import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryRequest;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class PageSummaryDownloadController {
 
-  private final PageDownloader pageDownloader;
+  private final PageSummaryDownloader pageSummaryDownloader;
   private final PageMetaDataDownloader pageMetaDataDownloader;
 
   public PageSummaryDownloadController(
-      final PageDownloader pageDownloader,
+      final PageSummaryDownloader pageDownloader,
       final PageMetaDataDownloader pageMetaDataDownloader) {
-    this.pageDownloader = pageDownloader;
+    this.pageSummaryDownloader = pageDownloader;
     this.pageMetaDataDownloader = pageMetaDataDownloader;
   }
 
@@ -39,7 +39,7 @@ public class PageSummaryDownloadController {
   public ResponseEntity<Resource> csv(
       @RequestBody final PageSummaryRequest request,
       @PageableDefault(sort = "name") final Pageable pageable) {
-    InputStreamResource file = pageDownloader.createCsv(request, pageable);
+    InputStreamResource file = pageSummaryDownloader.createCsv(request, pageable);
 
     return ResponseEntity.ok()
         .header(
@@ -56,7 +56,7 @@ public class PageSummaryDownloadController {
   public ResponseEntity<byte[]> pdf(
       @RequestBody final PageSummaryRequest request,
       @PageableDefault(sort = "name") final Pageable pageable) {
-    byte[] pdf = pageDownloader.createPdf(request, pageable);
+    byte[] pdf = pageSummaryDownloader.createPdf(request, pageable);
 
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_PDF)
