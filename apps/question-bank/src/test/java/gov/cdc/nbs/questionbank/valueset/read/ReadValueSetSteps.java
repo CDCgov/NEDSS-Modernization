@@ -35,22 +35,21 @@ public class ReadValueSetSteps {
   @Given("I search for a value set that exists")
   public void i_search_for_a_value_set_that_exists() {
     try {
-      search = new ValueSetSearchRequest();
-      Page<ValueSet> results = valueSetController.searchValueSet(search, PageRequest.ofSize(20));
+      search = new ValueSetSearchRequest("", "", "");
+      Page<ValueSet> results = valueSetController.searchValueSet(search, PageRequest.ofSize(25));
       valueSetSearchHolder.setValueSetResults(results);
     } catch (AccessDeniedException e) {
       exceptionHolder.setException(e);
     } catch (AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }
-
   }
 
   @Given("I make a request for a value set that does not exist")
   public void i_make_a_request_for_a_value_set_that_does_not_exist() {
     try {
-      search = new ValueSetSearchRequest();
-      Page<ValueSet> results = valueSetController.searchValueSet(search, PageRequest.ofSize(20));
+      search = new ValueSetSearchRequest("xxxx", "xxxx", "xxxx");
+      Page<ValueSet> results = valueSetController.searchValueSet(search, PageRequest.ofSize(25));
       valueSetSearchHolder.setValueSetResults(results);
     } catch (AccessDeniedException e) {
       exceptionHolder.setException(e);
@@ -84,8 +83,7 @@ public class ReadValueSetSteps {
   public void a_value_sets_should_not_be_returned() {
     Page<ValueSet> results = valueSetSearchHolder.getValueSetResults();
     assertNotNull(results);
-    assertEquals(0, results.getSize());
-
+    assertEquals(0, results.getTotalElements());
   }
 
   @Then("A value set should be returned")

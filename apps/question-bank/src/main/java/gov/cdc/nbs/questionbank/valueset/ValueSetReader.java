@@ -64,7 +64,7 @@ public class ValueSetReader {
           codeSet.getSourceDomainNm(),
           codeSet.getStatusCd(),
           codeSet.getStatusToTime(),
-          codeSet.getCodeSetGroup().getId(),
+          (codeSet.getCodeSetGroup() != null) ? codeSet.getCodeSetGroup().getId() : null,
           codeSet.getAdminComments(),
           codeSet.getValueSetNm(),
           codeSet.getLdfPicklistIndCd(),
