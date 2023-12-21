@@ -2,8 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type PageSummaryPdf = {
-    file?: string;
-    fileName?: string;
+export type QuestionInfo = {
+    id?: string;
+    label?: string;
 };
 

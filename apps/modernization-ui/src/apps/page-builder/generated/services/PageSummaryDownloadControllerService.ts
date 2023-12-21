@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { PageSummaryPdf } from '../models/PageSummaryPdf';
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
 import type { Resource } from '../models/Resource';
 
@@ -55,7 +54,7 @@ export class PageSummaryDownloadControllerService {
 
     /**
      * pdf
-     * @returns PageSummaryPdf OK
+     * @returns string OK
      * @returns any Created
      * @throws ApiError
      */
@@ -74,7 +73,7 @@ export class PageSummaryDownloadControllerService {
         page?: number,
         size?: number,
         sort?: string,
-    }): CancelablePromise<PageSummaryPdf | any> {
+    }): CancelablePromise<string | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/pages/pdf',
