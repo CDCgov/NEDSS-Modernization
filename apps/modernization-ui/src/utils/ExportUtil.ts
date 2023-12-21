@@ -1,4 +1,3 @@
-import { Filter } from 'filters';
 import {
     ExportControllerService,
     InvestigationFilter as ExportInvestigation,
@@ -71,27 +70,6 @@ export const downloadLabReportSearchResultPdf = (labReportFilter: LabReportFilte
             const a = document.createElement('a');
             a.href = url;
             a.download = 'LabReportSearchResults.pdf';
-            a.click();
-        });
-};
-
-export const downloadPageLibraryPdf = (authorization: string, search: string, filters: Filter[], sort?: string) => {
-    // auto generated methods dont allow direct conversion to blob
-    fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/pdf?sort=${sort ?? 'name,asc'}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/pdf',
-            'Content-Type': 'application/json',
-            Authorization: authorization
-        },
-        body: JSON.stringify({ search: search, filters: filters })
-    })
-        .then((response) => response.blob())
-        .then((blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'PageLibrary.pdf';
             a.click();
         });
 };

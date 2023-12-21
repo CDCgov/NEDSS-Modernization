@@ -2,8 +2,7 @@ import { authorization } from 'authorization';
 import { externalize, Filter } from 'filters';
 import { useState } from 'react';
 import { useSorting } from 'sorting';
-import { downloadAsCsv } from 'utils/downloadAsCsv';
-import { downloadPageLibraryPdf } from 'utils/ExportUtil';
+import { download as downloadBase64File, downloadAsCsv } from 'utils/download';
 
 import { usePageLibraryProperties } from './usePageLibraryProperties';
 import { usePageSummarySearch } from './usePageSummarySearch';
@@ -60,7 +59,16 @@ const PageLibraryContent = () => {
     };
 
     const handleDownloadPDF = () => {
-        downloadPageLibraryPdf(authorization(), keyword, filters, sorting);
+        PageSummaryDownloadControllerService.pdfUsingPost({
+            authorization: authorization(),
+            sort: sorting,
+            request: {
+                search: keyword,
+                filters: externalize(filters)
+            }
+        }).then((response) => {
+            downloadBase64File(response.fileName, response.file, 'application/pdf');
+        });
     };
 
     return (

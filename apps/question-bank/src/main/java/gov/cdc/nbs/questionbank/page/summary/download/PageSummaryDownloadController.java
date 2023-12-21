@@ -53,19 +53,11 @@ public class PageSummaryDownloadController {
   }
 
   @PostMapping("pdf")
-  public ResponseEntity<byte[]> pdf(
+  public PageSummaryPdf pdf(
       @RequestBody final PageSummaryRequest request,
       @PageableDefault(sort = "name") final Pageable pageable) {
-    byte[] pdf = pageDownloader.createPdf(request, pageable);
-
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_PDF)
-        .header(HttpHeaders.CONTENT_DISPOSITION,
-            ContentDisposition.attachment()
-                .filename("PageLibrary.pdf")
-                .build()
-                .toString())
-        .body(pdf);
+    byte[] file = pageDownloader.createPdf(request, pageable);
+    return new PageSummaryPdf("PageLibrary.pdf", file);
   }
 
   @GetMapping("{id}/metadata")
