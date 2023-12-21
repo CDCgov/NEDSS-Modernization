@@ -1,14 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
-import {
-    FindLabReportsForPatientQuery,
-    OrganizationParticipation2,
-    useFindLabReportsForPatientLazyQuery,
-    AssociatedInvestigation2
-} from 'generated/graphql/schema';
+import { FindLabReportsForPatientQuery, useFindLabReportsForPatientLazyQuery } from 'generated/graphql/schema';
 
-import { Headers, PatientLabReport } from './PatientLabReport';
+import { Headers, PatientLabReport, AssociatedWith, TestResult } from './PatientLabReport';
 import { transform } from './PatientLabReportTransformer';
 import { sort } from './PatientLabReportSorter';
 import { TableBody, TableComponent } from 'components/Table/Table';
@@ -23,7 +18,7 @@ const asTableBody =
             {
                 id: 1,
                 title: report?.receivedOn ? (
-                    <ClassicLink url={`/nbs/api/profile/${patient}/report/lab/${report.observationUid}`}>
+                    <ClassicLink url={`/nbs/api/profile/${patient}/report/lab/${report.report}`}>
                         {report?.receivedOn && format(report.receivedOn, 'MM/dd/yyyy')} <br />{' '}
                         {format(new Date(report?.receivedOn), 'hh:mm a')}
                     </ClassicLink>
@@ -61,20 +56,38 @@ const asTableBody =
             },
             {
                 id: 3,
-                title: format(report.collectedOn, 'MM/dd/yyyy')
+                title: format(report?.collectedOn, 'MM/dd/yyyy') || null
             },
             {
                 id: 4,
                 title: (
-                    <>        
-                        {report?.results[0].test}
-                        {report?.results[0].result}
+                    <>
+                        {report.results?.map((result: TestResult) => (
+                            <>
+                                <br />
+                                <strong>{result.test}:</strong>
+                                <br />
+                                <span>{result.result}</span>
+                                <br />
+                            </>
+                        ))}
                     </>
                 )
             },
             {
                 id: 5,
-                title: report?.associatedWith || null
+                title: (
+                    <>
+                        {report.associatedWith?.map((investigation: AssociatedWith, index: number) => (
+                            <div key={index}>
+                                <ClassicLink url={`/nbs/api/profile/${patient}/investigation/${investigation.id}`}>
+                                    {investigation?.local}
+                                </ClassicLink>
+                                <p className="margin-0">{investigation?.condition}</p>
+                            </div>
+                        ))}
+                    </>
+                )
             },
             {
                 id: 6,
