@@ -9,7 +9,6 @@ import {
     usePageManagement
 } from 'apps/page-builder/page/management';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
-import { useParams } from 'react-router-dom';
 
 export const Edit = () => {
     const { page } = useGetPageDetails();
@@ -25,13 +24,12 @@ export const Edit = () => {
 
 const EditPageContent = () => {
     const { page, selected } = usePageManagement();
-    const { pageId } = useParams();
 
     return (
         <PageManagementLayout name={page.name} mode={'edit'}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
-                    <NavLinkButton to={`/page-builder/pages/${pageId}/business-rules-library`} type="outline">
+                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules-library`} type="outline">
                         Business rules
                     </NavLinkButton>
                     <NavLinkButton to={'..'}>Preview</NavLinkButton>

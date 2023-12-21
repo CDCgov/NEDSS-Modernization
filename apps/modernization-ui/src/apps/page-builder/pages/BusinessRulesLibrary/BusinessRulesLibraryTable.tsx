@@ -1,11 +1,13 @@
 /* eslint-disable camelcase */
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { RefObject, useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import { BusinessRuleContext } from '../../context/BusinessContext';
 import { SearchBar } from './SearchBar';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import './BusinessRulesLibraryTable.scss';
 
 export enum Column {
     SourceFields = 'Source Fields',
@@ -49,7 +51,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Rules>({});
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
-    const navigateTo = useNavigate();
     const { pageId } = useParams();
 
     const mapLogic = ({ comparator, ruleFunction }: any) => {
@@ -169,17 +170,12 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             <label className="margin-bottom-1em no-text">
                 {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
-            <Button
-                className="submit-btn"
-                type="button"
-                onClick={() => {
-                    navigateTo(`${redirectRuleURL}/add`);
-                }}
-                outline>
+            <NavLinkButton className="submit-btn" type="outline" to={`${redirectRuleURL}/add`}>
                 Create New
-            </Button>
+            </NavLinkButton>
         </div>
     );
+
     const searchAvailableElement = (
         <div className="no-data-available">
             <label className="no-text">Still can't find what are you're looking for?</label>
@@ -187,32 +183,22 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 Please try searching in the local library before creating new
             </label>
             <div>
-                <Button
-                    className="submit-btn"
-                    type="button"
-                    onClick={() => {
-                        navigateTo(`${redirectRuleURL}/add`);
-                    }}
-                    outline>
+                <NavLinkButton className="submit-btn" type="outline" to={`${redirectRuleURL}/add`}>
                     Create New
-                </Button>
+                </NavLinkButton>
             </div>
         </div>
     );
 
     return (
         <div>
-            <div>{<SearchBar onChange={setSearchQuery} />}</div>
             <div className="add-business-rules-block">
-                <Button
-                    className="submit-btn"
-                    type="button"
-                    onClick={() => {
-                        navigateTo(`${redirectRuleURL}/add`);
-                    }}>
-                    Create new business rules
-                </Button>
+                <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`}>
+                    Add new business rule
+                </NavLinkButton>
             </div>
+            <div>{<SearchBar onChange={setSearchQuery} />}</div>
+
             {summaries?.length ? (
                 <TableComponent
                     contextName="businessRules"

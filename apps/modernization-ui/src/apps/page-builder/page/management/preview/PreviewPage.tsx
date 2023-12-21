@@ -13,7 +13,6 @@ import { PageInformation } from './information/PageInformation';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import styles from './preview-page.module.scss';
 import { PreviewTab } from './tab';
-import { useParams } from 'react-router-dom';
 
 const PreviewPage = () => {
     const { page } = useGetPageDetails();
@@ -29,13 +28,12 @@ const PreviewPage = () => {
 
 const PreviewPageContent = () => {
     const { page, selected } = usePageManagement();
-    const { pageId } = useParams();
 
     return (
         <PageManagementLayout name={page.name} mode={'draft'}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
-                    <NavLinkButton to={`/page-builder/pages/${pageId}/business-rules-library`} type="outline">
+                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules-library`} type="outline">
                         Business rules
                     </NavLinkButton>
                     <Button outline type="button">

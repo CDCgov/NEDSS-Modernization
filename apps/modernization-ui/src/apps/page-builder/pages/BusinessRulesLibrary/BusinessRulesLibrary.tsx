@@ -5,7 +5,6 @@ import { fetchBusinessRules } from './useBusinessRulesAPI';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
-import { useParams } from 'react-router-dom';
 import { Breadcrumb } from 'breadcrumb';
 import type { ViewRuleResponse } from '../../generated/models/ViewRuleResponse';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
@@ -15,14 +14,15 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const [rules, setRules] = useState<ViewRuleResponse[]>([]);
     const [totalElements, setTotalElements] = useState(0);
     const { state } = useContext(UserContext);
-    const { pageId } = useParams();
     const { page } = useGetPageDetails();
 
     const getBusinessRules = async () => {
         const token = `Bearer ${state.getToken()}`;
         setIsLoading(true);
+
         try {
-            if (pageId) {
+            if (page) {
+                const pageId = page.id.toString();
                 const response = await fetchBusinessRules(token, searchQuery, pageId, sortBy, currentPage, pageSize);
                 const { content, totalElements } = response;
                 setRules(content);
@@ -36,7 +36,7 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
 
     useEffect(() => {
         getBusinessRules();
-    }, [searchQuery, currentPage, pageSize, sortBy, filter]);
+    }, [searchQuery, currentPage, pageSize, sortBy, filter, page]);
 
     return (
         <PageBuilder page="pages">
