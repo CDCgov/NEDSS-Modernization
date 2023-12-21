@@ -80,7 +80,7 @@ export const downloadPageLibraryPdf = (authorization: string, search: string, fi
     fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/pdf?sort=${sort ?? 'name,asc'}`, {
         method: 'POST',
         headers: {
-            Accept: '*/*',
+            Accept: 'application/pdf',
             'Content-Type': 'application/json',
             Authorization: authorization
         },
@@ -88,7 +88,6 @@ export const downloadPageLibraryPdf = (authorization: string, search: string, fi
     })
         .then((response) => response.blob())
         .then((blob) => {
-            console.log(blob);
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;

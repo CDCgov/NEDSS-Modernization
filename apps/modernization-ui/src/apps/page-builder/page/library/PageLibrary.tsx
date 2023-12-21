@@ -49,7 +49,7 @@ const PageLibraryContent = () => {
     };
 
     const handleDownloadCSV = () => {
-        PageSummaryDownloadControllerService.downloadPageLibraryUsingPost({
+        PageSummaryDownloadControllerService.csvUsingPost({
             authorization: authorization(),
             sort: sorting,
             request: {
@@ -60,11 +60,7 @@ const PageLibraryContent = () => {
     };
 
     const handleDownloadPDF = () => {
-        try {
-            downloadPageLibraryPdf(authorization(), keyword, filters, sorting);
-        } catch (error) {
-            console.log(error);
-        }
+        downloadPageLibraryPdf(authorization(), keyword, filters, sorting);
     };
 
     return (

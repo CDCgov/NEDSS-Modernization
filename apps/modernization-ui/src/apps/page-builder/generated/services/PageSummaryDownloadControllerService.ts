@@ -11,12 +11,12 @@ import { request as __request } from '../core/request';
 export class PageSummaryDownloadControllerService {
 
     /**
-     * downloadPageLibrary
+     * csv
      * @returns Resource OK
      * @returns any Created
      * @throws ApiError
      */
-    public static downloadPageLibraryUsingPost({
+    public static csvUsingPost({
         authorization,
         request,
         page,
@@ -53,12 +53,12 @@ export class PageSummaryDownloadControllerService {
     }
 
     /**
-     * downloadPageLibraryPDF
+     * pdf
      * @returns string OK
      * @returns any Created
      * @throws ApiError
      */
-    public static downloadPageLibraryPdfUsingPost({
+    public static pdfUsingPost({
         authorization,
         request,
         page,
