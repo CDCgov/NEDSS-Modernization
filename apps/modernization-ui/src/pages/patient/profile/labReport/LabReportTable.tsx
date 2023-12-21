@@ -60,7 +60,7 @@ const asTableBody =
             },
             {
                 id: 4,
-                title: report?.associatedWith.length ? (
+                title: report?.results.length ? (
                     <>
                         {report.results?.map((result: TestResult) => (
                             <>
@@ -95,7 +95,7 @@ const asTableBody =
             },
             {
                 id: 7,
-                title: report?.jurisdiction || null
+                title: report?.jurisdiction !== 'null' ? <>{report.jurisdiction}</> : null
             },
             {
                 id: 8,
