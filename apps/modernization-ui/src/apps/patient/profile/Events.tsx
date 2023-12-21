@@ -1,14 +1,14 @@
-import { PatientTreatmentTable } from 'pages/patient/profile/treatment';
+import { PatientTreatmentTable } from 'apps/patient/profile/treatment';
 import {
     PatientProfileContactsNamedByPatient,
     PatientProfilePatientNamedByContact
-} from 'pages/patient/profile/contact';
-import { PatientProfileDocuments } from 'pages/patient/profile/document';
+} from 'apps/patient/profile/contact';
+import { PatientProfileDocuments } from 'apps/patient/profile/document';
 import { TOTAL_TABLE_DATA } from 'utils/util';
-import { PatientInvestigationsTable } from 'pages/patient/profile/investigation';
-import { MorbidityTable } from 'pages/patient/profile/morbidity';
-import { LabReportTable } from 'pages/patient/profile/labReport';
-import { PatientProfileVaccinations } from 'pages/patient/profile/vaccination';
+import { PatientInvestigationsTable } from 'apps/patient/profile/investigation';
+import { MorbidityTable } from 'apps/patient/profile/morbidity';
+import { LabReportTable } from 'apps/patient/profile/labReport';
+import { PatientProfileVaccinations } from 'apps/patient/profile/vaccination';
 import { ClassicModalProvider } from 'classic/ClassicModalContext';
 
 type EventTabProp = {

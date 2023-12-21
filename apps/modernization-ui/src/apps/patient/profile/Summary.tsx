@@ -1,6 +1,6 @@
-import { PatientOpenInvestigationsTable } from 'pages/patient/profile/investigation/PatientOpenInvestigationsTable';
-import { TOTAL_TABLE_DATA } from '../../utils/util';
-import { DocumentRequiringReview } from '../patient/profile/documentsRequiringReview/DocumentsRequiringReview';
+import { PatientOpenInvestigationsTable } from 'apps/patient/profile/investigation/PatientOpenInvestigationsTable';
+import { TOTAL_TABLE_DATA } from 'utils/util';
+import { DocumentRequiringReview } from 'apps/patient/profile/documentsRequiringReview/DocumentsRequiringReview';
 
 type SummaryProp = {
     patient: string | undefined;

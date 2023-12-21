@@ -11,7 +11,7 @@ import {
 import { externalizeDateTime, internalizeDate } from 'date';
 import { Detail, DetailsModal } from '../DetailsModal';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
-import EntryModal from 'pages/patient/profile/entry';
+import EntryModal from 'apps/patient/profile/entry';
 import { AdministrativeForm } from './AdministrativeForm';
 import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert/useAlert';

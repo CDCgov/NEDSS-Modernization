@@ -1,16 +1,16 @@
 import { Grid } from '@trussworks/react-uswds';
-import { NamesTable } from 'pages/patient/profile/names';
-import { AddressesTable } from 'pages/patient/profile/addresses';
-import { PhoneAndEmailTable } from 'pages/patient/profile/phoneEmail';
-import { IdentificationsTable } from 'pages/patient/profile/identification';
-import { RacesTable } from 'pages/patient/profile/race';
-import { AdministrativeTable } from 'pages/patient/profile/administrative';
-import { GeneralPatient } from 'pages/patient/profile/generalInfo';
-import { Mortality } from 'pages/patient/profile/mortality';
-import { Ethnicity } from 'pages/patient/profile/ethnicity';
-import { SexBirth } from 'pages/patient/profile/sexBirth';
+import { NamesTable } from 'apps/patient/profile/names';
+import { AddressesTable } from 'apps/patient/profile/addresses';
+import { PhoneAndEmailTable } from 'apps/patient/profile/phoneEmail';
+import { IdentificationsTable } from 'apps/patient/profile/identification';
+import { RacesTable } from 'apps/patient/profile/race';
+import { AdministrativeTable } from 'apps/patient/profile/administrative';
+import { GeneralPatient } from 'apps/patient/profile/generalInfo';
+import { Mortality } from 'apps/patient/profile/mortality';
+import { Ethnicity } from 'apps/patient/profile/ethnicity';
+import { SexBirth } from 'apps/patient/profile/sexBirth';
 import { AlertProvider } from 'alert';
-import { Patient } from 'pages/patient/profile';
+import { Patient } from 'apps/patient/profile';
 
 type DemographicProps = {
     handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;

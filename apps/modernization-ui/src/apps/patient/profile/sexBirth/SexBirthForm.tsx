@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
 import { useCountyCodedValues } from 'location';
-import { usePatientSexBirthCodedValues } from 'pages/patient/profile/sexBirth/usePatientSexBirthCodedValues';
+import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';

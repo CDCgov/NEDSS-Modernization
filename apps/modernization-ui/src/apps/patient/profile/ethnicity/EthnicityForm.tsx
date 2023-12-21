@@ -2,7 +2,7 @@ import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { usePatientEthnicityCodedValues } from 'pages/patient/profile/ethnicity';
+import { usePatientEthnicityCodedValues } from 'apps/patient/profile/ethnicity';
 import { MultiSelectInput } from 'components/selection/multi';
 import { orNull } from 'utils';
 import { externalizeDateTime, internalizeDate } from 'date';

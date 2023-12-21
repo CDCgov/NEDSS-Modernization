@@ -12,9 +12,9 @@ import { Direction } from 'sorting/Sort';
 import { externalizeDateTime, internalizeDate } from 'date';
 import { orNull } from 'utils/orNull';
 import { ConfirmationModal } from 'confirmation';
-import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
-import EntryModal from 'pages/patient/profile/entry';
-import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
+import { Detail, DetailsModal } from 'apps/patient/profile/DetailsModal';
+import EntryModal from 'apps/patient/profile/entry';
+import { maybeDescription, maybeId } from 'apps/patient/profile/coded';
 import { PatientNameResult, useFindPatientProfileNames } from './useFindPatientProfileNames';
 import { NameEntryForm } from './NameEntryForm';
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
@@ -150,7 +150,7 @@ export const NamesTable = ({ patient }: Props) => {
         setTotal(data?.findPatientProfile?.names?.total ?? 0);
         const content = transform(data?.findPatientProfile);
         const sorted = sort(content, {});
-        setItems(content);
+        setItems(sorted);
         setBodies(asTableBodies(sorted));
     };
 
