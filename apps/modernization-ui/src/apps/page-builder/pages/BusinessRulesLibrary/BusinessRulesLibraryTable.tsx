@@ -28,6 +28,11 @@ const tableColumns = [
     { name: Column.ID, sortable: false }
 ];
 
+type TargetQuestion = {
+    label: string;
+    id: string;
+};
+
 type Rules = {
     ruleId?: number;
     templateUid?: number;
@@ -39,6 +44,7 @@ type Rules = {
     targetType?: string;
     errorMsgText?: string;
     targetValueIdentifier?: any;
+    targetQuestions?: TargetQuestion[];
 };
 
 type Props = {
@@ -82,7 +88,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         tableDetails: [
             {
                 id: 1,
-                title: <Link to={`${redirectRuleURL}/edit/${rule?.ruleId}`}>{rule.ruleDescription}</Link>
+                title: <Link to={`${redirectRuleURL}/edit/${rule?.ruleId}`}>{rule.sourceIdentifier}</Link>
             },
             { id: 2, title: <div className="event-text">{mapLogic(rule)}</div> || null },
             {
@@ -95,7 +101,17 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             },
             {
                 id: 5,
-                title: <div>{rule.targetValueIdentifier?.join(' ')}</div> || null
+                title:
+                    (
+                        <div>
+                            {rule.targetQuestions?.map((tq) => (
+                                <>
+                                    <span>{tq.label}</span>
+                                    <br />
+                                </>
+                            ))}
+                        </div>
+                    ) || null
             },
             {
                 id: 6,

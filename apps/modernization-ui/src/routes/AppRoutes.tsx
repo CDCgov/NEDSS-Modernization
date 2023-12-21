@@ -9,14 +9,15 @@ import { Config } from 'config';
 import { useConfiguration } from 'configuration';
 import { Layout } from 'layout';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
-import { AddPatient } from 'pages/addPatient/AddPatient';
-import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
+import { AddPatient } from 'apps/patient/add/AddPatient';
+import { AddedPatient } from 'apps/patient/add/SuccessForm/AddedPatient';
 import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
 import { Login } from 'pages/login/Login';
 import { PatientProfile } from 'pages/patient/profile';
 import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -93,6 +94,7 @@ export const AppRoutes = () => {
                                             {pageLibraryRoutes(config.features.pageBuilder.page.library.enabled)}
                                             {pageManagementRoutes(config.features.pageBuilder.page.management.enabled)}
                                         </Route>
+                                        <Route path="question-library" element={<QuestionLibrary />} />
                                     </Route>
                                 )}
                                 {!config.loading && (
