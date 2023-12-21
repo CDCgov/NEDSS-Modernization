@@ -228,6 +228,14 @@
     }
 }
 .question-local-library__container {
+    .filter-config-panel {
+        display: none;
+    }
+    .no-data-available {
+        flex-direction: column;
+    }
+}
+.question-local-library__container {
     .edit-filter-modal {
         display: none;
     }

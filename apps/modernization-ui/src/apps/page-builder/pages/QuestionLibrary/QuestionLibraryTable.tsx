@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { CodedQuestion, DateQuestion, NumericQuestion, PageSummary, TextQuestion } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { ChangeEvent, RefObject, useContext, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, RefObject, useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { QuestionsContext } from '../../context/QuestionsContext';
@@ -139,23 +139,40 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef, onAddQuest
 
     const modalRef = useRef<ModalRef>(null);
 
+    const createNewQuestionModal = (
+        <ModalComponent
+            isLarge
+            modalRef={modalRef}
+            modalHeading={
+                <div className="add-question-header">
+                    <ModalToggleButton modalRef={modalRef} closer unstyled>
+                        <Icon.ArrowBack size={3} />
+                    </ModalToggleButton>
+                    <span>Add question</span>
+                </div>
+            }
+            close
+            modalBody={<CreateQuestion modalRef={modalRef} />}
+        />
+    );
+
+    const createNewQuestionButton = (
+        <>
+            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+                Create New
+            </ModalToggleButton>
+            {createNewQuestionModal}
+        </>
+    );
+
     const dataNotAvailableElement = (
         <div className="no-data-available">
             <label className="margin-bottom-1em no-text">
                 {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
-            <ModalToggleButton className="submit-btn display-none" type="button" modalRef={modalRef} outline>
-                Create New
-            </ModalToggleButton>
-            <ModalComponent
-                isLarge
-                modalRef={modalRef}
-                modalHeading={'Add question'}
-                modalBody={<CreateQuestion modalRef={modalRef} />}
-            />
+            {createNewQuestionButton}
         </div>
     );
-
     const searchAvailableElement = (
         <div className="no-data-available">
             <label className="no-text">Still can't find what are you're looking for?</label>
@@ -163,26 +180,17 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef, onAddQuest
                 Please try searching in the local library before creating new
             </label>
             <div>
-                <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
-                    Create New
-                </ModalToggleButton>
+                {createNewQuestionButton}
                 <Button className="submit-btn" type="button">
                     Search Local
                 </Button>
             </div>
-            <ModalComponent
-                isLarge
-                modalRef={modalRef}
-                modalHeading={'Add question'}
-                modalBody={<CreateQuestion modalRef={modalRef} />}
-            />
         </div>
     );
-
     return (
         <div>
             <h3 className="h3-label"> You can search for an existing question or create new one</h3>
-            <div>{<SearchBar onChange={setSearchQuery} />}</div>
+            <div>{<SearchBar onChange={setSearchQuery} createNewBtn={createNewQuestionButton} />}</div>
             {summaries?.length ? (
                 <TableComponent
                     contextName="questions"

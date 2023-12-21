@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import { PagesSubSection } from 'apps/page-builder/generated';
 import { SubsectionComponent } from './Subsection';
-import { BrowserRouter } from 'react-router-dom';
 
 describe('when Subsection renders', () => {
     const subsection: PagesSubSection = {
@@ -11,11 +10,8 @@ describe('when Subsection renders', () => {
         order: 1,
         questions: []
     };
-    const { container } = render(
-        <BrowserRouter>
-            <SubsectionComponent subsection={subsection} />
-        </BrowserRouter>
-    );
+
+    const { container } = render(<SubsectionComponent subsection={subsection} />);
 
     it('should display Subsection name', () => {
         const name = container.getElementsByTagName('h2');

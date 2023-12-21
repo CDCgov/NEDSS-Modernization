@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './CreateQuestion.scss';
 import {
     Form,
@@ -12,10 +12,9 @@ import {
     ErrorMessage
 } from '@trussworks/react-uswds';
 import { ValueSetControllerService, QuestionControllerService, UpdateQuestionRequest } from '../../generated';
-import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
-import { text as textOption } from '../../constant/constant';
+import { coded, dateOrNumeric, text as textOption } from '../../constant/constant';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { ValuesetLibrary } from '../../pages/ValuesetLibrary/ValuesetLibrary';
 import { Controller, useForm } from 'react-hook-form';
@@ -33,8 +32,7 @@ import {
     MessagingInfo,
     ReportingInfo
 } from '../../generated';
-import { PageBuilder } from '../../pages/PageBuilder/PageBuilder';
-import { Breadcrumb } from '../Breadcrumb/Breadcrumb';
+import { authorization } from 'authorization';
 
 namespace QuestionRequest {
     export enum codeSet {
@@ -44,6 +42,7 @@ namespace QuestionRequest {
 }
 
 const init = {
+    codeSet: 'LOCAL',
     label: '',
     description: '',
     minValue: 0,
@@ -68,6 +67,7 @@ export type QuestionFormType = {
     HL7Segment?: string;
     relatedUnits?: string;
     allowFutureDates?: string;
+    codeSet: any;
 };
 type CreateQuestionFormType = CreateNumericQuestionRequest &
     CreateCodedQuestionRequest &
@@ -76,6 +76,9 @@ type CreateQuestionFormType = CreateNumericQuestionRequest &
     ReportingInfo &
     MessagingInfo &
     QuestionFormType;
+
+export type optionsType = { name: string; value: string };
+
 export const CreateQuestion = ({ modalRef, question }: any) => {
     const questionForm = useForm<CreateQuestionFormType, any>({
         defaultValues: { ...init }
@@ -83,14 +86,13 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const { handleSubmit, reset, control, watch } = questionForm;
     // Fields
     const [questionData, setQuestionData] = useState({ valueSet: 0 });
-    const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
     // DropDown Options
     const [familyOptions, setFamilyOptions] = useState([]);
     const [groupOptions, setGroupOptions] = useState([]);
     const [selectedFieldType, setSelectedFieldType] = useState('');
     const [codeSystemOptionList, setCodeSystemOptionList] = useState([]);
-    const authorization = `Bearer ${state.getToken()}`;
+    const [maskOptions, setMaskOptions] = useState<optionsType[]>([]);
 
     useEffect(() => {
         if (question?.id) {
@@ -102,7 +104,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     }, [question]);
     const fetchFamilyOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization,
+            authorization: authorization(),
             codeSetNm: 'CONDITION_FAMILY'
         }).then((response: any) => {
             const data = response || [];
@@ -113,9 +115,22 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setFamilyOptions(familyList);
         });
     };
+    const fetchMask = () => {
+        ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
+            authorization: authorization(),
+            codeSetNm: 'NBS_MASK_TYPE'
+        }).then((response: any) => {
+            const data = response || [];
+            const mask: optionsType[] = [];
+            data.map((each: { display: string; conceptCode: string }) => {
+                mask.push({ name: each.display, value: each.conceptCode });
+            });
+            setMaskOptions(mask);
+        });
+    };
     const fetchGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization,
+            authorization: authorization(),
             codeSetNm: 'COINFECTION_GROUP'
         }).then((response: any) => {
             const data = response || [];
@@ -128,7 +143,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     };
     const fetchCodeSystemOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization,
+            authorization: authorization(),
             codeSetNm: 'CODE_SYSTEM'
         }).then((response: any) => {
             const data = response || [];
@@ -144,6 +159,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         fetchFamilyOptions();
         fetchGroupOptions();
         fetchCodeSystemOptions();
+        fetchMask();
     }, []);
 
     const onSubmit = handleSubmit(async (data) => {
@@ -179,7 +195,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         };
         if (selectedFieldType === 'TEXT') {
             QuestionControllerService.createTextQuestionUsingPost({
-                authorization,
+                authorization: authorization(),
                 request: request
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
@@ -189,7 +205,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         } else if (selectedFieldType === 'DATE') {
             const dateRequest = { ...request, allowFutureDates: data.allowFutureDates === 'Yes' };
             QuestionControllerService.createDateQuestionUsingPost({
-                authorization,
+                authorization: authorization(),
                 request: dateRequest
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
@@ -208,7 +224,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 defaultValue: data.defaultValue
             };
             QuestionControllerService.createNumericQuestionUsingPost({
-                authorization,
+                authorization: authorization(),
                 request: numericRequest
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
@@ -218,7 +234,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         } else {
             const codeRequest = { ...request, valueSet: questionData.valueSet };
             QuestionControllerService.createCodedQuestionUsingPost({
-                authorization,
+                authorization: authorization(),
                 request: codeRequest
             }).then((response: any) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
@@ -229,7 +245,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     });
     const handleUpdateQuestion = (request: any) => {
         QuestionControllerService.updateQuestionUsingPut({
-            authorization,
+            authorization: authorization(),
             id: question.id,
             request
         }).then((response: any) => {
@@ -248,10 +264,23 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
 
     const fieldTypeTab = [
         { name: 'Value set', value: UpdateQuestionRequest.type.CODED },
-        { name: 'Numerics entry', value: UpdateQuestionRequest.type.NUMERIC },
+        { name: 'Numeric entry', value: UpdateQuestionRequest.type.NUMERIC },
         { name: 'Text only', value: UpdateQuestionRequest.type.TEXT },
         { name: 'Date picker', value: UpdateQuestionRequest.type.DATE }
     ];
+    const getDisplayType = () => {
+        switch (selectedFieldType) {
+            case UpdateQuestionRequest.type.CODED:
+                return coded;
+            case UpdateQuestionRequest.type.TEXT:
+                return textOption;
+            case UpdateQuestionRequest.type.NUMERIC:
+            case UpdateQuestionRequest.type.DATE:
+                return dateOrNumeric;
+            default:
+                return coded;
+        }
+    };
 
     const valueSetmodalRef = useRef<ModalRef>(null);
     const renderValueSet = (
@@ -328,7 +357,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         required
                         defaultValue={value}
                         onChange={onChange}
-                        options={textOption.map((option) => {
+                        options={getDisplayType().map((option) => {
                             return {
                                 name: option.label!,
                                 value: option.value.toString()!
@@ -337,7 +366,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     />
                 )}
             />
-            <hr className="divider" />
+            <hr className="divider data-mart" />
         </>
     );
     const includedInMessage = watch('includedInMessage');
@@ -347,391 +376,410 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const isDisableUnitType = relatedUnits !== 'Yes';
 
     return (
-        <PageBuilder page="question-library">
-            <Breadcrumb header="Add Question" className="margin-top-1em" />
-            <div className="create-question">
-                <div className="create-question__container">
-                    <Form onSubmit={onSubmit}>
-                        <div>
-                            <div className="ds-u-text-align--center margin-bottom-2em">
-                                <h3 className="header-title margin-bottom-2px" data-testid="header-title">
-                                    {question?.id ? `Edit question` : `Let's create a new question`}
-                                </h3>
-                                <label className="fields-info">
-                                    All fields with <span className="mandatory-indicator">*</span> are required
-                                </label>
-                            </div>
-                            <h4>Basic information</h4>
-                            <Controller
-                                control={control}
-                                name="codeSet"
-                                render={({ field: { onChange, value } }) => (
-                                    <div className="radio-group">
-                                        <Radio
-                                            id="reportableCondition_Y"
-                                            name="codeSet"
-                                            value={QuestionRequest.codeSet.LOCAL}
-                                            label="LOCAL"
-                                            onChange={(e: any) => onChange(e.target.value)}
-                                            checked={value === 'LOCAL'}
-                                        />
-                                        <Radio
-                                            id="reportableCondition_N"
-                                            name="reportableCondition"
-                                            value={QuestionRequest.codeSet.PHIN}
-                                            label="PHIN"
-                                            onChange={(e: any) => onChange(e.target.value)}
-                                            checked={value === 'PHIN'}
-                                        />
-                                    </div>
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="uniqueId"
-                                rules={{
-                                    required: { value: true, message: 'Unique ID required' },
-                                    pattern: { value: handleValidation(), message: 'Unique ID invalid' },
-                                    maxLength: 50
-                                }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                    <Input
-                                        onChange={onChange}
-                                        defaultValue={value}
-                                        label="Unique ID"
-                                        type="text"
-                                        error={error?.message}
-                                        required
-                                    />
-                                )}
-                            />
-                            <p className="fields-help-text margin-bottom-1em margin-top-0">
-                                If you decide not to provide a UNIQUE ID the system will generate one for you.
-                            </p>
-                            <Controller
-                                control={control}
-                                name="uniqueName"
-                                rules={{
-                                    required: { value: true, message: 'Unique name required' },
-                                    pattern: { value: handleValidation(false), message: 'Unique name invalid' },
-                                    maxLength: 50
-                                }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                    <Input
-                                        onChange={onChange}
-                                        className="field-space"
-                                        defaultValue={value}
-                                        label="Unique name"
-                                        type="text"
-                                        error={error?.message}
-                                        required
-                                    />
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="subgroup"
-                                render={({ field: { onChange, value } }) => (
-                                    <SelectInput
-                                        defaultValue={value}
-                                        className="field-space"
-                                        label="Subgroup"
-                                        required
-                                        onChange={onChange}
-                                        options={familyOptions.map((option) => {
-                                            return {
-                                                name: option!,
-                                                value: option!
-                                            };
-                                        })}
-                                    />
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="description"
-                                rules={maxLengthRule(50)}
-                                render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
-                                    <>
-                                        <Label htmlFor={name}>Description</Label>
-                                        <Textarea onChange={onChange} onBlur={onBlur} name={name} id={name} />
-                                        {error?.message && (
-                                            <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>
-                                        )}
-                                    </>
-                                )}
-                            />
-                            <br></br>
-                            <label>Field type</label>
-                            <br></br>
-                            <ButtonGroup type="segmented">
-                                {fieldTypeTab.map((field, index) => (
-                                    <Button
-                                        key={index}
-                                        type="button"
-                                        outline={field.value !== selectedFieldType}
-                                        onClick={() => setSelectedFieldType(field.value)}>
-                                        {field.name}
-                                    </Button>
-                                ))}
-                            </ButtonGroup>
-                            <br></br>
-                            {selectedFieldType === UpdateQuestionRequest.type.CODED && renderValueSet}
-                            {(selectedFieldType === UpdateQuestionRequest.type.NUMERIC ||
-                                selectedFieldType === UpdateQuestionRequest.type.TEXT) && (
-                                <CreateTextQuestion
-                                    control={control}
-                                    isText={selectedFieldType === UpdateQuestionRequest.type.TEXT}
-                                />
-                            )}
-                            {selectedFieldType === UpdateQuestionRequest.type.NUMERIC && (
-                                <CreateNumericQuestion
-                                    control={control!}
-                                    isDisableUnitType={isDisableUnitType}
-                                    unitType={unitTypeValue}
-                                />
-                            )}
-                            {selectedFieldType === UpdateQuestionRequest.type.DATE && (
-                                <CreateDateQuestion control={control} />
-                            )}
-                            <hr className="divider" />
-                            {renderUserInterface}
-                            <h4>Data mart</h4>
-                            <p className="fields-info">Data mart - these fields will not be displayed to your users</p>
-                            <Controller
-                                control={control}
-                                name="defaultLabelInReport"
-                                rules={{
-                                    required: { value: true, message: 'Default label in report required' },
-                                    pattern: { value: /^\w*$/, message: 'Default label in report invalid' },
-                                    maxLength: 50
-                                }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                    <Input
-                                        onChange={onChange}
-                                        className="field-space"
-                                        defaultValue={value}
-                                        label="Default label in report"
-                                        type="text"
-                                        error={error?.message}
-                                        required
-                                    />
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="defaultRdbTableName"
-                                rules={{
-                                    required: { value: true, message: 'Default RDB table name required' },
-                                    pattern: { value: /^\w*$/, message: 'Default RDB table name invalid' },
-                                    maxLength: 50
-                                }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                    <Input
-                                        onChange={onChange}
-                                        className="field-space"
-                                        defaultValue={value}
-                                        label="Default RDB table name"
-                                        type="text"
-                                        error={error?.message}
-                                        required
-                                    />
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="rdbColumnName"
-                                rules={{
-                                    required: { value: true, message: 'RDB column name required' },
-                                    pattern: { value: handleValidation(), message: 'RDB column name invalid' },
-                                    maxLength: 50
-                                }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                    <Input
-                                        onChange={onChange}
-                                        defaultValue={value}
-                                        label="RDB column name"
-                                        type="text"
-                                        error={error?.message}
-                                        required
-                                    />
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="datamartColName"
-                                rules={{
-                                    pattern: { value: /^\w*$/, message: 'Data mart column name invalid' },
-                                    maxLength: 50
-                                }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                    <Input
-                                        onChange={onChange}
-                                        className="field-space"
-                                        defaultValue={value}
-                                        label="Data mart column name"
-                                        type="text"
-                                        error={error?.message}
-                                    />
-                                )}
-                            />
-                            <h4>Messaging</h4>
-                            <p className="fields-info">Messaging - these fields will not be displayed to your users</p>
-                            <p className="fields-info">Included in message?</p>
-                            <Controller
-                                control={control}
-                                name="includedInMessage"
-                                render={({ field: { onChange, value } }) => (
-                                    <>
-                                        <ToggleButton
-                                            className="margin-bottom-1em"
-                                            checked={value}
-                                            name="includedInMessage"
-                                            onChange={onChange}
-                                        />
-                                    </>
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="messageVariableId"
-                                rules={{
-                                    required: { value: !IsIncludedInMessage, message: 'Message ID required' },
-                                    pattern: { value: handleValidation(false), message: 'Message ID invalid' }
-                                }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                    <Input
-                                        onChange={onChange}
-                                        defaultValue={value}
-                                        disabled={IsIncludedInMessage}
-                                        label="Message ID"
-                                        type="text"
-                                        required
-                                        error={error?.message}
-                                    />
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="messageLabel"
-                                rules={{
-                                    required: { value: !IsIncludedInMessage, message: 'Message label required' },
-                                    pattern: { value: handleValidation(false), message: 'Message label invalid' }
-                                }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                    <Input
-                                        onChange={onChange}
-                                        disabled={IsIncludedInMessage}
-                                        defaultValue={value!}
-                                        label="Message label"
-                                        type="text"
-                                        error={error?.message}
-                                        required
-                                    />
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="codeSystem"
-                                render={({ field: { onChange, value } }) => (
-                                    <SelectInput
-                                        label="Code system name"
-                                        defaultValue={value}
-                                        onChange={onChange}
-                                        disabled={IsIncludedInMessage}
-                                        required
-                                        options={codeSystemOptionList.map(({ label }) => {
-                                            return {
-                                                name: label!,
-                                                value: label!
-                                            };
-                                        })}
-                                    />
-                                )}
-                            />
-                            <p className="fields-info">Required in message?</p>
-                            <Controller
-                                control={control}
-                                name="requiredInMessage"
-                                render={({ field: { onChange, value } }) => (
-                                    <>
-                                        <ToggleButton
-                                            className="requiredInMessage"
-                                            checked={value}
-                                            name="includedInMessage"
-                                            onChange={onChange}
-                                        />
-                                    </>
-                                )}
-                            />
-                            <br></br>
-                            <Controller
-                                control={control}
-                                name="hl7DataType"
-                                render={({ field: { onChange, value } }) => (
-                                    <SelectInput
-                                        label="HL7 data type"
-                                        defaultValue={value}
-                                        disabled={IsIncludedInMessage}
-                                        onChange={onChange}
-                                        options={groupOptions.map((option) => {
-                                            return {
-                                                name: option!,
-                                                value: option!
-                                            };
-                                        })}
-                                    />
-                                )}
-                            />
-                            <Controller
-                                control={control}
-                                name="HL7Segment"
-                                render={({ field: { onChange, value } }) => (
-                                    <SelectInput
-                                        label="HL7 Segment"
-                                        defaultValue={value}
-                                        className="hl7-segment"
-                                        disabled
-                                        required
-                                        onChange={onChange}
-                                        options={groupOptions.map((option) => {
-                                            return {
-                                                name: option!,
-                                                value: option!
-                                            };
-                                        })}
-                                    />
-                                )}
-                            />
+        <div className="create-question">
+            <div className="create-question__container">
+                <Form onSubmit={onSubmit}>
+                    <div>
+                        <div className="text-align-center margin-bottom-2em">
+                            <h3 className="header-title margin-2px" data-testid="header-title">
+                                {question?.id ? `Edit question` : `Let's create a new question`}
+                            </h3>
+                            <label className="sub-header-info">
+                                All fields with <span className="mandatory-indicator">*</span> are required
+                            </label>
                         </div>
-                        <hr className="divider" />
-                        <h4>Administrative</h4>
-                        <p className="fields-info">Administrative - these fields will not be displayed to your users</p>
+                        <h4>Basic information</h4>
                         <Controller
                             control={control}
-                            name="adminComments"
+                            name="codeSet"
+                            defaultValue={QuestionRequest.codeSet.LOCAL}
+                            render={({ field: { onChange, value, name } }) => (
+                                <div className="radio-group">
+                                    <Radio
+                                        id="codeSet_LOCAL"
+                                        name={name}
+                                        value={QuestionRequest.codeSet.LOCAL}
+                                        label="LOCAL"
+                                        onChange={(e: any) => onChange(e.target.value)}
+                                        checked={value === 'LOCAL'}
+                                    />
+                                    <Radio
+                                        id="codeSet_PHIN"
+                                        name={name}
+                                        value={QuestionRequest.codeSet.PHIN}
+                                        label="PHIN"
+                                        onChange={(e: any) => onChange(e.target.value)}
+                                        checked={value === 'PHIN'}
+                                    />
+                                </div>
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="uniqueId"
+                            rules={{
+                                required: { value: true, message: 'Unique ID required' },
+                                pattern: { value: handleValidation(), message: 'Unique ID invalid' },
+                                maxLength: 50
+                            }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
                                     defaultValue={value}
+                                    label="Unique ID"
+                                    type="text"
+                                    error={error?.message}
+                                    required
+                                />
+                            )}
+                        />
+                        <p className="fields-help-text margin-bottom-1em margin-top-0">
+                            If you decide not to provide a UNIQUE ID the system will generate one for you.
+                        </p>
+                        <Controller
+                            control={control}
+                            name="uniqueName"
+                            rules={{
+                                required: { value: true, message: 'Unique name required' },
+                                pattern: { value: handleValidation(false), message: 'Unique name invalid' },
+                                maxLength: 50
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                <Input
+                                    onChange={onChange}
                                     className="field-space"
-                                    label="Administrative comments"
+                                    defaultValue={value}
+                                    label="Unique name"
+                                    type="text"
+                                    error={error?.message}
+                                    required
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="subgroup"
+                            render={({ field: { onChange, value } }) => (
+                                <SelectInput
+                                    defaultValue={value}
+                                    className="field-space"
+                                    label="Subgroup"
+                                    required
+                                    onChange={onChange}
+                                    options={familyOptions.map((option) => {
+                                        return {
+                                            name: option!,
+                                            value: option!
+                                        };
+                                    })}
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="description"
+                            rules={maxLengthRule(50)}
+                            render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
+                                <>
+                                    <Label htmlFor={name}>Description</Label>
+                                    <Textarea onChange={onChange} onBlur={onBlur} rows={2} name={name} id={name} />
+                                    {error?.message && (
+                                        <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>
+                                    )}
+                                </>
+                            )}
+                        />
+                        <br></br>
+                        <label>Field type</label>
+                        <br></br>
+                        <ButtonGroup type="segmented">
+                            {fieldTypeTab.map((field, index) => (
+                                <Button
+                                    key={index}
+                                    type="button"
+                                    outline={field.value !== selectedFieldType}
+                                    onClick={() => setSelectedFieldType(field.value)}>
+                                    {field.name}
+                                </Button>
+                            ))}
+                        </ButtonGroup>
+                        <br></br>
+                        {selectedFieldType === UpdateQuestionRequest.type.CODED && renderValueSet}
+                        {(selectedFieldType === UpdateQuestionRequest.type.NUMERIC ||
+                            selectedFieldType === UpdateQuestionRequest.type.TEXT) && (
+                            <CreateTextQuestion
+                                isText={selectedFieldType === UpdateQuestionRequest.type.TEXT}
+                                control={control}
+                                options={maskOptions}
+                            />
+                        )}
+                        {selectedFieldType === UpdateQuestionRequest.type.NUMERIC && (
+                            <CreateNumericQuestion
+                                control={control!}
+                                isDisableUnitType={isDisableUnitType}
+                                unitType={unitTypeValue}
+                            />
+                        )}
+                        {selectedFieldType === UpdateQuestionRequest.type.DATE && (
+                            <CreateDateQuestion control={control} options={maskOptions} />
+                        )}
+                        <hr className="divider" />
+                        {renderUserInterface}
+                        <h4>Data mart</h4>
+                        <p className="fields-info">Data mart - these fields will not be displayed to your users</p>
+                        <Controller
+                            control={control}
+                            name="defaultLabelInReport"
+                            rules={{
+                                required: { value: true, message: 'Default label in report required' },
+                                pattern: { value: /^\w*$/, message: 'Default label in report invalid' },
+                                maxLength: 50
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    className="field-space"
+                                    defaultValue={value}
+                                    label="Default label in report"
+                                    type="text"
+                                    error={error?.message}
+                                    required
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="defaultRdbTableName"
+                            rules={{
+                                required: { value: true, message: 'Default RDB table name required' },
+                                pattern: { value: /^\w*$/, message: 'Default RDB table name invalid' },
+                                maxLength: 50
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    className="field-space"
+                                    defaultValue={value}
+                                    label="Default RDB table name"
+                                    type="text"
+                                    error={error?.message}
+                                    required
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="rdbColumnName"
+                            rules={{
+                                required: { value: true, message: 'RDB column name required' },
+                                pattern: { value: handleValidation(), message: 'RDB column name invalid' },
+                                maxLength: 50
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    label="RDB column name"
+                                    type="text"
+                                    error={error?.message}
+                                    required
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="datamartColName"
+                            rules={{
+                                pattern: { value: /^\w*$/, message: 'Data mart column name invalid' },
+                                maxLength: 50
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    className="field-space"
+                                    defaultValue={value}
+                                    label="Data mart column name"
                                     type="text"
                                     error={error?.message}
                                 />
                             )}
                         />
-                    </Form>
-                </div>
-                <div className="add-question-footer">
-                    <Button className="submit-btn" type="submit">
-                        {question?.id ? 'Save' : 'Create and add to page'}
-                    </Button>
-                    <ModalToggleButton className="cancel-btn" modalRef={modalRef} onClick={() => resetInput()}>
-                        Cancel
-                    </ModalToggleButton>
-                </div>
+                        <hr className="divider" />
+                        <h4>Messaging</h4>
+                        <p className="fields-info">Messaging - these fields will not be displayed to your users</p>
+                        <p className="fields-info">
+                            Included in message? <span className="mandatory-indicator">*</span>
+                        </p>
+                        <Controller
+                            control={control}
+                            name="includedInMessage"
+                            render={({ field: { onChange, value } }) => (
+                                <>
+                                    <ToggleButton
+                                        className="margin-bottom-1em"
+                                        checked={value}
+                                        name="includedInMessage"
+                                        onChange={onChange}
+                                    />
+                                </>
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="messageVariableId"
+                            rules={{
+                                required: { value: !IsIncludedInMessage, message: 'Message ID required' },
+                                pattern: { value: handleValidation(false), message: 'Message ID invalid' }
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    disabled={IsIncludedInMessage}
+                                    label="Message ID"
+                                    type="text"
+                                    required
+                                    error={error?.message}
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="messageLabel"
+                            rules={{
+                                required: { value: !IsIncludedInMessage, message: 'Message label required' },
+                                pattern: { value: handleValidation(false), message: 'Message label invalid' }
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    disabled={IsIncludedInMessage}
+                                    defaultValue={value!}
+                                    label="Message label"
+                                    type="text"
+                                    error={error?.message}
+                                    required
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="codeSystem"
+                            rules={{
+                                required: {
+                                    value: !IsIncludedInMessage,
+                                    message: 'Code system name required'
+                                }
+                            }}
+                            render={({ field: { onChange, value } }) => (
+                                <SelectInput
+                                    label="Code system name"
+                                    defaultValue={value}
+                                    onChange={onChange}
+                                    disabled={IsIncludedInMessage}
+                                    required
+                                    options={codeSystemOptionList.map(({ label }) => {
+                                        return {
+                                            name: label!,
+                                            value: label!
+                                        };
+                                    })}
+                                />
+                            )}
+                        />
+                        <p className="fields-info">
+                            Required in message? <span className="mandatory-indicator">*</span>
+                        </p>
+                        <Controller
+                            control={control}
+                            name="requiredInMessage"
+                            render={({ field: { onChange, value } }) => (
+                                <>
+                                    <ToggleButton
+                                        className="requiredInMessage"
+                                        checked={value}
+                                        name="includedInMessage"
+                                        onChange={onChange}
+                                    />
+                                </>
+                            )}
+                        />
+                        <br></br>
+                        <Controller
+                            control={control}
+                            name="hl7DataType"
+                            rules={{
+                                required: {
+                                    value: !IsIncludedInMessage,
+                                    message: 'HL7 data type required'
+                                }
+                            }}
+                            render={({ field: { onChange, value } }) => (
+                                <SelectInput
+                                    label="HL7 data type"
+                                    defaultValue={value}
+                                    disabled={IsIncludedInMessage}
+                                    onChange={onChange}
+                                    required
+                                    options={groupOptions.map((option) => {
+                                        return {
+                                            name: option!,
+                                            value: option!
+                                        };
+                                    })}
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="HL7Segment"
+                            render={({ field: { onChange, value } }) => (
+                                <SelectInput
+                                    label="HL7 Segment"
+                                    defaultValue={value}
+                                    className="hl7-segment"
+                                    disabled
+                                    onChange={onChange}
+                                    options={groupOptions.map((option) => {
+                                        return {
+                                            name: option!,
+                                            value: option!
+                                        };
+                                    })}
+                                />
+                            )}
+                        />
+                    </div>
+                    <hr className="divider" />
+                    <h4 className="margin-bottom-0">Administrative</h4>
+                    <p className="fields-info margin-bottom-2em">
+                        Administrative - these fields will not be displayed to your users
+                    </p>
+                    <Controller
+                        control={control}
+                        name="adminComments"
+                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            <Input
+                                onChange={onChange}
+                                defaultValue={value}
+                                className="field-space"
+                                label="Administrative comments"
+                                type="text"
+                                multiline
+                                error={error?.message}
+                            />
+                        )}
+                    />
+                </Form>
             </div>
-        </PageBuilder>
+            <div className="add-question-footer">
+                <Button className="submit-btn" type="submit">
+                    {question?.id ? 'Save' : 'Create and add to page'}
+                </Button>
+                <ModalToggleButton className="cancel-btn" modalRef={modalRef} onClick={() => resetInput()}>
+                    Cancel
+                </ModalToggleButton>
+            </div>
+        </div>
     );
 };
