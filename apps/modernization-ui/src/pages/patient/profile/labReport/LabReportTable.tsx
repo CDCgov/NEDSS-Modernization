@@ -135,7 +135,6 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         const content = transform(data?.findLabReportsForPatient);
         setItems(content);
         const sorted = sort(content, {});
-
         setBodies(asTableBodies(sorted, patient));
     };
 
