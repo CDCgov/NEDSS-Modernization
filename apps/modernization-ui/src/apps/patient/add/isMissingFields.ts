@@ -1,4 +1,4 @@
-import { NewPatientEntry } from 'pages/patient/add';
+import { NewPatientEntry } from 'apps/patient/add';
 
 export function isMissingFields(entry: NewPatientEntry) {
     for (const key in entry) {

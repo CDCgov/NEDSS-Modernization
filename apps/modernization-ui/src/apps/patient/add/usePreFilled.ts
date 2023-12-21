@@ -1,6 +1,6 @@
 import { internalizeDate } from 'date';
 import { EncryptionControllerService } from 'generated';
-import { DefaultNewPatentEntry, NewPatientEntry } from 'pages/patient/add';
+import { DefaultNewPatentEntry, NewPatientEntry } from 'apps/patient/add';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { UserContext } from 'user';
