@@ -1,3 +1,14 @@
+export enum Headers {
+    DateReceived = 'Date received',
+    FacilityProvider = 'Facility / provider',
+    DateCollected = 'Date collected',
+    TestResults = 'Test results',
+    AssociatedWith = 'Associated with',
+    ProgramArea = 'Program area',
+    Jurisdiction = 'Jurisdiction',
+    EventID = 'Event #'
+}
+
 type AssociatedWith = {
     id: string;
     condition: string;
