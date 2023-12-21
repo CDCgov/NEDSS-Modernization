@@ -1,5 +1,14 @@
 import { PatientLabReport, Headers } from './PatientLabReport';
-import { Comparator, Direction, sortBy, sortByDate, withDirection, descending } from 'sorting';
+import {
+    Comparator,
+    Direction,
+    sortBy,
+    sortByDate,
+    sortByNestedPatientLabReportTestArray,
+    sortByNestedPatientLabReportAssociatedArray,
+    withDirection,
+    descending
+} from 'sorting';
 
 export type SortCriteria = {
     name?: Headers;
@@ -16,9 +25,9 @@ const resolveComparator = (name?: Headers): Comparator<PatientLabReport> => {
         case Headers.DateCollected:
             return sortByDate('collectedOn');
         case Headers.TestResults:
-            return sortByDate('receivedOn');
+            return sortByNestedPatientLabReportTestArray('results');
         case Headers.AssociatedWith:
-            return sortByDate('receivedOn');
+            return sortByNestedPatientLabReportAssociatedArray('associatedWith');
         case Headers.ProgramArea:
             return sortBy('programArea');
         case Headers.Jurisdiction:
