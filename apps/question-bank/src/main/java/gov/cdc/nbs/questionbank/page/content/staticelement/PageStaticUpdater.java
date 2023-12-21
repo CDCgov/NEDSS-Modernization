@@ -15,6 +15,9 @@ public class PageStaticUpdater {
 
     private final EntityManager entityManager;
 
+    private static final String INVALID_COMPONENT = "could not find component with id ";
+    private static final String NOT_STATIC = "component with id ";
+
     public PageStaticUpdater(
             final EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -27,12 +30,12 @@ public class PageStaticUpdater {
         WaUiMetadata staticElement = entityManager.find(WaUiMetadata.class, componentId);
 
         if (staticElement == null) {
-            throw new UpdateStaticElementException("could not find component with id " + componentId);
+            throw new UpdateStaticElementException(INVALID_COMPONENT + componentId);
         }
 
         if (staticElement.getNbsUiComponentUid() != 1003L) {
             throw new UpdateStaticElementException(
-                    "component with id " + componentId + " is not a hyperlink element");
+                    NOT_STATIC + componentId + " is not a hyperlink element");
         }
 
         if (request.label() == null || request.linkUrl() == null) {
@@ -60,12 +63,12 @@ public class PageStaticUpdater {
         WaUiMetadata staticElement = entityManager.find(WaUiMetadata.class, componentId);
 
         if (staticElement == null) {
-            throw new UpdateStaticElementException("could not find component with id " + componentId);
+            throw new UpdateStaticElementException(INVALID_COMPONENT + componentId);
         }
 
         if (staticElement.getNbsUiComponentUid() != 1012L && staticElement.getNbsUiComponentUid() != 1030L
                 && staticElement.getNbsUiComponentUid() != 1036L) {
-            throw new UpdateStaticElementException("component with id " + componentId + " is not static");
+            throw new UpdateStaticElementException(NOT_STATIC + componentId + " is not static");
         }
 
         staticElement.update(asUpdateDefaultStaticElement(user, request.adminComments()));
@@ -86,12 +89,12 @@ public class PageStaticUpdater {
         WaUiMetadata staticElement = entityManager.find(WaUiMetadata.class, componentId);
 
         if (staticElement == null) {
-            throw new UpdateStaticElementException("could not find component with id " + componentId);
+            throw new UpdateStaticElementException(INVALID_COMPONENT + componentId);
         }
 
         if (staticElement.getNbsUiComponentUid() != 1014L) {
             throw new UpdateStaticElementException(
-                    "component with id " + componentId + " is not a read only comments element");
+                    NOT_STATIC + componentId + " is not a read only comments element");
         }
 
         if (request.commentsText() == null) {

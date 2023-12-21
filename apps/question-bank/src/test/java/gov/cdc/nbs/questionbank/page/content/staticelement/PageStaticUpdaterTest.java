@@ -14,7 +14,7 @@ import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.UpdateStat
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.UpdateStaticRequests;
 
 @ExtendWith(MockitoExtension.class)
-public class PageStaticUpdaterTest {
+class PageStaticUpdaterTest {
     @InjectMocks
     private PageStaticUpdater pageStaticUpdater;
 
@@ -36,7 +36,7 @@ public class PageStaticUpdaterTest {
 
         pageStaticUpdater.updateDefaultStaticElement(componentId, request, 123L);
 
-        assertEquals(tempElement.getAdminComment(), "new admin comments");
+        assertEquals("new admin comments", tempElement.getAdminComment());
     }
 
     @Test
@@ -87,9 +87,9 @@ public class PageStaticUpdaterTest {
 
         pageStaticUpdater.updateHyperlink(componentId, request, 123L);
 
-        assertEquals(tempElement.getAdminComment(), "new admin comments");
-        assertEquals(tempElement.getQuestionLabel(), "new label");
-        assertEquals(tempElement.getDefaultValue(), "www.new.com");
+        assertEquals("new admin comments", tempElement.getAdminComment());
+        assertEquals("new label", tempElement.getQuestionLabel());
+        assertEquals("www.new.com", tempElement.getDefaultValue());
     }
 
     @Test
@@ -142,8 +142,8 @@ public class PageStaticUpdaterTest {
         var request = new UpdateStaticRequests.UpdateReadOnlyComments("new comments", "admin comments");
         pageStaticUpdater.updateReadOnlyComments(componentId, request, 123L);
 
-        assertEquals(tempElement.getAdminComment(), "admin comments");
-        assertEquals(tempElement.getQuestionLabel(), "new comments");
+        assertEquals("admin comments", tempElement.getAdminComment());
+        assertEquals("new comments", tempElement.getQuestionLabel());
     }
 
     @Test
