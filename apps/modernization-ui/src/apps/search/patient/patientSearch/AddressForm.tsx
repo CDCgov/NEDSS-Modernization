@@ -1,8 +1,8 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Input } from '../../../../components/FormInputs/Input';
-import { SelectInput } from '../../../../components/FormInputs/SelectInput';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
-import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 export const AddressForm = ({ control }: any) => {
     return (

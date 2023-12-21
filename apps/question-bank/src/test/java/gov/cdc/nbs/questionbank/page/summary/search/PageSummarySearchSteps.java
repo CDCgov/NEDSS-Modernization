@@ -111,11 +111,10 @@ public class PageSummarySearchSteps {
 
   @Then("I filter page summaries last updated between {past} and {past}")
   public void i_filter_page_summaries_last_updated_between(final Instant starting, final Instant until) {
-    withDateRange("lastUpdate", starting, until);
+    withDateRange(starting, until);
   }
 
   private void withDateRange(
-      final String property,
       final Instant starting,
       final Instant until) {
 
@@ -123,7 +122,7 @@ public class PageSummarySearchSteps {
     LocalDate untilDate = until == null ? null : LocalDate.ofInstant(until, ZoneId.systemDefault());
 
     FilterJSON filter = new FilterJSON.DateRange(
-        property,
+        "lastUpdate",
         startingDate,
         untilDate);
 
@@ -133,12 +132,12 @@ public class PageSummarySearchSteps {
 
   @Then("I filter page summaries last updated after {past}")
   public void i_filter_page_summaries_last_updated_after(final Instant after) {
-    withDateRange("lastUpdate", after, null);
+    withDateRange(after, null);
   }
 
   @Then("I filter page summaries last updated before {past}")
   public void i_filter_page_summaries_last_updated_before(final Instant before) {
-    withDateRange("lastUpdate", null, before);
+    withDateRange(null, before);
   }
 
   @When("I search for page summaries")
@@ -185,7 +184,7 @@ public class PageSummarySearchSteps {
 
   @Then("the found page summaries contain a page with a(n) {string} equal to {string}")
   @Then("the found page summaries contain a page with the {string} {string}")
-  public void the_found_page_summaries_contain_a_page_with_thn_property_having_the_value(
+  public void the_found_page_summaries_contain_a_page_with_a_property_having_the_value(
       final String property,
       final String value) throws Exception {
     JsonPathResultMatchers pathMatcher = matchingPath(property, "*");
@@ -203,6 +202,18 @@ public class PageSummarySearchSteps {
 
     this.response.active()
         .andExpect(pathMatcher.value(not(matchingValue(property, value))));
+  }
+
+  @Then("all found page summaries contain a page with a(n) {string} equal to {string}")
+  @Then("all found page summaries contain a page with the {string} {string}")
+  public void all_found_page_summaries_contain_a_page_with_a_property_having_the_value(
+      final String property,
+      final String value
+  ) throws Exception {
+    JsonPathResultMatchers pathMatcher = matchingPath(property, "*");
+
+    this.response.active()
+        .andExpect(pathMatcher.value(everyItem(equalToIgnoringCase(value))));
   }
 
   @Then("the {nth} found page summary has a(n) {string} equal to {string}")

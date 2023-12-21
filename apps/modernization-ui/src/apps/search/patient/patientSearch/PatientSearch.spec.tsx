@@ -1,7 +1,7 @@
 import { render, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
-import { PersonFilter, RecordStatus } from '../../../../generated/graphql/schema';
+import { PersonFilter, RecordStatus } from 'generated/graphql/schema';
 import { PatientSearch } from './PatientSearch';
 
 describe('PatientSearch component tests', () => {

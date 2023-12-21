@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
 import com.querydsl.core.Tuple;
+import gov.cdc.nbs.questionbank.page.PageStatusResolver;
 import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 
 import java.time.Instant;
@@ -58,14 +59,7 @@ class PageSummaryMapper {
   private String getStatus(final Tuple tuple) {
     String templateType = tuple.get(this.tables.page().templateType);
     Integer publishVersion = tuple.get(this.tables.page().publishVersionNbr);
-    if ("Draft".equalsIgnoreCase(templateType)) {
-      if (publishVersion == null) {
-        return "Initial Draft";
-      } else {
-        return "Published with Draft";
-      }
-    }
-    return templateType;
+    return PageStatusResolver.resolve(templateType, publishVersion);
   }
 
   private PageSummary.EventType getEventType(final Tuple tuple) {
