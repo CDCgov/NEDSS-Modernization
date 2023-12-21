@@ -1,5 +1,5 @@
 import { authorization } from 'authorization';
-import { Filter } from 'filters';
+import { externalize, Filter } from 'filters';
 import { useState } from 'react';
 import { useSorting } from 'sorting';
 import { downloadAsCsv } from 'utils/downloadAsCsv';
@@ -11,7 +11,7 @@ import { usePageSummarySearch } from './usePageSummarySearch';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { TableProvider } from 'components/Table/TableProvider';
 
-import { PageControllerService } from 'apps/page-builder/generated';
+import { PageSummaryDownloadControllerService } from 'apps/page-builder/generated';
 import { PageBuilder } from 'apps/page-builder/pages/PageBuilder/PageBuilder';
 import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 import { PageLibraryMenu } from './menu/PageLibraryMenu';
@@ -30,16 +30,41 @@ const PageLibrary = () => {
 };
 
 const PageLibraryContent = () => {
-    const { sortBy } = useSorting();
+    const { sorting, sortBy } = useSorting();
     const config = useConfiguration();
     const { pages, searching, search, filter } = usePageSummarySearch();
     const { properties } = usePageLibraryProperties();
 
     const [filters, setFilters] = useState<Filter[]>([]);
+    const [keyword, setKeyword] = useState<string>('');
 
     const handleFilter = (filters: Filter[]) => {
         setFilters(filters);
         filter(filters);
+    };
+
+    const handleSearch = (searchString?: string) => {
+        setKeyword(searchString ?? '');
+        search(searchString);
+    };
+
+    const handleDownloadCSV = () => {
+        PageSummaryDownloadControllerService.downloadPageLibraryUsingPost({
+            authorization: authorization(),
+            sort: sorting,
+            request: {
+                search: keyword,
+                filters: externalize(filters)
+            }
+        }).then((file) => downloadAsCsv({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' }));
+    };
+
+    const handleDownloadPDF = () => {
+        try {
+            downloadPageLibraryPdf(authorization(), keyword, filters, sorting);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -60,7 +85,7 @@ const PageLibraryContent = () => {
                     <PageLibraryMenu
                         properties={properties}
                         filters={filters}
-                        onSearch={search}
+                        onSearch={handleSearch}
                         onFilter={handleFilter}
                         onDownload={handleDownloadCSV}
                         onPrint={handleDownloadPDF}
@@ -77,20 +102,6 @@ const PageLibraryContent = () => {
             </PageBuilder>
         </>
     );
-};
-
-const handleDownloadCSV = () => {
-    PageControllerService.downloadPageLibraryUsingGet({ authorization: authorization() }).then((file) =>
-        downloadAsCsv({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' })
-    );
-};
-
-const handleDownloadPDF = () => {
-    try {
-        downloadPageLibraryPdf(authorization());
-    } catch (error) {
-        console.log(error);
-    }
 };
 
 export { PageLibrary };

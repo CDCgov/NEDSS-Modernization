@@ -1,38 +1,47 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { PageCreateRequest } from '../models/PageCreateRequest';
-import type { PageCreateResponse } from '../models/PageCreateResponse';
-import type { PageDeleteResponse } from '../models/PageDeleteResponse';
-import type { PageStateResponse } from '../models/PageStateResponse';
+import type { PageSummaryRequest } from '../models/PageSummaryRequest';
+import type { Resource } from '../models/Resource';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class PageControllerService {
+export class PageSummaryDownloadControllerService {
 
     /**
-     * createPage
-     * @returns PageCreateResponse OK
+     * downloadPageLibrary
+     * @returns Resource OK
      * @returns any Created
      * @throws ApiError
      */
-    public static createPageUsingPost({
+    public static downloadPageLibraryUsingPost({
         authorization,
         request,
+        page,
+        size,
+        sort,
     }: {
         authorization: string,
         /**
          * request
          */
-        request: PageCreateRequest,
-    }): CancelablePromise<PageCreateResponse | any> {
+        request: PageSummaryRequest,
+        page?: number,
+        size?: number,
+        sort?: string,
+    }): CancelablePromise<Resource | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages',
+            url: '/nbs/page-builder/api/v1/pages/csv',
             headers: {
                 'Authorization': authorization,
+            },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             body: request,
             errors: {
@@ -44,43 +53,53 @@ export class PageControllerService {
     }
 
     /**
-     * deletePageDraft
-     * @returns PageDeleteResponse OK
+     * downloadPageLibraryPDF
+     * @returns string OK
+     * @returns any Created
      * @throws ApiError
      */
-    public static deletePageDraftUsingDelete({
+    public static downloadPageLibraryPdfUsingPost({
         authorization,
-        id,
+        request,
+        page,
+        size,
+        sort,
     }: {
         authorization: string,
         /**
-         * id
+         * request
          */
-        id: number,
-    }): CancelablePromise<PageDeleteResponse> {
+        request: PageSummaryRequest,
+        page?: number,
+        size?: number,
+        sort?: string,
+    }): CancelablePromise<string | any> {
         return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/nbs/page-builder/api/v1/pages/{id}/delete-draft',
-            path: {
-                'id': id,
-            },
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/pdf',
             headers: {
                 'Authorization': authorization,
             },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
+                404: `Not Found`,
             },
         });
     }
 
     /**
-     * savePageDraft
-     * @returns PageStateResponse OK
-     * @returns any Created
+     * downloadPageMetadata
+     * @returns Resource OK
      * @throws ApiError
      */
-    public static savePageDraftUsingPut({
+    public static downloadPageMetadataUsingGet({
         authorization,
         id,
     }: {
@@ -89,10 +108,10 @@ export class PageControllerService {
          * id
          */
         id: number,
-    }): CancelablePromise<PageStateResponse | any> {
+    }): CancelablePromise<Resource> {
         return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{id}/draft',
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/pages/{id}/metadata',
             path: {
                 'id': id,
             },

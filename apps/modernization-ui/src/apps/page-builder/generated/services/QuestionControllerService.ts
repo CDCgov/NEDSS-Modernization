@@ -7,6 +7,7 @@ import type { CreateDateQuestionRequest } from '../models/CreateDateQuestionRequ
 import type { CreateNumericQuestionRequest } from '../models/CreateNumericQuestionRequest';
 import type { CreateTextQuestionRequest } from '../models/CreateTextQuestionRequest';
 import type { DateQuestion } from '../models/DateQuestion';
+import type { DisplayControlOptions } from '../models/DisplayControlOptions';
 import type { FindQuestionRequest } from '../models/FindQuestionRequest';
 import type { GetQuestionResponse } from '../models/GetQuestionResponse';
 import type { NumericQuestion } from '../models/NumericQuestion';
@@ -109,6 +110,30 @@ export class QuestionControllerService {
                 'Authorization': authorization,
             },
             body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * getDisplayControlOptions
+     * @returns DisplayControlOptions OK
+     * @throws ApiError
+     */
+    public static getDisplayControlOptionsUsingGet({
+        authorization,
+    }: {
+        authorization: string,
+    }): CancelablePromise<DisplayControlOptions> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/questions/displayControlOptions',
+            headers: {
+                'Authorization': authorization,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

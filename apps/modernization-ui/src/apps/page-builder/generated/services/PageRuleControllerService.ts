@@ -212,23 +212,29 @@ export class PageRuleControllerService {
 
     /**
      * deletePageRule
-     * @returns CreateRuleResponse OK
+     * @returns any OK
      * @throws ApiError
      */
     public static deletePageRuleUsingDelete({
         authorization,
+        page,
         ruleId,
     }: {
         authorization: string,
         /**
+         * page
+         */
+        page: number,
+        /**
          * ruleId
          */
         ruleId: number,
-    }): CancelablePromise<CreateRuleResponse> {
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/nbs/page-builder/api/v1/pages/{page}/rules/{ruleId}',
             path: {
+                'page': page,
                 'ruleId': ruleId,
             },
             headers: {

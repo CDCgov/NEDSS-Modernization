@@ -1,3 +1,4 @@
+import { Filter } from 'filters';
 import {
     ExportControllerService,
     InvestigationFilter as ExportInvestigation,
@@ -74,15 +75,16 @@ export const downloadLabReportSearchResultPdf = (labReportFilter: LabReportFilte
         });
 };
 
-export const downloadPageLibraryPdf = (token: string) => {
+export const downloadPageLibraryPdf = (authorization: string, search: string, filters: Filter[], sort?: string) => {
     // auto generated methods dont allow direct conversion to blob
-    fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/downloadPDF`, {
-        method: 'GET',
+    fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/pdf?sort=${sort ?? 'name,asc'}`, {
+        method: 'POST',
         headers: {
-            Accept: 'application/pdf',
-            'Content-Type': 'blob',
-            Authorization: token
-        }
+            Accept: '*/*',
+            'Content-Type': 'application/json',
+            Authorization: authorization
+        },
+        body: JSON.stringify({ search: search, filters: filters })
     })
         .then((response) => response.blob())
         .then((blob) => {
