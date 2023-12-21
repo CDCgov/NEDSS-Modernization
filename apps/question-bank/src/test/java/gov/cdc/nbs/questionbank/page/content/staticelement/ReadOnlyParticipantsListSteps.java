@@ -74,7 +74,7 @@ public class ReadOnlyParticipantsListSteps {
         AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
 
         this.updateResponse.active(
-                request.updateDefaultRequest(updateRequest.active(), currPage.active().getId(),
+                request.updateParticipantsListRequest(updateRequest.active(), currPage.active().getId(),
                         staticResponse.componentId()));
     }
 

@@ -73,7 +73,7 @@ public class OriginalElectronicDocListSteps {
         AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
 
         this.updateResponse.active(
-                request.updateDefaultRequest(updateRequest.active(), currPage.active().getId(),
+                request.updateElecDocListRequest(updateRequest.active(), currPage.active().getId(),
                         staticResponse.componentId()));
     }
 

@@ -120,7 +120,7 @@ public class LineSeparatorSteps {
         AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
 
         this.updateResponse.active(
-                request.updateDefaultRequest(updateRequest.active(), currPage.active().getId(),
+                request.updateLineSeparatorRequest(updateRequest.active(), currPage.active().getId(),
                         staticResponse.componentId()));
     }
 
