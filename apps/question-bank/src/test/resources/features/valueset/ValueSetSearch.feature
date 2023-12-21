@@ -1,11 +1,15 @@
 @valueSet_search
 Feature: I can search for  value set
 
+Background:
+    Given I am logged in
+    And A valueSet exists
+
 
     Scenario: I am able to retrieve all value sets
             Given I am an admin user
             When I make a request to retrieve all value sets
-            Then Value sets should be returned
+            Then All Value sets should be returned
 
 
     Scenario: I can search for a value set that does not exist

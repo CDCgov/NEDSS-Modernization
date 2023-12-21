@@ -1,25 +1,22 @@
 package gov.cdc.nbs.questionbank.valueset.read;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import gov.cdc.nbs.questionbank.valueset.ValueSetFinder;
+import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralId;
@@ -35,6 +32,8 @@ class ValueSetReaderTest {
 
   @Mock
   ValueSetRepository valueSetRepository;
+  @Mock
+  ValueSetFinder valueSetFinder;
 
   @InjectMocks
   ValueSetReader valueSetReader;
@@ -61,26 +60,17 @@ class ValueSetReaderTest {
   }
 
   @Test
-  void searchValueSetSearchTest() {
-    ValueSetSearchRequest search = new ValueSetSearchRequest();
-    search.setValueSetNm("setnm");
-    search.setValueSetCode("setCode");
-    search.setValueSetDescription("descText");
+  void searchValueSetTest() {
+    ValueSetSearchRequest search = new ValueSetSearchRequest("setnm", "setCode", "descText");
 
-    int max = 5;
-    Pageable pageable = PageRequest.of(0, max);
-    Page<Codeset> codePage = getCodeSetPage(max, pageable);
-    when(valueSetRepository.findByValueSetNmOrValueSetCodeOrValueSetDescription(Mockito.anyString(),
-        Mockito.anyString(),
-        Mockito.anyString(), Mockito.any())).thenReturn(codePage);
-    Page<ValueSet> result = valueSetReader.searchValueSet(search, pageable);
-    assertNotNull(result);
-    assertEquals(max, result.getTotalElements());
+    List<ValueSetSearchResponse> expectedResult = List.of(new ValueSetSearchResponse("LOCAL", "setCode",
+        "setnm", "descText", "Active"));
 
-    ValueSet one = result.get().toList().get(0);
-    assertNotNull(one.valueSetNm());
-    assertNotNull(one.valueSetCode());
-
+    when(valueSetFinder.findValueSet(any(ValueSetSearchRequest.class))).thenReturn(expectedResult);
+    List<ValueSetSearchResponse> actualResult = valueSetReader.searchValueSet(search);
+    assertNotNull(actualResult);
+    boolean isEquals=(expectedResult.containsAll(actualResult) && actualResult.containsAll(expectedResult));
+    assertTrue(isEquals);
   }
 
   private Page<Codeset> getCodeSetPage(int max, Pageable pageable) {
@@ -88,7 +78,6 @@ class ValueSetReaderTest {
     for (int i = 0; i < max; i++) {
       set.add(getCodeSetRequest(i));
     }
-    ;
     return new PageImpl<>(set, pageable, set.size());
 
   }

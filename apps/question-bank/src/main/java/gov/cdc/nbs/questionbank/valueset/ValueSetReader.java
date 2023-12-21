@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +25,14 @@ public class ValueSetReader {
 
   private final CodeValueGeneralRepository codeValueGeneralRepository;
 
+  private final ValueSetFinder valueSetFinder;
+
   ValueSetReader(final ValueSetRepository valueSetRepository,
-      final CodeValueGeneralRepository codeValueGeneralRepository) {
+      final CodeValueGeneralRepository codeValueGeneralRepository,
+      final ValueSetFinder valueSetFinder) {
     this.valueSetRepository = valueSetRepository;
     this.codeValueGeneralRepository = codeValueGeneralRepository;
+    this.valueSetFinder = valueSetFinder;
   }
 
   public Page<ValueSet> findAllValueSets(Pageable pageable) {
@@ -37,12 +42,8 @@ public class ValueSetReader {
 
   }
 
-  public Page<ValueSet> searchValueSet(ValueSetSearchRequest search, Pageable pageable) {
-    Page<Codeset> rawResults = valueSetRepository.findByValueSetNmOrValueSetCodeOrValueSetDescription(
-        search.getValueSetNm(), search.getValueSetCode(), search.getValueSetDescription(), pageable);
-    List<ValueSet> formatResults = toReadValueSet(rawResults);
-    return new PageImpl<>(formatResults, pageable, rawResults.getTotalElements());
-
+  public List<ValueSetSearchResponse> searchValueSet(ValueSetSearchRequest search) {
+    return valueSetFinder.findValueSet(search);
   }
 
   public List<ValueSet> toReadValueSet(Page<Codeset> rawResults) {

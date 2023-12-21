@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import java.util.List;
 
+import gov.cdc.nbs.questionbank.valueset.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,11 +23,6 @@ import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
-import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
-import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -78,9 +74,8 @@ public class ValueSetController {
   }
 
   @PostMapping("search")
-  public Page<ValueSet> searchValueSet(@RequestBody ValueSetSearchRequest search,
-      @PageableDefault(size = 25) Pageable pageable) {
-    return valueSetReader.searchValueSet(search, pageable);
+  public List<ValueSetSearchResponse> searchValueSet(@RequestBody ValueSetSearchRequest search){
+    return valueSetReader.searchValueSet(search);
   }
 
   @GetMapping("{codeSetNm}/concepts")
