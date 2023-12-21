@@ -60,7 +60,7 @@ const asTableBody =
             },
             {
                 id: 4,
-                title: (
+                title: report?.associatedWith.length ? (
                     <>
                         {report.results?.map((result: TestResult) => (
                             <>
@@ -72,11 +72,11 @@ const asTableBody =
                             </>
                         ))}
                     </>
-                )
+                ) : null
             },
             {
                 id: 5,
-                title: (
+                title: report?.associatedWith.length ? (
                     <>
                         {report.associatedWith?.map((investigation: AssociatedWith, index: number) => (
                             <div key={index}>
@@ -87,7 +87,7 @@ const asTableBody =
                             </div>
                         ))}
                     </>
-                )
+                ) : null
             },
             {
                 id: 6,
@@ -133,7 +133,6 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
     const handleComplete = (data: FindLabReportsForPatientQuery) => {
         setTotal(data?.findLabReportsForPatient?.length || 0);
         const content = transform(data?.findLabReportsForPatient);
-        console.log(content);
         setItems(content);
         const sorted = sort(content, {});
 
