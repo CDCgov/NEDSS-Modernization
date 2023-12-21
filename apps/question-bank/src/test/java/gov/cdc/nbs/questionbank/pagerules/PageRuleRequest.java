@@ -52,8 +52,8 @@ public class PageRuleRequest {
   public void deleteBusinessRule(final long page, final long ruleId) {
     try {
       mvc.perform(
-              this.authenticated
-                  .withUser(delete("/api/v1/pages/{page}/rules/{ruleId}", page, ruleId)))
+          this.authenticated
+              .withUser(delete("/api/v1/pages/{page}/rules/{ruleId}", page, ruleId)))
           .andExpect(status().isOk());
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to execute Page Rule Delete request", exception);

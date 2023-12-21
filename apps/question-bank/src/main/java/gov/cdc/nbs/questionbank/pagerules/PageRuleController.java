@@ -57,12 +57,11 @@ public class PageRuleController {
     }
   }
 
-  @DeleteMapping("/{ruleId}")
+  @DeleteMapping("{ruleId}")
   public void deletePageRule(
-      @PathVariable("page") Long page,
+      @PathVariable("id") Long page,
       @PathVariable Long ruleId,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
-  ) {
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     pageRuleDeleter.delete(page, ruleId, details.getId());
   }
 
