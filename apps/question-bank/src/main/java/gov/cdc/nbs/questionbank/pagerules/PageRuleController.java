@@ -48,7 +48,7 @@ public class PageRuleController {
   @ResponseStatus(HttpStatus.CREATED)
   public CreateRuleResponse createBusinessRule(
       @RequestBody CreateRuleRequest request,
-      @PathVariable Long page,
+      @PathVariable("id") Long page,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     try {
       return pageRuleCreator.createPageRule(details.getId(), request, page);
