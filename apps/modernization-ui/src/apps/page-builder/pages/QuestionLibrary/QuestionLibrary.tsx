@@ -17,7 +17,6 @@ export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
     useEffect(async () => {
         const token = `Bearer ${state.getToken()}`;
         setIsLoading(true);
-        setSummaries([]);
         const { content, totalElements }: any = await fetchQuestion(
             token,
             searchQuery,
