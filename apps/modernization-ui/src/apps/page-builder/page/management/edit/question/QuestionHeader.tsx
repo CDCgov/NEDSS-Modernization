@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './question-header.module.scss';
 import { Icon } from '@trussworks/react-uswds';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
+import { Heading } from 'components/heading';
 type Props = {
     isStandard: boolean;
     isRequired: boolean;
@@ -20,7 +21,7 @@ export const QuestionHeader = ({
         <div className={styles.header}>
             <div className={styles.typeDisplay}>
                 {isStandard && <div className={styles.standardIndicator}>S</div>}
-                Question
+                <Heading level={3}>Question</Heading>
             </div>
             <div className={styles.questionButtons}>
                 <Icon.Edit onClick={onEditQuestion} />
