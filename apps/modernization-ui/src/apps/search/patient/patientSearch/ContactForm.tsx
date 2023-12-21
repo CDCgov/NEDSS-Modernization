@@ -1,5 +1,5 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Input } from '../../../../components/FormInputs/Input';
+import { Input } from 'components/FormInputs/Input';
 import { Controller } from 'react-hook-form';
 import { validate as validatePhoneNumber } from 'validation/search';
 

@@ -9,6 +9,14 @@
     h2 {
         margin: 0;
     }
+    .h3-label {
+        color: var(--base-black, #000);
+        font-family: Public Sans;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
     .margin-left-2em {
         margin-left: 2em;
         padding-top: 1.5rem;
@@ -52,9 +60,15 @@
                 min-width: 100px;
             }
             &:nth-of-type(2) {
-                width: 250px;
+                width: 130px;
             }
-            &:nth-of-type(5) {
+            &:nth-of-type(3) {
+                width: 120px;
+            }
+            &:nth-of-type(4) {
+                width: 300px;
+            }
+            &:nth-of-type(6) {
                 width: 80px;
             }
         }

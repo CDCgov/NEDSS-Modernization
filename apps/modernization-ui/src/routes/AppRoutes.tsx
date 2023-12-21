@@ -16,6 +16,7 @@ import { PatientProfile } from 'apps/patient/profile';
 import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -91,6 +92,7 @@ export const AppRoutes = () => {
                                             {pageLibraryRoutes(config.features.pageBuilder.page.library.enabled)}
                                             {pageManagementRoutes(config.features.pageBuilder.page.management.enabled)}
                                         </Route>
+                                        <Route path="question-library" element={<QuestionLibrary />} />
                                     </Route>
                                 )}
                                 {!config.loading && (
