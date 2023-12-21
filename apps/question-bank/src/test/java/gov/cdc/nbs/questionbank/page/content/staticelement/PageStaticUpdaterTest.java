@@ -40,6 +40,43 @@ class PageStaticUpdaterTest {
     }
 
     @Test
+    void testUpdateDefaultStaticElementOtherCompId() {
+
+        WaUiMetadata tempElement = new WaUiMetadata();
+        tempElement.setAdminComment("old comments");
+        tempElement.setNbsUiComponentUid(1012L);
+        tempElement.setId(2L);
+
+        long componentId = 2L;
+        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
+
+        var request = new UpdateStaticRequests.UpdateDefault("new admin comments");
+
+        pageStaticUpdater.updateDefaultStaticElement(componentId, request, 123L);
+
+        assertEquals("new admin comments", tempElement.getAdminComment());
+    }
+
+    @Test
+    void testUpdateDefaultStaticElementOtherCompId2() {
+
+        WaUiMetadata tempElement = new WaUiMetadata();
+        tempElement.setAdminComment("old comments");
+        tempElement.setNbsUiComponentUid(1030L);
+        tempElement.setId(2L);
+
+        long componentId = 2L;
+        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
+
+        var request = new UpdateStaticRequests.UpdateDefault("new admin comments");
+
+        pageStaticUpdater.updateDefaultStaticElement(componentId, request, 123L);
+
+        assertEquals("new admin comments", tempElement.getAdminComment());
+    }
+
+
+    @Test
     void testUpdateDefaultStaticElementDoesNotExist() {
         WaUiMetadata tempElement = new WaUiMetadata();
         tempElement.setAdminComment("old comments");
@@ -54,6 +91,7 @@ class PageStaticUpdaterTest {
         assertThrows(UpdateStaticElementException.class,
                 () -> pageStaticUpdater.updateDefaultStaticElement(2L, request, 2L));
     }
+    
 
     @Test
     void testUpdateDefaultStaticElementInvalidComponent() {
@@ -63,7 +101,7 @@ class PageStaticUpdaterTest {
         tempElement.setId(2L);
 
         long componentId = 2L;
-        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(null);
+        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
 
         var request = new UpdateStaticRequests.UpdateDefault("new admin comments");
 
@@ -120,9 +158,45 @@ class PageStaticUpdaterTest {
         tempElement.setId(2L);
 
         long componentId = 2L;
-        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(null);
+        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
 
         var request = new UpdateStaticRequests.UpdateHyperlink("new label", "www.new.com", "new admin comments");
+
+        assertThrows(UpdateStaticElementException.class,
+                () -> pageStaticUpdater.updateHyperlink(2L, request, 2L));
+    }
+
+    @Test
+    void testUpdateHyperlinkLabelNull() {
+        WaUiMetadata tempElement = new WaUiMetadata();
+        tempElement.setAdminComment("old comments");
+        tempElement.setDefaultValue("www.initial.com");
+        tempElement.setQuestionLabel("something label");
+        tempElement.setNbsUiComponentUid(1003L);
+        tempElement.setId(2L);
+
+        long componentId = 2L;
+        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
+
+        var request = new UpdateStaticRequests.UpdateHyperlink(null, "www.new.com", "new admin comments");
+
+        assertThrows(UpdateStaticElementException.class,
+                () -> pageStaticUpdater.updateHyperlink(2L, request, 2L));
+    }
+
+    @Test
+    void testUpdateHyperlinkLinkNull() {
+        WaUiMetadata tempElement = new WaUiMetadata();
+        tempElement.setAdminComment("old comments");
+        tempElement.setDefaultValue("www.initial.com");
+        tempElement.setQuestionLabel("something label");
+        tempElement.setNbsUiComponentUid(1003L);
+        tempElement.setId(2L);
+
+        long componentId = 2L;
+        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
+
+        var request = new UpdateStaticRequests.UpdateHyperlink("something", null, "new admin comments");
 
         assertThrows(UpdateStaticElementException.class,
                 () -> pageStaticUpdater.updateHyperlink(2L, request, 2L));
@@ -171,9 +245,25 @@ class PageStaticUpdaterTest {
         tempElement.setId(2L);
 
         long componentId = 2L;
-        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(null);
+        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
 
         var request = new UpdateStaticRequests.UpdateReadOnlyComments("new comments", "admin comments");
+        assertThrows(UpdateStaticElementException.class,
+                () -> pageStaticUpdater.updateReadOnlyComments(2L, request, 2L));
+    }
+
+    @Test
+    void testUpdateReadOnlyCommentsNull() {
+        WaUiMetadata tempElement = new WaUiMetadata();
+        tempElement.setAdminComment("old admin comments");
+        tempElement.setQuestionLabel("old comments");
+        tempElement.setNbsUiComponentUid(1014L);
+        tempElement.setId(2L);
+
+        long componentId = 2L;
+        when(entityManager.find(WaUiMetadata.class, componentId)).thenReturn(tempElement);
+
+        var request = new UpdateStaticRequests.UpdateReadOnlyComments(null, "admin comments");
         assertThrows(UpdateStaticElementException.class,
                 () -> pageStaticUpdater.updateReadOnlyComments(2L, request, 2L));
     }
