@@ -80,7 +80,7 @@ public class OriginalElectronicDocListSteps {
     @Then("the electronic doc list should have {string} of {string}")
     public void the_electronic_doc_list_should_have(String key, String value) throws Exception {
         switch(key) {
-            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").isString());
+            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").value(value));
         }
     }
 

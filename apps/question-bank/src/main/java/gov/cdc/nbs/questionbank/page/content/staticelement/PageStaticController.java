@@ -100,7 +100,7 @@ public class PageStaticController {
                 : new DeleteStaticResponse("delete fail");
     }
 
-    @PutMapping("/{id}/update/hyperlink")
+    @PutMapping("/{id}/hyperlink")
     public UpdateStaticResponse updateHyperlink(
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
@@ -110,7 +110,7 @@ public class PageStaticController {
         return pageStaticUpdater.updateHyperlink(componentId, request, details.getId());
     }
 
-    @PutMapping("/{id}/update/read-only-comments")
+    @PutMapping("/{id}/read-only-comments")
     public UpdateStaticResponse updateReadOnlyComments(
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
@@ -120,7 +120,7 @@ public class PageStaticController {
         return pageStaticUpdater.updateReadOnlyComments(componentId, request, details.getId());
     }
 
-    @PutMapping({"/{id}/update/line-separator", "/{id}/update/participants-list", "/{id}/update/elec-doc-list"})
+    @PutMapping({"/{id}/line-separator", "/{id}/participants-list", "/{id}/elec-doc-list"})
     public UpdateStaticResponse updateDefaultStaticElement(
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,

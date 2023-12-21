@@ -127,7 +127,7 @@ public class LineSeparatorSteps {
     @Then("the line separator should have {string} of {string}")
     public void the_line_separator_should_have(String key, String value) throws Exception {
         switch(key) {
-            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").isString());
+            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").value(value));
         }
     }
 

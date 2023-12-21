@@ -88,8 +88,8 @@ public class ReadOnlyCommentsSteps {
     @Then("the read only comments should have {string} of {string}")
     public void the_read_only_comments_should_have(String key, String value) throws Exception {
         switch(key) {
-            case "commentsText" -> this.updateResponse.active().andExpect(jsonPath("$.commentsText").isString());
-            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").isString());
+            case "commentsText" -> this.updateResponse.active().andExpect(jsonPath("$.commentsText").value(value));
+            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").value(value));
         }
     }
 

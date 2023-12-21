@@ -95,9 +95,9 @@ public class HyperLinkSteps {
     @Then("the hyperlink should have {string} of {string}")
     public void the_hyperlink_should_have(String key, String value) throws Exception {
         switch(key) {
-            case "label" -> this.updateResponse.active().andExpect(jsonPath("$.label").isString());
-            case "link" -> this.updateResponse.active().andExpect(jsonPath("$.linkUrl").isString());
-            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").isString());
+            case "label" -> this.updateResponse.active().andExpect(jsonPath("$.label").value(value));
+            case "link" -> this.updateResponse.active().andExpect(jsonPath("$.linkUrl").value(value));
+            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").value(value));
         }
     }
 
