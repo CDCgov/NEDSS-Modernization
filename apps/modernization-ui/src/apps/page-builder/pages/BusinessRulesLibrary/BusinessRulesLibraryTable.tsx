@@ -21,12 +21,12 @@ export enum Column {
 
 // Sorting temporarily disabled until API is ready
 const tableColumns = [
-    { name: Column.SourceFields, sortable: false },
-    { name: Column.Logic, sortable: false },
+    { name: Column.SourceFields, sortable: true },
+    { name: Column.Logic, sortable: true },
     { name: Column.Values, sortable: false },
-    { name: Column.Function, sortable: false },
+    { name: Column.Function, sortable: true },
     { name: Column.Target, sortable: false },
-    { name: Column.ID, sortable: false }
+    { name: Column.ID, sortable: true }
 ];
 
 type TargetQuestion = {
@@ -130,17 +130,17 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         if (name && direction && direction !== Direction.None) {
             switch (name) {
                 case Column.SourceFields:
-                    return `sourceIdentifier,${direction}`;
+                    return `sourceQuestionIdentifier,${direction}`;
                 case Column.Logic:
-                    return `comparator,${direction}`;
+                    return `logic,${direction}`;
                 case Column.Values:
                     return `sourceValue,${direction}`;
                 case Column.Function:
-                    return `ruleFunction,${direction}`;
+                    return `ruleCd,${direction}`;
                 case Column.Target:
                     return `targetValueIdentifier,${direction}`;
                 case Column.ID:
-                    return `ruleId,${direction}`;
+                    return `id,${direction}`;
                 default:
                     return '';
             }
