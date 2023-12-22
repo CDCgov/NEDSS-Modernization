@@ -11,7 +11,6 @@ import { externalizeDateTime, internalizeDate } from 'date';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { orNull } from 'utils/orNull';
 import { TableBody, TableComponent } from 'components/Table';
-import { Actions } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { Detail, DetailsModal } from 'apps/patient/profile/DetailsModal';
@@ -27,6 +26,7 @@ import { useAlert } from 'alert/useAlert';
 import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
+import { PatientTableActions } from 'apps/patient/profile/PatientTableActions';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -271,25 +271,16 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                 {
                     id: 5,
                     title: (
-                        <div className="table-span">
-                            <Button
-                                type="button"
-                                unstyled
-                                disabled={patient?.status !== 'ACTIVE'}
-                                onClick={() => setIsActions(isActions === index ? null : index)}>
-                                <Icon.MoreHoriz className="font-sans-lg" />
-                            </Button>
-
-                            {isActions === index && (
-                                <Actions
-                                    handleOutsideClick={() => setIsActions(null)}
-                                    handleAction={(type: string) => {
-                                        tableActionStateAdapter(actions, phone)(type);
-                                        setIsActions(null);
-                                    }}
-                                />
-                            )}
-                        </div>
+                        <PatientTableActions
+                            setActiveIndex={setIsActions}
+                            activeIndex={isActions}
+                            index={index}
+                            disabled={patient?.status !== 'ACTIVE'}
+                            handleAction={(type: string) => {
+                                tableActionStateAdapter(actions, phone)(type);
+                                setIsActions(null);
+                            }}
+                        />
                     )
                 }
             ]
