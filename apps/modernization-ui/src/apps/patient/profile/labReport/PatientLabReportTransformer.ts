@@ -48,7 +48,7 @@ const internalized = (content: GraphQLPatientLabReport): PatientLabReport | null
             results: getTestResults(content),
             associatedWith: getAssociations(content),
             programArea: content.programAreaCd,
-            jurisdiction: String(content.jurisdictionCodeDescTxt),
+            jurisdiction: content.jurisdictionCodeDescTxt,
             event: content.localId
         };
     }

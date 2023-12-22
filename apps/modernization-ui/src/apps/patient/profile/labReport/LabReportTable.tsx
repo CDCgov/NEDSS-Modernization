@@ -95,7 +95,7 @@ const asTableBody =
             },
             {
                 id: 7,
-                title: report?.jurisdiction !== 'null' ? <>{report.jurisdiction}</> : null
+                title: report?.jurisdiction || null
             },
             {
                 id: 8,
