@@ -1,5 +1,5 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import { Actions } from 'components/Table/Actions';
+import { Actions } from 'apps/patient/profile/Actions';
 
 import styles from './patient-table-actions.module.scss';
 
