@@ -263,6 +263,12 @@ public class WaUiMetadata {
     this.added(command);
   }
 
+  public void update(PageContentCommand.UpdateReadOnlyComments command) {
+    this.adminComment = command.adminComments();
+    this.questionLabel = command.comments();
+    updated(command);
+  }
+
   public WaUiMetadata(PageContentCommand.AddHyperLink command) {
     // Defaults
     this();
@@ -280,6 +286,20 @@ public class WaUiMetadata {
 
 
     this.added(command);
+  }
+
+  public void update(PageContentCommand.UpdateHyperlink command) {
+    this.adminComment = command.adminComments();
+    this.questionLabel = command.label();
+    this.defaultValue = command.linkUrl();
+
+    updated(command);
+  }
+
+  public void update(PageContentCommand.UpdateDefaultStaticElement command) {
+    this.adminComment = command.adminComments();
+
+    updated(command);
   }
 
   public WaUiMetadata(PageContentCommand.AddLineSeparator command) {
