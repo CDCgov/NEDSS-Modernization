@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { Button } from '@trussworks/react-uswds';
 
+import styles from './actions.module.scss';
+
 export const Actions = ({ handleAction, handleOutsideClick, notDeletable }: any) => {
     const actionRef: any = useRef(null);
 
@@ -19,7 +21,7 @@ export const Actions = ({ handleAction, handleOutsideClick, notDeletable }: any)
     }, [actionRef]);
 
     return (
-        <div className="actions-card" ref={actionRef}>
+        <div className={styles.actions} ref={actionRef}>
             <Button
                 onClick={() => handleAction('details')}
                 unstyled

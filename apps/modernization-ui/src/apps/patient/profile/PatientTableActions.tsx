@@ -1,6 +1,8 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import { Actions } from 'components/Table/Actions';
 
+import styles from './patient-table-actions.module.scss';
+
 type ActionType = 'add' | 'update' | 'delete' | 'details';
 
 type ActionProps = {
@@ -21,7 +23,7 @@ export const PatientTableActions = ({
     notDeletable
 }: ActionProps) => {
     return (
-        <div className="table-span">
+        <span className={styles.actions}>
             <Button
                 type="button"
                 unstyled
@@ -36,6 +38,6 @@ export const PatientTableActions = ({
                     notDeletable={notDeletable}
                 />
             )}
-        </div>
+        </span>
     );
 };
