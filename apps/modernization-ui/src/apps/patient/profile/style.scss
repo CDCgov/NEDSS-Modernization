@@ -22,33 +22,9 @@
     padding: 50px 30px;
 }
 
-.usa-modal__main {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.usa-modal__content {
-    padding: 0 !important;
-    position: relative;
-
-    .usa-button-group {
-        justify-content: flex-end;
-    }
-}
-.usa-modal__close {
-    position: absolute;
-    top: 40px;
-    right: 0;
-}
-
 .wall-desing {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-}
-
-.modal-form .modal-body {
-    max-height: 400px;
-    overflow-y: auto;
 }
 
 .modal-form .usa-button {
