@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './question-header.module.scss';
 import { Icon } from '@trussworks/react-uswds';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';

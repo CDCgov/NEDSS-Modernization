@@ -12,6 +12,7 @@ type Props = {
     onAddQuestion: () => void;
 };
 export const Subsection = ({ subsection, onAddQuestion }: Props) => {
+    console.log(subsection.questions);
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page } = usePageManagement();
 
@@ -20,7 +21,7 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const handleAlert = (message: string) => {
         showAlert({ message: message, type: 'success' });
     };
-    
+
     const handleExpandedChange = (expanded: boolean) => {
         setIsExpanded(expanded);
     };
@@ -39,7 +40,7 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
             PageStaticControllerService.deleteStaticElementUsingDelete({
                 authorization: authorization(),
                 page: page.id,
-                request: { componentId: componentId }
+                request: { componentId: id }
             }).then(() => {
                 handleAlert(`deleted a static element`);
             });
