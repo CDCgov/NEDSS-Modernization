@@ -1,24 +1,14 @@
 /* eslint-disable camelcase */
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { useAlert } from 'alert';
-import {
-    CodedQuestion,
-    DateQuestion,
-    NumericQuestion,
-    PageQuestionControllerService,
-    PageSummary,
-    TextQuestion
-} from 'apps/page-builder/generated';
+import { CodedQuestion, DateQuestion, NumericQuestion, PageSummary, TextQuestion } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, RefObject, useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { UserContext } from '../../../../providers/UserContext';
 import { QuestionsContext } from '../../context/QuestionsContext';
 import { CreateQuestion } from '../../components/CreateQuestion/CreateQuestion';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
-import { useNavigate, useParams } from 'react-router-dom';
 
 export enum Column {
     Type = 'Type',
@@ -41,18 +31,14 @@ type Question = TextQuestion | DateQuestion | NumericQuestion | CodedQuestion;
 type Props = {
     summaries: Question[];
     pages?: any;
-    qtnModalRef?: any;
+    qtnModalRef?: RefObject<ModalRef>;
+    onAddQuestion?: (id: number) => void;
 };
 
-export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
-    const { showAlert } = useAlert();
-    const navigateTo = useNavigate();
+export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef, onAddQuestion }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(QuestionsContext);
-    const { pageId, subsectionId } = useParams();
-    const { state } = useContext(UserContext);
-    const authorization = `Bearer ${state.getToken()}`;
     const asTableRow = (page: Question): TableBody => ({
         id: page.id,
         key: page.id,
@@ -78,9 +64,9 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             }
         ]
     });
-    const handleSelected = ({ target }: any, item: any) => {
+    const handleSelected = ({ target }: ChangeEvent<HTMLInputElement>, item: TableBody) => {
         if (target.checked) {
-            const value: any = summaries.filter((val: any) => item.id === val.id);
+            const value = summaries.find((val) => item.id === val.id) || {};
             setSelectedQuestion(value);
         } else {
             setSelectedQuestion({});
@@ -126,22 +112,8 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
     };
 
     const handleAddQsntoPage = async () => {
-        const request = {
-            orderNumber: subsectionId,
-            questionId: selectedQuestion.id
-        };
-        history.go(-1);
-
-        PageQuestionControllerService.addQuestionToPageUsingPost({
-            authorization,
-            page: Number(pageId),
-            request
-        }).then((response: any) => {
-            setSelectedQuestion({});
-            showAlert({ type: 'success', header: 'Add', message: 'Add Question successfully on page' });
-            history.go(-1);
-            return response;
-        });
+        onAddQuestion && onAddQuestion(Number(selectedQuestion.id));
+        setSelectedQuestion({});
     };
 
     const footerActionBtn = (
@@ -172,15 +144,6 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
             <label className="margin-bottom-1em no-text">
                 {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
-            <Button
-                className="submit-btn"
-                type="button"
-                onClick={() => {
-                    navigateTo('/page-builder/add/question');
-                }}
-                outline>
-                Create New
-            </Button>
             <ModalToggleButton className="submit-btn display-none" type="button" modalRef={modalRef} outline>
                 Create New
             </ModalToggleButton>
@@ -218,7 +181,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef }: Props) =
 
     return (
         <div>
-            <h3 className="h3-label"> you can search for an existing question or create new one</h3>
+            <h3 className="h3-label"> You can search for an existing question or create new one</h3>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
             {summaries?.length ? (
                 <TableComponent

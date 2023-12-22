@@ -60,16 +60,16 @@
                 min-width: 100px;
             }
             &:nth-of-type(2) {
-                width: 130px;
+                width: 8rem;
             }
             &:nth-of-type(3) {
-                width: 120px;
+                width: 11rem;
             }
-            &:nth-of-type(4) {
-                width: 300px;
+            &:nth-of-type(5) {
+                width: 8rem;
             }
             &:nth-of-type(6) {
-                width: 80px;
+                width: 5rem;
             }
         }
         tbody tr {
@@ -225,6 +225,14 @@
         font-style: normal;
         font-weight: 700;
         line-height: normal;
+    }
+}
+.question-local-library__container {
+    .edit-filter-modal {
+        display: none;
+    }
+    .no-data-available {
+        flex-direction: column;
     }
 }
 .edit-filter-modal {

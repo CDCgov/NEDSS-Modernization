@@ -6,14 +6,13 @@ import { Section } from './Section';
 
 type Props = {
     sections: PagesSection[];
-    onAddQuestion: (subsection: number) => void;
     onAddSubsection: (section: number) => void;
 };
-export const Sections = ({ sections, onAddSubsection, onAddQuestion }: Props) => {
+export const Sections = ({ sections, onAddSubsection }: Props) => {
     return (
         <div className={styles.sections}>
             {sections.map((s, k) => (
-                <Section section={s} key={k} onAddSubsection={onAddSubsection} onAddQuestion={onAddQuestion} />
+                <Section section={s} key={k} onAddSubsection={onAddSubsection} />
             ))}
         </div>
     );
