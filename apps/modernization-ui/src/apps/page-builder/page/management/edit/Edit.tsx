@@ -1,4 +1,3 @@
-import { Button } from '@trussworks/react-uswds';
 import { PageContent } from './content/PageContent';
 import { Loading } from 'components/Spinner';
 import {
@@ -30,9 +29,9 @@ const EditPageContent = () => {
         <PageManagementLayout name={page.name} mode={'edit'}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
-                    <Button type="button" outline>
+                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules-library`} type="outline">
                         Business rules
-                    </Button>
+                    </NavLinkButton>
                     <NavLinkButton to={'..'}>Preview</NavLinkButton>
                 </PageManagementMenu>
             </PageHeader>

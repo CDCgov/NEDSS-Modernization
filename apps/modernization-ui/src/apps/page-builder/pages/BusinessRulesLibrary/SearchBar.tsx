@@ -2,16 +2,22 @@ import { Input } from 'components/FormInputs/Input';
 import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import { useState } from 'react';
 import { FilterButton } from './FilterButton/Filter';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+
 export const SearchBar = ({ onChange }: any) => {
     const [searchTags, setSearchTags] = useState<any>([]);
     const [search, setSearch] = useState<string>('');
+    const { page } = useGetPageDetails();
+
     const handleSearch = ({ target }: any) => {
         setSearch(target.value);
     };
+
     const handleSubmit = () => {
         setSearchTags([...searchTags, search]);
         onChange(search);
     };
+
     const handleRemove = (removeTag: string) => {
         setSearch('');
         onChange('');
@@ -20,7 +26,7 @@ export const SearchBar = ({ onChange }: any) => {
 
     return (
         <div className="business-rules-library__header outer-search-box">
-            <h3> Condition X Case | business rules </h3>
+            <h3> {page?.name} | business rules </h3>
             <div className="search-tag">
                 {searchTags.map((tagName: string, index: number) => (
                     <div className="tag-cover" key={index}>

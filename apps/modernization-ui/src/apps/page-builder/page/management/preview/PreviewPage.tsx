@@ -10,7 +10,6 @@ import {
 import { Loading } from 'components/Spinner';
 import { LinkButton } from 'components/button';
 import { PageInformation } from './information/PageInformation';
-
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import styles from './preview-page.module.scss';
 import { PreviewTab } from './tab';
@@ -34,9 +33,9 @@ const PreviewPageContent = () => {
         <PageManagementLayout name={page.name} mode={'draft'}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
-                    <Button type="button" outline>
-                        Business Rules
-                    </Button>
+                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules-library`} type="outline">
+                        Business rules
+                    </NavLinkButton>
                     <Button outline type="button">
                         Save as Template
                     </Button>

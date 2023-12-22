@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.model;
 
+import gov.cdc.nbs.questionbank.pagerules.QuestionInfo;
+
 import java.util.List;
 
 public record ViewRuleResponse(
@@ -12,7 +14,7 @@ public record ViewRuleResponse(
         String comparator,
         String targetType,
         String errorMsgText,
-        List<String> targetValueIdentifier) {
+        List<QuestionInfo> targetQuestions) {
     public record SourceValues(List<String> sourceValueId, List<String> sourceValueText) {
     }
 

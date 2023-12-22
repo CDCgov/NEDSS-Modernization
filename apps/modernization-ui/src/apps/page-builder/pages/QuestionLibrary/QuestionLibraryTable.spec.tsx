@@ -1,5 +1,5 @@
 import { QuestionLibraryTable } from './QuestionLibraryTable';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AlertProvider } from '../../../../alert';
 
@@ -57,9 +57,11 @@ describe('when at least one summary is available', () => {
 
     it('should display the questions summaries', async () => {
         const { findAllByRole } = render(
-            <AlertProvider>
-                <QuestionLibraryTable summaries={summaries} />
-            </AlertProvider>
+            <MemoryRouter>
+                <AlertProvider>
+                    <QuestionLibraryTable summaries={summaries} />
+                </AlertProvider>
+            </MemoryRouter>
         );
 
         const tableData = await findAllByRole('cell');
