@@ -1,47 +1,5 @@
 @use 'styles/colors';
 
-.table-head {
-    display: flex;
-    justify-content: space-between;
-    border: none;
-    align-items: center;
-
-    button:disabled {
-        cursor: text;
-        .usa-icon {
-            color: colors.$disabled-dark;
-        }
-    }
-}
-
-td, th {
-    font-size: 14px !important;
-}
-
-.table__range {
-    color: colors.$base;
-}
-
-.pagination {
-    justify-content: flex-end;
-}
-
-.table-data {
-    .usa-checkbox__label {
-        margin: 0 !important;
-    }
-
-    .link {
-        color: colors.$primary;
-        text-decoration: underline;
-        cursor: pointer;
-    }
-}
-
-.table-span {
-    position: relative;
-}
-
 .actions-card {
     background: colors.$base-white;
     border: 1px solid colors.$border;
@@ -54,44 +12,4 @@ td, th {
     button:hover {
         border-bottom: 1px solid colors.$border;
     }
-}
-
-.table-component {
-    .usa-table {
-        margin: 0 !important;
-    }
-}
-
-.sort-header {
-    background-color: colors.$cool-accent-light !important;
-}
-
-.sort-td {
-    background-color: colors.$cool-accent-lighter !important;
-}
-
-th.selection {
-    width: 3rem;
-}
-
-td.selection {
-    vertical-align: baseline;
-}
-
-table.usa-table thead tr {
-    border-bottom-width: 2px;
-    border-bottom-style: solid;
-}
-
-table.usa-table {
-    margin: 0;
-}
-
-table.usa-table th,
-table.usa-table td {
-    font-size: 14px !important;
-}
-
-table.usa-table td {
-    white-space: pre-wrap;
 }
