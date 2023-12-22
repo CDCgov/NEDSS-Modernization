@@ -1,6 +1,6 @@
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SEARCH_TYPE } from 'pages/advancedSearch/AdvancedSearch';
 import { Control, Controller, FieldValues } from 'react-hook-form';
-import { SEARCH_TYPE } from '../../AdvancedSearch';
-import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 
 type EventTypesProps = {
     control: Control<FieldValues, any>;

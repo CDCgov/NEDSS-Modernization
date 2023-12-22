@@ -1,6 +1,6 @@
 import { Accordion } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SelectInput } from '../../../../../components/FormInputs/SelectInput';
 
 type EventTypeAccordionProps = {
     setSearchType: Function;
