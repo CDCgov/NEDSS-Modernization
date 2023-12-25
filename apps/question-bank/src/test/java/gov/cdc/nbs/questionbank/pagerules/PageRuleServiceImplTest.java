@@ -87,6 +87,7 @@ class PageRuleServiceImplTest {
     // }
 
 
+
     @Test
     void shouldGiveTheDetailsOfRule() {
         List<Object[]>  targetQuestions= Arrays.asList(new Object[]{"label1","test456"},new Object[]{"label2", " test789"});
