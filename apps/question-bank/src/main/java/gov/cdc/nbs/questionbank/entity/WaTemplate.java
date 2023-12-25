@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
 import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.PageNameVerifier;
@@ -159,7 +160,7 @@ public class WaTemplate {
       CascadeType.MERGE,
       CascadeType.REMOVE
   }, orphanRemoval = true)
-  private List<WaRuleMetadatum> waRuleMetadatums;
+  private List<WaRuleMetadata> waRuleMetadata;
 
   public WaTemplate() {
     this.templateType = DRAFT;
@@ -513,6 +514,29 @@ public class WaTemplate {
     return questionEntry;
   }
 
+  public void deleteQuestion(PageContentCommand.DeleteQuestion command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // ensure page already contain question
+    WaUiMetadata question = uiMetadata.stream()
+        .filter(e -> e.getQuestionIdentifier() != null
+            && e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier())).findFirst()
+        .orElseThrow(() ->
+            new PageContentModificationException(
+                "Unable to delete a question from a page, the page does not contain the question"));
+
+    //can not delete standard questions
+    if (question.getStandardQuestionIndCd() == 'T') {
+      throw new PageContentModificationException("Unable to delete standard question");
+    }
+
+    // Remove question and adjust orderNbrs
+    this.uiMetadata.remove(question);
+    adjustingComponentsFrom(question.getOrderNbr());
+    changed(command);
+  }
+
   private Optional<WaUiMetadata> findNextElementOfComponent(Integer start, List<Long> componentTypes) {
     return uiMetadata.stream()
         .filter(ui -> ui.getOrderNbr() >= start)
@@ -718,6 +742,7 @@ public class WaTemplate {
         .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
     subsection.update(command);
     changed(command);
+
     return subsection;
   }
 
@@ -741,4 +766,25 @@ public class WaTemplate {
     }
     return subsection;
   }
+
+  public WaRuleMetadata addRule(PageContentCommand.AddRule command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+    // create rule
+    WaRuleMetadata rule = new WaRuleMetadata(this.id, command);
+    this.waRuleMetadata.add(rule);
+    changed(command);
+    return rule;
+  }
+
+  public void deleteRule(PageContentCommand.DeleteRule command) {
+    verifyDraftType();
+    WaRuleMetadata rule = waRuleMetadata.stream().filter(e -> e.getId() == command.ruleId()).findFirst()
+        .orElseThrow(
+            () -> new PageContentModificationException("Failed to find Page Rule with id: " + command.ruleId()));
+    waRuleMetadata.remove(rule);
+    changed(command);
+  }
+
+
 }

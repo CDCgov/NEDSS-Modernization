@@ -20,7 +20,8 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
     properties = {
         "nbs.gateway.classic=http://localhost:10000",
         "nbs.gateway.pagebuilder.service=localhost:10002",
-        "nbs.gateway.pagebuilder.enabled=true"
+        "nbs.gateway.pagebuilder.enabled=true",
+        "nbs.gateway.pagebuilder.page.management.enabled=true"
     })
 class EditPageRouteConfigurationTest {
 

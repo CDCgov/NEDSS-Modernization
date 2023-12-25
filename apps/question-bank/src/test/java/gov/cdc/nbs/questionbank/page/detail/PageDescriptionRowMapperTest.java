@@ -19,6 +19,7 @@ class PageDescriptionRowMapperTest {
     ResultSet resultSet = mock(ResultSet.class);
     when(resultSet.getLong(columns.identifier())).thenReturn(2143L);
     when(resultSet.getString(columns.name())).thenReturn("name-value");
+    when(resultSet.getString(columns.status())).thenReturn("status-value");
     when(resultSet.getString(columns.description())).thenReturn("description-value");
 
     PageDescriptionRowMapper mapper = new PageDescriptionRowMapper(columns);
@@ -27,6 +28,7 @@ class PageDescriptionRowMapperTest {
 
     assertThat(actual.identifier()).isEqualTo(2143L);
     assertThat(actual.name()).isEqualTo("name-value");
+    assertThat(actual.status()).isEqualTo("status-value");
     assertThat(actual.description()).isEqualTo("description-value");
   }
 }

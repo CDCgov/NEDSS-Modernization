@@ -23,15 +23,15 @@ Feature: Concepts Autocomplete REST API
 
   Scenario: I can find specific concepts for a value set
     When I am trying to find concepts in the "Specific" value set that start with "reg"
-    Then there are 2 options included
-    And the option named "regrate" is included
-    And the option named "regulus" is included
-    And the option named "regreet" is not included
+    Then there are 2 concepts included
+    And the concept named "regrate" is included
+    And the concept named "regulus" is included
+    And the concept named "regreet" is not included
 
   Scenario: I can find a specific number of concepts for a value set
     When I am trying to find at most 4 concepts in the "Specific" value set that start with "w"
-    Then there are 4 options included
+    Then there are 4 concepts included
 
   Scenario: I cannot find specific concepts that do not exist
     When I am trying to find concepts in the "Other" value set that start with "z"
-    Then there aren't any options
+    Then there aren't any concepts available

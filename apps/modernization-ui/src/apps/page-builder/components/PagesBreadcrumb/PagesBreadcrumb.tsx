@@ -4,12 +4,17 @@ import './PagesBreadcrumb.scss';
 
 type Props = {
     currentPage?: string;
+    path?: string;
 };
 
-export const PagesBreadcrumb = ({ currentPage }: Props) => {
+export const PagesBreadcrumb = ({ currentPage, path }: Props) => {
     const navigate = useNavigate();
     const goBack = () => {
-        navigate(-1);
+        if (path) {
+            navigate(path);
+        } else {
+            navigate(-1);
+        }
     };
 
     return (

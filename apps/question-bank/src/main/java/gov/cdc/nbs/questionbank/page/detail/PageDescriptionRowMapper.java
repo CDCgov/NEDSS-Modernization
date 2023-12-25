@@ -9,9 +9,9 @@ import java.sql.SQLException;
 
 class PageDescriptionRowMapper implements RowMapper<PageDescription> {
 
-  record Column(int identifier, int name, int description) {
+  record Column(int identifier, int name, int status, int description) {
     Column() {
-      this(1, 2, 3);
+      this(1, 2, 3,4);
     }
   }
 
@@ -31,10 +31,12 @@ class PageDescriptionRowMapper implements RowMapper<PageDescription> {
   public PageDescription mapRow(final ResultSet rs, final int rowNum) throws SQLException {
     long identifier = rs.getLong(columns.identifier());
     String name = rs.getString(columns.name());
+    String status = rs.getString(columns.status());
     String description = rs.getString(columns.description());
     return new PageDescription(
         identifier,
         name,
+        status,
         description
     );
   }

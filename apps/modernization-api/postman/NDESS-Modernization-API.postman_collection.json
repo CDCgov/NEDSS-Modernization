@@ -290,6 +290,11 @@
 							"type": "oauth2",
 							"oauth2": [
 								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
 									"key": "accessToken",
 									"value": "{{token}}",
 									"type": "string"
@@ -307,7 +312,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query search($filter: PersonFilter!, $page: SortablePage) {\n  findPatientsByFilter(filter: $filter, page: $page) {\n    content {\n      patient\n      shortId\n      legalName {\n        first\n        middle\n        last\n        suffix\n      }\n      names {\n        first\n        middle\n        last\n        suffix\n      }\n      identification {\n        type\n        value\n      }\n    }\n    total\n  }\n}\n",
-								"variables": "{\n\t\t\"page\": {\n\t\t\t\"pageNumber\": 0,\n\t\t\t\"pageSize\": \"5\"\n\t\t}\n\t}"
+								"variables": "{\n    \"filter\" :{\n        \"recordStatus\": [\"ACTIVE\"],\n        \"gender\" :\"u\"\n    },\n\t\t\"page\": {\n\t\t\t\"pageNumber\": 0,\n\t\t\t\"pageSize\": \"5\"\n\t\t}\n\t}"
 							}
 						},
 						"url": {
@@ -630,7 +635,7 @@
 							"response": []
 						},
 						{
-							"name": "findLabReportsByFilter",
+							"name": "findLabReportsForPatient",
 							"protocolProfileBehavior": {
 								"followRedirects": false,
 								"followOriginalHttpMethod": false,
@@ -657,8 +662,8 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query reports($filter: LabReportFilter!, $page: SortablePage) {\n  findLabReportsByFilter(filter: $filter, page: $page) {\n    content {\n      id\n      observationUid\n      lastChange\n      classCd\n      moodCd\n      observationLastChgTime\n      cdDescTxt\n      recordStatusCd\n      programAreaCd\n      jurisdictionCd\n      jurisdictionCodeDescTxt\n      pregnantIndCd\n      localId\n      activityToTime\n      effectiveFromTime\n      rptToStateTime\n      addTime\n      electronicInd\n      versionCtrlNbr\n      addUserId\n      lastChgUserId\n      personParticipations {\n        actUid\n        localId\n        typeCd\n        entityId\n        subjectClassCd\n        participationRecordStatus\n        typeDescTxt\n        participationLastChangeTime\n        firstName\n        lastName\n        birthTime\n        currSexCd\n        personCd\n        personParentUid\n        personRecordStatus\n        personLastChangeTime\n      }\n      organizationParticipations {\n        actUid\n        typeCd\n        entityId\n        subjectClassCd\n        typeDescTxt\n        participationRecordStatus\n        participationLastChangeTime\n        name\n        organizationLastChangeTime\n      }\n      materialParticipations {\n        actUid\n        typeCd\n        entityId\n        subjectClassCd\n        typeDescTxt\n        participationRecordStatus\n        participationLastChangeTime\n        cd\n        cdDescTxt\n      }\n      observations {\n        cd\n        cdDescTxt\n        domainCd\n        statusCd\n        altCd\n        altDescTxt\n        altCdSystemCd\n        displayName\n        ovcCode\n        ovcAltCode\n        ovcAltDescTxt\n        ovcAltCdSystemCd\n      }\n      actIds {\n        id\n        recordStatus\n        actIdSeq\n        rootExtensionTxt\n        typeCd\n        lastChangeTime\n      }\n      associatedInvestigations {\n        publicHealthCaseUid\n        cdDescTxt\n        localId\n        lastChgTime\n        actRelationshipLastChgTime\n      }\n    }\n    total\n  }\n}\n",
-										"variables": "{\n    \"filter\": {\n        \"patientId\": {{patient}}\n    },\n    \"page\": {\n        \"pageNumber\": \"0\",\n        \"pageSize\": \"25\"\n    }\n}"
+										"query": "query lab_reports($patient: Int!, $page: Page) {\n  findLabReportsForPatient(personUid: $patient, page: $page) {\n\n    id\n    observationUid\n    addTime\n    effectiveFromTime\n    programAreaCd\n    jurisdictionCodeDescTxt\n    localId\n    electronicInd\n    associatedInvestigations {\n      publicHealthCaseUid\n      cdDescTxt\n      localId\n    }\n    personParticipations {\n      typeCd\n      personCd\n      firstName\n      lastName\n    }\n    organizationParticipations {\n      typeCd\n      name\n    }\n    observations {\n      domainCd\n      cdDescTxt\n      displayName\n    }\n  \n  }\n}\n",
+										"variables": "{\n\n    \"patient\": {{patient}},\n    \"page\": {\n        \"pageNumber\": \"0\",\n        \"pageSize\": \"25\"\n    }\n}"
 									}
 								},
 								"url": {
@@ -2897,6 +2902,18 @@
 				},
 				{
 					"name": "Patient Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const patient = pm.response.json().data?.findPatientProfile?.id;",
+									"pm.collectionVariables.set(\"patient\", patient);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"followRedirects": false,
 						"followOriginalHttpMethod": false,
@@ -2980,7 +2997,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query profile($short: Int!) {\n  findPatientProfile(shortId: $short) {\n    id\n    local\n    shortId\n    deletable\n  }\n}\n",
-								"variables": "{\n    \"short\": \"96000\"\n}"
+								"variables": "{\n    \"short\": \"75010\"\n}"
 							}
 						},
 						"url": {
@@ -3067,7 +3084,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query profile($patient: ID!, $asOf: DateTime) {\n  findPatientProfile(patient: $patient) {\n    id\n    local\n    shortId\n    summary(asOf: $asOf) {\n      legalName {\n        prefix\n        first\n        middle\n        last\n        suffix\n      }\n      birthday\n      age\n      gender\n      ethnicity\n      races\n      address {\n        use\n        address\n        address2\n        city\n        state\n        zipcode\n        country\n      }\n      phone {\n        use\n        number\n      }\n      email {\n        use\n        address\n      }\n    }\n  }\n}\n",
+								"query": "query profile($patient: ID!, $asOf: DateTime) {\n  findPatientProfile(patient: $patient) {\n    id\n    local\n    shortId\n    status\n    summary(asOf: $asOf) {\n      legalName {\n        prefix\n        first\n        middle\n        last\n        suffix\n      }\n      birthday\n      age\n      gender\n      ethnicity\n      races\n      address {\n        use\n        address\n        address2\n        city\n        state\n        zipcode\n        country\n      }\n      phone {\n        use\n        number\n      }\n      email {\n        use\n        address\n      }\n    }\n  }\n}\n",
 								"variables": "{\n    \"patient\": \"{{patient}}\"\n}"
 							}
 						},
@@ -3529,7 +3546,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base}}/nbs/api/options/concepts/:name/search?criteria=ad&limit=3",
+									"raw": "{{base}}/nbs/api/options/concepts/:name/search?criteria=",
 									"host": [
 										"{{base}}"
 									],
@@ -3544,17 +3561,111 @@
 									"query": [
 										{
 											"key": "criteria",
-											"value": "ad"
+											"value": ""
 										},
 										{
 											"key": "limit",
-											"value": "3"
+											"value": "",
+											"disabled": true
 										}
 									],
 									"variable": [
 										{
 											"key": "name",
-											"value": "CODE_SYSTEM"
+											"value": "BUS_OBJ_TYPE"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Conditions",
+					"item": [
+						{
+							"name": "All Conditions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/options/conditions",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"options",
+										"conditions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Specific Conditions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/options/conditions/search?criteria=we",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"options",
+										"conditions",
+										"search"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "criteria",
+											"value": "we"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Specific Users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base}}/nbs/api/options/users/search?criteria=a&limit=4",
+									"host": [
+										"{{base}}"
+									],
+									"path": [
+										"nbs",
+										"api",
+										"options",
+										"users",
+										"search"
+									],
+									"query": [
+										{
+											"key": "criteria",
+											"value": "a"
+										},
+										{
+											"key": "limit",
+											"value": "4"
 										}
 									]
 								}
@@ -3598,7 +3709,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"superuser\"\n}"
+					"raw": "{\n    \"username\": \"{{user}}\"\n}"
 				},
 				"url": {
 					"raw": "{{base}}/login",
@@ -3630,7 +3741,7 @@
 				"type": "text/javascript",
 				"exec": [
 					"const now = new Date()",
-					"pm.environment.set('now', now.toISOString())",
+					"pm.collectionVariables.set('now', now.toISOString())",
 					"",
 					"pm.collectionVariables.set (\"randomCountryCode\", _.random (1,9));",
 					"pm.collectionVariables.set (\"randomExtension\", _.random (1000,9999));",
@@ -3692,6 +3803,15 @@
 		{
 			"key": "dateInPast",
 			"value": ""
+		},
+		{
+			"key": "now",
+			"value": ""
+		},
+		{
+			"key": "user",
+			"value": "superuser",
+			"type": "string"
 		}
 	]
 }

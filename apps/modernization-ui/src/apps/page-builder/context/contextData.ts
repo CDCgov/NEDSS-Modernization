@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Direction } from 'sorting';
+import { createContext, Dispatch, SetStateAction } from 'react';
 
 export interface ContextData {
     filter: any;
@@ -15,4 +16,25 @@ export interface ContextData {
     setPageSize: Dispatch<SetStateAction<number>>;
     isLoading: boolean;
     setIsLoading: (status: boolean) => void;
+    handleSort?: (name: string, direction: Direction) => void;
 }
+
+const noop: ContextData & { type: 'noop' } = {
+    type: 'noop',
+    filter: '',
+    setFilter: () => {},
+    searchQuery: '',
+    setSearchQuery: () => {},
+    currentPage: 1,
+    setCurrentPage: () => {},
+    sortBy: 'name',
+    setSortBy: () => {},
+    sortDirection: 'asc',
+    setSortDirection: () => {},
+    pageSize: 10,
+    setPageSize: () => {},
+    isLoading: false,
+    setIsLoading: () => {}
+};
+
+export const NoopContext = createContext<ContextData>(noop);

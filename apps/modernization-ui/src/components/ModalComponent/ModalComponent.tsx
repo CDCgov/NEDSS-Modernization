@@ -9,16 +9,24 @@ type ModalProps = {
     modalFooter?: React.ReactNode | React.ReactNode[] | string;
     isLarge?: boolean;
     size?: string;
+    forceAction?: boolean;
 };
 
-export const ModalComponent = ({ modalRef, modalBody, modalHeading, modalFooter, isLarge, size }: ModalProps) => {
-    // @ts-ignore
+export const ModalComponent = ({
+    modalRef,
+    modalBody,
+    modalHeading,
+    modalFooter,
+    isLarge,
+    size,
+    forceAction = true
+}: ModalProps) => {
     return (
         <Modal
             ref={modalRef}
             isLarge={isLarge}
             id="example-modal-1"
-            forceAction={true}
+            forceAction={forceAction}
             aria-labelledby="modal-1-heading"
             className={`padding-0 ${size}`}
             aria-describedby="modal-1-description">

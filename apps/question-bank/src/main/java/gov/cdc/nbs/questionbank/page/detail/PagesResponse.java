@@ -10,6 +10,8 @@ public record PagesResponse(
     long id,
     @ApiModelProperty(required = true)
     String name,
+    @ApiModelProperty(required = true)
+    String status,
     String description,
     long root,
     Collection<PagesTab> tabs,
@@ -19,6 +21,7 @@ public record PagesResponse(
   PagesResponse(
       long id,
       String name,
+      String status,
       String description,
       long root,
       Collection<PageRule> rules
@@ -26,6 +29,7 @@ public record PagesResponse(
     this(
         id,
         name,
+        status,
         description,
         root,
         List.of(),
@@ -34,40 +38,58 @@ public record PagesResponse(
   }
 
   public record PagesTab(
+      @ApiModelProperty(required = true)
       long id,
+      @ApiModelProperty(required = true)
       String name,
+      @ApiModelProperty(required = true)
       int order,
+      @ApiModelProperty(required = true)
       boolean visible,
+      @ApiModelProperty(required = true)
       Collection<PagesSection> sections
   ) {
   }
 
 
   public record PagesSection(
+      @ApiModelProperty(required = true)
       long id,
+      @ApiModelProperty(required = true)
       String name,
+      @ApiModelProperty(required = true)
       int order,
+      @ApiModelProperty(required = true)
       boolean visible,
+      @ApiModelProperty(required = true)
       Collection<PagesSubSection> subSections
   ) {
   }
 
 
   public record PagesSubSection(
+      @ApiModelProperty(required = true)
       long id,
+      @ApiModelProperty(required = true)
       String name,
+      @ApiModelProperty(required = true)
       int order,
+      @ApiModelProperty(required = true)
       boolean visible,
+      @ApiModelProperty(required = true)
       Collection<PagesQuestion> questions
   ) {
   }
 
   public record PagesQuestion(
+      @ApiModelProperty(required = true)
       long id,
       boolean isStandard,
       String standard,
       String question,
+      @ApiModelProperty(required = true)
       String name,
+      @ApiModelProperty(required = true)
       int order,
       String subGroup,
       String description,
@@ -80,7 +102,8 @@ public record PagesResponse(
       boolean enabled,
       boolean required,
       String defaultValue,
-      String valueSet
+      String valueSet,
+      long displayComponent
   ) {
   }
 

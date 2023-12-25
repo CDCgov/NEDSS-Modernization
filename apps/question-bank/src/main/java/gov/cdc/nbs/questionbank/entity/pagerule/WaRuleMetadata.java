@@ -1,10 +1,14 @@
 package gov.cdc.nbs.questionbank.entity.pagerule;
 
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import gov.cdc.nbs.questionbank.pagerules.command.PageRuleCommand;
+
 import java.time.Instant;
 
 @NoArgsConstructor
@@ -13,66 +17,110 @@ import java.time.Instant;
 @Entity
 @Table(name = "WA_rule_metadata", catalog = "NBS_ODSE")
 public class WaRuleMetadata {
-    @Id
-    @Column(name = "wa_rule_metadata_uid", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  private static final String ACTIVE = "ACTIVE";
 
-    @Column(name = "wa_template_uid", length = 19, nullable = false)
-    private Long waTemplateUid;
+  @Id
+  @Column(name = "wa_rule_metadata_uid", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "rule_cd", length = 50)
-    private String ruleCd;
+  @Column(name = "wa_template_uid", length = 19, nullable = false)
+  private Long waTemplateUid;
 
-    @Column(name = "rule_expression", length =4000)
-    private String ruleExpression;
+  @Column(name = "rule_cd", length = 50)
+  private String ruleCd;
 
-    @Column(name = "err_msg_txt", length = 4000)
-    private String errormsgText;
+  @Column(name = "rule_expression", length = 4000)
+  private String ruleExpression;
 
-    @Column(name = "source_question_identifier", length = 4000)
-    private String sourceQuestionIdentifier;
+  @Column(name = "err_msg_txt", length = 4000)
+  private String errormsgText;
 
-    @Column(name = "target_question_identifier", length = 4000)
-    private String targetQuestionIdentifier;
+  @Column(name = "source_question_identifier", length = 4000)
+  private String sourceQuestionIdentifier;
 
-    @Column(name = "record_status_cd", length = 20)
-    private String recordStatusCd;
+  @Column(name = "target_question_identifier", length = 4000)
+  private String targetQuestionIdentifier;
 
-    @Column(name = "record_status_time")
-    private Instant recordStatusTime;
+  @Column(name = "record_status_cd", length = 20)
+  private String recordStatusCd;
 
-    @Column(name = "add_time")
-    private Instant addTime;
+  @Column(name = "record_status_time")
+  private Instant recordStatusTime;
 
-    @Column(name = "add_user_id", length = 19)
-    private Long addUserId;
+  @Column(name = "add_time")
+  private Instant addTime;
 
-    @Column(name = "last_chg_time")
-    private Instant lastChgTime;
+  @Column(name = "add_user_id", length = 19)
+  private Long addUserId;
 
-    @Column(name = "last_chg_user_id", length = 19)
-    private Long lastChgUserId;
+  @Column(name = "last_chg_time")
+  private Instant lastChgTime;
 
-    @Column(name = "rule_desc_txt", length =4000)
-    private String ruleDescText;
+  @Column(name = "last_chg_user_id", length = 19)
+  private Long lastChgUserId;
 
-    @Column(name = "javascript_function")
-    private String jsFunction;
+  @Column(name = "rule_desc_txt", length = 4000)
+  private String ruleDescText;
 
-    @Column(name= "javascript_function_nm", length = 100)
-    private String jsFunctionName;
+  @Column(name = "javascript_function")
+  private String jsFunction;
 
-    @Column(name = "user_rule_id", length = 50)
-    private String userRuleId;
+  @Column(name = "javascript_function_nm", length = 100)
+  private String jsFunctionName;
 
-    @Column(name = "logic", length = 20)
-    private String logic;
+  @Column(name = "user_rule_id", length = 50)
+  private String userRuleId;
 
-    @Column(name = "source_values", length = 4000)
-    private String sourceValues;
+  @Column(name = "logic", length = 20)
+  private String logic;
 
-    @Column(name = "target_type", length = 50)
-    private String targetType;
+  @Column(name = "source_values", length = 4000)
+  private String sourceValues;
+
+  @Column(name = "target_type", length = 50)
+  private String targetType;
+
+
+  public WaRuleMetadata(PageRuleCommand.AddPageRule command) {
+    this.ruleCd = command.ruleRequest().ruleFunction();
+    this.ruleDescText = command.ruleRequest().ruleDescription();
+    this.sourceValues = command.ruleData().sourceValues();
+    this.logic = command.ruleRequest().comparator();
+    this.sourceQuestionIdentifier = command.ruleData().sourceIdentifier();
+    this.targetQuestionIdentifier = command.ruleData().targetIdentifiers();
+    this.targetType = command.ruleRequest().targetType();
+    this.addTime = command.requestedOn();
+    this.addUserId = command.userId();
+    this.lastChgTime = command.requestedOn();
+    this.recordStatusCd = ACTIVE;
+    this.lastChgUserId = command.userId();
+    this.recordStatusTime = command.requestedOn();
+    this.errormsgText = command.ruleData().errorMsgText();
+    this.jsFunction = command.ruleData().jsFunctionNameHelper().jsFunction();
+    this.jsFunctionName = command.ruleData().jsFunctionNameHelper().jsFunctionName();
+    this.waTemplateUid = command.page();
+    this.ruleExpression = command.ruleData().ruleExpression();
+    this.userRuleId = "Rule" + this.id;
+  }
+
+  public WaRuleMetadata(long pageId, PageContentCommand.AddRule command) {
+    this.waTemplateUid = pageId;
+    this.ruleCd = command.ruleCd();
+    this.errormsgText = command.errMsgTxt();
+    this.jsFunction = command.javascriptFunction();
+    this.jsFunctionName = command.javascriptFunctionNm();
+    this.recordStatusCd = command.recordStatusCd();
+    added(command);
+  }
+
+  private void added(PageContentCommand command) {
+    this.addTime = command.requestedOn();
+    this.addUserId = command.userId();
+    this.lastChgTime = command.requestedOn();
+    this.lastChgUserId = command.userId();
+    this.recordStatusTime = command.requestedOn();
+
+  }
 
 }
