@@ -1,0 +1,33 @@
+@use 'styles/colors';
+@use 'styles/borders';
+@forward 'styles/buttons';
+
+.menu {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: colors.$base-lightest;
+    padding: 1rem 1.5rem;
+
+    .search {
+        input {
+            min-width: 36ch;
+        }
+    }
+
+    menu {
+        padding-inline-start: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+
+        > a,
+        > button {
+            background-color: colors.$base-white;
+
+            &:hover {
+                background-color: colors.$base-white;
+            }
+        }
+    }
+}

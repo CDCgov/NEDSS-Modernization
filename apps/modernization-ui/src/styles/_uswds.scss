@@ -1,5 +1,13 @@
-@import '../mixins/viewports';
-@import './colors';
+@use 'styles/colors';
+@use 'mixins/viewports';
+@use 'styles/borders';
+
+@import '@trussworks/react-uswds/lib/uswds.css';
+@import '@trussworks/react-uswds/lib/index.css';
+
+$theme-image-path: '~uswds/src/img';
+$theme-font-path: '~uswds/src/fonts';
+$theme-hero-image: '~uswds/src/img/hero.png';
 
 table.usa-table {
     overflow-x: auto;
@@ -9,7 +17,7 @@ table.usa-table {
         width: 100%;
     }
 }
-@include tablet {
+@include viewports.tablet {
     table.usa-table {
         display: block;
         table-layout: auto;
@@ -39,7 +47,7 @@ table.usa-table {
                 .usa-modal__main {
                     .usa-modal__footer {
                         margin-top: 0;
-                        border-top: $border-medium;
+                        @extend %thin-top;
                     }
                 }
             }
@@ -50,10 +58,21 @@ table.usa-table {
 // Default button styling
 button.usa-button {
     font-size: 1rem;
+
+    svg {
+        vertical-align: bottom;
+    }
+}
+.usa-button:disabled,
+.usa-button--outline-disabled,
+.usa-button--outline:disabled {
+    color: colors.$base-white !important;
+    background-color: colors.$disabled !important;
+    cursor: default;
 }
 
 .usa-pagination__button:active,
 .usa-pagination__button:focus,
 .usa-pagination__button:hover {
-    border: 1px solid #1a4480 !important;
+    border: 1px solid colors.$primary-dark !important;
 }

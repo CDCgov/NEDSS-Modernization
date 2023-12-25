@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import gov.cdc.nbs.questionbank.page.PageCommand;
+import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -396,6 +397,139 @@ class PageTest {
         )
     ).hasMessageContaining("The related conditions cannot be changed if the Page had ever been Published");
 
+
+  }
+
+  @Test
+  void should_not_create_template_when_name_not_unique() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    PageCommand.CreateTemplate create = new PageCommand.CreateTemplate(
+        "template-name",
+        "template-description",
+        1409L,
+        Instant.parse("2010-11-17T17:05:19Z")
+    );
+
+    assertThatThrownBy(() ->
+        page.createTemplate(
+            name -> false,
+            create
+        )
+    ).isInstanceOf(TemplateCreationException.class)
+        .hasMessageContaining("Another Template is named template-name");
+
+  }
+
+  @Test
+  void should_not_create_template_when_name_is_blank() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    PageCommand.CreateTemplate create = new PageCommand.CreateTemplate(
+        "",
+        "template-description",
+        1409L,
+        Instant.parse("2010-11-17T17:05:19Z")
+    );
+
+    assertThatThrownBy(() ->
+        page.createTemplate(
+            name -> true,
+            create
+        )
+    ).isInstanceOf(TemplateCreationException.class)
+        .hasMessageContaining("A Template name is required");
+
+  }
+
+  @Test
+  void should_not_create_template_when_name_is_null() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    PageCommand.CreateTemplate create = new PageCommand.CreateTemplate(
+        null,
+        "template-description",
+        1409L,
+        Instant.parse("2010-11-17T17:05:19Z")
+    );
+    assertThatThrownBy(() ->
+        page.createTemplate(
+            name -> true,
+            create
+        )
+    ).isInstanceOf(TemplateCreationException.class)
+        .hasMessageContaining("A Template name is required");
+
+  }
+
+  @Test
+  void should_not_create_template_when_description_is_blank() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    PageCommand.CreateTemplate create = new PageCommand.CreateTemplate(
+        "template-name",
+        "",
+        1409L,
+        Instant.parse("2010-11-17T17:05:19Z")
+    );
+    assertThatThrownBy(() ->
+        page.createTemplate(
+            name -> true,
+            create
+        )
+    ).isInstanceOf(TemplateCreationException.class)
+        .hasMessageContaining("A Template description is required");
+
+  }
+
+  @Test
+  void should_not_create_template_when_description_is_null() {
+    WaTemplate page = new WaTemplate(
+        "INV",
+        "mapping-guide-value",
+        "testing page",
+        99999L,
+        Instant.parse("2000-07-17T02:22:56Z")
+    );
+
+    PageCommand.CreateTemplate create = new PageCommand.CreateTemplate(
+        "template-name",
+        null,
+        1409L,
+        Instant.parse("2010-11-17T17:05:19Z")
+    );
+
+    assertThatThrownBy(() ->
+        page.createTemplate(
+            name -> true,
+            create
+        )
+    ).isInstanceOf(TemplateCreationException.class)
+        .hasMessageContaining("A Template description is required");
 
   }
 

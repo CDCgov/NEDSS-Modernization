@@ -435,7 +435,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"search\": \"port\"\n}",
+									"raw": "{\n    \"search\": \"\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -443,7 +443,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=25&sort=id,ASC",
 									"host": [
 										"{{page-builder}}"
 									],
@@ -461,7 +461,7 @@
 										},
 										{
 											"key": "size",
-											"value": "10"
+											"value": "25"
 										},
 										{
 											"key": "sort",
@@ -485,7 +485,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"filters\":[{\"property\":\"condition\",\"operator\":\"contains\",\"value\":\"type\"}]\n}",
+									"raw": "{\n    \"filters\":[{\"property\":\"conditions\",\"operator\":\"contains\",\"value\":\"type\"}]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -523,7 +523,7 @@
 							"response": []
 						},
 						{
-							"name": "Filtering with single value filter Copy",
+							"name": "Filtering with single value filter equals",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -535,7 +535,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"filters\":[{\"property\":\"condition\",\"operator\":\"contains\",\"value\":\"type\"}]\n}",
+									"raw": "{\n    \"filters\":[{\"property\":\"conditions\",\"operator\":\"equals\",\"value\":\"hiv\"}]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -585,7 +585,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"filters\":[{\"property\":\"condition\",\"operator\":\"contains\",\"values\":[\"type\", \"sec\"]}]\n}",
+									"raw": "{\n    \"filters\":[{\"property\":\"conditions\",\"operator\":\"contains\",\"values\":[\"type\", \"sec\"]}]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -771,6 +771,56 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Filtering with date between",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"filters\":[{\"property\":\"lastUpdate\", \"after\":\"2023-10-01\",\"before\":\"2023-10-31\"}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{page-builder}}/page-builder/api/v1/pages/search?page=0&size=10&sort=id,ASC",
+									"host": [
+										"{{page-builder}}"
+									],
+									"path": [
+										"page-builder",
+										"api",
+										"v1",
+										"pages",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "id,ASC"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -859,7 +909,7 @@
 					]
 				},
 				{
-					"name": "Pages",
+					"name": "Page Details",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -869,40 +919,6 @@
 								"type": "text"
 							}
 						],
-						"url": {
-							"raw": "{{page-builder}}/page-builder/api/v1/pages?page=0&size=25&sort=id,ASC",
-							"host": [
-								"{{page-builder}}"
-							],
-							"path": [
-								"page-builder",
-								"api",
-								"v1",
-								"pages"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "25"
-								},
-								{
-									"key": "sort",
-									"value": "id,ASC"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Details",
-					"request": {
-						"method": "GET",
-						"header": [],
 						"url": {
 							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page",
 							"host": [
@@ -915,17 +931,10 @@
 								"pages",
 								":page"
 							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1000319",
-									"disabled": true
-								}
-							],
 							"variable": [
 								{
 									"key": "page",
-									"value": "1000319"
+									"value": "{{page}}"
 								}
 							]
 						}
@@ -969,6 +978,49 @@
 								{
 									"key": "id",
 									"value": "1000366"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Template",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n  \"name\": \"Template {{$randomBsBuzz}}\",\n  \"description\": \"{{$randomLoremSentence}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/template",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page",
+								"template"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "{{page}}"
 								}
 							]
 						}
@@ -1042,7 +1094,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"templateId\": \"1000378\",\n    \"eventType\": \"INV\",\n    \"name\": \"{{$randomBsNoun}}\",\n    \"pageDescription\": \"Created for development testing.\",\n    \"conditionIds\": [\n        \"TV\"\n    ],\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"dataMartName\": \"{{ran}}\"\n}",
+							"raw": "{\n    \"templateId\": \"1000378\",\n    \"eventType\": \"INV\",\n    \"name\": \"{{$randomBsNoun}}\",\n    \"pageDescription\": \"Created for development testing.\",\n    \"conditionIds\": [\n        \"10057\"\n    ],\n    \"messageMappingGuide\": \"GEN_Case_Map_v2.0\",\n    \"dataMartName\": \"{{$randomWord}}\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1060,6 +1112,34 @@
 								"api",
 								"v1",
 								"pages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{page-builder}}/page-builder/api/v1/pages/:page/page-history",
+							"host": [
+								"{{page-builder}}"
+							],
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":page",
+								"page-history"
+							],
+							"variable": [
+								{
+									"key": "page",
+									"value": "{{page}}"
+								}
 							]
 						}
 					},
@@ -1250,6 +1330,30 @@
 					],
 					"path": [
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NBS Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{classic}}/nbs/nfc?UserName={{page-builder-user}}",
+					"host": [
+						"{{classic}}"
+					],
+					"path": [
+						"nbs",
+						"nfc"
+					],
+					"query": [
+						{
+							"key": "UserName",
+							"value": "{{page-builder-user}}"
+						}
 					]
 				}
 			},

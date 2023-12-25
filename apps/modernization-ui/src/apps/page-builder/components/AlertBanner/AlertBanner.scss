@@ -1,4 +1,9 @@
-@import 'settings.scss';
+@use 'styles/colors';
+
+@mixin indicator($background, $stripe) {
+    background-color: $background;
+    border-left: 8px solid $stripe;
+}
 
 .alert-banner {
     width: 100%;
@@ -8,29 +13,41 @@
     gap: 0.5rem;
     margin-bottom: 1rem;
     align-items: center;
+    position: relative;
+    &.hidden {
+        display: none;
+    }
     &.success {
-        background-color: $color-bg-alert-success;
-        border-left: 8px solid $color-alert-success;
+        @include indicator(colors.$success-lighter, colors.$success);
     }
     &.warning {
-        background-color: $color-bg-alert-warning;
-        border-left: 8px solid $color-alert-warning;
+        @include indicator(colors.$warning-lighter, colors.$warning);
     }
     &.prompt {
-        background-color: $color-bg-alert-prompt;
-        border-left: 8px solid $color-alert-prompt;
+        @include indicator(colors.$info-lighter, colors.$success);
     }
     &.info {
-        background-color: $color-bg-info-prompt;
-        border-left: 8px solid $color-alert-info;
+        @include indicator(colors.$info-lighter, colors.$info);
     }
     &.error {
-        background-color: $color-bg-alert-error;
-        border-left: 8px solid $color-alert-error;
+        @include indicator(colors.$error-lighter, colors.$error);
     }
     &__left,
     &__right {
         display: flex;
         align-items: center;
+    }
+    &__close {
+        cursor: pointer;
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    p {
+        margin: 0;
+        font-size: 0.8rem;
+        span {
+            font-weight: 700;
+        }
     }
 }

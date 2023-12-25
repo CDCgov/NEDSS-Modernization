@@ -1,9 +1,9 @@
+import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
 import ReactSelect, { MultiValue, components } from 'react-select';
-import React, { FocusEventHandler, useEffect, useMemo, useState } from 'react';
-import './MultiSelectInput.scss';
 import { mapNonNull } from 'utils';
-import { Label, ErrorMessage } from '@trussworks/react-uswds';
-import classNames from 'classnames';
+import { EntryWrapper } from 'components/Entry';
+
+import './MultiSelectInput.scss';
 
 const CheckedOption = (props: any) => {
     return (
@@ -15,13 +15,6 @@ const CheckedOption = (props: any) => {
     );
 };
 
-const USWDSDropdownIndicator = (props: any) => (
-    // Replaces the default arrow indicator from react-select with the select indicator from USDWS
-    <components.DropdownIndicator {...props}>
-        <div className="multi-select select-indicator" />
-    </components.DropdownIndicator>
-);
-
 const asSelectable = (selectables: Selectable[]) => (item: string) =>
     selectables.find((option) => option.value === item) || null;
 
@@ -32,6 +25,7 @@ type MultiSelectInputProps = {
     id?: string;
     name?: string;
     placeholder?: string;
+    orientation?: 'horizontal' | 'vertical';
     options?: Options[];
     value?: string[];
     onChange?: (value: any) => void;
@@ -52,7 +46,8 @@ export const MultiSelectInput = ({
     value = [],
     required,
     error,
-    placeholder = '- Select -'
+    placeholder = '- Select -',
+    orientation = 'vertical'
 }: MultiSelectInputProps) => {
     const selectableOptions = useMemo(
         () => options.map((item) => ({ value: item.value, label: item.name })),
@@ -76,28 +71,29 @@ export const MultiSelectInput = ({
     const Input = (props: any) => <components.Input {...props} maxLength={50} />;
 
     return (
-        <div className={`multi-select-input ${required ? 'required' : ''}`}>
-            {label && (
-                <Label className={classNames({ required })} htmlFor={label}>
-                    {label}
-                </Label>
-            )}
-            <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
-            <ReactSelect
-                isMulti={true}
-                id={id}
-                name={name}
-                value={selectedOptions}
-                placeholder={placeholder}
-                classNamePrefix="multi-select"
-                hideSelectedOptions={false}
-                closeMenuOnSelect={false}
-                closeMenuOnScroll={false}
-                onChange={handleOnChange}
-                onBlur={onBlur}
-                options={selectableOptions}
-                components={{ Input, Option: CheckedOption, DropdownIndicator: USWDSDropdownIndicator }}
-            />
+        <div className={'multi-select-input'}>
+            <EntryWrapper
+                orientation={orientation}
+                label={label ?? ''}
+                htmlFor={id ?? ''}
+                required={required}
+                error={error}>
+                <ReactSelect
+                    isMulti={true}
+                    id={id}
+                    name={name}
+                    value={selectedOptions}
+                    placeholder={placeholder}
+                    classNamePrefix="multi-select"
+                    hideSelectedOptions={false}
+                    closeMenuOnSelect={false}
+                    closeMenuOnScroll={false}
+                    onChange={handleOnChange}
+                    onBlur={onBlur}
+                    options={selectableOptions}
+                    components={{ Input, Option: CheckedOption }}
+                />
+            </EntryWrapper>
         </div>
     );
 };

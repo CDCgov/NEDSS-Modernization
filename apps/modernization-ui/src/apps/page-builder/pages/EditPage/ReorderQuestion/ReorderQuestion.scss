@@ -1,21 +1,28 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .reorder-question {
-    .reorder-question__handle {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
     .reorder-question__tile {
-        background-color: $color-white;
+        background-color: colors.$base-white;
         display: flex;
         align-items: center;
         gap: 1rem;
         padding: 0.9rem 1.5rem;
+        img {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+        .reorder-question__handle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 1.2rem;
+            height: 1.2rem;
+        }
         p {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            width: calc(100% - 2.4rem);
         }
         &.hidden {
             height: 0px;

@@ -1,45 +1,25 @@
 nbs:
-  security:
-    tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
-    tokenIssuer: gov.cdc.nbs
-    tokenExpirationMillis: 60000
-    parameterSecret: Yq4vh+mbi4B4QYThc/M+33VtPJ5O2Adc
   max-page-size: 1000
+  ui:
+    features:
+      address:
+        autocomplete: true
+        verification: false
+      pageBuilder:
+        enabled: true
+        page:
+          library: 
+            enabled: true
+          management: 
+            enabled: true
 
-logging:
-  file.path: ./log/
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.springframework.data.elasticsearch.client.WIRE: TRACE
-
-server:
-  port: 9090
 spring:
   graphql:
     graphiql:
       enabled: false
-  jpa:
-    properties:
-      hibernate:
-        ddl-auto: validate
-        default_schema: dbo
-        format_sql: true
-        jdbc.time_zone: UTC
-        dialect: org.hibernate.dialect.SQLServer2012Dialect
-        hbm2ddl:
-          jdbc_metadata_extraction_strategy: individually
-  datasource:
-    username: sa
-    password: fake.fake.fake.1234
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+
   kafka:
     bootstrap-servers: ${spring.embedded.kafka.brokers}
-    consumer:
-      auto-offset-reset: earliest
-      group-id: group-id
 
   main:
     allow-bean-definition-overriding: true
@@ -47,23 +27,9 @@ spring:
 kafka:
   enabled: true
 
-
-kafkadef:
-  topics:
-    request:
-      patient: patient
-
 testing:
   id-generation:
     suffix: 'TEST'
     starting: -20000000 # a negative id should reduce conflicts of ids in a live system
   database:
     image: cdc-sandbox-nbs-mssql
-
-nbs.ui:
-    features:
-      address:
-          autocomplete: true
-          verification: false
-      pageBuilder:
-        enabled: true

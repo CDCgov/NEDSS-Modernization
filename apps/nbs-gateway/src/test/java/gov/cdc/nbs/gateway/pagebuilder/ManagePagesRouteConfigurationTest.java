@@ -21,7 +21,8 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
     properties = {
         "nbs.gateway.classic=http://localhost:10000",
         "nbs.gateway.pagebuilder.service=localhost:10002",
-        "nbs.gateway.pagebuilder.enabled=true"
+        "nbs.gateway.pagebuilder.enabled=true",
+        "nbs.gateway.pagebuilder.page.library.enabled=true"
     })
 class ManagePagesRouteConfigurationTest {
 
@@ -31,7 +32,7 @@ class ManagePagesRouteConfigurationTest {
       .build();
 
   @RegisterExtension
-  static WireMockExtension modernizationApi = WireMockExtension.newInstance()
+  static WireMockExtension pagebuilderApi = WireMockExtension.newInstance()
       .options(wireMockConfig().port(10002))
       .build();
 
@@ -52,12 +53,28 @@ class ManagePagesRouteConfigurationTest {
         .block());
   }
 
-
   @Test
   void should_route_to_modernized() {
 
-    modernizationApi.stubFor(get(urlPathMatching("/nbs/redirect"))
-        .withHeader("NBS_REDIRECT", equalTo("/page-builder/manage/pages"))
+    pagebuilderApi.stubFor(get(urlPathMatching("/nbs/page-builder/redirect"))
+        .withHeader("Location", equalTo("/page-builder/pages"))
+        .willReturn(ok()));
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/nbs/ManagePage.do")
+                .queryParam("method", "list")
+                .build())
+        .exchange()
+        .expectStatus()
+        .isOk();
+  }
+
+  @Test
+  void should_route_to_modernized_initLoad() {
+
+    pagebuilderApi.stubFor(get(urlPathMatching("/nbs/page-builder/redirect"))
+        .withHeader("Location", equalTo("/page-builder/pages"))
         .willReturn(ok()));
     webClient
         .get().uri(

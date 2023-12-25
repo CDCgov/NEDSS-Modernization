@@ -1,7 +1,17 @@
-@import '../../../../settings';
+@use 'styles/colors.scss';
+@use 'styles/borders.scss';
 
 .import-template {
-    padding: 5px 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .banner {
+        padding: 1rem 3rem 0 3rem;
+    }
+    .spinner {
+        height: 100%;
+    }
     .field-space {
         margin-top: 10px;
         margin-bottom: 30px;
@@ -17,8 +27,8 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            label{
-                color: var(--base-black, #000);
+            label {
+                color: colors.$base-black;
                 font-family: Public Sans;
                 font-size: 16px;
                 font-style: normal;
@@ -36,10 +46,15 @@
             margin: 24px;
             cursor: pointer;
             border-radius: 8px;
-            border: 1px dashed var(--base-light, #A9AEB1);
+            border: 1px dashed colors.$base-light;
+            transition: background-color 0.5s ease;
+
+            &.dragged {
+                background-color: colors.$disabled-light;
+            }
             svg {
                 transform: rotate(-90deg);
-                color: #A9AEB1;
+                color: colors.$base-light;
             }
             .gap-10 {
                 gap: 10px;
@@ -50,8 +65,8 @@
                 gap: 8px;
                 padding: 4px 6px 4px 2px;
                 border-radius: 2px;
-                color: #FFFFFF;
-                background: #005EA2;
+                color: colors.$base-white;
+                background: colors.$primary;
                 .usa-icon {
                     cursor: pointer;
                 }
@@ -64,7 +79,7 @@
                 font-weight: 400;
                 line-height: 162%; /* 25.92px */
                 span {
-                    color: var(--primary-primary, #005EA2);
+                    color: colors.$primary;
                     font-family: Public Sans;
                     font-size: 16px;
                     font-style: normal;
@@ -76,35 +91,30 @@
         }
     }
 
-    .submit-btn {
-        float: right;
-        margin-right: 20px;
-        border: 2px solid #005EA2;
-        border-radius: 4px;
+    .button-container {
+        padding: 1.5rem;
+        @include borders.bordered($color: colors.$base-lightest);
+
+        .submit-btn {
+            float: right;
+            border: 2px solid colors.$primary;
+            border-radius: 0.25rem;
+        }
+        .cancel-btn {
+            float: right;
+            margin-right: 0.5rem;
+            border: 2px solid colors.$primary;
+            background: colors.$base-white;
+            color: colors.$primary;
+            border-radius: 0.25rem;
+        }
     }
-    .cancel-btn {
-        float: right;
-        margin-right: 20px;
-        margin-bottom: 80px;
-        border: 2px solid #005EA2;
-        background: #fff;
-        color: #005EA2;
-        border-radius: 4px;
-    }
-    .back-btn {
-        margin-right: 10px;
-        color: #1b1b1b;
-    }
-    .close-btn {
-        float: right;
-        font-size: 32px;
-        color: #1b1b1b;
-        margin: 15px auto;
-    }
+
     .usa-button {
         &:disabled {
-            border: 2px solid #C9C9C9;;
-            background: #C9C9C9;
+            border: 2px solid colors.$disabled;
+            background: colors.$disabled;
+            color: colors.$base-white;
         }
     }
 }

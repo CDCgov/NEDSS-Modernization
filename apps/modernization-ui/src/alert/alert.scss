@@ -4,10 +4,23 @@
     position: fixed;
     z-index: 100;
     top: 15px;
-    animation: mymove 0.3s;
+    animation: from-right 0.3s;
     animation-fill-mode: both;
 
     .usa-alert__heading {
         text-transform: capitalize;
+    }
+
+    .usa-alert__body {
+        margin-left: initial !important;
+    }
+}
+
+@keyframes from-right {
+    from {
+        right: -450px;
+    }
+    to {
+        right: 15px;
     }
 }

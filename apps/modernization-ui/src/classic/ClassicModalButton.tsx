@@ -1,21 +1,23 @@
 import { KeyboardEvent, MouseEvent, useEffect } from 'react';
 import { Button } from '@trussworks/react-uswds';
 import { Status, useClassicModal } from 'classic';
-import { useRedirect, redirectTo } from './useRedirect';
+import { useRedirect } from './useRedirect';
+import { Destination } from './Destination';
 
 type Props = {
     url: string;
+    destination?: Destination;
     onClose?: () => void;
 } & JSX.IntrinsicElements['button'];
 
 const ClassicModalButton = ({ url, onClose, children, ...defaultProps }: Props) => {
-    const { redirect, dispatch } = useRedirect();
+    const { location, redirect } = useRedirect({ destination: 'none' });
 
     const { state, open, reset } = useClassicModal();
 
     const handleClick = (event: MouseEvent) => {
         event.preventDefault();
-        redirectTo(url, dispatch);
+        redirect(url);
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -23,16 +25,16 @@ const ClassicModalButton = ({ url, onClose, children, ...defaultProps }: Props) 
             case 'enter':
             case 'space': {
                 event.preventDefault();
-                redirectTo(url, dispatch);
+                redirect(url);
             }
         }
     };
 
     useEffect(() => {
-        if (redirect.location) {
-            open(redirect.location);
+        if (location) {
+            open(location);
         }
-    }, [redirect.location]);
+    }, [location]);
 
     useEffect(() => {
         if (state.status === Status.Closed) {

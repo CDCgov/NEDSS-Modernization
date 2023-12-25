@@ -9,12 +9,13 @@ export type PagesQuestion = {
     defaultValue?: string;
     description?: string;
     display?: boolean;
+    displayComponent?: number;
     enabled?: boolean;
-    id?: number;
+    id: number;
     isStandard?: boolean;
     mask?: string;
-    name?: string;
-    order?: number;
+    name: string;
+    order: number;
     question?: string;
     required?: boolean;
     standard?: string;

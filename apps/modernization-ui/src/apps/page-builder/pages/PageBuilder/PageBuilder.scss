@@ -1,18 +1,11 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .page-builder {
-    position: relative;
-    background-color: #f1f6f9;
-    height: 100%;
-    min-height: calc(100vh - 5rem);
-    width: 100%;
     padding: 1rem;
     display: flex;
     gap: 1rem;
-    justify-content: center;
+
     .page-builder__content {
-        height: 100%;
-        position: relative;
         width: 100%;
     }
 }

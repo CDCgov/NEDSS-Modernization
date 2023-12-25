@@ -13,14 +13,6 @@ Feature: Save Page as Draft
         Given I am an admin user
         When I save a page as draft
         Then A page state should change
-        
-        
-    Scenario: Page exists can delete draft
-        Given I am an admin user and page draft exists
-        When I delete a page draft
-        Then A page draft should delete
-        
-        
 
     Scenario: I cannot save a page as draft without being logged in
         Given I am not logged in

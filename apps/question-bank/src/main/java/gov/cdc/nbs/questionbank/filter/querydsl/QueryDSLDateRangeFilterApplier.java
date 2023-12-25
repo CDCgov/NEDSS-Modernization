@@ -11,6 +11,7 @@ import static gov.cdc.nbs.questionbank.filter.querydsl.LocalDateConverter.asInst
 
 class QueryDSLDateRangeFilterApplier {
 
+  @SuppressWarnings("unchecked")
   static BooleanExpression apply(
       final DateRangeFilter filter,
       final TemporalExpression<? extends Comparable> expression

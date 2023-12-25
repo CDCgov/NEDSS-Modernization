@@ -1,4 +1,4 @@
-@import 'settings.scss';
+@use 'styles/colors';
 
 .add-new-page {
     background-color: #f1f6f9;
@@ -15,7 +15,6 @@
         display: flex;
         justify-content: center;
     }
-
     .add-new-page__form {
         display: flex;
         flex-direction: column;
@@ -23,11 +22,16 @@
         width: 80%;
         min-width: 960px;
         max-width: 960px;
-        background-color: $color-white;
+        background-color: colors.$base-white;
         margin: 1.2rem 0;
         display: flex;
         justify-content: center;
-
+        label {
+            font-size: 1rem;
+            &:first-of-type {
+                font-size: 0.875rem;
+            }
+        }
         .pages-breadcrumb {
             padding-top: 1.4rem;
             padding-left: 1.4rem;
@@ -40,8 +44,10 @@
             p {
                 font-size: 0.875rem;
                 line-height: 1.4rem;
-                margin-top: 0.5rem;
-                color: $color-base-light;
+                margin-top: 1rem;
+                margin-bottom: 0.5rem;
+                color: colors.$base-light;
+                font-size: 0.875rem;
             }
             h2 {
                 text-align: center;
@@ -59,12 +65,16 @@
                 font-size: 0.95rem;
                 text-decoration: none;
                 margin-top: 0;
+                &--unstyled:nth-of-type(1) {
+                    padding: 0;
+                }
             }
             button {
+                padding: 0.5rem 0.75rem;
                 p {
                     margin: 0;
                     font-weight: 700;
-                    color: $color-primary;
+                    color: colors.$primary;
                 }
             }
         }

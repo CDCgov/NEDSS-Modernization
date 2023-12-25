@@ -18,6 +18,7 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSubsection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -262,6 +263,12 @@ public class WaUiMetadata {
     this.added(command);
   }
 
+  public void update(PageContentCommand.UpdateReadOnlyComments command) {
+    this.adminComment = command.adminComments();
+    this.questionLabel = command.comments();
+    updated(command);
+  }
+
   public WaUiMetadata(PageContentCommand.AddHyperLink command) {
     // Defaults
     this();
@@ -279,6 +286,20 @@ public class WaUiMetadata {
 
 
     this.added(command);
+  }
+
+  public void update(PageContentCommand.UpdateHyperlink command) {
+    this.adminComment = command.adminComments();
+    this.questionLabel = command.label();
+    this.defaultValue = command.linkUrl();
+
+    updated(command);
+  }
+
+  public void update(PageContentCommand.UpdateDefaultStaticElement command) {
+    this.adminComment = command.adminComments();
+
+    updated(command);
   }
 
   public WaUiMetadata(PageContentCommand.AddLineSeparator command) {
@@ -522,6 +543,33 @@ public class WaUiMetadata {
 
   private void setVisible(boolean visible) {
     this.displayInd = visible ? "T" : "F";
+  }
+
+  public void update(PageContentCommand.GroupSubsection command) {
+    setBlockNm(command.blockName());
+    updated(command);
+  }
+
+  public void updateQuestionBatch(PageContentCommand.GroupSubsection command) {
+    setBlockNm(command.blockName());
+    GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst().get();
+    setBatchTableAppearIndCd(batch.batchTableAppearIndCd());
+    setBatchTableHeader(batch.batchTableHeader());
+    setBatchTableColumnWidth(batch.batchTableColumnWidth());
+    updated(command);
+  }
+
+  public void update(PageContentCommand.UnGroupSubsection command) {
+    setBlockNm(null);
+    updated(command);
+  }
+
+  public void updateQuestionBatch(PageContentCommand.UnGroupSubsection command) {
+    setBlockNm(null);
+    setBatchTableAppearIndCd(null);
+    setBatchTableHeader(null);
+    setBatchTableColumnWidth(null);
+    updated(command);
   }
 
   @Override

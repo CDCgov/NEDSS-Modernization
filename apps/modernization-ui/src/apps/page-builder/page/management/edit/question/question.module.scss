@@ -1,0 +1,14 @@
+@use 'styles/borders';
+.question {
+    padding: 1.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .borderedContainer {
+        border-radius: 0.3125rem 0.3125rem;
+
+        @extend %thin;
+    }
+}

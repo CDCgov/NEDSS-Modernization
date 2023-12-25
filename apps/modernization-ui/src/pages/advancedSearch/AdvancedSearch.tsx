@@ -1,5 +1,4 @@
 import { Alert, Button, Grid, Icon, Pagination } from '@trussworks/react-uswds';
-import { externalize, internalize } from 'pages/patient/search';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Config } from '../../config';
@@ -33,9 +32,11 @@ import './AdvancedSearch.scss';
 import { AdvancedSearchChips } from './components/chips/AdvancedSearchChips';
 import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
-import { PatientResults } from './components/PatientResults';
-import { EventSearch } from './components/eventSearch/EventSearch';
-import { PatientSearch } from './components/patientSearch/PatientSearch';
+import { EventSearch } from 'apps/search/event/components/EventSearch/EventSearch';
+import { useSkipLink } from 'SkipLink/SkipLinkContext';
+import { externalize, internalize } from 'apps/search/patient';
+import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
+import { PatientResults } from 'apps/search/patient/PatientResults';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -74,6 +75,11 @@ export const AdvancedSearch = () => {
     const [resultStartCount, setResultStartCount] = useState<number>(0);
     const [resultEndCount, setResultEndCount] = useState<number>(0);
     const [resultTotal, setResultTotal] = useState<number>(0);
+    const { skipTo } = useSkipLink();
+
+    useEffect(() => {
+        skipTo('lastName');
+    }, []);
 
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
     const [
@@ -421,7 +427,9 @@ export const AdvancedSearch = () => {
                                 onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
                                 outline>
                                 Add new
-                                <img src={'/icons/down-arrow-white.svg'} />
+                                <img
+                                    src={lastSearchType ? '/icons/down-arrow-blue.svg' : '/icons/down-arrow-white.svg'}
+                                />
                             </Button>
                             {showAddNewDropDown && (
                                 <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
@@ -473,6 +481,7 @@ export const AdvancedSearch = () => {
                                     onSearch={handleSubmit}
                                     investigationFilter={investigationFilter}
                                     labReportFilter={labReportFilter}
+                                    clearAll={handleClearAll}
                                 />
                             )}
                         </div>
@@ -502,7 +511,9 @@ export const AdvancedSearch = () => {
                                     />
                                 </div>
                             ) : (
-                                <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
+                                <p id="perform-search" className="margin-0 font-sans-md margin-top-05 text-normal">
+                                    Perform a search
+                                </p>
                             )}
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className="button-group">

@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Config } from '../../config';
-import { UserContext } from '../../providers/UserContext';
-import './NavBar.scss';
+import { Config } from 'config';
+import { UserContext } from 'providers/UserContext';
 import { useNavigationBarPermissions } from 'shared/header/permissions';
+import styles from './NavBar.module.scss';
 
 // eslint-disable-next-line no-undef
 const NBS_URL = Config.nbsUrl;
@@ -20,15 +20,15 @@ export default function NavBar() {
     const { systemManagementAccess } = useNavigationBarPermissions();
 
     return (
-        <div className="nav-bar">
-            <table role="presentation" className="nedssNavTable">
+        <div className={styles.navbar}>
+            <table role="presentation" className={styles.nedssNavTable}>
                 <tbody>
                     <tr>
                         <td>
-                            <table role="presentation" align="left">
+                            <table role="presentation">
                                 <tbody>
                                     <tr>
-                                        <td className="navLink">
+                                        <td className={styles.navLink}>
                                             <a href={`${NBS_URL}/HomePage.do?method=loadHomePage`}>Home</a>
                                         </td>
                                         <td>
@@ -36,14 +36,14 @@ export default function NavBar() {
                                             <span> | </span>{' '}
                                         </td>
 
-                                        <td className="navLink">
+                                        <td className={styles.navLink}>
                                             <a href={`${NBS_URL}/LoadNavbar.do?ContextAction=DataEntry`}>Data Entry</a>
                                         </td>
                                         <td>
                                             <span> | </span>
                                         </td>
 
-                                        <td className="navLink">
+                                        <td className={styles.navLink}>
                                             <a href={`${NBS_URL}/LoadNavbar1.do?ContextAction=MergePerson`}>
                                                 Merge Patients
                                             </a>
@@ -52,7 +52,7 @@ export default function NavBar() {
                                             <span> | </span>
                                         </td>
 
-                                        <td className="navLink">
+                                        <td className={styles.navLink}>
                                             <a
                                                 href={`${NBS_URL}/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}>
                                                 Open Investigations
@@ -62,12 +62,12 @@ export default function NavBar() {
                                             <span> | </span>
                                         </td>
 
-                                        <td className="navLink">
+                                        <td className={styles.navLink}>
                                             <a href={`${NBS_URL}/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
                                         </td>
 
                                         {systemManagementAccess && (
-                                            <td className="navLink">
+                                            <td className={styles.navLink}>
                                                 <span> | </span>
                                                 <a href={`${NBS_URL}/SystemAdmin.do`}>System Management</a>
                                             </td>
@@ -80,7 +80,7 @@ export default function NavBar() {
                             <table role="presentation" align="right">
                                 <tbody>
                                     <tr>
-                                        <td className="navLink">
+                                        <td className={styles.navLink}>
                                             <a
                                                 href={`${NBS_URL}/UserGuide.do?method=open`}
                                                 target="_blank"
@@ -92,7 +92,7 @@ export default function NavBar() {
                                         <td>
                                             <span> | </span>
                                         </td>
-                                        <td className="navLink">
+                                        <td className={styles.navLink}>
                                             <a onClick={logoutClick}>Logout</a>
                                         </td>
                                     </tr>
@@ -103,21 +103,25 @@ export default function NavBar() {
                     </tr>
                 </tbody>
             </table>
-            <h1 className="pageHeader" style={{ padding: '0px', margin: '0px', fontSize: '13px', color: '#185394' }}>
-                <table role="presentation" className="nedssPageHeaderAndLogoTable">
+            <h1
+                className={styles.pageHeader}
+                style={{ padding: '0px', margin: '0px', fontSize: '13px', color: '#185394' }}>
+                <table role="presentation" className={styles.nedssPageHeaderAndLogoTable}>
                     <tbody>
                         <tr>
-                            <td className="pageHeader" style={{ padding: '5px', marginBottom: '0px' }}>
+                            <td className={styles.pageHeader} style={{ padding: '5px', marginBottom: '0px' }}>
                                 <a style={{ textTransform: 'capitalize' }}>
                                     {location?.pathname?.split('/')[1]?.split('-').join(' ')}
                                 </a>
                             </td>
 
-                            <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
+                            <td className={styles.currentUser} style={{ paddingBottom: '0px', marginBottom: '0px' }}>
                                 User : {user?.name.display}
                             </td>
 
-                            <td className="currentUser logo" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
+                            <td
+                                className={`${styles.currentUser} ${styles.logo}`}
+                                style={{ paddingBottom: '0px', marginBottom: '0px' }}>
                                 <img
                                     style={{ background: '#DCDCDC', border: 0 }}
                                     title="Logo"

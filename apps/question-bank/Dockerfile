@@ -33,7 +33,7 @@ RUN jlink \
     --no-man-pages \
     --output page-builder/runtime
 
-FROM debian:12-slim
+FROM redhat/ubi9-micro:latest
 
 ENV NBS_DATASOURCE_SERVER=nbs-mssql
 

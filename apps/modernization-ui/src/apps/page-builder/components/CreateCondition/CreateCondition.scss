@@ -1,26 +1,51 @@
-@import '../../../../settings';
+@use 'styles/colors';
 
 .create-condition {
-    padding: 5px 30px;
-    margin-bottom: 8rem;
+    height: 70vh;
+    width: 100%;
+    overflow: hidden;
+    max-height: calc(100% - 90px);
     form.usa-form {
-        min-width: 70%;
+        min-width: 100%;
+        padding: 1.5rem 15% 0.5rem;
+        height: calc(100% - 5.5rem);
         margin: 0 auto;
+        overflow: auto;
     }
     .create-condition__container {
         width: 500px;
-        padding-top: 6rem;
-        margin: 0 auto;
+        padding: 1.5rem;
         position: relative;
         width: 100%;
         .mandatory-indicator {
-            color: #D83933;
+            color: #d83933;
         }
         label {
             margin-top: 1rem;
         }
         select {
             margin-bottom: 1.6rem;
+            width: 50%;
+            &:first-of-type {
+                width: 100%;
+            }
+        }
+        p {
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 162%;
+        }
+        hr {
+            height: 1px;
+            margin: 2rem -2.7rem;
+            border: none;
+            background-color: colors.$base-lighter;
+        }
+        h4 {
+            margin-bottom: 2rem;
+            &:first-of-type {
+                margin-top: 0;
+            }
         }
     }
     .radio-group {
@@ -29,21 +54,27 @@
         margin-bottom: 1.8rem;
     }
     .create-condition__buttons {
-        padding-top: 1.8rem;
+        position: absolute;
+        height: 5.5rem;
+        width: 100%;
+        bottom: 0;
+        padding: 1.5rem;
         display: flex;
         justify-content: flex-end;
         gap: 1.2rem;
+        background-color: white;
+        border-top: 1px solid colors.$base-lightest;
         .usa-button {
             margin: 0;
         }
         .cancel-btn {
-            border: 2px solid #005EA2;
+            border: 2px solid colors.$primary;
             background: #fff;
-            color: #005EA2;
+            color: colors.$primary;
             border-radius: 4px;
         }
         .submit-btn {
-            border: 2px solid #005EA2;
+            border: 2px solid colors.$primary;
             border-radius: 4px;
         }
     }

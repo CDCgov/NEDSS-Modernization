@@ -21,6 +21,7 @@ class PagesResponseMapper {
     return new PagesResponse(
         detailed.identifier(),
         detailed.name(),
+        detailed.status(),
         detailed.description(),
         0,
         mapAll(this::asRule, rules)
@@ -40,6 +41,7 @@ class PagesResponseMapper {
     return new PagesResponse(
         detailed.identifier(),
         detailed.name(),
+        detailed.status(),
         detailed.description(),
         component.identifier(),
         tabs,
@@ -112,6 +114,7 @@ class PagesResponseMapper {
     boolean required = content.attributes().required();
     String defaultValue = content.attributes().defaultValue();
     String valueSet = content instanceof SelectionNode selection ? selection.valueSet() : null;
+    long displayComponent = content.type().identifier();
     return new PagesResponse.PagesQuestion(
         id,
         isStandard,
@@ -130,7 +133,8 @@ class PagesResponseMapper {
         enabled,
         required,
         defaultValue,
-        valueSet
+        valueSet,
+        displayComponent
     );
   }
 

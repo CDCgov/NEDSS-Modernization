@@ -1,5 +1,5 @@
 @page-information-change
-Feature: Searching for Page Summaries
+Feature: Changing Page Information
 
   Background:
     Given I am logged in

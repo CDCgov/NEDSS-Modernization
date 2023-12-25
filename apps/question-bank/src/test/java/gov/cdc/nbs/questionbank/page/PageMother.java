@@ -236,6 +236,7 @@ public class PageMother {
     Instant now = Instant.now().plusSeconds(15);
     WaTemplate page = new WaTemplate();
     page.setTemplateNm(pageIn.getTemplateNm());
+    page.setFormCd(pageIn.getFormCd());
     page.setTemplateType("Draft");
     page.setBusObjType("INV");
     page.setNndEntityIdentifier("GEN_Case_Map_v2.0");
@@ -353,6 +354,17 @@ public class PageMother {
           //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
           //  with that becoming the Active page
           found.setTemplateType("Template");
+          found.setPublishIndCd('F');
+        }
+    );
+  }
+
+  public void legacy(final PageIdentifier page) {
+    harness.with(page).use(
+        found -> {
+          //  this should be replaced by the command when it is created.  It should result in the creation of a new Page
+          //  with that becoming the Active page
+          found.setTemplateType("LEGACY");
           found.setPublishIndCd('F');
         }
     );

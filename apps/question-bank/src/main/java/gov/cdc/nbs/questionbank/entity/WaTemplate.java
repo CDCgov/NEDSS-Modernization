@@ -1,11 +1,15 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
 import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.PageNameVerifier;
+import gov.cdc.nbs.questionbank.page.TemplateNameVerifier;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
+import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +46,7 @@ public class WaTemplate {
   private static final long TAB = 1010l;
   private static final long SECTION = 1015l;
   private static final long SUB_SECTION = 1016l;
+  private static final long QUESTION = 1007l;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -123,8 +128,7 @@ public class WaTemplate {
           CascadeType.REMOVE,
           CascadeType.PERSIST
       },
-      orphanRemoval = true
-  )
+      orphanRemoval = true)
   private Set<PageCondMapping> conditionMappings;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
@@ -134,6 +138,27 @@ public class WaTemplate {
   }, orphanRemoval = true)
   @OrderBy("orderNbr")
   private List<WaUiMetadata> uiMetadata;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
+  private List<WaNndMetadatum> nndMetadatums;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
+  private List<WaRdbMetadatum> waRdbMetadatums;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
+  private List<WaRuleMetadata> waRuleMetadata;
 
   public WaTemplate() {
     this.templateType = DRAFT;
@@ -487,6 +512,29 @@ public class WaTemplate {
     return questionEntry;
   }
 
+  public void deleteQuestion(PageContentCommand.DeleteQuestion command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // ensure page already contain question
+    WaUiMetadata question = uiMetadata.stream()
+        .filter(e -> e.getQuestionIdentifier() != null
+            && e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier())).findFirst()
+        .orElseThrow(() ->
+            new PageContentModificationException(
+                "Unable to delete a question from a page, the page does not contain the question"));
+
+    //can not delete standard questions
+    if (question.getStandardQuestionIndCd() == 'T') {
+      throw new PageContentModificationException("Unable to delete standard question");
+    }
+
+    // Remove question and adjust orderNbrs
+    this.uiMetadata.remove(question);
+    adjustingComponentsFrom(question.getOrderNbr());
+    changed(command);
+  }
+
   private Optional<WaUiMetadata> findNextElementOfComponent(Integer start, List<Long> componentTypes) {
     return uiMetadata.stream()
         .filter(ui -> ui.getOrderNbr() >= start)
@@ -527,8 +575,7 @@ public class WaTemplate {
 
   public void changeName(
       final PageNameVerifier verifier,
-      final PageCommand.ChangeName command
-  ) {
+      final PageCommand.ChangeName command) {
     checkChangesAllowed();
     if (!Objects.equals(this.templateNm, command.name())) {
       checkUniqueName(command.name(), verifier);
@@ -545,8 +592,7 @@ public class WaTemplate {
 
   public void changeDatamart(
       final DatamartNameVerifier verifier,
-      final PageCommand.ChangeDatamart command
-  ) {
+      final PageCommand.ChangeDatamart command) {
     checkDatamartChangesAllowed();
     if (!Objects.equals(this.templateNm, command.datamart())) {
       checkUniqueDatamart(command.datamart(), verifier);
@@ -564,8 +610,7 @@ public class WaTemplate {
 
   private void checkUniqueDatamart(
       final String datamart,
-      final DatamartNameVerifier verifier
-  ) {
+      final DatamartNameVerifier verifier) {
     if (!verifier.isUnique(datamart)) {
       throw new PageUpdateException(String.format("Another Page is using the datamart named %s", datamart));
     }
@@ -588,6 +633,7 @@ public class WaTemplate {
     changed(dissociate);
     return this;
   }
+
   private void checkConditionDisassociationAllowed() {
     checkChangesAllowed();
     if (hasBeenPublished()) {
@@ -624,13 +670,113 @@ public class WaTemplate {
     changed(updates);
   }
 
-  public void updateType(String type) {
-    this.templateType = type;
-  }
-
   private void verifyDraftType() {
     if (!DRAFT.equals(templateType)) {
       throw new PageContentModificationException("Unable to modify non Draft page");
     }
   }
+
+  public void createTemplate(
+      final TemplateNameVerifier verifier,
+      final PageCommand.CreateTemplate create
+  ) {
+
+    //  This method should return a new Template object however, the creation of templates is being delegated to classic
+    //  NBS because of the complexity surrounding the XML payload.  For now, it is just verifying the template name is
+    //  unique.  Why is this method here?  To ensure that the business logic of a Page is in one place and not spread all
+    //  over the code base.
+    checkTemplateCreation(verifier, create);
+
+  }
+
+  private void checkTemplateCreation(
+      final TemplateNameVerifier verifier,
+      final PageCommand.CreateTemplate create
+  ) {
+
+    String name = create.name();
+
+    if (name == null || name.isBlank()) {
+      throw new TemplateCreationException("A Template name is required");
+    }
+
+    checkUniqueTemplateName(verifier, create.name());
+
+    String description = create.description();
+
+    if (description == null || description.isBlank()) {
+      throw new TemplateCreationException("A Template description is required");
+    }
+  }
+
+  private void checkUniqueTemplateName(final TemplateNameVerifier verifier, final String name) {
+    boolean unique = verifier.isUnique(name);
+
+    if (!unique) {
+      String message = String.format("Another Template is named %s", name);
+      throw new TemplateCreationException(message);
+    }
+  }
+
+  public WaUiMetadata groupSubSection(PageContentCommand.GroupSubsection command) {
+    verifyDraftType();
+    WaUiMetadata subsection = uiMetadata.stream()
+        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
+
+    subsection.update(command);
+    changed(command);
+
+    List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
+    List<WaUiMetadata> questionBatches = uiMetadata.stream()
+        .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
+    for (WaUiMetadata questionBatch : questionBatches) {
+      questionBatch.updateQuestionBatch(command);
+      changed(command);
+    }
+    return subsection;
+  }
+
+  public WaUiMetadata unGroupSubSection(PageContentCommand.UnGroupSubsection command) {
+    verifyDraftType();
+
+    WaUiMetadata subsection = uiMetadata.stream()
+        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
+
+    subsection.update(command);
+    changed(command);
+
+    List<Long> batchIds = command.batches();
+    List<WaUiMetadata> questionBatches = uiMetadata.stream()
+        .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
+    for (WaUiMetadata questionBatch : questionBatches) {
+      questionBatch.updateQuestionBatch(command);
+      changed(command);
+    }
+    return subsection;
+  }
+
+  public WaRuleMetadata addRule(PageContentCommand.AddRule command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+    // create rule
+    WaRuleMetadata rule = new WaRuleMetadata(this.id, command);
+    this.waRuleMetadata.add(rule);
+    changed(command);
+    return rule;
+  }
+
+  public void deleteRule(PageContentCommand.DeleteRule command) {
+    verifyDraftType();
+    WaRuleMetadata rule = waRuleMetadata.stream().filter(e -> e.getId() == command.ruleId()).findFirst()
+        .orElseThrow(
+            () -> new PageContentModificationException("Failed to find Page Rule with id: " + command.ruleId()));
+    waRuleMetadata.remove(rule);
+    changed(command);
+  }
+
+
 }

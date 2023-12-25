@@ -1,0 +1,45 @@
+@use 'styles/colors';
+.subsection {
+    border-radius: 0.3125rem;
+    border: 1px solid colors.$base-lighter;
+    background: colors.$base-white;
+
+    .header {
+        display: flex;
+        padding: 1.5rem;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1 0 0;
+        align-self: stretch;
+
+        background: colors.$cool-accent-lighter;
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            .name {
+                color: colors.$base-black;
+                text-align: center;
+                font-size: 1rem;
+                font-weight: 700;
+            }
+            .count {
+                color: colors.$base-darkest;
+                font-size: 0.875rem;
+                font-weight: 400;
+            }
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+
+            svg {
+                color: colors.$primary;
+                cursor: pointer;
+            }
+        }
+    }
+}

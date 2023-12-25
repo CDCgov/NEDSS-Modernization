@@ -1,5 +1,5 @@
 @page-information
-Feature: Searching for Page Summaries
+Feature: Page Information
 
   Background:
     Given I am logged in

@@ -1,11 +1,8 @@
 package gov.cdc.nbs.questionbank.filter;
 
-import java.time.LocalDate;
-
 public record DateFilter(
     String property,
-    Operator operator,
-    LocalDate from
+    Operator operator
 ) implements Filter {
 
   public enum Operator {

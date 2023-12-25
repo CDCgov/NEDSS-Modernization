@@ -52,6 +52,15 @@ type ActId {
   lastChangeTime: DateTime
 }
 
+type ActId2 {
+  id: Int
+  recordStatus: String
+  actIdSeq: Int
+  rootExtensionTxt: String
+  typeCd: String
+  lastChangeTime: DateTime
+}
+
 input InvestigationFilter {
   patientId: Int
   conditions: [String]

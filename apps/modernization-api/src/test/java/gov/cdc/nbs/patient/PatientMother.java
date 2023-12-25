@@ -446,13 +446,17 @@ public class PatientMother {
   }
 
   public void withGender(final PatientIdentifier identifier) {
+    withGender(identifier, RandomUtil.gender().value());
+  }
+
+  public void withGender(final PatientIdentifier identifier, final String gender) {
     Person patient = managed(identifier);
 
     patient.update(
         new PatientCommand.UpdateGender(
             identifier.id(),
             RandomUtil.getRandomDateInPast(),
-            RandomUtil.gender().value(),
+            gender,
             null,
             null,
             null,

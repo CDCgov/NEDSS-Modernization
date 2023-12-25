@@ -1,3 +1,11 @@
-logging:
-  level:
-    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: DEBUG
+nbs:
+  gateway:
+    log:
+      level: DEBUG
+    pagebuilder:
+      enabled: true
+      page:
+        library: 
+          enabled: true
+        management: 
+          enabled: true

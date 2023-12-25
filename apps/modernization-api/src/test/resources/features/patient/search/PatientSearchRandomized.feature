@@ -8,7 +8,7 @@ Feature: Patient Search Randomized
     And there are 5 patients available for search
     And I am looking for one of them
 
-  Scenario Outline: I can find a Patient by patient data using one field
+  Scenario Outline: I can find a Patient by patient data using <field>
     Given I add the patient criteria "<field>" "<qualifier>"
     When I search for patients
     Then I find the patient
@@ -33,7 +33,7 @@ Feature: Patient Search Randomized
       | ethnicity        |           |
       | email            |           |
 
-  Scenario Outline: I can find a Patient by patient data using multiple fields
+  Scenario Outline: I can find a Patient by patient data using <field>, <field2>, and <field3> fields
     Given I add the patient criteria "<field>" "<qualifier>"
     And I add the patient criteria "<field2>" "<qualifier2>"
     And I add the patient criteria "<field3>" "<qualifier3>"

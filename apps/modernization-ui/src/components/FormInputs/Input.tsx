@@ -23,6 +23,7 @@ type InputProps = {
     textAreaRef?: RefObject<HTMLTextAreaElement>;
     mask?: string;
     pattern?: string;
+    ariaLabel?: string;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue'>;
 
 export const Input = ({
@@ -44,6 +45,7 @@ export const Input = ({
     textAreaRef,
     mask,
     pattern,
+    ariaLabel,
     ...props
 }: InputProps) => {
     const orientation = flexBox ? 'horizontal' : 'vertical';
@@ -59,6 +61,7 @@ export const Input = ({
                 {!multiline ? (
                     mask ? (
                         <TextInputMask
+                            autoComplete="off"
                             inputMode={inputMode}
                             placeholder={placeholder}
                             {...props}
@@ -73,9 +76,11 @@ export const Input = ({
                             type={type}
                             mask={mask}
                             pattern={pattern}
+                            aria-label={ariaLabel}
                         />
                     ) : (
                         <TextInput
+                            autoComplete="off"
                             inputMode={inputMode}
                             placeholder={placeholder}
                             {...props}
@@ -88,10 +93,12 @@ export const Input = ({
                             aria-describedby={`${error}-message`}
                             className={classNames(className)}
                             type={type}
+                            aria-label={ariaLabel}
                         />
                     )
                 ) : (
                     <Textarea
+                        autoComplete="off"
                         placeholder={placeholder}
                         id={id}
                         onChange={onChange}
@@ -100,6 +107,7 @@ export const Input = ({
                         inputRef={textAreaRef}
                         aria-describedby={`${error}-message`}
                         className={classNames(className)}
+                        aria-label={ariaLabel}
                     />
                 )}
             </EntryWrapper>

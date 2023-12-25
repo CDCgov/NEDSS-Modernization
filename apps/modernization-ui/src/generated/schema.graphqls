@@ -301,6 +301,15 @@ type ActId {
   lastChangeTime: DateTime
 }
 
+type ActId2 {
+  id: Int
+  recordStatus: String
+  actIdSeq: Int
+  rootExtensionTxt: String
+  typeCd: String
+  lastChangeTime: DateTime
+}
+
 input InvestigationFilter {
   patientId: Int
   conditions: [String]
@@ -826,6 +835,85 @@ type PatientInvestigationResults {
 extend type Query {
     findInvestigationsForPatient(patient: ID!, page: Page, openOnly: Boolean): PatientInvestigationResults
 }
+extend type Query {
+  findLabReportsForPatient(personUid: Int!, page: Page): [PatientLabReport!]!
+  findLabReportsForPatientCount(personUid: Int!): Int
+}
+
+type PatientLabReportResults {
+  content: [PatientLabReport]!
+  total: Int!
+}
+
+input PatientLabReportFilter {
+  patientId: Int
+  programAreas: [String]
+  jurisdictions: [ID]
+  pregnancyStatus: PregnancyStatus
+  eventId: LabReportEventId
+  eventDate: LaboratoryEventDateSearch
+  entryMethods: [EntryMethod]
+  enteredBy: [UserType]
+  eventStatus: [EventStatus]
+  processingStatus: [LaboratoryReportStatus]
+  createdBy: ID
+  lastUpdatedBy: ID
+  providerSearch: LabReportProviderSearch
+  resultedTest: String
+  codedResult: String
+}
+
+type PatientLabReport {
+  id: String!
+  observationUid: Int!
+  addTime: DateTime!
+  effectiveFromTime: DateTime
+  programAreaCd: String!
+  jurisdictionCodeDescTxt: String!
+  localId: String!
+  electronicInd: String
+  associatedInvestigations: [AssociatedInvestigation2!]!
+  personParticipations: [PersonParticipation2!]!
+  organizationParticipations: [OrganizationParticipation2!]!
+  observations: [Observation2!]!
+}
+
+type PersonParticipation2 {
+  typeCd: String!
+  personCd: String!
+  firstName: String
+  lastName: String
+
+}
+
+type OrganizationParticipation2 {
+  typeCd: String
+  name: String
+}
+
+type MaterialParticipation2 {
+  actUid: Int!
+  typeCd: String!
+  entityId: String
+  subjectClassCd: String!
+  typeDescTxt: String
+  participationRecordStatus: String
+  participationLastChangeTime: DateTime
+  cd: String!
+  cdDescTxt: String!
+}
+
+type Observation2 {
+  domainCd: String!
+  cdDescTxt: String!
+  displayName: String
+}
+
+type AssociatedInvestigation2 {
+  publicHealthCaseUid: Int!
+  cdDescTxt: String!
+  localId: String!
+}
 type PatientMorbidity {
     morbidity: ID!
     receivedOn: DateTime!
@@ -1263,12 +1351,11 @@ input PersonFilter {
     firstName: String
     race: String
     identification: IdentificationCriteria
-    ssn: String
     phoneNumber: String
     email: String
     dateOfBirth: Date
     dateOfBirthOperator: Operator
-    gender: Gender
+    gender: String
     deceased: Deceased
     address: String
     city: String
@@ -1346,7 +1433,7 @@ type PatientSearchResults {
     total: Int!
 }
 
-extend type Query {
+type Query {
     findPatientsByFilter(
         filter: PersonFilter!
         page: SortablePage
@@ -1402,13 +1489,6 @@ type PatientVaccinationResults {
 extend type Query {
     findVaccinationsForPatient(patient: ID!, page: Page): PatientVaccinationResults
 }
-type Query {
-    findOpenInvestigationsForPatient(
-        patientId: Int!
-        page: Page
-    ): InvestigationResults!
-}
-
 type PatientDeleteSuccessful {
     patient: Int!
 }

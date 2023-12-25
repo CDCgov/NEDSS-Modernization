@@ -1,70 +1,83 @@
 import { render } from '@testing-library/react';
 import { ReorderSection } from './ReorderSection';
-import { PagesSection, PagesTab } from 'apps/page-builder/generated';
+import { PagesSection, PagesResponse } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 describe('when ReorderSection renders', () => {
-    const content: PagesTab = {
-        id: 123456,
+    const content: PagesResponse = {
+        id: 123,
         name: 'Test Page',
-        sections: [
+        status: 'status',
+        tabs: [
             {
-        id: 123456,
-        name: 'Test Section',
-        subSections: [
-            {
-                id: 123,
-                name: 'Subsection1',
-                questions: [],
-                visible: true
-            },
-            {
-                id: 456,
-                name: 'Subsection2',
-                questions: [],
-                visible: true
+                id: 123456,
+                name: 'Test Page',
+                visible: true,
+                order: 1,
+                sections: [
+                    {
+                        id: 123456,
+                        name: 'Test Section',
+                        visible: true,
+                        order: 1,
+                        subSections: [
+                            {
+                                id: 123,
+                                name: 'Subsection1',
+                                visible: true,
+                                order: 1,
+                                questions: []
+                            },
+                            {
+                                id: 456,
+                                name: 'Subsection2',
+                                visible: true,
+                                order: 2,
+                                questions: []
+                            }
+                        ]
+                    }
+                ]
             }
-        ],
-        visible: true
-    }
-        ],
-        visible: true
+        ]
     };
     const section: PagesSection = {
         id: 123456,
         name: 'Test Section',
+        order: 1,
         subSections: [
             {
                 id: 123,
                 name: 'Subsection1',
-                questions: [],
-                visible: true
+                visible: true,
+                order: 1,
+                questions: []
             },
             {
                 id: 456,
                 name: 'Subsection2',
-                questions: [],
-                visible: true
+                visible: true,
+                order: 2,
+                questions: []
             }
         ],
         visible: true
     };
     it('should display Subsections', () => {
         const { container } = render(
-            <DragDropProvider data={content} pageDropId={0} tabId={1}>
+            <DragDropProvider pageData={content} currentTab={0}>
                 <DragDropContext onDragEnd={() => {}}>
-                    <Droppable droppableId='testId'>
+                    <Droppable droppableId="testId">
                         {(provided) => (
-                            <div
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                                className="test__sections">
-                            <ReorderSection section={section} index={1} visible />
-                    </div>)}
+                            <div {...provided.droppableProps} ref={provided.innerRef} className="test__sections">
+                                <ReorderSection section={section} index={1} visible />
+                            </div>
+                        )}
                     </Droppable>
                 </DragDropContext>
-            </DragDropProvider>);
+            </DragDropProvider>
+        );
         const subsection = container.getElementsByClassName('reorder-subsection');
         expect(subsection.length).toEqual(2);
     });

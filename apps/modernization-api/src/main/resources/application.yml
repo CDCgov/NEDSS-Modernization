@@ -26,14 +26,8 @@ nbs:
         max: 25
 
 logging:
-  file.path: ./log/
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.springframework.data.elasticsearch.client.WIRE: trace
-    nbs:
-      classic:
-        outgoing: DEBUG
+  file:
+    path: ./log/
 
 spring:
   graphql:
@@ -84,3 +78,8 @@ nbs.ui:
           verification: false
       pageBuilder:
         enabled: false
+        page:
+          library: 
+            enabled: false
+          management: 
+            enabled: false

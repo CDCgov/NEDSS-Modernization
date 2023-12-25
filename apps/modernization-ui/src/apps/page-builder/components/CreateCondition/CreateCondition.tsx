@@ -64,16 +64,13 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
         <div className="create-condition">
             <Form onSubmit={onSubmit}>
                 <div className="create-condition__container">
-                    <h2 className="main-header-title" data-testid="header-title">
-                        Create a new Condition
-                    </h2>
-                    <h4>Let's create a new condition to add to your page</h4>
+                    <h4 className="main-header-title" data-testid="header-title">
+                        Condition details
+                    </h4>
                     <p>
-                        First, we fill out some information about your new condition before creating it and associating
-                        it to your new page
-                    </p>
-                    <p>
-                        All fields with <span className="mandatory-indicator">*</span> are required
+                        These fields will be displayed to your users.
+                        <br />
+                        <span className="mandatory-indicator">*</span> indicates a required field.
                     </p>
                     <br></br>
                     <Controller
@@ -149,6 +146,40 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 required></SelectInput>
                         )}
                     />
+                    <Controller
+                        control={control}
+                        name="familyCd"
+                        render={({ field: { onChange, value } }) => (
+                            <SelectInput
+                                label="Condition family"
+                                defaultValue={value}
+                                onChange={onChange}
+                                options={familyOptions.map((option) => {
+                                    return {
+                                        name: option.display!,
+                                        value: option.localCode!
+                                    };
+                                })}></SelectInput>
+                        )}
+                    />
+                    <Controller
+                        control={control}
+                        name="coinfectionGrpCd"
+                        render={({ field: { onChange, value } }) => (
+                            <SelectInput
+                                label="Co-infection group"
+                                defaultValue={value}
+                                onChange={onChange}
+                                options={groupOptions.map((option) => {
+                                    return {
+                                        name: option.display!,
+                                        value: option.localCode!
+                                    };
+                                })}></SelectInput>
+                        )}
+                    />
+                    <hr />
+                    <h4>Condition behavior</h4>
                     <label>
                         Is this a CDC reportable condition (NND)?
                         <span className="mandatory-indicator">*</span>
@@ -243,7 +274,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                     <Controller
                         control={control}
                         name="contactTracingEnableInd"
-                        defaultValue="N"
+                        defaultValue="Y"
                         render={({ field: { onChange, value } }) => (
                             <div className="radio-group">
                                 <Radio
@@ -265,62 +296,27 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                             </div>
                         )}
                     />
-                    <br />
-                    <p>Would you like to add any additional information?</p>
-                    <p className="fields-info">These fields are optional, you can make changes to this later.</p>
-                    <Controller
-                        control={control}
-                        name="familyCd"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                label="Condition family"
-                                defaultValue={value}
-                                onChange={onChange}
-                                options={familyOptions.map((option) => {
-                                    return {
-                                        name: option.display!,
-                                        value: option.localCode!
-                                    };
-                                })}></SelectInput>
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="coinfectionGrpCd"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                label="Co-infection group"
-                                defaultValue={value}
-                                onChange={onChange}
-                                options={groupOptions.map((option) => {
-                                    return {
-                                        name: option.display!,
-                                        value: option.localCode!
-                                    };
-                                })}></SelectInput>
-                        )}
-                    />
-                </div>
-                <div className="create-condition__buttons">
-                    {modal ? (
-                        <ModalToggleButton
-                            modalRef={modal}
-                            type="reset"
-                            closer
-                            className="cancel-btn"
-                            onClick={() => resetInput()}>
-                            Cancel
-                        </ModalToggleButton>
-                    ) : (
-                        <Button className="cancel-btn" type="reset" onClick={() => resetInput()}>
-                            Cancel
-                        </Button>
-                    )}
-                    <Button className="submit-btn" type="submit">
-                        Create & add condition
-                    </Button>
                 </div>
             </Form>
+            <div className="create-condition__buttons">
+                {modal ? (
+                    <ModalToggleButton
+                        modalRef={modal}
+                        type="reset"
+                        closer
+                        className="cancel-btn"
+                        onClick={() => resetInput()}>
+                        Cancel
+                    </ModalToggleButton>
+                ) : (
+                    <Button className="cancel-btn" type="reset" onClick={() => resetInput()}>
+                        Cancel
+                    </Button>
+                )}
+                <Button className="submit-btn" type="submit">
+                    Create and add to page
+                </Button>
+            </div>
         </div>
     );
 };
