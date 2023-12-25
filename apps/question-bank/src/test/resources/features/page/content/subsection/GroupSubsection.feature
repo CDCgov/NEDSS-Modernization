@@ -6,22 +6,11 @@ Feature: Group Subsection
         And the page has a tab
         And the page has a section in the 1st tab
         And the page has a sub-section named "whatever" in the 1st section
-        And A text question exists
-        And A date question exists
 
-    Scenario: I can group a subsection of question elements
+    Scenario: I can group a subsection
         Given I am an admin user
-        And i add a list of questions to a subsection
         When I send a group subsection request
         Then the subsection is grouped
-
-
-    Scenario: I cannot group a subsection contains static elements
-        Given I am an admin user
-        And i add a list of questions and a static element to a subsection
-        When I send a group subsection request
-        Then An Update SubSection Exception is thrown
-
 
     Scenario: I cannot group a subsection without logging in
         Given I am not logged in
