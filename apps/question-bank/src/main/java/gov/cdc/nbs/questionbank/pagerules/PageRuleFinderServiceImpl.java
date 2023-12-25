@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
+import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,25 +16,28 @@ public class PageRuleFinderServiceImpl implements PageRuleFinderService {
 
     private final WaRuleMetaDataRepository waRuleMetaDataRepository;
 
+    private final WaQuestionRepository waQuestionRepository;
+
+
     public PageRuleFinderServiceImpl(
-            WaRuleMetaDataRepository waRuleMetaDataRepository) {
+            WaRuleMetaDataRepository waRuleMetaDataRepository, WaQuestionRepository waQuestionRepository) {
         this.waRuleMetaDataRepository = waRuleMetaDataRepository;
+        this.waQuestionRepository = waQuestionRepository;
     }
 
     @Override
     public ViewRuleResponse getRuleResponse(Long ruleId) {
         WaRuleMetadata ruleMetadata = waRuleMetaDataRepository.getReferenceById(ruleId);
         List<String> sourceValues = new ArrayList<>();
-        List<String> targetValues = new ArrayList<>();
+        List<QuestionInfo> targetQuestions = new ArrayList<>();
         if (ruleMetadata.getSourceValues() != null && ruleMetadata.getTargetQuestionIdentifier() != null) {
             String[] sourceValue = ruleMetadata.getSourceValues().split(",");
             sourceValues = Arrays.asList(sourceValue);
-            String[] targetValue = ruleMetadata.getTargetQuestionIdentifier().split(",");
-            targetValues = Arrays.asList(targetValue);
+            targetQuestions = findLabelsByIdentifiers(Arrays.asList(ruleMetadata.getTargetQuestionIdentifier().split(",")));
         }
         return new ViewRuleResponse(ruleId, ruleMetadata.getWaTemplateUid(), ruleMetadata.getRuleCd(),
                 ruleMetadata.getRuleDescText(), ruleMetadata.getSourceQuestionIdentifier(), sourceValues,
-                ruleMetadata.getLogic(), ruleMetadata.getTargetType(), ruleMetadata.getErrormsgText(), targetValues);
+                ruleMetadata.getLogic(), ruleMetadata.getTargetType(), ruleMetadata.getErrormsgText(), targetQuestions);
     }
 
     @Override
@@ -57,7 +61,7 @@ public class PageRuleFinderServiceImpl implements PageRuleFinderService {
                                 rule.getRuleDescText(), rule.getSourceQuestionIdentifier(),
                                 buildSourceTargetValues(rule, true),
                                 rule.getLogic(), rule.getTargetType(), rule.getErrormsgText(),
-                                buildSourceTargetValues(rule, false)))
+                                findLabelsByIdentifiers(buildSourceTargetValues(rule, false))))
                         .toList();
         return new PageImpl<>(ruleMetadata, ruleMetadataPage.getPageable(), ruleMetadataPage.getTotalElements());
     }
@@ -81,5 +85,10 @@ public class PageRuleFinderServiceImpl implements PageRuleFinderService {
 
         }
 
+    }
+
+    private List<QuestionInfo> findLabelsByIdentifiers(List<String> targetValue) {
+        return waQuestionRepository.findLabelsByIdentifiers(targetValue).stream().map(
+                question -> new QuestionInfo(question[0].toString(), question[1].toString())).toList();
     }
 }

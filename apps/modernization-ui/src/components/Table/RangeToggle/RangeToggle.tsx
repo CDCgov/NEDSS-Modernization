@@ -1,59 +1,65 @@
-import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { Context, useContext, useEffect, useState } from 'react';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import './RangeToggle.scss';
 import { ConditionsContext } from 'apps/page-builder/context/ConditionsContext';
 import { QuestionsContext } from 'apps/page-builder/context/QuestionsContext';
 import { ValueSetsContext } from 'apps/page-builder/context/ValueSetContext';
-import { ContextData } from 'apps/page-builder/context/contextData';
+import { ContextData, NoopContext } from 'apps/page-builder/context/contextData';
+import { usePageMaybe } from 'page';
+import { Select } from '@trussworks/react-uswds';
+import styles from './range-toggle.module.scss';
 
-interface RangeToggleProps {
-    contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates';
-}
+export type SupportedContext = 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates' | 'businessRules';
 
-export const RangeToggle = ({ contextName }: RangeToggleProps) => {
-    const [context, setContext] = useState<Context<ContextData>>(PagesContext);
+type RangeToggleProps = {
+    contextName?: SupportedContext;
+    initial?: number;
+};
 
-    useEffect(() => {
-        switch (contextName) {
-            case 'pages':
-                setContext(PagesContext);
-                break;
-            case 'conditions':
-                setContext(ConditionsContext);
-                break;
-            case 'questions':
-                setContext(QuestionsContext);
-                break;
-            case 'valuesets':
-                setContext(ValueSetsContext);
-                break;
-            default:
-                setContext(PagesContext);
-                break;
-        }
-    }, [contextName]);
+export const RangeToggle = ({ contextName, initial = 10 }: RangeToggleProps) => {
+    const context = resolveContext(contextName);
 
-    const { pageSize, setPageSize, currentPage, setCurrentPage } = useContext(context);
-    const [range, setRange] = useState(10);
-    const options = [
-        { name: '10', value: '10' },
-        { name: '20', value: '20' },
-        { name: '30', value: '30' },
-        { name: '50', value: '50' },
-        { name: '100', value: '100' }
-    ];
+    const fromContext = useContext(context);
+
+    const pagination = usePageMaybe();
+    const [range, setRange] = useState(Number(initial));
 
     useEffect(() => {
-        if (currentPage > 1 && setCurrentPage) {
-            setCurrentPage(1);
+        if (!('type' in fromContext)) {
+            if (fromContext.currentPage > 1 && fromContext.setCurrentPage) {
+                fromContext.setCurrentPage(1);
+            }
+            fromContext.setPageSize(range);
         }
-        setPageSize(range);
-    }, [range]);
+    }, [fromContext, range]);
+
+    useEffect(() => {
+        if (pagination && pagination.page.pageSize !== range) {
+            pagination.resize(range);
+        }
+    }, [pagination, range]);
 
     return (
-        <div className="range-toggle">
-            <SelectInput defaultValue={pageSize} options={options} onChange={(e) => setRange(Number(e.target.value))} />
-        </div>
+        <Select
+            className={styles.toggle}
+            id="range-toggle"
+            name="range-toggle"
+            defaultValue={initial}
+            onChange={(e) => setRange(Number(e.target.value))}>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={30}>30</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+        </Select>
     );
+};
+
+const resolveContext = (name?: SupportedContext): Context<ContextData> => {
+    if (name === 'conditions') {
+        return ConditionsContext;
+    } else if (name === 'questions') {
+        return QuestionsContext;
+    } else if (name === 'valuesets') {
+        return ValueSetsContext;
+    }
+    return NoopContext;
 };

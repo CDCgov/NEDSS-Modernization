@@ -1,27 +1,23 @@
 import { QuestionLibraryTable } from './QuestionLibraryTable';
-import { render, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { AlertProvider } from '../../../../alert';
 
 describe('when rendered', () => {
-    it('should display sentence cased headers', async () => {
+    it('should display sentence cased headers', () => {
         const questionsSummary: any = {};
         const summaries = [questionsSummary];
-        const { container } = render(
-            <BrowserRouter>
+        const { getByRole } = render(
+            <MemoryRouter>
                 <AlertProvider>
                     <QuestionLibraryTable summaries={summaries} />
                 </AlertProvider>
-            </BrowserRouter>
+            </MemoryRouter>
         );
 
-        const tableHeads = container.getElementsByClassName('table-head');
-
-        await waitFor(() => {
-            expect(tableHeads[1].textContent).toBe('Type');
-            expect(tableHeads[2].textContent).toBe('Unique ID');
-            expect(tableHeads[3].textContent).toBe('Unique name');
-        });
+        expect(getByRole('columnheader', { name: 'Type' })).toBeInTheDocument();
+        expect(getByRole('columnheader', { name: 'Unique ID' })).toBeInTheDocument();
+        expect(getByRole('columnheader', { name: 'Unique name' })).toBeInTheDocument();
     });
 });
 
@@ -60,19 +56,19 @@ describe('when at least one summary is available', () => {
     const summaries = [questionsSummary];
 
     it('should display the questions summaries', async () => {
-        const { container } = render(
-            <AlertProvider>
-                <QuestionLibraryTable summaries={summaries} />
-            </AlertProvider>
+        const { findAllByRole } = render(
+            <MemoryRouter>
+                <AlertProvider>
+                    <QuestionLibraryTable summaries={summaries} />
+                </AlertProvider>
+            </MemoryRouter>
         );
 
-        const tableData = container.getElementsByClassName('table-data');
+        const tableData = await findAllByRole('cell');
 
-        await waitFor(() => {
-            expect(tableData[1]).toHaveTextContent('TEXT');
-            expect(tableData[2]).toHaveTextContent('INV118');
-            expect(tableData[3]).toHaveTextContent('Reporting Source Zip');
-            expect(tableData[4]).toHaveTextContent('INV');
-        });
+        expect(tableData[1]).toHaveTextContent('TEXT');
+        expect(tableData[2]).toHaveTextContent('INV118');
+        expect(tableData[3]).toHaveTextContent('Reporting Source Zip');
+        expect(tableData[4]).toHaveTextContent('INV');
     });
 });
