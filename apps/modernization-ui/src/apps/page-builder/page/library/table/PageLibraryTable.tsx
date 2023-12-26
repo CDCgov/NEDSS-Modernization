@@ -10,7 +10,7 @@ import styles from './page-library-table.module.scss';
 
 export enum Column {
     PageName = 'Page name',
-    EventType = 'Event name',
+    EventType = 'Event type',
     RelatedConditions = 'Related condition(s)',
     Status = 'Status',
     LastUpdate = 'Last updated',
