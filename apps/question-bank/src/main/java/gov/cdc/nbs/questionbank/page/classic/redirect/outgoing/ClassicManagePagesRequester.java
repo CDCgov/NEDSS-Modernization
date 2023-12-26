@@ -7,13 +7,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
-public class ClassicManagePageRequester {
+public class ClassicManagePagesRequester {
 
   private static final String LOCATION = "/ManagePage.do";
 
   private final RestTemplate template;
 
-  public ClassicManagePageRequester(
+  public ClassicManagePagesRequester(
       @Qualifier("classic") final RestTemplate template) {
     this.template = template;
   }
