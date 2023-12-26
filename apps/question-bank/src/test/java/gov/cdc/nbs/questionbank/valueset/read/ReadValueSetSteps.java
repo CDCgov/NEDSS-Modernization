@@ -18,7 +18,6 @@ import gov.cdc.nbs.questionbank.valueset.util.ValueSetHolder;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -60,7 +59,7 @@ public class ReadValueSetSteps {
       search = new ValueSetSearchRequest("testValueSetNm",
           "testValueSetCode", "testCodeSetDescTxt");
       Pageable pageable = Pageable.ofSize(1);
-      List<ValueSetSearchResponse> results = valueSetController.searchValueSet(pageable,search);
+      Page<ValueSetSearchResponse> results = valueSetController.searchValueSet(pageable, search);
       valueSetSearchHolder.setValueSetSearchResults(results);
     } catch (AccessDeniedException e) {
       exceptionHolder.setException(e);
@@ -74,7 +73,7 @@ public class ReadValueSetSteps {
     try {
       search = new ValueSetSearchRequest("xxxxx", "xxxxx", "xxxxx");
       Pageable pageable = Pageable.ofSize(1);
-      List<ValueSetSearchResponse> results = valueSetController.searchValueSet(pageable,search);
+      Page<ValueSetSearchResponse> results = valueSetController.searchValueSet(pageable, search);
       valueSetSearchHolder.setValueSetSearchResults(results);
     } catch (AccessDeniedException e) {
       exceptionHolder.setException(e);
@@ -97,10 +96,10 @@ public class ReadValueSetSteps {
 
   @Then("Value sets should be returned")
   public void value_sets_should_be_returned() {
-    List<ValueSetSearchResponse> results = valueSetSearchHolder.getValueSetSearchResults();
+    Page<ValueSetSearchResponse> results = valueSetSearchHolder.getValueSetSearchResults();
     assertNotNull(results);
-    assertFalse(results.isEmpty());
-    assertEquals(1,results.size());
+    assertFalse(results.toList().isEmpty());
+    assertEquals(1, results.toList().size());
   }
 
   @Then("All Value sets should be returned")
@@ -112,7 +111,7 @@ public class ReadValueSetSteps {
 
   @Then("A value sets should not be returned")
   public void a_value_sets_should_not_be_returned() {
-    List<ValueSetSearchResponse> results = valueSetSearchHolder.getValueSetSearchResults();
+    Page<ValueSetSearchResponse> results = valueSetSearchHolder.getValueSetSearchResults();
     assertNotNull(results);
     assertTrue(results.isEmpty());
   }

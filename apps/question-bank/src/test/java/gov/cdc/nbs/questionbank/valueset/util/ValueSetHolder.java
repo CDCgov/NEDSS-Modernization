@@ -8,14 +8,12 @@ import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Component
 public class ValueSetHolder {
 	Page<ValueSet> valueSetResults;
 	Codeset valueSet;
-	List<ValueSetSearchResponse> valueSetSearchResults;
+	Page<ValueSetSearchResponse> valueSetSearchResults;
 
 }

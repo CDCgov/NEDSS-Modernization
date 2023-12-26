@@ -2,10 +2,13 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,8 +34,10 @@ public class ValueSetFinder {
           FETCH NEXT ? ROWS ONLY
           """;
 
+  private static final int MAX_ROW_COUNT = 2147483647;
   private final JdbcTemplate jdbcTemplate;
   private final RowMapper<ValueSetSearchResponse> mapper;
+  RowMapper<Integer> integerRowMapper = new SingleColumnRowMapper<>(Integer.class);
   private static final int VALUE_SET_NAME = 1;
   private static final int CODE_SET_DESCRIPTION = 2;
   private static final int VALUE_SET_CODE = 3;
@@ -40,23 +45,23 @@ public class ValueSetFinder {
   private static final int LIMIT = 5;
 
 
-
   ValueSetFinder(final JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
     this.mapper = new ValueSetSearchResponseMapper();
   }
 
-  public List<ValueSetSearchResponse> findValueSet(final ValueSetSearchRequest request, Pageable pageable) {
+  public Page<ValueSetSearchResponse> findValueSet(final ValueSetSearchRequest request, Pageable pageable) {
     int limit = pageable.getPageSize();
     int offset = pageable.getPageNumber() * limit;
     Sort sort = pageable.getSort();
+
+    int totalRowsCount = getTotalRowsCount(request);
 
     if (sort.isSorted()) {
       findValueSetQuery = findValueSetQuery.replace("ORDER BY value_set_nm",
           " ORDER BY " + sort.toString().replace(": ", " "));
     }
-
-    return this.jdbcTemplate.query(
+    List<ValueSetSearchResponse> result = this.jdbcTemplate.query(
         findValueSetQuery,
         setter -> {
           setter.setString(VALUE_SET_NAME, "%" + request.getValueSetNm() + "%");
@@ -66,5 +71,21 @@ public class ValueSetFinder {
           setter.setInt(LIMIT, limit);
         }, mapper
     );
+    return new PageImpl<>(result, pageable, totalRowsCount);
+  }
+
+
+  private int getTotalRowsCount(ValueSetSearchRequest request) {
+    String countQuery = "SELECT COUNT(*) FROM (" + findValueSetQuery + ") AS total";
+    return this.jdbcTemplate.query(
+        countQuery,
+        setter -> {
+          setter.setString(VALUE_SET_NAME, "%" + request.getValueSetNm() + "%");
+          setter.setString(CODE_SET_DESCRIPTION, "%" + request.getValueSetDescription() + "%");
+          setter.setString(VALUE_SET_CODE, "%" + request.getValueSetCode() + "%");
+          setter.setInt(OFFSET, 0);
+          setter.setInt(LIMIT, MAX_ROW_COUNT);
+        }, integerRowMapper
+    ).get(0);
   }
 }

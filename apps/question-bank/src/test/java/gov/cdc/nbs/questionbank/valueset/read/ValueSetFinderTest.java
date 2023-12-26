@@ -6,15 +6,19 @@ import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -41,15 +45,18 @@ class ValueSetFinderTest {
   void searchValueSet_validSearchCriteria_returnListOfValueSet() {
     ValueSetSearchRequest searchRequest = new ValueSetSearchRequest("setNm", "setCd", "desc");
     List<ValueSetSearchResponse> expectedResponse = getListOfValueSetSearchResponses();
-    when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(), any(RowMapper.class))).thenReturn(
+    when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(),
+        any(ValueSetSearchResponseMapper.class))).thenReturn(
         expectedResponse);
+    when(jdbcTemplate.query(any(String.class), any(PreparedStatementSetter.class), any(SingleColumnRowMapper.class)))
+        .thenReturn(Collections.singletonList(10));
     Pageable pageable = mock(Pageable.class);
     Sort sort = mock(Sort.class);
     when(sort.isSorted()).thenReturn(true);
     when(sort.toString()).thenReturn("searchField");
     when(pageable.getSort()).thenReturn(sort);
-    List<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest,pageable);
-    assertEquals(expectedResponse, actualResponse);
+    Page<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest, pageable);
+    assertEquals(expectedResponse, actualResponse.toList());
   }
 
   @Test
@@ -57,9 +64,11 @@ class ValueSetFinderTest {
     ValueSetSearchRequest searchRequest = new ValueSetSearchRequest("setNm", "setCd", "desc");
     when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(), any(RowMapper.class))).thenReturn(
         Collections.EMPTY_LIST);
+    when(jdbcTemplate.query(any(String.class), any(PreparedStatementSetter.class), any(SingleColumnRowMapper.class)))
+        .thenReturn(Collections.singletonList(0));
     Pageable pageable = Pageable.ofSize(5);
-    List<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest,pageable);
-    assertEquals(Collections.EMPTY_LIST, actualResponse);
+    Page<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest, pageable);
+    assertEquals(0, actualResponse.getTotalElements());
   }
 
   @Test
@@ -73,9 +82,18 @@ class ValueSetFinderTest {
           setter.setValues(preparedStatement);
           return expectedResponse;
         });
+
+    when(jdbcTemplate.query(any(String.class), setterCaptor.capture(), any(SingleColumnRowMapper.class)))
+        .thenAnswer(invocation -> {
+          PreparedStatementSetter setter = setterCaptor.getValue();
+          PreparedStatement preparedStatement = mock(PreparedStatement.class);
+          setter.setValues(preparedStatement);
+          return Collections.singletonList(10);
+        });
+
     Pageable pageable = Pageable.ofSize(5);
-    List<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest,pageable);
-    assertEquals(expectedResponse, actualResponse);
+    Page<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest, pageable);
+    assertEquals(expectedResponse, actualResponse.toList());
   }
 
   @Test

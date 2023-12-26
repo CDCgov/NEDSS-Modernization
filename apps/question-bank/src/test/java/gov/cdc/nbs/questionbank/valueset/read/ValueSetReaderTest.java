@@ -3,10 +3,12 @@ package gov.cdc.nbs.questionbank.valueset.read;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import gov.cdc.nbs.questionbank.valueset.ValueSetFinder;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,6 @@ class ValueSetReaderTest {
 
   @Test
   void findAllValueSetsTest() {
-
     int max = 5;
     Pageable pageable = PageRequest.of(0, max);
     Page<Codeset> codePage = getCodeSetPage(max, pageable);
@@ -52,25 +53,26 @@ class ValueSetReaderTest {
     Page<ValueSet> result = valueSetReader.findAllValueSets(pageable);
     assertNotNull(result);
     assertEquals(max, result.getTotalElements());
-
     ValueSet one = result.get().toList().get(0);
     assertNotNull(one.valueSetNm());
     assertNotNull(one.valueSetCode());
-
   }
 
   @Test
   void searchValueSetTest() {
     ValueSetSearchRequest search = new ValueSetSearchRequest("setnm", "setCode", "descText");
-
-    List<ValueSetSearchResponse> expectedResult = List.of(new ValueSetSearchResponse("LOCAL", "setCode",
+    List<ValueSetSearchResponse> searchResult = List.of(new ValueSetSearchResponse("LOCAL", "setCode",
         "setnm", "descText", "Active"));
-
+    Pageable pageable = Pageable.ofSize(1);
+    int start = (int) pageable.getOffset();
+    int end = (start + pageable.getPageSize());
+    Page<ValueSetSearchResponse> expectedResult =
+        new PageImpl<>(searchResult.subList(0, 1), pageable, searchResult.size());
     when(valueSetFinder.findValueSet(any(ValueSetSearchRequest.class), any(Pageable.class))).thenReturn(expectedResult);
-    Pageable pageable = Pageable.ofSize(5);
-    List<ValueSetSearchResponse> actualResult = valueSetReader.searchValueSet(search,pageable);
+    Page<ValueSetSearchResponse> actualResult = valueSetReader.searchValueSet(search, pageable);
     assertNotNull(actualResult);
-    boolean isEquals=(expectedResult.containsAll(actualResult) && actualResult.containsAll(expectedResult));
+    boolean isEquals = (expectedResult.toList().containsAll(actualResult.toList()) &&
+        actualResult.toList().containsAll(expectedResult.stream().toList()));
     assertTrue(isEquals);
   }
 
@@ -80,7 +82,6 @@ class ValueSetReaderTest {
       set.add(getCodeSetRequest(i));
     }
     return new PageImpl<>(set, pageable, set.size());
-
   }
 
   private Codeset getCodeSetRequest(int i) {

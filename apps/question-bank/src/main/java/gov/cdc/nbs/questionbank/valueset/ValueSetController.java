@@ -74,9 +74,9 @@ public class ValueSetController {
   }
 
   @PostMapping("search")
-  public List<ValueSetSearchResponse> searchValueSet( @PageableDefault(size = 25) Pageable pageable
-      ,@RequestBody ValueSetSearchRequest search){
-    return valueSetReader.searchValueSet(search,pageable);
+  public Page<ValueSetSearchResponse> searchValueSet(@PageableDefault(size = 25) Pageable pageable
+      , @RequestBody ValueSetSearchRequest search) {
+    return valueSetReader.searchValueSet(search, pageable);
   }
 
   @GetMapping("{codeSetNm}/concepts")

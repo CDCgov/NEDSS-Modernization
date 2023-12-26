@@ -42,8 +42,8 @@ public class ValueSetReader {
 
   }
 
-  public List<ValueSetSearchResponse> searchValueSet(ValueSetSearchRequest search, Pageable pageable) {
-    return valueSetFinder.findValueSet(search,pageable);
+  public Page<ValueSetSearchResponse> searchValueSet(ValueSetSearchRequest search, Pageable pageable) {
+    return valueSetFinder.findValueSet(search, pageable);
   }
 
   public List<ValueSet> toReadValueSet(Page<Codeset> rawResults) {
