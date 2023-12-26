@@ -8,7 +8,7 @@ import { useUserOptionsAutocomplete } from 'options/users';
 const statusOptions: Selectable[] = [
     { label: 'Draft', value: 'Draft', name: 'Draft' },
     { label: 'Published', value: 'Published', name: 'Published' },
-    { label: 'Published with draft', value: 'Published with draft', name: 'Published with draft' }
+    { label: 'Published with Draft', value: 'Published with Draft', name: 'Published with Draft' }
 ];
 
 const startsWith = (criteria: string) => (option: Selectable) =>

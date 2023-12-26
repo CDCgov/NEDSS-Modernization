@@ -28,7 +28,7 @@ record PageSummaryTables(
         QAuthUser.authUser,
         QAuthUser.authUser.userFirstNm.concat(" ").concat(QAuthUser.authUser.userLastNm),
         new CaseBuilder().when(
-                QWaTemplate.waTemplate.templateNm.eq("Draft")
+                QWaTemplate.waTemplate.templateType.eq("Draft")
                     .and(QWaTemplate.waTemplate.publishVersionNbr.isNotNull())
             ).then(PageStatus.PUBLISHED_WITH_DRAFT.display())
             .when(QWaTemplate.waTemplate.templateType.eq("Draft")).then(PageStatus.INITIAL_DRAFT.display())
