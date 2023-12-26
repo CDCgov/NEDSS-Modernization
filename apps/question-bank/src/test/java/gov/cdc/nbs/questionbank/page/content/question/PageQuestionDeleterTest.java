@@ -76,6 +76,29 @@ class PageQuestionDeleterTest {
     }
 
     @Test
+    void should_not_delete_question_the_page_does_not_contain_the_question_id_null() {
+        // Given a page
+        WaTemplate page = new WaTemplate();
+        page.setId(1L);
+
+        WaTemplate tempPage = new WaTemplate();
+        tempPage.setId(2L);
+        when(entityManager.find(WaTemplate.class, 1L)).thenReturn(page);
+
+        List<WaUiMetadata> waUiMetadataList = new ArrayList<>();
+        WaUiMetadata waUiMetadata = new WaUiMetadata();
+        waUiMetadata.setQuestionIdentifier("q_identifier_100");
+        waUiMetadata.setWaTemplateUid(tempPage);
+        waUiMetadataList.add(waUiMetadata);
+        page.setUiMetadata(new ArrayList<WaUiMetadata>());
+
+        PageContentModificationException exception =
+                assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
+        Assertions.assertEquals("Unable to delete a question from a page, the page does not contain the question",
+                exception.getMessage());
+    }
+
+    @Test
     void should_not_delete_question_from_page_the_question_is_standard() {
         // Given a page
         WaTemplate page = new WaTemplate();
