@@ -43,18 +43,15 @@ public class PageController {
   }
 
   @PostMapping
-  public PageCreateResponse createPage(
-      @RequestBody PageCreateRequest request) {
+  public PageCreateResponse createPage(@RequestBody PageCreateRequest request) {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return creator.createPage(request, userId);
   }
-
 
   @PutMapping("{id}/draft")
   public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
     return stateChange.savePageAsDraft(pageId);
   }
-
 
   @GetMapping("{id}/page-history")
   public List<PageHistory> getPageHistory(@PathVariable("id") Long pageId) {
