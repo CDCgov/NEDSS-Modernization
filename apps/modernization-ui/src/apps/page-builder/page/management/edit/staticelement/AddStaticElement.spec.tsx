@@ -13,7 +13,7 @@ const page: PagesResponse = {
 };
 
 const fetch = () => {
-    console.log("dummy fetch");
+    jest.fn();
 }
 
 describe('When page loads', () => {

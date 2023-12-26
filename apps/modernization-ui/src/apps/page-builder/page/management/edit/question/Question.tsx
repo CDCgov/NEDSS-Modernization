@@ -12,22 +12,15 @@ type Props = {
     onEditQuestion: (id: number) => void;
     onDeleteQuestion: (id: number, componentId: number) => void;
 };
+
+const staticComponents = [1003, 1036, 1012, 1014, 1030, undefined];
+
 export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQuestion }: Props) => {
     const modal = useRef<ModalRef>(null);
     const [confirmModal, setConfirmModal] = useState(false);
 
-    const handleCancel = () => {
-        window.location.reload();
-    };
-
     useEffect(() => {
-        const shown =
-            confirmModal &&
-            (question.displayComponent == 1003 ||
-                question.displayComponent == 1036 ||
-                question.displayComponent == 1012 ||
-                question.displayComponent == 1014 ||
-                question.displayComponent == 1030);
+        const shown = confirmModal && staticComponents.includes(question.displayComponent);
         modal.current?.toggleModal(undefined, shown);
     }, [confirmModal]);
 
@@ -41,7 +34,6 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     onEditQuestion={() => onEditQuestion(question.id)}
                     onDeleteQuestion={() => {
                         setConfirmModal(true);
-                        console.log('clicked', confirmModal);
                     }}
                 />
                 {confirmModal === true && (
@@ -56,7 +48,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                             setConfirmModal(false);
                         }}
                         cancelText="Cancel"
-                        onCancel={handleCancel}
+                        onCancel={() => {}}
                     />
                 )}
                 <QuestionContent

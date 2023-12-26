@@ -12,7 +12,6 @@ type Props = {
     onAddQuestion: () => void;
 };
 export const Subsection = ({ subsection, onAddQuestion }: Props) => {
-    console.log(subsection.questions);
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, fetch } = usePageManagement();
 
