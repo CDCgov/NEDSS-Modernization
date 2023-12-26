@@ -97,6 +97,7 @@ class PagesResponseMapper {
 
   private PagesResponse.PagesQuestion asQuestion(final ContentNode content) {
     long id = content.identifier();
+    String adminComments = content.attributes().adminComments();
     boolean isStandard = true;
     String standard = content.attributes().standard();
     String questionIdentifier = content.attributes().question();
@@ -134,7 +135,8 @@ class PagesResponseMapper {
         required,
         defaultValue,
         valueSet,
-        displayComponent
+        displayComponent,
+        adminComments
     );
   }
 

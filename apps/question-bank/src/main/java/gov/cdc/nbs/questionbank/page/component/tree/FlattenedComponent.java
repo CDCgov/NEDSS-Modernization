@@ -19,7 +19,8 @@ record FlattenedComponent(
     String mask,
     String toolTip,
     String defaultValue,
-    String valueSet
+    String valueSet,
+    String adminComments
 ) {
 
   FlattenedComponent(
@@ -31,6 +32,6 @@ record FlattenedComponent(
   ) {
     this(identifier, type, name, visible, order, false, null, null, null, null, null, false, false, false, false, null,
         null,
-        null, null);
+        null, null, null);
   }
 }
