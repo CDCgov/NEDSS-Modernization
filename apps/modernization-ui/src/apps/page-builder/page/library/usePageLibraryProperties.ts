@@ -6,7 +6,7 @@ import { useConditionOptionsAutocomplete } from 'options/condition';
 import { useUserOptionsAutocomplete } from 'options/users';
 
 const statusOptions: Selectable[] = [
-    { label: 'Draft', value: 'Draft', name: 'Draft' },
+    { label: 'Initial Draft', value: 'Initial Draft', name: 'Initial Draft' },
     { label: 'Published', value: 'Published', name: 'Published' },
     { label: 'Published with Draft', value: 'Published with Draft', name: 'Published with Draft' }
 ];
