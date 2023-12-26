@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
+import gov.cdc.nbs.questionbank.page.content.question.response.DeleteQuestionResponse;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
@@ -32,10 +33,10 @@ public class PageQuestionController {
     }
 
     @DeleteMapping("{questionId}")
-    public void deleteQuestion(
+    public DeleteQuestionResponse deleteQuestion(
             @PathVariable("page") Long page,
             @PathVariable("questionId") Long questionId,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-        deleter.deleteQuestion(page, questionId, details.getId());
+        return deleter.deleteQuestion(page, questionId, details.getId());
     }
 }

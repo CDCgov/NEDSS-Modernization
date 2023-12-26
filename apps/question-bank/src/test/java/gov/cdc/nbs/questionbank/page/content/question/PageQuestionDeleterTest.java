@@ -2,11 +2,8 @@ package gov.cdc.nbs.questionbank.page.content.question;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.exception.DeleteQuestionException;
-import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,11 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class PageQuestionDeleterTest {
 
     @Mock
     private EntityManager entityManager;
+
+    @Mock
+    private WaTemplate waTemplate;
 
     @InjectMocks
     private PageQuestionDeleter deleter;
@@ -39,12 +40,11 @@ class PageQuestionDeleterTest {
         waUiMetadata.setQuestionIdentifier("q_identifier");
         waUiMetadata.setStandardQuestionIndCd('F');
         waUiMetadata.setOrderNbr(3);
+        waUiMetadata.setWaTemplateUid(page);
         waUiMetadataList.add(waUiMetadata);
         page.setUiMetadata(waUiMetadataList);
 
-        TextQuestionEntity textQuestion = QuestionEntityMother.textQuestion();
-        when(textQuestion.getQuestionIdentifier()).thenReturn("q_identifier");
-        when(entityManager.find(WaQuestion.class, 2L)).thenReturn(textQuestion);
+        when(entityManager.find(WaUiMetadata.class, 2L)).thenReturn(waUiMetadata);
 
         Assertions.assertEquals(1, page.getUiMetadata().size());//before delete
         deleter.deleteQuestion(1L, 2L, 3L);
@@ -55,41 +55,46 @@ class PageQuestionDeleterTest {
     void should_not_delete_question_the_page_does_not_contain_the_question() {
         // Given a page
         WaTemplate page = new WaTemplate();
+        page.setId(1L);
+
+        WaTemplate tempPage = new WaTemplate();
+        tempPage.setId(2L);
         when(entityManager.find(WaTemplate.class, 1L)).thenReturn(page);
 
         List<WaUiMetadata> waUiMetadataList = new ArrayList<>();
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         waUiMetadata.setQuestionIdentifier("q_identifier_100");
+        waUiMetadata.setWaTemplateUid(tempPage);
         waUiMetadataList.add(waUiMetadata);
         page.setUiMetadata(waUiMetadataList);
 
-        TextQuestionEntity textQuestion = QuestionEntityMother.textQuestion();
-        when(textQuestion.getQuestionIdentifier()).thenReturn("q_identifier_200");
-        when(entityManager.find(WaQuestion.class, 2L)).thenReturn(textQuestion);
+        when(entityManager.find(WaUiMetadata.class, 2L)).thenReturn(waUiMetadata);
 
-        PageContentModificationException exception = assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
-        Assertions.assertEquals("Unable to delete a question from a page, the page does not contain the question"
-                , exception.getMessage());
+        PageContentModificationException exception =
+                assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
+        Assertions.assertEquals("Unable to delete a question from a page, the page does not contain the question",
+                exception.getMessage());
     }
 
     @Test
     void should_not_delete_question_from_page_the_question_is_standard() {
         // Given a page
         WaTemplate page = new WaTemplate();
+        page.setId(1L);
         when(entityManager.find(WaTemplate.class, 1L)).thenReturn(page);
 
         List<WaUiMetadata> waUiMetadataList = new ArrayList<>();
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         waUiMetadata.setQuestionIdentifier("q_identifier_100");
         waUiMetadata.setStandardQuestionIndCd('T');
+        waUiMetadata.setWaTemplateUid(page);
         waUiMetadataList.add(waUiMetadata);
         page.setUiMetadata(waUiMetadataList);
 
-        TextQuestionEntity textQuestion = QuestionEntityMother.textQuestion();
-        when(textQuestion.getQuestionIdentifier()).thenReturn("q_identifier_100");
-        when(entityManager.find(WaQuestion.class, 2L)).thenReturn(textQuestion);
+        when(entityManager.find(WaUiMetadata.class, 2L)).thenReturn(waUiMetadata);
 
-        PageContentModificationException exception = assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
+        PageContentModificationException exception =
+                assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
         Assertions.assertEquals("Unable to delete standard question", exception.getMessage());
     }
 

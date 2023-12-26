@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.page.command;
 import java.time.Instant;
 import java.util.List;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 
@@ -169,7 +170,7 @@ public sealed interface PageContentCommand {
 
         public record DeleteQuestion(
                 Long page,
-                WaQuestion question,
+                WaUiMetadata question,
                 long userId,
                 Instant requestedOn) implements PageContentCommand {
         }
