@@ -517,19 +517,21 @@ public class WaTemplate {
     verifyDraftType();
 
     // ensure page already contain question
-
-    if(command.question().getWaTemplateUid().getId() != command.page()) {
-      throw new PageContentModificationException("Unable to delete a question from a page, the page does not contain the question");
-    }
+    WaUiMetadata question = uiMetadata.stream()
+        .filter(e -> e.getId() != null
+            && e.getId().equals(command.question())).findFirst()
+        .orElseThrow(() ->
+            new PageContentModificationException(
+                "Unable to delete a question from a page, the page does not contain the question"));
 
     //can not delete standard questions
-    if (command.question().getStandardQuestionIndCd() == 'T') {
+    if (question.getStandardQuestionIndCd() == 'T') {
       throw new PageContentModificationException("Unable to delete standard question");
     }
 
     // Remove question and adjust orderNbrs
-    this.uiMetadata.remove(command.question());
-    adjustingComponentsFrom(command.question().getOrderNbr());
+    this.uiMetadata.remove(question);
+    adjustingComponentsFrom(question.getOrderNbr());
     changed(command);
   }
 

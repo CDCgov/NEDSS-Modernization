@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.question.response.DeleteQuestionResponse;
 import gov.cdc.nbs.questionbank.page.exception.DeleteQuestionException;
@@ -27,8 +26,7 @@ public class PageQuestionDeleter {
         if (page == null) {
             throw new DeleteQuestionException("Failed to find page with id: " + pageId);
         }
-        WaUiMetadata question = entityManager.find(WaUiMetadata.class, questionId);
-        page.deleteQuestion(new PageContentCommand.DeleteQuestion(page.getId(), question, user, Instant.now()));
+        page.deleteQuestion(new PageContentCommand.DeleteQuestion(questionId, user, Instant.now()));
         return new DeleteQuestionResponse("question deleted successfully");
     }
 

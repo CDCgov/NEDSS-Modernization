@@ -33,18 +33,18 @@ class PageQuestionDeleterTest {
     void should_delete_question_from_page() {
         // Given a page
         WaTemplate page = new WaTemplate();
+        page.setId(1L);
         when(entityManager.find(WaTemplate.class, 1L)).thenReturn(page);
 
         List<WaUiMetadata> waUiMetadataList = new ArrayList<>();
         WaUiMetadata waUiMetadata = new WaUiMetadata();
+        waUiMetadata.setId(2L);
         waUiMetadata.setQuestionIdentifier("q_identifier");
         waUiMetadata.setStandardQuestionIndCd('F');
         waUiMetadata.setOrderNbr(3);
         waUiMetadata.setWaTemplateUid(page);
         waUiMetadataList.add(waUiMetadata);
         page.setUiMetadata(waUiMetadataList);
-
-        when(entityManager.find(WaUiMetadata.class, 2L)).thenReturn(waUiMetadata);
 
         Assertions.assertEquals(1, page.getUiMetadata().size());//before delete
         deleter.deleteQuestion(1L, 2L, 3L);
@@ -63,12 +63,11 @@ class PageQuestionDeleterTest {
 
         List<WaUiMetadata> waUiMetadataList = new ArrayList<>();
         WaUiMetadata waUiMetadata = new WaUiMetadata();
+        waUiMetadata.setId(2L);
         waUiMetadata.setQuestionIdentifier("q_identifier_100");
         waUiMetadata.setWaTemplateUid(tempPage);
         waUiMetadataList.add(waUiMetadata);
-        page.setUiMetadata(waUiMetadataList);
-
-        when(entityManager.find(WaUiMetadata.class, 2L)).thenReturn(waUiMetadata);
+        page.setUiMetadata(new ArrayList<WaUiMetadata>());
 
         PageContentModificationException exception =
                 assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
@@ -85,19 +84,17 @@ class PageQuestionDeleterTest {
 
         List<WaUiMetadata> waUiMetadataList = new ArrayList<>();
         WaUiMetadata waUiMetadata = new WaUiMetadata();
+        waUiMetadata.setId(2L);
         waUiMetadata.setQuestionIdentifier("q_identifier_100");
         waUiMetadata.setStandardQuestionIndCd('T');
         waUiMetadata.setWaTemplateUid(page);
         waUiMetadataList.add(waUiMetadata);
         page.setUiMetadata(waUiMetadataList);
 
-        when(entityManager.find(WaUiMetadata.class, 2L)).thenReturn(waUiMetadata);
-
         PageContentModificationException exception =
                 assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
         Assertions.assertEquals("Unable to delete standard question", exception.getMessage());
     }
-
 
     @Test
     void should_not_delete_question_from_page_no_page_found() {
