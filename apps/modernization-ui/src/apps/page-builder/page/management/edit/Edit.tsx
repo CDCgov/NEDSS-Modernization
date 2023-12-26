@@ -11,10 +11,10 @@ import {
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 
 export const Edit = () => {
-    const { page } = useGetPageDetails();
+    const { page, fetch } = useGetPageDetails();
 
     return page ? (
-        <PageManagementProvider page={page}>
+        <PageManagementProvider page={page} fetch={fetch}>
             <EditPageContent />
         </PageManagementProvider>
     ) : (

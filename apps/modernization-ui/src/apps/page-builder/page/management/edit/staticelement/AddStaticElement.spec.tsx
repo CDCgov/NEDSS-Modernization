@@ -5,6 +5,7 @@ import { AddStaticElement } from './AddStaticElement';
 import { PageManagementProvider } from '../../usePageManagement';
 import { PagesResponse } from 'apps/page-builder/generated';
 import userEvent from '@testing-library/user-event';
+import { useGetPageDetails } from '../../useGetPageDetails';
 
 const page: PagesResponse = {
     id: 12039120,
@@ -12,12 +13,16 @@ const page: PagesResponse = {
     status: 'Draft'
 };
 
+const fetch = () => {
+    console.log("dummy fetch");
+}
+
 describe('When page loads', () => {
     it('the add static button should be disabled', () => {
         const { getByTestId } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -31,7 +36,7 @@ describe('When page loads', () => {
         const { getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -47,7 +52,7 @@ describe('When line separator is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -72,7 +77,7 @@ describe('When hyperlink is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -100,7 +105,7 @@ describe('When comments is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -127,7 +132,7 @@ describe('When participants is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -154,7 +159,7 @@ describe('When electronic doc list is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -179,7 +184,7 @@ describe('When all inputs are entered', () => {
         const { getByTestId, findByTestId } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>

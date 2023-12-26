@@ -14,7 +14,7 @@ type Props = {
 export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     console.log(subsection.questions);
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
-    const { page } = usePageManagement();
+    const { page, fetch } = usePageManagement();
 
     const { showAlert } = useAlert();
 
@@ -42,7 +42,8 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                 page: page.id,
                 request: { componentId: id }
             }).then(() => {
-                handleAlert(`deleted a static element`);
+                handleAlert(`Element deleted successfully`);
+                fetch(page.id);
             });
         } else {
             console.log('delete question NYI', id);
