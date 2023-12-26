@@ -13,8 +13,6 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ClassicCreatePageRedirector {
-  private static final String PREVIEW = "/nbs/ManagePage.do";
-
   private final ClassicCreatePagePreparer preparer;
 
   ClassicCreatePageRedirector(final ClassicCreatePagePreparer preparer) {
@@ -25,7 +23,7 @@ public class ClassicCreatePageRedirector {
   ResponseEntity<Void> view() {
     preparer.prepare();
 
-    String location = UriComponentsBuilder.fromPath(PREVIEW)
+    String location = UriComponentsBuilder.fromPath("/nbs/ManagePage.do")
         .queryParam("method", "addPageLoad")
         .build()
         .toUriString();
