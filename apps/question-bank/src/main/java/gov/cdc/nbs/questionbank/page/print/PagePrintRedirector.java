@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.page.print;
 
-import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePageRequester;
+import gov.cdc.nbs.questionbank.page.classic.redirect.outgoing.ClassicManagePagesRequester;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -13,9 +13,9 @@ class PagePrintRedirector {
 
   private static final String LOCATION = "/nbs/PreviewPage.do";
 
-  private final ClassicManagePageRequester managePageRequester;
+  private final ClassicManagePagesRequester managePageRequester;
 
-  PagePrintRedirector(final ClassicManagePageRequester managePageRequester) {
+  PagePrintRedirector(final ClassicManagePagesRequester managePageRequester) {
     this.managePageRequester = managePageRequester;
   }
 

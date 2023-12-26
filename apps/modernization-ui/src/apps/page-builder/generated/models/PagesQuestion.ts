@@ -9,6 +9,7 @@ export type PagesQuestion = {
     defaultValue?: string;
     description?: string;
     display?: boolean;
+    displayComponent?: number;
     enabled?: boolean;
     id: number;
     isStandard?: boolean;

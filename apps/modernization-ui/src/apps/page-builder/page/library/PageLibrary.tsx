@@ -66,7 +66,7 @@ const PageLibraryContent = () => {
                         {!config.loading && config.features.pageBuilder.page.management.enabled ? (
                             <NavLinkButton to={'/page-builder/pages/add'}>Create new page</NavLinkButton>
                         ) : (
-                            <LinkButton type="solid" target="_self" href="/nbs/ManagePage.do?method=addPageLoad">
+                            <LinkButton type="solid" target="_self" href="/nbs/page-builder/api/v1/pages/create">
                                 Create new page
                             </LinkButton>
                         )}

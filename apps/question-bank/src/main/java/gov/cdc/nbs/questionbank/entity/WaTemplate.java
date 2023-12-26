@@ -518,8 +518,8 @@ public class WaTemplate {
 
     // ensure page already contain question
     WaUiMetadata question = uiMetadata.stream()
-        .filter(e -> e.getQuestionIdentifier() != null
-            && e.getQuestionIdentifier().equals(command.question().getQuestionIdentifier())).findFirst()
+        .filter(e -> e.getId() != null
+            && e.getId().equals(command.question())).findFirst()
         .orElseThrow(() ->
             new PageContentModificationException(
                 "Unable to delete a question from a page, the page does not contain the question"));

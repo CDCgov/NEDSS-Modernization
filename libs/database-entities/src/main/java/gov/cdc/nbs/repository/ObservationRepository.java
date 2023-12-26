@@ -86,8 +86,7 @@ public interface ObservationRepository
                 JOIN act on o.observation_uid =act.act_uid
                 JOIN Participation par on par.act_uid = o.observation_uid
                 JOIN person p on p.person_uid = par.subject_entity_uid
-                LEFT JOIN nbs_srte.dbo.jurisdiction_code jc ON o.jurisdiction_cd = jc.code
-                AND o.obs_domain_cd_st_1 = 'Result'
+                JOIN nbs_srte.dbo.jurisdiction_code jc ON o.jurisdiction_cd = jc.code              
                 and o.record_status_cd in ('PROCESSED', 'UNPROCESSED')
                 and o.ctrl_cd_display_form = 'LabReport'
             WHERE

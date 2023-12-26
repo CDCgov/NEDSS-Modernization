@@ -13,7 +13,7 @@ describe('when rendered', () => {
         const tableHeads = getAllByRole('columnheader');
 
         expect(tableHeads[0]).toHaveTextContent('Page name');
-        expect(tableHeads[1]).toHaveTextContent('Event name');
+        expect(tableHeads[1]).toHaveTextContent('Event type');
         expect(tableHeads[2]).toHaveTextContent('Related condition(s)');
         expect(tableHeads[3]).toHaveTextContent('Status');
         expect(tableHeads[4]).toHaveTextContent('Last updated');
