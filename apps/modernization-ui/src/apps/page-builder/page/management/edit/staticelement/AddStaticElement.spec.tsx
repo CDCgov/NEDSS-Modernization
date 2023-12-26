@@ -5,7 +5,6 @@ import { AddStaticElement } from './AddStaticElement';
 import { PageManagementProvider } from '../../usePageManagement';
 import { PagesResponse } from 'apps/page-builder/generated';
 import userEvent from '@testing-library/user-event';
-import { useGetPageDetails } from '../../useGetPageDetails';
 
 const page: PagesResponse = {
     id: 12039120,
