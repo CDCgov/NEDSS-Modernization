@@ -66,8 +66,9 @@ class ValueSetReaderTest {
     List<ValueSetSearchResponse> expectedResult = List.of(new ValueSetSearchResponse("LOCAL", "setCode",
         "setnm", "descText", "Active"));
 
-    when(valueSetFinder.findValueSet(any(ValueSetSearchRequest.class))).thenReturn(expectedResult);
-    List<ValueSetSearchResponse> actualResult = valueSetReader.searchValueSet(search);
+    when(valueSetFinder.findValueSet(any(ValueSetSearchRequest.class), any(Pageable.class))).thenReturn(expectedResult);
+    Pageable pageable = Pageable.ofSize(5);
+    List<ValueSetSearchResponse> actualResult = valueSetReader.searchValueSet(search,pageable);
     assertNotNull(actualResult);
     boolean isEquals=(expectedResult.containsAll(actualResult) && actualResult.containsAll(expectedResult));
     assertTrue(isEquals);

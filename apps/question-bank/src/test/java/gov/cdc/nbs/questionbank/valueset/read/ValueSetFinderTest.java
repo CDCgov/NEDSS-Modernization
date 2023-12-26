@@ -6,6 +6,8 @@ import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -41,7 +43,12 @@ class ValueSetFinderTest {
     List<ValueSetSearchResponse> expectedResponse = getListOfValueSetSearchResponses();
     when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(), any(RowMapper.class))).thenReturn(
         expectedResponse);
-    List<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest);
+    Pageable pageable = mock(Pageable.class);
+    Sort sort = mock(Sort.class);
+    when(sort.isSorted()).thenReturn(true);
+    when(sort.toString()).thenReturn("searchField");
+    when(pageable.getSort()).thenReturn(sort);
+    List<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest,pageable);
     assertEquals(expectedResponse, actualResponse);
   }
 
@@ -50,7 +57,8 @@ class ValueSetFinderTest {
     ValueSetSearchRequest searchRequest = new ValueSetSearchRequest("setNm", "setCd", "desc");
     when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(), any(RowMapper.class))).thenReturn(
         Collections.EMPTY_LIST);
-    List<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest);
+    Pageable pageable = Pageable.ofSize(5);
+    List<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest,pageable);
     assertEquals(Collections.EMPTY_LIST, actualResponse);
   }
 
@@ -65,7 +73,8 @@ class ValueSetFinderTest {
           setter.setValues(preparedStatement);
           return expectedResponse;
         });
-    List<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest);
+    Pageable pageable = Pageable.ofSize(5);
+    List<ValueSetSearchResponse> actualResponse = valueSetFinder.findValueSet(searchRequest,pageable);
     assertEquals(expectedResponse, actualResponse);
   }
 

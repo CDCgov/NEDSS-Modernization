@@ -6,6 +6,7 @@ import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -58,7 +59,8 @@ public class ReadValueSetSteps {
     try {
       search = new ValueSetSearchRequest("testValueSetNm",
           "testValueSetCode", "testCodeSetDescTxt");
-      List<ValueSetSearchResponse> results = valueSetController.searchValueSet(search);
+      Pageable pageable = Pageable.ofSize(1);
+      List<ValueSetSearchResponse> results = valueSetController.searchValueSet(pageable,search);
       valueSetSearchHolder.setValueSetSearchResults(results);
     } catch (AccessDeniedException e) {
       exceptionHolder.setException(e);
@@ -71,7 +73,8 @@ public class ReadValueSetSteps {
   public void i_make_a_request_for_a_value_set_that_does_not_exist() {
     try {
       search = new ValueSetSearchRequest("xxxxx", "xxxxx", "xxxxx");
-      List<ValueSetSearchResponse> results = valueSetController.searchValueSet(search);
+      Pageable pageable = Pageable.ofSize(1);
+      List<ValueSetSearchResponse> results = valueSetController.searchValueSet(pageable,search);
       valueSetSearchHolder.setValueSetSearchResults(results);
     } catch (AccessDeniedException e) {
       exceptionHolder.setException(e);
@@ -97,6 +100,7 @@ public class ReadValueSetSteps {
     List<ValueSetSearchResponse> results = valueSetSearchHolder.getValueSetSearchResults();
     assertNotNull(results);
     assertFalse(results.isEmpty());
+    assertEquals(1,results.size());
   }
 
   @Then("All Value sets should be returned")
