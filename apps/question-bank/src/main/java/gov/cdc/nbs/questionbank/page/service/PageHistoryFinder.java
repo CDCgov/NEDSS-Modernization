@@ -23,7 +23,7 @@ public class PageHistoryFinder {
       SELECT
         hist.publish_version_nbr AS publishVersionNbr,
         CONVERT(varchar, hist.last_chg_time, 101) AS lastUpdatedDate,
-        userProfile.first_nm || ' ' || userProfile.last_nm AS lastUpdatedBy,
+        CONCAT(userProfile.first_nm, ' ', userProfile.last_nm) AS lastUpdatedBy,
         hist.version_note AS notes
       FROM
         WA_template_hist hist
@@ -34,7 +34,7 @@ public class PageHistoryFinder {
       SELECT
         tem.publish_version_nbr AS publishVersionNbr,
         CONVERT(varchar, tem.last_chg_time, 101) AS lastUpdatedDate,
-        userProfile.first_nm || ' ' || userProfile.last_nm AS lastUpdatedBy,
+        CONCAT(userProfile.first_nm, ' ', userProfile.last_nm) AS lastUpdatedBy,
         tem.version_note AS notes
       FROM
         WA_template tem
