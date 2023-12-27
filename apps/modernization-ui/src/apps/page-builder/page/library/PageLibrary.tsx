@@ -31,20 +31,24 @@ const PageLibrary = () => {
 const PageLibraryContent = () => {
     const { sorting, sortBy } = useSorting();
     const config = useConfiguration();
-    const { keyword, pages, searching, search, filter } = usePageSummarySearch();
+    const { keyword, pages, searching, search } = usePageSummarySearch();
     const { properties } = usePageLibraryProperties();
 
     const [filters, setFilters] = useState<Filter[]>([]);
 
     const handleFilter = (filters: Filter[]) => {
         setFilters(filters);
-        filter(filters);
+        search(keyword, filters);
+    };
+
+    const handleSearch = (query?: string) => {
+        search(query, filters);
     };
 
     const handleDownloadCSV = () => {
         PageSummaryDownloadControllerService.csvUsingPost({
             authorization: authorization(),
-            sort: sorting,
+            sort: sorting ?? 'id,asc',
             request: {
                 search: keyword,
                 filters: externalize(filters)
@@ -74,7 +78,7 @@ const PageLibraryContent = () => {
                     <PageLibraryMenu
                         properties={properties}
                         filters={filters}
-                        onSearch={search}
+                        onSearch={handleSearch}
                         onFilter={handleFilter}
                         onDownload={handleDownloadCSV}
                         onPrint={handleDownloadPDF}
