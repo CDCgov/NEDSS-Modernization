@@ -34,7 +34,17 @@ public class ValueSetFinder {
           FETCH NEXT ? ROWS ONLY
           """;
 
-  private static final int MAX_ROW_COUNT = 2147483647;
+  private static final String ROWS_COUNT = """
+      SELECT 
+      COUNT(*)
+      FROM NBS_SRTE.dbo.Codeset 
+      WHERE (NBS_SRTE.dbo.Codeset.value_set_nm LIKE  ?
+          OR NBS_SRTE.dbo.Codeset.code_set_desc_txt LIKE ?
+          OR NBS_SRTE.dbo.Codeset.value_set_code LIKE ? )
+          AND NBS_SRTE.dbo.Codeset.class_cd = 'code_value_general'
+          """;
+
+
   private final JdbcTemplate jdbcTemplate;
   private final RowMapper<ValueSetSearchResponse> mapper;
   RowMapper<Integer> integerRowMapper = new SingleColumnRowMapper<>(Integer.class);
@@ -43,6 +53,7 @@ public class ValueSetFinder {
   private static final int VALUE_SET_CODE = 3;
   private static final int OFFSET = 4;
   private static final int LIMIT = 5;
+  private static final String DEFAULT_SORT_COLUMN = "value_set_nm";
 
 
   ValueSetFinder(final JdbcTemplate jdbcTemplate) {
@@ -54,19 +65,17 @@ public class ValueSetFinder {
     int limit = pageable.getPageSize();
     int offset = pageable.getPageNumber() * limit;
     Sort sort = pageable.getSort();
-
     int totalRowsCount = getTotalRowsCount(request);
-
     if (sort.isSorted()) {
-      findValueSetQuery = findValueSetQuery.replace("ORDER BY value_set_nm",
-          " ORDER BY " + sort.toString().replace(": ", " "));
+      findValueSetQuery = findValueSetQuery.replace(DEFAULT_SORT_COLUMN,
+          DEFAULT_SORT_COLUMN + "," + sort.toString().replace(": ", " "));
     }
     List<ValueSetSearchResponse> result = this.jdbcTemplate.query(
         findValueSetQuery,
         setter -> {
-          setter.setString(VALUE_SET_NAME, "%" + request.getValueSetNm() + "%");
-          setter.setString(CODE_SET_DESCRIPTION, "%" + request.getValueSetDescription() + "%");
-          setter.setString(VALUE_SET_CODE, "%" + request.getValueSetCode() + "%");
+          setter.setString(VALUE_SET_NAME, "%" + request.valueSetNm() + "%");
+          setter.setString(CODE_SET_DESCRIPTION, "%" + request.valueSetDescription() + "%");
+          setter.setString(VALUE_SET_CODE, "%" + request.valueSetCode() + "%");
           setter.setInt(OFFSET, offset);
           setter.setInt(LIMIT, limit);
         }, mapper
@@ -74,17 +83,13 @@ public class ValueSetFinder {
     return new PageImpl<>(result, pageable, totalRowsCount);
   }
 
-
   private int getTotalRowsCount(ValueSetSearchRequest request) {
-    String countQuery = "SELECT COUNT(*) FROM (" + findValueSetQuery + ") AS total";
     return this.jdbcTemplate.query(
-        countQuery,
+        ROWS_COUNT,
         setter -> {
-          setter.setString(VALUE_SET_NAME, "%" + request.getValueSetNm() + "%");
-          setter.setString(CODE_SET_DESCRIPTION, "%" + request.getValueSetDescription() + "%");
-          setter.setString(VALUE_SET_CODE, "%" + request.getValueSetCode() + "%");
-          setter.setInt(OFFSET, 0);
-          setter.setInt(LIMIT, MAX_ROW_COUNT);
+          setter.setString(VALUE_SET_NAME, "%" + request.valueSetNm() + "%");
+          setter.setString(CODE_SET_DESCRIPTION, "%" + request.valueSetDescription() + "%");
+          setter.setString(VALUE_SET_CODE, "%" + request.valueSetCode() + "%");
         }, integerRowMapper
     ).get(0);
   }
