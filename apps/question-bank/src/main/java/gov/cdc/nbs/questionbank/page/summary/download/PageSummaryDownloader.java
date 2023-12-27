@@ -34,7 +34,7 @@ public class PageSummaryDownloader {
       final Pageable pageable) {
     // Retrieve page summaries 
     PageSummaryCriteria criteria = PageSummaryCriteriaMapper.asCriteria(request);
-    Sort sort = pageable != null ? pageable.getSort() : Sort.by("id").descending();
+    Sort sort = pageable != null ? pageable.getSort() : Sort.by("id");
     Page<PageSummary> summaries = searcher.find(criteria, PageRequest.ofSize(Integer.MAX_VALUE).withSort(sort));
 
     // Create CSV
@@ -46,7 +46,7 @@ public class PageSummaryDownloader {
       final Pageable pageable) {
     // Retrieve page summaries 
     PageSummaryCriteria criteria = PageSummaryCriteriaMapper.asCriteria(request);
-    Sort sort = pageable != null ? pageable.getSort() : Sort.by("id").descending();
+    Sort sort = pageable != null ? pageable.getSort() : Sort.by("id");
     Page<PageSummary> summaries = searcher.find(criteria, PageRequest.ofSize(Integer.MAX_VALUE).withSort(sort));
 
     // Create PDF
