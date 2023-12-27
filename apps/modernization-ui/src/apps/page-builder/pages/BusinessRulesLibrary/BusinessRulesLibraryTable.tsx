@@ -77,29 +77,29 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
 
     const redirectRuleURL = `/page-builder/pages/${pageId}/business-rules-library`;
 
-    const asTableRow = (page: Rules): TableBody => ({
-        id: page.templateUid,
+    const asTableRow = (rule: Rules): TableBody => ({
+        id: rule.templateUid,
         tableDetails: [
             {
                 id: 1,
-                title: <Link to={`${redirectRuleURL}/edit/${page?.ruleId}`}>{page?.sourceIdentifier}</Link>
+                title: <Link to={`/page-builder/pages/${pageId}/${rule.ruleId}`}>{rule?.sourceIdentifier}</Link>
             },
-            { id: 2, title: <div className="event-text">{mapLogic(page)}</div> || null },
+            { id: 2, title: <div className="event-text">{mapLogic(rule)}</div> || null },
             {
                 id: 3,
-                title: <div>{page?.sourceValue?.join(' ')}</div> || null
+                title: <div>{rule?.sourceValue?.join(' ')}</div> || null
             },
             {
                 id: 4,
-                title: <div>{page?.ruleFunction}</div> || null
+                title: <div>{rule?.ruleFunction}</div> || null
             },
             {
                 id: 5,
-                title: <div>{page?.targetValueIdentifier?.join(' ')}</div> || null
+                title: <div>{rule?.targetValueIdentifier?.join(' ')}</div> || null
             },
             {
                 id: 6,
-                title: <div>{page?.ruleId}</div> || null
+                title: <div>{rule?.ruleId}</div> || null
             }
         ]
     });
