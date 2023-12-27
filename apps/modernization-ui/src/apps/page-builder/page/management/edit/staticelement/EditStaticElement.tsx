@@ -29,6 +29,7 @@ const staticType = [
 type EditStaticProps = {
     modalRef?: RefObject<ModalRef>;
     question: PagesQuestion;
+    onChange?: () => void;
 };
 
 type StaticElementType = {

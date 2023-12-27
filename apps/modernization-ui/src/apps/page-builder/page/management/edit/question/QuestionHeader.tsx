@@ -42,7 +42,9 @@ export const QuestionHeader = ({
             <ModalComponent
                 modalRef={editStaticElementRef}
                 modalHeading={'Edit static elements'}
-                modalBody={<EditStaticElement modalRef={editStaticElementRef} question={question} />}
+                modalBody={
+                    <EditStaticElement modalRef={editStaticElementRef} question={question} onChange={onEditQuestion} />
+                }
             />
         </div>
     );

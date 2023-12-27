@@ -11,6 +11,15 @@ type Props = {
     subsection: PagesSubSection;
     onAddQuestion: () => void;
 };
+
+const hyperlinkID = 1003;
+const lineSeparatorID = 1012;
+const readOnlyParticipants = 1030;
+const readOnlyComments = 1014;
+const originalElecDoc = 1036;
+
+const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, readOnlyComments, originalElecDoc];
+
 export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, fetch } = usePageManagement();
@@ -25,17 +34,24 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
         setIsExpanded(expanded);
     };
 
-    const handleEditQuestion = (id: number) => {
-        console.log('edit question NYI', id);
+    const handleEditQuestion = (id: number, componentId: number) => {
+        if (staticElementTypes.includes(componentId)) {
+            console.log('edit question NYI', id);
+            if (hyperlinkID === componentId) {
+                PageStaticControllerService.updateHyperlinkUsingPut({
+                    authorization: authorization(),
+                    page: page.id,
+                    request: undefined
+                }).then(() => {
+                    handleAlert("Element is editted");
+                })
+            } else if (readOnlyComments === componentId) {
+            } else {
+            }
+        }
     };
     const handleDeleteQuestion = (id: number, componentId: number) => {
-        if (
-            componentId == 1003 ||
-            componentId == 1036 ||
-            componentId == 1012 ||
-            componentId == 1014 ||
-            componentId == 1030
-        ) {
+        if (staticElementTypes.includes(componentId)) {
             PageStaticControllerService.deleteStaticElementUsingDelete({
                 authorization: authorization(),
                 page: page.id,

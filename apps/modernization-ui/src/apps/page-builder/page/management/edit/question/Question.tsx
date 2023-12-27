@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 type Props = {
     question: PagesQuestion;
     onRequiredChange: (id: number) => void;
-    onEditQuestion: (id: number) => void;
+    onEditQuestion: (id: number, componentId: number) => void;
     onDeleteQuestion: (id: number, componentId: number) => void;
 };
 
@@ -32,7 +32,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     isRequired={question.required ?? false}
                     question={question}
                     onRequiredChange={() => onRequiredChange(question.id)}
-                    onEditQuestion={() => onEditQuestion(question.id)}
+                    onEditQuestion={() => onEditQuestion(question.id, question.displayComponent!)}
                     onDeleteQuestion={() => {
                         setConfirmModal(true);
                     }}

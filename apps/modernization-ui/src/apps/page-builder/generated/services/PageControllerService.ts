@@ -4,6 +4,7 @@
 import type { PageCreateRequest } from '../models/PageCreateRequest';
 import type { PageCreateResponse } from '../models/PageCreateResponse';
 import type { PageDeleteResponse } from '../models/PageDeleteResponse';
+import type { PageHistory } from '../models/PageHistory';
 import type { PageStateResponse } from '../models/PageStateResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -93,6 +94,38 @@ export class PageControllerService {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/pages/{id}/draft',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * getPageHistory
+     * @returns PageHistory OK
+     * @throws ApiError
+     */
+    public static getPageHistoryUsingGet({
+        authorization,
+        id,
+    }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+    }): CancelablePromise<Array<PageHistory>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/pages/{id}/page-history',
             path: {
                 'id': id,
             },
