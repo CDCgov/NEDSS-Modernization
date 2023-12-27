@@ -20,7 +20,7 @@ class PageSummaryCsvCreatorTest {
 
   @Test
   void should_create_csv() {
-    LocalDate date = LocalDate.now();
+    LocalDate date = LocalDate.of(2023, 12, 9);
     // Given page summaries
     Page<PageSummary> summaries = new PageImpl<>(Collections.singletonList(new PageSummary(
         1,
@@ -39,7 +39,7 @@ class PageSummaryCsvCreatorTest {
     String expectedHeaders = "Event Type,Page Name,Page State,Related Conditions(s),Last Updated,Last Updated By";
     assertThat(csv.lines().toList().get(0)).isEqualTo(expectedHeaders);
 
-    String expectedRow = "ET-Display,pageName,Initial Draft,condition(2),12/21/2023,test user";
+    String expectedRow = "ET-Display,pageName,Initial Draft,condition(2),12/09/2023,test user";
     assertThat(csv.lines().toList().get(1)).isEqualTo(expectedRow);
   }
 
