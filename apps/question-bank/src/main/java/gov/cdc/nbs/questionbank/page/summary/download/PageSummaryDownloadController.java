@@ -38,7 +38,7 @@ public class PageSummaryDownloadController {
   @PostMapping("csv")
   public ResponseEntity<Resource> csv(
       @RequestBody final PageSummaryRequest request,
-      @PageableDefault(sort = "name") final Pageable pageable) {
+      @PageableDefault(sort = "id") final Pageable pageable) {
     InputStreamResource file = pageSummaryDownloader.createCsv(request, pageable);
 
     return ResponseEntity.ok()
@@ -55,7 +55,7 @@ public class PageSummaryDownloadController {
   @PostMapping("pdf")
   public ResponseEntity<byte[]> pdf(
       @RequestBody final PageSummaryRequest request,
-      @PageableDefault(sort = "name") final Pageable pageable) {
+      @PageableDefault(sort = "id") final Pageable pageable) {
     byte[] pdf = pageSummaryDownloader.createPdf(request, pageable);
 
     return ResponseEntity.ok()

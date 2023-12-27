@@ -44,7 +44,7 @@ const PageLibraryContent = () => {
     const handleDownloadCSV = () => {
         PageSummaryDownloadControllerService.csvUsingPost({
             authorization: authorization(),
-            sort: sorting,
+            sort: sorting ?? 'id,asc',
             request: {
                 search: keyword,
                 filters: externalize(filters)

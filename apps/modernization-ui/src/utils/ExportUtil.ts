@@ -77,7 +77,7 @@ export const downloadLabReportSearchResultPdf = (labReportFilter: LabReportFilte
 
 export const downloadPageLibraryPdf = (authorization: string, search: string, filters: Filter[], sort?: string) => {
     // auto generated methods dont allow direct conversion to blob
-    fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/pdf?sort=${sort ?? 'name,asc'}`, {
+    fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/pdf?sort=${sort ?? 'id,asc'}`, {
         method: 'POST',
         headers: {
             Accept: 'application/pdf',
