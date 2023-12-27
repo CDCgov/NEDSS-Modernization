@@ -16,6 +16,8 @@ import gov.cdc.nbs.questionbank.support.QuestionMother;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import static org.junit.Assert.*;
 
@@ -49,17 +51,16 @@ public class DeleteQuestionFromPageSteps {
 
     @Given("I delete a question from a page")
     public void i_delete_a_question_from_a_page() {
-        WaQuestion question = questionMother.one();
-        this.questionId = question.getId();
         WaTemplate page = pageMother.one();
         WaUiMetadata waUiMetadata = page.getUiMetadata().stream().findFirst()
                 .orElseThrow(() -> new PageContentModificationException("the page does not contain questions"));
-        waUiMetadata.setQuestionIdentifier(question.getQuestionIdentifier());
         waUiMetadata.setStandardQuestionIndCd('F');
         waUiMetadata.setOrderNbr(3);
+        waUiMetadata.setWaTemplateUid(page);
+        this.questionId = waUiMetadata.getId();
 
         try {
-            pageQuestionController.deleteQuestion(page.getId(), question.getId(), user.getCurrentUserDetails());
+            pageQuestionController.deleteQuestion(page.getId(), waUiMetadata.getId(), user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

@@ -45,38 +45,6 @@ type OrganizationParticipation {
   organizationLastChangeTime: DateTime
 }
 
-type PersonParticipation2 {
-  actUid: Int!
-  localId: String
-  typeCd: String
-  entityId: Int!
-  subjectClassCd: String
-  participationRecordStatus: String
-  typeDescTxt: String
-  participationLastChangeTime: DateTime
-  firstName: String
-  lastName: String
-  birthTime: DateTime
-  currSexCd: String
-  personCd: String!
-  personParentUid: Int
-  personRecordStatus: String!
-  personLastChangeTime: DateTime
-  shortId: Int
-}
-
-type OrganizationParticipation2 {
-  actUid: Int
-  typeCd: String
-  entityId: Int
-  subjectClassCd: String
-  typeDescTxt: String
-  participationRecordStatus: String
-  participationLastChangeTime: DateTime
-  name: String
-  organizationLastChangeTime: DateTime
-}
-
 enum SortField {
   lastNm
   birthTime

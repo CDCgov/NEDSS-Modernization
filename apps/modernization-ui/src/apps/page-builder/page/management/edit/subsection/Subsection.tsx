@@ -1,8 +1,11 @@
-import { PagesSubSection } from 'apps/page-builder/generated';
+import { PageStaticControllerService, PagesSubSection } from 'apps/page-builder/generated';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
 import { useState } from 'react';
 import { Question } from '../question/Question';
+import { usePageManagement } from '../../usePageManagement';
+import { authorization } from 'authorization/authorization';
+import { useAlert } from 'alert';
 
 type Props = {
     subsection: PagesSubSection;
@@ -10,6 +13,13 @@ type Props = {
 };
 export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
+    const { page, fetch } = usePageManagement();
+
+    const { showAlert } = useAlert();
+
+    const handleAlert = (message: string) => {
+        showAlert({ message: message, type: 'success' });
+    };
 
     const handleExpandedChange = (expanded: boolean) => {
         setIsExpanded(expanded);
@@ -18,8 +28,25 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const handleEditQuestion = (id: number) => {
         console.log('edit question NYI', id);
     };
-    const handleDeleteQuestion = (id: number) => {
-        console.log('delete question NYI', id);
+    const handleDeleteQuestion = (id: number, componentId: number) => {
+        if (
+            componentId == 1003 ||
+            componentId == 1036 ||
+            componentId == 1012 ||
+            componentId == 1014 ||
+            componentId == 1030
+        ) {
+            PageStaticControllerService.deleteStaticElementUsingDelete({
+                authorization: authorization(),
+                page: page.id,
+                request: { componentId: id }
+            }).then(() => {
+                handleAlert(`Element deleted successfully`);
+                fetch(page.id);
+            });
+        } else {
+            console.log('delete question NYI', id);
+        }
     };
 
     const handleRequiredChange = (id: number) => {
