@@ -4,7 +4,7 @@ import { PageRuleControllerService } from 'apps/page-builder/generated';
 export const fetchBusinessRules = (
     authorization: string,
     searchValue: string,
-    pageId: string,
+    pageId: number,
     sort: any,
     currentPage: number,
     pageSize: number
@@ -12,7 +12,7 @@ export const fetchBusinessRules = (
     if (!searchValue) {
         return PageRuleControllerService.getAllPageRuleUsingGet({
             authorization,
-            pageId,
+            id: pageId,
             page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
             size: pageSize,
             sort

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-@RequestMapping("/api/v1/pages/{page}/rules")
+@RequestMapping("/api/v1/pages/{id}/rules")
 public class PageRuleController {
 
   private final PageRuleService pageRuleService;
@@ -46,10 +46,9 @@ public class PageRuleController {
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  @ResponseBody
   public CreateRuleResponse createBusinessRule(
       @RequestBody CreateRuleRequest request,
-      @PathVariable Long page,
+      @PathVariable("id") Long page,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     try {
       return pageRuleCreator.createPageRule(details.getId(), request, page);
@@ -58,18 +57,15 @@ public class PageRuleController {
     }
   }
 
-  @DeleteMapping("/{ruleId}")
-  @ResponseBody
+  @DeleteMapping("{ruleId}")
   public void deletePageRule(
-      @PathVariable("page") Long page,
+      @PathVariable("id") Long page,
       @PathVariable Long ruleId,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
-  ) {
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     pageRuleDeleter.delete(page, ruleId, details.getId());
   }
 
   @PutMapping("/{ruleId}")
-  @ResponseBody
   public CreateRuleResponse updatePageRule(@PathVariable Long ruleId,
       @RequestBody CreateRuleRequest request, @PathVariable Long page) throws RuleException {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
@@ -77,20 +73,17 @@ public class PageRuleController {
   }
 
   @GetMapping("/{ruleId}")
-  @ResponseBody
   public ViewRuleResponse viewRuleResponse(@PathVariable Long ruleId) {
     return pageRuleFinderService.getRuleResponse(ruleId);
   }
 
   @GetMapping
-  @ResponseBody
   public Page<ViewRuleResponse> getAllPageRule(@PageableDefault(size = 25) Pageable pageable,
-      @PathVariable Long page) {
-    return pageRuleFinderService.getAllPageRule(pageable, page);
+      @PathVariable Long id) {
+    return pageRuleFinderService.getAllPageRule(pageable, id);
   }
 
   @PostMapping("/search")
-  @ResponseBody
   public Page<ViewRuleResponse> findPageRule(@RequestBody SearchPageRuleRequest request,
       @PageableDefault(size = 25) Pageable pageable) {
     return pageRuleFinderService.findPageRule(request, pageable);

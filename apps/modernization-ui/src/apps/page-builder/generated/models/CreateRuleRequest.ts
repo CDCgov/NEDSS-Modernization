@@ -11,7 +11,7 @@ export type CreateRuleRequest = {
     ruleFunction?: string;
     sourceIdentifier?: string;
     sourceText?: string;
-    sourceValue?: Array<SourceValues>;
+    sourceValue?: SourceValues;
     targetType?: string;
     targetValueIdentifier?: Array<string>;
     targetValueText?: Array<string>;
