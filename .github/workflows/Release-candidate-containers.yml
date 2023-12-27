@@ -79,7 +79,33 @@ jobs:
     secrets:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}      
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+  build-page-builder-api-release-candidate:
+    name: Build Page Builder API Release Candidate
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Release-gradle-microservice-container.yaml@main
+    with:
+      microservice_name: page-builder-api
+      build-new-container: true
+      dockerfile_relative_path: -f ./apps/question-bank/Dockerfile .
+      environment_classifier: ${{inputs.environment}}
+    secrets:
+      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
+      ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}
+      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+  prepare-page-builder-api-release-candidate:
+    name: Prepare Page Builder API Candidate Deployment
+    needs: build-page-builder-api-release-candidate
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
+    with:
+      microservice_name: page-builder-api
+      values_file_with_path: charts/page-builder-api/values-${{inputs.values}}.yaml
+      new_image_tag: ${{ needs.build-page-builder-api-release-candidate.outputs.output_image_tag }}
+    secrets:
+      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
   build-elasticsearch-release-candidate:
     if: ${{ inputs.build-elasticsearch == 'true' }}
     name: Build Elasticsearch Release Candidate
