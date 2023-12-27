@@ -46,6 +46,11 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                     handleAlert("Element is editted");
                 })
             } else if (readOnlyComments === componentId) {
+                PageStaticControllerService.updateReadOnlyCommentsUsingPut({
+                    authorization: authorization(),
+                    page: page.id,
+                    request: undefined
+                })
             } else {
             }
         }
