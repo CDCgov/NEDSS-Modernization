@@ -38,23 +38,23 @@ public class UnGroupSubsectionSteps {
 
     ResponseEntity<String> response;
 
-    @Given("I send a un group subsection request")
+    @Given("I send a ungroup subsection request")
     public void i_send_a_un_group_subsection_request() {
         WaTemplate page = pageMother.one();
 
         WaUiMetadata section = page.getUiMetadata().stream()
-                .filter(u -> u.getNbsUiComponentUid() == 1016l)
-                .findFirst()
-                .orElseThrow();
+            .filter(u -> u.getNbsUiComponentUid() == 1016l)
+            .findFirst()
+            .orElseThrow();
         List<Long> batches = Arrays.asList(101l, 102l);
         try {
             response = subsectionController.unGroupSubSection(
-                    page.getId(),
-                    new UnGroupSubSectionRequest(
-                            section.getId(),
-                            batches
-                    ),
-                    user.getCurrentUserDetails());
+                page.getId(),
+                new UnGroupSubSectionRequest(
+                    section.getId(),
+                    batches
+                ),
+                user.getCurrentUserDetails());
 
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -63,10 +63,10 @@ public class UnGroupSubsectionSteps {
         }
     }
 
-    @Then("the subsection is un grouped")
+    @Then("the subsection is ungrouped")
     public void the_subsection_is_un_grouped() {
         assertNotNull(response);
-        assertTrue(response.getBody().contains("UnGrouped Successfully"));
+        assertTrue(response.getBody().contains("ungrouped Successfully"));
         assertEquals(200, response.getStatusCodeValue());
     }
 }

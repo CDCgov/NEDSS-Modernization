@@ -721,13 +721,13 @@ public class WaTemplate {
   }
 
 
-  public WaUiMetadata groupSubSection(PageContentCommand.GroupSubsection command) {
+  public WaUiMetadata groupSubSection(PageContentCommand.GroupSubsection command, List<Long> questionNbsUiComponentUids) {
     verifyDraftType();
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
     uiMetadata.stream()
         .filter(ui -> batchIds.contains(ui.getId()))
         .filter(batch -> {
-          if (batch.getNbsUiComponentUid() != QUESTION) {
+          if (!(questionNbsUiComponentUids.contains(batch.getNbsUiComponentUid()))) {
             throw new UpdateSubSectionException("Can only group the question elements");
           }
           return true;
@@ -742,28 +742,35 @@ public class WaTemplate {
         .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
     subsection.update(command);
     changed(command);
-
     return subsection;
   }
 
-  public WaUiMetadata unGroupSubSection(PageContentCommand.UnGroupSubsection command) {
+  public WaUiMetadata unGroupSubSection(PageContentCommand.UnGroupSubsection command, List<Long> questionNbsUiComponentUids) {
     verifyDraftType();
+
+    List<Long> batchIds = command.batches();
+    uiMetadata.stream()
+        .filter(ui -> batchIds.contains(ui.getId()))
+        .filter(batch -> {
+          if (!(questionNbsUiComponentUids.contains(batch.getNbsUiComponentUid()))) {
+            throw new UpdateSubSectionException("Can only ungroup the question elements");
+          }
+          return true;
+        }).forEach(questionBatch -> {
+          questionBatch.updateQuestionBatch(command);
+          changed(command);
+        });
+
 
     WaUiMetadata subsection = uiMetadata.stream()
         .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
         .findFirst()
-        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
+        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to ungroup"));
 
     subsection.update(command);
     changed(command);
 
-    List<Long> batchIds = command.batches();
-    List<WaUiMetadata> questionBatches = uiMetadata.stream()
-        .filter(ui -> batchIds.contains(ui.getId()) && ui.getNbsUiComponentUid() == QUESTION).toList();
-    for (WaUiMetadata questionBatch : questionBatches) {
-      questionBatch.updateQuestionBatch(command);
-      changed(command);
-    }
+
     return subsection;
   }
 

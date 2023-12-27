@@ -6,6 +6,7 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectionRequest;
+import gov.cdc.nbs.questionbank.question.QuestionManagementUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,12 @@ import java.time.Instant;
 public class SubSectionGrouper {
 
   private final EntityManager entityManager;
+  private final QuestionManagementUtil questionManagementUtil;
 
-  public SubSectionGrouper(final EntityManager entityManager) {
+  public SubSectionGrouper(final EntityManager entityManager, QuestionManagementUtil questionManagementUtil
+  ) {
     this.entityManager = entityManager;
+    this.questionManagementUtil = questionManagementUtil;
   }
 
 
@@ -42,8 +46,11 @@ public class SubSectionGrouper {
     if (page == null) {
       throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
     }
-    WaUiMetadata section = page.groupSubSection(asCommand(userId, request));
-    return ResponseEntity.ok("Subsection " + section.getId() + " is  Grouped Successfully , Block Name is " + section.getBlockNm());
+
+    WaUiMetadata section =
+        page.groupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
+    return ResponseEntity.ok(
+        "Subsection " + section.getId() + " is  Grouped Successfully , Block Name is " + section.getBlockNm());
   }
 
   public ResponseEntity<String> unGroup(Long pageId, UnGroupSubSectionRequest request, Long userId) {
@@ -51,9 +58,8 @@ public class SubSectionGrouper {
     if (page == null) {
       throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
     }
-    WaUiMetadata section = page.unGroupSubSection(asCommand(userId, request));
-    entityManager.flush();
-    return ResponseEntity.ok("Subsection " + section.getId() + " is UnGrouped Successfully ");
+    WaUiMetadata section = page.unGroupSubSection(asCommand(userId, request),questionManagementUtil.getQuestionNbsUiComponentUids());
+    return ResponseEntity.ok("Subsection " + section.getId() + " is ungrouped Successfully ");
   }
 
   private PageContentCommand.GroupSubsection asCommand(
