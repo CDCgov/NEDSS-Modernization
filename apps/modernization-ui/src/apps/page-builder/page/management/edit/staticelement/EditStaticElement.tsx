@@ -1,7 +1,12 @@
 import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { AddDefault, AddHyperlink, AddReadOnlyComments, PageStaticControllerService, PagesQuestion } from 'apps/page-builder/generated';
+import {
+    AddDefault,
+    AddHyperlink,
+    AddReadOnlyComments,
+    PageStaticControllerService,
+    PagesQuestion
+} from 'apps/page-builder/generated';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { watch } from 'fs';
 import { RefObject } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
@@ -22,7 +27,7 @@ const staticType = [
 ];
 
 type EditStaticProps = {
-    modalRef?: RefObject<ModalRef>; 
+    modalRef?: RefObject<ModalRef>;
     question: PagesQuestion;
 };
 
@@ -31,7 +36,6 @@ type StaticElementType = {
 };
 
 type StaticElementFormValues = (AddReadOnlyComments | AddHyperlink | AddDefault) & StaticElementType;
-
 
 export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
     const form = useForm<StaticElementFormValues>({
@@ -107,8 +111,6 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
             }
         }
     });
-    
-
 
     return (
         <div className={styles.static_element}>
@@ -154,7 +156,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                                     <Input
                                         onChange={onChange}
                                         onBlur={onBlur}
-                                        defaultValue={question.adminComments}
+                                        defaultValue={question.defaultValue}
                                         label="Administrative Comments"
                                         type="text"
                                         data-testid="adminComments"

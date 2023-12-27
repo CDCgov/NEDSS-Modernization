@@ -30,6 +30,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                 <QuestionHeader
                     isStandard={question.isStandard ?? false}
                     isRequired={question.required ?? false}
+                    question={question}
                     onRequiredChange={() => onRequiredChange(question.id)}
                     onEditQuestion={() => onEditQuestion(question.id)}
                     onDeleteQuestion={() => {
