@@ -28,6 +28,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
         <div className={styles.question}>
             <div className={styles.borderedContainer}>
                 <QuestionHeader
+                    questionLabel={question.name}
                     isStandard={question.isStandard ?? false}
                     isRequired={question.required ?? false}
                     onRequiredChange={() => onRequiredChange(question.id)}

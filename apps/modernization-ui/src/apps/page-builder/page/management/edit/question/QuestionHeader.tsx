@@ -3,6 +3,7 @@ import { Icon } from '@trussworks/react-uswds';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { Heading } from 'components/heading';
 type Props = {
+    questionLabel: string;
     isStandard: boolean;
     isRequired: boolean;
     onRequiredChange?: () => void;
@@ -12,6 +13,7 @@ type Props = {
 export const QuestionHeader = ({
     isStandard,
     isRequired,
+    questionLabel,
     onRequiredChange,
     onEditQuestion,
     onDeleteQuestion
@@ -20,7 +22,7 @@ export const QuestionHeader = ({
         <div className={styles.header}>
             <div className={styles.typeDisplay}>
                 {isStandard && <div className={styles.standardIndicator}>S</div>}
-                <Heading level={3}>Question</Heading>
+                <Heading level={3}>{questionLabel}</Heading>
             </div>
             <div className={styles.questionButtons}>
                 <Icon.Edit onClick={onEditQuestion} />
