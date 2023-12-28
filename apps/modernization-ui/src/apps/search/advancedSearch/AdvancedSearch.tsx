@@ -1,7 +1,7 @@
 import { Alert, Button, Grid, Icon, Pagination } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Config } from '../../config';
+import { Config } from 'config';
 
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import {
@@ -19,15 +19,15 @@ import {
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindPatientsByFilterLazyQuery
-} from '../../generated/graphql/schema';
-import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
-import { UserContext } from '../../providers/UserContext';
+} from 'generated/graphql/schema';
+import { EncryptionControllerService } from 'generated/services/EncryptionControllerService';
+import { UserContext } from 'providers/UserContext';
 import {
     downloadInvestigationSearchResultCsv,
     downloadInvestigationSearchResultPdf,
     downloadLabReportSearchResultCsv,
     downloadLabReportSearchResultPdf
-} from '../../utils/ExportUtil';
+} from 'utils/ExportUtil';
 import './AdvancedSearch.scss';
 import { AdvancedSearchChips } from './components/chips/AdvancedSearchChips';
 import { InvestigationResults } from './components/InvestigationResults';

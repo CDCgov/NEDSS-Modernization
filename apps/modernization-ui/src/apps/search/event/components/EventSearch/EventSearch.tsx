@@ -1,13 +1,13 @@
 import { Button, Form, Grid } from '@trussworks/react-uswds';
 import { InvestigationFilter, LabReportFilter } from 'generated/graphql/schema';
-import { SEARCH_TYPE } from 'pages/advancedSearch/AdvancedSearch';
+import { SEARCH_TYPE } from 'apps/search/advancedSearch/AdvancedSearch';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { objectOrUndefined } from 'utils';
 import { EventTypeAccordion, SearchType } from 'apps/search/event/components/EventTypeAccordion/EventTypeAccordion';
-import { InvestigationAccordion } from '../InvestigationSearch/InvestigationAccordion';
-import { initialLabForm } from '../labReportSearch/DefaultLabReportForm';
-import { LabReportAccordion } from '../labReportSearch/LabReportAccordion';
+import { InvestigationAccordion } from 'apps/search/event/components/InvestigationSearch/InvestigationAccordion';
+import { initialLabForm } from 'apps/search/event/components/labReportSearch/DefaultLabReportForm';
+import { LabReportAccordion } from 'apps/search/event/components/labReportSearch/LabReportAccordion';
 
 type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;

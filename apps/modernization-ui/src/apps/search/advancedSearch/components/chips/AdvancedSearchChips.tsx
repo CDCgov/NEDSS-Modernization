@@ -1,8 +1,8 @@
 import { InvestigationFilter, LabReportFilter, PersonFilter } from 'generated/graphql/schema';
 
-import { SEARCH_TYPE } from 'pages/advancedSearch/AdvancedSearch';
+import { SEARCH_TYPE } from 'apps/search/advancedSearch/AdvancedSearch';
 import { InvestigationChips } from './InvestigationChips';
-import { PatientChips } from '../../../../apps/search/patient/chips/PatientChips';
+import { PatientChips } from 'apps/search/patient/chips/PatientChips';
 import { LabReportChips } from './LabReportChips';
 
 type ChipProps = {

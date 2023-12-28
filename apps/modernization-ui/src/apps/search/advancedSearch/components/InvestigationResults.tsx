@@ -1,7 +1,7 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef } from 'react';
-import { Investigation, PersonParticipation } from '../../../generated/graphql/schema';
-import { calculateAge } from '../../../utils/util';
+import { Investigation, PersonParticipation } from 'generated/graphql/schema';
+import { calculateAge } from 'utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';

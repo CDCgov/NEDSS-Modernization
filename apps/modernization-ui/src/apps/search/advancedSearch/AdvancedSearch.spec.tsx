@@ -4,7 +4,7 @@ jest.mock('react-router-dom', () => ({
     useNavigate: () => mockedUsedNavigate
 }));
 
-import { AdvancedSearch } from './AdvancedSearch';
+import { AdvancedSearch } from 'apps/search/advancedSearch/AdvancedSearch';
 import { fireEvent, render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';

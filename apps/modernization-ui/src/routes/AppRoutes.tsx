@@ -11,7 +11,7 @@ import { Layout } from 'layout';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddPatient } from 'apps/patient/add/AddPatient';
 import { AddedPatient } from 'apps/patient/add/SuccessForm/AddedPatient';
-import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
+import { AdvancedSearch } from 'apps/search/advancedSearch/AdvancedSearch';
 import { Login } from 'pages/login/Login';
 import { PatientProfile } from 'apps/patient/profile';
 import { UserContext } from 'providers/UserContext';
