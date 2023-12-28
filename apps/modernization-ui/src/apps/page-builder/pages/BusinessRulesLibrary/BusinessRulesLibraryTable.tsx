@@ -123,7 +123,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     });
 
     // @ts-ignore
-    const asTableRows = (pages: ViewRuleResponses[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
+    const asTableRows = (pages: ViewRuleResponse[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
