@@ -63,15 +63,19 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                 onExpandedChange={handleExpandedChange}
                 isExpanded={isExpanded}
             />
-            {subsection.questions.map((q, k) => (
-                <Question
-                    question={q}
-                    key={k}
-                    onEditQuestion={handleEditQuestion}
-                    onDeleteQuestion={handleDeleteQuestion}
-                    onRequiredChange={handleRequiredChange}
-                />
-            ))}
+            {isExpanded && (
+                <>
+                    {subsection.questions.map((q, k) => (
+                        <Question
+                            question={q}
+                            key={k}
+                            onEditQuestion={handleEditQuestion}
+                            onDeleteQuestion={handleDeleteQuestion}
+                            onRequiredChange={handleRequiredChange}
+                        />
+                    ))}
+                </>
+            )}
         </div>
     );
 };
