@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import './BusinessRulesLibraryTable.scss';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { ViewRuleResponse } from 'apps/page-builder/generated';
 
 export enum Column {
     SourceFields = 'Source Fields',
@@ -49,7 +50,7 @@ type Rules = {
 };
 
 type Props = {
-    summaries: Rules[];
+    summaries: ViewRuleResponse[];
     pages?: any;
     qtnModalRef: RefObject<ModalRef>;
 };
@@ -122,7 +123,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     });
 
     // @ts-ignore
-    const asTableRows = (pages: Rules[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
+    const asTableRows = (pages: ViewRuleResponses[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
