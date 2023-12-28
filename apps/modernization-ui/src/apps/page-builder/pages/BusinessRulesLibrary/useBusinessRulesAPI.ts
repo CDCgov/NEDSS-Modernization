@@ -20,7 +20,7 @@ export const fetchBusinessRules = (
             .then((response: any) => {
                 return response || [];
             })
-            .catch((error: any) => {
+            .catch((error) => {
                 console.log(error.body);
             });
     } else {
@@ -38,7 +38,7 @@ export const fetchBusinessRules = (
             .then((response: Page_ViewRuleResponse_) => {
                 return response || [];
             })
-            .catch((error: any) => {
+            .catch((error) => {
                 console.log(error.body);
             });
     }
