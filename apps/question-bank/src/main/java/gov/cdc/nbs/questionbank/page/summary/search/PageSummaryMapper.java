@@ -7,6 +7,7 @@ import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +21,10 @@ class PageSummaryMapper {
 
   PageSummary map(final Tuple tuple) {
     long identifier = Objects.requireNonNull(tuple.get(this.tables.page().id), "A Page Summary ID is required.");
-    List<ConditionSummary> conditions = List.of(asCondition(tuple));
+    List<ConditionSummary> conditions = Arrays.asList(asCondition(tuple))
+        .stream()
+        .filter(Objects::nonNull)
+        .toList();
     PageSummary.EventType eventType = getEventType(tuple);
 
     String lastUpdateBy = tuple.get(this.tables.lastUpdatedBy());
@@ -34,15 +38,16 @@ class PageSummaryMapper {
         getStatus(tuple),
         conditions,
         lastUpdateDate,
-        lastUpdateBy
-    );
+        lastUpdateBy);
   }
 
   private ConditionSummary asCondition(final Tuple tuple) {
+    if (tuple.get(this.tables.condition().id) == null) {
+      return null;
+    }
     return new ConditionSummary(
         tuple.get(this.tables.condition().id),
-        tuple.get(this.tables.condition().conditionShortNm)
-    );
+        tuple.get(this.tables.condition().conditionShortNm));
   }
 
   /**

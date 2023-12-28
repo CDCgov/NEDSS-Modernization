@@ -22,8 +22,7 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
 
         try {
             if (page) {
-                const pageId = page.id.toString();
-                const response = await fetchBusinessRules(token, searchQuery, pageId, sortBy, currentPage, pageSize);
+                const response = await fetchBusinessRules(token, searchQuery, page.id, sortBy, currentPage, pageSize);
                 const { content, totalElements } = response;
                 setRules(content);
                 setTotalElements(totalElements);

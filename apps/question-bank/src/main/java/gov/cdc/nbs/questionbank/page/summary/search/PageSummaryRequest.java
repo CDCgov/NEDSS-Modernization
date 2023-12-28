@@ -5,13 +5,13 @@ import gov.cdc.nbs.questionbank.filter.json.FilterJSON;
 import java.util.List;
 import java.util.stream.Stream;
 
-record PageSummaryRequest(
+public record PageSummaryRequest(
     String search,
     List<FilterJSON> filters
 
 ) {
 
-  PageSummaryRequest(
+  public PageSummaryRequest(
       String search,
       List<FilterJSON> filters
 
@@ -37,7 +37,6 @@ record PageSummaryRequest(
 
     return new PageSummaryRequest(
         search(),
-        appended
-    );
+        appended);
   }
 }

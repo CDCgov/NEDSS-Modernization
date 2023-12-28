@@ -40,6 +40,9 @@ export const SubsectionHeader = ({ name, id, questionCount, isExpanded, onExpand
                 <div className={styles.count}>{`${questionCount} question${questionCount > 1 ? 's' : ''}`}</div>
             </div>
             <div className={styles.buttons}>
+                <Button type="button" onClick={onAddQuestion} outline>
+                    Add question
+                </Button>
                 <>{renderQuestionListModal()}</>
                 <MoreOptions header={<Icon.MoreVert size={4} />}>
                     <Button type="button" onClick={() => console.log('BLAH')}>

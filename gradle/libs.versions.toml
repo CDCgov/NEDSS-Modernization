@@ -2,7 +2,7 @@
 springBoot = '2.7.18'
 jackson = '2.13.5'
 queryDSL = '5.0.0'
-graphql = '21.3'
+graphql = '20.7'
 spring-kafka = '2.9.13'
 junit-jupiter = '5.8.2'
 cucumber = '7.14.0'
