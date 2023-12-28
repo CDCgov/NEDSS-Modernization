@@ -31,10 +31,11 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int mask,
       int toolTip,
       int defaultValue,
-      int valueSet
+      int valueSet,
+      int adminComments
   ) {
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+      this(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
     }
   }
 
@@ -67,6 +68,7 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     String toolTip = resultSet.getString(this.columns.toolTip());
     String defaultValue = resultSet.getString(this.columns.defaultValue());
     String valueSet = resultSet.getString(this.columns.valueSet());
+    String adminComments = resultSet.getString(this.columns.adminComments());
 
     return new FlattenedComponent(
         identifier,
@@ -87,6 +89,7 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         mask,
         toolTip,
         defaultValue,
+        adminComments,
         valueSet
     );
   }

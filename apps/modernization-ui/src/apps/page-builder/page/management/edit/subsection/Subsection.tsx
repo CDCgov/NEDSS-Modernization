@@ -37,22 +37,22 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const handleEditQuestion = (id: number, componentId: number) => {
         if (staticElementTypes.includes(componentId)) {
             console.log('edit question NYI', id);
-            if (hyperlinkID === componentId) {
-                PageStaticControllerService.updateHyperlinkUsingPut({
-                    authorization: authorization(),
-                    page: page.id,
-                    request: undefined
-                }).then(() => {
-                    handleAlert("Element is editted");
-                })
-            } else if (readOnlyComments === componentId) {
-                PageStaticControllerService.updateReadOnlyCommentsUsingPut({
-                    authorization: authorization(),
-                    page: page.id,
-                    request: undefined
-                })
-            } else {
-            }
+            // if (hyperlinkID === componentId) {
+            //     PageStaticControllerService.updateHyperlinkUsingPut({
+            //         authorization: authorization(),
+            //         page: page.id,
+            //         request: undefined
+            //     }).then(() => {
+            //         handleAlert("Element is editted");
+            //     })
+            // } else if (readOnlyComments === componentId) {
+            //     PageStaticControllerService.updateReadOnlyCommentsUsingPut({
+            //         authorization: authorization(),
+            //         page: page.id,
+            //         request: undefined
+            //     })
+            // } else {
+            // }
         }
     };
     const handleDeleteQuestion = (id: number, componentId: number) => {

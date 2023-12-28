@@ -50,7 +50,8 @@ class ContentComponentResolver {
         component.coInfection(),
         component.mask(),
         component.toolTip(),
-        component.defaultValue()
+        component.defaultValue(),
+        component.adminComments()
     );
   }
 

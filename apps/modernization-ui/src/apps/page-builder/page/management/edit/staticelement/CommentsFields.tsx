@@ -23,7 +23,7 @@ export const CommentsFields = ({ question }: CommentsProps) => {
                     <Input
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={question ? question.defaultValue : value}
+                        defaultValue={question ? question.defaultValue?.toString() : value}
                         label="Comments text"
                         required
                         type="text"
