@@ -11,15 +11,14 @@ import org.springframework.core.Ordered;
 import gov.cdc.nbs.gateway.pagebuilder.PageBuilderService;
 
 @Configuration
-@ConditionalOnExpression("${nbs.gateway.pagebuilder.enabled} and ${nbs.gateway.pagebuilder.page.management.enabled}")
+@ConditionalOnExpression("${nbs.gateway.pagebuilder.enabled} and ${nbs.gateway.pagebuilder.page.management.enabled} and ${nbs.gateway.pagebuilder.page.management.edit.enabled}")
 public class ManagePageViewPageDetailsRouteLocatorConfiguration {
 
   @Bean
   RouteLocator pageBuilderManagePageViewPageDetailsRouteLocator(
       final RouteLocatorBuilder builder,
       @Qualifier("default") final GatewayFilter globalFilter,
-      final PageBuilderService service
-  ) {
+      final PageBuilderService service) {
     return builder.routes()
         .route(
             "page-builder-manage-page-view-page-details-return",
@@ -32,8 +31,7 @@ public class ManagePageViewPageDetailsRouteLocatorConfiguration {
                 .cookie("Return-Page", "\\d+")
                 .filters(
                     filter -> filter.setPath(service.path("pages/return"))
-                        .filter(globalFilter)
-                )
+                        .filter(globalFilter))
                 .uri(service.uri()))
         .build();
   }

@@ -9,3 +9,7 @@ nbs:
           enabled: true
         management: 
           enabled: true
+          create: 
+            enabled: true
+          edit:
+            enabled: true

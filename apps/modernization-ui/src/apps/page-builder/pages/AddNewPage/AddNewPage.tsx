@@ -86,7 +86,7 @@ export const AddNewPage = () => {
                 form.reset();
                 navigate(`/page-builder/pages/${response.pageId}/edit`);
             } else {
-                window.location.href = `/nbs/page-builder/api/v1/pages/${response.pageId}/preview`;
+                window.location.href = `/nbs/page-builder/api/v1/pages/${response.pageId}/edit`;
             }
         });
     });

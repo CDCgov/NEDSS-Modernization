@@ -11,7 +11,7 @@ import org.springframework.core.Ordered;
 import gov.cdc.nbs.gateway.pagebuilder.PageBuilderService;
 
 @Configuration
-@ConditionalOnExpression("${nbs.gateway.pagebuilder.enabled} and ${nbs.gateway.pagebuilder.page.management.enabled}")
+@ConditionalOnExpression("${nbs.gateway.pagebuilder.enabled} and ${nbs.gateway.pagebuilder.page.management.enabled} and ${nbs.gateway.pagebuilder.page.management.edit.enabled}")
 public class PreviewPageViewPageLoadRouteLocatorConfiguration {
 
   @Bean

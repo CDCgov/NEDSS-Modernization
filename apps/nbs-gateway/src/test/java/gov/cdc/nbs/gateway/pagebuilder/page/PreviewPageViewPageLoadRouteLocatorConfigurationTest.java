@@ -16,7 +16,8 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
         "nbs.gateway.classic=http://localhost:10000",
         "nbs.gateway.pagebuilder.service=localhost:10002",
         "nbs.gateway.pagebuilder.enabled=true",
-        "nbs.gateway.pagebuilder.page.management.enabled=true"
+        "nbs.gateway.pagebuilder.page.management.enabled=true",
+        "nbs.gateway.pagebuilder.page.management.edit.enabled=true"
     })
 class PreviewPageViewPageLoadRouteLocatorConfigurationTest {
 
