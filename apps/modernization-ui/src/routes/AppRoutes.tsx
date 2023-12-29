@@ -17,7 +17,7 @@ import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
-import { Features, Management } from 'generated';
+import { Management } from 'generated';
 import EditBusinessRules from 'apps/page-builder/pages/BusinessRulesLibrary/Edit/EditBusinessRules';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
