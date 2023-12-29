@@ -1,6 +1,5 @@
 package gov.cdc.nbs.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +11,11 @@ import io.swagger.annotations.ApiImplicitParam;
 @RequestMapping("/nbs/api/configuration")
 public class ConfigurationController {
 
-    @Autowired
-    public Configuration configuration;
+    private final Configuration configuration;
+
+    public ConfigurationController(final Configuration configuration) {
+      this.configuration = configuration;
+    }
 
     @ApiImplicitParam(
             name = "Authorization",

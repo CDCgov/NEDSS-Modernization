@@ -1,43 +1,72 @@
 package gov.cdc.nbs.configuration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.configuration.Configuration.Features;
 import gov.cdc.nbs.configuration.Configuration.Features.Address;
 import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder;
 import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder.Page;
 import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder.Page.Library;
 import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder.Page.Management;
+import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder.Page.Management.Create;
+import gov.cdc.nbs.configuration.Configuration.Features.PageBuilder.Page.Management.Edit;
 
 @ExtendWith(MockitoExtension.class)
 class ConfigurationControllerTest {
 
-  @Spy
+  ObjectMapper mapper = new ObjectMapper();
+
   Configuration configuration =
       new Configuration(
           new Features(
               new Address(true, true),
               new PageBuilder(true,
-                  new Page(new Library(true), new Management(true)))));
+                  new Page(
+                      new Library(true),
+                      new Management(
+                          true,
+                          new Create(true),
+                          new Edit(true))))));
 
-  @InjectMocks
-  ConfigurationController controller;
+
+  ConfigurationController controller = new ConfigurationController(configuration);
 
   @Test
-  void should_return_proper_configuration() {
+  void should_return_proper_configuration() throws JsonProcessingException {
     Configuration config = controller.getConfiguration();
 
-    assertEquals(config, configuration);
-    assertEquals(config.features().address().autocomplete(), configuration.features().address().autocomplete());
-    assertEquals(config.features().address().verification(), configuration.features().address().verification());
-    assertEquals(config.features().pageBuilder().enabled(), configuration.features().pageBuilder().enabled());
-    assertEquals(config.features().pageBuilder().page().library().enabled(),
-        configuration.features().pageBuilder().page().library().enabled());
-    assertEquals(config.features().pageBuilder().page().management().enabled(),
-        configuration.features().pageBuilder().page().management().enabled());
+    String expected =
+        """
+            {
+              "features" : {
+                "address" : {
+                  "autocomplete" : true,
+                  "verification" : true
+                },
+                "pageBuilder" : {
+                  "enabled" : true,
+                  "page" : {
+                    "library" : {
+                      "enabled" : true
+                    },
+                    "management" : {
+                      "enabled" : true,
+                      "create" : {
+                        "enabled" : true
+                      },
+                      "edit" : {
+                        "enabled" : true
+                      }
+                    }
+                  }
+                }
+              }
+            }""";
+    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(config);
+    assertThat(json).isEqualTo(expected);
   }
 }
