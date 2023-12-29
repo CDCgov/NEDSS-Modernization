@@ -1,9 +1,10 @@
+/* eslint-disable camelcase */
 import { Button, Form, Modal, ModalRef } from '@trussworks/react-uswds';
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditionLookup/QuickConditionLookup';
-import { Concept, Condition, Template } from 'apps/page-builder/generated';
+import { Concept, Condition, Template, PageSummary } from 'apps/page-builder/generated';
 import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
 import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
@@ -16,6 +17,7 @@ import { UserContext } from 'user';
 import './AddNewPage.scss';
 import { AddNewPageFields } from './AddNewPageFields';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { fetchPageSummaries } from 'apps/page-builder/page/library/usePageSummaryAPI';
 
 export type FormValues = {
     conditionIds: string[];
@@ -47,6 +49,7 @@ export const AddNewPage = () => {
     const [templates, setTemplates] = useState<Template[]>([]);
     const form = useForm<FormValues>({ mode: 'onBlur' });
     const watch = useWatch({ control: form.control });
+    const [pageSummaries, setPageSummaries] = useState<PageSummary[] | undefined>([]);
 
     useEffect(() => {
         const token = `Bearer ${state.getToken()}`;
@@ -62,6 +65,9 @@ export const AddNewPage = () => {
         });
         fetchTemplates(token).then((data) => {
             setTemplates(data);
+        });
+        fetchPageSummaries(token).then((data) => {
+            setPageSummaries(data.content);
         });
     }, []);
 
@@ -164,6 +170,7 @@ export const AddNewPage = () => {
                                             createConditionModal={createConditionModal}
                                             conditionLookupModal={conditionLookupModal}
                                             importTemplateModal={importTemplateModal}
+                                            pageSummaries={pageSummaries!}
                                         />
                                     </FormProvider>
                                 ) : (

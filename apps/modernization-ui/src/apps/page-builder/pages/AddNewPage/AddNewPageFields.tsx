@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { Concept, Condition, Template } from 'apps/page-builder/generated';
+import { Concept, Condition, PageSummary, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
@@ -16,6 +16,7 @@ type AddNewPageFieldProps = {
     importTemplateModal: React.RefObject<ModalRef>;
     templates: Template[];
     mmgs: Concept[];
+    pageSummaries: PageSummary[];
 };
 export const AddNewPageFields = (props: AddNewPageFieldProps) => {
     const form = useFormContext<FormValues>();
@@ -53,7 +54,13 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 name="name"
                 rules={{
                     required: { value: true, message: 'Name is required.' },
-                    ...validPageNameRule
+                    ...validPageNameRule,
+                    validate: (value) => {
+                        return (
+                            props.pageSummaries.some((page) => page.name === value) === false ||
+                            'Page name already exists'
+                        );
+                    }
                 }}
                 render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <Input
