@@ -45,7 +45,7 @@ const DeleteBusinessRuleWarningModal = ({
 
             <ModalFooter>
                 <div></div>
-                <div>
+                <div className="delete-rule-modal-footer">
                     <ModalToggleButton
                         modalRef={deleteWarningModalModalRef}
                         closer

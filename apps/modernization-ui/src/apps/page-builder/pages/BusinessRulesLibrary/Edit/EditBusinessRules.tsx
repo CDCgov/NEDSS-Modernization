@@ -1,14 +1,14 @@
 import { Button, ButtonGroup, Form, Grid, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import React, { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UserContext } from 'user';
 import './EditBusinessRules.scss';
 // import { EditBusinessRulesFields } from './EditBusinessRulesFields';
 import { PageRuleControllerService, ViewRuleResponse } from '../../../generated';
 import DeleteBusinessRuleWarningModal from './DeleteBusinessRuleWarningModal';
 import { useAlert } from 'alert';
+import { authorization } from 'authorization';
 
 export type FormValues = {
     ruleFunction: string;
@@ -26,20 +26,18 @@ export type FormValues = {
 const EditBusinessRules = () => {
     const [selectedFieldType, setSelectedFieldType] = useState('');
     const navigate = useNavigate();
-    const { state } = useContext(UserContext);
     const { pageId, ruleId } = useParams();
     const form = useForm<FormValues>({
         defaultValues: { targetType: 'SUBSECTION', anySourceValue: false },
         mode: 'onChange'
     });
-    const token = `Bearer ${state.getToken()}`;
     const deleteWarningModalModal = useRef<ModalRef>(null);
     const { showAlert } = useAlert();
 
     useEffect(() => {
         if (!ruleId) return;
         PageRuleControllerService.viewRuleResponseUsingGet({
-            authorization: token,
+            authorization: authorization(),
             ruleId: Number(ruleId)
         }).then((resp: ViewRuleResponse) => {
             // form.setValue('anySourceValue', resp?.!);
@@ -72,7 +70,7 @@ const EditBusinessRules = () => {
         };
         if (!ruleId) {
             PageRuleControllerService.createBusinessRuleUsingPost({
-                authorization: token,
+                authorization: authorization(),
                 page: Number(pageId),
                 request
             }).then((resp: any) => {
@@ -80,13 +78,12 @@ const EditBusinessRules = () => {
             });
         } else {
             PageRuleControllerService.updatePageRuleUsingPut({
-                authorization: token,
+                authorization: authorization(),
                 page: Number(pageId),
                 ruleId: Number(ruleId),
                 request
             }).then((resp: any) => {
-                console.log(resp);
-                // showAlert({ type: 'success', header: 'updated', message: resp.message });
+                showAlert({ type: 'success', header: 'updated', message: resp.message });
             });
         }
         handleCancel();
@@ -100,7 +97,7 @@ const EditBusinessRules = () => {
         if (pageId) {
             try {
                 await PageRuleControllerService.deletePageRuleUsingDelete({
-                    authorization: token,
+                    authorization: authorization(),
                     pageId: pageId ?? '',
                     ruleId: Number(ruleId)
                 });
@@ -164,15 +161,10 @@ const EditBusinessRules = () => {
                                     )}
                                 </Grid>
                             </Grid>
-                            {selectedFieldType == '' ? (
-                                <></>
-                            ) : (
-                                <FormProvider {...form}>{/* <EditBusinessRulesFields /> */}</FormProvider>
-                            )}
                         </div>
                     </div>
                     <div className="edit-rules__buttons">
-                        {ruleId ? (
+                        {ruleId && (
                             <ModalToggleButton
                                 opener
                                 modalRef={deleteWarningModalModal}
@@ -182,8 +174,6 @@ const EditBusinessRules = () => {
                                 <Icon.Delete size={3} className="margin-right-2px" />
                                 <span> Delete</span>
                             </ModalToggleButton>
-                        ) : (
-                            <div />
                         )}
                         <div>
                             <Button type="button" outline onClick={handleCancel}>
