@@ -15,7 +15,12 @@ public record Configuration(Features features) {
       public record Page(Library library, Management management) {
         public record Library(boolean enabled) {
         }
-        public record Management(boolean enabled) {
+        public record Management(boolean enabled, Create create, Edit edit) {
+
+          public record Create(boolean enabled) {
+          }
+          public record Edit(boolean enabled) {
+          }
         }
       }
     }

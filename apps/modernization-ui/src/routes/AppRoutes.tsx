@@ -17,6 +17,7 @@ import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
+import { Features, Management } from 'generated';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -58,15 +59,17 @@ export const AppRoutes = () => {
         return enabled ? <Route index element={<PageLibrary />} /> : <Route index element={<Navigate to={'/'} />} />;
     };
 
-    const pageManagementRoutes = (enabled: boolean) => {
-        return enabled ? (
+    const pageManagementRoutes = (managementConfig: Management) => {
+        return managementConfig.enabled ? (
             <>
-                <Route path="add" element={<AddNewPage />} />
-                <Route path=":pageId">
-                    <Route index element={<PreviewPage />} />
-                    <Route path="edit" element={<Edit />} />
-                    <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
-                </Route>
+                {managementConfig.create?.enabled && <Route path="add" element={<AddNewPage />} />}
+                {managementConfig.edit?.enabled && (
+                    <Route path=":pageId">
+                        <Route index element={<PreviewPage />} />
+                        <Route path="edit" element={<Edit />} />
+                        <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
+                    </Route>
+                )}
             </>
         ) : (
             <Route index element={<Navigate to={'/'} />} />
@@ -90,7 +93,7 @@ export const AppRoutes = () => {
                                     <Route path="/page-builder" element={<PageBuilderContextProvider />}>
                                         <Route path="pages">
                                             {pageLibraryRoutes(config.features.pageBuilder.page.library.enabled)}
-                                            {pageManagementRoutes(config.features.pageBuilder.page.management.enabled)}
+                                            {pageManagementRoutes(config.features.pageBuilder.page.management)}
                                         </Route>
                                         <Route path="question-library" element={<QuestionLibrary />} />
                                     </Route>

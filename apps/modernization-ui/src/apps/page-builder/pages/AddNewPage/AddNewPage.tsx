@@ -16,6 +16,7 @@ import { UserContext } from 'user';
 import './AddNewPage.scss';
 import { AddNewPageFields } from './AddNewPageFields';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { useConfiguration } from 'configuration';
 
 export type FormValues = {
     conditionIds: string[];
@@ -47,6 +48,7 @@ export const AddNewPage = () => {
     const [templates, setTemplates] = useState<Template[]>([]);
     const form = useForm<FormValues>({ mode: 'onBlur' });
     const watch = useWatch({ control: form.control });
+    const config = useConfiguration();
 
     useEffect(() => {
         const token = `Bearer ${state.getToken()}`;
@@ -79,9 +81,13 @@ export const AddNewPage = () => {
             Number(data.templateId),
             data.pageDescription,
             data?.dataMartName
-        ).then((response: any) => {
-            form.reset();
-            navigate(`/page-builder/pages/${response.pageId}/edit`);
+        ).then((response) => {
+            if (config.features.pageBuilder.page.management.edit.enabled) {
+                form.reset();
+                navigate(`/page-builder/pages/${response.pageId}/edit`);
+            } else {
+                window.location.href = `/nbs/page-builder/api/v1/pages/${response.pageId}/preview`;
+            }
         });
     });
 
