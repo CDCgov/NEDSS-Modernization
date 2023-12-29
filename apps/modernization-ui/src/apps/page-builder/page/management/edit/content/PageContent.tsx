@@ -7,10 +7,6 @@ type Props = {
     tab: PagesTab;
 };
 export const PageContent = ({ tab }: Props) => {
-    const handleAddQuestion = (subsection: number) => {
-        console.log('add question not yet implemented', subsection);
-    };
-
     const handleAddSubsection = (section: number) => {
         console.log('add subsection not yet implemented', section);
     };
@@ -18,11 +14,7 @@ export const PageContent = ({ tab }: Props) => {
     return (
         <div className={styles.pageContent}>
             <div className={styles.invisible} />
-            <Sections
-                sections={tab.sections ?? []}
-                onAddSubsection={handleAddSubsection}
-                onAddQuestion={handleAddQuestion}
-            />
+            <Sections sections={tab.sections ?? []} onAddSubsection={handleAddSubsection} />
             <PageSideMenu />
         </div>
     );

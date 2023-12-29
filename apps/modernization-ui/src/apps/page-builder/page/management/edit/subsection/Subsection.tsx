@@ -13,7 +13,7 @@ import { useAlert } from 'alert';
 
 type Props = {
     subsection: PagesSubSection;
-    onAddQuestion: () => void;
+    onAddQuestion: (questionId: number) => void;
 };
 export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
