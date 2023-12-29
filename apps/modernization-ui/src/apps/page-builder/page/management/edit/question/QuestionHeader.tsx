@@ -2,6 +2,8 @@ import styles from './question-header.module.scss';
 import { Icon } from '@trussworks/react-uswds';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { Heading } from 'components/heading';
+import DeleteQuestion from '../../../../components/DeleteQuestion/DeleteQuestion';
+
 type Props = {
     isStandard: boolean;
     isRequired: boolean;
@@ -24,7 +26,7 @@ export const QuestionHeader = ({
             </div>
             <div className={styles.questionButtons}>
                 <Icon.Edit onClick={onEditQuestion} />
-                <Icon.Delete onClick={onDeleteQuestion} />
+                <DeleteQuestion onDelete={onDeleteQuestion} />
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Required</div>
                 <ToggleButton defaultChecked={isRequired} onChange={onRequiredChange} />
