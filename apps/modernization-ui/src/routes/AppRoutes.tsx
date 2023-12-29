@@ -18,6 +18,7 @@ import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
 import { Features, Management } from 'generated';
+import EditBusinessRules from 'apps/page-builder/pages/BusinessRulesLibrary/Edit/EditBusinessRules';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -68,6 +69,9 @@ export const AppRoutes = () => {
                         <Route index element={<PreviewPage />} />
                         <Route path="edit" element={<Edit />} />
                         <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
+                        <Route path=":ruleId">
+                            <Route index element={<EditBusinessRules />} />
+                        </Route>
                     </Route>
                 )}
             </>
