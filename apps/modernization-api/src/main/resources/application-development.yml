@@ -39,4 +39,4 @@ nbs:
             create:
               enabled: true
             edit:
-              enabled: false
+              enabled: true
