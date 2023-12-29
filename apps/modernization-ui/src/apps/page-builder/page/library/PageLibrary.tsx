@@ -1,17 +1,14 @@
 import { authorization } from 'authorization';
-import { Filter } from 'filters';
+import { externalize, Filter } from 'filters';
 import { useState } from 'react';
 import { useSorting } from 'sorting';
-import { downloadAsCsv } from 'utils/downloadAsCsv';
-import { downloadPageLibraryPdf } from 'utils/ExportUtil';
-
 import { usePageLibraryProperties } from './usePageLibraryProperties';
 import { usePageSummarySearch } from './usePageSummarySearch';
 
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { TableProvider } from 'components/Table/TableProvider';
 
-import { PageControllerService } from 'apps/page-builder/generated';
+import { PageSummaryDownloadControllerService } from 'apps/page-builder/generated';
 import { PageBuilder } from 'apps/page-builder/pages/PageBuilder/PageBuilder';
 import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 import { PageLibraryMenu } from './menu/PageLibraryMenu';
@@ -20,6 +17,8 @@ import { PageLibraryTable } from './table/PageLibraryTable';
 import { LinkButton } from 'components/button';
 import { useConfiguration } from 'configuration';
 import styles from './page-library.module.scss';
+import { downloadPageLibraryPdf } from 'utils/ExportUtil';
+import { download } from 'utils/download';
 
 const PageLibrary = () => {
     return (
@@ -30,16 +29,35 @@ const PageLibrary = () => {
 };
 
 const PageLibraryContent = () => {
-    const { sortBy } = useSorting();
+    const { sorting, sortBy } = useSorting();
     const config = useConfiguration();
-    const { pages, searching, search, filter } = usePageSummarySearch();
+    const { keyword, pages, searching, search } = usePageSummarySearch();
     const { properties } = usePageLibraryProperties();
 
     const [filters, setFilters] = useState<Filter[]>([]);
 
     const handleFilter = (filters: Filter[]) => {
         setFilters(filters);
-        filter(filters);
+        search(keyword, filters);
+    };
+
+    const handleSearch = (query?: string) => {
+        search(query, filters);
+    };
+
+    const handleDownloadCSV = () => {
+        PageSummaryDownloadControllerService.csvUsingPost({
+            authorization: authorization(),
+            sort: sorting ?? 'id,asc',
+            request: {
+                search: keyword,
+                filters: externalize(filters)
+            }
+        }).then((file) => download({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' }));
+    };
+
+    const handleDownloadPDF = () => {
+        downloadPageLibraryPdf(authorization(), keyword ?? '', filters, sorting);
     };
 
     return (
@@ -52,7 +70,7 @@ const PageLibraryContent = () => {
                         {!config.loading && config.features.pageBuilder.page.management.enabled ? (
                             <NavLinkButton to={'/page-builder/pages/add'}>Create new page</NavLinkButton>
                         ) : (
-                            <LinkButton type="solid" target="_self" href="/nbs/ManagePage.do?method=addPageLoad">
+                            <LinkButton type="solid" target="_self" href="/nbs/page-builder/api/v1/pages/create">
                                 Create new page
                             </LinkButton>
                         )}
@@ -60,7 +78,7 @@ const PageLibraryContent = () => {
                     <PageLibraryMenu
                         properties={properties}
                         filters={filters}
-                        onSearch={search}
+                        onSearch={handleSearch}
                         onFilter={handleFilter}
                         onDownload={handleDownloadCSV}
                         onPrint={handleDownloadPDF}
@@ -77,20 +95,6 @@ const PageLibraryContent = () => {
             </PageBuilder>
         </>
     );
-};
-
-const handleDownloadCSV = () => {
-    PageControllerService.downloadPageLibraryUsingGet({ authorization: authorization() }).then((file) =>
-        downloadAsCsv({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' })
-    );
-};
-
-const handleDownloadPDF = () => {
-    try {
-        downloadPageLibraryPdf(authorization());
-    } catch (error) {
-        console.log(error);
-    }
 };
 
 export { PageLibrary };

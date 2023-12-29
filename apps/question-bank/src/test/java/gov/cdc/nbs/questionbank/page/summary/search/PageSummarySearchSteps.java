@@ -18,7 +18,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Qualifier;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,11 +30,14 @@ public class PageSummarySearchSteps {
   private final Active<PageSummaryRequest> criteria;
   private final Active<PageRequest> pageable;
 
-  PageSummarySearchSteps(final PageSummarySearchRequester requester) {
+  PageSummarySearchSteps(
+      final PageSummarySearchRequester requester,
+      @Qualifier("pageSummaryRequest") final Active<PageSummaryRequest> criteria,
+      @Qualifier("pageable") final Active<PageRequest> pageable) {
     this.requester = requester;
-    this.pageable = new Active<>();
+    this.pageable = pageable;
     this.response = new Active<>();
-    this.criteria = new Active<>();
+    this.criteria = criteria;
   }
 
   @Before("@page-summary-search")
@@ -70,14 +73,12 @@ public class PageSummarySearchSteps {
   public void i_filter_page_summaries_by_property_operator_value(
       final String property,
       final ValueFilter.Operator operator,
-      final String value
-  ) {
+      final String value) {
 
     FilterJSON filter = new FilterJSON.SingleValue(
         pageSummaryProperty(property),
         operator,
-        value
-    );
+        value);
 
     this.criteria.active(existing -> existing.withFilter(filter));
 
@@ -87,14 +88,12 @@ public class PageSummarySearchSteps {
   public void i_filter_page_summaries_by_property_operator_values(
       final String property,
       final ValueFilter.Operator operator,
-      final List<String> values
-  ) {
+      final List<String> values) {
 
     FilterJSON filter = new FilterJSON.MultiValue(
         pageSummaryProperty(property),
         operator,
-        values
-    );
+        values);
 
     this.criteria.active(existing -> existing.withFilter(filter));
 
@@ -105,8 +104,7 @@ public class PageSummarySearchSteps {
 
     FilterJSON filter = new FilterJSON.Date(
         "lastUpdate",
-        operator
-    );
+        operator);
 
     this.criteria.active(existing -> existing.withFilter(filter));
   }
@@ -118,8 +116,7 @@ public class PageSummarySearchSteps {
 
   private void withDateRange(
       final Instant starting,
-      final Instant until
-  ) {
+      final Instant until) {
 
     LocalDate startingDate = starting == null ? null : LocalDate.ofInstant(starting, ZoneId.systemDefault());
     LocalDate untilDate = until == null ? null : LocalDate.ofInstant(until, ZoneId.systemDefault());
@@ -127,8 +124,7 @@ public class PageSummarySearchSteps {
     FilterJSON filter = new FilterJSON.DateRange(
         "lastUpdate",
         startingDate,
-        untilDate
-    );
+        untilDate);
 
     this.criteria.active(existing -> existing.withFilter(filter));
 
@@ -149,9 +145,7 @@ public class PageSummarySearchSteps {
     response.active(
         requester.request(
             pageable.active(),
-            criteria.active()
-        )
-    );
+            criteria.active()));
   }
 
   @Then("the page summaries are not searchable")
@@ -192,8 +186,7 @@ public class PageSummarySearchSteps {
   @Then("the found page summaries contain a page with the {string} {string}")
   public void the_found_page_summaries_contain_a_page_with_a_property_having_the_value(
       final String property,
-      final String value
-  ) throws Exception {
+      final String value) throws Exception {
     JsonPathResultMatchers pathMatcher = matchingPath(property, "*");
 
     this.response.active()
@@ -204,8 +197,7 @@ public class PageSummarySearchSteps {
   @Then("the found page summaries do not contain a page with the {string} {string}")
   public void the_found_page_summaries_do_not_contain_a_page_with_thn_property_having_the_value(
       final String property,
-      final String value
-  ) throws Exception {
+      final String value) throws Exception {
     JsonPathResultMatchers pathMatcher = matchingPath(property, "*");
 
     this.response.active()
@@ -230,8 +222,7 @@ public class PageSummarySearchSteps {
   public void the_found_nth_page_summaries_contain_a_page_with_nth_property_having_the_value(
       final int position,
       final String property,
-      final String value
-  ) throws Exception {
+      final String value) throws Exception {
     int index = position - 1;
     JsonPathResultMatchers pathMatcher = matchingPath(property, String.valueOf(index));
 
@@ -244,8 +235,7 @@ public class PageSummarySearchSteps {
   public void and_page_summaries_x_have_a_page_with_the_property_having_the_value(
       final int position,
       final String property,
-      final String value
-  ) throws Exception {
+      final String value) throws Exception {
     int index = position - 1;
 
     JsonPathResultMatchers pathMatcher = matchingPath(property, String.valueOf(index));
@@ -260,8 +250,8 @@ public class PageSummarySearchSteps {
       case "description" -> jsonPath("$.content[%s].description", position);
       case "status" -> jsonPath("$.content[%s].status", position);
       case "lastupdate", "last updated", "last update" -> jsonPath("$.content[%s].lastUpdate", position);
-      case "lastupdatedby", "last updated by", "updated by", "changed by" ->
-          jsonPath("$.content[%s].lastUpdateBy", position);
+      case "lastupdatedby", "last updated by", "updated by", "changed by" -> jsonPath("$.content[%s].lastUpdateBy",
+          position);
       case "eventtype", "event type" -> jsonPath("$.content[%s].eventType.name", position);
       case "condition" -> jsonPath("$.content[%s].conditions[*].name", position);
       default -> throw new IllegalStateException("Unexpected Page Summary value: " + field.toLowerCase());

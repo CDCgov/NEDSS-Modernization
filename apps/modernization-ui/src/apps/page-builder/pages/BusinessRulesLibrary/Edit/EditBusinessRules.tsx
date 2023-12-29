@@ -23,7 +23,7 @@ export type FormValues = {
     anySourceValue?: boolean;
 };
 
-export const EditBusinessRules = () => {
+const EditBusinessRules = () => {
     const [selectedFieldType, setSelectedFieldType] = useState('');
     const navigate = useNavigate();
     const { state } = useContext(UserContext);
@@ -50,7 +50,7 @@ export const EditBusinessRules = () => {
             form.setValue('sourceIdentifier', resp?.sourceIdentifier!);
             form.setValue('sourceText', resp?.sourceIdentifier!);
             form.setValue('sourceValue', resp?.sourceValue!);
-            form.setValue('targetValueIdentifier', resp?.targetValueIdentifier!);
+            // form.setValue('targetValueIdentifier', resp?.sourceValue!);
             setSelectedFieldType(resp.ruleFunction!);
         });
     }, [ruleId]);
@@ -62,12 +62,10 @@ export const EditBusinessRules = () => {
             ruleFunction: selectedFieldType,
             sourceIdentifier: data.sourceIdentifier,
             sourceText: data.sourceText,
-            sourceValue: [
-                {
-                    sourceValueId: data.sourceValue,
-                    sourceValueText: data.sourceValue
-                }
-            ],
+            sourceValue: {
+                sourceValueId: data.sourceValue,
+                sourceValueText: data.sourceValue
+            },
             targetType: data.targetType,
             targetValueIdentifier: data.targetValueIdentifier,
             targetValueText: data.targetValueText
@@ -88,7 +86,6 @@ export const EditBusinessRules = () => {
                 request
             }).then((resp: any) => {
                 console.log(resp);
-                console.log(resp);
                 // showAlert({ type: 'success', header: 'updated', message: resp.message });
             });
         }
@@ -100,19 +97,17 @@ export const EditBusinessRules = () => {
     };
 
     const handleDeleteRule = async () => {
-        console.log('delete rule', { pageId, ruleId });
         if (pageId) {
             try {
-                const response = await PageRuleControllerService.deletePageRuleUsingDelete({
+                await PageRuleControllerService.deletePageRuleUsingDelete({
                     authorization: token,
                     pageId: pageId ?? '',
                     ruleId: Number(ruleId)
                 });
-                // show alert
-                console.log('response', response);
-                showAlert({ type: 'success', header: 'deleted', message: response.message });
+                showAlert({ type: 'success', header: 'Success', message: 'Rule deleted.' });
+                navigate(-1);
             } catch (error: any) {
-                showAlert({ type: 'error', header: 'error', message: error.message });
+                showAlert({ type: 'error', header: 'error', message: error });
                 console.error('Error', error);
             }
         }
@@ -204,3 +199,5 @@ export const EditBusinessRules = () => {
         </>
     );
 };
+
+export default EditBusinessRules;

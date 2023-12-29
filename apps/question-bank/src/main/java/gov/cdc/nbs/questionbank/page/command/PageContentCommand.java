@@ -168,8 +168,7 @@ public sealed interface PageContentCommand {
         }
 
         public record DeleteQuestion(
-                Long page,
-                WaQuestion question,
+                Long question,
                 long userId,
                 Instant requestedOn) implements PageContentCommand {
         }

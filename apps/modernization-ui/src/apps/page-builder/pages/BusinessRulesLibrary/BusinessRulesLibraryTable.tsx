@@ -82,7 +82,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         tableDetails: [
             {
                 id: 1,
-                title: <Link to={`/page-builder/pages/${pageId}/${rule.ruleId}`}>{rule?.sourceIdentifier}</Link>
+                title: <Link to={`/page-builder/pages/${pageId}/${rule.ruleId}`}>{rule?.ruleDescription}</Link>
             },
             { id: 2, title: <div className="event-text">{mapLogic(rule)}</div> || null },
             {

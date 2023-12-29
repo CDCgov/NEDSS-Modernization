@@ -8,7 +8,6 @@ import { Spinner } from 'components/Spinner';
 import { Config } from 'config';
 import { useConfiguration } from 'configuration';
 import { Layout } from 'layout';
-import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddPatient } from 'apps/patient/add/AddPatient';
 import { AddedPatient } from 'apps/patient/add/SuccessForm/AddedPatient';
 import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
@@ -18,7 +17,7 @@ import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
-import { EditBusinessRules } from 'apps/page-builder/pages/BusinessRulesLibrary/Edit/EditBusinessRules';
+import EditBusinessRules from 'apps/page-builder/pages/BusinessRulesLibrary/Edit/EditBusinessRules';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -88,7 +87,6 @@ export const AppRoutes = () => {
                             <>
                                 <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
                                 <Route path="/patient-profile/:id" element={<PatientProfile />} />
-                                <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
                                 <Route path="/add-patient" element={<AddPatient />} />
                                 <Route path="/add-patient/patient-added" element={<AddedPatient />} />
 

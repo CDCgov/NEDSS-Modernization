@@ -108,7 +108,7 @@ export const AddNewPage = () => {
 
     const handleSubmit = () => {
         if (watch.eventType !== undefined && watch.eventType != '' && watch.eventType !== 'INV') {
-            window.location.href = '/nbs/ManagePage.do?method=addPageLoad';
+            window.location.href = '/nbs/page-builder/api/v1/pages/create';
         } else {
             onSubmit();
         }

@@ -6,6 +6,7 @@ type Selected = PagesTab | undefined;
 type Interactions = {
     page: PagesResponse;
     selected?: Selected;
+    fetch: (page: number) => void;
     select: (tab: PagesTab) => void;
 };
 
@@ -15,10 +16,11 @@ const resolveInitial = (tabs?: PagesTab[]) => (tabs && tabs.length > 0 ? tabs[0]
 
 type PageManagementProviderProps = {
     page: PagesResponse;
+    fetch: (page: number) => void;
     children: ReactNode;
 };
 
-const PageManagementProvider = ({ page, children }: PageManagementProviderProps) => {
+const PageManagementProvider = ({ page, children, fetch }: PageManagementProviderProps) => {
     const [selected, setSelected] = useState<Selected>(() => resolveInitial(page.tabs));
 
     const select = (tab: PagesTab) => setSelected(tab);
@@ -26,6 +28,7 @@ const PageManagementProvider = ({ page, children }: PageManagementProviderProps)
     const value = {
         page,
         selected,
+        fetch,
         select
     };
 
