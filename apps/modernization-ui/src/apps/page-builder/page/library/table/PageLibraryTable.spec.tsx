@@ -73,7 +73,7 @@ describe('when at least one summary is available', () => {
     it('should redirect to classic when a non investigation page name is clicked', () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableManagement={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
