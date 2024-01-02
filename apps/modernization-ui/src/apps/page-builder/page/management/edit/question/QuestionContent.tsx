@@ -61,7 +61,9 @@ export const QuestionContent = ({
                         </div>
                         <div className={styles.questionContent}>
                             <div className={styles.inputContent}>
-                                {displayComponent === 1007 && <SelectInput options={conceptState} />}
+                                {displayComponent === 1007 && (
+                                    <SelectInput options={conceptState} data-testid="dropdown-input" />
+                                )}
                                 {/* create custom checkbox component */}
                                 {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
                                 {displayComponent === 1001 && <SelectInput options={conceptState} />}
@@ -71,7 +73,9 @@ export const QuestionContent = ({
                                 )}
                             </div>
 
-                            {type === 'DATE' && <Icon.CalendarToday size={4} className={styles.icon} />}
+                            {type === 'DATE' && (
+                                <Icon.CalendarToday size={4} className={styles.icon} data-testid="calendar-icon" />
+                            )}
                         </div>
                     </div>
                 </>
