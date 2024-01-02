@@ -78,7 +78,7 @@ export const TableComponent = ({
     isLoading = false,
     contextName
 }: Props) => {
-    const sorting = useTableSorting({ enabled: tableBody && tableBody.length > 1, onSort: sortData });
+    const sorting = useTableSorting({ enabled: tableBody && totalResults > 1, onSort: sortData });
 
     const columns = resolveColumns(selectable, tableHead);
 
