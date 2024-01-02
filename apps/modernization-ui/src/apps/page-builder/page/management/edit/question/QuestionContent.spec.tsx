@@ -76,7 +76,7 @@ describe('when page loads', () => {
 
     });
 
-    it('drop down input should be true', () => {
+    it('drop down input should be true for display component 1007', () => {
         const {getByTestId} = render(
             <BrowserRouter>
                 <AlertProvider>

@@ -8,8 +8,6 @@
     border: 1px solid colors.$base-lightest;
     background: colors.$base-white;
     justify-content: space-between;
-    transition: opacity 0.7s;
-    opacity: 0;
 
     .typeDisplay {
         display: flex;
@@ -54,8 +52,4 @@
             line-height: 1.4175rem;
         }
     }
-}
-
-.visible {
-    opacity: 100;
 }
