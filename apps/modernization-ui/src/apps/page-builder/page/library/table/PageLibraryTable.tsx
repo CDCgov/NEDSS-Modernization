@@ -31,11 +31,12 @@ const asTableRow = (page: PageSummary, isManagementEnabled: boolean): TableBody 
     tableDetails: [
         {
             id: 1,
-            title: isManagementEnabled ? (
-                <Link to={`/page-builder/pages/${page.id}`}>{page?.name}</Link>
-            ) : (
-                <a href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}>{page?.name}</a>
-            )
+            title:
+                isManagementEnabled && page.eventType?.value === 'INV' ? (
+                    <Link to={`/page-builder/pages/${page.id}`}>{page?.name}</Link>
+                ) : (
+                    <a href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}>{page?.name}</a>
+                )
         },
         { id: 2, title: page.eventType?.name },
         {

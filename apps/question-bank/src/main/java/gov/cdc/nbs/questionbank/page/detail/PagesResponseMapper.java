@@ -98,7 +98,7 @@ class PagesResponseMapper {
   private PagesResponse.PagesQuestion asQuestion(final ContentNode content) {
     long id = content.identifier();
     String adminComments = content.attributes().adminComments();
-    boolean isStandard = true;
+    boolean isStandard = content.attributes().isStandard();
     String standard = content.attributes().standard();
     String questionIdentifier = content.attributes().question();
     String name = content.definition().name();

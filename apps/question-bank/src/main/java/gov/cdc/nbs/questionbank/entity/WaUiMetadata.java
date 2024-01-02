@@ -18,6 +18,7 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSubsection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
@@ -546,29 +547,30 @@ public class WaUiMetadata {
   }
 
   public void update(PageContentCommand.GroupSubsection command) {
-    setBlockNm(command.blockName());
+    this.blockNm = command.blockName();
     updated(command);
   }
 
   public void updateQuestionBatch(PageContentCommand.GroupSubsection command) {
-    setBlockNm(command.blockName());
-    GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst().get();
-    setBatchTableAppearIndCd(batch.batchTableAppearIndCd());
-    setBatchTableHeader(batch.batchTableHeader());
-    setBatchTableColumnWidth(batch.batchTableColumnWidth());
+    this.blockNm = command.blockName();
+    GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
+            .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
+    this.batchTableAppearIndCd = batch.batchTableAppearIndCd();
+    this.batchTableHeader = batch.batchTableHeader();
+    this.batchTableColumnWidth = batch.batchTableColumnWidth();
     updated(command);
   }
 
   public void update(PageContentCommand.UnGroupSubsection command) {
-    setBlockNm(null);
+    this.blockNm =null;
     updated(command);
   }
 
   public void updateQuestionBatch(PageContentCommand.UnGroupSubsection command) {
-    setBlockNm(null);
-    setBatchTableAppearIndCd(null);
-    setBatchTableHeader(null);
-    setBatchTableColumnWidth(null);
+    this.blockNm=null;
+    this.batchTableAppearIndCd=null;
+    this.batchTableHeader=null;
+    this.batchTableColumnWidth=null;
     updated(command);
   }
 

@@ -1,4 +1,8 @@
-import { PageStaticControllerService, PagesSubSection } from 'apps/page-builder/generated';
+import {
+    PageStaticControllerService,
+    PagesSubSection,
+    PageQuestionControllerService
+} from 'apps/page-builder/generated';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
 import { useState } from 'react';
@@ -9,7 +13,7 @@ import { useAlert } from 'alert';
 
 type Props = {
     subsection: PagesSubSection;
-    onAddQuestion: () => void;
+    onAddQuestion: (questionId: number) => void;
 };
 
 const hyperlinkID = 1003;
@@ -23,7 +27,6 @@ const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, 
 export const Subsection = ({ subsection, onAddQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, fetch } = usePageManagement();
-
     const { showAlert } = useAlert();
 
     const handleAlert = (message: string) => {
@@ -66,7 +69,14 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                 fetch(page.id);
             });
         } else {
-            console.log('delete question NYI', id);
+            PageQuestionControllerService.deleteQuestionUsingDelete({
+                authorization: authorization(),
+                page: page.id,
+                questionId: Number(id)
+            }).then(() => {
+                fetch(page.id);
+                handleAlert(`Question deleted successfully`);
+            });
         }
     };
 
@@ -84,15 +94,19 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                 onExpandedChange={handleExpandedChange}
                 isExpanded={isExpanded}
             />
-            {subsection.questions.map((q, k) => (
-                <Question
-                    question={q}
-                    key={k}
-                    onEditQuestion={handleEditQuestion}
-                    onDeleteQuestion={handleDeleteQuestion}
-                    onRequiredChange={handleRequiredChange}
-                />
-            ))}
+            {isExpanded && (
+                <>
+                    {subsection.questions.map((q, k) => (
+                        <Question
+                            question={q}
+                            key={k}
+                            onEditQuestion={handleEditQuestion}
+                            onDeleteQuestion={handleDeleteQuestion}
+                            onRequiredChange={handleRequiredChange}
+                        />
+                    ))}
+                </>
+            )}
         </div>
     );
 };
