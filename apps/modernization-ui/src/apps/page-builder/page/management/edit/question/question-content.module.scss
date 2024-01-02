@@ -3,7 +3,6 @@
 .question {
     padding: 1.5rem;
     display: flex;
-    flex-direction: column;
     width: 54rem;
     align-items: flex-start;
     gap: 0.75rem;
@@ -11,4 +10,46 @@
     border-radius: 0rem 0rem 0.3125rem 0.3125rem;
     border: 1px solid colors.$base-lightest;
     background: colors.$base-white;
+
+    padding: 1.5rem 1.5rem 2rem 0.75rem;
+
+    .reorderIcon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-right: 0.75rem;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        .questionHeader {
+            display: flex;
+            align-items: flex-start;
+
+            .identifier {
+                margin: 0%;
+                margin-top: 0.4rem;
+                margin-left: 0.5rem;
+                align-items: center;
+            }
+            
+        }
+
+        .questionContent {
+            display: flex;
+            width: 100%;
+            align-items: center;
+
+            .inputContent {
+                width: 60%;
+            }
+
+            .icon {
+                margin-left: 0.5rem;
+            }
+        }
+    }
 }

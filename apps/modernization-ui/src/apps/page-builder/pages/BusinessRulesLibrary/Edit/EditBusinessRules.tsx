@@ -22,7 +22,7 @@ const EditBusinessRules = () => {
             try {
                 await PageRuleControllerService.deletePageRuleUsingDelete({
                     authorization: authorization(),
-                    pageId: pageId ?? '',
+                    id: Number(pageId) ?? '',
                     ruleId: Number(ruleId)
                 });
                 showAlert({ type: 'success', header: 'Success', message: 'Rule deleted.' });
