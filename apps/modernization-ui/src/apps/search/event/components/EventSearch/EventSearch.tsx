@@ -6,8 +6,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { objectOrUndefined } from 'utils';
 import { EventTypeAccordion, SearchType } from 'apps/search/event/components/EventTypeAccordion/EventTypeAccordion';
 import { InvestigationAccordion } from 'apps/search/event/components/InvestigationSearch/InvestigationAccordion';
-import { initialLabForm } from 'apps/search/event/components/labReportSearch/DefaultLabReportForm';
-import { LabReportAccordion } from 'apps/search/event/components/labReportSearch/LabReportAccordion';
+import { initialLabForm } from 'apps/search/event/components/LabReportSearch/DefaultLabReportForm';
+import { LabReportAccordion } from 'apps/search/event/components/LabReportSearch/LabReportAccordion';
 
 type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;

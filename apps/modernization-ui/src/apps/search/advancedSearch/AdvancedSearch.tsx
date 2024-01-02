@@ -29,9 +29,9 @@ import {
     downloadLabReportSearchResultPdf
 } from 'utils/ExportUtil';
 import './AdvancedSearch.scss';
-import { AdvancedSearchChips } from './components/chips/AdvancedSearchChips';
-import { InvestigationResults } from './components/InvestigationResults';
-import { LabReportResults } from './components/LabReportResults';
+import { AdvancedSearchChips } from 'apps/search/advancedSearch/components/chips/AdvancedSearchChips';
+import { InvestigationResults } from 'apps/search/event/components/InvestigationSearch/InvestigationResults';
+import { LabReportResults } from 'apps/search/event/components/LabReportSearch/LabReportResults';
 import { EventSearch } from 'apps/search/event/components/EventSearch/EventSearch';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { externalize, internalize } from 'apps/search/patient';
