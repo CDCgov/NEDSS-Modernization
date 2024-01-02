@@ -13,7 +13,7 @@ class QueryDSLMultiValueFilterApplier {
 
     return switch (filter.operator()) {
       case EQUALS -> expression.in(filter.values());
-      case NOT_EQUAL_TO -> expression.notIn(filter.values());
+      case NOT_EQUAL_TO -> expression.notIn(filter.values()).or(expression.isNull());
       case STARTS_WITH -> filter.values()
           .stream()
           .map(expression::startsWith)
