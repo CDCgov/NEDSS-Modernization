@@ -69,11 +69,14 @@ describe('InvestigationResults component tests', () => {
                 />
             </BrowserRouter>
         );
+
+        const timeDiff = Date.now() - new Date(investigations[0].personParticipations![0]?.birthTime).getTime();
+        const age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
         expect(getByText('Doe, John')).toBeInTheDocument();
         expect(getByText('2019 Novel Coronavirus')).toBeInTheDocument();
         expect(getByText('CAS10003001GA99')).toBeInTheDocument();
         expect(getByText('1/1/1990')).toBeInTheDocument();
-        expect(getByText('(33 years)')).toBeInTheDocument();
+        expect(getByText(`(${age} years)`)).toBeInTheDocument();
         expect(getByText('63000')).toBeInTheDocument();
         expect(getByText('7/21/2023')).toBeInTheDocument();
         expect(getByText('OPEN')).toBeInTheDocument();
