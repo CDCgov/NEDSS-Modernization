@@ -59,7 +59,7 @@ export const QuestionHeader = ({
             </div>
             <div className={styles.questionButtons}>
                 <Icon.Edit onClick={onEditQuestion} />
-                <DeleteQuestion onDelete={onDeleteQuestion} />
+                {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Required</div>
                 <ToggleButton defaultChecked={question.required} onChange={onRequiredChange} />
