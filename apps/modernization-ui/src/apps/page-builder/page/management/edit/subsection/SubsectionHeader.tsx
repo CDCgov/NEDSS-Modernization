@@ -11,7 +11,7 @@ type Props = {
     name: string;
     id: number;
     questionCount: number;
-    onAddQuestion: () => void;
+    onAddQuestion: (questionId: number) => void;
     isExpanded: boolean;
     onExpandedChange: (isExpanded: boolean) => void;
 };
@@ -21,15 +21,15 @@ export const SubsectionHeader = ({ name, id, questionCount, isExpanded, onExpand
     const queListModalRef = useRef<ModalRef>(null);
     const renderQuestionListModal = () => (
         <>
-            <ModalToggleButton className="add-btn" outline onClick={onAddQuestion} modalRef={queListModalRef}>
-                Add question
+            <ModalToggleButton className="add-btn" outline modalRef={queListModalRef}>
+                Add Question
             </ModalToggleButton>
             <ModalComponent
                 isLarge
                 forceAction={false}
                 modalRef={queListModalRef}
                 modalHeading={'Add question'}
-                modalBody={<QuestionLibrary hideTabs modalRef={queListModalRef} />}
+                modalBody={<QuestionLibrary hideTabs onAddQuestion={onAddQuestion} modalRef={queListModalRef} />}
             />
         </>
     );

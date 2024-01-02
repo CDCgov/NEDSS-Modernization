@@ -4,6 +4,8 @@ import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import classNames from 'classnames';
 import { Heading } from 'components/heading';
+import DeleteQuestion from '../../../../components/DeleteQuestion/DeleteQuestion';
+
 type Props = {
     visible?: boolean;
     question: PagesQuestion;
@@ -57,7 +59,7 @@ export const QuestionHeader = ({
             </div>
             <div className={styles.questionButtons}>
                 <Icon.Edit onClick={onEditQuestion} />
-                <Icon.Delete onClick={onDeleteQuestion} />
+                <DeleteQuestion onDelete={onDeleteQuestion} />
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Required</div>
                 <ToggleButton defaultChecked={question.required} onChange={onRequiredChange} />

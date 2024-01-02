@@ -41,7 +41,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     onRequiredChange={() => onRequiredChange(question.id)}
                     onEditQuestion={() => onEditQuestion(question.id)}
                     onDeleteQuestion={() => {
-                        setConfirmModal(true);
+                        onDeleteQuestion(question.id, 0);
                     }}
                 />
                 {confirmModal === true && (
