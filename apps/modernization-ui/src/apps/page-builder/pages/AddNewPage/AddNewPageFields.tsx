@@ -7,6 +7,7 @@ import { MultiSelectInput } from 'components/selection/multi';
 import { validPageNameRule } from 'validation/entry';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormValues } from './AddNewPage';
+import { dataMartNameRule } from 'validation/entry/dataMartNameRule';
 
 type AddNewPageFieldProps = {
     conditions: Condition[];
@@ -140,8 +141,16 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="dataMartName"
-                render={({ field: { onChange, value } }) => (
-                    <Input label="Data mart name" type="text" onChange={onChange} defaultValue={value} />
+                rules={dataMartNameRule}
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                    <Input
+                        label="Data mart name"
+                        type="text"
+                        onChange={onChange}
+                        defaultValue={value}
+                        error={error?.message}
+                        onBlur={onBlur}
+                    />
                 )}
             />
         </>
