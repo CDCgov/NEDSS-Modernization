@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -119,15 +120,19 @@ class ConditionCreatorTest {
     void testGenerateNewIdWithNoExistingIds() {
         doReturn(new ArrayList<>()).when(ldfPageSetRepository).findAllIds();
         String newId = conditionCreator.getLdfId();
-        assertEquals("2023001", newId);
+        String currentYear = String.valueOf(LocalDate.now().getYear());
+        String expected = currentYear + "001";
+        assertEquals(expected, newId);
     }
 
     @Test
     void testGenerateNewIdWithExistingIdsContainingCurrentYear() {
-        List<String> existingIds = Arrays.asList("2023001", "2023002", "2023003");
+        String currentYear = String.valueOf(LocalDate.now().getYear());
+        List<String> existingIds = Arrays.asList(currentYear +"001", currentYear +"002", currentYear+ "003");
         doReturn(existingIds).when(ldfPageSetRepository).findAllIds();
         String newId = conditionCreator.getLdfId();
-        assertEquals("2023004", newId);
+        String expected = currentYear + "004";
+        assertEquals(expected, newId);
     }
 
     @Test
@@ -135,7 +140,9 @@ class ConditionCreatorTest {
         List<String> existingIds = Arrays.asList("2022001", "98", "99");
         doReturn(existingIds).when(ldfPageSetRepository).findAllIds();
         String newId = conditionCreator.getLdfId();
-        assertEquals("2023001", newId);
+        String currentYear = String.valueOf(LocalDate.now().getYear());
+        String expected = currentYear + "001";
+        assertEquals(expected, newId);
     }
 
     private CreateConditionRequest getCreateConditionRequest() {
