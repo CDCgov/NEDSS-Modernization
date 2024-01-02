@@ -103,7 +103,7 @@ describe('Table component', () => {
 });
 
 describe('when a table has a sortable header', () => {
-    it('should default to no active soriting', async () => {
+    it('should default to no active sorting', async () => {
         const { getAllByRole } = render(
             <TableComponent
                 tableHeader="Test Table Header"
@@ -207,5 +207,27 @@ describe('when a table has a sortable header', () => {
 
         const nonSortableHeader = headers[1];
         expect(nonSortableHeader).not.toHaveClass('sorted');
+    });
+
+    it('should disable sorting if there is only 1 total result', () => {
+        const { getByRole } = render(
+            <TableComponent
+                tableHeader="Test Table Header"
+                tableHead={[
+                    { name: 'A', sortable: true },
+                    { name: 'B', sortable: false }
+                ]}
+                tableBody={[
+                    {
+                        id: 1,
+                        tableDetails: [{ id: 1, title: 'one' }]
+                    }
+                ]}
+                totalResults={1}
+            />
+        );
+        const sortIcon = getByRole('button', { name: 'sort' });
+
+        expect(sortIcon).toBeDisabled();
     });
 });
