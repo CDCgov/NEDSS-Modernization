@@ -23,22 +23,29 @@
     .content {
         display: flex;
         flex-direction: column;
+        width: 100%;
 
         .questionHeader {
             display: flex;
             align-items: flex-start;
 
             .identifier {
+                margin: 0%;
+                margin-top: 0.4rem;
                 margin-left: 0.5rem;
-                display: flex;
-
+                align-items: center;
             }
+            
         }
 
         .questionContent {
             display: flex;
             width: 100%;
             align-items: center;
+
+            .inputContent {
+                width: 60%;
+            }
 
             .icon {
                 margin-left: 0.5rem;
