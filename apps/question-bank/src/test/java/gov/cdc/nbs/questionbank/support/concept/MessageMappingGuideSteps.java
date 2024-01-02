@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.support.concept;
 
+import gov.cdc.nbs.testing.support.concept.ConceptParameterResolver;
 import io.cucumber.java.ParameterType;
 
 public class MessageMappingGuideSteps {

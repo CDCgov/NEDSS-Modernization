@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.function.Predicate;
 @Embeddable
 public class PatientRaceDemographic {
 
-    private static Predicate<PersonRace> inCategory(final String category) {
+  private static Predicate<PersonRace> inCategory(final String category) {
         return test -> Objects.equals(test.getRaceCategoryCd(), category);
     }
 
@@ -28,6 +29,9 @@ public class PatientRaceDemographic {
     private static Predicate<PersonRace> isDetail() {
         return test -> !Objects.equals(test.getRaceCategoryCd(), test.getRaceCd());
     }
+
+    @Transient
+    private Person patient;
 
     @OneToMany(
         mappedBy = "personUid",
@@ -41,11 +45,20 @@ public class PatientRaceDemographic {
     )
     private List<PersonRace> races;
 
+    protected PatientRaceDemographic() {
+      this(null);
+    }
 
-    public void add(
-        final Person patient,
-        final PatientCommand.AddRace added
-    ) {
+    public PatientRaceDemographic(final Person patient) {
+        this.patient = patient;
+    }
+
+    public PatientRaceDemographic patient(final Person patient) {
+      this.patient = patient;
+      return this;
+    }
+
+    public void add(final PatientCommand.AddRace added) {
         //  Add a PersonRace for the category
         add(
             patient,

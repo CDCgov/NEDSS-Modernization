@@ -5,99 +5,130 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCreateAssertions;
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
-import gov.cdc.nbs.testing.support.Active;
-import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientProfileRaceSteps {
 
-    @Autowired
-    PatientMother mother;
+  private final Active<PatientInput> input;
+  private final TestPatient patient;
+  private final Active<PatientIdentifier> activePatient;
+  private final PatientRaceResolver resolver;
 
-    @Autowired
-    Active<PatientInput> input;
+  private final PatientProfileRaceRequester requester;
+  private final Active<ResultActions> response;
 
-    @Autowired
-    TestPatient patient;
+  PatientProfileRaceSteps(
+      final Active<PatientInput> input,
+      final TestPatient patient,
+      final Active<PatientIdentifier> activePatient,
+      final PatientRaceResolver resolver,
+      final PatientProfileRaceRequester requester,
+      final Active<ResultActions> response
+  ) {
+    this.input = input;
+    this.patient = patient;
+    this.activePatient = activePatient;
+    this.resolver = resolver;
+    this.requester = requester;
+    this.response = response;
+  }
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+  @Given("the new patient's race is entered")
+  public void the_new_patient_race_is_entered() {
+    PatientInput active = this.input.active();
 
-    @Autowired
-    PatientRaceResolver resolver;
+    active.getRaces().add(RandomUtil.getRandomString());
+  }
 
-    @Given("the patient has a race")
-    public void the_patient_has_a_race() {
-        mother.withRace(patients.one());
+  @Given("I view the Patient Profile Races")
+  public void i_view_the_patient_profile_races() {
+    this.activePatient.maybeActive()
+        .map(this.requester::races)
+        .ifPresent(this.response::active);
+  }
+
+  @Then("the new patient has the entered race")
+  @Transactional
+  public void the_new_patient_has_the_entered_race() {
+    Person actual = patient.managed();
+
+    if (!actual.getRaces().isEmpty()) {
+      assertThat(actual.getRaces())
+          .satisfiesExactly(PatientCreateAssertions.containsRaceCategories(this.input.active().getRaces()));
     }
+  }
 
-    @Given("the new patient's race is entered")
-    public void the_new_patient_race_is_entered() {
-        PatientInput active = this.input.active();
+  @Then("the profile has associated races")
+  public void the_profile_has_associated_races() {
+    long patient = this.activePatient.active().id();
 
-        active.getRaces().add(RandomUtil.getRandomString());
-    }
+    PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
-    @Then("the new patient has the entered race")
-    @Transactional
-    public void the_new_patient_has_the_entered_race() {
-        Person actual = patient.managed();
+    GraphQLPage page = new GraphQLPage(1);
 
-        if (!actual.getRaces().isEmpty()) {
-            assertThat(actual.getRaces())
-                .satisfiesExactly(PatientCreateAssertions.containsRaceCategories(this.input.active().getRaces()));
-        }
-    }
+    Page<PatientRace> actual = this.resolver.resolve(profile, page);
+    assertThat(actual).isNotEmpty();
+  }
 
-    @Then("the profile has associated races")
-    public void the_profile_has_associated_races() {
-        long patient = this.patients.one().id();
+  @Then("the profile has no associated races")
+  public void the_profile_has_no_associated_races() {
+    long patient = this.activePatient.active().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
+    PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.display());
 
-        GraphQLPage page = new GraphQLPage(1);
+    GraphQLPage page = new GraphQLPage(1);
 
-        Page<PatientRace> actual = this.resolver.resolve(profile, page);
-        assertThat(actual).isNotEmpty();
-    }
+    Page<PatientRace> actual = this.resolver.resolve(profile, page);
+    assertThat(actual).isEmpty();
+  }
 
-    @Then("the profile has no associated races")
-    public void the_profile_has_no_associated_races() {
-        long patient = this.patients.one().id();
+  @Then("the patient's race includes the category {raceCategory}")
+  public void the_patients_race_includes_the_category(final String category) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.data.findPatientProfile.races.content[*].category.id")
+            .value(hasItem(equalTo(category))));
+  }
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.display());
+  @Then("the patient's race does not include the category {raceCategory}")
+  public void the_patients_race_does_not_include_the_category(final String category) throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.data.findPatientProfile.races.content[*].category.id")
+            .value(not(hasItem(equalTo(category)))));
+  }
 
-        GraphQLPage page = new GraphQLPage(1);
+  @Then("the patient's race as of {date} includes the category {raceCategory}")
+  public void the_patients_race_as_of_includes_the_category(final Instant asOf, final String category)
+      throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.data.findPatientProfile.races.content[?(@.category.id=='%s')].asOf", category)
+            .value(hasItem(equalTo(asOf.toString()))));
+  }
 
-        Page<PatientRace> actual = this.resolver.resolve(profile, page);
-        assertThat(actual).isEmpty();
-    }
-
-    @Then("the profile races are not accessible")
-    public void the_profile_race_is_not_accessible() {
-        long patient = this.patients.one().id();
-
-
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.display());
-
-        GraphQLPage page = new GraphQLPage(1);
-
-        assertThatThrownBy(
-            () -> this.resolver.resolve(profile, page)
-        )
-            .isInstanceOf(AccessDeniedException.class);
-    }
+  @Then("the patient's race includes {raceDetail} within the category {raceCategory}")
+  public void the_patients_race_includes_the_detail(final String detail, final String category) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findPatientProfile.races.content[?(@.category.id=='%s')].detailed[*].id",
+                category
+            ).value(hasItem(equalTo(detail)))
+        );
+  }
 }
