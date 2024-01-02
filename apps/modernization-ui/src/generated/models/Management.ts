@@ -8,6 +8,5 @@ import type { Edit } from './Edit';
 export type Management = {
     create?: Create;
     edit?: Edit;
-    enabled?: boolean;
 };
 
