@@ -67,9 +67,7 @@ const PageLibraryContent = () => {
                 <section className={styles.library}>
                     <header>
                         <h2>Page library</h2>
-                        {!config.loading &&
-                        config.features.pageBuilder.page.management.enabled &&
-                        config.features.pageBuilder.page.management.create.enabled ? (
+                        {!config.loading && config.features.pageBuilder.page.management.create.enabled ? (
                             <NavLinkButton to={'/page-builder/pages/add'}>Create new page</NavLinkButton>
                         ) : (
                             <LinkButton type="solid" target="_self" href="/nbs/page-builder/api/v1/pages/create">
@@ -87,7 +85,7 @@ const PageLibraryContent = () => {
                     />
                     {!config.loading && (
                         <PageLibraryTable
-                            enableManagement={config.features.pageBuilder.page.management.enabled}
+                            enableEdit={config.features.pageBuilder.page.management.edit.enabled}
                             summaries={pages}
                             searching={searching}
                             onSort={sortBy}

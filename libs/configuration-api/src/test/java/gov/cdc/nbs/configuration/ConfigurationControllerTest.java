@@ -28,7 +28,6 @@ class ConfigurationControllerTest {
                   new Page(
                       new Library(true),
                       new Management(
-                          true,
                           new Create(true),
                           new Edit(true))))));
 
@@ -54,7 +53,6 @@ class ConfigurationControllerTest {
                       "enabled" : true
                     },
                     "management" : {
-                      "enabled" : true,
                       "create" : {
                         "enabled" : true
                       },

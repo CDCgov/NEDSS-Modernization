@@ -42,7 +42,6 @@ nbs:
         library: 
           enabled: false
         management: 
-          enabled: false
           create: 
             enabled: false
           edit:

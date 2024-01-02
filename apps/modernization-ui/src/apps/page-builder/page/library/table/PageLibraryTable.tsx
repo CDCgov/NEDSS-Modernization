@@ -26,12 +26,12 @@ const headers = [
     { name: Column.LastUpdatedBy, sortable: true }
 ];
 
-const asTableRow = (page: PageSummary, isManagementEnabled: boolean): TableBody => ({
+const asTableRow = (page: PageSummary, enableEdit: boolean): TableBody => ({
     id: page.id,
     tableDetails: [
         {
             id: 1,
-            title: isManagementEnabled ? (
+            title: enableEdit ? (
                 <Link to={`/page-builder/pages/${page.id}`}>{page?.name}</Link>
             ) : (
                 <a href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}>{page?.name}</a>
@@ -51,17 +51,17 @@ const asTableRow = (page: PageSummary, isManagementEnabled: boolean): TableBody 
     ]
 });
 
-const asTableRows = (pages: PageSummary[], isMangementEnabled: boolean): TableBody[] =>
-    pages.map((p) => asTableRow(p, isMangementEnabled));
+const asTableRows = (pages: PageSummary[], enableEdit: boolean): TableBody[] =>
+    pages.map((p) => asTableRow(p, enableEdit));
 
 type Props = {
     summaries: PageSummary[];
     searching?: boolean;
     onSort: (name: string, direction: Direction) => void;
-    enableManagement: boolean;
+    enableEdit: boolean;
 };
 
-export const PageLibraryTable = ({ enableManagement, summaries, searching = false, onSort }: Props) => {
+export const PageLibraryTable = ({ enableEdit, summaries, searching = false, onSort }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
 
     const {
@@ -70,7 +70,7 @@ export const PageLibraryTable = ({ enableManagement, summaries, searching = fals
     } = usePage();
 
     useEffect(() => {
-        setTableRows(asTableRows(summaries, enableManagement));
+        setTableRows(asTableRows(summaries, enableEdit));
     }, [summaries]);
 
     const handleSort = (name: string, direction: Direction): void => {

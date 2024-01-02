@@ -6,7 +6,7 @@ describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const { getAllByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableManagement={true} summaries={[]} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={[]} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -37,7 +37,7 @@ describe('when at least one summary is available', () => {
     it('should display the page summaries', async () => {
         const { findAllByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableManagement={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -54,7 +54,7 @@ describe('when at least one summary is available', () => {
     it('should redirect to the edit page when the page name is clicked', async () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableManagement={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -77,7 +77,7 @@ describe('when rendered with mangement disabled', () => {
     it('should redirect to the edit page when the page name is clicked', async () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableManagement={false} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={false} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
