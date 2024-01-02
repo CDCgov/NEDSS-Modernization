@@ -20,8 +20,6 @@ const lineSeparatorId = 1012;
 const originalElecDocId = 1036;
 const readOnlyPartId = 1030;
 
-const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, originalElecDocId, readOnlyPartId];
-
 export const QuestionHeader = ({
     question,
     onRequiredChange,
@@ -29,33 +27,28 @@ export const QuestionHeader = ({
     onDeleteQuestion,
     visible = true
 }: Props) => {
+    const getHeadingText = (displayComponent: number | undefined) => {
+        switch (displayComponent) {
+            case hyperlinkId:
+                return 'Static element: Hyperlink';
+            case lineSeparatorId:
+                return 'Static element: Line separator';
+            case commentsReadOnlyId:
+                return 'Static element: Comment';
+            case originalElecDocId:
+                return 'Static element: Electronic document list';
+            case readOnlyPartId:
+                return 'Static element: Participant list';
+            default:
+                return 'Question';
+        }
+    };
+
     return (
         <div className={classNames(styles.header, { [styles.visible]: visible })}>
             <div className={styles.typeDisplay}>
                 {question.isStandard && <div className={styles.standardIndicator}>S</div>}
-                {staticTypes.includes(question.displayComponent!) ? (
-                    <>
-                        {question.displayComponent === hyperlinkId && (
-                            <Heading level={3}>Static element: Hyperlink</Heading>
-                        )}
-                        {question.displayComponent === lineSeparatorId && (
-                            <Heading level={3}>Static element: Line separator</Heading>
-                        )}
-                        {question.displayComponent === commentsReadOnlyId && (
-                            <Heading level={3}>Static element: Comment </Heading>
-                        )}
-                        {question.displayComponent === originalElecDocId && (
-                            <Heading level={3}>Static element: Electronic document list</Heading>
-                        )}
-                        {question.displayComponent === readOnlyPartId && (
-                            <Heading level={3}>Static element: Participant list</Heading>
-                        )}
-                    </>
-                ) : (
-                    <>
-                        <Heading level={3}>Question</Heading>
-                    </>
-                )}
+                <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>
             </div>
             <div className={styles.questionButtons}>
                 <Icon.Edit onClick={onEditQuestion} />
