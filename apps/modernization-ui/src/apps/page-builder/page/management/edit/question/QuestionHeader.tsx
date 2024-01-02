@@ -1,5 +1,5 @@
 import styles from './question-header.module.scss';
-import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Icon, ModalRef } from '@trussworks/react-uswds';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { Heading } from 'components/heading';
@@ -55,10 +55,6 @@ export const QuestionHeader = ({
                 <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>
             </div>
             <div className={styles.questionButtons}>
-                <ModalToggleButton type="button" modalRef={editStaticElementRef}>
-                    <Icon.Edit size={3} />
-                </ModalToggleButton>
-                <Icon.Delete onClick={onDeleteQuestion} />
                 <Icon.Edit onClick={onEditQuestion} />
                 {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
