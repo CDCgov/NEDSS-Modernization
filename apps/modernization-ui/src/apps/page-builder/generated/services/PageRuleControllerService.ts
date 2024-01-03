@@ -62,14 +62,14 @@ export class PageRuleControllerService {
      */
     public static createBusinessRuleUsingPost({
         authorization,
-        page,
+        id,
         request
     }: {
         authorization: string;
         /**
-         * page
+         * id
          */
-        page: number;
+        id: number;
         /**
          * request
          */
@@ -79,7 +79,7 @@ export class PageRuleControllerService {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/pages/{id}/rules',
             path: {
-                page: page
+                id: id
             },
             headers: {
                 Authorization: authorization
@@ -221,14 +221,14 @@ export class PageRuleControllerService {
      */
     public static deletePageRuleUsingDelete({
         authorization,
-        page,
+        id,
         ruleId
     }: {
         authorization: string;
         /**
-         * page
+         * id
          */
-        page: number;
+        id: number;
         /**
          * ruleId
          */
@@ -238,7 +238,7 @@ export class PageRuleControllerService {
             method: 'DELETE',
             url: '/nbs/page-builder/api/v1/pages/{id}/rules/{ruleId}',
             path: {
-                page: page,
+                id: id,
                 ruleId: ruleId
             },
             headers: {

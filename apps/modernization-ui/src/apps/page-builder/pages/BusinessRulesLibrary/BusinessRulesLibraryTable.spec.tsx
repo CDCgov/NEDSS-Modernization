@@ -43,7 +43,7 @@ describe('BusinessRulesLibraryTable', () => {
                 ruleId: 6376,
                 templateUid: 1000272,
                 ruleFunction: 'Enable',
-                ruleDescription: null,
+                ruleDescription: 'test name',
                 sourceIdentifier: 'ARB001',
                 sourceValue: ['Dengue virus'],
                 comparator: '=',
@@ -59,7 +59,7 @@ describe('BusinessRulesLibraryTable', () => {
             );
 
             const tableData = await findAllByRole('cell');
-            expect(tableData[0]).toHaveTextContent('ARB001');
+            expect(tableData[0]).toHaveTextContent('test name');
             expect(tableData[1]).toHaveTextContent('Equal to');
             expect(tableData[2]).toHaveTextContent('Dengue virus');
             expect(tableData[3]).toHaveTextContent('Enable');

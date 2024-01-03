@@ -1,22 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { RefObject, useContext, useEffect, useState } from 'react';
 import './QuestionLibrary.scss';
 import './QuestionTabs.scss';
 import { QuestionsContext } from '../../context/QuestionsContext';
 import { fetchQuestion } from './useQuestionAPI';
 import { QuestionLibraryTable } from './QuestionLibraryTable';
-import { UserContext } from '../../../../providers/UserContext';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
+import { ModalRef } from '@trussworks/react-uswds';
+import { authorization } from '../../../../authorization';
 
-export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
+type Props = {
+    modalRef?: RefObject<ModalRef>;
+    hideTabs?: boolean;
+    onAddQuestion?: (id: number) => void;
+};
+
+export const QuestionLibrary = ({ hideTabs, modalRef, onAddQuestion }: Props) => {
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(QuestionsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
-    const { state } = useContext(UserContext);
+    const token = authorization();
 
     // @ts-ignore
     useEffect(async () => {
-        const token = `Bearer ${state.getToken()}`;
-        setIsLoading(true);
         const { content, totalElements }: any = await fetchQuestion(
             token,
             searchQuery,
@@ -36,6 +41,7 @@ export const QuestionLibrary = ({ hideTabs, modalRef }: any) => {
                 <QuestionLibraryTable
                     summaries={summaries}
                     qtnModalRef={modalRef}
+                    onAddQuestion={onAddQuestion}
                     pages={{ currentPage, pageSize, totalElements }}
                 />
             </div>
