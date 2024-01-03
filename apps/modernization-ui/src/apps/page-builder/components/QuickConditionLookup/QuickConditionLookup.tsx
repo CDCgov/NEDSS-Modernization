@@ -166,6 +166,7 @@ export const QuickConditionLookup = ({ modal, addConditions, createConditionModa
                 </div>
                 {conditions?.length ? (
                     <TableComponent
+                        display="zebra"
                         isLoading={loading}
                         sortData={handleSort}
                         tableHeader=""
