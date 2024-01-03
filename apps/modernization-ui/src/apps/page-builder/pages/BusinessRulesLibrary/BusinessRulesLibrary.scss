@@ -2,7 +2,6 @@
 @use 'styles/borders';
 
 .business-rules-library {
-    background-color: colors.$base-white;
     .search-description-block {
         p {
             margin: 32px 32px 8px;
@@ -121,7 +120,8 @@
     &.outer-search-box {
         border-radius: 5px;
         border-bottom: 1px solid var(--base-lighter, #dcdee0);
-        background: var(--base-lightest, #f0f0f0);
+        background-color: red;
+        //background: var(--base-lightest, #f0f0f0);
         padding: 16px;
         margin-bottom: 16px;
     }
