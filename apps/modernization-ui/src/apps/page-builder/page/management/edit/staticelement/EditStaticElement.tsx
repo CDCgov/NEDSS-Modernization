@@ -1,5 +1,11 @@
 import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { AddDefault, AddHyperlink, AddReadOnlyComments, PagesQuestion } from 'apps/page-builder/generated';
+import {
+    PageStaticControllerService,
+    PagesQuestion,
+    UpdateDefault,
+    UpdateHyperlink,
+    UpdateReadOnlyComments
+} from 'apps/page-builder/generated';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { RefObject } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
@@ -8,6 +14,9 @@ import styles from './staticelement.module.scss';
 import { maxLengthRule } from 'validation/entry';
 import { CommentsFields } from './CommentsFields';
 import { HyperlinkFields } from './HyperlinkFields';
+import { useAlert } from 'alert/useAlert';
+import { usePageManagement } from '../../usePageManagement';
+import { authorization } from 'authorization';
 
 const staticType = [
     { value: 'LIN', name: 'Line separator' },
@@ -23,40 +32,129 @@ type EditStaticProps = {
     onChange?: () => void;
 };
 
-type StaticElementType = {
-    type: 'HYP' | 'COM' | 'LIN' | 'PAR' | 'ELE' | '';
-};
+const hyperlinkId = 1003;
+const commentsReadOnlyId = 1014;
+const lineSeparatorId = 1012;
+const originalElecDocId = 1036;
+const readOnlyPartId = 1030;
 
-type StaticElementFormValues = (AddReadOnlyComments | AddHyperlink | AddDefault) & StaticElementType;
+type StaticElementFormValues = UpdateReadOnlyComments | UpdateHyperlink | UpdateDefault;
 
 export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
     const form = useForm<StaticElementFormValues>({
-        mode: 'onBlur'
+        mode: 'onBlur',
+        defaultValues: {
+            adminComments: question.adminComments,
+            label: question.name,
+            commentsText: question.name,
+            linkUrl: question.defaultValue
+        }
     });
-    // const { page, fetch } = usePageManagement();
-    // const { showAlert } = useAlert();
+
+    // const watch = useWatch({ control: form.control });
+
+    const { page, fetch } = usePageManagement();
+    const { showAlert } = useAlert();
+
+    // const checkFormValues = () => {
+    //     switch (question.displayComponent) {
+    //         case hyperlinkId:
+    //             if (watch.adminComments !== question.adminComments) {
+    //                 return false;
+    //             } else {
+    //                 return true;
+    //             }
+    //     }
+    // };
 
     const handleSubmit = () => {
         onSubmit();
     };
 
-    // const handleAlert = (message: string) => {
-    //     showAlert({ message: message, type: 'success' });
-    // };
+    const handleAlert = (message: string) => {
+        showAlert({ message: message, type: 'success' });
+    };
 
     const onSubmit = form.handleSubmit((data) => {
-        switch (data.type) {
-            case 'HYP':
-                console.log(`hi`);
+        switch (question.displayComponent) {
+            case hyperlinkId:
+                PageStaticControllerService.updateHyperlinkUsingPut({
+                    authorization: authorization(),
+                    id: question.id,
+                    page: page.id,
+                    request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The element ${(data as UpdateHyperlink).label} has been successfully updated.`);
+                    fetch(page.id);
+                });
+                break;
+            case commentsReadOnlyId:
+                PageStaticControllerService.updateReadOnlyCommentsUsingPut({
+                    authorization: authorization(),
+                    id: question.id,
+                    page: page.id,
+                    request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The comment element has been successfully updated.`);
+                    fetch(page.id);
+                });
+                break;
+            case lineSeparatorId:
+                PageStaticControllerService.updateDefaultStaticElementUsingPut({
+                    authorization: authorization(),
+                    id: question.id,
+                    page: page.id,
+                    request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The line separator element has been successfully updated.`);
+                    fetch(page.id);
+                });
+                break;
+            case readOnlyPartId:
+                PageStaticControllerService.updateDefaultStaticElementUsingPut({
+                    authorization: authorization(),
+                    id: question.id,
+                    page: page.id,
+                    request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The participant list has been successfully updated.`);
+                    fetch(page.id);
+                });
+                break;
+            case originalElecDocId:
+                PageStaticControllerService.updateDefaultStaticElementUsingPut({
+                    authorization: authorization(),
+                    id: question.id,
+                    page: page.id,
+                    request: data
+                }).then(() => {
+                    form.reset();
+                    handleAlert(`The electronic document list has been successfully updated.`);
+                    fetch(page.id);
+                });
                 break;
         }
     });
 
-    const checkStaticType = (): string => {
-        if (question.displayComponent === 1003) {
-            return `HYP`;
+    const checkStaticType = (displayComponent: number | undefined): string => {
+        switch (displayComponent) {
+            case hyperlinkId:
+                return 'HYP';
+            case lineSeparatorId:
+                return 'LIN';
+            case readOnlyPartId:
+                return 'PAR';
+            case commentsReadOnlyId:
+                return 'COM';
+            case originalElecDocId:
+                return 'ELE';
+            default:
+                return '';
         }
-        return `something`;
     };
 
     return (
@@ -64,42 +162,35 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
             <Form onSubmit={onSubmit} className={styles.form}>
                 <div className={styles.container}>
                     <div className={styles.staticType}>
-                        <Controller
-                            control={form.control}
-                            name="type"
-                            render={({ fieldState: { error } }) => (
-                                <SelectInput
-                                    label="Choose a static element"
-                                    options={staticType}
-                                    required
-                                    defaultValue={checkStaticType()}
-                                    error={error?.message}
-                                    data-testid="staticType"
-                                    disabled
-                                    className={styles.select_input}></SelectInput>
-                            )}
-                        />
+                        <SelectInput
+                            label="Choose a static element"
+                            options={staticType}
+                            required
+                            defaultValue={checkStaticType(question.displayComponent)}
+                            data-testid="staticType"
+                            disabled
+                            className={styles.select_input}></SelectInput>
                     </div>
                     <>
-                        {question.displayComponent === 1003 && (
+                        {question.displayComponent === hyperlinkId && (
                             <FormProvider {...form}>
                                 <HyperlinkFields />
                             </FormProvider>
                         )}
-                        {question.displayComponent === 1014 && (
+                        {question.displayComponent === commentsReadOnlyId && (
                             <FormProvider {...form}>
-                                <CommentsFields question={question} />
+                                <CommentsFields />
                             </FormProvider>
                         )}
                         <Controller
                             control={form.control}
                             name="adminComments"
                             rules={{ ...maxLengthRule(2000) }}
-                            render={({ field: { onBlur, onChange }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    defaultValue={question.adminComments}
+                                    defaultValue={value}
                                     label="Administrative Comments"
                                     type="text"
                                     data-testid="adminComments"
@@ -120,7 +211,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                             <ModalToggleButton
                                 modalRef={modalRef}
                                 closer
-                                disabled={!form.formState.isValid}
+                                disabled={!form.formState.isDirty || !form.formState.isValid}
                                 onClick={handleSubmit}
                                 data-testid="submit-btn">
                                 Save changes
@@ -132,7 +223,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                                 Cancel
                             </Button>
                             <Button
-                                disabled={!form.formState.isValid}
+                                disabled={!form.formState.isDirty || !form.formState.isValid}
                                 onClick={handleSubmit}
                                 type={'button'}
                                 data-testid="submit-btn">

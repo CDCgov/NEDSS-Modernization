@@ -1,5 +1,5 @@
 import styles from './question-header.module.scss';
-import { Icon, ModalRef } from '@trussworks/react-uswds';
+import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { Heading } from 'components/heading';
@@ -22,6 +22,8 @@ const commentsReadOnlyId = 1014;
 const lineSeparatorId = 1012;
 const originalElecDocId = 1036;
 const readOnlyPartId = 1030;
+
+const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, originalElecDocId, readOnlyPartId];
 
 export const QuestionHeader = ({
     question,
@@ -48,6 +50,10 @@ export const QuestionHeader = ({
         }
     };
 
+    const checkStaticType = (displayComponent: number | undefined) => {
+        return staticTypes.includes(displayComponent!);
+    };
+
     return (
         <div className={classNames(styles.header, { [styles.visible]: visible })}>
             <div className={styles.typeDisplay}>
@@ -55,7 +61,13 @@ export const QuestionHeader = ({
                 <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>
             </div>
             <div className={styles.questionButtons}>
-                <Icon.Edit onClick={onEditQuestion} />
+                {checkStaticType(question.displayComponent) ? (
+                    <ModalToggleButton type="button" unstyled modalRef={editStaticElementRef}>
+                        <Icon.Edit />
+                    </ModalToggleButton>
+                ) : (
+                    <Icon.Edit onClick={onEditQuestion} />
+                )}
                 {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Required</div>

@@ -1,14 +1,10 @@
-import { AddHyperlink, PagesQuestion } from 'apps/page-builder/generated';
+import { AddHyperlink, UpdateHyperlink } from 'apps/page-builder/generated';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
 
-type HyperlinkProps = {
-    question?: PagesQuestion;
-};
-
-export const HyperlinkFields = ({ question }: HyperlinkProps) => {
-    const form = useFormContext<AddHyperlink>();
+export const HyperlinkFields = () => {
+    const form = useFormContext<AddHyperlink | UpdateHyperlink>();
 
     return (
         <>
@@ -23,7 +19,7 @@ export const HyperlinkFields = ({ question }: HyperlinkProps) => {
                     <Input
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={question ? question.name : value}
+                        defaultValue={value}
                         label="Label"
                         type="text"
                         data-testid="hyperlinkLabel"
@@ -44,7 +40,7 @@ export const HyperlinkFields = ({ question }: HyperlinkProps) => {
                     <Input
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={question ? question.defaultValue : value}
+                        defaultValue={value}
                         label="Link URL"
                         type="text"
                         data-testid="linkUrl"

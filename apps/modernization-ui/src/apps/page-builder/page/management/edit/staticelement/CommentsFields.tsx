@@ -1,14 +1,10 @@
-import { AddReadOnlyComments, PagesQuestion } from 'apps/page-builder/generated';
+import { AddReadOnlyComments, UpdateReadOnlyComments } from 'apps/page-builder/generated';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
 
-type CommentsProps = {
-    question?: PagesQuestion;
-};
-
-export const CommentsFields = ({ question }: CommentsProps) => {
-    const form = useFormContext<AddReadOnlyComments>();
+export const CommentsFields = () => {
+    const form = useFormContext<AddReadOnlyComments | UpdateReadOnlyComments>();
 
     return (
         <>
@@ -23,7 +19,7 @@ export const CommentsFields = ({ question }: CommentsProps) => {
                     <Input
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={question ? question.defaultValue?.toString() : value}
+                        defaultValue={value}
                         label="Comments text"
                         required
                         type="text"
