@@ -23,7 +23,8 @@ public class RecentlyCreatedPageFinder {
         .from(pageTable)
         .where(pageTable.addUserId.eq(user)
             .and(pageTable.addTime.gt(thirtyMinutesAgo)))
-        .fetchOne();
+        .orderBy(pageTable.addTime.desc())
+        .fetchFirst();
     return Optional.ofNullable(id);
   }
 }
