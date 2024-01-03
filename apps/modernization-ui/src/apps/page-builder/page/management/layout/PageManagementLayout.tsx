@@ -21,7 +21,7 @@ const PageManagementLayout = ({ name, mode, children }: PageBuilderLayoutProps) 
                 <h1>Page builder</h1>
             </header>
             <div className={styles.bar}>
-                <Breadcrumb start=".." currentPage={name}>
+                <Breadcrumb start="/page-builder/pages" currentPage={name}>
                     Page library
                 </Breadcrumb>
                 <span
