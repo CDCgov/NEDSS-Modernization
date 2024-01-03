@@ -41,6 +41,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     }, []);
 
     const onSubmit = handleSubmit(async (data) => {
+        console.log('submitting', data);
         await createCondition(token, data)
             .then((response: Condition) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
@@ -59,6 +60,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const resetInput = () => {
         reset();
     };
+
+    console.log('test');
 
     return (
         <div className="create-condition">
@@ -313,7 +316,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         Cancel
                     </Button>
                 )}
-                <Button className="submit-btn" type="submit">
+                <Button className="submit-btn" type="submit" onClick={onSubmit}>
                     Create and add to page
                 </Button>
             </div>
