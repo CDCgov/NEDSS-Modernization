@@ -196,7 +196,7 @@ export const QuickConditionLookup = ({ modal, addConditions, createConditionModa
                         closer
                         onClick={handleAddConditions}
                         data-testid="modal-condition-add-btn">
-                        Create new condition
+                        Add conditions
                     </ModalToggleButton>
                 </ButtonGroup>
             </ModalFooter>
