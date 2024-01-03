@@ -90,7 +90,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         tableDetails: [
             {
                 id: 1,
-                title: <Link to={`/page-builder/pages/${pageId}/${rule.ruleId}`}>{rule?.ruleDescription}</Link>
+                title: <Link to={`/page-builder/pages/${page?.id}/${rule.ruleId}`}>{rule?.ruleDescription}</Link>
             },
             { id: 2, title: <div className="event-text">{mapLogic(rule)}</div> || null },
             {
@@ -103,7 +103,17 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             },
             {
                 id: 5,
-                title: <div>{rule?.targetValueIdentifier?.join(' ')}</div> || null
+                title:
+                    (
+                        <div>
+                            {rule?.targetQuestions?.map((question) => (
+                                <>
+                                    <span>{question.label}</span>
+                                    <br />
+                                </>
+                            ))}
+                        </div>
+                    ) || null
             },
             {
                 id: 6,
