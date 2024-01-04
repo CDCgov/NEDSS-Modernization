@@ -1,11 +1,12 @@
-import { Button, Grid, Icon, ModalFooter } from '@trussworks/react-uswds';
+import { Grid } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { NameEntry } from './NameEntry';
 import { usePatientNameCodedValues } from './usePatientNameCodedValues';
 import { Input } from 'components/FormInputs/Input';
+import { EntryFooter } from 'apps/patient/profile/entry';
 import { validNameRule } from 'validation/entry';
+import { NameEntry } from './NameEntry';
 
 type EntryProps = {
     action: string;
@@ -14,12 +15,8 @@ type EntryProps = {
     onDelete?: () => void;
 };
 
-export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps) => {
-    const {
-        handleSubmit,
-        control,
-        formState: { isValid }
-    } = useForm<NameEntry, Partial<NameEntry>>({ mode: 'onBlur' });
+export const NameEntryForm = ({ entry, onChange, onDelete }: EntryProps) => {
+    const { handleSubmit, control } = useForm<NameEntry, Partial<NameEntry>>({ mode: 'onBlur' });
 
     const coded = usePatientNameCodedValues();
 
@@ -31,8 +28,8 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
     };
 
     return (
-        <div className="width-full maxw-full modal-form">
-            <div className="modal-body">
+        <>
+            <section>
                 <Grid row>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
@@ -239,27 +236,9 @@ export const NameEntryForm = ({ action, entry, onChange, onDelete }: EntryProps)
                         />
                     </Grid>
                 </Grid>
-            </div>
-            <ModalFooter className="padding-2 margin-left-auto flex-justify display-flex details-footer">
-                <Button
-                    unstyled
-                    className={`text-red display-flex flex-align-center delete--modal-btn ${
-                        action !== 'Edit' ? 'ds-u-visibility--hidden' : ''
-                    }`}
-                    type="button"
-                    onClick={onDelete}>
-                    <Icon.Delete className="delete-icon" />
-                    Delete
-                </Button>
+            </section>
 
-                <Button
-                    disabled={!isValid}
-                    onClick={handleSubmit(onSubmit)}
-                    type="submit"
-                    className="padding-105 text-center margin-0">
-                    Save
-                </Button>
-            </ModalFooter>
-        </div>
+            <EntryFooter onSave={handleSubmit(onSubmit)} onDelete={onDelete} />
+        </>
     );
 };

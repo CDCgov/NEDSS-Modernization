@@ -1,17 +1,53 @@
+@use 'styles/modal';
+@use 'styles/borders';
+
 .modal {
+    --modal-height: #{modal.$max-height};
+    --header-height: 5.0625rem;
+    --footer-height: 5.25rem;
+
     header {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
 
         padding: 1.5rem;
+        max-height: var(--header-height);
 
         svg {
             cursor: pointer;
         }
     }
+    .content {
+        min-height: var(--footer-height);
+        max-height: calc(var(--modal-height) - var(--header-height));
+
+        overflow-x: hidden;
+        overflow-y: hidden;
+
+        & > section {
+            position: relative;
+
+            overflow-y: scroll;
+            max-height: calc(var(--modal-height) - var(--header-height) - var(--footer-height));
+        }
+    }
+
+    footer {
+        display: flex;
+        gap: 0.8 rem;
+        padding: 1.5rem;
+        max-height: var(--footer-height);
+        @extend %thin-top;
+    }
 }
 
 .overflow {
-    overflow-y: visible;
+    .content {
+        overflow: visible;
+
+        & > section {
+            overflow: visible;
+        }
+    }
 }
