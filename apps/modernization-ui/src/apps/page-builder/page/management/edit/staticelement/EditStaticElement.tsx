@@ -213,7 +213,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                                 closer
                                 disabled={!form.formState.isDirty || !form.formState.isValid}
                                 onClick={handleSubmit}
-                                aria-label='submit-btn'>
+                                aria-label="submit-btn">
                                 Save changes
                             </ModalToggleButton>
                         </>
@@ -226,7 +226,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                                 disabled={!form.formState.isDirty || !form.formState.isValid}
                                 onClick={handleSubmit}
                                 type={'button'}
-                                aria-label='submit-btn'>
+                                aria-label="submit-btn">
                                 Save changes
                             </Button>
                         </>
