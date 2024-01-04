@@ -35,7 +35,7 @@ class ContentComponentResolverTest {
         "mask-value",
         "tool-tip-value",
         "default-value-value",
-        "value-set-value"
+        "value-set-value", "admin-comments"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -87,7 +87,8 @@ class ContentComponentResolverTest {
         "mask-value",
         "tool-tip-value",
         "default-value-value",
-        null
+        null,
+        "admin-comments"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -138,7 +139,8 @@ class ContentComponentResolverTest {
         "mask-value",
         "tool-tip-value",
         "default-value-value",
-        "value-set-value"
+        "value-set-value",
+        "admin-comments"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -189,7 +191,8 @@ class ContentComponentResolverTest {
         "mask-value",
         "tool-tip-value",
         "default-value-value",
-        "value-set-value"
+        "value-set-value",
+        "admin-comments"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();

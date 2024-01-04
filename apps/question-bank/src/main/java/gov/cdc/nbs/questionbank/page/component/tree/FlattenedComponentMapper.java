@@ -89,8 +89,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         mask,
         toolTip,
         defaultValue,
-        adminComments,
-        valueSet
+        valueSet,
+        adminComments
     );
   }
 
