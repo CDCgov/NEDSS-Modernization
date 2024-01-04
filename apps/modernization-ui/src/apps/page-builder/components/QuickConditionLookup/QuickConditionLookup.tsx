@@ -166,6 +166,7 @@ export const QuickConditionLookup = ({ modal, addConditions, createConditionModa
                 </div>
                 {conditions?.length ? (
                     <TableComponent
+                        display="zebra"
                         isLoading={loading}
                         sortData={handleSort}
                         tableHeader=""
@@ -196,7 +197,7 @@ export const QuickConditionLookup = ({ modal, addConditions, createConditionModa
                         closer
                         onClick={handleAddConditions}
                         data-testid="modal-condition-add-btn">
-                        Create new condition
+                        Add conditions
                     </ModalToggleButton>
                 </ButtonGroup>
             </ModalFooter>
