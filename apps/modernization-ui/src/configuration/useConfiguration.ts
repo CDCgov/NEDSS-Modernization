@@ -20,7 +20,12 @@ type Features = {
                 enabled: boolean;
             };
             management: {
-                enabled: boolean;
+                create: {
+                    enabled: boolean;
+                };
+                edit: {
+                    enabled: boolean;
+                };
             };
         };
     };
@@ -43,7 +48,12 @@ const defaultFeatures: Features = {
                 enabled: false
             },
             management: {
-                enabled: false
+                create: {
+                    enabled: false
+                },
+                edit: {
+                    enabled: false
+                }
             }
         }
     }
