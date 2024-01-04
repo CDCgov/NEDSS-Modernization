@@ -1,6 +1,7 @@
 @use 'styles/colors';
 @use 'mixins/viewports';
 @use 'styles/borders';
+@use 'styles/modal';
 
 @import '@trussworks/react-uswds/lib/uswds.css';
 @import '@trussworks/react-uswds/lib/index.css';
@@ -37,7 +38,10 @@ table.usa-table {
             }
         }
         .usa-modal {
+            max-height: modal.$max-height;
+
             .usa-modal__content {
+                max-height: modal.$max-height;
                 .usa-modal__main {
                     .usa-modal__footer {
                         margin-top: 0;
@@ -66,6 +70,10 @@ table.usa-table {
     position: absolute;
     top: 40px;
     right: 0;
+}
+
+.usa-modal-overlay {
+    overflow: hidden;
 }
 
 // Default button styling

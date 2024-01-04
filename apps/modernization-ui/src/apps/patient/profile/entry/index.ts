@@ -1,3 +1,2 @@
-import { EntryModal } from './EntryModal';
-
-export default EntryModal;
+export * from './EntryModal';
+export * from './EntryFooter';

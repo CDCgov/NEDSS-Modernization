@@ -14,7 +14,7 @@ import { TableBody, TableComponent } from 'components/Table';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { Detail, DetailsModal } from 'apps/patient/profile/DetailsModal';
-import EntryModal from 'apps/patient/profile/entry';
+import { EntryModal } from 'apps/patient/profile/entry';
 import { maybeDescription, maybeId } from 'apps/patient/profile/coded';
 import {
     PatientProfilePhoneEmailResult,
@@ -326,7 +326,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     modal={modal}
                     id="add-patient-phone-email-modal"
                     title="Add - Phone & email">
-                    <PhoneEmailEntryForm action={'Add'} entry={initial} onChange={onAdded} />
+                    <PhoneEmailEntryForm entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
@@ -336,7 +336,6 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     id="edit-patient-phone-email-modal"
                     title="Edit - Phone & email">
                     <PhoneEmailEntryForm
-                        action={'Edit'}
                         entry={asEntry(selected.item)}
                         onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}

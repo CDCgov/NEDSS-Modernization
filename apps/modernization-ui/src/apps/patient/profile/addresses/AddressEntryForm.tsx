@@ -1,33 +1,28 @@
-import { Button, ErrorMessage, Grid, Icon, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
+import { ErrorMessage, Grid, Label, Textarea } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
 import { externalizeDateTime } from 'date';
 import { useLocationCodedValues } from 'location';
 import { orNull } from 'utils';
+import { EntryFooter } from 'apps/patient/profile/entry';
 import { usePatientAddressCodedValues } from './usePatientAddressCodedValues';
 
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
-import { AddressEntry } from './AddressEntry';
 
-import './AddressEntryForm.scss';
 import { maxLengthRule } from 'validation/entry';
+import { AddressEntry } from './AddressEntry';
+import './AddressEntryForm.scss';
 
 type EntryProps = {
-    action: string;
     entry: AddressEntry;
     onChange: (updated: AddressEntry) => void;
     onDelete?: () => void;
 };
 
-export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryProps) => {
-    const {
-        handleSubmit,
-        control,
-        formState: { isValid },
-        setValue
-    } = useForm({ mode: 'onBlur' });
+export const AddressEntryForm = ({ entry, onChange, onDelete }: EntryProps) => {
+    const { handleSubmit, control, setValue } = useForm({ mode: 'onBlur' });
 
     const selectedState = useWatch({ control, name: 'state', defaultValue: entry.state });
     const enteredCity = useWatch({ control, name: 'city', defaultValue: entry.city });
@@ -63,8 +58,8 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
     };
 
     return (
-        <div className="width-full maxw-full modal-form">
-            <div className="modal-body">
+        <>
+            <section>
                 <Grid row>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
@@ -326,27 +321,8 @@ export const AddressEntryForm = ({ action, entry, onChange, onDelete }: EntryPro
                         />
                     </Grid>
                 </Grid>
-            </div>
-            <ModalFooter className="padding-2 margin-left-auto flex-justify display-flex details-footer">
-                <Button
-                    unstyled
-                    className={`text-red display-flex flex-align-center delete--modal-btn ${
-                        action !== 'Edit' ? 'ds-u-visibility--hidden' : ''
-                    }`}
-                    type="button"
-                    onClick={onDelete}>
-                    <Icon.Delete className="delete-icon" />
-                    Delete
-                </Button>
-
-                <Button
-                    disabled={!isValid}
-                    onClick={handleSubmit(onSubmit)}
-                    type="submit"
-                    className="padding-105 text-center margin-0">
-                    Save
-                </Button>
-            </ModalFooter>
-        </div>
+            </section>
+            <EntryFooter onSave={handleSubmit(onSubmit)} onDelete={onDelete} />
+        </>
     );
 };

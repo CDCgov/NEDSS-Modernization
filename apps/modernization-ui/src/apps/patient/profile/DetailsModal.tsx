@@ -1,7 +1,10 @@
-import { Button, Grid, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
+import { Button, Grid, Icon, Modal, ModalRef } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
-import './DetailsModal.scss';
 import { NoData } from 'components/NoData';
+
+import styles from './details-modal.module.scss';
+import { Heading } from 'components/heading';
+import classNames from 'classnames';
 
 export type Detail = {
     name: string;
@@ -32,40 +35,25 @@ const maybeRender = (value: string | number | null | undefined) => <>{value}</> 
 
 export const DetailsModal = ({ modal, title, onClose, details, onEdit, onDelete }: Props) => {
     return (
-        <Modal
-            ref={modal}
-            forceAction
-            id="details-modal"
-            aria-labelledby="modal-1-heading"
-            className="padding-0"
-            aria-describedby="modal-1-description">
-            <ModalHeading
-                id="modal-1-heading"
-                className="border-bottom border-base-lighter font-sans-lg padding-2 margin-0 modal-1-heading display-flex flex-align-center flex-justify">
-                {title}
-                <Icon.Close className="cursor-pointer" onClick={onClose} />
-            </ModalHeading>
-            {(details && (
-                <div className="modal-body">
-                    <Grid row>{details.map(renderField)}</Grid>
-                </div>
-            )) ||
-                noData}
-            <ModalFooter className="padding-2 margin-left-auto flex-justify display-flex details-footer">
-                <Button
-                    unstyled
-                    className={`text-red display-flex flex-align-center delete--modal-btn ${
-                        title.includes('Administrative') ? 'ds-u-visibility--hidden' : ''
-                    }`}
-                    type="button"
-                    onClick={onDelete}>
-                    <Icon.Delete className="delete-icon" />
-                    Delete
-                </Button>
-                <Button type="button" onClick={onEdit}>
+        <Modal id={`${title}-detail`} forceAction ref={modal} className={classNames(styles.modal)}>
+            <header>
+                <Heading level={2}>{title}</Heading>
+                <Icon.Close size={3} onClick={onClose} />
+            </header>
+            <div className={styles.content}>
+                <section>{(details && <Grid row>{details.map(renderField)}</Grid>) || noData}</section>
+            </div>
+            <footer className={styles.footer}>
+                {onDelete && (
+                    <Button unstyled className={styles.delete} type="button" onClick={onDelete}>
+                        <Icon.Delete size={3} />
+                        Delete
+                    </Button>
+                )}
+                <Button onClick={onEdit} type="button" className={styles.cta}>
                     Edit
                 </Button>
-            </ModalFooter>
+            </footer>
         </Modal>
     );
 };
