@@ -16,8 +16,10 @@
     }
 }
 
-thead tr th {
-    &:nth-of-type(6) {
-        width: 80px;
+.business-rules-table {
+    thead tr th {
+        &:nth-of-type(6) {
+            width: 4.4375rem;
+        }
     }
 }
