@@ -13,7 +13,7 @@ import { externalizeDateTime, internalizeDate } from 'date';
 import { orNull } from 'utils/orNull';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from 'apps/patient/profile/DetailsModal';
-import EntryModal from 'apps/patient/profile/entry';
+import { EntryModal } from 'apps/patient/profile/entry';
 import { maybeDescription, maybeId } from 'apps/patient/profile/coded';
 import { PatientNameResult, useFindPatientProfileNames } from './useFindPatientProfileNames';
 import { NameEntryForm } from './NameEntryForm';
