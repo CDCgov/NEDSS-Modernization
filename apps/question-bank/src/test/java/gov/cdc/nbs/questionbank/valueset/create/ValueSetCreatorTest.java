@@ -38,11 +38,10 @@ class ValueSetCreatorTest {
 
 	@Test
 	void createValueSetTest() {
-		ValueSetCreateRequest request = getValueSetCreateRequest();
-		Codeset requestCodeSet = new Codeset(valueSetCreator.asAdd(request, userId));
+		ValueSetCreateRequest request = getValueSetCreateRequest("local");
 		CodeSetGroupMetadatum codeSetGrpRequest = new CodeSetGroupMetadatum();
 		codeSetGrpRequest.setId(2l);
-		requestCodeSet.setCodeSetGroup(codeSetGrpRequest);
+		Codeset requestCodeSet = new Codeset(valueSetCreator.asAdd(request,codeSetGrpRequest, userId));
 
 		when(valueSetRepository.save(Mockito.any())).thenReturn(requestCodeSet);
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(0l);
@@ -62,8 +61,18 @@ class ValueSetCreatorTest {
 	}
 
 	@Test
+	void createValueSetTypeNotValid() {
+		ValueSetCreateRequest request = getValueSetCreateRequest("xyz");
+		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(1l);
+		CreateValueSetResponse response = valueSetCreator.createValueSet(request, userId);
+		assertEquals(null, response.getBody());
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
+		assertEquals(ValueSetConstants.CODE_SET_TYPE_NOT_VALID, response.getMessage());
+	}
+
+	@Test
 	void createValueSetNameExistsTest() {
-		ValueSetCreateRequest request = getValueSetCreateRequest();
+		ValueSetCreateRequest request = getValueSetCreateRequest("local");
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(1l);
 		CreateValueSetResponse response = valueSetCreator.createValueSet(request, userId);
 		assertEquals(null, response.getBody());
@@ -73,7 +82,7 @@ class ValueSetCreatorTest {
 
 	@Test
 	void createValueSetGroupMetaDataExistsTest() {
-		ValueSetCreateRequest request = getValueSetCreateRequest();
+		ValueSetCreateRequest request = getValueSetCreateRequest("local");
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(0l);
 		when(codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(Mockito.anyString(), Mockito.anyString()))
 				.thenReturn(1l);
@@ -86,7 +95,7 @@ class ValueSetCreatorTest {
 	@Test
 	void createValueSetExceptionTest() {
 		final String message = "Could not save ValueSet illegal argument provided";
-		ValueSetCreateRequest request = getValueSetCreateRequest();
+		ValueSetCreateRequest request = getValueSetCreateRequest("local");
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(0l);
 		when(codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(Mockito.anyString(), Mockito.anyString()))
 				.thenReturn(0l);
@@ -139,8 +148,8 @@ class ValueSetCreatorTest {
 		assertEquals(99950l + 10, result);
 	}
 
-	private ValueSetCreateRequest getValueSetCreateRequest() {
+	private ValueSetCreateRequest getValueSetCreateRequest(String valueSetType) {
 		return new ValueSetCreateRequest(
-				"Type", "valueSetCode", "codeSetNm", "codeDescTxt");
+				valueSetType, "valueSetCode", "codeSetNm", "codeDescTxt");
 	}
 }

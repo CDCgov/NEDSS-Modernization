@@ -101,10 +101,10 @@ public class Codeset {
 		this.valueSetTypeCd = request.valueSetType();
 		this.valueSetNm = request.valueSetName();
 		this.codeSetDescTxt = request.valueSetDescription();
-
 		CodesetId codesetId = new CodesetId();
 		codesetId.setClassCd(ValueSetConstants.CREATE_CLASS_CD);
 		codesetId.setCodeSetNm(valueSetCodeUpper);
+		this.codeSetGroup=request.codeSetGroupMetadatum();
 		this.setId(codesetId);
 		this.ldfPicklistIndCd='Y';
 		this.assigningAuthorityCd="L";

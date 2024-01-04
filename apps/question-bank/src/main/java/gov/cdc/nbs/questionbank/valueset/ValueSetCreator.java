@@ -1,6 +1,9 @@
 package gov.cdc.nbs.questionbank.valueset;
 
 import java.time.Instant;
+import java.util.Arrays;
+
+import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
@@ -31,6 +34,11 @@ public class ValueSetCreator {
 		String codeSetName = request.valueSetCode().toUpperCase();
 		String codeShortDescTxt = request.valueSetName();
 
+		if (checkCodeType(request.valueSetType().toUpperCase())) {
+			response.setMessage(ValueSetConstants.CODE_SET_TYPE_NOT_VALID);
+			response.setStatus(HttpStatus.BAD_REQUEST);
+			return response;
+		}
 		if (checkValueSetNameExists(codeSetName)) {
 			response.setMessage(ValueSetConstants.VALUE_SET_NAME_EXISTS);
 			response.setStatus(HttpStatus.BAD_REQUEST);
@@ -42,46 +50,31 @@ public class ValueSetCreator {
 			return response;
 		}
 		try {
-			long codeSetGroupID = getCodeSetGroupID();
-			CodeSetGroupMetadatum codeGrp = new CodeSetGroupMetadatum();
-			codeGrp.setId(codeSetGroupID);
-			codeGrp.setCodeSetDescTxt(request.valueSetDescription());
-			codeGrp.setCodeSetShortDescTxt(codeShortDescTxt);
-			codeGrp.setCodeSetNm(codeSetName);
-			codeGrp.setVadsValueSetCode(codeSetName);
-			codeGrp.setLdfPicklistIndCd('Y');
-			codeGrp.setPhinStdValInd('N');   // will add all this properties inside the constructor
-
-			Codeset valueSet = new Codeset(asAdd(request, userId));
-
-			CodeSetGroupMetadatum savedGroup = codeSetGrpMetaRepository.save(codeGrp);
-			valueSet.setCodeSetGroup(savedGroup);
-			Codeset resultCodeSet = valueSetRepository.save(valueSet);
-
-			CreateValueSetResponse.ValueSetCreateShort body = new CreateValueSetResponse.ValueSetCreateShort(
-					resultCodeSet.getId(), resultCodeSet.getAddTime(), resultCodeSet.getAddUserId(),
-					resultCodeSet.getValueSetNm(), resultCodeSet.getCodeSetGroup().getId());
-
-			response.setBody(body);
+			CodeSetGroupMetadatum savedGroup = codeSetGrpMetaRepository.save(new CodeSetGroupMetadatum(getCodeSetGroupID(),
+					request.valueSetDescription(), codeShortDescTxt, codeSetName));
+			Codeset resultCodeSet = valueSetRepository.save(new Codeset(asAdd(request, savedGroup, userId)));
+			response.setBody(CreateValueSetResponse.ValueSetCreateShort.fromResult(resultCodeSet));
 			response.setMessage(ValueSetConstants.SUCCESS_MESSAGE);
 			response.setStatus(HttpStatus.CREATED);
-
 		} catch (Exception e) {
 			response.setMessage(e.getMessage());
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return response;
-
 	}
 
 	public boolean checkValueSetNameExists(String codeSetNm) {
 		return (codeSetNm != null && valueSetRepository.checkValueSetName(codeSetNm) > 0);
-
 	}
 
 	public boolean checkCodeSetGrpMetaDatEntry(String codeShrtDescTxt, String codeSetNm) {
 		return (codeShrtDescTxt != null && codeSetNm != null
 				&& codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(codeShrtDescTxt, codeSetNm) > 0);
+	}
+
+	public boolean checkCodeType(String codeType) {
+		return Arrays.stream(CodeSet.values())
+				.noneMatch(enumValue -> enumValue.name().equals(codeType));
 	}
 
 	public long getCodeSetGroupID() {
@@ -94,12 +87,14 @@ public class ValueSetCreator {
 		return maxGroupID;
 	}
 
-	public ValueSetCommand.AddValueSet asAdd(final ValueSetCreateRequest request, long userId) {
+	public ValueSetCommand.AddValueSet asAdd(final ValueSetCreateRequest request,
+			CodeSetGroupMetadatum codeSetGroupMetadatum, long userId) {
 		return new ValueSetCommand.AddValueSet(
-				request.valueSetType(),
+				request.valueSetType().toUpperCase(),
 				request.valueSetName(),
 				request.valueSetCode(),
 				request.valueSetDescription(),
+				codeSetGroupMetadatum,
 				Instant.now(),
 				userId);
 
