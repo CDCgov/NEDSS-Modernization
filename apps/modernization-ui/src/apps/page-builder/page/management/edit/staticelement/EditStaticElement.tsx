@@ -167,7 +167,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                             options={staticType}
                             required
                             defaultValue={checkStaticType(question.displayComponent)}
-                            data-testid="staticType"
+                            aria-label="staticType"
                             disabled
                             className={styles.select_input}></SelectInput>
                     </div>
@@ -193,7 +193,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                                     defaultValue={value}
                                     label="Administrative Comments"
                                     type="text"
-                                    data-testid="adminComments"
+                                    ariaLabel="adminComments"
                                     multiline
                                     error={error?.message}
                                 />
@@ -213,7 +213,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                                 closer
                                 disabled={!form.formState.isDirty || !form.formState.isValid}
                                 onClick={handleSubmit}
-                                data-testid="submit-btn">
+                                aria-label='submit-btn'>
                                 Save changes
                             </ModalToggleButton>
                         </>
@@ -226,7 +226,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                                 disabled={!form.formState.isDirty || !form.formState.isValid}
                                 onClick={handleSubmit}
                                 type={'button'}
-                                data-testid="submit-btn">
+                                aria-label='submit-btn'>
                                 Save changes
                             </Button>
                         </>

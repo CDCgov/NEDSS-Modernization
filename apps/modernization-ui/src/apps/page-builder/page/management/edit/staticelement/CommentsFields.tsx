@@ -23,6 +23,7 @@ export const CommentsFields = () => {
                         label="Comments text"
                         required
                         type="text"
+                        ariaLabel="commentsText"
                         error={error?.message}
                         multiline
                     />
