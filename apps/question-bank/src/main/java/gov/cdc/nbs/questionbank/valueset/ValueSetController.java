@@ -18,7 +18,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
-import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
+import gov.cdc.nbs.questionbank.valueset.request.ValueSetCreateRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
 import gov.cdc.nbs.questionbank.valueset.response.Concept;
@@ -44,7 +44,7 @@ public class ValueSetController {
     private final UserDetailsProvider userDetailsProvider;
 
     @PostMapping
-    public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody ValueSetRequest request) {
+    public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody ValueSetCreateRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         CreateValueSetResponse response = valueSetCreator.createValueSet(request, userId);
         return new ResponseEntity<>(response, null, response.getStatus());
@@ -78,7 +78,7 @@ public class ValueSetController {
 
     @PostMapping("search")
     public Page<ValueSet> searchValueSet(@RequestBody ValueSetSearchRequest search,
-            @PageableDefault(size = 25) Pageable pageable) {
+        @PageableDefault(size = 25) Pageable pageable) {
         return valueSetReador.searchValueSearch(search, pageable);
     }
 
@@ -89,10 +89,10 @@ public class ValueSetController {
 
     @PutMapping("/{codeSetNm}/concepts/{conceptCode}")
     public Concept updateConcept(
-            @PathVariable String codeSetNm,
-            @PathVariable String conceptCode,
-            @RequestBody UpdateConceptRequest request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        @PathVariable String codeSetNm,
+        @PathVariable String conceptCode,
+        @RequestBody UpdateConceptRequest request,
+        @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         return conceptUpdater.update(codeSetNm, conceptCode, request, details.getId());
     }
 

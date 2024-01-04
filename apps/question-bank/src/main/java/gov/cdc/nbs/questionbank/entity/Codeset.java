@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -93,30 +94,28 @@ public class Codeset {
 	@Column(name = "add_user_id")
 	private Long addUserId;
 
-	public Codeset(final ValueSetCommand.AddValueSet  request) {
-		this.assigningAuthorityCd = request.assigningAuthorityCd();
-		this.assigningAuthorityDescTxt = request.assigningAuthorityDescTxt();
-		this.codeSetDescTxt = request.codeSetDescTxt();
-		this.effectiveFromTime = request.effectiveFromTime();
-		this.effectiveToTime = request.effectiveToTime();
-		this.isModifiableInd = request.isModifiableInd();
-		this.nbsUid = request.nbsUid();
-		this.sourceVersionTxt = request.sourceVersionTxt();
-		this.sourceDomainNm = request.sourceDomainNm();
-		this.statusCd = request.statusCd();
-		this.statusToTime = request.statusToTime();
-		this.codeSetGroup = request.codeSetGroup();
-		this.adminComments = request.adminComments();
-		this.valueSetNm = request.valueSetNm();
-		this.ldfPicklistIndCd = request.ldfPicklistIndCd();
-		this.valueSetCode = request.valueSetCode();
-		this.valueSetTypeCd = request.valueSetTypeCd();
-		this.valueSetOid = request.valueSetOid();
-		this.valueSetStatusCd = request.valueSetStatusCd();
-		this.valueSetStatusTime = request.valueSetStatusTime();
-		this.parentIsCd = request.parentIsCd();
+
+	public Codeset(final ValueSetCommand.AddValueSet request) {
+		String valueSetCodeUpper = request.valueSetCode().toUpperCase();
+		this.valueSetCode = valueSetCodeUpper;
+		this.valueSetTypeCd = request.valueSetType();
+		this.valueSetNm = request.valueSetName();
+		this.codeSetDescTxt = request.valueSetDescription();
+
+		CodesetId codesetId = new CodesetId();
+		codesetId.setClassCd(ValueSetConstants.CREATE_CLASS_CD);
+		codesetId.setCodeSetNm(valueSetCodeUpper);
+		this.setId(codesetId);
+		this.ldfPicklistIndCd='Y';
+		this.assigningAuthorityCd="L";
+		this.assigningAuthorityDescTxt ="Local";
+		this.isModifiableInd='Y';
+		this.statusCd="A";
 		this.addTime = request.addTime();
 		this.addUserId = request.addUserId();
+		this.effectiveFromTime = request.addTime();
+		this.effectiveToTime = request.addTime();
+		this.statusToTime = request.addTime();
 
 	}
 
