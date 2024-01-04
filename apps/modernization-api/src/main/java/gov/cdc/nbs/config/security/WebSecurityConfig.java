@@ -36,6 +36,9 @@ public class WebSecurityConfig {
   @Value("${spring.graphql.path:/graphql}")
   private String graphQLEndpoint;
 
+  @Value("${keycloak-enabled}")
+  private Boolean keycloakEnabled;
+
   @Bean
   public SecurityFilterChain securityFilterChain(
       HttpSecurity http,
@@ -50,6 +53,34 @@ public class WebSecurityConfig {
         "/swagger-resources/**",
         "/v2/api-docs/**",
         "/login");
+
+    if (keycloakEnabled) {
+      http
+          .oauth2Client()
+          .and()
+          .oauth2Login()
+          .tokenEndpoint()
+          .and()
+          .userInfoEndpoint();
+
+      http
+          .sessionManagement()
+          .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+
+      http
+          .authorizeHttpRequests()
+          .antMatchers(ignoredPaths.paths())
+          .permitAll()
+          .antMatchers("/oauth2/**", "/login/**").permitAll()
+          .anyRequest()
+          .authenticated()
+          .and()
+          .logout()
+          .logoutSuccessUrl(
+              "http://localhost:8100/realms/nbs-development/protocol/openid-connect/logout?redirect_uri=http://localhost:3000/");
+
+      return http.build();
+    }
 
     final NBSAuthenticationFilter authFilter = new NBSAuthenticationFilter(
         tokenValidator,

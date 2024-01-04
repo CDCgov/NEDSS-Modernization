@@ -1,6 +1,6 @@
 {
   "id": "8d2aac71-68c8-4fe8-911a-a1b3e7afea0d",
-  "realm": "NBS Development",
+  "realm": "nbs-development",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
@@ -47,7 +47,7 @@
     "realm": [
       {
         "id": "49eed408-cda0-46bc-9888-f6b1726f361e",
-        "name": "default-roles-nbs development",
+        "name": "default-roles-nbs-development",
         "description": "${role_default-roles}",
         "composite": true,
         "composites": {
@@ -415,7 +415,7 @@
   "groups": [],
   "defaultRole": {
     "id": "49eed408-cda0-46bc-9888-f6b1726f361e",
-    "name": "default-roles-nbs development",
+    "name": "default-roles-nbs-development",
     "description": "${role_default-roles}",
     "composite": true,
     "clientRole": false,
@@ -488,13 +488,13 @@
       "clientId": "account",
       "name": "${client_account}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/NBS%20Development/account/",
+      "baseUrl": "/realms/nbs-development/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/NBS%20Development/account/*"
+        "/realms/nbs-development/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -532,13 +532,13 @@
       "clientId": "account-console",
       "name": "${client_account-console}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/NBS%20Development/account/",
+      "baseUrl": "/realms/nbs-development/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/NBS%20Development/account/*"
+        "/realms/nbs-development/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -672,10 +672,10 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "",
-        "http://localhost:3000/*"
+        "http://localhost:9080/*"
       ],
       "webOrigins": [
-        "http://localhost:3000"
+        "http://localhost:9080"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -754,13 +754,13 @@
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
       "rootUrl": "${authAdminUrl}",
-      "baseUrl": "/admin/NBS%20Development/console/",
+      "baseUrl": "/admin/nbs-development/console/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/admin/NBS%20Development/console/*"
+        "/admin/nbs-development/console/*"
       ],
       "webOrigins": [
         "+"
@@ -2198,7 +2198,9 @@
           "value": "fake.1234"
         }
       ],
-      "realmRoles": ["default-roles-nbs development"]
+      "realmRoles": [
+        "default-roles-nbs-development"
+      ]
     },
     {
       "id": "state",
@@ -2211,7 +2213,9 @@
           "value": "fake.1234"
         }
       ],
-      "realmRoles": ["default-roles-nbs development"]
+      "realmRoles": [
+        "default-roles-nbs-development"
+      ]
     }
   ]
 }

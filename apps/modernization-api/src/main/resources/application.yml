@@ -86,3 +86,15 @@ nbs.ui:
               enabled: false
             edit:
               enabled: false
+
+keycloak-enabled: false
+spring.security.oauth2.client:
+    provider.nbs-development.issuer-uri: http://localhost:8100/realms/nbs-development
+    registration.nbs-development:
+        provider: nbs-development
+        client-name: login-nbs
+        client-id: login-nbs
+        client-secret: sdfsafadsfsdfsdfsdf
+        scope: openid,offline_access,profile
+        authorization-grant-type: authorization_code        
+
