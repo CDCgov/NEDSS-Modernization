@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -124,6 +125,9 @@ public class CodeValueGeneral {
         this.codeSystemDescTxt = command.codeSystem();
         this.codeSystemCd = command.codeSystemId();
         this.conceptTypeCd = command.conceptTypeCd();
+
+        this.effectiveFromTime = command.effectiveFromTime();
+        this.effectiveToTime = command.effectiveToTime();
         
         added(command);
     }
