@@ -79,11 +79,6 @@ public class WebSecurityConfig {
           .permitAll()
           .anyRequest()
           .authenticated();
-      http.oauth2Login()
-          .and()
-          .logout()
-          // .addLogoutHandler(keycloakLogoutHandler)
-          .logoutSuccessUrl("/");
       return http.build();
     }
 
