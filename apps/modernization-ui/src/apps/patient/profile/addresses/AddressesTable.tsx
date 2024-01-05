@@ -14,7 +14,7 @@ import { orNull } from 'utils/orNull';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { Detail, DetailsModal } from 'apps/patient/profile/DetailsModal';
-import EntryModal from 'apps/patient/profile/entry';
+import { EntryModal } from 'apps/patient/profile/entry';
 import { maybeDescription, maybeId } from 'apps/patient/profile/coded';
 import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from './useFindPatientProfileAddresses';
 import { AddressEntryForm } from './AddressEntryForm';
@@ -370,7 +370,7 @@ export const AddressesTable = ({ patient }: Props) => {
             />
             {selected?.type === 'add' && (
                 <EntryModal onClose={actions.reset} modal={modal} id="add-patient-address-modal" title="Add - Address">
-                    <AddressEntryForm action={'Add'} entry={initial} onChange={onAdded} />
+                    <AddressEntryForm entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
@@ -380,7 +380,6 @@ export const AddressesTable = ({ patient }: Props) => {
                     id="edit-patient-address-modal"
                     title="Edit - Address">
                     <AddressEntryForm
-                        action={'Edit'}
                         entry={asEntry(selected.item)}
                         onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}

@@ -1,6 +1,7 @@
-import { Button, Grid, Label, ModalFooter, Textarea, ErrorMessage } from '@trussworks/react-uswds';
+import { Grid, Label, Textarea, ErrorMessage } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
-import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { EntryFooter } from 'apps/patient/profile/entry';
 import { AdministrativeEntry } from './AdministrativeEntry';
 import { maxLengthRule } from 'validation/entry';
 
@@ -12,11 +13,7 @@ type EntryProps = {
 };
 
 export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
-    const {
-        handleSubmit,
-        control,
-        formState: { isValid }
-    } = useForm({ mode: 'onBlur' });
+    const { handleSubmit, control } = useForm({ mode: 'onBlur' });
 
     const onSubmit = (entered: FieldValues) => {
         onChange({
@@ -26,8 +23,8 @@ export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
     };
 
     return (
-        <div onSubmit={onSubmit} className="width-full maxw-full modal-form">
-            <div className="modal-body">
+        <>
+            <section>
                 <Grid row>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
@@ -82,17 +79,9 @@ export const AdministrativeForm = ({ entry, onChange }: EntryProps) => {
                         />
                     </Grid>
                 </Grid>
-            </div>
+            </section>
 
-            <ModalFooter className="padding-2 margin-left-auto flex-justify-end display-flex details-footer">
-                <Button
-                    disabled={!isValid}
-                    onClick={handleSubmit(onSubmit)}
-                    type="submit"
-                    className="padding-105 text-center margin-0">
-                    Save
-                </Button>
-            </ModalFooter>
-        </div>
+            <EntryFooter onSave={handleSubmit(onSubmit)} />
+        </>
     );
 };

@@ -14,7 +14,7 @@ import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { TableBody, TableComponent } from 'components/Table';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'apps/patient/profile/coded';
 import { Detail, DetailsModal } from 'apps/patient/profile/DetailsModal';
-import EntryModal from 'apps/patient/profile/entry';
+import { EntryModal } from 'apps/patient/profile/entry';
 import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPatientProfileRace';
 import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
@@ -293,7 +293,7 @@ export const RacesTable = ({ patient }: Props) => {
                     id="add-patient-name-modal"
                     title="Add - Race"
                     overflow>
-                    <RaceEntryForm action={'Add'} entry={initial} onChange={onAdded} />
+                    <RaceEntryForm entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
@@ -304,7 +304,6 @@ export const RacesTable = ({ patient }: Props) => {
                     title="Edit - Race"
                     overflow>
                     <RaceEntryForm
-                        action={'Edit'}
                         entry={asEntry(selected.item)}
                         onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}

@@ -4,14 +4,19 @@ import { Heading } from 'components/heading';
 import { ReactNode, RefObject } from 'react';
 import styles from './entry-modal.module.scss';
 
+type Save = () => void;
+type Close = () => void;
+
 type Props = {
     modal: RefObject<ModalRef>;
     id: string;
-    title?: string;
+    title: string;
+    className?: string;
     overflow?: boolean;
     children: ReactNode;
-    onClose?: () => void;
-    className?: string;
+    onClose: Close;
+    onSave?: Save;
+    onDelete?: () => void;
 };
 
 export const EntryModal = ({ modal, id, title, children, overflow = false, className, onClose }: Props) => {
@@ -21,13 +26,11 @@ export const EntryModal = ({ modal, id, title, children, overflow = false, class
             forceAction
             ref={modal}
             className={classNames(styles.modal, className, { [styles.overflow]: overflow })}>
-            {title && (
-                <header>
-                    <Heading level={2}>{title}</Heading>
-                    <Icon.Close size={3} onClick={onClose} />
-                </header>
-            )}
-            {children}
+            <header>
+                <Heading level={2}>{title}</Heading>
+                <Icon.Close size={3} onClick={onClose} />
+            </header>
+            <div className={styles.content}>{children}</div>
         </Modal>
     );
 };
