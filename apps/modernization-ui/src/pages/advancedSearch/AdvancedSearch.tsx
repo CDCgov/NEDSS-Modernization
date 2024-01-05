@@ -276,6 +276,7 @@ export const AdvancedSearch = () => {
 
     const handleSubmit = async (filter: PersonFilter | InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {
         let search = '';
+        skipTo('');
         if (!isEmpty(filter)) {
             // send filter for encryption
             const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
@@ -377,6 +378,7 @@ export const AdvancedSearch = () => {
         setResultStartCount(startCount);
         setResultEndCount(endCount);
         setResultTotal(total);
+        skipTo('resultsCount');
     };
 
     function isLoading() {
@@ -492,7 +494,10 @@ export const AdvancedSearch = () => {
                             className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                             {submitted && !isError() ? (
                                 <div
-                                    className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
+                                    tabIndex={0}
+                                    id="resultsCount"
+                                    aria-label="Results are ready to review"
+                                    className="margin-0 font-sans-md margin-top-05 text-normal grid-row results-for"
                                     style={{ maxWidth: '55%' }}>
                                     <strong className="margin-right-1">
                                         {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
