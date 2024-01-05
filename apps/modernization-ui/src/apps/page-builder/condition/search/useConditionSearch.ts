@@ -40,13 +40,14 @@ type ResultPage = {
 type State =
     | { status: 'idle' }
     | { status: 'searching'; search: ConditionSearch }
-    | { status: 'complete'; response: ResultPage }
+    | { status: 'complete'; response: ResultPage; search: ConditionSearch }
     | { status: 'error'; error: string };
 
 type Action =
     | { type: 'search'; search: ConditionSearch }
-    | { type: 'complete'; response: ResultPage }
-    | { type: 'error'; error: string };
+    | { type: 'complete'; response: ResultPage; search: ConditionSearch }
+    | { type: 'error'; error: string }
+    | { type: 'reset' };
 
 const initial: State = { status: 'idle' };
 
@@ -55,9 +56,10 @@ const reducer = (_state: State, action: Action): State => {
         case 'search':
             return { status: 'searching', search: action.search };
         case 'complete':
-            return { status: 'complete', response: action.response };
+            return { status: 'complete', response: action.response, search: action.search };
         case 'error':
             return { status: 'error', error: action.error };
+        case 'reset':
         default:
             return { ...initial };
     }
@@ -70,7 +72,7 @@ export const useConditionSearch = () => {
         if (state.status === 'searching') {
             const sortString = state.search.sort
                 ? `${state.search.sort.field},${state.search.sort.direction}`
-                : undefined;
+                : `${ConditionSortField.CONDITION},${Direction.Ascending}`;
 
             ConditionControllerService.searchConditionsUsingPost({
                 authorization: authorization(),
@@ -80,7 +82,7 @@ export const useConditionSearch = () => {
                 sort: sortString
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', response }));
+                .then((response) => dispatch({ type: 'complete', response, search: state.search }));
         }
     }, [state.status]);
 
@@ -88,7 +90,9 @@ export const useConditionSearch = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'searching',
         response: state.status === 'complete' ? state.response : undefined,
-        search: (search: ConditionSearch) => dispatch({ type: 'search', search })
+        search: (search: ConditionSearch) => dispatch({ type: 'search', search }),
+        keyword: state.status === 'complete' || state.status === 'searching' ? state.search.searchText : '',
+        reset: () => dispatch({ type: 'reset' })
     };
 
     return value;

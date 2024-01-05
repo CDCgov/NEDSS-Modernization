@@ -1,16 +1,11 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import {
-    ConditionSort,
-    ConditionSortField,
-    useConditionSearch
-} from 'apps/page-builder/condition/search/useConditionSearch';
+import { ConditionSort, useConditionSearch } from 'apps/page-builder/condition/search/useConditionSearch';
 import { Search } from 'components/Search';
 import { Heading } from 'components/heading';
 import { PageProvider, Status, usePage } from 'page';
 import { useEffect, useState } from 'react';
-import { Direction } from 'sorting';
-import styles from './condition-search.module.scss';
 import { ConditionTable } from './ConditionTable';
+import styles from './condition-search.module.scss';
 
 type Props = {
     onConditionSelect: (ids: number[]) => void;
@@ -29,23 +24,19 @@ export const ConditionSearch = ({ onConditionSelect, onCancel, onCreateNew }: Pr
     );
 };
 
-const defaultSort = {
-    field: ConditionSortField.CONDITION,
-    direction: Direction.Ascending
-};
 const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Props) => {
-    const { search, response, isLoading } = useConditionSearch();
+    const { search, response, isLoading, keyword, reset } = useConditionSearch();
     const { page, ready, request } = usePage();
-    const [keyword, setKeyword] = useState<string | undefined>('');
+    const [sort, setSort] = useState<ConditionSort | undefined>();
     const [selected, setSelected] = useState<number[]>([]);
-    const [sort, setSort] = useState<ConditionSort>(defaultSort);
-    const [reset, setReset] = useState<boolean>(false);
+    const [resetTable, setResetTable] = useState<boolean>(false);
 
     useEffect(() => {
         search({ page: 0, sort });
     }, []);
 
     useEffect(() => {
+        // on page change, perform search with current keyword
         if (page.status === Status.Requested) {
             handleSearch(keyword ?? '');
         }
@@ -55,20 +46,19 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
         ready(response?.totalElements ?? 0, (response?.number ?? 0) + 1);
     }, [response]);
 
-    // Hack to clear the table sort and search keyword by reloading it on cancel
+    // Hack to clear the table sort state and search keyword by reloading the components on cancel
     useEffect(() => {
-        if (reset) {
-            setReset(false);
+        if (resetTable) {
+            setResetTable(false);
         }
     }, [reset]);
 
     const handleSearch = (keyword: string) => {
-        setKeyword(keyword);
         search({ page: page.current - 1, searchText: keyword, pageSize: page.pageSize, sort });
     };
 
     const handleSort = (sort: ConditionSort | undefined) => {
-        setSort(sort ?? defaultSort);
+        setSort(sort);
         request(1);
     };
 
@@ -83,10 +73,10 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
     };
 
     const clear = () => {
-        setKeyword('');
+        reset();
         setSelected([]);
-        setReset(true);
-        setSort(defaultSort);
+        setResetTable(true);
+        setSort(undefined);
         request(1);
     };
 
@@ -99,7 +89,7 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
             <div className={styles.content}>
                 <Heading level={3}>You can search for existing condition(s) or create a new one.</Heading>
                 <div className={styles.controls}>
-                    {reset === false && (
+                    {resetTable === false && (
                         <Search
                             className={styles.search}
                             id="condition-search"
@@ -113,7 +103,7 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
                         Create new condition
                     </Button>
                 </div>
-                {reset === false && (
+                {resetTable === false && (
                     <ConditionTable
                         isLoading={isLoading}
                         conditions={response?.content ?? []}
