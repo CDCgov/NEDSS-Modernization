@@ -76,7 +76,7 @@ export const useConditionSearch = () => {
 
             ConditionControllerService.searchConditionsUsingPost({
                 authorization: authorization(),
-                search: { searchText: state.search.searchText ?? '' },
+                search: { searchText: state.search.searchText ?? '',  excludeInUse: true},
                 page: state.search.page,
                 size: state.search.pageSize,
                 sort: sortString
