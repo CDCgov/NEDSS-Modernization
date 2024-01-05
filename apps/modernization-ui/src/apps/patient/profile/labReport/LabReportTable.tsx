@@ -56,7 +56,7 @@ const asTableBody =
             },
             {
                 id: 3,
-                title: format(report?.collectedOn, 'MM/dd/yyyy') || null
+                title: report?.collectedOn ? <>{format(report?.collectedOn, 'MM/dd/yyyy')}</> : null
             },
             {
                 id: 4,
