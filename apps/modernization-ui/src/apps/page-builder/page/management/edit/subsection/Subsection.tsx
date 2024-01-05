@@ -1,7 +1,8 @@
 import {
     PageStaticControllerService,
     PagesSubSection,
-    PageQuestionControllerService
+    PageQuestionControllerService,
+    PagesQuestion
 } from 'apps/page-builder/generated';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
@@ -14,6 +15,7 @@ import { useAlert } from 'alert';
 type Props = {
     subsection: PagesSubSection;
     onAddQuestion: (questionId: number) => void;
+    onEditQuestion: (question: PagesQuestion) => void;
 };
 
 const hyperlinkID = 1003;
@@ -24,7 +26,7 @@ const originalElecDoc = 1036;
 
 const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, readOnlyComments, originalElecDoc];
 
-export const Subsection = ({ subsection, onAddQuestion }: Props) => {
+export const Subsection = ({ subsection, onAddQuestion, onEditQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, fetch } = usePageManagement();
     const { showAlert } = useAlert();
@@ -37,11 +39,6 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
         setIsExpanded(expanded);
     };
 
-    const handleEditQuestion = (id: number, componentId: number) => {
-        if (staticElementTypes.includes(componentId)) {
-            console.log('edit question NYI', id);
-        }
-    };
     const handleDeleteQuestion = (id: number, componentId: number) => {
         if (staticElementTypes.includes(componentId)) {
             PageStaticControllerService.deleteStaticElementUsingDelete({
@@ -84,7 +81,7 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                         <Question
                             question={q}
                             key={k}
-                            onEditQuestion={handleEditQuestion}
+                            onEditQuestion={onEditQuestion}
                             onDeleteQuestion={handleDeleteQuestion}
                             onRequiredChange={handleRequiredChange}
                         />

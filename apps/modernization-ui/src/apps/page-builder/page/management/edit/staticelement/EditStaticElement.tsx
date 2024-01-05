@@ -1,4 +1,4 @@
-import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, Form } from '@trussworks/react-uswds';
 import {
     PageStaticControllerService,
     PagesQuestion,
@@ -7,7 +7,6 @@ import {
     UpdateReadOnlyComments
 } from 'apps/page-builder/generated';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { RefObject } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import styles from './staticelement.module.scss';
@@ -27,9 +26,9 @@ const staticType = [
 ];
 
 type EditStaticProps = {
-    modalRef?: RefObject<ModalRef>;
     question: PagesQuestion;
-    onChange?: () => void;
+    onCloseModal?: () => void;
+    refresh?: () => void;
 };
 
 const hyperlinkId = 1003;
@@ -40,7 +39,7 @@ const readOnlyPartId = 1030;
 
 type StaticElementFormValues = UpdateReadOnlyComments | UpdateHyperlink | UpdateDefault;
 
-export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
+export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStaticProps) => {
     const form = useForm<StaticElementFormValues>({
         mode: 'onBlur',
         defaultValues: {
@@ -51,24 +50,12 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
         }
     });
 
-    // const watch = useWatch({ control: form.control });
-
-    const { page, fetch } = usePageManagement();
+    const { page } = usePageManagement();
     const { showAlert } = useAlert();
-
-    // const checkFormValues = () => {
-    //     switch (question.displayComponent) {
-    //         case hyperlinkId:
-    //             if (watch.adminComments !== question.adminComments) {
-    //                 return false;
-    //             } else {
-    //                 return true;
-    //             }
-    //     }
-    // };
 
     const handleSubmit = () => {
         onSubmit();
+        onCloseModal && onCloseModal();
     };
 
     const handleAlert = (message: string) => {
@@ -86,7 +73,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                 }).then(() => {
                     form.reset();
                     handleAlert(`The element ${(data as UpdateHyperlink).label} has been successfully updated.`);
-                    fetch(page.id);
+                    refresh && refresh();
                 });
                 break;
             case commentsReadOnlyId:
@@ -98,7 +85,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                 }).then(() => {
                     form.reset();
                     handleAlert(`The comment element has been successfully updated.`);
-                    fetch(page.id);
+                    refresh && refresh();
                 });
                 break;
             case lineSeparatorId:
@@ -110,7 +97,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                 }).then(() => {
                     form.reset();
                     handleAlert(`The line separator element has been successfully updated.`);
-                    fetch(page.id);
+                    refresh && refresh();
                 });
                 break;
             case readOnlyPartId:
@@ -122,7 +109,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                 }).then(() => {
                     form.reset();
                     handleAlert(`The participant list has been successfully updated.`);
-                    fetch(page.id);
+                    refresh && refresh();
                 });
                 break;
             case originalElecDocId:
@@ -134,7 +121,7 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                 }).then(() => {
                     form.reset();
                     handleAlert(`The electronic document list has been successfully updated.`);
-                    fetch(page.id);
+                    refresh && refresh();
                 });
                 break;
         }
@@ -155,6 +142,11 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
             default:
                 return '';
         }
+    };
+
+    const onCancel = () => {
+        form.reset();
+        onCloseModal && onCloseModal();
     };
 
     return (
@@ -203,34 +195,16 @@ export const EditStaticElement = ({ modalRef, question }: EditStaticProps) => {
                 </div>
 
                 <div className={styles.footer_buttons}>
-                    {modalRef ? (
-                        <>
-                            <ModalToggleButton modalRef={modalRef} closer outline onClick={() => form.reset()}>
-                                Cancel
-                            </ModalToggleButton>
-                            <ModalToggleButton
-                                modalRef={modalRef}
-                                closer
-                                disabled={!form.formState.isDirty || !form.formState.isValid}
-                                onClick={handleSubmit}
-                                aria-label="submit-btn">
-                                Save changes
-                            </ModalToggleButton>
-                        </>
-                    ) : (
-                        <>
-                            <Button outline onClick={() => form.reset()} type={'button'}>
-                                Cancel
-                            </Button>
-                            <Button
-                                disabled={!form.formState.isDirty || !form.formState.isValid}
-                                onClick={handleSubmit}
-                                type={'button'}
-                                aria-label="submit-btn">
-                                Save changes
-                            </Button>
-                        </>
-                    )}
+                    <Button outline onClick={onCancel} type={'button'}>
+                        Cancel
+                    </Button>
+                    <Button
+                        disabled={!form.formState.isDirty || !form.formState.isValid}
+                        onClick={handleSubmit}
+                        type={'button'}
+                        aria-label="submit-btn">
+                        Save changes
+                    </Button>
                 </div>
             </Form>
         </div>

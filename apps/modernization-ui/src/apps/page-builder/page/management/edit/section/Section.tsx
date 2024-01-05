@@ -1,4 +1,4 @@
-import { PageQuestionControllerService, PagesSection } from 'apps/page-builder/generated';
+import { PageQuestionControllerService, PagesQuestion, PagesSection } from 'apps/page-builder/generated';
 import { SectionHeader } from './SectionHeader';
 
 import styles from './section.module.scss';
@@ -11,8 +11,9 @@ import { authorization } from 'authorization';
 type Props = {
     section: PagesSection;
     onAddSubsection: (section: number) => void;
+    onEditQuestion: (question: PagesQuestion) => void;
 };
-export const Section = ({ section, onAddSubsection }: Props) => {
+export const Section = ({ section, onAddSubsection, onEditQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
     const handleExpandedChange = (expanded: boolean) => {
@@ -56,6 +57,7 @@ export const Section = ({ section, onAddSubsection }: Props) => {
                             subsection={subsection}
                             key={k}
                             onAddQuestion={(questionId) => handleAddQuestion(subsection.id!, questionId)}
+                            onEditQuestion={onEditQuestion}
                         />
                     ))}
                 </div>

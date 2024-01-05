@@ -35,7 +35,8 @@ class ContentComponentResolverTest {
         "mask-value",
         "tool-tip-value",
         "default-value-value",
-        "value-set-value", "admin-comments"
+        "value-set-value", 
+        "admin-comments"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
