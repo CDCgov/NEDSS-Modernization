@@ -7,7 +7,7 @@ const validPageNameRule = {
     ...maxLengthRule(),
     pattern: {
         value: /^[\w*()+\-=;:/.,\s]+$/gm,
-        message: 'Valid characters are A-Z, a-z, 0-9, or ( ) _ + - = ; : / . ,'
+        message: 'Valid characters are A-Z, a-z, 0-9, or * ( ) _ + - = ; : / . ,'
     }
 };
 

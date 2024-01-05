@@ -6,6 +6,7 @@ import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { EditStaticElement } from '../staticelement/EditStaticElement';
 import { ModalRef } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
+import { AddQuestionModal } from '../../../../components/Subsection/AddQuestionModal/AddQuestionModal';
 
 type Props = {
     tab: PagesTab;
@@ -23,7 +24,8 @@ const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, originalE
 export const PageContent = ({ tab, refresh }: Props) => {
     const editStaticElementRef = useRef<ModalRef>(null);
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
-
+    const [subsectionId, setSubsectionId] = useState(0);
+    const addQuestionModalRef = useRef<ModalRef>(null);
     const handleAddSubsection = (section: number) => {
         console.log('add subsection not yet implemented', section);
     };
@@ -51,6 +53,8 @@ export const PageContent = ({ tab, refresh }: Props) => {
                 sections={tab.sections ?? []}
                 onAddSubsection={handleAddSubsection}
                 onEditQuestion={handleEditQuestion}
+                onAddQuestion={setSubsectionId}
+                addQuestionModalRef={addQuestionModalRef}
             />
             <PageSideMenu />
             <ModalComponent
@@ -66,6 +70,8 @@ export const PageContent = ({ tab, refresh }: Props) => {
                     )
                 }
             />
+            <PageSideMenu />
+            <AddQuestionModal subsectionId={subsectionId} modalRef={addQuestionModalRef} />
         </div>
     );
 };

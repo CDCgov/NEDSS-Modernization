@@ -16,6 +16,14 @@
     }
 }
 .usa-modal {
+    .usa-modal__heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .usa-button--unstyled {
+            color: colors.$base-darkest;
+        }
+    }
     &.tall {
         min-height: 50rem;
         height: 50rem;
@@ -35,5 +43,9 @@
             background: white;
             border-radius: 0 0 0.5rem 0.5rem;
         }
+    }
+    &.wide {
+        width: 70rem;
+        min-width: 70rem;
     }
 }

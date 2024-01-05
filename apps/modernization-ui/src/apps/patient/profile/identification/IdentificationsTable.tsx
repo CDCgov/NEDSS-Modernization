@@ -259,7 +259,7 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     modal={modal}
                     id="add-patient-identification-modal"
                     title="Add - Identification">
-                    <IdentificationEntryForm action={'Add'} entry={initial} onChange={onAdded} />
+                    <IdentificationEntryForm entry={initial} onChange={onAdded} />
                 </EntryModal>
             )}
 
@@ -270,7 +270,6 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     id="edit-patient-identification-modal"
                     title="Edit - Identification">
                     <IdentificationEntryForm
-                        action={'Edit'}
                         entry={asEntry(selected.item)}
                         onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}

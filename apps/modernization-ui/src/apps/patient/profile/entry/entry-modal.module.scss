@@ -1,17 +1,11 @@
-.modal {
-    header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-        padding: 1.5rem;
-
-        svg {
-            cursor: pointer;
-        }
-    }
-}
+@forward 'apps/patient/profile/profile-modal';
 
 .overflow {
-    overflow-y: visible;
+    .content {
+        overflow: visible;
+
+        & > section {
+            overflow: visible;
+        }
+    }
 }

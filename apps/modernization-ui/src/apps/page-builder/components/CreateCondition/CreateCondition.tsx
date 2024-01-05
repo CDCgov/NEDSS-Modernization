@@ -313,7 +313,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         Cancel
                     </Button>
                 )}
-                <Button className="submit-btn" type="submit">
+                <Button className="submit-btn" type="submit" onClick={onSubmit}>
                     Create and add to page
                 </Button>
             </div>
