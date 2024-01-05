@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
-import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
