@@ -70,7 +70,6 @@ export const PageContent = ({ tab, refresh }: Props) => {
                     )
                 }
             />
-            <PageSideMenu />
             <AddQuestionModal subsectionId={subsectionId} modalRef={addQuestionModalRef} />
         </div>
     );
