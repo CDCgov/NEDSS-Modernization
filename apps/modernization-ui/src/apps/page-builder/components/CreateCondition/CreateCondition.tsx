@@ -17,7 +17,7 @@ import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 
 type Props = {
-    modal?: RefObject<ModalRef>;
+    modal: RefObject<ModalRef>;
     conditionCreated?: (condition: Condition) => void;
 };
 
@@ -297,26 +297,16 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         )}
                     />
                 </div>
-            </Form>
-            <div className="create-condition__buttons">
-                {modal ? (
-                    <ModalToggleButton
-                        modalRef={modal}
-                        type="reset"
-                        closer
-                        className="cancel-btn"
-                        onClick={() => resetInput()}>
+                <div className="create-condition__buttons">
+                    <ModalToggleButton modalRef={modal} type="reset" closer className="cancel-btn" onClick={resetInput}>
                         Cancel
                     </ModalToggleButton>
-                ) : (
-                    <Button className="cancel-btn" type="reset" onClick={() => resetInput()}>
-                        Cancel
+
+                    <Button className="submit-btn" type={'submit'}>
+                        Create and add to page
                     </Button>
-                )}
-                <Button className="submit-btn" type="submit" onClick={onSubmit}>
-                    Create and add to page
-                </Button>
-            </div>
+                </div>
+            </Form>
         </div>
     );
 };

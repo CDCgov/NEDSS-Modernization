@@ -224,6 +224,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 <TableComponent
                     display="zebra"
                     contextName="businessRules"
+                    className="business-rules-table"
                     tableHeader=""
                     tableHead={tableColumns}
                     tableBody={tableRows}
