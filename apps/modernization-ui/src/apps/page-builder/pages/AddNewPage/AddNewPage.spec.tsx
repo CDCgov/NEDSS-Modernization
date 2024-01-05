@@ -1,21 +1,21 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { AlertProvider } from 'alert';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { AddNewPage } from './AddNewPage';
 
 import {
-    CancelablePromise,
-    Concept,
-    Condition,
-    ConditionControllerService,
-    PageControllerService,
-    PageCreateResponse,
-    Page_Condition_,
-    ProgramArea,
-    ProgramAreaControllerService,
-    Template,
-    TemplateControllerService,
-    ValueSetControllerService
+  CancelablePromise,
+  Concept,
+  Condition,
+  ConditionControllerService,
+  PageControllerService,
+  PageCreateResponse,
+  Page_Condition_,
+  ProgramArea,
+  ProgramAreaControllerService,
+  Template,
+  TemplateControllerService,
+  ValueSetControllerService
 } from 'apps/page-builder/generated';
 
 beforeEach(() => {
@@ -47,13 +47,25 @@ const eventType = [
 ];
 
 describe('Add New Page', () => {
-    it('should render event type drop down', async () => {
-        const { queryByText } = render(
-            <BrowserRouter>
+    it('should have the title of Create new page', () => {
+        const { getByText } = render(
+            <MemoryRouter>
                 <AlertProvider>
                     <AddNewPage />
                 </AlertProvider>
-            </BrowserRouter>
+            </MemoryRouter>
+        );
+
+        expect(getByText('Create new page')).toBeInTheDocument();
+    });
+
+    it('should render event type drop down', async () => {
+        const { queryByText } = render(
+            <MemoryRouter>
+                <AlertProvider>
+                    <AddNewPage />
+                </AlertProvider>
+            </MemoryRouter>
         );
 
         const label = screen.getByText('Event type');
@@ -74,11 +86,11 @@ describe('Add New Page', () => {
 
     it('should display warning when non Investigation type is selected', async () => {
         const { findByTestId, findByText } = render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <AlertProvider>
                     <AddNewPage />
                 </AlertProvider>
-            </BrowserRouter>
+            </MemoryRouter>
         );
         const label = screen.getByText('Event type');
         expect(label).toBeInTheDocument();
@@ -109,11 +121,11 @@ describe('Add New Page', () => {
         window.location = mockLocation;
 
         const { findByTestId, findByText } = render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <AlertProvider>
                     <AddNewPage />
                 </AlertProvider>
-            </BrowserRouter>
+            </MemoryRouter>
         );
 
         const label = screen.getByText('Event type');
@@ -129,11 +141,11 @@ describe('Add New Page', () => {
 
     it('should display form when Investigation type is selected', async () => {
         const { findByTestId, findByText, queryByText } = render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <AlertProvider>
                     <AddNewPage />
                 </AlertProvider>
-            </BrowserRouter>
+            </MemoryRouter>
         );
         const label = screen.getByText('Event type');
         expect(label).toBeInTheDocument();
