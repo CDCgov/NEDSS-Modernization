@@ -1,7 +1,8 @@
 import {
     PageStaticControllerService,
     PagesSubSection,
-    PageQuestionControllerService
+    PageQuestionControllerService,
+    PagesQuestion
 } from 'apps/page-builder/generated';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
@@ -14,10 +15,20 @@ import { ModalRef } from '@trussworks/react-uswds';
 
 type Props = {
     subsection: PagesSubSection;
+    onEditQuestion: (question: PagesQuestion) => void;
     onAddQuestion: () => void;
     addQuestionModalRef: RefObject<ModalRef>;
 };
-export const Subsection = ({ subsection, onAddQuestion, addQuestionModalRef }: Props) => {
+
+const hyperlinkID = 1003;
+const lineSeparatorID = 1012;
+const readOnlyParticipants = 1030;
+const readOnlyComments = 1014;
+const originalElecDoc = 1036;
+
+const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, readOnlyComments, originalElecDoc];
+
+export const Subsection = ({ subsection, onAddQuestion, addQuestionModalRef, onEditQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, fetch } = usePageManagement();
     const { showAlert } = useAlert();
@@ -30,17 +41,8 @@ export const Subsection = ({ subsection, onAddQuestion, addQuestionModalRef }: P
         setIsExpanded(expanded);
     };
 
-    const handleEditQuestion = (id: number) => {
-        console.log('edit question NYI', id);
-    };
     const handleDeleteQuestion = (id: number, componentId: number) => {
-        if (
-            componentId == 1003 ||
-            componentId == 1036 ||
-            componentId == 1012 ||
-            componentId == 1014 ||
-            componentId == 1030
-        ) {
+        if (staticElementTypes.includes(componentId)) {
             PageStaticControllerService.deleteStaticElementUsingDelete({
                 authorization: authorization(),
                 page: page.id,
@@ -82,7 +84,7 @@ export const Subsection = ({ subsection, onAddQuestion, addQuestionModalRef }: P
                         <Question
                             question={q}
                             key={k}
-                            onEditQuestion={handleEditQuestion}
+                            onEditQuestion={onEditQuestion}
                             onDeleteQuestion={handleDeleteQuestion}
                             onRequiredChange={handleRequiredChange}
                         />

@@ -214,7 +214,8 @@ class TreeifyTest {
             "mask-value",
             "tool-tip-value",
             "default-value-value",
-            "value-set-value"
+            "value-set-value",
+            "admin-comments"
         )
     ).collect(Treeify.asTree());
 
@@ -265,7 +266,8 @@ class TreeifyTest {
             "mask-value",
             "tool-tip-value",
             "default-value-value",
-            "value-set-value"
+            "value-set-value",
+            "admin-comments"
         ),
         new FlattenedComponent(13L, 1010, "Tab", true, 6)
     ).collect(Treeify.asTree());
