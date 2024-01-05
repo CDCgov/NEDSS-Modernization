@@ -128,6 +128,13 @@ export const AddNewPage = () => {
         form.setValue('templateId', template.id);
     };
 
+    const handleCreateCondition = () => {
+        conditionLookupModal.current?.toggleModal(undefined, false);
+        setTimeout(() => {
+            createConditionModal.current?.toggleModal(undefined, true);
+        }, 100);
+    };
+
     return (
         <div className="add-new-page">
             <div className="breadcrumb-wrap">
@@ -216,7 +223,7 @@ export const AddNewPage = () => {
                 <ConditionSearch
                     onCancel={() => conditionLookupModal.current?.toggleModal()}
                     onConditionSelect={handleAddConditions}
-                    onCreateNew={() => console.log('create new!')}
+                    onCreateNew={handleCreateCondition}
                 />
             </Modal>
         </div>
