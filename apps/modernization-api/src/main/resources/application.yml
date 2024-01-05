@@ -51,6 +51,13 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  security.oauth2.resourceserver.jwt.issuer-uri: http://localhost:8100/realms/nbs-development
+  security.oauth2.resourceserver.jwt.jwk-set-uri: http://localhost:8100/realms/nbs-development/protocol/openid-connect/certs
+  security.oauth2.client.registration.nbs-development.client-id: login-nbs
+  security.oauth2.client.registration.nbs-development.authorization-grant-type: authorization_code
+  security.oauth2.client.registration.nbs-development.scope: openid
+  security.oauth2.client.provider.nbs-development.issuer-uri: http://localhost:8100/realms/nbs-development
+  security.oauth2.client.provider.nbs-development.user-name-attribute: msa      
 
 
   kafka:
@@ -88,13 +95,3 @@ nbs.ui:
               enabled: false
 
 keycloak-enabled: false
-spring.security.oauth2.client:
-    provider.nbs-development.issuer-uri: http://localhost:8100/realms/nbs-development
-    registration.nbs-development:
-        provider: nbs-development
-        client-name: login-nbs
-        client-id: login-nbs
-        client-secret: sdfsafadsfsdfsdfsdf
-        scope: openid,offline_access,profile
-        authorization-grant-type: authorization_code        
-

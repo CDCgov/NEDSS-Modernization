@@ -18,11 +18,8 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.HashMap;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -38,16 +35,6 @@ public class UserController {
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
-
-    @GetMapping(path = "/keycloak")
-    public HashMap index() {
-        OAuth2User user = ((OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        return new HashMap() {
-            {
-                put("username", user.getAttribute("preferred_username"));
-            }
-        };
-    }
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {

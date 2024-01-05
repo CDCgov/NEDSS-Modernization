@@ -6,16 +6,24 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.authentication.IgnoredPaths;
 import gov.cdc.nbs.authentication.NBSAuthenticationFilter;
@@ -40,6 +48,17 @@ public class WebSecurityConfig {
   private Boolean keycloakEnabled;
 
   @Bean
+  protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+    return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    return http.getSharedObject(AuthenticationManagerBuilder.class)
+        .build();
+  }
+
+  @Bean
   public SecurityFilterChain securityFilterChain(
       HttpSecurity http,
       final NBSTokenValidator tokenValidator,
@@ -55,30 +74,16 @@ public class WebSecurityConfig {
         "/login");
 
     if (keycloakEnabled) {
-      http
-          .oauth2Client()
-          .and()
-          .oauth2Login()
-          .tokenEndpoint()
-          .and()
-          .userInfoEndpoint();
-
-      http
-          .sessionManagement()
-          .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-
-      http
-          .authorizeHttpRequests()
-          .antMatchers(ignoredPaths.paths())
+      http.authorizeRequests()
+          .antMatchers("/oauth2/**", "/login/**")
           .permitAll()
-          .antMatchers("/oauth2/**", "/login/**").permitAll()
           .anyRequest()
-          .authenticated()
+          .authenticated();
+      http.oauth2Login()
           .and()
           .logout()
-          .logoutSuccessUrl(
-              "http://localhost:8100/realms/nbs-development/protocol/openid-connect/logout?redirect_uri=http://localhost:3000/");
-
+          // .addLogoutHandler(keycloakLogoutHandler)
+          .logoutSuccessUrl("/");
       return http.build();
     }
 
