@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 type Props = {
     question: PagesQuestion;
     onRequiredChange: (id: number) => void;
-    onEditQuestion: (id: number) => void;
+    onEditQuestion: (question: PagesQuestion) => void;
     onDeleteQuestion: (id: number, componentId: number) => void;
 };
 
@@ -39,7 +39,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     visible={visibleState}
                     question={question}
                     onRequiredChange={() => onRequiredChange(question.id)}
-                    onEditQuestion={() => onEditQuestion(question.id)}
+                    onEditQuestion={() => onEditQuestion(question)}
                     onDeleteQuestion={() => {
                         onDeleteQuestion(question.id, question.displayComponent ?? 0);
                     }}

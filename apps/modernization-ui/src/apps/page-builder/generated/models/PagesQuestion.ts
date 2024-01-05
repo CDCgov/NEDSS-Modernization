@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 export type PagesQuestion = {
+    adminComments?: string;
     allowFutureDates?: boolean;
     coInfection?: boolean;
     dataType?: string;

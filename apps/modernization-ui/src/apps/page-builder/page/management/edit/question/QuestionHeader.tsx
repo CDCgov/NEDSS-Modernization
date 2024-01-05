@@ -1,10 +1,10 @@
 import styles from './question-header.module.scss';
 import { Icon } from '@trussworks/react-uswds';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
+import { Heading } from 'components/heading';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import classNames from 'classnames';
-import { Heading } from 'components/heading';
-import DeleteQuestion from '../../../../components/DeleteQuestion/DeleteQuestion';
+import DeleteQuestion from 'apps/page-builder/components/DeleteQuestion/DeleteQuestion';
 
 type Props = {
     visible?: boolean;

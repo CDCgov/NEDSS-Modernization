@@ -1,4 +1,4 @@
-import { PagesSection } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesSection } from 'apps/page-builder/generated';
 import React, { RefObject } from 'react';
 
 import styles from './section.module.scss';
@@ -10,8 +10,10 @@ type Props = {
     onAddQuestion: (subsection: number) => void;
     onAddSubsection: (section: number) => void;
     addQuestionModalRef: RefObject<ModalRef>;
+    onEditQuestion: (question: PagesQuestion) => void;
 };
-export const Sections = ({ sections, onAddSubsection, onAddQuestion, addQuestionModalRef }: Props) => {
+
+export const Sections = ({ sections, onAddSubsection, onAddQuestion, addQuestionModalRef, onEditQuestion }: Props) => {
     return (
         <div className={styles.sections}>
             {sections.map((s, k) => (
@@ -20,6 +22,7 @@ export const Sections = ({ sections, onAddSubsection, onAddQuestion, addQuestion
                     key={k}
                     onAddSubsection={onAddSubsection}
                     onAddQuestion={onAddQuestion}
+                    onEditQuestion={onEditQuestion}
                     addQuestionModalRef={addQuestionModalRef}
                 />
             ))}

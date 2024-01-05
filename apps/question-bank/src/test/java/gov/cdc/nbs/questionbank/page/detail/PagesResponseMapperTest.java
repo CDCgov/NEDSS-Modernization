@@ -281,7 +281,8 @@ class PagesResponseMapperTest {
                             true,
                             "mask-value",
                             "tool-tip-value",
-                            "default-value-value"
+                            "default-value-value",
+                            "admin-comments"
                         )
                     )
                 )
