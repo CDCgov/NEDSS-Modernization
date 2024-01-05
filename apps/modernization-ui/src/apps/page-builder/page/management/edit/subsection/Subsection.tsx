@@ -5,17 +5,19 @@ import {
 } from 'apps/page-builder/generated';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
-import { useState } from 'react';
+import { RefObject, useState } from 'react';
 import { Question } from '../question/Question';
 import { usePageManagement } from '../../usePageManagement';
 import { authorization } from 'authorization/authorization';
 import { useAlert } from 'alert';
+import { ModalRef } from '@trussworks/react-uswds';
 
 type Props = {
     subsection: PagesSubSection;
-    onAddQuestion: (questionId: number) => void;
+    onAddQuestion: () => void;
+    addQuestionModalRef: RefObject<ModalRef>;
 };
-export const Subsection = ({ subsection, onAddQuestion }: Props) => {
+export const Subsection = ({ subsection, onAddQuestion, addQuestionModalRef }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, fetch } = usePageManagement();
     const { showAlert } = useAlert();
@@ -70,6 +72,7 @@ export const Subsection = ({ subsection, onAddQuestion }: Props) => {
                 id={subsection.id}
                 questionCount={subsection.questions?.length ?? 0}
                 onAddQuestion={onAddQuestion}
+                addQuestionModalRef={addQuestionModalRef}
                 onExpandedChange={handleExpandedChange}
                 isExpanded={isExpanded}
             />

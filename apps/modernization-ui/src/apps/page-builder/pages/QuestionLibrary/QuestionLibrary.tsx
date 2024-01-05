@@ -12,9 +12,10 @@ type Props = {
     modalRef?: RefObject<ModalRef>;
     hideTabs?: boolean;
     onAddQuestion?: (id: number) => void;
+    nav?: boolean;
 };
 
-export const QuestionLibrary = ({ hideTabs, modalRef, onAddQuestion }: Props) => {
+export const QuestionLibrary = ({ hideTabs, modalRef, onAddQuestion, nav }: Props) => {
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(QuestionsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
@@ -50,7 +51,7 @@ export const QuestionLibrary = ({ hideTabs, modalRef, onAddQuestion }: Props) =>
 
     if (hideTabs) return <div className="question-local-library">{renderQuestionList}</div>;
     return (
-        <PageBuilder nav={true}>
+        <PageBuilder nav={nav}>
             <div className="question-local-library">
                 {!hideTabs && (
                     <div className="margin-left-2em">

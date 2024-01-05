@@ -3,9 +3,14 @@ import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import React, { useState } from 'react';
 import { QuestionLibraryFilterModal } from './FilterModal/QuestionLibraryFilterModal';
 
-export const SearchBar = ({ onChange }: any) => {
+type SearchBarProps = {
+    onChange: (str: string) => void;
+    createNewBtn?: React.ReactNode | React.ReactNode[] | string;
+};
+export const SearchBar = ({ onChange, createNewBtn }: SearchBarProps) => {
     const [searchTags, setSearchTags] = useState<any>([]);
     const [search, setSearch] = useState<string>('');
+
     const handleSearch = ({ target }: any) => {
         setSearch(target.value);
     };
@@ -43,6 +48,7 @@ export const SearchBar = ({ onChange }: any) => {
                     <Icon.Search size={3} />
                 </Button>
                 <QuestionLibraryFilterModal />
+                {createNewBtn}
             </div>
         </div>
     );
