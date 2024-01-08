@@ -21,7 +21,7 @@ const conditionTableColumns = [
     { name: ConditionColumn.Code, sortable: true },
     { name: ConditionColumn.ProgramArea, sortable: true },
     { name: ConditionColumn.ConditionFamily, sortable: true },
-    { name: ConditionColumn.CoinfectionGroup, sortable: false },
+    { name: ConditionColumn.CoinfectionGroup, sortable: true },
     { name: ConditionColumn.NND, sortable: true },
     { name: ConditionColumn.InvestigationPage, sortable: true },
     { name: ConditionColumn.Status, sortable: true }
@@ -91,12 +91,12 @@ export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSor
     const handleSort = (name: string, direction: Direction) => {
         if (direction === Direction.None) {
             // sort cleared
-            onSort && onSort(undefined);
+            onSort?.(undefined);
         } else {
             // get sortable field from column map
             const sortableField = columnToSortMap.get(name);
             const sort: ConditionSort = { field: sortableField ?? ConditionSortField.CONDITION, direction };
-            onSort && onSort(sort);
+            onSort?.(sort);
         }
     };
 
