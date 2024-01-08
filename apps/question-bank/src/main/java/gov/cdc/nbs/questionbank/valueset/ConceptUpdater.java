@@ -41,7 +41,7 @@ public class ConceptUpdater {
     requireNotEmpty(request.conceptMessagingInfo().codeSystem(), "conceptMessagingInfo.codeSystem");
     CodeValueGeneral codeSystem = findCodeSystem(request.conceptMessagingInfo().codeSystem());
 
-    concept.updatValueGeneral(updateConcept(
+    concept.updateValueGeneral(updateConcept(
         requireNotEmpty(request.displayName(), "displayName"),
         requireNotEmpty(request.conceptCode(), "conceptCode"),
         request.effectiveToTime(),
