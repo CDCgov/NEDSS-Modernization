@@ -1,12 +1,11 @@
 import React from 'react';
 import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { Concept, Condition, Template } from 'apps/page-builder/generated';
+import { Concept, Condition, PageCreateRequest, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { validPageNameRule } from 'validation/entry';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormValues } from './AddNewPage';
 import { dataMartNameRule } from 'validation/entry/dataMartNameRule';
 
 type AddNewPageFieldProps = {
@@ -18,7 +17,7 @@ type AddNewPageFieldProps = {
     mmgs: Concept[];
 };
 export const AddNewPageFields = (props: AddNewPageFieldProps) => {
-    const form = useFormContext<FormValues>();
+    const form = useFormContext<PageCreateRequest>();
 
     return (
         <>

@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router-dom';
 import { AddNewPage } from './AddNewPage';
@@ -17,6 +17,7 @@ import {
     TemplateControllerService,
     ValueSetControllerService
 } from 'apps/page-builder/generated';
+import userEvent from '@testing-library/user-event';
 
 beforeEach(() => {
     jest.spyOn(ConditionControllerService, 'findAllConditionsUsingGet').mockReturnValue(
@@ -73,7 +74,7 @@ describe('Add New Page', () => {
     });
 
     it('should display warning when non Investigation type is selected', async () => {
-        const { findByTestId, findByText } = render(
+        render(
             <BrowserRouter>
                 <AlertProvider>
                     <AddNewPage />
@@ -91,7 +92,7 @@ describe('Add New Page', () => {
         expect(warning).toBeInTheDocument();
     });
 
-    it.skip('should redirect to classic on create page when non investigation is selected', async () => {
+    it('should redirect to classic on create page when non investigation is selected', async () => {
         const savePage = jest.spyOn(PageControllerService, 'createPageUsingPost');
         savePage.mockImplementation(
             (params) => Promise.resolve({} as PageCreateResponse) as CancelablePromise<PageCreateResponse>
@@ -108,7 +109,7 @@ describe('Add New Page', () => {
         delete window.location;
         window.location = mockLocation;
 
-        const { findByTestId, findByText } = render(
+        render(
             <BrowserRouter>
                 <AlertProvider>
                     <AddNewPage />
@@ -116,19 +117,22 @@ describe('Add New Page', () => {
             </BrowserRouter>
         );
 
-        const label = screen.getByText('Event type');
         const select = screen.getByTestId('eventTypeDropdown');
-
-        fireEvent.change(select, { target: { value: 'IXS' } });
+        userEvent.selectOptions(select, 'IXS');
 
         const submit = screen.getByText('Create page');
-        fireEvent.click(submit);
-        expect(setHrefSpy).toHaveBeenCalledWith('/nbs/ManagePage.do?method=addPageLoad');
+
+        await waitFor(() => {
+            expect(submit).toBeEnabled();
+        });
+
+        userEvent.click(submit);
+        expect(setHrefSpy).toHaveBeenCalledWith('/nbs/page-builder/api/v1/pages/create');
         expect(savePage).not.toBeCalled();
     });
 
     it('should display form when Investigation type is selected', async () => {
-        const { findByTestId, findByText, queryByText } = render(
+        const { queryByText } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <AddNewPage />
@@ -141,7 +145,7 @@ describe('Add New Page', () => {
         const select = screen.getByTestId('eventTypeDropdown');
         expect(select).toBeInTheDocument();
 
-        fireEvent.change(select, { target: { value: 'INV' } });
+        userEvent.selectOptions(select, 'INV');
         const warning = queryByText('event type is not supported');
         expect(warning).not.toBeInTheDocument();
 

@@ -2,19 +2,12 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import { CancelablePromise, Template, TemplateControllerService } from 'apps/page-builder/generated';
 import { BrowserRouter } from 'react-router-dom';
 import { ImportTemplate } from './ImportTemplate';
-const toggleModal = jest.fn();
-const modal = {
-    isShowing: false,
-    current: {
-        modalId: '',
-        modalIsOpen: true,
-        toggleModal
-    }
-};
+const onCancel = jest.fn();
+const onCreated = jest.fn();
 
 describe('General information component tests', () => {
     it('should display Import template form', () => {
-        const { getByText } = render(<ImportTemplate modal={modal} onTemplateCreated={() => {}} />);
+        const { getByText } = render(<ImportTemplate onCancel={onCancel} onTemplateCreated={onCreated} />);
         expect(getByText('Import a new template')).toBeInTheDocument();
     });
 });
@@ -23,7 +16,7 @@ describe('When page loads', () => {
     it('Import button should be disabled', () => {
         const { container } = render(
             <BrowserRouter>
-                <ImportTemplate modal={modal} onTemplateCreated={() => {}} />
+                <ImportTemplate onCancel={onCancel} onTemplateCreated={onCreated} />
             </BrowserRouter>
         );
         const btn = container.getElementsByClassName('usa-button')[0];
@@ -35,7 +28,7 @@ describe('When a file is selected', () => {
     it('should have an error if not .xml', async () => {
         const { container } = render(
             <BrowserRouter>
-                <ImportTemplate modal={modal} onTemplateCreated={() => {}} />
+                <ImportTemplate onCancel={onCancel} onTemplateCreated={onCreated} />
             </BrowserRouter>
         );
         const file = new File(['fileContent'], 'template.txt', { type: 'txt' });
@@ -58,7 +51,7 @@ describe('When a file is selected', () => {
     it('Import button should not be disabled', async () => {
         const { container } = render(
             <BrowserRouter>
-                <ImportTemplate modal={modal} onTemplateCreated={() => {}} />
+                <ImportTemplate onCancel={onCancel} onTemplateCreated={onCreated} />
             </BrowserRouter>
         );
         const file = new File(['fileContent'], 'template.xml', { type: 'text/xml' });
@@ -76,7 +69,7 @@ describe('when a file is dropped', () => {
     it('Import button should be enabled', async () => {
         const { container } = render(
             <BrowserRouter>
-                <ImportTemplate modal={modal} onTemplateCreated={() => {}} />
+                <ImportTemplate onCancel={onCancel} onTemplateCreated={onCreated} />
             </BrowserRouter>
         );
         const file = new File(['fileContent'], 'template.xml', { type: 'text/xml' });
@@ -91,14 +84,13 @@ describe('when a file is dropped', () => {
 });
 
 describe('When a file is successfully imported', () => {
-    it('should excecute the callback', async () => {
+    it('should excecute the onTemplateCreated callback', async () => {
         const mockImport = jest.spyOn(TemplateControllerService, 'import');
         mockImport.mockImplementation(() => Promise.resolve({ id: 1 } as Template) as CancelablePromise<Template>);
-        const callback = jest.fn(() => {});
 
         const { container } = render(
             <BrowserRouter>
-                <ImportTemplate modal={modal} onTemplateCreated={callback} />
+                <ImportTemplate onCancel={onCancel} onTemplateCreated={onCreated} />
             </BrowserRouter>
         );
 
@@ -115,17 +107,19 @@ describe('When a file is successfully imported', () => {
 
         await waitFor(() => {
             expect(mockImport).toHaveBeenCalled();
-            expect(callback).toHaveBeenCalled();
+            expect(onCreated).toHaveBeenCalled();
         });
     });
+});
 
-    it('should close the modal', async () => {
+describe('when canceled', () => {
+    it('should trigger onCancel', async () => {
         const mockImport = jest.spyOn(TemplateControllerService, 'import');
         mockImport.mockImplementation(() => Promise.resolve({ id: 1 } as Template) as CancelablePromise<Template>);
 
         const { container } = render(
             <BrowserRouter>
-                <ImportTemplate modal={modal} onTemplateCreated={() => {}} />
+                <ImportTemplate onCancel={onCancel} onTemplateCreated={onCreated} />
             </BrowserRouter>
         );
 
@@ -135,20 +129,20 @@ describe('When a file is successfully imported', () => {
             fireEvent.change(input, { target: { files: [file] } });
         });
 
-        const submit = container.getElementsByClassName('submit-btn')[0];
+        const cancel = container.getElementsByClassName('cancel-btn')[0];
         await waitFor(() => {
-            fireEvent.click(submit);
+            fireEvent.click(cancel);
         });
 
         await waitFor(() => {
-            expect(toggleModal).toBeCalled();
+            expect(onCancel).toBeCalled();
         });
     });
 });
 
 describe('Import Template component tests', () => {
     it('should render a grid with 1 inputs labels which is  Choose file ', () => {
-        const { getByText } = render(<ImportTemplate modal={modal} onTemplateCreated={() => {}} />);
+        const { getByText } = render(<ImportTemplate onCancel={onCancel} onTemplateCreated={onCreated} />);
         expect(getByText('Choose file')).toBeInTheDocument();
     });
 });
