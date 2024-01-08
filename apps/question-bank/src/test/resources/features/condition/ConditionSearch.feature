@@ -24,18 +24,20 @@ Feature: I can search for conditions
     When i search a condition with sort "<field>" "<direction>"
     Then the conditions are returned sorted by "<field>" "<direction>"
     Examples:
-      | field              | value        | value2       | direction  |
-      | conditionShortNm   | AAASortTest  | ZZZSortTest  | ascending  |
-      | conditionShortNm   | AAAASortTest | ZZZZSortTest | descending |
-      | id                 | AAASortTest  | ZZZSortTest  | ascending  |
-      | id                 | AAAASortTest | ZZZZSortTest | descending |
-      | progAreaCd         | STD          | GCD          | ascending  |
-      | progAreaCd         | STD          | GCD          | descending |
-      | familyCd           | AAASortTest  | ZZZSortTest  | ascending  |
-      | familyCd           | AAASortTest  | ZZZSortTest  | descending |
-      | coinfection_grp_cd | AAASortTest  | ZZZSortTest  | ascending  |
-      | coinfection_grp_cd | AAASortTest  | ZZZSortTest  | descending |
-      | nndInd             | T            | F            | ascending  |
-      | nndInd             | T            | F            | descending |
-      | statusCd           | A            | I            | ascending  |
-      | statusCd           | A            | I            | descending |
+      | field               | value        | value2        | direction  |
+      | conditionShortNm    | AAASortTest  | ZZZSortTest   | ascending  |
+      | conditionShortNm    | AAAASortTest | ZZZZSortTest  | descending |
+      | id                  | AAASortTest  | ZZZSortTest   | ascending  |
+      | id                  | AAAASortTest | ZZZZSortTest  | descending |
+      | progAreaCd          | STD          | GCD           | ascending  |
+      | progAreaCd          | STD          | GCD           | descending |
+      | familyCd            | AAASortTest  | ZZZSortTest   | ascending  |
+      | familyCd            | AAASortTest  | ZZZSortTest   | descending |
+      | coinfection_grp_cd  | AAASortTest  | ZZZSortTest   | ascending  |
+      | coinfection_grp_cd  | AAASortTest  | ZZZSortTest   | descending |
+      | investigationFormCd | formSortTest | form2SortTest | ascending  |
+      | investigationFormCd | formSortTest | form2SortTest | descending |
+      | nndInd              | T            | F             | ascending  |
+      | nndInd              | T            | F             | descending |
+      | statusCd            | A            | I             | ascending  |
+      | statusCd            | A            | I             | descending |

@@ -99,7 +99,7 @@ public class ConditionSearchSteps {
   public void i_search_with_sort(String field, String direction) {
     Direction dir = direction.toLowerCase().contains("asc") ? Direction.ASC : Direction.DESC;
     response.active(request.search(
-        new ReadConditionRequest("", true),
+        new ReadConditionRequest(),
         PageRequest.of(0, 50, Sort.by(dir, field))));
   }
 
@@ -116,6 +116,7 @@ public class ConditionSearchSteps {
       case "progAreaCd" -> "progAreaCd";
       case "familyCd" -> "familyCd";
       case "coinfection_grp_cd" -> "coinfectionGrpCd";
+      case "investigationFormCd" -> "investigationFormCd";
       case "nndInd" -> "nndInd";
       case "statusCd" -> "statusCd";
       default -> throw new IllegalArgumentException();
