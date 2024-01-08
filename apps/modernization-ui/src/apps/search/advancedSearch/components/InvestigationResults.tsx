@@ -2,11 +2,7 @@ import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef } from 'react';
 import { Investigation, PersonParticipation } from 'generated/graphql/schema';
 import { calculateAge } from 'utils/util';
-<<<<<<<< HEAD:apps/modernization-ui/src/apps/search/event/components/InvestigationSearch/InvestigationResults.tsx
 import 'apps/search/advancedSearch/AdvancedSearch.scss';
-========
-import '../AdvancedSearch.scss';
->>>>>>>> 3179ebfb (git merge AdvancedSearch):apps/modernization-ui/src/apps/search/advancedSearch/components/InvestigationResults.tsx
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';

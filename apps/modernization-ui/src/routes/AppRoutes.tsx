@@ -13,6 +13,7 @@ import { Config } from 'config';
 import { useConfiguration } from 'configuration';
 import { Library, Management } from 'generated';
 import { Layout } from 'layout';
+import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddPatient } from 'apps/patient/add/AddPatient';
 import { AddedPatient } from 'apps/patient/add/SuccessForm/AddedPatient';
 import { AdvancedSearch } from 'apps/search/advancedSearch/AdvancedSearch';
