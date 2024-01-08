@@ -23,7 +23,11 @@ export const Edit = () => {
 };
 
 const EditPageContent = () => {
-    const { page, selected } = usePageManagement();
+    const { page, selected, fetch } = usePageManagement();
+
+    const refresh = () => {
+        fetch(page.id);
+    };
 
     return (
         <PageManagementLayout name={page.name} mode={'edit'}>
@@ -35,7 +39,7 @@ const EditPageContent = () => {
                     <NavLinkButton to={'..'}>Preview</NavLinkButton>
                 </PageManagementMenu>
             </PageHeader>
-            {selected && <PageContent tab={selected} />}
+            {selected && <PageContent tab={selected} refresh={refresh} />}
         </PageManagementLayout>
     );
 };

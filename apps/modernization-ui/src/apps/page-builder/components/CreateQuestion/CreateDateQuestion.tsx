@@ -11,7 +11,7 @@ import {
     MessagingInfo,
     ReportingInfo
 } from '../../generated';
-import { QuestionFormType } from './CreateQuestion';
+import { optionsType, QuestionFormType } from './CreateQuestion';
 
 type CreateQuestionFormType = CreateNumericQuestionRequest &
     CreateCodedQuestionRequest &
@@ -23,9 +23,12 @@ type CreateQuestionFormType = CreateNumericQuestionRequest &
 
 type DateQuestionProps = {
     control?: Control<CreateQuestionFormType, any>;
+    options: optionsType[];
 };
 
-export const CreateDateQuestion = ({ control }: DateQuestionProps) => {
+export const CreateDateQuestion = ({ control, options }: DateQuestionProps) => {
+    const maskOption = options.filter((opt) => opt.value?.includes('DATE')) || [];
+
     return (
         <>
             <Controller
@@ -37,12 +40,7 @@ export const CreateDateQuestion = ({ control }: DateQuestionProps) => {
                         defaultValue={value}
                         label="Date format"
                         onChange={onChange}
-                        options={[
-                            {
-                                name: 'Generic date (MM/DD/YYYY)',
-                                value: 'MM/DD/yyyy'
-                            }
-                        ]}
+                        options={maskOption}
                         error={error?.message}
                         required
                     />

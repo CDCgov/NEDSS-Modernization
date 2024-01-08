@@ -180,7 +180,7 @@ describe('When electronic doc list is chosen', () => {
 
 describe('When all inputs are entered', () => {
     it('button enables once all inputs are selected', async () => {
-        const { getByTestId, findByTestId } = render(
+        const { getByTestId, findByTestId, getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <PageManagementProvider page={page} fetch={fetch}>
@@ -200,7 +200,7 @@ describe('When all inputs are entered', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        const labelInput = getByTestId('hyperlinkLabel');
+        const labelInput = getByLabelText('hyperlinkLabel');
 
         act(() => {
             userEvent.type(labelInput, 'Something label');
@@ -210,7 +210,7 @@ describe('When all inputs are entered', () => {
             fireEvent.blur(labelInput);
         });
 
-        const linkInput = getByTestId('linkUrl');
+        const linkInput = getByLabelText('linkUrl');
         act(() => {
             userEvent.type(linkInput, 'www.test.com');
         });

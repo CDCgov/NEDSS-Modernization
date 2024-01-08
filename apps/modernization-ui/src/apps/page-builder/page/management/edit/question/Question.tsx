@@ -4,18 +4,25 @@ import styles from './question.module.scss';
 import { QuestionContent } from './QuestionContent';
 import { ModalRef } from '@trussworks/react-uswds';
 import { ConfirmationModal } from 'confirmation';
-import { useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
 type Props = {
     question: PagesQuestion;
     onRequiredChange: (id: number) => void;
-    onEditQuestion: (id: number) => void;
+    onEditQuestion: (question: PagesQuestion) => void;
     onDeleteQuestion: (id: number, componentId: number) => void;
+    editQuestionModalRef: RefObject<ModalRef>;
 };
 
 const staticComponents = [1003, 1036, 1012, 1014, 1030, undefined];
 
-export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQuestion }: Props) => {
+export const Question = ({
+    question,
+    onRequiredChange,
+    onEditQuestion,
+    editQuestionModalRef,
+    onDeleteQuestion
+}: Props) => {
     const modal = useRef<ModalRef>(null);
     const [confirmModal, setConfirmModal] = useState(false);
     const [visibleState, setVisibleState] = useState(false);
@@ -39,7 +46,8 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     visible={visibleState}
                     question={question}
                     onRequiredChange={() => onRequiredChange(question.id)}
-                    onEditQuestion={() => onEditQuestion(question.id)}
+                    onEditQuestion={() => onEditQuestion(question)}
+                    editQuestionModalRef={editQuestionModalRef}
                     onDeleteQuestion={() => {
                         onDeleteQuestion(question.id, question.displayComponent ?? 0);
                     }}
