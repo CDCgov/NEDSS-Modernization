@@ -3,30 +3,23 @@ package gov.cdc.nbs.config.security;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.authentication.IgnoredPaths;
 import gov.cdc.nbs.authentication.NBSAuthenticationFilter;
 import gov.cdc.nbs.authentication.NBSAuthenticationIssuer;
-import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.authentication.session.SessionAuthenticator;
 import gov.cdc.nbs.authentication.token.NBSTokenValidator;
 import graphql.GraphQLError;
@@ -45,20 +38,6 @@ public class WebSecurityConfig {
 
   @Value("${keycloak-enabled}")
   private boolean keycloakEnabled;
-
-  @Autowired
-  UserService userService;
-
-  @Bean
-  protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-    return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
-  }
-
-  @Bean
-  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-    return http.getSharedObject(AuthenticationManagerBuilder.class)
-        .build();
-  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(
