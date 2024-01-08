@@ -1,8 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset.update;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
@@ -34,8 +33,9 @@ class ConceptUpdaterTest {
   @InjectMocks
   private ConceptUpdater conceptUpdater;
 
+
   @Test
-  void should_update_concept() {
+  void should_update_concept_case1() {
     var concept = new CodeValueGeneral();
     when(codeValueGeneralRepository.findByIdCodeSetNmAndIdCode("concept", "something"))
         .thenReturn(Optional.of(concept));
@@ -55,7 +55,7 @@ class ConceptUpdaterTest {
             "pref name",
             "anything"));
 
-    Concept newConcept = new Concept(
+    Concept response = new Concept(
         "something",
         "CODE_SYSTEM",
         "displayName",
@@ -63,19 +63,66 @@ class ConceptUpdaterTest {
         "concept code",
         "pref name",
         "anything",
-        "active",
+        "Active",
         Instant.parse("2024-01-01T00:00:00Z"),
         null);
 
+
     ArgumentCaptor<CodeValueGeneral> captor = ArgumentCaptor.forClass(CodeValueGeneral.class);
     when(codeValueGeneralRepository.save(captor.capture())).thenAnswer(q -> q.getArgument(0));
-    when(mapper.toConcept(concept)).thenReturn(newConcept);
+    when(mapper.toConcept(concept)).thenReturn(response);
+
     Concept result = conceptUpdater.update("concept", "something", request, 1L);
+
     assertEquals("displayName", result.display());
-    assertThat(result.effectiveFromTime()).isEqualTo("2024-01-01T00:00:00Z");
-    assertEquals("concept code", result.conceptCode());
-    assertEquals("pref name", result.messagingConceptName());
-    assertEquals("anything", result.codeSystem());
+    assertNull(result.effectiveToTime());
+    assertEquals("Active", result.status());
+
+  }
+
+  @Test
+  void should_update_concept_case2() {
+    var concept = new CodeValueGeneral();
+    when(codeValueGeneralRepository.findByIdCodeSetNmAndIdCode("concept", "something"))
+        .thenReturn(Optional.of(concept));
+    var codeSystem = new CodeValueGeneral();
+    codeSystem.setCodeShortDescTxt("CODE_SYSTEM");
+    codeSystem.setCodeSystemCd("anything");
+    when(codeValueGeneralRepository.findByIdCodeSetNmAndIdCode("CODE_SYSTEM", "anything"))
+        .thenReturn(Optional.of(codeSystem));
+
+    var request = new UpdateConceptRequest(
+        "displayName",
+        "concept code",
+        Instant.parse("2024-01-01T00:00:00Z"),
+        false,
+        new UpdateConceptRequest.ConceptMessagingInfo(
+            "concept code",
+            "concept name",
+            "pref name",
+            "anything"));
+
+    Concept response = new Concept(
+        "something",
+        "CODE_SYSTEM",
+        "displayName",
+        "longName",
+        "concept code",
+        "pref name",
+        "anything",
+        "Inactive",
+        Instant.parse("2024-01-01T00:00:00Z"),
+        Instant.parse("2024-01-01T00:00:00Z"));
+
+    ArgumentCaptor<CodeValueGeneral> captor = ArgumentCaptor.forClass(CodeValueGeneral.class);
+    when(codeValueGeneralRepository.save(captor.capture())).thenAnswer(q -> q.getArgument(0));
+    when(mapper.toConcept(concept)).thenReturn(response);
+
+    Concept result = conceptUpdater.update("concept", "something", request, 1L);
+
+    assertEquals("displayName", result.display());
+    assertThat(result.effectiveToTime()).isEqualTo("2024-01-01T00:00:00Z");
+    assertEquals("Inactive", result.status());
   }
 
   @Test

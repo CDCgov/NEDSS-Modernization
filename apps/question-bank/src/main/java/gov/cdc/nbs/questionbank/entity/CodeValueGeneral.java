@@ -106,6 +106,19 @@ public class CodeValueGeneral {
     this.isModifiableInd = 'Y';
   }
 
+  public CodeValueGeneral updateValueGeneral(ConceptCommand.UpdateConcept command) {
+    this.codeShortDescTxt = command.displayName();
+    this.effectiveFromTime = Instant.now();
+    this.effectiveToTime = (command.effectiveToTime() == null) ? this.effectiveToTime : command.effectiveToTime();
+    this.statusCd = (command.active()) ? 'A' : 'I';
+    this.conceptStatusCd = (command.active()) ? "Active" : "Inactive";
+    this.conceptCode = command.conceptCode();
+    this.conceptNm = command.conceptName();
+    this.conceptPreferredNm =  command.preferredConceptName();
+    this.codeSystemCd = command.codeSystem();
+    return this;
+  }
+
   public CodeValueGeneral(ConceptCommand.AddConcept command) {
     // Default
     this();
@@ -126,22 +139,10 @@ public class CodeValueGeneral {
     this.codeSystemCd = command.codeSystemId();
     this.conceptTypeCd = command.conceptTypeCd();
 
+    this.effectiveFromTime = command.effectiveFromTime();
+    this.effectiveToTime = command.effectiveToTime();
+
     added(command);
-  }
-
-  public CodeValueGeneral updatValueGeneral(ConceptCommand.UpdateConcept command) {
-
-    this.codeShortDescTxt = command.displayName();
-    this.effectiveFromTime = Instant.now();
-    this.effectiveToTime = (command.effectiveToTime() == null) ? this.effectiveToTime : command.effectiveToTime();
-    this.statusCd = (command.active()) ? 'A' : 'I';
-    this.conceptStatusCd = (command.active()) ? "Active" : "Inactive";
-    this.conceptCode = (command.conceptCode() == null) ? this.conceptCode : command.conceptCode();
-    this.conceptNm = (command.conceptName() == null) ? this.conceptNm : command.conceptName();
-    this.conceptPreferredNm =
-        (command.preferredConceptName() == null) ? this.conceptPreferredNm : command.preferredConceptName();
-    this.codeSystemCd = (command.codeSystem() == null) ? this.codeSystemCd : command.codeSystem();
-    return this;
   }
 
   private void added(ConceptCommand command) {
