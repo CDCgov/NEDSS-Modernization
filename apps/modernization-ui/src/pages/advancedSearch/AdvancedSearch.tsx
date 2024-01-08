@@ -78,7 +78,7 @@ export const AdvancedSearch = () => {
     const { skipTo } = useSkipLink();
 
     useEffect(() => {
-        skipTo('lastName');
+        skipTo('lastName', false);
     }, []);
 
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
