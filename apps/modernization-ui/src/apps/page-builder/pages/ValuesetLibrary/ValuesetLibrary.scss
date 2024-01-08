@@ -38,6 +38,9 @@
         .padding-x-2.search-box {
             display: none;
         }
+        .no-data-available {
+            flex-direction: column;
+        }
         background-color: colors.$base-white;
         border-radius: 3px;
         border: 1px solid colors.$base-lightest;
@@ -60,10 +63,13 @@
                 margin-left: 66px;
             }
             &:nth-of-type(2) {
-                width: 250px;
+                width: 6.25rem;
+            }
+            &:nth-of-type(3) {
+                width: 11.25rem;
             }
             &:nth-of-type(4) {
-                width: 100px;
+                width: 21.875rem;
             }
         }
         tbody tr {
@@ -155,6 +161,9 @@
     width: 100%;
     .search-filter {
         display: flex;
+    }
+    .filter-config-panel {
+        display: none;
     }
     &.outer-search-box {
         border-radius: 5px;
@@ -266,4 +275,7 @@
     font-style: normal;
     font-weight: 400;
     margin-bottom: 0;
+}
+valueset-local-library__header {
+
 }

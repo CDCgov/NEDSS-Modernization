@@ -10,10 +10,18 @@ type Props = {
     onAddQuestion: (subsection: number) => void;
     onAddSubsection: (section: number) => void;
     addQuestionModalRef: RefObject<ModalRef>;
+    addValueModalRef: RefObject<ModalRef>;
     onEditQuestion: (question: PagesQuestion) => void;
 };
 
-export const Sections = ({ sections, onAddSubsection, onAddQuestion, addQuestionModalRef, onEditQuestion }: Props) => {
+export const Sections = ({
+    sections,
+    onAddSubsection,
+    onAddQuestion,
+    addQuestionModalRef,
+    addValueModalRef,
+    onEditQuestion
+}: Props) => {
     return (
         <div className={styles.sections}>
             {sections.map((s, k) => (
@@ -23,6 +31,7 @@ export const Sections = ({ sections, onAddSubsection, onAddQuestion, addQuestion
                     onAddSubsection={onAddSubsection}
                     onAddQuestion={onAddQuestion}
                     onEditQuestion={onEditQuestion}
+                    addValueModalRef={addValueModalRef}
                     addQuestionModalRef={addQuestionModalRef}
                 />
             ))}

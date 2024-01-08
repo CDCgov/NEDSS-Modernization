@@ -3,11 +3,11 @@ import { Input } from 'components/FormInputs/Input';
 import { Heading } from 'components/heading';
 import { ValueSetControllerService, Concept } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
-import { useEffect, useState } from 'react';
+import React, { RefObject, useEffect, useState } from 'react';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Selectable } from 'options/selectable';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { Icon } from '@trussworks/react-uswds';
+import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 
 type Props = {
     defaultValue: string;
@@ -17,6 +17,7 @@ type Props = {
     displayComponent?: number;
     identifier: string;
     valueSet: string;
+    addValueModalRef: RefObject<ModalRef>;
 };
 
 const hyperlinkId = 1003;
@@ -32,7 +33,8 @@ export const QuestionContent = ({
     name,
     identifier,
     displayComponent,
-    defaultValue
+    defaultValue,
+    addValueModalRef
 }: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
 
@@ -108,6 +110,11 @@ export const QuestionContent = ({
                         <body className={styles.inputContent}>Original document list will be placed here</body>
                     )}
                 </>
+            )}
+            {type === 'CODED' && (
+                <ModalToggleButton className="submit-btn" modalRef={addValueModalRef}>
+                    Add Value set
+                </ModalToggleButton>
             )}
         </div>
     );

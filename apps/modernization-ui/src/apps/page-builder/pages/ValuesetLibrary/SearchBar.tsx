@@ -1,15 +1,16 @@
 import { Input } from 'components/FormInputs/Input';
-import { Button, Tag, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalRef, ModalToggleButton, Tag } from '@trussworks/react-uswds';
 import { Icon } from '@trussworks/react-uswds';
-import React, { useRef, useState } from 'react';
+import React, { RefObject, useState } from 'react';
 import { QuestionLibraryFilterModal } from './FilterModal/ValuesetLibraryFilterModal';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { AddValueset } from '../../components/AddValueset/AddValueset';
 
-export const SearchBar = ({ onChange }: any) => {
+type Props = {
+    onChange: (str: string) => void;
+    createValueModalRef?: RefObject<ModalRef>;
+};
+export const SearchBar = ({ onChange, createValueModalRef }: Props) => {
     const [search, setSearch] = useState<string>('');
     const [searchTags, setSearchTags] = useState<any>([]);
-    const modalRef = useRef<ModalRef>(null);
 
     const handleSearch = ({ target }: any) => {
         setSearch(target.value);
@@ -21,7 +22,7 @@ export const SearchBar = ({ onChange }: any) => {
     };
     const handleRemove = (removeTag: string) => {
         setSearch('');
-        onChange('', '');
+        onChange('');
         setSearchTags((preTag: string[]) => preTag.filter((tag) => tag !== removeTag));
     };
 
@@ -48,17 +49,12 @@ export const SearchBar = ({ onChange }: any) => {
                     <Icon.Search size={3} />
                 </Button>
                 <QuestionLibraryFilterModal />
-                <ModalToggleButton modalRef={modalRef} className="submit-btn" type="button">
-                    Create Value set
-                </ModalToggleButton>
+                {createValueModalRef && (
+                    <ModalToggleButton modalRef={createValueModalRef} className="submit-btn" type="button">
+                        Create Value set
+                    </ModalToggleButton>
+                )}
             </div>
-            <ModalComponent
-                size="wide"
-                modalRef={modalRef}
-                modalHeading={'Add value set'}
-                modalBody={<AddValueset modalRef={modalRef} />}
-                closer
-            />
         </div>
     );
 };

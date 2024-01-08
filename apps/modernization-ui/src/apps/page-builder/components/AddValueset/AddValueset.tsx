@@ -1,11 +1,11 @@
-import React, { useContext, useState, RefObject } from 'react';
+import React, { RefObject, useState } from 'react';
 import { GetQuestionResponse, QuestionControllerService } from 'apps/page-builder/generated';
-import { Button, ModalToggleButton, ModalRef } from '@trussworks/react-uswds';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import './AddValueset.scss';
 import { ValueSetControllerService } from '../../generated';
 import '../../pages/ValuesetLibrary/ValuesetTabs.scss';
-import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
+import { authorization as getAuthorization } from 'authorization';
 import { Concept } from '../Concept/Concept';
 
 type Props = {
@@ -14,7 +14,6 @@ type Props = {
 };
 
 export const AddValueset = ({ modalRef, updateCallback }: Props) => {
-    const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
     // Fields
     const [isLocalOrPhin, setIsLocalOrPhin] = useState('LOCAL');
@@ -26,7 +25,7 @@ export const AddValueset = ({ modalRef, updateCallback }: Props) => {
     const [isValuesetCodeNotValid, setIsValuesetCodeNotValid] = useState(false);
     const [isValidationFailure, setIsValidationFailure] = useState(false);
 
-    const authorization = `Bearer ${state.getToken()}`;
+    const authorization = getAuthorization();
     const handleSubmit = () => {
         const request = {
             valueSetNm: name,

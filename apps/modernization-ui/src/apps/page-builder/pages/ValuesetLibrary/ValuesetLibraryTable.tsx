@@ -3,11 +3,9 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { useAlert } from 'alert';
 import { GetQuestionResponse, PageSummary, QuestionControllerService, ValueSet } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { RefObject, useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { UserContext } from '../../../../providers/UserContext';
-import { AddValueset } from '../../components/AddValueset/AddValueset';
 import { SearchBar } from './SearchBar';
 import './ValuesetLibraryTable.scss';
 import ValuesetLibraryTableRowExpanded from './ValuesetLibraryTableRowExpanded';
@@ -31,9 +29,10 @@ type Props = {
     summaries: ValueSet[];
     labModalRef?: any;
     pages?: any;
+    createValueModalRef?: RefObject<ModalRef>;
     updateCallback?: () => void;
 };
-export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCallback }: Props) => {
+export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValueModalRef }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
@@ -213,7 +212,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
     };
 
     const footerActionBtn = (
-        <div className="valueset-action-btn ds-u-text-align--right margin-bottom-1em">
+        <div className="valueset-action-btn ds-u-text-align--right">
             <ModalToggleButton
                 closer
                 modalRef={labModalRef}
@@ -234,24 +233,24 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
         </div>
     );
 
-    const modalRef = useRef<ModalRef>(null);
+    const createValueSetBtn = (text: string) => {
+        return createValueModalRef ? (
+            <ModalToggleButton className="submit-btn" type="button" modalRef={createValueModalRef} outline>
+                {text}
+            </ModalToggleButton>
+        ) : (
+            <div />
+        );
+    };
     const dataNotAvailableElement = (
         <div className="no-data-available">
             <label className="margin-bottom-1em no-text">
                 {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
-                Add value set
-            </ModalToggleButton>
-            <ModalComponent
-                size="wide"
-                modalRef={modalRef}
-                modalHeading={'Add value set'}
-                modalBody={<AddValueset modalRef={modalRef} />}
-                closer
-            />
+            {createValueSetBtn('Add value set')}
         </div>
     );
+
     const searchAvailableElement = (
         <div className="no-data-available">
             <label className="no-text">Still can't find what are you're looking for?</label>
@@ -259,26 +258,18 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
                 Please try searching in the local library before creating new
             </label>
             <div>
-                <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
-                    Create New
-                </ModalToggleButton>
+                {createValueSetBtn('Create New')}
+
                 <Button className="submit-btn" type="button">
                     Search Local
                 </Button>
             </div>
-            <ModalComponent
-                size="wide"
-                modalRef={modalRef}
-                modalHeading={'Add value set'}
-                modalBody={<AddValueset modalRef={modalRef} updateCallback={updateCallback} />}
-                closer
-            />
         </div>
     );
 
     return (
         <div>
-            <div>{<SearchBar onChange={setSearchQuery} />}</div>
+            <div>{<SearchBar onChange={setSearchQuery} createValueModalRef={createValueModalRef} />}</div>
             {summaries?.length ? (
                 <TableComponent
                     contextName="valuesets"

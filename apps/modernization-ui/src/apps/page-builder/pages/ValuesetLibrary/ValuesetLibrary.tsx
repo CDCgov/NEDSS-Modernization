@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { RefObject, useContext, useEffect, useState } from 'react';
 import { ValueSetsContext } from '../../context/ValueSetContext';
 import './ValuesetLibrary.scss';
 import { ValuesetLibraryTable } from './ValuesetLibraryTable';
@@ -6,8 +6,16 @@ import './ValuesetTabs.scss';
 import { fetchValueSet } from './useValuesetAPI';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import { authorization } from 'authorization';
+import { ModalRef } from '@trussworks/react-uswds';
 
-export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
+type Props = {
+    modalRef?: RefObject<ModalRef>;
+    createValueModalRef?: RefObject<ModalRef> | undefined;
+    hideTabs: boolean;
+    types?: string;
+};
+
+export const ValuesetLibrary = ({ hideTabs, types, modalRef, createValueModalRef }: Props) => {
     const [activeTab, setActiveTab] = useState(types || 'local');
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(ValueSetsContext);
     const [summaries, setSummaries] = useState([]);
@@ -64,6 +72,7 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
                         summaries={summaries}
                         pages={{ currentPage, pageSize, totalElements }}
                         labModalRef={modalRef}
+                        createValueModalRef={createValueModalRef}
                         updateCallback={handleUpdateSummariesCallback}
                     />
                 </div>
@@ -74,7 +83,7 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     if (hideTabs) return <div className="valueset-local-library">{renderValueSetList}</div>;
 
     return (
-        <PageBuilder nav>
+        <PageBuilder nav={!hideTabs}>
             <div className="valueset-local-library">
                 <div className="valueset-library__container">
                     {!hideTabs && (
@@ -92,18 +101,7 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
                             </li>
                         </ul>
                     )}
-                    <div className="search-description-block">
-                        <p>Let’s find the right value set for your single choice question</p>
-                    </div>
-                    <div className="valueset-local-library__container">
-                        <div className="valueset-local-library__table">
-                            <ValuesetLibraryTable
-                                summaries={summaries}
-                                pages={{ currentPage, pageSize, totalElements }}
-                                labModalRef={modalRef}
-                            />
-                        </div>
-                    </div>
+                    {renderValueSetList}
                 </div>
             </div>
         </PageBuilder>

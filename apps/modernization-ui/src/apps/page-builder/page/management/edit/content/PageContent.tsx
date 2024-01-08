@@ -4,9 +4,11 @@ import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { EditStaticElement } from '../staticelement/EditStaticElement';
-import { ModalRef } from '@trussworks/react-uswds';
+import { Icon, ModalRef } from '@trussworks/react-uswds';
 import React, { useEffect, useRef, useState } from 'react';
 import { AddQuestionModal } from '../../../../components/Subsection/AddQuestionModal/AddQuestionModal';
+import { ValuesetLibrary } from '../../../../pages/ValuesetLibrary/ValuesetLibrary';
+import { AddValueset } from '../../../../components/AddValueset/AddValueset';
 import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
 import { Heading } from '../../../../../../components/heading';
 
@@ -30,6 +32,8 @@ export const PageContent = ({ tab, refresh }: Props) => {
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
     const [subsectionId, setSubsectionId] = useState(0);
     const addQuestionModalRef = useRef<ModalRef>(null);
+    const addValueModalRef = useRef<ModalRef>(null);
+    const createValueModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
     const handleAddSubsection = (section: number) => {
         console.log('add subsection not yet implemented', section);
@@ -65,6 +69,7 @@ export const PageContent = ({ tab, refresh }: Props) => {
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={setSubsectionId}
                 addQuestionModalRef={addQuestionModalRef}
+                addValueModalRef={addValueModalRef}
             />
             <PageSideMenu />
             <ModalComponent
@@ -81,6 +86,28 @@ export const PageContent = ({ tab, refresh }: Props) => {
                 }
             />
             <AddQuestionModal subsectionId={subsectionId} modalRef={addQuestionModalRef} />
+            <ModalComponent
+                size="wide"
+                modalRef={addValueModalRef}
+                modalHeading={<Heading level={2}>Search value set</Heading>}
+                modalBody={
+                    <ValuesetLibrary hideTabs modalRef={addValueModalRef} createValueModalRef={createValueModalRef} />
+                }
+                closer
+            />
+            <ModalComponent
+                isLarge
+                size="wide"
+                modalRef={createValueModalRef}
+                modalHeading={
+                    <span className="header-icon-title">
+                        <Icon.ArrowBack />
+                        <Heading level={2}>Add value set</Heading>
+                    </span>
+                }
+                modalBody={<AddValueset modalRef={createValueModalRef} />}
+                closer
+            />
             <ModalComponent
                 isLarge
                 modalRef={editQuestionModalRef}
