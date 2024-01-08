@@ -11,10 +11,11 @@ import { CreateQuestion } from '../../CreateQuestion/CreateQuestion';
 
 type Props = {
     modalRef: RefObject<ModalRef>;
+    addValueModalRef?: RefObject<ModalRef>;
     subsectionId: number;
 };
 
-export const AddQuestionModal = ({ modalRef, subsectionId }: Props) => {
+export const AddQuestionModal = ({ modalRef, subsectionId, addValueModalRef }: Props) => {
     const { showAlert } = useAlert();
     const { page, fetch } = usePageManagement();
     const createModalRef = useRef<ModalRef>(null);
@@ -81,7 +82,13 @@ export const AddQuestionModal = ({ modalRef, subsectionId }: Props) => {
                     </div>
                 }
                 closer
-                modalBody={<CreateQuestion onAddQuestion={handleAddQuestion} onCloseModal={handleClose} />}
+                modalBody={
+                    <CreateQuestion
+                        onAddQuestion={handleAddQuestion}
+                        onCloseModal={handleClose}
+                        addValueModalRef={addValueModalRef}
+                    />
+                }
             />
         </>
     );
