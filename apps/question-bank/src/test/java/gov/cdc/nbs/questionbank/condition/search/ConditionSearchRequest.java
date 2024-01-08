@@ -30,7 +30,7 @@ public class ConditionSearchRequest {
           .contentType(MediaType.APPLICATION_JSON);
 
       if (pageable != null) {
-        builder.param("sort", pageable.getSort().toString());
+        builder.param("sort", pageable.getSort().toString().replace(": ", ","));
       }
 
       return mvc.perform(this.authenticated.withUser(builder));

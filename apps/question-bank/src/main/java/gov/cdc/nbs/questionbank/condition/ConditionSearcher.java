@@ -33,7 +33,8 @@ public class ConditionSearcher {
     // find all Ids of matching conditions
     List<String> ids = findConditions(request, pageable.getSort())
         .stream()
-        .map(r -> r.get(conditionTable.id)).toList();
+        .map(r -> r.get(conditionTable.id))
+        .toList();
     int total = ids.size();
 
     // page the list of Ids
@@ -44,7 +45,7 @@ public class ConditionSearcher {
                 (int) pageable.getOffset() + pageable.getPageSize()));
 
     // fetch the conditions
-    List<Condition> conditions = findConditionsById(ids)
+    List<Condition> conditions = findConditionsById(ids, pageable.getSort())
         .stream()
         .map(this::toCondition)
         .toList();
@@ -75,11 +76,12 @@ public class ConditionSearcher {
   }
 
   private OrderSpecifier<?> resolveOrdering(Sort sort) {
-    if (sort == null || sort.isEmpty()) {
+    if (sort == null || sort.isEmpty() || sort.isUnsorted()) {
       return conditionTable.conditionShortNm.asc();
     } else {
       Order order = sort.toList().get(0);
       var path = switch (order.getProperty()) {
+        case "id" -> conditionTable.id;
         case "conditionShortNm" -> conditionTable.conditionShortNm;
         case "progAreaCd" -> conditionTable.progAreaCd;
         case "familyCd" -> conditionTable.familyCd;
@@ -94,8 +96,9 @@ public class ConditionSearcher {
 
   }
 
-  private List<Tuple> findConditionsById(List<String> ids) {
-    return factory.select(conditionTable.id,
+  private List<Tuple> findConditionsById(List<String> ids, Sort sort) {
+    return factory.select(
+        conditionTable.id,
         conditionTable.conditionShortNm,
         conditionTable.progAreaCd,
         conditionTable.familyCd,
@@ -106,7 +109,9 @@ public class ConditionSearcher {
         .from(conditionTable)
         .leftJoin(pageMappingTable).on(pageMappingTable.conditionCd.eq(conditionTable.id))
         .leftJoin(templateTable).on(templateTable.id.eq(pageMappingTable.waTemplateUid.id))
-        .where(conditionTable.id.in(ids)).fetch();
+        .where(conditionTable.id.in(ids))
+        .orderBy(resolveOrdering(sort))
+        .fetch();
   }
 
   private Condition toCondition(Tuple row) {

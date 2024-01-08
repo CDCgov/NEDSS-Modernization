@@ -2,11 +2,21 @@ package gov.cdc.nbs.questionbank.condition.search;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.io.UnsupportedEncodingException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.web.servlet.ResultActions;
+import com.google.common.collect.Comparators;
+import com.jayway.jsonpath.JsonPath;
 import gov.cdc.nbs.questionbank.condition.ConditionCreator;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
@@ -42,7 +52,7 @@ public class ConditionSearchSteps {
 
   @Given("a condition exists")
   public void a_condition_exists() {
-    Condition created = creator.createCondition(createConditionRequest(), 999l);
+    Condition created = creator.createCondition(createConditionRequest(null, null), 999l);
     activeCondition.active(created);
   }
 
@@ -78,20 +88,93 @@ public class ConditionSearchSteps {
                 .value(not(hasItem(this.activeCondition.active().id()))));
   }
 
-  private CreateConditionRequest createConditionRequest() {
+
+  @Given("a condition exists with {string} set to {string}")
+  public void a_condition_exists_with_value(String field, String value) {
+    Condition created = creator.createCondition(createConditionRequest(field, value), 999l);
+    activeCondition.active(created);
+  }
+
+  @When("i search a condition with sort {string} {string}")
+  public void i_search_with_sort(String field, String direction) {
+    Direction dir = direction.toLowerCase().contains("asc") ? Direction.ASC : Direction.DESC;
+    response.active(request.search(
+        new ReadConditionRequest("", true),
+        PageRequest.of(0, 50, Sort.by(dir, field))));
+  }
+
+  @Then("the conditions are returned sorted by {string} {string}")
+  public void conditions_are_sorted(String field, String direction) throws UnsupportedEncodingException, Exception {
+    String content = response.active()
+        .andExpect(status().isOk())
+        .andReturn()
+        .getResponse()
+        .getContentAsString();
+    String jsonField = switch (field) {
+      case "id" -> "id";
+      case "conditionShortNm" -> "conditionShortNm";
+      case "progAreaCd" -> "progAreaCd";
+      case "familyCd" -> "familyCd";
+      case "coinfection_grp_cd" -> "coinfectionGrpCd";
+      case "nndInd" -> "nndInd";
+      case "statusCd" -> "statusCd";
+      default -> throw new IllegalArgumentException();
+    };
+    List<String> results = JsonPath.read(content, "$.content[*]." + jsonField);
+    results = results.stream().filter(Objects::nonNull).toList();
+    Comparator<String> comparator =
+        (a, b) -> direction.contains("asc") ? a.compareToIgnoreCase(b) : b.compareToIgnoreCase(a);
+    assertTrue(Comparators.isInOrder(results, comparator));
+  }
+
+  private CreateConditionRequest createConditionRequest(String field, String value) {
     UUID randomUuid = UUID.randomUUID();
     String name = randomUuid.toString().substring(0, 6);
+    String id = name;
+    String codeSystem = "Notifiable Event Code List";
+    String progArea = "GCD";
+    Character nndInd = 'N';
+    Character morbidityInd = 'N';
+    Character summaryInd = 'N';
+    Character contactTracing = 'N';
+    String familyCd = "ARBO";
+    String coinfectionGrp = null;
+
+    if (field != null) {
+      switch (field) {
+        case "conditionShortNm":
+          name = value;
+          break;
+        case "id":
+          id = value;
+          break;
+        case "progAreaCd":
+          progArea = value;
+          break;
+        case "familyCd":
+          familyCd = value;
+          break;
+        case "coinfection_grp_cd":
+          coinfectionGrp = value;
+          break;
+        case "nndInd":
+          nndInd = value.charAt(0);
+          break;
+      }
+    }
+
+
     return new CreateConditionRequest(
+        id,
+        codeSystem,
         name,
-        "Notifiable Event Code List",
-        name,
-        "GCD",
-        'N',
-        'N',
-        'N',
-        'N',
-        "ARBO",
-        null);
+        progArea,
+        nndInd,
+        morbidityInd,
+        summaryInd,
+        contactTracing,
+        familyCd,
+        coinfectionGrp);
   }
 
 }
