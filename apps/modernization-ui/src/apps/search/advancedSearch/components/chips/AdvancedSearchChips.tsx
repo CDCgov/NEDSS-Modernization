@@ -2,6 +2,7 @@ import { InvestigationFilter, LabReportFilter, PersonFilter } from 'generated/gr
 
 import { SEARCH_TYPE } from 'apps/search/advancedSearch/AdvancedSearch';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { InvestigationChips } from 'apps/search/event/components/InvestigationSearch/InvestigationChips';
 import { PatientChips } from 'apps/search/patient/chips/PatientChips';
 import { LabReportChips } from 'apps/search/event/components/LabReportSearch/LabReportChips';
@@ -10,6 +11,11 @@ import { InvestigationChips } from './InvestigationChips';
 import { PatientChips } from 'apps/search/patient/chips/PatientChips';
 import { LabReportChips } from './LabReportChips';
 >>>>>>> 3179ebfb (git merge AdvancedSearch)
+=======
+import { InvestigationChips } from 'apps/search/event/components/InvestigationSearch/InvestigationChips';
+import { PatientChips } from 'apps/search/patient/chips/PatientChips';
+import { LabReportChips } from 'apps/search/event/components/LabReportSearch/LabReportChips';
+>>>>>>> 424eb9d0 (Refactor search events to correct component module)
 
 type ChipProps = {
     lastSearchType: SEARCH_TYPE | undefined;
