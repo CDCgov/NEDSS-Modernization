@@ -2,21 +2,21 @@ import { Button, Form, Modal, ModalRef } from '@trussworks/react-uswds';
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
-import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditionLookup/QuickConditionLookup';
+import { ConditionSearch } from 'apps/page-builder/condition';
 import { Concept, Condition, Template } from 'apps/page-builder/generated';
 import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
 import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { useConfiguration } from 'configuration';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from 'user';
 import './AddNewPage.scss';
 import { AddNewPageFields } from './AddNewPageFields';
-import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import { useConfiguration } from 'configuration';
 
 export type FormValues = {
     conditionIds: string[];
@@ -67,8 +67,9 @@ export const AddNewPage = () => {
         });
     }, []);
 
-    const handleAddConditions = (conditions: string[]) => {
-        form.setValue('conditionIds', conditions.concat(form.getValues('conditionIds')));
+    const handleAddConditions = (conditions: number[]) => {
+        form.setValue('conditionIds', conditions.map((id) => String(id)).concat(form.getValues('conditionIds')));
+        conditionLookupModal.current?.toggleModal();
     };
 
     const onSubmit = form.handleSubmit(async (data) => {
@@ -125,6 +126,13 @@ export const AddNewPage = () => {
         temp.sort((a, b) => a.templateNm.localeCompare(b.templateNm));
         setTemplates(temp);
         form.setValue('templateId', template.id);
+    };
+
+    const handleCreateCondition = () => {
+        conditionLookupModal.current?.toggleModal(undefined, false);
+        setTimeout(() => {
+            createConditionModal.current?.toggleModal(undefined, true);
+        }, 100);
     };
 
     return (
@@ -206,11 +214,18 @@ export const AddNewPage = () => {
             <Modal id="import-template-modal" isLarge ref={importTemplateModal}>
                 <ImportTemplate modal={importTemplateModal} onTemplateCreated={handleTemplateImported} />
             </Modal>
-            <QuickConditionLookup
-                modal={conditionLookupModal}
-                addConditions={handleAddConditions}
-                createConditionModal={createConditionModal}
-            />
+            <Modal
+                forceAction
+                id="condition-lookup-modal"
+                className="add-condition-modal"
+                isLarge
+                ref={conditionLookupModal}>
+                <ConditionSearch
+                    onCancel={() => conditionLookupModal.current?.toggleModal()}
+                    onConditionSelect={handleAddConditions}
+                    onCreateNew={handleCreateCondition}
+                />
+            </Modal>
         </div>
     );
 };
