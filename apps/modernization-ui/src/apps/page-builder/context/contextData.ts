@@ -17,6 +17,8 @@ export interface ContextData {
     isLoading: boolean;
     setIsLoading: (status: boolean) => void;
     handleSort?: (name: string, direction: Direction) => void;
+    searchValueSet?: number;
+    setSearchValueSet?: (valueSet: number) => void;
 }
 
 const noop: ContextData & { type: 'noop' } = {

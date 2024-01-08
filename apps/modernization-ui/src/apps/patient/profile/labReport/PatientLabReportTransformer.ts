@@ -36,6 +36,14 @@ const getTestResults = (content: GraphQLPatientLabReport): TestResult[] => {
         .map((result) => ({ test: result.cdDescTxt, result: orNull(result.displayName) }));
 };
 
+const checkCollectedOnDate = (content: string | undefined | null) => {
+    if (content) {
+        return asLocalDate(content);
+    } else {
+        return null;
+    }
+};
+
 const internalized = (content: GraphQLPatientLabReport): PatientLabReport | null => {
     if (content) {
         return {
@@ -44,7 +52,7 @@ const internalized = (content: GraphQLPatientLabReport): PatientLabReport | null
             reportingFacility: orNull(getReportingFacility(content)),
             orderingProvider: getOrderingProviderName(content),
             orderingFacility: orNull(getOrderingFacility(content)),
-            collectedOn: asLocalDate(content.effectiveFromTime),
+            collectedOn: checkCollectedOnDate(content.effectiveFromTime),
             results: getTestResults(content),
             associatedWith: getAssociations(content),
             programArea: content.programAreaCd,

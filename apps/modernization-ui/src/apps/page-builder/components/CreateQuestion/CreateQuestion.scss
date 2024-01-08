@@ -2,7 +2,7 @@
     background: #fff;
     padding: 5px 30px;
     width: 80%;
-    height: 54vh;
+    max-height: 69vh;
     overflow: auto;
     margin: auto;
     .field-space {
@@ -151,9 +151,16 @@
     }
 }
 .add-question-footer {
-    margin-top: 40px;
-    margin-bottom: 100px;
+    margin-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    margin-bottom: 2.5rem;
+    width: 120%;
 }
 .text-align-center {
     text-align: center;
+}
+.edit-question-header {
+    display: flex;
+    gap: 1rem;
+    align-self: stretch;
 }

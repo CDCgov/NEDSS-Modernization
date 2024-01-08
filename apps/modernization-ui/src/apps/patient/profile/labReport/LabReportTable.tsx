@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { FindLabReportsForPatientQuery, useFindLabReportsForPatientLazyQuery } from 'generated/graphql/schema';
-
+import { internalizeDate } from 'date';
 import { Headers, PatientLabReport, AssociatedWith, TestResult } from './PatientLabReport';
 import { transform } from './PatientLabReportTransformer';
 import { sort } from './PatientLabReportSorter';
@@ -56,7 +56,7 @@ const asTableBody =
             },
             {
                 id: 3,
-                title: format(report?.collectedOn, 'MM/dd/yyyy') || null
+                title: internalizeDate(report?.collectedOn) || null
             },
             {
                 id: 4,

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import './CreateQuestion.scss';
 import {
     Form,
@@ -33,6 +33,7 @@ import {
     ReportingInfo
 } from '../../generated';
 import { authorization } from 'authorization';
+import { QuestionsContext } from '../../context/QuestionsContext';
 
 namespace QuestionRequest {
     export enum codeSet {
@@ -79,7 +80,7 @@ type CreateQuestionFormType = CreateNumericQuestionRequest &
 
 export type optionsType = { name: string; value: string };
 
-export const CreateQuestion = ({ modalRef, question }: any) => {
+export const CreateQuestion = ({ question, onCloseModal }: any) => {
     const questionForm = useForm<CreateQuestionFormType, any>({
         defaultValues: { ...init }
     });
@@ -93,15 +94,68 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     const [selectedFieldType, setSelectedFieldType] = useState('');
     const [codeSystemOptionList, setCodeSystemOptionList] = useState([]);
     const [maskOptions, setMaskOptions] = useState<optionsType[]>([]);
-
+    const { searchValueSet } = useContext(QuestionsContext);
     useEffect(() => {
         if (question?.id) {
             const updatedQuestion = { ...question, ...question?.messagingInfo, ...question?.dataMartInfo };
             delete updatedQuestion.messagingInfo;
             delete updatedQuestion.dataMartInfo;
             setQuestionData(updatedQuestion);
+            if (!question?.id) {
+                QuestionControllerService.getQuestionUsingGet({
+                    authorization: authorization(),
+                    id: Number(question?.id)
+                }).then((response: any) => {
+                    return response;
+                });
+            }
+            questionForm.setValue(
+                'defaultLabelInReport',
+                updatedQuestion.defaultLabelInReport || updatedQuestion.reportLabel
+            );
+            setSelectedFieldType(updatedQuestion.dataType);
+            questionForm.setValue('dataMartColumnName', updatedQuestion.dataMartColumnName);
+            questionForm.setValue('defaultRdbTableName', updatedQuestion.defaultRdbTableName);
+            questionForm.setValue('rdbColumnName', updatedQuestion.rdbColumnName);
+            questionForm.setValue('codeSystem', updatedQuestion.codeSystem);
+            questionForm.setValue('conceptCode', updatedQuestion.conceptCode);
+            questionForm.setValue('conceptName', updatedQuestion.conceptName);
+            questionForm.setValue('preferredConceptName', updatedQuestion.preferredConceptName);
+            questionForm.setValue('datamartColName', updatedQuestion.datamartColName);
+            questionForm.setValue('messageVariableId', updatedQuestion.messageVariableId);
+            questionForm.setValue('messageLabel', updatedQuestion.labelInMessage);
+            questionForm.setValue('unitType', updatedQuestion.unitType);
+            questionForm.setValue('dateFormat', updatedQuestion.dateFormat);
+            questionForm.setValue('displayType', updatedQuestion.displayType);
+            questionForm.setValue('includedInMessage', updatedQuestion.includedInMessage);
+            questionForm.setValue('requiredInMessage', updatedQuestion.requiredInMessage);
+            questionForm.setValue('hl7DataType', updatedQuestion.hl7DataType);
+            questionForm.setValue('HL7Segment', updatedQuestion.HL7Segment);
+            questionForm.setValue('relatedUnits', updatedQuestion.relatedUnits);
+            questionForm.setValue('allowFutureDates', updatedQuestion.allowFutureDates);
+            questionForm.setValue('adminComments', updatedQuestion.adminComments);
+            questionForm.setValue('codeSet', updatedQuestion.codeSet);
+            questionForm.setValue('description', updatedQuestion.description);
+            questionForm.setValue('defaultValue', updatedQuestion.defaultValue);
+            questionForm.setValue('displayControl', updatedQuestion.displayControl);
+            questionForm.setValue('label', updatedQuestion.name || updatedQuestion.label);
+            questionForm.setValue('mask', updatedQuestion.mask);
+            questionForm.setValue('subgroup', updatedQuestion.subgroup);
+            questionForm.setValue('tooltip', updatedQuestion.tooltip);
+            questionForm.setValue('uniqueName', updatedQuestion.uniqueName);
+            questionForm.setValue('uniqueId', updatedQuestion.uniqueId);
+            questionForm.setValue('minValue', updatedQuestion.minValue);
+            questionForm.setValue('maxValue', updatedQuestion.maxValue);
+            questionForm.setValue('relatedUnits', updatedQuestion.relatedUnits);
+            questionForm.setValue('unitType', updatedQuestion.unitType);
+            questionForm.setValue('fieldLength', updatedQuestion.fieldLength);
         }
     }, [question]);
+
+    useEffect(() => {
+        if (searchValueSet) questionForm.setValue('valueSet', searchValueSet);
+    }, [searchValueSet]);
+
     const fetchFamilyOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: authorization(),
@@ -128,6 +182,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setMaskOptions(mask);
         });
     };
+
     const fetchGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: authorization(),
@@ -242,16 +297,17 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 return response;
             });
         }
+        onCloseModal && onCloseModal();
     });
     const handleUpdateQuestion = (request: any) => {
         QuestionControllerService.updateQuestionUsingPut({
             authorization: authorization(),
             id: question.id,
             request
-        }).then((response: any) => {
+        }).then(() => {
             showAlert({ type: 'success', header: 'Updated', message: 'Question updated successfully' });
             resetInput();
-            return response;
+            onCloseModal && onCloseModal();
         });
     };
     const handleValidation = (unique = true) => {
@@ -260,6 +316,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
 
     const resetInput = () => {
         reset();
+        onCloseModal && onCloseModal();
     };
 
     const fieldTypeTab = [
@@ -293,7 +350,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 isLarge
                 modalRef={valueSetmodalRef}
                 modalHeading={'Add value set'}
-                modalBody={<ValuesetLibrary modalRef={modalRef} hideTabs types="recent" />}
+                modalBody={<ValuesetLibrary modalRef={valueSetmodalRef} hideTabs types="recent" />}
             />
             <br></br>
         </div>
@@ -328,7 +385,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 control={control}
                 name="tooltip"
                 rules={maxLengthRule(2000)}
-                render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
+                render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                     <>
                         <Label htmlFor={name}>
                             Tooltip <span className="mandatory-indicator">*</span>
@@ -336,6 +393,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         <Textarea
                             data-testid="tooltip"
                             rows={2}
+                            defaultValue={value}
                             className="field-space"
                             onChange={onChange}
                             onBlur={onBlur}
@@ -393,22 +451,22 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                             control={control}
                             name="codeSet"
                             defaultValue={QuestionRequest.codeSet.LOCAL}
-                            render={({ field: { onChange, value, name } }) => (
+                            render={({ field: { onChange, value } }) => (
                                 <div className="radio-group">
                                     <Radio
                                         id="codeSet_LOCAL"
-                                        name={name}
+                                        name="codeSet"
                                         value={QuestionRequest.codeSet.LOCAL}
                                         label="LOCAL"
-                                        onChange={(e: any) => onChange(e.target.value)}
+                                        onChange={(e) => onChange(e.target.value)}
                                         checked={value === 'LOCAL'}
                                     />
                                     <Radio
                                         id="codeSet_PHIN"
-                                        name={name}
+                                        name="codeSet"
                                         value={QuestionRequest.codeSet.PHIN}
                                         label="PHIN"
-                                        onChange={(e: any) => onChange(e.target.value)}
+                                        onChange={(e) => onChange(e.target.value)}
                                         checked={value === 'PHIN'}
                                     />
                                 </div>
@@ -479,10 +537,16 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                             control={control}
                             name="description"
                             rules={maxLengthRule(50)}
-                            render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
+                            render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                                 <>
                                     <Label htmlFor={name}>Description</Label>
-                                    <Textarea onChange={onChange} onBlur={onBlur} rows={2} name={name} id={name} />
+                                    <Textarea
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        defaultValue={value}
+                                        name={name}
+                                        id={name}
+                                    />
                                     {error?.message && (
                                         <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>
                                     )}
@@ -770,15 +834,15 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                             />
                         )}
                     />
+                    <div className="add-question-footer">
+                        <Button type="submit" className="submit-btn">
+                            {question?.id ? 'Save' : 'Create and add to page'}
+                        </Button>
+                        <Button className="cancel-btn" onClick={resetInput} type={'button'}>
+                            Cancel
+                        </Button>
+                    </div>
                 </Form>
-            </div>
-            <div className="add-question-footer">
-                <Button className="submit-btn" type="submit">
-                    {question?.id ? 'Save' : 'Create and add to page'}
-                </Button>
-                <ModalToggleButton className="cancel-btn" modalRef={modalRef} onClick={() => resetInput()}>
-                    Cancel
-                </ModalToggleButton>
             </div>
         </div>
     );

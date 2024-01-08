@@ -1,0 +1,53 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.conditionSearch {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 100px;
+    justify-content: space-between;
+
+    .header {
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @extend %thin;
+        @include borders.rounded('top');
+
+        svg {
+            cursor: pointer;
+        }
+    }
+
+    .content {
+        padding: 1.5rem;
+        display: flex;
+        flex-shrink: 1;
+        flex-grow: 1;
+        flex-direction: column;
+        overflow-y: auto;
+
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem;
+            margin: 1.5rem 0 1rem 0;
+            @include borders.rounded();
+            background: colors.$base-lightest;
+
+            .search {
+                width: 23.75rem;
+            }
+        }
+    }
+
+    .footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1.5rem;
+        @extend %thin-top;
+    }
+}

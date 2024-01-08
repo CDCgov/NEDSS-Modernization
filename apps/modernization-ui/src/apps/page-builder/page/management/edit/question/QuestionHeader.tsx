@@ -43,7 +43,6 @@ export const QuestionHeader = ({
                 return 'Question';
         }
     };
-
     return (
         <div className={classNames(styles.header, { [styles.visible]: visible })}>
             <div className={styles.typeDisplay}>
@@ -51,7 +50,7 @@ export const QuestionHeader = ({
                 <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>
             </div>
             <div className={styles.questionButtons}>
-                <Icon.Edit onClick={onEditQuestion} />
+                <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" onClick={onEditQuestion} />
                 {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Required</div>

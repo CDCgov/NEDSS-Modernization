@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset.request;
 
 import java.time.Instant;
+import javax.annotation.Nullable;
 import io.swagger.annotations.ApiModelProperty;
 
 public record AddConceptRequest(
@@ -8,7 +9,7 @@ public record AddConceptRequest(
         @ApiModelProperty(required = true) String displayName,
         @ApiModelProperty(required = true) String shortDisplayName,
         @ApiModelProperty(required = true) Instant effectiveFromTime,
-        Instant effectiveToTime,
+        @Nullable Instant effectiveToTime,
         @ApiModelProperty(required = true, example = "A") StatusCode statusCode,
         String adminComments,
         @ApiModelProperty(required = true) MessagingInfo messagingInfo) {
