@@ -4,8 +4,14 @@
     #{$which}: 1px solid $color;
 }
 
-@mixin rounded() {
-    border-radius: 0.3125rem;
+@mixin rounded($side: '') {
+    @if ($side == 'top') {
+        border-radius: 0.3125rem 0.3125rem 0rem 0rem;
+    } @else if ($side == 'bottom') {
+        border-radius: 0rem 0rem 0.3125rem 0.3125rem;
+    } @else {
+        border-radius: 0.3125rem;
+    }
 }
 
 %thin {
