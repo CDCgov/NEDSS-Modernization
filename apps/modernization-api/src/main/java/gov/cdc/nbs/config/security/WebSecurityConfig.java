@@ -44,7 +44,7 @@ public class WebSecurityConfig {
   private String graphQLEndpoint;
 
   @Value("${keycloak-enabled}")
-  private Boolean keycloakEnabled;
+  private boolean keycloakEnabled;
 
   @Autowired
   UserService userService;
@@ -83,9 +83,8 @@ public class WebSecurityConfig {
           .anyRequest()
           .authenticated();
 
-      http.oauth2ResourceServer((oauth2) -> {
-        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter));
-      });
+      http.oauth2ResourceServer(
+          oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
 
       return http.build();
     }
@@ -95,18 +94,10 @@ public class WebSecurityConfig {
         ignoredPaths,
         authIssuer,
         sessionAuthenticator);
-    return http.authorizeRequests()
-        .antMatchers(ignoredPaths.paths())
-        .permitAll()
-        .anyRequest().authenticated()
-        .and()
-        .csrf().disable()
-        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-        .exceptionHandling().authenticationEntryPoint(this::writeErrorMessage)
-        .and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .build();
+    return http.authorizeRequests().antMatchers(ignoredPaths.paths()).permitAll().anyRequest().authenticated().and()
+        .csrf().disable().addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).exceptionHandling()
+        .authenticationEntryPoint(this::writeErrorMessage).and().sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().build();
   }
 
   /**
