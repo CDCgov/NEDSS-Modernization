@@ -61,10 +61,6 @@ export const Login = () => {
                     <Button type="submit" disabled={state.isLoginPending}>
                         Sign in
                     </Button>
-
-                    <br></br>
-                    <br></br>
-                    <a href="http://localhost:9080/keycloak">Sign in with keycloak</a>
                 </Fieldset>
             </Form>
         </div>

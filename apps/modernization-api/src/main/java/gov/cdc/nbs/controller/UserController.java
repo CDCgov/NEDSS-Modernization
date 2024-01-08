@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -43,14 +44,16 @@ public class UserController {
         NBSToken token = this.creator.forUser(request.getUsername());
 
         token.apply(
-                securityProperties,
-                response);
+            securityProperties,
+            response
+        );
 
         return new LoginResponse(
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getFirstName() + " " + userDetails.getLastName(),
-                token.value());
+            userDetails.getId(),
+            userDetails.getUsername(),
+            userDetails.getFirstName() + " " + userDetails.getLastName(),
+            token.value()
+        );
     }
 
     /**
@@ -61,10 +64,10 @@ public class UserController {
     public Page<AuthUser> findAllUsers(@Argument GraphQLPage page) {
         var loggedInUser = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var userProgramAreas = loggedInUser.getAuthorities()
-                .stream()
-                .map(NbsAuthority::getProgramArea)
-                .distinct()
-                .toList();
+            .stream()
+            .map(NbsAuthority::getProgramArea)
+            .distinct()
+            .toList();
         return userRepository.findByProgramAreas(userProgramAreas, GraphQLPage.toPageable(page, maxPageSize));
     }
 
