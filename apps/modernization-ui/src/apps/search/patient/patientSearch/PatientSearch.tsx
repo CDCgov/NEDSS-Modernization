@@ -12,6 +12,7 @@ import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
+import { useSkipLink } from 'SkipLink/SkipLinkContext';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -21,6 +22,7 @@ type PatientSearchProps = {
 
 export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: PatientSearchProps) => {
     const form = useForm<PersonFilter>({ defaultValues: { recordStatus: [RecordStatus.Active] }, mode: 'onBlur' });
+    const { skipTo } = useSkipLink();
     useEffect(() => {
         if (personFilter) {
             form.reset({ ...personFilter }, { keepDefaultValues: true });
@@ -288,6 +290,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                         onClick={() => {
                             form.reset({}, { keepDefaultValues: true });
                             clearAll();
+                            skipTo('lastName', false);
                         }}
                         outline>
                         Clear all
