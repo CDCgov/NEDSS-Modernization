@@ -116,7 +116,7 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
                 <Button onClick={handleCancel} type="button" outline>
                     Cancel
                 </Button>
-                <Button onClick={handleAddConditions} type="button">
+                <Button disabled={selected.length === 0} onClick={handleAddConditions} type="button">
                     Add conditions
                 </Button>
             </div>
