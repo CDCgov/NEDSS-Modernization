@@ -54,8 +54,7 @@ spring:
   security.oauth2.resourceserver.jwt.issuer-uri: http://localhost:8100/realms/nbs-development
   security.oauth2.resourceserver.jwt.jwk-set-uri: http://localhost:8100/realms/nbs-development/protocol/openid-connect/certs
   security.oauth2.client.provider.nbs-development.issuer-uri: http://localhost:8100/realms/nbs-development
-  security.oauth2.client.provider.nbs-development.user-name-attribute: msa      
-
+  security.oauth2.client.provider.nbs-development.user-name-attribute: preferred_username
 
   kafka:
     bootstrap-servers: localhost:9092

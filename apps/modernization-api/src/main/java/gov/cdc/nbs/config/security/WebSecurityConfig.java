@@ -3,14 +3,13 @@ package gov.cdc.nbs.config.security;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,11 +22,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.authentication.IgnoredPaths;
 import gov.cdc.nbs.authentication.NBSAuthenticationFilter;
 import gov.cdc.nbs.authentication.NBSAuthenticationIssuer;
+import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.authentication.session.SessionAuthenticator;
 import gov.cdc.nbs.authentication.token.NBSTokenValidator;
 import graphql.GraphQLError;
@@ -47,6 +46,9 @@ public class WebSecurityConfig {
   @Value("${keycloak-enabled}")
   private Boolean keycloakEnabled;
 
+  @Autowired
+  UserService userService;
+
   @Bean
   protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
     return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
@@ -63,7 +65,8 @@ public class WebSecurityConfig {
       HttpSecurity http,
       final NBSTokenValidator tokenValidator,
       final NBSAuthenticationIssuer authIssuer,
-      final SessionAuthenticator sessionAuthenticator)
+      final SessionAuthenticator sessionAuthenticator,
+      final JwtAuthenticationConverter jwtAuthenticationConverter)
       throws Exception {
 
     final IgnoredPaths ignoredPaths = new IgnoredPaths(
@@ -75,10 +78,15 @@ public class WebSecurityConfig {
 
     if (keycloakEnabled) {
       http.authorizeRequests()
-          .antMatchers("/oauth2/**", "/login/**")
+          .antMatchers(ignoredPaths.paths())
           .permitAll()
           .anyRequest()
           .authenticated();
+
+      http.oauth2ResourceServer((oauth2) -> {
+        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter));
+      });
+
       return http.build();
     }
 
