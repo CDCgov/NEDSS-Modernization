@@ -3,8 +3,13 @@ import { CreateCondition } from 'apps/page-builder/components/CreateCondition/Cr
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { ConditionSearch } from 'apps/page-builder/condition';
-import { Concept, Condition, PageCreateRequest, Template } from 'apps/page-builder/generated';
-import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
+import {
+    Concept,
+    Condition,
+    ConditionControllerService,
+    PageCreateRequest,
+    Template
+} from 'apps/page-builder/generated';
 import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
@@ -60,9 +65,9 @@ export const AddNewPage = () => {
             .catch((error: any) => {
                 console.log('Error', error);
             });
-        fetchConditions(token).then((data) => {
-            setConditions(data);
-        });
+        ConditionControllerService.findConditionsNotInUseUsingGet({ authorization: token }).then((data) =>
+            setConditions(data)
+        );
         fetchTemplates(token).then((data) => {
             setTemplates(data);
         });
