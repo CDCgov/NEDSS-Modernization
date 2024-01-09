@@ -4,17 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import gov.cdc.nbs.questionbank.valueset.request.ValueSetCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.valueset.ValueSetMother;
 import gov.cdc.nbs.questionbank.valueset.ValueSetController;
-import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetHolder;
@@ -36,14 +35,14 @@ public class CreateValueSetSteps {
 	@Autowired
 	private ValueSetHolder valueSetHolder;
 
-	private ValueSetRequest request;
+	private ValueSetCreateRequest request;
 
 	private CreateValueSetResponse response;
 
 	private long codeSetGroupResult;
 
-	@Given("Codeset Group Metadata already exists")
-	public void codeset_group_metadata_already_exists() {
+	@Given("codeSet Group Metadata already exists")
+	public void codeSet_group_metadata_already_exists() {
 		try {
 			Codeset result = valueSetMother.createCodeSetGroupForValueSet();
 			valueSetHolder.setValueSet(result);
@@ -53,11 +52,10 @@ public class CreateValueSetSteps {
 		} catch (AuthenticationCredentialsNotFoundException e) {
 			exceptionHolder.setException(e);
 		}
-
 	}
 
-	@Given("A codeSetNm already already exists")
-	public void a_codesetnm_already_already_exists() {
+	@Given("A codeSetNm already exists")
+	public void a_codeSetNm_already_exists() {
 		try {
 			Codeset result = valueSetMother.createValueSet();
 			valueSetHolder.setValueSet(result);
@@ -82,18 +80,15 @@ public class CreateValueSetSteps {
 			if (valueSetHolder.getValueSet() != null) {
 				String codeSetName = valueSetHolder.getValueSet().getValueSetNm();
 				String codeSetDescTxt = valueSetHolder.getValueSet().getCodeSetDescTxt();
-				request.setValueSetNm(codeSetName);
-				request.setCodeSetDescTxt(codeSetDescTxt);
-				request.setValueSetCode(codeSetName);
-			} else {
-				request.setValueSetNm("testCreateCodeSet");
-				request.setCodeSetDescTxt("testCreateCodeSet");
-				request.setValueSetCode("testCreateCodeSet");
-			}
+				request = new ValueSetCreateRequest("testCodeSetType", codeSetName,
+						"testCodeSetName", codeSetDescTxt);
 
+			} else {
+				request = new ValueSetCreateRequest("testCodeSetType", "testCodeSetCode",
+						"testCodeSetName", "testCodeSetDescription");
+			}
 			ResponseEntity<CreateValueSetResponse> codeSetResult = valueSetController.createValueSet(request);
 			response = codeSetResult.getBody();
-
 		} catch (AccessDeniedException e) {
 			exceptionHolder.setException(e);
 		} catch (AuthenticationCredentialsNotFoundException e) {
@@ -102,8 +97,8 @@ public class CreateValueSetSteps {
 
 	}
 
-	@Then("Valueset should not create")
-	public void valueset_should_not_create() {
+	@Then("valueSet should not create")
+	public void valueSet_should_not_create() {
 		assertNotNull(response);
 		if (codeSetGroupResult == 1l) {
 			assertEquals(null, response.getBody());
@@ -117,8 +112,8 @@ public class CreateValueSetSteps {
 
 	}
 
-	@Then("Valueset should be created")
-	public void valueset_should_be_created() {
+	@Then("valueSet should be created")
+	public void valueSet_should_be_created() {
 		assertNull(valueSetHolder.getValueSet());
 		assertNotNull(response);
 		assertNotNull(response.getBody());
