@@ -42,7 +42,8 @@ class PatientNameFinder {
     }
 
     private long resolveTotal(final long patient) {
-        Long total = factory.select(this.tables.name().id.personNameSeq.max()).fetchOne().longValue();
+        Long total = applyCriteria(this.factory.select(this.tables.name().id.personNameSeq.max()), patient).fetchOne()
+                .longValue();
         return total == null ? 0L : total;
     }
 
