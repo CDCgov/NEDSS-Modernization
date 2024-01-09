@@ -108,7 +108,7 @@
         bottom: 0;
         width: 100%;
         padding: 1.5rem;
-        border-top: 1px solid colors.$base-lightest;
+        border-top: 0.0625rem solid colors.$base-lightest;
     }
 }
 
@@ -141,17 +141,6 @@
         box-shadow: 0 0 0 2px #71767a;
     }
 }
-.line-btn {
-    display: flex;
-    padding: 11px 10px;
-    justify-content: flex-end;
-    align-items: flex-start;
-    gap: 6px;
-    text-decoration: none;
-    &.delete-ln-btn {
-        color: var(--error-error, #d54309);
-    }
-}
 .footer-line-btn-block {
     display: flex;
     justify-content: space-between;
@@ -171,14 +160,6 @@
     button {
         margin: 0;
     }
-}
-
-.usa-modal {
-    border-radius: 20px;
-    .usa-modal__content {
-        //border-top: solid 5px #1d67c3;
-        border-radius: 20px;
-    };
 }
 
 .usa-modal-wrapper.is-visible {

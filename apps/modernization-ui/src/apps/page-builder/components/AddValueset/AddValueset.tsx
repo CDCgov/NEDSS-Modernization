@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, RefObject } from 'react';
 import { GetQuestionResponse, QuestionControllerService } from 'apps/page-builder/generated';
-import { Button, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalToggleButton, ModalRef } from '@trussworks/react-uswds';
 import './AddValueset.scss';
 import { ValueSetControllerService } from '../../generated';
 import '../../pages/ValuesetLibrary/ValuesetTabs.scss';
@@ -8,7 +8,12 @@ import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
 import { Concept } from '../Concept/Concept';
 
-export const AddValueset = ({ modalRef, updateCallback }: any) => {
+type Props = {
+    modalRef?: RefObject<ModalRef>;
+    updateCallback?: () => void;
+};
+
+export const AddValueset = ({ modalRef, updateCallback }: Props) => {
     const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
     // Fields
@@ -35,8 +40,7 @@ export const AddValueset = ({ modalRef, updateCallback }: any) => {
             setDesc('');
             setCode('');
             setName('');
-            // @ts-ignore
-            const id = parseInt(localStorage.getItem('selectedQuestion'));
+            const id = parseInt(localStorage.getItem('selectedQuestion')!);
             updateQuestion(id);
             return response;
         });
@@ -224,7 +228,7 @@ export const AddValueset = ({ modalRef, updateCallback }: any) => {
                             </div>
                             <div className="value-set-line-action-footer">
                                 <ModalToggleButton
-                                    modalRef={modalRef}
+                                    modalRef={modalRef!}
                                     onClick={() => reset()}
                                     type="button"
                                     outline
@@ -251,13 +255,13 @@ export const AddValueset = ({ modalRef, updateCallback }: any) => {
             </div>
             {activeTab !== 'details' ? (
                 <div className="add-valueset__footer">
-                    <ModalToggleButton outline modalRef={modalRef} onClick={() => reset()} type="button">
+                    <ModalToggleButton outline modalRef={modalRef!} onClick={() => reset()} type="button">
                         Cancel
                     </ModalToggleButton>
                     <ModalToggleButton
                         className="submit-btn"
                         type="button"
-                        modalRef={modalRef}
+                        modalRef={modalRef!}
                         onClick={handleSubmit}
                         disabled={disableBtn}>
                         Create and Add to question

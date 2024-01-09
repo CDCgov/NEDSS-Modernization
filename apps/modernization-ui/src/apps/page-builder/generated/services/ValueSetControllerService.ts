@@ -243,7 +243,6 @@ export class ValueSetControllerService {
          */
         request: AddConceptRequest,
     }): CancelablePromise<Concept | any> {
-        console.log('REQUEST', codeSetNm, request, authorization);
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/valueset/{codeSetNm}/concepts',

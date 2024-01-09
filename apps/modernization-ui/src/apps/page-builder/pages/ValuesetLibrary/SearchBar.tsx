@@ -56,7 +56,7 @@ export const SearchBar = ({ onChange }: any) => {
                 size="wide"
                 modalRef={modalRef}
                 modalHeading={'Add value set'}
-                modalBody={<AddValueset hideHeader modalRef={modalRef} />}
+                modalBody={<AddValueset modalRef={modalRef} />}
                 closer
             />
         </div>

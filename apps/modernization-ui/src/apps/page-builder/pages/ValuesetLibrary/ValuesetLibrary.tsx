@@ -16,21 +16,28 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
     const handleTab = (tab: string) => {
         setActiveTab(tab);
     };
-    // @ts-ignore
-    useEffect(async () => {
-        setIsLoading(true);
-        setSummaries([]);
-        const { content, totalElements }: any = await fetchValueSet(
-            authorization(),
-            searchQuery,
-            sortBy,
-            currentPage,
-            pageSize,
-            filter
-        );
-        setTotalElements(totalElements);
-        setIsLoading(false);
-        setSummaries(content);
+
+    useEffect(() => {
+        const fetchContent = async () => {
+            try {
+                setIsLoading(true);
+                setSummaries([]);
+                const { content, totalElements }: any = await fetchValueSet(
+                    authorization(),
+                    searchQuery,
+                    sortBy,
+                    currentPage,
+                    pageSize,
+                    filter
+                );
+                setTotalElements(totalElements);
+                setIsLoading(false);
+                setSummaries(content);
+            } catch (error) {
+                console.error('Error fetching content', error);
+            }
+        };
+        fetchContent();
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
 
     const handleUpdateSummariesCallback = async () => {

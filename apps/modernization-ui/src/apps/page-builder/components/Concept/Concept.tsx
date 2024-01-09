@@ -3,7 +3,6 @@ import './Concept.scss';
 import { ConceptsContext } from '../../context/ConceptContext';
 import { useConceptPI } from './useConceptAPI';
 import { ConceptTable } from './ConceptTable';
-import { UserContext } from '../../../../providers/UserContext';
 import { Button, FormGroup, Grid, Icon, Radio, ComboBox, ErrorMessage } from '@trussworks/react-uswds';
 import {
     AddConceptRequest,
@@ -16,6 +15,7 @@ import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInp
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useForm } from 'react-hook-form';
 import { initialEntry } from 'apps/patient/add';
+import { authorization } from 'authorization';
 
 const initConcept = {
     localCode: '',
@@ -64,9 +64,7 @@ export const Concept = ({ valueset, updateCallback }: Props) => {
         defaultValues: { ...init }
     });
     const { control, handleSubmit } = conceptForm;
-    const { state } = useContext(UserContext);
     const { selectedConcept } = useContext(ConceptsContext);
-    const authorization = `Bearer ${state.getToken()}`;
 
     const { searchQuery, sortDirection, currentPage, pageSize } = useContext(ConceptsContext);
     const [summaries, setSummaries] = useState([]);
@@ -79,13 +77,20 @@ export const Concept = ({ valueset, updateCallback }: Props) => {
     const handleValidation = (unique = true) => {
         return unique ? /^[a-zA-Z0-9_]*$/ : /^[a-zA-Z0-9\s?!,-_]*$/;
     };
-    // @ts-ignore
-    useEffect(async () => {
-        setSummaries([]);
-        const content: any = await useConceptPI(authorization, '');
-        setSummaries(content);
-        setTotalElements(content?.length);
-        fetchCodeSystemOptions();
+
+    useEffect(() => {
+        const fetchContent = async () => {
+            try {
+                setSummaries([]);
+                const content: any = await useConceptPI(authorization(), '');
+                setSummaries(content);
+                setTotalElements(content?.length);
+                fetchCodeSystemOptions();
+            } catch (error) {
+                console.error('Error fetching content', error);
+            }
+        };
+        fetchContent();
     }, [searchQuery, currentPage, pageSize, sortDirection]);
 
     useEffect(() => {
@@ -95,7 +100,7 @@ export const Concept = ({ valueset, updateCallback }: Props) => {
 
     const fetchCodeSystemOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization,
+            authorization: authorization(),
             codeSetNm: 'CODE_SYSTEM'
         }).then((response: any) => {
             const data = response || [];
@@ -136,7 +141,7 @@ export const Concept = ({ valueset, updateCallback }: Props) => {
             }
         };
         ValueSetControllerService.addConceptUsingPost({
-            authorization,
+            authorization: authorization(),
             codeSetNm: valueset!.valueSetCode!,
             request
         }).then((response: any) => {
@@ -157,7 +162,7 @@ export const Concept = ({ valueset, updateCallback }: Props) => {
         };
         if (concept?.status) return handleUpdateConcept(request);
         ValueSetControllerService.createValueSetUsingPost({
-            authorization,
+            authorization: authorization(),
             request
         }).then((response: any) => {
             setShowForm(!isShowFrom);
@@ -166,7 +171,7 @@ export const Concept = ({ valueset, updateCallback }: Props) => {
     };
     const handleUpdateConcept = (request: any) => {
         ValueSetControllerService.updateConceptUsingPut({
-            authorization,
+            authorization: authorization(),
             codeSetNm: concept.codesetName,
             conceptCode: concept.conceptCode,
             request
@@ -177,7 +182,7 @@ export const Concept = ({ valueset, updateCallback }: Props) => {
     };
     const handleDeleteConcept = () => {
         ValueSetControllerService.deleteValueSetUsingPut({
-            authorization,
+            authorization: authorization(),
             codeSetNm: concept.codesetName
         }).then((response: any) => {
             // setShowForm(!isShowFrom);

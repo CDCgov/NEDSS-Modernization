@@ -42,7 +42,6 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
     const { setSearchValueSet } = useContext(QuestionsContext);
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
-    // @ts-ignore
     const asTableRow = (valueSet: ValueSet): TableBody => ({
         id: valueSet.nbsUid,
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
@@ -159,8 +158,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
     };
 
     const handleAddQsn = async () => {
-        // @ts-ignore
-        const id: number = parseInt(localStorage.getItem('selectedQuestion'));
+        const id: number = parseInt(localStorage.getItem('selectedQuestion')!);
         if (!id) return;
         const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
             authorization,
@@ -249,7 +247,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
                 size="wide"
                 modalRef={modalRef}
                 modalHeading={'Add value set'}
-                modalBody={<AddValueset hideHeader modalRef={modalRef} />}
+                modalBody={<AddValueset modalRef={modalRef} />}
                 closer
             />
         </div>
@@ -272,7 +270,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
                 size="wide"
                 modalRef={modalRef}
                 modalHeading={'Add value set'}
-                modalBody={<AddValueset hideHeader modalRef={modalRef} updateCallback={updateCallback} />}
+                modalBody={<AddValueset modalRef={modalRef} updateCallback={updateCallback} />}
                 closer
             />
         </div>
