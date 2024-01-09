@@ -41,4 +41,15 @@ public class CodeSetGroupMetadatum {
 
     @OneToMany(mappedBy = "codeSetGroup")
     private Set<Codeset> codesets = new LinkedHashSet<>();
+
+    public CodeSetGroupMetadatum(Long id, String codeSetDescTxt, String codeSetShortDescTxt, String codeSetName) {
+        this.id = id;
+        this.codeSetDescTxt = codeSetDescTxt;
+        this.codeSetShortDescTxt = codeSetShortDescTxt;
+        this.codeSetNm = codeSetName;
+        this.vadsValueSetCode = codeSetName;
+        this.ldfPicklistIndCd = 'Y';
+        this.phinStdValInd = 'N';
+
+    }
 }
