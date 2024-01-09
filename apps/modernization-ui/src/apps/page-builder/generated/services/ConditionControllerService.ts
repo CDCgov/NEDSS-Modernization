@@ -104,6 +104,30 @@ export class ConditionControllerService {
     }
 
     /**
+     * findConditionsNotInUse
+     * @returns Condition OK
+     * @throws ApiError
+     */
+    public static findConditionsNotInUseUsingGet({
+        authorization,
+    }: {
+        authorization: string,
+    }): CancelablePromise<Array<Condition>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/conditions/available',
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
      * searchConditions
      * @returns Page_Condition_ OK
      * @returns any Created

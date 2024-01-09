@@ -33,16 +33,16 @@ describe('ConditionLibraryTable', () => {
 
     describe('when at least one summary is available', () => {
         it('should display the page conditions', async () => {
-            const conditions = [
+            const conditions: Condition[] = [
                 {
-                    coinfectionGrpCd: 'CCDD',
-                    conditionShortNm: 'test condition',
-                    familyCd: 'FCD',
+                    coinfectionGroup: 'CCDD',
+                    name: 'test condition',
+                    conditionFamily: 'FCD',
                     id: '11234',
-                    investigationFormCd: 'IFCD',
+                    page: 'IFCD',
                     nndInd: 'NNDID',
-                    progAreaCd: 'PACD',
-                    statusCd: 'A'
+                    programArea: 'PACD',
+                    status: 'A'
                 }
             ];
 
@@ -69,16 +69,16 @@ describe('ConditionLibraryTable', () => {
         });
 
         it('should display "Inactive" when inactive', async () => {
-            const conditions = [
+            const conditions: Condition[] = [
                 {
-                    coinfectionGrpCd: 'CCDD',
-                    conditionShortNm: 'test condition',
-                    familyCd: 'FCD',
+                    coinfectionGroup: 'CCDD',
+                    name: 'test condition',
+                    conditionFamily: 'FCD',
                     id: '11234',
-                    investigationFormCd: 'IFCD',
+                    page: 'IFCD',
                     nndInd: 'NNDID',
-                    progAreaCd: 'PACD',
-                    statusCd: 'I'
+                    programArea: 'PACD',
+                    status: 'I'
                 }
             ];
 

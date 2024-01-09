@@ -41,39 +41,44 @@ public class ConditionController {
     this.searcher = searcher;
   }
 
-    @PostMapping
-    public Condition createCondition(@RequestBody CreateConditionRequest request) {
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return conditionCreator.createCondition(request, userId);
-    }
+  @PostMapping
+  public Condition createCondition(@RequestBody CreateConditionRequest request) {
+    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+    return conditionCreator.createCondition(request, userId);
+  }
 
-    @GetMapping("all")
-    public List<Condition> findAllConditions() {
-        return conditionReader.findAllConditions();
-    }
+  @GetMapping("all")
+  public List<Condition> findAllConditions() {
+    return conditionReader.findAllConditions();
+  }
 
-    @GetMapping
-    public Page<Condition> findConditions(@PageableDefault(size = 20) Pageable pageable) {
-        return conditionReader.findConditions(pageable);
-    }
+  @GetMapping("available")
+  public List<Condition> findConditionsNotInUse() {
+    return searcher.findAvailable();
+  }
 
-    @PostMapping("/search")
-    public Page<Condition> searchConditions(@RequestBody ReadConditionRequest search,
-            @PageableDefault(size = 20) Pageable pageable) {
-        return searcher.search(search, pageable);
-    }
+  @GetMapping
+  public Page<Condition> findConditions(@PageableDefault(size = 20) Pageable pageable) {
+    return conditionReader.findConditions(pageable);
+  }
 
-    @PatchMapping("/{id}")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public ConditionStatusResponse activateCondition(@PathVariable String id) {
-        return conditionStatus.activateCondition(id);
-    }
+  @PostMapping("/search")
+  public Page<Condition> searchConditions(@RequestBody ReadConditionRequest search,
+      @PageableDefault(size = 20) Pageable pageable) {
+    return searcher.search(search, pageable);
+  }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public ConditionStatusResponse inactivateCondition(@PathVariable String id) {
-        return conditionStatus.inactivateCondition(id);
-    }
+  @PatchMapping("/{id}")
+  @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+  public ConditionStatusResponse activateCondition(@PathVariable String id) {
+    return conditionStatus.activateCondition(id);
+  }
+
+  @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+  public ConditionStatusResponse inactivateCondition(@PathVariable String id) {
+    return conditionStatus.inactivateCondition(id);
+  }
 
 
 }

@@ -30,7 +30,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         value={value}
                         options={props.conditions.map((m) => {
                             return {
-                                name: m.conditionShortNm ?? '',
+                                name: m.name ?? '',
                                 value: m.id
                             };
                         })}
