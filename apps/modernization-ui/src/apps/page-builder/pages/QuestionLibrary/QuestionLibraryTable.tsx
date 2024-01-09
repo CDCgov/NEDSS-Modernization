@@ -151,7 +151,7 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef, onAddQuest
                     <span>Add question</span>
                 </div>
             }
-            close
+            closer
             modalBody={<CreateQuestion modalRef={modalRef} />}
         />
     );

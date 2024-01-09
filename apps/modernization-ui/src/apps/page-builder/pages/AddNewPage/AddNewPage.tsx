@@ -138,12 +138,12 @@ export const AddNewPage = () => {
     return (
         <div className="add-new-page">
             <div className="breadcrumb-wrap">
-                <PagesBreadcrumb currentPage="Add new page" />
+                <PagesBreadcrumb currentPage="Create new page" />
             </div>
             <Form onSubmit={onSubmit}>
                 <div className="add-new-page__form">
                     <div className="add-new-page__content">
-                        <h2>Add new page</h2>
+                        <h2>Create new page</h2>
                         <h4>Let's fill out some information about your new page before creating it</h4>
                         <label className="fields-info">
                             All fields with <span className="mandatory-indicator">*</span> are required

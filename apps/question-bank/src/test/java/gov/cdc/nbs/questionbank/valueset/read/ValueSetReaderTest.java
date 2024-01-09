@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 import gov.cdc.nbs.questionbank.valueset.ValueSetFinder;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,6 +36,7 @@ class ValueSetReaderTest {
 
   @Mock
   ValueSetRepository valueSetRepository;
+
   @Mock
   ValueSetFinder valueSetFinder;
 
@@ -74,6 +77,7 @@ class ValueSetReaderTest {
     boolean isEquals = (expectedResult.toList().containsAll(actualResult.toList()) &&
         actualResult.toList().containsAll(expectedResult.stream().toList()));
     assertTrue(isEquals);
+
   }
 
   private Page<Codeset> getCodeSetPage(int max, Pageable pageable) {
@@ -82,6 +86,7 @@ class ValueSetReaderTest {
       set.add(getCodeSetRequest(i));
     }
     return new PageImpl<>(set, pageable, set.size());
+
   }
 
   private Codeset getCodeSetRequest(int i) {
@@ -138,7 +143,7 @@ class ValueSetReaderTest {
     Concept concept = valueSetReader.toConcept(cvg);
 
     assertEquals(cvg.getId().getCode(), concept.localCode());
-    assertEquals(cvg.getId().getCodeSetNm(), concept.codesetName());
+    assertEquals(cvg.getId().getCodeSetNm(), concept.codeSetName());
     assertEquals(cvg.getCodeShortDescTxt(), concept.display());
     assertEquals(cvg.getCodeDescTxt(), concept.longName());
     assertEquals(cvg.getConceptCode(), concept.conceptCode());
@@ -148,6 +153,8 @@ class ValueSetReaderTest {
     assertEquals(cvg.getEffectiveFromTime(), concept.effectiveFromTime());
     assertEquals(cvg.getEffectiveToTime(), concept.effectiveToTime());
   }
+
+
 
   @Test
   void should_return_empty_list_for_null_concept() {
