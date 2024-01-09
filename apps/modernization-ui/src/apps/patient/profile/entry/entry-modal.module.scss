@@ -1,0 +1,11 @@
+@forward 'apps/patient/profile/profile-modal';
+
+.overflow {
+    .content {
+        overflow: visible;
+
+        & > section {
+            overflow: visible;
+        }
+    }
+}

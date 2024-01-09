@@ -1,0 +1,39 @@
+@use 'styles/colors';
+
+.delete-btn {
+    &:hover {
+        background-color: #ec3823 !important;
+    }
+}
+
+.main-banner {
+    background-color: colors.$background;
+}
+
+.border-bottom-style {
+    border-bottom: 1px solid colors.$border;
+}
+
+.display-inline-flex {
+    display: inline-flex;
+}
+
+.main-body {
+    padding: 50px 30px;
+}
+
+.wall-desing {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.modal-form .usa-button {
+    margin-top: 0 !important;
+}
+
+.advanced-search-alert {
+    .usa-alert {
+        position: relative !important;
+        left: 0;
+    }
+}

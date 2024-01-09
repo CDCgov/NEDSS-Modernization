@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
@@ -12,6 +11,7 @@ import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElementRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.UpdateStaticRequests;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.page.PageMother;
@@ -40,7 +40,9 @@ public class LineSeparatorSteps {
 
     private final Active<ResultActions> addResponse = new Active<>();
     private final Active<ResultActions> deleteResponse = new Active<>();
+    private final Active<ResultActions> updateResponse = new Active<>();
     private final Active<StaticContentRequests.AddDefault> jsonRequestBody = new Active<>();
+    private final Active<UpdateStaticRequests.UpdateDefault> updateRequest = new Active<>();
     private final Active<WaTemplate> currPage = new Active<>();
 
     @Given("I create an add line separator request with {string}")
@@ -64,13 +66,6 @@ public class LineSeparatorSteps {
         } catch (Exception e) {
             exceptionHolder.setException(e);
         }
-    }
-
-    @Then("an illegal state exception is thrown")
-    public void an_illegal_state_exception_is_thrown() {
-        //  The illegal state exception no longer occurs. This should check the status of the active response.
-//        assertNotNull(exceptionHolder.getException());
-//        assertTrue(exceptionHolder.getException() instanceof IllegalStateException);
     }
 
     @Then("a line separator is created")
@@ -103,13 +98,37 @@ public class LineSeparatorSteps {
 
 
             this.deleteResponse.active(request.deleteStaticElementRequest(
-                this.currPage.active().getId(), 
-                new DeleteElementRequest(staticResponse.componentId())));
+                    this.currPage.active().getId(),
+                    new DeleteElementRequest(staticResponse.componentId())));
 
         } catch (Exception e) {
             exceptionHolder.setException(e);
         }
-        
+
+    }
+
+    @When("I update a line separator with {string} of {string}")
+    public void i_update_a_line_separator_of(String key, String value) {
+        switch (key) {
+            case ("adminComments") -> this.updateRequest.active(new UpdateStaticRequests.UpdateDefault(value));
+        }
+    }
+
+    @Then("I send an update line separator request")
+    public void i_send_an_update_line_separator_request() throws Exception {
+        String res = this.addResponse.active().andReturn().getResponse().getContentAsString();
+        AddStaticResponse staticResponse = mapper.readValue(res, AddStaticResponse.class);
+
+        this.updateResponse.active(
+                request.updateLineSeparatorRequest(updateRequest.active(), currPage.active().getId(),
+                        staticResponse.componentId()));
+    }
+
+    @Then("the line separator should have {string} of {string}")
+    public void the_line_separator_should_have(String key, String value) throws Exception {
+        switch(key) {
+            case "adminComments" -> this.updateResponse.active().andExpect(jsonPath("$.adminComments").value(value));
+        }
     }
 
     @Then("a line separator is deleted")

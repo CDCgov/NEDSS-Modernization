@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.question;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import gov.cdc.nbs.questionbank.question.request.*;
 import org.springframework.stereotype.Component;
@@ -74,5 +75,18 @@ public class QuestionManagementUtil {
                 CreateNumericQuestionRequest.NumericDisplayControl.getDisplayOptions(),
                 CreateTextQuestionRequest.TextDisplayControl.getDisplayOptions()
         );
+    }
+    public List<Long> getQuestionNbsUiComponentUids() {
+        return Stream.concat(
+            Stream.concat(
+                getDisplayControlOptions().codedDisplayControl().stream(),
+                getDisplayControlOptions().numericDisplayControl().stream()
+            ).map(c -> c.value()),
+            Stream.concat(
+                getDisplayControlOptions().textDisplayControl().stream(),
+                getDisplayControlOptions().dateDisplayControl().stream()
+            ).map(c -> c.value())
+        ).toList();
+
     }
 }

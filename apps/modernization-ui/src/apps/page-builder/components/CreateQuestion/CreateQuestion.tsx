@@ -12,10 +12,9 @@ import {
     ErrorMessage
 } from '@trussworks/react-uswds';
 import { ValueSetControllerService, QuestionControllerService, UpdateQuestionRequest } from '../../generated';
-import { UserContext } from 'user';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
-import { text as textOption } from '../../constant/constant';
+import { coded, dateOrNumeric, text as textOption } from '../../constant/constant';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { ValuesetLibrary } from '../../pages/ValuesetLibrary/ValuesetLibrary';
 import { Controller, useForm } from 'react-hook-form';
@@ -33,6 +32,8 @@ import {
     MessagingInfo,
     ReportingInfo
 } from '../../generated';
+import { authorization } from 'authorization';
+import { QuestionsContext } from '../../context/QuestionsContext';
 
 namespace QuestionRequest {
     export enum codeSet {
@@ -42,6 +43,7 @@ namespace QuestionRequest {
 }
 
 const init = {
+    codeSet: 'LOCAL',
     label: '',
     description: '',
     minValue: 0,
@@ -66,6 +68,7 @@ export type QuestionFormType = {
     HL7Segment?: string;
     relatedUnits?: string;
     allowFutureDates?: string;
+    codeSet: any;
 };
 type CreateQuestionFormType = CreateNumericQuestionRequest &
     CreateCodedQuestionRequest &
@@ -74,33 +77,88 @@ type CreateQuestionFormType = CreateNumericQuestionRequest &
     ReportingInfo &
     MessagingInfo &
     QuestionFormType;
-export const CreateQuestion = ({ modalRef, question }: any) => {
+
+export type optionsType = { name: string; value: string };
+
+export const CreateQuestion = ({ question, onCloseModal }: any) => {
     const questionForm = useForm<CreateQuestionFormType, any>({
         defaultValues: { ...init }
     });
     const { handleSubmit, reset, control, watch } = questionForm;
     // Fields
     const [questionData, setQuestionData] = useState({ valueSet: 0 });
-    const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
     // DropDown Options
     const [familyOptions, setFamilyOptions] = useState([]);
     const [groupOptions, setGroupOptions] = useState([]);
     const [selectedFieldType, setSelectedFieldType] = useState('');
     const [codeSystemOptionList, setCodeSystemOptionList] = useState([]);
-    const authorization = `Bearer ${state.getToken()}`;
-
+    const [maskOptions, setMaskOptions] = useState<optionsType[]>([]);
+    const { searchValueSet } = useContext(QuestionsContext);
     useEffect(() => {
         if (question?.id) {
             const updatedQuestion = { ...question, ...question?.messagingInfo, ...question?.dataMartInfo };
             delete updatedQuestion.messagingInfo;
             delete updatedQuestion.dataMartInfo;
             setQuestionData(updatedQuestion);
+            if (!question?.id) {
+                QuestionControllerService.getQuestionUsingGet({
+                    authorization: authorization(),
+                    id: Number(question?.id)
+                }).then((response: any) => {
+                    return response;
+                });
+            }
+            questionForm.setValue(
+                'defaultLabelInReport',
+                updatedQuestion.defaultLabelInReport || updatedQuestion.reportLabel
+            );
+            setSelectedFieldType(updatedQuestion.dataType);
+            questionForm.setValue('dataMartColumnName', updatedQuestion.dataMartColumnName);
+            questionForm.setValue('defaultRdbTableName', updatedQuestion.defaultRdbTableName);
+            questionForm.setValue('rdbColumnName', updatedQuestion.rdbColumnName);
+            questionForm.setValue('codeSystem', updatedQuestion.codeSystem);
+            questionForm.setValue('conceptCode', updatedQuestion.conceptCode);
+            questionForm.setValue('conceptName', updatedQuestion.conceptName);
+            questionForm.setValue('preferredConceptName', updatedQuestion.preferredConceptName);
+            questionForm.setValue('datamartColName', updatedQuestion.datamartColName);
+            questionForm.setValue('messageVariableId', updatedQuestion.messageVariableId);
+            questionForm.setValue('messageLabel', updatedQuestion.labelInMessage);
+            questionForm.setValue('unitType', updatedQuestion.unitType);
+            questionForm.setValue('dateFormat', updatedQuestion.dateFormat);
+            questionForm.setValue('displayType', updatedQuestion.displayType);
+            questionForm.setValue('includedInMessage', updatedQuestion.includedInMessage);
+            questionForm.setValue('requiredInMessage', updatedQuestion.requiredInMessage);
+            questionForm.setValue('hl7DataType', updatedQuestion.hl7DataType);
+            questionForm.setValue('HL7Segment', updatedQuestion.HL7Segment);
+            questionForm.setValue('relatedUnits', updatedQuestion.relatedUnits);
+            questionForm.setValue('allowFutureDates', updatedQuestion.allowFutureDates);
+            questionForm.setValue('adminComments', updatedQuestion.adminComments);
+            questionForm.setValue('codeSet', updatedQuestion.codeSet);
+            questionForm.setValue('description', updatedQuestion.description);
+            questionForm.setValue('defaultValue', updatedQuestion.defaultValue);
+            questionForm.setValue('displayControl', updatedQuestion.displayControl);
+            questionForm.setValue('label', updatedQuestion.name || updatedQuestion.label);
+            questionForm.setValue('mask', updatedQuestion.mask);
+            questionForm.setValue('subgroup', updatedQuestion.subgroup);
+            questionForm.setValue('tooltip', updatedQuestion.tooltip);
+            questionForm.setValue('uniqueName', updatedQuestion.uniqueName);
+            questionForm.setValue('uniqueId', updatedQuestion.uniqueId);
+            questionForm.setValue('minValue', updatedQuestion.minValue);
+            questionForm.setValue('maxValue', updatedQuestion.maxValue);
+            questionForm.setValue('relatedUnits', updatedQuestion.relatedUnits);
+            questionForm.setValue('unitType', updatedQuestion.unitType);
+            questionForm.setValue('fieldLength', updatedQuestion.fieldLength);
         }
     }, [question]);
+
+    useEffect(() => {
+        if (searchValueSet) questionForm.setValue('valueSet', searchValueSet);
+    }, [searchValueSet]);
+
     const fetchFamilyOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization,
+            authorization: authorization(),
             codeSetNm: 'CONDITION_FAMILY'
         }).then((response: any) => {
             const data = response || [];
@@ -111,9 +169,23 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             setFamilyOptions(familyList);
         });
     };
+    const fetchMask = () => {
+        ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
+            authorization: authorization(),
+            codeSetNm: 'NBS_MASK_TYPE'
+        }).then((response: any) => {
+            const data = response || [];
+            const mask: optionsType[] = [];
+            data.map((each: { display: string; conceptCode: string }) => {
+                mask.push({ name: each.display, value: each.conceptCode });
+            });
+            setMaskOptions(mask);
+        });
+    };
+
     const fetchGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization,
+            authorization: authorization(),
             codeSetNm: 'COINFECTION_GROUP'
         }).then((response: any) => {
             const data = response || [];
@@ -126,7 +198,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
     };
     const fetchCodeSystemOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization,
+            authorization: authorization(),
             codeSetNm: 'CODE_SYSTEM'
         }).then((response: any) => {
             const data = response || [];
@@ -142,6 +214,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         fetchFamilyOptions();
         fetchGroupOptions();
         fetchCodeSystemOptions();
+        fetchMask();
     }, []);
 
     const onSubmit = handleSubmit(async (data) => {
@@ -177,7 +250,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         };
         if (selectedFieldType === 'TEXT') {
             QuestionControllerService.createTextQuestionUsingPost({
-                authorization,
+                authorization: authorization(),
                 request: request
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
@@ -187,7 +260,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         } else if (selectedFieldType === 'DATE') {
             const dateRequest = { ...request, allowFutureDates: data.allowFutureDates === 'Yes' };
             QuestionControllerService.createDateQuestionUsingPost({
-                authorization,
+                authorization: authorization(),
                 request: dateRequest
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
@@ -206,7 +279,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 defaultValue: data.defaultValue
             };
             QuestionControllerService.createNumericQuestionUsingPost({
-                authorization,
+                authorization: authorization(),
                 request: numericRequest
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
@@ -216,7 +289,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
         } else {
             const codeRequest = { ...request, valueSet: questionData.valueSet };
             QuestionControllerService.createCodedQuestionUsingPost({
-                authorization,
+                authorization: authorization(),
                 request: codeRequest
             }).then((response: any) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
@@ -224,16 +297,17 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 return response;
             });
         }
+        onCloseModal && onCloseModal();
     });
     const handleUpdateQuestion = (request: any) => {
         QuestionControllerService.updateQuestionUsingPut({
-            authorization,
+            authorization: authorization(),
             id: question.id,
             request
-        }).then((response: any) => {
+        }).then(() => {
             showAlert({ type: 'success', header: 'Updated', message: 'Question updated successfully' });
             resetInput();
-            return response;
+            onCloseModal && onCloseModal();
         });
     };
     const handleValidation = (unique = true) => {
@@ -242,14 +316,28 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
 
     const resetInput = () => {
         reset();
+        onCloseModal && onCloseModal();
     };
 
     const fieldTypeTab = [
         { name: 'Value set', value: UpdateQuestionRequest.type.CODED },
-        { name: 'Numerics entry', value: UpdateQuestionRequest.type.NUMERIC },
+        { name: 'Numeric entry', value: UpdateQuestionRequest.type.NUMERIC },
         { name: 'Text only', value: UpdateQuestionRequest.type.TEXT },
         { name: 'Date picker', value: UpdateQuestionRequest.type.DATE }
     ];
+    const getDisplayType = () => {
+        switch (selectedFieldType) {
+            case UpdateQuestionRequest.type.CODED:
+                return coded;
+            case UpdateQuestionRequest.type.TEXT:
+                return textOption;
+            case UpdateQuestionRequest.type.NUMERIC:
+            case UpdateQuestionRequest.type.DATE:
+                return dateOrNumeric;
+            default:
+                return coded;
+        }
+    };
 
     const valueSetmodalRef = useRef<ModalRef>(null);
     const renderValueSet = (
@@ -262,7 +350,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 isLarge
                 modalRef={valueSetmodalRef}
                 modalHeading={'Add value set'}
-                modalBody={<ValuesetLibrary modalRef={modalRef} hideTabs types="recent" />}
+                modalBody={<ValuesetLibrary modalRef={valueSetmodalRef} hideTabs types="recent" />}
             />
             <br></br>
         </div>
@@ -297,7 +385,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                 control={control}
                 name="tooltip"
                 rules={maxLengthRule(2000)}
-                render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
+                render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                     <>
                         <Label htmlFor={name}>
                             Tooltip <span className="mandatory-indicator">*</span>
@@ -305,6 +393,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         <Textarea
                             data-testid="tooltip"
                             rows={2}
+                            defaultValue={value}
                             className="field-space"
                             onChange={onChange}
                             onBlur={onBlur}
@@ -326,7 +415,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         required
                         defaultValue={value}
                         onChange={onChange}
-                        options={textOption.map((option) => {
+                        options={getDisplayType().map((option) => {
                             return {
                                 name: option.label!,
                                 value: option.value.toString()!
@@ -335,7 +424,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                     />
                 )}
             />
-            <hr className="divider" />
+            <hr className="divider data-mart" />
         </>
     );
     const includedInMessage = watch('includedInMessage');
@@ -349,11 +438,11 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
             <div className="create-question__container">
                 <Form onSubmit={onSubmit}>
                     <div>
-                        <div className="ds-u-text-align--center margin-bottom-2em">
-                            <h3 className="header-title margin-bottom-2px" data-testid="header-title">
+                        <div className="text-align-center margin-bottom-2em">
+                            <h3 className="header-title margin-2px" data-testid="header-title">
                                 {question?.id ? `Edit question` : `Let's create a new question`}
                             </h3>
-                            <label className="fields-info">
+                            <label className="sub-header-info">
                                 All fields with <span className="mandatory-indicator">*</span> are required
                             </label>
                         </div>
@@ -361,22 +450,23 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         <Controller
                             control={control}
                             name="codeSet"
+                            defaultValue={QuestionRequest.codeSet.LOCAL}
                             render={({ field: { onChange, value } }) => (
                                 <div className="radio-group">
                                     <Radio
-                                        id="reportableCondition_Y"
+                                        id="codeSet_LOCAL"
                                         name="codeSet"
                                         value={QuestionRequest.codeSet.LOCAL}
                                         label="LOCAL"
-                                        onChange={(e: any) => onChange(e.target.value)}
+                                        onChange={(e) => onChange(e.target.value)}
                                         checked={value === 'LOCAL'}
                                     />
                                     <Radio
-                                        id="reportableCondition_N"
-                                        name="reportableCondition"
+                                        id="codeSet_PHIN"
+                                        name="codeSet"
                                         value={QuestionRequest.codeSet.PHIN}
                                         label="PHIN"
-                                        onChange={(e: any) => onChange(e.target.value)}
+                                        onChange={(e) => onChange(e.target.value)}
                                         checked={value === 'PHIN'}
                                     />
                                 </div>
@@ -447,10 +537,16 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                             control={control}
                             name="description"
                             rules={maxLengthRule(50)}
-                            render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
+                            render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                                 <>
                                     <Label htmlFor={name}>Description</Label>
-                                    <Textarea onChange={onChange} onBlur={onBlur} name={name} id={name} />
+                                    <Textarea
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        defaultValue={value}
+                                        name={name}
+                                        id={name}
+                                    />
                                     {error?.message && (
                                         <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>
                                     )}
@@ -476,8 +572,9 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         {(selectedFieldType === UpdateQuestionRequest.type.NUMERIC ||
                             selectedFieldType === UpdateQuestionRequest.type.TEXT) && (
                             <CreateTextQuestion
-                                control={control}
                                 isText={selectedFieldType === UpdateQuestionRequest.type.TEXT}
+                                control={control}
+                                options={maskOptions}
                             />
                         )}
                         {selectedFieldType === UpdateQuestionRequest.type.NUMERIC && (
@@ -488,7 +585,7 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                             />
                         )}
                         {selectedFieldType === UpdateQuestionRequest.type.DATE && (
-                            <CreateDateQuestion control={control} />
+                            <CreateDateQuestion control={control} options={maskOptions} />
                         )}
                         <hr className="divider" />
                         {renderUserInterface}
@@ -571,9 +668,12 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                                 />
                             )}
                         />
+                        <hr className="divider" />
                         <h4>Messaging</h4>
                         <p className="fields-info">Messaging - these fields will not be displayed to your users</p>
-                        <p className="fields-info">Included in message?</p>
+                        <p className="fields-info">
+                            Included in message? <span className="mandatory-indicator">*</span>
+                        </p>
                         <Controller
                             control={control}
                             name="includedInMessage"
@@ -629,6 +729,12 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         <Controller
                             control={control}
                             name="codeSystem"
+                            rules={{
+                                required: {
+                                    value: !IsIncludedInMessage,
+                                    message: 'Code system name required'
+                                }
+                            }}
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     label="Code system name"
@@ -645,7 +751,9 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                                 />
                             )}
                         />
-                        <p className="fields-info">Required in message?</p>
+                        <p className="fields-info">
+                            Required in message? <span className="mandatory-indicator">*</span>
+                        </p>
                         <Controller
                             control={control}
                             name="requiredInMessage"
@@ -664,12 +772,19 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         <Controller
                             control={control}
                             name="hl7DataType"
+                            rules={{
+                                required: {
+                                    value: !IsIncludedInMessage,
+                                    message: 'HL7 data type required'
+                                }
+                            }}
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     label="HL7 data type"
                                     defaultValue={value}
                                     disabled={IsIncludedInMessage}
                                     onChange={onChange}
+                                    required
                                     options={groupOptions.map((option) => {
                                         return {
                                             name: option!,
@@ -688,7 +803,6 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                                     defaultValue={value}
                                     className="hl7-segment"
                                     disabled
-                                    required
                                     onChange={onChange}
                                     options={groupOptions.map((option) => {
                                         return {
@@ -701,8 +815,10 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                         />
                     </div>
                     <hr className="divider" />
-                    <h4>Administrative</h4>
-                    <p className="fields-info">Administrative - these fields will not be displayed to your users</p>
+                    <h4 className="margin-bottom-0">Administrative</h4>
+                    <p className="fields-info margin-bottom-2em">
+                        Administrative - these fields will not be displayed to your users
+                    </p>
                     <Controller
                         control={control}
                         name="adminComments"
@@ -713,17 +829,18 @@ export const CreateQuestion = ({ modalRef, question }: any) => {
                                 className="field-space"
                                 label="Administrative comments"
                                 type="text"
+                                multiline
                                 error={error?.message}
                             />
                         )}
                     />
-                    <div>
-                        <Button className="submit-btn" type="submit">
+                    <div className="add-question-footer">
+                        <Button type="submit" className="submit-btn">
                             {question?.id ? 'Save' : 'Create and add to page'}
                         </Button>
-                        <ModalToggleButton className="cancel-btn" modalRef={modalRef} onClick={() => resetInput()}>
+                        <Button className="cancel-btn" onClick={resetInput} type={'button'}>
                             Cancel
-                        </ModalToggleButton>
+                        </Button>
                     </div>
                 </Form>
             </div>

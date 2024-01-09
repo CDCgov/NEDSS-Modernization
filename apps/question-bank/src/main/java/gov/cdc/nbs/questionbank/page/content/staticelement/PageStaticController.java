@@ -5,14 +5,17 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElementRequest;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.UpdateStaticRequests;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.page.content.staticelement.response.DeleteStaticResponse;
+import gov.cdc.nbs.questionbank.page.content.staticelement.response.UpdateStaticResponse;
 import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -25,13 +28,16 @@ import springfox.documentation.annotations.ApiIgnore;
 public class PageStaticController {
     private final PageStaticCreator pageStaticCreator;
     private final PageStaticDeletor pageStaticDeletor;
+    private final PageStaticUpdater pageStaticUpdater;
 
 
     public PageStaticController(
             final PageStaticCreator pageStaticCreator,
-            final PageStaticDeletor pageStaticDeletor) {
+            final PageStaticDeletor pageStaticDeletor,
+            final PageStaticUpdater pageStaticUpdater) {
         this.pageStaticCreator = pageStaticCreator;
         this.pageStaticDeletor = pageStaticDeletor;
+        this.pageStaticUpdater = pageStaticUpdater;
     }
 
 
@@ -93,5 +99,36 @@ public class PageStaticController {
         return pageStaticDeletor.deleteStaticElement(pageId, request) ? new DeleteStaticResponse("delete success")
                 : new DeleteStaticResponse("delete fail");
     }
+
+    @PutMapping("/{id}/hyperlink")
+    public UpdateStaticResponse updateHyperlink(
+            @PathVariable("page") Long pageId,
+            @PathVariable("id") Long componentId,
+            @RequestBody UpdateStaticRequests.UpdateHyperlink request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
+    ) {
+        return pageStaticUpdater.updateHyperlink(componentId, request, details.getId());
+    }
+
+    @PutMapping("/{id}/read-only-comments")
+    public UpdateStaticResponse updateReadOnlyComments(
+            @PathVariable("page") Long pageId,
+            @PathVariable("id") Long componentId,
+            @RequestBody UpdateStaticRequests.UpdateReadOnlyComments request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
+    ) {
+        return pageStaticUpdater.updateReadOnlyComments(componentId, request, details.getId());
+    }
+
+    @PutMapping({"/{id}/line-separator", "/{id}/participants-list", "/{id}/elec-doc-list"})
+    public UpdateStaticResponse updateDefaultStaticElement(
+            @PathVariable("page") Long pageId,
+            @PathVariable("id") Long componentId,
+            @RequestBody UpdateStaticRequests.UpdateDefault request,
+            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
+    ) {
+        return pageStaticUpdater.updateDefaultStaticElement(componentId, request, details.getId());
+    }
+
 
 }

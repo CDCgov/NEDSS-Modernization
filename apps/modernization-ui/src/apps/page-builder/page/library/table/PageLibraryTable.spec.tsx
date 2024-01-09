@@ -6,14 +6,14 @@ describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const { getAllByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableManagement={true} summaries={[]} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={[]} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
         const tableHeads = getAllByRole('columnheader');
 
         expect(tableHeads[0]).toHaveTextContent('Page name');
-        expect(tableHeads[1]).toHaveTextContent('Event name');
+        expect(tableHeads[1]).toHaveTextContent('Event type');
         expect(tableHeads[2]).toHaveTextContent('Related condition(s)');
         expect(tableHeads[3]).toHaveTextContent('Status');
         expect(tableHeads[4]).toHaveTextContent('Last updated');
@@ -31,13 +31,22 @@ describe('when at least one summary is available', () => {
             lastUpdateBy: 'last-update-by-value',
             name: 'test page',
             status: 'Draft'
+        },
+        {
+            conditions: [],
+            eventType: { name: 'Lab Report', value: 'LAB' },
+            id: 2,
+            lastUpdate: '2019-09-25T13:27:16.380Z',
+            lastUpdateBy: 'last-update-by-value',
+            name: 'Lab report page',
+            status: 'Published'
         }
     ];
 
     it('should display the page summaries', async () => {
         const { findAllByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableManagement={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
@@ -51,14 +60,27 @@ describe('when at least one summary is available', () => {
         expect(tableData[5]).toHaveTextContent('last-update-by-value');
     });
 
-    it('should redirect to the edit page when the page name is clicked', async () => {
+    it('should redirect to the preview page when an investigation page name is clicked', () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableManagement={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 
         expect(getByRole('link', { name: 'test page' })).toHaveAttribute('href', '/page-builder/pages/1');
+    });
+
+    it('should redirect to classic when a non investigation page name is clicked', () => {
+        const { getByRole } = render(
+            <WithinTableProvider>
+                <PageLibraryTable enableEdit={true} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+            </WithinTableProvider>
+        );
+
+        expect(getByRole('link', { name: 'Lab report page' })).toHaveAttribute(
+            'href',
+            '/nbs/page-builder/api/v1/pages/2/preview'
+        );
     });
 });
 
@@ -77,7 +99,7 @@ describe('when rendered with mangement disabled', () => {
     it('should redirect to the edit page when the page name is clicked', async () => {
         const { getByRole } = render(
             <WithinTableProvider>
-                <PageLibraryTable enableManagement={false} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
+                <PageLibraryTable enableEdit={false} summaries={summaries} onSort={jest.fn()}></PageLibraryTable>
             </WithinTableProvider>
         );
 

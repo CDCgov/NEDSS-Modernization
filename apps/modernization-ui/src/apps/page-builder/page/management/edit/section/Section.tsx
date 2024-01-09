@@ -1,16 +1,19 @@
-import { PagesSection } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesSection } from 'apps/page-builder/generated';
 import { SectionHeader } from './SectionHeader';
-
 import styles from './section.module.scss';
 import { Subsection } from '../subsection/Subsection';
-import { useState } from 'react';
+import { RefObject, useState } from 'react';
+import { ModalRef } from '@trussworks/react-uswds';
 
 type Props = {
     section: PagesSection;
     onAddQuestion: (subsection: number) => void;
     onAddSubsection: (section: number) => void;
+    onEditQuestion: (question: PagesQuestion) => void;
+    addQuestionModalRef: RefObject<ModalRef>;
 };
-export const Section = ({ section, onAddQuestion, onAddSubsection }: Props) => {
+
+export const Section = ({ section, onAddSubsection, onAddQuestion, addQuestionModalRef, onEditQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
     const handleExpandedChange = (expanded: boolean) => {
@@ -32,6 +35,8 @@ export const Section = ({ section, onAddQuestion, onAddSubsection }: Props) => {
                         <Subsection
                             subsection={subsection}
                             key={k}
+                            onEditQuestion={onEditQuestion}
+                            addQuestionModalRef={addQuestionModalRef}
                             onAddQuestion={() => onAddQuestion(subsection.id!)}
                         />
                     ))}

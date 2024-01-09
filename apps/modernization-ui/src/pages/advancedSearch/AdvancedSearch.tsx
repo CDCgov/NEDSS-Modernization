@@ -32,7 +32,7 @@ import './AdvancedSearch.scss';
 import { AdvancedSearchChips } from './components/chips/AdvancedSearchChips';
 import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
-import { EventSearch } from './components/eventSearch/EventSearch';
+import { EventSearch } from 'apps/search/event/components/EventSearch/EventSearch';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { externalize, internalize } from 'apps/search/patient';
 import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
@@ -78,7 +78,7 @@ export const AdvancedSearch = () => {
     const { skipTo } = useSkipLink();
 
     useEffect(() => {
-        skipTo('perform-search');
+        skipTo('lastName');
     }, []);
 
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);

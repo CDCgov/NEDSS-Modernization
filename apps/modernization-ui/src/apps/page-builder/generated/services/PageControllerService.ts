@@ -4,8 +4,8 @@
 import type { PageCreateRequest } from '../models/PageCreateRequest';
 import type { PageCreateResponse } from '../models/PageCreateResponse';
 import type { PageDeleteResponse } from '../models/PageDeleteResponse';
+import type { PageHistory } from '../models/PageHistory';
 import type { PageStateResponse } from '../models/PageStateResponse';
-import type { Resource } from '../models/Resource';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -36,54 +36,6 @@ export class PageControllerService {
                 'Authorization': authorization,
             },
             body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * downloadPageLibrary
-     * @returns Resource OK
-     * @throws ApiError
-     */
-    public static downloadPageLibraryUsingGet({
-        authorization,
-    }: {
-        authorization: string,
-    }): CancelablePromise<Resource> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/download',
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * downloadPageLibraryPDF
-     * @returns string OK
-     * @throws ApiError
-     */
-    public static downloadPageLibraryPdfUsingGet({
-        authorization,
-    }: {
-        authorization: string,
-    }): CancelablePromise<string> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/downloadPDF',
-            headers: {
-                'Authorization': authorization,
-            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -157,25 +109,25 @@ export class PageControllerService {
     }
 
     /**
-     * downloadPageMetadata
-     * @returns Resource OK
+     * getPageHistory
+     * @returns PageHistory OK
      * @throws ApiError
      */
-    public static downloadPageMetadataUsingGet({
+    public static getPageHistoryUsingGet({
         authorization,
-        waTemplateUid,
+        id,
     }: {
         authorization: string,
         /**
-         * waTemplateUid
+         * id
          */
-        waTemplateUid: number,
-    }): CancelablePromise<Resource> {
+        id: number,
+    }): CancelablePromise<Array<PageHistory>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{waTemplateUid}/download-metadata',
+            url: '/nbs/page-builder/api/v1/pages/{id}/page-history',
             path: {
-                'waTemplateUid': waTemplateUid,
+                'id': id,
             },
             headers: {
                 'Authorization': authorization,

@@ -7,7 +7,7 @@ import { usePageMaybe } from 'page';
 import { Select } from '@trussworks/react-uswds';
 import styles from './range-toggle.module.scss';
 
-type SupportedContext = 'pages' | 'conditions' | 'questions' | 'valuesets';
+export type SupportedContext = 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates' | 'businessRules';
 
 type RangeToggleProps = {
     contextName?: SupportedContext;

@@ -27,7 +27,7 @@ const pageReducer = (state: PageState, action: Action): PageState => {
         case 'ready':
             return { ...state, status: Status.Ready, total: action.total, current: action.page };
         case 'go-to': {
-            return state.current !== action.page ? { ...state, status: Status.Requested, current: action.page } : state;
+            return { ...state, status: Status.Requested, current: action.page };
         }
         case 'reload':
             return { ...state, status: Status.Requested };

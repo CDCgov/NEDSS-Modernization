@@ -49,4 +49,41 @@ export class PageQuestionControllerService {
         });
     }
 
+    /**
+     * deleteQuestion
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static deleteQuestionUsingDelete({
+        authorization,
+        page,
+        questionId,
+    }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * questionId
+         */
+        questionId: number,
+    }): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/nbs/page-builder/api/v1/pages/{page}/questions/{questionId}',
+            path: {
+                'page': page,
+                'questionId': questionId,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+            },
+        });
+    }
+
 }

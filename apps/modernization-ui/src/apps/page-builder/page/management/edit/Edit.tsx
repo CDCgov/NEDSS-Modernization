@@ -1,4 +1,3 @@
-import { Button } from '@trussworks/react-uswds';
 import { PageContent } from './content/PageContent';
 import { Loading } from 'components/Spinner';
 import {
@@ -12,10 +11,10 @@ import {
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 
 export const Edit = () => {
-    const { page } = useGetPageDetails();
+    const { page, fetch } = useGetPageDetails();
 
     return page ? (
-        <PageManagementProvider page={page}>
+        <PageManagementProvider page={page} fetch={fetch}>
             <EditPageContent />
         </PageManagementProvider>
     ) : (
@@ -24,19 +23,23 @@ export const Edit = () => {
 };
 
 const EditPageContent = () => {
-    const { page, selected } = usePageManagement();
+    const { page, selected, fetch } = usePageManagement();
+
+    const refresh = () => {
+        fetch(page.id);
+    };
 
     return (
         <PageManagementLayout name={page.name} mode={'edit'}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
-                    <Button type="button" outline>
+                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules-library`} type="outline">
                         Business rules
-                    </Button>
+                    </NavLinkButton>
                     <NavLinkButton to={'..'}>Preview</NavLinkButton>
                 </PageManagementMenu>
             </PageHeader>
-            {selected && <PageContent tab={selected} />}
+            {selected && <PageContent tab={selected} refresh={refresh} />}
         </PageManagementLayout>
     );
 };

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.valueset.read;
 
-import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
+import gov.cdc.nbs.questionbank.valueset.request.ValueSetCreateRequest;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +34,13 @@ public class ReadValueSetSteps {
 
   private ValueSetSearchRequest search;
 
-  private ValueSetRequest request;
+  private ValueSetCreateRequest request;
 
   @Given("A valueSet exists")
   public void a_valueSet_exists() {
     try {
-      request = new ValueSetRequest();
-      request.setValueSetNm("testValueSetNm");
-      request.setValueSetCode("testValueSetCode");
-      request.setCodeSetDescTxt("testCodeSetDescTxt");
+      request = new ValueSetCreateRequest("type","testValueSetCode","testValueSetNm","testCodeSetDescTxt");
+
 
       ResponseEntity<CreateValueSetResponse> codeSetResult = valueSetController.createValueSet(request);
     } catch (AccessDeniedException e) {

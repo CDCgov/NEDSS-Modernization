@@ -14,18 +14,6 @@ Feature: Create Read Only Comments
         When I send a read only comments element request
         Then a read only comments element is created
     
-    Scenario: I cannot create a read only comments static element without logging in
-        Given I am not logged in at all
-        And I create a read only comments element request with "<comments>"
-        When I send a read only comments element request
-        Then an illegal state exception is thrown
-
-    Scenario: I cannot create a read only comments static element without permissions
-        Given I am a user without permissions
-        And I create a read only comments element request with "<comments>"
-        When I send a read only comments element request
-        Then an illegal state exception is thrown
-
         Examples:
             | comments |
             | hello comments test |

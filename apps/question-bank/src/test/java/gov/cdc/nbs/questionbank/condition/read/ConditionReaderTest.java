@@ -1,27 +1,22 @@
 package gov.cdc.nbs.questionbank.condition.read;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.querydsl.core.BooleanBuilder;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.condition.ConditionReader;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
-import gov.cdc.nbs.questionbank.condition.request.ReadConditionRequest;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
+import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 
 
 class ConditionReaderTest {
@@ -46,33 +41,6 @@ class ConditionReaderTest {
         assertEquals(3, result.getTotalElements());
     }
 
-    @Test
-    void searchConditionTest() {
-        ReadConditionRequest readConditionRequest = new ReadConditionRequest();
-        readConditionRequest.setSearchText("Y2798");
-
-        List<ConditionCode> mockConditionList = new ArrayList<>();
-        Pageable pageable = Pageable.unpaged();
-        Page<ConditionCode> mockConditionPage = new PageImpl<>(mockConditionList);
-        when(conditionCodeRepository.findAll(Mockito.any(BooleanBuilder.class), Mockito.any(Pageable.class)))
-                .thenReturn(mockConditionPage);
-        Page<Condition> resultPage =
-                conditionReader.searchCondition(readConditionRequest, pageable);
-        assertNotNull(resultPage);
-        assertEquals(mockConditionList.size(), resultPage.getContent().size());
-    }
-
-    @Test
-    void searchWithException() {
-        ReadConditionRequest request = new ReadConditionRequest();
-        request.setSearchText("Z57685");
-        Pageable pageable = Pageable.unpaged();
-
-        when(conditionCodeRepository.findAll(Mockito.any(BooleanBuilder.class), Mockito.any(Pageable.class)))
-                .thenThrow(new RuntimeException("Repository error"));
-
-        assertThrows(RuntimeException.class, () -> conditionReader.searchCondition(request, pageable));
-    }
 
     private Page<ConditionCode> getConditionList(Pageable pageable) {
         List<ConditionCode> conditionCode = new ArrayList<>();

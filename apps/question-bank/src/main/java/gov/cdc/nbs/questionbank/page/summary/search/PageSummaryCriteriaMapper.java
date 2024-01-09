@@ -6,9 +6,9 @@ import gov.cdc.nbs.questionbank.filter.json.FilterJSON;
 import java.util.List;
 import java.util.Objects;
 
-class PageSummaryCriteriaMapper {
+public class PageSummaryCriteriaMapper {
 
-  static PageSummaryCriteria asCriteria(final PageSummaryRequest request) {
+  public static PageSummaryCriteria asCriteria(final PageSummaryRequest request) {
     String search = request.search();
     List<Filter> filters = request.filters()
         .stream()
@@ -19,7 +19,6 @@ class PageSummaryCriteriaMapper {
     return new PageSummaryCriteria(search, filters);
   }
 
-  private PageSummaryCriteriaMapper() {
-  }
+  private PageSummaryCriteriaMapper() {}
 
 }

@@ -18,15 +18,3 @@ Feature: Create Line Separator
             | adminComments      |
             | some comments      |
             | test comments      |
-
-    Scenario: I cannot create a line separator static element without logging in
-        Given I am not logged in at all
-        And I create an add line separator request with "<adminComments>"
-        When I send an add line separator request
-        Then an illegal state exception is thrown
-
-    Scenario: I cannot create a line separator static element without having admin permissions
-        Given I am a user without permissions
-        And I create an add line separator request with "<adminComments>"
-        When I send an add line separator request
-        Then an illegal state exception is thrown

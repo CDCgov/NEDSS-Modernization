@@ -14,8 +14,8 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       boolean coInfection,
       String mask,
       String toolTip,
-      String defaultValue
-  ) {
+      String defaultValue,
+      String adminComments) {
   }
 
 
@@ -26,8 +26,7 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       final long identifier,
       final Type type,
       final Definition definition,
-      final Attributes attributes
-  ) {
+      final Attributes attributes) {
     super(identifier, type, definition);
     this.attributes = attributes;
   }

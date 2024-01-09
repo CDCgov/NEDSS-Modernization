@@ -97,7 +97,8 @@ class PagesResponseMapper {
 
   private PagesResponse.PagesQuestion asQuestion(final ContentNode content) {
     long id = content.identifier();
-    boolean isStandard = true;
+    String adminComments = content.attributes().adminComments();
+    boolean isStandard = content.attributes().isStandard();
     String standard = content.attributes().standard();
     String questionIdentifier = content.attributes().question();
     String name = content.definition().name();
@@ -114,6 +115,7 @@ class PagesResponseMapper {
     boolean required = content.attributes().required();
     String defaultValue = content.attributes().defaultValue();
     String valueSet = content instanceof SelectionNode selection ? selection.valueSet() : null;
+    long displayComponent = content.type().identifier();
     return new PagesResponse.PagesQuestion(
         id,
         isStandard,
@@ -132,7 +134,9 @@ class PagesResponseMapper {
         enabled,
         required,
         defaultValue,
-        valueSet
+        valueSet,
+        displayComponent,
+        adminComments
     );
   }
 

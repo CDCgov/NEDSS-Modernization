@@ -281,7 +281,8 @@ class PagesResponseMapperTest {
                             true,
                             "mask-value",
                             "tool-tip-value",
-                            "default-value-value"
+                            "default-value-value",
+                            "admin-comments"
                         )
                     )
                 )
@@ -318,7 +319,8 @@ class PagesResponseMapperTest {
                                 () -> assertThat(question.coInfection()).isTrue(),
                                 () -> assertThat(question.mask()).isEqualTo("mask-value"),
                                 () -> assertThat(question.tooltip()).isEqualTo("tool-tip-value"),
-                                () -> assertThat(question.defaultValue()).isEqualTo("default-value-value")
+                                () -> assertThat(question.defaultValue()).isEqualTo("default-value-value"),
+                                () -> assertThat(question.displayComponent()).isEqualTo(1003L)
                             )
                         )
                     )

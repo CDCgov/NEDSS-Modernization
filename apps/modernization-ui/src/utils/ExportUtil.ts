@@ -1,3 +1,4 @@
+import { Filter, externalize } from 'filters';
 import {
     ExportControllerService,
     InvestigationFilter as ExportInvestigation,
@@ -74,19 +75,19 @@ export const downloadLabReportSearchResultPdf = (labReportFilter: LabReportFilte
         });
 };
 
-export const downloadPageLibraryPdf = (token: string) => {
+export const downloadPageLibraryPdf = (authorization: string, search: string, filters: Filter[], sort?: string) => {
     // auto generated methods dont allow direct conversion to blob
-    fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/downloadPDF`, {
-        method: 'GET',
+    fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/pdf?sort=${sort ?? 'id,asc'}`, {
+        method: 'POST',
         headers: {
             Accept: 'application/pdf',
-            'Content-Type': 'blob',
-            Authorization: token
-        }
+            'Content-Type': 'application/json',
+            Authorization: authorization
+        },
+        body: JSON.stringify({ search: search, filters: externalize(filters) })
     })
         .then((response) => response.blob())
         .then((blob) => {
-            console.log(blob);
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;

@@ -2,7 +2,7 @@ import styles from './subsection.module.scss';
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { Icon as IconComponent } from 'components/Icon/Icon';
-import { useRef } from 'react';
+import { RefObject, useRef } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
 
@@ -12,12 +12,27 @@ type Props = {
     questionCount: number;
     onAddQuestion: () => void;
     isExpanded: boolean;
+    addQuestionModalRef: RefObject<ModalRef>;
     onExpandedChange: (isExpanded: boolean) => void;
 };
 
-export const SubsectionHeader = ({ name, id, questionCount, isExpanded, onExpandedChange, onAddQuestion }: Props) => {
+export const SubsectionHeader = ({
+    name,
+    id,
+    questionCount,
+    isExpanded,
+    onAddQuestion,
+    onExpandedChange,
+    addQuestionModalRef
+}: Props) => {
     const addStaticElementModalRef = useRef<ModalRef>(null);
-
+    const renderQuestionListModal = () => (
+        <>
+            <ModalToggleButton className="add-btn" outline onClick={onAddQuestion} modalRef={addQuestionModalRef}>
+                Add Question
+            </ModalToggleButton>
+        </>
+    );
     return (
         <div className={styles.header}>
             <div className={styles.info}>
@@ -25,9 +40,7 @@ export const SubsectionHeader = ({ name, id, questionCount, isExpanded, onExpand
                 <div className={styles.count}>{`${questionCount} question${questionCount > 1 ? 's' : ''}`}</div>
             </div>
             <div className={styles.buttons}>
-                <Button type="button" onClick={onAddQuestion} outline>
-                    Add question
-                </Button>
+                <>{renderQuestionListModal()}</>
                 <MoreOptions header={<Icon.MoreVert size={4} />}>
                     <Button type="button" onClick={() => console.log('BLAH')}>
                         <Icon.Edit size={3} /> Edit Subsection

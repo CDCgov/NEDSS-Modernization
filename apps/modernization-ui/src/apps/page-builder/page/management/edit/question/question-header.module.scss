@@ -1,0 +1,55 @@
+@use 'styles/colors';
+
+.header {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    width: 100%;
+    border-radius: 0.3125rem 0.3125rem 0rem 0rem;
+    border: 1px solid colors.$base-lightest;
+    background: colors.$base-white;
+    justify-content: space-between;
+
+    .typeDisplay {
+        display: flex;
+        align-items: center;
+
+        .standardIndicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.125rem;
+            background: colors.$warm-accent;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.75rem;
+
+            color: colors.$base-white;
+            text-align: center;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.4175rem;
+        }
+    }
+
+    .questionButtons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        color: colors.$primary;
+        font-size: 1.25rem;
+        cursor: pointer;
+
+        .divider {
+            color: colors.$base-light;
+        }
+
+        .requiredToggle {
+            color: colors.$base-darker;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.4175rem;
+        }
+    }
+}

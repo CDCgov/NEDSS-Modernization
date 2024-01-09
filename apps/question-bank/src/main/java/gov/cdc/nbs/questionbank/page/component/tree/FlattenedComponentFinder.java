@@ -28,12 +28,13 @@ class FlattenedComponentFinder {
           [component].mask                      as [mask],
           [component].question_tool_tip         as [tool_tip],
           [component].default_value             as [default_value],
-          [set].[code_set_nm]                   as [value_set]
-      from WA_UI_metadata [component]\
-            
+          [set].[code_set_nm]                   as [value_set],
+          [component].admin_comment             as [adminComments]
+      from WA_UI_metadata [component]
+
           left join [NBS_SRTE]..Codeset [set] on
                   [set].code_set_group_id = [component].[code_set_group_id]
-            
+
       where   [component].wa_template_uid = ?
           and [component].order_nbr > 0
       order by

@@ -2,6 +2,7 @@ import { PageBuilderSideNav } from '../../components/Navigation/PageBuilderSideN
 import './PageBuilder.scss';
 
 type Props = {
+    page?: string;
     children: any;
     nav?: boolean;
 };

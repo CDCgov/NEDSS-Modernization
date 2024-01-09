@@ -3,16 +3,18 @@ import { PageLibrary } from 'apps/page-builder/page/library/PageLibrary';
 import { Edit } from 'apps/page-builder/page/management/edit/Edit';
 import { PreviewPage } from 'apps/page-builder/page/management/preview';
 import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
+import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
+import EditBusinessRules from 'apps/page-builder/pages/BusinessRulesLibrary/Edit/EditBusinessRules';
+import { AddPatient } from 'apps/patient/add/AddPatient';
+import { AddedPatient } from 'apps/patient/add/SuccessForm/AddedPatient';
+import { PatientProfile } from 'apps/patient/profile';
 import { Spinner } from 'components/Spinner';
 import { Config } from 'config';
 import { useConfiguration } from 'configuration';
+import { Library, Management } from 'generated';
 import { Layout } from 'layout';
-import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
-import { AddPatient } from 'pages/addPatient/AddPatient';
-import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
 import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
 import { Login } from 'pages/login/Login';
-import { PatientProfile } from 'pages/patient/profile';
 import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
@@ -53,21 +55,25 @@ export const AppRoutes = () => {
         setInitializing(false);
     }, 1000);
 
-    const pageLibraryRoutes = (enabled: boolean) => {
-        return enabled ? <Route index element={<PageLibrary />} /> : <Route index element={<Navigate to={'/'} />} />;
+    const pageLibraryRoutes = (libraryConfig: Library) => {
+        return libraryConfig.enabled && <Route index element={<PageLibrary />} />;
     };
 
-    const pageManagementRoutes = (enabled: boolean) => {
-        return enabled ? (
+    const pageManagementRoutes = (managementConfig: Management) => {
+        return (
             <>
-                <Route path="add" element={<AddNewPage />} />
-                <Route path=":pageId">
-                    <Route index element={<PreviewPage />} />
-                    <Route path="edit" element={<Edit />} />
-                </Route>
+                {managementConfig.create?.enabled && <Route path="add" element={<AddNewPage />} />}
+                {managementConfig.edit?.enabled && (
+                    <Route path=":pageId">
+                        <Route index element={<PreviewPage />} />
+                        <Route path="edit" element={<Edit />} />
+                        <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
+                        <Route path=":ruleId">
+                            <Route index element={<EditBusinessRules />} />
+                        </Route>
+                    </Route>
+                )}
             </>
-        ) : (
-            <Route index element={<Navigate to={'/'} />} />
         );
     };
 
@@ -81,15 +87,14 @@ export const AppRoutes = () => {
                             <>
                                 <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
                                 <Route path="/patient-profile/:id" element={<PatientProfile />} />
-                                <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
                                 <Route path="/add-patient" element={<AddPatient />} />
                                 <Route path="/add-patient/patient-added" element={<AddedPatient />} />
 
                                 {config.features.pageBuilder.enabled && (
                                     <Route path="/page-builder" element={<PageBuilderContextProvider />}>
                                         <Route path="pages">
-                                            {pageLibraryRoutes(config.features.pageBuilder.page.library.enabled)}
-                                            {pageManagementRoutes(config.features.pageBuilder.page.management.enabled)}
+                                            {pageLibraryRoutes(config.features.pageBuilder.page.library)}
+                                            {pageManagementRoutes(config.features.pageBuilder.page.management)}
                                         </Route>
                                     </Route>
                                 )}

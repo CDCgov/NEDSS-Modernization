@@ -23,7 +23,7 @@ export const fetchQuestion = (
     } else {
         const request = {
             search,
-            questionType: filter.questionType,
+            questionType: filter.questionType || '',
             questionSubGroup: filter.questionSubGroup
         };
         return QuestionControllerService.findQuestionsUsingPost({

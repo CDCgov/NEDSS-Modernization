@@ -22,12 +22,16 @@ export type CreateDateQuestionRequest = {
 };
 
 export namespace CreateDateQuestionRequest {
+
     export enum codeSet {
         LOCAL = 'LOCAL',
         PHIN = 'PHIN',
     }
+
     export enum mask {
         DATE = 'DATE',
     }
+
+
 }
 

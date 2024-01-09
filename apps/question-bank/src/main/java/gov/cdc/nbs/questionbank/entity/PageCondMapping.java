@@ -48,7 +48,7 @@ public class PageCondMapping {
   @Column(name = "last_chg_user_id", nullable = false)
   private Long lastChgUserId;
 
-  PageCondMapping(
+  public PageCondMapping(
       final WaTemplate page,
       final PageCommand.RelateCondition command
   ) {

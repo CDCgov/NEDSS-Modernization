@@ -1,12 +1,15 @@
 /* eslint-disable camelcase */
-import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { PageSummary } from 'apps/page-builder/generated';
+import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { RefObject, useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { BusinessRuleContext } from '../../context/BusinessContext';
 import { SearchBar } from './SearchBar';
+import { Link } from 'react-router-dom';
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import './BusinessRulesLibraryTable.scss';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { ViewRuleResponse } from 'apps/page-builder/generated';
 
 export enum Column {
     SourceFields = 'Source Fields',
@@ -17,14 +20,20 @@ export enum Column {
     ID = 'ID'
 }
 
+// Sorting temporarily disabled until API is ready
 const tableColumns = [
     { name: Column.SourceFields, sortable: true },
     { name: Column.Logic, sortable: true },
-    { name: Column.Values, sortable: true },
+    { name: Column.Values, sortable: false },
     { name: Column.Function, sortable: true },
-    { name: Column.Target, sortable: true },
+    { name: Column.Target, sortable: false },
     { name: Column.ID, sortable: true }
 ];
+
+type TargetQuestion = {
+    label: string;
+    id: string;
+};
 
 type Rules = {
     ruleId?: number;
@@ -37,17 +46,20 @@ type Rules = {
     targetType?: string;
     errorMsgText?: string;
     targetValueIdentifier?: any;
+    targetQuestions?: TargetQuestion[];
 };
 
 type Props = {
-    summaries: any;
+    summaries: ViewRuleResponse[];
     pages?: any;
-    qtnModalRef?: any;
+    qtnModalRef: RefObject<ModalRef>;
 };
+
 export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Rules>({});
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
+    const { page } = useGetPageDetails();
 
     const mapLogic = ({ comparator, ruleFunction }: any) => {
         if (ruleFunction === 'Date Compare') {
@@ -59,7 +71,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 case '>=':
                     return 'Greater than';
                 default:
-                    return 'Greater or equal to';
+                    return 'Greater than';
             }
         } else {
             switch (comparator) {
@@ -70,35 +82,48 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             }
         }
     };
-    const asTableRow = (page: Rules): TableBody => ({
-        id: page.templateUid,
+
+    const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules-library`;
+
+    const asTableRow = (rule: Rules): TableBody => ({
+        id: rule.templateUid,
         tableDetails: [
             {
                 id: 1,
-                title: <div className="page-name">{page?.sourceIdentifier}</div> || null
+                title: <Link to={`/page-builder/pages/${page?.id}/${rule.ruleId}`}>{rule?.ruleDescription}</Link>
             },
-            { id: 2, title: <div className="event-text">{mapLogic(page)}</div> || null },
+            { id: 2, title: <div className="event-text">{mapLogic(rule)}</div> || null },
             {
                 id: 3,
-                title: <div>{page?.sourceValue?.join(' ')}</div> || null
+                title: <div>{rule?.sourceValue?.join(' ')}</div> || null
             },
             {
                 id: 4,
-                title: <div>{page?.ruleFunction}</div> || null
+                title: <div>{rule?.ruleFunction}</div> || null
             },
             {
                 id: 5,
-                title: <div>{page?.targetValueIdentifier?.join(' ')}</div> || null
+                title:
+                    (
+                        <div>
+                            {rule?.targetQuestions?.map((question) => (
+                                <>
+                                    <span>{question.label}</span>
+                                    <br />
+                                </>
+                            ))}
+                        </div>
+                    ) || null
             },
             {
                 id: 6,
-                title: <div>{page?.ruleId}</div> || null
+                title: <div>{rule?.ruleId}</div> || null
             }
         ]
     });
 
     // @ts-ignore
-    const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
+    const asTableRows = (pages: ViewRuleResponse[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
@@ -106,17 +131,17 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         if (name && direction && direction !== Direction.None) {
             switch (name) {
                 case Column.SourceFields:
-                    return `SourceFields,${direction}`;
+                    return `sourceQuestionIdentifier,${direction}`;
                 case Column.Logic:
-                    return `comparator,${direction}`;
+                    return `logic,${direction}`;
                 case Column.Values:
                     return `sourceValue,${direction}`;
                 case Column.Function:
-                    return `ruleFunction,${direction}`;
+                    return `ruleCd,${direction}`;
                 case Column.Target:
                     return `targetValueIdentifier,${direction}`;
                 case Column.ID:
-                    return `ruleId,${direction}`;
+                    return `id,${direction}`;
                 default:
                     return '';
             }
@@ -136,6 +161,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             setSortBy(toSortString(name, direction));
         }
     };
+
     const footerActionBtn = (
         <div className="question-action-btn">
             <ModalToggleButton
@@ -156,18 +182,18 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             </ModalToggleButton>
         </div>
     );
-    const modalRef = useRef<ModalRef>(null);
+
     const dataNotAvailableElement = (
         <div className="no-data-available">
             <label className="margin-bottom-1em no-text">
                 {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
             </label>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+            <NavLinkButton className="submit-btn" type="outline" to={`${redirectRuleURL}/add`}>
                 Create New
-            </ModalToggleButton>
-            <ModalComponent isLarge modalRef={modalRef} modalHeading={'Add business rules'} modalBody={<div />} />
+            </NavLinkButton>
         </div>
     );
+
     const searchAvailableElement = (
         <div className="no-data-available">
             <label className="no-text">Still can't find what are you're looking for?</label>
@@ -175,27 +201,30 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 Please try searching in the local library before creating new
             </label>
             <div>
-                <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+                <NavLinkButton className="submit-btn" type="outline" to={`${redirectRuleURL}/add`}>
                     Create New
-                </ModalToggleButton>
-                <Button className="submit-btn" type="button">
-                    Search Local
-                </Button>
+                </NavLinkButton>
             </div>
-            <ModalComponent
-                isLarge
-                modalRef={modalRef}
-                modalHeading={'Add Business Rules'}
-                modalBody={<div> Business Rules </div>}
-            />
         </div>
     );
 
     return (
         <div>
+            <div className="add-business-rules-block">
+                <div className="business-rules-header">
+                    <h3> {page?.name} | business rules </h3>
+                </div>
+                <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`}>
+                    Add new business rule
+                </NavLinkButton>
+            </div>
             <div>{<SearchBar onChange={setSearchQuery} />}</div>
+
             {summaries?.length ? (
                 <TableComponent
+                    display="zebra"
+                    contextName="businessRules"
+                    className="business-rules-table"
                     tableHeader=""
                     tableHead={tableColumns}
                     tableBody={tableRows}

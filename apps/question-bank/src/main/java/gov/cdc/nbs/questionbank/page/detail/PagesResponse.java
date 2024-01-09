@@ -102,7 +102,9 @@ public record PagesResponse(
       boolean enabled,
       boolean required,
       String defaultValue,
-      String valueSet
+      String valueSet,
+      long displayComponent,
+      String adminComments
   ) {
   }
 

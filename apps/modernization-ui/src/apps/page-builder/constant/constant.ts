@@ -7,7 +7,7 @@ const fieldType = [
     { label: 'Multi-select dropdown', value: 'multi-select' },
     { label: 'Date / time', value: 'date-time' }
 ];
-const coded: any = [
+const coded = [
     {
         value: 1007,
         label: 'Single-Select (Drop down)'
@@ -18,19 +18,19 @@ const coded: any = [
     },
     {
         value: 1024,
-        label: 'Readonly single-select save'
+        label: 'Single-select save (readonly)'
     },
     {
         value: 1025,
-        label: 'Readonly multi-select save'
+        label: 'Multi-select save (readonly)'
     },
     {
         value: 1027,
-        label: 'Readonly single-select no save'
+        label: 'Single-select no save (readonly)'
     },
     {
         value: 1028,
-        label: 'Readonly multi-select no save'
+        label: 'Multi-select no save (readonly)'
     },
     {
         value: 1031,

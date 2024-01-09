@@ -3,12 +3,14 @@
 /* eslint-disable */
 
 export type PagesQuestion = {
+    adminComments?: string;
     allowFutureDates?: boolean;
     coInfection?: boolean;
     dataType?: string;
     defaultValue?: string;
     description?: string;
     display?: boolean;
+    displayComponent?: number;
     enabled?: boolean;
     id: number;
     isStandard?: boolean;

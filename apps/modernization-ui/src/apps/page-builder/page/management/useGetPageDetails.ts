@@ -32,6 +32,7 @@ const reducer = (_state: State, action: Action): State => {
 type Interaction = {
     loading: boolean;
     page: PagesResponse | undefined;
+    fetch: (page: number) => void;
     error?: string;
 };
 

@@ -12,12 +12,16 @@ const page: PagesResponse = {
     status: 'Draft'
 };
 
+const fetch = () => {
+    jest.fn();
+}
+
 describe('When page loads', () => {
     it('the add static button should be disabled', () => {
         const { getByTestId } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -31,7 +35,7 @@ describe('When page loads', () => {
         const { getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -47,7 +51,7 @@ describe('When line separator is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -72,7 +76,7 @@ describe('When hyperlink is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -100,7 +104,7 @@ describe('When comments is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -127,7 +131,7 @@ describe('When participants is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -154,7 +158,7 @@ describe('When electronic doc list is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -176,10 +180,10 @@ describe('When electronic doc list is chosen', () => {
 
 describe('When all inputs are entered', () => {
     it('button enables once all inputs are selected', async () => {
-        const { getByTestId, findByTestId } = render(
+        const { getByTestId, findByTestId, getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page}>
+                    <PageManagementProvider page={page} fetch={fetch}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -196,7 +200,7 @@ describe('When all inputs are entered', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        const labelInput = getByTestId('hyperlinkLabel');
+        const labelInput = getByLabelText('hyperlinkLabel');
 
         act(() => {
             userEvent.type(labelInput, 'Something label');
@@ -206,7 +210,7 @@ describe('When all inputs are entered', () => {
             fireEvent.blur(labelInput);
         });
 
-        const linkInput = getByTestId('linkUrl');
+        const linkInput = getByLabelText('linkUrl');
         act(() => {
             userEvent.type(linkInput, 'www.test.com');
         });

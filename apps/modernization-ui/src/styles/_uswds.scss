@@ -1,6 +1,7 @@
 @use 'styles/colors';
 @use 'mixins/viewports';
 @use 'styles/borders';
+@use 'styles/modal';
 
 @import '@trussworks/react-uswds/lib/uswds.css';
 @import '@trussworks/react-uswds/lib/index.css';
@@ -32,18 +33,15 @@ table.usa-table {
         max-height: 100vh;
         .usa-modal--lg {
             max-height: 85vh;
-            overflow-x: hidden;
-            overflow-y: hidden;
             .usa-modal__content {
-                overflow: hidden;
                 max-height: 85vh;
-                .usa-modal__main {
-                    overflow-y: auto;
-                }
             }
         }
         .usa-modal {
+            max-height: modal.$max-height;
+
             .usa-modal__content {
+                max-height: modal.$max-height;
                 .usa-modal__main {
                     .usa-modal__footer {
                         margin-top: 0;
@@ -53,6 +51,29 @@ table.usa-table {
             }
         }
     }
+}
+
+.usa-modal__main {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.usa-modal__content {
+    padding: 0 !important;
+    position: relative;
+
+    .usa-button-group {
+        justify-content: flex-end;
+    }
+}
+.usa-modal__close {
+    position: absolute;
+    top: 40px;
+    right: 0;
+}
+
+.usa-modal-overlay {
+    overflow: hidden;
 }
 
 // Default button styling

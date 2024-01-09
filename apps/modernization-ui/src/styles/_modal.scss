@@ -1,8 +1,8 @@
 @use 'styles/colors';
 
-.modal {
-    $modal-border-color: colors.$border;
+$max-height: 80svh;
 
+.modal {
     padding: 0;
 
     .modal-content {
@@ -34,7 +34,7 @@
     .modal-actions {
         margin-top: 1.5rem;
         padding: 1rem;
-        border-top-color: $modal-border-color;
+        border-top-color: colors.$border;
         border-top-style: solid;
         border-top-width: 1px;
     }

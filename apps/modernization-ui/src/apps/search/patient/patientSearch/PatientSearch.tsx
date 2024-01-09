@@ -72,6 +72,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                                     htmlFor={name}
                                     id={name}
                                     error={error?.message}
+                                    ariaLabel={'Perform a patient search, Last Name'}
                                 />
                             )}
                         />
