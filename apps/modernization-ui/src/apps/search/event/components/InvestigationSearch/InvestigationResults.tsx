@@ -1,8 +1,8 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef } from 'react';
-import { Investigation, PersonParticipation } from '../../../generated/graphql/schema';
-import { calculateAge } from '../../../utils/util';
-import '../AdvancedSearch.scss';
+import { Investigation, PersonParticipation } from 'generated/graphql/schema';
+import { calculateAge } from 'utils/util';
+import 'apps/search/advancedSearch/AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';

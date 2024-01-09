@@ -76,8 +76,8 @@ describe('InvestigationResults component tests', () => {
         expect(getByText('2019 Novel Coronavirus')).toBeInTheDocument();
         expect(getByText('CAS10003001GA99')).toBeInTheDocument();
         expect(getByText('1/1/1990')).toBeInTheDocument();
-        expect(getByText('63000')).toBeInTheDocument();
         expect(getByText(`(${age} years)`)).toBeInTheDocument();
+        expect(getByText('63000')).toBeInTheDocument();
         expect(getByText('7/21/2023')).toBeInTheDocument();
         expect(getByText('OPEN')).toBeInTheDocument();
         expect(getByText('Clayton County')).toBeInTheDocument();
