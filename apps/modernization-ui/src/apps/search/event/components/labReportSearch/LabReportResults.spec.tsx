@@ -88,7 +88,7 @@ describe('LabReportResults component tests', () => {
             </BrowserRouter>
         );
         const timeDiff = Date.now() - new Date(labReports[0].personParticipations![0]?.birthTime).getTime();
-        const age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);        
+        const age = Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
         expect(getByText('Doe, John')).toBeInTheDocument();
         expect(getByText('Acid-Fast Stain = abnormal')).toBeInTheDocument();
         expect(getByText('OBS10001008GA01')).toBeInTheDocument();
