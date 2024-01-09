@@ -3,6 +3,74 @@
 
 .value_set_concept_container {
     min-height: 486px;
+    h3 {
+        margin-top: 0;
+    }
+  .list-details {
+    border-radius: 5px;
+    list-style: none;
+    border: 1px solid colors.$base-lighter;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+    li:last-of-type {
+        width: 20rem;
+    }
+    .title {
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .details {
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+  .instruction {
+    font-size: 14px;
+  }
+  .add-new-concept-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    border: 1px solid colors.$base-lightest;
+    margin: 1rem 0;
+    p {
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
+  }
+  .add-new-concept {
+    margin-right: 20px;
+    border: 2px solid #005EA2;
+    background: #fff;
+    color: #005EA2;
+    border-radius: 4px;
+  }
+  .grid-row.inline-field {
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .effective-date-field {
+     .date-picker-input .usa-date-picker__wrapper {
+           width: 15rem;
+      }
+      margin-bottom: 24px;
+      .effective-radio {
+          display: flex;
+          width: 22rem;
+          gap: 2.8rem;
+          margin-right: 1.25rem;
+      }
+      &:last-of-type {
+        width: 100%;
+        .effective-radio {
+            gap: 5rem;
+        }
+      }
+  }
 }
 .concept-local-library {
     background-color: colors.$base-white;
@@ -58,7 +126,32 @@
         }
     }
 }
-
+.concept__fields {
+    max-width: 40rem;
+    margin: 0 auto 3rem;
+    .input {
+        width: 100%;
+        input {
+            max-width: unset;
+             width: 100%;
+        }
+    }
+}
+.concept__add-concept--messaging {
+    .input:nth-of-type(3) {
+        margin-bottom: 1.5rem;
+    }
+}
+.concept__buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1.5rem 1.5rem 0;
+    margin: 1.5rem -1.5rem 0;
+    gap: 0.5rem;
+    button {
+        margin: 0;
+    }
+}
 .concept-local-library__header {
     display: flex;
     flex-direction: row;

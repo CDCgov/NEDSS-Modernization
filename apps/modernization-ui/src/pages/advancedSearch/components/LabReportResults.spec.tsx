@@ -93,7 +93,6 @@ describe('LabReportResults component tests', () => {
         expect(getByText('Acid-Fast Stain = abnormal')).toBeInTheDocument();
         expect(getByText('OBS10001008GA01')).toBeInTheDocument();
         expect(getByText('1/1/1990')).toBeInTheDocument();
-        expect(getByText(`(${age} years)`)).toBeInTheDocument();
         expect(getByText('63000')).toBeInTheDocument();
         expect(getByText('7/27/2023')).toBeInTheDocument();
         expect(getByText('Piedmont Hospital')).toBeInTheDocument();

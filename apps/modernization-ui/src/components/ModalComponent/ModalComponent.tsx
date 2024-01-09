@@ -1,6 +1,7 @@
 import './ModalComponent.scss';
-import { Modal, ModalHeading, ModalRef, ModalFooter, Icon, ModalToggleButton } from '@trussworks/react-uswds';
+import { Modal, ModalHeading, ModalRef, ModalFooter, ModalToggleButton } from '@trussworks/react-uswds';
 import React, { RefObject } from 'react';
+import { Icon } from '@trussworks/react-uswds';
 
 type ModalProps = {
     modalRef?: RefObject<ModalRef> | undefined;
@@ -9,7 +10,8 @@ type ModalProps = {
     modalFooter?: React.ReactNode | React.ReactNode[] | string;
     isLarge?: boolean;
     size?: string;
-    close?: boolean;
+    forceAction?: boolean;
+    closer?: boolean;
 };
 
 export const ModalComponent = ({
@@ -19,7 +21,7 @@ export const ModalComponent = ({
     modalFooter,
     isLarge,
     size,
-    close
+    closer
 }: ModalProps) => {
     return (
         <Modal
@@ -32,8 +34,8 @@ export const ModalComponent = ({
             aria-describedby="modal-1-description">
             <ModalHeading id="modal-1-heading">
                 {modalHeading}
-                {close ? (
-                    <ModalToggleButton modalRef={modalRef!} closer unstyled>
+                {closer ? (
+                    <ModalToggleButton unstyled closer modalRef={modalRef!}>
                         <Icon.Close size={4} />
                     </ModalToggleButton>
                 ) : null}
