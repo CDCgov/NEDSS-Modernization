@@ -19,7 +19,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
-import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
+import gov.cdc.nbs.questionbank.valueset.request.ValueSetCreateRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
 import gov.cdc.nbs.questionbank.valueset.response.Concept;
@@ -36,6 +36,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ValueSetController {
 
+
   private final ValueSetStateManager valueSetStateManager;
   private final ValueSetReader valueSetReador;
   private final ValueSetUpdater valueSetUpdater;
@@ -45,7 +46,7 @@ public class ValueSetController {
   private final UserDetailsProvider userDetailsProvider;
 
   @PostMapping
-  public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody ValueSetRequest request) {
+  public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody ValueSetCreateRequest request) {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     CreateValueSetResponse response = valueSetCreator.createValueSet(request, userId);
     return new ResponseEntity<>(response, null, response.getStatus());
@@ -102,5 +103,6 @@ public class ValueSetController {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return conceptCreator.addConcept(codeSetNm, request, userId);
   }
+
 
 }

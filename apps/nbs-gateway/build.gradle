@@ -1,7 +1,7 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-    id 'org.springframework.boot' version '3.1.5'
+    id 'org.springframework.boot' version '3.2.1'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -30,7 +30,7 @@ testing {
 
             dependencies {
                 implementation 'org.springframework.boot:spring-boot-starter-test'
-                implementation "org.wiremock:wiremock:3.1.0"
+                implementation "org.wiremock:wiremock-standalone:3.2.0"
             }
         }
     }
@@ -41,7 +41,7 @@ dependencies {
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
     implementation libs.snake.yaml
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway:4.0.8'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway:4.1.1'
 }
 
 tasks.withType(JavaExec).configureEach {
