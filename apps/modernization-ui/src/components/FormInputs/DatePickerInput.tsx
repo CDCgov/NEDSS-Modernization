@@ -49,14 +49,18 @@ export const DatePickerInput = (props: DatePickerProps) => {
 
     const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue));
 
-    const watchDateChange = useWatch({ control: props.control, name: 'dateOfBirth' });
+    // This is a way to clear the error when a control of a form is passed.
+    // This is because a form.reset doesn't really reset this DatePicker's error.
+    if (props.control) {
+        const watchDateChange = useWatch({ control: props.control, name: 'dateOfBirth' });
 
-    // Reset the error state to false when the form is cleared.
-    useEffect(() => {
-        if (props.defaultValue == 'none') {
-            setError(false);
-        }
-    }, [watchDateChange]);
+        // Reset the error state to false when the form is cleared.
+        useEffect(() => {
+            if (props.defaultValue == 'none') {
+                setError(false);
+            }
+        }, [watchDateChange]);
+    }
 
     const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
         const currentVal = (event.target as HTMLInputElement).value;
