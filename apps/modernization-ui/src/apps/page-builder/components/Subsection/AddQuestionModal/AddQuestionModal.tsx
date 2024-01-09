@@ -53,7 +53,7 @@ export const AddQuestionModal = ({ modalRef, subsectionId }: Props) => {
                     <QuestionLibrary hideTabs modalRef={modalRef} onAddQuestion={handleAddQuestion} />
                 </div>
             }
-            close
+            closer
         />
     );
 };

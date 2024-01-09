@@ -21,19 +21,25 @@ export const QuestionLibrary = ({ hideTabs, modalRef, onAddQuestion, nav }: Prop
     const [totalElements, setTotalElements] = useState(0);
     const token = authorization();
 
-    // @ts-ignore
-    useEffect(async () => {
-        const { content, totalElements }: any = await fetchQuestion(
-            token,
-            searchQuery,
-            sortBy,
-            currentPage,
-            pageSize,
-            filter
-        );
-        setSummaries(content);
-        setTotalElements(totalElements);
-        setIsLoading(false);
+    useEffect(() => {
+        const fetchContent = async () => {
+            try {
+                const { content, totalElements }: any = await fetchQuestion(
+                    token,
+                    searchQuery,
+                    sortBy,
+                    currentPage,
+                    pageSize,
+                    filter
+                );
+                setSummaries(content);
+                setTotalElements(totalElements);
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Error fetching content', error);
+            }
+        };
+        fetchContent();
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
 
     const renderQuestionList = (

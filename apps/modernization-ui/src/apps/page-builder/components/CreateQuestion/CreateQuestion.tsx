@@ -347,7 +347,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                 Search value set
             </ModalToggleButton>
             <ModalComponent
-                isLarge
+                size="wide"
                 modalRef={valueSetmodalRef}
                 modalHeading={'Add value set'}
                 modalBody={<ValuesetLibrary modalRef={valueSetmodalRef} hideTabs types="recent" />}
