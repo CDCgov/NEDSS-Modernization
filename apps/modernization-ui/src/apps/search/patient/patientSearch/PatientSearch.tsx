@@ -103,7 +103,6 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                             name="dateOfBirth"
                             render={({ field: { onChange, value, name } }) => (
                                 <DatePickerInput
-                                    control={form.control}
                                     defaultValue={value}
                                     onChange={onChange}
                                     name={name}

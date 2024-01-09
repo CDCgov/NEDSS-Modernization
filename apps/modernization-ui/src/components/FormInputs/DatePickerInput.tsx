@@ -1,11 +1,9 @@
 import { DatePicker } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
-import React, { KeyboardEvent, useEffect, useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import classNames from 'classnames';
 import { isFuture } from 'date-fns';
 import { EntryWrapper } from 'components/Entry';
-import { Control, useWatch } from 'react-hook-form';
-import { PersonFilter } from 'generated/graphql/schema';
 
 type OnChange = (val?: string) => void;
 type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
@@ -24,7 +22,6 @@ type DatePickerProps = {
     required?: boolean;
     disabled?: boolean;
     disableFutureDates?: boolean;
-    control?: Control<PersonFilter, any>;
 };
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/(19|20)[0-9]{2}$/;
@@ -47,20 +44,7 @@ export const DatePickerInput = (props: DatePickerProps) => {
     const validDefaultValue = !emptyDefaultValue && props.defaultValue && matches(props.defaultValue);
     const intialDefault = validDefaultValue ? interalize(props.defaultValue) : undefined;
 
-    const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue));
-
-    // This is a way to clear the error when a control of a form is passed.
-    // This is because a form.reset doesn't really reset this DatePicker's error.
-    if (props.control) {
-        const watchDateChange = useWatch({ control: props.control, name: 'dateOfBirth' });
-
-        // Reset the error state to false when the form is cleared.
-        useEffect(() => {
-            if (props.defaultValue == 'none') {
-                setError(false);
-            }
-        }, [watchDateChange]);
-    }
+    const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue) && props.defaultValue !== 'none');
 
     const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
         const currentVal = (event.target as HTMLInputElement).value;
