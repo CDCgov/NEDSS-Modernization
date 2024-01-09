@@ -75,10 +75,11 @@ export const AdvancedSearch = () => {
     const [resultStartCount, setResultStartCount] = useState<number>(0);
     const [resultEndCount, setResultEndCount] = useState<number>(0);
     const [resultTotal, setResultTotal] = useState<number>(0);
-    const { skipTo } = useSkipLink();
+    const { skipTo, focusedTo } = useSkipLink();
 
     useEffect(() => {
-        skipTo('lastName', false);
+        skipTo('lastName');
+        focusedTo(false);
     }, []);
 
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
@@ -276,7 +277,6 @@ export const AdvancedSearch = () => {
 
     const handleSubmit = async (filter: PersonFilter | InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {
         let search = '';
-        skipTo('');
         if (!isEmpty(filter)) {
             // send filter for encryption
             const encryptedFilter = await EncryptionControllerService.encryptUsingPost({

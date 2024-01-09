@@ -2,7 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import './SkipLink.scss';
 
 interface SkipLinkContextType {
-    skipTo: (id: string, isFocused?: boolean) => void;
+    skipTo: (id: string) => void;
+    focusedTo: (focused: boolean) => void;
     currentFocusTarget: string;
 }
 
@@ -24,26 +25,29 @@ interface SkipLinkProviderProps {
 
 export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {
     const [currentFocusTarget, setCurrentFocusTarget] = useState('');
-    const [isActionFocused, setIsActionFocused] = useState(false);
+    const [isActionFocused, setIsActionFocused] = useState(true);
 
-    const skipTo = (id: string, isFocused?: boolean) => {
+    const skipTo = (id: string) => {
         setCurrentFocusTarget(id);
-        setIsActionFocused(isFocused !== undefined ? isFocused : true);
+        setIsActionFocused(true);
+    };
+
+    const focusedTo = (isFocused: boolean) => {
+        setIsActionFocused(isFocused);
     };
 
     // Setting up the id to pass it to the anchor tag
     const contextValue: SkipLinkContextType = {
         skipTo,
+        focusedTo,
         currentFocusTarget
     };
 
     useEffect(() => {
-        if (!isActionFocused) {
-            return;
-        }
         const targetElement = document.getElementById(currentFocusTarget);
-        if (targetElement) {
+        if (targetElement && isActionFocused) {
             targetElement.focus();
+            setCurrentFocusTarget('');
         }
     }, [currentFocusTarget, isActionFocused]);
 
