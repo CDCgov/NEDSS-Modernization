@@ -4,7 +4,12 @@
 .valueset-local-library {
     background-color: colors.$base-white;
     border-radius: 5px;
+    height: 100%;
+    overflow-y: auto;
     @extend %thin;
+    &.modal {
+        height: calc(100% - 5rem);
+    }
 
     h2 {
         margin: 0;
@@ -107,6 +112,27 @@
             }
         }
     }
+    .no-data-available {
+        border-radius: 0.4rem;
+        @extend %thin;
+        background: colors.$base-white;
+        display: flex;
+        padding: 1.5rem 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        align-self: stretch;
+    
+        .no-text {
+            color: colors.$base-black;
+            text-align: center;
+            font-family: Public Sans;
+            font-size: 1.25rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+    }
 }
 .usa-modal--lg {
     .usa-modal__main {
@@ -191,32 +217,6 @@
         text-align: center;
         font-family: Public Sans;
         font-size: 16px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
-    }
-}
-.header-icon-title {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-.no-data-available {
-    border-radius: 5px;
-    @extend %thin;
-    background: var(--base-white, #fff);
-    display: flex;
-    padding: 24px 0px;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    align-self: stretch;
-
-    .no-text {
-        color: var(--base-black, #000);
-        text-align: center;
-        font-family: Public Sans;
-        font-size: 22px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;

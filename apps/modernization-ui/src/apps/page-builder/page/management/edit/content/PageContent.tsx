@@ -84,7 +84,7 @@ export const PageContent = ({ tab, refresh }: Props) => {
             <ModalComponent
                 isLarge
                 modalRef={editQuestionModalRef}
-                close
+                closer
                 modalHeading={
                     <div className="edit-question-header">
                         <Heading level={2}>Edit question</Heading>

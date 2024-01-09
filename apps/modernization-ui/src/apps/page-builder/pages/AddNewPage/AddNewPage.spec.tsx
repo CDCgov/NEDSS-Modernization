@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { AlertProvider } from 'alert';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { AddNewPage } from './AddNewPage';
 
 import {
@@ -48,13 +48,25 @@ const eventType = [
 ];
 
 describe('Add New Page', () => {
-    it('should render event type drop down', async () => {
-        const { queryByText } = render(
-            <BrowserRouter>
+    it('should have the title of Create new page', () => {
+        const { getByText } = render(
+            <MemoryRouter>
                 <AlertProvider>
                     <AddNewPage />
                 </AlertProvider>
-            </BrowserRouter>
+            </MemoryRouter>
+        );
+
+        expect(getByText('Create new page')).toBeInTheDocument();
+    });
+
+    it('should render event type drop down', async () => {
+        const { queryByText } = render(
+            <MemoryRouter>
+                <AlertProvider>
+                    <AddNewPage />
+                </AlertProvider>
+            </MemoryRouter>
         );
 
         const label = screen.getByText('Event type');
@@ -75,11 +87,11 @@ describe('Add New Page', () => {
 
     it('should display warning when non Investigation type is selected', async () => {
         render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <AlertProvider>
                     <AddNewPage />
                 </AlertProvider>
-            </BrowserRouter>
+            </MemoryRouter>
         );
         const label = screen.getByText('Event type');
         expect(label).toBeInTheDocument();
@@ -110,11 +122,11 @@ describe('Add New Page', () => {
         window.location = mockLocation;
 
         render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <AlertProvider>
                     <AddNewPage />
                 </AlertProvider>
-            </BrowserRouter>
+            </MemoryRouter>
         );
 
         const select = screen.getByTestId('eventTypeDropdown');
@@ -133,11 +145,11 @@ describe('Add New Page', () => {
 
     it('should display form when Investigation type is selected', async () => {
         const { queryByText } = render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <AlertProvider>
                     <AddNewPage />
                 </AlertProvider>
-            </BrowserRouter>
+            </MemoryRouter>
         );
         const label = screen.getByText('Event type');
         expect(label).toBeInTheDocument();
