@@ -1,11 +1,12 @@
-import React from 'react';
 import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { Concept, Condition, PageCreateRequest, Template } from 'apps/page-builder/generated';
+import { Concept, Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
+import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
-import { validPageNameRule } from 'validation/entry';
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { validPageNameRule } from 'validation/entry';
 import { dataMartNameRule } from 'validation/entry/dataMartNameRule';
 
 type AddNewPageFieldProps = {
@@ -18,6 +19,16 @@ type AddNewPageFieldProps = {
 };
 export const AddNewPageFields = (props: AddNewPageFieldProps) => {
     const form = useFormContext<PageCreateRequest>();
+
+    const validatePageName = async (val: string) => {
+        const response = await PageControllerService.validatePageRequestUsingPost({
+            authorization: authorization(),
+            request: { name: val }
+        });
+        if (!response) {
+            form.setError('name', { message: 'Name is already in use' });
+        }
+    };
 
     return (
         <>
@@ -57,7 +68,10 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
-                        onBlur={onBlur}
+                        onBlur={() => {
+                            onBlur();
+                            validatePageName(value);
+                        }}
                         defaultValue={value}
                         label="Page name"
                         className="pageName"
