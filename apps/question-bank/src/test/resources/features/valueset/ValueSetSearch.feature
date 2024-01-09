@@ -15,7 +15,7 @@ Background:
     Scenario: I can search for a value set that does not exist
             Given I am an admin user
             When I make a request for a value set that does not exist
-            Then A value sets should not be returned
+            Then Value sets should not be returned
 
     Scenario: I can search for a value set that exists
             Given I am an admin user

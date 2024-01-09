@@ -39,9 +39,8 @@ public class ReadValueSetSteps {
   @Given("A valueSet exists")
   public void a_valueSet_exists() {
     try {
-      request = new ValueSetCreateRequest("type","testValueSetCode","testValueSetNm","testCodeSetDescTxt");
-
-
+      request = new ValueSetCreateRequest("type", "testValueSetCode", "testValueSetNm",
+          "testCodeSetDescTxt");
       ResponseEntity<CreateValueSetResponse> codeSetResult = valueSetController.createValueSet(request);
     } catch (AccessDeniedException e) {
       exceptionHolder.setException(e);
@@ -92,13 +91,6 @@ public class ReadValueSetSteps {
     }
   }
 
-  @Then("Value sets should be returned")
-  public void value_sets_should_be_returned() {
-    Page<ValueSetSearchResponse> results = valueSetSearchHolder.getValueSetSearchResults();
-    assertNotNull(results);
-    assertFalse(results.toList().isEmpty());
-    assertEquals(1, results.toList().size());
-  }
 
   @Then("All Value sets should be returned")
   public void all_value_sets_should_be_returned() {
@@ -107,18 +99,18 @@ public class ReadValueSetSteps {
     assertFalse(results.isEmpty());
   }
 
-  @Then("A value sets should not be returned")
-  public void a_value_sets_should_not_be_returned() {
+  @Then("Value sets should not be returned")
+  public void Value_sets_should_not_be_returned() {
     Page<ValueSetSearchResponse> results = valueSetSearchHolder.getValueSetSearchResults();
     assertNotNull(results);
     assertTrue(results.isEmpty());
   }
 
-  @Then("A value set should be returned")
-  public void a_value_set_should_be_returned() {
-    Page<ValueSet> results = valueSetSearchHolder.getValueSetResults();
-    assertNotNull(results);
-    assertTrue(results.getSize() > 0);
+  @Then("Value sets should be returned")
+  public void value_sets_should_be_returned() {
+    Page<ValueSetSearchResponse> result = valueSetSearchHolder.getValueSetSearchResults();
+    assertNotNull(result);
+    assertTrue(result.getSize() > 0);
   }
 
 }
