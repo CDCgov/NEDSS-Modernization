@@ -23,6 +23,8 @@ const readOnlyPartId = 1030;
 
 const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, originalElecDocId, readOnlyPartId];
 
+const questionTypes = [1001, 1006, 1007, 1008, 1009, 1013, 1017, 1019, 1024, 1025, 1026, 1027, 1028, 1029, 1031, 1032];
+
 export const PageContent = ({ tab, refresh }: Props) => {
     const editStaticElementRef = useRef<ModalRef>(null);
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
@@ -34,7 +36,11 @@ export const PageContent = ({ tab, refresh }: Props) => {
     };
 
     const onCloseModal = () => {
-        editStaticElementRef.current?.toggleModal(undefined, false);
+        if (staticTypes.includes(currentEditQuestion?.displayComponent!)) {
+            editStaticElementRef.current?.toggleModal(undefined, false);
+        } else {
+            editQuestionModalRef.current?.toggleModal(undefined, false);
+        }
         setCurrentEditQuestion(undefined);
     };
 
@@ -44,8 +50,9 @@ export const PageContent = ({ tab, refresh }: Props) => {
 
     useEffect(() => {
         if (staticTypes.includes(currentEditQuestion?.displayComponent!)) {
-            console.log(currentEditQuestion);
             editStaticElementRef.current?.toggleModal(undefined, true);
+        } else if (questionTypes.includes(currentEditQuestion?.displayComponent!)) {
+            editQuestionModalRef.current?.toggleModal(undefined, true);
         }
     }, [currentEditQuestion]);
 
@@ -58,7 +65,6 @@ export const PageContent = ({ tab, refresh }: Props) => {
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={setSubsectionId}
                 addQuestionModalRef={addQuestionModalRef}
-                editQuestionModalRef={editQuestionModalRef}
             />
             <PageSideMenu />
             <ModalComponent
@@ -78,13 +84,13 @@ export const PageContent = ({ tab, refresh }: Props) => {
             <ModalComponent
                 isLarge
                 modalRef={editQuestionModalRef}
-                close
+                closer
                 modalHeading={
                     <div className="edit-question-header">
                         <Heading level={2}>Edit question</Heading>
                     </div>
                 }
-                modalBody={<CreateQuestion modalRef={editQuestionModalRef} question={currentEditQuestion} />}
+                modalBody={<CreateQuestion onCloseModal={onCloseModal} question={currentEditQuestion} />}
             />
         </div>
     );

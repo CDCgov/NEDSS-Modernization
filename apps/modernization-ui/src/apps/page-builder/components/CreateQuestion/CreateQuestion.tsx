@@ -80,7 +80,7 @@ type CreateQuestionFormType = CreateNumericQuestionRequest &
 
 export type optionsType = { name: string; value: string };
 
-export const CreateQuestion = ({ question, modalRef }: any) => {
+export const CreateQuestion = ({ question, onCloseModal }: any) => {
     const questionForm = useForm<CreateQuestionFormType, any>({
         defaultValues: { ...init }
     });
@@ -297,7 +297,7 @@ export const CreateQuestion = ({ question, modalRef }: any) => {
                 return response;
             });
         }
-        modalRef.current?.toggleModal(undefined, false);
+        onCloseModal && onCloseModal();
     });
     const handleUpdateQuestion = (request: any) => {
         QuestionControllerService.updateQuestionUsingPut({
@@ -307,7 +307,7 @@ export const CreateQuestion = ({ question, modalRef }: any) => {
         }).then(() => {
             showAlert({ type: 'success', header: 'Updated', message: 'Question updated successfully' });
             resetInput();
-            modalRef.current?.toggleModal(undefined, false);
+            onCloseModal && onCloseModal();
         });
     };
     const handleValidation = (unique = true) => {
@@ -316,6 +316,7 @@ export const CreateQuestion = ({ question, modalRef }: any) => {
 
     const resetInput = () => {
         reset();
+        onCloseModal && onCloseModal();
     };
 
     const fieldTypeTab = [
@@ -346,7 +347,7 @@ export const CreateQuestion = ({ question, modalRef }: any) => {
                 Search value set
             </ModalToggleButton>
             <ModalComponent
-                isLarge
+                size="wide"
                 modalRef={valueSetmodalRef}
                 modalHeading={'Add value set'}
                 modalBody={<ValuesetLibrary modalRef={valueSetmodalRef} hideTabs types="recent" />}
@@ -837,9 +838,9 @@ export const CreateQuestion = ({ question, modalRef }: any) => {
                         <Button type="submit" className="submit-btn">
                             {question?.id ? 'Save' : 'Create and add to page'}
                         </Button>
-                        <ModalToggleButton className="cancel-btn" modalRef={modalRef} onClick={resetInput} closer>
+                        <Button className="cancel-btn" onClick={resetInput} type={'button'}>
                             Cancel
-                        </ModalToggleButton>
+                        </Button>
                     </div>
                 </Form>
             </div>

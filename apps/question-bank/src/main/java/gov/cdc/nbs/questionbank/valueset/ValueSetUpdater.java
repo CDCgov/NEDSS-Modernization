@@ -2,7 +2,6 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +15,22 @@ import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 @Service
 public class ValueSetUpdater {
 
-	@Autowired
-	private ValueSetRepository valueSetRepository;
+
+	private final ValueSetRepository valueSetRepository;
+
+	public ValueSetUpdater(ValueSetRepository valueSetRepository) {
+		this.valueSetRepository = valueSetRepository;
+	}
 
 	public UpdatedValueSetResponse updateValueSet(ValueSetUpdateRequest update) {
 		UpdatedValueSetResponse response = new UpdatedValueSetResponse();
-		if (update.codeSetName() == null) {
+		if (update.valueSetCode() == null) {
 			response.setMessage(ValueSetConstants.EMPTY_CODE_SET_NM);
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			return response;
 		}
 		try {
-			Optional<Codeset> codeSet = valueSetRepository.findByCodeSetNm(update.codeSetName());
+			Optional<Codeset> codeSet = valueSetRepository.findByCodeSetNm(update.valueSetCode());
 			if (codeSet.isPresent()) {
 				Codeset result = codeSet.get();
 				result.setValueSetNm(update.valueSetNm() != null ? update.valueSetNm() : result.getValueSetNm());
@@ -36,7 +39,8 @@ public class ValueSetUpdater {
 				valueSetRepository.save(result);
 				response.setMessage(ValueSetConstants.UPDATE_SUCCESS_MESSAGE);
 				response.setStatus(HttpStatus.OK);
-				ValueSetUpdateShort body = new ValueSetUpdateShort(update.codeSetName(), update.valueSetNm(),update.codeSetDescTxt());
+				ValueSetUpdateShort body =
+						new ValueSetUpdateShort(update.valueSetCode(), update.valueSetNm(), update.codeSetDescTxt());
 				response.setBody(body);
 
 			} else {

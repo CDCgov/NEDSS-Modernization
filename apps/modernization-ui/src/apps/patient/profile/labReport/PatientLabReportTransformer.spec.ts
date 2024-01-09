@@ -265,4 +265,65 @@ describe('when the result has content', () => {
             ])
         );
     });
+
+
+    it('should return null for collectedOn date and not transform a null effectiveFromTime value to a date with for collectedOn', () => {
+        const result: GraphQLPatientLabReport[] = [
+            {
+                id: '10066376',
+                observationUid: 10066376,
+                addTime: '2023-03-27T00:00:00Z',
+                effectiveFromTime: null,
+                programAreaCd: 'program-area-value',
+                jurisdictionCodeDescTxt: 'jurisdiction-value',
+                localId: 'local-id-value',
+                electronicInd: 'N',
+                associatedInvestigations: [],
+                personParticipations: [
+                    {
+                        typeCd: 'PATSBJ',
+                        personCd: 'PAT',
+                        firstName: 'provider-first-name',
+                        lastName: 'provider-last-name'
+                    }
+                ],
+                organizationParticipations: [
+                    {
+                        typeCd: 'AUT',
+                        name: 'reporting-Facility-value'
+                    },
+                    {
+                        typeCd: 'ORD',
+                        name: 'ordering-Facility-value'
+                    }
+                ],
+                observations: [
+                    {
+                        domainCd: 'OTHER',
+                        cdDescTxt: 'No Information Given',
+                        displayName: null
+                    },
+                    {
+                        domainCd: 'Result',
+                        cdDescTxt: 'Acid-Fast Stain',
+                        displayName: 'abnormal presence of'
+                    }
+                ]
+            }
+        ];
+        const actual = transform(result);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    report: '10066376',
+                    receivedOn: new Date('2023-03-27T05:00:00Z'),
+                    collectedOn: null,
+                    programArea: 'program-area-value',
+                    jurisdiction: 'jurisdiction-value',
+                    event: 'local-id-value'
+                })
+            ])
+        );
+    });
 });

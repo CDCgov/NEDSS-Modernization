@@ -1,12 +1,15 @@
 import { Input } from 'components/FormInputs/Input';
-import { Button, Tag } from '@trussworks/react-uswds';
+import { Button, Tag, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Icon } from '@trussworks/react-uswds';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { QuestionLibraryFilterModal } from './FilterModal/ValuesetLibraryFilterModal';
+import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
+import { AddValueset } from '../../components/AddValueset/AddValueset';
 
 export const SearchBar = ({ onChange }: any) => {
     const [search, setSearch] = useState<string>('');
     const [searchTags, setSearchTags] = useState<any>([]);
+    const modalRef = useRef<ModalRef>(null);
 
     const handleSearch = ({ target }: any) => {
         setSearch(target.value);
@@ -45,7 +48,17 @@ export const SearchBar = ({ onChange }: any) => {
                     <Icon.Search size={3} />
                 </Button>
                 <QuestionLibraryFilterModal />
+                <ModalToggleButton modalRef={modalRef} className="submit-btn" type="button">
+                    Create Value set
+                </ModalToggleButton>
             </div>
+            <ModalComponent
+                size="wide"
+                modalRef={modalRef}
+                modalHeading={'Add value set'}
+                modalBody={<AddValueset modalRef={modalRef} />}
+                closer
+            />
         </div>
     );
 };

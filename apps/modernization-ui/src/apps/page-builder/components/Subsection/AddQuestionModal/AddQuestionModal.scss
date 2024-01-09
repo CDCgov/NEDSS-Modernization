@@ -1,14 +1,10 @@
+.add-question-modal {
+    height: calc(100% - 4rem);
+    overflow: auto;
+}
 .add-question-header {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
-    gap: 16px;
-    align-self: stretch;
-    span {
-        font-family: Public Sans;
-        font-size: 22px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
-    }
+    gap: 1rem;
 }

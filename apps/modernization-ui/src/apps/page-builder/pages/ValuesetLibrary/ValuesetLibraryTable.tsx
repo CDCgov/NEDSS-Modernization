@@ -31,8 +31,9 @@ type Props = {
     summaries: ValueSet[];
     labModalRef?: any;
     pages?: any;
+    updateCallback?: () => void;
 };
-export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) => {
+export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCallback }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
@@ -41,7 +42,6 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     const { setSearchValueSet } = useContext(QuestionsContext);
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
-    // @ts-ignore
     const asTableRow = (valueSet: ValueSet): TableBody => ({
         id: valueSet.nbsUid,
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
@@ -158,8 +158,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
     };
 
     const handleAddQsn = async () => {
-        // @ts-ignore
-        const id: number = parseInt(localStorage.getItem('selectedQuestion'));
+        const id: number = parseInt(localStorage.getItem('selectedQuestion')!);
         if (!id) return;
         const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
             authorization,
@@ -245,14 +244,11 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                 Add value set
             </ModalToggleButton>
             <ModalComponent
-                isLarge
+                size="wide"
                 modalRef={modalRef}
-                modalHeading={
-                    <span className="header-icon-title">
-                        <Icon.ArrowBack /> Add value set
-                    </span>
-                }
-                modalBody={<AddValueset hideHeader modalRef={modalRef} />}
+                modalHeading={'Add value set'}
+                modalBody={<AddValueset modalRef={modalRef} />}
+                closer
             />
         </div>
     );
@@ -271,14 +267,11 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) =
                 </Button>
             </div>
             <ModalComponent
-                isLarge
+                size="wide"
                 modalRef={modalRef}
-                modalHeading={
-                    <span className="header-icon-title">
-                        <Icon.ArrowBack /> Add value set
-                    </span>
-                }
-                modalBody={<AddValueset hideHeader modalRef={modalRef} />}
+                modalHeading={'Add value set'}
+                modalBody={<AddValueset modalRef={modalRef} updateCallback={updateCallback} />}
+                closer
             />
         </div>
     );

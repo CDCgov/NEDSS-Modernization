@@ -18,7 +18,6 @@ type Props = {
     onEditQuestion: (question: PagesQuestion) => void;
     onAddQuestion: () => void;
     addQuestionModalRef: RefObject<ModalRef>;
-    editQuestionModalRef: RefObject<ModalRef>;
 };
 
 const hyperlinkID = 1003;
@@ -29,13 +28,7 @@ const originalElecDoc = 1036;
 
 const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, readOnlyComments, originalElecDoc];
 
-export const Subsection = ({
-    subsection,
-    onAddQuestion,
-    addQuestionModalRef,
-    editQuestionModalRef,
-    onEditQuestion
-}: Props) => {
+export const Subsection = ({ subsection, onAddQuestion, addQuestionModalRef, onEditQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, fetch } = usePageManagement();
     const { showAlert } = useAlert();
@@ -92,7 +85,6 @@ export const Subsection = ({
                             question={q}
                             key={k}
                             onEditQuestion={onEditQuestion}
-                            editQuestionModalRef={editQuestionModalRef}
                             onDeleteQuestion={handleDeleteQuestion}
                             onRequiredChange={handleRequiredChange}
                         />

@@ -18,17 +18,28 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("api/v1/conditions/")
-@RequiredArgsConstructor
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ConditionController {
-    private final ConditionCreator conditionCreator;
-    private final ConditionReader conditionReader;
-    private final UserDetailsProvider userDetailsProvider;
-    private final ConditionStatus conditionStatus;
+  private final ConditionCreator conditionCreator;
+  private final ConditionReader conditionReader;
+  private final UserDetailsProvider userDetailsProvider;
+  private final ConditionStatus conditionStatus;
+  private final ConditionSearcher searcher;
+
+  public ConditionController(
+      final ConditionCreator conditionCreator,
+      final ConditionReader conditionReader,
+      final UserDetailsProvider userDetailsProvider,
+      final ConditionStatus conditionStatus,
+      final ConditionSearcher searcher) {
+    this.conditionCreator = conditionCreator;
+    this.conditionReader = conditionReader;
+    this.userDetailsProvider = userDetailsProvider;
+    this.conditionStatus = conditionStatus;
+    this.searcher = searcher;
+  }
 
     @PostMapping
     public Condition createCondition(@RequestBody CreateConditionRequest request) {
@@ -49,7 +60,7 @@ public class ConditionController {
     @PostMapping("/search")
     public Page<Condition> searchConditions(@RequestBody ReadConditionRequest search,
             @PageableDefault(size = 20) Pageable pageable) {
-        return conditionReader.searchCondition(search, pageable);
+        return searcher.search(search, pageable);
     }
 
     @PatchMapping("/{id}")
