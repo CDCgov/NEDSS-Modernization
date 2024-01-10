@@ -6,14 +6,19 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
+    margin: 0;
     background-color: colors.$base-white;
     //border-bottom: borders.$border;
 }
+
 .addRulesContainer {
     max-width: 75vw;
     margin: 0 auto;
     padding: 20px;
     background-color: colors.$base-white;
+    .addBusinessRuleTitle {
+        text-align: center;
+    }
 }
 
 .footerButtonsContainer {
