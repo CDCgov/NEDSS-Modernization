@@ -18,6 +18,7 @@ import { Login } from 'pages/login/Login';
 import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import AddBusinessRule from 'apps/page-builder/pages/BusinessRulesLibrary/Add/AddBusinessRule';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -67,7 +68,10 @@ export const AppRoutes = () => {
                     <Route path=":pageId">
                         <Route index element={<PreviewPage />} />
                         <Route path="edit" element={<Edit />} />
-                        <Route path="business-rules" element={<BusinessRulesLibrary />} />
+                        <Route path="business-rules">
+                            <Route index element={<BusinessRulesLibrary />} />
+                            <Route path="add" element={<AddBusinessRule />} />
+                        </Route>
                         <Route path=":ruleId">
                             <Route index element={<EditBusinessRules />} />
                         </Route>

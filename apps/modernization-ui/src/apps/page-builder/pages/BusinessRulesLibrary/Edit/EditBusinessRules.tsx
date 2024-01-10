@@ -47,17 +47,16 @@ const EditBusinessRules = () => {
             />
             <div className="edit-rules">
                 <div className="edit-rules__buttons">
-                    {ruleId && (
-                        <ModalToggleButton
-                            opener
-                            modalRef={deleteWarningModalModal}
-                            type="button"
-                            className="delete-btn"
-                            unstyled>
-                            <Icon.Delete size={3} className="margin-right-2px" />
-                            <span>Delete</span>
-                        </ModalToggleButton>
-                    )}
+                    <ModalToggleButton
+                        opener
+                        modalRef={deleteWarningModalModal}
+                        type="button"
+                        className="delete-btn"
+                        unstyled>
+                        <Icon.Delete size={3} className="margin-right-2px" />
+                        <span>Delete</span>
+                    </ModalToggleButton>
+
                     <div>
                         <Button type="button" outline onClick={handleCancel}>
                             Cancel
