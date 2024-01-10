@@ -201,14 +201,14 @@ class ConditionCreatorTest {
   void testGenerateNewIdWithNoExistingIds() {
     doReturn(new ArrayList<>()).when(ldfPageSetRepository).findAllIds();
     String newId = conditionCreator.getLdfId();
-    String currentYear = String.valueOf(LocalDate.now().getYear());
+    String currentYear = String.valueOf(LocalDate.now(clock).getYear());
     String expected = currentYear + "001";
     assertEquals(expected, newId);
   }
 
   @Test
   void testGenerateNewIdWithExistingIdsContainingCurrentYear() {
-    String currentYear = String.valueOf(LocalDate.now().getYear());
+    String currentYear = String.valueOf(LocalDate.now(clock).getYear());
     List<String> existingIds = Arrays.asList(currentYear + "001", currentYear + "002", currentYear + "003");
     doReturn(existingIds).when(ldfPageSetRepository).findAllIds();
     String newId = conditionCreator.getLdfId();
@@ -221,7 +221,7 @@ class ConditionCreatorTest {
     List<String> existingIds = Arrays.asList("2022001", "98", "99");
     doReturn(existingIds).when(ldfPageSetRepository).findAllIds();
     String newId = conditionCreator.getLdfId();
-    String currentYear = String.valueOf(LocalDate.now().getYear());
+    String currentYear = String.valueOf(LocalDate.now(clock).getYear());
     String expected = currentYear + "001";
     assertEquals(expected, newId);
   }
