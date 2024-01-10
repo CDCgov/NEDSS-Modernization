@@ -33,7 +33,7 @@ const EditPageContent = () => {
         <PageManagementLayout name={page.name} mode={'edit'}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
-                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules-library`} type="outline">
+                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                         Business rules
                     </NavLinkButton>
                     <NavLinkButton to={'..'}>Preview</NavLinkButton>

@@ -67,7 +67,7 @@ export const AppRoutes = () => {
                     <Route path=":pageId">
                         <Route index element={<PreviewPage />} />
                         <Route path="edit" element={<Edit />} />
-                        <Route path="business-rules-library" element={<BusinessRulesLibrary />} />
+                        <Route path="business-rules" element={<BusinessRulesLibrary />} />
                         <Route path=":ruleId">
                             <Route index element={<EditBusinessRules />} />
                         </Route>
