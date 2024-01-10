@@ -10,12 +10,13 @@ import { authorization } from '../../../../authorization';
 
 type Props = {
     modalRef?: RefObject<ModalRef>;
+    createModalRef?: RefObject<ModalRef>;
     hideTabs?: boolean;
     onAddQuestion?: (id: number) => void;
     nav?: boolean;
 };
 
-export const QuestionLibrary = ({ hideTabs, modalRef, onAddQuestion, nav }: Props) => {
+export const QuestionLibrary = ({ hideTabs, modalRef, onAddQuestion, createModalRef, nav }: Props) => {
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(QuestionsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
@@ -49,6 +50,7 @@ export const QuestionLibrary = ({ hideTabs, modalRef, onAddQuestion, nav }: Prop
                     summaries={summaries}
                     qtnModalRef={modalRef}
                     onAddQuestion={onAddQuestion}
+                    createModalRef={createModalRef}
                     pages={{ currentPage, pageSize, totalElements }}
                 />
             </div>

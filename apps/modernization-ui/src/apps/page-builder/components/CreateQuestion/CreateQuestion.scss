@@ -2,7 +2,7 @@
     background: #fff;
     width: 100%;
     max-height: 68vh;
-    overflow: auto;
+    overflow-y: auto;
     margin: auto;
     .field-space {
         margin-top: 10px;
@@ -162,4 +162,15 @@
     display: flex;
     gap: 1rem;
     align-self: stretch;
+}
+
+.usa-modal-wrapper.is-visible {
+   .usa-modal-overlay .usa-modal {
+       max-height: 80vh;
+       overflow: auto;
+       .usa-modal__content {
+           max-height: 80vh;
+           overflow: auto;
+       }
+   }
 }
