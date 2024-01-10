@@ -27,14 +27,6 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            label {
-                color: colors.$base-black;
-                font-family: Public Sans;
-                font-size: 16px;
-                font-style: normal;
-                font-weight: 700;
-                line-height: normal;
-            }
         }
         .drop-area {
             display: flex;
@@ -73,15 +65,13 @@
             }
             label {
                 color: #000;
-                font-family: Public Sans;
-                font-size: 16px;
+                font-size: 1rem;
                 font-style: normal;
                 font-weight: 400;
-                line-height: 162%; /* 25.92px */
+                line-height: 162%;
                 span {
                     color: colors.$primary;
-                    font-family: Public Sans;
-                    font-size: 16px;
+                    font-size: 1rem;
                     font-style: normal;
                     font-weight: 700;
                     line-height: normal;

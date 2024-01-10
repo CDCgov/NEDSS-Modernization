@@ -60,8 +60,8 @@ export const QuestionLibraryFilterModal = () => {
         fetchConditions(authorization).then((data: Condition[]) => {
             const list = data.map((option) => {
                 return {
-                    name: option.conditionShortNm!,
-                    value: option.investigationFormCd!
+                    name: option.name!,
+                    value: option.page!
                 };
             });
             setConditions(list);

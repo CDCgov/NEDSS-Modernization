@@ -3,30 +3,26 @@ import { CreateCondition } from 'apps/page-builder/components/CreateCondition/Cr
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { ConditionSearch } from 'apps/page-builder/condition';
-import { Concept, Condition, Template } from 'apps/page-builder/generated';
-import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
+import {
+    Concept,
+    Condition,
+    ConditionControllerService,
+    PageCreateRequest,
+    Template
+} from 'apps/page-builder/generated';
 import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
+import { authorization } from 'authorization';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { useConfiguration } from 'configuration';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from 'user';
 import './AddNewPage.scss';
 import { AddNewPageFields } from './AddNewPageFields';
 
-export type FormValues = {
-    conditionIds: string[];
-    dataMartName?: string;
-    eventType: string;
-    messageMappingGuide: string;
-    name: string;
-    pageDescription?: string;
-    templateId: number;
-};
 const eventType = [
     { value: 'CON', name: 'Contact Record' },
     { value: 'IXS', name: 'Interview' },
@@ -42,16 +38,26 @@ export const AddNewPage = () => {
     const createConditionModal = useRef<ModalRef>(null);
     const importTemplateModal = useRef<ModalRef>(null);
     const navigate = useNavigate();
-    const { state } = useContext(UserContext);
     const [conditions, setConditions] = useState<Condition[]>([]);
     const [mmgs, setMmgs] = useState<Concept[]>([]);
     const [templates, setTemplates] = useState<Template[]>([]);
-    const form = useForm<FormValues>({ mode: 'onBlur' });
+    const form = useForm<PageCreateRequest>({
+        mode: 'onBlur',
+        defaultValues: {
+            conditionIds: [],
+            dataMartName: '',
+            eventType: '',
+            messageMappingGuide: '',
+            name: '',
+            pageDescription: '',
+            templateId: undefined
+        }
+    });
     const watch = useWatch({ control: form.control });
     const config = useConfiguration();
 
     useEffect(() => {
-        const token = `Bearer ${state.getToken()}`;
+        const token = authorization();
         fetchMMGOptions(token)
             .then((data) => {
                 setMmgs(data);
@@ -59,9 +65,9 @@ export const AddNewPage = () => {
             .catch((error: any) => {
                 console.log('Error', error);
             });
-        fetchConditions(token).then((data) => {
-            setConditions(data);
-        });
+        ConditionControllerService.findConditionsNotInUseUsingGet({ authorization: token }).then((data) =>
+            setConditions(data)
+        );
         fetchTemplates(token).then((data) => {
             setTemplates(data);
         });
@@ -72,17 +78,8 @@ export const AddNewPage = () => {
         conditionLookupModal.current?.toggleModal();
     };
 
-    const onSubmit = form.handleSubmit(async (data) => {
-        await createPage(
-            `Bearer ${state.getToken()}`,
-            data.conditionIds.filter(Boolean),
-            data.eventType,
-            data.messageMappingGuide,
-            data.name,
-            Number(data.templateId),
-            data.pageDescription,
-            data?.dataMartName
-        ).then((response) => {
+    const onSubmit = form.handleSubmit((data) => {
+        createPage(authorization(), data).then((response) => {
             if (config.features.pageBuilder.page.management.edit.enabled) {
                 form.reset();
                 navigate(`/page-builder/pages/${response.pageId}/edit`);
@@ -126,6 +123,7 @@ export const AddNewPage = () => {
         temp.sort((a, b) => a.templateNm.localeCompare(b.templateNm));
         setTemplates(temp);
         form.setValue('templateId', template.id);
+        importTemplateModal.current?.toggleModal(undefined, false);
     };
 
     const handleCreateCondition = () => {
@@ -145,9 +143,9 @@ export const AddNewPage = () => {
                     <div className="add-new-page__content">
                         <h2>Create new page</h2>
                         <h4>Let's fill out some information about your new page before creating it</h4>
-                        <label className="fields-info">
+                        <div className="fields-info">
                             All fields with <span className="mandatory-indicator">*</span> are required
-                        </label>
+                        </div>
                         <Controller
                             control={form.control}
                             name="eventType"
@@ -165,9 +163,7 @@ export const AddNewPage = () => {
                                 />
                             )}
                         />
-                        {watch.eventType == undefined || watch.eventType == '' ? (
-                            <></>
-                        ) : (
+                        {watch.eventType !== undefined && watch.eventType !== '' && (
                             <>
                                 {watch.eventType == 'INV' ? (
                                     <FormProvider {...form}>
@@ -212,7 +208,10 @@ export const AddNewPage = () => {
                 modalBody={<CreateCondition conditionCreated={handleConditionCreated} modal={createConditionModal} />}
             />
             <Modal id="import-template-modal" isLarge ref={importTemplateModal}>
-                <ImportTemplate modal={importTemplateModal} onTemplateCreated={handleTemplateImported} />
+                <ImportTemplate
+                    onCancel={() => importTemplateModal.current?.toggleModal()}
+                    onTemplateCreated={handleTemplateImported}
+                />
             </Modal>
             <Modal
                 forceAction

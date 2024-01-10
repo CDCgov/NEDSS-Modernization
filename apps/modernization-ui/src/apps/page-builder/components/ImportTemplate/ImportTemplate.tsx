@@ -1,25 +1,25 @@
-import { Button, Icon, ModalRef, Tag } from '@trussworks/react-uswds';
+import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import { Template } from 'apps/page-builder/generated';
 import { useImportTemplate } from 'apps/page-builder/services/useImportTemplate';
 import { Spinner } from 'components/Spinner/Spinner';
 import React, { useEffect, useState } from 'react';
 import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
+import { Heading } from 'components/heading';
 
 type ImportTemplateProps = {
     onTemplateCreated: (template: Template) => void;
-    modal: React.RefObject<ModalRef>;
+    onCancel: () => void;
 };
-export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps) => {
+export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplateProps) => {
     const [file, setFile] = useState<File | undefined>();
     const [fileDrag, setFileDrag] = useState(false);
     const { error, isLoading, imported, reset, importTemplate } = useImportTemplate();
 
     useEffect(() => {
         if (imported) {
-            onTemplateCreated(imported);
             reset();
-            modal.current?.toggleModal(undefined, false);
+            onTemplateCreated(imported);
         }
     }, [imported]);
 
@@ -42,7 +42,7 @@ export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps
     const handleCancel = () => {
         setFile(undefined);
         reset();
-        modal.current?.toggleModal();
+        onCancel();
     };
 
     const handleDragEnd = (ev: React.DragEvent<HTMLDivElement>) => {
@@ -65,18 +65,19 @@ export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps
         <div className="import-template">
             {isLoading ? <Spinner /> : null}
             <div
+                role="none"
                 className="drop-container"
                 onDragLeave={handleDragEnd}
                 onDragOver={handleDragOver}
                 onDrop={handleFileDrop}>
-                {error ? (
+                {error && (
                     <div className="banner">
                         <AlertBanner type="error">{error}</AlertBanner>
                     </div>
-                ) : null}
+                )}
 
                 <div className="heading">
-                    <label>Import a new template</label>
+                    <Heading level={3}>Import a new template</Heading>
                 </div>
                 <label htmlFor="importTempId">
                     <input
@@ -91,11 +92,11 @@ export const ImportTemplate = ({ modal, onTemplateCreated }: ImportTemplateProps
 
                     <div className={`drop-area ${fileDrag ? 'dragged' : ''}`}>
                         <div className="display-flex gap-10">
-                            {file ? (
+                            {file && (
                                 <div className="tag-cover">
                                     <Tag background="#005EA2">{file?.name}</Tag>
                                 </div>
-                            ) : null}
+                            )}
                         </div>
                         <Icon.Logout size={4} />
                         <label htmlFor="importTempId">

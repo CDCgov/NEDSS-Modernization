@@ -3,7 +3,8 @@ import {
     PageControllerService,
     Page_PageSummary_,
     PagesService,
-    PageSummaryService
+    PageSummaryService,
+    PageCreateRequest
 } from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = (
@@ -22,19 +23,10 @@ export const fetchPageSummaries = (
     });
 };
 
-export const createPage = (
-    token: string,
-    conditionIds: string[],
-    eventType: string,
-    messageMappingGuide: string,
-    name: string,
-    templateId: number,
-    pageDescription?: string,
-    dataMartName?: string
-) => {
+export const createPage = (token: string, request: PageCreateRequest) => {
     return PageControllerService.createPageUsingPost({
         authorization: token,
-        request: { conditionIds, dataMartName, eventType, messageMappingGuide, name, pageDescription, templateId }
+        request
     }).then((response: any) => {
         return response;
     });

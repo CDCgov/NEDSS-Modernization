@@ -77,6 +77,7 @@ export type { PagesTab } from './models/PagesTab';
 export type { PageStateResponse } from './models/PageStateResponse';
 export type { PageSummary } from './models/PageSummary';
 export type { PageSummaryRequest } from './models/PageSummaryRequest';
+export type { PageValidationRequest } from './models/PageValidationRequest';
 export type { ProgramArea } from './models/ProgramArea';
 export type { Question } from './models/Question';
 export type { QuestionInfo } from './models/QuestionInfo';

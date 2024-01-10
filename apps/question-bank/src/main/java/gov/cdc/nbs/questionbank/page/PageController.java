@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.model.PageHistory;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
+import gov.cdc.nbs.questionbank.page.request.PageValidationRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.response.PageDeleteResponse;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
@@ -28,18 +29,21 @@ public class PageController {
   private final PageDeletor pageDeletor;
   private final UserDetailsProvider userDetailsProvider;
   private final PageHistoryFinder pageHistoryFinder;
+  private final PageValidator validator;
 
   public PageController(
       final PageCreator creator,
       final PageStateChanger stateChange,
       final PageDeletor pageDeletor,
       final UserDetailsProvider userDetailsProvider,
-      final PageHistoryFinder pageHistoryFinder) {
+      final PageHistoryFinder pageHistoryFinder,
+      final PageValidator validator) {
     this.creator = creator;
     this.stateChange = stateChange;
     this.pageDeletor = pageDeletor;
     this.userDetailsProvider = userDetailsProvider;
     this.pageHistoryFinder = pageHistoryFinder;
+    this.validator = validator;
   }
 
   @PostMapping
@@ -61,6 +65,11 @@ public class PageController {
   @DeleteMapping("{id}/delete-draft")
   public PageDeleteResponse deletePageDraft(@PathVariable("id") Long pageId) {
     return pageDeletor.deletePageDraft(pageId);
+  }
+
+  @PostMapping("/validate")
+  public Boolean validatePageRequest(@RequestBody PageValidationRequest request) {
+    return validator.validate(request);
   }
 
 }
