@@ -37,7 +37,7 @@ import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { externalize, internalize } from 'apps/search/patient';
 import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
-import { focusedTarget } from 'utils/util';
+import { focusedTarget } from 'utils';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
