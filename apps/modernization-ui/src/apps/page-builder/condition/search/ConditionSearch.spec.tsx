@@ -92,4 +92,14 @@ describe('ConditionSearch', () => {
         expect(cells[7]).toHaveTextContent('No Data');
         expect(cells[8]).toHaveTextContent('Active');
     });
+
+    it('should search with appropriate page size', () => {
+        render(
+            <MemoryRouter>
+                <ConditionSearch onConditionSelect={onConditionSelect} onCancel={onCancel} onCreateNew={onCreateNew} />
+            </MemoryRouter>
+        );
+
+        expect(search).toBeCalledWith({ page: 0, pageSize: 10, sort: undefined });
+    });
 });
