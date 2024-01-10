@@ -28,13 +28,13 @@ describe('when at least one condition is available', () => {
     const conditions: Condition[] = [
         {
             id: '1',
-            coinfectionGrpCd: 'coinfectionGrpCd',
-            conditionShortNm: 'condition name',
-            familyCd: 'family cd',
-            investigationFormCd: 'investigation',
+            coinfectionGroup: 'coinfectionGrpCd',
+            name: 'condition name',
+            conditionFamily: 'family cd',
+            page: 'investigation',
             nndInd: 'nnd',
-            progAreaCd: 'prog area',
-            statusCd: 'A'
+            programArea: 'prog area',
+            status: 'A'
         }
     ];
 

@@ -6,6 +6,7 @@ import type { PageCreateResponse } from '../models/PageCreateResponse';
 import type { PageDeleteResponse } from '../models/PageDeleteResponse';
 import type { PageHistory } from '../models/PageHistory';
 import type { PageStateResponse } from '../models/PageStateResponse';
+import type { PageValidationRequest } from '../models/PageValidationRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -32,6 +33,37 @@ export class PageControllerService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/pages',
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * validatePageRequest
+     * @returns boolean OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static validatePageRequestUsingPost({
+        authorization,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * request
+         */
+        request: PageValidationRequest,
+    }): CancelablePromise<boolean | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/validate',
             headers: {
                 'Authorization': authorization,
             },
