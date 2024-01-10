@@ -51,32 +51,32 @@ public class ValueSetReader {
 
     for (Codeset codeSet : rawResults.getContent()) {
 
-      results.add(new ValueSet(
-          codeSet.getId().getClassCd(),
-          codeSet.getId().getCodeSetNm(),
-          codeSet.getAssigningAuthorityCd(),
-          codeSet.getAssigningAuthorityDescTxt(),
-          codeSet.getCodeSetDescTxt(),
-          codeSet.getEffectiveFromTime(),
-          codeSet.getEffectiveToTime(),
-          codeSet.getIsModifiableInd(),
-          codeSet.getNbsUid(),
-          codeSet.getSourceVersionTxt(),
-          codeSet.getSourceDomainNm(),
-          codeSet.getStatusCd(),
-          codeSet.getStatusToTime(),
-          (codeSet.getCodeSetGroup() != null) ? codeSet.getCodeSetGroup().getId() : null,
-          codeSet.getAdminComments(),
-          codeSet.getValueSetNm(),
-          codeSet.getLdfPicklistIndCd(),
-          codeSet.getValueSetCode(),
-          codeSet.getValueSetTypeCd(),
-          codeSet.getValueSetOid(),
-          codeSet.getValueSetStatusCd(),
-          codeSet.getValueSetStatusTime(),
-          codeSet.getParentIsCd(),
-          codeSet.getAddTime(),
-          codeSet.getAddUserId()));
+            results.add(new ValueSet(
+                    codeSet.getId().getClassCd(),
+                    codeSet.getId().getCodeSetNm(),
+                    codeSet.getAssigningAuthorityCd(),
+                    codeSet.getAssigningAuthorityDescTxt(),
+                    codeSet.getCodeSetDescTxt(),
+                    codeSet.getEffectiveFromTime(),
+                    codeSet.getEffectiveToTime(),
+                    codeSet.getIsModifiableInd(),
+                    codeSet.getNbsUid(),
+                    codeSet.getSourceVersionTxt(),
+                    codeSet.getSourceDomainNm(),
+                    codeSet.getStatusCd(),
+                    codeSet.getStatusToTime(),
+                    (codeSet.getCodeSetGroup() != null) ? codeSet.getCodeSetGroup().getId() : null,
+                    codeSet.getAdminComments(),
+                    codeSet.getValueSetNm(),
+                    codeSet.getLdfPicklistIndCd(),
+                    codeSet.getValueSetCode(),
+                    codeSet.getValueSetTypeCd(),
+                    codeSet.getValueSetOid(),
+                    codeSet.getValueSetStatusCd(),
+                    codeSet.getValueSetStatusTime(),
+                    codeSet.getParentIsCd(),
+                    codeSet.getAddTime(),
+                    codeSet.getAddUserId()));
 
     }
     return results;
@@ -94,18 +94,18 @@ public class ValueSetReader {
         .toList();
   }
 
-  public Concept toConcept(CodeValueGeneral codeValueGeneral) {
-    return new Concept(
-        codeValueGeneral.getId().getCode(),
-        codeValueGeneral.getId().getCodeSetNm(),
-        codeValueGeneral.getCodeShortDescTxt(),
-        codeValueGeneral.getCodeDescTxt(),
-        codeValueGeneral.getConceptCode(),
-        codeValueGeneral.getConceptPreferredNm(),
-        codeValueGeneral.getCodeSystemDescTxt(),
-        codeValueGeneral.getConceptStatusCd(),
-        codeValueGeneral.getEffectiveFromTime(),
-        codeValueGeneral.getEffectiveToTime());
-  }
+    public Concept toConcept(CodeValueGeneral codeValueGeneral) {
+        return new Concept(
+                codeValueGeneral.getId().getCode(),
+                codeValueGeneral.getId().getCodeSetNm(),
+                codeValueGeneral.getCodeShortDescTxt(),
+                codeValueGeneral.getCodeDescTxt(),
+                codeValueGeneral.getConceptCode(),
+                codeValueGeneral.getConceptPreferredNm(),
+                codeValueGeneral.getCodeSystemDescTxt(),
+                codeValueGeneral.getConceptStatusCd(),
+                codeValueGeneral.getEffectiveFromTime(),
+                codeValueGeneral.getEffectiveToTime();
+    }
 
 }

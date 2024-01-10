@@ -2,9 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ValueSetSearchRequest = {
+export type ValueSetSearchResponse = {
+    type?: string;
     valueSetCode?: string;
     valueSetDescription?: string;
-    valueSetNm?: string;
+    valueSetName?: string;
+    valueSetStatus?: string;
 };
 

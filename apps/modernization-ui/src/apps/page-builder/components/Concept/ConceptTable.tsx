@@ -26,8 +26,9 @@ const tableColumns = [
 type Props = {
     summaries: any;
     pages?: any;
+    setEditMode: () => void;
 };
-export const ConceptTable = ({ summaries, pages }: Props) => {
+export const ConceptTable = ({ summaries, pages, setEditMode }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const { setSearchQuery, setCurrentPage, setSortDirection, setSortBy, setSelectedConcept } =
         useContext(ConceptsContext);
@@ -65,6 +66,7 @@ export const ConceptTable = ({ summaries, pages }: Props) => {
         ]
     });
     const handleSelected = (row: any) => {
+        setEditMode();
         setSelectedConcept(row);
     };
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
