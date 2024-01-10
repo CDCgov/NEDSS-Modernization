@@ -37,6 +37,7 @@ import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { externalize, internalize } from 'apps/search/patient';
 import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
+import { focusedTarget } from 'utils';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -377,6 +378,8 @@ export const AdvancedSearch = () => {
         setResultStartCount(startCount);
         setResultEndCount(endCount);
         setResultTotal(total);
+        skipTo('resultsCount');
+        focusedTarget('resultsCount');
     };
 
     function isLoading() {
@@ -492,7 +495,17 @@ export const AdvancedSearch = () => {
                             className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                             {submitted && !isError() ? (
                                 <div
-                                    className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
+                                    tabIndex={0}
+                                    id="resultsCount"
+                                    aria-label={
+                                        ((lastSearchType === SEARCH_TYPE.PERSON && patientData?.total?.toString()) ||
+                                            (lastSearchType === SEARCH_TYPE.INVESTIGATION &&
+                                                investigationData?.total?.toString()) ||
+                                            (lastSearchType === SEARCH_TYPE.LAB_REPORT &&
+                                                labReportData?.total?.toString())) +
+                                        ' amount of results have been found'
+                                    }
+                                    className="margin-0 font-sans-md margin-top-05 text-normal grid-row results-for"
                                     style={{ maxWidth: '55%' }}>
                                     <strong className="margin-right-1">
                                         {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}

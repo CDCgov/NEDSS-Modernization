@@ -194,3 +194,7 @@ button {
     text-transform: uppercase;
     color: colors.$base;
 }
+
+.results-for:focus {
+    outline: none !important;
+} 
