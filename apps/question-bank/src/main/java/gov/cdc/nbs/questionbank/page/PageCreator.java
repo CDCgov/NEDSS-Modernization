@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
@@ -15,23 +14,29 @@ import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.exception.PageCreateException;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
+import gov.cdc.nbs.questionbank.page.request.PageValidationRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
-import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class PageCreator {
 
-    @Autowired
-    private WaTemplateRepository templateRepository;
+  private final WaTemplateRepository templateRepository;
+  private final PageCondMappingRepository pageConMappingRepository;
+  private final WaUiMetadataRepository waUiMetadataRepository;
+  private final PageValidator validator;
 
-    @Autowired
-    private PageCondMappingRepository pageConMappingRepository;
-
-    @Autowired
-    private WaUiMetadataRepository waUiMetadataRepository;
+  public PageCreator(
+      final WaTemplateRepository templateRepository,
+      final PageCondMappingRepository pageConMappingRepository,
+      final WaUiMetadataRepository waUiMetadataRepository,
+      final PageValidator validator) {
+    this.templateRepository = templateRepository;
+    this.pageConMappingRepository = pageConMappingRepository;
+    this.waUiMetadataRepository = waUiMetadataRepository;
+    this.validator = validator;
+  }
 
     public PageCreateResponse createPage(PageCreateRequest request, Long userId) {
         if (request.name() == null || request.name().isEmpty()) {
@@ -50,9 +55,7 @@ public class PageCreator {
             throw new PageCreateException(PageConstants.ADD_PAGE_MMG_EMPTY);
         }
 
-        Optional<WaTemplate> existingPageName = templateRepository.findFirstByTemplateNm(request.name());
-
-        if (existingPageName.isPresent()) {
+        if (!validator.validate(new PageValidationRequest(request.name()))) {
             String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, request.name());
             throw new PageCreateException(finalMessage);
         }

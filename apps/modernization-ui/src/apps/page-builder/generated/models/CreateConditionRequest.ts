@@ -3,14 +3,14 @@
 /* eslint-disable */
 
 export type CreateConditionRequest = {
-    code?: string;
-    codeSystemDescTxt?: string;
+    code: string;
+    codeSystemDescTxt: string;
     coinfectionGrpCd?: string;
-    conditionShortNm?: string;
+    conditionShortNm: string;
     contactTracingEnableInd?: string;
     familyCd?: string;
     nndInd?: string;
-    progAreaCd?: string;
+    progAreaCd: string;
     reportableMorbidityInd?: string;
     reportableSummaryInd?: string;
 };

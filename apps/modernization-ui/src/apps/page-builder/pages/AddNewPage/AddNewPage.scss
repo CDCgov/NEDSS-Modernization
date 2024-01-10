@@ -24,7 +24,6 @@
         max-width: 960px;
         background-color: colors.$base-white;
         margin: 1.2rem 0;
-        display: flex;
         justify-content: center;
         label {
             font-size: 1rem;
@@ -41,13 +40,19 @@
             width: 480px;
             padding: 2rem 0 4rem;
             margin: 0 auto;
+
+            .fields-info {
+                font-size: 0.875rem;
+                .mandatory-indicator {
+                    color: colors.$mandatory;
+                }
+            }
             p {
                 font-size: 0.875rem;
                 line-height: 1.4rem;
                 margin-top: 1rem;
                 margin-bottom: 0.5rem;
                 color: colors.$base-light;
-                font-size: 0.875rem;
             }
             h2 {
                 text-align: center;
@@ -64,7 +69,6 @@
                 margin-top: 0.4rem;
                 font-size: 0.95rem;
                 text-decoration: none;
-                margin-top: 0;
                 &--unstyled:nth-of-type(1) {
                     padding: 0;
                 }

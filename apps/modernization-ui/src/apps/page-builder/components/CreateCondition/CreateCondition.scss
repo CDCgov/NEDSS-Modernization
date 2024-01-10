@@ -13,12 +13,11 @@
         overflow: auto;
     }
     .create-condition__container {
-        width: 500px;
+        width: 100%;
         padding: 1.5rem;
         position: relative;
-        width: 100%;
-        .mandatory-indicator {
-            color: #d83933;
+        .mandatory {
+            color: colors.$mandatory;
         }
         label {
             margin-top: 1rem;

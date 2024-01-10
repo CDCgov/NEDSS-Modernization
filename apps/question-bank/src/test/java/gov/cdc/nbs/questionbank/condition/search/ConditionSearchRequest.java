@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.condition.search;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -35,6 +36,16 @@ public class ConditionSearchRequest {
 
       return mvc.perform(this.authenticated.withUser(builder));
 
+    } catch (Exception exception) {
+      throw new IllegalStateException("Unable to execute condition search request", exception);
+    }
+  }
+
+  ResultActions available() {
+    try {
+      MockHttpServletRequestBuilder builder = get("/api/v1/conditions/available")
+          .contentType(MediaType.APPLICATION_JSON);
+      return mvc.perform(this.authenticated.withUser(builder));
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to execute condition search request", exception);
     }
