@@ -1,0 +1,28 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.addBusinessRuleHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: colors.$base-white;
+    //border-bottom: borders.$border;
+}
+.addRulesContainer {
+    max-width: 75vw;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: colors.$base-white;
+}
+
+.footerButtonsContainer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    //stick to bottom of container
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: colors.$base-white;
+}

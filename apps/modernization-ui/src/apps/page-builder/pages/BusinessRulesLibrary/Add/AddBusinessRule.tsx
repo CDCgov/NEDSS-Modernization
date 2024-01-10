@@ -1,15 +1,16 @@
-import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import React, { useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import './EditBusinessRules.scss';
+import { Button } from '@trussworks/react-uswds';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PageBuilder } from '../../PageBuilder/PageBuilder';
+import styles from './AddBusinessRule.module.scss';
+import { Breadcrumb } from 'breadcrumb';
 // import { PageRuleControllerService } from '../../../generated';
-import { useAlert } from 'alert';
+// import { useAlert } from 'alert';
 // import { authorization } from 'authorization';
 
 const AddBusinessRule = () => {
     const navigate = useNavigate();
     // const { pageId } = useParams();
-    const deleteWarningModalModal = useRef<ModalRef>(null);
     // const { showAlert } = useAlert();
 
     const handleCancel = () => {
@@ -17,29 +18,26 @@ const AddBusinessRule = () => {
     };
 
     return (
-        <>
-            <div className="edit-rules">
-                <div className="edit-rules__buttons">
-                    <ModalToggleButton
-                        opener
-                        modalRef={deleteWarningModalModal}
-                        type="button"
-                        className="delete-btn"
-                        unstyled>
-                        <Icon.Delete size={3} className="margin-right-2px" />
-                        <span>Delete</span>
-                    </ModalToggleButton>
-                    <div>
-                        <Button type="button" outline onClick={handleCancel}>
-                            Cancel
-                        </Button>
-                        <Button type="submit" className="lbr" disabled>
-                            Add to Library
-                        </Button>
-                    </div>
-                </div>
+        <PageBuilder page="business-rules">
+            <section className={styles.addBusinessRuleHeader}>
+                <header>
+                    <h2>Business Rules</h2>
+                </header>
+            </section>
+            <Breadcrumb start="../">business rules</Breadcrumb>
+            <div className={styles.addRulesContainer}>
+                <h3>Add new business rule</h3>
+                <div></div>
             </div>
-        </>
+            <div className={styles.footerButtonsContainer}>
+                <Button type="button" outline onClick={handleCancel}>
+                    Cancel
+                </Button>
+                <Button type="submit" className="lbr" disabled>
+                    Add to Library
+                </Button>
+            </div>
+        </PageBuilder>
     );
 };
 

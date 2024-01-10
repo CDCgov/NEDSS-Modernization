@@ -56,7 +56,6 @@ const EditBusinessRules = () => {
                         <Icon.Delete size={3} className="margin-right-2px" />
                         <span>Delete</span>
                     </ModalToggleButton>
-
                     <div>
                         <Button type="button" outline onClick={handleCancel}>
                             Cancel
