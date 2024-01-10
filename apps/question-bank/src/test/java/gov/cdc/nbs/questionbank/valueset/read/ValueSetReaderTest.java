@@ -1,8 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset.read;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
@@ -10,16 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+import gov.cdc.nbs.questionbank.valueset.ValueSetFinder;
+import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralId;
@@ -36,6 +37,9 @@ class ValueSetReaderTest {
   @Mock
   ValueSetRepository valueSetRepository;
 
+  @Mock
+  ValueSetFinder valueSetFinder;
+
   @InjectMocks
   ValueSetReader valueSetReader;
 
@@ -45,7 +49,6 @@ class ValueSetReaderTest {
 
   @Test
   void findAllValueSetsTest() {
-
     int max = 5;
     Pageable pageable = PageRequest.of(0, max);
     Page<Codeset> codePage = getCodeSetPage(max, pageable);
@@ -53,35 +56,27 @@ class ValueSetReaderTest {
     Page<ValueSet> result = valueSetReader.findAllValueSets(pageable);
     assertNotNull(result);
     assertEquals(max, result.getTotalElements());
-
     ValueSet one = result.get().toList().get(0);
     assertNotNull(one.valueSetNm());
     assertNotNull(one.valueSetCode());
-
   }
 
   @Test
-  void searchValueSetSearchTest() {
-    ValueSetSearchRequest search = new ValueSetSearchRequest();
-    search.setCodeSetName("setnm");
-    search.setValueSetNm("setnm");
-    search.setValueSetCode("setCode");
-    search.setValueSetTypeCd("LOCAL");
-    search.setValueSetDescription("descText");
-
-    int max = 5;
-    Pageable pageable = PageRequest.of(0, max);
-    Page<Codeset> codePage = getCodeSetPage(max, pageable);
-    when(valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCodeorValueSetType(Mockito.anyString(),
-        Mockito.anyString(),
-        Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.any())).thenReturn(codePage);
-    Page<ValueSet> result = valueSetReader.searchValueSearch(search, pageable);
-    assertNotNull(result);
-    assertEquals(max, result.getTotalElements());
-
-    ValueSet one = result.get().toList().get(0);
-    assertNotNull(one.valueSetNm());
-    assertNotNull(one.valueSetCode());
+  void searchValueSetTest() {
+    ValueSetSearchRequest search = new ValueSetSearchRequest("setnm", "setCode", "descText");
+    List<ValueSetSearchResponse> searchResult = List.of(new ValueSetSearchResponse("LOCAL", "setCode",
+        "setnm", "descText", "Active"));
+    Pageable pageable = Pageable.ofSize(1);
+    int start = (int) pageable.getOffset();
+    int end = (start + pageable.getPageSize());
+    Page<ValueSetSearchResponse> expectedResult =
+        new PageImpl<>(searchResult.subList(0, 1), pageable, searchResult.size());
+    when(valueSetFinder.findValueSet(any(ValueSetSearchRequest.class), any(Pageable.class))).thenReturn(expectedResult);
+    Page<ValueSetSearchResponse> actualResult = valueSetReader.searchValueSet(search, pageable);
+    assertNotNull(actualResult);
+    boolean isEquals = (expectedResult.toList().containsAll(actualResult.toList()) &&
+        actualResult.toList().containsAll(expectedResult.stream().toList()));
+    assertTrue(isEquals);
 
   }
 
@@ -90,7 +85,6 @@ class ValueSetReaderTest {
     for (int i = 0; i < max; i++) {
       set.add(getCodeSetRequest(i));
     }
-    ;
     return new PageImpl<>(set, pageable, set.size());
 
   }
@@ -159,6 +153,8 @@ class ValueSetReaderTest {
     assertEquals(cvg.getEffectiveFromTime(), concept.effectiveFromTime());
     assertEquals(cvg.getEffectiveToTime(), concept.effectiveToTime());
   }
+
+
 
   @Test
   void should_return_empty_list_for_null_concept() {
