@@ -32,7 +32,7 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
     const [resetTable, setResetTable] = useState<boolean>(false);
 
     useEffect(() => {
-        search({ page: 0, sort });
+        search({ page: 0, pageSize: page.pageSize, sort });
     }, []);
 
     useEffect(() => {
