@@ -237,7 +237,6 @@ export const AdministrativeTable = ({ patient }: Props) => {
                     details={asDetail(selected.item)}
                     onClose={actions.reset}
                     onEdit={() => actions.selectForEdit(selected.item)}
-                    onDelete={() => actions.selectForDelete(selected.item)}
                 />
             )}
         </>
