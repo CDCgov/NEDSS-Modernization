@@ -65,7 +65,8 @@ class ConceptUpdaterTest {
         "anything",
         "Active",
         Instant.parse("2024-01-01T00:00:00Z"),
-        null);
+        null,
+        "pref name");
 
 
     ArgumentCaptor<CodeValueGeneral> captor = ArgumentCaptor.forClass(CodeValueGeneral.class);
@@ -112,7 +113,8 @@ class ConceptUpdaterTest {
         "anything",
         "Inactive",
         Instant.parse("2024-01-01T00:00:00Z"),
-        Instant.parse("2024-01-01T00:00:00Z"));
+        Instant.parse("2024-01-01T00:00:00Z"),
+        "pref name");
 
     ArgumentCaptor<CodeValueGeneral> captor = ArgumentCaptor.forClass(CodeValueGeneral.class);
     when(codeValueGeneralRepository.save(captor.capture())).thenAnswer(q -> q.getArgument(0));

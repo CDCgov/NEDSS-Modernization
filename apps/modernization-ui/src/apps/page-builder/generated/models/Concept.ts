@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type Concept = {
+    codeSetName?: string;
     codeSystem?: string;
-    codesetName?: string;
     conceptCode?: string;
     display?: string;
     effectiveFromTime?: string;
@@ -12,6 +12,7 @@ export type Concept = {
     localCode?: string;
     longName?: string;
     messagingConceptName?: string;
+    prefConceptName?: string;
     status?: string;
 };
 

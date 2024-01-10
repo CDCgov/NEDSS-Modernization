@@ -46,66 +46,67 @@ public class ValueSetReader {
     return valueSetFinder.findValueSet(search, pageable);
   }
 
-  public List<ValueSet> toReadValueSet(Page<Codeset> rawResults) {
-    List<ValueSet> results = new ArrayList<>();
+    public List<ValueSet> toReadValueSet(Page<Codeset> rawResults) {
+        List<ValueSet> results = new ArrayList<>();
 
-    for (Codeset codeSet : rawResults.getContent()) {
+        for (Codeset codeSet : rawResults.getContent()) {
 
-      results.add(new ValueSet(
-          codeSet.getId().getClassCd(),
-          codeSet.getId().getCodeSetNm(),
-          codeSet.getAssigningAuthorityCd(),
-          codeSet.getAssigningAuthorityDescTxt(),
-          codeSet.getCodeSetDescTxt(),
-          codeSet.getEffectiveFromTime(),
-          codeSet.getEffectiveToTime(),
-          codeSet.getIsModifiableInd(),
-          codeSet.getNbsUid(),
-          codeSet.getSourceVersionTxt(),
-          codeSet.getSourceDomainNm(),
-          codeSet.getStatusCd(),
-          codeSet.getStatusToTime(),
-          (codeSet.getCodeSetGroup() != null) ? codeSet.getCodeSetGroup().getId() : null,
-          codeSet.getAdminComments(),
-          codeSet.getValueSetNm(),
-          codeSet.getLdfPicklistIndCd(),
-          codeSet.getValueSetCode(),
-          codeSet.getValueSetTypeCd(),
-          codeSet.getValueSetOid(),
-          codeSet.getValueSetStatusCd(),
-          codeSet.getValueSetStatusTime(),
-          codeSet.getParentIsCd(),
-          codeSet.getAddTime(),
-          codeSet.getAddUserId()));
+            results.add(new ValueSet(
+                    codeSet.getId().getClassCd(),
+                    codeSet.getId().getCodeSetNm(),
+                    codeSet.getAssigningAuthorityCd(),
+                    codeSet.getAssigningAuthorityDescTxt(),
+                    codeSet.getCodeSetDescTxt(),
+                    codeSet.getEffectiveFromTime(),
+                    codeSet.getEffectiveToTime(),
+                    codeSet.getIsModifiableInd(),
+                    codeSet.getNbsUid(),
+                    codeSet.getSourceVersionTxt(),
+                    codeSet.getSourceDomainNm(),
+                    codeSet.getStatusCd(),
+                    codeSet.getStatusToTime(),
+                    codeSet.getCodeSetGroup().getId(),
+                    codeSet.getAdminComments(),
+                    codeSet.getValueSetNm(),
+                    codeSet.getLdfPicklistIndCd(),
+                    codeSet.getValueSetCode(),
+                    codeSet.getValueSetTypeCd(),
+                    codeSet.getValueSetOid(),
+                    codeSet.getValueSetStatusCd(),
+                    codeSet.getValueSetStatusTime(),
+                    codeSet.getParentIsCd(),
+                    codeSet.getAddTime(),
+                    codeSet.getAddUserId()));
 
-    }
-    return results;
-  }
-
-  public List<Concept> findConceptCodes(String codeSetNm) {
-    if (codeSetNm == null) {
-      return Collections.emptyList();
+        }
+        return results;
     }
 
-    return codeValueGeneralRepository
-        .findByIdCodeSetNm(codeSetNm, Sort.by(Sort.Direction.ASC, "codeShortDescTxt"))
-        .stream()
-        .map(this::toConcept)
-        .toList();
-  }
+    public List<Concept> findConceptCodes(String codeSetNm) {
+        if (codeSetNm == null) {
+            return Collections.emptyList();
+        }
 
-  public Concept toConcept(CodeValueGeneral codeValueGeneral) {
-    return new Concept(
-        codeValueGeneral.getId().getCode(),
-        codeValueGeneral.getId().getCodeSetNm(),
-        codeValueGeneral.getCodeShortDescTxt(),
-        codeValueGeneral.getCodeDescTxt(),
-        codeValueGeneral.getConceptCode(),
-        codeValueGeneral.getConceptPreferredNm(),
-        codeValueGeneral.getCodeSystemDescTxt(),
-        codeValueGeneral.getConceptStatusCd(),
-        codeValueGeneral.getEffectiveFromTime(),
-        codeValueGeneral.getEffectiveToTime());
-  }
+        return codeValueGeneralRepository
+                .findByIdCodeSetNm(codeSetNm, Sort.by(Sort.Direction.ASC, "codeShortDescTxt"))
+                .stream()
+                .map(this::toConcept)
+                .toList();
+    }
+
+    public Concept toConcept(CodeValueGeneral codeValueGeneral) {
+        return new Concept(
+                codeValueGeneral.getId().getCode(),
+                codeValueGeneral.getId().getCodeSetNm(),
+                codeValueGeneral.getCodeShortDescTxt(),
+                codeValueGeneral.getCodeDescTxt(),
+                codeValueGeneral.getConceptCode(),
+                codeValueGeneral.getConceptPreferredNm(),
+                codeValueGeneral.getCodeSystemDescTxt(),
+                codeValueGeneral.getConceptStatusCd(),
+                codeValueGeneral.getEffectiveFromTime(),
+                codeValueGeneral.getEffectiveToTime(),
+                codeValueGeneral.getConceptPreferredNm());
+    }
 
 }

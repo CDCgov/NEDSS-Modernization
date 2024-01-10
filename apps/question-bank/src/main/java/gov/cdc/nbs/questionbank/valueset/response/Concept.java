@@ -12,5 +12,6 @@ public record Concept(
     String codeSystem,
     String status,
     Instant effectiveFromTime,
-    Instant effectiveToTime) {
+    Instant effectiveToTime,
+    String prefConceptName) {
 }

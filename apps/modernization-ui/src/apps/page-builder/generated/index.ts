@@ -114,7 +114,7 @@ export type { ValueSetByOIDResponse } from './models/ValueSetByOIDResponse';
 export type { ValueSetByOIDResults } from './models/ValueSetByOIDResults';
 export type { ValueSetConcept } from './models/ValueSetConcept';
 export type { ValueSetCreateShort } from './models/ValueSetCreateShort';
-export type { ValueSetRequest } from './models/ValueSetRequest';
+export type { ValueSetCreateRequest } from './models/ValueSetCreateRequest';
 export type { ValueSetSearchRequest } from './models/ValueSetSearchRequest';
 export { ValueSetStateChangeResponse } from './models/ValueSetStateChangeResponse';
 export type { ValueSetUpdateRequest } from './models/ValueSetUpdateRequest';

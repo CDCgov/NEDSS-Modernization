@@ -6,7 +6,7 @@ describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const { findAllByRole } = render(
             <WithinTableProvider>
-                <ConceptTable summaries={[]} />
+                <ConceptTable summaries={[]} setEditMode={jest.fn} />
             </WithinTableProvider>
         );
 
@@ -37,7 +37,7 @@ describe('when at least one summary is available', () => {
     it('should display the Concept details in table', async () => {
         const { findAllByRole } = render(
             <WithinTableProvider>
-                <ConceptTable summaries={summaries} />
+                <ConceptTable summaries={summaries} setEditMode={jest.fn} />
             </WithinTableProvider>
         );
 

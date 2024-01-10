@@ -18,6 +18,7 @@ public class ConceptMapper {
         codeValueGeneral.getCodeSystemDescTxt(),
         codeValueGeneral.getConceptStatusCd(),
         codeValueGeneral.getEffectiveFromTime(),
-        codeValueGeneral.getEffectiveToTime());
+        codeValueGeneral.getEffectiveToTime(),
+        codeValueGeneral.getConceptPreferredNm());
   }
 }

@@ -31,9 +31,8 @@ type Props = {
     summaries: ValueSet[];
     labModalRef?: any;
     pages?: any;
-    updateCallback?: () => void;
 };
-export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCallback }: Props) => {
+export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
@@ -270,7 +269,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
                 size="wide"
                 modalRef={modalRef}
                 modalHeading={'Add value set'}
-                modalBody={<AddValueset modalRef={modalRef} updateCallback={updateCallback} />}
+                modalBody={<AddValueset modalRef={modalRef} />}
                 closer
             />
         </div>

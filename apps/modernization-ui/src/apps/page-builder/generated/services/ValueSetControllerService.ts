@@ -7,7 +7,7 @@ import type { CreateValueSetResponse } from '../models/CreateValueSetResponse';
 import type { Page_ValueSet_ } from '../models/Page_ValueSet_';
 import type { UpdateConceptRequest } from '../models/UpdateConceptRequest';
 import type { UpdatedValueSetResponse } from '../models/UpdatedValueSetResponse';
-import type { ValueSetRequest } from '../models/ValueSetRequest';
+import type { ValueSetCreateRequest } from '../models/ValueSetCreateRequest';
 import type { ValueSetSearchRequest } from '../models/ValueSetSearchRequest';
 import type { ValueSetStateChangeResponse } from '../models/ValueSetStateChangeResponse';
 import type { ValueSetUpdateRequest } from '../models/ValueSetUpdateRequest';
@@ -67,7 +67,7 @@ export class ValueSetControllerService {
         /**
          * request
          */
-        request: ValueSetRequest,
+        request: ValueSetCreateRequest,
     }): CancelablePromise<CreateValueSetResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -262,51 +262,6 @@ export class ValueSetControllerService {
     }
 
     /**
-     * updateConcept
-     * @returns Concept OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updateConceptUsingPut({
-        authorization,
-        codeSetNm,
-        conceptCode,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * codeSetNm
-         */
-        codeSetNm: string,
-        /**
-         * conceptCode
-         */
-        conceptCode: string,
-        /**
-         * request
-         */
-        request: UpdateConceptRequest,
-    }): CancelablePromise<Concept | any> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/valueset/{codeSetNm}/concepts/{conceptCode}',
-            path: {
-                'codeSetNm': codeSetNm,
-                'conceptCode': conceptCode,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
      * deleteValueSet
      * @returns ValueSetStateChangeResponse OK
      * @returns any Created
@@ -331,6 +286,51 @@ export class ValueSetControllerService {
             headers: {
                 'Authorization': authorization,
             },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * updateConcept
+     * @returns Concept OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static updateConceptUsingPut({
+        authorization,
+        localCode,
+        request,
+        valueSetCode,
+    }: {
+        authorization: string,
+        /**
+         * localCode
+         */
+        localCode: string,
+        /**
+         * request
+         */
+        request: UpdateConceptRequest,
+        /**
+         * valueSetCode
+         */
+        valueSetCode: string,
+    }): CancelablePromise<Concept | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/page-builder/api/v1/valueset/{valueSetCode}/concepts/{localCode}',
+            path: {
+                'localCode': localCode,
+                'valueSetCode': valueSetCode,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
