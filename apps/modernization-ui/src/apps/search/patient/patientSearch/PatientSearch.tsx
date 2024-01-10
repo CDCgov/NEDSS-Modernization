@@ -22,7 +22,7 @@ type PatientSearchProps = {
 
 export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: PatientSearchProps) => {
     const form = useForm<PersonFilter>({ defaultValues: { recordStatus: [RecordStatus.Active] }, mode: 'onBlur' });
-    const { skipTo, focusedTo } = useSkipLink();
+    const { skipTo } = useSkipLink();
     useEffect(() => {
         if (personFilter) {
             form.reset({ ...personFilter }, { keepDefaultValues: true });
@@ -291,7 +291,6 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                             form.reset({}, { keepDefaultValues: true });
                             clearAll();
                             skipTo('lastName');
-                            focusedTo(false);
                         }}
                         outline>
                         Clear all

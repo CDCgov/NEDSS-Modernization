@@ -37,6 +37,7 @@ import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { externalize, internalize } from 'apps/search/patient';
 import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
+import { focusedTarget } from 'utils/util';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -75,11 +76,10 @@ export const AdvancedSearch = () => {
     const [resultStartCount, setResultStartCount] = useState<number>(0);
     const [resultEndCount, setResultEndCount] = useState<number>(0);
     const [resultTotal, setResultTotal] = useState<number>(0);
-    const { skipTo, focusedTo } = useSkipLink();
+    const { skipTo } = useSkipLink();
 
     useEffect(() => {
         skipTo('lastName');
-        focusedTo(false);
     }, []);
 
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
@@ -379,6 +379,7 @@ export const AdvancedSearch = () => {
         setResultEndCount(endCount);
         setResultTotal(total);
         skipTo('resultsCount');
+        focusedTarget('resultsCount');
     };
 
     function isLoading() {
