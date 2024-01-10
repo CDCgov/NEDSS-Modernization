@@ -13,7 +13,7 @@ import { Config } from 'config';
 import { useConfiguration } from 'configuration';
 import { Library, Management } from 'generated';
 import { Layout } from 'layout';
-import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
+import { AdvancedSearch } from 'apps/search/advancedSearch/AdvancedSearch';
 import { Login } from 'pages/login/Login';
 import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';

@@ -12,7 +12,7 @@ import {
     ReportingEntityType
 } from 'generated/graphql/schema';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { InvestigationChips } from './InvestigationChips';
+import { InvestigationChips } from 'apps/search/event/components/InvestigationSearch/InvestigationChips';
 
 describe('InvestigationChips component tests', () => {
     it('should render condition chips', () => {

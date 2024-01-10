@@ -1,20 +1,34 @@
-import { LabReportFilter } from 'generated/graphql/schema';
+import { InvestigationFilter } from 'generated/graphql/schema';
 import { SearchCriteria, SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import Chip from './Chip';
+import Chip from 'apps/search/advancedSearch/components/chips/Chip';
 
-type LabReportChipsProps = {
-    filter: LabReportFilter;
-    onChange: (labReportFilter: LabReportFilter) => void;
+type InvestigationChipsProps = {
+    filter: InvestigationFilter;
+    onChange: (investigationFilter: InvestigationFilter) => void;
 };
-export const LabReportChips = ({ filter, onChange }: LabReportChipsProps) => {
+export const InvestigationChips = ({ filter, onChange }: InvestigationChipsProps) => {
     function lookupUserName(searchCriteria: SearchCriteria, createdBy: string): string {
         const user = searchCriteria.userResults.find((u) => u.nedssEntryId === createdBy);
         return user ? `${user.userLastNm}, ${user.userFirstNm}` : '';
     }
+
     return (
         <SearchCriteriaContext.Consumer>
             {({ searchCriteria }) => (
                 <>
+                    {filter.conditions?.map((condition, index) => (
+                        <Chip
+                            name="CONDITION"
+                            value={searchCriteria.conditions.find((c) => c.id === condition)?.conditionDescTxt ?? ''}
+                            key={`condition-${index}`}
+                            handleClose={() =>
+                                onChange({
+                                    ...filter,
+                                    conditions: filter.conditions?.filter((c) => c !== condition) ?? []
+                                })
+                            }
+                        />
+                    ))}
                     {filter.programAreas?.map((programArea, index) => (
                         <Chip
                             name="PROGRAM AREA"
@@ -32,7 +46,7 @@ export const LabReportChips = ({ filter, onChange }: LabReportChipsProps) => {
                         <Chip
                             name="JURISDICTION"
                             value={searchCriteria.jurisdictions.find((j) => j.id === jurisdiction)?.codeDescTxt ?? ''}
-                            key={`jurisdiction-${index}`}
+                            key={`jurisdiction${index}`}
                             handleClose={() =>
                                 onChange({
                                     ...filter,
@@ -48,17 +62,17 @@ export const LabReportChips = ({ filter, onChange }: LabReportChipsProps) => {
                             handleClose={() => onChange({ ...filter, pregnancyStatus: undefined })}
                         />
                     ) : null}
-                    {filter.eventId?.labEventType ? (
+                    {filter.eventId?.investigationEventType ? (
                         <Chip
                             name="INVESTIGATION EVENT TYPE"
-                            value={filter.eventId.labEventType.replaceAll('_', ' ')}
+                            value={filter.eventId.investigationEventType.replaceAll('_', ' ')}
                             handleClose={() => onChange({ ...filter, eventId: undefined })}
                         />
                     ) : null}
-                    {filter.eventId?.labEventId ? (
+                    {filter.eventId?.id ? (
                         <Chip
                             name="EVENT ID"
-                            value={filter.eventId.labEventId}
+                            value={filter.eventId.id}
                             handleClose={() => onChange({ ...filter, eventId: undefined })}
                         />
                     ) : null}
@@ -83,58 +97,6 @@ export const LabReportChips = ({ filter, onChange }: LabReportChipsProps) => {
                             handleClose={() => onChange({ ...filter, eventDate: undefined })}
                         />
                     ) : null}
-                    {filter.entryMethods?.map((e, index) => (
-                        <Chip
-                            name="ENTRY METHOD"
-                            key={index}
-                            value={e ?? ''}
-                            handleClose={() =>
-                                onChange({
-                                    ...filter,
-                                    entryMethods: filter.entryMethods?.filter((entry) => entry !== e)
-                                })
-                            }
-                        />
-                    ))}
-                    {filter.enteredBy?.map((e, index) => (
-                        <Chip
-                            name="ENTERED BY"
-                            key={index}
-                            value={e ?? ''}
-                            handleClose={() =>
-                                onChange({
-                                    ...filter,
-                                    enteredBy: filter.enteredBy?.filter((enteredBy) => enteredBy !== e)
-                                })
-                            }
-                        />
-                    ))}
-                    {filter.eventStatus?.map((e, index) => (
-                        <Chip
-                            name="EVENT STATUS"
-                            key={index}
-                            value={e ?? ''}
-                            handleClose={() =>
-                                onChange({
-                                    ...filter,
-                                    eventStatus: filter.eventStatus?.filter((status) => status !== e)
-                                })
-                            }
-                        />
-                    ))}
-                    {filter.processingStatus?.map((e, index) => (
-                        <Chip
-                            name="PROCESSING STATUS"
-                            key={index}
-                            value={(e ?? '').replaceAll('_', ' ')}
-                            handleClose={() =>
-                                onChange({
-                                    ...filter,
-                                    processingStatus: filter.processingStatus?.filter((status) => status !== e)
-                                })
-                            }
-                        />
-                    ))}
                     {filter.createdBy ? (
                         <Chip
                             name="CREATED BY"
@@ -149,54 +111,96 @@ export const LabReportChips = ({ filter, onChange }: LabReportChipsProps) => {
                             handleClose={() => onChange({ ...filter, lastUpdatedBy: undefined })}
                         />
                     ) : null}
-                    {filter.providerSearch?.providerType ? (
+                    {filter.providerFacilitySearch?.entityType ? (
                         <Chip
                             name="ENTITY TYPE"
-                            value={filter.providerSearch.providerType}
+                            value={filter.providerFacilitySearch.entityType}
                             handleClose={() =>
                                 onChange({
                                     ...filter,
-                                    providerSearch: undefined
+                                    providerFacilitySearch: undefined
                                 })
                             }
                         />
                     ) : null}
-                    {filter.providerSearch?.providerId ? (
+                    {filter.providerFacilitySearch?.id ? (
                         <Chip
                             name="ENTITY ID"
-                            value={filter.providerSearch.providerId}
+                            value={filter.providerFacilitySearch.id}
                             handleClose={() =>
                                 onChange({
                                     ...filter,
-                                    providerSearch: undefined
+                                    providerFacilitySearch: undefined
                                 })
                             }
                         />
                     ) : null}
-                    {filter.resultedTest ? (
+                    {filter.investigationStatus ? (
                         <Chip
-                            name="RESULTED TEST"
-                            value={filter.resultedTest}
+                            name="INVESTIGATION STATUS"
+                            value={filter.investigationStatus}
                             handleClose={() =>
                                 onChange({
                                     ...filter,
-                                    resultedTest: undefined
+                                    investigationStatus: undefined
                                 })
                             }
                         />
                     ) : null}
-                    {filter.codedResult ? (
+                    {filter.outbreakNames?.map((outbreak, index) => (
                         <Chip
-                            name="CODED RESULT"
-                            value={filter.codedResult}
+                            name="OUTBREAK NAME"
+                            value={searchCriteria.outbreaks.find((o) => o.id.code === outbreak)?.codeShortDescTxt ?? ''}
+                            key={`outbreak-${index}`}
                             handleClose={() =>
                                 onChange({
                                     ...filter,
-                                    codedResult: undefined
+                                    outbreakNames: filter.outbreakNames?.filter((c) => c !== outbreak) ?? []
                                 })
                             }
                         />
-                    ) : null}
+                    ))}
+                    {filter.caseStatuses?.map((caseStatus, index) => (
+                        <Chip
+                            name="CASE STATUS"
+                            value={caseStatus}
+                            key={`case-status-${index}`}
+                            handleClose={() =>
+                                onChange({
+                                    ...filter,
+                                    caseStatuses: filter.caseStatuses?.filter((c) => c !== caseStatus) ?? []
+                                })
+                            }
+                        />
+                    ))}
+                    {filter.processingStatuses?.map((processingStatus, index) => (
+                        <Chip
+                            name="PROCESSING STATUS"
+                            value={(processingStatus ?? '').replaceAll('_', ' ')}
+                            key={`processing-status-${index}`}
+                            handleClose={() =>
+                                onChange({
+                                    ...filter,
+                                    processingStatuses:
+                                        filter.processingStatuses?.filter((c) => c !== processingStatus) ?? []
+                                })
+                            }
+                        />
+                    ))}
+                    {filter.notificationStatuses?.map((notificationStatus, index) => (
+                        <Chip
+                            name="NOTIFICATION STATUS"
+                            value={notificationStatus ?? ''}
+                            key={`notification-status-${index}`}
+                            handleClose={() =>
+                                onChange({
+                                    ...filter,
+                                    notificationStatuses:
+                                        filter.notificationStatuses?.filter((c) => c !== notificationStatus) ?? []
+                                })
+                            }
+                        />
+                    ))}
                 </>
             )}
         </SearchCriteriaContext.Consumer>
