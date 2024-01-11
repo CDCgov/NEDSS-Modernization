@@ -75,7 +75,7 @@ export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSor
     useEffect(() => {
         setSelected([]);
         setTableRows(conditions.map(asTableRow));
-    }, [conditions]);
+    }, [JSON.stringify(conditions)]);
 
     useEffect(() => {
         onSelectionChange(selected);
