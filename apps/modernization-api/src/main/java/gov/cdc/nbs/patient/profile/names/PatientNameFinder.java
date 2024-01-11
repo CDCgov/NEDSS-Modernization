@@ -44,8 +44,7 @@ class PatientNameFinder {
         private long resolveTotal(final long patient) {
                 Long total = applyCriteria(this.factory.select(this.tables.name().id.personNameSeq.countDistinct()),
                                 patient)
-                                .fetchOne()
-                                .longValue();
+                                                .fetchOne();
                 return total == null ? 0L : total;
         }
 
@@ -69,22 +68,22 @@ class PatientNameFinder {
                                                 tables.name().nmDegree,
                                                 tables.degree().codeDescTxt),
                                 patient)
-                                .leftJoin(this.tables.prefix()).on(
-                                                this.tables.prefix().id.codeSetNm
-                                                                .eq(NAME_PREFIX_CODE_SET),
-                                                this.tables.prefix().id.code
-                                                                .eq(this.tables.name().nmPrefix))
-                                .leftJoin(this.tables.degree()).on(
-                                                this.tables.degree().id.codeSetNm
-                                                                .eq(NAME_DEGREE_CODE_SET),
-                                                this.tables.degree().id.code
-                                                                .eq(this.tables.name().nmDegree))
-                                .offset(pageable.getOffset())
-                                .limit(pageable.getPageSize())
-                                .fetch()
-                                .stream()
-                                .map(mapper::map)
-                                .toList();
+                                                .leftJoin(this.tables.prefix()).on(
+                                                                this.tables.prefix().id.codeSetNm
+                                                                                .eq(NAME_PREFIX_CODE_SET),
+                                                                this.tables.prefix().id.code
+                                                                                .eq(this.tables.name().nmPrefix))
+                                                .leftJoin(this.tables.degree()).on(
+                                                                this.tables.degree().id.codeSetNm
+                                                                                .eq(NAME_DEGREE_CODE_SET),
+                                                                this.tables.degree().id.code
+                                                                                .eq(this.tables.name().nmDegree))
+                                                .offset(pageable.getOffset())
+                                                .limit(pageable.getPageSize())
+                                                .fetch()
+                                                .stream()
+                                                .map(mapper::map)
+                                                .toList();
         }
 
         Page<PatientName> find(final long patient, final Pageable pageable) {
