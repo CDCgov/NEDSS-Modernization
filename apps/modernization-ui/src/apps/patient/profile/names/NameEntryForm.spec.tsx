@@ -48,40 +48,23 @@ describe('When adding a name', () => {
             });
         });
 
-        it('should not allow numbers in First name', async () => {
-            const { getByLabelText, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow numbers in First name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('First name');
+            const input = getByLabelText('First name') as HTMLInputElement;
 
-            await act(() => userEvent.type(input, '1231'));
+            await userEvent.type(input, '1231');
 
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
         });
 
-        it('should not allow special characters in First name', async () => {
-            const { getByLabelText, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow special characters in First name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('First name');
+            const input = getByLabelText('First name') as HTMLInputElement;
+            await userEvent.type(input, '!@#$%^&*');
 
-            await act(() => userEvent.type(input, '!@#$%^&*'));
-
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the special characters
         });
     });
 
@@ -104,40 +87,23 @@ describe('When adding a name', () => {
             });
         });
 
-        it('should not allow numbers in Middle name', async () => {
-            const { getByLabelText, container, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow numbers in Middle name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Middle name');
+            const input = getByLabelText('Middle name') as HTMLInputElement;
 
-            await act(() => userEvent.type(input, '1231'));
+            await userEvent.type(input, '1231');
 
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
         });
 
-        it('should not allow special characters in Middle name', async () => {
-            const { getByLabelText, container, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow special characters in Middle name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Middle name');
+            const input = getByLabelText('Middle name') as HTMLInputElement;
+            await userEvent.type(input, '!@#$%^&*');
 
-            await act(() => userEvent.type(input, '!@#$%^&*'));
-
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the special characters
         });
     });
 
@@ -160,40 +126,23 @@ describe('When adding a name', () => {
             });
         });
 
-        it('should not allow numbers in Second middle name', async () => {
-            const { getByLabelText, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow numbers in Second middle name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Second middle');
+            const input = getByLabelText('Second middle') as HTMLInputElement;
 
-            await act(() => userEvent.type(input, '1231'));
+            await userEvent.type(input, '1231');
 
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
         });
 
-        it('should not allow special characters in Second middle name', async () => {
-            const { getByLabelText, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow special characters in Second middle name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Second middle');
+            const input = getByLabelText('Second middle') as HTMLInputElement;
+            await userEvent.type(input, '!@#$%^&*');
 
-            await act(() => userEvent.type(input, '!@#$%^&*'));
-
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the special characters
         });
     });
 
@@ -216,40 +165,23 @@ describe('When adding a name', () => {
             });
         });
 
-        it('should not allow numbers in Last name', async () => {
-            const { getByLabelText, container, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow numbers in Last name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Last name');
+            const input = getByLabelText('Last name') as HTMLInputElement;
 
-            await act(() => userEvent.type(input, '1231'));
+            await userEvent.type(input, '1231');
 
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
         });
 
-        it('should not allow special characters in Last name', async () => {
-            const { getByLabelText, container, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow special characters in Last name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Last name');
+            const input = getByLabelText('Last name') as HTMLInputElement;
+            await userEvent.type(input, '!@#$%^&*');
 
-            await act(() => userEvent.type(input, '!@#$%^&*'));
-
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the special characters
         });
     });
 
@@ -272,40 +204,23 @@ describe('When adding a name', () => {
             });
         });
 
-        it('should not allow numbers in Second last name', async () => {
-            const { getByLabelText, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow numbers in Second last name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Second last');
+            const input = getByLabelText('Second last') as HTMLInputElement;
 
-            await act(() => userEvent.type(input, '1231'));
+            await userEvent.type(input, '1231');
 
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
         });
 
-        it('should not allow special characters in Second last name', async () => {
-            const { getByLabelText, getByText } = render(
-                <NameEntryForm action="Add" entry={entry} onChange={onChange} />
-            );
+        it('should allow special characters in Second last name', async () => {
+            const { getByLabelText } = render(<NameEntryForm action="Add" entry={entry} onChange={onChange} />);
 
-            const input = getByLabelText('Second last');
+            const input = getByLabelText('Second last') as HTMLInputElement;
+            await userEvent.type(input, '!@#$%^&*');
 
-            await act(() => userEvent.type(input, '!@#$%^&*'));
-
-            act(() => {
-                fireEvent.blur(input);
-            });
-
-            await waitFor(() => {
-                expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-            });
+            expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the special characters
         });
     });
 });

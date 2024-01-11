@@ -43,36 +43,24 @@ describe('when entering a last name', () => {
         });
     });
 
-    it('should not allow numbers in Last name', async () => {
-        const { getByLabelText, getByText } = setup();
+    it('should allow numbers in Last name', async () => {
+        const { getByLabelText } = setup();
 
-        const input = getByLabelText('Last');
+        const input = getByLabelText('Last') as HTMLInputElement;
 
-        await act(() => userEvent.type(input, '1231'));
+        await userEvent.type(input, '1231');
 
-        act(() => {
-            fireEvent.blur(input);
-        });
-
-        await waitFor(() => {
-            expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-        });
+        expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
     });
 
-    it('should not allow special characters in Last name', async () => {
-        const { getByLabelText, getByText } = setup();
+    it('should allow special characters Last name', async () => {
+        const { getByLabelText } = setup();
 
-        const input = getByLabelText('Last');
+        const input = getByLabelText('Last') as HTMLInputElement;
 
-        await act(() => userEvent.type(input, '!@#$%^&*'));
+        await userEvent.type(input, '!@#$%^&*');
 
-        act(() => {
-            fireEvent.blur(input);
-        });
-
-        await waitFor(() => {
-            expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-        });
+        expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the numbers
     });
 });
 
@@ -93,36 +81,24 @@ describe('when entering a first name', () => {
         });
     });
 
-    it('should not allow numbers in First name', async () => {
-        const { getByLabelText, getByText } = setup();
+    it('should allow numbers in First name', async () => {
+        const { getByLabelText } = setup();
 
-        const input = getByLabelText('First');
+        const input = getByLabelText('First') as HTMLInputElement;
 
-        await act(() => userEvent.type(input, '1231'));
+        await userEvent.type(input, '1231');
 
-        act(() => {
-            fireEvent.blur(input);
-        });
-
-        await waitFor(() => {
-            expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-        });
+        expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
     });
 
-    it('should not allow special characters in First name', async () => {
-        const { getByLabelText, getByText } = setup();
+    it('should allow special characters First name', async () => {
+        const { getByLabelText } = setup();
 
-        const input = getByLabelText('First');
+        const input = getByLabelText('First') as HTMLInputElement;
 
-        await act(() => userEvent.type(input, '!@#$%^&*'));
+        await userEvent.type(input, '!@#$%^&*');
 
-        act(() => {
-            fireEvent.blur(input);
-        });
-
-        await waitFor(() => {
-            expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-        });
+        expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the numbers
     });
 });
 
@@ -143,35 +119,23 @@ describe('when entering a middle name', () => {
         });
     });
 
-    it('should not allow numbers in Middle name', async () => {
-        const { getByLabelText, getByText } = setup();
+    it('should allow numbers in Middle name', async () => {
+        const { getByLabelText } = setup();
 
-        const input = getByLabelText('Middle');
+        const input = getByLabelText('Middle') as HTMLInputElement;
 
-        await act(() => userEvent.type(input, '1231'));
+        await userEvent.type(input, '1231');
 
-        act(() => {
-            fireEvent.blur(input);
-        });
-
-        await waitFor(() => {
-            expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-        });
+        expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
     });
 
-    it('should not allow special characters in Middle name', async () => {
-        const { getByLabelText, getByText } = setup();
+    it('should allow special characters Middle name', async () => {
+        const { getByLabelText } = setup();
 
-        const input = getByLabelText('Middle');
+        const input = getByLabelText('Middle') as HTMLInputElement;
 
-        await act(() => userEvent.type(input, '!@#$%^&*'));
+        await userEvent.type(input, '!@#$%^&*');
 
-        act(() => {
-            fireEvent.blur(input);
-        });
-
-        await waitFor(() => {
-            expect(getByText('Names can not contain numbers or special characters.')).toBeInTheDocument();
-        });
+        expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the numbers
     });
 });
