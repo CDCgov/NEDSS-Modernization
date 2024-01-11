@@ -85,6 +85,11 @@ public class ValueSetController {
     return valueSetReader.findConceptCodes(codeSetNm);
   }
 
+  @GetMapping("{codeSetNm}/race/concepts")
+  public List<RaceConcept> findRaceConceptsByCodeSetName(@PathVariable String codeSetNm) {
+    return valueSetReader.findRaceConceptCodes(codeSetNm);
+  }
+
   @PutMapping("/{valueSetCode}/concepts/{localCode}")
   public Concept updateConcept(
       @PathVariable String valueSetCode,

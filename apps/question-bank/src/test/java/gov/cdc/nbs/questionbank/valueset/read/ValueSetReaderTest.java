@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 
+import gov.cdc.nbs.questionbank.valueset.RaceConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.ValueSetFinder;
+import gov.cdc.nbs.questionbank.valueset.response.RaceConcept;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 
 import org.junit.jupiter.api.Test;
@@ -42,6 +44,9 @@ class ValueSetReaderTest {
 
   @InjectMocks
   ValueSetReader valueSetReader;
+
+  @Mock
+  RaceConceptFinder raceConceptFinder;
 
   ValueSetReaderTest() {
     MockitoAnnotations.openMocks(this);
@@ -155,11 +160,29 @@ class ValueSetReaderTest {
   }
 
 
-
   @Test
   void should_return_empty_list_for_null_concept() {
-    List<Concept> results = valueSetReader.findConceptCodes(null);
-    assertNotNull(results);
-    assertTrue(results.isEmpty());
+    List<Concept> conceptResults = valueSetReader.findConceptCodes(null);
+    List<RaceConcept> raceConceptResults = valueSetReader.findRaceConceptCodes(null);
+    assertNotNull(conceptResults);
+    assertTrue(conceptResults.isEmpty());
+    assertNotNull(raceConceptResults);
+    assertTrue(raceConceptResults.isEmpty());
   }
+
+  @Test
+  void should_return_raceConcept_list_for_valid_concept() {
+    when(raceConceptFinder.findRaceConceptCodes("codeSetNm")).thenReturn(getListOfRaceConceptCodes());
+    List<RaceConcept> raceConceptResults = valueSetReader.findRaceConceptCodes("codeSetNm");
+    assertNotNull(raceConceptResults);
+    assertFalse(raceConceptResults.isEmpty());
+  }
+
+  private List<RaceConcept> getListOfRaceConceptCodes() {
+    List<RaceConcept> response = new ArrayList<>();
+    response.add(new RaceConcept("code", "codeSetName", "display", "longName",
+        "codeSystem", "Active", "2002-03-15 00:00:00.0", "2002-03-20 00:00:00.0"));
+    return response;
+  }
+
 }

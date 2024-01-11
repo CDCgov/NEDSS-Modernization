@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import gov.cdc.nbs.questionbank.valueset.response.RaceConcept;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,12 +28,17 @@ public class ValueSetReader {
 
   private final ValueSetFinder valueSetFinder;
 
+  private final RaceConceptFinder raceConceptFinder;
+
+
   ValueSetReader(final ValueSetRepository valueSetRepository,
       final CodeValueGeneralRepository codeValueGeneralRepository,
-      final ValueSetFinder valueSetFinder) {
+      final ValueSetFinder valueSetFinder,
+      final RaceConceptFinder raceConceptFinder) {
     this.valueSetRepository = valueSetRepository;
     this.codeValueGeneralRepository = codeValueGeneralRepository;
     this.valueSetFinder = valueSetFinder;
+    this.raceConceptFinder = raceConceptFinder;
   }
 
   public Page<ValueSet> findAllValueSets(Pageable pageable) {
@@ -92,6 +98,10 @@ public class ValueSetReader {
         .stream()
         .map(this::toConcept)
         .toList();
+  }
+
+  public List<RaceConcept> findRaceConceptCodes(String codeSetNm) {
+    return (codeSetNm != null) ? raceConceptFinder.findRaceConceptCodes(codeSetNm) : Collections.emptyList();
   }
 
   public Concept toConcept(CodeValueGeneral codeValueGeneral) {

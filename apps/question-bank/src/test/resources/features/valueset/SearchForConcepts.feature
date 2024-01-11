@@ -12,11 +12,28 @@ Feature: I can search for concepts associated with the given value set
             | 900_RESULT_PROVIDED |
 
     Scenario: I cannot search for concepts without logging in
-        Given I am not logged in
-        When I search for concepts for value set "CODE_SYSTEM"
-        Then a no credentials found exception is thrown
+            Given I am not logged in
+            When I search for concepts for value set "CODE_SYSTEM"
+            Then a no credentials found exception is thrown
 
     Scenario: I cannot search for concepts without proper permission
-        Given I am a user without permissions
-        When I search for concepts for value set "CODE_SYSTEM"
-        Then an accessdenied exception is thrown
+            Given I am a user without permissions
+            When I search for concepts for value set "CODE_SYSTEM"
+            Then an accessdenied exception is thrown
+
+
+
+    Scenario: I can list all race concepts for a value set
+            Given I am an admin user
+            When I search for race concepts for value set "P_RACE"
+            Then I find race concepts for value set "P_RACE"
+
+    Scenario: I cannot search for race concepts without logging in
+            Given I am not logged in
+            When I search for race concepts for value set "P_RACE"
+            Then a no credentials found exception is thrown
+
+    Scenario: I cannot search for race concepts without proper permission
+            Given I am a user without permissions
+            When I search for race concepts for value set "P_RACE"
+            Then an accessdenied exception is thrown
