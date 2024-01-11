@@ -1,13 +1,14 @@
 package gov.cdc.nbs.questionbank.valueset;
 
-import gov.cdc.nbs.questionbank.valueset.response.RaceConcept;
+import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 
-public class RaceConceptMapper implements RowMapper<RaceConcept> {
+public class RaceConceptMapper implements RowMapper<Concept> {
 
   record Column(int code, int codeSetName, int display, int longName,
                 int codeSystem, int status, int effectiveFromTime, int effectiveToTime) {
@@ -30,20 +31,25 @@ public class RaceConceptMapper implements RowMapper<RaceConcept> {
 
   @Override
   @NonNull
-  public RaceConcept mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+  public Concept mapRow(final ResultSet rs, final int rowNum) throws SQLException {
     String code = rs.getString(columns.code());
     String codeSetName = rs.getString(columns.codeSetName());
     String display = rs.getString(columns.display());
     String longName = rs.getString(columns.longName());
     String codeSystem = rs.getString(columns.codeSystem());
     String status = rs.getString(columns.status()).equals("A") ? "Active" : "Inactive";
-    String effectiveFromTime = rs.getString(columns.effectiveFromTime());
-    String effectiveToTime = rs.getString(columns.effectiveToTime());
-    return new RaceConcept(
+    Instant effectiveFromTime = rs.getTimestamp(columns.effectiveFromTime()) != null ?
+        rs.getTimestamp(columns.effectiveFromTime()).toInstant() : null;
+    Instant effectiveToTime = rs.getTimestamp(columns.effectiveToTime()) != null ?
+        rs.getTimestamp(columns.effectiveFromTime()).toInstant() : null;
+
+    return new Concept(
         code,
         codeSetName,
         display,
         longName,
+        null,
+        null,
         codeSystem,
         status,
         effectiveFromTime,

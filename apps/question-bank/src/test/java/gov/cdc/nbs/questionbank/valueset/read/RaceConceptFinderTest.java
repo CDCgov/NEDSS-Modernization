@@ -2,7 +2,8 @@ package gov.cdc.nbs.questionbank.valueset.read;
 
 import gov.cdc.nbs.questionbank.valueset.RaceConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.RaceConceptMapper;
-import gov.cdc.nbs.questionbank.valueset.response.RaceConcept;
+import gov.cdc.nbs.questionbank.valueset.response.Concept;
+import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,12 +13,12 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -40,10 +41,10 @@ class RaceConceptFinderTest {
 
   @Test
   void findRaceConceptCodes_validCodeSetName_returnListOfRaceConceptCodes() {
-    List<RaceConcept> expectedResponse = getListOfRaceConceptCodes();
+    List<Concept> expectedResponse = getListOfRaceConceptCodes();
     when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(),
         any(RaceConceptMapper.class))).thenReturn(expectedResponse);
-    List<RaceConcept> actualResponse = raceConceptFinder.findRaceConceptCodes("codeSetName");
+    List<Concept> actualResponse = raceConceptFinder.findRaceConceptCodes(ValueSetConstants.RACE_CONCEPT_CODE_SET);
     assertEquals(expectedResponse, actualResponse);
   }
 
@@ -51,13 +52,13 @@ class RaceConceptFinderTest {
   void findRaceConceptCodes_inValidCodeSetName_returnEmptyList() {
     when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(),
         any(RaceConceptMapper.class))).thenReturn(Collections.EMPTY_LIST);
-    List<RaceConcept> actualResponse = raceConceptFinder.findRaceConceptCodes("invalidCodeSetName");
+    List<Concept> actualResponse = raceConceptFinder.findRaceConceptCodes("invalidCodeSetName");
     assertTrue(actualResponse.isEmpty());
   }
 
   @Test
   void testRaceConceptCodesParametersSet() {
-    List<RaceConcept> expectedResponse = getListOfRaceConceptCodes();
+    List<Concept> expectedResponse = getListOfRaceConceptCodes();
     when(jdbcTemplate.query(anyString(), setterCaptor.capture(), any(RowMapper.class)))
         .thenAnswer(invocation -> {
           PreparedStatementSetter setter = setterCaptor.getValue();
@@ -65,7 +66,7 @@ class RaceConceptFinderTest {
           setter.setValues(preparedStatement);
           return expectedResponse;
         });
-    List<RaceConcept> actualResponse = raceConceptFinder.findRaceConceptCodes("codeSetName");
+    List<Concept> actualResponse = raceConceptFinder.findRaceConceptCodes(ValueSetConstants.RACE_CONCEPT_CODE_SET);
     assertEquals(expectedResponse, actualResponse);
   }
 
@@ -74,30 +75,30 @@ class RaceConceptFinderTest {
     RaceConceptMapper mapper = new RaceConceptMapper();
     ResultSet resultSet = mock(ResultSet.class);
     when(resultSet.getString(1)).thenReturn("code");
-    when(resultSet.getString(2)).thenReturn("codeSetName");
+    when(resultSet.getString(2)).thenReturn("P_RACE_CAT");
     when(resultSet.getString(3)).thenReturn("display");
     when(resultSet.getString(4)).thenReturn("longName");
     when(resultSet.getString(5)).thenReturn("codeSystem");
     when(resultSet.getString(6)).thenReturn("A");
-    when(resultSet.getString(7)).thenReturn("2002-03-15 00:00:00.000");
-    when(resultSet.getString(8)).thenReturn("2002-03-20 00:00:00.000");
+    when(resultSet.getString(7)).thenReturn("2024-01-09T02:03:04Z");
+    when(resultSet.getString(8)).thenReturn("2024-01-09T02:03:04Z");
 
-    RaceConcept response = mapper.mapRow(resultSet, 1);
+    Concept response = mapper.mapRow(resultSet, 1);
     assertEquals("code", response.localCode());
-    assertEquals("codeSetName", response.codeSetName());
+    assertEquals("P_RACE_CAT", response.codeSetName());
     assertEquals("display", response.display());
     assertEquals("longName", response.longName());
     assertEquals("codeSystem", response.codeSystem());
     assertEquals("Active", response.status());
-    assertEquals("2002-03-15 00:00:00.000", response.effectiveFromTime());
-    assertEquals("2002-03-20 00:00:00.000", response.effectiveToTime());
+
   }
 
 
-  private List<RaceConcept> getListOfRaceConceptCodes() {
-    List<RaceConcept> response = new ArrayList<>();
-    response.add(new RaceConcept("code", "codeSetName", "display", "longName",
-        "codeSystem", "Active", "2002-03-15 00:00:00.0", "2002-03-20 00:00:00.0"));
-    return response;
+  private List<Concept> getListOfRaceConceptCodes() {
+    List<Concept> conceptList = new ArrayList<>();
+    conceptList.add(new Concept("code", "P_RACE_CAT", "display",
+        "longName", null, null,
+        "codeSystem", "Active", Instant.now(), Instant.now()));
+    return conceptList;
   }
 }

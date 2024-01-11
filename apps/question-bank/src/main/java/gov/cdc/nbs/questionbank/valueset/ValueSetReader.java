@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import gov.cdc.nbs.questionbank.valueset.response.RaceConcept;
+
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
+import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -92,7 +93,9 @@ public class ValueSetReader {
     if (codeSetNm == null) {
       return Collections.emptyList();
     }
-
+    if (codeSetNm.equals(ValueSetConstants.RACE_CONCEPT_CODE_SET)) {
+      return raceConceptFinder.findRaceConceptCodes(codeSetNm);
+    }
     return codeValueGeneralRepository
         .findByIdCodeSetNm(codeSetNm, Sort.by(Sort.Direction.ASC, "codeShortDescTxt"))
         .stream()
@@ -100,9 +103,6 @@ public class ValueSetReader {
         .toList();
   }
 
-  public List<RaceConcept> findRaceConceptCodes(String codeSetNm) {
-    return (codeSetNm != null) ? raceConceptFinder.findRaceConceptCodes(codeSetNm) : Collections.emptyList();
-  }
 
   public Concept toConcept(CodeValueGeneral codeValueGeneral) {
     return new Concept(

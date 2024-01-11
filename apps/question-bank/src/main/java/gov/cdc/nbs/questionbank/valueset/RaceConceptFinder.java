@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.valueset;
 
-import gov.cdc.nbs.questionbank.valueset.response.RaceConcept;
+import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class RaceConceptFinder {
           """;
 
   private final JdbcTemplate jdbcTemplate;
-  private final RowMapper<RaceConcept> mapper;
+  private final RowMapper<Concept> mapper;
   private static final int CODE_SET_NAME = 1;
 
   RaceConceptFinder(final JdbcTemplate jdbcTemplate) {
@@ -36,7 +36,7 @@ public class RaceConceptFinder {
     this.mapper = new RaceConceptMapper();
   }
 
-  public List<RaceConcept> findRaceConceptCodes(String codeSetName) {
+  public List<Concept> findRaceConceptCodes(String codeSetName) {
     return this.jdbcTemplate.query(
         findRaceConceptQuery,
         setter -> setter.setString(CODE_SET_NAME, codeSetName),
