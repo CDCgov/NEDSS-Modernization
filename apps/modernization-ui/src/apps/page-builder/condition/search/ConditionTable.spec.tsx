@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Condition } from 'apps/page-builder/generated';
 import { WithinTableProvider } from 'components/Table/testing';
 import { ConditionTable } from './ConditionTable';
@@ -80,9 +80,7 @@ describe('when a search is performed', () => {
                 />
             </WithinTableProvider>
         );
-        await waitFor(() => {
-            expect(mockOnSelectionChange).toHaveBeenLastCalledWith([]);
-        });
+        expect(mockOnSelectionChange).toHaveBeenLastCalledWith([]);
 
         const row1Checkbox = (await findAllByRole('cell'))[0].children[0].children[1];
         // select the first condition
