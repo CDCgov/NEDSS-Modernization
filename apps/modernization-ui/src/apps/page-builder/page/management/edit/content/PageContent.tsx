@@ -37,6 +37,7 @@ export const PageContent = ({ tab, refresh }: Props) => {
     const manageSectionModalRef = useRef<ModalRef>(null);
     const addSectionModalRef = useRef<ModalRef>(null);
     const [currentTab, setCurrentTab] = useState<PagesTab>();
+
     const handleAddSubsection = (section: number) => {
         console.log('add subsection not yet implemented', section);
     };
@@ -78,15 +79,11 @@ export const PageContent = ({ tab, refresh }: Props) => {
     };
 
     const handleAddSection = () => {
-        manageSectionModalRef.current?.toggleModal(undefined, false);
         addSectionModalRef.current?.toggleModal(undefined, true);
     };
 
     const closeAddSection = () => {
         addSectionModalRef.current?.toggleModal(undefined, false);
-        setTimeout(() => {
-            manageSectionModalRef.current?.toggleModal(undefined, true);
-        }, 10);
     };
 
     return (
