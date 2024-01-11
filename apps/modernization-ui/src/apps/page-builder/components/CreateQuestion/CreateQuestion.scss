@@ -163,14 +163,3 @@
     gap: 1rem;
     align-self: stretch;
 }
-
-.usa-modal-wrapper.is-visible {
-   .usa-modal-overlay .usa-modal {
-       max-height: 80vh;
-       overflow: auto;
-       .usa-modal__content {
-           max-height: 80vh;
-           overflow: auto;
-       }
-   }
-}

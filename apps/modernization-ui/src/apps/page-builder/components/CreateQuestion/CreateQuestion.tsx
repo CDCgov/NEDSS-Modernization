@@ -57,6 +57,7 @@ export type QuestionFormType = {
     defaultLabelInReport?: string;
     datamartColName?: string;
     unitType?: string;
+    groupNumber?: string;
     dateFormat?: number;
     includedInMessage?: boolean;
     requiredInMessage?: boolean;
@@ -90,7 +91,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
     const [subGroupOptions, setSubGroupOptions] = useState<optionsType[]>([]);
     const [groupOptions, setGroupOptions] = useState<optionsType[]>([]);
     const [selectedFieldType, setSelectedFieldType] = useState('');
-    const [codeSystemOptionList, setCodeSystemOptionList] = useState([]);
+    const [codeSystemOptionList, setCodeSystemOptionList] = useState<optionsType[]>([]);
     const [maskOptions, setMaskOptions] = useState<optionsType[]>([]);
     const { searchValueSet } = useContext(QuestionsContext);
     useEffect(() => {
@@ -199,9 +200,9 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
             codeSetNm: 'CODE_SYSTEM'
         }).then((response: any) => {
             const data = response || [];
-            const codeSystemOptionList: any = [];
-            data.map((each: { localCode: string; description: string }) => {
-                codeSystemOptionList.push({ label: each.localCode, value: each.description });
+            const codeSystemOptionList: optionsType[] = [];
+            data.map((each: { display: string; conceptCode: string }) => {
+                codeSystemOptionList.push({ name: each.display, value: each.conceptCode });
             });
             setCodeSystemOptionList(codeSystemOptionList);
         });
@@ -282,6 +283,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
                 resetInput();
+                onAddQuestion?.(response.id!);
                 return response.id!;
             });
         } else {
@@ -311,6 +313,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
     const handleValidation = (unique = true) => {
         return unique ? /^[a-zA-Z0-9_]*$/ : /^[a-zA-Z0-9\s?!,-_]*$/;
     };
+    const startWithNonInteger = /^\D[a-zA-Z0-9_]*$/;
 
     const resetInput = () => {
         reset();
@@ -521,13 +524,15 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                         <Controller
                             control={control}
                             name="subgroup"
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'Subgroup required' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     className="field-space"
                                     label="Subgroup"
                                     required
                                     onChange={onChange}
+                                    error={error?.message}
                                     options={subGroupOptions}
                                 />
                             )}
@@ -635,7 +640,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                             name="rdbColumnName"
                             rules={{
                                 required: { value: true, message: 'RDB column name required' },
-                                pattern: { value: handleValidation(), message: 'RDB column name invalid' },
+                                pattern: { value: startWithNonInteger, message: 'RDB column name invalid' },
                                 maxLength: 50
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -653,7 +658,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                             control={control}
                             name="datamartColName"
                             rules={{
-                                pattern: { value: /^\w*$/, message: 'Data mart column name invalid' },
+                                pattern: { value: startWithNonInteger, message: 'Data mart column name invalid' },
                                 maxLength: 50
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -741,12 +746,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                                     onChange={onChange}
                                     disabled={IsIncludedInMessage}
                                     required
-                                    options={codeSystemOptionList.map(({ label }) => {
-                                        return {
-                                            name: label!,
-                                            value: label!
-                                        };
-                                    })}
+                                    options={codeSystemOptionList}
                                 />
                             )}
                         />
@@ -762,6 +762,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                                         className="requiredInMessage"
                                         checked={value}
                                         name="includedInMessage"
+                                        disabled={IsIncludedInMessage}
                                         onChange={onChange}
                                     />
                                 </>
@@ -771,18 +772,15 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                         <Controller
                             control={control}
                             name="hl7DataType"
-                            rules={{
-                                required: {
-                                    value: !IsIncludedInMessage,
-                                    message: 'HL7 data type required'
-                                }
-                            }}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: !IsIncludedInMessage, message: 'HL7 data type required' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     label="HL7 data type"
                                     defaultValue={value}
+                                    name="hl7DataType"
                                     disabled={IsIncludedInMessage}
                                     onChange={onChange}
+                                    error={error?.message}
                                     required
                                     options={groupOptions}
                                 />
@@ -802,6 +800,20 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                                 />
                             )}
                         />
+                        <Controller
+                            control={control}
+                            name="groupNumber"
+                            render={({ field: { onChange, value } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    disabled
+                                    className="field-space"
+                                    label="Group Number (Order Group ID)"
+                                    type="text"
+                                />
+                            )}
+                        />
                     </div>
                     <hr className="divider" />
                     <h4 className="margin-bottom-0">Administrative</h4>
@@ -811,6 +823,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                     <Controller
                         control={control}
                         name="adminComments"
+                        rules={{ maxLength: 2000 }}
                         render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <Input
                                 onChange={onChange}
