@@ -2,13 +2,16 @@ import { PagesQuestion, PagesTab } from 'apps/page-builder/generated';
 import { Sections } from '../section/Sections';
 import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
-import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { EditStaticElement } from '../staticelement/EditStaticElement';
-import { ModalRef } from '@trussworks/react-uswds';
-import React, { useEffect, useRef, useState } from 'react';
+import { Button, ModalRef } from '@trussworks/react-uswds';
+import { useEffect, useRef, useState } from 'react';
 import { AddQuestionModal } from '../../../../components/Subsection/AddQuestionModal/AddQuestionModal';
 import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
 import { Heading } from '../../../../../../components/heading';
+import { ManageSection } from '../section/manage/ManageSection';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { Icon } from '@trussworks/react-uswds';
+import { AddSection } from '../section/manage/AddSection';
 
 type Props = {
     tab: PagesTab;
@@ -31,6 +34,9 @@ export const PageContent = ({ tab, refresh }: Props) => {
     const [subsectionId, setSubsectionId] = useState(0);
     const addQuestionModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
+    const manageSectionModalRef = useRef<ModalRef>(null);
+    const addSectionModalRef = useRef<ModalRef>(null);
+    const [currentTab, setCurrentTab] = useState<PagesTab>();
     const handleAddSubsection = (section: number) => {
         console.log('add subsection not yet implemented', section);
     };
@@ -56,6 +62,33 @@ export const PageContent = ({ tab, refresh }: Props) => {
         }
     }, [currentEditQuestion]);
 
+    const handleManageSection = () => {
+        setCurrentTab(tab);
+    };
+
+    useEffect(() => {
+        if (currentTab !== undefined) {
+            manageSectionModalRef.current?.toggleModal(undefined, true);
+        }
+    }, [currentTab]);
+
+    const onCloseManageSectionModal = () => {
+        manageSectionModalRef.current?.toggleModal(undefined, false);
+        setCurrentTab(undefined);
+    };
+
+    const handleAddSection = () => {
+        manageSectionModalRef.current?.toggleModal(undefined, false);
+        addSectionModalRef.current?.toggleModal(undefined, true);
+    };
+
+    const closeAddSection = () => {
+        addSectionModalRef.current?.toggleModal(undefined, false);
+        setTimeout(() => {
+            manageSectionModalRef.current?.toggleModal(undefined, true);
+        }, 10);
+    };
+
     return (
         <div className={styles.pageContent}>
             <div className={styles.invisible} />
@@ -64,9 +97,10 @@ export const PageContent = ({ tab, refresh }: Props) => {
                 onAddSubsection={handleAddSubsection}
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={setSubsectionId}
+                handleManageSection={handleManageSection}
                 addQuestionModalRef={addQuestionModalRef}
             />
-            <PageSideMenu />
+            <PageSideMenu onAddSection={handleAddSection} />
             <ModalComponent
                 modalRef={editStaticElementRef}
                 modalHeading={'Edit static elements'}
@@ -91,6 +125,28 @@ export const PageContent = ({ tab, refresh }: Props) => {
                     </div>
                 }
                 modalBody={<CreateQuestion onCloseModal={onCloseModal} question={currentEditQuestion} />}
+            />
+            <ModalComponent
+                modalRef={manageSectionModalRef}
+                modalHeading={
+                    <>
+                        <Heading level={2}>Manage sections</Heading>
+                        <Button type="button" onClick={handleAddSection} outline className={styles.addSectionBtn}>
+                            <Icon.Add size={3} />
+                            Add sections
+                        </Button>
+                    </>
+                }
+                modalBody={
+                    currentTab !== undefined && (
+                        <ManageSection tab={currentTab!} refresh={refresh} onCloseModal={onCloseManageSectionModal} />
+                    )
+                }
+            />
+            <ModalComponent
+                modalRef={addSectionModalRef}
+                modalHeading={'Add a section'}
+                modalBody={<AddSection onCloseModal={closeAddSection} refresh={refresh} tabId={currentTab?.id} />}
             />
         </div>
     );

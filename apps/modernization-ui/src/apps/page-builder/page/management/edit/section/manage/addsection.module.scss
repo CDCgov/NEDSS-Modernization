@@ -1,0 +1,57 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.addSection {
+    height: auto;
+    width: auto;
+    min-width: auto;
+    max-height: auto;
+
+    .form {
+        width: auto;
+        max-width: unset;
+        height: 38.875rem;
+        max-height: unset;
+
+        .content {
+            margin: 1.5rem 1.5rem 2.5rem 1.5rem;
+            width: auto;
+
+            .inputField {
+                width: 100%;
+            }
+
+            .visibleToggle {
+                display: flex;
+                flex-direction: row;
+                padding-top: 0.5rem;
+
+                .toggleBtn {
+                    padding-left: 1rem;
+                    padding-right: 1rem;
+                }
+            }
+        }
+
+        .footer {
+            display: flex;
+            width: auto;
+            padding-top: unset;
+            justify-content: flex-end;
+            display: flex;
+            position: relative;
+            align-items: flex-end;
+            border-top: 1px solid colors.$base-lightest;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            // padding-right: 1.5rem;
+            // padding-bottom: 1.5rem;
+            @include borders.rounded();
+
+            .footerBtns {
+                justify-content: flex-end;
+                margin-right: 1.5rem;
+            }
+        }
+    }
+}

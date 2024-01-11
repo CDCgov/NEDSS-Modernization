@@ -1,0 +1,69 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.managesection {
+    width: auto;
+    min-width: auto;
+    height: 38.875rem;
+    overflow: scroll;
+
+    padding: 1rem 1.5rem 1rem 1.5rem;
+
+    .tab {
+        display: flex;
+        flex-direction: row;
+
+        .folderIcon {
+            padding-right: 1rem;
+        }
+        .tabName {
+            margin: 0%;
+        }
+
+    }
+
+    .subsection {
+        display: flex;
+        flex-direction: row;
+
+        .drag {
+            padding-top: 1rem;
+            padding-right: 1rem;
+        }
+        .group {
+            padding-top: 1rem;
+            padding-right: 1rem;
+        }
+
+        .subsectionIcons {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            .edit {
+                justify-content: end;
+                padding-right: 1.5rem;
+                margin-left: auto;
+            }
+    
+            .delete {
+                justify-content: end;
+            }
+        }
+    }
+    .footer {
+        display: flex;
+        flex-direction: row;
+        width: auto;
+        height: auto;
+        padding-top: unset;
+        justify-content: flex-end;
+        align-items: flex-end;
+        border-top: 1px solid colors.$base-lightest;
+        padding-top: 1.5rem;
+        // padding-right: 1.5rem;
+        // padding-bottom: 1.5rem;
+        @include borders.rounded();
+    }
+}
