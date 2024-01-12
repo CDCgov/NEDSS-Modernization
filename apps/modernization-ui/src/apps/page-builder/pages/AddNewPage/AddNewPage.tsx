@@ -74,7 +74,10 @@ export const AddNewPage = () => {
     }, []);
 
     const handleAddConditions = (conditions: number[]) => {
-        form.setValue('conditionIds', conditions.map((id) => String(id)).concat(form.getValues('conditionIds')));
+        const newConditions = conditions
+            .map((id) => String(id))
+            .filter((id) => !form.getValues('conditionIds').includes(id));
+        form.setValue('conditionIds', newConditions.concat(form.getValues('conditionIds')));
         conditionLookupModal.current?.toggleModal();
     };
 
