@@ -11,6 +11,7 @@ import { Heading } from '../../../../../../components/heading';
 import { ManageSection } from '../section/manage/ManageSection';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { AddSection } from '../section/manage/AddSection';
+import { usePageManagement } from '../../usePageManagement';
 
 type Props = {
     tab: PagesTab;
@@ -36,6 +37,8 @@ export const PageContent = ({ tab, refresh }: Props) => {
     const manageSectionModalRef = useRef<ModalRef>(null);
     const addSectionModalRef = useRef<ModalRef>(null);
     const [currentTab, setCurrentTab] = useState<PagesTab>();
+
+    const {page} = usePageManagement();
 
     const handleAddSubsection = (section: number) => {
         console.log('add subsection not yet implemented', section);
