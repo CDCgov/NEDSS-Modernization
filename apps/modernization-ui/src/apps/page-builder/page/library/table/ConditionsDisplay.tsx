@@ -24,7 +24,7 @@ export const ConditionsDisplay = ({ conditions }: Props) => {
     };
     return (
         <>
-            {conditions.length > 0 && renderConditions()}
+            {conditions.length > 0 ? renderConditions() : <NoData />}
             {conditions.length > 5 && !showAll && (
                 <button
                     aria-label="view all conditions"
@@ -37,7 +37,6 @@ export const ConditionsDisplay = ({ conditions }: Props) => {
                     className={styles.expandButton}
                     onClick={() => setShowAll(false)}>{`view less`}</button>
             )}
-            {conditions.length === 0 && <NoData />}
         </>
     );
 };

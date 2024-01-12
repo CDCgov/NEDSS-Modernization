@@ -28,6 +28,13 @@ const conditions: ConditionSummary[] = [
 const viewLess = 'view less';
 
 describe('ConditionDisplay', () => {
+    it('should display No Data if no conditions are provided', () => {
+        const { queryByRole, getByText } = render(<ConditionsDisplay conditions={[]} />);
+        const entries = queryByRole('listitem');
+        expect(entries).toBeNull();
+        expect(getByText('No Data')).toBeInTheDocument();
+    });
+
     it('should display condition and id', () => {
         const { getAllByRole, queryByText } = render(<ConditionsDisplay conditions={conditions} />);
         const entries = getAllByRole('listitem');
