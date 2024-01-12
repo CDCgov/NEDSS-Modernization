@@ -17,7 +17,13 @@ class PatientProfileAddRaceRequester {
   private static final String MUTATION = """
       mutation add($input: RaceInput!) {
         addPatientRace(input: $input) {
-          patient
+          __typename
+          ... on PatientRaceChangeFailureExistingCategory {
+            patient
+          }
+          ... on PatientRaceChangeSuccessful {
+            patient
+          }
         }
       }
       """;

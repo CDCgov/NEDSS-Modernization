@@ -7,13 +7,19 @@ Feature: Patient Profile Race Changes
     And I can "edit" any "patient"
     And I have a patient
 
-  Scenario: I can update a patient with a new race category
+  Scenario: I can change a patient with a new race category
     Given I want to set the patient's race category to Black or African American
     When I add a patient's race as of 04/10/2017
     And I view the Patient Profile Races
     Then the patient's race as of 04/10/2017 includes the category Black or African American
 
-  Scenario: I can update a patient with a new detailed race
+  Scenario: I cannot change a patient with the same race category
+    Given the patient has the race category Black or African American
+    And I want to set the patient's race category to Black or African American
+    When I add a patient's race as of 04/10/2017
+    Then the patient's race cannot be added because the category exists
+    
+  Scenario: I can change a patient with a new detailed race
     Given I want to set the patient's race category to Black or African American
     And I want to set the patient's detailed race to Bahamian
     And I want to set the patient's detailed race to Haitian
@@ -22,7 +28,7 @@ Feature: Patient Profile Race Changes
     Then the patient's race includes Bahamian within the category Black or African American
     And the patient's race includes Haitian within the category Black or African American
 
-  Scenario: I can update a patient's existing race
+  Scenario: I can change a patient's existing race
     Given the patient has the race category Asian
     And the patient has the race category Other
     And I want to set the patient's detailed race to Bangladeshi
@@ -31,7 +37,7 @@ Feature: Patient Profile Race Changes
     And I view the Patient Profile Races
     Then the patient's race as of 04/17/2020 includes the category Asian
 
-  Scenario: I can update a patient's existing race with detailed races
+  Scenario: I can change a patient's existing race with detailed races
     Given the patient has the race category Asian
     And the patient has the race category Other
     And I want to set the patient's detailed race to Bangladeshi

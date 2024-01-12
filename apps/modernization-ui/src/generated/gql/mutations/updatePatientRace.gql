@@ -1,5 +1,12 @@
 mutation updatePatientRace($input: RaceInput!){
     updatePatientRace(input: $input){
-        patient
+        __typename
+        ... on PatientRaceChangeSuccessful {
+            patient
+        }
+        ... on PatientRaceChangeFailed {
+            patient
+            reason
+        }
     }
 }

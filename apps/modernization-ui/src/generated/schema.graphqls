@@ -1680,9 +1680,16 @@ input DeletePatientRace {
     category: String!
 }
 
-type PatientRaceChangeResult {
+type PatientRaceChangeSuccessful {
     patient: Int!
 }
+
+type PatientRaceChangeFailed {
+    patient: Int!
+    reason: String!
+}
+
+union PatientRaceChangeResult = PatientRaceChangeSuccessful | PatientRaceChangeFailed
 
 input NewPatientNameInput {
     patient: Int!

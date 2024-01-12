@@ -3,11 +3,15 @@ package gov.cdc.nbs.patient.profile.race.change;
 import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.Instant;
 import java.util.Optional;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientProfileAddRaceSteps {
 
@@ -41,5 +45,12 @@ public class PatientProfileAddRaceSteps {
   ) {
     return this.input.maybeActive()
         .map(current -> current.patient(identifier.id()).asOf(asOf));
+  }
+
+  @Then("the patient's race cannot be added because the category exists")
+  public void the_patient_race_cannot_be_added_because_the_category_exists() throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.data.addPatientRace.__typename")
+            .value(equalTo("PatientRaceChangeFailureExistingCategory")));
   }
 }

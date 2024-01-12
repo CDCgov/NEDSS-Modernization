@@ -15,6 +15,7 @@ class PatientProfileDeleteRaceRequester {
       mutation delete($input: DeletePatientRace!) {
         deletePatientRace(input: $input) {
           patient
+                        
         }
       }
       """;
