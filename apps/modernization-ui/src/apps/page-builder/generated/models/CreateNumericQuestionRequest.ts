@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { MessagingInfo } from './MessagingInfo';
+import type { MessagingInfo0 } from './MessagingInfo0';
 import type { ReportingInfo } from './ReportingInfo';
 
 export type CreateNumericQuestionRequest = {
@@ -16,7 +16,7 @@ export type CreateNumericQuestionRequest = {
     label?: string;
     mask?: CreateNumericQuestionRequest.mask;
     maxValue?: number;
-    messagingInfo?: MessagingInfo;
+    messagingInfo?: MessagingInfo0;
     minValue?: number;
     relatedUnitsLiteral?: string;
     relatedUnitsValueSet?: number;

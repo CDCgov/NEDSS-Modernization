@@ -1,4 +1,4 @@
-import { Table, Pagination, Checkbox, Radio } from '@trussworks/react-uswds';
+import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { NoData } from 'components/NoData';
@@ -88,6 +88,7 @@ export const TableComponent = ({
     const handleRowSelection =
         (row: TableBody, handleSelected?: OldSelectionHandler): ChangeEventHandler<HTMLInputElement> =>
         (event) => {
+            console.log('event, row/////', event, row);
             handleSelected?.(event, row);
             if (row.onSelect) {
                 const mode = event.target.checked ? 'select' : 'deselect';
@@ -109,11 +110,11 @@ export const TableComponent = ({
                         {selectable && (
                             <td className={styles.selectable}>
                                 {row.radioButton ? (
-                                    <Radio
+                                    <input
                                         key={`selection-${index}`}
                                         id={`selection-${index}`}
                                         name={'selection'}
-                                        label=""
+                                        type="radio"
                                         onChange={handleRowSelection(row, handleSelected)}
                                     />
                                 ) : (
