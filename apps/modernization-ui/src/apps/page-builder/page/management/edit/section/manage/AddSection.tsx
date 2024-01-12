@@ -6,14 +6,15 @@ import { Controller, useForm } from 'react-hook-form';
 import { usePageManagement } from '../../../usePageManagement';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
+import { Heading } from 'components/heading';
 
 type sectionProps = {
     tabId?: number;
-    onCloseModal: () => void;
-    refresh?: () => void;
+    onCancel?: () => void;
+    onAddSectionCreated?: () => void;
 };
 
-export const AddSection = ({ onCloseModal, tabId, refresh }: sectionProps) => {
+export const AddSection = ({ onAddSectionCreated, tabId, onCancel }: sectionProps) => {
     const form = useForm<CreateSectionRequest>();
     const { page } = usePageManagement();
 
@@ -26,18 +27,20 @@ export const AddSection = ({ onCloseModal, tabId, refresh }: sectionProps) => {
         }).then(() => {
             form.reset();
             // handle alert here
-            refresh && refresh();
-            onCloseModal && onCloseModal();
+            onAddSectionCreated && onAddSectionCreated();
         });
     });
 
     const onClose = () => {
         form.reset();
-        onCloseModal && onCloseModal();
+        onCancel && onCancel();
     };
 
     return (
         <div className={styles.addSection}>
+            <div className={styles.header}>
+                <Heading level={4}>Add a section</Heading>
+            </div>
             <Form onSubmit={onSubmit} className={styles.form}>
                 <div className={styles.content}>
                     <Controller

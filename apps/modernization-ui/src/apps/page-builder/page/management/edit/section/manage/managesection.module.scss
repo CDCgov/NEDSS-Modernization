@@ -7,48 +7,83 @@
     height: 38.875rem;
     overflow: scroll;
 
-    padding: 1rem 1.5rem 1rem 1.5rem;
+    justify-content: space-between;
 
-    .tab {
+    .header {
+        padding: 1.5rem;
         display: flex;
-        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        border-bottom: 1px solid colors.$base-lightest;
 
-        .folderIcon {
-            padding-right: 1rem;
-        }
-        .tabName {
-            margin: 0%;
+
+        .manageSectionHeader {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 1.375rem;
         }
 
+        .addSectionHeader {
+            display: flex;
+            justify-content: flex-end;
+
+            .addSectionBtn {
+                display: flex;
+                justify-content: end;
+                align-items: center;
+
+                .addIcon {
+                    padding-right: 0.4rem;
+                    align-items: center;
+                }
+            }
+        }
     }
 
-    .subsection {
-        display: flex;
-        flex-direction: row;
+    .content {
+        padding: 1rem 1.5rem 1rem 1.5rem;
 
-        .drag {
-            padding-top: 1rem;
-            padding-right: 1rem;
-        }
-        .group {
-            padding-top: 1rem;
-            padding-right: 1rem;
-        }
-
-        .subsectionIcons {
+        .tab {
             display: flex;
             flex-direction: row;
-            width: 100%;
-            justify-content: space-between;
-            align-items: center;
-            .edit {
-                justify-content: end;
-                padding-right: 1.5rem;
-                margin-left: auto;
+
+            .folderIcon {
+                padding-right: 1rem;
             }
-    
-            .delete {
-                justify-content: end;
+            .tabName {
+                margin: 0%;
+            }
+        }
+
+        .section {
+            display: flex;
+            flex-direction: row;
+
+            .drag {
+                padding-top: 1rem;
+                padding-right: 1rem;
+            }
+            .group {
+                padding-top: 1rem;
+                padding-right: 1rem;
+            }
+
+            .sectionIcons {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+                .edit {
+                    justify-content: end;
+                    padding-right: 1.5rem;
+                    margin-left: auto;
+                }
+
+                .delete {
+                    justify-content: end;
+                }
             }
         }
     }
@@ -61,7 +96,7 @@
         justify-content: flex-end;
         align-items: flex-end;
         border-top: 1px solid colors.$base-lightest;
-        padding-top: 1.5rem;
+        padding: 1.5rem;
         // padding-right: 1.5rem;
         // padding-bottom: 1.5rem;
         @include borders.rounded();

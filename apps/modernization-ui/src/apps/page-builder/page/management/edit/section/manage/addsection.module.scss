@@ -7,14 +7,28 @@
     min-width: auto;
     max-height: auto;
 
+    .header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 1.375rem;
+        padding: 1.5rem;       
+
+        border-bottom: 1px solid colors.$base-lightest;
+
+    }
+
     .form {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
         width: auto;
         max-width: unset;
         height: 38.875rem;
         max-height: unset;
 
         .content {
-            margin: 1.5rem 1.5rem 2.5rem 1.5rem;
+            padding: 1.5rem 1.5rem 2.5rem 1.5rem;
             width: auto;
 
             .inputField {
