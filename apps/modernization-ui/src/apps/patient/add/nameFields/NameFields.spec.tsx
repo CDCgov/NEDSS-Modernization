@@ -46,21 +46,21 @@ describe('when entering a last name', () => {
     it('should allow numbers in Last name', async () => {
         const { getByLabelText } = setup();
 
-        const input = getByLabelText('Last') as HTMLInputElement;
+        const input = getByLabelText('Last');
 
         await userEvent.type(input, '1231');
 
-        expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
+        expect(input).toHaveValue('1231'); // Asserting that the input contains the numbers
     });
 
     it('should allow special characters Last name', async () => {
         const { getByLabelText } = setup();
 
-        const input = getByLabelText('Last') as HTMLInputElement;
+        const input = getByLabelText('Last');
 
         await userEvent.type(input, '!@#$%^&*');
 
-        expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the numbers
+        expect(input).toHaveValue('!@#$%^&*'); // Asserting that the input contains the numbers
     });
 });
 
@@ -84,21 +84,21 @@ describe('when entering a first name', () => {
     it('should allow numbers in First name', async () => {
         const { getByLabelText } = setup();
 
-        const input = getByLabelText('First') as HTMLInputElement;
+        const input = getByLabelText('First');
 
         await userEvent.type(input, '1231');
 
-        expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
+        expect(input).toHaveValue('1231'); // Asserting that the input contains the numbers
     });
 
     it('should allow special characters First name', async () => {
         const { getByLabelText } = setup();
 
-        const input = getByLabelText('First') as HTMLInputElement;
+        const input = getByLabelText('First');
 
         await userEvent.type(input, '!@#$%^&*');
 
-        expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the numbers
+        expect(input).toHaveValue('!@#$%^&*'); // Asserting that the input contains the numbers
     });
 });
 
@@ -122,20 +122,20 @@ describe('when entering a middle name', () => {
     it('should allow numbers in Middle name', async () => {
         const { getByLabelText } = setup();
 
-        const input = getByLabelText('Middle') as HTMLInputElement;
+        const input = getByLabelText('Middle');
 
         await userEvent.type(input, '1231');
 
-        expect(input.value).toBe('1231'); // Asserting that the input contains the numbers
+        expect(input).toHaveValue('1231'); // Asserting that the input contains the numbers
     });
 
     it('should allow special characters Middle name', async () => {
         const { getByLabelText } = setup();
 
-        const input = getByLabelText('Middle') as HTMLInputElement;
+        const input = getByLabelText('Middle');
 
         await userEvent.type(input, '!@#$%^&*');
 
-        expect(input.value).toBe('!@#$%^&*'); // Asserting that the input contains the numbers
+        expect(input).toHaveValue('!@#$%^&*'); // Asserting that the input contains the numbers
     });
 });
