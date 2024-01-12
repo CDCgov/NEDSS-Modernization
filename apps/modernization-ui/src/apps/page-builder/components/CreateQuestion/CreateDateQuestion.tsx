@@ -33,7 +33,7 @@ export const CreateDateQuestion = ({ control, options }: DateQuestionProps) => {
         <>
             <Controller
                 control={control}
-                name="dateFormat"
+                name="mask"
                 rules={{ required: { value: true, message: 'Mask required' } }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <SelectInput
