@@ -15,23 +15,20 @@ public class QueryDSLFilterApplier {
     Stream<Expression<?>> resolve(final String property);
   }
 
-
   public interface CriteriaResolver {
     Stream<BooleanExpression> resolve(final Filter filter, final Expression<?> expression);
   }
 
   public static Stream<BooleanExpression> apply(
       final ExpressionResolver expressionResolver,
-      final Collection<Filter> filters
-  ) {
+      final Collection<Filter> filters) {
     return apply(expressionResolver, new DefaultQueryDSLCriteriaResolver(), filters);
   }
 
   public static Stream<BooleanExpression> apply(
       final ExpressionResolver expressionResolver,
       final CriteriaResolver criteriaResolver,
-      final Collection<Filter> filters
-  ) {
+      final Collection<Filter> filters) {
     return filters.stream()
         .flatMap(applyFilter(expressionResolver, criteriaResolver))
         .reduce(BooleanExpression::and)
@@ -40,13 +37,11 @@ public class QueryDSLFilterApplier {
 
   private static Function<Filter, Stream<BooleanExpression>> applyFilter(
       final ExpressionResolver expressionResolver,
-      final CriteriaResolver criteriaResolver
-  ) {
+      final CriteriaResolver criteriaResolver) {
     return filter -> expressionResolver.resolve(filter.property())
         .flatMap(expression -> criteriaResolver.resolve(filter, expression));
   }
 
-  private QueryDSLFilterApplier() {
-  }
+  private QueryDSLFilterApplier() {}
 
 }
