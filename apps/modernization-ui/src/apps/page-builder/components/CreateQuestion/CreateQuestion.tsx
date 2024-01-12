@@ -48,7 +48,6 @@ const init = {
     description: '',
     minValue: 0,
     maxValue: 50,
-    displayControl: 0,
     relatedUnitsLiteral: 'ML',
     relatedUnitsValueSet: 2,
     includedInMessage: false
@@ -58,8 +57,8 @@ export type QuestionFormType = {
     defaultLabelInReport?: string;
     datamartColName?: string;
     unitType?: string;
+    groupNumber?: string;
     dateFormat?: number;
-    displayType?: string;
     includedInMessage?: boolean;
     requiredInMessage?: boolean;
     messageVariableId?: string;
@@ -80,7 +79,7 @@ type CreateQuestionFormType = CreateNumericQuestionRequest &
 
 export type optionsType = { name: string; value: string };
 
-export const CreateQuestion = ({ question, onCloseModal }: any) => {
+export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) => {
     const questionForm = useForm<CreateQuestionFormType, any>({
         defaultValues: { ...init }
     });
@@ -89,10 +88,10 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
     const [questionData, setQuestionData] = useState({ valueSet: 0 });
     const { showAlert } = useAlert();
     // DropDown Options
-    const [familyOptions, setFamilyOptions] = useState([]);
-    const [groupOptions, setGroupOptions] = useState([]);
+    const [subGroupOptions, setSubGroupOptions] = useState<optionsType[]>([]);
+    const [groupOptions, setGroupOptions] = useState<optionsType[]>([]);
     const [selectedFieldType, setSelectedFieldType] = useState('');
-    const [codeSystemOptionList, setCodeSystemOptionList] = useState([]);
+    const [codeSystemOptionList, setCodeSystemOptionList] = useState<optionsType[]>([]);
     const [maskOptions, setMaskOptions] = useState<optionsType[]>([]);
     const { searchValueSet } = useContext(QuestionsContext);
     useEffect(() => {
@@ -126,7 +125,6 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             questionForm.setValue('messageLabel', updatedQuestion.labelInMessage);
             questionForm.setValue('unitType', updatedQuestion.unitType);
             questionForm.setValue('dateFormat', updatedQuestion.dateFormat);
-            questionForm.setValue('displayType', updatedQuestion.displayType);
             questionForm.setValue('includedInMessage', updatedQuestion.includedInMessage);
             questionForm.setValue('requiredInMessage', updatedQuestion.requiredInMessage);
             questionForm.setValue('hl7DataType', updatedQuestion.hl7DataType);
@@ -156,17 +154,17 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
         if (searchValueSet) questionForm.setValue('valueSet', searchValueSet);
     }, [searchValueSet]);
 
-    const fetchFamilyOptions = () => {
+    const fetchSubGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
             authorization: authorization(),
-            codeSetNm: 'CONDITION_FAMILY'
+            codeSetNm: 'NBS_QUES_SUBGROUP'
         }).then((response: any) => {
             const data = response || [];
-            const familyList: never[] = [];
-            data.map((each: { localCode: never }) => {
-                familyList.push(each.localCode);
+            const subgroupList: optionsType[] = [];
+            data.map((each: { display: string; conceptCode: string }) => {
+                subgroupList.push({ name: each.display, value: each.conceptCode });
             });
-            setFamilyOptions(familyList);
+            setSubGroupOptions(subgroupList);
         });
     };
     const fetchMask = () => {
@@ -189,9 +187,9 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             codeSetNm: 'COINFECTION_GROUP'
         }).then((response: any) => {
             const data = response || [];
-            const coinfectionGroupList: never[] = [];
-            data.map((each: { localCode: never }) => {
-                coinfectionGroupList.push(each.localCode);
+            const coinfectionGroupList: optionsType[] = [];
+            data.map((each: { display: string; conceptCode: string }) => {
+                coinfectionGroupList.push({ name: each.display, value: each.conceptCode });
             });
             setGroupOptions(coinfectionGroupList);
         });
@@ -202,16 +200,16 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             codeSetNm: 'CODE_SYSTEM'
         }).then((response: any) => {
             const data = response || [];
-            const codeSystemOptionList: any = [];
-            data.map((each: { localCode: string; description: string }) => {
-                codeSystemOptionList.push({ label: each.localCode, value: each.description });
+            const codeSystemOptionList: optionsType[] = [];
+            data.map((each: { display: string; conceptCode: string }) => {
+                codeSystemOptionList.push({ name: each.display, value: each.conceptCode });
             });
             setCodeSystemOptionList(codeSystemOptionList);
         });
     };
 
     useEffect(() => {
-        fetchFamilyOptions();
+        fetchSubGroupOptions();
         fetchGroupOptions();
         fetchCodeSystemOptions();
         fetchMask();
@@ -240,7 +238,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             codeSet: data.codeSet,
             description: data.description,
             defaultValue: data.defaultValue, // text
-            displayControl: parseInt(String(data.displayControl!), 10),
+            displayControl: data.displayControl!,
             label: data.label,
             mask: data.mask,
             subgroup: data.subgroup,
@@ -248,6 +246,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             uniqueName: data.uniqueName,
             uniqueId: data.uniqueId
         };
+
         if (selectedFieldType === 'TEXT') {
             QuestionControllerService.createTextQuestionUsingPost({
                 authorization: authorization(),
@@ -255,7 +254,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
                 resetInput();
-                return response;
+                onAddQuestion?.(response.id!);
             });
         } else if (selectedFieldType === 'DATE') {
             const dateRequest = { ...request, allowFutureDates: data.allowFutureDates === 'Yes' };
@@ -265,7 +264,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
                 resetInput();
-                return response;
+                onAddQuestion?.(response.id!);
             });
         } else if (selectedFieldType === 'NUMERIC') {
             const numericRequest = {
@@ -284,7 +283,8 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             }).then((response) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
                 resetInput();
-                return response;
+                onAddQuestion?.(response.id!);
+                return response.id!;
             });
         } else {
             const codeRequest = { ...request, valueSet: questionData.valueSet };
@@ -294,7 +294,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             }).then((response: any) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
                 resetInput();
-                return response;
+                return response.id;
             });
         }
         onCloseModal && onCloseModal();
@@ -313,6 +313,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
     const handleValidation = (unique = true) => {
         return unique ? /^[a-zA-Z0-9_]*$/ : /^[a-zA-Z0-9\s?!,-_]*$/;
     };
+    const startWithNonInteger = /^\D[a-zA-Z0-9_]*$/;
 
     const resetInput = () => {
         reset();
@@ -406,15 +407,16 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
             />
             <Controller
                 control={control}
-                name="displayType"
-                render={({ field: { onChange, value } }) => (
+                name="displayControl"
+                rules={{ required: { value: true, message: 'Display Type required' } }}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="Display Type"
-                        id="displayType"
                         data-testid="displayType"
                         required
                         defaultValue={value}
                         onChange={onChange}
+                        error={error?.message}
                         options={getDisplayType().map((option) => {
                             return {
                                 name: option.label!,
@@ -432,6 +434,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
     const unitTypeValue = watch('unitType');
     const IsIncludedInMessage = !includedInMessage;
     const isDisableUnitType = relatedUnits !== 'Yes';
+    const editDisabledFields = question?.id !== undefined;
 
     return (
         <div className="create-question">
@@ -458,6 +461,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                                         name="codeSet"
                                         value={QuestionRequest.codeSet.LOCAL}
                                         label="LOCAL"
+                                        disabled={editDisabledFields}
                                         onChange={(e) => onChange(e.target.value)}
                                         checked={value === 'LOCAL'}
                                     />
@@ -466,6 +470,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                                         name="codeSet"
                                         value={QuestionRequest.codeSet.PHIN}
                                         label="PHIN"
+                                        disabled={editDisabledFields}
                                         onChange={(e) => onChange(e.target.value)}
                                         checked={value === 'PHIN'}
                                     />
@@ -476,7 +481,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                             control={control}
                             name="uniqueId"
                             rules={{
-                                required: { value: true, message: 'Unique ID required' },
+                                required: { value: !editDisabledFields, message: 'Unique ID required' },
                                 pattern: { value: handleValidation(), message: 'Unique ID invalid' },
                                 maxLength: 50
                             }}
@@ -486,6 +491,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                                     defaultValue={value}
                                     label="Unique ID"
                                     type="text"
+                                    disabled={editDisabledFields}
                                     error={error?.message}
                                     required
                                 />
@@ -498,7 +504,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                             control={control}
                             name="uniqueName"
                             rules={{
-                                required: { value: true, message: 'Unique name required' },
+                                required: { value: !editDisabledFields, message: 'Unique name required' },
                                 pattern: { value: handleValidation(false), message: 'Unique name invalid' },
                                 maxLength: 50
                             }}
@@ -509,6 +515,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                                     defaultValue={value}
                                     label="Unique name"
                                     type="text"
+                                    disabled={editDisabledFields}
                                     error={error?.message}
                                     required
                                 />
@@ -517,19 +524,16 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                         <Controller
                             control={control}
                             name="subgroup"
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'Subgroup required' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     className="field-space"
                                     label="Subgroup"
                                     required
                                     onChange={onChange}
-                                    options={familyOptions.map((option) => {
-                                        return {
-                                            name: option!,
-                                            value: option!
-                                        };
-                                    })}
+                                    error={error?.message}
+                                    options={subGroupOptions}
                                 />
                             )}
                         />
@@ -636,7 +640,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                             name="rdbColumnName"
                             rules={{
                                 required: { value: true, message: 'RDB column name required' },
-                                pattern: { value: handleValidation(), message: 'RDB column name invalid' },
+                                pattern: { value: startWithNonInteger, message: 'RDB column name invalid' },
                                 maxLength: 50
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -654,7 +658,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                             control={control}
                             name="datamartColName"
                             rules={{
-                                pattern: { value: /^\w*$/, message: 'Data mart column name invalid' },
+                                pattern: { value: startWithNonInteger, message: 'Data mart column name invalid' },
                                 maxLength: 50
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -742,12 +746,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                                     onChange={onChange}
                                     disabled={IsIncludedInMessage}
                                     required
-                                    options={codeSystemOptionList.map(({ label }) => {
-                                        return {
-                                            name: label!,
-                                            value: label!
-                                        };
-                                    })}
+                                    options={codeSystemOptionList}
                                 />
                             )}
                         />
@@ -763,6 +762,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                                         className="requiredInMessage"
                                         checked={value}
                                         name="includedInMessage"
+                                        disabled={IsIncludedInMessage}
                                         onChange={onChange}
                                     />
                                 </>
@@ -772,25 +772,17 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                         <Controller
                             control={control}
                             name="hl7DataType"
-                            rules={{
-                                required: {
-                                    value: !IsIncludedInMessage,
-                                    message: 'HL7 data type required'
-                                }
-                            }}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: !IsIncludedInMessage, message: 'HL7 data type required' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     label="HL7 data type"
                                     defaultValue={value}
+                                    name="hl7DataType"
                                     disabled={IsIncludedInMessage}
                                     onChange={onChange}
+                                    error={error?.message}
                                     required
-                                    options={groupOptions.map((option) => {
-                                        return {
-                                            name: option!,
-                                            value: option!
-                                        };
-                                    })}
+                                    options={groupOptions}
                                 />
                             )}
                         />
@@ -804,12 +796,21 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                                     className="hl7-segment"
                                     disabled
                                     onChange={onChange}
-                                    options={groupOptions.map((option) => {
-                                        return {
-                                            name: option!,
-                                            value: option!
-                                        };
-                                    })}
+                                    options={groupOptions}
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="groupNumber"
+                            render={({ field: { onChange, value } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    disabled
+                                    className="field-space"
+                                    label="Group Number (Order Group ID)"
+                                    type="text"
                                 />
                             )}
                         />
@@ -822,6 +823,7 @@ export const CreateQuestion = ({ question, onCloseModal }: any) => {
                     <Controller
                         control={control}
                         name="adminComments"
+                        rules={{ maxLength: 2000 }}
                         render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <Input
                                 onChange={onChange}
