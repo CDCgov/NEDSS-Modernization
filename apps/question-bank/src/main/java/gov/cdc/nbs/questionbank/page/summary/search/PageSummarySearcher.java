@@ -6,13 +6,13 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import gov.cdc.nbs.questionbank.filter.querydsl.PageLibraryQueryDSLCriteriaResolver;
 import gov.cdc.nbs.questionbank.filter.querydsl.QueryDSLFilterApplier;
 import gov.cdc.nbs.questionbank.order.QueryDSLOrderResolver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -95,6 +95,7 @@ public class PageSummarySearcher {
         applySearch(criteria),
         QueryDSLFilterApplier.apply(
             this::resolveProperty,
+            new PageLibraryQueryDSLCriteriaResolver(),
             criteria.filters()))
         .reduce(
             onlyPages,
