@@ -1,3 +1,5 @@
+@use 'styles/colors';
+
 table.pages {
     thead tr th {
         &:nth-of-type(2) {
@@ -6,5 +8,18 @@ table.pages {
         &:nth-of-type(4) {
             width: 22ch;
         }
+    }
+    .expandButton {
+        background: none;
+        border: none;
+        color: colors.$primary;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .conditionList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
     }
 }

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Direction } from 'sorting';
 
 import styles from './page-library-table.module.scss';
+import { ConditionsDisplay } from './ConditionsDisplay';
 
 export enum Column {
     PageName = 'Page name',
@@ -41,7 +42,7 @@ const asTableRow = (page: PageSummary, enableEdit: boolean): TableBody => ({
         { id: 2, title: page.eventType?.name },
         {
             id: 3,
-            title: page.conditions?.map((condition) => condition.name).join('\n')
+            title: <ConditionsDisplay conditions={page.conditions ?? []} />
         },
         { id: 4, title: page?.status },
         {
