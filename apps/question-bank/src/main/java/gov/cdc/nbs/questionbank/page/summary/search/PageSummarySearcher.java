@@ -109,6 +109,7 @@ public class PageSummarySearcher {
       return Stream.of(this.tables.page().templateNm.contains(criteria.search())
           .or(
               this.tables.condition().conditionShortNm.contains(criteria.search())
+                  .or(this.tables.condition().id.contains(criteria.search()))
                   .or(this.tables.page().id.like(criteria.search()))));
     }
     return Stream.empty();
