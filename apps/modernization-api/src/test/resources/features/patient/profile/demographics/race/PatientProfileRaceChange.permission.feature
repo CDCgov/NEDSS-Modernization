@@ -1,4 +1,4 @@
-@patient-profile-race-change @web-interaction
+@patient-profile-race @patient-profile-race-change @web-interaction
 Feature: Patient Profile Race Change Permissions
 
   Background:
