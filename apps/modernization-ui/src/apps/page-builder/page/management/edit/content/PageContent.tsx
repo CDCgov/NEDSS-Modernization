@@ -74,7 +74,7 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
                 handleManageSection={() => handleManageSection!(tab)}
                 addQuestionModalRef={addQuestionModalRef}
             />
-            <PageSideMenu onAddSection={handleAddSection} addSectionModalRef={addSectionModalRef} />
+            <PageSideMenu onAddSection={() => handleAddSection!(tab)}/>
             <ModalComponent
                 modalRef={editStaticElementRef}
                 modalHeading={'Edit static elements'}

@@ -6,24 +6,20 @@ import { Icon as EQIcon } from 'components/Icon/Icon';
 
 type PageSideMenuProps = {
     onAddSection: () => void;
-    addSectionModalRef: RefObject<ModalRef>;
 };
 
-export const PageSideMenu = ({ onAddSection, addSectionModalRef }: PageSideMenuProps) => {
+export const PageSideMenu = ({ onAddSection }: PageSideMenuProps) => {
     return (
         <div className={styles.sideMenu}>
             <ul className={styles.list}>
                 <li>
-                    <ModalToggleButton type="button" modalRef={addSectionModalRef} unstyled>
-                        <Icon.Add
-                            size={4}
-                            onClick={() => {
-                                onAddSection();
-                                console.log(onAddSection);
-                            }}
-                        />
-                        Add section
-                    </ModalToggleButton>
+                    <Icon.Add
+                        size={4}
+                        onClick={() => {
+                            onAddSection();
+                        }}
+                    />
+                    Add section
                 </li>
                 <li>
                     <EQIcon name="reorder" />
