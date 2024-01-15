@@ -1509,9 +1509,9 @@ type Mutation {
     updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
     deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
-    addPatientRace(input: RaceInput!): PatientRaceChangeResult!
-    updatePatientRace(input: RaceInput!): PatientRaceChangeResult!
-    deletePatientRace(input: DeletePatientRace!): PatientRaceChangeResult!
+    addPatientRace(input: RaceInput!): PatientRaceAddResult!
+    updatePatientRace(input: RaceInput!): PatientRaceChangeSuccessful!
+    deletePatientRace(input: DeletePatientRace!): PatientRaceChangeSuccessful!
     addPatientName(input: NewPatientNameInput!): PatientNameChangeResult!
     updatePatientName(input: UpdatePatientNameInput!): PatientNameChangeResult!
     deletePatientName(input: DeletePatientNameInput!): PatientNameChangeResult!
@@ -1684,12 +1684,12 @@ type PatientRaceChangeSuccessful {
     patient: Int!
 }
 
-type PatientRaceChangeFailed {
+type PatientRaceChangeFailureExistingCategory {
     patient: Int!
-    reason: String!
+    category: String!
 }
 
-union PatientRaceChangeResult = PatientRaceChangeSuccessful | PatientRaceChangeFailed
+union PatientRaceAddResult = PatientRaceChangeSuccessful | PatientRaceChangeFailureExistingCategory
 
 input NewPatientNameInput {
     patient: Int!

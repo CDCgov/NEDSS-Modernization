@@ -1,12 +1,5 @@
 mutation deletePatientRace($input: DeletePatientRace!){
     deletePatientRace(input: $input){
-        __typename
-        ... on PatientRaceChangeSuccessful {
-            patient
-        }
-        ... on PatientRaceChangeFailed {
-            patient
-            reason
-        }
+        patient
     }
 }

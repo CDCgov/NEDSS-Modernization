@@ -1,18 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
-import {
-    PatientRace,
-    useAddPatientRaceMutation,
-    useDeletePatientRaceMutation,
-    useUpdatePatientRaceMutation
-} from 'generated/graphql/schema';
+import { PatientRace, useDeletePatientRaceMutation, useUpdatePatientRaceMutation } from 'generated/graphql/schema';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { Direction, sortByNestedProperty, withDirection } from 'sorting';
-import { internalizeDate } from 'date';
+import { externalizeDateTime, internalizeDate } from 'date';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { TableBody, TableComponent } from 'components/Table';
-import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'apps/patient/profile/coded';
+import { maybeDescription, maybeDescriptions, maybeIds } from 'apps/patient/profile/coded';
 import { Detail, DetailsModal } from 'apps/patient/profile/DetailsModal';
 import { EntryModal } from 'apps/patient/profile/entry';
 import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPatientProfileRace';
@@ -23,6 +18,14 @@ import { useProfileContext } from '../ProfileContext';
 import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
 import { PatientTableActions } from 'apps/patient/profile/PatientTableActions';
+import { AddPatientRace } from './AddPatientRace';
+
+const headers = [
+    { name: 'As of', sortable: true },
+    { name: 'Race', sortable: true },
+    { name: 'Detailed race', sortable: true },
+    { name: 'Actions', sortable: false }
+];
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -31,36 +34,26 @@ const asDetail = (data: PatientRace): Detail[] => [
 ];
 
 const asEntry = (race: PatientRace): RaceEntry => ({
-    patient: race.patient,
-    category: maybeId(race?.category),
-    asOf: internalizeDate(race?.asOf),
-    detailed: maybeIds(race?.detailed)
+    category: race.category.id,
+    asOf: internalizeDate(race.asOf),
+    detailed: maybeIds(race.detailed)
 });
 
-const resolveInitialEntry = (patient: string): RaceEntry => ({
-    patient: +patient,
-    category: null,
+const resolveInitialEntry = (): Partial<RaceEntry> => ({
     asOf: internalizeDate(new Date()),
     detailed: []
 });
 
-type Props = {
+type RacesTableProps = {
     patient: Patient | undefined;
 };
 
-export const RacesTable = ({ patient }: Props) => {
-    const { showAlert } = useAlert();
-    const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'As of', sortable: true },
-        { name: 'Race', sortable: true },
-        { name: 'Detailed race', sortable: true },
-        { name: 'Actions', sortable: false }
-    ]);
+const RacesTable = ({ patient }: RacesTableProps) => {
+    const { alertSuccess, alertError } = useAlert();
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const initial = resolveInitialEntry(patient?.id || '');
     const { changed } = useProfileContext();
 
     const { selected, actions } = useTableActionState<PatientRace>();
@@ -77,7 +70,6 @@ export const RacesTable = ({ patient }: Props) => {
 
     const [fetch, { refetch, called, loading }] = useFindPatientProfileRace({ onCompleted: handleComplete });
 
-    const [add] = useAddPatientRaceMutation();
     const [update] = useUpdatePatientRaceMutation();
     const [remove] = useDeletePatientRaceMutation();
 
@@ -99,53 +91,34 @@ export const RacesTable = ({ patient }: Props) => {
         modal.current?.toggleModal(undefined, selected !== undefined);
     }, [selected]);
 
-    const onAdded = (entry: RaceEntry) => {
-        if (entry.category) {
-            add({
-                variables: {
-                    input: {
-                        patient: entry.patient,
-                        asOf: entry.asOf,
-                        category: entry.category,
-                        detailed: entry.detailed
-                    }
-                }
-            })
-                .then(() => {
-                    showAlert({
-                        type: 'success',
-                        header: 'success',
-                        message: `Added race`
-                    });
-                    refetch();
-                    changed();
-                })
-                .then(actions.reset);
-        }
+    const handleSuccess = (message: string) => () => {
+        alertSuccess({ message: message });
+        refetch()
+            .then(() => changed())
+            .finally(actions.reset);
+    };
+
+    const handleFailure = (reason: string) => {
+        alertError({ message: reason });
+        actions.reset();
     };
 
     const onChanged = (entry: RaceEntry) => {
-        if (entry.category) {
+        if (patient && entry.category) {
             update({
                 variables: {
                     input: {
-                        patient: entry.patient,
-                        asOf: entry.asOf,
+                        patient: Number(patient.id),
+                        asOf: externalizeDateTime(entry.asOf),
                         category: entry.category,
                         detailed: entry.detailed
                     }
                 }
             })
-                .then(() => {
-                    showAlert({
-                        type: 'success',
-                        header: 'success',
-                        message: `Updated race`
-                    });
-                    refetch();
-                    changed();
-                })
-                .then(actions.reset);
+                .then(() => alertSuccess({ message: 'Updated race' }))
+                .then(() => refetch())
+                .then(() => changed())
+                .finally(actions.reset);
         }
     };
 
@@ -159,32 +132,14 @@ export const RacesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => {
-                    showAlert({
-                        type: 'success',
-                        header: 'success',
-                        message: `Deleted race`
-                    });
-                    refetch();
-                    changed();
-                })
-                .then(actions.reset);
+                .then(() => alertSuccess({ message: 'Deleted race' }))
+                .then(() => refetch())
+                .then(() => changed())
+                .finally(actions.reset);
         }
     };
 
-    const tableHeadChanges = (name: string, type: string) => {
-        tableHead.map((item) => {
-            if (item.name.toLowerCase() === name.toLowerCase()) {
-                item.sort = type;
-            } else {
-                item.sort = 'all';
-            }
-        });
-        setTableHead(tableHead);
-    };
-
-    const handleSort = (name: string, type: Direction): any => {
-        tableHeadChanges(name, type);
+    const handleSort = (name: string, type: Direction) => {
         switch (name.toLowerCase()) {
             case 'as of':
                 setRaces(
@@ -279,31 +234,32 @@ export const RacesTable = ({ patient }: Props) => {
                     </div>
                 }
                 tableHeader={'Races'}
-                tableHead={tableHead}
+                tableHead={headers}
                 tableBody={generateTableBody()}
                 totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
                 sortData={handleSort}
             />
-            {selected?.type === 'add' && (
-                <EntryModal
-                    onClose={actions.reset}
+            {patient && selected?.type === 'add' && (
+                <AddPatientRace
                     modal={modal}
-                    id="add-patient-name-modal"
-                    title="Add - Race"
-                    overflow>
-                    <RaceEntryForm entry={initial} onChange={onAdded} />
-                </EntryModal>
+                    patient={Number(patient.id)}
+                    entry={resolveInitialEntry()}
+                    onCancel={actions.reset}
+                    onSuccess={handleSuccess('Added race')}
+                    onFailure={handleFailure}
+                />
             )}
-            {selected?.type === 'update' && (
+            {patient && selected?.type === 'update' && (
                 <EntryModal
                     onClose={actions.reset}
                     modal={modal}
-                    id="edit-patient-name-modal"
+                    id="edit-patient-race-entry"
                     title="Edit - Race"
                     overflow>
                     <RaceEntryForm
+                        patient={Number(patient.id)}
                         entry={asEntry(selected.item)}
                         onDelete={() => actions.selectForDelete(selected.item)}
                         onChange={onChanged}
@@ -333,3 +289,5 @@ export const RacesTable = ({ patient }: Props) => {
         </>
     );
 };
+
+export { RacesTable };

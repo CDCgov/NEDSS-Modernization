@@ -4,9 +4,9 @@ mutation addPatientRace($input: RaceInput!){
         ... on PatientRaceChangeSuccessful {
             patient
         }
-        ... on PatientRaceChangeFailed {
+        ... on PatientRaceChangeFailureExistingCategory {
             patient
-            reason
+            category
         }
     }
 }
