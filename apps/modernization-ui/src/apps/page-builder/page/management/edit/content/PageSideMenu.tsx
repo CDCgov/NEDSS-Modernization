@@ -1,7 +1,5 @@
-import React, { RefObject } from 'react';
-
 import styles from './page-content.module.scss';
-import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Icon } from '@trussworks/react-uswds';
 import { Icon as EQIcon } from 'components/Icon/Icon';
 
 type PageSideMenuProps = {
