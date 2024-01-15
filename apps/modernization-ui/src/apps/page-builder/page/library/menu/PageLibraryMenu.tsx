@@ -5,6 +5,7 @@ import { LinkButton } from 'components/button';
 import { Search } from 'components/Search';
 
 import styles from './page-library-menu.module.scss';
+import { FilterDisplay } from './FilterDisplay';
 
 type Props = {
     properties: Property[];
@@ -17,6 +18,7 @@ type Props = {
 const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, onPrint }: Props) => {
     return (
         <section className={styles.menu}>
+            <FilterDisplay filters={filters} />
             <Search
                 className={styles.search}
                 id="page-search"
