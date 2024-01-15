@@ -34,15 +34,21 @@ export const Edit = () => {
     return (
         <>
             {page ? (
-                <PageManagementProvider page={page} fetch={fetch}>
-                    <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
-                    <ManageSectionModal
-                        tab={currentTab}
-                        refresh={() => fetch(page!.id)}
-                        addSecModalRef={addSectionModalRef}
-                        manageSecModalRef={manageSectionModalRef}
-                    />
-                </PageManagementProvider>
+                <>
+                    <PageManagementProvider page={page} fetch={fetch}>
+                        <EditPageContent
+                            handleManageSection={handleManageSection}
+                            handleAddSection={handleAddSection}
+                        />
+                        <ManageSectionModal
+                            pageId={page?.id}
+                            tab={currentTab}
+                            refresh={() => fetch(page!.id)}
+                            addSecModalRef={addSectionModalRef}
+                            manageSecModalRef={manageSectionModalRef}
+                        />
+                    </PageManagementProvider>
+                </>
             ) : (
                 <Loading center />
             )}

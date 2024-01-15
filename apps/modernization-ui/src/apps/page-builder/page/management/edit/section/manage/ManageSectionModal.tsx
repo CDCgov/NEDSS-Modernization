@@ -6,12 +6,19 @@ import { RefObject } from 'react';
 
 type ManageSectionModalProps = {
     tab?: PagesTab;
+    pageId?: number;
     refresh?: () => void;
     addSecModalRef: RefObject<ModalRef>;
     manageSecModalRef: RefObject<ModalRef>;
 };
 
-export const ManageSectionModal = ({ tab, refresh, addSecModalRef, manageSecModalRef }: ManageSectionModalProps) => {
+export const ManageSectionModal = ({
+    tab,
+    refresh,
+    addSecModalRef,
+    manageSecModalRef,
+    pageId
+}: ManageSectionModalProps) => {
     const manageSectionModalRef = manageSecModalRef;
     const addSectionModalRef = addSecModalRef;
 
@@ -27,6 +34,7 @@ export const ManageSectionModal = ({ tab, refresh, addSecModalRef, manageSecModa
         <>
             <Modal id={'manage-section-modal'} ref={manageSectionModalRef} forceAction>
                 <ManageSection
+                    pageId={pageId!}
                     tab={tab!}
                     key={tab?.sections.length}
                     onContentChange={() => {
@@ -37,6 +45,7 @@ export const ManageSectionModal = ({ tab, refresh, addSecModalRef, manageSecModa
             </Modal>
             <Modal id={'add-section-modl'} ref={addSectionModalRef}>
                 <AddSection
+                    pageId={pageId}
                     tabId={tab?.id}
                     onAddSectionCreated={() => {
                         refresh && refresh();

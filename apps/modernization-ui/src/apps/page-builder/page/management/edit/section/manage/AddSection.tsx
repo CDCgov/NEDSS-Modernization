@@ -3,26 +3,25 @@ import { CreateSectionRequest, SectionControllerService } from 'apps/page-builde
 import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useForm } from 'react-hook-form';
-import { usePageManagement } from '../../../usePageManagement';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
 import { Heading } from 'components/heading';
 
 type sectionProps = {
     tabId?: number;
+    pageId?: number;
     onCancel?: () => void;
     onAddSectionCreated?: () => void;
 };
 
-export const AddSection = ({ onAddSectionCreated, tabId, onCancel }: sectionProps) => {
+export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sectionProps) => {
     const form = useForm<CreateSectionRequest>();
-    const { page } = usePageManagement();
 
     const onSubmit = form.handleSubmit((data) => {
         data.tabId = tabId;
         SectionControllerService.createSectionUsingPost({
             authorization: authorization(),
-            page: page.id,
+            page: pageId!,
             request: data
         }).then(() => {
             form.reset();

@@ -8,17 +8,19 @@ import { Heading } from 'components/heading';
 
 type ManageSectionProps = {
     tab: PagesTab;
+    pageId: number;
     onCancel?: () => void;
     onContentChange?: () => void;
 };
 
-export const ManageSection = ({ onCancel, tab, onContentChange }: ManageSectionProps) => {
+export const ManageSection = ({ onCancel, tab, onContentChange, pageId }: ManageSectionProps) => {
     const [sectionState, setSectionState] = useState<'manage' | 'add'>('manage');
 
     return (
         <>
             {sectionState === 'add' && (
                 <AddSection
+                    pageId={pageId}
                     onAddSectionCreated={() => {
                         onContentChange && onContentChange();
                         setSectionState('manage');
