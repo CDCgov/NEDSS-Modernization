@@ -47,6 +47,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
         expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         selectable: true,
+        radioButton: true,
         tableDetails: [
             {
                 id: 1,
@@ -117,7 +118,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
         if (target.checked) {
             const value = summaries.find((val: ValueSet) => item.id === val.nbsUid) || {};
             setSelectedValueSet(value);
-            setSearchValueSet?.(value?.nbsUid!);
+            setSearchValueSet?.(value);
         } else {
             setSelectedValueSet({});
         }
