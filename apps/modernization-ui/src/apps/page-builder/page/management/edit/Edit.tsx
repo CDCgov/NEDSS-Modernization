@@ -9,20 +9,53 @@ import {
     usePageManagement
 } from 'apps/page-builder/page/management';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { ManageSectionModal } from './section/manage/ManageSectionModal';
+import { ModalRef } from '@trussworks/react-uswds';
+import { useRef, useState } from 'react';
+import { PagesTab } from 'apps/page-builder/generated';
 
 export const Edit = () => {
     const { page, fetch } = useGetPageDetails();
 
-    return page ? (
-        <PageManagementProvider page={page} fetch={fetch}>
-            <EditPageContent />
-        </PageManagementProvider>
-    ) : (
-        <Loading center />
+    const manageSectionModalRef = useRef<ModalRef>(null);
+    const addSectionModalRef = useRef<ModalRef>(null);
+    const [currentTab, setCurrentTab] = useState<PagesTab>();
+
+    const handleManageSection = (tab: PagesTab) => {
+        setCurrentTab(tab);
+        manageSectionModalRef.current?.toggleModal(undefined, true);
+    };
+
+    const handleAddSection = (tab: PagesTab) => {
+        setCurrentTab(tab);
+        addSectionModalRef.current?.toggleModal(undefined, true);
+    };
+
+    return (
+        <>
+            {page ? (
+                <PageManagementProvider page={page} fetch={fetch}>
+                    <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
+                    <ManageSectionModal
+                        tab={currentTab}
+                        refresh={() => fetch(page!.id)}
+                        addSecModalRef={addSectionModalRef}
+                        manageSecModalRef={manageSectionModalRef}
+                    />
+                </PageManagementProvider>
+            ) : (
+                <Loading center />
+            )}
+        </>
     );
 };
 
-const EditPageContent = () => {
+type EditPageContentProps = {
+    handleManageSection?: (tab: PagesTab) => void;
+    handleAddSection?: (tab: PagesTab) => void;
+};
+
+const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageContentProps) => {
     const { page, selected, fetch } = usePageManagement();
 
     const refresh = () => {
@@ -39,7 +72,14 @@ const EditPageContent = () => {
                     <NavLinkButton to={'..'}>Preview</NavLinkButton>
                 </PageManagementMenu>
             </PageHeader>
-            {selected && <PageContent tab={selected} refresh={refresh} />}
+            {selected && (
+                <PageContent
+                    tab={selected}
+                    refresh={refresh}
+                    handleManageSection={handleManageSection}
+                    handleAddSection={handleAddSection}
+                />
+            )}
         </PageManagementLayout>
     );
 };

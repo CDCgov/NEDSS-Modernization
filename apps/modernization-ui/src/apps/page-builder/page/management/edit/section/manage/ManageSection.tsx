@@ -20,7 +20,7 @@ export const ManageSection = ({ onCancel, tab, onContentChange }: ManageSectionP
             {sectionState === 'add' && (
                 <AddSection
                     onAddSectionCreated={() => {
-                        onContentChange;
+                        onContentChange && onContentChange();
                         setSectionState('manage');
                     }}
                     onCancel={() => setSectionState('manage')}
