@@ -34,6 +34,7 @@ import {
 } from '../../generated';
 import { authorization } from 'authorization';
 import { QuestionsContext } from '../../context/QuestionsContext';
+import { Heading } from '../../../../components/heading';
 
 namespace QuestionRequest {
     export enum codeSet {
@@ -84,8 +85,6 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
         defaultValues: { ...init }
     });
     const { handleSubmit, reset, control, watch } = questionForm;
-    // Fields
-    const [questionData, setQuestionData] = useState({ valueSet: 0 });
     const { showAlert } = useAlert();
     // DropDown Options
     const [subGroupOptions, setSubGroupOptions] = useState<optionsType[]>([]);
@@ -99,7 +98,6 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
             const updatedQuestion = { ...question, ...question?.messagingInfo, ...question?.dataMartInfo };
             delete updatedQuestion.messagingInfo;
             delete updatedQuestion.dataMartInfo;
-            setQuestionData(updatedQuestion);
             if (!question?.id) {
                 QuestionControllerService.getQuestionUsingGet({
                     authorization: authorization(),
@@ -151,7 +149,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
     }, [question]);
 
     useEffect(() => {
-        if (searchValueSet) questionForm.setValue('valueSet', searchValueSet);
+        if (searchValueSet) questionForm.setValue('valueSet', searchValueSet.codeSetGroupId);
     }, [searchValueSet]);
 
     const fetchSubGroupOptions = () => {
@@ -287,13 +285,14 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                 return response.id!;
             });
         } else {
-            const codeRequest = { ...request, valueSet: questionData.valueSet };
+            const codeRequest = { ...request, valueSet: data.valueSet };
             QuestionControllerService.createCodedQuestionUsingPost({
                 authorization: authorization(),
                 request: codeRequest
             }).then((response: any) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
                 resetInput();
+                onAddQuestion?.(response.id!);
                 return response.id;
             });
         }
@@ -341,11 +340,17 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
     };
 
     const valueSetmodalRef = useRef<ModalRef>(null);
+    const isValueSet = searchValueSet?.valueSetNm !== undefined;
     const renderValueSet = (
         <div className="">
             <label>Value set</label>
-            <ModalToggleButton modalRef={valueSetmodalRef} className="width-full margin-top-1em" type="submit" outline>
-                Search value set
+            {isValueSet && (
+                <Heading className="selected-value-set" level={4}>
+                    {searchValueSet?.valueSetNm!}
+                </Heading>
+            )}
+            <ModalToggleButton modalRef={valueSetmodalRef} className="width-full" type="submit" outline>
+                {isValueSet ? 'Change value set' : 'Search value set'}
             </ModalToggleButton>
             <ModalComponent
                 size="wide"
