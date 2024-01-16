@@ -59,7 +59,7 @@ export const QuestionContent = ({
                 <div className={styles.content}>
                     <div className={styles.questionHeader}>
                         <Heading level={2}>{name}</Heading>
-                        <body className={styles.identifier}>{`(${identifier})`}</body>
+                        <div className={styles.identifier}>{`(${identifier})`}</div>
                     </div>
                     <div className={styles.questionContent}>
                         <div className={styles.inputContent}>
@@ -110,16 +110,16 @@ export const QuestionContent = ({
                 </div>
             ) : (
                 <>
-                    {displayComponent === commentsReadOnlyId && <body>{name}</body>}
+                    {displayComponent === commentsReadOnlyId && <div>{name}</div>}
                     {displayComponent === hyperlinkId && <a href={defaultValue}>{name}</a>}
                     {displayComponent === lineSeparatorId && (
-                        <body className={styles.inputContent}>Line separator will be placed here</body>
+                        <div className={styles.inputContent}>Line separator will be placed here</div>
                     )}
                     {displayComponent === participantListId && (
-                        <body className={styles.inputContent}>Participants list will be placed here</body>
+                        <div className={styles.inputContent}>Participants list will be placed here</div>
                     )}
                     {displayComponent === originalElecDocId && (
-                        <body className={styles.inputContent}>Original document list will be placed here</body>
+                        <div className={styles.inputContent}>Original document list will be placed here</div>
                     )}
                 </>
             )}
