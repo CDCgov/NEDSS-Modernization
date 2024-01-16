@@ -6,7 +6,6 @@ import java.util.List;
 
 
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
-import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,17 +28,14 @@ public class ValueSetReader {
 
   private final ValueSetFinder valueSetFinder;
 
-  private final RaceConceptFinder raceConceptFinder;
 
 
   ValueSetReader(final ValueSetRepository valueSetRepository,
       final CodeValueGeneralRepository codeValueGeneralRepository,
-      final ValueSetFinder valueSetFinder,
-      final RaceConceptFinder raceConceptFinder) {
+      final ValueSetFinder valueSetFinder) {
     this.valueSetRepository = valueSetRepository;
     this.codeValueGeneralRepository = codeValueGeneralRepository;
     this.valueSetFinder = valueSetFinder;
-    this.raceConceptFinder = raceConceptFinder;
   }
 
   public Page<ValueSet> findAllValueSets(Pageable pageable) {
@@ -92,9 +88,6 @@ public class ValueSetReader {
   public List<Concept> findConceptCodes(String codeSetNm) {
     if (codeSetNm == null) {
       return Collections.emptyList();
-    }
-    if (codeSetNm.equals(ValueSetConstants.RACE_CONCEPT_CODE_SET)) {
-      return raceConceptFinder.findRaceConceptCodes(codeSetNm);
     }
     return codeValueGeneralRepository
         .findByIdCodeSetNm(codeSetNm, Sort.by(Sort.Direction.ASC, "codeShortDescTxt"))

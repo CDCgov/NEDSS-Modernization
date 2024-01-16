@@ -29,5 +29,4 @@ public class ValueSetConstants {
   public static final String UPDATE_SUCCESS_MESSAGE = "ValueSet updated.";
   public static final String UPDATE_FAILURE_MESSAGE = "Was not able to update valueset";
 
-  public static final String RACE_CONCEPT_CODE_SET = "P_RACE_CAT";
 }

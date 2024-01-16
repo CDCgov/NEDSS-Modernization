@@ -12,11 +12,9 @@ import java.util.UUID;
 
 
 import gov.cdc.nbs.questionbank.entity.*;
-import gov.cdc.nbs.questionbank.valueset.RaceConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.ValueSetFinder;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 
-import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -43,8 +41,6 @@ class ValueSetReaderTest {
   @InjectMocks
   ValueSetReader valueSetReader;
 
-  @Mock
-  RaceConceptFinder raceConceptFinder;
 
   @Mock
   CodeValueGeneralRepository codeValueGeneralRepository;
@@ -162,26 +158,11 @@ class ValueSetReaderTest {
     String codeSetName = "codeSetName";
     when(codeValueGeneralRepository.findByIdCodeSetNm(any(), any(Sort.class)))
         .thenReturn(getListOfCodeValueGeneral());
-    when(raceConceptFinder.findRaceConceptCodes(ValueSetConstants.RACE_CONCEPT_CODE_SET)).thenReturn(
-        getListOfRaceConceptCodes());
-
     List<Concept> ConceptResults = valueSetReader.findConceptCodes(codeSetName);
-    List<Concept> raceConceptResults = valueSetReader.findConceptCodes(ValueSetConstants.RACE_CONCEPT_CODE_SET);
-
     assertNotNull(ConceptResults);
     assertFalse(ConceptResults.isEmpty());
-    assertNotNull(raceConceptResults);
-    assertFalse(raceConceptResults.isEmpty());
   }
 
-
-  private List<Concept> getListOfRaceConceptCodes() {
-    List<Concept> conceptList = new ArrayList<>();
-    conceptList.add(new Concept("code", "codeSetName", "display",
-        "longName", null, null,
-        "codeSystem", "Active", Instant.now(), Instant.now()));
-    return conceptList;
-  }
 
   private List<CodeValueGeneral> getListOfCodeValueGeneral() {
     return Arrays.asList(getCodeValueGeneral());
