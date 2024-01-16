@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import {
     Button,
     Checkbox,
@@ -13,9 +13,9 @@ import {
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormValues } from './EditBusinessRules';
+import { FormValues } from './Add/AddBusinessRule';
 // import { nonDateCompare, dateCompare } from '../../constant/constant';
-// import TargetQuestion from '../../components/Question/Question';
+import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { maxLengthRule } from '../../../../validation/entry';
 import { Input } from '../../../../components/FormInputs/Input';
@@ -29,6 +29,7 @@ type QuestionProps = {
     selected: boolean;
     valueSet: string;
 };
+
 type FieldProps = {
     name: string;
     value: string;
