@@ -113,10 +113,10 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="messageMappingGuide"
-                rules={{ required: { value: true, message: 'MMG is required.' } }}
+                rules={{ required: { value: true, message: 'Reporting mechanism is required.' } }}
                 render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <SelectInput
-                        label="MMG"
+                        label="Reporting mechanism"
                         name="messageMappingGuide"
                         onChange={onChange}
                         onBlur={onBlur}
@@ -128,7 +128,8 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                             };
                         })}
                         error={error?.message}
-                        required></SelectInput>
+                        required
+                    />
                 )}
             />
             <p>
