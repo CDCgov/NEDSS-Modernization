@@ -4,8 +4,10 @@
 .managesection {
     width: auto;
     min-width: auto;
-    height: 38.875rem;
-    overflow: scroll;
+    overflow: hidden;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
 
     justify-content: space-between;
 
@@ -15,7 +17,6 @@
         width: 100%;
         justify-content: space-between;
         border-bottom: 1px solid colors.$base-lightest;
-
 
         .manageSectionHeader {
             display: flex;
@@ -42,14 +43,23 @@
     }
 
     .content {
-        padding: 1rem 1.5rem 1rem 1.5rem;
+        padding-left: 1.5rem;
+
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 1;
+        overflow-y: auto;
 
         .tab {
             display: flex;
             flex-direction: row;
+            padding-top: 1rem;
+            
 
             .folderIcon {
                 padding-right: 1rem;
+                width: 3rem;
+                height: 3rem;
             }
             .tabName {
                 margin: 0%;
@@ -60,13 +70,36 @@
             display: flex;
             flex-direction: row;
 
-            .drag {
-                padding-top: 1rem;
-                padding-right: 1rem;
+            padding-top: 1rem;
+            padding-right: 1.5rem;
+            padding-bottom: 1rem;
+
+
+            .icons {
+                display: flex;
+                flex-direction: row;
+                .drag {
+                    width: 3rem;
+                    height: 3rem;
+                    padding-top: 1rem;
+                    padding-right: 1rem;
+                    align-items: center;
+    
+                }
+                .group {
+                    width: 3rem;
+                    height: 3rem;
+                    align-items: center;
+                    padding-top: 1rem;
+                    padding-right: 1rem;
+                }
             }
-            .group {
-                padding-top: 1rem;
-                padding-right: 1rem;
+
+            .sectionName {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin: unset;
             }
 
             .sectionIcons {
@@ -97,8 +130,6 @@
         align-items: flex-end;
         border-top: 1px solid colors.$base-lightest;
         padding: 1.5rem;
-        // padding-right: 1.5rem;
-        // padding-bottom: 1.5rem;
         @include borders.rounded();
     }
 }

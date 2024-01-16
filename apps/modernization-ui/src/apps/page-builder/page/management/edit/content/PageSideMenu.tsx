@@ -10,13 +10,11 @@ export const PageSideMenu = ({ onAddSection }: PageSideMenuProps) => {
     return (
         <div className={styles.sideMenu}>
             <ul className={styles.list}>
-                <li>
-                    <Icon.Add
-                        size={4}
-                        onClick={() => {
-                            onAddSection();
-                        }}
-                    />
+                <li
+                    onClick={() => {
+                        onAddSection();
+                    }}>
+                    <Icon.Add size={4} />
                     Add section
                 </li>
                 <li>

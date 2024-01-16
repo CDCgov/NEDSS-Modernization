@@ -3,6 +3,7 @@ import { AddSection } from './AddSection';
 import { ManageSection } from './ManageSection';
 import { PagesTab } from 'apps/page-builder/generated';
 import { RefObject } from 'react';
+import './ManageSectionModal.scss';
 
 type ManageSectionModalProps = {
     tab: PagesTab;
@@ -32,7 +33,11 @@ export const ManageSectionModal = ({
 
     return (
         <>
-            <Modal id={'manage-section-modal'} ref={manageSectionModalRef} forceAction>
+            <Modal
+                id={'manage-section-modal'}
+                className={'manage-section-modal'}
+                ref={manageSectionModalRef}
+                forceAction>
                 <ManageSection
                     pageId={pageId}
                     tab={tab}

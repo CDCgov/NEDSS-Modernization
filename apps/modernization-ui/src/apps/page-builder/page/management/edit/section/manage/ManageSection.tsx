@@ -61,13 +61,18 @@ export const ManageSection = ({ onCancel, tab, onContentChange, pageId }: Manage
                         {tab.sections?.map((section, k) => {
                             return (
                                 <div className={styles.section} key={k}>
-                                    <div className={styles.drag}>
-                                        <NbsIcon name={'drag'} />
+                                    <div className={styles.icons}>
+                                        <div className={styles.drag}>
+                                            <NbsIcon name={'drag'} />
+                                        </div>
+                                        <div className={styles.group}>
+                                            <NbsIcon name={'group'} />
+                                        </div>
                                     </div>
-                                    <div className={styles.group}>
-                                        <NbsIcon name={'group'} />
-                                    </div>
-                                    <p>{`${section.name}(${section.subSections.length})`}</p>
+                                    <p
+                                        className={
+                                            styles.sectionName
+                                        }>{`${section.name}(${section.subSections.length})`}</p>
                                     <div className={styles.sectionIcons}>
                                         <div className={styles.edit}>
                                             <Icon.Edit
