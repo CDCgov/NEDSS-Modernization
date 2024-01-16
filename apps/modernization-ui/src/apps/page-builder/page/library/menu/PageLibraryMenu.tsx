@@ -5,6 +5,8 @@ import { LinkButton } from 'components/button';
 import { Search } from 'components/Search';
 
 import styles from './page-library-menu.module.scss';
+import { FilterDisplay } from './FilterDisplay';
+import { useState } from 'react';
 
 type Props = {
     properties: Property[];
@@ -15,8 +17,33 @@ type Props = {
     onPrint: () => void;
 };
 const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, onPrint }: Props) => {
+    const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
     return (
         <section className={styles.menu}>
+            <FilterDisplay onClickFilter={() => setOverlayVisible(true)} filters={filters} />
+            <OverlayPanel
+                position="right"
+                overlayVisible={overlayVisible}
+                toggle={() => (
+                    <Button
+                        type="button"
+                        onClick={() => setOverlayVisible(true)}
+                        outline
+                        className={styles.filterButton}>
+                        <Icon.FilterAlt />
+                        Filter
+                    </Button>
+                )}
+                render={() => (
+                    <FilterPanel
+                        label="Pages"
+                        properties={properties}
+                        filters={filters}
+                        close={() => setOverlayVisible(false)}
+                        onApply={onFilter}
+                    />
+                )}
+            />
             <Search
                 className={styles.search}
                 id="page-search"
@@ -29,24 +56,6 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, 
                 <LinkButton target="_self" href="/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true">
                     Page porting
                 </LinkButton>
-                <OverlayPanel
-                    position="right"
-                    toggle={({ toggle }) => (
-                        <Button type="button" onClick={toggle} outline>
-                            <Icon.FilterAlt />
-                            Filter
-                        </Button>
-                    )}
-                    render={(close) => (
-                        <FilterPanel
-                            label="Pages"
-                            properties={properties}
-                            filters={filters}
-                            close={close}
-                            onApply={onFilter}
-                        />
-                    )}
-                />
                 <Button type="button" onClick={onPrint} className={styles.icon} outline>
                     <Icon.Print size={3} data-testid="print-icon" />
                 </Button>

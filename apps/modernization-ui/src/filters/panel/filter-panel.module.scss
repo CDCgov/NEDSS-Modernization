@@ -13,7 +13,7 @@
 
         @extend %thin-bottom;
 
-        .usa-icon {
+        svg {
             cursor: pointer;
         }
 
@@ -42,5 +42,10 @@
         justify-content: flex-end;
         padding-top: 0.75rem;
         padding-bottom: 0.75rem;
+
+        .clearButton {
+            border: none;
+            box-shadow: none;
+        }
     }
 }
