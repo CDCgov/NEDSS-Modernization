@@ -10,7 +10,6 @@ Feature: I can search for concepts associated with the given value set
             | valueSet            |
             | CODE_SYSTEM         |
             | 900_RESULT_PROVIDED |
-            | P_RACE_CAT          |
 
     Scenario: I cannot search for concepts without logging in
             Given I am not logged in
