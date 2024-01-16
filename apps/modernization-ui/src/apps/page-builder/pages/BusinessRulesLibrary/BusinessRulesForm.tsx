@@ -14,8 +14,8 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormValues } from './EditBusinessRules';
-import { nonDateCompare, dateCompare } from '../../constant/constant';
-import TargetQuestion from '../../components/SearchTargetQuestion/TargetQuestion';
+// import { nonDateCompare, dateCompare } from '../../constant/constant';
+// import TargetQuestion from '../../components/Question/Question';
 import { useParams } from 'react-router-dom';
 import { maxLengthRule } from '../../../../validation/entry';
 import { Input } from '../../../../components/FormInputs/Input';
@@ -64,6 +64,7 @@ const BusinessRulesForm = () => {
             handleRuleDescription();
         }, 1000);
     };
+
     const handleFetchSource = (data: QuestionProps[]) => {
         setSelectedSource(data);
         form.setValue('sourceIdentifier', data[0].question);
@@ -73,6 +74,7 @@ const BusinessRulesForm = () => {
             handleRuleDescription();
         }, 1000);
     };
+
     const targetValueIdentifier = form.watch('targetValueIdentifier') || [];
 
     const targetQtn = targetQuestion.length > 1 || targetValueIdentifier?.length > 1;
@@ -83,11 +85,13 @@ const BusinessRulesForm = () => {
             sourceModalBtn?.click();
         }
     };
+
     const clearFetchQuestion = () => {
         setTargetQuestion([]);
         form.setValue('targetValueIdentifier', []);
         form.setValue('targetValueText', []);
     };
+
     const handleRuleDescription = () => {
         let description = '';
         const logic = form.watch('comparator');
