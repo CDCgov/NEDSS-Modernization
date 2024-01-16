@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
 import { Heading } from 'components/heading';
+import { useAlert } from 'alert';
 
 type sectionProps = {
     tabId?: number;
@@ -16,6 +17,7 @@ type sectionProps = {
 
 export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sectionProps) => {
     const form = useForm<CreateSectionRequest>();
+    const { showAlert } = useAlert();
 
     const onSubmit = form.handleSubmit((data) => {
         data.tabId = tabId;
@@ -25,8 +27,8 @@ export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sec
             request: data
         }).then(() => {
             form.reset();
-            // handle alert here
-            onAddSectionCreated && onAddSectionCreated();
+            showAlert({ type: 'success', message: `You've successfully Added a new section` });
+            onAddSectionCreated?.();
         });
     });
 
@@ -72,18 +74,17 @@ export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sec
                         )}
                     />
                 </div>
-
-                <div className={styles.footer}>
-                    <div className={styles.footerBtns}>
-                        <Button type="button" onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
-                            Add section
-                        </Button>
-                    </div>
-                </div>
             </Form>
+            <div className={styles.footer}>
+                <div className={styles.footerBtns}>
+                    <Button type="button" onClick={onClose}>
+                        Cancel
+                    </Button>
+                    <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
+                        Add section
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 };

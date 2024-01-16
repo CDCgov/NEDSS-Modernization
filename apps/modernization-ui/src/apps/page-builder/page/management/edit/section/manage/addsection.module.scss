@@ -2,20 +2,24 @@
 @use 'styles/borders';
 
 .addSection {
-    height: auto;
+    height: 100%;
     width: auto;
     min-width: auto;
-    max-height: auto;
+    max-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
 
     .header {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         font-size: 1.375rem;
-        padding: 1.5rem;       
+        padding: 1.5rem;
 
         border-bottom: 1px solid colors.$base-lightest;
-
     }
 
     .form {
@@ -23,9 +27,11 @@
         justify-content: space-between;
         flex-direction: column;
         width: auto;
+        height: 100%;
         max-width: unset;
-        height: 38.875rem;
         max-height: unset;
+        flex-shrink: 1;
+        overflow-y: auto;
 
         .content {
             padding: 1.5rem 1.5rem 2.5rem 1.5rem;
@@ -46,26 +52,24 @@
                 }
             }
         }
+    }
+    .footer {
+        display: flex;
+        width: auto;
+        padding-top: unset;
+        justify-content: flex-end;
+        display: flex;
+        position: relative;
+        align-items: flex-end;
+        border-top: 1px solid colors.$base-lightest;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        @include borders.rounded();
 
-        .footer {
-            display: flex;
-            width: auto;
-            padding-top: unset;
+        .footerBtns {
             justify-content: flex-end;
-            display: flex;
-            position: relative;
-            align-items: flex-end;
-            border-top: 1px solid colors.$base-lightest;
-            margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
-            // padding-right: 1.5rem;
-            // padding-bottom: 1.5rem;
-            @include borders.rounded();
-
-            .footerBtns {
-                justify-content: flex-end;
-                margin-right: 1.5rem;
-            }
+            margin-right: 1.5rem;
+            margin-top: 1rem;
         }
     }
 }

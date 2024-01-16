@@ -48,12 +48,13 @@ export const ManageSectionModal = ({
                     onCancel={onCloseManageSectionModal}
                 />
             </Modal>
-            <Modal id={'add-section-modl'} ref={addSectionModalRef}>
+            <Modal id={'add-section-modal'} ref={addSectionModalRef} className={'add-section-modal'}>
                 <AddSection
                     pageId={pageId}
                     tabId={tab.id}
                     onAddSectionCreated={() => {
                         refresh?.();
+                        closeAddSection?.();
                     }}
                     onCancel={closeAddSection}
                 />
