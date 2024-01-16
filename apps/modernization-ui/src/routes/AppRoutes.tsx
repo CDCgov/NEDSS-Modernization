@@ -5,6 +5,7 @@ import { PreviewPage } from 'apps/page-builder/page/management/preview';
 import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
 import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import EditBusinessRules from 'apps/page-builder/pages/BusinessRulesLibrary/Edit/EditBusinessRules';
+import { ValuesetLibrary } from 'apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
 import { AddPatient } from 'apps/patient/add/AddPatient';
 import { AddedPatient } from 'apps/patient/add/SuccessForm/AddedPatient';
 import { PatientProfile } from 'apps/patient/profile';
@@ -13,7 +14,7 @@ import { Config } from 'config';
 import { useConfiguration } from 'configuration';
 import { Library, Management } from 'generated';
 import { Layout } from 'layout';
-import { AdvancedSearch } from 'pages/advancedSearch/AdvancedSearch';
+import { AdvancedSearch } from 'apps/search/advancedSearch/AdvancedSearch';
 import { Login } from 'pages/login/Login';
 import { UserContext } from 'providers/UserContext';
 import { ReactNode, useContext, useEffect, useState } from 'react';
@@ -96,6 +97,7 @@ export const AppRoutes = () => {
                                             {pageLibraryRoutes(config.features.pageBuilder.page.library)}
                                             {pageManagementRoutes(config.features.pageBuilder.page.management)}
                                         </Route>
+                                        <Route path="valueset-library" element={<ValuesetLibrary />} />
                                     </Route>
                                 )}
                                 {!config.loading && (

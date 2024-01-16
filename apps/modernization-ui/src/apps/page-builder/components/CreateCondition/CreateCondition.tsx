@@ -1,20 +1,20 @@
-import { RefObject, useContext, useEffect, useState } from 'react';
-import './CreateCondition.scss';
-import { Form, Button, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
-import { Condition, CreateConditionRequest, ProgramArea } from '../../generated';
-import { UserContext } from 'user';
+import { Button, Form, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
-import { Concept } from '../../generated/models/Concept';
+import { createCondition } from 'apps/page-builder/services/conditionAPI';
 import { fetchProgramAreaOptions } from 'apps/page-builder/services/programAreaAPI';
 import {
     fetchCodingSystemOptions,
     fetchFamilyOptions,
     fetchGroupOptions
 } from 'apps/page-builder/services/valueSetAPI';
-import { Controller, useForm } from 'react-hook-form';
-import { createCondition } from 'apps/page-builder/services/conditionAPI';
+import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { RefObject, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Condition, CreateConditionRequest, ProgramArea } from '../../generated';
+import { Concept } from '../../generated/models/Concept';
+import './CreateCondition.scss';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -22,9 +22,8 @@ type Props = {
 };
 
 export const CreateCondition = ({ modal, conditionCreated }: Props) => {
-    const { state } = useContext(UserContext);
-    const token = `Bearer ${state.getToken()}`;
-    const { handleSubmit, control, reset } = useForm<CreateConditionRequest, any>();
+    const token = authorization();
+    const { handleSubmit, control, reset, formState } = useForm<CreateConditionRequest>({ mode: 'onBlur' });
     const { showAlert } = useAlert();
 
     // DropDown Options
@@ -70,14 +69,17 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                     <p>
                         These fields will be displayed to your users.
                         <br />
-                        <span className="mandatory-indicator">*</span> indicates a required field.
+                        <span className="mandatory">*</span> indicates a required field.
                     </p>
                     <br></br>
                     <Controller
                         control={control}
                         name="conditionShortNm"
-                        rules={{ pattern: { value: /^\w*$/, message: 'Condition name not valid' } }}
-                        render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                        rules={{
+                            pattern: { value: /^\w*$/, message: 'Condition name not valid' },
+                            required: { value: true, message: 'Condition name is required' }
+                        }}
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <Input
                                 id={name}
                                 name={name}
@@ -87,6 +89,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 defaultValue={value}
                                 error={error?.message}
                                 onChange={onChange}
+                                onBlur={onBlur}
+                                required
                             />
                         )}
                     />
@@ -94,19 +98,21 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         control={control}
                         name="codeSystemDescTxt"
                         rules={{ required: { value: true, message: 'Coding System is required' } }}
-                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <SelectInput
                                 label="Coding System"
                                 defaultValue={value}
                                 onChange={onChange}
+                                onBlur={onBlur}
                                 options={systemOptions.map((option) => {
                                     return {
-                                        name: option.messagingConceptName || '',
-                                        value: option.localCode || ''
+                                        name: option.preferredConceptName ?? '',
+                                        value: option.localCode ?? ''
                                     };
                                 })}
                                 error={error?.message}
-                                required></SelectInput>
+                                required
+                            />
                         )}
                     />
                     <Controller
@@ -116,9 +122,10 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                             required: { value: true, message: 'Condition Code required' },
                             pattern: { value: /^\w*$/, message: 'Condition Code invalid' }
                         }}
-                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
                                 onChange={onChange}
+                                onBlur={onBlur}
                                 defaultValue={value}
                                 label="Condition Code"
                                 type="text"
@@ -131,11 +138,12 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         control={control}
                         name="progAreaCd"
                         rules={{ required: { value: true, message: 'Program area required' } }}
-                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <SelectInput
                                 label="Program Area"
                                 defaultValue={value}
                                 onChange={onChange}
+                                onBlur={onBlur}
                                 options={programAreaOptions.map((option) => {
                                     return {
                                         name: option.display!,
@@ -143,7 +151,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     };
                                 })}
                                 error={error?.message}
-                                required></SelectInput>
+                                required
+                            />
                         )}
                     />
                     <Controller
@@ -159,7 +168,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                         name: option.display!,
                                         value: option.localCode!
                                     };
-                                })}></SelectInput>
+                                })}
+                            />
                         )}
                     />
                     <Controller
@@ -175,14 +185,14 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                         name: option.display!,
                                         value: option.localCode!
                                     };
-                                })}></SelectInput>
+                                })}
+                            />
                         )}
                     />
                     <hr />
                     <h4>Condition behavior</h4>
-                    <label>
-                        Is this a CDC reportable condition (NND)?
-                        <span className="mandatory-indicator">*</span>
+                    <label htmlFor="nndInd">
+                        Is this a CDC reportable condition (NND)? <span className="mandatory">*</span>
                     </label>
                     <Controller
                         control={control}
@@ -209,9 +219,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                             </div>
                         )}
                     />
-                    <label>
-                        Is this reportable through Morbidity Reports?
-                        <span className="mandatory-indicator">*</span>
+                    <label htmlFor="reportableMorbidityInd">
+                        Is this reportable through Morbidity Reports? <span className="mandatory">*</span>
                     </label>
                     <Controller
                         control={control}
@@ -238,9 +247,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                             </div>
                         )}
                     />
-                    <label>
-                        Is this reportable in Aggregate (summary)?
-                        <span className="mandatory-indicator">*</span>
+                    <label htmlFor="reportableSummaryInd">
+                        Is this reportable in Aggregate (summary)? <span className="mandatory">*</span>
                     </label>
                     <Controller
                         control={control}
@@ -267,9 +275,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                             </div>
                         )}
                     />
-                    <label>
-                        Will this condition need the Contact Tracing Module?
-                        <span className="mandatory-indicator">*</span>
+                    <label htmlFor="contactTracingEnableInd">
+                        Will this condition need the Contact Tracing Module? <span className="mandatory">*</span>
                     </label>
                     <Controller
                         control={control}
@@ -302,7 +309,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         Cancel
                     </ModalToggleButton>
 
-                    <Button className="submit-btn" type={'submit'}>
+                    <Button disabled={!formState.isValid} type={'submit'}>
                         Create and add to page
                     </Button>
                 </div>

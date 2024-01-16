@@ -45,19 +45,19 @@ const asTableRow = (condition: Condition): TableBody => ({
     tableDetails: [
         {
             id: 1,
-            title: <div className="condition-name">{condition.conditionShortNm}</div>
+            title: <div className="condition-name">{condition.name}</div>
         },
         { id: 2, title: condition.id },
-        { id: 3, title: condition.progAreaCd },
+        { id: 3, title: condition.programArea },
         {
             id: 4,
-            title: condition.familyCd
+            title: condition.conditionFamily
         },
-        { id: 5, title: condition.coinfectionGrpCd },
+        { id: 5, title: condition.coinfectionGroup },
 
         { id: 6, title: condition.nndInd },
-        { id: 7, title: condition.investigationFormCd },
-        { id: 8, title: condition.statusCd === 'A' ? 'Active' : 'Inactive' }
+        { id: 7, title: condition.page },
+        { id: 8, title: condition.status === 'A' ? 'Active' : 'Inactive' }
     ]
 });
 
@@ -73,8 +73,9 @@ export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSor
     const [selected, setSelected] = useState<number[]>([]);
 
     useEffect(() => {
+        setSelected([]);
         setTableRows(conditions.map(asTableRow));
-    }, [conditions]);
+    }, [JSON.stringify(conditions)]);
 
     useEffect(() => {
         onSelectionChange(selected);

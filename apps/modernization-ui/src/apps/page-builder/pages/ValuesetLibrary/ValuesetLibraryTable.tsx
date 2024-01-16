@@ -31,9 +31,8 @@ type Props = {
     summaries: ValueSet[];
     labModalRef?: any;
     pages?: any;
-    updateCallback?: () => void;
 };
-export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCallback }: Props) => {
+export const ValuesetLibraryTable = ({ summaries, labModalRef, pages }: Props) => {
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
@@ -47,6 +46,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
         expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         selectable: true,
+        radioButton: true,
         tableDetails: [
             {
                 id: 1,
@@ -117,7 +117,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
         if (target.checked) {
             const value = summaries.find((val: ValueSet) => item.id === val.nbsUid) || {};
             setSelectedValueSet(value);
-            setSearchValueSet?.(value?.nbsUid!);
+            setSearchValueSet?.(value);
         } else {
             setSelectedValueSet({});
         }
@@ -270,7 +270,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, updateCall
                 size="wide"
                 modalRef={modalRef}
                 modalHeading={'Add value set'}
-                modalBody={<AddValueset modalRef={modalRef} updateCallback={updateCallback} />}
+                modalBody={<AddValueset modalRef={modalRef} />}
                 closer
             />
         </div>

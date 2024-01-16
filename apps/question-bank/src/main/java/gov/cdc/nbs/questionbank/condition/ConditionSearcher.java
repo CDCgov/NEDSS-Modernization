@@ -29,6 +29,27 @@ public class ConditionSearcher {
     this.factory = factory;
   }
 
+  // query for all conditions that are not associated with a page
+  public List<Condition> findAvailable() {
+    return factory.select(
+        conditionTable.id,
+        conditionTable.conditionShortNm,
+        conditionTable.progAreaCd,
+        conditionTable.familyCd,
+        conditionTable.coinfectionGrpCd,
+        conditionTable.nndInd,
+        conditionTable.investigationFormCd,
+        conditionTable.statusCd)
+        .from(conditionTable)
+        .leftJoin(pageMappingTable).on(pageMappingTable.conditionCd.eq(conditionTable.id))
+        .where(pageMappingTable.waTemplateUid.isNull())
+        .orderBy(conditionTable.conditionShortNm.asc())
+        .fetch()
+        .stream()
+        .map(this::toCondition)
+        .toList();
+  }
+
   public Page<Condition> search(ReadConditionRequest request, Pageable pageable) {
     // find all Ids of matching conditions
     List<String> ids = findConditions(request, pageable.getSort())

@@ -84,6 +84,18 @@ const asDateRange = (
     return undefined;
 };
 
-export { asFilter };
+const asString = (filter: Filter): string => {
+    let value = '';
+    if ('value' in filter) {
+        value = typeof filter.value === 'string' ? filter.value : filter.value.name;
+    } else if ('values' in filter) {
+        value = filter.values.map((v) => (typeof v === 'string' ? v : v.name)).join(' OR ');
+    } else if ('after' in filter && 'before' in filter) {
+        value = `${filter.after} and ${filter.before}`;
+    }
+    return `${filter.property.name} ${filter.operator.name} ${value}`;
+};
+
+export { asFilter, asString };
 
 export type { Filter };

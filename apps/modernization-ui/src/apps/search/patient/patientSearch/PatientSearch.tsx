@@ -12,6 +12,7 @@ import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
+import { useSkipLink } from 'SkipLink/SkipLinkContext';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -21,6 +22,7 @@ type PatientSearchProps = {
 
 export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: PatientSearchProps) => {
     const form = useForm<PersonFilter>({ defaultValues: { recordStatus: [RecordStatus.Active] }, mode: 'onBlur' });
+    const { skipTo } = useSkipLink();
     useEffect(() => {
         if (personFilter) {
             form.reset({ ...personFilter }, { keepDefaultValues: true });
@@ -286,8 +288,15 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                         className="width-full clear-btn"
                         type={'button'}
                         onClick={() => {
-                            form.reset({}, { keepDefaultValues: true });
-                            clearAll();
+                            // Because of the customized nature of Date picker errors, the date picker doesn't reset when the clear all is clicked.
+                            // So you need to set the error to false and then run the form reset and clearAll methods.
+                            // None instead of empty string because Trusswork's DatePicker doesn't update with empty string.
+                            form.setValue('dateOfBirth', 'none');
+                            setTimeout(() => {
+                                form.reset({}, { keepDefaultValues: true });
+                                clearAll();
+                                skipTo('lastName');
+                            });
                         }}
                         outline>
                         Clear all

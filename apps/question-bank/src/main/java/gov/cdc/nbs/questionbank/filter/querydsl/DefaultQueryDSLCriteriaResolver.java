@@ -20,13 +20,12 @@ public class DefaultQueryDSLCriteriaResolver implements QueryDSLFilterApplier.Cr
       return Stream.of(QueryDSLSingleValueFilterApplier.apply(single, string));
     } else if (filter instanceof MultiValueFilter multi && expression instanceof StringExpression string) {
       return Stream.of(QueryDSLMultiValueFilterApplier.apply(multi, string));
-    } else if (filter instanceof DateFilter date && expression instanceof TemporalExpression<? extends Comparable> temporal) {
+    } else if (filter instanceof DateFilter date && expression instanceof TemporalExpression<?> temporal) {
       return Stream.of(QueryDSLDateFilterApplier.apply(date, temporal));
-    } else if (filter instanceof DateRangeFilter dateRange && expression instanceof TemporalExpression<? extends Comparable> temporal) {
+    } else if (filter instanceof DateRangeFilter dateRange && expression instanceof TemporalExpression<?> temporal) {
       return Stream.of(QueryDSLDateRangeFilterApplier.apply(dateRange, temporal));
     } else {
       return Stream.empty();
     }
   }
 }
-

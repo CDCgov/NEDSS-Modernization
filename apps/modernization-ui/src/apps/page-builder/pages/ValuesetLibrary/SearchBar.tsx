@@ -49,7 +49,7 @@ export const SearchBar = ({ onChange }: any) => {
                 </Button>
                 <QuestionLibraryFilterModal />
                 <ModalToggleButton modalRef={modalRef} className="submit-btn" type="button">
-                    Create Value set
+                    Create new value set
                 </ModalToggleButton>
             </div>
             <ModalComponent

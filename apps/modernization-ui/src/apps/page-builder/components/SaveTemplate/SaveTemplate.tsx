@@ -22,7 +22,6 @@ export const SaveTemplates = ({ modalRef }: any) => {
     const handleSubmit = () => {
         const { name, desc } = details;
         const request = { name, desc };
-        console.log('authorization..', request, authorization);
     };
     const validateBtn = !details.name || validateName || !details.desc;
     const renderTemplateForm = (

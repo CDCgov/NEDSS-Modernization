@@ -44,7 +44,7 @@ export const DatePickerInput = (props: DatePickerProps) => {
     const validDefaultValue = !emptyDefaultValue && props.defaultValue && matches(props.defaultValue);
     const intialDefault = validDefaultValue ? interalize(props.defaultValue) : undefined;
 
-    const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue));
+    const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue) && props.defaultValue !== 'none');
 
     const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
         const currentVal = (event.target as HTMLInputElement).value;

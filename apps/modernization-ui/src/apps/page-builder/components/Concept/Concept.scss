@@ -1,7 +1,7 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.value_set_concept_container {
+.concept {
     min-height: 486px;
     h3 {
         margin-top: 0;
@@ -26,11 +26,11 @@
       font-weight: bold;
       font-size: 14px;
     }
-  }
-  .instruction {
+    }
+    .instruction {
     font-size: 14px;
-  }
-  .add-new-concept-container {
+    }
+    .concept__footer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,36 +41,46 @@
         font-weight: 600;
         margin-bottom: 1.5rem;
     }
-  }
-  .add-new-concept {
-    margin-right: 20px;
-    border: 2px solid #005EA2;
-    background: #fff;
-    color: #005EA2;
-    border-radius: 4px;
-  }
-  .grid-row.inline-field {
+    }
+    .grid-row.inline-field {
     gap: 1.5rem;
     margin-bottom: 1.5rem;
-  }
-  .effective-date-field {
-     .date-picker-input .usa-date-picker__wrapper {
-           width: 15rem;
-      }
-      margin-bottom: 24px;
-      .effective-radio {
-          display: flex;
-          width: 22rem;
-          gap: 2.8rem;
-          margin-right: 1.25rem;
-      }
-      &:last-of-type {
-        width: 100%;
-        .effective-radio {
-            gap: 5rem;
+    }
+    .concept__date {
+        .usa-radio {
+            background-color: unset;
         }
-      }
-  }
+            .date-picker-input {
+            .grid-col-6:first-of-type {
+                display: none;
+            }
+            .usa-date-picker__wrapper {
+                width: 17rem;
+            }
+            }
+            margin-bottom: 24px;
+            .effective-radio {
+                display: flex;
+                width: 22rem;
+                gap: 2.8rem;
+                margin-right: 1.25rem;
+            }
+            &:last-of-type {
+            width: 100%;
+            .effective-radio {
+                gap: 5rem;
+            }
+        }
+    }
+    &.edit {
+        .concept__add-concept--local, .concept__add-concept--messaging {
+            background-color: colors.$base-lightest;
+            padding: 0.5rem;
+        }
+        .concept__add-concept--local {
+            margin-bottom: 1rem;
+        }
+    }
 }
 .concept-local-library {
     background-color: colors.$base-white;
@@ -150,63 +160,6 @@
     gap: 0.5rem;
     button {
         margin: 0;
-    }
-}
-.concept-local-library__header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    .search-filter {
-        display: flex;
-    }
-    &.outer-search-box {
-        border-radius: 5px;
-        border-bottom: 1px solid var(--base-lighter, #dcdee0);
-        background: unset;
-        padding: 16px;
-        margin-bottom: 16px;
-    }
-    .search-tag {
-        display: flex;
-        gap: 10px;
-        .tag-cover {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 4px 6px 4px 2px;
-            border-radius: 2px;
-            color: #ffffff;
-            background: #005ea2;
-            .usa-icon {
-                cursor: pointer;
-            }
-        }
-    }
-    button {
-        padding: 9px 16px;
-        height: 40px;
-        p {
-            margin: 0;
-            font-size: 16px;
-        }
-        &:first-of-type {
-            border-radius: 0 4px 4px 0;
-            padding: 9px;
-        }
-        &:last-of-type {
-            margin-right: 0;
-        }
-    }
-    .input {
-        input {
-            margin: 0;
-            width: 252px;
-        }
-        span {
-            display: none;
-        }
     }
 }
 .search-desc {

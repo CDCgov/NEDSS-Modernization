@@ -17,7 +17,7 @@ const questionContextDefaultValue: ContextData = {
     setPageSize: () => {},
     isLoading: false,
     setIsLoading: () => {},
-    searchValueSet: 0,
+    searchValueSet: {},
     setSearchValueSet: () => {}
 };
 

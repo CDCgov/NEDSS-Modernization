@@ -14,25 +14,24 @@ type OverlayPanelProps = {
     position?: 'right' | 'left';
     toggle: ToggleRenderer;
     render: PanelRenderer;
+    overlayVisible?: boolean;
 };
 
-const OverlayPanel = ({ toggle, render, position }: OverlayPanelProps) => {
+const OverlayPanel = ({ toggle, render, position, overlayVisible }: OverlayPanelProps) => {
     const [visible, setVisible] = useState(false);
 
     const handleToggle = () => setVisible((existing) => !existing);
     const handleClose = () => setVisible(false);
 
     return (
-        <>
-            <span className={styles.overlay}>
-                {visible && (
-                    <Dialog position={position} onClose={handleClose}>
-                        {render(handleClose)}
-                    </Dialog>
-                )}
-            </span>
+        <div className={styles.overlay}>
+            {((overlayVisible !== undefined && overlayVisible) || visible) && (
+                <Dialog position={position} onClose={handleClose}>
+                    {render(handleClose)}
+                </Dialog>
+            )}
             {toggle({ toggle: handleToggle })}
-        </>
+        </div>
     );
 };
 

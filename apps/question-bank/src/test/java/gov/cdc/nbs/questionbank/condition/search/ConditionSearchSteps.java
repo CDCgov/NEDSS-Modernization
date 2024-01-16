@@ -70,6 +70,11 @@ public class ConditionSearchSteps {
         Pageable.ofSize(20)));
   }
 
+  @When("i search for all available conditions")
+  public void search_for_all_available() {
+    response.active(request.available());
+  }
+
   @Then("the condition is returned")
   public void the_condition_is_returned() throws Exception {
     response.active()
@@ -88,7 +93,6 @@ public class ConditionSearchSteps {
                 .value(not(hasItem(this.activeCondition.active().id()))));
   }
 
-
   @Given("a condition exists with {string} set to {string}")
   public void a_condition_exists_with_value(String field, String value) {
     Condition created = creator.createCondition(createConditionRequest(field, value), 999l);
@@ -101,6 +105,16 @@ public class ConditionSearchSteps {
     response.active(request.search(
         new ReadConditionRequest(),
         PageRequest.of(0, 50, Sort.by(dir, field))));
+  }
+
+  @Then("the condition is not in the available conditions")
+  public void condition_is_not_in_available() throws Exception {
+    response.active()
+        .andExpect(status().isOk())
+        .andExpect(
+            jsonPath("$.[*].id")
+                .value(not(hasItem(this.activeCondition.active().id()))))
+        .andExpect(jsonPath("$.[*].id").isNotEmpty());
   }
 
   @Then("the conditions are returned sorted by {string} {string}")

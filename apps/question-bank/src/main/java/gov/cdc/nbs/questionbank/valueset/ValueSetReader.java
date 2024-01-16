@@ -3,7 +3,8 @@ package gov.cdc.nbs.questionbank.valueset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,31 +21,35 @@ import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 @Service
 public class ValueSetReader {
 
-    @Autowired
-    private ValueSetRepository valueSetRepository;
+  private final ValueSetRepository valueSetRepository;
 
-    @Autowired
-    private CodeValueGeneralRepository codeValueGeneralRepository;
+  private final CodeValueGeneralRepository codeValueGeneralRepository;
 
-    public Page<ValueSet> findAllValueSets(Pageable pageable) {
-        Page<Codeset> rawResults = valueSetRepository.findAll(pageable);
-        List<ValueSet> formatResults = toReadValueSet(rawResults);
-        return new PageImpl<>(formatResults, pageable, rawResults.getTotalElements());
+  private final ValueSetFinder valueSetFinder;
 
-    }
+  ValueSetReader(final ValueSetRepository valueSetRepository,
+      final CodeValueGeneralRepository codeValueGeneralRepository,
+      final ValueSetFinder valueSetFinder) {
+    this.valueSetRepository = valueSetRepository;
+    this.codeValueGeneralRepository = codeValueGeneralRepository;
+    this.valueSetFinder = valueSetFinder;
+  }
 
-    public Page<ValueSet> searchValueSearch(ValueSetSearchRequest search, Pageable pageable) {
-        Page<Codeset> rawResults = valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCodeorValueSetType(search.getCodeSetName(),
-                search.getValueSetNm(), search.getValueSetCode(), search.getValueSetTypeCd(), search.getValueSetDescription(), pageable);
-        List<ValueSet> formatResults = toReadValueSet(rawResults);
-        return new PageImpl<>(formatResults, pageable, rawResults.getTotalElements());
+  public Page<ValueSet> findAllValueSets(Pageable pageable) {
+    Page<Codeset> rawResults = valueSetRepository.findAll(pageable);
+    List<ValueSet> formatResults = toReadValueSet(rawResults);
+    return new PageImpl<>(formatResults, pageable, rawResults.getTotalElements());
 
-    }
+  }
 
-    public List<ValueSet> toReadValueSet(Page<Codeset> rawResults) {
-        List<ValueSet> results = new ArrayList<>();
+  public Page<ValueSetSearchResponse> searchValueSet(ValueSetSearchRequest search, Pageable pageable) {
+    return valueSetFinder.findValueSet(search, pageable);
+  }
 
-        for (Codeset codeSet : rawResults.getContent()) {
+  public List<ValueSet> toReadValueSet(Page<Codeset> rawResults) {
+    List<ValueSet> results = new ArrayList<>();
+
+    for (Codeset codeSet : rawResults.getContent()) {
 
             results.add(new ValueSet(
                     codeSet.getId().getClassCd(),
@@ -60,7 +65,7 @@ public class ValueSetReader {
                     codeSet.getSourceDomainNm(),
                     codeSet.getStatusCd(),
                     codeSet.getStatusToTime(),
-                    codeSet.getCodeSetGroup().getId(),
+                    (codeSet.getCodeSetGroup() != null) ? codeSet.getCodeSetGroup().getId() : null,
                     codeSet.getAdminComments(),
                     codeSet.getValueSetNm(),
                     codeSet.getLdfPicklistIndCd(),
@@ -73,21 +78,21 @@ public class ValueSetReader {
                     codeSet.getAddTime(),
                     codeSet.getAddUserId()));
 
-        }
-        return results;
+    }
+    return results;
+  }
+
+  public List<Concept> findConceptCodes(String codeSetNm) {
+    if (codeSetNm == null) {
+      return Collections.emptyList();
     }
 
-    public List<Concept> findConceptCodes(String codeSetNm) {
-        if (codeSetNm == null) {
-            return Collections.emptyList();
-        }
-
-        return codeValueGeneralRepository
-                .findByIdCodeSetNm(codeSetNm, Sort.by(Sort.Direction.ASC, "codeShortDescTxt"))
-                .stream()
-                .map(this::toConcept)
-                .toList();
-    }
+    return codeValueGeneralRepository
+        .findByIdCodeSetNm(codeSetNm, Sort.by(Sort.Direction.ASC, "codeShortDescTxt"))
+        .stream()
+        .map(this::toConcept)
+        .toList();
+  }
 
     public Concept toConcept(CodeValueGeneral codeValueGeneral) {
         return new Concept(

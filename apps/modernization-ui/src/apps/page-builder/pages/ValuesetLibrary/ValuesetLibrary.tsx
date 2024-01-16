@@ -40,19 +40,6 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
         fetchContent();
     }, [searchQuery, currentPage, pageSize, sortBy, filter]);
 
-    const handleUpdateSummariesCallback = async () => {
-        const { content, totalElements }: any = await fetchValueSet(
-            authorization(),
-            searchQuery,
-            sortBy,
-            currentPage,
-            pageSize,
-            filter
-        );
-        setTotalElements(totalElements);
-        setSummaries(content);
-    };
-
     const renderValueSetList = (
         <>
             <div className="search-description-block">
@@ -64,7 +51,6 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef }: any) => {
                         summaries={summaries}
                         pages={{ currentPage, pageSize, totalElements }}
                         labModalRef={modalRef}
-                        updateCallback={handleUpdateSummariesCallback}
                     />
                 </div>
             </div>

@@ -22,7 +22,7 @@ type Result = {
 const useCodedValueQuery = (baseOptions?: Apollo.QueryHookOptions<Result, Variables>) =>
     Apollo.useLazyQuery<Result, Variables>(Query, { ...baseOptions });
 
-const useDetailedRaceCodedValues = (category?: string | undefined) => {
+const useDetailedRaceCodedValues = (category?: string | undefined | null) => {
     const [coded, setCoded] = useState<GroupedCodedValue[]>([]);
 
     const handleComplete = (result: Result) => setCoded(result.detailedRaces);

@@ -19,6 +19,12 @@ Feature: Searching for Page Summaries
     When I search for page summaries
     Then the found page summaries contain a page with the "condition" "Crusted Scabies"
 
+  Scenario: I can search for Page Summaries by condition id
+    Given the page is tied to the Crusted Scabies condition
+    And I am looking for page summaries that contain "128870005"
+    When I search for page summaries
+    Then the found page summaries contain a page with the "condition" "Crusted Scabies"
+
   Scenario: Templates are not included when searching Page Summaries
     Given the page has a "name" of "Needle In a Haystack"
     And the page is a Template
