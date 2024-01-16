@@ -37,7 +37,8 @@ export const ManageSectionModal = ({
                 id={'manage-section-modal'}
                 className={'manage-section-modal'}
                 ref={manageSectionModalRef}
-                forceAction>
+                forceAction
+                isLarge>
                 <ManageSection
                     pageId={pageId}
                     tab={tab}
@@ -48,7 +49,7 @@ export const ManageSectionModal = ({
                     onCancel={onCloseManageSectionModal}
                 />
             </Modal>
-            <Modal id={'add-section-modal'} ref={addSectionModalRef} className={'add-section-modal'}>
+            <Modal id={'add-section-modal'} ref={addSectionModalRef} className={'add-section-modal'} isLarge>
                 <AddSection
                     pageId={pageId}
                     tabId={tab.id}
