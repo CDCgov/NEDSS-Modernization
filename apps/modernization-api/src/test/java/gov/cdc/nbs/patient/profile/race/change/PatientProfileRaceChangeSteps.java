@@ -4,13 +4,11 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -21,20 +19,16 @@ public class PatientProfileRaceChangeSteps {
 
   private final Available<PatientIdentifier> patients;
 
-  private final PatientRaceChangeController controller;
-
   private final EntityManager entityManager;
 
   private final Active<RaceInput> input;
 
   PatientProfileRaceChangeSteps(
       final Available<PatientIdentifier> patients,
-      final PatientRaceChangeController controller,
       final EntityManager entityManager,
       final Active<RaceInput> input
   ) {
     this.patients = patients;
-    this.controller = controller;
     this.entityManager = entityManager;
     this.input = input;
   }
@@ -46,7 +40,7 @@ public class PatientProfileRaceChangeSteps {
 
   @Given("I want to set the patient's race category to {raceCategory}")
   public void i_want_to_set_the_patients_race_category_to(final String category) {
-    input.active(current -> current.category(category));
+    input.active(current -> current.setCategory(category));
   }
 
   @Given("I want to set the patient's detailed race to {raceDetail}")
@@ -73,25 +67,25 @@ public class PatientProfileRaceChangeSteps {
     ;
   }
 
-  @When("a patient's race is changed")
-  @Transactional
-  public void a_patient_race_is_changed() {
-    PatientIdentifier patient = patients.one();
-
-    PersonRace existing = this.entityManager.find(Person.class, patients.one().id())
-        .getRaces()
-        .stream()
-        .findFirst()
-        .orElseThrow();
-
-    input.active(
-        current ->
-            current.patient(patient.id())
-                .asOf(RandomUtil.getRandomDateInPast())
-                .category(existing.getRaceCategoryCd())
-    );
-
-    input.maybeActive().ifPresent(controller::update);
-  }
+//  @When("a patient's race is changed")
+  //  @Transactional
+  //  public void a_patient_race_is_changed() {
+  //    PatientIdentifier patient = patients.one();
+  //
+  //    PersonRace existing = this.entityManager.find(Person.class, patients.one().id())
+  //        .getRaces()
+  //        .stream()
+  //        .findFirst()
+  //        .orElseThrow();
+  //
+  //    input.active(
+  //        current ->
+  //            current.setPatient(patient.id())
+  //                .setAsOf(RandomUtil.getRandomDateInPast())
+  //                .setCategory(existing.getRaceCategoryCd())
+  //    );
+  //
+  //    input.maybeActive().ifPresent(controller::update);
+  //  }
 
 }

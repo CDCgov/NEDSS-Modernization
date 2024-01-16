@@ -42,9 +42,9 @@ public class PatientProfileUpdateRaceSteps {
   ) {
     return this.input.maybeActive()
         .map(
-            current -> current.patient(identifier.id())
-                .category(category)
-                .asOf(asOf)
+            current -> current.setPatient(identifier.id())
+                .setCategory(category)
+                .setAsOf(asOf)
         );
   }
 }

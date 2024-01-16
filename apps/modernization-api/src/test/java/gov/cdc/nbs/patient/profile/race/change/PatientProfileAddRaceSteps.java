@@ -44,7 +44,7 @@ public class PatientProfileAddRaceSteps {
       final Instant asOf
   ) {
     return this.input.maybeActive()
-        .map(current -> current.patient(identifier.id()).asOf(asOf));
+        .map(current -> current.setPatient(identifier.id()).setAsOf(asOf));
   }
 
   @Then("the patient's race cannot be added because the category exists")
