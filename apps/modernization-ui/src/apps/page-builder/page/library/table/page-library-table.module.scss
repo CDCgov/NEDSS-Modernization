@@ -1,6 +1,6 @@
 @use 'styles/colors';
 
-table.pages {
+.pageTable {
     thead tr th {
         &:nth-of-type(2) {
             width: 150px;
@@ -8,6 +8,10 @@ table.pages {
         &:nth-of-type(4) {
             width: 22ch;
         }
+    }
+
+    tr {
+        word-wrap: break-word;
     }
     .expandButton {
         background: none;
