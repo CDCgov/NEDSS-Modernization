@@ -22,9 +22,7 @@ export const fetchValueSet = (
         // if (filter.newestToOldest || (!searchQuery && !filter?.questionType)) {
         return ValueSetControllerService.searchValueSetUsingPost({
             authorization,
-            search: search
-                ? { valueSetNm: search, valueSetDescription: search, valueSetTypeCd: filter?.questionType }
-                : { valueSetTypeCd: filter?.questionType || 'LOCAL' },
+            search: search ? { valueSetNm: search, valueSetDescription: search } : {},
             page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
             size: pageSize,
             sort

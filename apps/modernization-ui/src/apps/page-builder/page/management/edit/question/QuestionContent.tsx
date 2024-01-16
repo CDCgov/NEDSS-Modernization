@@ -43,7 +43,7 @@ export const QuestionContent = ({
                 codeSetNm: valueSet
             }).then((resp: Array<Concept>) => {
                 const temp = resp.map((r) => {
-                    return { value: r.codesetName ?? '', name: r.longName ?? '', label: r.conceptCode ?? '' };
+                    return { value: r.codeSetName ?? '', name: r.longName ?? '', label: r.conceptCode ?? '' };
                 });
                 setConceptState(temp);
             });

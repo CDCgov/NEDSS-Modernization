@@ -3,15 +3,15 @@
 /* eslint-disable */
 
 export type Concept = {
+    codeSetName?: string;
     codeSystem?: string;
-    codesetName?: string;
     conceptCode?: string;
     display?: string;
     effectiveFromTime?: string;
     effectiveToTime?: string;
     localCode?: string;
     longName?: string;
-    messagingConceptName?: string;
+    preferredConceptName?: string;
     status?: string;
 };
 
