@@ -144,14 +144,14 @@ describe('Add New Page', () => {
     });
 
     it('should display form when Investigation type is selected', async () => {
-        const { queryByText } = render(
+        const { queryByText, getByText } = render(
             <MemoryRouter>
                 <AlertProvider>
                     <AddNewPage />
                 </AlertProvider>
             </MemoryRouter>
         );
-        const label = screen.getByText('Event type');
+        const label = getByText('Event type');
         expect(label).toBeInTheDocument();
 
         const select = screen.getByTestId('eventTypeDropdown');
@@ -161,7 +161,11 @@ describe('Add New Page', () => {
         const warning = queryByText('event type is not supported');
         expect(warning).not.toBeInTheDocument();
 
-        const conditionSelect = screen.getByText('Condition(s)');
-        expect(conditionSelect).toBeInTheDocument();
+        expect(getByText('Condition(s)')).toBeInTheDocument();
+        expect(getByText('Page name')).toBeInTheDocument();
+        expect(getByText('Template')).toBeInTheDocument();
+        expect(getByText('Reporting mechanism')).toBeInTheDocument();
+        expect(getByText('Page description')).toBeInTheDocument();
+        expect(getByText('Data mart name')).toBeInTheDocument();
     });
 });

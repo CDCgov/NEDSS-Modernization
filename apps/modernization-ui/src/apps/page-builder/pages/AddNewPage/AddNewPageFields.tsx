@@ -89,7 +89,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <SelectInput
-                        label="Templates"
+                        label="Template"
                         defaultValue={value}
                         onChange={onChange}
                         onBlur={onBlur}
