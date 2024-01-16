@@ -5,8 +5,8 @@ import { PagesTab } from 'apps/page-builder/generated';
 import { RefObject } from 'react';
 
 type ManageSectionModalProps = {
-    tab?: PagesTab;
-    pageId?: number;
+    tab: PagesTab;
+    pageId: number;
     refresh?: () => void;
     addSecModalRef: RefObject<ModalRef>;
     manageSecModalRef: RefObject<ModalRef>;
@@ -34,11 +34,11 @@ export const ManageSectionModal = ({
         <>
             <Modal id={'manage-section-modal'} ref={manageSectionModalRef} forceAction>
                 <ManageSection
-                    pageId={pageId!}
-                    tab={tab!}
+                    pageId={pageId}
+                    tab={tab}
                     key={tab?.sections.length}
                     onContentChange={() => {
-                        refresh && refresh();
+                        refresh?.();
                     }}
                     onCancel={onCloseManageSectionModal}
                 />
@@ -46,9 +46,9 @@ export const ManageSectionModal = ({
             <Modal id={'add-section-modl'} ref={addSectionModalRef}>
                 <AddSection
                     pageId={pageId}
-                    tabId={tab?.id}
+                    tabId={tab.id}
                     onAddSectionCreated={() => {
-                        refresh && refresh();
+                        refresh?.();
                     }}
                     onCancel={closeAddSection}
                 />

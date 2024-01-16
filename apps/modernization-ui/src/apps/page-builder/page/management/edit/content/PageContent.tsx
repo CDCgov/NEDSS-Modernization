@@ -13,8 +13,8 @@ import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 type Props = {
     tab: PagesTab;
     refresh?: () => void;
-    handleManageSection?: (tab: PagesTab) => void;
-    handleAddSection?: (tab: PagesTab) => void;
+    handleManageSection?: () => void;
+    handleAddSection?: () => void;
 };
 
 const hyperlinkId = 1003;
@@ -71,10 +71,10 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
                 onAddSubsection={handleAddSubsection}
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={setSubsectionId}
-                handleManageSection={() => handleManageSection!(tab)}
+                handleManageSection={() => handleManageSection!()}
                 addQuestionModalRef={addQuestionModalRef}
             />
-            <PageSideMenu onAddSection={() => handleAddSection!(tab)} />
+            <PageSideMenu onAddSection={() => handleAddSection!()} />
             <ModalComponent
                 modalRef={editStaticElementRef}
                 modalHeading={'Edit static elements'}

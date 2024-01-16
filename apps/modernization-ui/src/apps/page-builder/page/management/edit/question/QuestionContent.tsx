@@ -56,48 +56,62 @@ export const QuestionContent = ({
                 <NbsIcon name={'drag'} />
             </div>
             {isStandard ? (
-                <>
-                    <div className={styles.content}>
-                        <div className={styles.questionHeader}>
-                            <Heading level={2}>{name}</Heading>
-                            <body className={styles.identifier}>{`(${identifier})`}</body>
-                        </div>
-                        <div className={styles.questionContent}>
-                            <div className={styles.inputContent}>
-                                {(displayComponent === 1007 ||
-                                    displayComponent === 1013 ||
-                                    displayComponent === 1024 ||
-                                    displayComponent === 1025 ||
-                                    displayComponent === 1027 ||
-                                    displayComponent === 1028 ||
-                                    displayComponent === 1031) && (
-                                    <SelectInput options={conceptState} data-testid="dropdown-input" />
-                                )}
-                                {/* create custom checkbox component */}
-                                {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
-                                {displayComponent === 1001 && <SelectInput options={conceptState} />}
+                <div className={styles.content}>
+                    <div className={styles.questionHeader}>
+                        <Heading level={2}>{name}</Heading>
+                        <body className={styles.identifier}>{`(${identifier})`}</body>
+                    </div>
+                    <div className={styles.questionContent}>
+                        <div className={styles.inputContent}>
+                            {(displayComponent === 1007 ||
+                                displayComponent === 1013 ||
+                                displayComponent === 1024 ||
+                                displayComponent === 1025 ||
+                                displayComponent === 1027 ||
+                                displayComponent === 1028 ||
+                                displayComponent === 1031) && (
+                                <SelectInput
+                                    onChange={() => {}}
+                                    defaultValue={''}
+                                    options={conceptState}
+                                    data-testid="dropdown-input"
+                                />
+                            )}
+                            {/* create custom checkbox component */}
+                            {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
+                            {displayComponent === 1001 && (
+                                <SelectInput defaultValue={''} onChange={() => {}} options={conceptState} />
+                            )}
 
-                                {displayComponent === 1008 && <Input type="text" className={styles.questionInput} />}
+                            {displayComponent === 1008 && (
+                                <Input
+                                    onChange={() => {}}
+                                    defaultValue=""
+                                    type="text"
+                                    className={styles.questionInput}
+                                />
+                            )}
 
-                                {(displayComponent === 1009 || displayComponent === 1019) && (
-                                    <Input type="text" className={styles.questionInput} multiline />
-                                )}
-                            </div>
-
-                            {type === 'DATE' && (
-                                <Icon.CalendarToday size={4} className={styles.icon} data-testid="calendar-icon" />
+                            {(displayComponent === 1009 || displayComponent === 1019) && (
+                                <Input
+                                    onChange={() => {}}
+                                    defaultValue=""
+                                    type="text"
+                                    className={styles.questionInput}
+                                    multiline
+                                />
                             )}
                         </div>
+
+                        {type === 'DATE' && (
+                            <Icon.CalendarToday size={4} className={styles.icon} data-testid="calendar-icon" />
+                        )}
                     </div>
-                </>
+                </div>
             ) : (
                 <>
                     {displayComponent === commentsReadOnlyId && <body>{name}</body>}
-                    {displayComponent === hyperlinkId && (
-                        <>
-                            <a href={defaultValue}>{name}</a>
-                        </>
-                    )}
+                    {displayComponent === hyperlinkId && <a href={defaultValue}>{name}</a>}
                     {displayComponent === lineSeparatorId && (
                         <body className={styles.inputContent}>Line separator will be placed here</body>
                     )}

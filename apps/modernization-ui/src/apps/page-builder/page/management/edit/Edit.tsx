@@ -1,54 +1,54 @@
-import { PageContent } from './content/PageContent';
-import { Loading } from 'components/Spinner';
+import { ModalRef } from '@trussworks/react-uswds';
 import {
-    PageManagementProvider,
-    useGetPageDetails,
+    PageHeader,
+    PageManagementContext,
     PageManagementLayout,
     PageManagementMenu,
-    PageHeader,
+    PageManagementProvider,
+    useGetPageDetails,
     usePageManagement
 } from 'apps/page-builder/page/management';
+import { Loading } from 'components/Spinner';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { useRef } from 'react';
+import { PageContent } from './content/PageContent';
 import { ManageSectionModal } from './section/manage/ManageSectionModal';
-import { ModalRef } from '@trussworks/react-uswds';
-import { useRef, useState } from 'react';
-import { PagesTab } from 'apps/page-builder/generated';
 
 export const Edit = () => {
-    const { page, fetch } = useGetPageDetails();
+    const { page, fetch, refresh } = useGetPageDetails();
 
     const manageSectionModalRef = useRef<ModalRef>(null);
     const addSectionModalRef = useRef<ModalRef>(null);
-    const [currentTab, setCurrentTab] = useState<PagesTab>();
 
-    const handleManageSection = (tab: PagesTab) => {
-        setCurrentTab(tab);
+    const handleManageSection = () => {
         manageSectionModalRef.current?.toggleModal(undefined, true);
     };
 
-    const handleAddSection = (tab: PagesTab) => {
-        setCurrentTab(tab);
+    const handleAddSection = () => {
         addSectionModalRef.current?.toggleModal(undefined, true);
     };
 
     return (
         <>
             {page ? (
-                <>
-                    <PageManagementProvider page={page} fetch={fetch}>
-                        <EditPageContent
-                            handleManageSection={handleManageSection}
-                            handleAddSection={handleAddSection}
-                        />
-                        <ManageSectionModal
-                            pageId={page?.id}
-                            tab={currentTab}
-                            refresh={() => fetch(page!.id)}
-                            addSecModalRef={addSectionModalRef}
-                            manageSecModalRef={manageSectionModalRef}
-                        />
-                    </PageManagementProvider>
-                </>
+                <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementContext.Consumer>
+                        {(context) => (
+                            <>
+                                {context?.selected && (
+                                    <ManageSectionModal
+                                        pageId={context.page.id}
+                                        tab={context.selected}
+                                        refresh={() => page && refresh(page)}
+                                        addSecModalRef={addSectionModalRef}
+                                        manageSecModalRef={manageSectionModalRef}
+                                    />
+                                )}
+                            </>
+                        )}
+                    </PageManagementContext.Consumer>
+                    <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
+                </PageManagementProvider>
             ) : (
                 <Loading center />
             )}
@@ -57,8 +57,8 @@ export const Edit = () => {
 };
 
 type EditPageContentProps = {
-    handleManageSection?: (tab: PagesTab) => void;
-    handleAddSection?: (tab: PagesTab) => void;
+    handleManageSection?: () => void;
+    handleAddSection?: () => void;
 };
 
 const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageContentProps) => {
