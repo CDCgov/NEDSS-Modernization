@@ -6,6 +6,7 @@ import { Search } from 'components/Search';
 
 import styles from './page-library-menu.module.scss';
 import { FilterDisplay } from './FilterDisplay';
+import { useState } from 'react';
 
 type Props = {
     properties: Property[];
@@ -16,25 +17,29 @@ type Props = {
     onPrint: () => void;
 };
 const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, onPrint }: Props) => {
+    const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
     return (
         <section className={styles.menu}>
+            <FilterDisplay onClickFilter={() => setOverlayVisible(true)} filters={filters} />
             <OverlayPanel
                 position="right"
-                toggle={({ toggle }) => (
-                    <>
-                        <FilterDisplay onClickFilter={toggle} filters={filters} />
-                        <Button type="button" onClick={toggle} outline className={styles.filterButton}>
-                            <Icon.FilterAlt />
-                            Filter
-                        </Button>
-                    </>
+                overlayVisible={overlayVisible}
+                toggle={() => (
+                    <Button
+                        type="button"
+                        onClick={() => setOverlayVisible(true)}
+                        outline
+                        className={styles.filterButton}>
+                        <Icon.FilterAlt />
+                        Filter
+                    </Button>
                 )}
-                render={(close) => (
+                render={() => (
                     <FilterPanel
                         label="Pages"
                         properties={properties}
                         filters={filters}
-                        close={close}
+                        close={() => setOverlayVisible(false)}
                         onApply={onFilter}
                     />
                 )}

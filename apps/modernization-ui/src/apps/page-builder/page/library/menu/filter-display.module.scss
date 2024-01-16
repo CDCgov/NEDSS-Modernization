@@ -3,10 +3,9 @@
 .filterDisplay {
     display: flex;
     flex-grow: 1;
-    padding-right: 1rem;
     overflow: hidden;
 
-    .filterButton {
+    .clickableFilter {
         display: flex;
         cursor: pointer;
         max-width: 100%;
@@ -16,6 +15,7 @@
         overflow: hidden;
         outline: none;
         border: none;
+        margin-right: 0.5rem;
 
         &:focus {
             outline: none;

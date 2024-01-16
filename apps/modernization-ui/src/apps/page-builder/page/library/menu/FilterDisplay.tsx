@@ -13,7 +13,7 @@ export const FilterDisplay = ({ filters, onClickFilter }: Props) => {
     return (
         <div className={styles.filterDisplay}>
             {filters.length > 0 && (
-                <button onClick={onClickFilter} className={styles.filterButton}>
+                <button onClick={onClickFilter} className={styles.clickableFilter}>
                     <span className={styles.filterText}>{renderProperty(filters[0])}</span>
                     {filters.length > 1 && (
                         <span className={styles.moreText}>&nbsp;{`and ${filters.length - 1} others`}</span>
