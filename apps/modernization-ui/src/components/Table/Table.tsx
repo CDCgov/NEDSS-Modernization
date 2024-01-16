@@ -1,4 +1,4 @@
-import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
+import { Table, Pagination, Checkbox, Radio } from '@trussworks/react-uswds';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { NoData } from 'components/NoData';
@@ -30,6 +30,7 @@ export type Header = {
 export type TableBody = {
     key?: number | string | undefined;
     checkbox?: boolean;
+    radioButton?: boolean;
     id: number | string | undefined | null;
     tableDetails: Cell[];
     data?: any;
@@ -107,14 +108,24 @@ export const TableComponent = ({
                     <tr>
                         {selectable && (
                             <td className={styles.selectable}>
-                                <Checkbox
-                                    disabled={!row.selectable}
-                                    key={`selection-${index}`}
-                                    id={`selection-${index}`}
-                                    name={'selection'}
-                                    label=""
-                                    onChange={handleRowSelection(row, handleSelected)}
-                                />
+                                {row.radioButton ? (
+                                    <Radio
+                                        key={`selection-${index}`}
+                                        id={`selection-${index}`}
+                                        name={'selection'}
+                                        label=""
+                                        onChange={handleRowSelection(row, handleSelected)}
+                                    />
+                                ) : (
+                                    <Checkbox
+                                        disabled={!row.selectable}
+                                        key={`selection-${index}`}
+                                        id={`selection-${index}`}
+                                        name={'selection'}
+                                        label=""
+                                        onChange={handleRowSelection(row, handleSelected)}
+                                    />
+                                )}
                             </td>
                         )}
                         {row.tableDetails.map((detail: Cell, column: number) => {
