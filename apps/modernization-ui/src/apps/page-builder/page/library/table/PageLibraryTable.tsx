@@ -84,7 +84,7 @@ export const PageLibraryTable = ({ enableEdit, summaries, searching = false, onS
         <TableComponent
             display="zebra"
             isLoading={searching}
-            className={styles.pages}
+            className={styles.pageTable}
             tableHead={headers}
             tableBody={tableRows}
             isPagination={true}
