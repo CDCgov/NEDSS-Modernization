@@ -2,8 +2,11 @@ package gov.cdc.nbs;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.Then;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.ResultActions;
+
+import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
 
 public class WebInteractionSteps {
 
@@ -25,4 +28,8 @@ public class WebInteractionSteps {
     activeAction.reset();
   }
 
+  @Then("I am not allowed due to insufficient permissions")
+  public void access_is_denied() throws Exception {
+    this.activeAction.active().andExpect(accessDenied());
+  }
 }

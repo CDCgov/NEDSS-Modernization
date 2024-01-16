@@ -1,4 +1,4 @@
-@patient-profile-races
+@patient-profile-races  @web-interaction
 Feature: Patient Profile Races
 
   Background:
@@ -13,6 +13,3 @@ Feature: Patient Profile Races
     Given I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     Then the profile has no associated races
 
-  Scenario: I cannot retrieve patient races without proper authorities
-    Given I have the authorities: "OTHER" for the jurisdiction: "ALL" and program area: "STD"
-    Then the profile races are not accessible

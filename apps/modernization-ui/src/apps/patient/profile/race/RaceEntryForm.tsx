@@ -1,22 +1,23 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { EntryFooter } from 'apps/patient/profile/entry';
 import { useDetailedRaceCodedValues, useRaceCodedValues } from 'coded/race';
 import { RaceEntry } from './RaceEntry';
-import { externalizeDateTime } from 'date';
-import { orNull } from 'utils';
+
 import { MultiSelectInput } from 'components/selection/multi';
+import { validateCategory } from './validateCategory';
 
 type EntryProps = {
-    entry: RaceEntry;
+    patient: number;
+    entry: Partial<RaceEntry>;
     onChange: (updated: RaceEntry) => void;
     onDelete?: () => void;
 };
 
-export const RaceEntryForm = ({ entry, onChange, onDelete }: EntryProps) => {
-    const { handleSubmit, control } = useForm({ mode: 'onBlur' });
+export const RaceEntryForm = ({ patient, entry, onChange, onDelete }: EntryProps) => {
+    const { handleSubmit, control } = useForm<RaceEntry, Partial<RaceEntry>>({ mode: 'onBlur' });
 
     const categories = useRaceCodedValues();
 
@@ -24,14 +25,7 @@ export const RaceEntryForm = ({ entry, onChange, onDelete }: EntryProps) => {
 
     const detailedRaces = useDetailedRaceCodedValues(selectedCategory);
 
-    const onSubmit = (entered: FieldValues) => {
-        onChange({
-            patient: entry.patient,
-            asOf: externalizeDateTime(entered.asOf),
-            category: orNull(entered.category),
-            detailed: entered.detailed ? entered.detailed : []
-        });
-    };
+    const updating = typeof entry.category === 'string';
 
     return (
         <>
@@ -63,19 +57,23 @@ export const RaceEntryForm = ({ entry, onChange, onDelete }: EntryProps) => {
                         <Controller
                             control={control}
                             name="category"
-                            rules={{ required: { value: true, message: 'Race is required.' } }}
+                            rules={{
+                                required: { value: true, message: 'Race is required.' },
+                                validate: validateCategory(patient, entry.category)
+                            }}
                             defaultValue={entry.category}
-                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                                 <SelectInput
-                                    onBlur={onBlur}
                                     flexBox
-                                    defaultValue={value}
+                                    required
+                                    onBlur={onBlur}
                                     onChange={onChange}
-                                    htmlFor={'category'}
+                                    defaultValue={value}
+                                    htmlFor={name}
                                     label="Race"
                                     options={categories}
                                     error={error?.message}
-                                    required
+                                    disabled={updating}
                                 />
                             )}
                         />
@@ -106,7 +104,7 @@ export const RaceEntryForm = ({ entry, onChange, onDelete }: EntryProps) => {
                 </Grid>
             </section>
 
-            <EntryFooter onSave={handleSubmit(onSubmit)} onDelete={onDelete} />
+            <EntryFooter onSave={handleSubmit(onChange)} onDelete={onDelete} />
         </>
     );
 };
