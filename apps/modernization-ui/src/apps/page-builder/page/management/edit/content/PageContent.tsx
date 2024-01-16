@@ -34,10 +34,6 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
     const addQuestionModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
 
-    useEffect(() => {
-        console.log('dumb test');
-    }, [tab]);
-
     const handleAddSubsection = (section: number) => {
         console.log('add subsection not yet implemented', section);
     };
