@@ -1,6 +1,11 @@
 package gov.cdc.nbs.questionbank.question;
 
 import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
+import gov.cdc.nbs.questionbank.question.request.update.UpdateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.update.UpdateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.update.UpdateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.update.UpdateTextQuestionRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,13 +25,12 @@ import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
-import gov.cdc.nbs.questionbank.question.request.CreateCodedQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
-import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.response.GetQuestionResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/api/v1/questions")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+@RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionCreator creator;
@@ -41,20 +46,6 @@ public class QuestionController {
     private final QuestionUpdater updater;
     private final QuestionFinder finder;
 
-    private final QuestionManagementUtil questionManagementUtil;
-
-    public QuestionController(
-            QuestionCreator creator,
-            UserDetailsProvider userDetailsProvider,
-            QuestionUpdater updater,
-            QuestionFinder finder,
-            QuestionManagementUtil questionManagementUtil) {
-        this.creator = creator;
-        this.userDetailsProvider = userDetailsProvider;
-        this.updater = updater;
-        this.finder = finder;
-        this.questionManagementUtil = questionManagementUtil;
-    }
 
     @GetMapping
     public Page<Question> findAllQuestions(@PageableDefault(size = 25) Pageable pageable) {
@@ -66,8 +57,8 @@ public class QuestionController {
 
     @PostMapping("search")
     public Page<Question> findQuestions(
-            @RequestBody FindQuestionRequest request,
-            @PageableDefault(size = 25) Pageable pageable) {
+        @RequestBody FindQuestionRequest request,
+        @PageableDefault(size = 25) Pageable pageable) {
         log.debug("Received find question request");
         Page<Question> results = finder.find(request, pageable);
         log.debug("Found {} questions", results.getTotalElements());
@@ -102,13 +93,29 @@ public class QuestionController {
         return creator.create(userId, request);
     }
 
-    @PutMapping("{id}")
-    public Question updateQuestion(@PathVariable("id") Long id, @RequestBody UpdateQuestionRequest request) {
-        log.debug("Received update question request");
+    @PutMapping("text/{id}")
+    public Question updateTextQuestion(@PathVariable("id") Long id, @RequestBody UpdateTextQuestionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Question question = updater.update(userId, id, request);
-        log.debug("Completed update question request");
-        return question;
+        return updater.update(userId, id, request);
+    }
+
+    @PutMapping("numeric/{id}")
+    public Question updateNumericQuestion(@PathVariable("id") Long id,
+        @RequestBody UpdateNumericQuestionRequest request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return updater.update(userId, id, request);
+    }
+
+    @PutMapping("coded/{id}")
+    public Question updateCodedQuestion(@PathVariable("id") Long id, @RequestBody UpdateCodedQuestionRequest request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return updater.update(userId, id, request);
+    }
+
+    @PutMapping("date/{id}")
+    public Question updateDateQuestion(@PathVariable("id") Long id, @RequestBody UpdateDateQuestionRequest request) {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return updater.update(userId, id, request);
     }
 
     @GetMapping("{id}")
@@ -130,7 +137,7 @@ public class QuestionController {
 
     @GetMapping("/displayControlOptions")
     public DisplayControlOptions getDisplayControlOptions() {
-        return questionManagementUtil.getDisplayControlOptions();
+        return creator.getDisplayControlOptions();
     }
 
 }

@@ -17,7 +17,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
-import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
 import java.util.Arrays;
@@ -48,23 +48,23 @@ class QuestionControllerTest {
 
         // and the creator will create the question
         when(creator.create(eq(user.getId()), Mockito.any(CreateTextQuestionRequest.class)))
-                .thenReturn(new TextQuestion(19L,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null));
+            .thenReturn(new TextQuestion(19L,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
 
         // when the request is processed
         Question response = controller.createTextQuestion(request);
@@ -75,21 +75,21 @@ class QuestionControllerTest {
 
     private NbsUserDetails userDetails() {
         return new NbsUserDetails(
-                1L,
-                "test",
-                "test",
-                "test",
-                false,
-                false,
-                null,
-                null,
-                null,
-                true);
+            1L,
+            "test",
+            "test",
+            "test",
+            false,
+            false,
+            null,
+            null,
+            null,
+            true);
     }
 
     @Test
     void should_return_displayControlOptions() {
-        when(questionManagementUtil.getDisplayControlOptions()).thenReturn(getDisplayControlOptions());
+        when(creator.getDisplayControlOptions()).thenReturn(getDisplayControlOptions());
         DisplayControlOptions result = controller.getDisplayControlOptions();
         assertNotNull(result);
         assertFalse(result.codedDisplayControl().isEmpty());
@@ -101,9 +101,9 @@ class QuestionControllerTest {
 
     private DisplayControlOptions getDisplayControlOptions() {
         return new DisplayControlOptions(
-                Arrays.asList(new DisplayOption(101l, "mock_101"), new DisplayOption(102l, "mock_102")),
-                Arrays.asList(new DisplayOption(201l, "mock_201"), new DisplayOption(202l, "mock_202")),
-                Arrays.asList(new DisplayOption(301l, "mock_301"), new DisplayOption(302l, "mock_302")),
-                Arrays.asList(new DisplayOption(401l, "mock_401"), new DisplayOption(401l, "mock_402")));
+            Arrays.asList(new DisplayOption(101l, "mock_101"), new DisplayOption(102l, "mock_102")),
+            Arrays.asList(new DisplayOption(201l, "mock_201"), new DisplayOption(202l, "mock_202")),
+            Arrays.asList(new DisplayOption(301l, "mock_301"), new DisplayOption(302l, "mock_302")),
+            Arrays.asList(new DisplayOption(401l, "mock_401"), new DisplayOption(401l, "mock_402")));
     }
 }

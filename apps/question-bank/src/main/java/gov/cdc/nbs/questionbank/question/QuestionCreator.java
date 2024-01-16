@@ -1,6 +1,9 @@
 package gov.cdc.nbs.questionbank.question;
 
 import java.time.Instant;
+
+import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.EntityType;
@@ -20,11 +23,11 @@ import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateCodedQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 
 @Component
 class QuestionCreator {
@@ -37,12 +40,12 @@ class QuestionCreator {
     private final QuestionMapper questionMapper;
 
     public QuestionCreator(
-            final IdGeneratorService idGenerator,
-            final WaQuestionRepository repository,
-            final NbsConfigurationRepository configRepository,
-            final CodesetRepository codesetRepository,
-            final QuestionManagementUtil managementUtil,
-            final QuestionMapper questionMapper) {
+        final IdGeneratorService idGenerator,
+        final WaQuestionRepository repository,
+        final NbsConfigurationRepository configRepository,
+        final CodesetRepository codesetRepository,
+        final QuestionManagementUtil managementUtil,
+        final QuestionMapper questionMapper) {
         this.idGenerator = idGenerator;
         this.repository = repository;
         this.configRepository = configRepository;
@@ -88,111 +91,112 @@ class QuestionCreator {
 
     private AddNumericQuestion asAdd(Long userId, CreateNumericQuestionRequest request) {
         return new QuestionCommand.AddNumericQuestion(
-                request.getMask(),
-                request.getFieldLength(),
-                request.getDefaultValue(),
-                request.getMinValue(),
-                request.getMaxValue(),
-                request.getRelatedUnitsLiteral(),
-                request.getRelatedUnitsValueSet(),
-                asQuestionData(request),
-                asReportingData(
-                        request.getDataMartInfo(),
-                        request.getSubgroup()),
-                asMessagingData(request.getMessagingInfo()),
-                userId,
-                Instant.now());
+            request.getMask(),
+            request.getFieldLength(),
+            request.getDefaultValue(),
+            request.getMinValue(),
+            request.getMaxValue(),
+            request.getRelatedUnitsLiteral(),
+            request.getRelatedUnitsValueSet(),
+            asQuestionData(request),
+            asReportingData(
+                request.getDataMartInfo(),
+                request.getSubgroup()),
+            asMessagingData(request.getMessagingInfo()),
+            userId,
+            Instant.now());
     }
 
     private AddDateQuestion asAdd(Long userId, CreateDateQuestionRequest request) {
         return new QuestionCommand.AddDateQuestion(
-                request.getMask(),
-                request.isAllowFutureDates(),
-                asQuestionData(request),
-                asReportingData(
-                        request.getDataMartInfo(),
-                        request.getSubgroup()),
-                asMessagingData(request.getMessagingInfo()),
-                userId,
-                Instant.now());
+            request.getMask(),
+            request.isAllowFutureDates(),
+            asQuestionData(request),
+            asReportingData(
+                request.getDataMartInfo(),
+                request.getSubgroup()),
+            asMessagingData(request.getMessagingInfo()),
+            userId,
+            Instant.now());
     }
 
     QuestionCommand.AddTextQuestion asAdd(Long userId, CreateTextQuestionRequest request) {
         return new QuestionCommand.AddTextQuestion(
-                request.getMask(),
-                request.getFieldLength(),
-                request.getDefaultValue(),
-                asQuestionData(request),
-                asReportingData(
-                        request.getDataMartInfo(),
-                        request.getSubgroup()),
-                asMessagingData(request.getMessagingInfo()),
-                userId,
-                Instant.now());
+            request.getMask(),
+            request.getFieldLength(),
+            request.getDefaultValue(),
+            asQuestionData(request),
+            asReportingData(
+                request.getDataMartInfo(),
+                request.getSubgroup()),
+            asMessagingData(request.getMessagingInfo()),
+            userId,
+            Instant.now());
     }
 
     QuestionCommand.AddCodedQuestion asAdd(Long userId, CreateCodedQuestionRequest request) {
         return new QuestionCommand.AddCodedQuestion(
-                request.getValueSet(),
-                request.getDefaultValue(),
-                asQuestionData(request),
-                asReportingData(
-                        request.getDataMartInfo(),
-                        request.getSubgroup()),
-                asMessagingData(request.getMessagingInfo()),
-                userId,
-                Instant.now());
+            request.getValueSet(),
+            request.getDefaultValue(),
+            asQuestionData(request),
+            asReportingData(
+                request.getDataMartInfo(),
+                request.getSubgroup()),
+            asMessagingData(request.getMessagingInfo()),
+            userId,
+            Instant.now());
     }
 
     QuestionCommand.QuestionData asQuestionData(CreateQuestionRequest request) {
         var messagingInfo = request.getMessagingInfo();
         return new QuestionCommand.QuestionData(
-                request.getCodeSet(),
-                getLocalId(request),
-                request.getUniqueName(),
-                request.getSubgroup(),
-                request.getDescription(),
-                request.getLabel(),
-                request.getTooltip(),
-                request.getDisplayControl(),
-                request.getAdminComments(),
-                managementUtil.getQuestionOid(
-                        messagingInfo.includedInMessage(),
-                        messagingInfo.codeSystem(),
-                        request.getCodeSet()));
-    }
-
-    QuestionCommand.ReportingData asReportingData(CreateQuestionRequest.ReportingInfo dataMartInfo, String subgroup) {
-        return new QuestionCommand.ReportingData(
-                dataMartInfo.reportLabel(),
-                dataMartInfo.defaultRdbTableName(),
-                subgroup + "_" + dataMartInfo.rdbColumnName(), // Legacy appends the subgroup to the beginning of the rdbColumnName
-                dataMartInfo.dataMartColumnName());
-    }
-
-    QuestionCommand.MessagingData asMessagingData(CreateQuestionRequest.MessagingInfo messagingInfo) {
-        return new QuestionCommand.MessagingData(
+            request.getCodeSet(),
+            getLocalId(request),
+            request.getUniqueName(),
+            request.getSubgroup(),
+            request.getDescription(),
+            request.getLabel(),
+            request.getTooltip(),
+            request.getDisplayControl(),
+            request.getAdminComments(),
+            managementUtil.getQuestionOid(
                 messagingInfo.includedInMessage(),
-                messagingInfo.messageVariableId(),
-                messagingInfo.labelInMessage(),
                 messagingInfo.codeSystem(),
-                messagingInfo.requiredInMessage(),
-                messagingInfo.hl7DataType());
+                request.getCodeSet()));
+    }
+
+    QuestionCommand.ReportingData asReportingData(QuestionRequest.ReportingInfo dataMartInfo, String subgroup) {
+        return new QuestionCommand.ReportingData(
+            dataMartInfo.reportLabel(),
+            dataMartInfo.defaultRdbTableName(),
+            subgroup + "_" + dataMartInfo.rdbColumnName(),
+            // Legacy appends the subgroup to the beginning of the rdbColumnName
+            dataMartInfo.dataMartColumnName());
+    }
+
+    QuestionCommand.MessagingData asMessagingData(QuestionRequest.MessagingInfo messagingInfo) {
+        return new QuestionCommand.MessagingData(
+            messagingInfo.includedInMessage(),
+            messagingInfo.messageVariableId(),
+            messagingInfo.labelInMessage(),
+            messagingInfo.codeSystem(),
+            messagingInfo.requiredInMessage(),
+            messagingInfo.hl7DataType());
     }
 
 
     /**
      * If the request is of 'LOCAL' type and no Id is specified, generate the next available Id from the database. Else,
      * return the specified request.uniqueId
-     * 
+     *
      * @param request
      * @return
      */
     String getLocalId(CreateQuestionRequest request) {
         if (request.getCodeSet().equals(CodeSet.LOCAL)
-                && (request.getUniqueId() == null || request.getUniqueId().isBlank())) {
-            // Question Ids are a combination of the 
-            // `NBS_ODSE.NBS_configuration NBS_CLASS_CODE config value + the next valid Id 
+            && (request.getUniqueId() == null || request.getUniqueId().isBlank())) {
+            // Question Ids are a combination of the
+            // `NBS_ODSE.NBS_configuration NBS_CLASS_CODE config value + the next valid Id
             // Ex. GA13004
             String nbsClassCode = getNbsClassCode();
             return nbsClassCode + idGenerator.getNextValidId(EntityType.NBS_QUESTION_ID_LDF).getId();
@@ -203,8 +207,12 @@ class QuestionCreator {
 
     String getNbsClassCode() {
         return configRepository.findById("NBS_CLASS_CODE")
-                .orElseThrow(() -> new CreateQuestionException("Failed to lookup NBS_CLASS_CODE"))
-                .getConfigValue();
+            .orElseThrow(() -> new CreateQuestionException("Failed to lookup NBS_CLASS_CODE"))
+            .getConfigValue();
+    }
+
+    public DisplayControlOptions getDisplayControlOptions() {
+        return managementUtil.getDisplayControlOptions();
     }
 
 }
