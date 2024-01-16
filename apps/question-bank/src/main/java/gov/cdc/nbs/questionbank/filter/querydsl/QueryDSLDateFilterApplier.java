@@ -14,8 +14,7 @@ class QueryDSLDateFilterApplier {
   @SuppressWarnings({"unchecked"})
   static BooleanExpression apply(
       final DateFilter filter,
-      final TemporalExpression<? extends Comparable> expression
-  ) {
+      final TemporalExpression<? extends Comparable> expression) {
 
     if (Instant.class.isAssignableFrom(expression.getType())) {
 
@@ -38,7 +37,6 @@ class QueryDSLDateFilterApplier {
 
 
 
-  private QueryDSLDateFilterApplier() {
-  }
+  private QueryDSLDateFilterApplier() {}
 
 }

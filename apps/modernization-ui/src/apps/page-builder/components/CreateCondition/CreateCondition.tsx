@@ -106,7 +106,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 onBlur={onBlur}
                                 options={systemOptions.map((option) => {
                                     return {
-                                        name: option.messagingConceptName ?? '',
+                                        name: option.preferredConceptName ?? '',
                                         value: option.localCode ?? ''
                                     };
                                 })}

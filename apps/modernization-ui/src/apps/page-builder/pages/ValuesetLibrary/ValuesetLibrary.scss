@@ -2,6 +2,9 @@
 @use 'styles/colors' as colors;
 
 .valueset-local-library {
+    .filter-config-panel {
+        display: none;
+    }
     background-color: colors.$base-white;
     border-radius: 5px;
     height: 100%;
@@ -57,18 +60,27 @@
         }
         thead th {
             &:nth-of-type(1) .table-head {
-                margin-left: 66px;
+                margin-left: 10%;
             }
             &:nth-of-type(2) {
-                width: 250px;
+                width: 15%;
+            }
+            &:nth-of-type(3) {
+                width: 20%;
             }
             &:nth-of-type(4) {
-                width: 100px;
+               min-width: 50%;
+            }
+            &:nth-of-type(5) {
+                min-width: 5%;
             }
         }
         tbody tr {
             border-bottom: 1px solid #1b1b1b;
             td {
+                &:nth-of-type(1) {
+                    display: inline-flex;
+                }
                 border: 0;
                 .usa-checkbox__label::before {
                     margin-top: 0.18rem;

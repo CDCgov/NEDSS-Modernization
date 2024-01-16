@@ -8,7 +8,7 @@ public record Concept(
     String display,
     String longName,
     String conceptCode,
-    String messagingConceptName,
+    String preferredConceptName,
     String codeSystem,
     String status,
     Instant effectiveFromTime,

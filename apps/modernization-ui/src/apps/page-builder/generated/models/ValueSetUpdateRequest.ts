@@ -4,7 +4,7 @@
 
 export type ValueSetUpdateRequest = {
     codeSetDescTxt?: string;
-    codeSetName?: string;
+    valueSetCode?: string;
     valueSetNm?: string;
 };
 

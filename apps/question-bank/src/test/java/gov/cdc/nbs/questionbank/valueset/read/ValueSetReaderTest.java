@@ -137,7 +137,7 @@ class ValueSetReaderTest {
     assertEquals(cvg.getCodeShortDescTxt(), concept.display());
     assertEquals(cvg.getCodeDescTxt(), concept.longName());
     assertEquals(cvg.getConceptCode(), concept.conceptCode());
-    assertEquals(cvg.getConceptPreferredNm(), concept.messagingConceptName());
+    assertEquals(cvg.getConceptPreferredNm(), concept.preferredConceptName());
     assertEquals(cvg.getCodeSystemDescTxt(), concept.codeSystem());
     assertEquals(cvg.getConceptStatusCd(), concept.status());
     assertEquals(cvg.getEffectiveFromTime(), concept.effectiveFromTime());

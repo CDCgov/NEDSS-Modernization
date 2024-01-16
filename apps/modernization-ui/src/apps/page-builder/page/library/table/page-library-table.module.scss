@@ -1,4 +1,6 @@
-table.pages {
+@use 'styles/colors';
+
+.pageTable {
     thead tr th {
         &:nth-of-type(2) {
             width: 150px;
@@ -6,5 +8,22 @@ table.pages {
         &:nth-of-type(4) {
             width: 22ch;
         }
+    }
+
+    tr {
+        word-wrap: break-word;
+    }
+    .expandButton {
+        background: none;
+        border: none;
+        color: colors.$primary;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .conditionList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
     }
 }

@@ -1,55 +1,62 @@
-import { Alert, Button, Icon } from '@trussworks/react-uswds';
+import { Alert as USWDSAlert, Button, Icon } from '@trussworks/react-uswds';
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import './alert.scss';
 
 type AlertType = 'success' | 'warning' | 'error' | 'info';
 
-export type AlertProp = { type: AlertType; header?: string; message?: string };
+type Message = { header?: string; message?: string };
 
-type AlertContextType = {
-    showAlert: ({ type, header, message }: AlertProp) => void;
+type Alert = { type: AlertType } & Message;
+
+type AlertInteraction = {
+    clear: () => void;
+    showAlert: (alert: Alert) => void;
+    alertSuccess: (message: Message) => void;
+    alertError: (message: Message) => void;
 };
 
-const AlertContext = createContext<AlertContextType | undefined>(undefined);
+const AlertContext = createContext<AlertInteraction | undefined>(undefined);
 
 type AlertProviderProps = {
+    duration?: number;
     children: ReactNode;
 };
 
-function AlertProvider({ children }: AlertProviderProps) {
-    const [alert, setAlert] = useState<AlertProp | null>(null);
-    const showAlert = ({ type, header, message }: AlertProp) => {
-        setAlert({ type, header, message });
-    };
+function AlertProvider({ duration = 5000, children }: AlertProviderProps) {
+    const [alert, setAlert] = useState<Alert | null>(null);
+    const clear = () => setAlert(null);
 
     useEffect(() => {
         if (alert) {
             const timeout = setTimeout(() => {
-                setAlert(null);
-            }, 5000);
+                clear();
+            }, duration);
 
             return () => clearTimeout(timeout);
         }
     }, [alert]);
 
-    const contextValue: AlertContextType = {
-        showAlert
+    const value: AlertInteraction = {
+        clear,
+        showAlert: (alert: Alert) => setAlert(alert),
+        alertSuccess: (message: Message) => setAlert({ type: 'success', header: 'Success', ...message }),
+        alertError: (message: Message) => setAlert({ type: 'error', header: 'Error', ...message })
     };
 
     return (
-        <AlertContext.Provider value={contextValue}>
+        <AlertContext.Provider value={value}>
             {alert && (
-                <Alert
+                <USWDSAlert
                     type={alert.type}
                     heading={alert?.header || alert.type}
                     headingLevel="h4"
                     cta={
-                        <Button type="button" unstyled onClick={() => setAlert(null)}>
+                        <Button type="button" unstyled onClick={clear}>
                             <Icon.Close />
                         </Button>
                     }>
-                    {alert.message || ''}
-                </Alert>
+                    {alert.message ?? ''}
+                </USWDSAlert>
             )}
             {children}
         </AlertContext.Provider>

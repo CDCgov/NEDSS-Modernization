@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.support.concept;
+package gov.cdc.nbs.testing.support.concept;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-class ConceptParameterResolver {
+public class ConceptParameterResolver {
 
   private static final String QUERY = """
       select
@@ -18,11 +18,11 @@ class ConceptParameterResolver {
 
   private final JdbcTemplate template;
 
-  ConceptParameterResolver(final JdbcTemplate template) {
+  public ConceptParameterResolver(final JdbcTemplate template) {
     this.template = template;
   }
 
-  Optional<String> resolve(final String set, final String value) {
+  public Optional<String> resolve(final String set, final String value) {
     return this.template.query(
         QUERY,
         statement -> {

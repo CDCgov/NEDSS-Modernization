@@ -570,7 +570,7 @@ export type Mutation = {
   addPatientIdentification: PatientIdentificationChangeResult;
   addPatientName: PatientNameChangeResult;
   addPatientPhone: PatientPhoneChangeResult;
-  addPatientRace: PatientRaceChangeResult;
+  addPatientRace: PatientRaceAddResult;
   createPatient: PatientCreatedResponse;
   deletePatient: PatientDeleteResult;
   deletePatientAddress: PatientAddressChangeResult;
@@ -578,7 +578,7 @@ export type Mutation = {
   deletePatientIdentification: PatientIdentificationChangeResult;
   deletePatientName: PatientNameChangeResult;
   deletePatientPhone: PatientPhoneChangeResult;
-  deletePatientRace: PatientRaceChangeResult;
+  deletePatientRace: PatientRaceChangeSuccessful;
   updateEthnicity: PatientEthnicityChangeResult;
   updatePatientAddress: PatientAddressChangeResult;
   updatePatientAdministrative: PatientAdministrativeChangeResult;
@@ -588,7 +588,7 @@ export type Mutation = {
   updatePatientMortality: PatientMortalityChangeResult;
   updatePatientName: PatientNameChangeResult;
   updatePatientPhone: PatientPhoneChangeResult;
-  updatePatientRace: PatientRaceChangeResult;
+  updatePatientRace: PatientRaceChangeSuccessful;
 };
 
 
@@ -1651,14 +1651,22 @@ export type PatientRace = {
   version: Scalars['Int']['output'];
 };
 
+export type PatientRaceAddResult = PatientRaceChangeFailureExistingCategory | PatientRaceChangeSuccessful;
+
 export type PatientRaceCategory = {
   __typename?: 'PatientRaceCategory';
   description: Scalars['String']['output'];
   id: Scalars['String']['output'];
 };
 
-export type PatientRaceChangeResult = {
-  __typename?: 'PatientRaceChangeResult';
+export type PatientRaceChangeFailureExistingCategory = {
+  __typename?: 'PatientRaceChangeFailureExistingCategory';
+  category: Scalars['String']['output'];
+  patient: Scalars['Int']['output'];
+};
+
+export type PatientRaceChangeSuccessful = {
+  __typename?: 'PatientRaceChangeSuccessful';
   patient: Scalars['Int']['output'];
 };
 
@@ -2584,7 +2592,7 @@ export type AddPatientRaceMutationVariables = Exact<{
 }>;
 
 
-export type AddPatientRaceMutation = { __typename?: 'Mutation', addPatientRace: { __typename?: 'PatientRaceChangeResult', patient: number } };
+export type AddPatientRaceMutation = { __typename?: 'Mutation', addPatientRace: { __typename: 'PatientRaceChangeFailureExistingCategory', patient: number, category: string } | { __typename: 'PatientRaceChangeSuccessful', patient: number } };
 
 export type CreatePatientMutationVariables = Exact<{
   patient: PersonInput;
@@ -2641,7 +2649,7 @@ export type DeletePatientRaceMutationVariables = Exact<{
 }>;
 
 
-export type DeletePatientRaceMutation = { __typename?: 'Mutation', deletePatientRace: { __typename?: 'PatientRaceChangeResult', patient: number } };
+export type DeletePatientRaceMutation = { __typename?: 'Mutation', deletePatientRace: { __typename?: 'PatientRaceChangeSuccessful', patient: number } };
 
 export type UpdateEthnicityMutationVariables = Exact<{
   input: EthnicityInput;
@@ -2711,7 +2719,7 @@ export type UpdatePatientRaceMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePatientRaceMutation = { __typename?: 'Mutation', updatePatientRace: { __typename?: 'PatientRaceChangeResult', patient: number } };
+export type UpdatePatientRaceMutation = { __typename?: 'Mutation', updatePatientRace: { __typename?: 'PatientRaceChangeSuccessful', patient: number } };
 
 export type AddressTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3301,7 +3309,14 @@ export type AddPatientPhoneMutationOptions = Apollo.BaseMutationOptions<AddPatie
 export const AddPatientRaceDocument = gql`
     mutation addPatientRace($input: RaceInput!) {
   addPatientRace(input: $input) {
-    patient
+    __typename
+    ... on PatientRaceChangeSuccessful {
+      patient
+    }
+    ... on PatientRaceChangeFailureExistingCategory {
+      patient
+      category
+    }
   }
 }
     `;

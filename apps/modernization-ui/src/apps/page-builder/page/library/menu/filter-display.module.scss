@@ -1,0 +1,39 @@
+@use 'styles/colors';
+
+.filterDisplay {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+
+    .clickableFilter {
+        display: flex;
+        cursor: pointer;
+        max-width: 100%;
+        color: colors.$base-white;
+        background-color: colors.$primary;
+        padding: 0.25rem 0.5rem;
+        overflow: hidden;
+        outline: none;
+        border: none;
+        margin-right: 0.5rem;
+
+        &:focus {
+            outline: none;
+        }
+
+        .filterText {
+            display: inline-block;
+            flex-shrink: 1;
+            max-width: 100%;
+            min-width: 3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+        }
+        .moreText {
+            display: inline-block;
+            white-space: nowrap;
+        }
+    }
+}

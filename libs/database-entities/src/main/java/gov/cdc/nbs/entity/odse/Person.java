@@ -383,18 +383,19 @@ public class Person {
     private PatientRaceDemographic race;
 
     protected Person() {
-
+        this.versionCtrlNbr = 1;
+        this.ethnicity = new PatientEthnicity();
+        this.race = new PatientRaceDemographic(this);
     }
 
     public Person(final long identifier, final String localId) {
+        this();
         this.id = identifier;
         this.localId = localId;
         this.nbsEntity = new NBSEntity(identifier, "PSN");
-        this.ethnicity = new PatientEthnicity();
-        this.race = new PatientRaceDemographic();
 
         this.personParentUid = this;
-        this.versionCtrlNbr = 1;
+
         this.cd = "PAT";
         this.electronicInd = 'N';
         this.edxInd = "Y";
@@ -531,7 +532,7 @@ public class Person {
     }
 
     public void add(final PatientCommand.AddRace added) {
-        this.race.add(this, added);
+        this.race.patient(this).add(added);
         changed(added);
     }
 

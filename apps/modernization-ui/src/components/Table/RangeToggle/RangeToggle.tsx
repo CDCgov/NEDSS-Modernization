@@ -21,10 +21,9 @@ export const RangeToggle = ({ contextName, initial = 10 }: RangeToggleProps) => 
 
     const pagination = usePageMaybe();
     const [range, setRange] = useState(Number(initial));
-
     useEffect(() => {
         if (!('type' in fromContext)) {
-            if (fromContext.currentPage > 1 && fromContext.setCurrentPage) {
+            if (fromContext.currentPage <= 1 && fromContext.setCurrentPage) {
                 fromContext.setCurrentPage(1);
             }
             fromContext.setPageSize(range);
