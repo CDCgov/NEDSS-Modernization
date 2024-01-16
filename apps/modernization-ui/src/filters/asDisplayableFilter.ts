@@ -92,8 +92,6 @@ const asString = (filter: Filter): string => {
         value = filter.values.map((v) => (typeof v === 'string' ? v : v.name)).join(' OR ');
     } else if ('after' in filter && 'before' in filter) {
         value = `${filter.after} and ${filter.before}`;
-    } else {
-        throw new Error('Failed to convert filter to string');
     }
     return `${filter.property.name} ${filter.operator.name} ${value}`;
 };
