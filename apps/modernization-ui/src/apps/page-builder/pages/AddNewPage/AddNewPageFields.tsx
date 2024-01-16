@@ -65,13 +65,14 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                     required: { value: true, message: 'Name is required.' },
                     ...validPageNameRule
                 }}
-                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
                         onBlur={() => {
                             onBlur();
                             validatePageName(value);
                         }}
+                        name={name}
                         defaultValue={value}
                         label="Page name"
                         className="pageName"
@@ -87,9 +88,10 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 rules={{
                     required: { value: true, message: 'Template is required.' }
                 }}
-                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SelectInput
-                        label="Templates"
+                        label="Template"
+                        name={name}
                         defaultValue={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -113,11 +115,11 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="messageMappingGuide"
-                rules={{ required: { value: true, message: 'MMG is required.' } }}
-                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                rules={{ required: { value: true, message: 'Reporting mechanism is required.' } }}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <SelectInput
-                        label="MMG"
-                        name="messageMappingGuide"
+                        label="Reporting mechanism"
+                        name={name}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -128,7 +130,8 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                             };
                         })}
                         error={error?.message}
-                        required></SelectInput>
+                        required
+                    />
                 )}
             />
             <p>
@@ -139,12 +142,13 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="pageDescription"
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange, value, name } }) => (
                     <Input
                         onChange={(d: any) => {
                             onChange(d);
                         }}
                         label="Page description"
+                        name={name}
                         type="text"
                         multiline
                         defaultValue={value}
@@ -155,9 +159,10 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 control={form.control}
                 name="dataMartName"
                 rules={dataMartNameRule}
-                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Data mart name"
+                        name={name}
                         type="text"
                         onChange={onChange}
                         defaultValue={value}
