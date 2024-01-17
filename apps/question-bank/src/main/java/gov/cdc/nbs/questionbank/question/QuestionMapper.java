@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.question;
 
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestion;
+import gov.cdc.nbs.questionbank.question.request.update.*;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
@@ -34,106 +36,106 @@ public class QuestionMapper {
 
     public TextQuestion toTextQuestion(TextQuestionEntity q) {
         return new TextQuestion(
-                q.getId(),
-                q.getMask(),
-                q.getFieldSize(),
-                q.getDefaultValue(),
-                q.getQuestionType(),
-                q.getQuestionIdentifier(),
-                q.getQuestionNm(),
-                q.getRecordStatusCd(),
-                q.getSubGroupNm(),
-                q.getDescTxt(),
-                q.getDataType(),
-                q.getQuestionLabel(),
-                q.getQuestionToolTip(),
-                q.getNbsUiComponentUid(),
-                q.getAdminComment(),
-                getDataMartInfo(q),
-                getMessagingInfo(q));
+            q.getId(),
+            q.getMask(),
+            q.getFieldSize(),
+            q.getDefaultValue(),
+            q.getQuestionType(),
+            q.getQuestionIdentifier(),
+            q.getQuestionNm(),
+            q.getRecordStatusCd(),
+            q.getSubGroupNm(),
+            q.getDescTxt(),
+            q.getDataType(),
+            q.getQuestionLabel(),
+            q.getQuestionToolTip(),
+            q.getNbsUiComponentUid(),
+            q.getAdminComment(),
+            getDataMartInfo(q),
+            getMessagingInfo(q));
     }
 
     public DateQuestion toDateQuestion(DateQuestionEntity q) {
         return new DateQuestion(
-                q.getId(),
-                q.getMask(),
-                toBoolean(q.getFutureDateIndCd(), 'T'),
-                q.getQuestionType(),
-                q.getQuestionIdentifier(),
-                q.getQuestionNm(),
-                q.getRecordStatusCd(),
-                q.getSubGroupNm(),
-                q.getDescTxt(),
-                q.getDataType(),
-                q.getQuestionLabel(),
-                q.getQuestionToolTip(),
-                q.getNbsUiComponentUid(),
-                q.getAdminComment(),
-                getDataMartInfo(q),
-                getMessagingInfo(q));
+            q.getId(),
+            q.getMask(),
+            toBoolean(q.getFutureDateIndCd(), 'T'),
+            q.getQuestionType(),
+            q.getQuestionIdentifier(),
+            q.getQuestionNm(),
+            q.getRecordStatusCd(),
+            q.getSubGroupNm(),
+            q.getDescTxt(),
+            q.getDataType(),
+            q.getQuestionLabel(),
+            q.getQuestionToolTip(),
+            q.getNbsUiComponentUid(),
+            q.getAdminComment(),
+            getDataMartInfo(q),
+            getMessagingInfo(q));
     }
 
     public NumericQuestion toNumericQuestion(NumericQuestionEntity q) {
         return new NumericQuestion(
-                q.getId(),
-                q.getMask(),
-                q.getFieldSize(),
-                q.getDefaultValue(),
-                q.getMinValue(),
-                q.getMaxValue(),
-                q.getUnitTypeCd(),
-                q.getUnitValue(),
-                q.getQuestionType(),
-                q.getQuestionIdentifier(),
-                q.getQuestionNm(),
-                q.getRecordStatusCd(),
-                q.getSubGroupNm(),
-                q.getDescTxt(),
-                q.getDataType(),
-                q.getQuestionLabel(),
-                q.getQuestionToolTip(),
-                q.getNbsUiComponentUid(),
-                q.getAdminComment(),
-                getDataMartInfo(q),
-                getMessagingInfo(q));
+            q.getId(),
+            q.getMask(),
+            q.getFieldSize(),
+            q.getDefaultValue(),
+            q.getMinValue(),
+            q.getMaxValue(),
+            q.getUnitTypeCd(),
+            q.getUnitValue(),
+            q.getQuestionType(),
+            q.getQuestionIdentifier(),
+            q.getQuestionNm(),
+            q.getRecordStatusCd(),
+            q.getSubGroupNm(),
+            q.getDescTxt(),
+            q.getDataType(),
+            q.getQuestionLabel(),
+            q.getQuestionToolTip(),
+            q.getNbsUiComponentUid(),
+            q.getAdminComment(),
+            getDataMartInfo(q),
+            getMessagingInfo(q));
     }
 
     public CodedQuestion toCodedQuestion(CodedQuestionEntity q) {
         return new CodedQuestion(
-                q.getId(),
-                q.getCodeSetGroupId(),
-                q.getDefaultValue(),
-                q.getQuestionType(),
-                q.getQuestionIdentifier(),
-                q.getQuestionNm(),
-                q.getRecordStatusCd(),
-                q.getSubGroupNm(),
-                q.getDescTxt(),
-                q.getDataType(),
-                q.getQuestionLabel(),
-                q.getQuestionToolTip(),
-                q.getNbsUiComponentUid(),
-                q.getAdminComment(),
-                getDataMartInfo(q),
-                getMessagingInfo(q));
+            q.getId(),
+            q.getCodeSetGroupId(),
+            q.getDefaultValue(),
+            q.getQuestionType(),
+            q.getQuestionIdentifier(),
+            q.getQuestionNm(),
+            q.getRecordStatusCd(),
+            q.getSubGroupNm(),
+            q.getDescTxt(),
+            q.getDataType(),
+            q.getQuestionLabel(),
+            q.getQuestionToolTip(),
+            q.getNbsUiComponentUid(),
+            q.getAdminComment(),
+            getDataMartInfo(q),
+            getMessagingInfo(q));
     }
 
     private MessagingInfo getMessagingInfo(WaQuestion question) {
         return new MessagingInfo(
-                toBoolean(question.getNndMsgInd(), 'T'),
-                question.getQuestionIdentifierNnd(),
-                question.getQuestionLabelNnd(),
-                question.getQuestionOid(),
-                toBoolean(question.getQuestionRequiredNnd(), 'R'),
-                question.getQuestionDataTypeNnd());
+            toBoolean(question.getNndMsgInd(), 'T'),
+            question.getQuestionIdentifierNnd(),
+            question.getQuestionLabelNnd(),
+            question.getQuestionOid(),
+            toBoolean(question.getQuestionRequiredNnd(), 'R'),
+            question.getQuestionDataTypeNnd());
     }
 
     private DataMartInfo getDataMartInfo(WaQuestion question) {
         return new DataMartInfo(
-                question.getRptAdminColumnNm(),
-                question.getRdbTableNm(),
-                question.getRdbColumnNm(),
-                question.getUserDefinedColumnNm());
+            question.getRptAdminColumnNm(),
+            question.getRdbTableNm(),
+            question.getRdbColumnNm(),
+            question.getUserDefinedColumnNm());
     }
 
     private boolean toBoolean(Character character, Character trueValue) {
@@ -143,6 +145,20 @@ public class QuestionMapper {
             return character.equals(trueValue);
         }
 
+    }
+
+    UpdateQuestion toUpdateQuestion(UpdateQuestionRequest updateQuestionRequest) {
+        if (updateQuestionRequest instanceof UpdateTextQuestionRequest tq) {
+            return new UpdateQuestion(tq);
+        } else if (updateQuestionRequest instanceof UpdateDateQuestionRequest dq) {
+            return new UpdateQuestion(dq);
+        } else if (updateQuestionRequest instanceof UpdateNumericQuestionRequest nq) {
+            return new UpdateQuestion(nq);
+        } else if (updateQuestionRequest instanceof UpdateCodedQuestionRequest cq) {
+            return new UpdateQuestion(cq);
+        } else {
+            throw new UpdateQuestionException("Failed to convert entity to question");
+        }
     }
 
 }
