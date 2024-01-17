@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     Button,
     Checkbox,
@@ -14,13 +14,13 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormValues } from './Add/AddBusinessRule';
-// import { nonDateCompare, dateCompare } from '../../constant/constant';
+import { nonDateCompare, dateCompare } from '../../constant/constant';
 import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { maxLengthRule } from '../../../../validation/entry';
 import { Input } from '../../../../components/FormInputs/Input';
 import { useConceptPI } from '../../components/Concept/useConceptAPI';
-import { UserContext } from '../../../../providers/UserContext';
+import { authorization } from 'authorization';
 
 type QuestionProps = {
     id: number;
@@ -43,11 +43,9 @@ const BusinessRulesForm = () => {
     const [sourceList, setSourceList] = useState<FieldProps[]>([]);
     const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
     const { pageId } = useParams();
-    const { state } = useContext(UserContext);
 
     const fetchSourceRecord = async (valueSet: string) => {
-        const token = `Bearer ${state.getToken()}`;
-        const content: any = await useConceptPI(token, valueSet);
+        const content: any = await useConceptPI(authorization(), valueSet);
         const list = content?.map((src: any) => ({ name: src.longName, value: src.conceptCode }));
         setSourceList(list);
     };
@@ -107,30 +105,18 @@ const BusinessRulesForm = () => {
     const ruleFunction = form.watch('ruleFunction');
     const logicList = ruleFunction === 'Date Compare' ? dateCompare : nonDateCompare;
 
+    const handleSourceValueChange = (data: string[]) => {
+        form.setValue('sourceValueIds', data);
+        const sourceValueText: string[] = [];
+        data.forEach((value) => {
+            const sourceValue = sourceList.find((src) => src.value === value);
+            sourceValueText.push(sourceValue?.name!);
+        });
+        form.setValue('sourceValueText', sourceValueText);
+    };
+
     return (
         <>
-            <Controller
-                control={form.control}
-                name="anySourceValue"
-                render={({ field: { onChange, value } }) => (
-                    <Grid row className="inline-field">
-                        <Grid col={3}>
-                            <label className="input-label">Any source value</label>
-                        </Grid>
-                        <Grid col={9} className="height-3">
-                            <Checkbox
-                                onChange={onChange}
-                                className=""
-                                id="anySourceValue"
-                                type="checkbox"
-                                checked={value}
-                                label=" "
-                                name="anySourceValue"
-                            />
-                        </Grid>
-                    </Grid>
-                )}
-            />
             <Controller
                 control={form.control}
                 name="sourceText"
@@ -165,9 +151,31 @@ const BusinessRulesForm = () => {
             />
             <Controller
                 control={form.control}
+                name="anySourceValue"
+                render={({ field: { onChange, value } }) => (
+                    <Grid row className="inline-field">
+                        <Grid col={3}>
+                            <label className="input-label">Any source value</label>
+                        </Grid>
+                        <Grid col={9} className="height-3">
+                            <Checkbox
+                                onChange={onChange}
+                                className=""
+                                id="anySourceValue"
+                                type="checkbox"
+                                checked={value}
+                                label=" "
+                                name="anySourceValue"
+                            />
+                        </Grid>
+                    </Grid>
+                )}
+            />
+            <Controller
+                control={form.control}
                 name="comparator"
                 rules={{
-                    required: { value: true, message: 'Logic is required.' }
+                    required: { value: true, message: 'This field is required.' }
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
@@ -190,13 +198,18 @@ const BusinessRulesForm = () => {
             <Controller
                 control={form.control}
                 name="sourceValue"
-                render={({ field: { onChange, value } }) => (
+                render={() => (
                     <Grid row className="inline-field">
                         <Grid col={3}>
-                            <label className="input-label">Source value</label>
+                            <label className="input-label">Source value(s)</label>
                         </Grid>
                         <Grid col={9}>
-                            <MultiSelectInput onChange={onChange} value={value} options={sourceList} />
+                            <MultiSelectInput
+                                onChange={(e) => {
+                                    handleSourceValueChange(e);
+                                }}
+                                options={sourceList}
+                            />
                         </Grid>
                     </Grid>
                 )}
@@ -233,7 +246,7 @@ const BusinessRulesForm = () => {
             />
             <Grid row className="inline-field">
                 <Grid col={3}>
-                    <label className="input-label">Target Questions</label>
+                    <label className="input-label">Target Question(s)</label>
                 </Grid>
                 <Grid col={8}>
                     {!targetQtn ? (

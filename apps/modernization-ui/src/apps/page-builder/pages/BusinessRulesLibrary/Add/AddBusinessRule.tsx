@@ -1,20 +1,28 @@
 import { Button, ButtonGroup, Form, Grid, Icon } from '@trussworks/react-uswds';
-import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
-import React, { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UserContext } from 'user';
+// import { UserContext } from 'user';
 import './AddBusinessRule.scss';
-// import { EditBusinessRulesFields } from './EditBusinessRulesFields';
-import { CreateRuleRequest, PageRuleControllerService, ViewRuleResponse } from '../../../generated';
+import { PageRuleControllerService, ViewRuleResponse } from '../../../generated';
 import { useAlert } from 'alert';
+import BusinessRulesForm from '../BusinessRulesForm';
+import { PageBuilder } from '../../PageBuilder/PageBuilder';
+import { Breadcrumb } from 'breadcrumb';
+import { authorization } from 'authorization';
+// import { ApiError } from 'generated';
 
 export type FormValues = {
     ruleFunction: string;
     sourceIdentifier: string;
     sourceText: string;
     comparator?: string;
-    sourceValue: string[];
+    sourceValueIds?: string[];
+    sourceValueText?: string[];
+    sourceValue?: {
+        sourceValueId?: string[];
+        sourceValueText?: string[];
+    };
     targetValueIdentifier?: string[];
     targetType: string;
     ruleDescription: string;
@@ -24,66 +32,81 @@ export type FormValues = {
 
 const AddBusinessRule = () => {
     const navigate = useNavigate();
-    const { state } = useContext(UserContext);
+    // const { state } = useContext(UserContext);
     const form = useForm<FormValues>({
         defaultValues: { targetType: 'SUBSECTION', anySourceValue: false },
         mode: 'onChange'
     });
     const [selectedFieldType, setSelectedFieldType] = useState('');
-    const token = `Bearer ${state.getToken()}`;
     const { pageId, ruleId } = useParams();
     const { showAlert } = useAlert();
 
     useEffect(() => {
         if (ruleId) {
             PageRuleControllerService.viewRuleResponseUsingGet({
-                authorization: token,
+                authorization: authorization(),
                 ruleId: Number(ruleId)
             }).then((resp: ViewRuleResponse) => {
-                /* form.setValue('anySourceValue', resp?.anySourceValue!);
+                form.setValue('anySourceValue', resp?.anySourceValue!);
                 form.setValue('ruleDescription', resp?.ruleDescription!);
                 form.setValue('ruleFunction', resp?.ruleFunction!);
                 form.setValue('comparator', resp?.comparator!);
                 form.setValue('targetType', resp?.targetType!);
                 form.setValue('sourceIdentifier', resp?.sourceIdentifier!);
                 form.setValue('sourceText', resp?.sourceIdentifier!);
-                form.setValue('sourceValue', resp?.sourceValue!);
+                form.setValue('sourceValueIds', resp?.sourceValue?.sourceValueId!);
+                form.setValue('sourceValueText', resp?.sourceValue?.sourceValueText!);
                 form.setValue('targetValueIdentifier', ['testing']);
-                setSelectedFieldType(resp.ruleFunction!); */
+                setSelectedFieldType(resp.ruleFunction!);
                 console.log('resp', resp);
             });
         }
     }, [ruleId]);
 
     const onSubmit = form.handleSubmit(async (data) => {
-        const request: CreateRuleRequest = {
+        console.log('data', data);
+        const sourceValue = {
+            sourceValueId: data.sourceValueIds,
+            sourceValueText: data.sourceValueText
+        };
+        const request = {
+            anySourceValue: data.anySourceValue,
             comparator: data.comparator,
             ruleDescription: data.ruleDescription,
-            ruleFunction: selectedFieldType,
+            ruleFunction: data.ruleFunction,
             sourceIdentifier: data.sourceIdentifier,
             sourceText: data.sourceText,
-            // sourceValue: {sourceValueId: data.sourceValue, sourceValueText: data.sourceValue},
+            sourceValue: sourceValue,
+            targetText: data.targetValueText,
             targetType: data.targetType,
-            targetValueIdentifier: data.targetValueIdentifier,
-            targetValueText: data.targetValueText
+            targetValueIdentifier: data.targetValueIdentifier
         };
         if (!ruleId) {
             PageRuleControllerService.createBusinessRuleUsingPost({
-                authorization: token,
+                authorization: authorization(),
                 id: Number(pageId),
                 request
-            }).then((resp) => {
-                showAlert({ type: 'success', header: 'added', message: resp.message });
-            });
+            })
+                .then((resp) => {
+                    console.log('resp', resp);
+                    showAlert({ type: 'success', header: 'added', message: resp.message });
+                })
+                .catch((err) => {
+                    showAlert({ type: 'error', header: 'error', message: err.error });
+                });
         } else {
             PageRuleControllerService.updatePageRuleUsingPut({
-                authorization: token,
+                authorization: authorization(),
                 page: Number(pageId),
                 ruleId: Number(ruleId),
                 request
-            }).then((resp) => {
-                showAlert({ type: 'success', header: 'updated', message: resp.message });
-            });
+            })
+                .then((resp) => {
+                    showAlert({ type: 'success', header: 'updated', message: resp.message });
+                })
+                .catch(() => {
+                    // showAlert({ type: 'error', header: 'error', message: err.body });
+                });
         }
         handleCancel();
     });
@@ -94,7 +117,7 @@ const AddBusinessRule = () => {
 
     const handleDeleteRule = () => {
         PageRuleControllerService.deletePageRuleUsingDelete({
-            authorization: token,
+            authorization: authorization(),
             id: Number(pageId),
             ruleId: Number(ruleId)
         }).then((resp: any) => {
@@ -105,8 +128,8 @@ const AddBusinessRule = () => {
 
     const fieldTypeTab = [
         { name: 'Enable' },
-        { name: 'Date Compare' },
         { name: 'Disable' },
+        { name: 'Data validation' },
         { name: 'Hide' },
         { name: 'Unhide' },
         { name: 'Require If' }
@@ -116,64 +139,72 @@ const AddBusinessRule = () => {
     const ruleFunction = form.watch('ruleFunction');
 
     return (
-        <div className="edit-rules">
+        <PageBuilder>
+            <header className="add-business-rule-header">
+                <h2>Page library</h2>
+            </header>
             <div className="breadcrumb-wrap">
-                <PagesBreadcrumb currentPage={`${title} business rules`} />
+                <Breadcrumb start="../">Business rules</Breadcrumb>
             </div>
-            <Form onSubmit={onSubmit}>
-                <div className="edit-rules__form">
-                    <div className="edit-rules__content">
-                        <h2>{`${title} business rules`}</h2>
-                        <Grid row className="inline-field">
-                            <Grid col={3}>
-                                <label className="input-label">Function</label>
+
+            <div className="edit-rules">
+                <Form onSubmit={onSubmit}>
+                    <div className="edit-rules__form">
+                        <div className="edit-rules__content">
+                            <h2>{`${title} business rules`}</h2>
+                            <Grid row className="inline-field">
+                                <Grid col={3}>
+                                    <label className="input-label">Function</label>
+                                </Grid>
+                                <Grid col={9}>
+                                    {ruleId ? (
+                                        <label>{ruleFunction}</label>
+                                    ) : (
+                                        <ButtonGroup type="segmented">
+                                            {fieldTypeTab.map((field, index) => (
+                                                <Button
+                                                    key={index}
+                                                    type="button"
+                                                    outline={field.name !== selectedFieldType}
+                                                    onClick={() => {
+                                                        setSelectedFieldType(field.name);
+                                                        form.setValue('ruleFunction', field.name);
+                                                    }}>
+                                                    {field.name}
+                                                </Button>
+                                            ))}
+                                        </ButtonGroup>
+                                    )}
+                                </Grid>
                             </Grid>
-                            <Grid col={8}>
-                                {ruleId ? (
-                                    <label>{ruleFunction}</label>
-                                ) : (
-                                    <ButtonGroup type="segmented">
-                                        {fieldTypeTab.map((field, index) => (
-                                            <Button
-                                                key={index}
-                                                type="button"
-                                                outline={field.name !== selectedFieldType}
-                                                onClick={() => {
-                                                    setSelectedFieldType(field.name);
-                                                    form.setValue('ruleFunction', field.name);
-                                                }}>
-                                                {field.name}
-                                            </Button>
-                                        ))}
-                                    </ButtonGroup>
-                                )}
-                            </Grid>
-                        </Grid>
-                        {selectedFieldType == '' ? null : (
-                            <FormProvider {...form}>{/* <EditBusinessRulesFields /> */}</FormProvider>
+                            {selectedFieldType == '' ? null : (
+                                <FormProvider {...form}>
+                                    <BusinessRulesForm />
+                                </FormProvider>
+                            )}
+                        </div>
+                    </div>
+                    <div className="edit-rules__buttons">
+                        {ruleId ? (
+                            <Button type="button" className="delete-btn" unstyled onClick={handleDeleteRule}>
+                                <Icon.Delete size={3} className="margin-right-2px" />
+                                <span> Delete</span>
+                            </Button>
+                        ) : (
+                            <div />
                         )}
+                        <div>
+                            <Button type="button" outline onClick={handleCancel}>
+                                Cancel
+                            </Button>
+                            <Button type="submit" className="lbr" disabled={!form.formState.isValid}>
+                                Add to Library
+                            </Button>
+                        </div>
                     </div>
-                </div>
-                <div className="edit-rules__buttons">
-                    {ruleId ? (
-                        <Button type="button" className="delete-btn" unstyled onClick={handleDeleteRule}>
-                            <Icon.Delete size={3} className="margin-right-2px" />
-                            <span> Delete</span>
-                        </Button>
-                    ) : (
-                        <div />
-                    )}
-                    <div>
-                        <Button type="button" outline onClick={handleCancel}>
-                            Cancel
-                        </Button>
-                        <Button type="submit" className="lbr" disabled={!form.formState.isValid}>
-                            Add to Library
-                        </Button>
-                    </div>
-                </div>
-            </Form>
-        </div>
+                </Form>
+            </div>
+        </PageBuilder>
     );
 };
 

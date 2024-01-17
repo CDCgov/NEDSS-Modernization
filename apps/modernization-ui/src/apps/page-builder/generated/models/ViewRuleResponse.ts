@@ -11,9 +11,12 @@ export type ViewRuleResponse = {
     ruleFunction?: string;
     ruleId?: number;
     sourceIdentifier?: string;
-    sourceValue?: Array<string>;
+    sourceValue?: {
+        sourceValueId: string[];
+        sourceValueText: string[];
+    };
     targetQuestions?: Array<QuestionInfo>;
     targetType?: string;
     templateUid?: number;
+    anySourceValue?: boolean;
 };
-

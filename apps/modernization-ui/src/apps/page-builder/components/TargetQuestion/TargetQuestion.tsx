@@ -23,6 +23,7 @@ type CommonProps = {
     multiSelected?: boolean;
     header?: string;
 };
+
 type QuestionProps = {
     id: number;
     question: string;
@@ -30,6 +31,7 @@ type QuestionProps = {
     selected: boolean;
     valueSet: string;
 };
+
 const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = true }: CommonProps) => {
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
@@ -38,7 +40,8 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
     const [subsectionOpen, setSubsectionOpen] = useState(false);
     const [sourceId, setSource] = useState(-1);
     const [page, setPage] = useState<PagesResponse>();
-    // const [queList, setQuestions] = useState([]);
+    const [questions, setQuestions] = useState([]);
+    console.log('questions', questions);
 
     useEffect(() => {
         if (pageId) {
@@ -63,6 +66,8 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
 
     const handleSelect = (e: any, key: number) => {
         let updateList = [...sourceList];
+        console.log('e', e.target);
+        console.log('list', updateList);
 
         if (!multiSelected) {
             updateList = updateList.map((qtn: QuestionProps) => ({
@@ -149,7 +154,7 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
                                                         className="reorder-section__tiles"
                                                         onClick={() => {
                                                             setSource(id);
-                                                            // setQuestions(sub.questions);
+                                                            setQuestions(sub.questions);
                                                             handleSourceList(sub.questions);
                                                         }}>
                                                         <div

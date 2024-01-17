@@ -1,7 +1,7 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.addBusinessRuleHeader {
+.add-business-rule-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,45 +35,31 @@
 ///////////////////////////
 ///
 ///
-.editRules {
-    background-color: #f1f6f9;
-    padding: 0 1.5rem 6rem;
-    min-height: 90vh;
+///
+.breadcrumb-wrap {
+    margin-top: 1rem;
+}
+.edit-rules {
+    margin-top: 2rem;
+    padding-bottom: 10rem;
 
-    .breadcrumb-wrap {
-        padding: 1.5rem 0;
-    }
-
-    form.usaForm {
-        max-width: unset;
-        width: 100%;
-        display: flex;
-        background-color: lightblue;
-        justify-content: center;
+    form.usa-form {
+        min-width: 100%;
     }
 
     .edit-rules__form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 80%;
-        max-width: 960px;
+        max-width: 60%;
+        margin: 2rem auto;
         background-color: colors.$base-white;
-        margin: 1.2rem 0;
-        display: flex;
-        justify-content: center;
+        padding: 4rem;
 
-        .pages-breadcrumb {
-            padding-top: 1.4rem;
-            padding-left: 1.4rem;
-        }
         .inline-field {
             margin-top: 24px;
             align-items: baseline;
+            max-width: 75%;
         }
         .edit-rules__content {
-            width: 60%;
-            padding: 2rem 0 4rem;
+            padding: 2rem 4rem;
             margin: 0 auto;
             p {
                 font-size: 0.875rem;
@@ -132,32 +118,34 @@
             line-height: 1.62rem;
         }
     }
-    .edit-rules__buttons {
-        position: fixed;
-        display: flex;
-        bottom: 0;
-        width: 100%;
-        padding: 1.5rem;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid var(--base-lightest, #f0f0f0);
-        background: var(--base-white, #fff);
+}
 
-        .usa-button {
-            margin-top: 0 !important;
-            font-size: 16px;
-        }
-        .delete-btn {
-            background: var(--base-white, #fff);
-            color: colors.$error;
-            text-decoration: none;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            &:hover {
-                background: colors.$base-white !important;
-            }
+.edit-rules__buttons {
+    position: fixed;
+    display: flex;
+    bottom: 0;
+    width: 100%;
+    padding: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    border: 1px solid var(--base-lightest, #f0f0f0);
+    background: var(--base-white, #fff);
+
+    .usa-button {
+        margin-top: 0 !important;
+        font-size: 16px;
+    }
+    .delete-btn {
+        background: var(--base-white, #fff);
+        color: colors.$error;
+        text-decoration: none;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        &:hover {
+            background: colors.$base-white !important;
         }
     }
 }
