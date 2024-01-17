@@ -497,7 +497,7 @@ export const AdvancedSearch = () => {
                                 <div
                                     tabIndex={0}
                                     id="resultsCount"
-                                    aria-label={resultTotal + ' amount of results have been found'}
+                                    aria-label={resultTotal + ' Results have been found'}
                                     className="margin-0 font-sans-md margin-top-05 text-normal grid-row results-for"
                                     style={{ maxWidth: '55%' }}>
                                     <strong className="margin-right-1">{resultTotal}</strong> Results for
