@@ -1,12 +1,10 @@
 /* eslint-disable camelcase */
-import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { CodedQuestion, DateQuestion, NumericQuestion, PageSummary, TextQuestion } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import React, { ChangeEvent, RefObject, useContext, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, RefObject, useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import { QuestionsContext } from '../../context/QuestionsContext';
-import { CreateQuestion } from '../../components/CreateQuestion/CreateQuestion';
 import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
 
@@ -32,10 +30,11 @@ type Props = {
     summaries: Question[];
     pages?: any;
     qtnModalRef?: RefObject<ModalRef>;
+    createModalRef?: RefObject<ModalRef>;
     onAddQuestion?: (id: number) => void;
 };
 
-export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef, onAddQuestion }: Props) => {
+export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef, createModalRef, onAddQuestion }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(QuestionsContext);
@@ -137,32 +136,10 @@ export const QuestionLibraryTable = ({ summaries, pages, qtnModalRef, onAddQuest
         </div>
     );
 
-    const modalRef = useRef<ModalRef>(null);
-
-    const createNewQuestionModal = (
-        <ModalComponent
-            isLarge
-            modalRef={modalRef}
-            modalHeading={
-                <div className="add-question-header">
-                    <ModalToggleButton modalRef={modalRef} closer unstyled>
-                        <Icon.ArrowBack size={3} />
-                    </ModalToggleButton>
-                    <span>Add question</span>
-                </div>
-            }
-            closer
-            modalBody={<CreateQuestion modalRef={modalRef} />}
-        />
-    );
-
-    const createNewQuestionButton = (
-        <>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
-                Create New
-            </ModalToggleButton>
-            {createNewQuestionModal}
-        </>
+    const createNewQuestionButton = createModalRef && (
+        <ModalToggleButton className="submit-btn" type="button" modalRef={createModalRef} outline>
+            Create New
+        </ModalToggleButton>
     );
 
     const dataNotAvailableElement = (

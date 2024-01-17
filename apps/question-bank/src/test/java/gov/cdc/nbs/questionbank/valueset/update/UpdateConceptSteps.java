@@ -90,7 +90,7 @@ public class UpdateConceptSteps {
     assertEquals("updated concept code", response.conceptCode());
     assertEquals("updated display", response.display());
     assertEquals("Active", response.status());
-    assertEquals("concept name", response.messagingConceptName());
+    assertEquals("concept name", response.preferredConceptName());
   }
 
   @Then("a not found exception is thrown")

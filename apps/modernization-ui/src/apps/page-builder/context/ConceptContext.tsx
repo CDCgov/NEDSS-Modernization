@@ -1,9 +1,10 @@
 /* eslint-disable camelcase */
 import { createContext, useState, Dispatch, SetStateAction } from 'react';
+import { Concept } from '../generated';
 
 interface ConceptsContextData {
-    selectedConcept: any;
-    setSelectedConcept: (concept: any) => void;
+    selectedConcept: Concept;
+    setSelectedConcept: (concept: Concept) => void;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     currentPage: number;

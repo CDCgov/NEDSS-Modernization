@@ -1,11 +1,12 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.MessagingData;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.ReportingData;
-import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest.DateMask;
+import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest.DateMask;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
@@ -37,33 +38,33 @@ class DateQuestionEntityTest {
 
     private QuestionCommand.AddDateQuestion addCommand(DateMask mask, boolean allowFutureDates) {
         return new QuestionCommand.AddDateQuestion(
-                mask,
-                allowFutureDates,
-                new QuestionCommand.QuestionData(
-                        CodeSet.LOCAL,
-                        "localId",
-                        "uniqueName",
-                        "subgroup",
-                        "description",
-                        "label",
-                        "tooltip",
-                        1234L,
-                        "comments",
-                        null),
-                new ReportingData(
-                        "report label",
-                        "RDB_TABLE_NAME",
-                        "RDB_COLUMN_NAME",
-                        "DATA_MART_COL"),
-                new MessagingData(
-                        false,
-                        null,
-                        null,
-                        null,
-                        false,
-                        null),
-                0,
-                null);
+            mask,
+            allowFutureDates,
+            new QuestionCommand.QuestionData(
+                CodeSet.LOCAL,
+                "localId",
+                "uniqueName",
+                "subgroup",
+                "description",
+                "label",
+                "tooltip",
+                1234L,
+                "comments",
+                null),
+            new ReportingData(
+                "report label",
+                "RDB_TABLE_NAME",
+                "RDB_COLUMN_NAME",
+                "DATA_MART_COL"),
+            new MessagingData(
+                false,
+                null,
+                null,
+                null,
+                false,
+                null),
+            0,
+            null);
     }
 
     @Test

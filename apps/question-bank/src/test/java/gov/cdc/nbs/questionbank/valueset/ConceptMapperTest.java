@@ -23,7 +23,7 @@ class ConceptMapperTest {
     assertEquals("short desc", concept.display());
     assertEquals("descTxt", concept.longName());
     assertEquals("conceptCode", concept.conceptCode());
-    assertEquals("concept name", concept.messagingConceptName());
+    assertEquals("concept name", concept.preferredConceptName());
     assertEquals("systemDescTxt", concept.codeSystem());
     assertEquals("statusCd", concept.status());
     assertEquals(now, concept.effectiveFromTime());

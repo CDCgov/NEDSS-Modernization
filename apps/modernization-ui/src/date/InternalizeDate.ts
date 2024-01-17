@@ -1,8 +1,13 @@
+/* eslint-disable no-redeclare */
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 import { INTERNAL_DATE_FORMAT } from './Dates';
 
-export const internalizeDate = (input: string | Date | null | undefined) => {
+function internalizeDate(input: string): string;
+function internalizeDate(input: Date): string;
+function internalizeDate(input: string | null | undefined): null;
+function internalizeDate(input: Date | null | undefined): null;
+function internalizeDate(input: string | Date | null | undefined) {
     if (input) {
         if (typeof input === 'string') {
             return format(parseISO(input), INTERNAL_DATE_FORMAT);
@@ -12,4 +17,6 @@ export const internalizeDate = (input: string | Date | null | undefined) => {
     }
 
     return null;
-};
+}
+
+export { internalizeDate };

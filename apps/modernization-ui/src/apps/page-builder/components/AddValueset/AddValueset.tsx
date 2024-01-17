@@ -10,10 +10,9 @@ import { Concept } from '../Concept/Concept';
 
 type Props = {
     modalRef?: RefObject<ModalRef>;
-    updateCallback?: () => void;
 };
 
-export const AddValueset = ({ modalRef, updateCallback }: Props) => {
+export const AddValueset = ({ modalRef }: Props) => {
     const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
     // Fields
@@ -248,7 +247,6 @@ export const AddValueset = ({ modalRef, updateCallback }: Props) => {
                                 valueSetNm: name,
                                 codeSetDescTxt: desc
                             }}
-                            updateCallback={updateCallback}
                         />
                     )}
                 </div>

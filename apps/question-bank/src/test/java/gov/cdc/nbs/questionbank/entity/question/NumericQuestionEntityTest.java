@@ -1,12 +1,13 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
-import static org.junit.Assert.assertThrows;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.Instant;
+
 import org.junit.jupiter.api.Test;
-import gov.cdc.nbs.questionbank.exception.NullObjectException;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
-import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest.NumericMask;
+import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest.NumericMask;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
@@ -21,38 +22,38 @@ class NumericQuestionEntityTest {
     @Test
     void should_set_related_unit_value_set() {
         QuestionCommand.AddNumericQuestion command = new QuestionCommand.AddNumericQuestion(
-                NumericMask.NUM_DD,
-                1,
-                0l,
-                1l,
-                100l,
-                "literal units",
-                123l,
-                new QuestionCommand.QuestionData(
-                        CodeSet.LOCAL,
-                        "localId",
-                        "name",
-                        "subgrp",
-                        "descrip",
-                        "label",
-                        "tooltip",
-                        1009l,
-                        null,
-                        null),
-                new QuestionCommand.ReportingData(
-                        "lbl",
-                        "RDBNM",
-                        "COLNM",
-                        "DMRT"),
-                new QuestionCommand.MessagingData(
-                        false,
-                        null,
-                        null,
-                        null,
-                        false,
-                        null),
-                1l,
-                Instant.now());
+            NumericMask.NUM_DD,
+            1,
+            0l,
+            1l,
+            100l,
+            "literal units",
+            123l,
+            new QuestionCommand.QuestionData(
+                CodeSet.LOCAL,
+                "localId",
+                "name",
+                "subgrp",
+                "descrip",
+                "label",
+                "tooltip",
+                1009l,
+                null,
+                null),
+            new QuestionCommand.ReportingData(
+                "lbl",
+                "RDBNM",
+                "COLNM",
+                "DMRT"),
+            new QuestionCommand.MessagingData(
+                false,
+                null,
+                null,
+                null,
+                false,
+                null),
+            1l,
+            Instant.now());
         NumericQuestionEntity q = new NumericQuestionEntity(command);
 
         assertEquals(UnitType.CODED.toString(), q.getUnitTypeCd());
@@ -62,38 +63,38 @@ class NumericQuestionEntityTest {
     @Test
     void should_set_related_unit_literal_value() {
         QuestionCommand.AddNumericQuestion command = new QuestionCommand.AddNumericQuestion(
-                NumericMask.NUM_EXT,
-                1,
-                0l,
-                1l,
-                100l,
-                "literal units",
+            NumericMask.NUM_EXT,
+            1,
+            0l,
+            1l,
+            100l,
+            "literal units",
+            null,
+            new QuestionCommand.QuestionData(
+                CodeSet.LOCAL,
+                "localId",
+                "name",
+                "subgrp",
+                "descrip",
+                "label",
+                "tooltip",
+                1009l,
                 null,
-                new QuestionCommand.QuestionData(
-                        CodeSet.LOCAL,
-                        "localId",
-                        "name",
-                        "subgrp",
-                        "descrip",
-                        "label",
-                        "tooltip",
-                        1009l,
-                        null,
-                        null),
-                new QuestionCommand.ReportingData(
-                        "lbl",
-                        "RDBNM",
-                        "COLNM",
-                        "DMRT"),
-                new QuestionCommand.MessagingData(
-                        false,
-                        null,
-                        null,
-                        null,
-                        false,
-                        null),
-                1l,
-                Instant.now());
+                null),
+            new QuestionCommand.ReportingData(
+                "lbl",
+                "RDBNM",
+                "COLNM",
+                "DMRT"),
+            new QuestionCommand.MessagingData(
+                false,
+                null,
+                null,
+                null,
+                false,
+                null),
+            1l,
+            Instant.now());
         NumericQuestionEntity q = new NumericQuestionEntity(command);
 
         assertEquals(UnitType.LITERAL.toString(), q.getUnitTypeCd());
@@ -112,39 +113,39 @@ class NumericQuestionEntityTest {
         assertEquals(command.defaultValue(), entity.getDefaultValue());
         assertEquals(command.minValue(), entity.getMinValue());
         assertEquals(command.maxValue(), entity.getMaxValue());
-        assertEquals(command.unitType().toString(), entity.getUnitTypeCd());
-        assertEquals(command.unitValue(), entity.getUnitValue());
+        assertEquals(command.relatedUnitsValueSet().toString(), entity.getUnitValue());
+
     }
 
     @Test
     void unitvalue_required_if_unit_type_is_provided() {
         NumericQuestionEntity entity = QuestionEntityMother.numericQuestion();
         var command = new QuestionCommand.Update(
-                new QuestionCommand.UpdatableQuestionData(
-                        true,
-                        "uniqueName",
-                        "descrip",
-                        "label",
-                        "tt",
-                        123l,
-                        null,
-                        null),
+            new QuestionCommand.UpdatableQuestionData(
+                true,
+                "uniqueName",
+                "descrip",
+                "label",
+                "tt",
+                123l,
                 null,
-                "mask",
-                "10",
-                false,
-                null,
-                null,
-                null,
-                UnitType.LITERAL,
-                null,
-                new QuestionCommand.ReportingData("asdf", "ASD", "FDSA", "DSSF"),
-                new QuestionCommand.MessagingData(false, null, null, null, false, null),
-                0, null);
+                null),
+            null,
+            "mask",
+            "10",
+            false,
+            null,
+            null,
+            null,
+            null,
+            1000l,
+            new QuestionCommand.ReportingData("asdf", "ASD", "FDSA", "DSSF"),
+            new QuestionCommand.MessagingData(false, null, null, null, false, null),
+            0, null);
 
-        assertThrows("If specifying UnitType, UnitValue must not be null",
-                NullObjectException.class,
-                () -> entity.update(command));
+        entity.update(command);
+        assertEquals("CODED", entity.getUnitTypeCd());
+        assertEquals("1000", entity.getUnitValue());
     }
 
 }

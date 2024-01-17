@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import java.util.List;
 
+import gov.cdc.nbs.questionbank.valueset.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,11 +23,6 @@ import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetCreateRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
-import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
-import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -38,7 +34,7 @@ public class ValueSetController {
 
 
   private final ValueSetStateManager valueSetStateManager;
-  private final ValueSetReader valueSetReador;
+  private final ValueSetReader valueSetReader;
   private final ValueSetUpdater valueSetUpdater;
   private final ValueSetCreator valueSetCreator;
   private final ConceptCreator conceptCreator;
@@ -67,7 +63,7 @@ public class ValueSetController {
 
   @GetMapping
   public Page<ValueSet> findAllValueSets(@PageableDefault(size = 25) Pageable pageable) {
-    return valueSetReador.findAllValueSets(pageable);
+    return valueSetReader.findAllValueSets(pageable);
 
   }
 
@@ -79,14 +75,14 @@ public class ValueSetController {
   }
 
   @PostMapping("search")
-  public Page<ValueSet> searchValueSet(@RequestBody ValueSetSearchRequest search,
-      @PageableDefault(size = 25) Pageable pageable) {
-    return valueSetReador.searchValueSearch(search, pageable);
+  public Page<ValueSetSearchResponse> searchValueSet(@PageableDefault(size = 25) Pageable pageable
+      , @RequestBody ValueSetSearchRequest search) {
+    return valueSetReader.searchValueSet(search, pageable);
   }
 
   @GetMapping("{codeSetNm}/concepts")
   public List<Concept> findConceptsByCodeSetName(@PathVariable String codeSetNm) {
-    return valueSetReador.findConceptCodes(codeSetNm);
+    return valueSetReader.findConceptCodes(codeSetNm);
   }
 
   @PutMapping("/{valueSetCode}/concepts/{localCode}")

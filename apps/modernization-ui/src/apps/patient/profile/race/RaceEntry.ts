@@ -1,6 +1,5 @@
 export type RaceEntry = {
-    patient: number;
-    asOf: string | null;
-    category: string | null;
+    asOf: string;
+    category: string;
     detailed: string[];
 };

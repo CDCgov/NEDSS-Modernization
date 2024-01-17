@@ -18,6 +18,6 @@ testing {
 
 dependencies {
 
-    implementation libs.springBoot
+    implementation libs.bundles.jdbc
 
 }

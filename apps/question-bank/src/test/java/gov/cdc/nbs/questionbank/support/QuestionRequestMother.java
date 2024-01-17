@@ -2,18 +2,19 @@ package gov.cdc.nbs.questionbank.support;
 
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.UnitType;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest.DateMask;
-import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest.NumericMask;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
-import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest.TextMask;
-import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
-import gov.cdc.nbs.questionbank.question.request.CreateCodedQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.model.Question.*;
+import gov.cdc.nbs.questionbank.question.request.create.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestion;
+import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest.DateMask;
+import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest.NumericMask;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
+import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest.TextMask;
+import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.request.update.*;
 
 public class QuestionRequestMother {
 
@@ -85,21 +86,21 @@ public class QuestionRequestMother {
     }
 
     public static CreateTextQuestionRequest custom(
-            String uniqueName,
-            String identifier,
-            String dataMartColumnName,
-            String rdbTableName,
-            String rdbColumnName) {
+        String uniqueName,
+        String identifier,
+        String dataMartColumnName,
+        String rdbTableName,
+        String rdbColumnName) {
         CreateTextQuestionRequest request = new CreateTextQuestionRequest();
         setSharedFields(request);
         request.setUniqueId(identifier);
         request.setUniqueName(uniqueName);
         request.setDisplayControl(1008l);
         request.setDataMartInfo(reportingInfo(
-                "custom label",
-                rdbTableName,
-                rdbColumnName,
-                dataMartColumnName));
+            "custom label",
+            rdbTableName,
+            rdbColumnName,
+            dataMartColumnName));
 
         request.setMask(TextMask.TXT);
         request.setFieldLength(50);
@@ -113,7 +114,7 @@ public class QuestionRequestMother {
 
         request.setCodeSet(codeSet);
         request.setMessagingInfo(
-                messagingInfo(includedInMessage));
+            messagingInfo(includedInMessage));
         request.setMask(TextMask.TXT);
         request.setFieldLength(50);
         request.setDefaultValue("Test default");
@@ -123,63 +124,93 @@ public class QuestionRequestMother {
 
     public static MessagingInfo messagingInfo(boolean includedInMessage) {
         return new MessagingInfo(
-                includedInMessage,
-                "Message Variable Id",
-                "Label in message",
-                "ABNORMAL_FLAGS_HL7",
-                false,
-                "IS");
+            includedInMessage,
+            "Message Variable Id",
+            "Label in message",
+            "ABNORMAL_FLAGS_HL7",
+            false,
+            "IS");
     }
 
     public static ReportingInfo reportingInfo() {
         return reportingInfo(
-                "default label",
-                "RDB_TABLE_NAME",
-                "RDB_COLUMN_NAME",
-                "DATA_MART_COLUMN_NAME");
+            "default label",
+            "RDB_TABLE_NAME",
+            "RDB_COLUMN_NAME",
+            "DATA_MART_COLUMN_NAME");
     }
 
     public static ReportingInfo reportingInfo(String reportLabel, String rdbTableName, String rdbColumnName,
-            String dataMartColumnName) {
+        String dataMartColumnName) {
         return new ReportingInfo(
-                reportLabel,
-                rdbTableName,
-                rdbColumnName,
-                dataMartColumnName);
+            reportLabel,
+            rdbTableName,
+            rdbColumnName,
+            dataMartColumnName);
     }
 
-    public static UpdateQuestionRequest update(QuestionType type) {
-        return new UpdateQuestionRequest(
-                "updated unique name",
-                "updated description",
-                type,
-                "updated label",
-                "updated tooltip",
-                123L,
-                "updated admin comments",
-                "updated default value",
-                "TXT_SSN",
-                "12",
-                false,
-                -1L,
-                70L,
-                UnitType.LITERAL,
-                "some literalValue",
-                333L,
-                "updated report label",
-                "UP_DMART_COL",
-                "UP_RDB_COL_NM",
-                true,
-                "Updated msg var id",
-                "updated msg label",
-                "PH_ACCEPTAPPLICATION",
-                false,
-                "CWE");
+    public static UpdateTextQuestionRequest updateTextQuestionRequest() {
+        UpdateTextQuestionRequest updateTextQuestionRequest = new UpdateTextQuestionRequest();
+        setCommon(updateTextQuestionRequest);
+        updateTextQuestionRequest.setType(UpdateQuestionRequest.DataType.TEXT);
+        updateTextQuestionRequest.setMask(UpdateTextQuestionRequest.TextMask.TXT);
+        updateTextQuestionRequest.setFieldLength(10);
+        updateTextQuestionRequest.setDefaultValue("default value");
+        return updateTextQuestionRequest;
     }
 
-    public static UpdateQuestionRequest update() {
-        return update(QuestionType.TEXT);
+    public static UpdateDateQuestionRequest updateDateQuestionRequest() {
+        UpdateDateQuestionRequest updateDateQuestionRequest = new UpdateDateQuestionRequest();
+        setCommon(updateDateQuestionRequest);
+        updateDateQuestionRequest.setType(UpdateQuestionRequest.DataType.DATE);
+        updateDateQuestionRequest.setMask(UpdateDateQuestionRequest.DateMask.DATE);
+        updateDateQuestionRequest.setAllowFutureDates(true);
+        return updateDateQuestionRequest;
     }
+
+    public static UpdateCodedQuestionRequest updateCodedQuestionRequest() {
+        UpdateCodedQuestionRequest updateCodedQuestionRequest = new UpdateCodedQuestionRequest();
+        setCommon(updateCodedQuestionRequest);
+        updateCodedQuestionRequest.setType(UpdateQuestionRequest.DataType.CODED);
+        updateCodedQuestionRequest.setValueSet(1000l);
+        updateCodedQuestionRequest.setDefaultValue("default value");
+        return updateCodedQuestionRequest;
+    }
+
+    public static UpdateNumericQuestionRequest updateNumericQuestionRequest() {
+        UpdateNumericQuestionRequest updateNumericQuestionRequest = new UpdateNumericQuestionRequest();
+        setCommon(updateNumericQuestionRequest);
+        updateNumericQuestionRequest.setType(UpdateQuestionRequest.DataType.NUMERIC);
+        updateNumericQuestionRequest.setMask(UpdateNumericQuestionRequest.NumericMask.NUM);
+        updateNumericQuestionRequest.setMinValue(10l);
+        updateNumericQuestionRequest.setMaxValue(50l);
+        updateNumericQuestionRequest.setDefaultValue(25l);
+        updateNumericQuestionRequest.setFieldLength(20);
+        updateNumericQuestionRequest.setRelatedUnitsValueSet(null);
+        updateNumericQuestionRequest.setRelatedUnitsLiteral("test");
+        return updateNumericQuestionRequest;
+    }
+
+    private static void setCommon(UpdateQuestionRequest updateQuestionRequest) {
+        updateQuestionRequest.setUniqueName("updated unique name");
+        updateQuestionRequest.setDescription("updated description");
+        updateQuestionRequest.setLabel("updated label");
+        updateQuestionRequest.setTooltip("updated tooltip");
+        updateQuestionRequest.setDisplayControl(10l);
+        updateQuestionRequest.setDataMartInfo(getReportingInfo());
+        updateQuestionRequest.setMessagingInfo(getMessagingInfo());
+    }
+
+    private static ReportingInfo getReportingInfo() {
+        return new ReportingInfo("test", "test",
+            "test", "test");
+    }
+
+    private static MessagingInfo getMessagingInfo() {
+        return new MessagingInfo(true, "test", "test",
+            "PH_ACCEPTAPPLICATION", true, "test");
+    }
+
 
     public static CreateTextQuestionRequest localWithUniqueId(String uniqueId) {
         CreateTextQuestionRequest request = new CreateTextQuestionRequest();

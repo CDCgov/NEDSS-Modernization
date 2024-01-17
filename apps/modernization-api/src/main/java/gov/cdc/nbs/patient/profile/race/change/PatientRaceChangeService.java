@@ -1,28 +1,22 @@
 package gov.cdc.nbs.patient.profile.race.change;
 
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 
 @Component
-@Transactional
 public class PatientRaceChangeService {
 
-    private final EntityManager entityManager;
+  private final PatientProfileService service;
 
-    PatientRaceChangeService(final EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+  PatientRaceChangeService(final PatientProfileService service) {
+    this.service = service;
+  }
 
-    public void add(final RequestContext context, final RaceInput input) {
-        Person patient = managed(input.getPatient());
-
-        patient.add(
+  void add(final RequestContext context, final RaceInput input) {
+    this.service.using(input.getPatient(), found -> found.add(
             new PatientCommand.AddRace(
                 input.getPatient(),
                 input.getAsOf(),
@@ -31,13 +25,12 @@ public class PatientRaceChangeService {
                 context.requestedBy(),
                 context.requestedAt()
             )
-        );
-    }
+        )
+    );
+  }
 
-    public void update(final RequestContext context, final RaceInput input) {
-        Person patient = managed(input.getPatient());
-
-        patient.update(
+  void update(final RequestContext context, final RaceInput input) {
+    this.service.using(input.getPatient(), found -> found.update(
             new PatientCommand.UpdateRaceInfo(
                 input.getPatient(),
                 input.getAsOf(),
@@ -46,23 +39,22 @@ public class PatientRaceChangeService {
                 context.requestedBy(),
                 context.requestedAt()
             )
-        );
-    }
+        )
+    );
+  }
 
-    public void delete(final RequestContext context, final DeletePatientRace input) {
-        Person patient = managed(input.patient());
+  void delete(final RequestContext context, final DeletePatientRace input) {
 
-        patient.delete(
+    this.service.using(input.patient(), found -> found.delete(
             new PatientCommand.DeleteRaceInfo(
                 input.patient(),
                 input.category(),
                 context.requestedBy(),
                 context.requestedAt()
             )
-        );
-    }
+        )
+    );
 
-    private Person managed(final long patient) {
-        return this.entityManager.find(Person.class, patient);
-    }
+  }
+
 }

@@ -14,8 +14,7 @@ class QueryDSLDateRangeFilterApplier {
   @SuppressWarnings("unchecked")
   static BooleanExpression apply(
       final DateRangeFilter filter,
-      final TemporalExpression<? extends Comparable> expression
-  ) {
+      final TemporalExpression<? extends Comparable> expression) {
 
     if (Instant.class.isAssignableFrom(expression.getType())) {
       TemporalExpression<Instant> instant = (TemporalExpression<Instant>) expression;

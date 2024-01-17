@@ -48,6 +48,11 @@ const FilterPanel = ({ label, properties, filters, onApply, close }: FilterPanel
         onApply(displayable);
     };
 
+    const handleClear = () => {
+        close();
+        onApply([]);
+    };
+
     return (
         <div className={styles.filters}>
             <header>
@@ -62,6 +67,14 @@ const FilterPanel = ({ label, properties, filters, onApply, close }: FilterPanel
                 <FilterEntryForm properties={properties} onSave={handleAddFilter} onCancel={handleEntryCancel} />
             )}
             <footer>
+                <Button
+                    disabled={displayable.length === 0}
+                    className={styles.clearButton}
+                    type="button"
+                    outline
+                    onClick={handleClear}>
+                    Clear filters
+                </Button>
                 <Button type="button" onClick={handleApply}>
                     Apply
                 </Button>

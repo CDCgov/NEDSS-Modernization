@@ -1,28 +1,67 @@
-import { PageContent } from './content/PageContent';
-import { Loading } from 'components/Spinner';
+import { ModalRef } from '@trussworks/react-uswds';
 import {
-    PageManagementProvider,
-    useGetPageDetails,
+    PageHeader,
+    PageManagementContext,
     PageManagementLayout,
     PageManagementMenu,
-    PageHeader,
+    PageManagementProvider,
+    useGetPageDetails,
     usePageManagement
 } from 'apps/page-builder/page/management';
+import { Loading } from 'components/Spinner';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { useRef } from 'react';
+import { PageContent } from './content/PageContent';
+import { ManageSectionModal } from './section/manage/ManageSectionModal';
 
 export const Edit = () => {
-    const { page, fetch } = useGetPageDetails();
+    const { page, fetch, refresh } = useGetPageDetails();
 
-    return page ? (
-        <PageManagementProvider page={page} fetch={fetch}>
-            <EditPageContent />
-        </PageManagementProvider>
-    ) : (
-        <Loading center />
+    const manageSectionModalRef = useRef<ModalRef>(null);
+    const addSectionModalRef = useRef<ModalRef>(null);
+
+    const handleManageSection = () => {
+        manageSectionModalRef.current?.toggleModal(undefined, true);
+    };
+
+    const handleAddSection = () => {
+        addSectionModalRef.current?.toggleModal(undefined, true);
+    };
+
+    return (
+        <>
+            {page ? (
+                <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementContext.Consumer>
+                        {(context) => (
+                            <>
+                                {context?.selected && (
+                                    <ManageSectionModal
+                                        pageId={context.page.id}
+                                        tab={context.selected}
+                                        refresh={() => page && refresh(page)}
+                                        addSecModalRef={addSectionModalRef}
+                                        manageSecModalRef={manageSectionModalRef}
+                                    />
+                                )}
+                            </>
+                        )}
+                    </PageManagementContext.Consumer>
+                    <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
+                </PageManagementProvider>
+            ) : (
+                <Loading center />
+            )}
+        </>
     );
 };
 
-const EditPageContent = () => {
+type EditPageContentProps = {
+    handleManageSection?: () => void;
+    handleAddSection?: () => void;
+};
+
+const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageContentProps) => {
     const { page, selected, fetch } = usePageManagement();
 
     const refresh = () => {
@@ -39,7 +78,14 @@ const EditPageContent = () => {
                     <NavLinkButton to={'..'}>Preview</NavLinkButton>
                 </PageManagementMenu>
             </PageHeader>
-            {selected && <PageContent tab={selected} refresh={refresh} />}
+            {selected && (
+                <PageContent
+                    tab={selected}
+                    refresh={refresh}
+                    handleManageSection={handleManageSection}
+                    handleAddSection={handleAddSection}
+                />
+            )}
         </PageManagementLayout>
     );
 };

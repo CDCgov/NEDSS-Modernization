@@ -159,4 +159,13 @@ public class PatientSteps {
     };
   }
 
+  @Given("the patient has a race")
+  public void the_patient_has_a_race() {
+    patient.maybeActive().ifPresent(mother::withRace);
+  }
+
+  @Given("the patient has the race category {raceCategory}")
+  public void the_patient_has_the_race_category(final String category) {
+    patient.maybeActive().ifPresent(current -> mother.withRace(current, category));
+  }
 }
