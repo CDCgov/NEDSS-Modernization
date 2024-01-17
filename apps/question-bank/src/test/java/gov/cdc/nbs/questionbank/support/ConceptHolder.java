@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.support;
 
 import java.util.List;
+
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import lombok.Getter;
