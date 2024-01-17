@@ -2,7 +2,7 @@
     min-width: 450px;
     padding: 10px;
     position: fixed;
-    z-index: 100;
+    z-index: 99999+1;
     top: 15px;
     animation: from-right 0.3s;
     animation-fill-mode: both;

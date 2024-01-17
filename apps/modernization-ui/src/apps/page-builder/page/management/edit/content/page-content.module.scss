@@ -29,6 +29,13 @@
                 align-items: center;
                 gap: 1rem;
                 cursor: pointer;
+                button {
+                    display: flex;
+                    color: colors.$base-black;
+                    align-items: center;
+                    justify-content: space-between;
+                    text-decoration: none;
+                }
             }
         }
     }

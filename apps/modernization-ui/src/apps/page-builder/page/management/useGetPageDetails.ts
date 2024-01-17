@@ -6,11 +6,13 @@ import { useParams } from 'react-router-dom';
 type State =
     | { status: 'idle' }
     | { status: 'fetching'; page: number }
+    | { status: 'refreshing'; page: number; details: PagesResponse }
     | { status: 'complete'; details: PagesResponse }
     | { status: 'error'; error: string };
 
 type Action =
     | { type: 'fetch'; page: number }
+    | { type: 'refresh'; details: PagesResponse }
     | { type: 'complete'; details: PagesResponse }
     | { type: 'error'; error: string };
 
@@ -20,6 +22,8 @@ const reducer = (_state: State, action: Action): State => {
     switch (action.type) {
         case 'fetch':
             return { status: 'fetching', page: action.page };
+        case 'refresh':
+            return { status: 'refreshing', details: action.details, page: action.details.id };
         case 'complete':
             return { status: 'complete', details: action.details };
         case 'error':
@@ -34,6 +38,7 @@ type Interaction = {
     page: PagesResponse | undefined;
     fetch: (page: number) => void;
     error?: string;
+    refresh: (pageDetails: PagesResponse) => void;
 };
 
 export const useGetPageDetails = (): Interaction => {
@@ -47,7 +52,7 @@ export const useGetPageDetails = (): Interaction => {
     }, [pageId, dispatch]);
 
     useEffect(() => {
-        if (state.status === 'fetching') {
+        if (state.status === 'fetching' || state.status === 'refreshing') {
             PagesService.detailsUsingGet({
                 authorization: authorization(),
                 id: state.page
@@ -66,8 +71,9 @@ export const useGetPageDetails = (): Interaction => {
     const value = {
         error: state.status === 'error' ? state.error : undefined,
         loading: state.status === 'fetching',
-        page: state.status === 'complete' ? state.details : undefined,
-        fetch: (page: number) => dispatch({ type: 'fetch', page })
+        page: state.status === 'complete' || state.status === 'refreshing' ? state.details : undefined,
+        fetch: (page: number) => dispatch({ type: 'fetch', page }),
+        refresh: (pageDetails: PagesResponse) => dispatch({ type: 'refresh', details: pageDetails })
     };
 
     return value;
