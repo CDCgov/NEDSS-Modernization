@@ -11,7 +11,7 @@ import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { RefObject, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Condition, CreateConditionRequest, ProgramArea } from '../../generated';
 import { Concept } from '../../generated/models/Concept';
 import './CreateCondition.scss';
@@ -24,6 +24,7 @@ type Props = {
 export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const token = authorization();
     const { handleSubmit, control, reset, formState } = useForm<CreateConditionRequest>({ mode: 'onBlur' });
+    const formWatch = useWatch({ control });
     const { showAlert } = useAlert();
 
     // DropDown Options
@@ -31,6 +32,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const [groupOptions, setGroupOptions] = useState([] as Concept[]);
     const [programAreaOptions, setProgramAreaOptions] = useState([] as ProgramArea[]);
     const [systemOptions, setSystemOptions] = useState([] as Concept[]);
+    const stdHivCodes = ['HIV', 'STD'];
 
     useEffect(() => {
         fetchFamilyOptions(token).then((response) => setFamilyOptions(response));
@@ -160,6 +162,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         name="familyCd"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
+                                disabled={!(formWatch.progAreaCd && stdHivCodes.includes(formWatch.progAreaCd))}
                                 label="Condition family"
                                 defaultValue={value}
                                 onChange={onChange}

@@ -11,19 +11,23 @@ import io.swagger.annotations.ApiImplicitParam;
 @RequestMapping("/nbs/api/configuration")
 public class ConfigurationController {
 
-    private final Configuration configuration;
+  private final Features features;
+  private final NbsConfigurationFinder finder;
 
-    public ConfigurationController(final Configuration configuration) {
-      this.configuration = configuration;
-    }
+  public ConfigurationController(
+      final Features features,
+      final NbsConfigurationFinder finder) {
+    this.features = features;
+    this.finder = finder;
+  }
 
-    @ApiImplicitParam(
-            name = "Authorization",
-            required = true,
-            paramType = "header",
-            dataTypeClass = String.class)
-    @GetMapping
-    public Configuration getConfiguration() {
-        return configuration;
-    }
+  @ApiImplicitParam(
+      name = "Authorization",
+      required = true,
+      paramType = "header",
+      dataTypeClass = String.class)
+  @GetMapping
+  public Configuration getConfiguration() {
+    return new Configuration(features, finder.find());
+  }
 }
