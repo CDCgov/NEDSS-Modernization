@@ -186,7 +186,11 @@ public class DocumentMother {
         document.setRecordStatusTime(settings.createdOn());
         document.setAddTime(settings.createdOn());
         document.setAddUserId(settings.createdBy());
-        document.setProgramJurisdictionOid(CLAYTON_STD_OID); // Clayton
+
+        // Jurisdiction: Out of system
+        document.setProgAreaCd("STD");
+        document.setJurisdictionCd("999999");
+        document.setProgramJurisdictionOid(1300200015L);   //  STD Out of System
 
         document.setNbsDocumentMetadataUid(metadatum());
 

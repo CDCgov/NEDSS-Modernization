@@ -16,7 +16,8 @@ public record DocumentRequiringReview(
         boolean isElectronic,
         boolean isUpdate,
         FacilityProviders facilityProviders,
-        List<Description> descriptions) {
+        List<Description> descriptions
+) {
 
 
     public record ReportingFacility(String name) {
@@ -28,7 +29,8 @@ public record DocumentRequiringReview(
 
     public record Description(
             String title,
-            String value) {
+            String value
+    ) {
     }
 
     @Getter
@@ -36,7 +38,7 @@ public record DocumentRequiringReview(
     @AllArgsConstructor
     @NoArgsConstructor
     public static class FacilityProviders {
-        // These need to be settable after the intial DocumentRequiringReview creation
+        // These need to be settable after the initial DocumentRequiringReview creation
         private ReportingFacility reportingFacility;
         private OrderingProvider orderingProvider;
         private SendingFacility sendingFacility;

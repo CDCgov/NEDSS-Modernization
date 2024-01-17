@@ -69,7 +69,9 @@ public class MorbidityReportMother {
         observation.setCdDescTxt("Condition");
 
         // Jurisdiction: Out of system
+        observation.setProgAreaCd("STD");
         observation.setJurisdictionCd("999999");
+        observation.setProgramJurisdictionOid(1300200015L);
 
         observation.setRecordStatusCd("UNPROCESSED");
         observation.setRecordStatusTime(settings.createdOn());
@@ -119,7 +121,16 @@ public class MorbidityReportMother {
         observation.setCtrlCdDisplayForm(MORBIDITY_DISPLAY_FORM);
         observation.setElectronicInd('N');
         observation.setRecordStatusCd("UNPROCESSED");
-        observation.setProgramJurisdictionOid(1300200015L);
+
+        // Jurisdiction: Out of system
+        observation.setProgAreaCd("STD");
+        observation.setJurisdictionCd("999999");
+        observation.setProgramJurisdictionOid(1300200015L);   //  STD Out of System
+
+        observation.setAddTime(settings.createdOn());
+        observation.setAddUserId(settings.createdBy());
+        observation.setLastChgTime(settings.createdOn());
+        observation.setLastChgUserId(settings.createdBy());
 
         patientSubjectParticipation(observation, patient);
 
