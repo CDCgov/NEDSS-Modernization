@@ -44,19 +44,49 @@
     }
 
     .content {
-        padding-left: 1.5rem;
-
         display: flex;
         flex-direction: column;
         flex-shrink: 1;
         overflow-y: auto;
         height: 100%;
 
+        .alert {
+            display: flex;
+            flex-direction: row;
+            border-left: 0.5rem solid colors.$success;
+            background-color: colors.$success-lighter;
+            padding-right: 1.5rem;
+            padding-top: 0.5rem;
+
+
+            .checkCircle {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+
+            .alertContent {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                width: 100%;
+
+                .alertMessage {
+                    font-size: 1rem;
+                    font-weight: bold;
+                }
+
+                .closeBtn {
+                    justify-content: end;
+                }
+            }
+        }
+
         .tab {
             display: flex;
             flex-direction: row;
             padding-top: 1rem;
-
+            padding-left: 1.5rem;
 
             .folderIcon {
                 padding-right: 1rem;
@@ -69,13 +99,14 @@
         }
 
         .section {
+            padding-left: 1.5rem;
+
             display: flex;
             flex-direction: row;
 
             padding-top: 1rem;
             padding-right: 1.5rem;
             padding-bottom: 1rem;
-
 
             .icons {
                 display: flex;
@@ -86,7 +117,6 @@
                     padding-top: 1rem;
                     padding-right: 1rem;
                     align-items: center;
-    
                 }
                 .group {
                     width: 3rem;
@@ -112,6 +142,16 @@
                 width: 100%;
                 justify-content: space-between;
                 align-items: center;
+
+                .iconBtn {
+                    box-shadow: none;
+
+                    &:disabled {
+                        color: colors.$base-light !important;
+                        background-color: transparent !important;
+                    }
+                }
+
                 .edit {
                     justify-content: end;
                     padding-right: 1.5rem;
@@ -120,6 +160,79 @@
 
                 .delete {
                     justify-content: end;
+                }
+            }
+        }
+
+        .warningModal {
+            display: flex;
+            flex-direction: column;
+
+            padding-left: 0rem !important;
+            margin-left: unset;
+
+            background-color: colors.$warning-lighter;
+            border-left: 0.5rem solid colors.$warning;
+
+            .warningModalHeader {
+                display: flex;
+                align-items: center;
+
+                margin-left: 1rem;
+                padding-top: 0.69rem;
+                padding-bottom: 0.69rem;
+                padding-right: 1.5rem;
+
+                .warningIcon {
+                    margin-right: 1rem;
+                }
+            }
+
+            .warningModalContent {
+                display: flex;
+                flex-direction: row;
+                padding: 1rem 1.5rem 1rem 1rem;
+
+                align-items: center;
+
+                justify-content: space-between;
+
+                .content {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: start;
+
+                    .warningDrag {
+                        width: 3rem;
+                        height: 2rem;
+                        padding-right: 1rem;
+                        align-items: center;
+                    }
+
+                    .warningGroup {
+                        width: 3rem;
+                        height: 2rem;
+                        padding-right: 1rem;
+                        align-items: center;
+                    }
+                }
+
+                .warningModalBtns {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: start;
+
+                    color: colors.$primary;
+
+                    div {
+                        cursor: pointer;
+                    }
+
+                    .separator {
+                        margin-left: 1rem;
+                        margin-right: 1rem;
+                        cursor: unset;
+                    }
                 }
             }
         }

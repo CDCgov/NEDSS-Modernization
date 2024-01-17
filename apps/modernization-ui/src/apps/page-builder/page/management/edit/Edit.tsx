@@ -1,7 +1,6 @@
 import { ModalRef } from '@trussworks/react-uswds';
 import {
     PageHeader,
-    PageManagementContext,
     PageManagementLayout,
     PageManagementMenu,
     PageManagementProvider,
@@ -32,21 +31,11 @@ export const Edit = () => {
         <>
             {page ? (
                 <PageManagementProvider page={page} fetch={fetch}>
-                    <PageManagementContext.Consumer>
-                        {(context) => (
-                            <>
-                                {context?.selected && (
-                                    <ManageSectionModal
-                                        pageId={context.page.id}
-                                        tab={context.selected}
-                                        refresh={() => page && refresh(page)}
-                                        addSecModalRef={addSectionModalRef}
-                                        manageSecModalRef={manageSectionModalRef}
-                                    />
-                                )}
-                            </>
-                        )}
-                    </PageManagementContext.Consumer>
+                    <ManageSectionModal
+                        refresh={() => page && refresh(page)}
+                        addSecModalRef={addSectionModalRef}
+                        manageSecModalRef={manageSectionModalRef}
+                    />
                     <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
                 </PageManagementProvider>
             ) : (
