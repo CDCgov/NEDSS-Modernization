@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
     ButtonGroup,
     Checkbox,
@@ -9,12 +9,12 @@ import {
     Icon as UswIcon
 } from '@trussworks/react-uswds';
 import { PagesResponse } from 'apps/page-builder/generated';
-import { RefObject, useContext, useState } from 'react';
-import { UserContext } from 'user';
+import { RefObject, useState } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import './TargetQuestion.scss';
 import { Icon } from '../../../../components/Icon/Icon';
 import { fetchPageDetails } from '../../services/pagesAPI';
+import { authorization } from 'authorization';
 
 type CommonProps = {
     modalRef: RefObject<ModalRef>;
@@ -33,19 +33,15 @@ type QuestionProps = {
 };
 
 const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = true }: CommonProps) => {
-    const { state } = useContext(UserContext);
-    const token = `Bearer ${state.getToken()}`;
     const [activeTab, setActiveTab] = useState(0);
     const [sourceList, setSourceList] = useState<QuestionProps[]>([]);
     const [subsectionOpen, setSubsectionOpen] = useState(false);
     const [sourceId, setSource] = useState(-1);
     const [page, setPage] = useState<PagesResponse>();
-    const [questions, setQuestions] = useState([]);
-    console.log('questions', questions);
 
     useEffect(() => {
         if (pageId) {
-            fetchPageDetails(token, Number(pageId)).then((data) => {
+            fetchPageDetails(authorization(), Number(pageId)).then((data) => {
                 setPage(data);
             });
         }
@@ -66,8 +62,6 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
 
     const handleSelect = (e: any, key: number) => {
         let updateList = [...sourceList];
-        console.log('e', e.target);
-        console.log('list', updateList);
 
         if (!multiSelected) {
             updateList = updateList.map((qtn: QuestionProps) => ({
@@ -154,7 +148,6 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
                                                         className="reorder-section__tiles"
                                                         onClick={() => {
                                                             setSource(id);
-                                                            setQuestions(sub.questions);
                                                             handleSourceList(sub.questions);
                                                         }}>
                                                         <div

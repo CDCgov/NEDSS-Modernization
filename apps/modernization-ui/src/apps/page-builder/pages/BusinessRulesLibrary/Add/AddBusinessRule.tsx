@@ -77,13 +77,13 @@ const AddBusinessRule = () => {
             targetValueIdentifier: data.targetValueIdentifier,
             targetValueText: data.targetValueText
         };
+
         if (!ruleId) {
             PageRuleControllerService.createBusinessRuleUsingPost({
                 authorization: authorization(),
                 id: Number(pageId),
                 request
             }).then((resp) => {
-                console.log('resp', resp);
                 showAlert({ type: 'success', header: 'added', message: resp.message });
             });
         } else {
@@ -178,9 +178,7 @@ const AddBusinessRule = () => {
                                 <Icon.Delete size={3} className="margin-right-2px" />
                                 <span> Delete</span>
                             </Button>
-                        ) : (
-                            <div />
-                        )}
+                        ) : null}
                         <div>
                             <Button type="button" outline onClick={handleCancel}>
                                 Cancel
