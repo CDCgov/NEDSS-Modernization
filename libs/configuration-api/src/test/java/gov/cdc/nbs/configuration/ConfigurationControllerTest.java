@@ -2,8 +2,8 @@ package gov.cdc.nbs.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,6 +19,8 @@ import gov.cdc.nbs.configuration.Features.PageBuilder.Page.Library;
 import gov.cdc.nbs.configuration.Features.PageBuilder.Page.Management;
 import gov.cdc.nbs.configuration.Features.PageBuilder.Page.Management.Create;
 import gov.cdc.nbs.configuration.Features.PageBuilder.Page.Management.Edit;
+import gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder;
+import gov.cdc.nbs.configuration.nbs.Properties;
 
 @ExtendWith(MockitoExtension.class)
 class ConfigurationControllerTest {
@@ -36,7 +38,7 @@ class ConfigurationControllerTest {
                   new Edit(true)))));
 
   @Mock
-  private NbsConfigurationFinder finder;
+  private NbsPropertiesFinder finder;
 
   @InjectMocks
   private ConfigurationController controller;
@@ -44,9 +46,9 @@ class ConfigurationControllerTest {
 
   @Test
   void should_return_proper_configuration() throws JsonProcessingException {
-    Map<String, String> configs = new HashMap<>();
-    configs.put("key1", "value1");
-    when(finder.find()).thenReturn(configs);
+    Properties properties = new Properties(Arrays.asList("STD"), Arrays.asList("HIV"),
+        Collections.singletonMap("CODE_BASE", "Release 6.0.15-Beta"));
+    when(finder.find()).thenReturn(properties);
 
     Configuration config = controller.getConfiguration();
 
@@ -75,8 +77,12 @@ class ConfigurationControllerTest {
                   }
                 }
               },
-              "configuration" : {
-                "key1" : "value1"
+              "properties" : {
+                "stdProgramAreas" : [ "STD" ],
+                "hivProgramAreas" : [ "HIV" ],
+                "entries" : {
+                  "CODE_BASE" : "Release 6.0.15-Beta"
+                }
               }
             }""";
     String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(config);
