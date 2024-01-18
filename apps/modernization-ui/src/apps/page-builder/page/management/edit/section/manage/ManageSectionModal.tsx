@@ -80,6 +80,7 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
                         closeAddSection?.();
                     }}
                     onCancel={closeAddSection}
+                    isEdit={false}
                 />
             </Modal>
         </>

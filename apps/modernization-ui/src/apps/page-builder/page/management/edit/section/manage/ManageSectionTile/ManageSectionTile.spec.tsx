@@ -77,7 +77,11 @@ describe('when ManageSectionTile renders', () => {
                                     setSelectedForDelete={jest.fn}
                                     selectedForDelete={undefined}
                                     handleDelete={jest.fn}
-                                    setOnAction={jest.fn} onAction={false}/>
+                                    setOnAction={jest.fn}
+                                    onAction={false}
+                                    setSectionState={jest.fn}
+                                    setSelectedForEdit={jest.fn}
+                                />
                             </div>
                         )}
                     </Droppable>

@@ -30,13 +30,15 @@ export const ManageSection = ({
     onDeleteSection,
     onResetAlert
 }: ManageSectionProps) => {
-    const [sectionState, setSectionState] = useState<'manage' | 'add'>('manage');
+    const [sectionState, setSectionState] = useState<'manage' | 'add' | 'edit'>('manage');
 
     const [confirmDelete, setConfirmDelete] = useState<PagesSection | undefined>(undefined);
 
+    const [sectionEdit, setSectionEdit] = useState<PagesSection | undefined>();
+
     const [onAction, setOnAction] = useState<boolean>(false);
 
-    const handleUpdateState = (state: 'manage' | 'add') => {
+    const handleUpdateState = (state: 'manage' | 'add' | 'edit') => {
         setSectionState(state);
     };
 
@@ -63,6 +65,24 @@ export const ManageSection = ({
                     }}
                     onCancel={() => setSectionState('manage')}
                     tabId={tab?.id}
+                    isEdit={false}
+                />
+            )}
+            {sectionState === 'edit' && (
+                <AddSection
+                    pageId={pageId}
+                    onAddSectionCreated={() => {
+                        onContentChange?.();
+                        setSectionState('manage');
+                        setSectionEdit(undefined);
+                    }}
+                    onCancel={() => {
+                        setSectionState('manage');
+                        setSectionEdit(undefined);
+                    }}
+                    tabId={tab?.id}
+                    isEdit={true}
+                    section={sectionEdit}
                 />
             )}
             {sectionState === 'manage' && (
@@ -125,6 +145,8 @@ export const ManageSection = ({
                                                     handleDelete={onDelete}
                                                     setOnAction={setOnAction}
                                                     onAction={onAction}
+                                                    setSectionState={setSectionState}
+                                                    setSelectedForEdit={setSectionEdit}
                                                 />
                                             );
                                         })}
