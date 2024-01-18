@@ -19,7 +19,7 @@ import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { maxLengthRule } from '../../../../validation/entry';
 import { Input } from '../../../../components/FormInputs/Input';
-import { useConceptPI } from '../../components/Concept/useConceptAPI';
+import { useConceptAPI } from '../../components/Concept/useConceptAPI';
 import { authorization } from 'authorization';
 
 type QuestionProps = {
@@ -45,13 +45,10 @@ const BusinessRulesForm = () => {
     const { pageId } = useParams();
 
     const fetchSourceRecord = async (valueSet: string) => {
-        const content: any = await useConceptPI(authorization(), valueSet);
+        const content: any = await useConceptAPI(authorization(), valueSet);
         const list = content?.map((src: any) => ({ name: src.longName, value: src.conceptCode }));
         setSourceList(list);
     };
-    useEffect(() => {
-        fetchSourceRecord('');
-    }, []);
 
     const handleFetchQuestion = (data: QuestionProps[]) => {
         setTargetQuestion(data);
@@ -59,9 +56,6 @@ const BusinessRulesForm = () => {
         const text = data.map((val) => val.name);
         form.setValue('targetValueIdentifier', value);
         form.setValue('targetValueText', text);
-        setTimeout(() => {
-            handleRuleDescription();
-        }, 1000);
     };
 
     const handleFetchSource = (data: QuestionProps[]) => {
@@ -69,10 +63,11 @@ const BusinessRulesForm = () => {
         form.setValue('sourceIdentifier', data[0].question);
         form.setValue('sourceText', data[0].name);
         fetchSourceRecord(data[0].valueSet);
-        setTimeout(() => {
-            handleRuleDescription();
-        }, 1000);
     };
+
+    useEffect(() => {
+        handleRuleDescription();
+    }, [targetQuestion, selectedSource]);
 
     const targetValueIdentifier = form.watch('targetValueIdentifier') || [];
 

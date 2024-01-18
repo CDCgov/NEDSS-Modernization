@@ -4,7 +4,6 @@ import { Edit } from 'apps/page-builder/page/management/edit/Edit';
 import { PreviewPage } from 'apps/page-builder/page/management/preview';
 import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
 import { BusinessRulesLibrary } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import EditBusinessRules from 'apps/page-builder/pages/BusinessRulesLibrary/Edit/EditBusinessRules';
 import { ValuesetLibrary } from 'apps/page-builder/pages/ValuesetLibrary/ValuesetLibrary';
 import { AddPatient } from 'apps/patient/add/AddPatient';
 import { AddedPatient } from 'apps/patient/add/SuccessForm/AddedPatient';
@@ -74,7 +73,7 @@ export const AppRoutes = () => {
                             <Route path="add" element={<AddBusinessRule />} />
                         </Route>
                         <Route path=":ruleId">
-                            <Route index element={<EditBusinessRules />} />
+                            <Route index element={<AddBusinessRule />} />
                         </Route>
                     </Route>
                 )}

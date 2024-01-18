@@ -19,4 +19,6 @@ export type ViewRuleResponse = {
     targetType?: string;
     templateUid?: number;
     anySourceValue?: boolean;
+    targetValueText?: string[];
+    targetValueIdentifier?: string[];
 };

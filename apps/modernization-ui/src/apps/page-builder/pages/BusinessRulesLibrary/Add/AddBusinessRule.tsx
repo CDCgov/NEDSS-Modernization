@@ -2,7 +2,6 @@ import { Button, ButtonGroup, Form, Grid, Icon } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-// import { UserContext } from 'user';
 import './AddBusinessRule.scss';
 import { PageRuleControllerService, ViewRuleResponse } from '../../../generated';
 import { useAlert } from 'alert';
@@ -10,7 +9,6 @@ import BusinessRulesForm from '../BusinessRulesForm';
 import { PageBuilder } from '../../PageBuilder/PageBuilder';
 import { Breadcrumb } from 'breadcrumb';
 import { authorization } from 'authorization';
-// import { ApiError } from 'generated';
 
 export type FormValues = {
     ruleFunction: string;
@@ -32,7 +30,6 @@ export type FormValues = {
 
 const AddBusinessRule = () => {
     const navigate = useNavigate();
-    // const { state } = useContext(UserContext);
     const form = useForm<FormValues>({
         defaultValues: { targetType: 'SUBSECTION', anySourceValue: false },
         mode: 'onChange'
@@ -56,15 +53,14 @@ const AddBusinessRule = () => {
                 form.setValue('sourceText', resp?.sourceIdentifier!);
                 form.setValue('sourceValueIds', resp?.sourceValue?.sourceValueId!);
                 form.setValue('sourceValueText', resp?.sourceValue?.sourceValueText!);
-                form.setValue('targetValueIdentifier', ['testing']);
+                form.setValue('targetValueIdentifier', resp?.targetValueIdentifier!);
+                form.setValue('targetValueText', ['testing']);
                 setSelectedFieldType(resp.ruleFunction!);
-                console.log('resp', resp);
             });
         }
     }, [ruleId]);
 
     const onSubmit = form.handleSubmit(async (data) => {
-        console.log('data', data);
         const sourceValue = {
             sourceValueId: data.sourceValueIds,
             sourceValueText: data.sourceValueText
@@ -77,36 +73,28 @@ const AddBusinessRule = () => {
             sourceIdentifier: data.sourceIdentifier,
             sourceText: data.sourceText,
             sourceValue: sourceValue,
-            targetText: data.targetValueText,
             targetType: data.targetType,
-            targetValueIdentifier: data.targetValueIdentifier
+            targetValueIdentifier: data.targetValueIdentifier,
+            targetValueText: data.targetValueText
         };
         if (!ruleId) {
             PageRuleControllerService.createBusinessRuleUsingPost({
                 authorization: authorization(),
                 id: Number(pageId),
                 request
-            })
-                .then((resp) => {
-                    console.log('resp', resp);
-                    showAlert({ type: 'success', header: 'added', message: resp.message });
-                })
-                .catch((err) => {
-                    showAlert({ type: 'error', header: 'error', message: err.error });
-                });
+            }).then((resp) => {
+                console.log('resp', resp);
+                showAlert({ type: 'success', header: 'added', message: resp.message });
+            });
         } else {
             PageRuleControllerService.updatePageRuleUsingPut({
                 authorization: authorization(),
                 page: Number(pageId),
                 ruleId: Number(ruleId),
                 request
-            })
-                .then((resp) => {
-                    showAlert({ type: 'success', header: 'updated', message: resp.message });
-                })
-                .catch(() => {
-                    // showAlert({ type: 'error', header: 'error', message: err.body });
-                });
+            }).then((resp) => {
+                showAlert({ type: 'success', header: 'updated', message: resp.message });
+            });
         }
         handleCancel();
     });
