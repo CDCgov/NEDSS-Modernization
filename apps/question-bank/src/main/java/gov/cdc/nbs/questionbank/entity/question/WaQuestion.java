@@ -17,7 +17,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Setter;
 import org.hibernate.annotations.Where;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.CreateQuestionCommand;
@@ -50,6 +49,9 @@ public abstract class WaQuestion {
 
     @Column(name = "data_cd", length = 50)
     private String dataCd;
+
+    @Column(name = "data_type", insertable = false, updatable = false)
+    private String dataType;
 
     @Column(name = "data_location", length = 150)
     private String dataLocation;
@@ -191,6 +193,9 @@ public abstract class WaQuestion {
 
     @Column(name = "last_chg_user_id")
     private Long lastChgUserId;
+
+    @Column(name = "code_set_group_id")
+    private Long codeSetGroupId;
 
     public abstract String getDataType();
 
