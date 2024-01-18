@@ -83,6 +83,7 @@
         }
 
         .tab {
+            padding-left: 1.5rem;    
             display: flex;
             flex-direction: row;
             padding-top: 1rem;
@@ -153,13 +154,13 @@
                 }
 
                 .edit {
-                    justify-content: end;
+                    justify-content: flex-end;
                     padding-right: 1.5rem;
                     margin-left: auto;
                 }
 
                 .delete {
-                    justify-content: end;
+                    justify-content: flex-end;
                 }
             }
         }

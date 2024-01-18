@@ -4,6 +4,8 @@ import { ManageSection } from './ManageSection';
 import { RefObject, useEffect, useState } from 'react';
 import './ManageSectionModal.scss';
 import { usePageManagement } from '../../../usePageManagement';
+import { PagesTab } from 'apps/page-builder/generated';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 
 type ManageSectionModalProps = {
     refresh?: () => void;
@@ -37,6 +39,11 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
             setTimeout(() => setAlert(undefined), 5000);
         }
     }, [alert]);
+    const onReorderSuccess = () => {
+        refresh?.();
+    };
+
+    const reset = () => {};
 
     return (
         <>
@@ -46,20 +53,23 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
                 ref={manageSectionModalRef}
                 forceAction
                 isLarge>
-                <ManageSection
-                    alert={alert}
-                    onResetAlert={() => setAlert(undefined)}
-                    pageId={page.id}
-                    tab={selected}
-                    key={selected?.sections.length}
-                    onContentChange={() => {
-                        refresh?.();
-                    }}
-                    onDeleteSection={() => {
-                        setAlert({ message: `You've successfully deleted section!`, type: `success` });
-                    }}
-                    onCancel={onCloseManageSectionModal}
-                />
+                <DragDropProvider
+                    pageData={page}
+                    currentTab={page.tabs?.findIndex((x: PagesTab) => x.name === selected?.name) ?? 0}
+                    successCallBack={onReorderSuccess}>
+                    <ManageSection
+                        pageId={page.id}
+                        alert={alert}
+                        onResetAlert={() => setAlert(undefined)}
+                        tab={selected}
+                        key={selected?.sections.length}
+                        onContentChange={() => {
+                            refresh?.();
+                        }}
+                        onCancel={onCloseManageSectionModal}
+                        reset={reset}
+                    />
+                </DragDropProvider>
             </Modal>
             <Modal id={'add-section-modal'} ref={addSectionModalRef} className={'add-section-modal'} isLarge>
                 <AddSection

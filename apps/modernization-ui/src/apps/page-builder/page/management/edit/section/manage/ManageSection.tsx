@@ -8,15 +8,19 @@ import { Heading } from 'components/heading';
 import { authorization } from 'authorization';
 import { AlertInLineProps } from './ManageSectionModal';
 import React from 'react';
+import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
+import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 type ManageSectionProps = {
-    tab?: PagesTab;
     pageId: number;
+    tab?: PagesTab;
     onCancel?: () => void;
     onContentChange?: () => void;
     alert?: AlertInLineProps;
     onDeleteSection?: () => void;
     onResetAlert?: () => void;
+    reset: () => void;
 };
 
 export const ManageSection = ({
@@ -30,7 +34,7 @@ export const ManageSection = ({
 }: ManageSectionProps) => {
     const [sectionState, setSectionState] = useState<'manage' | 'add'>('manage');
 
-    const [confirmDelete, setConfirmDelete] = useState<number | undefined>(undefined);
+    const [confirmDelete, setConfirmDelete] = useState<PagesSection | undefined>(undefined);
 
     const [onAction, setOnAction] = useState<boolean>(false);
 
@@ -49,22 +53,7 @@ export const ManageSection = ({
         });
     };
 
-    const deleteHeader = (section: PagesSection) => {
-        if (section.subSections.length !== 0) {
-            return `Section cannot be deleted. This section contains elements (subsections and questions) inside it. Remove the contents first, and then the section can be deleted.`;
-        } else {
-            return `Are you sure you want to delete this section?`;
-        }
-    };
-
-    const isValidDelete = (section: PagesSection) => {
-        if (section.subSections.length !== 0) {
-            return false;
-        } else {
-            return true;
-        }
-    };
-
+    const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
     return (
         <>
             {sectionState === 'add' && (
@@ -81,7 +70,7 @@ export const ManageSection = ({
             {sectionState === 'manage' && (
                 <div className={styles.managesection}>
                     <div className={styles.header}>
-                        <div className={styles.manageSectionHeader}>
+                        <div className={styles.manageSectionHeader} data-testid="header">
                             <Heading level={4}>Manage sections</Heading>
                         </div>
                         <div className={styles.addSectionHeader}>
@@ -117,108 +106,35 @@ export const ManageSection = ({
                             </div>
                             <p className={styles.tabName}>{tab?.name}</p>
                         </div>
-                        {tab?.sections?.map((section, k) => {
-                            return (
-                                <React.Fragment key={k}>
-                                    {confirmDelete !== undefined && confirmDelete === section.id ? (
-                                        <div className={styles.warningModal}>
-                                            <div className={styles.warningModalHeader}>
-                                                <div className={styles.warningIcon}>
-                                                    <Icon.Warning size={3} />
-                                                </div>
-                                                {deleteHeader?.(section)}
-                                            </div>
-                                            <div className={styles.warningModalContent}>
-                                                <div className={styles.content}>
-                                                    <div className={styles.warningDrag}>
-                                                        <NbsIcon name={'drag'} />
-                                                    </div>
-                                                    <div className={styles.warningGroup}>
-                                                        <NbsIcon name={'group'} />
-                                                    </div>
-                                                    <div
-                                                        className={
-                                                            styles.warningSectionName
-                                                        }>{`${section.name}(${section.subSections.length})`}</div>
-                                                </div>
-                                                <div className={styles.warningModalBtns}>
-                                                    {isValidDelete(section) ? (
-                                                        <>
-                                                            <div
-                                                                onClick={() => {
-                                                                    onDelete?.(section);
-                                                                    setConfirmDelete(undefined);
-                                                                    setOnAction(false);
-                                                                }}>
-                                                                Yes, delete
-                                                            </div>
-                                                            <div className={styles.separator}>|</div>
-                                                            <div
-                                                                onClick={() => {
-                                                                    setConfirmDelete(undefined);
-                                                                    setOnAction(false);
-                                                                }}>
-                                                                Cancel
-                                                            </div>
-                                                        </>
-                                                    ) : (
-                                                        <div
-                                                            onClick={() => {
-                                                                setConfirmDelete(undefined);
-                                                                setOnAction(false);
-                                                            }}>
-                                                            OK
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className={styles.section}>
-                                            <div className={styles.icons}>
-                                                <div className={styles.drag}>
-                                                    <NbsIcon name={'drag'} />
-                                                </div>
-                                                <div className={styles.group}>
-                                                    <NbsIcon name={'group'} />
-                                                </div>
-                                            </div>
-                                            <p
-                                                className={
-                                                    styles.sectionName
-                                                }>{`${section.name}(${section.subSections.length})`}</p>
-                                            <div className={styles.sectionIcons}>
-                                                <div className={styles.edit}>
-                                                    <Button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            console.log('edit here');
-                                                        }}
-                                                        outline
-                                                        className={styles.iconBtn}
-                                                        disabled={onAction}>
-                                                        <Icon.Edit style={{ cursor: 'pointer' }} size={3} />
-                                                    </Button>
-                                                </div>
-                                                <div className={styles.delete}>
-                                                    <Button
-                                                        type="button"
-                                                        className={styles.iconBtn}
-                                                        outline
-                                                        disabled={onAction}
-                                                        onClick={() => {
-                                                            setConfirmDelete(section.id);
-                                                            setOnAction(true);
-                                                        }}>
-                                                        <Icon.Delete style={{ cursor: 'pointer' }} size={3} />
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                                </React.Fragment>
-                            );
-                        })}
+                        <DragDropContext
+                            onDragEnd={handleDragEnd}
+                            onDragStart={handleDragStart}
+                            onDragUpdate={handleDragUpdate}>
+                            <Droppable droppableId="all-sections" type="sections">
+                                {(provided) => (
+                                    <div
+                                        className="manage-sections"
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}>
+                                        {tab?.sections?.map((section, k) => {
+                                            return (
+                                                <ManageSectionTile
+                                                    section={section}
+                                                    index={k}
+                                                    key={k}
+                                                    setSelectedForDelete={setConfirmDelete}
+                                                    selectedForDelete={confirmDelete}
+                                                    handleDelete={onDelete}
+                                                    setOnAction={setOnAction}
+                                                    onAction={onAction}
+                                                />
+                                            );
+                                        })}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                     </div>
                     <div className={styles.footer}>
                         <Button

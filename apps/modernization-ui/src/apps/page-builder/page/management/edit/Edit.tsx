@@ -1,4 +1,3 @@
-import { ModalRef } from '@trussworks/react-uswds';
 import {
     PageHeader,
     PageManagementLayout,
@@ -9,9 +8,10 @@ import {
 } from 'apps/page-builder/page/management';
 import { Loading } from 'components/Spinner';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
-import { useRef } from 'react';
 import { PageContent } from './content/PageContent';
 import { ManageSectionModal } from './section/manage/ManageSectionModal';
+import { ModalRef } from '@trussworks/react-uswds';
+import { useRef } from 'react';
 
 export const Edit = () => {
     const { page, fetch, refresh } = useGetPageDetails();
