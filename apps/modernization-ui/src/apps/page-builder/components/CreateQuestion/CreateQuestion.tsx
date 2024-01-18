@@ -65,6 +65,7 @@ export type QuestionFormType = {
     HL7Segment?: string;
     relatedUnits?: string;
     allowFutureDates?: string;
+    dataType?: string;
     codeSet: any;
 };
 type CreateQuestionFormType = CreateNumericQuestionRequest &
@@ -108,6 +109,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                 updatedQuestion.defaultLabelInReport || updatedQuestion.reportLabel
             );
             setSelectedFieldType(updatedQuestion.dataType);
+            questionForm.setValue('dataType', updatedQuestion.dataType);
             questionForm.setValue('dataMartColumnName', updatedQuestion.dataMartColumnName);
             questionForm.setValue('defaultRdbTableName', updatedQuestion.defaultRdbTableName);
             questionForm.setValue('rdbColumnName', updatedQuestion.rdbColumnName);
@@ -553,19 +555,33 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             )}
                         />
                         <br></br>
-                        <label>Field type</label>
-                        <br></br>
-                        <ButtonGroup type="segmented">
-                            {fieldTypeTab.map((field, index) => (
-                                <Button
-                                    key={index}
-                                    type="button"
-                                    outline={field.value !== selectedFieldType}
-                                    onClick={() => setSelectedFieldType(field.value)}>
-                                    {field.name}
-                                </Button>
-                            ))}
-                        </ButtonGroup>
+                        <Controller
+                            control={control}
+                            name="dataType"
+                            rules={{ required: { value: true, message: 'Field type required' } }}
+                            render={({ field: { onChange, name }, fieldState: { error } }) => (
+                                <>
+                                    <Label htmlFor={name}>Field type</Label>
+                                    <ButtonGroup type="segmented">
+                                        {fieldTypeTab.map((field, index) => (
+                                            <Button
+                                                key={index}
+                                                type="button"
+                                                outline={field.value !== selectedFieldType}
+                                                onClick={() => {
+                                                    setSelectedFieldType(field.value);
+                                                    onChange(field.value);
+                                                }}>
+                                                {field.name}
+                                            </Button>
+                                        ))}
+                                    </ButtonGroup>
+                                    {error?.message && (
+                                        <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>
+                                    )}
+                                </>
+                            )}
+                        />
                         <br></br>
                         {selectedFieldType === UpdateQuestionRequest.type.CODED && renderValueSet}
                         {(selectedFieldType === UpdateQuestionRequest.type.NUMERIC ||
