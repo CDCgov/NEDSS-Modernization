@@ -29,6 +29,7 @@ export type { Me } from './models/Me';
 export type { Option } from './models/Option';
 export type { Page } from './models/Page';
 export type { PageBuilder } from './models/PageBuilder';
+export type { Properties } from './models/Properties';
 export { ProviderFacilitySearch } from './models/ProviderFacilitySearch';
 
 export { ConceptOptionsService } from './services/ConceptOptionsService';
