@@ -117,49 +117,27 @@
             .delete {
                 display: none;
             }
-            &.locked {
-                svg:nth-of-type(2) {
-                    color: colors.$disabled;
-                    cursor: none;
+
+            .iconBtn {
+                box-shadow: none;
+
+                &:disabled {
+                    color: colors.$base-light !important;
+                    background-color: transparent !important;
                 }
             }
         }
-        &.delete {
-            background-color: colors.$warning-lighter;
-            border: 3px solid colors.$warning;
-            flex-direction: column;
-            .handle {
-                padding-bottom: 0.8rem;
-                img {
-                    display: none;
-                }
-                p {
-                    display: inline;
-                    font-weight: 700;
-                    font-size: 0.8rem;
-                }
-            }
-            .buttons {
-                display: flex;
-                svg {
-                    display: none;
-                }
-                p {
-                    cursor: pointer;
-                }
-            }
-            .delete {
-                display: flex;
-                gap: 1.5rem;
-                width: 100%;
-                justify-content: flex-end;
-                p {
-                    font-size: 0.8rem;
-                    font-weight: 700;
-                    margin: 0;
-                    cursor: pointer;
-                }
-            }
+    }
+    .delete {
+        display: flex;
+        gap: 1.5rem;
+        width: 100%;
+        justify-content: flex-end;
+        p {
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin: 0;
+            cursor: pointer;
         }
     }
 }

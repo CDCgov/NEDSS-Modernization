@@ -7,7 +7,6 @@ import { AddSection } from './AddSection';
 import { Heading } from 'components/heading';
 import { authorization } from 'authorization';
 import { AlertInLineProps } from './ManageSectionModal';
-import React from 'react';
 import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
@@ -20,7 +19,6 @@ type ManageSectionProps = {
     alert?: AlertInLineProps;
     onDeleteSection?: () => void;
     onResetAlert?: () => void;
-    reset: () => void;
 };
 
 export const ManageSection = ({

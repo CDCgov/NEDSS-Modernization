@@ -58,7 +58,6 @@
             padding-right: 1.5rem;
             padding-top: 0.5rem;
 
-
             .checkCircle {
                 margin-left: 1rem;
                 margin-right: 1rem;
@@ -83,7 +82,7 @@
         }
 
         .tab {
-            padding-left: 1.5rem;    
+            padding-left: 1.5rem;
             display: flex;
             flex-direction: row;
             padding-top: 1rem;
@@ -96,145 +95,6 @@
             }
             .tabName {
                 margin: 0%;
-            }
-        }
-
-        .section {
-            padding-left: 1.5rem;
-
-            display: flex;
-            flex-direction: row;
-
-            padding-top: 1rem;
-            padding-right: 1.5rem;
-            padding-bottom: 1rem;
-
-            .icons {
-                display: flex;
-                flex-direction: row;
-                .drag {
-                    width: 3rem;
-                    height: 3rem;
-                    padding-top: 1rem;
-                    padding-right: 1rem;
-                    align-items: center;
-                }
-                .group {
-                    width: 3rem;
-                    height: 3rem;
-                    align-items: center;
-                    padding-top: 1rem;
-                    padding-right: 1rem;
-                }
-            }
-
-            .sectionName {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                margin: unset;
-                width: auto;
-                white-space: nowrap;
-            }
-
-            .sectionIcons {
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-                justify-content: space-between;
-                align-items: center;
-
-                .iconBtn {
-                    box-shadow: none;
-
-                    &:disabled {
-                        color: colors.$base-light !important;
-                        background-color: transparent !important;
-                    }
-                }
-
-                .edit {
-                    justify-content: flex-end;
-                    padding-right: 1.5rem;
-                    margin-left: auto;
-                }
-
-                .delete {
-                    justify-content: flex-end;
-                }
-            }
-        }
-
-        .warningModal {
-            display: flex;
-            flex-direction: column;
-
-            padding-left: 0rem !important;
-            margin-left: unset;
-
-            background-color: colors.$warning-lighter;
-            border-left: 0.5rem solid colors.$warning;
-
-            .warningModalHeader {
-                display: flex;
-                align-items: center;
-
-                margin-left: 1rem;
-                padding-top: 0.69rem;
-                padding-bottom: 0.69rem;
-                padding-right: 1.5rem;
-
-                .warningIcon {
-                    margin-right: 1rem;
-                }
-            }
-
-            .warningModalContent {
-                display: flex;
-                flex-direction: row;
-                padding: 1rem 1.5rem 1rem 1rem;
-
-                align-items: center;
-
-                justify-content: space-between;
-
-                .content {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: start;
-
-                    .warningDrag {
-                        width: 3rem;
-                        height: 2rem;
-                        padding-right: 1rem;
-                        align-items: center;
-                    }
-
-                    .warningGroup {
-                        width: 3rem;
-                        height: 2rem;
-                        padding-right: 1rem;
-                        align-items: center;
-                    }
-                }
-
-                .warningModalBtns {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: start;
-
-                    color: colors.$primary;
-
-                    div {
-                        cursor: pointer;
-                    }
-
-                    .separator {
-                        margin-left: 1rem;
-                        margin-right: 1rem;
-                        cursor: unset;
-                    }
-                }
             }
         }
     }

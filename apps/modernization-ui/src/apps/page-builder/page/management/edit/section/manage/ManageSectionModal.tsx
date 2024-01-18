@@ -43,8 +43,6 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
         refresh?.();
     };
 
-    const reset = () => {};
-
     return (
         <>
             <Modal
@@ -66,8 +64,10 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
                         onContentChange={() => {
                             refresh?.();
                         }}
+                        onDeleteSection={() => {
+                            setAlert({ message: `You've successfully deleted section!`, type: `success` });
+                        }}
                         onCancel={onCloseManageSectionModal}
-                        reset={reset}
                     />
                 </DragDropProvider>
             </Modal>

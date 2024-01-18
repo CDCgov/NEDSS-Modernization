@@ -59,7 +59,6 @@ describe('when ManageSection renders', () => {
                     key={1}
                     onContentChange={jest.fn()}
                     onCancel={jest.fn()}
-                    reset={jest.fn()}
                 />
             </DragDropProvider>
         );
@@ -76,7 +75,6 @@ describe('when ManageSection renders', () => {
                     key={1}
                     onContentChange={jest.fn()}
                     onCancel={jest.fn()}
-                    reset={jest.fn()}
                 />
             </DragDropProvider>
         );

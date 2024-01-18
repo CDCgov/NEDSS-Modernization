@@ -3,6 +3,7 @@ import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { Button, Icon } from '@trussworks/react-uswds';
 import styles from './manageSectionTile.module.scss';
+import { AlertInLineProps } from '../ManageSectionModal';
 
 type Props = {
     section: PagesSection;
@@ -11,6 +12,7 @@ type Props = {
     selectedForDelete: PagesSection | undefined;
     handleDelete: (section: PagesSection) => void;
     setOnAction: (action: boolean) => void;
+    setAlert?: (alerts: AlertInLineProps) => void;
     onAction: boolean;
 };
 
