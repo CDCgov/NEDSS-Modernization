@@ -44,7 +44,7 @@ export const ManageSectionTile = ({
     return (
         <Draggable draggableId={section.id?.toString()} index={index} key={section.id?.toString()}>
             {(provided: DraggableProvided) => (
-                <div className={styles.tile} ref={provided.innerRef}>
+                <div className={styles.tile} ref={provided.innerRef} {...provided.draggableProps}>
                     {selectedForDelete !== undefined && selectedForDelete.id === section.id ? (
                         <div className={styles.warningModal}>
                             <div className={styles.warningModalHeader}>
@@ -99,7 +99,7 @@ export const ManageSectionTile = ({
                             </div>
                         </div>
                     ) : (
-                        <div className={styles.manageSectionTile} ref={provided.innerRef} {...provided.draggableProps}>
+                        <div className={styles.manageSectionTile}>
                             <div className={styles.handle} {...provided.dragHandleProps}>
                                 <IconComponent name="drag" size="3" />
                             </div>
