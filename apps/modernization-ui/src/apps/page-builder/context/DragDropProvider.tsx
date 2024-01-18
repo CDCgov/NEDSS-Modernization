@@ -214,9 +214,6 @@ const DragDropProvider: React.FC<{
 
     // move sections
     const handleSectionMove: DragDropProps = (source, destination) => {
-        const reorderedSections = [...sections];
-        const [removed] = reorderedSections.splice(source.index, 1);
-        reorderedSections.splice(destination.index, 0, removed);
         if (destination.index === sections.length - 1) {
             afterId = sections[sections.length - 1].id!;
         } else if (destination.index === 0) {
@@ -226,7 +223,7 @@ const DragDropProvider: React.FC<{
         } else {
             afterId = sections[destination.index - 1].id!;
         }
-        setSections(reorderedSections);
+        sections.splice(destination.index, 0, sections.splice(source.index, 1)[0]);
     };
 
     const handleTabMove: DragDropProps = (source, destination) => {
@@ -254,7 +251,7 @@ const DragDropProvider: React.FC<{
         setMoveId(Number(event.draggableId));
     };
 
-    const handleDragEnd = (result: DropResult) => {
+    const handleDragEnd = async (result: DropResult) => {
         setCloseId({ id: '', type: '' });
         setDragTarget({ droppableId: '', index: 999, source: 999 });
         if (!result.destination) return;
@@ -268,8 +265,9 @@ const DragDropProvider: React.FC<{
         } else {
             handleTabMove(source, destination);
         }
-        setTimeout(() => reorderObjects(token, afterId, moveId, pageData!.id), 100);
-        setTimeout(() => successCallBack!(), 500);
+        await reorderObjects(token, afterId, moveId, pageData!.id).then(() => {
+            successCallBack!();
+        });
     };
 
     return (
