@@ -1,12 +1,13 @@
 import { Button, Form } from '@trussworks/react-uswds';
 import { CreateSectionRequest, SectionControllerService } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
-import { Input } from 'components/FormInputs/Input';
 import { Controller, useForm } from 'react-hook-form';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
 import { Heading } from 'components/heading';
 import { useAlert } from 'alert';
+import { maxLengthRule } from 'validation/entry';
+import { Input } from 'components/FormInputs/Input';
 
 type sectionProps = {
     tabId?: number;
@@ -16,7 +17,7 @@ type sectionProps = {
 };
 
 export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sectionProps) => {
-    const form = useForm<CreateSectionRequest>();
+    const form = useForm<CreateSectionRequest>({ mode: 'onBlur' });
     const { showAlert } = useAlert();
 
     const onSubmit = form.handleSubmit((data) => {
@@ -47,18 +48,20 @@ export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sec
                     <Controller
                         control={form.control}
                         name="name"
-                        rules={{ required: { value: true, message: 'Section name is required' } }}
+                        rules={{ required: { value: true, message: 'Section name is required' }, ...maxLengthRule(50) }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <Input
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                defaultValue={value}
-                                label="Section Name"
-                                type="text"
-                                error={error?.message}
-                                required
-                                className={styles.inputField}
-                            />
+                            <>
+                                <Input
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    defaultValue={value}
+                                    label="Section Name"
+                                    type="text"
+                                    error={error?.message}
+                                    required
+                                    className={styles.inputField}
+                                />
+                            </>
                         )}
                     />
 
