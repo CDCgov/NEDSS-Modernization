@@ -1,6 +1,5 @@
 import {
     PageHeader,
-    PageManagementContext,
     PageManagementLayout,
     PageManagementMenu,
     PageManagementProvider,
@@ -13,7 +12,6 @@ import { PageContent } from './content/PageContent';
 import { ManageSectionModal } from './section/manage/ManageSectionModal';
 import { ModalRef } from '@trussworks/react-uswds';
 import { useRef } from 'react';
-import { PagesSection } from 'apps/page-builder/generated';
 
 export const Edit = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -29,34 +27,15 @@ export const Edit = () => {
         addSectionModalRef.current?.toggleModal(undefined, true);
     };
 
-    const handleDeleteSection = (section: PagesSection) => {
-        console.log('DELETE', section);
-    };
-
-    const reset = () => {};
-
     return (
         <>
             {page ? (
                 <PageManagementProvider page={page} fetch={fetch}>
-                    <PageManagementContext.Consumer>
-                        {(context) => (
-                            <>
-                                {context?.selected && (
-                                    <ManageSectionModal
-                                        page={context.page}
-                                        pageId={context.page.id}
-                                        tab={context.selected}
-                                        refresh={() => page && refresh(page)}
-                                        addSecModalRef={addSectionModalRef}
-                                        manageSecModalRef={manageSectionModalRef}
-                                        handleDelete={handleDeleteSection}
-                                        reset={reset}
-                                    />
-                                )}
-                            </>
-                        )}
-                    </PageManagementContext.Consumer>
+                    <ManageSectionModal
+                        refresh={() => page && refresh(page)}
+                        addSecModalRef={addSectionModalRef}
+                        manageSecModalRef={manageSectionModalRef}
+                    />
                     <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
                 </PageManagementProvider>
             ) : (

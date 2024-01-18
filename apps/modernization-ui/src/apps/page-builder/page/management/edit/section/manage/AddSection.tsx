@@ -1,5 +1,5 @@
 import { Button, Form } from '@trussworks/react-uswds';
-import { CreateSectionRequest, PagesSection, SectionControllerService } from 'apps/page-builder/generated';
+import { CreateSectionRequest, SectionControllerService } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useForm } from 'react-hook-form';
@@ -13,7 +13,6 @@ type sectionProps = {
     pageId?: number;
     onCancel?: () => void;
     onAddSectionCreated?: () => void;
-    selectedForEdit: PagesSection | undefined;
 };
 
 export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sectionProps) => {
