@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type AddQuestionRequest = {
-    questionIds?: Array<number>;
+export type AvailableQuestionCriteria = {
+    query?: string;
 };
 

@@ -1,44 +1,20 @@
-import React, { RefObject, useRef } from 'react';
 import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { QuestionLibrary } from 'apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
-import './AddQuestionModal.scss';
-import { PageQuestionControllerService } from '../../../generated';
-import { authorization } from '../../../../../authorization';
-import { useAlert } from '../../../../../alert';
-import { usePageManagement } from '../../../page/management';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { RefObject, useRef } from 'react';
 import { CreateQuestion } from '../../CreateQuestion/CreateQuestion';
+import './AddQuestionModal.scss';
 
 type Props = {
     modalRef: RefObject<ModalRef>;
     subsectionId: number;
 };
 
-export const AddQuestionModal = ({ modalRef, subsectionId }: Props) => {
-    const { showAlert } = useAlert();
-    const { page, fetch } = usePageManagement();
+export const AddQuestionModal = ({ modalRef }: Props) => {
     const createModalRef = useRef<ModalRef>(null);
 
     const handleAddQuestion = (questionId: number) => {
-        const request = {
-            subsectionId,
-            questionId: questionId
-        };
-        PageQuestionControllerService.addQuestionToPageUsingPost({
-            authorization: authorization(),
-            page: page.id,
-            request
-        }).then((response) => {
-            fetch(page.id);
-            showAlert({
-                type: 'success',
-                header: 'Add',
-                message: response.message || 'Add Question successfully on page'
-            });
-            handleClose();
-            modalRef.current?.toggleModal(undefined, false);
-            return response;
-        });
+        console.log('add question', questionId);
     };
     const handleClose = () => {
         createModalRef.current?.toggleModal(undefined, false);

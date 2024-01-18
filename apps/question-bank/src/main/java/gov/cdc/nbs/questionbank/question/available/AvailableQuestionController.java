@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/v1/questions/page/{pageId}")
@@ -21,12 +20,8 @@ public class AvailableQuestionController {
     this.finder = finder;
   }
 
-  @ApiOperation(
-      value = "Search available questions",
-      notes = "Searches for questions that can be added to the given page",
-      tags = "Page")
   @PostMapping("search")
-  public Page<AvailableQuestion> findAddableQuestions(
+  public Page<AvailableQuestion> findAvailableQuestions(
       @RequestBody AvailableQuestionCriteria request,
       @PathVariable("pageId") Long pageId,
       @PageableDefault(size = 25) Pageable pageable) {
