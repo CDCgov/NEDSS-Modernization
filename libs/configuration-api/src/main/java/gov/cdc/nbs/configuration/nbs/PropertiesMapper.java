@@ -1,5 +1,6 @@
 package gov.cdc.nbs.configuration.nbs;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,9 @@ public class PropertiesMapper {
 
   // NBS Classic tokenizes STD and HIV program areas in the cachedStdProgramArea method of the PropertyUtil
   private static List<String> tokenize(String original) {
+    if (original == null) {
+      return new ArrayList<>();
+    }
     return Stream.of(original.split(","))
         .map(s -> s.toUpperCase().trim())
         .toList();

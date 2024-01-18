@@ -15,6 +15,7 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Condition, CreateConditionRequest, ProgramArea } from '../../generated';
 import { Concept } from '../../generated/models/Concept';
 import './CreateCondition.scss';
+import { useConfiguration } from 'configuration';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -23,16 +24,16 @@ type Props = {
 
 export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const token = authorization();
-    const { handleSubmit, control, reset, formState } = useForm<CreateConditionRequest>({ mode: 'onBlur' });
+    const { handleSubmit, control, reset, resetField, formState } = useForm<CreateConditionRequest>({ mode: 'onBlur' });
     const formWatch = useWatch({ control });
     const { showAlert } = useAlert();
+    const { properties } = useConfiguration();
 
     // DropDown Options
     const [familyOptions, setFamilyOptions] = useState([] as Concept[]);
     const [groupOptions, setGroupOptions] = useState([] as Concept[]);
     const [programAreaOptions, setProgramAreaOptions] = useState([] as ProgramArea[]);
     const [systemOptions, setSystemOptions] = useState([] as Concept[]);
-    const stdHivCodes = ['HIV', 'STD'];
 
     useEffect(() => {
         fetchFamilyOptions(token).then((response) => setFamilyOptions(response));
@@ -60,6 +61,20 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const resetInput = () => {
         reset();
     };
+
+    const isStdOrHivProgramArea = (programArea: string | undefined): boolean => {
+        return (
+            programArea !== undefined &&
+            (properties.hivProgramAreas.includes(programArea) || properties.stdProgramAreas.includes(programArea))
+        );
+    };
+
+    useEffect(() => {
+        // if new selected program area code is not hiv or std, clear co-infection group
+        if (!isStdOrHivProgramArea(formWatch.progAreaCd)) {
+            resetField('coinfectionGrpCd');
+        }
+    }, [formWatch.progAreaCd]);
 
     return (
         <div className="create-condition">
@@ -162,7 +177,6 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         name="familyCd"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
-                                disabled={!(formWatch.progAreaCd && stdHivCodes.includes(formWatch.progAreaCd))}
                                 label="Condition family"
                                 defaultValue={value}
                                 onChange={onChange}
@@ -183,6 +197,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 label="Co-infection group"
                                 defaultValue={value}
                                 onChange={onChange}
+                                disabled={!isStdOrHivProgramArea(formWatch.progAreaCd)}
                                 options={groupOptions.map((option) => {
                                     return {
                                         name: option.display!,

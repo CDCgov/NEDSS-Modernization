@@ -22,4 +22,14 @@ class PropertiesMapperTest {
     assertThat(props.entries()).containsEntry(NbsPropertiesFinder.CODE_BASE, "nbs 6");
     assertThat(props.entries()).doesNotContainKey("dontInclude");
   }
+
+  @Test
+  void shouldNotFailForNullTokenizeCall() {
+    Map<String, String> map = new HashMap<>();
+    Properties props = PropertiesMapper.toProperties(map);
+    assertThat(props).isNotNull();
+    assertThat(props.stdProgramAreas()).isEmpty();
+    assertThat(props.hivProgramAreas()).isEmpty();
+    assertThat(props.entries().entrySet()).isEmpty();
+  }
 }
