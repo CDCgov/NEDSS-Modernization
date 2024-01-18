@@ -56,11 +56,12 @@ export const CreateConcept = ({ valueset, codeSystemOptionList, setShowForm, upd
     });
 
     const handleCreateConcept = (data: AddConceptRequest) => {
+        const effectiveFromTime = new Date(data.effectiveFromTime).toISOString();
         const request: AddConceptRequest = {
             code: valueset?.valueSetCode!,
             displayName: data.displayName,
             shortDisplayName: data.displayName,
-            effectiveFromTime: data.effectiveFromTime,
+            effectiveFromTime,
             effectiveToTime: data.effectiveToTime,
             statusCode: data.statusCode,
             messagingInfo: {
