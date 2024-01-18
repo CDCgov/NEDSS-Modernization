@@ -106,7 +106,6 @@ export const ManageSectionTile = ({
                             <div className={styles.label}>
                                 <IconComponent name="group" size="3" />
                                 <span data-testid="manageSectionTileId">
-                                    {section.name}&nbsp;
                                     {`${section.name}(${section.subSections.length})`}
                                 </span>
                             </div>

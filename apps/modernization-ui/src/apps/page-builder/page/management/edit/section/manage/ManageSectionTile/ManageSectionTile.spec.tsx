@@ -75,7 +75,7 @@ describe('when ManageSectionTile renders', () => {
                                     section={section}
                                     index={1}
                                     setSelectedForDelete={jest.fn}
-                                    selectedForDelete={section}
+                                    selectedForDelete={undefined}
                                     handleDelete={jest.fn}
                                     setOnAction={jest.fn} onAction={false}/>
                             </div>
@@ -84,6 +84,6 @@ describe('when ManageSectionTile renders', () => {
                 </DragDropContext>
             </DragDropProvider>
         );
-        expect(getByTestId('manageSectionTileId').innerHTML).toBe('Test Section&nbsp;(2)');
+        expect(getByTestId('manageSectionTileId').innerHTML).toBe('Test Section(2)');
     });
 });

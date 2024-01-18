@@ -38,7 +38,7 @@
             .content {
                 display: flex;
                 flex-direction: row;
-                align-items: start;
+                align-items: flex-start;
 
                 .warningDrag {
                     padding-right: 1.2rem;
@@ -54,7 +54,7 @@
             .warningModalBtns {
                 display: flex;
                 flex-direction: row;
-                align-items: start;
+                align-items: flex-start;
 
                 color: colors.$primary;
 
