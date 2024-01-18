@@ -44,7 +44,7 @@ export const ManageSectionTile = ({
     return (
         <Draggable draggableId={section.id?.toString()} index={index} key={section.id?.toString()}>
             {(provided: DraggableProvided) => (
-                <div className={styles.tile}>
+                <div className={styles.tile} ref={provided.innerRef}>
                     {selectedForDelete !== undefined && selectedForDelete.id === section.id ? (
                         <div className={styles.warningModal}>
                             <div className={styles.warningModalHeader}>
