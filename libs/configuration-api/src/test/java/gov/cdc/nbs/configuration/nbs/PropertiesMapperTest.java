@@ -1,4 +1,4 @@
-package gov.cdc.nbs.configuration;
+package gov.cdc.nbs.configuration.nbs;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.HashMap;
