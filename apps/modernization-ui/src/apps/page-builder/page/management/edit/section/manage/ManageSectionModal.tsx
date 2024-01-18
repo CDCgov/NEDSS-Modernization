@@ -1,11 +1,10 @@
-import { ModalRef } from '@trussworks/react-uswds';
+import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { AddSection } from './AddSection';
 import { ManageSection } from './ManageSection';
 import './ManageSectionModal.scss';
 import { PagesResponse, PagesSection, PagesTab } from 'apps/page-builder/generated';
 import { RefObject, useState } from 'react';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
-import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 
 type ManageSectionModalProps = {
     page: PagesResponse;
@@ -47,50 +46,45 @@ export const ManageSectionModal = ({
 
     return (
         <>
-            <ModalComponent
-                modalRef={manageSectionModalRef}
+            <Modal
+                id={'manage-section-modal'}
+                className={'manage-section-modal'}
+                ref={manageSectionModalRef}
                 forceAction
-                size="tall"
-                modalHeading={null}
-                modalBody={
-                    <DragDropProvider
-                        pageData={page}
-                        currentTab={page!.tabs!.findIndex((x: PagesTab) => x.name === tab.name)}
-                        successCallBack={onReorderSuccess}>
-                        <ManageSection
-                            pageId={pageId}
-                            tab={tab}
-                            key={tab?.sections.length}
-                            onContentChange={() => {
-                                refresh?.();
-                            }}
-                            onCancel={onCloseManageSectionModal}
-                            setSelectedForEdit={setSelectedForEdit}
-                            selectedForEdit={selectedForEdit}
-                            setSelectedForDelete={setSelectedForDelete}
-                            selectedForDelete={selectedForDelete}
-                            handleDelete={handleDelete}
-                            reset={reset}
-                        />
-                    </DragDropProvider>
-                }
-            />
-            <ModalComponent
-                modalRef={addSectionModalRef}
-                size="tall"
-                modalBody={
-                    <AddSection
+                isLarge>
+                <DragDropProvider
+                    pageData={page}
+                    currentTab={page!.tabs!.findIndex((x: PagesTab) => x.name === tab.name)}
+                    successCallBack={onReorderSuccess}>
+                    <ManageSection
                         pageId={pageId}
-                        tabId={tab.id}
-                        onAddSectionCreated={() => {
+                        tab={tab}
+                        key={tab?.sections.length}
+                        onContentChange={() => {
                             refresh?.();
-                            closeAddSection?.();
                         }}
-                        onCancel={closeAddSection}
+                        onCancel={onCloseManageSectionModal}
+                        setSelectedForEdit={setSelectedForEdit}
                         selectedForEdit={selectedForEdit}
+                        setSelectedForDelete={setSelectedForDelete}
+                        selectedForDelete={selectedForDelete}
+                        handleDelete={handleDelete}
+                        reset={reset}
                     />
-                }
-            />
+                </DragDropProvider>
+            </Modal>
+            <Modal id={'add-section-modal'} ref={addSectionModalRef} className={'add-section-modal'} isLarge>
+                <AddSection
+                    pageId={pageId}
+                    tabId={tab.id}
+                    onAddSectionCreated={() => {
+                        refresh?.();
+                        closeAddSection?.();
+                    }}
+                    onCancel={closeAddSection}
+                    selectedForEdit={selectedForEdit}
+                />
+            </Modal>
         </>
     );
 };
