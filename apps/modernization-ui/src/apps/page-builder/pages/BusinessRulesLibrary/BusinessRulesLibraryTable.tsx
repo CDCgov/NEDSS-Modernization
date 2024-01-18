@@ -83,7 +83,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         }
     };
 
-    const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules-library`;
+    const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules`;
 
     const asTableRow = (rule: Rules): TableBody => ({
         id: rule.templateUid,
