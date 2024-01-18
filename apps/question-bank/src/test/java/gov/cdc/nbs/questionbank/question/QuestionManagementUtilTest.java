@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
@@ -24,7 +25,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
@@ -45,15 +46,15 @@ class QuestionManagementUtilTest {
         TextQuestionEntity entity = QuestionEntityMother.textQuestion();
         // given the question is not unique
         when(questionRepository.findAllByUniqueFields(
-                entity.getQuestionNm(),
-                entity.getQuestionIdentifier(),
-                entity.getUserDefinedColumnNm(),
-                entity.getRdbColumnNm()))
-                        .thenReturn(Collections.singletonList(new TextQuestionEntity()));
+            entity.getQuestionNm(),
+            entity.getQuestionIdentifier(),
+            entity.getUserDefinedColumnNm(),
+            entity.getRdbColumnNm()))
+            .thenReturn(Collections.singletonList(new TextQuestionEntity()));
 
         // when i check if a question is unique then an exception is thrown
         assertThrows(UniqueQuestionException.class,
-                () -> questionManagementUtil.verifyUnique(entity));
+            () -> questionManagementUtil.verifyUnique(entity));
     }
 
     @Test
@@ -61,11 +62,11 @@ class QuestionManagementUtilTest {
         TextQuestionEntity entity = QuestionEntityMother.textQuestion();
         // given the question is not unique
         when(questionRepository.findAllByUniqueFields(
-                entity.getQuestionNm(),
-                entity.getQuestionIdentifier(),
-                entity.getUserDefinedColumnNm(),
-                entity.getRdbColumnNm()))
-                        .thenReturn(new ArrayList<>());
+            entity.getQuestionNm(),
+            entity.getQuestionIdentifier(),
+            entity.getUserDefinedColumnNm(),
+            entity.getRdbColumnNm()))
+            .thenReturn(new ArrayList<>());
 
         // when i check if a question is unique then no exception is thrown
         questionManagementUtil.verifyUnique(entity);
@@ -95,9 +96,9 @@ class QuestionManagementUtilTest {
 
         // when I generate the question oid
         QuestionOid oid = questionManagementUtil.getQuestionOid(
-                false,
-                request.getMessagingInfo().codeSystem(),
-                request.getCodeSet());
+            false,
+            request.getMessagingInfo().codeSystem(),
+            request.getCodeSet());
 
         // then I am returned the proper code system info
         assertEquals("L", oid.oid());
@@ -111,9 +112,9 @@ class QuestionManagementUtilTest {
 
         // when I generate the question oid
         QuestionOid oid = questionManagementUtil.getQuestionOid(
-                false,
-                request.getMessagingInfo().codeSystem(),
-                request.getCodeSet());
+            false,
+            request.getMessagingInfo().codeSystem(),
+            request.getCodeSet());
 
         // then I am returned the proper code system info
         assertEquals("2.16.840.1.114222.4.5.232", oid.oid());
@@ -125,17 +126,17 @@ class QuestionManagementUtilTest {
         // given a request with an invalid code_system
         CreateTextQuestionRequest request = QuestionRequestMother.localTextRequest();
         when(codeValueGeneralRepository.findByCode(request.getMessagingInfo().codeSystem()))
-                .thenReturn(Optional.empty());
+            .thenReturn(Optional.empty());
 
-        // when retrieving the question oid 
+        // when retrieving the question oid
         // then an exception is thrown
         String codeSystem = request.getMessagingInfo().codeSystem();
         CodeSet codeSet = request.getCodeSet();
         assertThrows(UpdateQuestionException.class,
-                () -> questionManagementUtil.getQuestionOid(
-                        true,
-                        codeSystem,
-                        codeSet));
+            () -> questionManagementUtil.getQuestionOid(
+                true,
+                codeSystem,
+                codeSet));
     }
 
     @Test

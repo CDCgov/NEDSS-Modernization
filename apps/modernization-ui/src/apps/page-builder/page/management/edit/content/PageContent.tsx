@@ -3,9 +3,11 @@ import { Sections } from '../section/Sections';
 import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
 import { EditStaticElement } from '../staticelement/EditStaticElement';
-import { ModalRef } from '@trussworks/react-uswds';
+import { Icon, ModalRef } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
 import { AddQuestionModal } from '../../../../components/Subsection/AddQuestionModal/AddQuestionModal';
+import { ValuesetLibrary } from '../../../../pages/ValuesetLibrary/ValuesetLibrary';
+import { AddValueset } from '../../../../components/AddValueset/AddValueset';
 import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
 import { Heading } from '../../../../../../components/heading';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
@@ -32,6 +34,8 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
     const [subsectionId, setSubsectionId] = useState(0);
     const addQuestionModalRef = useRef<ModalRef>(null);
+    const addValueModalRef = useRef<ModalRef>(null);
+    const createValueModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
 
     const handleAddSubsection = (section: number) => {
@@ -88,17 +92,57 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
                     )
                 }
             />
-            <AddQuestionModal subsectionId={subsectionId} modalRef={addQuestionModalRef} />
+            <AddQuestionModal
+                subsectionId={subsectionId}
+                modalRef={addQuestionModalRef}
+                addValueModalRef={addValueModalRef}
+            />
             <ModalComponent
-                isLarge
                 modalRef={editQuestionModalRef}
                 closer
+                size="wide"
                 modalHeading={
                     <div className="edit-question-header">
                         <Heading level={2}>Edit question</Heading>
                     </div>
                 }
-                modalBody={<CreateQuestion onCloseModal={onCloseModal} question={currentEditQuestion} />}
+                modalBody={
+                    <CreateQuestion
+                        onCloseModal={onCloseModal}
+                        question={currentEditQuestion}
+                        addValueModalRef={addValueModalRef}
+                    />
+                }
+            />
+            <ModalComponent
+                size="wide"
+                modalRef={addValueModalRef}
+                modalHeading={<Heading level={2}>Search value set</Heading>}
+                modalBody={
+                    <ValuesetLibrary hideTabs modalRef={addValueModalRef} createValueModalRef={createValueModalRef} />
+                }
+                closer
+            />
+            <ModalComponent
+                isLarge
+                size="wide"
+                modalRef={createValueModalRef}
+                modalHeading={
+                    <span className="header-icon-title">
+                        <Icon.ArrowBack />
+                        <Heading level={2}>Add value set</Heading>
+                    </span>
+                }
+                modalBody={
+                    <AddValueset
+                        modalRef={createValueModalRef}
+                        updateCallback={() => {
+                            createValueModalRef.current?.toggleModal(undefined, false);
+                            addValueModalRef.current?.toggleModal(undefined, false);
+                        }}
+                    />
+                }
+                closer
             />
         </div>
     );

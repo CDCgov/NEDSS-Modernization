@@ -50,17 +50,16 @@ export const Sections = ({
     return (
         <div className={styles.sections}>
             {sections.map((s, k) => (
-                <React.Fragment key={k}>
-                    <Section
-                        section={s}
-                        onAddSubsection={onAddSubsection}
-                        onAddQuestion={onAddQuestion}
-                        onEditQuestion={onEditQuestion}
-                        addQuestionModalRef={addQuestionModalRef}
-                        handleEditSection={handleEditSection}
-                        handleDeleteSection={() => handleDeleteSection?.(s)}
-                    />
-                </React.Fragment>
+                <Section
+                    section={s}
+                    key={k}
+                    onAddSubsection={onAddSubsection}
+                    onAddQuestion={onAddQuestion}
+                    onEditQuestion={onEditQuestion}
+                    addQuestionModalRef={addQuestionModalRef}
+                    handleEditSection={handleEditSection}
+                    handleDeleteSection={() => handleDeleteSection?.(s)}
+                />
             ))}
             <StatusModal
                 modal={statusModalRef}

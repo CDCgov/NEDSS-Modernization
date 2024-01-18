@@ -6,9 +6,13 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Optional;
+
+import gov.cdc.nbs.questionbank.entity.question.*;
+import gov.cdc.nbs.questionbank.question.request.update.UpdateQuestionRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -18,8 +22,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
@@ -27,8 +29,7 @@ import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestion;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
@@ -116,7 +117,7 @@ class QuestionUpdaterTest {
     @Test
     void should_not_allow_update_inactive() {
         // given an update request
-        UpdateQuestionRequest request = QuestionRequestMother.update(QuestionType.DATE);
+        UpdateQuestionRequest request = QuestionRequestMother.updateNumericQuestionRequest();
 
         // and an existing question
         WaQuestion inactive = inactiveQuestion();
@@ -129,16 +130,16 @@ class QuestionUpdaterTest {
     @Test
     // Allow more than 25 assertions
     @SuppressWarnings("squid:S5961")
-    void should_convert_to_update() {
+    void should_convert_to_update_text_question() {
         // given an update request
-        UpdateQuestionRequest request = QuestionRequestMother.update();
+        UpdateQuestion request = questionMapper.toUpdateQuestion(QuestionRequestMother.updateTextQuestionRequest());
 
         // and a valid oid
         when(managementUtil.getQuestionOid(
-                true,
-                "PH_ACCEPTAPPLICATION",
-                null))
-                        .thenReturn(new QuestionOid("oid", "oid system"));
+            true,
+            "PH_ACCEPTAPPLICATION",
+            null))
+            .thenReturn(new QuestionOid("oid", "oid system"));
 
 
         // and an existing question
@@ -149,38 +150,108 @@ class QuestionUpdaterTest {
 
         // then the proper values are set
         QuestionCommand.UpdatableQuestionData data = update.questionData();
-        assertEquals(request.uniqueName(), data.uniqueName());
-        assertEquals(request.description(), data.description());
-        assertEquals(request.label(), data.label());
-        assertEquals(request.tooltip(), data.tooltip());
-        assertEquals(request.displayControl(), data.displayControl());
-        assertEquals(request.adminComments(), data.adminComments());
+        assertEquals(request.getUniqueName(), data.uniqueName());
+        assertEquals(request.getDescription(), data.description());
+        assertEquals(request.getLabel(), data.label());
+        assertEquals(request.getTooltip(), data.tooltip());
+        assertEquals(request.getDisplayControl(), data.displayControl());
+        assertEquals(request.getAdminComments(), data.adminComments());
         assertEquals("oid", data.questionOid().oid());
         assertEquals("oid system", data.questionOid().system());
-
-        assertEquals(request.defaultValue(), update.defaultValue());
-        assertEquals(request.mask(), update.mask());
-        assertEquals(request.fieldLength(), update.fieldLength());
-        assertEquals(request.minValue(), update.minValue());
-        assertEquals(request.maxValue(), update.maxValue());
-        assertEquals(request.unitType(), update.unitType());
-        assertEquals(request.unitValue(), update.unitValue());
-        assertEquals(request.allowFutureDates(), update.allowFutureDates());
-        assertEquals(request.valueSet(), update.valueSet());
+        assertEquals(request.getDefaultValue(), update.defaultValue());
 
         QuestionCommand.ReportingData reportingData = update.reportingData();
-        assertEquals(question.getSubGroupNm() + "_" + request.rdbColumnName(), reportingData.rdbColumnName());
-        assertEquals(request.defaultLabelInReport(), reportingData.reportLabel());
-        assertEquals(request.datamartColumnName(), reportingData.dataMartColumnName());
+        assertEquals(question.getSubGroupNm() + "_" + request.getRdbColumnName(), reportingData.rdbColumnName());
+        assertEquals(request.getDefaultLabelInReport(), reportingData.reportLabel());
+        assertEquals(request.getDataMartColumnName(), reportingData.dataMartColumnName());
 
         QuestionCommand.MessagingData messagingData = update.messagingData();
-        assertEquals(request.includedInMessage(), messagingData.includedInMessage());
-        assertEquals(request.messageVariableId(), messagingData.messageVariableId());
-        assertEquals(request.labelInMessage(), messagingData.labelInMessage());
-        assertEquals(request.codeSystem(), messagingData.codeSystem());
-        assertEquals(request.requiredInMessage(), messagingData.requiredInMessage());
-        assertEquals(request.hl7DataType(), messagingData.hl7DataType());
+        assertEquals(request.isIncludedInMessage(), messagingData.includedInMessage());
+        assertEquals(request.getMessageVariableId(), messagingData.messageVariableId());
+        assertEquals(request.getLabelInMessage(), messagingData.labelInMessage());
+        assertEquals(request.getCodeSystem(), messagingData.codeSystem());
+        assertEquals(request.isRequiredInMessage(), messagingData.requiredInMessage());
+        assertEquals(request.getHl7DataType(), messagingData.hl7DataType());
     }
+
+    @Test
+    void should_convert_to_update_date_question() {
+        UpdateQuestion request = questionMapper.toUpdateQuestion(QuestionRequestMother.updateDateQuestionRequest());
+
+        // and a valid oid
+        when(managementUtil.getQuestionOid(
+            true,
+            "PH_ACCEPTAPPLICATION",
+            null))
+            .thenReturn(new QuestionOid("oid", "oid system"));
+
+        DateQuestionEntity question = QuestionEntityMother.dateQuestion();
+
+        QuestionCommand.Update update = updater.asUpdate(1L, request, false, question);
+        QuestionCommand.UpdatableQuestionData data = update.questionData();
+        assertEquals(request.getUniqueName(), data.uniqueName());
+        assertEquals(request.getDescription(), data.description());
+        assertEquals(request.getLabel(), data.label());
+        assertEquals(request.getTooltip(), data.tooltip());
+        assertEquals(request.getDisplayControl(), data.displayControl());
+        assertEquals(request.isAllowFutureDates(), update.allowFutureDates());
+    }
+
+    @Test
+    void should_convert_to_update_coded_Question() {
+        UpdateQuestion request = questionMapper.toUpdateQuestion(QuestionRequestMother.updateCodedQuestionRequest());
+
+        // and a valid oid
+        when(managementUtil.getQuestionOid(
+            true,
+            "PH_ACCEPTAPPLICATION",
+            null))
+            .thenReturn(new QuestionOid("oid", "oid system"));
+
+        CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
+
+        QuestionCommand.Update update = updater.asUpdate(1L, request, false, question);
+        QuestionCommand.UpdatableQuestionData data = update.questionData();
+        assertEquals(request.getUniqueName(), data.uniqueName());
+        assertEquals(request.getDescription(), data.description());
+        assertEquals(request.getLabel(), data.label());
+        assertEquals(request.getTooltip(), data.tooltip());
+        assertEquals(request.getDisplayControl(), data.displayControl());
+        assertEquals(request.getDefaultValue(), update.defaultValue());
+
+    }
+
+    @Test
+    void should_convert_to_update_numeric_Question() {
+        UpdateQuestion request = questionMapper.toUpdateQuestion(QuestionRequestMother.updateNumericQuestionRequest());
+
+        // and a valid oid
+        when(managementUtil.getQuestionOid(
+            true,
+            "PH_ACCEPTAPPLICATION",
+            null))
+            .thenReturn(new QuestionOid("oid", "oid system"));
+
+        NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
+
+        QuestionCommand.Update update = updater.asUpdate(1L, request, false, question);
+        QuestionCommand.UpdatableQuestionData data = update.questionData();
+        assertEquals(request.getUniqueName(), data.uniqueName());
+        assertEquals(request.getDescription(), data.description());
+        assertEquals(request.getLabel(), data.label());
+        assertEquals(request.getTooltip(), data.tooltip());
+        assertEquals(request.getDisplayControl(), data.displayControl());
+
+        assertEquals(request.getDefaultValue(), update.defaultValue());
+        assertEquals(request.getMask(), update.mask());
+        assertEquals(request.getFieldLength().toString(), update.fieldLength());
+        assertEquals(request.getMinValue(), update.minValue());
+        assertEquals(request.getMaxValue(), update.maxValue());
+        assertEquals(request.getRelatedUnitsLiteral(), update.relatedUnitsLiteral());
+        assertEquals(request.getRelatedUnitsValueSet(), update.relatedUnitsValueSet());
+
+    }
+
 
     private WaQuestion emptyQuestion() {
         TextQuestionEntity q = QuestionEntityMother.textQuestion();
@@ -193,19 +264,18 @@ class QuestionUpdaterTest {
         return q;
     }
 
-
     @Test
     void cant_update_type_if_inuse() {
         // given an update request
-        UpdateQuestionRequest request = QuestionRequestMother.update(QuestionType.DATE);
-        TextQuestionEntity spy = QuestionEntityMother.textQuestion();
+        UpdateQuestionRequest request = QuestionRequestMother.updateTextQuestionRequest();
+        DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
         // and an existign question
         when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(spy));
 
         // and a question that is in use
         when(metadatumRepository
-                .findAllByQuestionIdentifier(QuestionEntityMother.textQuestion().getQuestionIdentifier()))
-                        .thenReturn(Collections.singletonList(new WaUiMetadata()));
+            .findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
+            .thenReturn(Collections.singletonList(new WaUiMetadata()));
 
         // and the question can be saved
         when(repository.save(Mockito.any())).thenReturn(spy);
@@ -217,19 +287,19 @@ class QuestionUpdaterTest {
         verify(repository, times(0)).setDataType(Mockito.anyString(), Mockito.anyLong());
     }
 
+
     @Test
     void can_update_type_if_not_inuse() {
         // given an update request
-        UpdateQuestionRequest request = QuestionRequestMother.update(QuestionType.DATE);
-
+        UpdateQuestionRequest request = QuestionRequestMother.updateTextQuestionRequest();
         // and an existign question
-        TextQuestionEntity spy = QuestionEntityMother.textQuestion();
+        DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
         when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(spy));
 
         // and a question that is in use
         when(metadatumRepository
-                .findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
-                        .thenReturn(Collections.emptyList());
+            .findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
+            .thenReturn(Collections.emptyList());
 
         // and the question can be saved
         when(repository.save(Mockito.any())).thenReturn(spy);

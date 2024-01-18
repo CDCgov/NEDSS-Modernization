@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
+
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,13 +34,13 @@ import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
-import gov.cdc.nbs.questionbank.question.request.CreateCodedQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateDateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateNumericQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
-import gov.cdc.nbs.questionbank.question.request.CreateTextQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
+import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
 @ExtendWith(MockitoExtension.class)
@@ -83,8 +85,8 @@ class QuestionCreatorTest {
     @Test
     void should_return_generated_local_id_null() {
         // given the idGenerator will return a generated Id
-        when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(1000L, "PREFIX","SUFFIX"));
-        
+        when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(1000L, "PREFIX", "SUFFIX"));
+
         // and the configRepository will return a NBS_CLASS_CODE
         NbsConfiguration configEntry = new NbsConfiguration();
         configEntry.setConfigValue("GA");
@@ -103,8 +105,8 @@ class QuestionCreatorTest {
     @Test
     void should_return_generated_local_id_empty() {
         // given the idGenerator will return a generated Id
-        when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(1000L, "PREFIX","SUFFIX"));
-        
+        when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(1000L, "PREFIX", "SUFFIX"));
+
         // and the configRepository will return a NBS_CLASS_CODE
         NbsConfiguration configEntry = new NbsConfiguration();
         configEntry.setConfigValue("GA");
@@ -173,10 +175,10 @@ class QuestionCreatorTest {
 
         // and a valid oid
         when(managementUtil.getQuestionOid(
-                false,
-                "ABNORMAL_FLAGS_HL7",
-                CodeSet.PHIN))
-                        .thenReturn(new QuestionOid("test", "test"));
+            false,
+            "ABNORMAL_FLAGS_HL7",
+            CodeSet.PHIN))
+            .thenReturn(new QuestionOid("test", "test"));
 
         // when i convert to an Add command
         QuestionCommand.AddTextQuestion command = creator.asAdd(123L, request);
@@ -212,23 +214,23 @@ class QuestionCreatorTest {
 
         // and that entity will be mapped to a question
         when(mapper.toTextQuestion(tq)).thenReturn(new TextQuestion(
-                999l,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                1l,
-                null,
-                null,
-                null));
+            999l,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1l,
+            null,
+            null,
+            null));
 
         // given a create question request
         CreateTextQuestionRequest request = QuestionRequestMother.phinTextRequest(false);
@@ -256,7 +258,7 @@ class QuestionCreatorTest {
         when(codesetRepository.findOneByCodeSetGroupId(123L)).thenReturn(Optional.empty());
 
         // when querying for the value set then an exception is thrown
-        assertThrows(CreateQuestionException.class, ()-> creator.verifyValueSetExists(123L));
+        assertThrows(CreateQuestionException.class, () -> creator.verifyValueSetExists(123L));
     }
 
     @Test
@@ -265,7 +267,7 @@ class QuestionCreatorTest {
         when(configRepository.findById("NBS_CLASS_CODE")).thenReturn(Optional.empty());
 
         // when retrieving the codes, an exception is thrown
-        assertThrows(CreateQuestionException.class,() ->creator.getNbsClassCode());
+        assertThrows(CreateQuestionException.class, () -> creator.getNbsClassCode());
     }
 
     @Test
@@ -277,22 +279,22 @@ class QuestionCreatorTest {
 
         // and that entity will be mapped to a question
         when(mapper.toDateQuestion(dq)).thenReturn(new DateQuestion(
-                999l,
-                null,
-                false,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null));
+            999l,
+            null,
+            false,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null));
 
         // given a create question request
         CreateDateQuestionRequest request = QuestionRequestMother.dateRequest();
@@ -313,27 +315,27 @@ class QuestionCreatorTest {
 
         // and that entity will be mapped to a question
         when(mapper.toNumericQuestion(nq)).thenReturn(new NumericQuestion(
-                999l,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null));
+            999l,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null));
 
         // given a create question request
         CreateNumericQuestionRequest request = QuestionRequestMother.numericRequest();
@@ -357,22 +359,22 @@ class QuestionCreatorTest {
 
         // and that entity will be mapped to a question
         when(mapper.toCodedQuestion(cq)).thenReturn(new CodedQuestion(
-                999l,
-                123l,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null));
+            999l,
+            123l,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null));
 
         // given a create question request
         CreateCodedQuestionRequest request = QuestionRequestMother.codedRequest(123l);

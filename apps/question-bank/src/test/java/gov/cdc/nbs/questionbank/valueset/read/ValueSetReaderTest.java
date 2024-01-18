@@ -6,10 +6,12 @@ import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 
+import gov.cdc.nbs.questionbank.entity.*;
 import gov.cdc.nbs.questionbank.valueset.ValueSetFinder;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 
@@ -21,16 +23,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
-import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
-import gov.cdc.nbs.questionbank.entity.CodeValueGeneralId;
-import gov.cdc.nbs.questionbank.entity.Codeset;
-import gov.cdc.nbs.questionbank.entity.CodesetId;
 import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import gov.cdc.nbs.questionbank.valueset.ValueSetReader;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
+import org.springframework.data.domain.Sort;
 
 class ValueSetReaderTest {
 
@@ -42,6 +40,10 @@ class ValueSetReaderTest {
 
   @InjectMocks
   ValueSetReader valueSetReader;
+
+
+  @Mock
+  CodeValueGeneralRepository codeValueGeneralRepository;
 
   ValueSetReaderTest() {
     MockitoAnnotations.openMocks(this);
@@ -128,20 +130,8 @@ class ValueSetReaderTest {
 
   @Test
   void should_map_codeValueGeneral_to_concept() {
-    Instant now = Instant.now();
-    Instant future = now.plusSeconds(500);
-    CodeValueGeneral cvg = new CodeValueGeneral();
-    cvg.setId(new CodeValueGeneralId("codeSetNm", "code"));
-    cvg.setCodeShortDescTxt("codeShortDescTxt");
-    cvg.setConceptCode("conceptCode");
-    cvg.setConceptPreferredNm("conceptPreferredName");
-    cvg.setCodeSystemDescTxt("codeSystemDescTxt");
-    cvg.setConceptStatusCd("Active");
-    cvg.setEffectiveFromTime(now);
-    cvg.setEffectiveToTime(future);
-
+    CodeValueGeneral cvg = getCodeValueGeneral();
     Concept concept = valueSetReader.toConcept(cvg);
-
     assertEquals(cvg.getId().getCode(), concept.localCode());
     assertEquals(cvg.getId().getCodeSetNm(), concept.codeSetName());
     assertEquals(cvg.getCodeShortDescTxt(), concept.display());
@@ -155,11 +145,41 @@ class ValueSetReaderTest {
   }
 
 
-
   @Test
   void should_return_empty_list_for_null_concept() {
-    List<Concept> results = valueSetReader.findConceptCodes(null);
-    assertNotNull(results);
-    assertTrue(results.isEmpty());
+    List<Concept> conceptResults = valueSetReader.findConceptCodes(null);
+    assertNotNull(conceptResults);
+    assertTrue(conceptResults.isEmpty());
+  }
+
+
+  @Test
+  void should_return_concept_list_for_valid_concept() {
+    String codeSetName = "codeSetName";
+    when(codeValueGeneralRepository.findByIdCodeSetNm(any(), any(Sort.class)))
+        .thenReturn(getListOfCodeValueGeneral());
+    List<Concept> ConceptResults = valueSetReader.findConceptCodes(codeSetName);
+    assertNotNull(ConceptResults);
+    assertFalse(ConceptResults.isEmpty());
+  }
+
+
+  private List<CodeValueGeneral> getListOfCodeValueGeneral() {
+    return Arrays.asList(getCodeValueGeneral());
+  }
+
+  private CodeValueGeneral getCodeValueGeneral() {
+    Instant now = Instant.now();
+    Instant future = now.plusSeconds(500);
+    CodeValueGeneral cvg = new CodeValueGeneral();
+    cvg.setId(new CodeValueGeneralId("codeSetNm", "code"));
+    cvg.setCodeShortDescTxt("codeShortDescTxt");
+    cvg.setConceptCode("conceptCode");
+    cvg.setConceptPreferredNm("conceptPreferredName");
+    cvg.setCodeSystemDescTxt("codeSystemDescTxt");
+    cvg.setConceptStatusCd("Active");
+    cvg.setEffectiveFromTime(now);
+    cvg.setEffectiveToTime(future);
+    return cvg;
   }
 }

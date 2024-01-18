@@ -3,12 +3,11 @@ package gov.cdc.nbs.questionbank.support;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+
+import gov.cdc.nbs.questionbank.entity.question.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 
 @Component
@@ -47,6 +46,18 @@ public class QuestionMother {
         .orElseGet(this::createDateQuestion);
   }
 
+  public WaQuestion codeQuestion() {
+    return allQuestions.stream()
+        .filter(q -> q instanceof CodedQuestionEntity).findFirst()
+        .orElseGet(this::createCodeQuestion);
+  }
+
+  public WaQuestion numericQuestion() {
+    return allQuestions.stream()
+        .filter(q -> q instanceof NumericQuestionEntity).findFirst()
+        .orElseGet(this::createNumericQuestion);
+  }
+
   public WaQuestion one() {
     return allQuestions.stream().findFirst()
         .orElseThrow(() -> new IllegalStateException("No questions are available"));
@@ -61,6 +72,20 @@ public class QuestionMother {
 
   private WaQuestion createDateQuestion() {
     WaQuestion q = QuestionEntityMother.dateQuestion();
+    q = questionRepository.save(q);
+    allQuestions.add(q);
+    return q;
+  }
+
+  private WaQuestion createCodeQuestion() {
+    WaQuestion q = QuestionEntityMother.codedQuestion();
+    q = questionRepository.save(q);
+    allQuestions.add(q);
+    return q;
+  }
+
+  private WaQuestion createNumericQuestion() {
+    WaQuestion q = QuestionEntityMother.numericQuestion();
     q = questionRepository.save(q);
     allQuestions.add(q);
     return q;
