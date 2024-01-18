@@ -3,16 +3,18 @@ package gov.cdc.nbs.questionbank.valueset;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ValueSetSearchResponseMapper implements RowMapper<ValueSetSearchResponse> {
 
-  record Column(int type, int valueSetCode, int valueSetName, int valueSetDescription, int status) {
+  record Column(int type, int valueSetCode, int valueSetName, int valueSetDescription, int status, int codeSetGroupId) {
     Column() {
-      this(1, 2, 3, 4, 5);
+      this(1, 2, 3, 4, 5, 6);
     }
   }
+
 
   private final Column columns;
 
@@ -32,12 +34,15 @@ public class ValueSetSearchResponseMapper implements RowMapper<ValueSetSearchRes
     String valueSetName = rs.getString(columns.valueSetName());
     String valueSetDescription = rs.getString(columns.valueSetDescription());
     String status = rs.getString(columns.status());
+    Long codeSetGroupId = rs.getLong(columns.codeSetGroupId());
     return new ValueSetSearchResponse(
         type,
         valueSetCode,
         valueSetName,
         valueSetDescription,
-        status );
+        status,
+        codeSetGroupId);
+
   }
 
 

@@ -23,7 +23,8 @@ public class ValueSetFinder {
           NBS_SRTE.dbo.Codeset.value_set_code,
           NBS_SRTE.dbo.Codeset.value_set_nm,
           NBS_SRTE.dbo.Codeset.code_set_desc_txt,
-          NBS_SRTE.dbo.Codeset.value_set_status_cd
+          NBS_SRTE.dbo.Codeset.value_set_status_cd,
+          NBS_SRTE.dbo.Codeset.code_set_group_id
       FROM NBS_SRTE.dbo.Codeset 
       WHERE (NBS_SRTE.dbo.Codeset.value_set_nm LIKE  ?
           OR NBS_SRTE.dbo.Codeset.code_set_desc_txt LIKE ?
