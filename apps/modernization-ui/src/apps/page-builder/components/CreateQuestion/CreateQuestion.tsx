@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './CreateQuestion.scss';
 import {
     Form,
@@ -6,7 +6,6 @@ import {
     Radio,
     ButtonGroup,
     Button,
-    ModalRef,
     Textarea,
     Label,
     ErrorMessage
@@ -15,8 +14,6 @@ import { ValueSetControllerService, QuestionControllerService, UpdateQuestionReq
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
 import { coded, dateOrNumeric, text as textOption } from '../../constant/constant';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { ValuesetLibrary } from '../../pages/ValuesetLibrary/ValuesetLibrary';
 import { Controller, useForm } from 'react-hook-form';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
@@ -68,6 +65,7 @@ export type QuestionFormType = {
     HL7Segment?: string;
     relatedUnits?: string;
     allowFutureDates?: string;
+    dataType?: string;
     codeSet: any;
 };
 type CreateQuestionFormType = CreateNumericQuestionRequest &
@@ -80,7 +78,7 @@ type CreateQuestionFormType = CreateNumericQuestionRequest &
 
 export type optionsType = { name: string; value: string };
 
-export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) => {
+export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValueModalRef }: any) => {
     const questionForm = useForm<CreateQuestionFormType, any>({
         defaultValues: { ...init }
     });
@@ -111,6 +109,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                 updatedQuestion.defaultLabelInReport || updatedQuestion.reportLabel
             );
             setSelectedFieldType(updatedQuestion.dataType);
+            questionForm.setValue('dataType', updatedQuestion.dataType);
             questionForm.setValue('dataMartColumnName', updatedQuestion.dataMartColumnName);
             questionForm.setValue('defaultRdbTableName', updatedQuestion.defaultRdbTableName);
             questionForm.setValue('rdbColumnName', updatedQuestion.rdbColumnName);
@@ -339,7 +338,6 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
         }
     };
 
-    const valueSetmodalRef = useRef<ModalRef>(null);
     const isValueSet = searchValueSet?.valueSetNm !== undefined;
     const renderValueSet = (
         <div className="">
@@ -349,15 +347,9 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                     {searchValueSet?.valueSetNm!}
                 </Heading>
             )}
-            <ModalToggleButton modalRef={valueSetmodalRef} className="width-full" type="submit" outline>
+            <ModalToggleButton modalRef={addValueModalRef} className="width-full" type="submit" outline>
                 {isValueSet ? 'Change value set' : 'Search value set'}
             </ModalToggleButton>
-            <ModalComponent
-                size="wide"
-                modalRef={valueSetmodalRef}
-                modalHeading={'Add value set'}
-                modalBody={<ValuesetLibrary modalRef={valueSetmodalRef} hideTabs types="recent" />}
-            />
             <br></br>
         </div>
     );
@@ -563,19 +555,33 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                             )}
                         />
                         <br></br>
-                        <label>Field type</label>
-                        <br></br>
-                        <ButtonGroup type="segmented">
-                            {fieldTypeTab.map((field, index) => (
-                                <Button
-                                    key={index}
-                                    type="button"
-                                    outline={field.value !== selectedFieldType}
-                                    onClick={() => setSelectedFieldType(field.value)}>
-                                    {field.name}
-                                </Button>
-                            ))}
-                        </ButtonGroup>
+                        <Controller
+                            control={control}
+                            name="dataType"
+                            rules={{ required: { value: true, message: 'Field type required' } }}
+                            render={({ field: { onChange, name }, fieldState: { error } }) => (
+                                <>
+                                    <Label htmlFor={name}>Field type</Label>
+                                    <ButtonGroup type="segmented">
+                                        {fieldTypeTab.map((field, index) => (
+                                            <Button
+                                                key={index}
+                                                type="button"
+                                                outline={field.value !== selectedFieldType}
+                                                onClick={() => {
+                                                    setSelectedFieldType(field.value);
+                                                    onChange(field.value);
+                                                }}>
+                                                {field.name}
+                                            </Button>
+                                        ))}
+                                    </ButtonGroup>
+                                    {error?.message && (
+                                        <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>
+                                    )}
+                                </>
+                            )}
+                        />
                         <br></br>
                         {selectedFieldType === UpdateQuestionRequest.type.CODED && renderValueSet}
                         {(selectedFieldType === UpdateQuestionRequest.type.NUMERIC ||

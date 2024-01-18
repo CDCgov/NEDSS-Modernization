@@ -5,6 +5,7 @@ public record ValueSetSearchResponse(
     String valueSetCode,
     String valueSetName,
     String valueSetDescription,
-    String valueSetStatus
+    String valueSetStatus,
+    Long codeSetGroupId
 ) {
 }

@@ -33,7 +33,7 @@ const PreviewPageContent = () => {
         <PageManagementLayout name={page.name} mode={'draft'}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
-                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules-library`} type="outline">
+                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                         Business rules
                     </NavLinkButton>
                     <Button outline type="button">

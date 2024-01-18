@@ -1,7 +1,5 @@
-import { ModalRef } from '@trussworks/react-uswds';
 import {
     PageHeader,
-    PageManagementContext,
     PageManagementLayout,
     PageManagementMenu,
     PageManagementProvider,
@@ -10,9 +8,10 @@ import {
 } from 'apps/page-builder/page/management';
 import { Loading } from 'components/Spinner';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
-import { useRef } from 'react';
 import { PageContent } from './content/PageContent';
 import { ManageSectionModal } from './section/manage/ManageSectionModal';
+import { ModalRef } from '@trussworks/react-uswds';
+import { useRef } from 'react';
 
 export const Edit = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -32,21 +31,11 @@ export const Edit = () => {
         <>
             {page ? (
                 <PageManagementProvider page={page} fetch={fetch}>
-                    <PageManagementContext.Consumer>
-                        {(context) => (
-                            <>
-                                {context?.selected && (
-                                    <ManageSectionModal
-                                        pageId={context.page.id}
-                                        tab={context.selected}
-                                        refresh={() => page && refresh(page)}
-                                        addSecModalRef={addSectionModalRef}
-                                        manageSecModalRef={manageSectionModalRef}
-                                    />
-                                )}
-                            </>
-                        )}
-                    </PageManagementContext.Consumer>
+                    <ManageSectionModal
+                        refresh={() => page && refresh(page)}
+                        addSecModalRef={addSectionModalRef}
+                        manageSecModalRef={manageSectionModalRef}
+                    />
                     <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
                 </PageManagementProvider>
             ) : (
@@ -72,7 +61,7 @@ const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageCont
         <PageManagementLayout name={page.name} mode={'edit'}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
-                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules-library`} type="outline">
+                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                         Business rules
                     </NavLinkButton>
                     <NavLinkButton to={'..'}>Preview</NavLinkButton>

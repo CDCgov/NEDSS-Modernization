@@ -7,10 +7,11 @@ import './AddQuestionModal.scss';
 
 type Props = {
     modalRef: RefObject<ModalRef>;
+    addValueModalRef?: RefObject<ModalRef>;
     subsectionId: number;
 };
 
-export const AddQuestionModal = ({ modalRef }: Props) => {
+export const AddQuestionModal = ({ modalRef, addValueModalRef }: Props) => {
     const createModalRef = useRef<ModalRef>(null);
 
     const handleAddQuestion = (questionId: number) => {
@@ -57,7 +58,13 @@ export const AddQuestionModal = ({ modalRef }: Props) => {
                     </div>
                 }
                 closer
-                modalBody={<CreateQuestion onAddQuestion={handleAddQuestion} onCloseModal={handleClose} />}
+                modalBody={
+                    <CreateQuestion
+                        onAddQuestion={handleAddQuestion}
+                        onCloseModal={handleClose}
+                        addValueModalRef={addValueModalRef}
+                    />
+                }
             />
         </>
     );

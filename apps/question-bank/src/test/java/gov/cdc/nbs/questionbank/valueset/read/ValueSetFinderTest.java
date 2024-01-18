@@ -119,10 +119,10 @@ class ValueSetFinderTest {
   private List<ValueSetSearchResponse> getListOfValueSetSearchResponses() {
     List<ValueSetSearchResponse> response = new ArrayList<>();
     response.add(new ValueSetSearchResponse("LOCAL", "setCode_1",
-        "setnm_1", "descText_1", "Active"));
+        "setnm_1", "descText_1", "Active",100l));
 
     response.add(new ValueSetSearchResponse("LOCAL", "setCode_2",
-        "setnm_2", "descText_2", "Active"));
+        "setnm_2", "descText_2", "Active",123l));
     return response;
 
   }

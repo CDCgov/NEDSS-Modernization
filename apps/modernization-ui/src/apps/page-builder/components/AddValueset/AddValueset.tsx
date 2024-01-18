@@ -1,21 +1,18 @@
-import React, { useContext, useState, RefObject } from 'react';
-import { GetQuestionResponse, QuestionControllerService } from 'apps/page-builder/generated';
-import { Button, ModalToggleButton, ModalRef } from '@trussworks/react-uswds';
+import React, { RefObject, useContext, useState } from 'react';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import './AddValueset.scss';
 import { ValueSetControllerService } from '../../generated';
 import '../../pages/ValuesetLibrary/ValuesetTabs.scss';
-import { UserContext } from '../../../../providers/UserContext';
-import { useAlert } from 'alert';
+import { authorization as getAuthorization } from 'authorization';
 import { Concept } from '../Concept/Concept';
+import { QuestionsContext } from '../../context/QuestionsContext';
 
 type Props = {
     modalRef?: RefObject<ModalRef>;
+    updateCallback?: () => void;
 };
 
-export const AddValueset = ({ modalRef }: Props) => {
-    const { state } = useContext(UserContext);
-    const { showAlert } = useAlert();
-    // Fields
+export const AddValueset = ({ modalRef, updateCallback }: Props) => {
     const [isLocalOrPhin, setIsLocalOrPhin] = useState('LOCAL');
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
@@ -24,78 +21,30 @@ export const AddValueset = ({ modalRef }: Props) => {
     const [isValuesetNameNotValid, setIsValuesetNameNotValid] = useState(false);
     const [isValuesetCodeNotValid, setIsValuesetCodeNotValid] = useState(false);
     const [isValidationFailure, setIsValidationFailure] = useState(false);
+    const { setSearchValueSet } = useContext(QuestionsContext);
 
-    const authorization = `Bearer ${state.getToken()}`;
+    const authorization = getAuthorization();
     const handleSubmit = () => {
         const request = {
-            valueSetNm: name,
+            valueSetName: name,
             valueSetCode: code,
-            valueSetTypeCd: isLocalOrPhin
+            valueSetType: isLocalOrPhin,
+            valueSetDescription: desc
         };
         ValueSetControllerService.createValueSetUsingPost({
             authorization,
             request
-        }).then((response: any) => {
-            setDesc('');
-            setCode('');
-            setName('');
-            const id = parseInt(localStorage.getItem('selectedQuestion')!);
-            updateQuestion(id);
-            return response;
+        }).then(({ body }) => {
+            setSearchValueSet?.({ valueSetNm: body.valueSetNm, codeSetGroupId: body.codeSetGroupId });
         });
     };
 
-    const updateQuestion = async (id: number) => {
-        // TODO :  we have to add logic for get question ID here
-        const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
-            authorization,
-            id
-        }).then((response: GetQuestionResponse) => {
-            return response;
-        });
-
-        const {
-            valueSet,
-            unitValue,
-            description,
-            messagingInfo,
-            label,
-            tooltip,
-            displayControl,
-            mask,
-            dataMartInfo,
-            uniqueName,
-            fieldLength,
-            fieldSize
-        }: any = question;
-
-        const request = {
-            description,
-            labelInMessage: messagingInfo.labelInMessage,
-            messageVariableId: messagingInfo.messageVariableId,
-            hl7DataType: messagingInfo.hl7DataType,
-            label,
-            displayControl,
-            mask,
-            fieldLength,
-            defaultLabelInReport: dataMartInfo.defaultLabelInReport,
-            uniqueName,
-            valueSet,
-            unitValue,
-            // eslint-disable-next-line no-dupe-keys
-            tooltip: tooltip || 'demo tooltip',
-            size: 50,
-            fieldSize: fieldSize || 50
-        };
-
-        QuestionControllerService.updateQuestionUsingPut({
-            authorization,
-            id,
-            request
-        }).then((response: any) => {
-            showAlert({ type: 'success', header: 'Add', message: 'Question Added successfully' });
-            return response;
-        });
+    const updateQuestion = async () => {
+        setDesc('');
+        setCode('');
+        setName('');
+        updateCallback?.();
+        setActiveTab('details');
     };
 
     const validateValuesetName = (name: string) => {
@@ -126,10 +75,16 @@ export const AddValueset = ({ modalRef }: Props) => {
         }
     };
 
+    const handleCreateValueset = () => {
+        handleSubmit();
+        setActiveTab('concepts');
+    };
+
     const reset = () => {
         setDesc('');
         setCode('');
         setName('');
+        setSearchValueSet?.({});
         setActiveTab('details');
     };
 
@@ -234,7 +189,7 @@ export const AddValueset = ({ modalRef }: Props) => {
                                     closer>
                                     Cancel
                                 </ModalToggleButton>
-                                <Button type="submit" onClick={() => setActiveTab('concepts')}>
+                                <Button type="submit" onClick={handleCreateValueset}>
                                     <span>Continue to value set concept</span>
                                 </Button>
                             </div>
@@ -253,16 +208,17 @@ export const AddValueset = ({ modalRef }: Props) => {
             </div>
             {activeTab !== 'details' ? (
                 <div className="add-valueset__footer">
-                    <ModalToggleButton outline modalRef={modalRef!} onClick={() => reset()} type="button">
+                    <ModalToggleButton outline modalRef={modalRef!} onClick={() => reset()} type="button" closer>
                         Cancel
                     </ModalToggleButton>
                     <ModalToggleButton
                         className="submit-btn"
                         type="button"
                         modalRef={modalRef!}
-                        onClick={handleSubmit}
+                        onClick={updateQuestion}
+                        closer
                         disabled={disableBtn}>
-                        Create and Add to question
+                        Continue
                     </ModalToggleButton>
                 </div>
             ) : null}

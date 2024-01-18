@@ -32,14 +32,16 @@ export const ModalComponent = ({
             aria-labelledby="modal-1-heading"
             className={`padding-0 ${size}`}
             aria-describedby="modal-1-description">
-            <ModalHeading id="modal-1-heading">
-                {modalHeading}
-                {closer ? (
-                    <ModalToggleButton unstyled closer modalRef={modalRef!}>
-                        <Icon.Close size={4} />
-                    </ModalToggleButton>
-                ) : null}
-            </ModalHeading>
+            {modalHeading ? (
+                <ModalHeading id="modal-1-heading">
+                    {modalHeading}
+                    {closer ? (
+                        <ModalToggleButton unstyled closer modalRef={modalRef!}>
+                            <Icon.Close size={4} />
+                        </ModalToggleButton>
+                    ) : null}
+                </ModalHeading>
+            ) : null}
             {modalBody}
             {modalFooter ? <ModalFooter>{modalFooter}</ModalFooter> : null}
         </Modal>
