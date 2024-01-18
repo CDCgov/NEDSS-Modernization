@@ -27,11 +27,9 @@ export const SubsectionHeader = ({
 }: Props) => {
     const addStaticElementModalRef = useRef<ModalRef>(null);
     const renderQuestionListModal = () => (
-        <>
-            <ModalToggleButton className="add-btn" outline onClick={onAddQuestion} modalRef={addQuestionModalRef}>
-                Add Question
-            </ModalToggleButton>
-        </>
+        <ModalToggleButton className="add-btn" outline onClick={onAddQuestion} modalRef={addQuestionModalRef}>
+            Add Question
+        </ModalToggleButton>
     );
     return (
         <div className={styles.header}>
@@ -40,7 +38,7 @@ export const SubsectionHeader = ({
                 <div className={styles.count}>{`${questionCount} question${questionCount > 1 ? 's' : ''}`}</div>
             </div>
             <div className={styles.buttons}>
-                <>{renderQuestionListModal()}</>
+                {renderQuestionListModal()}
                 <MoreOptions header={<Icon.MoreVert size={4} />}>
                     <Button type="button" onClick={() => console.log('BLAH')}>
                         <Icon.Edit size={3} /> Edit Subsection
