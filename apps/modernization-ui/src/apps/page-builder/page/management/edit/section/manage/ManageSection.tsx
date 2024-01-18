@@ -1,25 +1,46 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import { PagesTab } from 'apps/page-builder/generated';
+import { PagesSection, PagesTab } from 'apps/page-builder/generated';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
 import styles from './managesection.module.scss';
 import { useState } from 'react';
 import { AddSection } from './AddSection';
 import { Heading } from 'components/heading';
+import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
+import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 type ManageSectionProps = {
-    tab: PagesTab;
     pageId: number;
+    tab: PagesTab;
     onCancel?: () => void;
     onContentChange?: () => void;
+    setSelectedForEdit: (section: PagesSection | undefined) => void;
+    selectedForEdit: PagesSection | undefined;
+    setSelectedForDelete: (section: PagesSection | undefined) => void;
+    selectedForDelete: PagesSection | undefined;
+    handleDelete: (section: PagesSection) => void;
+    reset: () => void;
 };
 
-export const ManageSection = ({ onCancel, tab, onContentChange, pageId }: ManageSectionProps) => {
+export const ManageSection = ({
+    pageId,
+    tab,
+    onContentChange,
+    onCancel,
+    setSelectedForEdit,
+    selectedForEdit,
+    setSelectedForDelete,
+    selectedForDelete,
+    handleDelete,
+    reset
+}: ManageSectionProps) => {
     const [sectionState, setSectionState] = useState<'manage' | 'add'>('manage');
 
     const handleUpdateState = (state: 'manage' | 'add') => {
         setSectionState(state);
     };
 
+    const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
     return (
         <>
             {sectionState === 'add' && (
@@ -31,12 +52,13 @@ export const ManageSection = ({ onCancel, tab, onContentChange, pageId }: Manage
                     }}
                     onCancel={() => setSectionState('manage')}
                     tabId={tab.id}
+                    selectedForEdit={selectedForEdit}
                 />
             )}
             {sectionState === 'manage' && (
                 <div className={styles.managesection}>
                     <div className={styles.header}>
-                        <div className={styles.manageSectionHeader}>
+                        <div className={styles.manageSectionHeader} data-testid="header">
                             <Heading level={4}>Manage sections</Heading>
                         </div>
                         <div className={styles.addSectionHeader}>
@@ -58,40 +80,35 @@ export const ManageSection = ({ onCancel, tab, onContentChange, pageId }: Manage
                             </div>
                             <p className={styles.tabName}>{tab.name}</p>
                         </div>
-                        {tab.sections?.map((section, k) => {
-                            return (
-                                <div className={styles.section} key={k}>
-                                    <div className={styles.icons}>
-                                        <div className={styles.drag}>
-                                            <NbsIcon name={'drag'} />
-                                        </div>
-                                        <div className={styles.group}>
-                                            <NbsIcon name={'group'} />
-                                        </div>
+                        <DragDropContext
+                            onDragEnd={handleDragEnd}
+                            onDragStart={handleDragStart}
+                            onDragUpdate={handleDragUpdate}>
+                            <Droppable droppableId="all-sections" type="sections">
+                                {(provided) => (
+                                    <div
+                                        className="manage-sections"
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}>
+                                        {tab.sections?.map((section, k) => {
+                                            return (
+                                                <ManageSectionTile
+                                                    section={section}
+                                                    index={k}
+                                                    key={k}
+                                                    setSelectedForEdit={setSelectedForEdit}
+                                                    setSelectedForDelete={setSelectedForDelete}
+                                                    selectedForDelete={selectedForDelete}
+                                                    handleDelete={handleDelete}
+                                                    reset={reset}
+                                                />
+                                            );
+                                        })}
+                                        {provided.placeholder}
                                     </div>
-                                    <p
-                                        className={
-                                            styles.sectionName
-                                        }>{`${section.name}(${section.subSections.length})`}</p>
-                                    <div className={styles.sectionIcons}>
-                                        <div className={styles.edit}>
-                                            <Icon.Edit
-                                                style={{ cursor: 'pointer' }}
-                                                size={3}
-                                                onClick={() => console.log('edit here')}
-                                            />
-                                        </div>
-                                        <div className={styles.delete}>
-                                            <Icon.Delete
-                                                style={{ cursor: 'pointer' }}
-                                                size={3}
-                                                onClick={() => console.log('delete here')}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                     </div>
                     <div className={styles.footer}>
                         <Button onClick={onCancel} type={'button'} outline>

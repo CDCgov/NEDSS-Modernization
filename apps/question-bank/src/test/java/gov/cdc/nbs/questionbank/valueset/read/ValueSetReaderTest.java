@@ -67,7 +67,7 @@ class ValueSetReaderTest {
   void searchValueSetTest() {
     ValueSetSearchRequest search = new ValueSetSearchRequest("setnm", "setCode", "descText");
     List<ValueSetSearchResponse> searchResult = List.of(new ValueSetSearchResponse("LOCAL", "setCode",
-        "setnm", "descText", "Active"));
+        "setnm", "descText", "Active",100l));
     Pageable pageable = Pageable.ofSize(1);
     int start = (int) pageable.getOffset();
     int end = (start + pageable.getPageSize());

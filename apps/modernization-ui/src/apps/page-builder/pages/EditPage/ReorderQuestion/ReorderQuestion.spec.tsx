@@ -4,7 +4,7 @@ import { PagesQuestion, PagesResponse } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-describe('when ReorderSubsection renders', () => {
+describe('when ReorderQuestion renders', () => {
     const content: PagesResponse = {
         id: 123,
         name: 'Test Page',
