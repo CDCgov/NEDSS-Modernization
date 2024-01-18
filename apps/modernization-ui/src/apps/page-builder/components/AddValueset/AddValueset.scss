@@ -4,7 +4,7 @@
     overflow-y: auto;
     height: 100%;
     width: 100%;
-    max-height: calc(85vh - 7rem);
+    max-height: calc(85vh - 6rem);
     position: relative;
     .tabs {
         padding-left: unset !important;
@@ -39,7 +39,7 @@
         max-width: 40rem;
         margin: 0 auto;
         .main-header-title {
-            font-size: 0.85;
+            font-size: 0.85rem;
             text-align: center;
         }
         .description {
@@ -173,4 +173,9 @@
             }
         }
     }
+}
+.header-icon-title {
+    display: flex;
+    gap: 1rem;
+    align-self: stretch;
 }

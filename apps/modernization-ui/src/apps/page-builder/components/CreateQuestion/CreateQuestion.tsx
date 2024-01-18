@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './CreateQuestion.scss';
 import {
     Form,
@@ -6,7 +6,6 @@ import {
     Radio,
     ButtonGroup,
     Button,
-    ModalRef,
     Textarea,
     Label,
     ErrorMessage
@@ -15,8 +14,6 @@ import { ValueSetControllerService, QuestionControllerService, UpdateQuestionReq
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
 import { coded, dateOrNumeric, text as textOption } from '../../constant/constant';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { ValuesetLibrary } from '../../pages/ValuesetLibrary/ValuesetLibrary';
 import { Controller, useForm } from 'react-hook-form';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
@@ -80,7 +77,7 @@ type CreateQuestionFormType = CreateNumericQuestionRequest &
 
 export type optionsType = { name: string; value: string };
 
-export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) => {
+export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValueModalRef }: any) => {
     const questionForm = useForm<CreateQuestionFormType, any>({
         defaultValues: { ...init }
     });
@@ -339,7 +336,6 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
         }
     };
 
-    const valueSetmodalRef = useRef<ModalRef>(null);
     const isValueSet = searchValueSet?.valueSetNm !== undefined;
     const renderValueSet = (
         <div className="">
@@ -349,15 +345,9 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal }: any) =
                     {searchValueSet?.valueSetNm!}
                 </Heading>
             )}
-            <ModalToggleButton modalRef={valueSetmodalRef} className="width-full" type="submit" outline>
+            <ModalToggleButton modalRef={addValueModalRef} className="width-full" type="submit" outline>
                 {isValueSet ? 'Change value set' : 'Search value set'}
             </ModalToggleButton>
-            <ModalComponent
-                size="wide"
-                modalRef={valueSetmodalRef}
-                modalHeading={'Add value set'}
-                modalBody={<ValuesetLibrary modalRef={valueSetmodalRef} hideTabs types="recent" />}
-            />
             <br></br>
         </div>
     );
