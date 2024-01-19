@@ -6,12 +6,13 @@ import {
     UpdateSectionRequest
 } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
-import { Input } from 'components/FormInputs/Input';
 import { Controller, useForm } from 'react-hook-form';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
 import { Heading } from 'components/heading';
 import { useEffect } from 'react';
+import { maxLengthRule } from 'validation/entry';
+import { Input } from 'components/FormInputs/Input';
 
 type sectionProps = {
     tabId?: number;
@@ -78,18 +79,20 @@ export const AddSection = ({
                     <Controller
                         control={form.control}
                         name="name"
-                        rules={{ required: { value: true, message: 'Section name is required' } }}
+                        rules={{ required: { value: true, message: 'Section name is required' }, ...maxLengthRule(50) }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <Input
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                defaultValue={value}
-                                label="Section Name"
-                                type="text"
-                                error={error?.message}
-                                required
-                                className={styles.inputField}
-                            />
+                            <>
+                                <Input
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    defaultValue={value}
+                                    label="Section Name"
+                                    type="text"
+                                    error={error?.message}
+                                    required
+                                    className={styles.inputField}
+                                />
+                            </>
                         )}
                     />
 

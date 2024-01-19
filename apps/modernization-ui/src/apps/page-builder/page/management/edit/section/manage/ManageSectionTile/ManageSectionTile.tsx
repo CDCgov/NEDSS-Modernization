@@ -67,10 +67,7 @@ export const ManageSectionTile = ({
                                     <div className={styles.warningGroup}>
                                         <IconComponent name="group" size="3" />
                                     </div>
-                                    <div>
-                                        {section.name}&nbsp;
-                                        {`${section.name}(${section.subSections.length})`}
-                                    </div>
+                                    <div>{`${section.name}(${section.subSections.length})`}</div>
                                 </div>
                                 <div className={styles.warningModalBtns}>
                                     {isValidDelete(section) ? (
