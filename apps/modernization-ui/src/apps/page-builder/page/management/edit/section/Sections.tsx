@@ -41,7 +41,7 @@ export const Sections = ({
                 page: page.id,
                 sectionId: section.id
             }).then(() => {
-                showAlert({ message: `You've successfully deleted section!`, type: `success` });
+                showAlert({ message: `You have successfully deleted section "${section.name}"`, type: `success` });
                 fetch(page.id);
             });
         }
