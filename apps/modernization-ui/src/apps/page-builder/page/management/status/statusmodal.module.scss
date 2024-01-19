@@ -1,0 +1,45 @@
+@use 'styles/colors';
+
+$max-height: 80svh;
+
+.modal {
+    padding: 0;
+
+    .content {
+        display: flex;
+        margin: 1.5rem;
+
+        border-left: 0.5rem solid colors.$warning;
+
+
+        .warning {
+            
+            color: colors.$warning;
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+        .message {
+            width: min-content;
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: auto;
+
+            display: flex;
+            flex-direction: column;
+
+            .title {
+                font-weight: bold;
+            }
+        }
+    }
+
+    .footer {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-top-color: colors.$border;
+        border-top-style: solid;
+        border-top-width: 1px;
+        justify-content: end;
+    }
+}

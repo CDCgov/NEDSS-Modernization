@@ -498,22 +498,10 @@ export const AdvancedSearch = () => {
                                 <div
                                     tabIndex={0}
                                     id="resultsCount"
-                                    aria-label={
-                                        ((lastSearchType === SEARCH_TYPE.PERSON && patientData?.total?.toString()) ||
-                                            (lastSearchType === SEARCH_TYPE.INVESTIGATION &&
-                                                investigationData?.total?.toString()) ||
-                                            (lastSearchType === SEARCH_TYPE.LAB_REPORT &&
-                                                labReportData?.total?.toString())) +
-                                        ' amount of results have been found'
-                                    }
+                                    aria-label={resultTotal + ' Results have been found'}
                                     className="margin-0 font-sans-md margin-top-05 text-normal grid-row results-for"
                                     style={{ maxWidth: '55%' }}>
-                                    <strong className="margin-right-1">
-                                        {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
-                                        {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
-                                        {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
-                                    </strong>{' '}
-                                    Results for
+                                    <strong className="margin-right-1">{resultTotal}</strong> Results for
                                     <AdvancedSearchChips
                                         lastSearchType={lastSearchType}
                                         personFilter={personFilter}

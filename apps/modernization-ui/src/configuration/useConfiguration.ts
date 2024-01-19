@@ -1,4 +1,5 @@
-import { ConfigurationControllerService } from 'generated';
+import { authorization } from 'authorization';
+import { ConfigurationControllerService, Properties } from 'generated';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'user';
 
@@ -34,6 +35,7 @@ type Features = {
 type Configuration = {
     settings: Settings;
     features: Features;
+    properties: Properties;
 };
 
 const defaultFeatures: Features = {
@@ -65,12 +67,19 @@ const defaultSettings: Settings = {
     }
 };
 
-const initial: Configuration = {
-    settings: defaultSettings,
-    features: defaultFeatures
+const defaultProperties: Properties = {
+    entries: {},
+    hivProgramAreas: [],
+    stdProgramAreas: []
 };
 
-const useConfiguration = (): { settings: Settings; features: Features; loading: boolean } => {
+const initial: Configuration = {
+    settings: defaultSettings,
+    features: defaultFeatures,
+    properties: defaultProperties
+};
+
+const useConfiguration = (): { settings: Settings; features: Features; loading: boolean; properties: Properties } => {
     const [config, setConfig] = useState<Configuration>(initial);
     const [loading, setLoading] = useState(false);
     const { state } = useContext(UserContext);
@@ -79,7 +88,7 @@ const useConfiguration = (): { settings: Settings; features: Features; loading: 
         if (state.isLoggedIn) {
             setLoading(true);
             ConfigurationControllerService.getConfigurationUsingGet({
-                authorization: `Bearer ${state.getToken()}`
+                authorization: authorization()
             }).then((response) => {
                 setConfig((existing) => ({ ...existing, ...(response as Configuration) }));
                 setLoading(false);

@@ -29,7 +29,7 @@ const PageManagementProvider = ({ page, children, fetch }: PageManagementProvide
             fetch,
             select
         };
-    }, [JSON.stringify(page)]);
+    }, [JSON.stringify(page), selected]);
 
     return <PageManagementContext.Provider value={value}>{children}</PageManagementContext.Provider>;
 };

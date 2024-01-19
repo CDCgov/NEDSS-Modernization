@@ -2,7 +2,9 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 import java.time.temporal.ChronoUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -36,8 +38,18 @@ public class SetQuestionStatusSteps {
 
 
     @Given("A text question exists")
-    public void a_question_exists() {
+    public void a_text_question_exists() {
         questionMother.textQuestion();
+    }
+
+    @Given("A coded question exists")
+    public void a_coded_question_exists() {
+        questionMother.codeQuestion();
+    }
+
+    @Given("A numeric question exists")
+    public void a_numeric_question_exists() {
+        questionMother.numericQuestion();
     }
 
     @When("I update a question's status to {string}")
@@ -45,7 +57,7 @@ public class SetQuestionStatusSteps {
         WaQuestion question = questionMother.one();
         try {
             controller.setQuestionStatus(question.getId(),
-                    new QuestionStatusRequest("Active".equals(status) ? true : false));
+                new QuestionStatusRequest("Active".equals(status) ? true : false));
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -65,10 +77,10 @@ public class SetQuestionStatusSteps {
     public void a_question_history_is_created() {
         WaQuestion originalQuestion = questionMother.one();
         WaQuestionHist history = histRepository.findAll()
-                .stream()
-                .filter(h -> h.getWaQuestionUid().getId().equals(originalQuestion.getId()))
-                .findFirst()
-                .orElseThrow();
+            .stream()
+            .filter(h -> h.getWaQuestionUid().getId().equals(originalQuestion.getId()))
+            .findFirst()
+            .orElseThrow();
 
         assertEquals(originalQuestion.getVersionCtrlNbr(), history.getVersionCtrlNbr());
         assertEquals(originalQuestion.getDataType(), history.getDataType());
@@ -104,8 +116,8 @@ public class SetQuestionStatusSteps {
         assertEquals(originalQuestion.getOrderGroupId(), history.getOrderGroupId());
         assertEquals(originalQuestion.getRecordStatusCd(), history.getRecordStatusCd());
         assertEquals(
-                originalQuestion.getRecordStatusTime().truncatedTo(ChronoUnit.SECONDS),
-                history.getRecordStatusTime().truncatedTo(ChronoUnit.SECONDS));
+            originalQuestion.getRecordStatusTime().truncatedTo(ChronoUnit.SECONDS),
+            history.getRecordStatusTime().truncatedTo(ChronoUnit.SECONDS));
         assertEquals(originalQuestion.getNbsUiComponentUid(), history.getNbsUiComponentUid());
         assertEquals(originalQuestion.getStandardQuestionIndCd(), history.getStandardQuestionIndCd());
         assertEquals(originalQuestion.getEntryMethod(), history.getEntryMethod());
@@ -120,11 +132,11 @@ public class SetQuestionStatusSteps {
         assertEquals(originalQuestion.getCoinfectionIndCd(), history.getCoinfectionIndCd());
         assertEquals(originalQuestion.getAddUserId(), history.getAddUserId());
         assertEquals(
-                originalQuestion.getAddTime().truncatedTo(ChronoUnit.SECONDS),
-                history.getAddTime().truncatedTo(ChronoUnit.SECONDS));
+            originalQuestion.getAddTime().truncatedTo(ChronoUnit.SECONDS),
+            history.getAddTime().truncatedTo(ChronoUnit.SECONDS));
         assertEquals(
-                originalQuestion.getLastChgTime().truncatedTo(ChronoUnit.SECONDS),
-                history.getLastChgTime().truncatedTo(ChronoUnit.SECONDS));
+            originalQuestion.getLastChgTime().truncatedTo(ChronoUnit.SECONDS),
+            history.getLastChgTime().truncatedTo(ChronoUnit.SECONDS));
         assertEquals(originalQuestion.getLastChgUserId(), history.getLastChgUserId());
     }
 }

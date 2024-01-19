@@ -22,6 +22,8 @@ dependencies {
     implementation project(':authentication')
 
     implementation libs.springBoot.web
+    implementation libs.bundles.jpa
+    implementation libs.mssql.jdbc
 
     implementation libs.bundles.swagger
     implementation libs.bundles.security

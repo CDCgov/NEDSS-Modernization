@@ -44,19 +44,49 @@
     }
 
     .content {
-        padding-left: 1.5rem;
-
         display: flex;
         flex-direction: column;
         flex-shrink: 1;
         overflow-y: auto;
         height: 100%;
 
+        .alert {
+            display: flex;
+            flex-direction: row;
+            border-left: 0.5rem solid colors.$success;
+            background-color: colors.$success-lighter;
+            padding-right: 1.5rem;
+            padding-top: 0.5rem;
+
+            .checkCircle {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+
+            .alertContent {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                width: 100%;
+
+                .alertMessage {
+                    font-size: 1rem;
+                    font-weight: bold;
+                }
+
+                .closeBtn {
+                    justify-content: end;
+                }
+            }
+        }
+
         .tab {
+            padding-left: 1.5rem;
             display: flex;
             flex-direction: row;
             padding-top: 1rem;
-
+            padding-left: 1.5rem;
 
             .folderIcon {
                 padding-right: 1rem;
@@ -65,62 +95,6 @@
             }
             .tabName {
                 margin: 0%;
-            }
-        }
-
-        .section {
-            display: flex;
-            flex-direction: row;
-
-            padding-top: 1rem;
-            padding-right: 1.5rem;
-            padding-bottom: 1rem;
-
-
-            .icons {
-                display: flex;
-                flex-direction: row;
-                .drag {
-                    width: 3rem;
-                    height: 3rem;
-                    padding-top: 1rem;
-                    padding-right: 1rem;
-                    align-items: center;
-    
-                }
-                .group {
-                    width: 3rem;
-                    height: 3rem;
-                    align-items: center;
-                    padding-top: 1rem;
-                    padding-right: 1rem;
-                }
-            }
-
-            .sectionName {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                margin: unset;
-                width: auto;
-                white-space: nowrap;
-            }
-
-            .sectionIcons {
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-                justify-content: space-between;
-                align-items: center;
-                .edit {
-                    justify-content: end;
-                    padding-right: 1.5rem;
-                    margin-left: auto;
-                }
-
-                .delete {
-                    justify-content: end;
-                }
             }
         }
     }

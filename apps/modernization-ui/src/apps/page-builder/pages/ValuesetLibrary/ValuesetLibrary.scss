@@ -41,6 +41,9 @@
         .padding-x-2.search-box {
             display: none;
         }
+        .no-data-available {
+            flex-direction: column;
+        }
         background-color: colors.$base-white;
         border-radius: 3px;
         border: 1px solid colors.$base-lightest;

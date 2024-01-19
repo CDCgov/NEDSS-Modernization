@@ -1,9 +1,11 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
 import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -110,11 +112,13 @@ public class NumericQuestionEntity extends WaQuestion {
         setDefaultValue(command.defaultValue());
         setMinValue(command.minValue());
         setMaxValue(command.maxValue());
-        if (command.unitType() != null) {
-            setUnitTypeCd(command.unitType().toString());
-            requireNonNull(command.unitValue(), "If specifying UnitType, UnitValue");
+        if (command.relatedUnitsValueSet() != null) {
+            setUnitTypeCd(UnitType.CODED.toString());
+            setUnitValue(command.relatedUnitsValueSet().toString());
+        } else if (command.relatedUnitsLiteral() != null && !command.relatedUnitsLiteral().isBlank()) {
+            setUnitTypeCd(UnitType.LITERAL.toString());
+            setUnitValue(command.relatedUnitsLiteral());
         }
-        setUnitValue(command.unitValue());
 
 
         // Reporting

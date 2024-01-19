@@ -21,7 +21,7 @@ export const fetchBusinessRules = (
                 return response || [];
             })
             .catch((error) => {
-                console.log(error.body);
+                console.error(error.body);
             });
     } else {
         const request = {
@@ -39,7 +39,7 @@ export const fetchBusinessRules = (
                 return response || [];
             })
             .catch((error) => {
-                console.log(error.body);
+                console.error(error.body);
             });
     }
 };

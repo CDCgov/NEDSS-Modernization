@@ -7,6 +7,7 @@ const fieldType = [
     { label: 'Multi-select dropdown', value: 'multi-select' },
     { label: 'Date / time', value: 'date-time' }
 ];
+
 const coded = [
     {
         value: 1007,
@@ -142,6 +143,7 @@ const pageFieldList = [
         value: 'lastUpdatedBy'
     }
 ];
+
 const businessRuleFieldList = [
     {
         name: 'Source Fields',
@@ -168,6 +170,7 @@ const businessRuleFieldList = [
         value: 'id'
     }
 ];
+
 const questionFieldList = [
     {
         name: 'Unique Name',
@@ -194,6 +197,7 @@ const questionFieldList = [
         value: 'Status'
     }
 ];
+
 const valueSetFieldList = [
     {
         name: 'Value set name',
@@ -216,6 +220,7 @@ const valueSetFieldList = [
         value: 'Status'
     }
 ];
+
 const conditionFieldList = [
     {
         name: 'Condition',
@@ -246,6 +251,7 @@ const conditionFieldList = [
         value: 'Status'
     }
 ];
+
 const initOperator = [
     {
         name: 'Starts with',
@@ -273,6 +279,36 @@ const arithOperator = [
     {
         name: 'Not equal to',
         value: 'net'
+    }
+];
+
+const nonDateCompare = [
+    {
+        name: 'Equal to',
+        value: '='
+    },
+    {
+        name: 'No equal to',
+        value: '!='
+    }
+];
+
+const dateCompare = [
+    {
+        name: 'Less than',
+        value: '<'
+    },
+    {
+        name: 'Less or equal to',
+        value: '<='
+    },
+    {
+        name: 'Greater or equal to',
+        value: '>='
+    },
+    {
+        name: 'Greater than',
+        value: '>'
     }
 ];
 
@@ -313,5 +349,7 @@ export {
     businessRuleFieldList,
     questionFieldList,
     valueSetFieldList,
-    conditionFieldList
+    conditionFieldList,
+    nonDateCompare,
+    dateCompare
 };

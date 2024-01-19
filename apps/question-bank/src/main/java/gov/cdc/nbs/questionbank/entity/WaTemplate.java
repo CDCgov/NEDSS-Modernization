@@ -437,7 +437,7 @@ public class WaTemplate {
     }
 
     // Remove section and adjust orderNbrs
-    uiMetadata.remove(section);
+    this.uiMetadata.remove(section);
     adjustingComponentsFrom(section.getOrderNbr());
     changed(command);
   }
