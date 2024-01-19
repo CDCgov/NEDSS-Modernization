@@ -11,19 +11,27 @@ import { Controller, useForm } from 'react-hook-form';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
 import { Heading } from 'components/heading';
-import { useAlert } from 'alert';
 import { useEffect } from 'react';
 
 type sectionProps = {
     tabId?: number;
     pageId?: number;
     onCancel?: () => void;
-    onAddSectionCreated?: () => void;
+    onSectionTouched?: () => void;
+    onAddSection?: (section: string) => void;
     section?: PagesSection;
     isEdit: boolean;
 };
 
-export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId, section, isEdit }: sectionProps) => {
+export const AddSection = ({
+    onSectionTouched,
+    tabId,
+    onCancel,
+    pageId,
+    section,
+    isEdit,
+    onAddSection
+}: sectionProps) => {
     const form = useForm<CreateSectionRequest | UpdateSectionRequest>();
 
     useEffect(() => {
@@ -31,9 +39,6 @@ export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId, secti
             form.reset({ name: section.name, tabId: tabId, visible: section.visible });
         }
     }, [section]);
-
-    const { showAlert } = useAlert();
-
     const onSubmit = form.handleSubmit((data) => {
         if (isEdit) {
             SectionControllerService.updateSectionUsingPut({
@@ -43,7 +48,7 @@ export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId, secti
                 request: { name: data.name, visible: data.visible }
             }).then(() => {
                 form.reset();
-                showAlert({ type: `success`, message: `Your changes have been saved successfully` });
+                onSectionTouched?.();
             });
         } else {
             SectionControllerService.createSectionUsingPost({
@@ -52,8 +57,8 @@ export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId, secti
                 request: { name: data.name, visible: data.visible, tabId: tabId }
             }).then(() => {
                 form.reset();
-                showAlert({ type: 'success', message: `You've successfully Added a new section` });
-                onAddSectionCreated?.();
+                onAddSection?.(data.name ?? '');
+                onSectionTouched?.();
             });
         }
     });

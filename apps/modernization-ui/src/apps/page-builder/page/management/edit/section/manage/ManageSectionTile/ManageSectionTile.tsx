@@ -153,7 +153,7 @@ export const ManageSectionTile = ({
                                     <Button
                                         type="button"
                                         outline
-                                        className={styles.iconBtn}
+                                        className={`${styles.iconBtn} ${styles.offVisibility}`}
                                         disabled={onAction}
                                         onClick={() => {
                                             onChangeVisibility(section, true);

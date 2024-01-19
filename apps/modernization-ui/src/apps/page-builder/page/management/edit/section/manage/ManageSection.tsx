@@ -19,6 +19,8 @@ type ManageSectionProps = {
     alert?: AlertInLineProps;
     onDeleteSection?: () => void;
     onResetAlert?: () => void;
+    onUpdateSection?: () => void;
+    onAddSection?: (section: string) => void;
 };
 
 export const ManageSection = ({
@@ -28,7 +30,9 @@ export const ManageSection = ({
     pageId,
     alert,
     onDeleteSection,
-    onResetAlert
+    onResetAlert,
+    onUpdateSection,
+    onAddSection
 }: ManageSectionProps) => {
     const [sectionState, setSectionState] = useState<'manage' | 'add' | 'edit'>('manage');
 
@@ -59,6 +63,8 @@ export const ManageSection = ({
             page: pageId,
             request: { name: section.name, visible: visibility },
             section: section.id
+        }).then(() => {
+            onContentChange?.();
         });
     };
 
@@ -68,10 +74,11 @@ export const ManageSection = ({
             {sectionState === 'add' && (
                 <AddSection
                     pageId={pageId}
-                    onAddSectionCreated={() => {
+                    onSectionTouched={() => {
                         onContentChange?.();
                         setSectionState('manage');
                     }}
+                    onAddSection={onAddSection}
                     onCancel={() => setSectionState('manage')}
                     tabId={tab?.id}
                     isEdit={false}
@@ -80,10 +87,11 @@ export const ManageSection = ({
             {sectionState === 'edit' && (
                 <AddSection
                     pageId={pageId}
-                    onAddSectionCreated={() => {
+                    onSectionTouched={() => {
                         onContentChange?.();
                         setSectionState('manage');
                         setSectionEdit(undefined);
+                        onUpdateSection?.();
                     }}
                     onCancel={() => {
                         setSectionState('manage');
