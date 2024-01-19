@@ -81,6 +81,7 @@ describe('when ManageSectionTile renders', () => {
                                     onAction={false}
                                     setSectionState={jest.fn}
                                     setSelectedForEdit={jest.fn}
+                                    onChangeVisibility={jest.fn}
                                 />
                             </div>
                         )}

@@ -53,6 +53,15 @@ export const ManageSection = ({
         });
     };
 
+    const onChangeVisibility = (section: PagesSection, visibility: boolean) => {
+        SectionControllerService.updateSectionUsingPut({
+            authorization: authorization(),
+            page: pageId,
+            request: { name: section.name, visible: visibility },
+            section: section.id
+        });
+    };
+
     const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
     return (
         <>
@@ -147,6 +156,7 @@ export const ManageSection = ({
                                                     onAction={onAction}
                                                     setSectionState={setSectionState}
                                                     setSelectedForEdit={setSectionEdit}
+                                                    onChangeVisibility={onChangeVisibility}
                                                 />
                                             );
                                         })}
