@@ -146,6 +146,7 @@ export const QuestionSearchTable = ({
                     selectable={page.status === Status.Ready}
                     rangeSelector={page.total > 0}
                     isLoading={isLoading}
+                    display="zebra"
                 />
             </div>
         </>

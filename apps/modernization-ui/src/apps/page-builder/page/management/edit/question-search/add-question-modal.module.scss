@@ -1,0 +1,7 @@
+@use 'styles/colors' as colors;
+
+.modal {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}

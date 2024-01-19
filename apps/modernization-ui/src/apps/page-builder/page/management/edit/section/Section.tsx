@@ -2,8 +2,7 @@ import { PagesQuestion, PagesSection } from 'apps/page-builder/generated';
 import { SectionHeader } from './SectionHeader';
 import styles from './section.module.scss';
 import { Subsection } from '../subsection/Subsection';
-import { RefObject, useState } from 'react';
-import { ModalRef } from '@trussworks/react-uswds';
+import { useState } from 'react';
 
 type Props = {
     section: PagesSection;
@@ -12,14 +11,12 @@ type Props = {
     onEditQuestion: (question: PagesQuestion) => void;
     handleEditSection: () => void;
     handleDeleteSection: () => void;
-    addQuestionModalRef: RefObject<ModalRef>;
 };
 
 export const Section = ({
     section,
     onAddSubsection,
     onAddQuestion,
-    addQuestionModalRef,
     onEditQuestion,
     handleEditSection,
     handleDeleteSection
@@ -35,7 +32,7 @@ export const Section = ({
             <SectionHeader
                 name={section.name ?? ''}
                 subsectionCount={section.subSections?.length ?? 0}
-                onAddSubsection={() => onAddSubsection(section.id!)}
+                onAddSubsection={() => onAddSubsection(section.id)}
                 onExpandedChange={handleExpandedChange}
                 handleEditSection={handleEditSection}
                 handleDeleteSection={handleDeleteSection}
@@ -48,8 +45,7 @@ export const Section = ({
                             subsection={subsection}
                             key={k}
                             onEditQuestion={onEditQuestion}
-                            addQuestionModalRef={addQuestionModalRef}
-                            onAddQuestion={() => onAddQuestion(subsection.id!)}
+                            onAddQuestion={() => onAddQuestion(subsection.id)}
                         />
                     ))}
                 </div>

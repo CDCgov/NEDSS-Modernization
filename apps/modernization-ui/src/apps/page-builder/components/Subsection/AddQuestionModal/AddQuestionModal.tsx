@@ -8,14 +8,14 @@ import './AddQuestionModal.scss';
 type Props = {
     modalRef: RefObject<ModalRef>;
     addValueModalRef?: RefObject<ModalRef>;
-    subsectionId: number;
+    subsection: number;
 };
 
-export const AddQuestionModal = ({ modalRef, addValueModalRef }: Props) => {
+export const AddQuestionModal = ({ modalRef, addValueModalRef, subsection }: Props) => {
     const createModalRef = useRef<ModalRef>(null);
 
     const handleAddQuestion = (questionId: number) => {
-        console.log('add question', questionId);
+        console.log('add question: ', questionId, subsection);
     };
     const handleClose = () => {
         createModalRef.current?.toggleModal(undefined, false);

@@ -1,0 +1,10 @@
+.add-question-modal {
+    height: 85vh;
+    overflow: hidden;
+    .usa-modal__content {
+        height: 100%;
+        .usa-modal__main {
+            height: 100%;
+        }
+    }
+}

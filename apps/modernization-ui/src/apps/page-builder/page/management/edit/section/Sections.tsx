@@ -1,31 +1,23 @@
 import { PagesQuestion, PagesSection, SectionControllerService } from 'apps/page-builder/generated';
-import React, { RefObject, useRef } from 'react';
+import { useRef } from 'react';
 
 import styles from './section.module.scss';
-import { Section } from './Section';
 import { ModalRef } from '@trussworks/react-uswds';
 import { authorization } from 'authorization';
 import { usePageManagement } from '../../usePageManagement';
 import { useAlert } from 'alert';
 import { StatusModal } from '../../status/StatusModal';
+import { Section } from './Section';
 
 type Props = {
     sections: PagesSection[];
     onAddQuestion: (subsection: number) => void;
     onAddSubsection: (section: number) => void;
-    addQuestionModalRef: RefObject<ModalRef>;
     onEditQuestion: (question: PagesQuestion) => void;
-    handleEditSection: () => void;
+    onEditSection: (section: PagesSection) => void;
 };
 
-export const Sections = ({
-    sections,
-    onAddSubsection,
-    onAddQuestion,
-    addQuestionModalRef,
-    onEditQuestion,
-    handleEditSection
-}: Props) => {
+export const Sections = ({ sections, onAddSubsection, onAddQuestion, onEditQuestion, onEditSection }: Props) => {
     const { page, fetch } = usePageManagement();
 
     const statusModalRef = useRef<ModalRef>(null);
@@ -56,9 +48,8 @@ export const Sections = ({
                     onAddSubsection={onAddSubsection}
                     onAddQuestion={onAddQuestion}
                     onEditQuestion={onEditQuestion}
-                    addQuestionModalRef={addQuestionModalRef}
-                    handleEditSection={handleEditSection}
-                    handleDeleteSection={() => handleDeleteSection?.(s)}
+                    handleEditSection={() => onEditSection(s)}
+                    handleDeleteSection={() => handleDeleteSection(s)}
                 />
             ))}
             <StatusModal
