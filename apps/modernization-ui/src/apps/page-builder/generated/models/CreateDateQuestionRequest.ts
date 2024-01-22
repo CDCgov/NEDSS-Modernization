@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { MessagingInfo } from './MessagingInfo';
+import type { MessagingInfo0 } from './MessagingInfo0';
 import type { ReportingInfo } from './ReportingInfo';
 
 export type CreateDateQuestionRequest = {
@@ -14,7 +14,7 @@ export type CreateDateQuestionRequest = {
     displayControl?: number;
     label?: string;
     mask?: CreateDateQuestionRequest.mask;
-    messagingInfo?: MessagingInfo;
+    messagingInfo?: MessagingInfo0;
     subgroup?: string;
     tooltip?: string;
     uniqueId?: string;
