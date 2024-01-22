@@ -70,11 +70,17 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
                         onUpdateSection={() => {
                             setAlert({ message: `Your changes have been saved successfully.`, type: `success` });
                         }}
-                        onDeleteSection={() => {
-                            setAlert({ message: `You've successfully deleted section!`, type: `success` });
+                        onDeleteSection={(section: string) => {
+                            setAlert({ message: `You've successfully deleted "${section}"`, type: `success` });
                         }}
                         onAddSection={(section: string) => {
                             setAlert({ message: `You have successfully added section "${section}"`, type: `success` });
+                        }}
+                        onHiddenSection={() => {
+                            setAlert({ message: `Section hidden successfully`, type: `success` });
+                        }}
+                        onUnhiddenSection={() => {
+                            setAlert({ message: `Section unhidden successfully`, type: `success` });
                         }}
                         onCancel={onCloseManageSectionModal}
                     />
