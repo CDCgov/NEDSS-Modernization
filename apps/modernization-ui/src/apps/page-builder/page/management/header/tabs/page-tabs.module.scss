@@ -33,18 +33,4 @@
             outline: 0.25rem solid #2491ff;
         }
     }
-    button {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-top: -0.75rem;
-    }
-    .modalBody {
-        background-color: pink;
-    }
-}
-.modalHeader {
-    h3 {
-        margin: 0;
-    }
 }
