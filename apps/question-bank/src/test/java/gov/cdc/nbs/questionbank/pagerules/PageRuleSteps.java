@@ -2,7 +2,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest.SourceValues;
-import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
+import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.testing.support.Active;
@@ -17,8 +17,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -82,7 +84,7 @@ public class PageRuleSteps {
   @Given("the business rule has {string} of:")
   public void the_business_rule_has(final String property, List<List<String>> values) {
     List<String> actValues = new ArrayList<>();
-    for(List<String> val : values) {
+    for (List<String> val : values) {
       actValues.add(val.get(0));
     }
     switch (property.toLowerCase()) {
@@ -107,9 +109,9 @@ public class PageRuleSteps {
 
   @Then("I retrieve the information of the page rule")
   public void i_retrieve_the_information_of_the_page_rule() throws Exception {
-    CreateRuleResponse test = objectMapper.readValue(
+    ViewRuleResponse test = objectMapper.readValue(
         this.response.active().andReturn().getResponse().getContentAsString(),
-        CreateRuleResponse.class);
+        ViewRuleResponse.class);
 
     this.detailResponse.active(
         this.requester.request(

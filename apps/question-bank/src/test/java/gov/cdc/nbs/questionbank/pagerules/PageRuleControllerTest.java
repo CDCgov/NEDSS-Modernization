@@ -6,7 +6,6 @@ import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
-import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +26,7 @@ class PageRuleControllerTest {
 
   @InjectMocks
   private PageRuleController pageRuleController;
+
   @Mock
   private PageRuleService pageRuleService;
 
@@ -55,9 +56,9 @@ class PageRuleControllerTest {
     NbsUserDetails nbsUserDetails =
         NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
     when(pageRuleService.updatePageRule(ruleId, ruleRequest, userId, 123456L))
-        .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Updated"));
+        .thenReturn(getViewRuleResponse());
     when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
-    CreateRuleResponse ruleResponse = pageRuleController.updatePageRule(ruleId, ruleRequest, 123456L);
+    ViewRuleResponse ruleResponse = pageRuleController.updatePageRule(ruleId, ruleRequest, 123456L);
     assertNotNull(ruleResponse);
   }
 
@@ -124,4 +125,20 @@ class PageRuleControllerTest {
     Page<ViewRuleResponse> ruleResponse = pageRuleController.findPageRule(request, pageRequest);
     assertNotNull(ruleResponse);
   }
+
+  private ViewRuleResponse getViewRuleResponse() {
+    return new ViewRuleResponse(
+        99l,
+        123l,
+        "Enable",
+        "TestDescription",
+        "sourceIdentifier",
+        new ArrayList<>(),
+        "comparator",
+        "Question",
+        "errorMsgText",
+        Arrays.asList(new QuestionInfo("label1", "test456"), new QuestionInfo("label2", "test789"))
+    );
+  }
+
 }
