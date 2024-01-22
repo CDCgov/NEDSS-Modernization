@@ -16,8 +16,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -41,7 +40,22 @@ class RuleResponseMapperTest {
     assertEquals(ruleMetadata.getId(), result.ruleId());
     assertEquals(ruleMetadata.getWaTemplateUid(), result.templateUid());
     assertEquals(ruleMetadata.getRuleDescText(), result.ruleDescription());
+    assertFalse( result.sourceValue().isEmpty());
+    assertFalse( result.targetQuestions().isEmpty());
   }
+  @Test
+  void should_return_viewRuleResponse_null_SourceTargetValues() {
+    WaRuleMetadata ruleMetadata = getWaRuleMetadata();
+    ruleMetadata.setSourceValues(null);
+    ruleMetadata.setTargetQuestionIdentifier(null);
+    ViewRuleResponse result = ruleResponseMapper.mapRuleResponse(ruleMetadata);
+    assertEquals(ruleMetadata.getId(), result.ruleId());
+    assertEquals(ruleMetadata.getWaTemplateUid(), result.templateUid());
+    assertEquals(ruleMetadata.getRuleDescText(), result.ruleDescription());
+    assertTrue( result.sourceValue().isEmpty());
+    assertTrue( result.targetQuestions().isEmpty());
+  }
+
 
   @Test
   void should_return_page_of_viewRuleResponse() {
@@ -51,8 +65,20 @@ class RuleResponseMapperTest {
     Page<ViewRuleResponse> result = ruleResponseMapper.mapRuleResponse(waRuleMetadataPage);
     assertNotNull(result);
     assertEquals(1, result.toList().size());
-
+    assertFalse(result.toList().get(0).sourceValue().isEmpty());
+    assertFalse( result.toList().get(0).targetQuestions().isEmpty());
   }
+
+  @Test
+  void should_return_page_of_viewRuleResponse_null_SourceTargetValues() {
+    Page<WaRuleMetadata> waRuleMetadataPage = getPageOfWaRuleMetadataWithNullSourceTarget();
+    Page<ViewRuleResponse> result = ruleResponseMapper.mapRuleResponse(waRuleMetadataPage);
+    assertNotNull(result);
+    assertEquals(1, result.toList().size());
+    assertTrue(result.toList().get(0).sourceValue().isEmpty());
+    assertTrue( result.toList().get(0).targetQuestions().isEmpty());
+  }
+
 
 
   private WaRuleMetadata getWaRuleMetadata() {
@@ -70,6 +96,14 @@ class RuleResponseMapperTest {
 
   private Page<WaRuleMetadata> getPageOfWaRuleMetadata() {
     List<WaRuleMetadata> ruleMetadataList = Arrays.asList(getWaRuleMetadata());
+    Pageable pageable = PageRequest.of(0, 1);
+    return new PageImpl<>(ruleMetadataList, pageable, 5);
+  }
+  private Page<WaRuleMetadata> getPageOfWaRuleMetadataWithNullSourceTarget() {
+    WaRuleMetadata ruleMetadata =getWaRuleMetadata();
+    ruleMetadata.setSourceValues(null);
+    ruleMetadata.setTargetQuestionIdentifier(null);
+    List<WaRuleMetadata> ruleMetadataList = Arrays.asList(ruleMetadata);
     Pageable pageable = PageRequest.of(0, 1);
     return new PageImpl<>(ruleMetadataList, pageable, 5);
   }
