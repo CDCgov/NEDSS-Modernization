@@ -134,7 +134,6 @@ export const QuestionSearchTable = ({
             </div>
             <div className={styles.tableContainer}>
                 <TableComponent
-                    contextName="questions"
                     tableHead={tableHeaders}
                     tableBody={tableRows}
                     isPagination={true}
@@ -144,7 +143,7 @@ export const QuestionSearchTable = ({
                     handleNext={request}
                     sortData={handleSort}
                     selectable={page.status === Status.Ready}
-                    rangeSelector={page.total > 0}
+                    rangeSelector={isLoading === true || questions.length > 0}
                     isLoading={isLoading}
                     display="zebra"
                 />

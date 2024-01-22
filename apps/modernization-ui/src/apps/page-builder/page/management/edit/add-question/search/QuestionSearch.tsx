@@ -45,7 +45,7 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
                 sort
             });
         }
-    }, [page]);
+    }, [page.status]);
 
     useEffect(() => {
         if (page.current === 1) {
