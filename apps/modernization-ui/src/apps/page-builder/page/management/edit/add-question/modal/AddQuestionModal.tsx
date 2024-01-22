@@ -1,6 +1,6 @@
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { RefObject, useState } from 'react';
-import { QuestionSearch } from './QuestionSearch';
+import { QuestionSearch } from '../search/QuestionSearch';
 import { CreateQuestionForm } from 'apps/page-builder/components/CreateQuestionForm/CreateQuestionForm';
 import styles from './add-question-modal.module.scss';
 import './AddQuestionModal.scss';

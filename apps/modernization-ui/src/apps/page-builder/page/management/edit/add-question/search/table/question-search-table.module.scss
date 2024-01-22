@@ -29,4 +29,10 @@
     .expandButton {
         cursor: pointer;
     }
+
+    thead tr th {
+        &:nth-of-type(6) {
+            width: 4rem;
+        }
+    }
 }

@@ -4,7 +4,7 @@ import { SelectionMode } from 'components/Table';
 import { PageProvider, Status, usePage } from 'page';
 import { useEffect, useState } from 'react';
 
-import { QuestionSearchTable } from './QuestionSearchTable';
+import { QuestionSearchTable } from './table/QuestionSearchTable';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import styles from './question-search.module.scss';

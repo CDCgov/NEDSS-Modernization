@@ -2,6 +2,7 @@ import { AvailableQuestion } from 'apps/page-builder/generated';
 import { useState } from 'react';
 import { TabbedButtonBar } from 'apps/page-builder/components/TabbedButtonBar/TabbedButtonBar';
 import styles from './expanded-question.module.scss';
+import { NoData } from 'components/NoData';
 
 type Props = {
     question: AvailableQuestion;
@@ -9,9 +10,9 @@ type Props = {
 
 const Entry = ({ heading, value }: { heading: string; value?: string }) => {
     return (
-        <div>
+        <div className={styles.property}>
             <div className={styles.fieldHeading}>{heading}</div>
-            <div className={styles.fieldValue}>{value}</div>
+            <div className={styles.fieldValue}>{value?.length ? value : <NoData />}</div>
         </div>
     );
 };

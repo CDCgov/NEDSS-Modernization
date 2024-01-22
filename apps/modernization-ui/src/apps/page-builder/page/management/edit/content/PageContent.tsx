@@ -10,7 +10,7 @@ import { AddValueset } from '../../../../components/AddValueset/AddValueset';
 import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
 import { Heading } from '../../../../../../components/heading';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import { AddQuestionModal } from '../question-search/AddQuestionModal';
+import { AddQuestionModal } from '../add-question/modal/AddQuestionModal';
 import { usePageManagement } from '../../usePageManagement';
 import { useAlert } from 'alert';
 import { useAddQuestionsToPage } from 'apps/page-builder/hooks/api/useAddQuestionsToPage';

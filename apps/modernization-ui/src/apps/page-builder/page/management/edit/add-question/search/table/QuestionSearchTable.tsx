@@ -1,6 +1,6 @@
 import { Icon } from '@trussworks/react-uswds';
 import { AvailableQuestion } from 'apps/page-builder/generated';
-import { AddableQuestionSort, SortField } from '../../../../hooks/api/useFindAvailableQuestions';
+import { AddableQuestionSort, SortField } from '../../../../../../hooks/api/useFindAvailableQuestions';
 import { Search } from 'components/Search';
 import { SelectionMode, TableBody, TableComponent } from 'components/Table';
 import { Status, usePage } from 'page';

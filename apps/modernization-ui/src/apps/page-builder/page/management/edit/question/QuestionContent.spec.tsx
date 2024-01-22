@@ -3,7 +3,6 @@ import { PagesQuestion, PagesResponse, PagesSection, PagesSubSection, PagesTab }
 import { BrowserRouter } from "react-router-dom";
 import { PageManagementProvider } from "../../usePageManagement";
 import { render } from "@testing-library/react";
-import { EditPage } from "apps/page-builder/pages/EditPage/EditPage";
 import { PageContent } from "../content/PageContent";
 
 
