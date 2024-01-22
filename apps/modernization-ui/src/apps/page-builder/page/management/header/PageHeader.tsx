@@ -7,10 +7,11 @@ import styles from './page-header.module.scss';
 type PageHeaderProps = {
     page: PagesResponse;
     tabs: PagesTab[];
+    onAddTabSuccess?: () => void;
     children: ReactNode;
 };
 
-const PageHeader = ({ page, tabs, children }: PageHeaderProps) => {
+const PageHeader = ({ page, tabs, onAddTabSuccess, children }: PageHeaderProps) => {
     return (
         <header className={styles.header}>
             <div>
@@ -20,7 +21,7 @@ const PageHeader = ({ page, tabs, children }: PageHeaderProps) => {
                 </div>
                 {children}
             </div>
-            <PageTabs tabs={tabs} />
+            <PageTabs pageId={page.id} tabs={tabs} onAddSuccess={onAddTabSuccess} />
         </header>
     );
 };
