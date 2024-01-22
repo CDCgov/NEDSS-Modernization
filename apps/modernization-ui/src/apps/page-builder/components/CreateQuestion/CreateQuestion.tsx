@@ -10,7 +10,7 @@ import {
     Label,
     ErrorMessage
 } from '@trussworks/react-uswds';
-import { ValueSetControllerService, QuestionControllerService, UpdateQuestionRequest } from '../../generated';
+import { ValueSetControllerService, QuestionControllerService, UpdateDateQuestionRequest } from '../../generated';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
 import { coded, dateOrNumeric, text as textOption } from '../../constant/constant';
@@ -29,7 +29,7 @@ import {
     MessagingInfo,
     ReportingInfo
 } from '../../generated';
-import { authorization } from 'authorization';
+import { authorization as fetchToken } from 'authorization';
 import { QuestionsContext } from '../../context/QuestionsContext';
 import { Heading } from '../../../../components/heading';
 
@@ -91,25 +91,36 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
     const [codeSystemOptionList, setCodeSystemOptionList] = useState<optionsType[]>([]);
     const [maskOptions, setMaskOptions] = useState<optionsType[]>([]);
     const { searchValueSet } = useContext(QuestionsContext);
+    const authorization = fetchToken();
+
+    useEffect(() => {
+        fetchSubGroupOptions();
+        fetchGroupOptions();
+        fetchCodeSystemOptions();
+        fetchMask();
+    }, []);
+
     useEffect(() => {
         if (question?.id) {
             const updatedQuestion = { ...question, ...question?.messagingInfo, ...question?.dataMartInfo };
             delete updatedQuestion.messagingInfo;
             delete updatedQuestion.dataMartInfo;
-            if (!question?.id) {
-                QuestionControllerService.getQuestionUsingGet({
-                    authorization: authorization(),
-                    id: Number(question?.id)
-                }).then((response: any) => {
-                    return response;
-                });
-            }
             questionForm.setValue(
                 'defaultLabelInReport',
                 updatedQuestion.defaultLabelInReport || updatedQuestion.reportLabel
             );
             setSelectedFieldType(updatedQuestion.dataType);
+
+            questionForm.setValue('codeSet', updatedQuestion.codeSet || updatedQuestion.standard);
+            questionForm.setValue('uniqueName', updatedQuestion.uniqueName || updatedQuestion.name);
+            questionForm.setValue('uniqueId', updatedQuestion.uniqueId || updatedQuestion.question);
+            questionForm.setValue('description', updatedQuestion.description);
+            questionForm.setValue('subgroup', updatedQuestion.subgroup || updatedQuestion.subGroup);
             questionForm.setValue('dataType', updatedQuestion.dataType);
+            questionForm.setValue('valueSet', updatedQuestion.valueSet);
+
+            questionForm.setValue('displayControl', updatedQuestion.displayControl || updatedQuestion.displayComponent);
+
             questionForm.setValue('dataMartColumnName', updatedQuestion.dataMartColumnName);
             questionForm.setValue('defaultRdbTableName', updatedQuestion.defaultRdbTableName);
             questionForm.setValue('rdbColumnName', updatedQuestion.rdbColumnName);
@@ -129,16 +140,10 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
             questionForm.setValue('relatedUnits', updatedQuestion.relatedUnits);
             questionForm.setValue('allowFutureDates', updatedQuestion.allowFutureDates);
             questionForm.setValue('adminComments', updatedQuestion.adminComments);
-            questionForm.setValue('codeSet', updatedQuestion.codeSet);
-            questionForm.setValue('description', updatedQuestion.description);
             questionForm.setValue('defaultValue', updatedQuestion.defaultValue);
-            questionForm.setValue('displayControl', updatedQuestion.displayControl);
             questionForm.setValue('label', updatedQuestion.name || updatedQuestion.label);
             questionForm.setValue('mask', updatedQuestion.mask);
-            questionForm.setValue('subgroup', updatedQuestion.subgroup);
             questionForm.setValue('tooltip', updatedQuestion.tooltip);
-            questionForm.setValue('uniqueName', updatedQuestion.uniqueName);
-            questionForm.setValue('uniqueId', updatedQuestion.uniqueId);
             questionForm.setValue('minValue', updatedQuestion.minValue);
             questionForm.setValue('maxValue', updatedQuestion.maxValue);
             questionForm.setValue('relatedUnits', updatedQuestion.relatedUnits);
@@ -153,7 +158,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
 
     const fetchSubGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization: authorization(),
+            authorization,
             codeSetNm: 'NBS_QUES_SUBGROUP'
         }).then((response: any) => {
             const data = response || [];
@@ -166,7 +171,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
     };
     const fetchMask = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization: authorization(),
+            authorization,
             codeSetNm: 'NBS_MASK_TYPE'
         }).then((response: any) => {
             const data = response || [];
@@ -180,7 +185,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
 
     const fetchGroupOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization: authorization(),
+            authorization,
             codeSetNm: 'COINFECTION_GROUP'
         }).then((response: any) => {
             const data = response || [];
@@ -193,7 +198,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
     };
     const fetchCodeSystemOptions = () => {
         ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
-            authorization: authorization(),
+            authorization,
             codeSetNm: 'CODE_SYSTEM'
         }).then((response: any) => {
             const data = response || [];
@@ -205,15 +210,8 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
         });
     };
 
-    useEffect(() => {
-        fetchSubGroupOptions();
-        fetchGroupOptions();
-        fetchCodeSystemOptions();
-        fetchMask();
-    }, []);
-
     const onSubmit = handleSubmit(async (data) => {
-        if (question?.id) return handleUpdateQuestion(data);
+        const { id } = question;
         const request = {
             dataMartInfo: {
                 defaultLabelInReport: data.defaultLabelInReport,
@@ -245,68 +243,62 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
         };
 
         if (selectedFieldType === 'TEXT') {
-            QuestionControllerService.createTextQuestionUsingPost({
-                authorization: authorization(),
-                request: request
-            }).then((response) => {
-                showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
-                resetInput();
-                onAddQuestion?.(response.id!);
+            const payload = { authorization, request };
+            if (id)
+                return QuestionControllerService.updateTextQuestionUsingPut({ ...payload, id }).then(() => {
+                    handleResponse(0);
+                });
+            QuestionControllerService.createTextQuestionUsingPost(payload).then((response) => {
+                handleResponse(response.id!, 'created');
             });
         } else if (selectedFieldType === 'DATE') {
-            const dateRequest = { ...request, allowFutureDates: data.allowFutureDates === 'Yes' };
-            QuestionControllerService.createDateQuestionUsingPost({
-                authorization: authorization(),
-                request: dateRequest
-            }).then((response) => {
-                showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
-                resetInput();
-                onAddQuestion?.(response.id!);
+            const payload = {
+                authorization,
+                request: { ...request, allowFutureDates: data.allowFutureDates === 'Yes' }
+            };
+            if (id) return QuestionControllerService.updateDateQuestionUsingPut({ ...payload, id }).then(() => {});
+            QuestionControllerService.createDateQuestionUsingPost(payload).then((response) => {
+                handleResponse(response.id!, 'created');
             });
         } else if (selectedFieldType === 'NUMERIC') {
-            const numericRequest = {
-                ...request,
-                minValue: parseInt(String(data.minValue!), 10),
-                fieldLength: parseInt(String(data.fieldLength!), 10),
-                maxValue: parseInt(String(data.maxValue!), 10),
-                relatedUnits: data?.relatedUnits,
-                relatedUnitsLiteral: data?.relatedUnitsLiteral,
-                relatedUnitsValueSet: data?.relatedUnitsValueSet,
-                defaultValue: data.defaultValue
+            const payload = {
+                authorization,
+                request: {
+                    ...request,
+                    minValue: parseInt(String(data.minValue!), 10),
+                    fieldLength: parseInt(String(data.fieldLength!), 10),
+                    maxValue: parseInt(String(data.maxValue!), 10),
+                    relatedUnits: data?.relatedUnits,
+                    relatedUnitsLiteral: data?.relatedUnitsLiteral,
+                    relatedUnitsValueSet: data?.relatedUnitsValueSet,
+                    defaultValue: data.defaultValue
+                }
             };
-            QuestionControllerService.createNumericQuestionUsingPost({
-                authorization: authorization(),
-                request: numericRequest
-            }).then((response) => {
-                showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
-                resetInput();
-                onAddQuestion?.(response.id!);
-                return response.id!;
+            if (id)
+                return QuestionControllerService.updateNumericQuestionUsingPut({ ...payload, id }).then(() => {
+                    handleResponse(0);
+                });
+            QuestionControllerService.createNumericQuestionUsingPost(payload).then((response) => {
+                handleResponse(response.id!, 'created');
             });
         } else {
-            const codeRequest = { ...request, valueSet: data.valueSet };
-            QuestionControllerService.createCodedQuestionUsingPost({
-                authorization: authorization(),
-                request: codeRequest
-            }).then((response: any) => {
-                showAlert({ type: 'success', header: 'Created', message: 'Question created successfully' });
-                resetInput();
-                onAddQuestion?.(response.id!);
-                return response.id;
+            const payload = {
+                authorization,
+                request: { ...request, valueSet: data.valueSet }
+            };
+            if (id)
+                return QuestionControllerService.updateCodedQuestionUsingPut({ ...payload, id }).then(() => {
+                    handleResponse(0);
+                });
+            QuestionControllerService.createCodedQuestionUsingPost(payload).then((response) => {
+                handleResponse(response.id!, 'created');
             });
         }
-        onCloseModal && onCloseModal();
     });
-    const handleUpdateQuestion = (request: any) => {
-        QuestionControllerService.updateQuestionUsingPut({
-            authorization: authorization(),
-            id: question.id,
-            request
-        }).then(() => {
-            showAlert({ type: 'success', header: 'Updated', message: 'Question updated successfully' });
-            resetInput();
-            onCloseModal && onCloseModal();
-        });
+    const handleResponse = (id: number, msg = 'updated') => {
+        showAlert({ type: 'success', header: 'Created', message: `Question ${msg} successfully` });
+        resetInput();
+        if (id) onAddQuestion?.(id);
     };
     const handleValidation = (unique = true) => {
         return unique ? /^[a-zA-Z0-9_]*$/ : /^[a-zA-Z0-9\s?!,-_]*$/;
@@ -319,32 +311,33 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
     };
 
     const fieldTypeTab = [
-        { name: 'Value set', value: UpdateQuestionRequest.type.CODED },
-        { name: 'Numeric entry', value: UpdateQuestionRequest.type.NUMERIC },
-        { name: 'Text only', value: UpdateQuestionRequest.type.TEXT },
-        { name: 'Date picker', value: UpdateQuestionRequest.type.DATE }
+        { name: 'Value set', value: UpdateDateQuestionRequest.type.CODED },
+        { name: 'Numeric entry', value: UpdateDateQuestionRequest.type.NUMERIC },
+        { name: 'Text only', value: UpdateDateQuestionRequest.type.TEXT },
+        { name: 'Date picker', value: UpdateDateQuestionRequest.type.DATE }
     ];
     const getDisplayType = () => {
         switch (selectedFieldType) {
-            case UpdateQuestionRequest.type.CODED:
+            case UpdateDateQuestionRequest.type.CODED:
                 return coded;
-            case UpdateQuestionRequest.type.TEXT:
+            case UpdateDateQuestionRequest.type.TEXT:
                 return textOption;
-            case UpdateQuestionRequest.type.NUMERIC:
-            case UpdateQuestionRequest.type.DATE:
+            case UpdateDateQuestionRequest.type.NUMERIC:
+            case UpdateDateQuestionRequest.type.DATE:
                 return dateOrNumeric;
             default:
                 return coded;
         }
     };
 
-    const isValueSet = searchValueSet?.valueSetNm !== undefined;
+    const valueSetName = searchValueSet?.valueSetNm || searchValueSet?.valueSetName || watch('valueSet');
+    const isValueSet = valueSetName !== undefined;
     const renderValueSet = (
         <div className="">
             <label>Value set</label>
             {isValueSet && (
                 <Heading className="selected-value-set" level={4}>
-                    {searchValueSet?.valueSetNm!}
+                    {valueSetName?.toString()}
                 </Heading>
             )}
             <ModalToggleButton modalRef={addValueModalRef} className="width-full" type="submit" outline>
@@ -478,9 +471,8 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             control={control}
                             name="uniqueId"
                             rules={{
-                                required: { value: !editDisabledFields, message: 'Unique ID required' },
                                 pattern: { value: handleValidation(), message: 'Unique ID invalid' },
-                                maxLength: 50
+                                ...maxLengthRule(50)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
@@ -490,7 +482,6 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     type="text"
                                     disabled={editDisabledFields}
                                     error={error?.message}
-                                    required
                                 />
                             )}
                         />
@@ -503,7 +494,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             rules={{
                                 required: { value: !editDisabledFields, message: 'Unique name required' },
                                 pattern: { value: handleValidation(false), message: 'Unique name invalid' },
-                                maxLength: 50
+                                ...maxLengthRule(50)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
@@ -526,6 +517,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                 <SelectInput
                                     defaultValue={value}
                                     className="field-space"
+                                    disabled={editDisabledFields}
                                     label="Subgroup"
                                     required
                                     onChange={onChange}
@@ -537,7 +529,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                         <Controller
                             control={control}
                             name="description"
-                            rules={maxLengthRule(50)}
+                            rules={maxLengthRule(100)}
                             render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                                 <>
                                     <Label htmlFor={name}>Description</Label>
@@ -546,6 +538,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                         onBlur={onBlur}
                                         defaultValue={value}
                                         name={name}
+                                        disabled={editDisabledFields}
                                         id={name}
                                     />
                                     {error?.message && (
@@ -568,6 +561,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                                 key={index}
                                                 type="button"
                                                 outline={field.value !== selectedFieldType}
+                                                disabled={editDisabledFields}
                                                 onClick={() => {
                                                     setSelectedFieldType(field.value);
                                                     onChange(field.value);
@@ -583,23 +577,23 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             )}
                         />
                         <br></br>
-                        {selectedFieldType === UpdateQuestionRequest.type.CODED && renderValueSet}
-                        {(selectedFieldType === UpdateQuestionRequest.type.NUMERIC ||
-                            selectedFieldType === UpdateQuestionRequest.type.TEXT) && (
+                        {selectedFieldType === UpdateDateQuestionRequest.type.CODED && renderValueSet}
+                        {(selectedFieldType === UpdateDateQuestionRequest.type.NUMERIC ||
+                            selectedFieldType === UpdateDateQuestionRequest.type.TEXT) && (
                             <CreateTextQuestion
-                                isText={selectedFieldType === UpdateQuestionRequest.type.TEXT}
+                                isText={selectedFieldType === UpdateDateQuestionRequest.type.TEXT}
                                 control={control}
                                 options={maskOptions}
                             />
                         )}
-                        {selectedFieldType === UpdateQuestionRequest.type.NUMERIC && (
+                        {selectedFieldType === UpdateDateQuestionRequest.type.NUMERIC && (
                             <CreateNumericQuestion
                                 control={control!}
                                 isDisableUnitType={isDisableUnitType}
                                 unitType={unitTypeValue}
                             />
                         )}
-                        {selectedFieldType === UpdateQuestionRequest.type.DATE && (
+                        {selectedFieldType === UpdateDateQuestionRequest.type.DATE && (
                             <CreateDateQuestion control={control} options={maskOptions} />
                         )}
                         <hr className="divider" />
@@ -612,7 +606,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             rules={{
                                 required: { value: true, message: 'Default label in report required' },
                                 pattern: { value: /^\w*$/, message: 'Default label in report invalid' },
-                                maxLength: 50
+                                ...maxLengthRule(50)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
@@ -632,7 +626,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             rules={{
                                 required: { value: true, message: 'Default RDB table name required' },
                                 pattern: { value: /^\w*$/, message: 'Default RDB table name invalid' },
-                                maxLength: 50
+                                ...maxLengthRule(50)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
@@ -650,15 +644,16 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             control={control}
                             name="rdbColumnName"
                             rules={{
-                                required: { value: true, message: 'RDB column name required' },
+                                required: { value: !editDisabledFields, message: 'RDB column name required' },
                                 pattern: { value: startWithNonInteger, message: 'RDB column name invalid' },
-                                maxLength: 50
+                                ...maxLengthRule(50)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
                                     defaultValue={value}
                                     label="RDB column name"
+                                    disabled={editDisabledFields}
                                     type="text"
                                     error={error?.message}
                                     required
@@ -670,7 +665,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             name="datamartColName"
                             rules={{
                                 pattern: { value: startWithNonInteger, message: 'Data mart column name invalid' },
-                                maxLength: 50
+                                ...maxLengthRule(50)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input

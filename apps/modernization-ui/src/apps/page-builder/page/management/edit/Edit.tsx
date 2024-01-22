@@ -36,7 +36,11 @@ export const Edit = () => {
                         addSecModalRef={addSectionModalRef}
                         manageSecModalRef={manageSectionModalRef}
                     />
-                    <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
+                    <EditPageContent
+                        handleManageSection={handleManageSection}
+                        handleAddSection={handleAddSection}
+                        refresh={() => page && refresh(page)}
+                    />
                 </PageManagementProvider>
             ) : (
                 <Loading center />
@@ -48,18 +52,19 @@ export const Edit = () => {
 type EditPageContentProps = {
     handleManageSection?: () => void;
     handleAddSection?: () => void;
+    refresh: () => void;
 };
 
-const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageContentProps) => {
+const EditPageContent = ({ handleManageSection, handleAddSection, refresh }: EditPageContentProps) => {
     const { page, selected, fetch } = usePageManagement();
 
-    const refresh = () => {
+    const refreshContent = () => {
         fetch(page.id);
     };
 
     return (
         <PageManagementLayout name={page.name} mode={'edit'}>
-            <PageHeader page={page} tabs={page.tabs ?? []}>
+            <PageHeader page={page} tabs={page.tabs ?? []} onAddTabSuccess={refresh}>
                 <PageManagementMenu>
                     <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                         Business rules
@@ -70,7 +75,7 @@ const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageCont
             {selected && (
                 <PageContent
                     tab={selected}
-                    refresh={refresh}
+                    refresh={refreshContent}
                     handleManageSection={handleManageSection}
                     handleAddSection={handleAddSection}
                 />

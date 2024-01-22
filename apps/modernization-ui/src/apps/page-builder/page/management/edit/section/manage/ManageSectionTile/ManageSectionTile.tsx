@@ -13,6 +13,9 @@ type Props = {
     handleDelete: (section: PagesSection) => void;
     setOnAction: (action: boolean) => void;
     setAlert?: (alerts: AlertInLineProps) => void;
+    setSectionState: (state: 'add' | 'manage' | 'edit') => void;
+    setSelectedForEdit: (section: PagesSection | undefined) => void;
+    onChangeVisibility: (section: PagesSection, visibility: boolean) => void;
     onAction: boolean;
 };
 
@@ -23,7 +26,10 @@ export const ManageSectionTile = ({
     selectedForDelete,
     handleDelete,
     setOnAction,
-    onAction
+    onAction,
+    setSectionState,
+    setSelectedForEdit,
+    onChangeVisibility
 }: Props) => {
     const deleteHeader = (section: PagesSection) => {
         if (section.subSections.length !== 0) {
@@ -110,7 +116,8 @@ export const ManageSectionTile = ({
                                 <Button
                                     type="button"
                                     onClick={() => {
-                                        console.log('edit here');
+                                        setSectionState('edit');
+                                        setSelectedForEdit(section);
                                     }}
                                     outline
                                     className={styles.iconBtn}
@@ -128,6 +135,29 @@ export const ManageSectionTile = ({
                                     }}>
                                     <Icon.Delete style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
+                                {section.visible ? (
+                                    <Button
+                                        type="button"
+                                        outline
+                                        className={styles.iconBtn}
+                                        disabled={onAction}
+                                        onClick={() => {
+                                            onChangeVisibility(section, false);
+                                        }}>
+                                        <Icon.Visibility style={{ cursor: 'pointer' }} size={3} />
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        type="button"
+                                        outline
+                                        className={`${styles.iconBtn} ${styles.offVisibility}`}
+                                        disabled={onAction}
+                                        onClick={() => {
+                                            onChangeVisibility(section, true);
+                                        }}>
+                                        <Icon.VisibilityOff style={{ cursor: 'pointer' }} size={3} />
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     )}

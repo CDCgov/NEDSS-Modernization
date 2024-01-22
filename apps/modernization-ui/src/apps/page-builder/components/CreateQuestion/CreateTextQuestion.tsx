@@ -12,6 +12,7 @@ import {
     ReportingInfo
 } from '../../generated';
 import { QuestionFormType, optionsType } from './CreateQuestion';
+import { maxLengthRule } from '../../../../validation/entry';
 
 type CreateQuestionFormType = CreateNumericQuestionRequest &
     CreateCodedQuestionRequest &
@@ -51,7 +52,7 @@ export const CreateTextQuestion = ({ control, options, isText }: TextQuestionPro
                 name="fieldLength"
                 rules={{
                     required: { value: true, message: 'Field length required' },
-                    maxLength: 3
+                    ...maxLengthRule(4)
                 }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <Input
@@ -61,6 +62,8 @@ export const CreateTextQuestion = ({ control, options, isText }: TextQuestionPro
                         label="Field length"
                         type="number"
                         error={error?.message}
+                        min={1}
+                        max={2000}
                         required
                     />
                 )}

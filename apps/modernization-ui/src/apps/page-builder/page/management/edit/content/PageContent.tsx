@@ -42,10 +42,6 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
         console.log('add subsection not yet implemented', section);
     };
 
-    const handleEditSection = () => {
-        console.log('edit section here');
-    };
-
     const onCloseModal = () => {
         if (staticTypes.includes(currentEditQuestion?.displayComponent!)) {
             editStaticElementRef.current?.toggleModal(undefined, false);
@@ -75,7 +71,6 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
                 onAddSubsection={handleAddSubsection}
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={setSubsectionId}
-                handleEditSection={() => handleEditSection?.()}
                 addQuestionModalRef={addQuestionModalRef}
             />
             <PageSideMenu onAddSection={() => handleAddSection?.()} onManageSection={() => handleManageSection?.()} />
@@ -101,6 +96,7 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
                 modalRef={editQuestionModalRef}
                 closer
                 size="wide"
+                onCloseModal={onCloseModal}
                 modalHeading={
                     <div className="edit-question-header">
                         <Heading level={2}>Edit question</Heading>

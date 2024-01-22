@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import type { DataMartInfo } from './DataMartInfo';
-import type { MessagingInfo0 } from './MessagingInfo0';
+import type { MessagingInfo } from './MessagingInfo';
 import type { Question } from './Question';
 
 export type NumericQuestion = (Question & {
@@ -18,7 +18,7 @@ export type NumericQuestion = (Question & {
     label?: string;
     mask?: string;
     maxValue?: number;
-    messagingInfo?: MessagingInfo0;
+    messagingInfo?: MessagingInfo;
     minValue?: number;
     status?: string;
     subgroup?: string;
