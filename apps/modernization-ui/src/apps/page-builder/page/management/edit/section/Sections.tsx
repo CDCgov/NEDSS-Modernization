@@ -1,13 +1,12 @@
 import { PagesQuestion, PagesSection, SectionControllerService } from 'apps/page-builder/generated';
 import { useRef } from 'react';
-
 import styles from './section.module.scss';
 import { ModalRef } from '@trussworks/react-uswds';
 import { authorization } from 'authorization';
 import { usePageManagement } from '../../usePageManagement';
-import { useAlert } from 'alert';
 import { StatusModal } from '../../status/StatusModal';
 import { Section } from './Section';
+import { useAlert } from 'alert';
 
 type Props = {
     sections: PagesSection[];
@@ -33,7 +32,7 @@ export const Sections = ({ sections, onAddSubsection, onAddQuestion, onEditQuest
                 page: page.id,
                 sectionId: section.id
             }).then(() => {
-                showAlert({ message: `You've successfully deleted section!`, type: `success` });
+                showAlert({ message: `You have successfully deleted section "${section.name}"`, type: `success` });
                 fetch(page.id);
             });
         }
@@ -48,7 +47,6 @@ export const Sections = ({ sections, onAddSubsection, onAddQuestion, onEditQuest
                     onAddSubsection={onAddSubsection}
                     onAddQuestion={onAddQuestion}
                     onEditQuestion={onEditQuestion}
-                    handleEditSection={() => onEditSection(s)}
                     handleDeleteSection={() => handleDeleteSection(s)}
                 />
             ))}

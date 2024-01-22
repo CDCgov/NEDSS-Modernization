@@ -1,14 +1,17 @@
 import { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import classNames from 'classnames';
 import { PagesTab } from 'apps/page-builder/generated';
-
 import styles from './page-tabs.module.scss';
 import { usePageManagement } from '../../usePageManagement';
+import { ManageTabs } from '../../edit/tabs/ManageTabs/ManageTabs';
 
 type Props = {
+    pageId: number;
     tabs: PagesTab[];
+    onAddSuccess?: () => void;
 };
-export const PageTabs = ({ tabs }: Props) => {
+
+export const PageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
     const { selected, select } = usePageManagement();
 
     const handleKeyPress = (selected: PagesTab) => (event: ReactKeyboardEvent) => {
@@ -29,6 +32,7 @@ export const PageTabs = ({ tabs }: Props) => {
                     {tab.name}
                 </li>
             ))}
+            {onAddSuccess ? <ManageTabs pageId={pageId} tabs={tabs} onAddSuccess={onAddSuccess} /> : null}
         </ul>
     );
 };

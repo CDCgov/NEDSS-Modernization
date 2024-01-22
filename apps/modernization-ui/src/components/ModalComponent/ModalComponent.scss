@@ -19,12 +19,16 @@
 }
 .usa-modal {
     .usa-modal__heading {
+        h3 {
+            margin: 0;
+        }
         .usa-button {
             color: colors.$base-darkest;
             &:last-child {
                 position: absolute;
                 top: 1rem;
                 right: 1rem;
+                color: colors.$base-white;
             }
         }
     }
@@ -46,6 +50,14 @@
             padding: 1.5rem;
             background: white;
             border-radius: 0 0 0.5rem 0.5rem;
+            display: flex;
+            justify-content: flex-end;
+            button {
+                margin: 0;
+                &:last-of-type {
+                    margin-left: 0.5rem;
+                }
+            }
         }
     }
     &.wide {

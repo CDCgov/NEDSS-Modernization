@@ -38,7 +38,7 @@ export const SectionHeader = ({
                         <Icon.Edit size={3} /> Edit section
                     </Button>
                     <Button type="button" onClick={handleDeleteSection}>
-                        <Icon.Delete size={3} /> Delete
+                        <Icon.Delete size={3} /> Delete section
                     </Button>
                 </MoreOptions>
                 {isExpanded ? (

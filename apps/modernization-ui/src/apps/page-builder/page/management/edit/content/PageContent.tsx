@@ -136,6 +136,7 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
                 modalRef={editQuestionModalRef}
                 closer
                 size="wide"
+                onCloseModal={onCloseModal}
                 modalHeading={
                     <div className="edit-question-header">
                         <Heading level={2}>Edit question</Heading>
