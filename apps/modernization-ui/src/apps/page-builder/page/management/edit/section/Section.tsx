@@ -8,23 +8,24 @@ import { AddSection } from './manage/AddSection';
 import { useAlert } from 'alert';
 import { usePageManagement } from '../../usePageManagement';
 import './manage/ManageSectionModal.scss';
+import { AddSubSection } from '../subsection/manage/AddSubSection';
 
 type Props = {
     section: PagesSection;
     onAddQuestion: (subsection: number) => void;
-    onAddSubsection: (section: number) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     handleDeleteSection: () => void;
     addQuestionModalRef: RefObject<ModalRef>;
+    refresh?: () => void;
 };
 
 export const Section = ({
     section,
-    onAddSubsection,
     onAddQuestion,
     addQuestionModalRef,
     onEditQuestion,
-    handleDeleteSection
+    handleDeleteSection,
+    refresh
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
@@ -36,6 +37,8 @@ export const Section = ({
 
     const editSectionModalRef = useRef<ModalRef>(null);
 
+    const addSubsectionModalRef = useRef<ModalRef>(null);
+
     const { showAlert } = useAlert();
 
     const onCloseEditSectionModal = () => {
@@ -46,12 +49,20 @@ export const Section = ({
         editSectionModalRef.current?.toggleModal(undefined, true);
     };
 
+    const handleAddSubSection = () => {
+        addSubsectionModalRef.current?.toggleModal(undefined, true);
+    };
+
+    const onCloseAddSubSection = () => {
+        addSubsectionModalRef.current?.toggleModal(undefined, false);
+    };
+
     return (
         <div className={styles.section}>
             <SectionHeader
                 name={section.name ?? ''}
                 subsectionCount={section.subSections?.length ?? 0}
-                onAddSubsection={() => onAddSubsection(section.id!)}
+                onAddSubsection={handleAddSubSection}
                 onExpandedChange={handleExpandedChange}
                 handleEditSection={handleEditSection}
                 handleDeleteSection={handleDeleteSection}
@@ -82,6 +93,20 @@ export const Section = ({
                     onCancel={onCloseEditSectionModal}
                     isEdit={true}
                     section={section}
+                />
+            </Modal>
+
+            <Modal id={'add-section-modal'} ref={addSubsectionModalRef} className={'add-section-modal'} isLarge>
+                <AddSubSection
+                    sectionId={section.id}
+                    pageId={page.id}
+                    onCancel={() => {
+                        onCloseAddSubSection?.();
+                    }}
+                    onSubSectionTouched={() => {
+                        onCloseAddSubSection?.();
+                        refresh;
+                    }}
                 />
             </Modal>
         </div>

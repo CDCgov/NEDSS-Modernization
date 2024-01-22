@@ -38,10 +38,6 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
     const createValueModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
 
-    const handleAddSubsection = (section: number) => {
-        console.log('add subsection not yet implemented', section);
-    };
-
     const onCloseModal = () => {
         if (staticTypes.includes(currentEditQuestion?.displayComponent!)) {
             editStaticElementRef.current?.toggleModal(undefined, false);
@@ -68,10 +64,10 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
             <div className={styles.invisible} />
             <Sections
                 sections={tab.sections ?? []}
-                onAddSubsection={handleAddSubsection}
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={setSubsectionId}
                 addQuestionModalRef={addQuestionModalRef}
+                refresh={refresh}
             />
             <PageSideMenu onAddSection={() => handleAddSection?.()} onManageSection={() => handleManageSection?.()} />
             <ModalComponent

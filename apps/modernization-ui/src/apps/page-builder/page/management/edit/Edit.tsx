@@ -75,7 +75,7 @@ const EditPageContent = ({ handleManageSection, handleAddSection, refresh }: Edi
             {selected && (
                 <PageContent
                     tab={selected}
-                    refresh={refreshContent}
+                    refresh={refresh}
                     handleManageSection={handleManageSection}
                     handleAddSection={handleAddSection}
                 />
