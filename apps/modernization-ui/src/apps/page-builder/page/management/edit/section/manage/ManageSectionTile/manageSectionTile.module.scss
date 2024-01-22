@@ -2,6 +2,7 @@
 @use 'styles/borders';
 
 .tile {
+    justify-content: space-between;
     .warningModal {
         display: flex;
         flex-direction: column;
@@ -74,18 +75,15 @@
     .manageSectionTile {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
         color: colors.$base-darkest;
         padding: 1rem 1.5rem;
         background-color: colors.$base-white;
 
         .handle {
             display: flex;
+            margin-right: 1.35rem;
             svg {
                 cursor: pointer;
-            }
-            p {
-                display: none;
             }
         }
         .label {
@@ -114,10 +112,6 @@
                     }
                 }
             }
-            .delete {
-                display: none;
-            }
-
             .iconBtn {
                 box-shadow: none;
 
@@ -126,18 +120,10 @@
                     background-color: transparent !important;
                 }
             }
-        }
-    }
-    .delete {
-        display: flex;
-        gap: 1.5rem;
-        width: 100%;
-        justify-content: flex-end;
-        p {
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin: 0;
-            cursor: pointer;
+
+            .offVisibility {
+                color: colors.$base-lighter;
+            }
         }
     }
 }

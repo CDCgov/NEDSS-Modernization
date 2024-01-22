@@ -19,6 +19,8 @@ type ManageSectionProps = {
     alert?: AlertInLineProps;
     onDeleteSection?: () => void;
     onResetAlert?: () => void;
+    onUpdateSection?: () => void;
+    onAddSection?: (section: string) => void;
 };
 
 export const ManageSection = ({
@@ -28,15 +30,19 @@ export const ManageSection = ({
     pageId,
     alert,
     onDeleteSection,
-    onResetAlert
+    onResetAlert,
+    onUpdateSection,
+    onAddSection
 }: ManageSectionProps) => {
-    const [sectionState, setSectionState] = useState<'manage' | 'add'>('manage');
+    const [sectionState, setSectionState] = useState<'manage' | 'add' | 'edit'>('manage');
 
     const [confirmDelete, setConfirmDelete] = useState<PagesSection | undefined>(undefined);
 
+    const [sectionEdit, setSectionEdit] = useState<PagesSection | undefined>();
+
     const [onAction, setOnAction] = useState<boolean>(false);
 
-    const handleUpdateState = (state: 'manage' | 'add') => {
+    const handleUpdateState = (state: 'manage' | 'add' | 'edit') => {
         setSectionState(state);
     };
 
@@ -51,18 +57,49 @@ export const ManageSection = ({
         });
     };
 
+    const onChangeVisibility = (section: PagesSection, visibility: boolean) => {
+        SectionControllerService.updateSectionUsingPut({
+            authorization: authorization(),
+            page: pageId,
+            request: { name: section.name, visible: visibility },
+            section: section.id
+        }).then(() => {
+            onContentChange?.();
+        });
+    };
+
     const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
     return (
         <>
             {sectionState === 'add' && (
                 <AddSection
                     pageId={pageId}
-                    onAddSectionCreated={() => {
+                    onSectionTouched={() => {
                         onContentChange?.();
                         setSectionState('manage');
                     }}
+                    onAddSection={onAddSection}
                     onCancel={() => setSectionState('manage')}
                     tabId={tab?.id}
+                    isEdit={false}
+                />
+            )}
+            {sectionState === 'edit' && (
+                <AddSection
+                    pageId={pageId}
+                    onSectionTouched={() => {
+                        onContentChange?.();
+                        setSectionState('manage');
+                        setSectionEdit(undefined);
+                        onUpdateSection?.();
+                    }}
+                    onCancel={() => {
+                        setSectionState('manage');
+                        setSectionEdit(undefined);
+                    }}
+                    tabId={tab?.id}
+                    isEdit={true}
+                    section={sectionEdit}
                 />
             )}
             {sectionState === 'manage' && (
@@ -125,6 +162,9 @@ export const ManageSection = ({
                                                     handleDelete={onDelete}
                                                     setOnAction={setOnAction}
                                                     onAction={onAction}
+                                                    setSectionState={setSectionState}
+                                                    setSelectedForEdit={setSectionEdit}
+                                                    onChangeVisibility={onChangeVisibility}
                                                 />
                                             );
                                         })}

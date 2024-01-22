@@ -6,6 +6,7 @@ import './ManageSectionModal.scss';
 import { usePageManagement } from '../../../usePageManagement';
 import { PagesTab } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { useAlert } from 'alert';
 
 type ManageSectionModalProps = {
     refresh?: () => void;
@@ -21,6 +22,8 @@ export type AlertInLineProps = {
 export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef }: ManageSectionModalProps) => {
     const manageSectionModalRef = manageSecModalRef;
     const addSectionModalRef = addSecModalRef;
+
+    const { showAlert } = useAlert();
 
     const [alert, setAlert] = useState<AlertInLineProps | undefined>(undefined);
 
@@ -64,8 +67,14 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
                         onContentChange={() => {
                             refresh?.();
                         }}
+                        onUpdateSection={() => {
+                            setAlert({ message: `Your changes have been saved successfully.`, type: `success` });
+                        }}
                         onDeleteSection={() => {
                             setAlert({ message: `You've successfully deleted section!`, type: `success` });
+                        }}
+                        onAddSection={(section: string) => {
+                            setAlert({ message: `You have successfully added section "${section}"`, type: `success` });
                         }}
                         onCancel={onCloseManageSectionModal}
                     />
@@ -75,11 +84,15 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
                 <AddSection
                     pageId={page.id}
                     tabId={selected?.id}
-                    onAddSectionCreated={() => {
+                    onSectionTouched={() => {
                         refresh?.();
                         closeAddSection?.();
                     }}
+                    onAddSection={(section: string) => {
+                        showAlert({ message: `You have successfully added section "${section}"`, type: `success` });
+                    }}
                     onCancel={closeAddSection}
+                    isEdit={false}
                 />
             </Modal>
         </>

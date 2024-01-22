@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.page.content.section;
 import java.time.Instant;
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -12,6 +13,7 @@ import gov.cdc.nbs.questionbank.page.content.section.model.Section;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 
 @Component
+@Transactional
 public class SectionUpdater {
 
     private final EntityManager entityManager;
