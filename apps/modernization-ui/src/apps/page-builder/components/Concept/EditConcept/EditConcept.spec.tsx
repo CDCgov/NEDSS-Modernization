@@ -25,7 +25,7 @@ describe('When EditConcept form renders', () => {
 
     it('should disable Local code field', () => {
         const { container } = render(
-            <EditConcept valueset={valueset} selectedConcept={selectedConcept} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} />
+            <EditConcept valueset={valueset} selectedConcept={selectedConcept} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} setAlertMessage={jest.fn()} />
         );
         const inputs = container.getElementsByClassName('usa-input');
         expect(inputs[1]).toBeDisabled();
@@ -33,7 +33,7 @@ describe('When EditConcept form renders', () => {
 
     it('should display UI display name', async () => {
         const { container } = render(
-            <EditConcept valueset={valueset} selectedConcept={selectedConcept} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} />
+            <EditConcept valueset={valueset} selectedConcept={selectedConcept} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} setAlertMessage={jest.fn()} />
         );
         const inputs = container.getElementsByTagName('input');
         expect(inputs.length).toBe(13);
@@ -41,7 +41,7 @@ describe('When EditConcept form renders', () => {
 
     it('should display UI display name', async () => {
         const { container } = render(
-            <EditConcept valueset={valueset} selectedConcept={selectedConcept} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} />
+            <EditConcept valueset={valueset} selectedConcept={selectedConcept} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} setAlertMessage={jest.fn()} />
         );
         expect(screen.getAllByDisplayValue('Test concept display')).toHaveLength(1);
         expect(screen.getAllByDisplayValue('ZZZ')).toHaveLength(2);
