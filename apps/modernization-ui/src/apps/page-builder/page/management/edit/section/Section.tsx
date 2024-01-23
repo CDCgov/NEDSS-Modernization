@@ -2,13 +2,15 @@ import { PagesQuestion, PagesSection } from 'apps/page-builder/generated';
 import { SectionHeader } from './SectionHeader';
 import styles from './section.module.scss';
 import { Subsection } from '../subsection/Subsection';
-import { RefObject, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { AddSection } from './manage/AddSection';
 import { useAlert } from 'alert';
 import { usePageManagement } from '../../usePageManagement';
 import './manage/ManageSectionModal.scss';
 import { AddSubSection } from '../subsection/manage/AddSubSection';
+import { AlertInLineProps } from './manage/ManageSectionModal';
+import { ManageSubsection } from '../subsection/manage/ManageSubsection';
 
 type Props = {
     section: PagesSection;
@@ -39,7 +41,25 @@ export const Section = ({
 
     const addSubsectionModalRef = useRef<ModalRef>(null);
 
+    const manageSubsectionModalRef = useRef<ModalRef>(null);
+
     const { showAlert } = useAlert();
+
+    const [alert, setAlert] = useState<AlertInLineProps | undefined>(undefined);
+
+    useEffect(() => {
+        if (alert !== undefined) {
+            setTimeout(() => setAlert(undefined), 5000);
+        }
+    }, [alert]);
+
+    const handleManageSubsection = () => {
+        manageSubsectionModalRef.current?.toggleModal(undefined, true);
+    };
+
+    const onCloseManageSubsection = () => {
+        manageSubsectionModalRef.current?.toggleModal(undefined, false);
+    };
 
     const onCloseEditSectionModal = () => {
         editSectionModalRef.current?.toggleModal(undefined, false);
@@ -63,6 +83,7 @@ export const Section = ({
                 name={section.name ?? ''}
                 subsectionCount={section.subSections?.length ?? 0}
                 onAddSubsection={handleAddSubSection}
+                handleManageSubsection={handleManageSubsection}
                 onExpandedChange={handleExpandedChange}
                 handleEditSection={handleEditSection}
                 handleDeleteSection={handleDeleteSection}
@@ -105,8 +126,24 @@ export const Section = ({
                     }}
                     onSubSectionTouched={() => {
                         onCloseAddSubSection?.();
-                        refresh;
+                        refresh?.();
                     }}
+                />
+            </Modal>
+
+            <Modal
+                id={'manage-section-modal'}
+                ref={manageSubsectionModalRef}
+                className={'manage-section-modal'}
+                isLarge>
+                <ManageSubsection
+                    section={section}
+                    alert={alert}
+                    onResetAlert={() => setAlert(undefined)}
+                    onSetAlert={(message, type) => {
+                        setAlert({ message: message, type: type });
+                    }}
+                    onCancel={onCloseManageSubsection}
                 />
             </Modal>
         </div>
