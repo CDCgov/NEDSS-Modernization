@@ -168,7 +168,10 @@ class SearchablePatientConverter {
   }
 
   private static NestedEntityId asIdentification(final EntityId identification) {
-    String adjusted = identification.getRootExtensionTxt().replaceAll("\\W", "");
+    String value = identification.getRootExtensionTxt();
+    String adjusted = value == null
+        ? null
+        : identification.getRootExtensionTxt().replaceAll("\\W", "");
     return new NestedEntityId(
         identification.getRecordStatusCd(),
         adjusted,

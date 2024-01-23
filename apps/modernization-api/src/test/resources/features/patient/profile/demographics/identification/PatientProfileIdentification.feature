@@ -21,7 +21,7 @@
       Then the patient's identification includes 3 entries
       And the patient has 5 identification entries
 
-    Scenario: I can only retrieve valid identifications for a patient
+    Scenario: BUG: CNFT1-2008 I can only retrieve valid identifications for a patient
       Given the patient can be identified with a Medicare Number of "1009"
       And the patient can be identified with a Driver's License Number of "1013"
       And the patient can be identified with an Account Number without a value
