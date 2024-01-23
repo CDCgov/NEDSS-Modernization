@@ -72,7 +72,7 @@ export const CreateConcept = ({
             displayName: data.displayName,
             shortDisplayName: data.displayName,
             effectiveFromTime,
-            effectiveToTime: duration ? externalizeDateTime(data.effectiveToTime)! : undefined,
+            effectiveToTime: duration ? externalizeDateTime(data.effectiveToTime) ?? undefined : undefined,
             statusCode: data.statusCode,
             messagingInfo: {
                 codeSystem: data.messagingInfo.codeSystem,
