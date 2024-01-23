@@ -84,7 +84,7 @@ export const EditConcept = ({
                 preferredConceptName: data.messagingInfo.preferredConceptName
             },
             displayName: data.displayName,
-            effectiveToTime: duration ? externalizeDateTime(data.effectiveToTime)! : undefined
+            effectiveToTime: duration ? externalizeDateTime(data.effectiveToTime) ?? undefined : undefined
         };
         await ValueSetControllerService.updateConceptUsingPut({
             authorization: authorization(),
