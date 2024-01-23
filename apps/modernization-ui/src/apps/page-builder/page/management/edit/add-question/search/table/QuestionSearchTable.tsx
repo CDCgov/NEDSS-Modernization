@@ -1,4 +1,4 @@
-import { Icon } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import { AvailableQuestion } from 'apps/page-builder/generated';
 import { AddableQuestionSort, SortField } from '../../../../../../hooks/api/useFindAvailableQuestions';
 import { Search } from 'components/Search';
@@ -9,9 +9,18 @@ import { Direction } from 'sorting';
 import { ExpandedQuestion } from './ExpandedQuestion';
 import styles from './question-search-table.module.scss';
 
+const tableHeaders = [
+    { name: 'Type', sortable: true },
+    { name: 'Unique ID', sortable: true },
+    { name: 'Unique name', sortable: true },
+    { name: 'Subgroup', sortable: true },
+    { name: '', sortable: false }
+];
+
 type Props = {
     isLoading?: boolean;
     questions: AvailableQuestion[];
+    query?: string;
     onSortChange?: (sort: AddableQuestionSort | undefined) => void;
     onQuerySubmit?: (query: string) => void;
     onSelectionChange?: (mode: SelectionMode, id: number) => void;
@@ -19,6 +28,7 @@ type Props = {
 export const QuestionSearchTable = ({
     isLoading,
     questions,
+    query,
     onSortChange,
     onQuerySubmit,
     onSelectionChange
@@ -114,22 +124,28 @@ export const QuestionSearchTable = ({
         }
     };
 
-    const tableHeaders = [
-        { name: 'Type', sortable: true },
-        { name: 'Unique ID', sortable: true },
-        { name: 'Unique name', sortable: true },
-        { name: 'Subgroup', sortable: true },
-        { name: '', sortable: false }
-    ];
-
     return (
         <>
             <div className={styles.searchBar}>
+                <div>
+                    {query && (
+                        <div className={styles.searchText}>
+                            <div> {query}</div>
+                            <Button
+                                className={styles.clearSearchButton}
+                                type="button"
+                                onClick={() => onQuerySubmit?.('')}>
+                                <Icon.Close />
+                            </Button>
+                        </div>
+                    )}
+                </div>
                 <Search
                     onSearch={doQuerySearch}
                     placeholder="Search by unique name or unique ID"
-                    name="Test"
+                    name="question-search"
                     id="question-search"
+                    value={query}
                 />
             </div>
             <div className={styles.tableContainer}>

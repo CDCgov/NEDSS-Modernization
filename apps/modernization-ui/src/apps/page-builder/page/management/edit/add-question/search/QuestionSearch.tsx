@@ -27,6 +27,7 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
     const [sort, setSort] = useState<AddableQuestionSort | undefined>(undefined);
     const { isLoading, search, response } = useFindAddableQuestions();
     const [selectedQuestions, setSelectedQuestions] = useState<number[]>([]);
+    const [resetTable, setResetTable] = useState<boolean>(false);
 
     useEffect(() => {
         if (pageId) {
@@ -68,20 +69,43 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
         }
     };
 
+    const handleAccept = () => {
+        setSelectedQuestions([]);
+        setResetTable(true);
+        onAccept(selectedQuestions);
+    };
+
+    const handleClose = () => {
+        setSelectedQuestions([]);
+        setResetTable(true);
+        onCancel();
+    };
+
+    useEffect(() => {
+        if (resetTable) {
+            firstPage();
+            setResetTable(false);
+        }
+    }, [resetTable]);
+
     return (
         <>
-            <CloseableHeader onClose={onCancel} title="Add question" />
+            <CloseableHeader onClose={handleClose} title="Add question" />
             <div className={styles.content}>
                 <div className={styles.subHeading}>
                     <div className={styles.helpText}>You can search for an existing question or create a new one</div>
                 </div>
-                <QuestionSearchTable
-                    questions={response?.content ?? []}
-                    isLoading={isLoading}
-                    onQuerySubmit={(query) => setQuery(query)}
-                    onSortChange={setSort}
-                    onSelectionChange={handleSelectedQuestionChange}
-                />
+                {!resetTable && (
+                    <QuestionSearchTable
+                        questions={response?.content ?? []}
+                        isLoading={isLoading}
+                        query={query}
+                        onQuerySubmit={(query) => setQuery(query)}
+                        onSortChange={setSort}
+                        onSelectionChange={handleSelectedQuestionChange}
+                    />
+                )}
+
                 {response?.content?.length === 0 && (
                     <div className={styles.createNewNotification}>
                         <div className={styles.message}>Can't find what you're looking for?</div>
@@ -92,11 +116,11 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
                 )}
             </div>
             <ButtonBar>
-                <Button onClick={onCancel} type="button" outline>
+                <Button onClick={handleClose} type="button" outline>
                     Cancel
                 </Button>
                 <Button
-                    onClick={() => onAccept(selectedQuestions)}
+                    onClick={handleAccept}
                     type="button"
                     disabled={selectedQuestions == undefined || selectedQuestions.length === 0}>
                     Add to page
