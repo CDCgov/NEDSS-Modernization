@@ -30,17 +30,9 @@ export const Edit = () => {
     return (
         <>
             {page ? (
-                <PageManagementProvider page={page} fetch={fetch}>
-                    <ManageSectionModal
-                        refresh={() => page && refresh(page)}
-                        addSecModalRef={addSectionModalRef}
-                        manageSecModalRef={manageSectionModalRef}
-                    />
-                    <EditPageContent
-                        handleManageSection={handleManageSection}
-                        handleAddSection={handleAddSection}
-                        refresh={() => page && refresh(page)}
-                    />
+                <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <ManageSectionModal addSecModalRef={addSectionModalRef} manageSecModalRef={manageSectionModalRef} />
+                    <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
                 </PageManagementProvider>
             ) : (
                 <Loading center />
@@ -52,11 +44,10 @@ export const Edit = () => {
 type EditPageContentProps = {
     handleManageSection?: () => void;
     handleAddSection?: () => void;
-    refresh: () => void;
 };
 
-const EditPageContent = ({ handleManageSection, handleAddSection, refresh }: EditPageContentProps) => {
-    const { page, selected } = usePageManagement();
+const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageContentProps) => {
+    const { page, selected, refresh } = usePageManagement();
 
     return (
         <PageManagementLayout name={page.name} mode={'edit'}>
@@ -71,7 +62,6 @@ const EditPageContent = ({ handleManageSection, handleAddSection, refresh }: Edi
             {selected && (
                 <PageContent
                     tab={selected}
-                    refresh={refresh}
                     handleManageSection={handleManageSection}
                     handleAddSection={handleAddSection}
                 />

@@ -1,16 +1,16 @@
+import { useAlert } from 'alert';
 import {
-    PageStaticControllerService,
-    PagesSubSection,
     PageQuestionControllerService,
-    PagesQuestion
+    PageStaticControllerService,
+    PagesQuestion,
+    PagesSubSection
 } from 'apps/page-builder/generated';
+import { authorization } from 'authorization/authorization';
+import { useState } from 'react';
+import { usePageManagement } from '../../usePageManagement';
+import { Question } from '../question/Question';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
-import { useState } from 'react';
-import { Question } from '../question/Question';
-import { usePageManagement } from '../../usePageManagement';
-import { authorization } from 'authorization/authorization';
-import { useAlert } from 'alert';
 
 type Props = {
     subsection: PagesSubSection;
@@ -28,7 +28,7 @@ const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, 
 
 export const Subsection = ({ subsection, onAddQuestion, onEditQuestion }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
-    const { page, fetch } = usePageManagement();
+    const { page, refresh } = usePageManagement();
     const { showAlert } = useAlert();
 
     const handleAlert = (message: string) => {
@@ -47,7 +47,7 @@ export const Subsection = ({ subsection, onAddQuestion, onEditQuestion }: Props)
                 request: { componentId: id }
             }).then(() => {
                 handleAlert(`Element deleted successfully`);
-                fetch(page.id);
+                refresh();
             });
         } else {
             PageQuestionControllerService.deleteQuestionUsingDelete({
@@ -55,7 +55,7 @@ export const Subsection = ({ subsection, onAddQuestion, onEditQuestion }: Props)
                 page: page.id,
                 questionId: Number(id)
             }).then(() => {
-                fetch(page.id);
+                refresh();
                 handleAlert(`Question deleted successfully`);
             });
         }

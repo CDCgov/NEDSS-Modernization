@@ -7,6 +7,7 @@ type Interactions = {
     page: PagesResponse;
     selected?: Selected;
     fetch: (page: number) => void;
+    refresh: () => void;
     select: (tab: PagesTab) => void;
 };
 
@@ -15,10 +16,11 @@ export const PageManagementContext = createContext<Interactions | undefined>(und
 type PageManagementProviderProps = {
     page: PagesResponse;
     fetch: (page: number) => void;
+    refresh: () => void;
     children: ReactNode;
 };
 
-const PageManagementProvider = ({ page, children, fetch }: PageManagementProviderProps) => {
+const PageManagementProvider = ({ page, children, fetch, refresh }: PageManagementProviderProps) => {
     const [selected, setSelected] = useState<number>(0);
 
     const select = (tab: PagesTab) => setSelected(page.tabs?.indexOf(tab) ?? 0);
@@ -27,6 +29,7 @@ const PageManagementProvider = ({ page, children, fetch }: PageManagementProvide
             page,
             selected: page.tabs?.[selected],
             fetch,
+            refresh,
             select
         };
     }, [JSON.stringify(page), selected]);

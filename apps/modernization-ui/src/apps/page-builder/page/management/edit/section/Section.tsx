@@ -17,13 +17,12 @@ type Props = {
     onAddQuestion: (subsection: number) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     handleDeleteSection: () => void;
-    refresh?: () => void;
 };
 
-export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSection, refresh }: Props) => {
+export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSection }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
-    const { page, fetch, selected } = usePageManagement();
+    const { page, refresh, selected } = usePageManagement();
 
     const handleExpandedChange = (expanded: boolean) => {
         setIsExpanded(expanded);
@@ -100,7 +99,7 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSe
                     onSectionTouched={() => {
                         onCloseEditSectionModal();
                         showAlert({ message: `Your changes have been saved succesfully.`, type: `success` });
-                        fetch(page.id);
+                        refresh();
                     }}
                     onCancel={onCloseEditSectionModal}
                     isEdit={true}
@@ -121,7 +120,7 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSe
                     onSubSectionTouched={(section: string) => {
                         onCloseAddSubSection();
                         showAlert({ message: `You have successfully subsection "${section}"`, type: `success` });
-                        refresh?.();
+                        refresh();
                     }}
                 />
             </Modal>
@@ -139,7 +138,6 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSe
                     onSetAlert={(message, type) => {
                         setAlert({ message: message, type: type });
                     }}
-                    refresh={refresh}
                     onCancel={onCloseManageSubsection}
                 />
             </Modal>

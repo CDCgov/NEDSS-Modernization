@@ -1,7 +1,7 @@
-import { render } from "@testing-library/react";
-import { PagesResponse } from "apps/page-builder/generated";
-import { PageTabs } from "./PageTabs";
-import { PageManagementProvider } from "../../usePageManagement";
+import { render } from '@testing-library/react';
+import { PagesResponse } from 'apps/page-builder/generated';
+import { PageTabs } from './PageTabs';
+import { PageManagementProvider } from '../../usePageManagement';
 
 const content: PagesResponse = {
     id: 123,
@@ -33,11 +33,10 @@ const content: PagesResponse = {
     ]
 };
 
-
 describe('When PageTabs renders', () => {
     it('should display the Manage Tabs button when passed onAddSuccess', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()}>
+            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
                 <PageTabs pageId={999} tabs={content.tabs!} onAddSuccess={jest.fn()} />
             </PageManagementProvider>
         );
@@ -46,7 +45,7 @@ describe('When PageTabs renders', () => {
     });
     it('should not display the Manage Tabs button when not passed onAddSuccess', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()}>
+            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
                 <PageTabs pageId={999} tabs={content.tabs!} />
             </PageManagementProvider>
         );

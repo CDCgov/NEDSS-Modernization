@@ -12,11 +12,10 @@ type Props = {
     sections: PagesSection[];
     onAddQuestion: (subsection: number) => void;
     onEditQuestion: (question: PagesQuestion) => void;
-    refresh?: () => void;
 };
 
-export const Sections = ({ sections, onAddQuestion, onEditQuestion, refresh }: Props) => {
-    const { page, fetch } = usePageManagement();
+export const Sections = ({ sections, onAddQuestion, onEditQuestion }: Props) => {
+    const { page, refresh } = usePageManagement();
 
     const statusModalRef = useRef<ModalRef>(null);
 
@@ -32,7 +31,7 @@ export const Sections = ({ sections, onAddQuestion, onEditQuestion, refresh }: P
                 sectionId: section.id
             }).then(() => {
                 showAlert({ message: `You have successfully deleted section "${section.name}"`, type: `success` });
-                fetch(page.id);
+                refresh();
             });
         }
     };
@@ -45,8 +44,7 @@ export const Sections = ({ sections, onAddQuestion, onEditQuestion, refresh }: P
                     key={k}
                     onAddQuestion={onAddQuestion}
                     onEditQuestion={onEditQuestion}
-                    handleDeleteSection={() => handleDeleteSection?.(s)}
-                    refresh={refresh}
+                    handleDeleteSection={() => handleDeleteSection(s)}
                 />
             ))}
             <StatusModal

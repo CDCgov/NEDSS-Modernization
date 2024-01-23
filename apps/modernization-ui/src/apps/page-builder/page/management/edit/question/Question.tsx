@@ -54,9 +54,13 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                         onConfirm={() => {
                             onDeleteQuestion(question.id, question.displayComponent!);
                             setConfirmModal(false);
+                            modal.current?.toggleModal();
                         }}
                         cancelText="Cancel"
-                        onCancel={() => {}}
+                        onCancel={() => {
+                            console.log('cancel');
+                            modal.current?.toggleModal();
+                        }}
                     />
                 )}
                 <QuestionContent

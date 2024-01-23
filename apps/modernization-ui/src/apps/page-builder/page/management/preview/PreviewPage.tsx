@@ -15,10 +15,10 @@ import styles from './preview-page.module.scss';
 import { PreviewTab } from './tab';
 
 const PreviewPage = () => {
-    const { page, fetch } = useGetPageDetails();
+    const { page, fetch, refresh } = useGetPageDetails();
 
     return page ? (
-        <PageManagementProvider page={page} fetch={fetch}>
+        <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
             <PreviewPageContent />
         </PageManagementProvider>
     ) : (
