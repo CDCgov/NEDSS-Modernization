@@ -1,8 +1,8 @@
 import { CreateSubSectionRequest, SubSectionControllerService } from 'apps/page-builder/generated';
 import { Controller, useForm } from 'react-hook-form';
-import styles from './subsection.module.scss';
+import styles from './addsubsection.module.scss';
 import { Heading } from 'components/heading';
-import { Button, Form } from '@trussworks/react-uswds';
+import { Button, Form, Icon } from '@trussworks/react-uswds';
 import { authorization } from 'authorization';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { maxLengthRule } from 'validation/entry';
@@ -12,7 +12,7 @@ type subSectionProps = {
     sectionId?: number;
     pageId?: number;
     onCancel?: () => void;
-    onSubSectionTouched?: () => void;
+    onSubSectionTouched?: (section: string) => void;
 };
 
 export const AddSubSection = ({ sectionId, pageId, onCancel, onSubSectionTouched }: subSectionProps) => {
@@ -25,14 +25,25 @@ export const AddSubSection = ({ sectionId, pageId, onCancel, onSubSectionTouched
             page: pageId ?? 0,
             request: data
         }).then(() => {
-            onSubSectionTouched?.();
+            onSubSectionTouched?.(data.name ?? '');
+            form.reset();
         });
     });
 
     return (
         <div className={styles.subSection}>
             <div className={styles.header}>
-                <Heading level={4}>Add subsection</Heading>
+                <div className={styles.headerContent}>
+                    <Heading level={4}>Add subsection</Heading>
+                </div>
+                <Icon.Close
+                    size={3}
+                    onClick={() => {
+                        form.reset();
+                        onCancel?.();
+                    }}
+                    className={styles.closeBtn}
+                />
             </div>
             <Form onSubmit={onSubmit} className={styles.form}>
                 <div className={styles.content}>
@@ -74,7 +85,12 @@ export const AddSubSection = ({ sectionId, pageId, onCancel, onSubSectionTouched
             </Form>
             <div className={styles.footer}>
                 <div className={styles.footerBtns}>
-                    <Button type="button" onClick={onCancel}>
+                    <Button
+                        type="button"
+                        onClick={() => {
+                            form.reset();
+                            onCancel?.();
+                        }}>
                         Cancel
                     </Button>
                     <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>

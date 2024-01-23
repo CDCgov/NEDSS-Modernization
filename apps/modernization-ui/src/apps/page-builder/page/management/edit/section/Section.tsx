@@ -117,15 +117,21 @@ export const Section = ({
                 />
             </Modal>
 
-            <Modal id={'add-section-modal'} ref={addSubsectionModalRef} className={'add-section-modal'} isLarge>
+            <Modal
+                id={'add-section-modal'}
+                ref={addSubsectionModalRef}
+                className={'add-section-modal'}
+                isLarge
+                forceAction>
                 <AddSubSection
                     sectionId={section.id}
                     pageId={page.id}
                     onCancel={() => {
                         onCloseAddSubSection?.();
                     }}
-                    onSubSectionTouched={() => {
+                    onSubSectionTouched={(section: string) => {
                         onCloseAddSubSection?.();
+                        showAlert({ message: `You have successfully subsection "${section}"`, type: `success` });
                         refresh?.();
                     }}
                 />
@@ -135,6 +141,7 @@ export const Section = ({
                 id={'manage-section-modal'}
                 ref={manageSubsectionModalRef}
                 className={'manage-section-modal'}
+                forceAction
                 isLarge>
                 <ManageSubsection
                     section={section}
@@ -143,6 +150,7 @@ export const Section = ({
                     onSetAlert={(message, type) => {
                         setAlert({ message: message, type: type });
                     }}
+                    refresh={refresh}
                     onCancel={onCloseManageSubsection}
                 />
             </Modal>

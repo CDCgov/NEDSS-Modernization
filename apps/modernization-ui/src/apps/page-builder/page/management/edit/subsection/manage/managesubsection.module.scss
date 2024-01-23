@@ -1,0 +1,113 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.manageSubsection {
+    width: auto;
+    min-width: auto;
+    overflow: hidden;
+    max-height: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    .header {
+        padding: 1.5rem;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        border-bottom: 1px solid colors.$base-lightest;
+
+        .manageSubsectionHeader {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 1.375rem;
+        }
+
+        .addSubsectionHeader {
+            display: flex;
+            justify-content: flex-end;
+
+            .addSubsectionBtn {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+
+                .addIcon {
+                    padding-right: 0.4rem;
+                    align-items: center;
+                }
+            }
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 1;
+        overflow-y: auto;
+        height: 100%;
+
+        .alert {
+            display: flex;
+            flex-direction: row;
+            border-left: 0.5rem solid colors.$success;
+            background-color: colors.$success-lighter;
+            padding-right: 1.5rem;
+            padding-top: 0.5rem;
+
+            .checkCircle {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+
+            .alertContent {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                width: 100%;
+
+                .alertMessage {
+                    font-size: 1rem;
+                    font-weight: bold;
+                }
+
+                .closeBtn {
+                    justify-content: end;
+                }
+            }
+        }
+
+        .section {
+            padding-left: 1.5rem;
+            display: flex;
+            flex-direction: row;
+            padding-top: 1rem;
+            padding-left: 1.5rem;
+
+            .folderIcon {
+                padding-right: 1rem;
+                width: 3rem;
+                height: 3rem;
+            }
+            .sectionName {
+                margin: 0%;
+            }
+        }
+    }
+    .footer {
+        display: flex;
+        flex-direction: row;
+        width: auto;
+        height: auto;
+        padding-top: unset;
+        justify-content: flex-end;
+        align-items: flex-end;
+        border-top: 1px solid colors.$base-lightest;
+        padding: 1.5rem;
+        @include borders.rounded();
+    }
+}
