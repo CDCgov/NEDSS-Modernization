@@ -8,6 +8,7 @@ import { Heading } from 'components/heading';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { initialEntry } from 'apps/patient/add';
+import { externalizeDateTime } from 'date';
 
 interface CodeSystemOption {
     label: string;
@@ -71,7 +72,7 @@ export const CreateConcept = ({
             displayName: data.displayName,
             shortDisplayName: data.displayName,
             effectiveFromTime,
-            effectiveToTime: data.effectiveToTime,
+            effectiveToTime: duration ? externalizeDateTime(data.effectiveToTime)! : undefined,
             statusCode: data.statusCode,
             messagingInfo: {
                 codeSystem: data.messagingInfo.codeSystem,
@@ -218,7 +219,7 @@ export const CreateConcept = ({
                                         <DatePickerInput
                                             id="effectivDate"
                                             name="effectivDate"
-                                            defaultValue={value}
+                                            defaultValue={!duration ? undefined : value}
                                             flexBox
                                             onChange={onChange}
                                             disableFutureDates={false}

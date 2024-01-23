@@ -12,6 +12,7 @@ import { authorization } from 'authorization';
 import { Heading } from 'components/heading';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { externalizeDateTime } from 'date';
 
 interface CodeSystemOption {
     label: string;
@@ -83,7 +84,7 @@ export const EditConcept = ({
                 preferredConceptName: data.messagingInfo.preferredConceptName
             },
             displayName: data.displayName,
-            effectiveToTime: data.effectiveToTime
+            effectiveToTime: duration ? externalizeDateTime(data.effectiveToTime)! : undefined
         };
         await ValueSetControllerService.updateConceptUsingPut({
             authorization: authorization(),
