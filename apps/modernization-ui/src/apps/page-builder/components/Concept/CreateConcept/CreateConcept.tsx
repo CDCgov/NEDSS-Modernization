@@ -1,5 +1,5 @@
 import { AddConceptRequest } from 'apps/page-builder/generated';
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormGroup, Grid, Radio, ComboBox, ErrorMessage } from '@trussworks/react-uswds';
 import { ValueSetControllerService, ValueSet } from 'apps/page-builder/generated';
@@ -31,15 +31,23 @@ const init = {
     shortDisplayName: undefined,
     statusCode: AddConceptRequest.statusCode.A
 };
+type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number };
 
 type Props = {
     valueset: ValueSet;
     codeSystemOptionList: CodeSystemOption[];
     setShowForm: () => void;
     updateCallback: () => void;
+    setAlertMessage: (message: AlertMessage) => void;
 };
 
-export const CreateConcept = ({ valueset, codeSystemOptionList, setShowForm, updateCallback }: Props) => {
+export const CreateConcept = ({
+    valueset,
+    codeSystemOptionList,
+    setShowForm,
+    updateCallback,
+    setAlertMessage
+}: Props) => {
     const [duration, setDuration] = useState(false);
     const conceptForm = useForm<AddConceptRequest>({
         mode: 'onBlur',
@@ -48,6 +56,7 @@ export const CreateConcept = ({ valueset, codeSystemOptionList, setShowForm, upd
     const { control, handleSubmit, reset } = conceptForm;
 
     const resetForm = () => {
+        setShowForm();
         reset();
     };
 
@@ -55,10 +64,10 @@ export const CreateConcept = ({ valueset, codeSystemOptionList, setShowForm, upd
         handleCreateConcept(data);
     });
 
-    const handleCreateConcept = (data: AddConceptRequest) => {
+    const handleCreateConcept = async (data: AddConceptRequest) => {
         const effectiveFromTime = new Date(data.effectiveFromTime).toISOString();
         const request: AddConceptRequest = {
-            code: valueset?.valueSetCode!,
+            code: data.messagingInfo.conceptCode,
             displayName: data.displayName,
             shortDisplayName: data.displayName,
             effectiveFromTime,
@@ -71,16 +80,31 @@ export const CreateConcept = ({ valueset, codeSystemOptionList, setShowForm, upd
                 preferredConceptName: data.messagingInfo.preferredConceptName
             }
         };
-        ValueSetControllerService.addConceptUsingPost({
+        await ValueSetControllerService.addConceptUsingPost({
             authorization: authorization(),
             codeSetNm: valueset!.valueSetCode!,
             request
-        }).then((response: any) => {
-            setShowForm();
-            updateCallback!();
-            return response;
-        });
-        setShowForm();
+        })
+            .then((response: any) => {
+                setAlertMessage({
+                    type: 'success',
+                    expiration: 3000,
+                    message: (
+                        <p>
+                            You've successfully added <span>{data.messagingInfo.conceptName}</span>
+                        </p>
+                    )
+                });
+                updateCallback!();
+                return response;
+            })
+            .catch((error: any) => {
+                setAlertMessage({
+                    type: 'error',
+                    expiration: 3000,
+                    message: <p>{error.message}</p>
+                });
+            });
     };
 
     const handleValidation = (unique = true) => {
