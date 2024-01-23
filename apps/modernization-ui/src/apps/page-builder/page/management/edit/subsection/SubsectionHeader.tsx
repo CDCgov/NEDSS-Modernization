@@ -39,7 +39,7 @@ export const SubsectionHeader = ({ name, id, questionCount, isExpanded, onAddQue
                         <Icon.Add size={3} /> Add static element
                     </ModalToggleButton>
                     <Button type="button" onClick={() => console.log('BLAH')}>
-                        <Icon.Delete size={3} /> Delete
+                        <Icon.Delete size={3} /> Delete Subsection
                     </Button>
                 </MoreOptions>
                 {isExpanded ? (

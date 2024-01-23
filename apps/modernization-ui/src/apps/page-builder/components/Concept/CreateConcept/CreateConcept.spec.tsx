@@ -38,7 +38,7 @@ describe('When EditConcept form renders', () => {
                 pageSize: 10,
                 setPageSize: () => {}
             }}>
-                <CreateConcept valueset={valueset} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} />
+                <CreateConcept valueset={valueset} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} setAlertMessage={jest.fn()} />
             </ConceptsProvider>
         );
 
@@ -66,7 +66,7 @@ describe('When EditConcept form renders', () => {
                 pageSize: 10,
                 setPageSize: () => {}
             }}>
-                <CreateConcept valueset={valueset} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} />
+                <CreateConcept valueset={valueset} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} setAlertMessage={jest.fn()} />
             </ConceptsProvider>
         );
         const inputs = container.getElementsByClassName('usa-input');
@@ -88,7 +88,7 @@ describe('When EditConcept form renders', () => {
                 pageSize: 10,
                 setPageSize: () => {}
             }}>
-                <CreateConcept valueset={valueset} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} />
+                <CreateConcept valueset={valueset} codeSystemOptionList={options} setShowForm={jest.fn()} updateCallback={jest.fn()} setAlertMessage={jest.fn()} />
             </ConceptsProvider>
         );
         const buttons = container.getElementsByTagName('button');

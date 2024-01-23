@@ -17,10 +17,12 @@ type ManageSectionProps = {
     onCancel?: () => void;
     onContentChange?: () => void;
     alert?: AlertInLineProps;
-    onDeleteSection?: () => void;
+    onDeleteSection?: (section: string) => void;
     onResetAlert?: () => void;
     onUpdateSection?: () => void;
     onAddSection?: (section: string) => void;
+    onHiddenSection?: () => void;
+    onUnhiddenSection?: () => void;
 };
 
 export const ManageSection = ({
@@ -32,7 +34,9 @@ export const ManageSection = ({
     onDeleteSection,
     onResetAlert,
     onUpdateSection,
-    onAddSection
+    onAddSection,
+    onHiddenSection,
+    onUnhiddenSection
 }: ManageSectionProps) => {
     const [sectionState, setSectionState] = useState<'manage' | 'add' | 'edit'>('manage');
 
@@ -53,7 +57,7 @@ export const ManageSection = ({
             sectionId: section.id
         }).then(() => {
             onContentChange?.();
-            onDeleteSection?.();
+            onDeleteSection?.(section.name);
         });
     };
 
@@ -65,6 +69,11 @@ export const ManageSection = ({
             section: section.id
         }).then(() => {
             onContentChange?.();
+            if (visibility) {
+                onHiddenSection?.();
+            } else {
+                onUnhiddenSection?.();
+            }
         });
     };
 

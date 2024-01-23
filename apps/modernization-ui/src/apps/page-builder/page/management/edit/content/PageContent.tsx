@@ -1,4 +1,4 @@
-import { PagesQuestion, PagesSection, PagesTab } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesTab } from 'apps/page-builder/generated';
 import { Sections } from '../section/Sections';
 import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
@@ -44,14 +44,6 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
     const addValueModalRef = useRef<ModalRef>(null);
     const createValueModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
-
-    const handleAddSubsection = (section: number) => {
-        console.log('add subsection not yet implemented', section);
-    };
-
-    const handleEditSection = (section: PagesSection) => {
-        console.log('edit section here', section);
-    };
 
     const handleAddQuestion = (subsection: number) => {
         console.log('showing add question modal for subsection: ', subsection);
@@ -107,10 +99,9 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
             <div className={styles.invisible} />
             <Sections
                 sections={tab.sections ?? []}
-                onAddSubsection={handleAddSubsection}
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={handleAddQuestion}
-                onEditSection={handleEditSection}
+                refresh={refresh}
             />
             <PageSideMenu onAddSection={() => handleAddSection?.()} onManageSection={() => handleManageSection?.()} />
             <ModalComponent

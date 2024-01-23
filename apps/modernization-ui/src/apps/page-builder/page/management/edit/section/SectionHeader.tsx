@@ -10,6 +10,7 @@ type Props = {
     onExpandedChange: (expanded: boolean) => void;
     handleEditSection: () => void;
     handleDeleteSection: () => void;
+    handleManageSubsection: () => void;
     isExpanded: boolean;
 };
 export const SectionHeader = ({
@@ -19,6 +20,7 @@ export const SectionHeader = ({
     onExpandedChange,
     handleEditSection,
     handleDeleteSection,
+    handleManageSubsection,
     isExpanded
 }: Props) => {
     return (
@@ -33,10 +35,14 @@ export const SectionHeader = ({
                 <Button type="button" onClick={onAddSubsection} outline>
                     Add subsection
                 </Button>
+                <Button type="button" onClick={handleManageSubsection} outline className={styles.settingBtn}>
+                    <Icon.Settings size={3} />
+                </Button>
                 <MoreOptions header={<Icon.MoreVert size={4} />}>
                     <Button type="button" onClick={handleEditSection}>
                         <Icon.Edit size={3} /> Edit section
                     </Button>
+
                     <Button type="button" onClick={handleDeleteSection}>
                         <Icon.Delete size={3} /> Delete section
                     </Button>

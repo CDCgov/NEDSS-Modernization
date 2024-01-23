@@ -72,7 +72,7 @@ export const AddSection = ({
     return (
         <div className={styles.addSection}>
             <div className={styles.header}>
-                <Heading level={4}>Add a section</Heading>
+                {isEdit ? <Heading level={4}>Edit section</Heading> : <Heading level={4}>Add a section</Heading>}
             </div>
             <Form onSubmit={onSubmit} className={styles.form}>
                 <div className={styles.content}>
@@ -119,7 +119,10 @@ export const AddSection = ({
                         Cancel
                     </Button>
                     {isEdit ? (
-                        <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
+                        <Button
+                            type="button"
+                            onClick={onSubmit}
+                            disabled={!form.formState.isDirty || !form.formState.isValid}>
                             Save
                         </Button>
                     ) : (

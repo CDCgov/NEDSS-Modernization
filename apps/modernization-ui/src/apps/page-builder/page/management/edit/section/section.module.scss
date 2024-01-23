@@ -49,11 +49,17 @@
             .buttons {
                 display: flex;
                 align-items: center;
-                gap: 0.625rem;
+                margin-right: 0 !important;
+                padding: 0 !important;
 
                 svg {
                     color: colors.$primary;
                     cursor: pointer;
+                }
+
+                .settingBtn {
+                    box-shadow: none;
+                    margin-right: 0 !important;
                 }
             }
         }

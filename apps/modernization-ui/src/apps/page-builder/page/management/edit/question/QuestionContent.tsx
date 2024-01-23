@@ -11,7 +11,6 @@ import { Icon } from '@trussworks/react-uswds';
 
 type Props = {
     defaultValue: string;
-    isStandard: boolean;
     name: string;
     type: string;
     displayComponent?: number;
@@ -25,15 +24,9 @@ const lineSeparatorId = 1012;
 const participantListId = 1030;
 const originalElecDocId = 1036;
 
-export const QuestionContent = ({
-    isStandard,
-    type,
-    valueSet,
-    name,
-    identifier,
-    displayComponent,
-    defaultValue
-}: Props) => {
+const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, participantListId, originalElecDocId];
+
+export const QuestionContent = ({ type, valueSet, name, identifier, displayComponent, defaultValue }: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
 
     useEffect(() => {
@@ -102,11 +95,10 @@ export const QuestionContent = ({
             <div className={styles.reorderIcon}>
                 <NbsIcon name={'drag'} />
             </div>
-            {isStandard ? (
+            {!staticTypes.includes(displayComponent ?? 0) ? (
                 renderLabelWithComponent
             ) : (
                 <>
-                    {renderLabelWithComponent}
                     {displayComponent === commentsReadOnlyId && <div>{name}</div>}
                     {displayComponent === hyperlinkId && <a href={defaultValue}>{name}</a>}
                     {displayComponent === lineSeparatorId && (

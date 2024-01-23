@@ -5,7 +5,7 @@ import {
     CodedQuestion,
     DateQuestion,
     NumericQuestion,
-    Page_AvailableQuestion_,
+    Page_AvailableQuestion_ as PageAvailableQuestion,
     TextQuestion
 } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
@@ -35,12 +35,12 @@ export type AddableQuestionSort = {
 type State =
     | { status: 'idle' }
     | { status: 'searching'; search: QuestionSearch }
-    | { status: 'complete'; questions: Page_AvailableQuestion_ }
+    | { status: 'complete'; questions: PageAvailableQuestion }
     | { status: 'error'; error: string };
 
 type Action =
     | { type: 'search'; search: QuestionSearch }
-    | { type: 'complete'; questions: Page_AvailableQuestion_ }
+    | { type: 'complete'; questions: PageAvailableQuestion }
     | { type: 'error'; error: string };
 
 const initial: State = { status: 'idle' };
