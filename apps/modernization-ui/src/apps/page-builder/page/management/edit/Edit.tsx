@@ -56,11 +56,7 @@ type EditPageContentProps = {
 };
 
 const EditPageContent = ({ handleManageSection, handleAddSection, refresh }: EditPageContentProps) => {
-    const { page, selected, fetch } = usePageManagement();
-
-    const refreshContent = () => {
-        fetch(page.id);
-    };
+    const { page, selected } = usePageManagement();
 
     return (
         <PageManagementLayout name={page.name} mode={'edit'}>
@@ -75,7 +71,7 @@ const EditPageContent = ({ handleManageSection, handleAddSection, refresh }: Edi
             {selected && (
                 <PageContent
                     tab={selected}
-                    refresh={refreshContent}
+                    refresh={refresh}
                     handleManageSection={handleManageSection}
                     handleAddSection={handleAddSection}
                 />

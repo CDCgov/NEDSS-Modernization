@@ -11,12 +11,12 @@ import { useAlert } from 'alert';
 type Props = {
     sections: PagesSection[];
     onAddQuestion: (subsection: number) => void;
-    onAddSubsection: (section: number) => void;
     addQuestionModalRef: RefObject<ModalRef>;
     onEditQuestion: (question: PagesQuestion) => void;
+    refresh?: () => void;
 };
 
-export const Sections = ({ sections, onAddSubsection, onAddQuestion, addQuestionModalRef, onEditQuestion }: Props) => {
+export const Sections = ({ sections, onAddQuestion, addQuestionModalRef, onEditQuestion, refresh }: Props) => {
     const { page, fetch } = usePageManagement();
 
     const statusModalRef = useRef<ModalRef>(null);
@@ -44,11 +44,11 @@ export const Sections = ({ sections, onAddSubsection, onAddQuestion, addQuestion
                 <Section
                     section={s}
                     key={k}
-                    onAddSubsection={onAddSubsection}
                     onAddQuestion={onAddQuestion}
                     onEditQuestion={onEditQuestion}
                     addQuestionModalRef={addQuestionModalRef}
                     handleDeleteSection={() => handleDeleteSection?.(s)}
+                    refresh={refresh}
                 />
             ))}
             <StatusModal
