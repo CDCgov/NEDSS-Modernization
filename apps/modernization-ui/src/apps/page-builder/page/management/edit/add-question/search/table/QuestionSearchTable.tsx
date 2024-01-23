@@ -24,6 +24,7 @@ type Props = {
     onSortChange?: (sort: AddableQuestionSort | undefined) => void;
     onQuerySubmit?: (query: string) => void;
     onSelectionChange?: (mode: SelectionMode, id: number) => void;
+    onCreateNew: () => void;
 };
 export const QuestionSearchTable = ({
     isLoading,
@@ -31,7 +32,8 @@ export const QuestionSearchTable = ({
     query,
     onSortChange,
     onQuerySubmit,
-    onSelectionChange
+    onSelectionChange,
+    onCreateNew
 }: Props) => {
     const { page, request } = usePage();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
@@ -140,13 +142,18 @@ export const QuestionSearchTable = ({
                         </div>
                     )}
                 </div>
-                <Search
-                    onSearch={doQuerySearch}
-                    placeholder="Search by unique name or unique ID"
-                    name="question-search"
-                    id="question-search"
-                    value={query}
-                />
+                <div>
+                    <Search
+                        onSearch={doQuerySearch}
+                        placeholder="Search by unique name or unique ID"
+                        name="question-search"
+                        id="question-search"
+                        value={query}
+                    />
+                    <Button type="button" className={styles.createNewButton} outline onClick={onCreateNew}>
+                        Create new
+                    </Button>
+                </div>
             </div>
             <div className={styles.tableContainer}>
                 <TableComponent

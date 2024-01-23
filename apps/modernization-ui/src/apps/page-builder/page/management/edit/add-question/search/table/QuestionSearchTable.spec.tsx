@@ -9,7 +9,7 @@ describe('question search table tests', () => {
         const { getByText } = render(
             <MemoryRouter>
                 <PageProvider>
-                    <QuestionSearchTable questions={[]} />
+                    <QuestionSearchTable questions={[]} onCreateNew={jest.fn()} />
                 </PageProvider>
             </MemoryRouter>
         );
@@ -20,7 +20,7 @@ describe('question search table tests', () => {
         const { getAllByRole } = render(
             <MemoryRouter>
                 <PageProvider>
-                    <QuestionSearchTable questions={[]} />
+                    <QuestionSearchTable questions={[]} onCreateNew={jest.fn()} />
                 </PageProvider>
             </MemoryRouter>
         );
@@ -46,6 +46,7 @@ describe('question search table tests', () => {
                                 type: 'PHIN'
                             }
                         ]}
+                        onCreateNew={jest.fn()}
                     />
                 </PageProvider>
             </MemoryRouter>

@@ -103,6 +103,7 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
                         onQuerySubmit={(query) => setQuery(query)}
                         onSortChange={setSort}
                         onSelectionChange={handleSelectedQuestionChange}
+                        onCreateNew={onCreateNew}
                     />
                 )}
 
@@ -123,7 +124,7 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
                     onClick={handleAccept}
                     type="button"
                     disabled={selectedQuestions == undefined || selectedQuestions.length === 0}>
-                    Add to page
+                    Apply to page
                 </Button>
             </ButtonBar>
         </>
