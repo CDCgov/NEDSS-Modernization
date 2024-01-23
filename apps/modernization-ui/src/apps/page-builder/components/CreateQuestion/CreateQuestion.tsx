@@ -211,7 +211,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
     };
 
     const onSubmit = handleSubmit(async (data) => {
-        const { id } = question;
+        const { id } = question ?? {};
         const request = {
             dataMartInfo: {
                 defaultLabelInReport: data.defaultLabelInReport,
