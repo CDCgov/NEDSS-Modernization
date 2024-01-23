@@ -3,10 +3,13 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { AddEditTab } from 'apps/page-builder/page/management/edit/tabs/AddEditTab/AddEditTab';
-import { addTab } from 'apps/page-builder/services/tabsAPI';
+import { addTab, updateTab } from 'apps/page-builder/services/tabsAPI';
 import { PagesTab } from 'apps/page-builder/generated';
 import { Heading } from 'components/heading';
 import styles from './manageTabs.module.scss';
+import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { ManageTabsTile } from '../ManageTabsTile/ManageTabsTile';
 
 type Props = {
     pageId: number;
@@ -14,34 +17,27 @@ type Props = {
     onAddSuccess?: () => void;
 };
 
-export const ManageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
+export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
     const modalRef = useRef<ModalRef>(null);
     const [message, setMessage] = useState<AlertMessage | undefined>(undefined);
     const [addEdit, setAddEdit] = useState(false);
     const [selectedForEdit, setSelectedForEdit] = useState<PagesTab | undefined>(undefined);
-    const [selectedForDelete, setSelectedForDelete] = useState(undefined);
+    const [selectedForDelete, setSelectedForDelete] = useState<PagesTab | undefined>(undefined);
     const [newTab, setNewTab] = useState<TabEntry | undefined>(undefined);
 
+    const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
     type AlertMessage = { type: 'warning' | 'success'; message: string | ReactNode; expiration: number };
 
     type TabEntry = { name: string | undefined; visible: boolean; order: number };
 
     useEffect(() => {
         if (selectedForEdit) {
-            setMessage({
-                type: 'success',
-                expiration: 3000,
-                message: (
-                    <p>
-                        You've successfully added <span>{selectedForEdit.name}!</span>
-                    </p>
-                )
-            });
+            setAddEdit(true);
         }
     }, [selectedForEdit, selectedForDelete]);
 
     useEffect(() => {
-        setTimeout(() => setMessage(undefined), 3000);
+        setTimeout(() => setMessage(undefined), 5000);
     }, [message]);
 
     const handleAdd = async () => {
@@ -63,6 +59,30 @@ export const ManageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
                             </p>
                         )
                     });
+                })
+                .then(() => resetEditPageTabs());
+        }
+    };
+
+    const handleSave = async () => {
+        if (newTab && selectedForEdit && onAddSuccess) {
+            await updateTab(pageId, { name: newTab.name ?? '', visible: newTab?.visible }, selectedForEdit.id)
+                .catch((e) => {
+                    console.error(e);
+                })
+                .then(() => {
+                    setMessage({
+                        type: 'success',
+                        expiration: 3000,
+                        message: (
+                            <p>
+                                You've successfully edited <span>{newTab?.name}!</span>
+                            </p>
+                        )
+                    });
+                })
+                .then(() => {
+                    onAddSuccess();
                 })
                 .then(() => resetEditPageTabs());
         }
@@ -95,12 +115,18 @@ export const ManageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
                 }
                 modalBody={
                     <div className={styles.modalBody}>
-                        {message && (
+                        {message ? (
                             <AlertBanner type={message.type} expiration={message.expiration}>
                                 {message.message}
                             </AlertBanner>
-                        )}
-                        {addEdit ? <AddEditTab tabData={null} onChanged={setNewTab} /> : null}
+                        ) : null}
+                        <AlertBanner type={'info'} expiration={5000}>
+                            <p>
+                                Tabs from a template cannot be reordered, edited or deleted. Only new tabs that are
+                                added using the button above can be managed.
+                            </p>
+                        </AlertBanner>
+                        {addEdit ? <AddEditTab tabData={selectedForEdit} onChanged={setNewTab} /> : null}
                         {!addEdit && tabs.length === 0 ? (
                             <>
                                 <p>No manageable tabs to show</p>
@@ -108,11 +134,34 @@ export const ManageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
                             </>
                         ) : null}
                         {!addEdit && tabs.length !== 0 ? (
-                            <ul>
-                                {tabs.map((tab, key) => (
-                                    <li key={key}>{tab.name}</li>
-                                ))}
-                            </ul>
+                            <DragDropContext
+                                onDragEnd={handleDragEnd}
+                                onDragStart={handleDragStart}
+                                onDragUpdate={handleDragUpdate}>
+                                <Droppable droppableId="all-tabs" type="tabs">
+                                    {(provided) => (
+                                        <div
+                                            className="manage-tabs"
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}>
+                                            {tabs.map((tab, i) => {
+                                                return (
+                                                    <ManageTabsTile
+                                                        key={tab.id!.toString()}
+                                                        tab={tab}
+                                                        index={i}
+                                                        setSelectedForEdit={setSelectedForEdit}
+                                                        setSelectedForDelete={setSelectedForDelete}
+                                                        selectedForDelete={selectedForDelete}
+                                                        reset={resetEditPageTabs}
+                                                    />
+                                                );
+                                            })}
+                                            {provided.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
                         ) : null}
                     </div>
                 }
@@ -125,13 +174,7 @@ export const ManageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
                         ) : null}
                         {addEdit && !selectedForEdit ? (
                             <div className="margin-bottom-1em add-tab-modal ds-u-text-align--right ">
-                                <Button
-                                    type="button"
-                                    outline
-                                    onClick={() => {
-                                        setAddEdit(false);
-                                        resetEditPageTabs();
-                                    }}>
+                                <Button type="button" outline onClick={() => resetEditPageTabs()}>
                                     Cancel
                                 </Button>
                                 <Button onClick={handleAdd} type="button" disabled={!newTab?.name}>
@@ -141,15 +184,10 @@ export const ManageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
                         ) : null}
                         {addEdit && selectedForEdit ? (
                             <>
-                                <ModalToggleButton
-                                    modalRef={modalRef}
-                                    type="button"
-                                    outline
-                                    onClick={() => resetEditPageTabs()}
-                                    closer>
+                                <Button type="button" outline onClick={() => resetEditPageTabs()}>
                                     Cancel
-                                </ModalToggleButton>
-                                <Button type="button" onClick={() => console.log('save edits to tab')}>
+                                </Button>
+                                <Button type="button" onClick={handleSave}>
                                     Save
                                 </Button>
                             </>
