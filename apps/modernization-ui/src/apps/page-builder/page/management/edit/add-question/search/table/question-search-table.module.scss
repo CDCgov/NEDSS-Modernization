@@ -66,8 +66,14 @@
     }
 
     thead tr th {
-        &:nth-of-type(6) {
-            width: 4rem;
+        &:nth-of-type(2) {
+            width: 6rem;
+        }
+        &:nth-of-type(3) {
+            width: 6rem;
+        }
+        &:nth-of-type(7) {
+            width: 6rem;
         }
     }
 }

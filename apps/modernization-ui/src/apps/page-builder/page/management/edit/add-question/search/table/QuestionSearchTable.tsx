@@ -9,14 +9,6 @@ import { Direction } from 'sorting';
 import { ExpandedQuestion } from './ExpandedQuestion';
 import styles from './question-search-table.module.scss';
 
-const tableHeaders = [
-    { name: 'Type', sortable: true },
-    { name: 'Unique ID', sortable: true },
-    { name: 'Unique name', sortable: true },
-    { name: 'Subgroup', sortable: true },
-    { name: '', sortable: false }
-];
-
 type Props = {
     isLoading?: boolean;
     questions: AvailableQuestion[];
@@ -51,6 +43,15 @@ export const QuestionSearchTable = ({
         }
     }, [questions, expanded]);
 
+    const tableHeaders = [
+        { name: 'Status', sortable: true },
+        { name: 'Type', sortable: true },
+        { name: 'Unique ID', sortable: true },
+        { name: 'Label', sortable: true },
+        { name: 'Subgroup', sortable: true },
+        { name: 'More info', sortable: false }
+    ];
+
     const toTableRow = (question: AvailableQuestion): TableBody => {
         return {
             id: question.id,
@@ -63,19 +64,23 @@ export const QuestionSearchTable = ({
             tableDetails: [
                 {
                     id: 1,
+                    title: question?.status
+                },
+                {
+                    id: 2,
                     title: question?.type
                 },
-                { id: 2, title: question?.uniqueId },
-                {
-                    id: 3,
-                    title: question?.uniqueName
-                },
+                { id: 3, title: question?.uniqueId },
                 {
                     id: 4,
-                    title: question?.subgroupName
+                    title: question?.label
                 },
                 {
                     id: 5,
+                    title: question?.subgroupName
+                },
+                {
+                    id: 6,
                     title:
                         expanded === question.id ? (
                             <Icon.ExpandLess
@@ -106,14 +111,17 @@ export const QuestionSearchTable = ({
 
         let sortField: SortField | undefined = undefined;
         switch (name) {
+            case 'Status':
+                sortField = SortField.STATUS;
+                break;
             case 'Type':
                 sortField = SortField.TYPE;
                 break;
             case 'Unique ID':
                 sortField = SortField.UNIQUE_ID;
                 break;
-            case 'Unique name':
-                sortField = SortField.UNIQUE_NAME;
+            case 'Label':
+                sortField = SortField.LABEL;
                 break;
             case 'Subgroup':
                 sortField = SortField.SUBGROUP;

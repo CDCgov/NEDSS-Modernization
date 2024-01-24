@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -76,7 +75,8 @@ public class AvailableQuestionFinder {
         this.tables.question().id,
         this.tables.question().questionType,
         this.tables.question().questionIdentifier,
-        this.tables.question().questionNm,
+        this.tables.question().questionLabel,
+        this.tables.question().recordStatusCd,
         this.tables.codeValueGeneral().codeShortDescTxt)
         .distinct()
         .from(this.tables.question())
@@ -170,19 +170,16 @@ public class AvailableQuestionFinder {
 
   private OrderSpecifier<?> resolveOrder(Order order) {
     return switch (order.getProperty().toLowerCase()) {
+      case "status" -> applyOrder(order, this.tables.question().recordStatusCd);
       case "type" -> applyOrder(order, this.tables.question().questionType);
       case "uniqueid" -> applyOrder(order, this.tables.question().questionIdentifier);
-      case "uniquename" -> applyOrder(order, this.tables.question().questionNm);
+      case "label" -> applyOrder(order, this.tables.question().questionLabel);
       case "subgroup" -> applyOrder(order, this.tables.codeValueGeneral().codeShortDescTxt);
-      default -> applyOrder(order, this.tables.question().id);
+      default -> null;
     };
   }
 
   private OrderSpecifier<String> applyOrder(Order order, StringPath path) {
-    return order.isAscending() ? path.asc() : path.desc();
-  }
-
-  private OrderSpecifier<Long> applyOrder(Order order, NumberPath<Long> path) {
     return order.isAscending() ? path.asc() : path.desc();
   }
 

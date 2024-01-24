@@ -22,9 +22,10 @@ export type QuestionSearch = {
 export type Question = TextQuestion | NumericQuestion | CodedQuestion | DateQuestion;
 
 export enum SortField {
+    STATUS = 'status',
     TYPE = 'type',
     UNIQUE_ID = 'uniqueId',
-    UNIQUE_NAME = 'uniqueName',
+    LABEL = 'label',
     SUBGROUP = 'subgroup'
 }
 export type AddableQuestionSort = {
