@@ -1,0 +1,58 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+
+.manageSubsectionTile {
+    display: flex;
+    flex-direction: row;
+    color: colors.$base-darkest;
+    padding: 1rem 1.5rem;
+    background-color: colors.$base-white;
+
+    .handle {
+        display: flex;
+        margin-right: 1.35rem;
+        svg {
+            cursor: pointer;
+        }
+    }
+    .label {
+        display: flex;
+        align-items: center;
+        width: 75%;
+        gap: 1rem;
+        font-size: 1rem;
+        font-weight: 400;
+    }
+    .buttons {
+        color: colors.$primary;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
+        svg {
+            height: 1.25rem;
+            cursor: pointer;
+            &:hover {
+                color: colors.$primary-light;
+            }
+            &:nth-of-type(2) {
+                &:hover {
+                    color: colors.$error;
+                }
+            }
+        }
+        .iconBtn {
+            box-shadow: none;
+
+            &:disabled {
+                color: colors.$base-light !important;
+                background-color: transparent !important;
+            }
+        }
+
+        .offVisibility {
+            color: colors.$base-lighter;
+        }
+    }
+}
