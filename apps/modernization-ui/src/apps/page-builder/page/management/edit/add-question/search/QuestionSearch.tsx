@@ -76,6 +76,7 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
     };
 
     const handleClose = () => {
+        setQuery('');
         setSelectedQuestions([]);
         setResetTable(true);
         onCancel();
