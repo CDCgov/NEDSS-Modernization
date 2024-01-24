@@ -227,8 +227,6 @@ const DragDropProvider: React.FC<{
     };
 
     const handleTabMove: DragDropProps = (source, destination) => {
-        console.log(source, destination);
-        // const reorderedTabs = moveTabInArray(tabs, source.index, destination.index);
         if (destination.index === tabs.length - 1) {
             afterId = tabs[tabs.length - 1].id!;
         } else if (destination.index === 0) {
@@ -238,8 +236,6 @@ const DragDropProvider: React.FC<{
         } else {
             afterId = tabs[destination.index - 1].id!;
         }
-        // setTabs(reorderedTabs);
-
         tabs.splice(destination.index, 0, tabs.splice(source.index, 1)[0]);
     };
 
@@ -255,7 +251,6 @@ const DragDropProvider: React.FC<{
     };
 
     const handleDragEnd = async (result: DropResult) => {
-        // console.log(result);
         setCloseId({ id: '', type: '' });
         setDragTarget({ droppableId: '', index: 999, source: 999 });
         if (!result.destination) return;
