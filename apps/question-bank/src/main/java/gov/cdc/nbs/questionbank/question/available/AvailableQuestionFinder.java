@@ -140,7 +140,7 @@ public class AvailableQuestionFinder {
   }
 
   private BooleanExpression applySearch(final AvailableQuestionCriteria criteria, final List<Long> inUse) {
-    return Stream.concat(applyCriteria(criteria), questionNotInUse(inUse))
+    return Stream.concat(applyCriteria(criteria), questionNotInUseAndActive(inUse))
         .reduce(BooleanExpression::and)
         .orElseThrow();
   }
@@ -159,13 +159,15 @@ public class AvailableQuestionFinder {
   }
 
   /**
-   * Limit questions to those not currently in use on the provided page
+   * Limit questions to those not currently in use on the provided page and are Active
    * 
    * @param page
    * @return
    */
-  private Stream<BooleanExpression> questionNotInUse(final List<Long> inUse) {
-    return Stream.of(this.tables.question().id.notIn(inUse));
+  private Stream<BooleanExpression> questionNotInUseAndActive(final List<Long> inUse) {
+    return Stream.of(
+        this.tables.question().id.notIn(inUse)
+            .and(this.tables.question().recordStatusCd.eq("Active")));
   }
 
   private OrderSpecifier<?> resolveOrder(Order order) {

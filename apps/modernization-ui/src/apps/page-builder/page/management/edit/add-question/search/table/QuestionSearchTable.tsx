@@ -44,7 +44,6 @@ export const QuestionSearchTable = ({
     }, [questions, expanded]);
 
     const tableHeaders = [
-        { name: 'Status', sortable: true },
         { name: 'Type', sortable: true },
         { name: 'Unique ID', sortable: true },
         { name: 'Label', sortable: true },
@@ -64,23 +63,19 @@ export const QuestionSearchTable = ({
             tableDetails: [
                 {
                     id: 1,
-                    title: question?.status
-                },
-                {
-                    id: 2,
                     title: question?.type
                 },
-                { id: 3, title: question?.uniqueId },
+                { id: 2, title: question?.uniqueId },
                 {
-                    id: 4,
+                    id: 3,
                     title: question?.label
                 },
                 {
-                    id: 5,
+                    id: 4,
                     title: question?.subgroupName
                 },
                 {
-                    id: 6,
+                    id: 5,
                     title:
                         expanded === question.id ? (
                             <Icon.ExpandLess

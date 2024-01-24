@@ -12,16 +12,16 @@ Feature: Available Question Search
     When I search for available questions by "<query>" and sorted by "<sortField>" <direction>
     Then the "<expected>" available questions are returned
     Examples:
-      | query                | sortField  | direction  | expected                |
-      | Question Unique Name | type       | ascending  | TEST9900001,TEST9900002 |
-      | Question Unique Name | type       | descending | TEST9900002,TEST9900001 |
-      | Question Unique Name | uniqueId   | ascending  | TEST9900001,TEST9900002 |
-      | Question Unique Name | uniqueId   | descending | TEST9900002,TEST9900001 |
-      | Question Unique Name | uniqueName | ascending  | TEST9900002,TEST9900001 |
-      | Question Unique Name | uniqueName | descending | TEST9900001,TEST9900002 |
-      | Question Unique Name | subgroup   | ascending  | TEST9900001,TEST9900002 |
-      | Question Unique Name | subgroup   | descending | TEST9900002,TEST9900001 |
-      | Question Unique Name | none       | ascending  | TEST9900002,TEST9900001 |
+      | query                | sortField | direction  | expected                |
+      | Question Unique Name | type      | ascending  | TEST9900001,TEST9900002 |
+      | Question Unique Name | type      | descending | TEST9900002,TEST9900001 |
+      | Question Unique Name | uniqueId  | ascending  | TEST9900001,TEST9900002 |
+      | Question Unique Name | uniqueId  | descending | TEST9900002,TEST9900001 |
+      | Question Unique Name | label     | ascending  | TEST9900002,TEST9900001 |
+      | Question Unique Name | label     | descending | TEST9900001,TEST9900002 |
+      | Question Unique Name | subgroup  | ascending  | TEST9900001,TEST9900002 |
+      | Question Unique Name | subgroup  | descending | TEST9900002,TEST9900001 |
+      | Question Unique Name | none      | ascending  | TEST9900002,TEST9900001 |
 
 
   Scenario: I can search for questions to add to a page on multiple fields

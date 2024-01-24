@@ -20,6 +20,7 @@ public class AvailableQuestionController {
     this.finder = finder;
   }
 
+  // Returns a list of questions that are available to be added to the given page
   @PostMapping("search")
   public Page<AvailableQuestion> findAvailableQuestions(
       @RequestBody AvailableQuestionCriteria request,

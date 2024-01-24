@@ -26,11 +26,10 @@ describe('question search table tests', () => {
         );
 
         const headers = getAllByRole('columnheader');
-        expect(headers[1]).toHaveTextContent('Status');
-        expect(headers[2]).toHaveTextContent('Type');
-        expect(headers[3]).toHaveTextContent('Unique ID');
-        expect(headers[4]).toHaveTextContent('Label');
-        expect(headers[5]).toHaveTextContent('Subgroup');
+        expect(headers[1]).toHaveTextContent('Type');
+        expect(headers[2]).toHaveTextContent('Unique ID');
+        expect(headers[3]).toHaveTextContent('Label');
+        expect(headers[4]).toHaveTextContent('Subgroup');
     });
 
     it('should display proper values for a question', async () => {
@@ -55,10 +54,9 @@ describe('question search table tests', () => {
         );
 
         const data = await findAllByRole('cell');
-        expect(data[1]).toHaveTextContent('Active');
-        expect(data[2]).toHaveTextContent('PHIN');
-        expect(data[3]).toHaveTextContent('unique id');
-        expect(data[4]).toHaveTextContent('label');
-        expect(data[5]).toHaveTextContent('subgroup name');
+        expect(data[1]).toHaveTextContent('PHIN');
+        expect(data[2]).toHaveTextContent('unique id');
+        expect(data[3]).toHaveTextContent('label');
+        expect(data[4]).toHaveTextContent('subgroup name');
     });
 });
