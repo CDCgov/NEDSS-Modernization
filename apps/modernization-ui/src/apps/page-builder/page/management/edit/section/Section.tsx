@@ -1,4 +1,4 @@
-import { PagesQuestion, PagesSection } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { SectionHeader } from './SectionHeader';
 import styles from './section.module.scss';
 import { Subsection } from '../subsection/Subsection';
@@ -11,15 +11,17 @@ import './manage/ManageSectionModal.scss';
 import { AddSubSection } from '../subsection/manage/AddSubSection';
 import { AlertInLineProps } from './manage/ManageSectionModal';
 import { ManageSubsection } from '../subsection/manage/ManageSubsection';
+import { authorization } from 'authorization';
 
 type Props = {
     section: PagesSection;
     onAddQuestion: (subsection: number) => void;
     onEditQuestion: (question: PagesQuestion) => void;
-    handleDeleteSection: () => void;
+    onDeleteSection: () => void;
+    onDeleteStatus: () => void;
 };
 
-export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSection }: Props) => {
+export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSection, onDeleteStatus }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
     const { page, refresh, selected } = usePageManagement();
@@ -68,6 +70,24 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSe
         addSubsectionModalRef.current?.toggleModal(undefined, false);
     };
 
+    const handleDeleteSubsection = (subsection: PagesSubSection) => {
+        if (subsection.questions.length > 0) {
+            onDeleteStatus();
+        } else {
+            SubSectionControllerService.deleteSubSectionUsingDelete({
+                authorization: authorization(),
+                page: page.id,
+                subSectionId: subsection.id
+            }).then(() => {
+                showAlert({
+                    message: `You've successfully deleted "${subsection.name}"`,
+                    type: `success`
+                });
+                refresh();
+            });
+        }
+    };
+
     return (
         <div className={styles.section}>
             <SectionHeader
@@ -77,7 +97,7 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSe
                 handleManageSubsection={handleManageSubsection}
                 onExpandedChange={handleExpandedChange}
                 handleEditSection={handleEditSection}
-                handleDeleteSection={handleDeleteSection}
+                handleDeleteSection={onDeleteSection}
                 isExpanded={isExpanded}
             />
             {isExpanded && (
@@ -88,6 +108,7 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSe
                             key={k}
                             onEditQuestion={onEditQuestion}
                             onAddQuestion={() => onAddQuestion(subsection.id)}
+                            onDeleteSubsection={handleDeleteSubsection}
                         />
                     ))}
                 </div>
@@ -119,7 +140,7 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, handleDeleteSe
                     onCancel={onCloseAddSubSection}
                     onSubSectionTouched={(section: string) => {
                         onCloseAddSubSection();
-                        showAlert({ message: `You have successfully subsection "${section}"`, type: `success` });
+                        showAlert({ message: `You have successfully added subsection "${section}"`, type: `success` });
                         refresh();
                     }}
                 />

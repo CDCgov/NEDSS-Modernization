@@ -16,6 +16,7 @@ type Props = {
     subsection: PagesSubSection;
     onEditQuestion: (question: PagesQuestion) => void;
     onAddQuestion: () => void;
+    onDeleteSubsection: (subsection: PagesSubSection) => void;
 };
 
 const hyperlinkID = 1003;
@@ -26,7 +27,7 @@ const originalElecDoc = 1036;
 
 const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, readOnlyComments, originalElecDoc];
 
-export const Subsection = ({ subsection, onAddQuestion, onEditQuestion }: Props) => {
+export const Subsection = ({ subsection, onAddQuestion, onEditQuestion, onDeleteSubsection }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, refresh } = usePageManagement();
     const { showAlert } = useAlert();
@@ -74,6 +75,7 @@ export const Subsection = ({ subsection, onAddQuestion, onEditQuestion }: Props)
                 onAddQuestion={onAddQuestion}
                 onExpandedChange={handleExpandedChange}
                 isExpanded={isExpanded}
+                onDeleteSubsection={() => onDeleteSubsection(subsection)}
             />
             {isExpanded && (
                 <>

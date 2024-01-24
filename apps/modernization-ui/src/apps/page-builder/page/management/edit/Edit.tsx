@@ -51,7 +51,7 @@ const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageCont
 
     return (
         <PageManagementLayout name={page.name} mode={'edit'}>
-            <PageHeader page={page} tabs={page.tabs ?? []} onAddTabSuccess={refresh}>
+            <PageHeader page={page} tabs={page.tabs ?? []} selected={selected} onAddTabSuccess={refresh}>
                 <PageManagementMenu>
                     <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                         Business rules

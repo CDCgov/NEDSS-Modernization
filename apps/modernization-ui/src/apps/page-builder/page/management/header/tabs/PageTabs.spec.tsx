@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { PagesResponse } from 'apps/page-builder/generated';
 import { PageTabs } from './PageTabs';
 import { PageManagementProvider } from '../../usePageManagement';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 
 const content: PagesResponse = {
     id: 123,
@@ -36,18 +37,22 @@ const content: PagesResponse = {
 describe('When PageTabs renders', () => {
     it('should display the Manage Tabs button when passed onAddSuccess', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
-                <PageTabs pageId={999} tabs={content.tabs!} onAddSuccess={jest.fn()} />
-            </PageManagementProvider>
+            <DragDropProvider pageData={content} currentTab={0}>
+                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
+                    <PageTabs pageId={999} tabs={content.tabs!} onAddSuccess={jest.fn()} />
+                </PageManagementProvider>
+            </DragDropProvider>
         );
         const button = container.getElementsByTagName('button');
         expect(button[0]).toBeInTheDocument();
     });
     it('should not display the Manage Tabs button when not passed onAddSuccess', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
-                <PageTabs pageId={999} tabs={content.tabs!} />
-            </PageManagementProvider>
+            <DragDropProvider pageData={content} currentTab={0}>
+                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
+                    <PageTabs pageId={999} tabs={content.tabs!} />
+                </PageManagementProvider>
+            </DragDropProvider>
         );
         const button = container.getElementsByTagName('button');
         expect(button).toHaveLength(0);

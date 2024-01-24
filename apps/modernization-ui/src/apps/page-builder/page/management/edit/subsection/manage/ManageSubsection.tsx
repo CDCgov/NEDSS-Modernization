@@ -4,10 +4,11 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import { Heading } from 'components/heading';
 import { AlertInLineProps } from '../../section/manage/ManageSectionModal';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { PagesSection } from 'apps/page-builder/generated';
+import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTile';
 import { AddSubSection } from './AddSubSection';
 import { usePageManagement } from '../../../usePageManagement';
+import { authorization } from 'authorization';
 
 type ManageSubsectionProps = {
     alert?: AlertInLineProps;
@@ -26,6 +27,17 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
         setSubsectionState(state);
     };
 
+    const onDelete = (subsection: PagesSubSection) => {
+        SubSectionControllerService.deleteSubSectionUsingDelete({
+            authorization: authorization(),
+            page: page.id,
+            subSectionId: subsection.id
+        }).then(() => {
+            onSetAlert?.(`You have successfully deleted "${subsection.name}"`, `success`);
+            refresh?.();
+        });
+    };
+
     return (
         <>
             {subsectionState === 'add' && (
@@ -36,7 +48,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                         handleUpdateState('manage');
                     }}
                     onSubSectionTouched={(section: string) => {
-                        onSetAlert?.(`You have successfully subsection "${section}"`, `success`);
+                        onSetAlert?.(`You have successfully added subsection "${section}"`, `success`);
                         handleUpdateState('manage');
                         refresh();
                     }}
@@ -90,6 +102,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                                         subsection={s}
                                         key={k}
                                         setOnAction={setOnAction}
+                                        onDelete={onDelete}
                                     />
                                 );
                             })}

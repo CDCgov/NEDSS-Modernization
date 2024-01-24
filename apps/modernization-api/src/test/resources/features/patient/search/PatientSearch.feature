@@ -162,6 +162,18 @@ Feature: Patient Search
     When I search for patients
     Then the patient is not in the search results
 
+Scenario: BUG: CNFT1-2008 I can search for a Patient with invalid identification
+  Given the patient has the "legal" name "Max" "Headroom"
+  And the patient can be identified with a Medicare Number of "1009"
+  And I have another patient
+  And the patient has the "legal" name "Max" "Smart"
+  And the patient has the gender Male
+  And the patient can be identified with an Account Number without a value
+  When I search for patients
+  And the search results have a patient with a "last name" equal to "Headroom"
+  And the search results have a patient with a "last name" equal to "Smart"
+
+
   Scenario Outline: I can search for a Patient with a specified Gender
     Given the patient has the gender Male
     And I have another patient
