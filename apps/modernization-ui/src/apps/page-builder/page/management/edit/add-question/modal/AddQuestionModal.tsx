@@ -1,9 +1,10 @@
-import { Modal, ModalRef } from '@trussworks/react-uswds';
+import { Icon, Modal, ModalRef } from '@trussworks/react-uswds';
 import { RefObject, useState } from 'react';
 import { QuestionSearch } from '../search/QuestionSearch';
 import styles from './add-question-modal.module.scss';
 import './AddQuestionModal.scss';
 import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/CreateQuestion';
+import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -40,11 +41,21 @@ export const AddQuestionModal = ({ pageId, modal, onClose, valueSetModalRef }: P
                         pageId={pageId}
                     />
                 ) : (
-                    <CreateQuestion
-                        onAddQuestion={(e: number) => handleClose([e])}
-                        onCloseModal={handleClose}
-                        addValueModalRef={valueSetModalRef}
-                    />
+                    <>
+                        <CloseableHeader
+                            title={
+                                <div className={styles.createQuestionHeader}>
+                                    <Icon.ArrowBack onClick={() => setState('search')} /> Add question
+                                </div>
+                            }
+                            onClose={handleClose}
+                        />
+                        <CreateQuestion
+                            onAddQuestion={(e: number) => handleClose([e])}
+                            onCloseModal={handleClose}
+                            addValueModalRef={valueSetModalRef}
+                        />
+                    </>
                 )}
             </div>
         </Modal>

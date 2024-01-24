@@ -1,9 +1,10 @@
 import { Icon } from '@trussworks/react-uswds';
 import styles from './closeable-header.module.scss';
+import { ReactNode } from 'react';
 
 type Props = {
     onClose: () => void;
-    title: string;
+    title: string | ReactNode;
 };
 export const CloseableHeader = ({ onClose, title }: Props) => {
     return (
