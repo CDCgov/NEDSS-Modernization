@@ -32,5 +32,6 @@ Feature: Available Question Search
       | PHIN                       | type         |
       | LOCAL                      | type         |
       | Date Question Unique Name  | uniqueName   |
+      | Text question label        | label        |
       | TEST9900001                | uniqueId     |
       | Administrative Information | subgroupName |
