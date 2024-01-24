@@ -154,7 +154,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     }, [summaries]);
 
     const handleSort = (name: string, direction: Direction): void => {
-        console.log('name', name);
         if (pages?.currentPage > 1 && setCurrentPage) {
             setCurrentPage(1);
         }
