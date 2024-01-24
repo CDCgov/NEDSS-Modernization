@@ -16,9 +16,9 @@ export const ManageSubsectionTile = ({ subsection, setOnAction, action, onDelete
 
     const deleteHeader = (curSubsection: PagesSubSection) => {
         if (curSubsection.questions.length !== 0) {
-            return `Section cannot be deleted. This section contains elements (subsections and questions) inside it. Remove the contents first, and then the section can be deleted.`;
+            return `Subsection cannot be deleted. This subsection contains elements (questions) inside it. Remove the contents first, and then the subsection can be deleted.`;
         } else {
-            return `Are you sure you want to delete this section?`;
+            return `Are you sure you want to delete this subsection?`;
         }
     };
 

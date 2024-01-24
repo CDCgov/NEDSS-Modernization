@@ -4,10 +4,11 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import { Heading } from 'components/heading';
 import { AlertInLineProps } from '../../section/manage/ManageSectionModal';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { PagesSection, PagesSubSection } from 'apps/page-builder/generated';
+import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTile';
 import { AddSubSection } from './AddSubSection';
 import { usePageManagement } from '../../../usePageManagement';
+import { authorization } from 'authorization';
 
 type ManageSubsectionProps = {
     alert?: AlertInLineProps;
@@ -15,7 +16,6 @@ type ManageSubsectionProps = {
     section: PagesSection;
     refresh?: () => void;
     onCancel?: () => void;
-    onDelete?: (subsection: PagesSubSection) => void;
     onSetAlert?: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
 };
 
@@ -25,8 +25,7 @@ export const ManageSubsection = ({
     section,
     onSetAlert,
     onCancel,
-    refresh,
-    onDelete
+    refresh
 }: ManageSubsectionProps) => {
     const [subsectionState, setSubsectionState] = useState<'manage' | 'add' | 'edit'>('manage');
     const { page } = usePageManagement();
@@ -34,6 +33,17 @@ export const ManageSubsection = ({
 
     const handleUpdateState = (state: 'manage' | 'add' | 'edit') => {
         setSubsectionState(state);
+    };
+
+    const onDelete = (subsection: PagesSubSection) => {
+        SubSectionControllerService.deleteSubSectionUsingDelete({
+            authorization: authorization(),
+            page: page.id,
+            subSectionId: subsection.id
+        }).then(() => {
+            onSetAlert?.(`You have successfully deleted "${subsection.name}"`, `success`);
+            refresh?.();
+        });
     };
 
     return (

@@ -19,6 +19,7 @@ type Props = {
     onEditQuestion: (question: PagesQuestion) => void;
     handleDeleteSection: () => void;
     addQuestionModalRef: RefObject<ModalRef>;
+    handleStatus: () => void;
     refresh?: () => void;
 };
 
@@ -28,7 +29,8 @@ export const Section = ({
     addQuestionModalRef,
     onEditQuestion,
     handleDeleteSection,
-    refresh
+    refresh,
+    handleStatus
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
@@ -79,13 +81,21 @@ export const Section = ({
     };
 
     const handleDeleteSubsection = (subsection: PagesSubSection) => {
-        SubSectionControllerService.deleteSubSectionUsingDelete({
-            authorization: authorization(),
-            page: page.id,
-            subSectionId: subsection.id
-        }).then(() => {
-            refresh?.();
-        });
+        if (subsection.questions.length > 0) {
+            handleStatus();
+        } else {
+            SubSectionControllerService.deleteSubSectionUsingDelete({
+                authorization: authorization(),
+                page: page.id,
+                subSectionId: subsection.id
+            }).then(() => {
+                showAlert({
+                    message: `You've successfully deleted "${subsection.name}"`,
+                    type: `success`
+                });
+                fetch(page.id);
+            });
+        }
     };
 
     return (
@@ -109,14 +119,7 @@ export const Section = ({
                             onEditQuestion={onEditQuestion}
                             addQuestionModalRef={addQuestionModalRef}
                             onAddQuestion={() => onAddQuestion(subsection.id!)}
-                            onDeleteSubsection={(subsection: PagesSubSection) => {
-                                handleDeleteSubsection(subsection);
-                                showAlert({
-                                    message: `You've successfully deleted "${subsection.name}"`,
-                                    type: `success`
-                                });
-                                fetch(page.id);
-                            }}
+                            onDeleteSubsection={handleDeleteSubsection}
                         />
                     ))}
                 </div>
@@ -171,10 +174,6 @@ export const Section = ({
                     }}
                     refresh={refresh}
                     onCancel={onCloseManageSubsection}
-                    onDelete={(subsection: PagesSubSection) => {
-                        handleDeleteSubsection(subsection);
-                        setAlert({ message: `You've successfully deleted "${subsection.name}"`, type: `success` });
-                    }}
                 />
             </Modal>
         </div>
