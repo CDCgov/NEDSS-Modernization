@@ -1,17 +1,17 @@
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { RefObject, useState } from 'react';
 import { QuestionSearch } from '../search/QuestionSearch';
-import { CreateQuestionForm } from 'apps/page-builder/components/CreateQuestionForm/CreateQuestionForm';
 import styles from './add-question-modal.module.scss';
 import './AddQuestionModal.scss';
+import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/CreateQuestion';
 
 type Props = {
     modal: RefObject<ModalRef>;
     pageId: number;
     onClose?: (questions: number[]) => void;
-    subsection?: number;
+    valueSetModalRef: RefObject<ModalRef>;
 };
-export const AddQuestionModal = ({ pageId, modal, onClose }: Props) => {
+export const AddQuestionModal = ({ pageId, modal, onClose, valueSetModalRef }: Props) => {
     const [state, setState] = useState<'search' | 'add'>('search');
 
     const handleClose = (questions?: number[]) => {
@@ -40,9 +40,10 @@ export const AddQuestionModal = ({ pageId, modal, onClose }: Props) => {
                         pageId={pageId}
                     />
                 ) : (
-                    <CreateQuestionForm
-                        onCreated={(question) => handleClose([question])}
-                        onCancel={() => handleClose([])}
+                    <CreateQuestion
+                        onAddQuestion={(e: number) => handleClose([e])}
+                        onCloseModal={handleClose}
+                        addValueModalRef={valueSetModalRef}
                     />
                 )}
             </div>

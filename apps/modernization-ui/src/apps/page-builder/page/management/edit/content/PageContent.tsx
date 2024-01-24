@@ -111,10 +111,10 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
                 }
             />
             <AddQuestionModal
-                subsection={subsectionId}
                 pageId={page.id}
                 onClose={handleAddQuestionClose}
                 modal={addQuestionModalRef}
+                valueSetModalRef={addValueModalRef}
             />
             <ModalComponent
                 modalRef={editQuestionModalRef}
