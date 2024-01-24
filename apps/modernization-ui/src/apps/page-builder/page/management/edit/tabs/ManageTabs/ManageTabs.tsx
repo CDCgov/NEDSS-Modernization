@@ -116,16 +116,13 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                 modalBody={
                     <div className={styles.modalBody}>
                         {message ? (
-                            <AlertBanner type={message.type} expiration={message.expiration}>
+                            <AlertBanner
+                                type={message.type}
+                                expiration={message.expiration}
+                                onClose={() => setMessage(undefined)}>
                                 {message.message}
                             </AlertBanner>
                         ) : null}
-                        <AlertBanner type={'info'} expiration={5000}>
-                            <p>
-                                Tabs from a template cannot be reordered, edited or deleted. Only new tabs that are
-                                added using the button above can be managed.
-                            </p>
-                        </AlertBanner>
                         {addEdit ? <AddEditTab tabData={selectedForEdit} onChanged={setNewTab} /> : null}
                         {!addEdit && tabs.length === 0 ? (
                             <>
@@ -188,7 +185,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                                     Cancel
                                 </Button>
                                 <Button type="button" onClick={handleSave}>
-                                    Save
+                                    Update
                                 </Button>
                             </>
                         ) : null}

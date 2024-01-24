@@ -51,9 +51,12 @@ export const ManageTabsTile = ({
                             }}
                             size={3}
                         />
+                        {tab.visible ? <Icon.Visibility size={3} /> : <Icon.VisibilityOff size={3} />}
                         <div className={styles.deleteb}>
                             <p onClick={() => setSelectedForDelete(undefined)}>Cancel</p>
-                            <p onClick={() => setSelectedForDelete(selectedForDelete!)}>Delete</p>
+                            <p onClick={selectedForDelete ? () => setSelectedForDelete(selectedForDelete!) : undefined}>
+                                Delete
+                            </p>
                         </div>
                     </div>
                 </div>
