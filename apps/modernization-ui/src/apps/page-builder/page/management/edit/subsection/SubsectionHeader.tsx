@@ -14,6 +14,7 @@ type Props = {
     isExpanded: boolean;
     addQuestionModalRef: RefObject<ModalRef>;
     onExpandedChange: (isExpanded: boolean) => void;
+    onDeleteSubsection: () => void;
 };
 
 export const SubsectionHeader = ({
@@ -23,7 +24,8 @@ export const SubsectionHeader = ({
     isExpanded,
     onAddQuestion,
     onExpandedChange,
-    addQuestionModalRef
+    addQuestionModalRef,
+    onDeleteSubsection
 }: Props) => {
     const addStaticElementModalRef = useRef<ModalRef>(null);
     const renderQuestionListModal = () => (
@@ -43,16 +45,16 @@ export const SubsectionHeader = ({
                 <>{renderQuestionListModal()}</>
                 <MoreOptions header={<Icon.MoreVert size={4} />}>
                     <Button type="button" onClick={() => console.log('BLAH')}>
-                        <Icon.Edit size={3} /> Edit Subsection
+                        <Icon.Edit size={3} /> Edit subsection
                     </Button>
                     <Button type="button" onClick={() => console.log('BLAH')}>
-                        <IconComponent name={'group'} size={'s'} /> Group Subsection
+                        <IconComponent name={'group'} size={'s'} /> Group subsection
                     </Button>
                     <ModalToggleButton type="button" modalRef={addStaticElementModalRef}>
                         <Icon.Add size={3} /> Add static element
                     </ModalToggleButton>
-                    <Button type="button" onClick={() => console.log('BLAH')}>
-                        <Icon.Delete size={3} /> Delete Subsection
+                    <Button type="button" onClick={onDeleteSubsection}>
+                        <Icon.Delete size={3} /> Delete subsection
                     </Button>
                 </MoreOptions>
                 {isExpanded ? (
