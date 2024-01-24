@@ -19,6 +19,9 @@
 }
 .usa-modal {
     .usa-modal__heading {
+        padding: 1.5rem;
+        margin-bottom: 0;
+        border-bottom: 1px solid colors.$base-lightest;
         h3 {
             margin: 0;
         }

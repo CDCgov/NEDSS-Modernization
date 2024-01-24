@@ -99,14 +99,14 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
         <div className={styles.manage}>
             <ModalToggleButton unstyled type="button" modalRef={modalRef} data-testid="openManageTabs">
                 <Icon.Edit />
-                <h4>Manage tabs</h4>
+                <Heading level={3}>Manage tabs</Heading>
             </ModalToggleButton>
             <ModalComponent
                 size={'tall'}
                 modalRef={modalRef}
                 modalHeading={
                     <div className={styles.modalHeader}>
-                        <Heading level={3}>Manage tabs</Heading>
+                        <Heading level={4}>Manage tabs</Heading>
                         <Button type="button" onClick={() => setAddEdit(true)}>
                             <Icon.Add className="margin-right-05em add-tab-icon" />
                             <span>Add new tab</span>
