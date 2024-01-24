@@ -99,7 +99,7 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
                             onSearch={(e) => handleSearch(e ?? '')}
                         />
                     )}
-                    <Button type="button" onClick={onCreateNew}>
+                    <Button aria-label="Create new condition" type="button" onClick={onCreateNew}>
                         Create new condition
                     </Button>
                 </div>
@@ -113,10 +113,14 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
                 )}
             </div>
             <div className={styles.footer}>
-                <Button onClick={handleCancel} type="button" outline>
+                <Button aria-label="Cancel" onClick={handleCancel} type="button" outline>
                     Cancel
                 </Button>
-                <Button disabled={selected.length === 0} onClick={handleAddConditions} type="button">
+                <Button
+                    aria-label="Add conditions"
+                    disabled={selected.length === 0}
+                    onClick={handleAddConditions}
+                    type="button">
                     Add conditions
                 </Button>
             </div>

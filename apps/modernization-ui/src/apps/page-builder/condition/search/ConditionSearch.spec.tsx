@@ -102,4 +102,16 @@ describe('ConditionSearch', () => {
 
         expect(search).toBeCalledWith({ page: 0, pageSize: 10, sort: undefined });
     });
+
+    it('should have aria labels', () => {
+        const { getByText } = render(
+            <MemoryRouter>
+                <ConditionSearch onConditionSelect={onConditionSelect} onCancel={onCancel} onCreateNew={onCreateNew} />
+            </MemoryRouter>
+        );
+
+        expect(getByText('Create new condition')).toHaveAttribute('aria-label', 'Create new condition');
+        expect(getByText('Add conditions')).toHaveAttribute('aria-label', 'Add conditions');
+        expect(getByText('Cancel')).toHaveAttribute('aria-label', 'Cancel');
+    });
 });
