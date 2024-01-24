@@ -88,7 +88,6 @@ export const TableComponent = ({
     const handleRowSelection =
         (row: TableBody, handleSelected?: OldSelectionHandler): ChangeEventHandler<HTMLInputElement> =>
         (event) => {
-            console.log('event, row/////', event, row);
             handleSelected?.(event, row);
             if (row.onSelect) {
                 const mode = event.target.checked ? 'select' : 'deselect';

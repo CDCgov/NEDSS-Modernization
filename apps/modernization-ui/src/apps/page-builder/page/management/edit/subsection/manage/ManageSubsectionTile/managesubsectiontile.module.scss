@@ -1,58 +1,128 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
+.tile {
+    justify-content: space-between;
+    .warningModal {
+        display: flex;
+        flex-direction: column;
 
-.manageSubsectionTile {
-    display: flex;
-    flex-direction: row;
-    color: colors.$base-darkest;
-    padding: 1rem 1.5rem;
-    background-color: colors.$base-white;
+        padding-left: 0rem !important;
+        margin-left: unset;
 
-    .handle {
-        display: flex;
-        margin-right: 1.35rem;
-        svg {
-            cursor: pointer;
-        }
-    }
-    .label {
-        display: flex;
-        align-items: center;
-        width: 75%;
-        gap: 1rem;
-        font-size: 1rem;
-        font-weight: 400;
-    }
-    .buttons {
-        color: colors.$primary;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 0.4rem;
-        svg {
-            height: 1.25rem;
-            cursor: pointer;
-            &:hover {
-                color: colors.$primary-light;
+        background-color: colors.$warning-lighter;
+        border-left: 0.5rem solid colors.$warning;
+
+        .warningModalHeader {
+            display: flex;
+            align-items: center;
+
+            margin-left: 1rem;
+            padding-top: 0.69rem;
+            padding-bottom: 0.69rem;
+            padding-right: 1.5rem;
+
+            .warningIcon {
+                margin-right: 1rem;
             }
-            &:nth-of-type(2) {
-                &:hover {
-                    color: colors.$error;
+        }
+
+        .warningModalContent {
+            display: flex;
+            flex-direction: row;
+            padding: 1rem 1.5rem 1rem 1rem;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            .content {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+
+                .warningDrag {
+                    padding-right: 1.2rem;
+                    align-items: center;
+                }
+
+                .warningGroup {
+                    padding-right: 1rem;
+                    align-items: center;
+                }
+            }
+
+            .warningModalBtns {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+
+                color: colors.$primary;
+
+                div {
+                    cursor: pointer;
+                }
+
+                .separator {
+                    margin-left: 1rem;
+                    margin-right: 1rem;
+                    cursor: unset;
                 }
             }
         }
-        .iconBtn {
-            box-shadow: none;
+    }
+    .manageSubsectionTile {
+        display: flex;
+        flex-direction: row;
+        color: colors.$base-darkest;
+        padding: 1rem 1.5rem;
+        background-color: colors.$base-white;
 
-            &:disabled {
-                color: colors.$base-light !important;
-                background-color: transparent !important;
+        .handle {
+            display: flex;
+            margin-right: 1.35rem;
+            svg {
+                cursor: pointer;
             }
         }
+        .label {
+            display: flex;
+            align-items: center;
+            width: 75%;
+            gap: 1rem;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        .buttons {
+            color: colors.$primary;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.4rem;
+            svg {
+                height: 1.25rem;
+                cursor: pointer;
+                &:hover {
+                    color: colors.$primary-light;
+                }
+                &:nth-of-type(2) {
+                    &:hover {
+                        color: colors.$error;
+                    }
+                }
+            }
+            .iconBtn {
+                box-shadow: none;
 
-        .offVisibility {
-            color: colors.$base-lighter;
+                &:disabled {
+                    color: colors.$base-light !important;
+                    background-color: transparent !important;
+                }
+            }
+
+            .offVisibility {
+                color: colors.$base-lighter;
+            }
         }
     }
 }

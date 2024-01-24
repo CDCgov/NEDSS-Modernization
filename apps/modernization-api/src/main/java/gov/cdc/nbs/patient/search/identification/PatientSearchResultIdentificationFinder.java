@@ -14,18 +14,14 @@ class PatientSearchResultIdentificationFinder {
           select distinct
             [type].code_short_desc_txt              as [type],
             [identification].root_extension_txt     as [value]
-          from Person [patient]
-
-          join [Entity_id] [identification] on
-                  [identification].[entity_uid] = [patient].person_uid
-              and [identification].[record_status_cd] = 'ACTIVE'
-
+          from [Entity_id] [identification]
           join NBS_SRTE..Code_value_general [type] on
                   [type].code_set_nm = 'EI_TYPE_PAT'
               and [type].code = [identification].[type_cd]
 
-            where   [patient].person_uid = ?
-          and [patient].cd = 'PAT'
+        where        [identification].[entity_uid] = ?
+          and [identification].[record_status_cd] = 'ACTIVE'
+          and [identification].root_extension_txt is not null
       """;
   private final JdbcTemplate template;
 

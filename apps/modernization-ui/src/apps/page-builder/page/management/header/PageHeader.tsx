@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { PagesResponse, PagesTab } from 'apps/page-builder/generated';
 import { PageTabs } from './tabs/PageTabs';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 
 import styles from './page-header.module.scss';
 
@@ -8,10 +9,11 @@ type PageHeaderProps = {
     page: PagesResponse;
     tabs: PagesTab[];
     onAddTabSuccess?: () => void;
+    selected?: PagesTab;
     children: ReactNode;
 };
 
-const PageHeader = ({ page, tabs, onAddTabSuccess, children }: PageHeaderProps) => {
+const PageHeader = ({ page, tabs, onAddTabSuccess, selected, children }: PageHeaderProps) => {
     return (
         <header className={styles.header}>
             <div>
@@ -21,7 +23,12 @@ const PageHeader = ({ page, tabs, onAddTabSuccess, children }: PageHeaderProps) 
                 </div>
                 {children}
             </div>
-            <PageTabs pageId={page.id} tabs={tabs} onAddSuccess={onAddTabSuccess} />
+            <DragDropProvider
+                pageData={page}
+                currentTab={page.tabs?.findIndex((x: PagesTab) => x.name === selected?.name) ?? 0}
+                successCallBack={onAddTabSuccess}>
+                <PageTabs pageId={page.id} tabs={tabs} onAddSuccess={onAddTabSuccess} />
+            </DragDropProvider>
         </header>
     );
 };
