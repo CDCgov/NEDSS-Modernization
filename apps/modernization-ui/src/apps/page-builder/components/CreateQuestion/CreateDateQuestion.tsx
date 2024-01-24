@@ -34,12 +34,16 @@ export const CreateDateQuestion = ({ control, options }: DateQuestionProps) => {
             <Controller
                 control={control}
                 name="mask"
-                rules={{ required: { value: true, message: 'Mask required' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                defaultValue="DATE"
+                rules={{ required: { value: true, message: 'Date format required' } }}
+                render={({ field: { onChange }, fieldState: { error } }) => (
                     <SelectInput
-                        defaultValue={value}
+                        defaultValue="DATE"
+                        className="date-format"
+                        value="DATE"
                         label="Date format"
                         onChange={onChange}
+                        disabled
                         options={maskOption}
                         error={error?.message}
                         required

@@ -67,6 +67,7 @@ export type QuestionFormType = {
     allowFutureDates?: string;
     dataType?: string;
     codeSet: any;
+    mask: string | any;
 };
 type CreateQuestionFormType = CreateNumericQuestionRequest &
     CreateCodedQuestionRequest &

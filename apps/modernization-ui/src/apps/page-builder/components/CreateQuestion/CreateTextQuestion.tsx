@@ -35,10 +35,12 @@ export const CreateTextQuestion = ({ control, options, isText }: TextQuestionPro
             <Controller
                 control={control}
                 name="mask"
+                defaultValue={type}
                 rules={{ required: { value: true, message: 'Mask required' } }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <SelectInput
-                        defaultValue={value}
+                        defaultValue={type}
+                        value={value}
                         label="Mask"
                         onChange={onChange}
                         options={maskOption}
