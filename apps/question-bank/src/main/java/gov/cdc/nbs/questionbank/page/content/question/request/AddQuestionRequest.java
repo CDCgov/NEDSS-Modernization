@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.question.request;
 
-public record AddQuestionRequest(Long questionId, Long subsectionId) {
+import java.util.Collection;
+
+public record AddQuestionRequest(Collection<Long> questionIds) {
 
 }

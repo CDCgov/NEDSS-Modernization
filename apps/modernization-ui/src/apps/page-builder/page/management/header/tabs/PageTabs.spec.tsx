@@ -1,7 +1,7 @@
-import { render } from "@testing-library/react";
-import { PagesResponse } from "apps/page-builder/generated";
-import { PageTabs } from "./PageTabs";
-import { PageManagementProvider } from "../../usePageManagement";
+import { render } from '@testing-library/react';
+import { PagesResponse } from 'apps/page-builder/generated';
+import { PageTabs } from './PageTabs';
+import { PageManagementProvider } from '../../usePageManagement';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 
 const content: PagesResponse = {
@@ -34,12 +34,11 @@ const content: PagesResponse = {
     ]
 };
 
-
 describe('When PageTabs renders', () => {
     it('should display the Manage Tabs button when passed onAddSuccess', () => {
         const { container } = render(
             <DragDropProvider pageData={content} currentTab={0}>
-                <PageManagementProvider page={content} fetch={jest.fn()}>
+                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
                     <PageTabs pageId={999} tabs={content.tabs!} onAddSuccess={jest.fn()} />
                 </PageManagementProvider>
             </DragDropProvider>
@@ -50,7 +49,7 @@ describe('When PageTabs renders', () => {
     it('should not display the Manage Tabs button when not passed onAddSuccess', () => {
         const { container } = render(
             <DragDropProvider pageData={content} currentTab={0}>
-                <PageManagementProvider page={content} fetch={jest.fn()}>
+                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
                     <PageTabs pageId={999} tabs={content.tabs!} />
                 </PageManagementProvider>
             </DragDropProvider>

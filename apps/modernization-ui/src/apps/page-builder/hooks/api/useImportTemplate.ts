@@ -1,6 +1,6 @@
 import { useContext, useEffect, useReducer } from 'react';
-import { Template } from '../generated/models/Template';
-import { TemplateControllerService } from '../generated';
+import { Template } from '../../generated/models/Template';
+import { TemplateControllerService } from '../../generated';
 import { UserContext } from 'user';
 
 type State =

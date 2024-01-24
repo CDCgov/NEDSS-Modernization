@@ -3,7 +3,6 @@
 /* eslint-disable */
 
 export type AddQuestionRequest = {
-    questionId?: number;
-    subsectionId?: number;
+    questionIds?: Array<number>;
 };
 

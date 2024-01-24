@@ -14,14 +14,18 @@ const page: PagesResponse = {
 
 const fetch = () => {
     jest.fn();
-}
+};
+
+const refresh = () => {
+    jest.fn();
+};
 
 describe('When page loads', () => {
     it('the add static button should be disabled', () => {
         const { getByTestId } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -35,7 +39,7 @@ describe('When page loads', () => {
         const { getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -51,7 +55,7 @@ describe('When line separator is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -76,7 +80,7 @@ describe('When hyperlink is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -92,10 +96,8 @@ describe('When hyperlink is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(await findByText('Administrative Comments')).toBeInTheDocument()
-        expect(await findByText('Link URL')).toBeInTheDocument()
-
-        
+        expect(await findByText('Administrative Comments')).toBeInTheDocument();
+        expect(await findByText('Link URL')).toBeInTheDocument();
     });
 });
 
@@ -104,7 +106,7 @@ describe('When comments is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -120,9 +122,8 @@ describe('When comments is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(await findByText('Administrative Comments')).toBeInTheDocument()
-        expect(await findByText('Comments text')).toBeInTheDocument()
-
+        expect(await findByText('Administrative Comments')).toBeInTheDocument();
+        expect(await findByText('Comments text')).toBeInTheDocument();
     });
 });
 
@@ -131,7 +132,7 @@ describe('When participants is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -148,8 +149,7 @@ describe('When participants is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(await findByText('Administrative Comments')).toBeInTheDocument()
-
+        expect(await findByText('Administrative Comments')).toBeInTheDocument();
     });
 });
 
@@ -158,7 +158,7 @@ describe('When electronic doc list is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -174,7 +174,7 @@ describe('When electronic doc list is chosen', () => {
             fireEvent.blur(staticTypeInput);
         });
 
-        expect(await findByText('Administrative Comments')).toBeInTheDocument()
+        expect(await findByText('Administrative Comments')).toBeInTheDocument();
     });
 });
 
@@ -183,7 +183,7 @@ describe('When all inputs are entered', () => {
         const { getByTestId, findByTestId, getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -219,6 +219,6 @@ describe('When all inputs are entered', () => {
             fireEvent.blur(linkInput);
         });
 
-        expect(await findByTestId('submit-btn')).toBeEnabled()
+        expect(await findByTestId('submit-btn')).toBeEnabled();
     });
 });

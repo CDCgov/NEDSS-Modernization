@@ -1,0 +1,31 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.buttonBar {
+    display: flex;
+    padding: 0.25rem;
+    align-items: center;
+    gap: 0.5rem;
+    @include borders.rounded();
+    @extend %thin;
+    background: colors.$base-lightest;
+
+    .button {
+        text-align: center;
+        line-height: normal;
+        box-shadow: none;
+        color: colors.$base-black;
+        font-weight: 400;
+        user-select: none;
+        &.hover {
+            border: none;
+        }
+    }
+    .active {
+        color: black !important;
+        font-weight: 700;
+        border-radius: 0.25rem;
+        background: colors.$base-white;
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+    }
+}

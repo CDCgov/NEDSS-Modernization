@@ -26,6 +26,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -71,10 +72,12 @@ public class GroupSubsectionSteps {
         List<WaQuestion> questionsList = questionMother.list(2);
         try {
             for (WaQuestion question : questionsList) {
-                AddQuestionResponse response = pageQuestionController.addQuestionToPage(page.getId(),
-                    new AddQuestionRequest(question.getId(), section.getId()),
-                    user.getCurrentUserDetails());
-                questionsIds.add(response.componentId());
+                AddQuestionResponse response = pageQuestionController.addQuestionToPage(
+                  page.getId(),
+                  section.getId(),
+                  new AddQuestionRequest(Arrays.asList(question.getId())),
+                  user.getCurrentUserDetails());
+                questionsIds.add(response.ids().get(0));
             }
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -90,9 +93,12 @@ public class GroupSubsectionSteps {
         WaUiMetadata section = getSection(page);
         WaQuestion question = questionMother.one();
         try {
-            AddQuestionResponse addQuestionResponse = pageQuestionController.addQuestionToPage(page.getId(),
-                new AddQuestionRequest(question.getId(), section.getId()), user.getCurrentUserDetails());
-            questionsIds.add(addQuestionResponse.componentId());
+            AddQuestionResponse addQuestionResponse = pageQuestionController.addQuestionToPage(
+              page.getId(),
+              section.getId(),
+              new AddQuestionRequest(Arrays.asList(question.getId())),
+              user.getCurrentUserDetails());
+            questionsIds.add(addQuestionResponse.ids().get(0));
 
             StaticContentRequests.AddDefault request = new StaticContentRequests.AddDefault("test_comment",
                 section.getId());

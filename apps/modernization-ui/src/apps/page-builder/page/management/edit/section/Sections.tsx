@@ -1,23 +1,21 @@
 import { PagesQuestion, PagesSection, SectionControllerService } from 'apps/page-builder/generated';
-import { RefObject, useRef } from 'react';
+import { useRef } from 'react';
 import styles from './section.module.scss';
-import { Section } from './Section';
 import { ModalRef } from '@trussworks/react-uswds';
 import { authorization } from 'authorization';
 import { usePageManagement } from '../../usePageManagement';
 import { StatusModal } from '../../status/StatusModal';
+import { Section } from './Section';
 import { useAlert } from 'alert';
 
 type Props = {
     sections: PagesSection[];
     onAddQuestion: (subsection: number) => void;
-    addQuestionModalRef: RefObject<ModalRef>;
     onEditQuestion: (question: PagesQuestion) => void;
-    refresh?: () => void;
 };
 
-export const Sections = ({ sections, onAddQuestion, addQuestionModalRef, onEditQuestion, refresh }: Props) => {
-    const { page, fetch } = usePageManagement();
+export const Sections = ({ sections, onAddQuestion, onEditQuestion }: Props) => {
+    const { page, refresh } = usePageManagement();
 
     const sectionStatusModalRef = useRef<ModalRef>(null);
 
@@ -39,7 +37,7 @@ export const Sections = ({ sections, onAddQuestion, addQuestionModalRef, onEditQ
                 sectionId: section.id
             }).then(() => {
                 showAlert({ message: `You have successfully deleted section "${section.name}"`, type: `success` });
-                fetch(page.id);
+                refresh();
             });
         }
     };
@@ -52,9 +50,7 @@ export const Sections = ({ sections, onAddQuestion, addQuestionModalRef, onEditQ
                     key={k}
                     onAddQuestion={onAddQuestion}
                     onEditQuestion={onEditQuestion}
-                    addQuestionModalRef={addQuestionModalRef}
-                    onDeleteSection={() => handleDeleteSection?.(s)}
-                    refresh={refresh}
+                    onDeleteSection={() => handleDeleteSection(s)}
                     onDeleteStatus={handleSubsectionStatusModal}
                 />
             ))}

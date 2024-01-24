@@ -2,7 +2,7 @@ import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerServi
 import { SectionHeader } from './SectionHeader';
 import styles from './section.module.scss';
 import { Subsection } from '../subsection/Subsection';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { AddSection } from './manage/AddSection';
 import { useAlert } from 'alert';
@@ -18,23 +18,13 @@ type Props = {
     onAddQuestion: (subsection: number) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     onDeleteSection: () => void;
-    addQuestionModalRef: RefObject<ModalRef>;
     onDeleteStatus: () => void;
-    refresh?: () => void;
 };
 
-export const Section = ({
-    section,
-    onAddQuestion,
-    addQuestionModalRef,
-    onEditQuestion,
-    onDeleteSection,
-    refresh,
-    onDeleteStatus
-}: Props) => {
+export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSection, onDeleteStatus }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
-    const { page, fetch, selected } = usePageManagement();
+    const { page, refresh, selected } = usePageManagement();
 
     const handleExpandedChange = (expanded: boolean) => {
         setIsExpanded(expanded);
@@ -93,7 +83,7 @@ export const Section = ({
                     message: `You've successfully deleted "${subsection.name}"`,
                     type: `success`
                 });
-                fetch(page.id);
+                refresh();
             });
         }
     };
@@ -117,8 +107,7 @@ export const Section = ({
                             subsection={subsection}
                             key={k}
                             onEditQuestion={onEditQuestion}
-                            addQuestionModalRef={addQuestionModalRef}
-                            onAddQuestion={() => onAddQuestion(subsection.id!)}
+                            onAddQuestion={() => onAddQuestion(subsection.id)}
                             onDeleteSubsection={handleDeleteSubsection}
                         />
                     ))}
@@ -129,9 +118,9 @@ export const Section = ({
                     pageId={page.id}
                     tabId={selected?.id}
                     onSectionTouched={() => {
-                        onCloseEditSectionModal?.();
+                        onCloseEditSectionModal();
                         showAlert({ message: `Your changes have been saved succesfully.`, type: `success` });
-                        fetch(page.id);
+                        refresh();
                     }}
                     onCancel={onCloseEditSectionModal}
                     isEdit={true}
@@ -148,13 +137,11 @@ export const Section = ({
                 <AddSubSection
                     sectionId={section.id}
                     pageId={page.id}
-                    onCancel={() => {
-                        onCloseAddSubSection?.();
-                    }}
+                    onCancel={onCloseAddSubSection}
                     onSubSectionTouched={(section: string) => {
-                        onCloseAddSubSection?.();
+                        onCloseAddSubSection();
                         showAlert({ message: `You have successfully added subsection "${section}"`, type: `success` });
-                        refresh?.();
+                        refresh();
                     }}
                 />
             </Modal>
@@ -172,7 +159,6 @@ export const Section = ({
                     onSetAlert={(message, type) => {
                         setAlert({ message: message, type: type });
                     }}
-                    refresh={refresh}
                     onCancel={onCloseManageSubsection}
                 />
             </Modal>
