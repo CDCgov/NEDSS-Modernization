@@ -9,13 +9,20 @@
     background-color: colors.$base-white;
     .handle {
         display: flex;
-        svg {
+        margin-right: 1rem;
+        img {
             cursor: pointer;
+            width: 1rem;
+            max-width: unset;
         }
         p {
             display: none;
         }
-        margin-right: 1rem;
+        &.inactive {
+            img {
+                cursor: not-allowed;
+            }
+        }
     }
     .label {
         display: flex;
@@ -46,25 +53,13 @@
                 }
             }
         }
-        &.locked {
-            svg:nth-of-type(2) {
-                color: colors.$disabled;
-                cursor: none;
-            }
-        }
     }
-    .deleteb {
+    .delete_buttons {
         display: none;
     }
     &.delete {
         background-color: colors.$warning-lighter;
-        border: 3px solid colors.$warning;
-        flex-direction: column;
         .handle {
-            padding-bottom: 0.8rem;
-            img {
-                display: none;
-            }
             p {
                 display: inline;
                 font-weight: 700;
@@ -80,16 +75,20 @@
                 cursor: pointer;
             }
         }
-        .deleteb {
+        .delete_buttons {
             display: flex;
             gap: 1.5rem;
             width: 100%;
             justify-content: flex-end;
             p {
-                font-size: 0.8rem;
+                font-size: 0.875rem;
                 font-weight: 700;
                 margin: 0;
+                margin-top: 0.15rem;
                 cursor: pointer;
+                &:first-of-type {
+                    width: 4.75rem;
+                }
             }
         }
     }

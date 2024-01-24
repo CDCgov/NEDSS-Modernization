@@ -41,6 +41,7 @@ const props = {
     setDeleteTab: jest.fn(),
     selectedForDelete: content.tabs![0],
     setSelectedForDelete: jest.fn(),
+    deleteTab: jest.fn(),
     reset: jest.fn()
 };
 
