@@ -17,9 +17,9 @@ type Props = {
     section: PagesSection;
     onAddQuestion: (subsection: number) => void;
     onEditQuestion: (question: PagesQuestion) => void;
-    handleDeleteSection: () => void;
+    onDeleteSection: () => void;
     addQuestionModalRef: RefObject<ModalRef>;
-    handleStatus: () => void;
+    onDeleteStatus: () => void;
     refresh?: () => void;
 };
 
@@ -28,9 +28,9 @@ export const Section = ({
     onAddQuestion,
     addQuestionModalRef,
     onEditQuestion,
-    handleDeleteSection,
+    onDeleteSection,
     refresh,
-    handleStatus
+    onDeleteStatus
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
@@ -82,7 +82,7 @@ export const Section = ({
 
     const handleDeleteSubsection = (subsection: PagesSubSection) => {
         if (subsection.questions.length > 0) {
-            handleStatus();
+            onDeleteStatus();
         } else {
             SubSectionControllerService.deleteSubSectionUsingDelete({
                 authorization: authorization(),
@@ -107,7 +107,7 @@ export const Section = ({
                 handleManageSubsection={handleManageSubsection}
                 onExpandedChange={handleExpandedChange}
                 handleEditSection={handleEditSection}
-                handleDeleteSection={handleDeleteSection}
+                handleDeleteSection={onDeleteSection}
                 isExpanded={isExpanded}
             />
             {isExpanded && (

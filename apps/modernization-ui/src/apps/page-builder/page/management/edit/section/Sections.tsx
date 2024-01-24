@@ -53,9 +53,9 @@ export const Sections = ({ sections, onAddQuestion, addQuestionModalRef, onEditQ
                     onAddQuestion={onAddQuestion}
                     onEditQuestion={onEditQuestion}
                     addQuestionModalRef={addQuestionModalRef}
-                    handleDeleteSection={() => handleDeleteSection?.(s)}
+                    onDeleteSection={() => handleDeleteSection?.(s)}
                     refresh={refresh}
-                    handleStatus={handleSubsectionStatusModal}
+                    onDeleteStatus={handleSubsectionStatusModal}
                 />
             ))}
             <StatusModal
