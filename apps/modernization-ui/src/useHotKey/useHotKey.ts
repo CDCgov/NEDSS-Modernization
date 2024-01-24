@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const useAltX = (callback: () => void) => {
+const useHotKey = (callback: () => void) => {
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.altKey && event.keyCode === 88) {
@@ -17,4 +17,4 @@ const useAltX = (callback: () => void) => {
     }, []);
 };
 
-export { useAltX };
+export { useHotKey };

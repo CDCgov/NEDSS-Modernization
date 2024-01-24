@@ -13,7 +13,7 @@ import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
-import { useAltX } from 'useAltX';
+import { useHotKey } from 'useHotKey';
 import { focusedTarget } from 'utils';
 
 type PatientSearchProps = {
@@ -35,7 +35,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
         skipTo('lastName');
     }, []);
 
-    useAltX(() => {
+    useHotKey(() => {
         focusedTarget('lastName');
     });
 
