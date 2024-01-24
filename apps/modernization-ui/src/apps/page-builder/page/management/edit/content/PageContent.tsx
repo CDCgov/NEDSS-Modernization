@@ -2,7 +2,6 @@ import { PagesQuestion, PagesTab } from 'apps/page-builder/generated';
 import { Sections } from '../section/Sections';
 import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
-import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { EditStaticElement } from '../staticelement/EditStaticElement';
 import { Icon, ModalRef } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
@@ -11,6 +10,7 @@ import { ValuesetLibrary } from '../../../../pages/ValuesetLibrary/ValuesetLibra
 import { AddValueset } from '../../../../components/AddValueset/AddValueset';
 import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
 import { Heading } from '../../../../../../components/heading';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 
 type Props = {
     tab: PagesTab;
@@ -38,10 +38,6 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
     const createValueModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
 
-    const handleAddSubsection = (section: number) => {
-        console.log('add subsection not yet implemented', section);
-    };
-
     const onCloseModal = () => {
         if (staticTypes.includes(currentEditQuestion?.displayComponent!)) {
             editStaticElementRef.current?.toggleModal(undefined, false);
@@ -68,13 +64,12 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
             <div className={styles.invisible} />
             <Sections
                 sections={tab.sections ?? []}
-                onAddSubsection={handleAddSubsection}
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={setSubsectionId}
-                handleManageSection={() => handleManageSection!()}
                 addQuestionModalRef={addQuestionModalRef}
+                refresh={refresh}
             />
-            <PageSideMenu onAddSection={() => handleAddSection!()} />
+            <PageSideMenu onAddSection={() => handleAddSection?.()} onManageSection={() => handleManageSection?.()} />
             <ModalComponent
                 modalRef={editStaticElementRef}
                 modalHeading={'Edit static elements'}
@@ -97,6 +92,7 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
                 modalRef={editQuestionModalRef}
                 closer
                 size="wide"
+                onCloseModal={onCloseModal}
                 modalHeading={
                     <div className="edit-question-header">
                         <Heading level={2}>Edit question</Heading>

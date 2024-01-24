@@ -74,11 +74,14 @@ describe('when ManageSectionTile renders', () => {
                                 <ManageSectionTile
                                     section={section}
                                     index={1}
-                                    setSelectedForEdit={jest.fn}
                                     setSelectedForDelete={jest.fn}
-                                    selectedForDelete={section}
+                                    selectedForDelete={undefined}
                                     handleDelete={jest.fn}
-                                    reset={jest.fn}
+                                    setOnAction={jest.fn}
+                                    onAction={false}
+                                    setSectionState={jest.fn}
+                                    setSelectedForEdit={jest.fn}
+                                    onChangeVisibility={jest.fn}
                                 />
                             </div>
                         )}
@@ -86,6 +89,6 @@ describe('when ManageSectionTile renders', () => {
                 </DragDropContext>
             </DragDropProvider>
         );
-        expect(getByTestId('manageSectionTileId').innerHTML).toBe('Test Section&nbsp;(2)');
+        expect(getByTestId('manageSectionTileId').innerHTML).toBe('Test Section(2)');
     });
 });

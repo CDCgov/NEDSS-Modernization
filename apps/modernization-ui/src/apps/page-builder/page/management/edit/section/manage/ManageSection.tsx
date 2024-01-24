@@ -1,43 +1,80 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import { PagesSection, PagesTab } from 'apps/page-builder/generated';
+import { PagesSection, PagesTab, SectionControllerService } from 'apps/page-builder/generated';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
 import styles from './managesection.module.scss';
 import { useState } from 'react';
 import { AddSection } from './AddSection';
 import { Heading } from 'components/heading';
+import { authorization } from 'authorization';
+import { AlertInLineProps } from './ManageSectionModal';
 import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 type ManageSectionProps = {
     pageId: number;
-    tab: PagesTab;
+    tab?: PagesTab;
     onCancel?: () => void;
     onContentChange?: () => void;
-    setSelectedForEdit: (section: PagesSection | undefined) => void;
-    selectedForEdit: PagesSection | undefined;
-    setSelectedForDelete: (section: PagesSection | undefined) => void;
-    selectedForDelete: PagesSection | undefined;
-    handleDelete: (section: PagesSection) => void;
-    reset: () => void;
+    alert?: AlertInLineProps;
+    onDeleteSection?: (section: string) => void;
+    onResetAlert?: () => void;
+    onUpdateSection?: () => void;
+    onAddSection?: (section: string) => void;
+    onHiddenSection?: () => void;
+    onUnhiddenSection?: () => void;
 };
 
 export const ManageSection = ({
-    pageId,
+    onCancel,
     tab,
     onContentChange,
-    onCancel,
-    setSelectedForEdit,
-    selectedForEdit,
-    setSelectedForDelete,
-    selectedForDelete,
-    handleDelete,
-    reset
+    pageId,
+    alert,
+    onDeleteSection,
+    onResetAlert,
+    onUpdateSection,
+    onAddSection,
+    onHiddenSection,
+    onUnhiddenSection
 }: ManageSectionProps) => {
-    const [sectionState, setSectionState] = useState<'manage' | 'add'>('manage');
+    const [sectionState, setSectionState] = useState<'manage' | 'add' | 'edit'>('manage');
 
-    const handleUpdateState = (state: 'manage' | 'add') => {
+    const [confirmDelete, setConfirmDelete] = useState<PagesSection | undefined>(undefined);
+
+    const [sectionEdit, setSectionEdit] = useState<PagesSection | undefined>();
+
+    const [onAction, setOnAction] = useState<boolean>(false);
+
+    const handleUpdateState = (state: 'manage' | 'add' | 'edit') => {
         setSectionState(state);
+    };
+
+    const onDelete = (section: PagesSection) => {
+        SectionControllerService.deleteSectionUsingDelete({
+            authorization: authorization(),
+            page: pageId,
+            sectionId: section.id
+        }).then(() => {
+            onContentChange?.();
+            onDeleteSection?.(section.name);
+        });
+    };
+
+    const onChangeVisibility = (section: PagesSection, visibility: boolean) => {
+        SectionControllerService.updateSectionUsingPut({
+            authorization: authorization(),
+            page: pageId,
+            request: { name: section.name, visible: visibility },
+            section: section.id
+        }).then(() => {
+            onContentChange?.();
+            if (visibility) {
+                onHiddenSection?.();
+            } else {
+                onUnhiddenSection?.();
+            }
+        });
     };
 
     const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
@@ -46,13 +83,32 @@ export const ManageSection = ({
             {sectionState === 'add' && (
                 <AddSection
                     pageId={pageId}
-                    onAddSectionCreated={() => {
+                    onSectionTouched={() => {
                         onContentChange?.();
                         setSectionState('manage');
                     }}
+                    onAddSection={onAddSection}
                     onCancel={() => setSectionState('manage')}
-                    tabId={tab.id}
-                    selectedForEdit={selectedForEdit}
+                    tabId={tab?.id}
+                    isEdit={false}
+                />
+            )}
+            {sectionState === 'edit' && (
+                <AddSection
+                    pageId={pageId}
+                    onSectionTouched={() => {
+                        onContentChange?.();
+                        setSectionState('manage');
+                        setSectionEdit(undefined);
+                        onUpdateSection?.();
+                    }}
+                    onCancel={() => {
+                        setSectionState('manage');
+                        setSectionEdit(undefined);
+                    }}
+                    tabId={tab?.id}
+                    isEdit={true}
+                    section={sectionEdit}
                 />
             )}
             {sectionState === 'manage' && (
@@ -67,18 +123,32 @@ export const ManageSection = ({
                                 onClick={() => {
                                     handleUpdateState('add');
                                 }}
-                                className={styles.addSectionBtn}>
+                                className={styles.addSectionBtn}
+                                disabled={onAction}>
                                 <Icon.Add size={3} className={styles.addIcon} />
                                 Add new section
                             </Button>
                         </div>
                     </div>
                     <div className={styles.content}>
+                        {alert !== undefined && (
+                            <div className={styles.alert}>
+                                <div className={styles.checkCircle}>
+                                    <Icon.CheckCircle size={3} />
+                                </div>
+                                <div className={styles.alertContent}>
+                                    <div className={styles.alertMessage}>{alert.message}</div>
+                                    <div className={styles.closeBtn}>
+                                        <Icon.Close size={3} onClick={() => onResetAlert?.()} />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <div className={styles.tab}>
                             <div className={styles.folderIcon}>
                                 <NbsIcon name={'folder'} />
                             </div>
-                            <p className={styles.tabName}>{tab.name}</p>
+                            <p className={styles.tabName}>{tab?.name}</p>
                         </div>
                         <DragDropContext
                             onDragEnd={handleDragEnd}
@@ -90,17 +160,20 @@ export const ManageSection = ({
                                         className="manage-sections"
                                         {...provided.droppableProps}
                                         ref={provided.innerRef}>
-                                        {tab.sections?.map((section, k) => {
+                                        {tab?.sections?.map((section, k) => {
                                             return (
                                                 <ManageSectionTile
                                                     section={section}
                                                     index={k}
                                                     key={k}
-                                                    setSelectedForEdit={setSelectedForEdit}
-                                                    setSelectedForDelete={setSelectedForDelete}
-                                                    selectedForDelete={selectedForDelete}
-                                                    handleDelete={handleDelete}
-                                                    reset={reset}
+                                                    setSelectedForDelete={setConfirmDelete}
+                                                    selectedForDelete={confirmDelete}
+                                                    handleDelete={onDelete}
+                                                    setOnAction={setOnAction}
+                                                    onAction={onAction}
+                                                    setSectionState={setSectionState}
+                                                    setSelectedForEdit={setSectionEdit}
+                                                    onChangeVisibility={onChangeVisibility}
                                                 />
                                             );
                                         })}
@@ -111,7 +184,13 @@ export const ManageSection = ({
                         </DragDropContext>
                     </div>
                     <div className={styles.footer}>
-                        <Button onClick={onCancel} type={'button'} outline>
+                        <Button
+                            onClick={() => {
+                                onCancel?.();
+                                setConfirmDelete(undefined);
+                            }}
+                            type={'button'}
+                            outline>
                             Close
                         </Button>
                     </div>

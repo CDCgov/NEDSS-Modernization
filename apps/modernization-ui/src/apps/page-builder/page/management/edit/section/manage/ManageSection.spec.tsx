@@ -59,12 +59,6 @@ describe('when ManageSection renders', () => {
                     key={1}
                     onContentChange={jest.fn()}
                     onCancel={jest.fn()}
-                    setSelectedForEdit={jest.fn()}
-                    selectedForEdit={undefined}
-                    setSelectedForDelete={jest.fn()}
-                    selectedForDelete={undefined}
-                    handleDelete={jest.fn()}
-                    reset={jest.fn()}
                 />
             </DragDropProvider>
         );
@@ -81,12 +75,6 @@ describe('when ManageSection renders', () => {
                     key={1}
                     onContentChange={jest.fn()}
                     onCancel={jest.fn()}
-                    setSelectedForEdit={jest.fn()}
-                    selectedForEdit={undefined}
-                    setSelectedForDelete={jest.fn()}
-                    selectedForDelete={undefined}
-                    handleDelete={jest.fn()}
-                    reset={jest.fn()}
                 />
             </DragDropProvider>
         );

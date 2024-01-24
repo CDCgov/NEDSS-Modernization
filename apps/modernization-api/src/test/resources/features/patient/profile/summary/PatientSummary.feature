@@ -24,6 +24,16 @@ Feature: Patient Profile Summary
     And the Patient Profile Summary has an "identification type" of "Medicare number"
     And the Patient Profile Summary has an "identification value" of "5507"
 
+  Scenario: BUG: CNFT1-2008 A patient's valid identification in the Patient Profile Summary
+    Given I can "find" any "patient"
+    And the patient can be identified with a "Medicare number" of "5507"
+    And the patient can be identified with a "Driver's license number" of "4099"
+    And the patient can be identified with an Account Number without a value
+    When I view the Patient Profile Summary
+    Then the Patient Profile Summary has an "identification type" of "Driver's license number"
+    And the Patient Profile Summary has an "identification type" of "Medicare number"
+    And the Patient Profile Summary does not have an "identification type" of "Account Number"
+
   Scenario Outline: A patient's race is in the Patient Profile Summary
     Given I can "find" any "patient"
     And the patient has a "race" of <race>

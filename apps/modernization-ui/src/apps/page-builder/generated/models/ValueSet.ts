@@ -24,6 +24,7 @@ export type ValueSet = {
     statusToTime?: string;
     valueSetCode?: string;
     valueSetNm?: string;
+    valueSetName?: string;
     valueSetOid?: string;
     valueSetStatusCd?: string;
     valueSetStatusTime?: string;

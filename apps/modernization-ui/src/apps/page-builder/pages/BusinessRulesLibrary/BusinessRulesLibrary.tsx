@@ -4,7 +4,6 @@ import { BusinessRuleContext } from '../../context/BusinessContext';
 import { fetchBusinessRules } from './useBusinessRulesAPI';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
-import { PageBuilder } from '../PageBuilder/PageBuilder';
 import { Breadcrumb } from 'breadcrumb';
 import type { ViewRuleResponse } from '../../generated/models/ViewRuleResponse';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
@@ -42,29 +41,27 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
             <header className="business-rule-header">
                 <h2>Page builder</h2>
             </header>
-            <PageBuilder page="pages">
-                <div className="business-rules-library padding-top-3">
-                    {page && (
-                        <div className="padding-left-3">
-                            <Breadcrumb
-                                start="../.."
-                                currentPage="Rules library"
-                                crumbs={[{ name: page.name, position: 1, to: '..' }]}>
-                                Page library
-                            </Breadcrumb>
-                        </div>
-                    )}
-                    <div className="business-rules-library__container">
-                        <div className="business-rules-library__table">
-                            <BusinessRulesLibraryTable
-                                summaries={rules}
-                                qtnModalRef={modalRef}
-                                pages={{ currentPage, pageSize, totalElements }}
-                            />
-                        </div>
+            <div className="business-rules-library padding-top-3">
+                {page && (
+                    <div className="padding-left-3">
+                        <Breadcrumb
+                            start="../.."
+                            currentPage="Rules library"
+                            crumbs={[{ name: page.name, position: 1, to: '..' }]}>
+                            Page library
+                        </Breadcrumb>
+                    </div>
+                )}
+                <div className="business-rules-library__container">
+                    <div className="business-rules-library__table">
+                        <BusinessRulesLibraryTable
+                            summaries={rules}
+                            qtnModalRef={modalRef}
+                            pages={{ currentPage, pageSize, totalElements }}
+                        />
                     </div>
                 </div>
-            </PageBuilder>
+            </div>
         </>
     );
 };

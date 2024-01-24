@@ -12,6 +12,7 @@ type ModalProps = {
     size?: string;
     forceAction?: boolean;
     closer?: boolean;
+    onCloseModal?: () => void;
 };
 
 export const ModalComponent = ({
@@ -21,7 +22,8 @@ export const ModalComponent = ({
     modalFooter,
     isLarge,
     size,
-    closer
+    closer,
+    onCloseModal
 }: ModalProps) => {
     return (
         <Modal
@@ -36,7 +38,7 @@ export const ModalComponent = ({
                 <ModalHeading id="modal-1-heading">
                     {modalHeading}
                     {closer ? (
-                        <ModalToggleButton unstyled closer modalRef={modalRef!}>
+                        <ModalToggleButton unstyled closer modalRef={modalRef!} onClick={onCloseModal}>
                             <Icon.Close size={4} />
                         </ModalToggleButton>
                     ) : null}

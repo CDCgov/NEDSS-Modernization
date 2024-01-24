@@ -1,36 +1,67 @@
 import { Button, Form } from '@trussworks/react-uswds';
-import { CreateSectionRequest, PagesSection, SectionControllerService } from 'apps/page-builder/generated';
+import {
+    CreateSectionRequest,
+    PagesSection,
+    SectionControllerService,
+    UpdateSectionRequest
+} from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
-import { Input } from 'components/FormInputs/Input';
 import { Controller, useForm } from 'react-hook-form';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
 import { Heading } from 'components/heading';
-import { useAlert } from 'alert';
+import { useEffect } from 'react';
+import { maxLengthRule } from 'validation/entry';
+import { Input } from 'components/FormInputs/Input';
 
 type sectionProps = {
     tabId?: number;
     pageId?: number;
     onCancel?: () => void;
-    onAddSectionCreated?: () => void;
-    selectedForEdit: PagesSection | undefined;
+    onSectionTouched?: () => void;
+    onAddSection?: (section: string) => void;
+    section?: PagesSection;
+    isEdit: boolean;
 };
 
-export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sectionProps) => {
-    const form = useForm<CreateSectionRequest>();
-    const { showAlert } = useAlert();
+export const AddSection = ({
+    onSectionTouched,
+    tabId,
+    onCancel,
+    pageId,
+    section,
+    isEdit,
+    onAddSection
+}: sectionProps) => {
+    const form = useForm<CreateSectionRequest | UpdateSectionRequest>();
 
+    useEffect(() => {
+        if (section && isEdit) {
+            form.reset({ name: section.name, tabId: tabId, visible: section.visible });
+        }
+    }, [section]);
     const onSubmit = form.handleSubmit((data) => {
-        data.tabId = tabId;
-        SectionControllerService.createSectionUsingPost({
-            authorization: authorization(),
-            page: pageId!,
-            request: data
-        }).then(() => {
-            form.reset();
-            showAlert({ type: 'success', message: `You've successfully Added a new section` });
-            onAddSectionCreated?.();
-        });
+        if (isEdit) {
+            SectionControllerService.updateSectionUsingPut({
+                authorization: authorization(),
+                page: pageId ?? 0,
+                section: section?.id ?? 0,
+                request: { name: data.name, visible: data.visible }
+            }).then(() => {
+                form.reset();
+                onSectionTouched?.();
+            });
+        } else {
+            SectionControllerService.createSectionUsingPost({
+                authorization: authorization(),
+                page: pageId ?? 0,
+                request: { name: data.name, visible: data.visible, tabId: tabId }
+            }).then(() => {
+                form.reset();
+                onAddSection?.(data.name ?? '');
+                onSectionTouched?.();
+            });
+        }
     });
 
     const onClose = () => {
@@ -41,35 +72,41 @@ export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sec
     return (
         <div className={styles.addSection}>
             <div className={styles.header}>
-                <Heading level={4}>Add a section</Heading>
+                {isEdit ? <Heading level={4}>Edit section</Heading> : <Heading level={4}>Add a section</Heading>}
             </div>
             <Form onSubmit={onSubmit} className={styles.form}>
                 <div className={styles.content}>
                     <Controller
                         control={form.control}
                         name="name"
-                        rules={{ required: { value: true, message: 'Section name is required' } }}
+                        rules={{ required: { value: true, message: 'Section name is required' }, ...maxLengthRule(50) }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <Input
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                defaultValue={value}
-                                label="Section Name"
-                                type="text"
-                                error={error?.message}
-                                required
-                                className={styles.inputField}
-                            />
+                            <>
+                                <Input
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    defaultValue={value}
+                                    label="Section Name"
+                                    type="text"
+                                    error={error?.message}
+                                    required
+                                    className={styles.inputField}
+                                />
+                            </>
                         )}
                     />
 
                     <Controller
                         control={form.control}
                         name="visible"
-                        render={() => (
+                        render={({ field: { onChange, value } }) => (
                             <div className={styles.visibleToggle}>
                                 Not visible
-                                <ToggleButton defaultChecked className={styles.toggleBtn} />
+                                <ToggleButton
+                                    defaultChecked={section ? section.visible : value}
+                                    className={styles.toggleBtn}
+                                    onChange={onChange}
+                                />
                                 Visible
                             </div>
                         )}
@@ -81,9 +118,18 @@ export const AddSection = ({ onAddSectionCreated, tabId, onCancel, pageId }: sec
                     <Button type="button" onClick={onClose}>
                         Cancel
                     </Button>
-                    <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
-                        Add section
-                    </Button>
+                    {isEdit ? (
+                        <Button
+                            type="button"
+                            onClick={onSubmit}
+                            disabled={!form.formState.isDirty || !form.formState.isValid}>
+                            Save
+                        </Button>
+                    ) : (
+                        <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
+                            Add section
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>

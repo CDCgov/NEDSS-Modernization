@@ -63,7 +63,6 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     defaultValue={question.defaultValue ?? ''}
                     valueSet={question.valueSet ?? ''}
                     identifier={question.question ?? ''}
-                    isStandard={question.isStandard ?? false}
                     name={question.name}
                     type={question.dataType ?? ''}
                     displayComponent={question.displayComponent}

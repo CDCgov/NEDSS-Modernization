@@ -6,7 +6,6 @@ import './AddBusinessRule.scss';
 import { PageRuleControllerService, ViewRuleResponse } from '../../../generated';
 import { useAlert } from 'alert';
 import BusinessRulesForm from '../BusinessRulesForm';
-import { PageBuilder } from '../../PageBuilder/PageBuilder';
 import { Breadcrumb } from 'breadcrumb';
 import { authorization } from 'authorization';
 import { ConfirmationModal } from 'confirmation';
@@ -144,71 +143,69 @@ const AddBusinessRule = () => {
                 <h2>Page library</h2>
             </header>
 
-            <PageBuilder>
-                <div className="breadcrumb-wrap">
-                    <Breadcrumb start="../">Business rules</Breadcrumb>
-                </div>
+            <div className="breadcrumb-wrap">
+                <Breadcrumb start="../">Business rules</Breadcrumb>
+            </div>
 
-                <div className="edit-rules">
-                    <Form onSubmit={onSubmit}>
-                        <div className="edit-rules__form">
-                            <div className="edit-rules__container">
-                                <div className="edit-rules-title">
-                                    <h2>{`${title} business rules`}</h2>
-                                </div>
-                                <div className="edit-rules__content">
-                                    <Grid row className="inline-field">
-                                        <Grid col={2}>
-                                            <label className="input-label">Function</label>
-                                        </Grid>
-                                        <Grid col={10}>
-                                            {ruleId ? (
-                                                <label>{ruleFunction}</label>
-                                            ) : (
-                                                <ButtonGroup type="segmented">
-                                                    {fieldTypeTab.map((field, index) => (
-                                                        <Button
-                                                            key={index}
-                                                            type="button"
-                                                            outline={field.name !== selectedFieldType}
-                                                            onClick={() => {
-                                                                setSelectedFieldType(field.name);
-                                                                form.setValue('ruleFunction', field.name);
-                                                            }}>
-                                                            {field.name}
-                                                        </Button>
-                                                    ))}
-                                                </ButtonGroup>
-                                            )}
-                                        </Grid>
+            <div className="edit-rules">
+                <Form onSubmit={onSubmit}>
+                    <div className="edit-rules__form">
+                        <div className="edit-rules__container">
+                            <div className="edit-rules-title">
+                                <h2>{`${title} business rules`}</h2>
+                            </div>
+                            <div className="edit-rules__content">
+                                <Grid row className="inline-field">
+                                    <Grid col={2}>
+                                        <label className="input-label">Function</label>
                                     </Grid>
-                                    {selectedFieldType == '' ? null : (
-                                        <FormProvider {...form}>
-                                            <BusinessRulesForm />
-                                        </FormProvider>
-                                    )}
-                                </div>
+                                    <Grid col={10}>
+                                        {ruleId ? (
+                                            <label>{ruleFunction}</label>
+                                        ) : (
+                                            <ButtonGroup type="segmented">
+                                                {fieldTypeTab.map((field, index) => (
+                                                    <Button
+                                                        key={index}
+                                                        type="button"
+                                                        outline={field.name !== selectedFieldType}
+                                                        onClick={() => {
+                                                            setSelectedFieldType(field.name);
+                                                            form.setValue('ruleFunction', field.name);
+                                                        }}>
+                                                        {field.name}
+                                                    </Button>
+                                                ))}
+                                            </ButtonGroup>
+                                        )}
+                                    </Grid>
+                                </Grid>
+                                {selectedFieldType == '' ? null : (
+                                    <FormProvider {...form}>
+                                        <BusinessRulesForm />
+                                    </FormProvider>
+                                )}
                             </div>
                         </div>
-                        <div className="edit-rules__buttons">
-                            {ruleId ? (
-                                <Button type="button" className="delete-btn" unstyled onClick={handleDeleteRule}>
-                                    <Icon.Delete size={3} className="margin-right-2px" />
-                                    <span> Delete</span>
-                                </Button>
-                            ) : null}
-                            <div>
-                                <Button type="button" outline onClick={handleCancel}>
-                                    Cancel
-                                </Button>
-                                <Button type="submit" className="lbr" disabled={!form.formState.isValid}>
-                                    Add to Library
-                                </Button>
-                            </div>
+                    </div>
+                    <div className="edit-rules__buttons">
+                        {ruleId ? (
+                            <Button type="button" className="delete-btn" unstyled onClick={handleDeleteRule}>
+                                <Icon.Delete size={3} className="margin-right-2px" />
+                                <span> Delete</span>
+                            </Button>
+                        ) : null}
+                        <div>
+                            <Button type="button" outline onClick={handleCancel}>
+                                Cancel
+                            </Button>
+                            <Button type="submit" className="lbr" disabled={!form.formState.isValid}>
+                                Add to Library
+                            </Button>
                         </div>
-                    </Form>
-                </div>
-            </PageBuilder>
+                    </div>
+                </Form>
+            </div>
         </>
     );
 };

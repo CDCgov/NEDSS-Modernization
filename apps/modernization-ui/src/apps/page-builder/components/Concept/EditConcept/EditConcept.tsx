@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormGroup, Grid, Radio, ComboBox, ErrorMessage } from '@trussworks/react-uswds';
 import {
@@ -12,6 +12,7 @@ import { authorization } from 'authorization';
 import { Heading } from 'components/heading';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { externalizeDateTime } from 'date';
 
 interface CodeSystemOption {
     label: string;
@@ -24,14 +25,17 @@ type Props = {
     codeSystemOptionList: CodeSystemOption[];
     setShowForm: () => void;
     updateCallback: () => void;
+    setAlertMessage: (message: AlertMessage) => void;
 };
+type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number };
 
 export const EditConcept = ({
     valueset,
     selectedConcept,
     codeSystemOptionList,
     setShowForm,
-    updateCallback
+    updateCallback,
+    setAlertMessage
 }: Props) => {
     const [duration, setDuration] = useState(false);
     const init = {
@@ -69,7 +73,7 @@ export const EditConcept = ({
         return unique ? /^[a-zA-Z0-9_]*$/ : /^[a-zA-Z0-9\s?!,-_]*$/;
     };
 
-    const handleSaveConcept = (data: AddConceptRequest) => {
+    const handleSaveConcept = async (data: AddConceptRequest) => {
         const request: UpdateConceptRequest = {
             active: data.statusCode === AddConceptRequest.statusCode.A,
             conceptCode: data.code,
@@ -80,17 +84,34 @@ export const EditConcept = ({
                 preferredConceptName: data.messagingInfo.preferredConceptName
             },
             displayName: data.displayName,
-            effectiveToTime: data.effectiveToTime
+            effectiveToTime: duration ? externalizeDateTime(data.effectiveToTime) ?? undefined : undefined
         };
-        ValueSetControllerService.updateConceptUsingPut({
+        await ValueSetControllerService.updateConceptUsingPut({
             authorization: authorization(),
             valueSetCode: valueset.valueSetCode!,
             localCode: data.code,
             request
-        }).then((response: any) => {
-            updateCallback();
-            return response;
-        });
+        })
+            .then((response: any) => {
+                setAlertMessage({
+                    type: 'success',
+                    expiration: 3000,
+                    message: (
+                        <p>
+                            You've successfully edited <span>{data.displayName}</span>
+                        </p>
+                    )
+                });
+                updateCallback();
+                return response;
+            })
+            .catch((error: any) => {
+                setAlertMessage({
+                    type: 'error',
+                    expiration: 3000,
+                    message: <p>{error.message}</p>
+                });
+            });
     };
 
     return (

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, ReactNode } from 'react';
 import './Concept.scss';
 import { ConceptsContext } from '../../context/ConceptContext';
 import { useConceptAPI } from './useConceptAPI';
@@ -8,6 +8,7 @@ import { ValueSet, ValueSetControllerService } from '../../generated';
 import { authorization } from 'authorization';
 import { EditConcept } from './EditConcept/EditConcept';
 import { CreateConcept } from './CreateConcept/CreateConcept';
+import { AlertBanner } from '../AlertBanner/AlertBanner';
 
 type Props = {
     valueset: ValueSet;
@@ -25,6 +26,8 @@ export const Concept = ({ valueset }: Props) => {
     const [isShowFrom, setShowForm] = useState(false);
     const [codeSystemOptionList, setCodeSystemOptionList] = useState<CodeSystemOption[]>([]);
     const [editMode, setEditMode] = useState(false);
+    const [alertMessage, setAlertMessage] = useState<AlertMessage | undefined>(undefined);
+    type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number };
 
     const fetchContent = async () => {
         try {
@@ -45,6 +48,10 @@ export const Concept = ({ valueset }: Props) => {
     useEffect(() => {
         selectedConcept.status && setShowForm(!isShowFrom);
     }, [selectedConcept]);
+
+    useEffect(() => {
+        setTimeout(() => setAlertMessage(undefined), 3000);
+    }, [alertMessage]);
 
     const updateCallback = () => {
         fetchContent();
@@ -87,6 +94,11 @@ export const Concept = ({ valueset }: Props) => {
             <h3 className="main-header-title" data-testid="header-title">
                 Add value set concept
             </h3>
+            {alertMessage && (
+                <AlertBanner type={alertMessage.type} expiration={alertMessage.expiration}>
+                    {alertMessage.message}
+                </AlertBanner>
+            )}
             {isShowFrom ? (
                 editMode ? (
                     <EditConcept
@@ -95,6 +107,7 @@ export const Concept = ({ valueset }: Props) => {
                         codeSystemOptionList={codeSystemOptionList}
                         setShowForm={() => setShowForm(false)}
                         updateCallback={updateCallback}
+                        setAlertMessage={setAlertMessage}
                     />
                 ) : (
                     <CreateConcept
@@ -102,6 +115,7 @@ export const Concept = ({ valueset }: Props) => {
                         codeSystemOptionList={codeSystemOptionList}
                         setShowForm={() => setShowForm(false)}
                         updateCallback={updateCallback}
+                        setAlertMessage={setAlertMessage}
                     />
                 )
             ) : (

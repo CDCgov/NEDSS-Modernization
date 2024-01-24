@@ -15,6 +15,10 @@ import type { Page_Question_ } from '../models/Page_Question_';
 import type { Question } from '../models/Question';
 import type { QuestionStatusRequest } from '../models/QuestionStatusRequest';
 import type { TextQuestion } from '../models/TextQuestion';
+import type { UpdateCodedQuestionRequest } from '../models/UpdateCodedQuestionRequest';
+import type { UpdateDateQuestionRequest } from '../models/UpdateDateQuestionRequest';
+import type { UpdateNumericQuestionRequest } from '../models/UpdateNumericQuestionRequest';
+import type { UpdateTextQuestionRequest } from '../models/UpdateTextQuestionRequest';
 import type { UpdateQuestionRequest } from '../models/UpdateQuestionRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -89,6 +93,45 @@ export class QuestionControllerService {
     }
 
     /**
+     * updateCodedQuestion
+     * @returns Question OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static updateCodedQuestionUsingPut({
+        authorization,
+        id,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+        /**
+         * request
+         */
+        request: UpdateCodedQuestionRequest,
+    }): CancelablePromise<Question | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/page-builder/api/v1/questions/coded/{id}',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
      * createDateQuestion
      * @returns DateQuestion Created
      * @throws ApiError
@@ -106,6 +149,45 @@ export class QuestionControllerService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/questions/date',
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * updateDateQuestion
+     * @returns Question OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static updateDateQuestionUsingPut({
+        authorization,
+        id,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+        /**
+         * request
+         */
+        request: UpdateDateQuestionRequest,
+    }): CancelablePromise<Question | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/page-builder/api/v1/questions/date/{id}',
+            path: {
+                'id': id,
+            },
             headers: {
                 'Authorization': authorization,
             },
@@ -171,6 +253,47 @@ export class QuestionControllerService {
             },
         });
     }
+
+    /**
+     * updateNumericQuestion
+     * @returns Question OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static updateNumericQuestionUsingPut({
+        authorization,
+        id,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+        /**
+         * request
+         */
+        request: UpdateNumericQuestionRequest,
+    }): CancelablePromise<Question | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/page-builder/api/v1/questions/numeric/{id}',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+
 
     /**
      * findQuestions
@@ -300,6 +423,44 @@ export class QuestionControllerService {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/questions/{id}',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
+     * updateTextQuestion
+     * @returns Question OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static updateTextQuestionUsingPut({
+         authorization,
+         id,
+         request,
+     }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+        /**
+         * request
+         */
+        request: UpdateTextQuestionRequest,
+    }): CancelablePromise<Question | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/page-builder/api/v1/questions/text/{id}',
             path: {
                 'id': id,
             },

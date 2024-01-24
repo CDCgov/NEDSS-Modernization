@@ -1,36 +1,33 @@
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { AddSection } from './AddSection';
 import { ManageSection } from './ManageSection';
+import { RefObject, useEffect, useState } from 'react';
 import './ManageSectionModal.scss';
-import { PagesResponse, PagesSection, PagesTab } from 'apps/page-builder/generated';
-import { RefObject, useState } from 'react';
+import { usePageManagement } from '../../../usePageManagement';
+import { PagesTab } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { useAlert } from 'alert';
 
 type ManageSectionModalProps = {
-    page: PagesResponse;
-    tab: PagesTab;
-    pageId: number;
     refresh?: () => void;
     addSecModalRef: RefObject<ModalRef>;
     manageSecModalRef: RefObject<ModalRef>;
-    handleDelete: (section: PagesSection) => void;
-    reset: () => void;
+};
+export type AlertInLineProps = {
+    type: 'success' | 'error' | 'warning' | 'info';
+    message: string;
+    onClose?: () => void;
 };
 
-export const ManageSectionModal = ({
-    page,
-    tab,
-    refresh,
-    addSecModalRef,
-    manageSecModalRef,
-    pageId,
-    handleDelete,
-    reset
-}: ManageSectionModalProps) => {
+export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef }: ManageSectionModalProps) => {
     const manageSectionModalRef = manageSecModalRef;
     const addSectionModalRef = addSecModalRef;
-    const [selectedForEdit, setSelectedForEdit] = useState<PagesSection | undefined>(undefined);
-    const [selectedForDelete, setSelectedForDelete] = useState<PagesSection | undefined>(undefined);
+
+    const { showAlert } = useAlert();
+
+    const [alert, setAlert] = useState<AlertInLineProps | undefined>(undefined);
+
+    const { page, selected } = usePageManagement();
 
     const onCloseManageSectionModal = () => {
         manageSectionModalRef.current?.toggleModal(undefined, false);
@@ -40,6 +37,11 @@ export const ManageSectionModal = ({
         addSectionModalRef.current?.toggleModal(undefined, false);
     };
 
+    useEffect(() => {
+        if (alert !== undefined) {
+            setTimeout(() => setAlert(undefined), 5000);
+        }
+    }, [alert]);
     const onReorderSuccess = () => {
         refresh?.();
     };
@@ -54,35 +56,49 @@ export const ManageSectionModal = ({
                 isLarge>
                 <DragDropProvider
                     pageData={page}
-                    currentTab={page!.tabs!.findIndex((x: PagesTab) => x.name === tab.name)}
+                    currentTab={page.tabs?.findIndex((x: PagesTab) => x.name === selected?.name) ?? 0}
                     successCallBack={onReorderSuccess}>
                     <ManageSection
-                        pageId={pageId}
-                        tab={tab}
-                        key={tab?.sections.length}
+                        pageId={page.id}
+                        alert={alert}
+                        onResetAlert={() => setAlert(undefined)}
+                        tab={selected}
+                        key={selected?.sections.length}
                         onContentChange={() => {
                             refresh?.();
                         }}
+                        onUpdateSection={() => {
+                            setAlert({ message: `Your changes have been saved successfully.`, type: `success` });
+                        }}
+                        onDeleteSection={(section: string) => {
+                            setAlert({ message: `You've successfully deleted "${section}"`, type: `success` });
+                        }}
+                        onAddSection={(section: string) => {
+                            setAlert({ message: `You have successfully added section "${section}"`, type: `success` });
+                        }}
+                        onHiddenSection={() => {
+                            setAlert({ message: `Section hidden successfully`, type: `success` });
+                        }}
+                        onUnhiddenSection={() => {
+                            setAlert({ message: `Section unhidden successfully`, type: `success` });
+                        }}
                         onCancel={onCloseManageSectionModal}
-                        setSelectedForEdit={setSelectedForEdit}
-                        selectedForEdit={selectedForEdit}
-                        setSelectedForDelete={setSelectedForDelete}
-                        selectedForDelete={selectedForDelete}
-                        handleDelete={handleDelete}
-                        reset={reset}
                     />
                 </DragDropProvider>
             </Modal>
             <Modal id={'add-section-modal'} ref={addSectionModalRef} className={'add-section-modal'} isLarge>
                 <AddSection
-                    pageId={pageId}
-                    tabId={tab.id}
-                    onAddSectionCreated={() => {
+                    pageId={page.id}
+                    tabId={selected?.id}
+                    onSectionTouched={() => {
                         refresh?.();
                         closeAddSection?.();
                     }}
+                    onAddSection={(section: string) => {
+                        showAlert({ message: `You have successfully added section "${section}"`, type: `success` });
+                    }}
                     onCancel={closeAddSection}
-                    selectedForEdit={selectedForEdit}
+                    isEdit={false}
                 />
             </Modal>
         </>
