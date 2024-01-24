@@ -13,6 +13,8 @@ import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
+import { useAltX } from 'useAltX';
+import { focusedTarget } from 'utils';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -28,6 +30,14 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
             form.reset({ ...personFilter }, { keepDefaultValues: true });
         }
     }, [personFilter]);
+
+    useEffect(() => {
+        skipTo('lastName');
+    }, []);
+
+    useAltX(() => {
+        focusedTarget('lastName');
+    });
 
     useEffect(() => {}, [form.formState.errors]);
 

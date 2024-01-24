@@ -1,10 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import './SkipLink.scss';
-import { focusedTarget } from 'utils';
 
 interface SkipLinkContextType {
     skipTo: (id: string) => void;
-    previousTarget: (id: string) => void;
     currentFocusTarget: string;
 }
 
@@ -26,30 +24,14 @@ interface SkipLinkProviderProps {
 
 export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {
     const [currentFocusTarget, setCurrentFocusTarget] = useState('');
-    const [previousFocusTarget, setPreviousFocusTarget] = useState('');
 
     const skipTo = (id: string) => {
         setCurrentFocusTarget(id);
     };
 
-    const previousTarget = (id: string) => {
-        setPreviousFocusTarget(id);
-    };
-
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.altKey && event.keyCode === 88) {
-                event.preventDefault();
-                focusedTarget(previousFocusTarget);
-            }
-        };
-        window.addEventListener('keydown', handleKeyDown);
-    }, [previousFocusTarget]);
-
     // Setting up the id to pass it to the anchor tag
     const contextValue: SkipLinkContextType = {
         skipTo,
-        previousTarget,
         currentFocusTarget
     };
 
