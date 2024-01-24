@@ -44,9 +44,9 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
         setTimeout(() => setMessage(undefined), 5000);
     }, [message]);
 
-    const handleAdd = async () => {
+    const handleAdd = () => {
         if (newTab && onAddSuccess) {
-            await addTab(pageId, { name: newTab.name!, visible: newTab.visible })
+            addTab(pageId, { name: newTab.name!, visible: newTab.visible })
                 .catch((e) => {
                     console.error(e);
                 })
@@ -68,9 +68,9 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
         }
     };
 
-    const handleSave = async () => {
+    const handleSave = () => {
         if (newTab && selectedForEdit && onAddSuccess) {
-            await updateTab(pageId, { name: newTab.name ?? '', visible: newTab?.visible }, selectedForEdit.id)
+            updateTab(pageId, { name: newTab.name ?? '', visible: newTab?.visible }, selectedForEdit.id)
                 .catch((e) => {
                     console.error(e);
                 })
@@ -92,7 +92,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
         }
     };
 
-    const handleDelete = async () => {
+    const handleDelete = () => {
         if (selectedForDelete && onAddSuccess) {
             if (selectedForDelete.sections.length > 0) {
                 setMessage({
@@ -107,7 +107,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                 });
                 setSelectedForDelete(undefined);
             } else {
-                await deleteTab(pageId, selectedForDelete.id)
+                deleteTab(pageId, selectedForDelete.id)
                     .catch((e) => {
                         console.error(e);
                     })
