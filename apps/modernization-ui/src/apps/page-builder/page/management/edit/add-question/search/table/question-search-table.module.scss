@@ -1,0 +1,76 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.searchBar {
+    display: flex;
+    width: 100%;
+    padding: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+    border-radius: 0.3125rem;
+    background: colors.$base-lightest;
+
+    .clearSearchButton {
+        padding: 0;
+        margin: 0;
+    }
+
+    .searchText {
+        display: flex;
+        padding: 0.25rem 0.5rem;
+        align-items: center;
+        gap: 0.625rem;
+        border-radius: 0.125rem;
+        background: colors.$primary;
+        color: colors.$base-white;
+        line-height: normal;
+    }
+
+    svg {
+        cursor: pointer;
+    }
+
+    search {
+        width: 23.75rem;
+    }
+
+    div {
+        display: flex;
+
+        .createNewButton {
+            background-color: colors.$base-white;
+            line-height: 1rem;
+            margin-right: 0;
+        }
+    }
+}
+
+.tableContainer {
+    position: relative;
+    margin-top: 0.88rem;
+    margin-bottom: 0.25rem;
+    @extend %thin;
+    @include borders.rounded();
+
+    .loadingIndicator {
+        div {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .expandButton {
+        cursor: pointer;
+    }
+
+    thead tr th {
+        &:nth-of-type(2) {
+            width: 6rem;
+        }
+        &:nth-of-type(6) {
+            width: 6rem;
+        }
+    }
+}

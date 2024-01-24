@@ -14,21 +14,13 @@ type ManageSubsectionProps = {
     alert?: AlertInLineProps;
     onResetAlert?: () => void;
     section: PagesSection;
-    refresh?: () => void;
     onCancel?: () => void;
     onSetAlert?: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
 };
 
-export const ManageSubsection = ({
-    alert,
-    onResetAlert,
-    section,
-    onSetAlert,
-    onCancel,
-    refresh
-}: ManageSubsectionProps) => {
+export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onCancel }: ManageSubsectionProps) => {
     const [subsectionState, setSubsectionState] = useState<'manage' | 'add' | 'edit'>('manage');
-    const { page } = usePageManagement();
+    const { page, refresh } = usePageManagement();
     const [onAction, setOnAction] = useState<boolean>(false);
 
     const handleUpdateState = (state: 'manage' | 'add' | 'edit') => {
@@ -58,7 +50,7 @@ export const ManageSubsection = ({
                     onSubSectionTouched={(section: string) => {
                         onSetAlert?.(`You have successfully added subsection "${section}"`, `success`);
                         handleUpdateState('manage');
-                        refresh?.();
+                        refresh();
                     }}
                 />
             )}

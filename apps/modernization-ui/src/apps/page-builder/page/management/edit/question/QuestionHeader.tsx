@@ -1,13 +1,11 @@
-import styles from './question-header.module.scss';
 import { Icon } from '@trussworks/react-uswds';
-import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
-import { Heading } from 'components/heading';
-import { PagesQuestion } from 'apps/page-builder/generated';
-import classNames from 'classnames';
 import DeleteQuestion from 'apps/page-builder/components/DeleteQuestion/DeleteQuestion';
+import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
+import { PagesQuestion } from 'apps/page-builder/generated';
+import { Heading } from 'components/heading';
+import styles from './question-header.module.scss';
 
 type Props = {
-    visible?: boolean;
     question: PagesQuestion;
     onRequiredChange?: () => void;
     onEditQuestion?: () => void;
@@ -20,13 +18,7 @@ const lineSeparatorId = 1012;
 const originalElecDocId = 1036;
 const readOnlyPartId = 1030;
 
-export const QuestionHeader = ({
-    question,
-    onRequiredChange,
-    onEditQuestion,
-    onDeleteQuestion,
-    visible = true
-}: Props) => {
+export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onDeleteQuestion }: Props) => {
     const getHeadingText = (displayComponent: number | undefined) => {
         switch (displayComponent) {
             case hyperlinkId:
@@ -44,7 +36,7 @@ export const QuestionHeader = ({
         }
     };
     return (
-        <div className={classNames(styles.header, { [styles.visible]: visible })}>
+        <div className={styles.header}>
             <div className={styles.typeDisplay}>
                 {question.isStandard && <div className={styles.standardIndicator}>S</div>}
                 <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>

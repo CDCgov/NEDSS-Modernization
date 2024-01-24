@@ -5,16 +5,18 @@ import styles from './page-content.module.scss';
 import { EditStaticElement } from '../staticelement/EditStaticElement';
 import { Icon, ModalRef } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
-import { AddQuestionModal } from '../../../../components/Subsection/AddQuestionModal/AddQuestionModal';
 import { ValuesetLibrary } from '../../../../pages/ValuesetLibrary/ValuesetLibrary';
 import { AddValueset } from '../../../../components/AddValueset/AddValueset';
 import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
 import { Heading } from '../../../../../../components/heading';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { AddQuestionModal } from '../add-question/modal/AddQuestionModal';
+import { usePageManagement } from '../../usePageManagement';
+import { useAlert } from 'alert';
+import { useAddQuestionsToPage } from 'apps/page-builder/hooks/api/useAddQuestionsToPage';
 
 type Props = {
     tab: PagesTab;
-    refresh?: () => void;
     handleManageSection?: () => void;
     handleAddSection?: () => void;
 };
@@ -29,14 +31,23 @@ const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, originalE
 
 const questionTypes = [1001, 1006, 1007, 1008, 1009, 1013, 1017, 1019, 1024, 1025, 1026, 1027, 1028, 1029, 1031, 1032];
 
-export const PageContent = ({ tab, refresh, handleAddSection, handleManageSection }: Props) => {
-    const editStaticElementRef = useRef<ModalRef>(null);
+export const PageContent = ({ tab, handleAddSection, handleManageSection }: Props) => {
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
-    const [subsectionId, setSubsectionId] = useState(0);
+    const [subsectionId, setSubsectionId] = useState<number | undefined>(undefined);
+    const { error, response, add } = useAddQuestionsToPage();
+    const { showAlert } = useAlert();
+    const { page, refresh } = usePageManagement();
+
+    const editStaticElementRef = useRef<ModalRef>(null);
     const addQuestionModalRef = useRef<ModalRef>(null);
     const addValueModalRef = useRef<ModalRef>(null);
     const createValueModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
+
+    const handleAddQuestion = (subsection: number) => {
+        setSubsectionId(subsection);
+        addQuestionModalRef.current?.toggleModal();
+    };
 
     const onCloseModal = () => {
         if (staticTypes.includes(currentEditQuestion?.displayComponent!)) {
@@ -59,15 +70,35 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
         }
     }, [currentEditQuestion]);
 
+    const handleAddQuestionClose = (questions: number[]) => {
+        if (questions.length > 0 && subsectionId && page.id) {
+            add(questions, subsectionId, page.id);
+        }
+    };
+
+    useEffect(() => {
+        if (response) {
+            showAlert({
+                type: 'success',
+                message: `Successfully added questions to page.`
+            });
+            refresh();
+        }
+        if (error) {
+            showAlert({
+                type: 'error',
+                message: `Failed to add question(s) to page.`
+            });
+        }
+    }, [response, error]);
+
     return (
         <div className={styles.pageContent}>
             <div className={styles.invisible} />
             <Sections
                 sections={tab.sections ?? []}
                 onEditQuestion={handleEditQuestion}
-                onAddQuestion={setSubsectionId}
-                addQuestionModalRef={addQuestionModalRef}
-                refresh={refresh}
+                onAddQuestion={handleAddQuestion}
             />
             <PageSideMenu onAddSection={() => handleAddSection?.()} onManageSection={() => handleManageSection?.()} />
             <ModalComponent
@@ -75,18 +106,15 @@ export const PageContent = ({ tab, refresh, handleAddSection, handleManageSectio
                 modalHeading={'Edit static elements'}
                 modalBody={
                     currentEditQuestion !== undefined && (
-                        <EditStaticElement
-                            question={currentEditQuestion!}
-                            onCloseModal={onCloseModal}
-                            refresh={refresh}
-                        />
+                        <EditStaticElement question={currentEditQuestion} onCloseModal={onCloseModal} />
                     )
                 }
             />
             <AddQuestionModal
-                subsectionId={subsectionId}
-                modalRef={addQuestionModalRef}
-                addValueModalRef={addValueModalRef}
+                pageId={page.id}
+                onClose={handleAddQuestionClose}
+                modal={addQuestionModalRef}
+                valueSetModalRef={addValueModalRef}
             />
             <ModalComponent
                 modalRef={editQuestionModalRef}

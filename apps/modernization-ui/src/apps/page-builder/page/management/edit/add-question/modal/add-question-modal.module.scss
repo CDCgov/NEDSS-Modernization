@@ -1,0 +1,16 @@
+@use 'styles/colors' as colors;
+
+.modal {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .createQuestionHeader {
+        display: flex;
+        align-items: center;
+        svg {
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+    }
+}

@@ -1,10 +1,9 @@
-import { AlertProvider } from "alert";
-import { PagesQuestion, PagesResponse } from "apps/page-builder/generated";
-import { BrowserRouter } from "react-router-dom";
-import { PageManagementProvider } from "../../usePageManagement";
-import { EditStaticElement } from "./EditStaticElement";
-import { render } from "@testing-library/react";
-
+import { AlertProvider } from 'alert';
+import { PagesQuestion, PagesResponse } from 'apps/page-builder/generated';
+import { BrowserRouter } from 'react-router-dom';
+import { PageManagementProvider } from '../../usePageManagement';
+import { EditStaticElement } from './EditStaticElement';
+import { render } from '@testing-library/react';
 
 const page: PagesResponse = {
     id: 12039120,
@@ -14,40 +13,44 @@ const page: PagesResponse = {
 
 const hyperlinkElement: PagesQuestion = {
     id: 3,
-    name: "hyperlink label",
-    defaultValue: "google.com",
+    name: 'hyperlink label',
+    defaultValue: 'google.com',
     order: 3,
-    adminComments: "admin comments",
+    adminComments: 'admin comments',
     displayComponent: 1003
-}
+};
 
 const commentsElement: PagesQuestion = {
     id: 4,
-    name: "testing comments element",
+    name: 'testing comments element',
     order: 4,
-    adminComments: "admin comments",
+    adminComments: 'admin comments',
     displayComponent: 1014
-}
+};
 
 const lineSeparatorElement: PagesQuestion = {
     id: 4,
     order: 4,
-    adminComments: "admin comments",
+    adminComments: 'admin comments',
     displayComponent: 1012,
-    name: ""
-}
+    name: ''
+};
 
 const fetch = () => {
     jest.fn();
-}
+};
+
+const refresh = () => {
+    jest.fn();
+};
 
 describe('When modal loads with hyperlink element', () => {
     it('the save changes button should be disabled', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
-                        <EditStaticElement question={hyperlinkElement}/>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                        <EditStaticElement question={hyperlinkElement} />
                     </PageManagementProvider>
                 </AlertProvider>
             </BrowserRouter>
@@ -57,11 +60,11 @@ describe('When modal loads with hyperlink element', () => {
     });
 
     it('the input fields should be populated with defaults', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
-                        <EditStaticElement question={hyperlinkElement}/>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                        <EditStaticElement question={hyperlinkElement} />
                     </PageManagementProvider>
                 </AlertProvider>
             </BrowserRouter>
@@ -73,11 +76,11 @@ describe('When modal loads with hyperlink element', () => {
     });
 
     it('static type select should be disables', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
-                        <EditStaticElement question={hyperlinkElement}/>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                        <EditStaticElement question={hyperlinkElement} />
                     </PageManagementProvider>
                 </AlertProvider>
             </BrowserRouter>
@@ -89,11 +92,11 @@ describe('When modal loads with hyperlink element', () => {
 
 describe('When modal loads with comments element', () => {
     it('the save changes button should be disabled', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
-                        <EditStaticElement question={commentsElement}/>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                        <EditStaticElement question={commentsElement} />
                     </PageManagementProvider>
                 </AlertProvider>
             </BrowserRouter>
@@ -103,11 +106,11 @@ describe('When modal loads with comments element', () => {
     });
 
     it('the input fields should be populated with defaults', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
-                        <EditStaticElement question={commentsElement}/>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                        <EditStaticElement question={commentsElement} />
                     </PageManagementProvider>
                 </AlertProvider>
             </BrowserRouter>
@@ -120,11 +123,11 @@ describe('When modal loads with comments element', () => {
 
 describe('When modal loads with line separator element', () => {
     it('the save changes button should be disabled', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
-                        <EditStaticElement question={lineSeparatorElement}/>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                        <EditStaticElement question={lineSeparatorElement} />
                     </PageManagementProvider>
                 </AlertProvider>
             </BrowserRouter>
@@ -134,11 +137,11 @@ describe('When modal loads with line separator element', () => {
     });
 
     it('the input fields should be populated with defaults', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch}>
-                        <EditStaticElement question={lineSeparatorElement}/>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                        <EditStaticElement question={lineSeparatorElement} />
                     </PageManagementProvider>
                 </AlertProvider>
             </BrowserRouter>

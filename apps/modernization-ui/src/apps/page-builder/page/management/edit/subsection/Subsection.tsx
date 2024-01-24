@@ -1,23 +1,21 @@
+import { useAlert } from 'alert';
 import {
-    PageStaticControllerService,
-    PagesSubSection,
     PageQuestionControllerService,
-    PagesQuestion
+    PageStaticControllerService,
+    PagesQuestion,
+    PagesSubSection
 } from 'apps/page-builder/generated';
+import { authorization } from 'authorization/authorization';
+import { useState } from 'react';
+import { usePageManagement } from '../../usePageManagement';
+import { Question } from '../question/Question';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
-import { RefObject, useState } from 'react';
-import { Question } from '../question/Question';
-import { usePageManagement } from '../../usePageManagement';
-import { authorization } from 'authorization/authorization';
-import { useAlert } from 'alert';
-import { ModalRef } from '@trussworks/react-uswds';
 
 type Props = {
     subsection: PagesSubSection;
     onEditQuestion: (question: PagesQuestion) => void;
     onAddQuestion: () => void;
-    addQuestionModalRef: RefObject<ModalRef>;
     onDeleteSubsection: (subsection: PagesSubSection) => void;
 };
 
@@ -29,15 +27,9 @@ const originalElecDoc = 1036;
 
 const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, readOnlyComments, originalElecDoc];
 
-export const Subsection = ({
-    subsection,
-    onAddQuestion,
-    addQuestionModalRef,
-    onEditQuestion,
-    onDeleteSubsection
-}: Props) => {
+export const Subsection = ({ subsection, onAddQuestion, onEditQuestion, onDeleteSubsection }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
-    const { page, fetch } = usePageManagement();
+    const { page, refresh } = usePageManagement();
     const { showAlert } = useAlert();
 
     const handleAlert = (message: string) => {
@@ -56,7 +48,7 @@ export const Subsection = ({
                 request: { componentId: id }
             }).then(() => {
                 handleAlert(`Element deleted successfully`);
-                fetch(page.id);
+                refresh();
             });
         } else {
             PageQuestionControllerService.deleteQuestionUsingDelete({
@@ -64,7 +56,7 @@ export const Subsection = ({
                 page: page.id,
                 questionId: Number(id)
             }).then(() => {
-                fetch(page.id);
+                refresh();
                 handleAlert(`Question deleted successfully`);
             });
         }
@@ -81,7 +73,6 @@ export const Subsection = ({
                 id={subsection.id}
                 questionCount={subsection.questions?.length ?? 0}
                 onAddQuestion={onAddQuestion}
-                addQuestionModalRef={addQuestionModalRef}
                 onExpandedChange={handleExpandedChange}
                 isExpanded={isExpanded}
                 onDeleteSubsection={() => onDeleteSubsection(subsection)}

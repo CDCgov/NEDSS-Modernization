@@ -41,7 +41,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
         mode: 'onBlur'
     });
     const watch = useWatch({ control: form.control });
-    const { page, fetch } = usePageManagement();
+    const { page, refresh } = usePageManagement();
     const { showAlert } = useAlert();
 
     const handleSubmit = () => {
@@ -63,7 +63,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 }).then(() => {
                     form.reset();
                     handleAlert(`The element ${(data as AddHyperlink).label} has been successfully added.`);
-                    fetch(page.id);
+                    refresh();
                 });
                 break;
             }
@@ -76,7 +76,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 }).then(() => {
                     form.reset();
                     handleAlert(`The comment element has been successfully added.`);
-                    fetch(page.id);
+                    refresh();
                 });
                 break;
             }
@@ -89,7 +89,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 }).then(() => {
                     form.reset();
                     handleAlert(`The line separator element has been successfully added.`);
-                    fetch(page.id);
+                    refresh();
                 });
                 break;
             }
@@ -102,7 +102,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 }).then(() => {
                     form.reset();
                     handleAlert(`The electronic document list has been successfully added.`);
-                    fetch(page.id);
+                    refresh();
                 });
                 break;
             }
@@ -115,7 +115,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 }).then(() => {
                     form.reset();
                     handleAlert(`The participant list has been successfully added.`);
-                    fetch(page.id);
+                    refresh();
                 });
                 break;
             }
