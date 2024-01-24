@@ -29,6 +29,12 @@ public class TemplateFinder {
         .map(this::toTemplate).toList();
   }
 
+  public List<Template> findAllTemplates(String type) {
+    return templateRepository.findAllByTemplateTypeAndBusObjType(TEMPLATE_TYPE, type,Sort.by("templateNm"))
+        .stream()
+        .map(this::toTemplate).toList();
+  }
+
   private Template toTemplate(WaTemplate aWaTemplate) {
     return new Template(
         aWaTemplate.getId(),

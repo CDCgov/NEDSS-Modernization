@@ -1,6 +1,4 @@
 package gov.cdc.nbs.questionbank.template;
-
-
 import gov.cdc.nbs.questionbank.template.response.Template;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,9 +31,9 @@ public class TemplateController {
     this.templateImporter = templateImporter;
   }
 
-  @GetMapping
-  public List<Template> findAllTemplates() {
-    return finder.findAllTemplates();
+  @GetMapping("{type}/")
+  public List<Template> findAllTemplates(@RequestParam(required = false) String type) {
+    return type != null ? finder.findAllTemplates(type) : finder.findAllTemplates();
   }
 
   @Operation(
