@@ -168,4 +168,15 @@ describe('Add New Page', () => {
         expect(getByText('Page description')).toBeInTheDocument();
         expect(getByText('Data mart name')).toBeInTheDocument();
     });
+
+    it('should have aria label for heading', async () => {
+        const { getByText } = render(
+            <MemoryRouter>
+                <AlertProvider>
+                    <AddNewPage />
+                </AlertProvider>
+            </MemoryRouter>
+        );
+        expect(getByText('Create new page')).toHaveAttribute('aria-label', 'Create new page');
+    });
 });
