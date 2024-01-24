@@ -78,10 +78,6 @@ export const AdvancedSearch = () => {
     const [resultTotal, setResultTotal] = useState<number>(0);
     const { skipTo } = useSkipLink();
 
-    useEffect(() => {
-        skipTo('lastName');
-    }, []);
-
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
     const [
         findPatients,
