@@ -30,9 +30,7 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
     const [resetTable, setResetTable] = useState<boolean>(false);
 
     useEffect(() => {
-        if (pageId) {
-            search({ pageId });
-        }
+        search({ pageId });
     }, [pageId]);
 
     useEffect(() => {
