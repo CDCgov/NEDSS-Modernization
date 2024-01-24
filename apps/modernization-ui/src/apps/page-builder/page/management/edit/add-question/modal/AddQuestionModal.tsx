@@ -34,7 +34,7 @@ export const AddQuestionModal = ({ pageId, modal, onClose, valueSetModalRef }: P
             <div className={styles.modal}>
                 {state === 'search' ? (
                     <QuestionSearch
-                        onCancel={() => handleClose([])}
+                        onCancel={handleClose}
                         onAccept={handleClose}
                         onCreateNew={() => setState('add')}
                         pageId={pageId}

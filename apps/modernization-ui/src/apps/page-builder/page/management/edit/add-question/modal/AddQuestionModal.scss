@@ -3,7 +3,8 @@
     min-width: 85%;
     overflow: hidden;
     .usa-modal__content {
-        height: 100%;
+        height: 85vh;
+        overflow: hidden;
         .usa-modal__main {
             height: 100%;
         }
