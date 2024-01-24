@@ -26,12 +26,15 @@
             margin: 0;
         }
         .usa-button {
-            color: colors.$base-darkest;
+            color: colors.$base-white;
             &:last-child {
                 position: absolute;
                 top: 1rem;
                 right: 1rem;
             }
+        }
+        .usa-button--unstyled {
+            color: colors.$base-darkest;
         }
     }
     &.tall {

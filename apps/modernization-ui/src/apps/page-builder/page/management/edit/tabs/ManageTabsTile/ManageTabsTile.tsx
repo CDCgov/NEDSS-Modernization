@@ -10,6 +10,7 @@ type Props = {
     setSelectedForEdit: (tab: PagesTab, index: number) => void;
     setSelectedForDelete: (tab: PagesTab | undefined) => void;
     selectedForDelete: PagesTab | undefined;
+    deleteTab: () => void;
     reset: () => void;
 };
 
@@ -19,6 +20,7 @@ export const ManageTabsTile = ({
     setSelectedForEdit,
     setSelectedForDelete,
     selectedForDelete,
+    deleteTab,
     reset
 }: Props) => {
     return (
@@ -28,16 +30,21 @@ export const ManageTabsTile = ({
                     className={`${styles.tile} ${tab === selectedForDelete ? styles.delete : ''}`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
-                    <div className={styles.handle} {...provided.dragHandleProps}>
-                        <IconComponent name="drag" />
-                        <p>Delete this tab?</p>
+                    <div
+                        className={`${styles.handle} ${selectedForDelete ? styles.inactive : ''}`}
+                        {...provided.dragHandleProps}>
+                        {selectedForDelete ? (
+                            <IconComponent name="drag" color="inactive" />
+                        ) : (
+                            <IconComponent name="drag" />
+                        )}
                     </div>
                     <div className={styles.label} data-testid={'label'}>
                         <IconComponent name="folder" />
                         {tab.name}&nbsp;
                         {tab.sections && tab.sections.length ? '(' + tab.sections!.length + ')' : '(0)'}
                     </div>
-                    <div className={`${styles.buttons} ${tab.sections?.length === 0 ? styles.locked : ''}`}>
+                    <div className={styles.buttons}>
                         <Icon.Edit
                             onClick={() => {
                                 reset();
@@ -47,16 +54,13 @@ export const ManageTabsTile = ({
                         />
                         <Icon.Delete
                             onClick={() => {
-                                tab.sections?.length !== 0 ? (reset(), setSelectedForDelete(tab)) : null;
+                                reset(), setSelectedForDelete(tab);
                             }}
                             size={3}
                         />
                         {tab.visible ? <Icon.Visibility size={3} /> : <Icon.VisibilityOff size={3} />}
-                        <div className={styles.deleteb}>
-                            <p onClick={() => setSelectedForDelete(undefined)}>Cancel</p>
-                            <p onClick={selectedForDelete ? () => setSelectedForDelete(selectedForDelete!) : undefined}>
-                                Delete
-                            </p>
+                        <div className={styles.delete_buttons}>
+                            <p onClick={deleteTab}>Yes, delete</p> | <p onClick={() => reset()}>Cancel</p>
                         </div>
                     </div>
                 </div>

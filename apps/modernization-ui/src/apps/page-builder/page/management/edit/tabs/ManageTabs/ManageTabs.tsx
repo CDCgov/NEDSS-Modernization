@@ -3,7 +3,7 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { AddEditTab } from 'apps/page-builder/page/management/edit/tabs/AddEditTab/AddEditTab';
-import { addTab, updateTab } from 'apps/page-builder/services/tabsAPI';
+import { addTab, updateTab, deleteTab } from 'apps/page-builder/services/tabsAPI';
 import { PagesTab } from 'apps/page-builder/generated';
 import { Heading } from 'components/heading';
 import styles from './manageTabs.module.scss';
@@ -26,7 +26,11 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
     const [newTab, setNewTab] = useState<TabEntry | undefined>(undefined);
 
     const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
-    type AlertMessage = { type: 'warning' | 'success'; message: string | ReactNode; expiration: number };
+    type AlertMessage = {
+        type: 'warning' | 'success' | 'error';
+        message: string | ReactNode;
+        expiration: number | undefined;
+    };
 
     type TabEntry = { name: string | undefined; visible: boolean; order: number };
 
@@ -47,9 +51,6 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                     console.error(e);
                 })
                 .then(() => {
-                    onAddSuccess();
-                })
-                .then(() => {
                     setMessage({
                         type: 'success',
                         expiration: 3000,
@@ -59,6 +60,9 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                             </p>
                         )
                     });
+                })
+                .then(() => {
+                    onAddSuccess();
                 })
                 .then(() => resetEditPageTabs());
         }
@@ -85,6 +89,44 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                     onAddSuccess();
                 })
                 .then(() => resetEditPageTabs());
+        }
+    };
+
+    const handleDelete = async () => {
+        if (selectedForDelete && onAddSuccess) {
+            if (selectedForDelete.sections.length > 0) {
+                setMessage({
+                    type: 'error',
+                    expiration: 3000,
+                    message: (
+                        <p>
+                            This tab cannot be deleted because there are other elements inside it. Please remove or
+                            delete all child elements by managing the content at the subsection/section/question level.
+                        </p>
+                    )
+                });
+                setSelectedForDelete(undefined);
+            } else {
+                await deleteTab(pageId, selectedForDelete.id)
+                    .catch((e) => {
+                        console.error(e);
+                    })
+                    .then(() => {
+                        setMessage({
+                            type: 'success',
+                            expiration: 3000,
+                            message: (
+                                <p>
+                                    You've successfully deleted <span>{selectedForDelete.name}!</span>
+                                </p>
+                            )
+                        });
+                    })
+                    .then(() => {
+                        onAddSuccess();
+                    })
+                    .then(() => resetEditPageTabs());
+            }
         }
     };
 
@@ -137,10 +179,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                                 onDragUpdate={handleDragUpdate}>
                                 <Droppable droppableId="all-tabs" type="tabs">
                                     {(provided) => (
-                                        <div
-                                            className="manage-tabs"
-                                            {...provided.droppableProps}
-                                            ref={provided.innerRef}>
+                                        <div {...provided.droppableProps} ref={provided.innerRef}>
                                             {tabs.map((tab, i) => {
                                                 return (
                                                     <ManageTabsTile
@@ -150,6 +189,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                                                         setSelectedForEdit={setSelectedForEdit}
                                                         setSelectedForDelete={setSelectedForDelete}
                                                         selectedForDelete={selectedForDelete}
+                                                        deleteTab={handleDelete}
                                                         reset={resetEditPageTabs}
                                                     />
                                                 );

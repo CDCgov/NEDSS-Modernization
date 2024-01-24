@@ -40,8 +40,12 @@
     &__close {
         cursor: pointer;
         position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
+        top: 0.75rem;
+        right: 1.5rem;
+        svg {
+            height: 1.2rem;
+            width: 1.2rem;
+        }
     }
     p {
         margin: 0;

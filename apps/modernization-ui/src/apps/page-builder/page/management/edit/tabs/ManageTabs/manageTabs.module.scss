@@ -1,3 +1,5 @@
+@use 'styles/colors';
+
 .manage {
     button {
         display: flex;
@@ -10,5 +12,8 @@
 .modalHeader {
     h3 {
         margin: 0;
+    }
+    button {
+        color: colors.$base-white;
     }
 }
