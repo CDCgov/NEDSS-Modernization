@@ -5,6 +5,7 @@ import {
     ModalFooter,
     ModalRef,
     ModalToggleButton,
+    Radio,
     Tag,
     Icon as UswIcon
 } from '@trussworks/react-uswds';
@@ -175,16 +176,29 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
                                 )}
                                 <br />
                                 {sourceList.map((list: any, index) => {
-                                    return (
-                                        <Checkbox
-                                            onChange={(e) => handleSelect(e, index)}
-                                            key={index}
-                                            id={`sourceId${index}`}
-                                            checked={list.selected}
-                                            name={`sourceName ${index}`}
-                                            label={list?.name!}
-                                        />
-                                    );
+                                    if (multiSelected) {
+                                        return (
+                                            <Checkbox
+                                                onChange={(e) => handleSelect(e, index)}
+                                                key={index}
+                                                id={`sourceId${index}`}
+                                                checked={list.selected}
+                                                name={`sourceName ${index}`}
+                                                label={list?.name!}
+                                            />
+                                        );
+                                    } else {
+                                        return (
+                                            <Radio
+                                                key={index}
+                                                id={`sourceId${index}`}
+                                                checked={list.selected}
+                                                name={`sourceName ${index}`}
+                                                label={list?.name!}
+                                                onChange={(e) => handleSelect(e, index)}
+                                            />
+                                        );
+                                    }
                                 })}
                             </div>
                         </div>
