@@ -1,15 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './CreateQuestion.scss';
-import {
-    Form,
-    ModalToggleButton,
-    Radio,
-    ButtonGroup,
-    Button,
-    Textarea,
-    Label,
-    ErrorMessage
-} from '@trussworks/react-uswds';
+import { Form, Radio, ButtonGroup, Button, Textarea, Label, ErrorMessage } from '@trussworks/react-uswds';
 import { ValueSetControllerService, QuestionControllerService, UpdateDateQuestionRequest } from '../../generated';
 import { useAlert } from 'alert';
 import { ToggleButton } from '../ToggleButton';
@@ -19,6 +10,7 @@ import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { maxLengthRule } from '../../../../validation/entry';
 import { CreateDateQuestion } from './CreateDateQuestion';
+import { CreateCodedQuestion } from './CreateCodedQuestion';
 import { CreateNumericQuestion } from './CreateNumericQuestion';
 import { CreateTextQuestion } from './CreateTextQuestion';
 import {
@@ -31,7 +23,6 @@ import {
 } from '../../generated';
 import { authorization as fetchToken } from 'authorization';
 import { QuestionsContext } from '../../context/QuestionsContext';
-import { Heading } from '../../../../components/heading';
 
 namespace QuestionRequest {
     export enum codeSet {
@@ -153,6 +144,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
         }
     }, [question]);
 
+    const valueSetName = searchValueSet?.valueSetNm || searchValueSet?.valueSetName || watch('valueSet') || '';
     useEffect(() => {
         if (searchValueSet) questionForm.setValue('valueSet', searchValueSet.codeSetGroupId);
     }, [searchValueSet]);
@@ -331,22 +323,6 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
         }
     };
 
-    const valueSetName = searchValueSet?.valueSetNm || searchValueSet?.valueSetName || watch('valueSet');
-    const isValueSet = valueSetName !== undefined;
-    const renderValueSet = (
-        <div className="">
-            <label>Value set</label>
-            {isValueSet && (
-                <Heading className="selected-value-set" level={4}>
-                    {valueSetName?.toString()}
-                </Heading>
-            )}
-            <ModalToggleButton modalRef={addValueModalRef} className="width-full" type="submit" outline>
-                {isValueSet ? 'Change value set' : 'Search value set'}
-            </ModalToggleButton>
-            <br></br>
-        </div>
-    );
     const renderUserInterface = (
         <>
             <h4>User Interface</h4>
@@ -578,7 +554,13 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             )}
                         />
                         <br></br>
-                        {selectedFieldType === UpdateDateQuestionRequest.type.CODED && renderValueSet}
+                        {selectedFieldType === UpdateDateQuestionRequest.type.CODED && (
+                            <CreateCodedQuestion
+                                control={control}
+                                addValueModalRef={addValueModalRef}
+                                valueSetName={valueSetName.toString()}
+                            />
+                        )}
                         {(selectedFieldType === UpdateDateQuestionRequest.type.NUMERIC ||
                             selectedFieldType === UpdateDateQuestionRequest.type.TEXT) && (
                             <CreateTextQuestion
