@@ -165,7 +165,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         name={name}
                         type="text"
                         onChange={onChange}
-                        defaultValue={value}
+                        defaultValue={value?.toUpperCase()}
                         error={error?.message}
                         onBlur={onBlur}
                     />
