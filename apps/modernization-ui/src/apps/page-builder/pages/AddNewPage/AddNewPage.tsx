@@ -141,7 +141,7 @@ export const AddNewPage = () => {
             <div className="breadcrumb-wrap">
                 <PagesBreadcrumb currentPage="Create new page" />
             </div>
-            <Form onSubmit={onSubmit}>
+            <Form onSubmit={onSubmit} aria-label="create new page form">
                 <div className="add-new-page__form">
                     <div className="add-new-page__content">
                         <h2 aria-label="Create new page">Create new page</h2>
@@ -153,16 +153,17 @@ export const AddNewPage = () => {
                             control={form.control}
                             name="eventType"
                             rules={{ required: { value: true, message: 'Event type is required.' } }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <SelectInput
-                                    aria-label="Event type"
-                                    aria-labelledby="eventType"
                                     label="Event type"
                                     dataTestid="eventTypeDropdown"
                                     value={value}
                                     onChange={onChange}
                                     options={eventType}
                                     error={error?.message}
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
                                     required
                                 />
                             )}

@@ -35,17 +35,21 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="conditionIds"
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange, value, name } }) => (
                     <MultiSelectInput
                         onChange={onChange}
                         value={value}
+                        name={name}
+                        id={name}
+                        aria-label={'select the conditions for the page'}
                         options={props.conditions.map((m) => {
                             return {
                                 name: m.name ?? '',
                                 value: m.id
                             };
                         })}
-                        label="Condition(s)"></MultiSelectInput>
+                        label="Condition(s)"
+                    />
                 )}
             />
             <p>Can't find the condition you're looking for?</p>
@@ -72,9 +76,12 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                             onBlur();
                             validatePageName(value);
                         }}
-                        name={name}
-                        defaultValue={value}
                         label="Page name"
+                        name={name}
+                        htmlFor={name}
+                        id={name}
+                        ariaLabel={'enter a name for the page'}
+                        defaultValue={value}
                         className="pageName"
                         type="text"
                         error={error?.message}
@@ -93,6 +100,9 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         label="Template"
                         name={name}
                         defaultValue={value}
+                        htmlFor={name}
+                        id={name}
+                        aria-label={'select a template'}
                         onChange={onChange}
                         onBlur={onBlur}
                         options={props.templates.map((template) => {
@@ -120,6 +130,9 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                     <SelectInput
                         label="Reporting mechanism"
                         name={name}
+                        htmlFor={name}
+                        id={name}
+                        aria-label={'select a reporting mechanism for the page'}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -149,6 +162,9 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         }}
                         label="Page description"
                         name={name}
+                        htmlFor={name}
+                        id={name}
+                        aria-label={'enter a description for the page'}
                         type="text"
                         multiline
                         defaultValue={value}
@@ -163,6 +179,9 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                     <Input
                         label="Data mart name"
                         name={name}
+                        htmlFor={name}
+                        id={name}
+                        aria-label={'enter a Data mart name for the page'}
                         type="text"
                         onChange={onChange}
                         defaultValue={value}
