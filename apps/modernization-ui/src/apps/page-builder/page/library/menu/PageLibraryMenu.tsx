@@ -56,10 +56,21 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, 
                 <LinkButton target="_self" href="/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true">
                     Page porting
                 </LinkButton>
-                <Button type="button" onClick={onPrint} className={styles.icon} outline>
+                <Button
+                    aria-label="download search results as csv"
+                    type="button"
+                    onClick={onPrint}
+                    className={styles.icon}
+                    outline>
                     <Icon.Print size={3} data-testid="print-icon" />
                 </Button>
-                <Button type="button" className={styles.icon} outline onClick={onDownload} data-testid="file-download">
+                <Button
+                    aria-label="download search results as pdf"
+                    type="button"
+                    className={styles.icon}
+                    outline
+                    onClick={onDownload}
+                    data-testid="file-download">
                     <Icon.FileDownload size={3} />
                 </Button>
             </menu>

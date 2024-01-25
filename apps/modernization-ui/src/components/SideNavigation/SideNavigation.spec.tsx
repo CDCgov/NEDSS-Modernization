@@ -9,19 +9,19 @@ const WithActiveRoute = ({ active = '/active', children }: { active?: string; ch
 );
 
 describe('SideNavigation', () => {
-    it('should render a title', async () => {
-        const { findByText } = render(
+    it('should render a title', () => {
+        const { getByText } = render(
             <WithActiveRoute>
                 <SideNavigation title="test title" />
             </WithActiveRoute>
         );
 
-        const entry = await findByText('test title');
+        const entry = getByText('test title');
         expect(entry).toBeInTheDocument();
     });
 
-    it('should render nav entry', async () => {
-        const { findByText } = render(
+    it('should render nav entry', () => {
+        const { getByText } = render(
             <WithActiveRoute>
                 <SideNavigation title="test title">
                     <NavigationEntry path="/some-href">test label</NavigationEntry>
@@ -29,15 +29,15 @@ describe('SideNavigation', () => {
             </WithActiveRoute>
         );
 
-        const entry = await findByText('test label');
+        const entry = getByText('test label');
 
         expect(entry).toBeInTheDocument();
         expect(entry).toHaveAttribute('href', '/some-href');
         expect(entry.parentElement).not.toHaveClass('active');
     });
 
-    it('should set active based on path', async () => {
-        const { findByText } = render(
+    it('should set active based on path', () => {
+        const { getByText } = render(
             <WithActiveRoute active="/some-href">
                 <SideNavigation title="test title">
                     <NavigationEntry path="/some-href">test label</NavigationEntry>
@@ -46,9 +46,21 @@ describe('SideNavigation', () => {
             </WithActiveRoute>
         );
 
-        const active = await findByText('test label');
+        const active = getByText('test label');
         expect(active.parentElement).toHaveClass('active');
-        const other = await findByText('another label');
+        const other = getByText('another label');
         expect(other.parentElement).not.toHaveClass('active');
+    });
+
+    it('should show aria label for title', () => {
+        const { getByText } = render(
+            <WithActiveRoute active="/some-href">
+                <SideNavigation title="test title">
+                    <NavigationEntry path="/some-href">test label</NavigationEntry>
+                    <NavigationEntry path="/some-other-href">another label</NavigationEntry>
+                </SideNavigation>
+            </WithActiveRoute>
+        );
+        expect(getByText('test title')).toHaveAttribute('aria-label', 'test title');
     });
 });

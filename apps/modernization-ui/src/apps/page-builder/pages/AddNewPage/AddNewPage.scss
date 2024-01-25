@@ -1,7 +1,7 @@
 @use 'styles/colors';
 
 .add-new-page {
-    background-color: #f1f6f9;
+    background-color: colors.$background;
     padding: 0 1.5rem 6rem;
     min-height: 90vh;
 
@@ -52,7 +52,6 @@
                 line-height: 1.4rem;
                 margin-top: 1rem;
                 margin-bottom: 0.5rem;
-                color: colors.$base-light;
             }
             h2 {
                 text-align: center;
