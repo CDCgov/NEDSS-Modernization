@@ -20,11 +20,11 @@ class TemplateRequester {
   }
 
   ResultActions getAll() throws Exception {
-    return mvc.perform(this.authenticated.withUser(get("/api/v1/template/{type}/", " "))).andDo(print());
+    return mvc.perform(this.authenticated.withUser(get("/api/v1/template/"))).andDo(print());
   }
 
-  ResultActions getAllInv(String type) throws Exception {
-    return mvc.perform(this.authenticated.withUser(get("/api/v1/template/{type}/", type))).andDo(print());
+  ResultActions getAllInv() throws Exception {
+    return mvc.perform(this.authenticated.withUser(get("/api/v1/template/?type=INV"))).andDo(print());
   }
 
 }

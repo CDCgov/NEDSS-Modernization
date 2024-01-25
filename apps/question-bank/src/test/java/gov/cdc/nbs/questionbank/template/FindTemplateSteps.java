@@ -41,7 +41,7 @@ public class FindTemplateSteps {
 
   @When("I search for all investigation templates")
   public void i_search_for_all_investigation_templates() throws Exception {
-    response.active(requester.getAllInv("INV"));
+    response.active(requester.getAllInv());
   }
 
   @Then("templates are returned")

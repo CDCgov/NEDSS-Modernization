@@ -31,7 +31,7 @@ public class TemplateController {
     this.templateImporter = templateImporter;
   }
 
-  @GetMapping("/{type}/")
+  @GetMapping
   public List<Template> findAllTemplates(@RequestParam(required = false) String type) {
     return finder.findAllTemplates(type);
   }
