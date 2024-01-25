@@ -5,35 +5,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    margin: 0;
-    background-color: colors.$base-white;
-}
-
-.addRulesContainer {
-    max-width: 75vw;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: colors.$base-white;
-    .addBusinessRuleTitle {
-        text-align: center;
-    }
-}
-
-.footerButtonsContainer {
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px;
-    //stick to bottom of container
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+    padding: 0rem 1.5rem;
+    border-bottom: 1px solid colors.$base-lighter;
     background-color: colors.$base-white;
 }
 
 .breadcrumb-wrap {
     margin-top: 1rem;
 }
+
 .edit-rules {
     margin-top: 2rem;
     padding-bottom: 10rem;
@@ -43,60 +23,93 @@
     }
 
     .edit-rules__form {
-        max-width: 60%;
-        margin: 2rem auto;
-        background-color: colors.$base-white;
-        padding: 4rem;
+        display: flex;
+        width: 100%;
+        padding-top: 1.5rem;
+        flex-direction: column;
+        align-items: center;
 
-        .inline-field {
-            margin-top: 24px;
-            align-items: baseline;
-            max-width: 75%;
-        }
-        .edit-rules__content {
-            padding: 2rem 4rem;
-            margin: 0 auto;
-            p {
-                font-size: 0.875rem;
-                line-height: 1.4rem;
-                margin-top: 0.5rem;
-                color: colors.$base-light;
-            }
-            h2 {
-                text-align: center;
-                margin-bottom: 3rem;
-            }
-            h4 {
-                font-weight: 400;
-                margin-bottom: 0;
-            }
-            a {
-                text-decoration: none;
-            }
-            .usa-button {
-                margin-top: 0.4rem;
-                font-size: 0.95rem;
-                text-decoration: none;
-                margin-top: 0;
-            }
-            button {
-                p {
+        .edit-rules__container {
+            display: flex;
+            padding: 1.25rem;
+            width: 60rem;
+            flex-direction: column;
+            gap: 1.25rem;
+            background-color: colors.$base-white;
+            align-items: center;
+            .edit-rules-title {
+                align-self: center;
+                margin-top: 1.25rem;
+                margin-bottom: 1.5rem;
+                h2 {
+                    padding: 0;
                     margin: 0;
+                    font-size: 1.375rem;
+                    font-style: normal;
                     font-weight: 700;
-                    color: colors.$primary;
+                    line-height: normal;
                 }
             }
-            .clear-target {
-                right: 0;
-                position: absolute;
-                margin-top: 5px;
-            }
-            .que-valueset {
-                .target-edit-btn {
-                    padding-top: 4px;
-                    text-align: right;
-                    border-top: 1px solid #55595b4d;
-                    width: 100%;
+            .edit-rules__content {
+                width: 47.1rem;
+                .inline-field {
+                    display: flex;
+                    flex-direction: row;
+                    margin-top: 1.25rem;
+                    padding: 0;
+                    align-items: flex-start;
+                    justify-content: center;
+                    .text-input {
+                        width: 28.0625rem;
+                        height: 2.5rem;
+                        margin: 0;
+                        justify-self: center;
+                    }
+                    .input-label {
+                        margin-right: 1.5rem;
+                    }
+                    .radio-group {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 1.38rem;
+
+                        .radio-button {
+                            width: 8.25rem;
+                        }
+                    }
+                }
+
+                a {
+                    text-decoration: none;
+                }
+                .usa-button {
+                    margin-top: 0.4rem;
+                    font-size: 0.95rem;
+                    text-decoration: none;
+                    margin-top: 0;
+                }
+                .usa-label {
+                    margin-top: 0;
+                }
+                button {
+                    p {
+                        margin: 0;
+                        font-weight: 700;
+                        color: colors.$primary;
+                    }
+                }
+                .clear-target {
+                    right: 0;
+                    position: absolute;
+                    margin-top: 5px;
+                }
+                .que-valueset {
+                    .target-edit-btn {
+                        padding-top: 4px;
+                        text-align: right;
+                        border-top: 1px solid #55595b4d;
+                        width: 100%;
+                    }
                 }
             }
         }
@@ -124,8 +137,8 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 2rem;
-    border: 1px solid var(--base-lightest, #f0f0f0);
-    background: var(--base-white, #fff);
+    border: 1px solid colors.$base-lightest;
+    background: var(--base-white, colors.$base-white);
 
     .usa-button {
         margin-top: 0 !important;
