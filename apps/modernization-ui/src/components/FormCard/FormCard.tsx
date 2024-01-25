@@ -1,5 +1,5 @@
 import { Grid } from '@trussworks/react-uswds';
-import './FormCard.spec';
+import './FormCard.scss';
 
 export default function FormCard({ id, title, children }: { id?: string; title?: string; children: any }) {
     return (
