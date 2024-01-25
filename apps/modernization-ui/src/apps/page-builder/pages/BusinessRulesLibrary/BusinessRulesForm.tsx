@@ -120,7 +120,7 @@ const BusinessRulesForm = () => {
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={3}>
+                        <Grid col={2}>
                             <label className="input-label">Source Questions</label>
                         </Grid>
                         <ModalToggleButton
@@ -130,8 +130,9 @@ const BusinessRulesForm = () => {
                             outline>
                             hide
                         </ModalToggleButton>
-                        <Grid col={9}>
+                        <Grid col={10}>
                             <Input
+                                className={'text-input'}
                                 defaultValue={value}
                                 onChange={onChange}
                                 onClick={openSourceModal}
@@ -149,10 +150,10 @@ const BusinessRulesForm = () => {
                 name="anySourceValue"
                 render={({ field: { onChange, value } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={3}>
+                        <Grid col={2}>
                             <label className="input-label">Any source value</label>
                         </Grid>
-                        <Grid col={9} className="height-3">
+                        <Grid col={10} className="height-3">
                             <Checkbox
                                 onChange={onChange}
                                 className=""
@@ -174,11 +175,12 @@ const BusinessRulesForm = () => {
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={3}>
+                        <Grid col={2}>
                             <label className="input-label">Logic</label>
                         </Grid>
-                        <Grid col={9}>
+                        <Grid col={10}>
                             <SelectInput
+                                className="text-input"
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -195,16 +197,18 @@ const BusinessRulesForm = () => {
                 name="sourceValue"
                 render={() => (
                     <Grid row className="inline-field">
-                        <Grid col={3}>
+                        <Grid col={2}>
                             <label className="input-label">Source value(s)</label>
                         </Grid>
-                        <Grid col={9}>
-                            <MultiSelectInput
-                                onChange={(e) => {
-                                    handleSourceValueChange(e);
-                                }}
-                                options={sourceList}
-                            />
+                        <Grid col={10}>
+                            <div className="text-input">
+                                <MultiSelectInput
+                                    onChange={(e) => {
+                                        handleSourceValueChange(e);
+                                    }}
+                                    options={sourceList}
+                                />
+                            </div>
                         </Grid>
                     </Grid>
                 )}
@@ -214,11 +218,12 @@ const BusinessRulesForm = () => {
                 name="targetType"
                 render={({ field: { onChange, value } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={3}>
+                        <Grid col={2}>
                             <label className="input-label">Target type</label>
                         </Grid>
-                        <Grid col={9} className="targetType-radio">
+                        <Grid col={10} className="radio-group">
                             <Radio
+                                className="radio-button"
                                 type="radio"
                                 name="targetType"
                                 value="QUESTION"
@@ -228,6 +233,7 @@ const BusinessRulesForm = () => {
                                 label="Question"
                             />
                             <Radio
+                                className="radio-button"
                                 id="targetType_Sub"
                                 name="targetType"
                                 value="SUBSECTION"
@@ -240,15 +246,15 @@ const BusinessRulesForm = () => {
                 )}
             />
             <Grid row className="inline-field">
-                <Grid col={3}>
+                <Grid col={2}>
                     <label className="input-label">Target Question(s)</label>
                 </Grid>
-                <Grid col={8}>
+                <Grid col={10}>
                     {!targetQtn ? (
                         <div className="width-48-p margin-bottom-1em">
                             <ModalToggleButton
                                 modalRef={TargetQtnModalRef}
-                                className="width-full margin-top-1em"
+                                className="text-input"
                                 type="submit"
                                 outline>
                                 Search Target Question
@@ -298,10 +304,10 @@ const BusinessRulesForm = () => {
                 rules={maxLengthRule(50)}
                 render={({ field: { name, onChange, onBlur, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={3}>
+                        <Grid col={2}>
                             <Label htmlFor={name}>Rules Description</Label>
                         </Grid>
-                        <Grid col={8}>
+                        <Grid col={10}>
                             <Input
                                 onChange={onChange}
                                 type="text"
