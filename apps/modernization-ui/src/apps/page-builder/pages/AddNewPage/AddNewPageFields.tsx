@@ -167,7 +167,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });
                         }}
-                        defaultValue={value?.toUpperCase()}
+                        defaultValue={value}
                         error={error?.message}
                         onBlur={onBlur}
                     />
