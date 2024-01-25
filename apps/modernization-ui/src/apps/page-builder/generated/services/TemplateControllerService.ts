@@ -10,30 +10,6 @@ import { request as __request } from '../core/request';
 export class TemplateControllerService {
 
     /**
-     * findAllTemplates
-     * @returns Template OK
-     * @throws ApiError
-     */
-    public static findAllTemplatesUsingGet({
-        authorization,
-    }: {
-        authorization: string,
-    }): CancelablePromise<Array<Template>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/template/',
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
      * Creates a new Template from an XML File.
      * Creates a new Template by importing an XML file that describes how the template should be created.
      * @returns Template OK
@@ -55,6 +31,38 @@ export class TemplateControllerService {
             },
             formData: {
                 'file': file,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * findAllTemplates
+     * @returns Template OK
+     * @throws ApiError
+     */
+    public static findAllTemplatesUsingGet({
+        authorization,
+        type,
+    }: {
+        authorization: string,
+        /**
+         * type
+         */
+        type?: string,
+    }): CancelablePromise<Array<Template>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/template/{type}/',
+            headers: {
+                'Authorization': authorization,
+            },
+            query: {
+                'type': type,
             },
             errors: {
                 401: `Unauthorized`,
