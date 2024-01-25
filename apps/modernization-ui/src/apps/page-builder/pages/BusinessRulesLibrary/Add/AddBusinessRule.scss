@@ -6,7 +6,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0rem 1.5rem;
-    border-bottom: 1px solid var(--Base-lighter, #dcdee0);
+    border-bottom: 1px solid colors.$base-lighter;
     background-color: colors.$base-white;
 }
 
@@ -35,7 +35,7 @@
             width: 60rem;
             flex-direction: column;
             gap: 1.25rem;
-            background-color: white;
+            background-color: colors.$base-white;
             align-items: center;
             .edit-rules-title {
                 align-self: center;
@@ -137,8 +137,8 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 2rem;
-    border: 1px solid var(--base-lightest, #f0f0f0);
-    background: var(--base-white, #fff);
+    border: 1px solid colors.$base-lightest;
+    background: var(--base-white, colors.$base-white);
 
     .usa-button {
         margin-top: 0 !important;
