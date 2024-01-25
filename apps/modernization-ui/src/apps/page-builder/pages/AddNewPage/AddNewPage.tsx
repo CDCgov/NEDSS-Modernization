@@ -74,7 +74,6 @@ export const AddNewPage = () => {
         fetchTemplates(authorization(), watch.eventType ?? ' ').then((data) => {
             setTemplates(data);
         });
-        console.log(`2nd ${watch.eventType}`);
     }, [watch.eventType]);
 
     const handleAddConditions = (conditions: number[]) => {
