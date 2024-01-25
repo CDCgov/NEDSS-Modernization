@@ -23,16 +23,14 @@ public class TemplateFinder {
     return toTemplate(template);
   }
 
-  public List<Template> findAllTemplates() {
-    return templateRepository.findAllByTemplateType(TEMPLATE_TYPE, Sort.by("templateNm"))
-        .stream()
-        .map(this::toTemplate).toList();
-  }
-
   public List<Template> findAllTemplates(String type) {
-    return templateRepository.findAllByTemplateTypeAndBusObjType(TEMPLATE_TYPE, type,Sort.by("templateNm"))
-        .stream()
-        .map(this::toTemplate).toList();
+    return type != null
+        ? templateRepository.findAllByTemplateTypeAndBusObjType(TEMPLATE_TYPE, type, Sort.by("templateNm"))
+            .stream()
+            .map(this::toTemplate).toList()
+        : templateRepository.findAllByTemplateType(TEMPLATE_TYPE, Sort.by("templateNm"))
+            .stream()
+            .map(this::toTemplate).toList();
   }
 
   private Template toTemplate(WaTemplate aWaTemplate) {

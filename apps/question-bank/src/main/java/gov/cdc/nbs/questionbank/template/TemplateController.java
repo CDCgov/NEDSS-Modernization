@@ -33,7 +33,7 @@ public class TemplateController {
 
   @GetMapping("/{type}/")
   public List<Template> findAllTemplates(@RequestParam(required = false) String type) {
-    return type != null ? finder.findAllTemplates(type) : finder.findAllTemplates();
+    return finder.findAllTemplates(type);
   }
 
   @Operation(
