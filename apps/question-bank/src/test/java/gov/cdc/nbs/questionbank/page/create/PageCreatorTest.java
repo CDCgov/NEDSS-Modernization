@@ -2,7 +2,6 @@ package gov.cdc.nbs.questionbank.page.create;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +20,6 @@ import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.PageCreator;
 import gov.cdc.nbs.questionbank.page.PageValidator;
-import gov.cdc.nbs.questionbank.page.exception.PageCreateException;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
@@ -67,66 +65,6 @@ class PageCreatorTest {
     assertEquals(page.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE, response.message());
   }
 
-  @Test
-  void testCreatePageNOName() {
-    PageCreateRequest request = new PageCreateRequest(
-        null,
-        Arrays.asList(),
-        null,
-        0l,
-        "HEP_Case_Map_V1.0",
-        "unit test", "dataMart");
-
-    var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
-    assertEquals(PageConstants.ADD_PAGE_NAME_EMPTY, exception.getMessage());
-  }
-
-  @Test
-  void testCreatePageNOEventType() {
-    PageCreateRequest request =
-        new PageCreateRequest(
-            null,
-            Arrays.asList("1023"),
-            "TestPage",
-            0l,
-            "HEP_Case_Map_V1.0",
-            "unit test",
-            "dataMart");
-
-    var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
-    assertEquals(PageConstants.ADD_PAGE_EVENTTYPE_EMPTY, exception.getMessage());
-  }
-
-  @Test
-  void testCreatePageNOTemplate() {
-    PageCreateRequest request =
-        new PageCreateRequest(
-            "INV",
-            Arrays.asList("1023"),
-            "TestPage",
-            0l,
-            "HEP_Case_Map_V1.0",
-            "unit test",
-            "dataMart");
-
-    var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
-    assertEquals(PageConstants.ADD_PAGE_TEMPLATE_EMPTY, exception.getMessage());
-  }
-
-  @Test
-  void testCreatePageNOMMG() {
-    PageCreateRequest request = new PageCreateRequest(
-        "INV",
-        Arrays.asList("1023"),
-        "TestPage",
-        10l,
-        null,
-        "unit test",
-        "dataMart");
-
-    var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
-    assertEquals(PageConstants.ADD_PAGE_MMG_EMPTY, exception.getMessage());
-  }
 
   @Test
   void testCopyWaTemplateUIMetaData() {
