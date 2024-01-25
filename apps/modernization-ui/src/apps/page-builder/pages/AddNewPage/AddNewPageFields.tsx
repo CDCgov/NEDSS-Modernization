@@ -4,7 +4,7 @@ import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { validPageNameRule } from 'validation/entry';
 import { dataMartNameRule } from 'validation/entry/dataMartNameRule';
@@ -164,7 +164,9 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         label="Data mart name"
                         name={name}
                         type="text"
-                        onChange={onChange}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });
+                        }}
                         defaultValue={value?.toUpperCase()}
                         error={error?.message}
                         onBlur={onBlur}
