@@ -53,14 +53,14 @@ const init = {
 
 export type QuestionFormType = {
     defaultLabelInReport?: string;
-    datamartColName?: string;
+    dataMartColumnName?: string;
     unitType?: string;
     groupNumber?: string;
     dateFormat?: number;
     includedInMessage?: boolean;
     requiredInMessage?: boolean;
     messageVariableId?: string;
-    messageLabel?: string;
+    labelInMessage?: string;
     hl7DataType?: string;
     HL7Segment?: string;
     relatedUnits?: string;
@@ -129,9 +129,8 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
             questionForm.setValue('conceptCode', updatedQuestion.conceptCode);
             questionForm.setValue('conceptName', updatedQuestion.conceptName);
             questionForm.setValue('preferredConceptName', updatedQuestion.preferredConceptName);
-            questionForm.setValue('datamartColName', updatedQuestion.datamartColName);
             questionForm.setValue('messageVariableId', updatedQuestion.messageVariableId);
-            questionForm.setValue('messageLabel', updatedQuestion.labelInMessage);
+            questionForm.setValue('labelInMessage', updatedQuestion.labelInMessage);
             questionForm.setValue('unitType', updatedQuestion.unitType);
             questionForm.setValue('dateFormat', updatedQuestion.dateFormat);
             questionForm.setValue('includedInMessage', updatedQuestion.includedInMessage);
@@ -215,7 +214,6 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
         const { id } = question ?? {};
         const request = {
             dataMartInfo: {
-                defaultLabelInReport: data.defaultLabelInReport,
                 dataMartColumnName: data.dataMartColumnName,
                 defaultRdbTableName: data.defaultRdbTableName,
                 rdbColumnName: data.rdbColumnName,
@@ -223,12 +221,11 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
             },
             messagingInfo: {
                 codeSystem: data.codeSystem ?? '',
-                conceptCode: data.conceptCode,
-                conceptName: data.conceptName,
-                preferredConceptName: data.preferredConceptName,
-                messageVariableId: data.messageVariableId,
-                labelInMessage: data.messageLabel,
-                hl7DataType: data.hl7DataType
+                hl7DataType: data.hl7DataType,
+                labelInMessage: data.labelInMessage,
+                includedInMessage: data.includedInMessage,
+                requiredInMessage: data.requiredInMessage,
+                messageVariableId: data.messageVariableId
             },
             adminComments: data.adminComments!,
             codeSet: data.codeSet,
@@ -426,6 +423,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
     const IsIncludedInMessage = !includedInMessage;
     const isDisableUnitType = relatedUnits !== 'Yes';
     const editDisabledFields = question?.id !== undefined;
+    const readOnlyControl = watch('displayControl') == 1026;
 
     return (
         <div className="create-question">
@@ -605,7 +603,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             control={control}
                             name="defaultLabelInReport"
                             rules={{
-                                required: { value: true, message: 'Default label in report required' },
+                                required: { value: !readOnlyControl, message: 'Default label in report required' },
                                 pattern: { value: /^\w*$/, message: 'Default label in report invalid' },
                                 ...maxLengthRule(50)
                             }}
@@ -614,6 +612,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     onChange={onChange}
                                     className="field-space"
                                     defaultValue={value}
+                                    disabled={readOnlyControl}
                                     label="Default label in report"
                                     type="text"
                                     error={error?.message}
@@ -625,7 +624,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             control={control}
                             name="defaultRdbTableName"
                             rules={{
-                                required: { value: true, message: 'Default RDB table name required' },
+                                required: { value: !readOnlyControl, message: 'Default RDB table name required' },
                                 pattern: { value: /^\w*$/, message: 'Default RDB table name invalid' },
                                 ...maxLengthRule(50)
                             }}
@@ -634,6 +633,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     onChange={onChange}
                                     className="field-space"
                                     defaultValue={value}
+                                    disabled={readOnlyControl}
                                     label="Default RDB table name"
                                     type="text"
                                     error={error?.message}
@@ -654,7 +654,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     onChange={onChange}
                                     defaultValue={value}
                                     label="RDB column name"
-                                    disabled={editDisabledFields}
+                                    disabled={editDisabledFields || readOnlyControl}
                                     type="text"
                                     error={error?.message}
                                     required
@@ -663,7 +663,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                         />
                         <Controller
                             control={control}
-                            name="datamartColName"
+                            name="dataMartColumnName"
                             rules={{
                                 pattern: { value: startWithNonInteger, message: 'Data mart column name invalid' },
                                 ...maxLengthRule(50)
@@ -675,6 +675,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     defaultValue={value}
                                     label="Data mart column name"
                                     type="text"
+                                    disabled={readOnlyControl}
                                     error={error?.message}
                                 />
                             )}
@@ -693,6 +694,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     <ToggleButton
                                         className="margin-bottom-1em"
                                         checked={value}
+                                        disabled={readOnlyControl}
                                         name="includedInMessage"
                                         onChange={onChange}
                                     />
@@ -720,7 +722,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                         />
                         <Controller
                             control={control}
-                            name="messageLabel"
+                            name="labelInMessage"
                             rules={{
                                 required: { value: !IsIncludedInMessage, message: 'Message label required' },
                                 pattern: { value: handleValidation(false), message: 'Message label invalid' }
