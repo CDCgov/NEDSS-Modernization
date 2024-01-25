@@ -41,7 +41,7 @@ public class ConditionCreator {
 
     //check if id already exists
     if (checkId(request.code())) {
-      throw new ConditionCreateException("Condition Id already exists");
+      throw new ConditionCreateException("Condition Code already exists");
     }
 
     //check if conditionNm already exists
