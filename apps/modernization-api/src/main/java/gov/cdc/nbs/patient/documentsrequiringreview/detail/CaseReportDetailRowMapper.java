@@ -13,11 +13,11 @@ class CaseReportDetailRowMapper implements RowMapper<DocumentRequiringReview> {
   record Column(
       int identifier,
       int receivedOn,
-      int eventDate,
       int type,
-      int electronic,
-      int updated,
-      int event
+      int sendingFacility,
+      int condition,
+      int event,
+      int updated
   ) {
   }
 
@@ -32,27 +32,42 @@ class CaseReportDetailRowMapper implements RowMapper<DocumentRequiringReview> {
   public DocumentRequiringReview mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
     long identifier = resultSet.getLong(columns.identifier());
     Instant receivedOn = resultSet.getTimestamp(columns.receivedOn()).toInstant();
-    Instant eventDate = resultSet.getTimestamp(columns.eventDate()).toInstant();
     String type = resultSet.getString(columns.type());
-    boolean electronic = resultSet.getBoolean(columns.electronic());
     boolean updated = resultSet.getBoolean(columns.updated());
     String event = resultSet.getString(columns.event());
 
-    DocumentRequiringReview.FacilityProviders providers = new DocumentRequiringReview.FacilityProviders();
+    DocumentRequiringReview.FacilityProviders providers = mapProviders(resultSet);
+
+    List<DocumentRequiringReview.Description> descriptions = mapDescription(resultSet);
 
     return new DocumentRequiringReview(
         identifier,
         event,
         type,
-        eventDate,
         receivedOn,
-        electronic,
+        receivedOn,
+        false,
         updated,
         providers,
-        List.of()
+        descriptions
     );
 
 
   }
 
+  private DocumentRequiringReview.FacilityProviders mapProviders(final ResultSet resultSet) throws SQLException {
+    String sendingFacility = resultSet.getString(columns.sendingFacility());
+
+    DocumentRequiringReview.FacilityProviders providers = new DocumentRequiringReview.FacilityProviders();
+    providers.setSendingFacility(new DocumentRequiringReview.SendingFacility(sendingFacility));
+
+    return providers;
+  }
+
+  private List<DocumentRequiringReview.Description> mapDescription(final ResultSet resultSet)
+      throws SQLException {
+    String condition = resultSet.getString(this.columns.condition());
+
+    return List.of(new DocumentRequiringReview.Description(condition, ""));
+  }
 }

@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.documentsrequiringreview;
 
+import gov.cdc.nbs.patient.documentsrequiringreview.detail.DocumentRequiringReviewDetailResolver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -10,12 +11,15 @@ import java.util.List;
 @Component
 class PatientDocumentsRequiringReviewFinder {
 
-  private final PatientActivityRequiringReviewFinder activityFinder;
+  private final PatientActivityRequiringReviewFinder finder;
+  private final DocumentRequiringReviewDetailResolver resolver;
 
   PatientDocumentsRequiringReviewFinder(
-      final PatientActivityRequiringReviewFinder activityFinder
+      final PatientActivityRequiringReviewFinder finder,
+      final DocumentRequiringReviewDetailResolver resolver
   ) {
-    this.activityFinder = activityFinder;
+    this.finder = finder;
+    this.resolver = resolver;
   }
 
   Page<DocumentRequiringReview> find(
@@ -23,7 +27,7 @@ class PatientDocumentsRequiringReviewFinder {
       final Pageable pageable
   ) {
 
-    List<PatientActivityRequiringReview> activity = activityFinder.find(criteria);
+    PatientActivity activity = finder.find(criteria, pageable);
 
     return (activity.isEmpty())
         ? emptyPage(pageable)
@@ -36,29 +40,12 @@ class PatientDocumentsRequiringReviewFinder {
 
   private Page<DocumentRequiringReview> paged(
       final Pageable pageable,
-      final List<PatientActivityRequiringReview> activity
+      final PatientActivity activity
   ) {
 
-    List<DocumentRequiringReview> documents = activity.stream()
-        .skip(pageable.getOffset())
-        .limit(pageable.getPageSize())
-        .map(this::from)
-        .toList();
+    List<DocumentRequiringReview> documents = resolver.resolve(activity);
 
-    return new PageImpl<>(documents, pageable, activity.size());
+    return new PageImpl<>(documents, pageable, activity.total());
   }
 
-  private DocumentRequiringReview from(final PatientActivityRequiringReview activity) {
-    return new DocumentRequiringReview(
-        activity.id(),
-        null,
-        activity.type(),
-        null,
-        null,
-        false,
-        false,
-        new DocumentRequiringReview.FacilityProviders(),
-        List.of()
-    );
-  }
 }

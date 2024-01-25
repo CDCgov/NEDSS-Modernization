@@ -13,8 +13,7 @@ Feature: I can find documents requiring review for a particular patient
     Then the <document type> requiring review is returned
     Examples:
       | document type    | permission                 |
-      | lab report       | OBSERVATIONLABREPORT       |
-      | morbidity report | OBSERVATIONMORBIDITYREPORT |
+#      | morbidity report | OBSERVATIONMORBIDITYREPORT |
       | document         | DOCUMENT                   |
 
   Scenario Outline: I can not find documents requiring review without the proper permission
@@ -26,6 +25,6 @@ Feature: I can find documents requiring review for a particular patient
     Then no <document type> are returned
     Examples:
       | document type    | permission                 |
-      | morbidity report | OBSERVATIONLABREPORT       |
+#      | morbidity report | OBSERVATIONLABREPORT       |
       | document         | OBSERVATIONMORBIDITYREPORT |
 

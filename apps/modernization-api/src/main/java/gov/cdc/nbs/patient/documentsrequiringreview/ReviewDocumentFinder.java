@@ -91,7 +91,7 @@ class ReviewDocumentFinder {
     // Build select query
     JPAQuery<Tuple> query = queryFactory.selectDistinct(
         DOCUMENT.id.coalesce(OBSERVATION.id).as(ID),
-        OBSERVATION.ctrlCdDisplayForm.coalesce("Document").as(TYPE),
+        OBSERVATION.ctrlCdDisplayForm.coalesce("Case Report").as(TYPE),
         DOCUMENT.addTime.coalesce(OBSERVATION.addTime).as(DATE_RECEIVED),
         DOCUMENT.addTime.coalesce(OBSERVATION.effectiveFromTime, OBSERVATION.activityToTime).as(EVENT_DATE),
         DOCUMENT.localId.coalesce(OBSERVATION.localId).as(LOCAL_ID),
