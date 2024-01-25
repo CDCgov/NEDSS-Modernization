@@ -32,7 +32,7 @@ const SideNavigation = ({ title, className, children = [] }: SideNavigationProps
 
     return (
         <div className={classNames('navigation', className)}>
-            <h2>{title}</h2>
+            <h2 aria-label={title}>{title}</h2>
             <nav>
                 <ol>
                     {ensureArray(children).map((child, index) => (

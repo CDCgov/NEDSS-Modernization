@@ -11,4 +11,7 @@ img.icon {
         height: 1.2rem;
         width: 1.2rem;
     }
+    &.inactive {
+        filter: grayscale(90%) brightness(200%);
+    }
 }

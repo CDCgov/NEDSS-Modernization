@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DragStart, DragUpdate, DraggableLocation, DropResult } from 'react-beautiful-dnd';
 import { PagesResponse, PagesSection, PagesTab } from '../generated';
-import { moveSubsectionInArray, moveQuestionInArray, moveTabInArray } from '../helpers/moveObjectInArray';
+import { moveSubsectionInArray, moveQuestionInArray } from '../helpers/moveObjectInArray';
 import { reorderObjects } from '../services/reorderObjectsAPI';
 import { UserContext } from 'user';
 
@@ -227,7 +227,6 @@ const DragDropProvider: React.FC<{
     };
 
     const handleTabMove: DragDropProps = (source, destination) => {
-        const reorderedTabs = moveTabInArray(tabs, source.index, destination.index);
         if (destination.index === tabs.length - 1) {
             afterId = tabs[tabs.length - 1].id!;
         } else if (destination.index === 0) {
@@ -237,7 +236,7 @@ const DragDropProvider: React.FC<{
         } else {
             afterId = tabs[destination.index - 1].id!;
         }
-        setTabs(reorderedTabs);
+        tabs.splice(destination.index, 0, tabs.splice(source.index, 1)[0]);
     };
 
     const handleDragUpdate = (event: DragUpdate) => {

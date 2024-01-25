@@ -19,17 +19,22 @@
 }
 .usa-modal {
     .usa-modal__heading {
+        padding: 1.5rem;
+        margin-bottom: 0;
+        border-bottom: 1px solid colors.$base-lightest;
         h3 {
             margin: 0;
         }
         .usa-button {
-            color: colors.$base-darkest;
+            color: colors.$base-white;
             &:last-child {
                 position: absolute;
                 top: 1rem;
                 right: 1rem;
-                color: colors.$base-white;
             }
+        }
+        .usa-button--unstyled {
+            color: colors.$base-darkest;
         }
     }
     &.tall {

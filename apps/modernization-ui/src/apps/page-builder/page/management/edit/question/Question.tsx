@@ -18,7 +18,6 @@ const staticComponents = [1003, 1036, 1012, 1014, 1030, undefined];
 export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQuestion }: Props) => {
     const modal = useRef<ModalRef>(null);
     const [confirmModal, setConfirmModal] = useState(false);
-    const [visibleState, setVisibleState] = useState(false);
 
     useEffect(() => {
         const shown = confirmModal && staticComponents.includes(question.displayComponent);
@@ -27,16 +26,8 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
 
     return (
         <div className={styles.question}>
-            <div
-                className={styles.borderedContainer}
-                onMouseOver={() => {
-                    setVisibleState(true);
-                }}
-                onMouseLeave={() => {
-                    setVisibleState(false);
-                }}>
+            <div className={styles.borderedContainer}>
                 <QuestionHeader
-                    visible={visibleState}
                     question={question}
                     onRequiredChange={() => onRequiredChange(question.id)}
                     onEditQuestion={() => onEditQuestion(question)}
@@ -54,9 +45,12 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                         onConfirm={() => {
                             onDeleteQuestion(question.id, question.displayComponent!);
                             setConfirmModal(false);
+                            modal.current?.toggleModal();
                         }}
                         cancelText="Cancel"
-                        onCancel={() => {}}
+                        onCancel={() => {
+                            modal.current?.toggleModal();
+                        }}
                     />
                 )}
                 <QuestionContent

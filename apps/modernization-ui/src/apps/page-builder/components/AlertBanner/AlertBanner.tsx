@@ -34,7 +34,7 @@ export const AlertBanner = ({ type, children, onClose, expiration }: AlertBanner
             <div className="alert-banner__right">{children}</div>
             {onClose ? (
                 <div className="alert-banner__close" onClick={() => onClose()}>
-                    <Icon.Close />
+                    <Icon.Close size={3} />
                 </div>
             ) : null}
         </div>

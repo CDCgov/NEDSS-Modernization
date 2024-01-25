@@ -141,10 +141,10 @@ export const AddNewPage = () => {
             <div className="breadcrumb-wrap">
                 <PagesBreadcrumb currentPage="Create new page" />
             </div>
-            <Form onSubmit={onSubmit}>
+            <Form onSubmit={onSubmit} aria-label="create new page form">
                 <div className="add-new-page__form">
                     <div className="add-new-page__content">
-                        <h2>Create new page</h2>
+                        <h2 aria-label="Create new page">Create new page</h2>
                         <h4>Let's fill out some information about your new page before creating it</h4>
                         <div className="fields-info">
                             All fields with <span className="mandatory-indicator">*</span> are required
@@ -153,15 +153,17 @@ export const AddNewPage = () => {
                             control={form.control}
                             name="eventType"
                             rules={{ required: { value: true, message: 'Event type is required.' } }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <SelectInput
-                                    aria-labelledby="eventType"
                                     label="Event type"
                                     dataTestid="eventTypeDropdown"
                                     value={value}
                                     onChange={onChange}
                                     options={eventType}
                                     error={error?.message}
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
                                     required
                                 />
                             )}

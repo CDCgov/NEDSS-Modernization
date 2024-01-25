@@ -9,33 +9,33 @@ import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionRespon
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@RequestMapping("/api/v1/pages/{page}/questions/")
+@RequestMapping("/api/v1/pages/{page}/")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class PageQuestionController {
 
-    private final PageQuestionCreator creator;
+  private final PageQuestionAdder adder;
+  private final PageQuestionDeleter deleter;
 
-    private final PageQuestionDeleter deleter;
 
+  public PageQuestionController(final PageQuestionAdder contentManager, final PageQuestionDeleter deleter) {
+    this.adder = contentManager;
+    this.deleter = deleter;
+  }
 
-    public PageQuestionController(final PageQuestionCreator contentManager, final PageQuestionDeleter deleter) {
-        this.creator = contentManager;
-        this.deleter = deleter;
-    }
+  @PostMapping("subsection/{subsection}/questions")
+  public AddQuestionResponse addQuestionToPage(
+      @PathVariable("page") Long pageId,
+      @PathVariable("subsection") Long subsection,
+      @RequestBody AddQuestionRequest request,
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+    return adder.addQuestions(pageId, subsection, request, details.getId());
+  }
 
-    @PostMapping
-    public AddQuestionResponse addQuestionToPage(
-            @PathVariable("page") Long pageId,
-            @RequestBody AddQuestionRequest request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-        return creator.addQuestion(pageId, request, details.getId());
-    }
-
-    @DeleteMapping("{questionId}")
-    public void deleteQuestion(
-            @PathVariable("page") Long page,
-            @PathVariable("questionId") Long questionId,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-        deleter.deleteQuestion(page, questionId, details.getId());
-    }
+  @DeleteMapping("questions/{questionId}")
+  public void deleteQuestion(
+      @PathVariable("page") Long page,
+      @PathVariable("questionId") Long questionId,
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+    deleter.deleteQuestion(page, questionId, details.getId());
+  }
 }

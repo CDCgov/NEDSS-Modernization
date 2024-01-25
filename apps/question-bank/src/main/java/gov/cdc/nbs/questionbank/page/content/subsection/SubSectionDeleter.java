@@ -3,11 +3,13 @@ package gov.cdc.nbs.questionbank.page.content.subsection;
 import java.time.Instant;
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.DeleteSubSectionException;
 
 @Component
+@Transactional
 public class SubSectionDeleter {
 
     private final EntityManager entityManager;

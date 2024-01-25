@@ -9,7 +9,6 @@ import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { useAlert } from 'alert';
 
 type ManageSectionModalProps = {
-    refresh?: () => void;
     addSecModalRef: RefObject<ModalRef>;
     manageSecModalRef: RefObject<ModalRef>;
 };
@@ -19,7 +18,8 @@ export type AlertInLineProps = {
     onClose?: () => void;
 };
 
-export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef }: ManageSectionModalProps) => {
+export const ManageSectionModal = ({ addSecModalRef, manageSecModalRef }: ManageSectionModalProps) => {
+    const { refresh } = usePageManagement();
     const manageSectionModalRef = manageSecModalRef;
     const addSectionModalRef = addSecModalRef;
 
@@ -43,7 +43,7 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
         }
     }, [alert]);
     const onReorderSuccess = () => {
-        refresh?.();
+        refresh();
     };
 
     return (
@@ -91,8 +91,8 @@ export const ManageSectionModal = ({ refresh, addSecModalRef, manageSecModalRef 
                     pageId={page.id}
                     tabId={selected?.id}
                     onSectionTouched={() => {
-                        refresh?.();
-                        closeAddSection?.();
+                        refresh();
+                        closeAddSection();
                     }}
                     onAddSection={(section: string) => {
                         showAlert({ message: `You have successfully added section "${section}"`, type: `success` });

@@ -13,6 +13,12 @@
         gap: 1rem;
         margin-bottom: 1.8rem;
     }
+    .usa-select {
+        &.date-format{
+            background: unset;
+        }
+
+    }
     .main-header-title {
         font-size: 22px;
     }

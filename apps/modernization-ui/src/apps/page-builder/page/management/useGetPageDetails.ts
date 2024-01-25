@@ -38,7 +38,7 @@ type Interaction = {
     page: PagesResponse | undefined;
     fetch: (page: number) => void;
     error?: string;
-    refresh: (pageDetails: PagesResponse) => void;
+    refresh: () => void;
 };
 
 export const useGetPageDetails = (): Interaction => {
@@ -66,14 +66,14 @@ export const useGetPageDetails = (): Interaction => {
                     }
                 });
         }
-    }, [state]);
+    }, [state.status]);
 
     const value = {
         error: state.status === 'error' ? state.error : undefined,
         loading: state.status === 'fetching',
         page: state.status === 'complete' || state.status === 'refreshing' ? state.details : undefined,
         fetch: (page: number) => dispatch({ type: 'fetch', page }),
-        refresh: (pageDetails: PagesResponse) => dispatch({ type: 'refresh', details: pageDetails })
+        refresh: () => (state.status === 'complete' ? dispatch({ type: 'refresh', details: state.details }) : undefined)
     };
 
     return value;

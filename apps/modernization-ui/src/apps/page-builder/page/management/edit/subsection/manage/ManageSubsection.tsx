@@ -4,34 +4,38 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import { Heading } from 'components/heading';
 import { AlertInLineProps } from '../../section/manage/ManageSectionModal';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { PagesSection } from 'apps/page-builder/generated';
+import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTile';
 import { AddSubSection } from './AddSubSection';
 import { usePageManagement } from '../../../usePageManagement';
+import { authorization } from 'authorization';
 
 type ManageSubsectionProps = {
     alert?: AlertInLineProps;
     onResetAlert?: () => void;
     section: PagesSection;
-    refresh?: () => void;
     onCancel?: () => void;
     onSetAlert?: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
 };
 
-export const ManageSubsection = ({
-    alert,
-    onResetAlert,
-    section,
-    onSetAlert,
-    onCancel,
-    refresh
-}: ManageSubsectionProps) => {
+export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onCancel }: ManageSubsectionProps) => {
     const [subsectionState, setSubsectionState] = useState<'manage' | 'add' | 'edit'>('manage');
-    const { page } = usePageManagement();
+    const { page, refresh } = usePageManagement();
     const [onAction, setOnAction] = useState<boolean>(false);
 
     const handleUpdateState = (state: 'manage' | 'add' | 'edit') => {
         setSubsectionState(state);
+    };
+
+    const onDelete = (subsection: PagesSubSection) => {
+        SubSectionControllerService.deleteSubSectionUsingDelete({
+            authorization: authorization(),
+            page: page.id,
+            subSectionId: subsection.id
+        }).then(() => {
+            onSetAlert?.(`You have successfully deleted "${subsection.name}"`, `success`);
+            refresh?.();
+        });
     };
 
     return (
@@ -44,9 +48,9 @@ export const ManageSubsection = ({
                         handleUpdateState('manage');
                     }}
                     onSubSectionTouched={(section: string) => {
-                        onSetAlert?.(`You have successfully subsection "${section}"`, `success`);
+                        onSetAlert?.(`You have successfully added subsection "${section}"`, `success`);
                         handleUpdateState('manage');
-                        refresh?.();
+                        refresh();
                     }}
                 />
             )}
@@ -98,6 +102,7 @@ export const ManageSubsection = ({
                                         subsection={s}
                                         key={k}
                                         setOnAction={setOnAction}
+                                        onDelete={onDelete}
                                     />
                                 );
                             })}

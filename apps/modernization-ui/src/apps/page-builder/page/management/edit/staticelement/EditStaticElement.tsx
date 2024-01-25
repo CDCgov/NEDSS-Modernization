@@ -28,7 +28,6 @@ const staticType = [
 type EditStaticProps = {
     question: PagesQuestion;
     onCloseModal?: () => void;
-    refresh?: () => void;
 };
 
 const hyperlinkId = 1003;
@@ -39,7 +38,8 @@ const readOnlyPartId = 1030;
 
 type StaticElementFormValues = UpdateReadOnlyComments | UpdateHyperlink | UpdateDefault;
 
-export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStaticProps) => {
+export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) => {
+    const { refresh } = usePageManagement();
     const form = useForm<StaticElementFormValues>({
         mode: 'onBlur',
         defaultValues: {
@@ -55,7 +55,7 @@ export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStati
 
     const handleSubmit = () => {
         onSubmit();
-        onCloseModal && onCloseModal();
+        onCloseModal?.();
     };
 
     const handleAlert = (message: string) => {
@@ -73,7 +73,7 @@ export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStati
                 }).then(() => {
                     form.reset();
                     handleAlert(`The element ${(data as UpdateHyperlink).label} has been successfully updated.`);
-                    refresh && refresh();
+                    refresh();
                 });
                 break;
             case commentsReadOnlyId:
@@ -85,7 +85,7 @@ export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStati
                 }).then(() => {
                     form.reset();
                     handleAlert(`The comment element has been successfully updated.`);
-                    refresh && refresh();
+                    refresh();
                 });
                 break;
             case lineSeparatorId:
@@ -97,7 +97,7 @@ export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStati
                 }).then(() => {
                     form.reset();
                     handleAlert(`The line separator element has been successfully updated.`);
-                    refresh && refresh();
+                    refresh();
                 });
                 break;
             case readOnlyPartId:
@@ -109,7 +109,7 @@ export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStati
                 }).then(() => {
                     form.reset();
                     handleAlert(`The participant list has been successfully updated.`);
-                    refresh && refresh();
+                    refresh();
                 });
                 break;
             case originalElecDocId:
@@ -121,7 +121,7 @@ export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStati
                 }).then(() => {
                     form.reset();
                     handleAlert(`The electronic document list has been successfully updated.`);
-                    refresh && refresh();
+                    refresh();
                 });
                 break;
         }
@@ -146,7 +146,7 @@ export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStati
 
     const onCancel = () => {
         form.reset();
-        onCloseModal && onCloseModal();
+        onCloseModal?.();
     };
 
     return (
@@ -163,35 +163,33 @@ export const EditStaticElement = ({ question, onCloseModal, refresh }: EditStati
                             disabled
                             className={styles.select_input}></SelectInput>
                     </div>
-                    <>
-                        {question.displayComponent === hyperlinkId && (
-                            <FormProvider {...form}>
-                                <HyperlinkFields />
-                            </FormProvider>
+                    {question.displayComponent === hyperlinkId && (
+                        <FormProvider {...form}>
+                            <HyperlinkFields />
+                        </FormProvider>
+                    )}
+                    {question.displayComponent === commentsReadOnlyId && (
+                        <FormProvider {...form}>
+                            <CommentsFields />
+                        </FormProvider>
+                    )}
+                    <Controller
+                        control={form.control}
+                        name="adminComments"
+                        rules={{ ...maxLengthRule(2000) }}
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                defaultValue={value}
+                                label="Administrative Comments"
+                                type="text"
+                                ariaLabel="adminComments"
+                                multiline
+                                error={error?.message}
+                            />
                         )}
-                        {question.displayComponent === commentsReadOnlyId && (
-                            <FormProvider {...form}>
-                                <CommentsFields />
-                            </FormProvider>
-                        )}
-                        <Controller
-                            control={form.control}
-                            name="adminComments"
-                            rules={{ ...maxLengthRule(2000) }}
-                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                                <Input
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    defaultValue={value}
-                                    label="Administrative Comments"
-                                    type="text"
-                                    ariaLabel="adminComments"
-                                    multiline
-                                    error={error?.message}
-                                />
-                            )}
-                        />
-                    </>
+                    />
                 </div>
 
                 <div className={styles.footer_buttons}>

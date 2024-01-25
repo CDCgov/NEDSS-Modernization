@@ -1,8 +1,8 @@
-import { useState, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Button, Icon, TextInput } from '@trussworks/react-uswds';
+import { KeyboardEvent as ReactKeyboardEvent, useEffect, useState } from 'react';
 
-import styles from './search.module.scss';
 import classNames from 'classnames';
+import styles from './search.module.scss';
 
 type SearchProps = {
     id: string;
@@ -16,6 +16,7 @@ type SearchProps = {
 
 const Search = (props: SearchProps) => {
     const [keyword, setKeyword] = useState<string>();
+    const [resetInput, setResetInput] = useState<boolean>(false);
     const handleSearch = () => {
         if (props.onSearch) {
             props.onSearch(keyword);
@@ -28,23 +29,34 @@ const Search = (props: SearchProps) => {
         }
     };
 
+    useEffect(() => {
+        setResetInput(true);
+    }, [props.value]);
+
+    useEffect(() => {
+        if (resetInput) {
+            setResetInput(false);
+        }
+    }, [resetInput]);
     return (
         <search className={classNames(styles.search, props.className)}>
             <label className="usa-sr-only" htmlFor={props.id}>
                 Search
             </label>
-            <TextInput
-                placeholder={props.placeholder}
-                type="search"
-                id={props.id}
-                name={props.name}
-                aria-label={props.ariaLabel}
-                defaultValue={props.value}
-                onChange={(event) => setKeyword(event.target.value)}
-                onKeyDown={handleEnter}
-                maxLength={50}
-            />
-            <Button type="button" onClick={handleSearch}>
+            {!resetInput && (
+                <TextInput
+                    placeholder={props.placeholder}
+                    type="search"
+                    id={props.id}
+                    name={props.name}
+                    aria-label={props.ariaLabel}
+                    defaultValue={props.value}
+                    onChange={(event) => setKeyword(event.target.value)}
+                    onKeyDown={handleEnter}
+                    maxLength={50}
+                />
+            )}
+            <Button aria-label="search" type="button" onClick={handleSearch}>
                 <Icon.Search size={3} name="Search" />
             </Button>
         </search>
