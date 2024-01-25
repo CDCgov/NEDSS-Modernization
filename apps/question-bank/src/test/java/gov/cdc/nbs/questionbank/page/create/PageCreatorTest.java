@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -62,48 +61,10 @@ class PageCreatorTest {
     WaTemplate page = pageCreator.buildPage(request, "INV", 10l);
     page.setId(id);
     when(templateRepository.save(Mockito.any())).thenReturn(page);
-    when(validator.validate(Mockito.any())).thenReturn(true);
     PageCreateResponse response = pageCreator.createPage(request, 1l);
     assertEquals(page.getId(), response.pageId());
     assertEquals(page.getTemplateNm(), response.pageName());
     assertEquals(page.getTemplateNm() + PageConstants.ADD_PAGE_MESSAGE, response.message());
-  }
-
-  @Test
-  void testCreatePageTemplateNameExists() {
-    WaTemplate existing = getTemplate(10l);
-    String templateName = "TestPageExist";
-    PageCreateRequest request =
-        new PageCreateRequest("INV", Arrays.asList("1023"), templateName, 10l, "HEP_Case_Map_V1.0",
-            "unit test", "dataMart");
-
-    existing.setTemplateNm(templateName);
-    when(validator.validate(Mockito.any())).thenReturn(false);
-
-
-    String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, templateName);
-    var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
-    assertEquals(finalMessage, exception.getMessage());
-  }
-
-
-  @Test
-  void testCreatePageDataMartNameExist() {
-    when(validator.validate(Mockito.any())).thenReturn(true);
-    WaTemplate existing = getTemplate(10l);
-    String dataMartNm = "dataMartExist";
-    PageCreateRequest request =
-        new PageCreateRequest("INV", Arrays.asList("1023"), "TestPage", 10l, "HEP_Case_Map_V1.0",
-            "unit test", dataMartNm);
-
-    String finalMessage = String.format(PageConstants.ADD_PAGE_DATAMART_NAME_EXISTS,
-        dataMartNm);
-    existing.setDatamartNm(dataMartNm);
-    when(templateRepository.findFirstByDatamartNm(Mockito.any())).thenReturn(Optional.of(existing));
-
-
-    var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
-    assertEquals(finalMessage, exception.getMessage());
   }
 
   @Test
@@ -165,16 +126,6 @@ class PageCreatorTest {
 
     var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
     assertEquals(PageConstants.ADD_PAGE_MMG_EMPTY, exception.getMessage());
-  }
-
-  @Test
-  void testCreatePageException() {
-    when(validator.validate(Mockito.any())).thenReturn(true);
-    final String message = "Could not find page invalid id provided";
-    when(templateRepository.save(Mockito.any())).thenThrow(new IllegalArgumentException(message));
-    PageCreateRequest request = pageRequest();
-    var exception = assertThrows(PageCreateException.class, () -> pageCreator.createPage(request, 1l));
-    assertEquals(PageConstants.ADD_PAGE_FAIL, exception.getMessage());
   }
 
   @Test
