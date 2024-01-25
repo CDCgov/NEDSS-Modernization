@@ -18,7 +18,7 @@ const PageManagementLayout = ({ name, mode, children }: PageBuilderLayoutProps) 
     return (
         <section className={styles.management}>
             <header>
-                <h1>Page builder</h1>
+                <h1 aria-label="Page builder">Page builder</h1>
             </header>
             <div className={styles.bar}>
                 <Breadcrumb start="/page-builder/pages" currentPage={name}>
