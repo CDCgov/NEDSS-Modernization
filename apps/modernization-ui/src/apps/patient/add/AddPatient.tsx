@@ -243,7 +243,7 @@ const AddPatient = () => {
                                 zIndex: 1
                             }}>
                             <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
-                                <h1 className="h1 margin-0">New patient</h1>
+                                <h1 className="new-patient-title margin-0">New patient</h1>
                                 <Button className="add-patient-button" type={'submit'}>
                                     Save changes
                                 </Button>
@@ -309,7 +309,9 @@ const AddPatient = () => {
                                     <main className="content-container">
                                         <aside className="content-sidebar">
                                             <nav className="content-navigation">
-                                                <h2 className="h2 margin-top-0 margin-bottom-1">On this page</h2>
+                                                <h2 className="content-navigation-title margin-top-0 margin-bottom-1">
+                                                    On this page
+                                                </h2>
                                                 <div className="border-left border-base-lighter">
                                                     <a href="#section-General_information">General information</a>
                                                     <a href="#section-Name">Name information</a>
