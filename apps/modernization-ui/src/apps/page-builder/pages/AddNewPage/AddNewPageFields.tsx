@@ -41,6 +41,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         value={value}
                         name={name}
                         id={name}
+                        label="Condition(s)"
                         aria-label={'select the conditions for the page'}
                         options={props.conditions.map((m) => {
                             return {
@@ -48,7 +49,6 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                                 value: m.id
                             };
                         })}
-                        label="Condition(s)"
                     />
                 )}
             />
@@ -147,11 +147,6 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                     />
                 )}
             />
-            <p>
-                Would you like to add any additional information?
-                <br />
-                These fields are optional, you can make changes to this later.
-            </p>
             <Controller
                 control={form.control}
                 name="pageDescription"
