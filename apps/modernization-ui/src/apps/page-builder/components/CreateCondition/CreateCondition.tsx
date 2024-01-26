@@ -22,6 +22,8 @@ type Props = {
     conditionCreated?: (condition: Condition) => void;
 };
 
+const codingSystemDefault = 'CONDITION_LIST_CDC';
+
 export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const token = authorization();
     const { handleSubmit, control, reset, resetField, formState } = useForm<CreateConditionRequest>({ mode: 'onBlur' });
@@ -118,7 +120,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <SelectInput
                                 label="Coding System"
-                                defaultValue={value}
+                                defaultValue={!value ? codingSystemDefault : value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 options={systemOptions.map((option) => {
