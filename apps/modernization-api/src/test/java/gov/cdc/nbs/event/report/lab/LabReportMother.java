@@ -8,6 +8,8 @@ import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.organization.OrganizationIdentifier;
+import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
@@ -28,7 +30,7 @@ public class LabReportMother {
   private static final String PATIENT_SUBJECT = "PATSBJ";
   private static final String LAB_REPORT_DISPLAY_FORM = "LabReport";
   private static final String LAB_REPORT_DOMAIN = "Order";
-  private static final long PIEDMONT_HOSPITAL = 10003001L;
+  private static final String ORDERED_BY = "ORD";
 
   private final MotherSettings settings;
   private final SequentialIdentityGenerator idGenerator;
@@ -63,36 +65,20 @@ public class LabReportMother {
     this.reports.reset();
   }
 
-  /**
-   * Creates a Lab Report associated with the given {@code patient}
-   *
-   * @param patient The identifier of the patient.
-   */
-  void labReport(final PatientIdentifier patient) {
-    unprocessed(patient, PIEDMONT_HOSPITAL);
-  }
 
-  private void include(final LabReportIdentifier observation) {
-    this.reports.available(observation);
-    this.report.active(observation);
-  }
-
-  private void unprocessed(
-      final PatientIdentifier patient,
-      final long organization
-  ) {
+  void create(final PatientIdentifier patient, final OrganizationIdentifier organization) {
     PatientIdentifier revision = patientMother.revise(patient);
     // Observation
     long identifier = idGenerator.next();
-    String localId = idGenerator.nextLocal(LAB_REPORT_CLASS_CODE);
+    String local = idGenerator.nextLocal(LAB_REPORT_CLASS_CODE);
 
-    Observation observation = new Observation(identifier, localId);
+    Observation observation = new Observation(identifier, local);
     observation.setEffectiveFromTime(RandomUtil.getRandomDateInPast());
     observation.setActivityToTime(RandomUtil.getRandomDateInPast());
     observation.setCtrlCdDisplayForm(LAB_REPORT_DISPLAY_FORM);
     observation.setObsDomainCdSt1(LAB_REPORT_DOMAIN);
     observation.setElectronicInd('N');
-    observation.setRecordStatusCd("UNPROCESSED");
+    observation.setRecordStatusCd("ACTIVE");
 
     // Condition: Flu activity code (Influenza)
     observation.setCd("10570");
@@ -108,17 +94,17 @@ public class LabReportMother {
     observation.setLastChgTime(settings.createdOn());
     observation.setLastChgUserId(settings.createdBy());
 
-    patientSubjectParticipation(observation, revision.id());
+    forPatient(observation, revision.id());
 
-    reportingFacility(observation, organization);
+    reportingFacility(observation, organization.identifier());
 
     entityManager.persist(observation);
 
-    include(new LabReportIdentifier(identifier));
+    LabReportIdentifier created = new LabReportIdentifier(identifier, local);
+    include(created);
   }
 
-
-  private void patientSubjectParticipation(final Observation observation, final long patient) {
+  private void forPatient(final Observation observation, final long patient) {
     Act act = observation.getAct();
 
     // create the participation
@@ -157,5 +143,45 @@ public class LabReportMother {
 
     act.addParticipation(participation);
   }
+
+  private void include(final LabReportIdentifier identifier) {
+    this.reports.available(identifier);
+    this.report.active(identifier);
+  }
+
+  void unprocessed(final LabReportIdentifier identifier) {
+    Observation lab = managed(identifier);
+    lab.setRecordStatusCd("UNPROCESSED");
+  }
+
+  void electronic(final LabReportIdentifier identifier) {
+    Observation lab = managed(identifier);
+    lab.setElectronicInd('Y');
+  }
+
+  void orderedBy(final LabReportIdentifier identifier, final ProviderIdentifier provider) {
+    Observation lab = managed(identifier);
+
+    Act act = lab.getAct();
+
+    // create the participation
+    Participation participation = new Participation();
+    participation.setId(new ParticipationId(provider.identifier(), lab.getId(), ORDERED_BY));
+    participation.setActClassCd(act.getClassCd());
+    participation.setSubjectClassCd(PERSON_CLASS);
+
+    participation.setRecordStatusCd(RecordStatus.ACTIVE);
+    participation.setRecordStatusTime(settings.createdOn());
+    participation.setAddTime(settings.createdOn());
+    participation.setAddUserId(settings.createdBy());
+    participation.setActUid(act);
+
+    act.addParticipation(participation);
+  }
+
+  private Observation managed(final LabReportIdentifier identifier) {
+    return this.entityManager.find(Observation.class, identifier.identifier());
+  }
+
 
 }

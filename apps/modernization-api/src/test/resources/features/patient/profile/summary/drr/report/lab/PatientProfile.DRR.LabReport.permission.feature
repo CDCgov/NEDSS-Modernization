@@ -13,7 +13,7 @@ Feature: Patient Profile Documents Requiring Review: Lab Report Permission
   Scenario: I can not find Lab Reports requiring review without the proper permission
     Given I can "View" any "Document"
     And I can "View" any "ObservationMorbidityReport"
-    And the patient has an unprocessed lab report
+    And the patient has a lab report
     And the patient has an unprocessed morbidity report
     And the patient has an unprocessed document
     When I search for documents requiring review for the patient

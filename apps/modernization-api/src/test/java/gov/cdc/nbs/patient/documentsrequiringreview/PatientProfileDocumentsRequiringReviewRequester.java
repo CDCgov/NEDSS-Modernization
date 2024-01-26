@@ -15,27 +15,28 @@ class PatientProfileDocumentsRequiringReviewRequester {
   private static final String QUERY = """
       query documentsRequiringReview($patient: Int!, $page: DocumentRequiringReviewSortablePage) {
         findDocumentsRequiringReviewForPatient(patient: $patient, page: $page) {
-          content {
-            id
-            type
-            dateReceived
-            facilityProviders {
-              orderingProvider {
-                  name
+          content{
+              id
+              localId
+              type
+              dateReceived
+              eventDate
+              isElectronic
+              facilityProviders{
+                  reportingFacility{
+                      name
+                  }
+                  orderingProvider{
+                      name
+                  }
+                  sendingFacility{
+                      name
+                  }
               }
-              reportingFacility {
-                  name
+              descriptions{
+                  title
+                  value
               }
-              sendingFacility {
-                  name
-              }
-            }
-            eventDate
-            descriptions {
-              title
-              value
-            }
-            eventDate
           }
           total
         }
