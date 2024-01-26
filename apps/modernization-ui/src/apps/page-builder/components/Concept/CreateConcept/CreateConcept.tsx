@@ -32,7 +32,7 @@ const init = {
     shortDisplayName: undefined,
     statusCode: AddConceptRequest.statusCode.A
 };
-type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number };
+type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number | undefined };
 
 type Props = {
     valueset: ValueSet;
@@ -40,6 +40,7 @@ type Props = {
     setShowForm: () => void;
     updateCallback: () => void;
     setAlertMessage: (message: AlertMessage) => void;
+    closeForm: () => void;
 };
 
 export const CreateConcept = ({
@@ -47,7 +48,8 @@ export const CreateConcept = ({
     codeSystemOptionList,
     setShowForm,
     updateCallback,
-    setAlertMessage
+    setAlertMessage,
+    closeForm
 }: Props) => {
     const [duration, setDuration] = useState(false);
     const conceptForm = useForm<AddConceptRequest>({
@@ -102,9 +104,10 @@ export const CreateConcept = ({
             .catch((error: any) => {
                 setAlertMessage({
                     type: 'error',
-                    expiration: 3000,
-                    message: <p>{error.message}</p>
+                    expiration: undefined,
+                    message: <p>{error.body.message}</p>
                 });
+                closeForm();
             });
     };
 

@@ -26,8 +26,9 @@ type Props = {
     setShowForm: () => void;
     updateCallback: () => void;
     setAlertMessage: (message: AlertMessage) => void;
+    closeForm: () => void;
 };
-type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number };
+type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number | undefined };
 
 export const EditConcept = ({
     valueset,
@@ -35,7 +36,8 @@ export const EditConcept = ({
     codeSystemOptionList,
     setShowForm,
     updateCallback,
-    setAlertMessage
+    setAlertMessage,
+    closeForm
 }: Props) => {
     const [duration, setDuration] = useState(false);
     const init = {
@@ -108,9 +110,10 @@ export const EditConcept = ({
             .catch((error: any) => {
                 setAlertMessage({
                     type: 'error',
-                    expiration: 3000,
-                    message: <p>{error.message}</p>
+                    expiration: undefined,
+                    message: <p>{error.body.message}</p>
                 });
+                closeForm();
             });
     };
 

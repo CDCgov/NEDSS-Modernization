@@ -23,11 +23,11 @@ export const Concept = ({ valueset }: Props) => {
     const { searchQuery, sortDirection, currentPage, pageSize } = useContext(ConceptsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
-    const [isShowFrom, setShowForm] = useState(false);
+    const [showForm, setShowForm] = useState(false);
     const [codeSystemOptionList, setCodeSystemOptionList] = useState<CodeSystemOption[]>([]);
     const [editMode, setEditMode] = useState(false);
     const [alertMessage, setAlertMessage] = useState<AlertMessage | undefined>(undefined);
-    type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number };
+    type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number | undefined };
 
     const fetchContent = async () => {
         try {
@@ -46,11 +46,11 @@ export const Concept = ({ valueset }: Props) => {
     }, [searchQuery, currentPage, pageSize, sortDirection]);
 
     useEffect(() => {
-        selectedConcept.status && setShowForm(!isShowFrom);
+        selectedConcept.status && setShowForm(!showForm);
     }, [selectedConcept]);
 
     useEffect(() => {
-        setTimeout(() => setAlertMessage(undefined), 3000);
+        setTimeout(() => setAlertMessage(undefined), 5000);
     }, [alertMessage]);
 
     const updateCallback = () => {
@@ -99,7 +99,7 @@ export const Concept = ({ valueset }: Props) => {
                     {alertMessage.message}
                 </AlertBanner>
             )}
-            {isShowFrom ? (
+            {showForm ? (
                 editMode ? (
                     <EditConcept
                         valueset={valueset}
@@ -108,6 +108,7 @@ export const Concept = ({ valueset }: Props) => {
                         setShowForm={() => setShowForm(false)}
                         updateCallback={updateCallback}
                         setAlertMessage={setAlertMessage}
+                        closeForm={() => setShowForm(false)}
                     />
                 ) : (
                     <CreateConcept
@@ -116,6 +117,7 @@ export const Concept = ({ valueset }: Props) => {
                         setShowForm={() => setShowForm(false)}
                         updateCallback={updateCallback}
                         setAlertMessage={setAlertMessage}
+                        closeForm={() => setShowForm(false)}
                     />
                 )
             ) : (
@@ -151,7 +153,7 @@ export const Concept = ({ valueset }: Props) => {
                             type="submit"
                             onClick={() => {
                                 setEditMode(false);
-                                setShowForm(!isShowFrom);
+                                setShowForm(!showForm);
                             }}>
                             <span>Add New concept</span>
                         </Button>
