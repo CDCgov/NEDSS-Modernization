@@ -1,10 +1,12 @@
 import { Icon, Modal, ModalRef } from '@trussworks/react-uswds';
-import { RefObject, useState } from 'react';
-import { QuestionSearch } from '../search/QuestionSearch';
-import styles from './add-question-modal.module.scss';
-import './AddQuestionModal.scss';
-import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/CreateQuestion';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
+import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/CreateQuestion';
+import { PageProvider, usePage } from 'page';
+import { RefObject, useEffect, useState } from 'react';
+import { QuestionSearch } from '../search/QuestionSearch';
+import './AddQuestionModal.scss';
+import styles from './add-question-modal.module.scss';
+import { usePageManagement } from '../../../usePageManagement';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -12,16 +14,34 @@ type Props = {
     onClose?: (questions: number[]) => void;
     valueSetModalRef: RefObject<ModalRef>;
 };
-export const AddQuestionModal = ({ pageId, modal, onClose, valueSetModalRef }: Props) => {
+
+export const AddQuestionModal = (props: Props) => {
+    return (
+        <PageProvider>
+            <AddQuestionModalContent {...props} />
+        </PageProvider>
+    );
+};
+
+const AddQuestionModalContent = ({ pageId, modal, onClose, valueSetModalRef }: Props) => {
     const [state, setState] = useState<'search' | 'add'>('search');
+    const { page } = usePageManagement();
+    const { firstPage } = usePage();
 
     const handleClose = (questions?: number[]) => {
         if (onClose) {
             onClose(questions ?? []);
         }
         setState('search');
+        if (!questions) {
+            firstPage();
+        }
         modal.current?.toggleModal(undefined, false);
     };
+
+    useEffect(() => {
+        firstPage();
+    }, [JSON.stringify(page)]);
 
     return (
         <Modal
