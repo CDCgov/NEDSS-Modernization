@@ -45,8 +45,9 @@ export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onD
                 <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" onClick={onEditQuestion} />
                 {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
-                <div className={styles.requiredToggle}>Required</div>
+                <div className={styles.requiredToggle}>Not required</div>
                 <ToggleButton defaultChecked={question.required} onChange={onRequiredChange} />
+                <div className={styles.requiredToggle}>Required</div>
             </div>
         </div>
     );

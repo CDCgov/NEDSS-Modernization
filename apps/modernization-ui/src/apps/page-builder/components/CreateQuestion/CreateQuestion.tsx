@@ -672,15 +672,16 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             control={control}
                             name="includedInMessage"
                             render={({ field: { onChange, value } }) => (
-                                <>
+                                <div className="create-question-toggle-group">
+                                    <div>Not required</div>
                                     <ToggleButton
-                                        className="margin-bottom-1em"
                                         checked={value}
                                         disabled={readOnlyControl}
                                         name="includedInMessage"
                                         onChange={onChange}
                                     />
-                                </>
+                                    <div>Required</div>
+                                </div>
                             )}
                         />
                         <Controller
@@ -748,7 +749,8 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             control={control}
                             name="requiredInMessage"
                             render={({ field: { onChange, value } }) => (
-                                <>
+                                <div className="create-question-toggle-group">
+                                    <div>Not required</div>
                                     <ToggleButton
                                         className="requiredInMessage"
                                         checked={value}
@@ -756,7 +758,8 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                         disabled={IsIncludedInMessage}
                                         onChange={onChange}
                                     />
-                                </>
+                                    <div>Required</div>
+                                </div>
                             )}
                         />
                         <br></br>
