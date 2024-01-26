@@ -1,4 +1,10 @@
-import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
+import {
+    PagesQuestion,
+    PagesSection,
+    PagesSubSection,
+    SubSectionControllerService,
+    PagesTab
+} from 'apps/page-builder/generated';
 import { SectionHeader } from './SectionHeader';
 import styles from './section.module.scss';
 import { Subsection } from '../subsection/Subsection';
@@ -12,6 +18,7 @@ import { AddSubSection } from '../subsection/manage/AddSubSection';
 import { AlertInLineProps } from './manage/ManageSectionModal';
 import { ManageSubsection } from '../subsection/manage/ManageSubsection';
 import { authorization } from 'authorization';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 
 type Props = {
     section: PagesSection;
@@ -88,6 +95,10 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSectio
         }
     };
 
+    const handleReorderSubsection = () => {
+        refresh();
+    };
+
     return (
         <div className={styles.section}>
             <SectionHeader
@@ -152,15 +163,20 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSectio
                 className={'manage-section-modal'}
                 forceAction
                 isLarge>
-                <ManageSubsection
-                    section={section}
-                    alert={alert}
-                    onResetAlert={() => setAlert(undefined)}
-                    onSetAlert={(message, type) => {
-                        setAlert({ message: message, type: type });
-                    }}
-                    onCancel={onCloseManageSubsection}
-                />
+                <DragDropProvider
+                    pageData={page}
+                    currentTab={page.tabs?.findIndex((x: PagesTab) => x.name === selected?.name) ?? 0}
+                    successCallBack={handleReorderSubsection}>
+                    <ManageSubsection
+                        section={section}
+                        alert={alert}
+                        onResetAlert={() => setAlert(undefined)}
+                        onSetAlert={(message, type) => {
+                            setAlert({ message: message, type: type });
+                        }}
+                        onCancel={onCloseManageSubsection}
+                    />
+                </DragDropProvider>
             </Modal>
         </div>
     );

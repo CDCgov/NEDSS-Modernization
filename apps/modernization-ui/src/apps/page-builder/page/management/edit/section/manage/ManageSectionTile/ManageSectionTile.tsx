@@ -67,7 +67,7 @@ export const ManageSectionTile = ({
                                     <div className={styles.warningGroup}>
                                         <IconComponent name="group" size="3" />
                                     </div>
-                                    <div>{`${section.name}(${section.subSections.length})`}</div>
+                                    <div>{`${section.name} (${section.subSections.length})`}</div>
                                 </div>
                                 <div className={styles.warningModalBtns}>
                                     {isValidDelete(section) ? (
@@ -109,7 +109,7 @@ export const ManageSectionTile = ({
                             <div className={styles.label}>
                                 <IconComponent name="group" size="3" />
                                 <span data-testid="manageSectionTileId">
-                                    {`${section.name}(${section.subSections.length})`}
+                                    {`${section.name} (${section.subSections.length})`}
                                 </span>
                             </div>
                             <div className={styles.buttons}>

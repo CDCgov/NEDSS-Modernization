@@ -78,7 +78,7 @@
         color: colors.$base-darkest;
         padding: 1rem 1.5rem;
         background-color: colors.$base-white;
-
+        justify-content: space-between;
         .handle {
             display: flex;
             margin-right: 1.35rem;
@@ -93,6 +93,7 @@
             gap: 1rem;
             font-size: 1rem;
             font-weight: 400;
+            margin-left: -1.5rem;
         }
         .buttons {
             color: colors.$primary;
@@ -120,7 +121,9 @@
                     background-color: transparent !important;
                 }
             }
-
+            button {
+                padding: 0;
+            }
             .offVisibility {
                 color: colors.$base-lighter;
             }
