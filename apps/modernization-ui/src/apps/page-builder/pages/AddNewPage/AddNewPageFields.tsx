@@ -139,7 +139,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         options={props.mmgs.map((m) => {
                             return {
                                 name: m.display ?? '',
-                                value: m.conceptCode ?? ''
+                                value: m.localCode ?? ''
                             };
                         })}
                         error={error?.message}

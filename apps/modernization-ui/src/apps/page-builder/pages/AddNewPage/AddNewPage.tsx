@@ -1,4 +1,5 @@
 import { Button, Form, Modal, ModalRef } from '@trussworks/react-uswds';
+import { useAlert } from 'alert';
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
@@ -7,10 +8,10 @@ import {
     Concept,
     Condition,
     ConditionControllerService,
+    PageControllerService,
     PageCreateRequest,
     Template
 } from 'apps/page-builder/generated';
-import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
 import { authorization } from 'authorization';
@@ -41,6 +42,7 @@ export const AddNewPage = () => {
     const [conditions, setConditions] = useState<Condition[]>([]);
     const [mmgs, setMmgs] = useState<Concept[]>([]);
     const [templates, setTemplates] = useState<Template[]>([]);
+    const { alertError } = useAlert();
     const form = useForm<PageCreateRequest>({
         mode: 'onBlur',
         defaultValues: {
@@ -85,14 +87,21 @@ export const AddNewPage = () => {
     };
 
     const onSubmit = form.handleSubmit((data) => {
-        createPage(authorization(), data).then((response) => {
-            if (config.features.pageBuilder.page.management.edit.enabled) {
-                form.reset();
-                navigate(`/page-builder/pages/${response.pageId}/edit`);
-            } else {
-                window.location.href = `/nbs/page-builder/api/v1/pages/${response.pageId}/edit`;
-            }
-        });
+        PageControllerService.createPageUsingPost({
+            authorization: authorization(),
+            request: data
+        })
+            .then((response) => {
+                if (config.features.pageBuilder.page.management.edit.enabled) {
+                    form.reset();
+                    navigate(`/page-builder/pages/${response.pageId}/edit`);
+                } else {
+                    window.location.href = `/nbs/page-builder/api/v1/pages/${response.pageId}/edit`;
+                }
+            })
+            .catch(() => {
+                alertError({ message: 'Failed to create page' });
+            });
     });
 
     const handleConditionCreated = (condition: Condition) => {
