@@ -20,14 +20,14 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, 
     const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
     return (
         <section className={styles.menu}>
-            <FilterDisplay onClickFilter={() => setOverlayVisible(true)} filters={filters} />
+            <FilterDisplay onClickFilter={() => setOverlayVisible(!overlayVisible)} filters={filters} />
             <OverlayPanel
                 position="right"
                 overlayVisible={overlayVisible}
                 toggle={() => (
                     <Button
                         type="button"
-                        onClick={() => setOverlayVisible(true)}
+                        onClick={() => setOverlayVisible(!overlayVisible)}
                         outline
                         className={styles.filterButton}>
                         <Icon.FilterAlt />
