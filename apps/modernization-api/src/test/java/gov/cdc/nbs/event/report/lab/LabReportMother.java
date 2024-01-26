@@ -37,8 +37,8 @@ public class LabReportMother {
   private final EntityManager entityManager;
   private final TestLabReportCleaner cleaner;
 
-  private final Active<LabReportIdentifier> report;
-  private final Available<LabReportIdentifier> reports;
+  private final Active<LabReportIdentifier> active;
+  private final Available<LabReportIdentifier> available;
 
   private final PatientMother patientMother;
 
@@ -47,22 +47,22 @@ public class LabReportMother {
       final SequentialIdentityGenerator idGenerator,
       final EntityManager entityManager,
       final TestLabReportCleaner cleaner,
-      final Active<LabReportIdentifier> report,
-      final Available<LabReportIdentifier> reports,
+      final Active<LabReportIdentifier> active,
+      final Available<LabReportIdentifier> available,
       final PatientMother patientMother
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.entityManager = entityManager;
     this.cleaner = cleaner;
-    this.report = report;
-    this.reports = reports;
+    this.active = active;
+    this.available = available;
     this.patientMother = patientMother;
   }
 
   public void reset() {
     this.cleaner.clean(this.settings.starting());
-    this.reports.reset();
+    this.available.reset();
   }
 
 
@@ -96,7 +96,7 @@ public class LabReportMother {
 
     forPatient(observation, revision.id());
 
-    reportingFacility(observation, organization.identifier());
+    reportedBy(observation, organization.identifier());
 
     entityManager.persist(observation);
 
@@ -124,7 +124,7 @@ public class LabReportMother {
     act.addParticipation(participation);
   }
 
-  private void reportingFacility(final Observation observation, final long organization) {
+  private void reportedBy(final Observation observation, final long organization) {
     Act act = observation.getAct();
 
     // create the participation
@@ -145,8 +145,8 @@ public class LabReportMother {
   }
 
   private void include(final LabReportIdentifier identifier) {
-    this.reports.available(identifier);
-    this.report.active(identifier);
+    this.available.available(identifier);
+    this.active.active(identifier);
   }
 
   void unprocessed(final LabReportIdentifier identifier) {

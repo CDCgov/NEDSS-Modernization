@@ -14,7 +14,7 @@ class CaseReportDetailRowMapper implements RowMapper<DocumentRequiringReview> {
       int identifier,
       int receivedOn,
       int type,
-      int sendingFacility,
+      FacilityProvidersRowMapper.Column facilities,
       int condition,
       int event,
       int updated
@@ -23,9 +23,11 @@ class CaseReportDetailRowMapper implements RowMapper<DocumentRequiringReview> {
 
 
   private final Column columns;
+  private final FacilityProvidersRowMapper facilityProvidersRowMapper;
 
   CaseReportDetailRowMapper(final Column columns) {
     this.columns = columns;
+    this.facilityProvidersRowMapper = new FacilityProvidersRowMapper(columns.facilities());
   }
 
   @Override
@@ -56,18 +58,13 @@ class CaseReportDetailRowMapper implements RowMapper<DocumentRequiringReview> {
   }
 
   private DocumentRequiringReview.FacilityProviders mapProviders(final ResultSet resultSet) throws SQLException {
-    String sendingFacility = resultSet.getString(columns.sendingFacility());
-
-    DocumentRequiringReview.FacilityProviders providers = new DocumentRequiringReview.FacilityProviders();
-    providers.setSendingFacility(new DocumentRequiringReview.SendingFacility(sendingFacility));
-
-    return providers;
+    return this.facilityProvidersRowMapper.map(resultSet);
   }
 
   private List<DocumentRequiringReview.Description> mapDescription(final ResultSet resultSet)
       throws SQLException {
     String condition = resultSet.getString(this.columns.condition());
 
-    return List.of(new DocumentRequiringReview.Description(condition, ""));
+    return List.of(new DocumentRequiringReview.Description(condition));
   }
 }

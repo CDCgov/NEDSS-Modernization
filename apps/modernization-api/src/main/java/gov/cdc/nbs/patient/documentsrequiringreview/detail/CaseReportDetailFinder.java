@@ -18,7 +18,7 @@ class CaseReportDetailFinder {
           [document].nbs_document_uid             as [id],
           [document].add_time                     as [date_received],
           [document_type].code_short_desc_txt     as [document_type],
-          [document].sending_facility_nm          as [sending_facility],    
+          [document].sending_facility_nm          as [sending_facility],
           [condition].condition_short_nm          as [condition],
           [document].local_id                     as [event_id],
           case
@@ -38,7 +38,12 @@ class CaseReportDetailFinder {
       where   [document].nbs_document_uid in (:identifiers)
       """;
   private static final CaseReportDetailRowMapper.Column DEFAULT_COLUMNS =
-      new CaseReportDetailRowMapper.Column(1, 2, 3, 4, 5, 6, 7);
+      new CaseReportDetailRowMapper.Column(1, 2, 3,
+          new FacilityProvidersRowMapper.Column(
+              null,
+              null,
+              new SendingFacilityRowMapper.Column(4)
+          ), 5, 6, 7);
 
   private final NamedParameterJdbcTemplate template;
   private final CaseReportDetailRowMapper mapper;

@@ -14,14 +14,19 @@ import static org.mockito.Mockito.when;
 
 class CaseReportDetailRowMapperTest {
 
+  private final CaseReportDetailRowMapper.Column columns = new CaseReportDetailRowMapper.Column(2, 3, 5,
+      new FacilityProvidersRowMapper.Column(
+          null,
+          null,
+          new SendingFacilityRowMapper.Column(9)
+      ),
+      11, 13, 17
+  );
+
   @Test
   void should_map_from_result_set() throws SQLException {
 
-    CaseReportDetailRowMapper.Column columns =
-        new CaseReportDetailRowMapper.Column(2, 3, 5, 7, 11, 13, 17);
-
-    CaseReportDetailRowMapper mapper =
-        new CaseReportDetailRowMapper(columns);
+    CaseReportDetailRowMapper mapper = new CaseReportDetailRowMapper(columns);
 
     ResultSet resultSet = mock(ResultSet.class);
 
@@ -47,18 +52,14 @@ class CaseReportDetailRowMapperTest {
   @Test
   void should_map_with_providers_from_result_set() throws SQLException {
 
-    CaseReportDetailRowMapper.Column columns =
-        new CaseReportDetailRowMapper.Column(2, 3, 5, 7, 11, 13, 17);
-
-    CaseReportDetailRowMapper mapper =
-        new CaseReportDetailRowMapper(columns);
+    CaseReportDetailRowMapper mapper = new CaseReportDetailRowMapper(columns);
 
     ResultSet resultSet = mock(ResultSet.class);
 
     when(resultSet.getLong(columns.identifier())).thenReturn(37L);
     when(resultSet.getTimestamp(columns.receivedOn())).thenReturn(
         Timestamp.from(Instant.parse("1989-03-19T00:00:00Z")));
-    when(resultSet.getString(columns.sendingFacility())).thenReturn("sending-facility-value");
+    when(resultSet.getString(columns.facilities().sending().name())).thenReturn("sending-facility-value");
 
 
 
@@ -74,11 +75,7 @@ class CaseReportDetailRowMapperTest {
   @Test
   void should_map_with_description_from_result_set() throws SQLException {
 
-    CaseReportDetailRowMapper.Column columns =
-        new CaseReportDetailRowMapper.Column(2, 3, 5, 7, 11, 13, 17);
-
-    CaseReportDetailRowMapper mapper =
-        new CaseReportDetailRowMapper(columns);
+    CaseReportDetailRowMapper mapper = new CaseReportDetailRowMapper(columns);
 
     ResultSet resultSet = mock(ResultSet.class);
 

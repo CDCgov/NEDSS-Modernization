@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient.documentsrequiringreview.detail;
 
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview;
-import gov.cdc.nbs.provider.ProviderNameRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -13,25 +12,26 @@ import java.util.List;
 
 class LaboratoryReportDetailRowMapper implements RowMapper<DocumentRequiringReview> {
 
-
   record Column(
       int identifier,
       int receivedOn,
       int eventDate,
-      int reportingFacility,
-      ProviderNameRowMapper.Column ordering,
+      FacilityProvidersRowMapper.Column facilities,
       int electronic,
-      int event
+      int event,
+      LabTestSummaryRowMapper.Column tests
   ) {
   }
 
 
   private final Column columns;
-  private final ProviderNameRowMapper orderingProviderMapper;
+  private final FacilityProvidersRowMapper facilityProvidersRowMapper;
+  private final LabTestSummaryRowMapper labTestSummaryMapper;
 
   LaboratoryReportDetailRowMapper(final Column columns) {
     this.columns = columns;
-    this.orderingProviderMapper = new ProviderNameRowMapper(columns.ordering);
+    this.facilityProvidersRowMapper = new FacilityProvidersRowMapper(columns.facilities());
+    this.labTestSummaryMapper = new LabTestSummaryRowMapper(columns.tests());
   }
 
   @Override
@@ -44,7 +44,7 @@ class LaboratoryReportDetailRowMapper implements RowMapper<DocumentRequiringRevi
 
     DocumentRequiringReview.FacilityProviders providers = mapProviders(resultSet);
 
-    List<DocumentRequiringReview.Description> descriptions = Collections.emptyList();
+    List<DocumentRequiringReview.Description> descriptions = maybeMapTests(resultSet);
 
     return new DocumentRequiringReview(
         identifier,
@@ -65,20 +65,14 @@ class LaboratoryReportDetailRowMapper implements RowMapper<DocumentRequiringRevi
   }
 
   private DocumentRequiringReview.FacilityProviders mapProviders(final ResultSet resultSet) throws SQLException {
-
-    DocumentRequiringReview.FacilityProviders providers = new DocumentRequiringReview.FacilityProviders();
-    String reportingFacility = resultSet.getString(columns.reportingFacility());
-
-    providers.setReportingFacility(new DocumentRequiringReview.ReportingFacility(reportingFacility));
-
-    String orderingProvider = this.orderingProviderMapper.map(resultSet);
-    if (orderingProvider != null) {
-      providers.setOrderingProvider(new DocumentRequiringReview.OrderingProvider(orderingProvider));
-    }
-
-    return providers;
+    return this.facilityProvidersRowMapper.map(resultSet);
   }
 
+  private List<DocumentRequiringReview.Description> maybeMapTests(final ResultSet resultSet) throws SQLException {
+    LabTestSummary summary = this.labTestSummaryMapper.map(resultSet);
+
+    return LabTestSummaryDescriptionMapper.maybeMap(summary).map(List::of).orElse(Collections.emptyList());
+  }
 
 }
 
