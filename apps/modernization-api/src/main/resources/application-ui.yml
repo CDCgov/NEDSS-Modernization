@@ -1,0 +1,23 @@
+nbs:
+  ui:
+    features:
+      address:
+        autocomplete: false
+        verification: false
+      pageBuilder:
+        enabled: false
+        page:
+          library:
+            enabled: false
+          management:
+            create:
+              enabled: false
+            edit:
+              enabled: false
+
+    settings:
+      smarty:
+        key: 166215385741384990
+      analytics:
+        key: fake.1234
+        host: analytics.host
