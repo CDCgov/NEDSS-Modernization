@@ -26,7 +26,10 @@ const codingSystemDefault = 'CONDITION_LIST_CDC';
 
 export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const token = authorization();
-    const { handleSubmit, control, reset, resetField, formState } = useForm<CreateConditionRequest>({ mode: 'onBlur' });
+    const { handleSubmit, control, reset, resetField, formState } = useForm<CreateConditionRequest>({
+        mode: 'onBlur',
+        defaultValues: { codeSystemDescTxt: codingSystemDefault }
+    });
     const formWatch = useWatch({ control });
     const { showAlert } = useAlert();
     const { properties } = useConfiguration();
@@ -120,7 +123,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <SelectInput
                                 label="Coding System"
-                                defaultValue={!value ? codingSystemDefault : value}
+                                defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 options={systemOptions.map((option) => {
