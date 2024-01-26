@@ -68,10 +68,13 @@ export const AddNewPage = () => {
         ConditionControllerService.findConditionsNotInUseUsingGet({ authorization: token }).then((data) =>
             setConditions(data)
         );
-        fetchTemplates(token).then((data) => {
+    }, []);
+
+    useEffect(() => {
+        fetchTemplates(authorization(), watch.eventType ?? ' ').then((data) => {
             setTemplates(data);
         });
-    }, []);
+    }, [watch.eventType]);
 
     const handleAddConditions = (conditions: number[]) => {
         const newConditions = conditions

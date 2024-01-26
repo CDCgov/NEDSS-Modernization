@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 
 @Component
@@ -21,8 +20,11 @@ class TemplateRequester {
   }
 
   ResultActions getAll() throws Exception {
-    MockHttpServletRequestBuilder builder = get("/api/v1/template/");
-    return mvc.perform(this.authenticated.withUser(builder)).andDo(print());
+    return mvc.perform(this.authenticated.withUser(get("/api/v1/template/"))).andDo(print());
+  }
+
+  ResultActions getAllInv() throws Exception {
+    return mvc.perform(this.authenticated.withUser(get("/api/v1/template/?type=INV"))).andDo(print());
   }
 
 }
