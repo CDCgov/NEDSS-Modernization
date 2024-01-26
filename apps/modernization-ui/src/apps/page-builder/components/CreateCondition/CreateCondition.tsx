@@ -123,7 +123,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <SelectInput
                                 label="Coding System"
-                                defaultValue={!value ? codingSystemDefault : value}
+                                defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 options={systemOptions.map((option) => {
