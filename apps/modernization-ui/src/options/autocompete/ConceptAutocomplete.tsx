@@ -1,9 +1,9 @@
-import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
 import { useConceptOptionsAutocomplete } from './useConceptOptionsAutocomplete';
 import { Suggestions } from 'suggestion/Suggestions';
 import { Selectable } from 'options/selectable';
-
-const renderSuggestion = (suggestion: Selectable) => <>{suggestion.name}</>;
+import { useUserOptionsAutocomplete } from 'options/users/useUserOptionsAutocomplete';
+import { DateProperty, Property, ValueProperty } from 'filters/properties';
 
 type Props = {
     id: string;
@@ -18,11 +18,14 @@ type Props = {
 const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange }: Props) => {
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const { options, suggest, reset } = useConceptOptionsAutocomplete(valueSet);
-
+    const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
+        return <>{suggestion.label}</>;
+    };
+    
     const [entered, setEntered] = useState(value?.name || '');
 
+    const { options, suggest, reset } = useUserOptionsAutocomplete({initialCriteria: entered});
+    
     useEffect(() => {
         reset(value?.name);
     }, []);
@@ -30,6 +33,7 @@ const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange
     useEffect(() => {
         if (entered) {
             suggest(entered);
+
         } else {
             reset();
         }
@@ -58,8 +62,18 @@ const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange
         inputRef?.current?.focus();
     };
 
+    const handleOptions = (option: Selectable) => {
+        reset(option.name);
+        setEntered(option.name ?? '');
+        if (onChange) {
+            onChange(option.value);
+        }
+    };
+
     return (
         <>
+            <label className="usa-label" htmlFor={id}>{label}</label>
+
             <input
                 ref={inputRef}
                 className="usa-input"
