@@ -108,7 +108,6 @@ export const EditConcept = ({
                 return response;
             })
             .catch((error: any) => {
-                console.log(error.body);
                 setAlertMessage({
                     type: 'error',
                     expiration: undefined,
