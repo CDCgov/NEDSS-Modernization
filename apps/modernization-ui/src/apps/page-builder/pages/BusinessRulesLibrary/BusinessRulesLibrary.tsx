@@ -4,7 +4,6 @@ import { BusinessRuleContext } from '../../context/BusinessContext';
 import { fetchBusinessRules } from './useBusinessRulesAPI';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
-import { PageBuilder } from '../PageBuilder/PageBuilder';
 import { Breadcrumb } from 'breadcrumb';
 import type { ViewRuleResponse } from '../../generated/models/ViewRuleResponse';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
@@ -38,7 +37,10 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
     }, [searchQuery, currentPage, pageSize, sortBy, filter, page]);
 
     return (
-        <PageBuilder page="pages">
+        <>
+            <header className="business-rule-header">
+                <h2>Page builder</h2>
+            </header>
             <div className="business-rules-library padding-top-3">
                 {page && (
                     <div className="padding-left-3">
@@ -60,6 +62,6 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
                     </div>
                 </div>
             </div>
-        </PageBuilder>
+        </>
     );
 };

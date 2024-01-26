@@ -1,4 +1,5 @@
 import { Button, Form, Modal, ModalRef } from '@trussworks/react-uswds';
+import { useAlert } from 'alert';
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
@@ -7,10 +8,10 @@ import {
     Concept,
     Condition,
     ConditionControllerService,
+    PageControllerService,
     PageCreateRequest,
     Template
 } from 'apps/page-builder/generated';
-import { createPage } from 'apps/page-builder/services/pagesAPI';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
 import { authorization } from 'authorization';
@@ -41,6 +42,7 @@ export const AddNewPage = () => {
     const [conditions, setConditions] = useState<Condition[]>([]);
     const [mmgs, setMmgs] = useState<Concept[]>([]);
     const [templates, setTemplates] = useState<Template[]>([]);
+    const { alertError } = useAlert();
     const form = useForm<PageCreateRequest>({
         mode: 'onBlur',
         defaultValues: {
@@ -68,10 +70,13 @@ export const AddNewPage = () => {
         ConditionControllerService.findConditionsNotInUseUsingGet({ authorization: token }).then((data) =>
             setConditions(data)
         );
-        fetchTemplates(token).then((data) => {
+    }, []);
+
+    useEffect(() => {
+        fetchTemplates(authorization(), watch.eventType ?? ' ').then((data) => {
             setTemplates(data);
         });
-    }, []);
+    }, [watch.eventType]);
 
     const handleAddConditions = (conditions: number[]) => {
         const newConditions = conditions
@@ -82,14 +87,21 @@ export const AddNewPage = () => {
     };
 
     const onSubmit = form.handleSubmit((data) => {
-        createPage(authorization(), data).then((response) => {
-            if (config.features.pageBuilder.page.management.edit.enabled) {
-                form.reset();
-                navigate(`/page-builder/pages/${response.pageId}/edit`);
-            } else {
-                window.location.href = `/nbs/page-builder/api/v1/pages/${response.pageId}/edit`;
-            }
-        });
+        PageControllerService.createPageUsingPost({
+            authorization: authorization(),
+            request: data
+        })
+            .then((response) => {
+                if (config.features.pageBuilder.page.management.edit.enabled) {
+                    form.reset();
+                    navigate(`/page-builder/pages/${response.pageId}/edit`);
+                } else {
+                    window.location.href = `/nbs/page-builder/api/v1/pages/${response.pageId}/edit`;
+                }
+            })
+            .catch(() => {
+                alertError({ message: 'Failed to create page' });
+            });
     });
 
     const handleConditionCreated = (condition: Condition) => {
@@ -141,10 +153,10 @@ export const AddNewPage = () => {
             <div className="breadcrumb-wrap">
                 <PagesBreadcrumb currentPage="Create new page" />
             </div>
-            <Form onSubmit={onSubmit}>
+            <Form onSubmit={onSubmit} aria-label="create new page form">
                 <div className="add-new-page__form">
                     <div className="add-new-page__content">
-                        <h2>Create new page</h2>
+                        <h2 aria-label="Create new page">Create new page</h2>
                         <h4>Let's fill out some information about your new page before creating it</h4>
                         <div className="fields-info">
                             All fields with <span className="mandatory-indicator">*</span> are required
@@ -153,15 +165,17 @@ export const AddNewPage = () => {
                             control={form.control}
                             name="eventType"
                             rules={{ required: { value: true, message: 'Event type is required.' } }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <SelectInput
-                                    aria-labelledby="eventType"
                                     label="Event type"
                                     dataTestid="eventTypeDropdown"
                                     value={value}
                                     onChange={onChange}
                                     options={eventType}
                                     error={error?.message}
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
                                     required
                                 />
                             )}

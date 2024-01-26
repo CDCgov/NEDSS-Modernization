@@ -1,10 +1,9 @@
 /* eslint-disable camelcase */
 import {
     PageControllerService,
-    Page_PageSummary_,
-    PagesService,
     PageSummaryService,
-    PageCreateRequest
+    Page_PageSummary_,
+    PagesService
 } from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = (
@@ -20,15 +19,6 @@ export const fetchPageSummaries = (
         page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
         size: pageSize,
         sort
-    });
-};
-
-export const createPage = (token: string, request: PageCreateRequest) => {
-    return PageControllerService.createPageUsingPost({
-        authorization: token,
-        request
-    }).then((response: any) => {
-        return response;
     });
 };
 

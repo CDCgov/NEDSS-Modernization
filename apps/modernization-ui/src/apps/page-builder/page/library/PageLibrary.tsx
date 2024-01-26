@@ -66,7 +66,7 @@ const PageLibraryContent = () => {
             <PageBuilder nav>
                 <section className={styles.library}>
                     <header>
-                        <h2>Page library</h2>
+                        <h2 aria-label="Page library">Page library</h2>
                         {!config.loading && config.features.pageBuilder.page.management.create.enabled ? (
                             <NavLinkButton to={'/page-builder/pages/add'}>Create new page</NavLinkButton>
                         ) : (

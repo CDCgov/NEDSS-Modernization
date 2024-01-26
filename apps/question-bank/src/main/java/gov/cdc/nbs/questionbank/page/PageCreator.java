@@ -14,7 +14,6 @@ import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.exception.PageCreateException;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
-import gov.cdc.nbs.questionbank.page.request.PageValidationRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 
@@ -39,26 +38,7 @@ public class PageCreator {
   }
 
     public PageCreateResponse createPage(PageCreateRequest request, Long userId) {
-        if (request.name() == null || request.name().isEmpty()) {
-            throw new PageCreateException(PageConstants.ADD_PAGE_NAME_EMPTY);
-        }
-
-        if (request.eventType() == null || request.eventType().isEmpty()) {
-            throw new PageCreateException(PageConstants.ADD_PAGE_EVENTTYPE_EMPTY);
-        }
-
-        if (request.templateId() == null || request.templateId().intValue() < 1) {
-            throw new PageCreateException(PageConstants.ADD_PAGE_TEMPLATE_EMPTY);
-        }
-
-        if (request.messageMappingGuide() == null || request.messageMappingGuide().isEmpty()) {
-            throw new PageCreateException(PageConstants.ADD_PAGE_MMG_EMPTY);
-        }
-
-        if (!validator.validate(new PageValidationRequest(request.name()))) {
-            String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, request.name());
-            throw new PageCreateException(finalMessage);
-        }
+       validator.validate(request);
 
         if (request.dataMartName() != null && !request.dataMartName().isEmpty()) {
             Optional<WaTemplate> existingDataMartNm = templateRepository.findFirstByDatamartNm(request.dataMartName());

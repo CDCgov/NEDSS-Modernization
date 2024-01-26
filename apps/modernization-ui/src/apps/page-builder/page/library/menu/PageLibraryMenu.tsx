@@ -20,14 +20,14 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, 
     const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
     return (
         <section className={styles.menu}>
-            <FilterDisplay onClickFilter={() => setOverlayVisible(true)} filters={filters} />
+            <FilterDisplay onClickFilter={() => setOverlayVisible(!overlayVisible)} filters={filters} />
             <OverlayPanel
                 position="right"
                 overlayVisible={overlayVisible}
                 toggle={() => (
                     <Button
                         type="button"
-                        onClick={() => setOverlayVisible(true)}
+                        onClick={() => setOverlayVisible(!overlayVisible)}
                         outline
                         className={styles.filterButton}>
                         <Icon.FilterAlt />
@@ -56,10 +56,21 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, 
                 <LinkButton target="_self" href="/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true">
                     Page porting
                 </LinkButton>
-                <Button type="button" onClick={onPrint} className={styles.icon} outline>
+                <Button
+                    aria-label="download search results as csv"
+                    type="button"
+                    onClick={onPrint}
+                    className={styles.icon}
+                    outline>
                     <Icon.Print size={3} data-testid="print-icon" />
                 </Button>
-                <Button type="button" className={styles.icon} outline onClick={onDownload} data-testid="file-download">
+                <Button
+                    aria-label="download search results as pdf"
+                    type="button"
+                    className={styles.icon}
+                    outline
+                    onClick={onDownload}
+                    data-testid="file-download">
                     <Icon.FileDownload size={3} />
                 </Button>
             </menu>

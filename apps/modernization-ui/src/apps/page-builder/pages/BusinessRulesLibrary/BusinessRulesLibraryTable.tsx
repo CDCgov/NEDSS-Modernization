@@ -139,7 +139,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 case Column.Function:
                     return `ruleCd,${direction}`;
                 case Column.Target:
-                    return `targetValueIdentifier,${direction}`;
+                    return `targetQuestionIdentifier,${direction}`;
                 case Column.ID:
                     return `id,${direction}`;
                 default:
