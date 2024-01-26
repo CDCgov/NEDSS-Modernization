@@ -1,27 +1,28 @@
-zimport { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect } from 'react';
-import { useConceptOptionsAutocomplete } from './useConceptOptionsAutocomplete';
+import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
 import { Suggestions } from 'suggestion/Suggestions';
 import { Selectable } from 'options/selectable';
-
-const renderSuggestion = (suggestion: Selectable) => <>{suggestion.name}</>;
+import { useUserOptionsAutocomplete } from 'options/users/useUserOptionsAutocomplete';
+import { Label } from '@trussworks/react-uswds';
 
 type Props = {
     id: string;
     label: string;
-    valueSet: string;
     className?: string;
     placeholder?: string;
     value?: Selectable;
     onChange?: (value?: string) => void;
 };
 
-const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange }: Props) => {
+const UserAutocomplete = ({ id, label, placeholder, value, onChange }: Props) => {
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const { options, suggest, reset } = useConceptOptionsAutocomplete(valueSet);
+    const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
+        return <>{suggestion.label}</>;
+    };
 
     const [entered, setEntered] = useState(value?.name || '');
+
+    const { options, suggest, reset } = useUserOptionsAutocomplete({ initialCriteria: entered });
 
     useEffect(() => {
         reset(value?.name);
@@ -59,7 +60,11 @@ const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange
     };
 
     return (
-        <>
+        <div>
+            <Label className="usa-label" htmlFor={id}>
+                {label}
+            </Label>
+
             <input
                 ref={inputRef}
                 className="usa-input"
@@ -69,7 +74,7 @@ const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange
                 type="text"
                 autoComplete="off"
                 value={entered}
-                name={label ?? ''}
+                name={id}
                 onChange={(event) => setEntered(event.target.value)}
                 onKeyDown={handleKeyDown}
             />
@@ -81,8 +86,8 @@ const ConceptAutocomplete = ({ id, label, valueSet, placeholder, value, onChange
                 onSelection={handleSelection}
                 onCancel={handleCancel}
             />
-        </>
+        </div>
     );
 };
 
-export { ConceptAutocomplete };
+export { UserAutocomplete };

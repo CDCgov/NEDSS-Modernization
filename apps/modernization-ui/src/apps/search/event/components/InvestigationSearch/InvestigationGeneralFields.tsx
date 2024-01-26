@@ -1,5 +1,4 @@
 import { ErrorMessage } from '@trussworks/react-uswds';
-import { AutoCompleteInput } from 'components/AutoCompleteInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -15,7 +14,7 @@ import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { ChangeEvent, ReactElement } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
-import { ConceptAutocomplete } from 'options/autocompete/ConceptAutocomplete';
+import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 
 type InvestigationGeneralAccordionProps = {
     form: UseFormReturn<InvestigationFilter>;
@@ -251,35 +250,23 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                 </>
             ) : null}
 
-            <SearchCriteriaContext.Consumer>
-                {({ searchCriteria }) => (
-                    <>
-                        <Controller
-                            control={form.control}
-                            name="createdBy"
-                            render={({ field: { onChange, value, name } }) => (
-                                <ConceptAutocomplete
-                                    id="createdBy"
-                                    label="Event created by user"
-                                    onChange={onChange}
-                                />
-                            )}
-                        />
+            <>
+                <Controller
+                    control={form.control}
+                    name="createdBy"
+                    render={({ field: { onChange } }) => (
+                        <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
+                    )}
+                />
 
-                        <Controller
-                            control={form.control}
-                            name="lastUpdatedBy"
-                            render={({ field: { onChange, value, name } }) => (
-                                <ConceptAutocomplete
-                                    id="lastUpdatedBy"
-                                    onChange={onChange}
-                                    label="Event updated by user"
-                                />
-                            )}
-                        />
-                    </>
-                )}
-            </SearchCriteriaContext.Consumer>
+                <Controller
+                    control={form.control}
+                    name="lastUpdatedBy"
+                    render={({ field: { onChange } }) => (
+                        <UserAutocomplete id="lastUpdatedBy" onChange={onChange} label="Event updated by user" />
+                    )}
+                />
+            </>
 
             <Controller
                 control={form.control}
