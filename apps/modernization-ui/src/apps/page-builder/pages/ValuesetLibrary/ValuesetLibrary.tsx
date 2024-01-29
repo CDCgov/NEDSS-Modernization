@@ -28,7 +28,6 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef, createValueModalRef
         const fetchContent = async () => {
             try {
                 setIsLoading(true);
-                setSummaries([]);
                 const { content, totalElements }: any = await fetchValueSet(
                     authorization(),
                     searchQuery,
