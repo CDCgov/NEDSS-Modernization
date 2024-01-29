@@ -12,12 +12,20 @@ import java.util.List;
 
 @Component
 class PatientActivityRequiringReviewFinder {
-  private static final String QUERY = """      
+  private static final String QUERY = """   
+      with patient (person_uid) as (
+          select
+              [patient].[person_uid]
+          from  Person [patient]\s
+          where   [patient].person_parent_uid = :patient
+          and [patient].cd = 'PAT'
+          and [patient].record_status_cd = 'ACTIVE'
+      )  
       select
           count([document].[nbs_document_uid]) over() as total,
           [document].nbs_document_uid         as [id],
           [document].doc_type_cd              as [type]
-      from Person [patient]
+      from patient
               join Participation [participation] with (nolock) on
                   [participation].subject_class_cd = 'PSN'
               and [participation].record_status_cd = 'ACTIVE'
@@ -33,16 +41,12 @@ class PatientActivityRequiringReviewFinder {
           join NBS_SRTE..Code_value_general [document_type] on
                   [document_type].[code_set_nm] = 'PUBLIC_HEALTH_EVENT'
               and [document_type].code = [document].doc_type_cd
-            
-      where   [patient].person_parent_uid = :patient
-          and [patient].cd = 'PAT'
-          and [patient].record_status_cd = 'ACTIVE'
       union
       select
           count([observation].observation_uid) over() as total,
           [observation].observation_uid       as [id],
           [observation].ctrl_cd_display_form  as [type]
-      from Person [patient]
+      from patient
               join Participation [participation] with (nolock) on
                   [participation].subject_class_cd = 'PSN'
               and [participation].record_status_cd = 'ACTIVE'
@@ -54,16 +58,12 @@ class PatientActivityRequiringReviewFinder {
                   [observation].observation_uid = [participation].act_uid
               and [observation].record_status_cd = 'UNPROCESSED'
               and [observation].program_jurisdiction_oid in (:labs)
-            
-      where   [patient].person_parent_uid = :patient
-          and [patient].cd = 'PAT'
-          and [patient].record_status_cd = 'ACTIVE'
       union
       select
           count([observation].observation_uid) over() as total,
           [observation].observation_uid       as [id],
           [observation].ctrl_cd_display_form  as [type]
-      from Person [patient]
+      from patient
               join Participation [participation] with (nolock) on
                   [participation].subject_class_cd = 'PSN'
               and [participation].record_status_cd = 'ACTIVE'
@@ -75,10 +75,9 @@ class PatientActivityRequiringReviewFinder {
                   [observation].observation_uid = [participation].act_uid
               and [observation].record_status_cd = 'UNPROCESSED'
               and [observation].program_jurisdiction_oid in (:morbidities)
-            
-      where   [patient].person_parent_uid = :patient
-          and [patient].cd = 'PAT'
-          and [patient].record_status_cd = 'ACTIVE'
+      order by id
+      offset :offset rows
+      fetch next :pageSize rows only
       """;
   private static final PatientActivityRequiringReviewResultSetHandler.Column DEFAULT_COLUMNS =
       new PatientActivityRequiringReviewResultSetHandler.Column(1, 2, 3);
@@ -97,7 +96,9 @@ class PatientActivityRequiringReviewFinder {
             "patient", criteria.patient(),
             "documents", ensured(criteria.documentScope().any()),
             "labs", ensured(criteria.labReportScope().any()),
-            "morbidities", ensured(criteria.morbidityReportScope().any())
+            "morbidities", ensured(criteria.morbidityReportScope().any()),
+            "offset", pageable.getOffset(),
+            "pageSize", pageable.getPageSize()
         )
     );
 
