@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.morbidity;
+package gov.cdc.nbs.event.report.morbidity;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;

@@ -23,7 +23,7 @@ public class DocumentSteps {
     this.patientMother = patientMother;
   }
 
-  @ParameterType(name = "documentType", value = "lab report|morbidity report|case report|document")
+  @ParameterType(name = "documentType", value = "lab report|Morbidity Report|case report|document")
   public String documentType(final String value) {
     return switch (value.toLowerCase()) {
       case "lab report" -> "Laboratory Report";
