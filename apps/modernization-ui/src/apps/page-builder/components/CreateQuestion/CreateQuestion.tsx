@@ -143,7 +143,8 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
         }
     }, [question]);
 
-    const valueSetName = searchValueSet?.valueSetNm || searchValueSet?.valueSetName || watch('valueSet') || '';
+    const valueSetName = searchValueSet?.valueSetName || searchValueSet?.valueSetName || watch('valueSet') || '';
+    const valueSetCode = searchValueSet?.valueSetCode || watch('valueSet') || '';
     useEffect(() => {
         if (searchValueSet) questionForm.setValue('valueSet', searchValueSet.codeSetGroupId);
     }, [searchValueSet]);
@@ -557,6 +558,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                 control={control}
                                 addValueModalRef={addValueModalRef}
                                 valueSetName={valueSetName.toString()}
+                                valueSetCode={valueSetCode.toString()}
                             />
                         )}
                         {(selectedFieldType === UpdateDateQuestionRequest.type.NUMERIC ||
