@@ -8,6 +8,7 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Selectable } from 'options/selectable';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
 import { Icon } from '@trussworks/react-uswds';
+import { RadioButton } from 'apps/page-builder/components/RadioButton/RadioButton';
 
 type Props = {
     defaultValue: string;
@@ -68,7 +69,10 @@ export const QuestionContent = ({ type, valueSet, name, identifier, displayCompo
                     {/* create custom checkbox component */}
                     {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
                     {displayComponent === 1001 && (
-                        <SelectInput defaultValue={''} onChange={() => {}} options={conceptState} />
+                        <>
+                            {console.log(valueSet)}
+                            <RadioButton options={conceptState} />{' '}
+                        </>
                     )}
 
                     {displayComponent === 1008 && (
