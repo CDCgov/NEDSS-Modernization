@@ -29,3 +29,11 @@ Feature: I can find documents requiring review for a particular patient
       | Morbidity Report | OBSERVATIONLABREPORT |
       | document         | OBSERVATIONLABREPORT |
 
+  Scenario: I can find documents requiring review for only the specific patient
+    Given I can "view" any "DOCUMENT"
+    And I can "view" any "OBSERVATIONMORBIDITYREPORT"
+    And I can "view" any "OBSERVATIONLABREPORT"
+    And I have another patient
+    When I search for documents requiring review for the patient
+    Then the patient has no documents requiring review
+

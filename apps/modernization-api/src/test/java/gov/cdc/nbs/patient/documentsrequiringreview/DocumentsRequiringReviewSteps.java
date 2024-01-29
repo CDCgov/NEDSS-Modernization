@@ -49,6 +49,13 @@ public class DocumentsRequiringReviewSteps {
             : this.requester.documentsRequiringReview(patient);
   }
 
+  @Then("the patient has no documents requiring review")
+  public void the_patient_has_no_documents_requiring_review() throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.data.findDocumentsRequiringReviewForPatient.total").value(equalTo(0)))
+        .andExpect(jsonPath("$.data.findDocumentsRequiringReviewForPatient.content").isEmpty());
+  }
+
   @Then("the {documentType} requiring review is returned")
   public void the_correct_document_requiring_review_is_returned(final String documentType) throws Exception {
     this.response.active()

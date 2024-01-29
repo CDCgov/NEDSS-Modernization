@@ -16,7 +16,7 @@ class OrderingProviderRowMapper {
 
   Optional<DocumentRequiringReview.OrderingProvider> maybeMap(final ResultSet resultSet) throws SQLException {
     String name = mapper.map(resultSet);
-    return name == null || name.isEmpty()
+    return name.isEmpty()
         ? Optional.empty()
         : Optional.of(new DocumentRequiringReview.OrderingProvider(name));
   }

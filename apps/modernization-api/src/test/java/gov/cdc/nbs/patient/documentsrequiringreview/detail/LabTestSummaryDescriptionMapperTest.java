@@ -104,7 +104,40 @@ class LabTestSummaryDescriptionMapperTest {
     Optional<DocumentRequiringReview.Description> mapped = LabTestSummaryDescriptionMapper.maybeMap(summary);
 
     assertThat(mapped).hasValueSatisfying(
-        actual -> assertThat(actual.value()).isEqualTo("45.5\nReference Range - (high-low) - (status)")
+        actual -> assertThat(actual.value()).isEqualTo("45.5\nReference Range - (low-high) - (status)")
+    );
+  }
+
+  @Test
+  void should_map_numeric_result_with_only_low_range() {
+
+    LabTestSummary summary = mock(LabTestSummary.class);
+    when(summary.name()).thenReturn("name-value");
+    when(summary.numeric()).thenReturn(new BigDecimal("45.5"));
+    when(summary.low()).thenReturn("low");
+    when(summary.status()).thenReturn("status");
+
+    Optional<DocumentRequiringReview.Description> mapped = LabTestSummaryDescriptionMapper.maybeMap(summary);
+
+    assertThat(mapped).hasValueSatisfying(
+        actual -> assertThat(actual.value()).isEqualTo("45.5\nReference Range - (low) - (status)")
+    );
+
+  }
+
+  @Test
+  void should_map_numeric_result_with_only_high_range() {
+
+    LabTestSummary summary = mock(LabTestSummary.class);
+    when(summary.name()).thenReturn("name-value");
+    when(summary.numeric()).thenReturn(new BigDecimal("45.5"));
+    when(summary.high()).thenReturn("high");
+    when(summary.status()).thenReturn("status");
+
+    Optional<DocumentRequiringReview.Description> mapped = LabTestSummaryDescriptionMapper.maybeMap(summary);
+
+    assertThat(mapped).hasValueSatisfying(
+        actual -> assertThat(actual.value()).isEqualTo("45.5\nReference Range - (high) - (status)")
     );
   }
 

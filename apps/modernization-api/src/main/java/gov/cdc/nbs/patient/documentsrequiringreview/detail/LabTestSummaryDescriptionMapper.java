@@ -55,7 +55,7 @@ class LabTestSummaryDescriptionMapper {
     StringBuilder builder = new StringBuilder();
 
     if (summary.high() != null || summary.low() != null) {
-      String range = Stream.of(summary.high(), summary.low())
+      String range = Stream.of(summary.low(), summary.high())
           .filter(Objects::nonNull)
           .collect(
               Collectors.joining(
