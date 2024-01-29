@@ -1,7 +1,7 @@
 import { Button } from '@trussworks/react-uswds';
 import { AddableQuestionSort, useFindAddableQuestions } from 'apps/page-builder/hooks/api/useFindAvailableQuestions';
 import { SelectionMode } from 'components/Table';
-import { PageProvider, Status, usePage } from 'page';
+import { Status, usePage } from 'page';
 import { useEffect, useState } from 'react';
 
 import { QuestionSearchTable } from './table/QuestionSearchTable';
@@ -9,25 +9,18 @@ import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/Cl
 import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import styles from './question-search.module.scss';
 
-export const QuestionSearch = (props: Props) => (
-    <PageProvider>
-        <QuestionSearchContent {...props} />
-    </PageProvider>
-);
-
 type Props = {
     pageId: number;
     onCreateNew: () => void;
     onCancel: () => void;
     onAccept: (questions: number[]) => void;
 };
-const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Props) => {
+export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Props) => {
     const { page, ready, firstPage, reload } = usePage();
     const [query, setQuery] = useState<string>('');
     const [sort, setSort] = useState<AddableQuestionSort | undefined>(undefined);
     const { isLoading, search, response } = useFindAddableQuestions();
     const [selectedQuestions, setSelectedQuestions] = useState<number[]>([]);
-    const [resetTable, setResetTable] = useState<boolean>(false);
 
     useEffect(() => {
         search({ pageId });
@@ -69,23 +62,15 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
 
     const handleAccept = () => {
         setSelectedQuestions([]);
-        setResetTable(true);
+        setQuery('');
         onAccept(selectedQuestions);
     };
 
     const handleClose = () => {
         setQuery('');
         setSelectedQuestions([]);
-        setResetTable(true);
         onCancel();
     };
-
-    useEffect(() => {
-        if (resetTable) {
-            firstPage();
-            setResetTable(false);
-        }
-    }, [resetTable]);
 
     return (
         <>
@@ -94,18 +79,15 @@ const QuestionSearchContent = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
                 <div className={styles.subHeading}>
                     <div className={styles.helpText}>You can search for an existing question or create a new one</div>
                 </div>
-                {!resetTable && (
-                    <QuestionSearchTable
-                        questions={response?.content ?? []}
-                        isLoading={isLoading}
-                        query={query}
-                        onQuerySubmit={(query) => setQuery(query)}
-                        onSortChange={setSort}
-                        onSelectionChange={handleSelectedQuestionChange}
-                        onCreateNew={onCreateNew}
-                    />
-                )}
-
+                <QuestionSearchTable
+                    questions={response?.content ?? []}
+                    isLoading={isLoading}
+                    query={query}
+                    onQuerySubmit={(query) => setQuery(query)}
+                    onSortChange={setSort}
+                    onSelectionChange={handleSelectedQuestionChange}
+                    onCreateNew={onCreateNew}
+                />
                 {response?.content?.length === 0 && (
                     <div className={styles.createNewNotification}>
                         <div className={styles.message}>Can't find what you're looking for?</div>
