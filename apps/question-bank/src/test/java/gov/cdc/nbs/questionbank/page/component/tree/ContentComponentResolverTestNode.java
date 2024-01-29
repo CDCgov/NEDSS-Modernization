@@ -35,8 +35,12 @@ class ContentComponentResolverTest {
         "mask-value",
         "tool-tip-value",
         "default-value-value",
-        "value-set-value", 
-        "admin-comments"
+        "value-set-value",
+        "admin-comments",
+        "10",
+        "default-rdb-table-name",
+        "rdb-column-name",
+        "default-label-in-report"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -89,7 +93,11 @@ class ContentComponentResolverTest {
         "tool-tip-value",
         "default-value-value",
         null,
-        "admin-comments"
+        "admin-comments",
+        "10",
+        "default-rdb-table-name",
+        "rdb-column-name",
+        "default-label-in-report"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -141,7 +149,11 @@ class ContentComponentResolverTest {
         "tool-tip-value",
         "default-value-value",
         "value-set-value",
-        "admin-comments"
+        "admin-comments",
+        "10",
+        "default-rdb-table-name",
+        "rdb-column-name",
+        "default-label-in-report"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -193,7 +205,11 @@ class ContentComponentResolverTest {
         "tool-tip-value",
         "default-value-value",
         "value-set-value",
-        "admin-comments"
+        "admin-comments",
+        "10",
+        "default-rdb-table-name",
+        "rdb-column-name",
+        "default-label-in-report"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();

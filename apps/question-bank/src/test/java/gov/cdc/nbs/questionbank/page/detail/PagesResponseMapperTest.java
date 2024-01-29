@@ -282,7 +282,11 @@ class PagesResponseMapperTest {
                             "mask-value",
                             "tool-tip-value",
                             "default-value-value",
-                            "admin-comments"
+                            "admin-comments",
+                            "10",
+                            "default-rdb-table-name",
+                            "rdb-column-name",
+                            "default-label-in-report"
                         )
                     )
                 )

@@ -32,10 +32,18 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int toolTip,
       int defaultValue,
       int valueSet,
-      int adminComments
+      int adminComments,
+      int fieldLength,
+      int defaultRdbTableName,
+      int rdbColumnName,
+      int defaultLabelInReport
+
   ) {
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+      this(1, 2, 3, 4, 5, 6, 7, 8, 9,
+          10, 11, 12, 13, 14, 15, 16,
+          17, 18, 19, 20, 21, 22,
+          23, 24);
     }
   }
 
@@ -70,6 +78,11 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     String valueSet = resultSet.getString(this.columns.valueSet());
     String adminComments = resultSet.getString(this.columns.adminComments());
 
+    String fieldLength = resultSet.getString(this.columns.fieldLength());
+    String defaultRdbTableName = resultSet.getString(this.columns.defaultRdbTableName());
+    String rdbColumnName = resultSet.getString(this.columns.rdbColumnName());
+    String defaultLabelInReport = resultSet.getString(this.columns.defaultLabelInReport());
+
     return new FlattenedComponent(
         identifier,
         type,
@@ -90,7 +103,12 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         toolTip,
         defaultValue,
         valueSet,
-        adminComments
+        adminComments,
+        fieldLength,
+        defaultRdbTableName,
+        rdbColumnName,
+        defaultLabelInReport
+
     );
   }
 
