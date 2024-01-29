@@ -16,7 +16,7 @@ public record PagesResponse(
     long root,
     Collection<PagesTab> tabs,
     Collection<PageRule> rules
-    ) {
+) {
 
   PagesResponse(
       long id,
@@ -34,7 +34,7 @@ public record PagesResponse(
         root,
         List.of(),
         rules
-        );
+    );
   }
 
   public record PagesTab(
@@ -104,7 +104,11 @@ public record PagesResponse(
       String defaultValue,
       String valueSet,
       long displayComponent,
-      String adminComments
+      String adminComments,
+      String fieldLength,
+      String defaultRdbTableName,
+      String rdbColumnName,
+      String defaultLabelInReport
   ) {
   }
 

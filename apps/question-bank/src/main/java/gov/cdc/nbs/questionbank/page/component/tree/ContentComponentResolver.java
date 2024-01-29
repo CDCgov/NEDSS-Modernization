@@ -51,7 +51,11 @@ class ContentComponentResolver {
         component.mask(),
         component.toolTip(),
         component.defaultValue(),
-        component.adminComments()
+        component.adminComments(),
+        component.fieldLength(),
+        component.defaultRdbTableName(),
+        component.rdbColumnName(),
+        component.defaultLabelInReport()
     );
   }
 
