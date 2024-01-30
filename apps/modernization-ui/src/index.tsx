@@ -5,7 +5,7 @@ import { UserContextProvider } from './providers/UserContext';
 import reportWebVitals from './reportWebVitals';
 import { AppRoutes } from 'routes/AppRoutes';
 import 'styles/global.scss';
-import { AnalyticsProvider } from 'analytics/AnalyticsContext';
+import { AnalyticsProvider } from 'analytics';
 
 render(
     <StrictMode>
