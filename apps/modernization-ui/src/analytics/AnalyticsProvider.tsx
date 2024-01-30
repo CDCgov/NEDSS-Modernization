@@ -1,20 +1,20 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
+import { AnalyticsSettings, useAnalyticsSettings } from './useAnalytics';
 import { PostHogProvider } from 'posthog-js/react';
-import { useConfiguration } from 'configuration';
 
 type AnalyticsProviderProps = {
     children: ReactNode;
 };
 
-export const AnalyticsProvider: FC<AnalyticsProviderProps> = ({ children }) => {
-    const defaultConfig = useConfiguration();
-    const options = {
-        api_host: defaultConfig.settings.analytics?.host
-    };
-
-    return (
-        <PostHogProvider apiKey={defaultConfig.settings.analytics?.apiKey} options={options}>
-            {children}
-        </PostHogProvider>
-    );
+const AnalyticsProvider = ({ children }: AnalyticsProviderProps) => {
+    const settings = useAnalyticsSettings();
+    return settings.enabled ? withAnalytics(settings, children) : <>{children}</>;
 };
+
+const withAnalytics = (settings: AnalyticsSettings, children: ReactNode) => (
+    <PostHogProvider apiKey={settings.key} options={settings.options}>
+        {children}
+    </PostHogProvider>
+);
+
+export { AnalyticsProvider };
