@@ -14,6 +14,7 @@ type Props = {
     isExpanded: boolean;
     onExpandedChange: (isExpanded: boolean) => void;
     onDeleteSubsection: () => void;
+    onEditSubsection: () => void;
 };
 
 export const SubsectionHeader = ({
@@ -23,7 +24,8 @@ export const SubsectionHeader = ({
     isExpanded,
     onAddQuestion,
     onExpandedChange,
-    onDeleteSubsection
+    onDeleteSubsection,
+    onEditSubsection
 }: Props) => {
     const addStaticElementModalRef = useRef<ModalRef>(null);
 
@@ -38,7 +40,7 @@ export const SubsectionHeader = ({
                     Add Question
                 </Button>
                 <MoreOptions header={<Icon.MoreVert size={4} />}>
-                    <Button type="button" onClick={() => console.log('BLAH')}>
+                    <Button type="button" onClick={onEditSubsection}>
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
                     <Button type="button" onClick={() => console.log('BLAH')}>

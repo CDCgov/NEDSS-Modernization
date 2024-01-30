@@ -61,6 +61,7 @@ export const CreateConcept = ({
     const resetForm = () => {
         setShowForm();
         reset();
+        setShowForm();
     };
 
     const onSubmit = handleSubmit((data) => {

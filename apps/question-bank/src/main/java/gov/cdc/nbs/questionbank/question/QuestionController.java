@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import gov.cdc.nbs.questionbank.question.model.DisplayControlOptions;
 import gov.cdc.nbs.questionbank.question.request.update.UpdateCodedQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.update.UpdateDateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.update.UpdateNumericQuestionRequest;
@@ -135,9 +134,5 @@ public class QuestionController {
         return question;
     }
 
-    @GetMapping("/displayControlOptions")
-    public DisplayControlOptions getDisplayControlOptions() {
-        return creator.getDisplayControlOptions();
-    }
 
 }

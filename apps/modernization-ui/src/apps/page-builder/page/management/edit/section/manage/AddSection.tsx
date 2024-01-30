@@ -33,7 +33,7 @@ export const AddSection = ({
     isEdit,
     onAddSection
 }: sectionProps) => {
-    const form = useForm<CreateSectionRequest | UpdateSectionRequest>();
+    const form = useForm<CreateSectionRequest | UpdateSectionRequest>({ mode: 'onBlur' });
 
     useEffect(() => {
         if (section && isEdit) {

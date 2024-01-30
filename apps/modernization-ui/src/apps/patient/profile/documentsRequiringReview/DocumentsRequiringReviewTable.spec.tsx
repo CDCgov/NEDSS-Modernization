@@ -41,22 +41,50 @@ describe('when no documents are available for a patient', () => {
 });
 
 describe('when at least one document is available for a patient', () => {
-    const documents = [
-        {
-            id: '1234',
-            localId: 'someLocalId',
-            dateReceived: new Date('2021-10-07T15:01:10Z'),
-            type: 'LabReport',
-            eventDate: undefined,
-            isElectronic: true,
-            descriptions: [{ title: 'description title ', value: 'description value' }],
-            facilityProviders: {
-                reportingFacility: { name: 'some hospital' }
+    it('should not display an indicator for manual documents', async () => {
+        const documents = [
+            {
+                id: '197',
+                localId: 'local-value',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Test Document',
+                eventDate: undefined,
+                isElectronic: false,
+                descriptions: [],
+                facilityProviders: {}
             }
-        }
-    ];
+        ];
 
-    it('should display the documents', async () => {
+        const { queryByText, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const electronic = await queryByText('(Electronic)');
+
+        expect(tableData[0]).not.toContainElement(electronic);
+    });
+
+    it('should display an indicator for electronic documents', () => {
+        const documents = [
+            {
+                id: '197',
+                localId: 'local-value',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Test Document',
+                eventDate: undefined,
+                isElectronic: true,
+                descriptions: [],
+                facilityProviders: {}
+            }
+        ];
+
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
@@ -68,14 +96,352 @@ describe('when at least one document is available for a patient', () => {
 
         const tableData = getAllByRole('cell');
 
-        expect(tableData[0]).toHaveTextContent('Lab Report(Electronic)');
+        const electronic = getByText('(Electronic)');
+
+        expect(tableData[0]).toContainElement(electronic);
+    });
+
+    it('should display the a laboratory report', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Laboratory Report',
+                eventDate: undefined,
+                isElectronic: false,
+                descriptions: [],
+                facilityProviders: {}
+            }
+        ];
+
+        const { getByRole, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const link = getByRole('link', { name: 'Laboratory Report' });
+
+        expect(tableData[0]).toContainElement(link);
+    });
+
+    it('should display the a morbidity report', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Morbidity Report',
+                eventDate: undefined,
+                isElectronic: false,
+                descriptions: [],
+                facilityProviders: {}
+            }
+        ];
+
+        const { getByRole, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const link = getByRole('link', { name: 'Morbidity Report' });
+
+        expect(tableData[0]).toContainElement(link);
+    });
+
+    it('should display the a case report', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Case Report',
+                eventDate: undefined,
+                isElectronic: false,
+                descriptions: [],
+                facilityProviders: {}
+            }
+        ];
+
+        const { getByRole, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const link = getByRole('link', { name: 'Case Report' });
+
+        expect(tableData[0]).toContainElement(link);
+    });
+
+    it('should display the Date received', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Test Report',
+                eventDate: undefined,
+                isElectronic: false,
+                descriptions: [],
+                facilityProviders: {}
+            }
+        ];
+
+        const { getByText, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
 
         const dateReceived = getByText(/10\/07\/2021/);
-        expect(dateReceived).toHaveTextContent('10/07/2021 10:01 am');
+
         expect(tableData[1]).toContainElement(dateReceived);
-        expect(tableData[2]).toHaveTextContent('Reporting facilitysome hospital');
-        expect(tableData[3]).toHaveTextContent('No date');
-        expect(tableData[4]).toHaveTextContent('description title description value');
-        expect(tableData[5]).toHaveTextContent('someLocalId');
+    });
+
+    it('should display the sending facility', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Laboratory Report',
+                eventDate: undefined,
+                isElectronic: true,
+                descriptions: [],
+                facilityProviders: {
+                    sendingFacility: { name: 'sending facility name' }
+                }
+            }
+        ];
+
+        const { getByText, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const title = getByText('Sending facility');
+        const value = getByText('sending facility name');
+
+        expect(tableData[2]).toContainElement(title);
+        expect(tableData[2]).toContainElement(value);
+    });
+
+    it('should display the reporting facility', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Laboratory Report',
+                eventDate: undefined,
+                isElectronic: true,
+                descriptions: [],
+                facilityProviders: {
+                    reportingFacility: { name: 'reporting facility name' }
+                }
+            }
+        ];
+
+        const { getByText, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const title = getByText('Reporting facility');
+        const value = getByText('reporting facility name');
+
+        expect(tableData[2]).toContainElement(title);
+        expect(tableData[2]).toContainElement(value);
+    });
+
+    it('should display the ordering provider', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Laboratory Report',
+                eventDate: undefined,
+                isElectronic: true,
+                descriptions: [{ title: 'description title ', value: 'description value' }],
+                facilityProviders: {
+                    orderingProvider: { name: 'ordering provider name' }
+                }
+            }
+        ];
+
+        const { getByText, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const title = getByText('Ordering provider');
+        const value = getByText('ordering provider name');
+
+        expect(tableData[2]).toContainElement(title);
+        expect(tableData[2]).toContainElement(value);
+    });
+
+    it('should display the Event date', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Test Report',
+                eventDate: new Date('2013-08-17T15:01:10Z'),
+                isElectronic: false,
+                descriptions: [],
+                facilityProviders: {}
+            }
+        ];
+
+        const { getByText, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const eventDate = getByText(/08\/17\/2013/);
+
+        expect(tableData[3]).toContainElement(eventDate);
+    });
+
+    it('should display a Description with title and value', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Test Report',
+                eventDate: undefined,
+                isElectronic: false,
+                descriptions: [{ title: 'description title', value: 'description value' }],
+                facilityProviders: {}
+            }
+        ];
+
+        const { getByText, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const title = getByText('description title');
+        const value = getByText('description value');
+
+        expect(tableData[4]).toContainElement(title);
+        expect(tableData[4]).toContainElement(value);
+    });
+
+    it('should display a Description with only a title', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'someLocalId',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Test Report',
+                eventDate: undefined,
+                isElectronic: false,
+                descriptions: [{ title: 'description title' }],
+                facilityProviders: {}
+            }
+        ];
+
+        const { getByText, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const title = getByText('description title');
+
+        expect(tableData[4]).toContainElement(title);
+    });
+
+    it('should display the Event #', () => {
+        const documents = [
+            {
+                id: '1234',
+                localId: 'event-id-value',
+                dateReceived: new Date('2021-10-07T15:01:10Z'),
+                type: 'Test Report',
+                eventDate: undefined,
+                isElectronic: false,
+                descriptions: [],
+                facilityProviders: {}
+            }
+        ];
+
+        const { getByText, getAllByRole } = render(
+            <WithinTableProvider>
+                <DocumentsRequiringReviewTable
+                    setSort={() => {}}
+                    patient={'patient'}
+                    documents={documents}></DocumentsRequiringReviewTable>
+            </WithinTableProvider>
+        );
+
+        const tableData = getAllByRole('cell');
+
+        const eventDate = getByText('event-id-value');
+
+        expect(tableData[5]).toContainElement(eventDate);
     });
 });

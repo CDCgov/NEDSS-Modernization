@@ -8,17 +8,21 @@ import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 type ManageSubsectionTileProps = {
     subsection: PagesSubSection;
     setOnAction?: (action: boolean) => void;
+    setEdit: (subsection: PagesSubSection) => void;
     action: boolean;
     onDelete?: (subsection: PagesSubSection) => void;
     index: number;
+    onChangeVisibility: (subsection: PagesSubSection, visibility: boolean) => void;
 };
 
 export const ManageSubsectionTile = ({
     subsection,
     setOnAction,
+    setEdit,
     action,
     onDelete,
-    index
+    index,
+    onChangeVisibility
 }: ManageSubsectionTileProps) => {
     const [deleteWarning, setDeleteWarning] = useState<PagesSubSection | undefined>(undefined);
 
@@ -106,7 +110,7 @@ export const ManageSubsectionTile = ({
                                 <Button
                                     type="button"
                                     onClick={() => {
-                                        setOnAction?.(true);
+                                        setEdit(subsection);
                                     }}
                                     outline
                                     disabled={action}
@@ -124,16 +128,29 @@ export const ManageSubsectionTile = ({
                                     }}>
                                     <Icon.Delete style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
-                                <Button
-                                    type="button"
-                                    outline
-                                    disabled={action}
-                                    className={styles.iconBtn}
-                                    onClick={() => {
-                                        setOnAction?.(true);
-                                    }}>
-                                    <Icon.Visibility style={{ cursor: 'pointer' }} size={3} />
-                                </Button>
+                                {subsection.visible ? (
+                                    <Button
+                                        type="button"
+                                        outline
+                                        className={styles.iconBtn}
+                                        disabled={action}
+                                        onClick={() => {
+                                            onChangeVisibility(subsection, false);
+                                        }}>
+                                        <Icon.Visibility style={{ cursor: 'pointer' }} size={3} />
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        type="button"
+                                        outline
+                                        className={`${styles.iconBtn} ${styles.offVisibility}`}
+                                        disabled={action}
+                                        onClick={() => {
+                                            onChangeVisibility(subsection, true);
+                                        }}>
+                                        <Icon.VisibilityOff style={{ cursor: 'pointer' }} size={3} />
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     )}

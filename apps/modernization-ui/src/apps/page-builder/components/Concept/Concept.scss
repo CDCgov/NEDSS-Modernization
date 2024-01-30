@@ -6,6 +6,10 @@
     h3 {
         margin-top: 0;
     }
+  .concept-header {
+    display: flex;
+    justify-content: space-between;
+  }
   .list-details {
     border-radius: 5px;
     list-style: none;
@@ -25,6 +29,7 @@
     .details {
       font-weight: bold;
       font-size: 14px;
+      overflow-wrap: break-word
     }
     }
     .instruction {

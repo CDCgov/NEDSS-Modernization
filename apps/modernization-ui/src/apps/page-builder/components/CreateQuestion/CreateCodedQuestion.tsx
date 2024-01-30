@@ -28,14 +28,15 @@ type DateQuestionProps = {
     control?: Control<CreateQuestionFormType, any>;
     addValueModalRef: RefObject<ModalRef>;
     valueSetName: string;
+    valueSetCode: string;
 };
 
-export const CreateCodedQuestion = ({ control, addValueModalRef, valueSetName }: DateQuestionProps) => {
+export const CreateCodedQuestion = ({ control, addValueModalRef, valueSetName, valueSetCode }: DateQuestionProps) => {
     const isValueSet = valueSetName !== '';
     const [options, setOptions] = useState<optionsType[]>([]);
 
     const fetchConcepts = async () => {
-        useConceptAPI(authorization(), valueSetName!).then((response: any) => {
+        useConceptAPI(authorization(), valueSetCode!).then((response: any) => {
             const data = response || [];
             const list: optionsType[] = [];
             data.map((each: { display: string; conceptCode: string }) => {
@@ -45,8 +46,8 @@ export const CreateCodedQuestion = ({ control, addValueModalRef, valueSetName }:
         });
     };
     useEffect(() => {
-        if (valueSetName) fetchConcepts();
-    }, [valueSetName]);
+        if (valueSetCode) fetchConcepts();
+    }, [valueSetCode]);
 
     return (
         <div className="">

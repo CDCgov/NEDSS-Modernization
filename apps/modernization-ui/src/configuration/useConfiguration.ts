@@ -7,6 +7,10 @@ type Settings = {
     smarty?: {
         key: string;
     };
+    analytics?: {
+        apiKey: string;
+        host: string;
+    };
 };
 
 type Features = {
@@ -64,6 +68,10 @@ const defaultFeatures: Features = {
 const defaultSettings: Settings = {
     smarty: {
         key: '166215385741384990'
+    },
+    analytics: {
+        apiKey: 'phc_FRJiRaZB8QjWLhfGYQ4V6uKx9bmwDXXdOegb3r1V4OG',
+        host: 'https://posthog.com'
     }
 };
 

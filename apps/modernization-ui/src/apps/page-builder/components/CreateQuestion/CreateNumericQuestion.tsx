@@ -41,7 +41,7 @@ const unitTypeOption = [
 export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: NumericQuestionProps) => {
     let text = '';
     if (unitType) {
-        text = unitType === 'coded' ? 'Related units valueset' : 'Related units literal';
+        text = unitType === 'coded' ? 'Related Units Value set' : 'Literal Units Value';
     }
     return (
         <>
@@ -49,7 +49,6 @@ export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: 
                 control={control}
                 name="minValue"
                 rules={{
-                    required: { value: true, message: 'Minimum Value required' },
                     maxLength: 50
                 }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -60,7 +59,6 @@ export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: 
                         label="Minimum Value"
                         type="number"
                         error={error?.message}
-                        required
                     />
                 )}
             />
@@ -68,7 +66,6 @@ export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: 
                 control={control}
                 name="maxValue"
                 rules={{
-                    required: { value: true, message: 'Maximum Value required' },
                     maxLength: 50
                 }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -79,7 +76,6 @@ export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: 
                         label="Maximum Value"
                         type="number"
                         error={error?.message}
-                        required
                     />
                 )}
             />
