@@ -130,17 +130,27 @@ class QuestionFinderTest {
   }
 
   @Test
-  void should_return_true_for_unique_id() {
+  void should_return_true_for_unique_fields() {
     when(questionRepository.findIdByQuestionIdentifier(anyString())).thenReturn(Collections.EMPTY_LIST);
-    assertTrue(finder.checkUnique(new QuestionValidationRequest("uniqueId", "unique")));
+    when(questionRepository.findIdByQuestionNm(anyString())).thenReturn(Collections.EMPTY_LIST);
+
+    assertTrue(finder.checkUnique(
+        new QuestionValidationRequest(QuestionValidationRequest.FieldName.UNIQUE_ID.getValue(), "unique")));
+    assertTrue(finder.checkUnique(
+        new QuestionValidationRequest(QuestionValidationRequest.FieldName.UNIQUE_NAME.getValue(), "unique")));
   }
 
   @Test
-  void should_return_false_for_duplicate_id() {
+  void should_return_false_for_duplicate_fields() {
     List<Object[]> result = new ArrayList<>();
     result.add(new Object[] {"Sample"});
     when(questionRepository.findIdByQuestionIdentifier(anyString())).thenReturn(result);
-    assertFalse(finder.checkUnique(new QuestionValidationRequest("uniqueId", "duplicate")));
+    when(questionRepository.findIdByQuestionNm(anyString())).thenReturn(result);
+
+    assertFalse(finder.checkUnique(
+        new QuestionValidationRequest(QuestionValidationRequest.FieldName.UNIQUE_ID.getValue(), "duplicate")));
+    assertFalse(finder.checkUnique(
+        new QuestionValidationRequest(QuestionValidationRequest.FieldName.UNIQUE_NAME.getValue(), "duplicate")));
   }
 
   @Test

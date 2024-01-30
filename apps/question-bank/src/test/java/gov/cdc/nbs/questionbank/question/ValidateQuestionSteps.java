@@ -4,6 +4,7 @@ package gov.cdc.nbs.questionbank.question;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
+import gov.cdc.nbs.questionbank.support.QuestionMother;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class ValidateQuestionSteps {
   @Autowired
   private QuestionControllerHelper controllerHelper;
 
+  @Autowired
+  private QuestionMother questionMother;
+
   QuestionValidationRequest request;
 
   private boolean validationResult;
@@ -31,11 +35,7 @@ public class ValidateQuestionSteps {
   @When("I validate unique field {string}")
   public void i_validate_unique_field(String field) {
     try {
-      if (field.equals(FieldName.UNIQUE_ID.getValue())) {
-        request = new QuestionValidationRequest(field, "TEST9900001");
-      } else {// invalid unique field name
-        request = new QuestionValidationRequest(field, "value");
-      }
+      request = prepareRequest(field);
       validationResult = controllerHelper.validate(request);
     } catch (UniqueQuestionException e) {
       exceptionHolder.setException(e);
@@ -45,7 +45,6 @@ public class ValidateQuestionSteps {
       exceptionHolder.setException(e);
     }
   }
-
 
   @Then("return valid")
   public void return_valid() {
@@ -64,5 +63,13 @@ public class ValidateQuestionSteps {
     assertEquals("invalid unique field name", exceptionHolder.getException().getMessage());
   }
 
+  private QuestionValidationRequest prepareRequest(String field) {
+    if (field.equals(FieldName.UNIQUE_ID.getValue()))
+      return new QuestionValidationRequest(field, "TEST9900001");
+    if (field.equals(FieldName.UNIQUE_NAME.getValue()))
+      return new QuestionValidationRequest(field, "Text Question Unique Name");
+    else // invalid unique field name
+      return new QuestionValidationRequest(field, "any value");
+  }
 
 }
