@@ -496,7 +496,7 @@ export const AdvancedSearch = () => {
                                     aria-label={resultTotal + ' Results have been found'}
                                     className="margin-0 font-sans-md margin-top-05 text-normal grid-row results-for"
                                     style={{ maxWidth: '55%' }}>
-                                    <strong className="margin-right-1">{resultTotal}</strong> Results for
+                                    <h2 className="advanced-search-results-title">{resultTotal} Results for:</h2>
                                     <AdvancedSearchChips
                                         lastSearchType={lastSearchType}
                                         personFilter={personFilter}
