@@ -31,7 +31,7 @@ export const AddSubSection = ({
     subsectionEdit,
     isEdit
 }: subSectionProps) => {
-    const form = useForm<CreateSubSectionRequest | UpdateSubSectionRequest>();
+    const form = useForm<CreateSubSectionRequest | UpdateSubSectionRequest>({ mode: 'onBlur' });
 
     useEffect(() => {
         if (subsectionEdit && isEdit) {
