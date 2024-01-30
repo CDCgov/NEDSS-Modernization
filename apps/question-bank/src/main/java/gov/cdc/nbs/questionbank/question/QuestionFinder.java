@@ -5,6 +5,7 @@ import java.util.List;
 
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.FieldName;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -69,7 +70,7 @@ public class QuestionFinder {
     }
 
     public boolean checkUnique(QuestionValidationRequest request) {
-        if (request.field().equals("uniqueId")) {
+        if (request.fieldName().equals(FieldName.UNIQUE_ID.getValue())) {
             return questionRepository.findIdByQuestionIdentifier(request.value()).isEmpty();
         } else {
             throw new UniqueQuestionException("invalid unique field name");

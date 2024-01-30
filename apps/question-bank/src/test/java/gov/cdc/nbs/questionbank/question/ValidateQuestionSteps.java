@@ -9,6 +9,7 @@ import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.FieldName;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
@@ -30,7 +31,7 @@ public class ValidateQuestionSteps {
   @When("I validate unique field {string}")
   public void i_validate_unique_field(String field) {
     try {
-      if (field.equals("uniqueId")) {
+      if (field.equals(FieldName.UNIQUE_ID.getValue())) {
         request = new QuestionValidationRequest(field, "TEST9900001");
       } else {// invalid unique field name
         request = new QuestionValidationRequest(field, "value");
