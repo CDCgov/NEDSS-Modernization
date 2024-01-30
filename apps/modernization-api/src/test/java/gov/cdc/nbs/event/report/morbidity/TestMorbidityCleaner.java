@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.report.lab;
+package gov.cdc.nbs.event.report.morbidity;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -11,30 +11,30 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 @Component
-class TestLabReportCleaner {
+class TestMorbidityCleaner {
 
-  private static final QObservation LAB = QObservation.observation;
+  private static final QObservation MORBIDITY = QObservation.observation;
   private final EntityManager entityManager;
   private final JPAQueryFactory factory;
 
-  TestLabReportCleaner(final EntityManager entityManager, final JPAQueryFactory factory) {
+  TestMorbidityCleaner(final EntityManager entityManager, final JPAQueryFactory factory) {
     this.entityManager = entityManager;
     this.factory = factory;
   }
 
   @Transactional
   void clean(final long starting) {
-    this.factory.select(LAB)
-        .from(LAB)
-        .where(criteria(starting), LAB.ctrlCdDisplayForm.eq("LabReport"))
+    this.factory.select(MORBIDITY)
+        .from(MORBIDITY)
+        .where(criteria(starting), MORBIDITY.ctrlCdDisplayForm.eq("MorbReport"))
         .fetch()
         .forEach(this::remove);
   }
 
   private BooleanExpression criteria(final long starting) {
-    BooleanExpression threshold = LAB.id.goe(starting);
+    BooleanExpression threshold = MORBIDITY.id.goe(starting);
     return starting < 0
-        ? threshold.and(LAB.id.lt(0))
+        ? threshold.and(MORBIDITY.id.lt(0))
         : threshold;
   }
 
