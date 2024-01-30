@@ -4,7 +4,7 @@ import io.cucumber.java.ParameterType;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 public class DateTimeSteps {
@@ -20,7 +20,7 @@ public class DateTimeSteps {
   public Instant date(final String value) {
     return localDate(value)
         .atStartOfDay()
-        .atZone(ZoneId.systemDefault())
+        .atZone(ZoneOffset.UTC)
         .toInstant();
   }
 }
