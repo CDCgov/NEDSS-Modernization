@@ -1,13 +1,12 @@
 @use 'styles/colors';
 
 .advanced-search-title {
-    font-size: 100%;
+    font-size: 2rem;
 }
 
 .advanced-search-results-title {
-    margin-block-start: 0 !important;
-    margin-block-end: 0 !important;
-    font-size: 1.13rem;
+    margin: 0;
+    font-size: 1.375rem;
 }
 
 button {
