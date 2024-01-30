@@ -1,4 +1,9 @@
-import { CreateSubSectionRequest, SubSectionControllerService } from 'apps/page-builder/generated';
+import {
+    CreateSubSectionRequest,
+    PagesSubSection,
+    SubSectionControllerService,
+    UpdateSubSectionRequest
+} from 'apps/page-builder/generated';
 import { Controller, useForm } from 'react-hook-form';
 import styles from './addsubsection.module.scss';
 import { Heading } from 'components/heading';
@@ -7,27 +12,53 @@ import { authorization } from 'authorization';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { maxLengthRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
+import { useEffect } from 'react';
 
 type subSectionProps = {
     sectionId?: number;
     pageId?: number;
     onCancel?: () => void;
     onSubSectionTouched?: (section: string) => void;
+    subsectionEdit?: PagesSubSection;
+    isEdit?: boolean;
 };
 
-export const AddSubSection = ({ sectionId, pageId, onCancel, onSubSectionTouched }: subSectionProps) => {
-    const form = useForm<CreateSubSectionRequest>();
+export const AddSubSection = ({
+    sectionId,
+    pageId,
+    onCancel,
+    onSubSectionTouched,
+    subsectionEdit,
+    isEdit
+}: subSectionProps) => {
+    const form = useForm<CreateSubSectionRequest | UpdateSubSectionRequest>({ mode: 'onBlur' });
+
+    useEffect(() => {
+        if (subsectionEdit && isEdit) {
+            form.reset({ name: subsectionEdit.name, visible: subsectionEdit.visible, sectionId: sectionId });
+        }
+    }, [subsectionEdit]);
 
     const onSubmit = form.handleSubmit((data) => {
-        data.sectionId = sectionId;
-        SubSectionControllerService.createSubsectionUsingPost({
-            authorization: authorization(),
-            page: pageId ?? 0,
-            request: data
-        }).then(() => {
-            onSubSectionTouched?.(data.name ?? '');
-            form.reset();
-        });
+        if (isEdit) {
+            SubSectionControllerService.updateSubSectionUsingPut({
+                authorization: authorization(),
+                page: pageId ?? 0,
+                subSectionId: subsectionEdit?.id ?? 0,
+                request: { name: data.name, visible: data.visible }
+            }).then(() => {
+                onSubSectionTouched?.('');
+            });
+        } else {
+            SubSectionControllerService.createSubsectionUsingPost({
+                authorization: authorization(),
+                page: pageId ?? 0,
+                request: { name: data.name, visible: data.visible, sectionId: sectionId }
+            }).then(() => {
+                onSubSectionTouched?.(data.name ?? '');
+                form.reset();
+            });
+        }
     });
 
     return (
