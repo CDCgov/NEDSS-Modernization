@@ -3,13 +3,13 @@ package gov.cdc.nbs.patient.documentsrequiringreview;
 import java.util.Collection;
 import java.util.Objects;
 
-public record PatientActivity(
+public record PatientActivityRequiringReview(
     CaseReport cases,
     MorbidityReport morbidity,
     LabReport labs
 ) {
 
-  public PatientActivity {
+  public PatientActivityRequiringReview {
     Objects.requireNonNull(cases);
     Objects.requireNonNull(morbidity);
     Objects.requireNonNull(labs);

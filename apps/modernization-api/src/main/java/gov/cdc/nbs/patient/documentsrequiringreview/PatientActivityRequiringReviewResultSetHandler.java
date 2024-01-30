@@ -15,15 +15,15 @@ class PatientActivityRequiringReviewResultSetHandler implements RowCallbackHandl
 
 
   private final Column columns;
-  private PatientActivity.CaseReport cases;
-  private PatientActivity.MorbidityReport morbidities;
-  private PatientActivity.LabReport labs;
+  private PatientActivityRequiringReview.CaseReport cases;
+  private PatientActivityRequiringReview.MorbidityReport morbidities;
+  private PatientActivityRequiringReview.LabReport labs;
 
   PatientActivityRequiringReviewResultSetHandler(final Column columns) {
     this.columns = columns;
-    this.cases = new PatientActivity.CaseReport(new ArrayList<>(), 0);
-    this.morbidities = new PatientActivity.MorbidityReport(new ArrayList<>(), 0);
-    this.labs = new PatientActivity.LabReport(new ArrayList<>(), 0);
+    this.cases = new PatientActivityRequiringReview.CaseReport(new ArrayList<>(), 0);
+    this.morbidities = new PatientActivityRequiringReview.MorbidityReport(new ArrayList<>(), 0);
+    this.labs = new PatientActivityRequiringReview.LabReport(new ArrayList<>(), 0);
   }
 
   @Override
@@ -41,7 +41,7 @@ class PatientActivityRequiringReviewResultSetHandler implements RowCallbackHandl
   }
 
   private void includeCase(final long identifier, final long total) {
-    this.cases = new PatientActivity.CaseReport(
+    this.cases = new PatientActivityRequiringReview.CaseReport(
         include(this.cases.identifiers(), identifier),
         total
     );
@@ -53,21 +53,21 @@ class PatientActivityRequiringReviewResultSetHandler implements RowCallbackHandl
   }
 
   private void includeMorbidity(final long identifier, final long total) {
-    this.morbidities = new PatientActivity.MorbidityReport(
+    this.morbidities = new PatientActivityRequiringReview.MorbidityReport(
         include(this.morbidities.identifiers(), identifier),
         total
     );
   }
 
   private void includeLab(final long identifier, final long total) {
-    this.labs = new PatientActivity.LabReport(
+    this.labs = new PatientActivityRequiringReview.LabReport(
         include(this.labs.identifiers(), identifier),
         total
     );
   }
 
-  public PatientActivity activity() {
-    return new PatientActivity(
+  public PatientActivityRequiringReview activity() {
+    return new PatientActivityRequiringReview(
         cases,
         morbidities,
         labs

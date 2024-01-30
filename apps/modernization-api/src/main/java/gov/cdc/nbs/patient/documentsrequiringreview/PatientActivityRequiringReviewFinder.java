@@ -16,7 +16,7 @@ class PatientActivityRequiringReviewFinder {
       with patient (person_uid) as (
           select
               [patient].[person_uid]
-          from  Person [patient]\s
+          from  Person [patient]
           where   [patient].person_parent_uid = :patient
           and [patient].cd = 'PAT'
           and [patient].record_status_cd = 'ACTIVE'
@@ -89,7 +89,7 @@ class PatientActivityRequiringReviewFinder {
     this.template = template;
   }
 
-  PatientActivity find(final DocumentsRequiringReviewCriteria criteria, final Pageable pageable) {
+  PatientActivityRequiringReview find(final DocumentsRequiringReviewCriteria criteria, final Pageable pageable) {
 
     SqlParameterSource parameters = new MapSqlParameterSource(
         Map.of(

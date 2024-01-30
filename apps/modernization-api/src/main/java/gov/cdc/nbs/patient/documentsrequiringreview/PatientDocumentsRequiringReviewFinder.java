@@ -27,7 +27,7 @@ class PatientDocumentsRequiringReviewFinder {
       final Pageable pageable
   ) {
 
-    PatientActivity activity = finder.find(criteria, pageable);
+    PatientActivityRequiringReview activity = finder.find(criteria, pageable);
 
     return (activity.isEmpty())
         ? emptyPage(pageable)
@@ -40,7 +40,7 @@ class PatientDocumentsRequiringReviewFinder {
 
   private Page<DocumentRequiringReview> paged(
       final Pageable pageable,
-      final PatientActivity activity
+      final PatientActivityRequiringReview activity
   ) {
 
     List<DocumentRequiringReview> documents = resolver.resolve(activity);

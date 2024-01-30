@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.documentsrequiringreview.detail;
 
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview;
-import gov.cdc.nbs.patient.documentsrequiringreview.PatientActivity;
+import gov.cdc.nbs.patient.documentsrequiringreview.PatientActivityRequiringReview;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -53,7 +53,7 @@ class CaseReportDetailFinder {
     this.mapper = new CaseReportDetailRowMapper(DEFAULT_COLUMNS);
   }
 
-  Collection<DocumentRequiringReview> find(final PatientActivity.CaseReport cases) {
+  Collection<DocumentRequiringReview> find(final PatientActivityRequiringReview.CaseReport cases) {
     return cases.identifiers().isEmpty()
         ? Collections.emptyList()
         : findAll(cases.identifiers());

@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.documentsrequiringreview.detail;
 
 import gov.cdc.nbs.accumulation.Accumulator;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview;
-import gov.cdc.nbs.patient.documentsrequiringreview.PatientActivity;
+import gov.cdc.nbs.patient.documentsrequiringreview.PatientActivityRequiringReview;
 import gov.cdc.nbs.provider.ProviderNameRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -120,7 +120,7 @@ class LaboratoryReportDetailFinder {
     this.merger = new PatientDocumentRequiringReviewMerger();
   }
 
-  Collection<DocumentRequiringReview> find(final PatientActivity.LabReport cases) {
+  Collection<DocumentRequiringReview> find(final PatientActivityRequiringReview.LabReport cases) {
     return cases.identifiers().isEmpty()
         ? Collections.emptyList()
         : findAll(cases.identifiers());

@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.documentsrequiringreview.detail;
 
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview;
-import gov.cdc.nbs.patient.documentsrequiringreview.PatientActivity;
+import gov.cdc.nbs.patient.documentsrequiringreview.PatientActivityRequiringReview;
 import gov.cdc.nbs.provider.ProviderNameRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -82,7 +82,7 @@ class MorbidityReportDetailFinder {
     this.mapper = new MorbidityReportDetailRowMapper(DEFAULT_COLUMNS);
   }
 
-  Collection<DocumentRequiringReview> find(final PatientActivity.MorbidityReport reports) {
+  Collection<DocumentRequiringReview> find(final PatientActivityRequiringReview.MorbidityReport reports) {
     return reports.identifiers().isEmpty()
         ? Collections.emptyList()
         : findAll(reports.identifiers());

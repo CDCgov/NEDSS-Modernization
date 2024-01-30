@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.documentsrequiringreview.detail;
 
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview;
-import gov.cdc.nbs.patient.documentsrequiringreview.PatientActivity;
+import gov.cdc.nbs.patient.documentsrequiringreview.PatientActivityRequiringReview;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class DocumentRequiringReviewDetailResolver {
     this.morbidityReportDetailFinder = morbidityReportDetailFinder;
   }
 
-  public List<DocumentRequiringReview> resolve(final PatientActivity activity) {
+  public List<DocumentRequiringReview> resolve(final PatientActivityRequiringReview activity) {
     List<DocumentRequiringReview> details = new ArrayList<>(caseReportDetailFinder.find(activity.cases()));
     details.addAll(laboratoryReportDetailFinder.find(activity.labs()));
     details.addAll(morbidityReportDetailFinder.find(activity.morbidity()));
