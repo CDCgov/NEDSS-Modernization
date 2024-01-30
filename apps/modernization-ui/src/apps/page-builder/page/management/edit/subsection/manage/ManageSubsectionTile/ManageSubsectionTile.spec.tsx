@@ -82,7 +82,7 @@ describe('when ReorderSubsection renders', () => {
                 <Droppable droppableId="testId">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} className="test__subsections">
-                            <ManageSubsectionTile subsection={subsection} setOnAction={jest.fn()} action={true} onDelete={jest.fn()} index={1} />
+                            <ManageSubsectionTile subsection={subsection} setOnAction={jest.fn()} action={true} onDelete={jest.fn()} index={1} setEdit={jest.fn()} onChangeVisibility={jest.fn()}/>
                         </div>
                     )}
                 </Droppable>
