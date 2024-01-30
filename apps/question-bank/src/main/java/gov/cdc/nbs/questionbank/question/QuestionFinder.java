@@ -70,11 +70,12 @@ public class QuestionFinder {
     }
 
     public boolean checkUnique(QuestionValidationRequest request) {
-        if (request.fieldName().equals(FieldName.UNIQUE_ID.getValue())) {
+        if (request.fieldName().equals(FieldName.UNIQUE_ID.getValue()))
             return questionRepository.findIdByQuestionIdentifier(request.value()).isEmpty();
-        } else {
+        if (request.fieldName().equals(FieldName.UNIQUE_NAME.getValue()))
+            return questionRepository.findIdByQuestionNm(request.value()).isEmpty();
+        else
             throw new UniqueQuestionException("invalid unique field name");
-        }
     }
 
 }

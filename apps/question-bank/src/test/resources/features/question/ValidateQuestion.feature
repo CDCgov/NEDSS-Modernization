@@ -4,14 +4,24 @@ Feature: Validate question
     Scenario: I can use a valid unique field
         Given I am an admin user
         And No questions exist
-        When I validate unique field "uniqueId"
+        When I validate unique field "<unique-field>"
         Then return valid
+
+        Examples:
+                | unique-field       |
+                | uniqueId           |
+                | uniqueName         |
 
     Scenario: I cannot use invalid unique field
         Given I am an admin user
         And A text question exists
-        When I validate unique field "uniqueId"
+        When I validate unique field "<unique-field>"
         Then return not valid
+
+        Examples:
+                 | unique-field       |
+                 | uniqueId           |
+                 | uniqueName         |
 
     Scenario: I cannot validate non unique field
         Given I am an admin user
