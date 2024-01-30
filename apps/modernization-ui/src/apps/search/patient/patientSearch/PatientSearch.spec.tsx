@@ -20,7 +20,7 @@ describe('PatientSearch component tests', () => {
                 />
             </SkipLinkProvider>
         );
-        const accordionH4Elements = container.querySelectorAll('h4.accordian-item');
+        const accordionH4Elements = container.querySelectorAll('h3.accordian-item');
         expect(accordionH4Elements.length).toBe(5);
         expect(accordionH4Elements[0].textContent).toBe('Basic information');
         expect(accordionH4Elements[1].textContent).toBe('Address');
@@ -42,7 +42,7 @@ describe('PatientSearch component tests', () => {
                 />
             </SkipLinkProvider>
         );
-        const accordionButtonElements = container.querySelectorAll('h4.accordian-item button');
+        const accordionButtonElements = container.querySelectorAll('h3.accordian-item button');
         expect(accordionButtonElements[0].getAttribute('aria-expanded')).toBe('true');
         expect(accordionButtonElements[1].getAttribute('aria-expanded')).toBe('false');
         expect(accordionButtonElements[2].getAttribute('aria-expanded')).toBe('false');
