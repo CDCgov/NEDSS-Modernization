@@ -1,15 +1,15 @@
 import styles from './question-content.module.scss';
 import { Input } from 'components/FormInputs/Input';
 import { Heading } from 'components/heading';
-import { ValueSetControllerService, Concept } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Selectable } from 'options/selectable';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
 import { RadioButton } from 'apps/page-builder/components/RadioButton/RadioButton';
 import { Button, Icon } from '@trussworks/react-uswds';
 import { QuestionsContext } from '../../../../context/QuestionsContext';
+import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
 
 type Props = {
     defaultValue: string;
@@ -34,14 +34,11 @@ export const QuestionContent = ({ type, valueSet, name, identifier, displayCompo
 
     useEffect(() => {
         if (valueSet) {
-            ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
+            ConceptOptionsService.allUsingGet({
                 authorization: authorization(),
-                codeSetNm: valueSet
-            }).then((resp: Array<Concept>) => {
-                const temp = resp.map((r) => {
-                    return { value: r.codeSetName ?? '', name: r.longName ?? '', label: r.conceptCode ?? '' };
-                });
-                setConceptState(temp);
+                name: valueSet
+            }).then((resp: ConceptOptionsResponse) => {
+                setConceptState(resp.options);
             });
         }
     }, [valueSet]);
@@ -72,7 +69,6 @@ export const QuestionContent = ({ type, valueSet, name, identifier, displayCompo
                     {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
                     {displayComponent === 1001 && (
                         <>
-                            {console.log(valueSet)}
                             <RadioButton options={conceptState} />{' '}
                         </>
                     )}

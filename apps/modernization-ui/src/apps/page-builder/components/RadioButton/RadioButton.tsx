@@ -1,6 +1,6 @@
-import { Icon as NbsIcon } from 'components/Icon/Icon';
 import styles from './radiobutton.module.scss';
 import { Selectable } from 'options';
+import { Icon } from '@trussworks/react-uswds';
 
 type Props = {
     options: Selectable[];
@@ -11,11 +11,10 @@ export const RadioButton = ({ options }: Props) => {
     return (
         <div className={styles.radioBtns}>
             <>
-                {console.log(options)}
                 {options.map((s, k) => (
                     <div className={styles.content} key={k}>
                         <div className={styles.select}>
-                            <NbsIcon name={'multi-select'} />
+                            <Icon.RadioButtonUnchecked size={3} />
                         </div>
                         <div className={styles.title}>{s.name}</div>
                     </div>
