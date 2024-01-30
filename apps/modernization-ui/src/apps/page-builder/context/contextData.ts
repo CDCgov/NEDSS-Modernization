@@ -20,6 +20,8 @@ export interface ContextData {
     handleSort?: (name: string, direction: Direction) => void;
     searchValueSet?: ValueSet;
     setSearchValueSet?: (valueSet: ValueSet) => void;
+    editValueSet?: ValueSet;
+    setEditValueSet?: (valueSet: ValueSet) => void;
 }
 
 const noop: ContextData & { type: 'noop' } = {

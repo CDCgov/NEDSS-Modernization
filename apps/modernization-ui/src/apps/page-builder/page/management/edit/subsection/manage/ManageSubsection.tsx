@@ -24,6 +24,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
     const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
     const [subsectionState, setSubsectionState] = useState<'manage' | 'add' | 'edit'>('manage');
     const { page, refresh } = usePageManagement();
+    const [editSubsection, setEditSubsection] = useState<PagesSubSection | undefined>(undefined);
     const [onAction, setOnAction] = useState<boolean>(false);
 
     const handleUpdateState = (state: 'manage' | 'add' | 'edit') => {
@@ -41,6 +42,27 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
         });
     };
 
+    const onEdit = (subsection: PagesSubSection) => {
+        setSubsectionState('edit');
+        setEditSubsection(subsection);
+    };
+
+    const handleChangeVisibility = (subsection: PagesSubSection, visibility: boolean) => {
+        SubSectionControllerService.updateSubSectionUsingPut({
+            authorization: authorization(),
+            page: page.id,
+            subSectionId: subsection.id,
+            request: { name: subsection.name, visible: visibility }
+        }).then(() => {
+            refresh?.();
+            if (visibility) {
+                onSetAlert?.(`Section unhidden successfully`, `success`);
+            } else {
+                onSetAlert?.(`Section hidden successfully`, `success`);
+            }
+        });
+    };
+
     return (
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragUpdate={handleDragUpdate}>
             {subsectionState === 'add' && (
@@ -55,6 +77,23 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                         handleUpdateState('manage');
                         refresh();
                     }}
+                />
+            )}
+            {subsectionState === 'edit' && (
+                <AddSubSection
+                    sectionId={section.id}
+                    pageId={page.id}
+                    onCancel={() => {
+                        handleUpdateState('manage');
+                    }}
+                    onSubSectionTouched={() => {
+                        onSetAlert?.(`Your changes have been successfully updated`, `success`);
+                        handleUpdateState('manage');
+                        setEditSubsection(undefined);
+                        refresh();
+                    }}
+                    subsectionEdit={editSubsection}
+                    isEdit
                 />
             )}
             {subsectionState === 'manage' && (
@@ -109,8 +148,10 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                                                 subsection={s}
                                                 key={k}
                                                 setOnAction={setOnAction}
+                                                setEdit={onEdit}
                                                 onDelete={onDelete}
                                                 index={k}
+                                                onChangeVisibility={handleChangeVisibility}
                                             />
                                         );
                                     })}

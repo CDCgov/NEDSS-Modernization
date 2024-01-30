@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState, ReactNode } from 'react';
+import React, { useContext, useEffect, useState, ReactNode } from 'react';
 import './Concept.scss';
 import { ConceptsContext } from '../../context/ConceptContext';
 import { useConceptAPI } from './useConceptAPI';
 import { ConceptTable } from './ConceptTable';
-import { Button } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import { ValueSet, ValueSetControllerService } from '../../generated';
 import { authorization } from 'authorization';
 import { EditConcept } from './EditConcept/EditConcept';
@@ -12,13 +12,14 @@ import { AlertBanner } from '../AlertBanner/AlertBanner';
 
 type Props = {
     valueset: ValueSet;
+    onEdit?: () => void;
 };
 interface CodeSystemOption {
     label: string;
     value: string;
 }
 
-export const Concept = ({ valueset }: Props) => {
+export const Concept = ({ valueset, onEdit }: Props) => {
     const { selectedConcept } = useContext(ConceptsContext);
     const { searchQuery, sortDirection, currentPage, pageSize } = useContext(ConceptsContext);
     const [summaries, setSummaries] = useState([]);
@@ -43,7 +44,7 @@ export const Concept = ({ valueset }: Props) => {
 
     useEffect(() => {
         fetchContent();
-    }, [searchQuery, currentPage, pageSize, sortDirection]);
+    }, [searchQuery, currentPage, pageSize, sortDirection, valueset!.valueSetCode]);
 
     useEffect(() => {
         selectedConcept.status && setShowForm(!showForm);
@@ -80,7 +81,10 @@ export const Concept = ({ valueset }: Props) => {
     ];
     return (
         <div className={`concept ${editMode ? 'edit' : ''}`}>
-            <h3>Value set details</h3>
+            <div className="concept-header">
+                <h3>Value set details</h3>
+                <Icon.Edit onClick={onEdit} style={{ cursor: 'pointer' }} size={3} />
+            </div>
             <div>
                 <ul className="list-details">
                     {list.map((ls, index) => (

@@ -41,6 +41,9 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSectio
 
     const addSubsectionModalRef = useRef<ModalRef>(null);
 
+    const editSubsectionModalRef = useRef<ModalRef>(null);
+    const [editSubsection, setEditSubsection] = useState<PagesSubSection | undefined>(undefined);
+
     const manageSubsectionModalRef = useRef<ModalRef>(null);
 
     const { showAlert } = useAlert();
@@ -55,6 +58,16 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSectio
 
     const handleManageSubsection = () => {
         manageSubsectionModalRef.current?.toggleModal(undefined, true);
+    };
+
+    const handleEditSubsection = (subsection: PagesSubSection) => {
+        setEditSubsection(subsection);
+        editSubsectionModalRef.current?.toggleModal(undefined, true);
+    };
+
+    const onCloseEditSubsectionModal = () => {
+        setEditSubsection(undefined);
+        editSubsectionModalRef.current?.toggleModal(undefined, false);
     };
 
     const onCloseManageSubsection = () => {
@@ -120,6 +133,7 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSectio
                             onEditQuestion={onEditQuestion}
                             onAddQuestion={() => onAddQuestion(subsection.id)}
                             onDeleteSubsection={handleDeleteSubsection}
+                            onEditSubsection={handleEditSubsection}
                         />
                     ))}
                 </div>
@@ -154,6 +168,26 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSectio
                         showAlert({ message: `You have successfully added subsection "${section}"`, type: `success` });
                         refresh();
                     }}
+                />
+            </Modal>
+
+            <Modal
+                id={'add-section-modal'}
+                ref={editSubsectionModalRef}
+                className={'add-section-modal'}
+                isLarge
+                forceAction>
+                <AddSubSection
+                    sectionId={section.id}
+                    pageId={page.id}
+                    onCancel={onCloseEditSubsectionModal}
+                    onSubSectionTouched={() => {
+                        onCloseEditSubsectionModal();
+                        showAlert({ message: `Your changes have been successfully updated`, type: `success` });
+                        refresh();
+                    }}
+                    subsectionEdit={editSubsection}
+                    isEdit
                 />
             </Modal>
 
