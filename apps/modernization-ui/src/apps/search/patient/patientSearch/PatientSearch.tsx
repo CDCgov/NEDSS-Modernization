@@ -245,7 +245,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
             ),
             expanded: true,
             id: '1',
-            headingLevel: 'h4',
+            headingLevel: 'h3',
             className: 'accordian-item'
         },
         {
@@ -253,7 +253,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
             content: <AddressForm control={form.control} />,
             expanded: false,
             id: '2',
-            headingLevel: 'h4',
+            headingLevel: 'h3',
             className: 'accordian-item'
         },
         {
@@ -261,7 +261,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
             content: <ContactForm control={form.control} errors={form.formState.errors} />,
             expanded: false,
             id: '3',
-            headingLevel: 'h4',
+            headingLevel: 'h3',
             className: 'accordian-item'
         },
         {
@@ -269,7 +269,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
             content: <IDForm control={form} />,
             expanded: false,
             id: '4',
-            headingLevel: 'h4',
+            headingLevel: 'h3',
             className: 'accordian-item'
         },
         {
@@ -277,7 +277,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
             content: <EthnicityForm control={form.control} />,
             expanded: false,
             id: '5',
-            headingLevel: 'h4',
+            headingLevel: 'h3',
             className: 'accordian-item'
         }
     ];
