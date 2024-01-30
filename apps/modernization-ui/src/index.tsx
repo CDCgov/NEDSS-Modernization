@@ -5,13 +5,16 @@ import { UserContextProvider } from './providers/UserContext';
 import reportWebVitals from './reportWebVitals';
 import { AppRoutes } from 'routes/AppRoutes';
 import 'styles/global.scss';
+import { AnalyticsProvider } from 'analytics/AnalyticsContext';
 
 render(
     <StrictMode>
         <BrowserRouter>
-            <UserContextProvider>
-                <AppRoutes />
-            </UserContextProvider>
+            <AnalyticsProvider>
+                <UserContextProvider>
+                    <AppRoutes />
+                </UserContextProvider>
+            </AnalyticsProvider>
         </BrowserRouter>
     </StrictMode>,
     document.getElementById('root')
