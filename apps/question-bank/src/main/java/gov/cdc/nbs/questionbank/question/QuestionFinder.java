@@ -1,6 +1,10 @@
 package gov.cdc.nbs.questionbank.question;
 
 import java.util.List;
+
+
+import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
+import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +24,9 @@ public class QuestionFinder {
     private final QuestionMapper questionMapper;
 
     public QuestionFinder(
-            final WaQuestionRepository questionRepository,
-            final QuestionMapper questionMapper,
-            WaUiMetadataRepository uiMetadataRepository) {
+        final WaQuestionRepository questionRepository,
+        final QuestionMapper questionMapper,
+        WaUiMetadataRepository uiMetadataRepository) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
         this.uiMetadataRepository = uiMetadataRepository;
@@ -30,8 +34,8 @@ public class QuestionFinder {
 
     public GetQuestionResponse find(Long id) {
         Question question = questionRepository.findById(id)
-                .map(questionMapper::toQuestion)
-                .orElseThrow(() -> new QuestionNotFoundException(id));
+            .map(questionMapper::toQuestion)
+            .orElseThrow(() -> new QuestionNotFoundException(id));
         boolean isInUse = checkQuestionInUse(question.uniqueId());
         return new GetQuestionResponse(question, isInUse);
     }
@@ -44,10 +48,10 @@ public class QuestionFinder {
 
     public Page<Question> find(FindQuestionRequest request, Pageable pageable) {
         Page<WaQuestion> page = questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(
-                request.search(),
-                tryConvert(request.search()),
-                request.questionType(),
-                pageable);
+            request.search(),
+            tryConvert(request.search()),
+            request.questionType(),
+            pageable);
         List<Question> questions = page.get().map(questionMapper::toQuestion).toList();
         return new PageImpl<>(questions, pageable, page.getTotalElements());
     }
@@ -61,6 +65,14 @@ public class QuestionFinder {
             return Long.valueOf(search);
         } catch (NumberFormatException e) {
             return -1L;
+        }
+    }
+
+    public boolean checkUnique(QuestionValidationRequest request) {
+        if (request.field().equals("uniqueId")) {
+            return questionRepository.findIdByQuestionIdentifier(request.value()).isEmpty();
+        } else {
+            throw new UniqueQuestionException("invalid unique field name");
         }
     }
 
