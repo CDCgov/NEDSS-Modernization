@@ -93,7 +93,7 @@ export const QuestionContent = ({ type, valueSet, name, identifier, displayCompo
             {valueSet && (
                 <div className="margin-top-1em">
                     <Button
-                        className="line-btn"
+                        className={styles.unStyledButton}
                         type="button"
                         onClick={() => {
                             setEditValueSet?.({ valueSetNm: valueSet });

@@ -309,10 +309,8 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
             case UpdateDateQuestionRequest.type.CODED:
                 return coded;
             case UpdateDateQuestionRequest.type.TEXT:
-                questionForm.setValue('mask', 'TXT');
                 return textOption;
             case UpdateDateQuestionRequest.type.NUMERIC:
-                questionForm.setValue('mask', 'NUM');
                 return dateOrNumeric;
             case UpdateDateQuestionRequest.type.DATE:
                 return dateOrNumeric;
@@ -414,10 +412,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
         </>
     );
     const includedInMessage = watch('includedInMessage');
-    const relatedUnits = watch('relatedUnits');
-    const unitTypeValue = watch('unitType');
     const IsIncludedInMessage = !includedInMessage;
-    const isDisableUnitType = relatedUnits !== 'Yes';
     const editDisabledFields = question?.id !== undefined;
     const readOnlyControl = watch('displayControl') == 1026;
 
@@ -589,11 +584,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             />
                         )}
                         {selectedFieldType === UpdateDateQuestionRequest.type.NUMERIC && (
-                            <CreateNumericQuestion
-                                control={control!}
-                                isDisableUnitType={isDisableUnitType}
-                                unitType={unitTypeValue}
-                            />
+                            <CreateNumericQuestion control={control} />
                         )}
                         {selectedFieldType === UpdateDateQuestionRequest.type.DATE && (
                             <CreateDateQuestion control={control} options={maskOptions} />

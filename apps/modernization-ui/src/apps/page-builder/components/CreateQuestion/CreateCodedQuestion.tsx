@@ -65,7 +65,6 @@ export const CreateCodedQuestion = ({ control, addValueModalRef, valueSetName, v
                 <Controller
                     control={control}
                     name="defaultValue"
-                    rules={{ required: { value: isValueSet, message: 'Default Value required' } }}
                     render={({ field: { onChange, value }, fieldState: { error } }) => (
                         <SelectInput
                             defaultValue={value}
@@ -73,7 +72,6 @@ export const CreateCodedQuestion = ({ control, addValueModalRef, valueSetName, v
                             onChange={onChange}
                             options={options}
                             error={error?.message}
-                            required={isValueSet}
                         />
                     )}
                 />
