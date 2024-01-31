@@ -140,8 +140,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
     }, [question]);
 
     const valueSetName = searchValueSet?.valueSetName || searchValueSet?.valueSetNm || watch('valueSet') || '';
-    const valueSetCode = searchValueSet?.valueSetCode || watch('valueSet') || '';
-
+    const valueSetCode = searchValueSet?.valueSetCode || valueSetName;
     useEffect(() => {
         if (searchValueSet) questionForm.setValue('valueSet', searchValueSet.codeSetGroupId);
     }, [searchValueSet]);
@@ -335,7 +334,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
     };
 
     useEffect(() => {
-        getDefaultSelection();
+        if (!editDisabledFields) getDefaultSelection();
     }, [selectedFieldType]);
 
     const renderUserInterface = (

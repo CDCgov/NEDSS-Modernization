@@ -86,7 +86,7 @@ export const CreateTextQuestion = ({ control, options, isText }: TextQuestionPro
                         onChange={onChange}
                         className="field-space"
                         defaultValue={value}
-                        label="default Value"
+                        label="Default value"
                         type="text"
                         error={error?.message}
                     />
