@@ -16,8 +16,5 @@ nbs:
               enabled: false
 
     settings:
-      smarty:
-        key: 166215385741384990
       analytics:
-        key: phc_FRJiRaZB8QjWLhfGYQ4V6uKx9bmwDXXdOegb3r1V4OG
         host: https://us.posthog.com
