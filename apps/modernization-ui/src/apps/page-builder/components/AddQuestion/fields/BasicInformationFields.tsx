@@ -19,9 +19,9 @@ const questionTypes: { name: string; value: QuestionType }[] = [
 ];
 
 type Props = {
-    question?: CreateQuestionForm;
+    editing?: boolean;
 };
-export const BasicInformationFields = ({ question }: Props) => {
+export const BasicInformationFields = ({ editing = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
     const [subgroups, setSubgroups] = useState<Option[]>([]);
@@ -44,7 +44,7 @@ export const BasicInformationFields = ({ question }: Props) => {
                             label="LOCAL"
                             onChange={onChange}
                             checked={value === 'LOCAL'}
-                            readOnly={question !== undefined}
+                            readOnly={editing}
                         />
                         <Radio
                             id="codeSet_PHIN"
@@ -53,7 +53,7 @@ export const BasicInformationFields = ({ question }: Props) => {
                             label="PHIN"
                             onChange={onChange}
                             checked={value === 'PHIN'}
-                            readOnly={question !== undefined}
+                            readOnly={editing}
                         />
                     </div>
                 )}
@@ -77,7 +77,7 @@ export const BasicInformationFields = ({ question }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            readOnly={question !== undefined}
+                            readOnly={editing}
                         />
                     )}
                 />
@@ -101,7 +101,7 @@ export const BasicInformationFields = ({ question }: Props) => {
                         id={name}
                         error={error?.message}
                         required
-                        readOnly={question !== undefined}
+                        readOnly={editing}
                     />
                 )}
             />
@@ -113,7 +113,7 @@ export const BasicInformationFields = ({ question }: Props) => {
                     <SelectInput
                         label="Subgroup"
                         defaultValue={value}
-                        disabled={question !== undefined}
+                        disabled={editing}
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
@@ -140,7 +140,7 @@ export const BasicInformationFields = ({ question }: Props) => {
                             onBlur={onBlur}
                             defaultValue={value}
                             name={name}
-                            disabled={question !== undefined}
+                            disabled={editing}
                             id={name}
                             rows={1}
                             className={styles.textaArea}
@@ -163,7 +163,7 @@ export const BasicInformationFields = ({ question }: Props) => {
                                     key={k}
                                     type="button"
                                     outline={field.value !== watch.questionType}
-                                    disabled={question !== undefined}
+                                    disabled={editing}
                                     onClick={() => {
                                         onChange(field.value);
                                     }}>

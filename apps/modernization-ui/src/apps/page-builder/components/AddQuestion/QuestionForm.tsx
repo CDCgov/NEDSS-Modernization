@@ -46,13 +46,13 @@ export const QuestionForm = ({ question }: Props) => {
     }, [watch.displayControl]);
     return (
         <div className={styles.form}>
-            <BasicInformationFields question={question} />
+            <BasicInformationFields editing={question !== undefined} />
             <div className={styles.divider} />
             <UserInterfaceFields />
             {watch.displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'
                 <>
                     <div className={styles.divider} />
-                    <DataMartFields />
+                    <DataMartFields editing={question !== undefined} />
                     <div className={styles.divider} />
                     <MessagingFields />
                 </>

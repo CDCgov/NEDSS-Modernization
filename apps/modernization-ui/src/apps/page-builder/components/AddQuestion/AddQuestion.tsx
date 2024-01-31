@@ -30,7 +30,7 @@ export const AddQuestion = ({ onBack, onClose }: Props) => {
         <div className={classNames(styles.addQuestion, 'add-question')}>
             <CloseableHeader
                 title={
-                    <div className={styles.createQuestionHeader}>
+                    <div className={styles.addQuestionHeader}>
                         <Icon.ArrowBack onClick={onBack} /> Add question
                     </div>
                 }

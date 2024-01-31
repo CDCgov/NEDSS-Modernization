@@ -6,6 +6,15 @@
     justify-content: space-between;
     overflow: hidden;
 
+    .addQuestionHeader {
+        display: flex;
+        align-items: center;
+        svg {
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+    }
+
     .scrollableContent {
         overflow-y: auto;
         display: flex;

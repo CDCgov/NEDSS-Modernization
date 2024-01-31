@@ -110,6 +110,7 @@ export const UserInterfaceFields = () => {
                         label="Question label"
                         id={name}
                         name={name}
+                        htmlFor={name}
                         type="text"
                         defaultValue={value}
                         error={error?.message}

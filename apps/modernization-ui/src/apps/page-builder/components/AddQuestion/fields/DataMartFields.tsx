@@ -8,11 +8,14 @@ import { useEffect, useState } from 'react';
 import { Option } from 'generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 
-export const DataMartFields = () => {
+type Props = {
+    editing?: boolean;
+};
+export const DataMartFields = ({ editing = false }: Props) => {
     const [rdbTableNames, setRdbTableNames] = useState<Option[]>([]);
-
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
+    const alphanumericUnderscoreNotStartingWithNumber = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
 
     useEffect(() => {
         useOptions('NBS_PH_DOMAINS').then((response) => setRdbTableNames(response.options));
@@ -38,7 +41,7 @@ export const DataMartFields = () => {
                     required: { value: true, message: 'Default label in report is required' },
                     ...maxLengthRule(50)
                 }}
-                render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
+                render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                     <Input
                         label="Default label in report"
                         onChange={onChange}
@@ -46,6 +49,9 @@ export const DataMartFields = () => {
                         defaultValue={value}
                         type="text"
                         error={error?.message}
+                        name={name}
+                        id={name}
+                        htmlFor={name}
                         required
                     />
                 )}
@@ -57,7 +63,7 @@ export const DataMartFields = () => {
                     required: { value: true, message: 'Default RDB table name is required' },
                     ...maxLengthRule(50)
                 }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                     <Input
                         label="Default RDB table name"
                         onChange={onChange}
@@ -66,7 +72,63 @@ export const DataMartFields = () => {
                         disabled={true}
                         type="text"
                         error={error?.message}
+                        name={name}
+                        id={name}
+                        htmlFor={name}
                         required
+                    />
+                )}
+            />
+            <Controller
+                control={form.control}
+                name="dataMartInfo.rdbColumnName"
+                rules={{
+                    required: { value: true, message: 'RDB column name is required' },
+                    pattern: {
+                        value: alphanumericUnderscoreNotStartingWithNumber,
+                        message: 'Must not start with a number and valid characters are A-Z, a-z, 0-9, or _'
+                    },
+                    ...maxLengthRule(50)
+                }}
+                render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
+                    <Input
+                        label="RDB column name"
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        defaultValue={value}
+                        disabled={editing}
+                        type="text"
+                        error={error?.message}
+                        name={name}
+                        id={name}
+                        htmlFor={name}
+                        required
+                    />
+                )}
+            />
+            <Controller
+                control={form.control}
+                name="dataMartInfo.dataMartColumnName"
+                rules={{
+                    pattern: {
+                        value: alphanumericUnderscoreNotStartingWithNumber,
+                        message: 'Must not start with a number and valid characters are A-Z, a-z, 0-9, or _'
+                    },
+                    ...maxLengthRule(50)
+                }}
+                render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
+                    <Input
+                        label="Data mart column name"
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        className="field-space"
+                        defaultValue={value}
+                        type="text"
+                        disabled={editing}
+                        error={error?.message}
+                        name={name}
+                        id={name}
+                        htmlFor={name}
                     />
                 )}
             />
