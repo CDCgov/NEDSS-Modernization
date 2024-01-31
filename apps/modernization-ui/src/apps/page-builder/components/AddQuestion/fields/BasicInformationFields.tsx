@@ -155,7 +155,9 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                 rules={{ required: { value: true, message: 'Field type required' } }}
                 render={({ field: { onChange, name }, fieldState: { error } }) => (
                     <>
-                        <Label htmlFor={name}>Field type</Label>
+                        <Label className="required" htmlFor={name}>
+                            Field type
+                        </Label>
                         {error?.message && <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>}
                         <ButtonGroup className={styles.buttonGroup} type="segmented">
                             {questionTypes.map((field, k) => (

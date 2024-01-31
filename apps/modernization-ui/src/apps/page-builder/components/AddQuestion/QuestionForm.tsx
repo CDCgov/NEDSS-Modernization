@@ -54,7 +54,7 @@ export const QuestionForm = ({ question }: Props) => {
                     <div className={styles.divider} />
                     <DataMartFields editing={question !== undefined} />
                     <div className={styles.divider} />
-                    <MessagingFields />
+                    <MessagingFields editing={question !== undefined} />
                 </>
             )}
             <div className={styles.divider} />

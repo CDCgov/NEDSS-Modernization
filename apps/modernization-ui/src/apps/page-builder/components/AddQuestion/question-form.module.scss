@@ -3,6 +3,7 @@
 .form {
     display: flex;
     flex-direction: column;
+    padding-bottom: 4rem;
 
     .divider {
         width: 100%;
@@ -38,5 +39,18 @@
     .fieldInfo {
         margin-top: 0.25rem;
         font-size: 0.875rem;
+    }
+
+    .toggleGroup {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .toggleLabel {
+        margin-top: 1.5rem;
+    }
+
+    .mandatory {
+        color: colors.$mandatory;
     }
 }
