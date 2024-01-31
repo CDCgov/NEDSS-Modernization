@@ -1,5 +1,14 @@
 @use 'styles/colors';
 
+.advanced-search-title {
+    font-size: 2rem;
+}
+
+.advanced-search-results-title {
+    margin: 0;
+    font-size: 1.375rem;
+}
+
 button {
     white-space: nowrap;
     img {
