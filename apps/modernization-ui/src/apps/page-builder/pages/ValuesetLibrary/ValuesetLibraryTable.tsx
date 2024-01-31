@@ -41,7 +41,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
     const asTableRow = (valueSet: ValueSet): TableBody => ({
-        id: valueSet.nbsUid,
+        id: valueSet.codeSetGroupId,
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
         expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         selectable: true,
@@ -117,7 +117,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
 
     const handleSelected = ({ target }: any, item: any) => {
         if (target.checked) {
-            const value = summaries.find((val: ValueSet) => item.id === val.nbsUid) || {};
+            const value = summaries.find((val: ValueSet) => item.id === val.codeSetGroupId) || {};
             setSelectedValueSet(value);
             setSearchValueSet?.(value);
         } else {
