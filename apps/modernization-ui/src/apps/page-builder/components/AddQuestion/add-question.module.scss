@@ -1,0 +1,35 @@
+@use 'styles/colors';
+
+.addQuestion {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+
+    .scrollableContent {
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .heading {
+            padding: 2rem 0;
+            text-align: center;
+
+            .fieldInfo {
+                margin-top: 0.25rem;
+                font-size: 0.875rem;
+            }
+
+            .mandatory {
+                color: colors.$mandatory;
+            }
+        }
+        .formContainer {
+            width: 35rem;
+            .usa-input {
+                max-width: 35rem;
+            }
+        }
+    }
+}
