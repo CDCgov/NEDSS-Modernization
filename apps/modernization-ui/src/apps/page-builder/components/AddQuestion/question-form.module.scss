@@ -19,6 +19,11 @@
         margin-top: 1.5rem;
     }
 
+    .futureDateButtons {
+        display: flex;
+        gap: 4rem;
+    }
+
     .helpText {
         color: colors.$base-darkest;
         font-size: 0.875rem;

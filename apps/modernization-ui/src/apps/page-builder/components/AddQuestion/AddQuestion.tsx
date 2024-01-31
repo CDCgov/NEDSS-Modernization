@@ -18,7 +18,7 @@ export const AddQuestion = ({ onBack, onClose }: Props) => {
         mode: 'onBlur',
         defaultValues: {
             codeSet: CreateTextQuestionRequest.codeSet.LOCAL,
-            messagingInfo: { includedInMessage: false }
+            messagingInfo: { includedInMessage: false, requiredInMessage: false }
         }
     });
 

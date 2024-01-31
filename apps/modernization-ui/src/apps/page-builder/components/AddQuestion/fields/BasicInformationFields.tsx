@@ -10,6 +10,10 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm, QuestionType } from '../QuestionForm';
 import styles from '../question-form.module.scss';
+import { CodedFields } from './CodedFields';
+import { NumericFields } from './NumericFields';
+import { TextFields } from './TextFields';
+import { DateFields } from './DateFields';
 
 const questionTypes: { name: string; value: QuestionType }[] = [
     { name: 'Value set', value: 'CODED' },
@@ -25,10 +29,18 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
     const [subgroups, setSubgroups] = useState<Option[]>([]);
+    const [maskOptions, setMaskOptions] = useState<Option[]>([]);
 
     useEffect(() => {
         useOptions('NBS_QUES_SUBGROUP').then((response) => setSubgroups(response.options));
+        useOptions('NBS_MASK_TYPE').then((response) => setMaskOptions(response.options));
     }, []);
+
+    useEffect(() => {
+        // When the question type changes, reset the question specific fields
+        form.resetField('mask');
+        form.resetField('allowFutureDates');
+    }, [watch.questionType]);
     return (
         <>
             <Heading level={4}>Basic information</Heading>
@@ -176,9 +188,10 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                     </>
                 )}
             />
-            <div style={{ border: 'solid 1px green', padding: '2rem', backgroundColor: 'gold' }}>
-                Placeholder -- field type specific form elements
-            </div>
+            {watch.questionType === 'CODED' && <CodedFields />}
+            {watch.questionType === 'NUMERIC' && <NumericFields />}
+            {watch.questionType === 'TEXT' && <TextFields />}
+            {watch.questionType === 'DATE' && <DateFields maskOptions={maskOptions} />}
         </>
     );
 };
