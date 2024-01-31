@@ -36,7 +36,7 @@ export const CreateCodedQuestion = ({ control, addValueModalRef, valueSetName, v
     const [options, setOptions] = useState<optionsType[]>([]);
 
     const fetchConcepts = async () => {
-        useConceptAPI(authorization(), valueSetCode!).then((response: any) => {
+        useConceptAPI(authorization(), valueSetCode).then((response: any) => {
             const data = response || [];
             const list: optionsType[] = [];
             data.map((each: { display: string; conceptCode: string }) => {
@@ -68,7 +68,7 @@ export const CreateCodedQuestion = ({ control, addValueModalRef, valueSetName, v
                     render={({ field: { onChange, value }, fieldState: { error } }) => (
                         <SelectInput
                             defaultValue={value}
-                            label="Default Value"
+                            label="Default value"
                             onChange={onChange}
                             options={options}
                             error={error?.message}
