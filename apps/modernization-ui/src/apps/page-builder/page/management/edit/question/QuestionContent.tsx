@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from 'react';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Selectable } from 'options/selectable';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { RadioButton } from 'apps/page-builder/components/RadioButton/RadioButton';
+import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
 import { Button, Icon } from '@trussworks/react-uswds';
 import { QuestionsContext } from '../../../../context/QuestionsContext';
 import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
@@ -69,7 +69,7 @@ export const QuestionContent = ({ type, valueSet, name, identifier, displayCompo
                     {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
                     {displayComponent === 1001 && (
                         <>
-                            <RadioButton options={conceptState} />{' '}
+                            <RadioButtons options={conceptState} />
                         </>
                     )}
 

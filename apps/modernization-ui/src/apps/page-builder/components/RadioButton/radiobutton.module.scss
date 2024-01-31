@@ -1,16 +1,7 @@
-
-
 .radioBtns {
     .content {
         display: flex;
         flex-direction: row;
-        .select {
-            display: flex;
-            align-items: center;
-        }
-        .title {
-            display: flex;
-            align-items: center;
-        }
+        margin-top: 1rem;
     }
 }

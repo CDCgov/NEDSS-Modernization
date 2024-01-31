@@ -1,22 +1,19 @@
 import styles from './radiobutton.module.scss';
 import { Selectable } from 'options';
-import { Icon } from '@trussworks/react-uswds';
+import { Radio } from '@trussworks/react-uswds';
 
 type Props = {
     options: Selectable[];
     onChange?: () => void;
 };
 
-export const RadioButton = ({ options }: Props) => {
+export const RadioButtons = ({ options }: Props) => {
     return (
         <div className={styles.radioBtns}>
             <>
                 {options.map((s, k) => (
                     <div className={styles.content} key={k}>
-                        <div className={styles.select}>
-                            <Icon.RadioButtonUnchecked size={3} />
-                        </div>
-                        <div className={styles.title}>{s.name}</div>
+                        <Radio label={s.name} id={'radio-btn'} name={'radio-btn'} />
                     </div>
                 ))}
             </>
