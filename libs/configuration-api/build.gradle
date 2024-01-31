@@ -2,7 +2,9 @@ plugins {
     alias libs.plugins.springBoot apply false
 }
 
+apply from: "${rootDir}/gradle/cucumber-logging.gradle"
 
+group = 'gov.cdc.nbs.configuration'
 
 testing {
     suites {
@@ -12,21 +14,29 @@ testing {
             dependencies {
                 implementation.bundle(libs.bundles.testing)
                 implementation libs.spring.test
+
+                implementation libs.mssql.jdbc
+                implementation.bundle(libs.bundles.testcontainers)
+                implementation.bundle(libs.bundles.cucumber)
+
+                implementation project(':testing:support')
+                implementation project(':testing:database')
             }
         }
     }
 }
 
 dependencies {
-
-    implementation project(':authentication')
-
     implementation libs.springBoot.web
-    implementation libs.bundles.jpa
+    implementation libs.bundles.jdbc
     implementation libs.mssql.jdbc
 
     implementation libs.bundles.swagger
-    implementation libs.bundles.security
 
 }
 
+test {
+    if (System.getProperty("testing.database.image") != null) {
+        systemProperty "testing.database.image", System.getProperty("testing.database.image")
+    }
+}
