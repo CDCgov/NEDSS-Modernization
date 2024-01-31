@@ -3,15 +3,27 @@ import styles from './managesubsectiontile.module.scss';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
 import { Icon, Button } from '@trussworks/react-uswds';
 import { useState } from 'react';
+import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 
 type ManageSubsectionTileProps = {
     subsection: PagesSubSection;
     setOnAction?: (action: boolean) => void;
+    setEdit: (subsection: PagesSubSection) => void;
     action: boolean;
     onDelete?: (subsection: PagesSubSection) => void;
+    index: number;
+    onChangeVisibility: (subsection: PagesSubSection, visibility: boolean) => void;
 };
 
-export const ManageSubsectionTile = ({ subsection, setOnAction, action, onDelete }: ManageSubsectionTileProps) => {
+export const ManageSubsectionTile = ({
+    subsection,
+    setOnAction,
+    setEdit,
+    action,
+    onDelete,
+    index,
+    onChangeVisibility
+}: ManageSubsectionTileProps) => {
     const [deleteWarning, setDeleteWarning] = useState<PagesSubSection | undefined>(undefined);
 
     const deleteHeader = (curSubsection: PagesSubSection) => {
@@ -31,104 +43,119 @@ export const ManageSubsectionTile = ({ subsection, setOnAction, action, onDelete
     };
 
     return (
-        <div className={styles.tile}>
-            {deleteWarning !== undefined && deleteWarning.id === subsection.id ? (
-                <div className={styles.warningModal}>
-                    <div className={styles.warningModalHeader}>
-                        <div className={styles.warningIcon}>
-                            <Icon.Warning size={3} />
+        <Draggable draggableId={subsection.id?.toString()} index={index} key={subsection.id?.toString()}>
+            {(provided: DraggableProvided) => (
+                <div className={styles.tile} ref={provided.innerRef} {...provided.draggableProps}>
+                    {deleteWarning !== undefined && deleteWarning.id === subsection.id ? (
+                        <div className={styles.warningModal}>
+                            <div className={styles.warningModalHeader}>
+                                <div className={styles.warningIcon}>
+                                    <Icon.Warning size={3} />
+                                </div>
+                                {deleteHeader?.(subsection)}
+                            </div>
+                            <div className={styles.warningModalContent}>
+                                <div className={styles.content}>
+                                    <div className={styles.warningDrag} {...provided.dragHandleProps}>
+                                        <NbsIcon name="drag" size="3" />
+                                    </div>
+                                    <div className={styles.warningGroup}>
+                                        <NbsIcon name="group" size="3" />
+                                    </div>
+                                    <div>{`${deleteWarning.name}(${subsection.questions.length})`}</div>
+                                </div>
+                                <div className={styles.warningModalBtns}>
+                                    {isValidDelete(subsection) ? (
+                                        <>
+                                            <div
+                                                onClick={() => {
+                                                    onDelete?.(subsection);
+                                                    setDeleteWarning(undefined);
+                                                    setOnAction?.(false);
+                                                }}>
+                                                Yes, delete
+                                            </div>
+                                            <div className={styles.separator}>|</div>
+                                            <div
+                                                onClick={() => {
+                                                    setDeleteWarning(undefined);
+                                                    setOnAction?.(false);
+                                                }}>
+                                                Cancel
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div
+                                            onClick={() => {
+                                                setDeleteWarning(undefined);
+                                                setOnAction?.(false);
+                                            }}>
+                                            OK
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
-                        {deleteHeader?.(subsection)}
-                    </div>
-                    <div className={styles.warningModalContent}>
-                        <div className={styles.content}>
-                            <div className={styles.warningDrag}>
+                    ) : (
+                        <div className={styles.manageSubsectionTile}>
+                            <div className={styles.handle} {...provided.dragHandleProps}>
                                 <NbsIcon name="drag" size="3" />
                             </div>
-                            <div className={styles.warningGroup}>
+                            <div className={styles.label} data-testid={'label'}>
                                 <NbsIcon name="group" size="3" />
+                                <span data-testid="manageSectionTileId">{`${subsection.name} (${subsection.questions.length})`}</span>
                             </div>
-                            <div>{`${deleteWarning.name}(${subsection.questions.length})`}</div>
-                        </div>
-                        <div className={styles.warningModalBtns}>
-                            {isValidDelete(subsection) ? (
-                                <>
-                                    <div
-                                        onClick={() => {
-                                            onDelete?.(subsection);
-                                            setDeleteWarning(undefined);
-                                            setOnAction?.(false);
-                                        }}>
-                                        Yes, delete
-                                    </div>
-                                    <div className={styles.separator}>|</div>
-                                    <div
-                                        onClick={() => {
-                                            setDeleteWarning(undefined);
-                                            setOnAction?.(false);
-                                        }}>
-                                        Cancel
-                                    </div>
-                                </>
-                            ) : (
-                                <div
+
+                            <div className={styles.buttons}>
+                                <Button
+                                    type="button"
+                                    onClick={() => {
+                                        setEdit(subsection);
+                                    }}
+                                    outline
+                                    disabled={action}
+                                    className={styles.iconBtn}>
+                                    <Icon.Edit style={{ cursor: 'pointer' }} size={3} />
+                                </Button>
+                                <Button
+                                    type="button"
+                                    className={styles.iconBtn}
+                                    outline
+                                    disabled={action}
                                     onClick={() => {
                                         setDeleteWarning(undefined);
-                                        setOnAction?.(false);
+                                        setOnAction?.(true);
                                     }}>
-                                    OK
-                                </div>
-                            )}
+                                    <Icon.Delete style={{ cursor: 'pointer' }} size={3} />
+                                </Button>
+                                {subsection.visible ? (
+                                    <Button
+                                        type="button"
+                                        outline
+                                        className={styles.iconBtn}
+                                        disabled={action}
+                                        onClick={() => {
+                                            onChangeVisibility(subsection, false);
+                                        }}>
+                                        <Icon.Visibility style={{ cursor: 'pointer' }} size={3} />
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        type="button"
+                                        outline
+                                        className={`${styles.iconBtn} ${styles.offVisibility}`}
+                                        disabled={action}
+                                        onClick={() => {
+                                            onChangeVisibility(subsection, true);
+                                        }}>
+                                        <Icon.VisibilityOff style={{ cursor: 'pointer' }} size={3} />
+                                    </Button>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                </div>
-            ) : (
-                <div className={styles.manageSubsectionTile}>
-                    <div className={styles.handle}>
-                        <NbsIcon name="drag" size="3" />
-                    </div>
-                    <div className={styles.label}>
-                        <NbsIcon name="group" size="3" />
-                        <span data-testid="manageSectionTileId">{`${subsection.name}(${subsection.questions.length})`}</span>
-                    </div>
-
-                    <div className={styles.buttons}>
-                        <Button
-                            type="button"
-                            onClick={() => {
-                                setOnAction?.(true);
-                                console.log('edit');
-                            }}
-                            outline
-                            disabled={action}
-                            className={styles.iconBtn}>
-                            <Icon.Edit style={{ cursor: 'pointer' }} size={3} />
-                        </Button>
-                        <Button
-                            type="button"
-                            className={styles.iconBtn}
-                            outline
-                            disabled={action}
-                            onClick={() => {
-                                setOnAction?.(true);
-                                setDeleteWarning(subsection);
-                            }}>
-                            <Icon.Delete style={{ cursor: 'pointer' }} size={3} />
-                        </Button>
-                        <Button
-                            type="button"
-                            outline
-                            disabled={action}
-                            className={styles.iconBtn}
-                            onClick={() => {
-                                setOnAction?.(true);
-                                console.log('visbility');
-                            }}>
-                            <Icon.Visibility style={{ cursor: 'pointer' }} size={3} />
-                        </Button>
-                    </div>
+                    )}
                 </div>
             )}
-        </div>
+        </Draggable>
     );
 };

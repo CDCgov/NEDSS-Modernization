@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DragStart, DragUpdate, DraggableLocation, DropResult } from 'react-beautiful-dnd';
 import { PagesResponse, PagesSection, PagesTab } from '../generated';
-import { moveSubsectionInArray, moveQuestionInArray } from '../helpers/moveObjectInArray';
+import { moveQuestionInArray } from '../helpers/moveObjectInArray';
 import { reorderObjects } from '../services/reorderObjectsAPI';
 import { UserContext } from 'user';
 
@@ -38,24 +38,17 @@ const DragDropProvider: React.FC<{
     useEffect(() => {
         if (pageData) {
             if (pageData.tabs) {
-                setTabs(pageData.tabs);
-            }
-            if (pageData.tabs![currentTab]) {
-                setSections(pageData.tabs![currentTab].sections!);
+                if (pageData.tabs[currentTab]) {
+                    setSections(pageData.tabs![currentTab].sections!);
+                } else {
+                    setTabs(pageData.tabs);
+                }
             }
         }
     }, [pageData, currentTab]);
 
     // handling movement of subsection in the same section
     const moveSubsectionWithinSection: DragDropProps = (source, destination) => {
-        const updatedOrder = moveSubsectionInArray(
-            sections.find((section) => section.id!.toString() === source.droppableId)!.subSections!,
-            source.index,
-            destination.index
-        );
-        const updatedSections = sections.map((section) =>
-            section.id!.toString() !== source.droppableId ? section : { ...section, subSections: updatedOrder }
-        );
         const findId = sections.filter((section) => {
             return section.id!.toString() === destination.droppableId;
         });
@@ -68,7 +61,7 @@ const DragDropProvider: React.FC<{
         } else {
             afterId = findId[0].subSections![destination.index - 1].id!;
         }
-        setSections(updatedSections);
+        findId[0].subSections.splice(destination.index, 0, findId[0].subSections.splice(source.index, 1)[0]);
     };
 
     // handling movement of subsection between sections
@@ -250,7 +243,7 @@ const DragDropProvider: React.FC<{
         setMoveId(Number(event.draggableId));
     };
 
-    const handleDragEnd = async (result: DropResult) => {
+    const handleDragEnd = (result: DropResult) => {
         setCloseId({ id: '', type: '' });
         setDragTarget({ droppableId: '', index: 999, source: 999 });
         if (!result.destination) return;
@@ -264,7 +257,7 @@ const DragDropProvider: React.FC<{
         } else {
             handleTabMove(source, destination);
         }
-        await reorderObjects(token, afterId, moveId, pageData!.id).then(() => {
+        reorderObjects(token, afterId, moveId, pageData!.id).then(() => {
             successCallBack!();
         });
     };

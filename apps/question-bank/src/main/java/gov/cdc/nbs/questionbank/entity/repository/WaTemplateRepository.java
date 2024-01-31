@@ -41,4 +41,6 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
     public Optional<WaTemplate> findByIdAndTemplateType(Long id, String type);
 
     public List<WaTemplate> findAllByTemplateType(String string, Sort sort);
+
+    public List<WaTemplate> findAllByTemplateTypeAndBusObjType(String templateType, String busObjType, Sort sort);
 }

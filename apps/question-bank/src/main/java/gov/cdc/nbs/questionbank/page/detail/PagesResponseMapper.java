@@ -116,6 +116,10 @@ class PagesResponseMapper {
     String defaultValue = content.attributes().defaultValue();
     String valueSet = content instanceof SelectionNode selection ? selection.valueSet() : null;
     long displayComponent = content.type().identifier();
+    String fieldLength = content.attributes().fieldLength();
+    String defaultRdbTableName = content.attributes().defaultRdbTableName();
+    String rdbColumnName = content.attributes().rdbColumnName();
+    String defaultLabelInReport = content.attributes().defaultLabelInReport();
     return new PagesResponse.PagesQuestion(
         id,
         isStandard,
@@ -136,7 +140,11 @@ class PagesResponseMapper {
         defaultValue,
         valueSet,
         displayComponent,
-        adminComments
+        adminComments,
+        fieldLength,
+        defaultRdbTableName,
+        rdbColumnName,
+        defaultLabelInReport
     );
   }
 

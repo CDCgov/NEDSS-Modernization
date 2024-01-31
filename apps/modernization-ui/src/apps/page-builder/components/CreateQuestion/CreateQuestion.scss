@@ -98,6 +98,11 @@
         .mandatory-indicator {
             color: #d83933;
         }
+        .create-question-toggle-group {
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+        }
     }
     .submit-btn {
         float: right;

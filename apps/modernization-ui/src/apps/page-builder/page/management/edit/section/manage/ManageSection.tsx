@@ -70,9 +70,9 @@ export const ManageSection = ({
         }).then(() => {
             onContentChange?.();
             if (visibility) {
-                onHiddenSection?.();
-            } else {
                 onUnhiddenSection?.();
+            } else {
+                onHiddenSection?.();
             }
         });
     };

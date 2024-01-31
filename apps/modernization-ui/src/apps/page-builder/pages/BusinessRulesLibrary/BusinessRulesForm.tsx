@@ -122,8 +122,6 @@ const BusinessRulesForm = ({ form }: formProps) => {
         handleRuleDescription();
     };
 
-    console.log('form', form.getValues());
-
     return (
         <>
             <Controller
@@ -144,7 +142,7 @@ const BusinessRulesForm = ({ form }: formProps) => {
                             outline>
                             hide
                         </ModalToggleButton>
-                        <Grid col={9}>
+                        <Grid col={10}>
                             <Input
                                 className={'text-input'}
                                 defaultValue={sourceDescription}
@@ -192,10 +190,10 @@ const BusinessRulesForm = ({ form }: formProps) => {
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={3}>
+                        <Grid col={2}>
                             <label className="input-label">Logic</label>
                         </Grid>
-                        <Grid col={9}>
+                        <Grid col={10}>
                             <SelectInput
                                 className="text-input"
                                 defaultValue={value}
@@ -239,7 +237,7 @@ const BusinessRulesForm = ({ form }: formProps) => {
                 name="targetType"
                 render={({ field: { onChange, value } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={3}>
+                        <Grid col={2}>
                             <label className="input-label">Target type</label>
                         </Grid>
                         <Grid col={9} className="radio-group">
@@ -267,7 +265,7 @@ const BusinessRulesForm = ({ form }: formProps) => {
                 )}
             />
             <Grid row className="inline-field">
-                <Grid col={3}>
+                <Grid col={2}>
                     <label className="input-label">Target Question(s)</label>
                 </Grid>
                 <Grid col={9}>

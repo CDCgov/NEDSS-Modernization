@@ -8,7 +8,7 @@ import { Sort } from './DocumentsRequiringReview';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';
 
-enum Headers {
+enum Columns {
     DocumentType = 'Document type',
     DateReceived = 'Date received',
     ReportingFacilityProvider = 'Reporting facility / provider',
@@ -18,40 +18,36 @@ enum Headers {
 }
 
 const headers = [
-    { name: Headers.DocumentType, sortable: true },
-    { name: Headers.DateReceived, sortable: true },
-    { name: Headers.ReportingFacilityProvider, sortable: false },
-    { name: Headers.EventDate, sortable: true },
-    { name: Headers.Description, sortable: false },
-    { name: Headers.EventID, sortable: true }
+    { name: Columns.DocumentType, sortable: true },
+    { name: Columns.DateReceived, sortable: true },
+    { name: Columns.ReportingFacilityProvider, sortable: false },
+    { name: Columns.EventDate, sortable: true },
+    { name: Columns.Description, sortable: false },
+    { name: Columns.EventID, sortable: true }
 ];
 
+const resolveUrl = (document: DocumentRequiringReview, patient?: string) => {
+    switch (document.type) {
+        case 'Morbidity Report':
+            return `/nbs/api/profile/${patient}/report/morbidity/${document.id}`;
+        case 'Laboratory Report':
+            return `/nbs/api/profile/${patient}/report/lab/${document.id}`;
+        default:
+            return `/nbs/api/profile/${patient}/document/${document.id}`;
+    }
+};
+
 const renderType = (document: DocumentRequiringReview, patient?: string) => {
+    const url = resolveUrl(document, patient);
     return (
         <>
-            {document.type === 'MorbReport' ? (
-                <>
-                    <ClassicLink url={`/nbs/api/profile/${patient}/report/morbidity/${document.id}`}>
-                        Morbidity Report
-                    </ClassicLink>
-                </>
-            ) : null}
-            {document.type === 'LabReport' ? (
-                <>
-                    <ClassicLink url={`/nbs/api/profile/${patient}/report/lab/${document.id}`}>Lab Report</ClassicLink>
-                </>
-            ) : null}
-            {document.type === 'Document' ? (
-                <>
-                    <ClassicLink url={`/nbs/api/profile/${patient}/document/${document.id}`}>Document</ClassicLink>
-                </>
-            ) : null}
-            {document.isElectronic ? (
+            {url && <ClassicLink url={url}>{document.type}</ClassicLink>}
+            {document.isElectronic && (
                 <>
                     <br />
                     (Electronic)
                 </>
-            ) : null}
+            )}
         </>
     );
 };
@@ -119,23 +115,13 @@ const renderEventDate = (document: DocumentRequiringReview) => {
 };
 
 const renderDescriptions = (document: DocumentRequiringReview) => {
-    return (
-        <>
-            {document.descriptions.length === 0 ? (
-                <NoData />
-            ) : (
-                <>
-                    {document.descriptions.map((d, key) => (
-                        <div key={key}>
-                            <strong>{d?.title}</strong>
-                            <br />
-                            <span>{d?.value}</span>
-                        </div>
-                    ))}
-                </>
-            )}
-        </>
-    );
+    return document.descriptions.map((d, key) => (
+        <div key={key}>
+            <strong>{d?.title}</strong>
+            <br />
+            <span>{d?.value}</span>
+        </div>
+    ));
 };
 
 const renderIdLink = (document: DocumentRequiringReview) => {
@@ -200,16 +186,16 @@ export const DocumentsRequiringReviewTable = ({
     const handleSort = (field: string, direction: Direction) => {
         let sortField: DocumentRequiringReviewSortableField;
         switch (field) {
-            case Headers.DocumentType:
+            case Columns.DocumentType:
                 sortField = DocumentRequiringReviewSortableField.Type;
                 break;
-            case Headers.DateReceived:
+            case Columns.DateReceived:
                 sortField = DocumentRequiringReviewSortableField.DateReceived;
                 break;
-            case Headers.EventDate:
+            case Columns.EventDate:
                 sortField = DocumentRequiringReviewSortableField.EventDate;
                 break;
-            case Headers.EventID:
+            case Columns.EventID:
                 sortField = DocumentRequiringReviewSortableField.LocalId;
                 break;
             default:

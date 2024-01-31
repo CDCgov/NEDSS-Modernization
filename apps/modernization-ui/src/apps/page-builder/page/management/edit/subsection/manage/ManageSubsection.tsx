@@ -9,6 +9,8 @@ import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTil
 import { AddSubSection } from './AddSubSection';
 import { usePageManagement } from '../../../usePageManagement';
 import { authorization } from 'authorization';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 
 type ManageSubsectionProps = {
     alert?: AlertInLineProps;
@@ -19,8 +21,10 @@ type ManageSubsectionProps = {
 };
 
 export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onCancel }: ManageSubsectionProps) => {
+    const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
     const [subsectionState, setSubsectionState] = useState<'manage' | 'add' | 'edit'>('manage');
     const { page, refresh } = usePageManagement();
+    const [editSubsection, setEditSubsection] = useState<PagesSubSection | undefined>(undefined);
     const [onAction, setOnAction] = useState<boolean>(false);
 
     const handleUpdateState = (state: 'manage' | 'add' | 'edit') => {
@@ -38,8 +42,29 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
         });
     };
 
+    const onEdit = (subsection: PagesSubSection) => {
+        setSubsectionState('edit');
+        setEditSubsection(subsection);
+    };
+
+    const handleChangeVisibility = (subsection: PagesSubSection, visibility: boolean) => {
+        SubSectionControllerService.updateSubSectionUsingPut({
+            authorization: authorization(),
+            page: page.id,
+            subSectionId: subsection.id,
+            request: { name: subsection.name, visible: visibility }
+        }).then(() => {
+            refresh?.();
+            if (visibility) {
+                onSetAlert?.(`Section unhidden successfully`, `success`);
+            } else {
+                onSetAlert?.(`Section hidden successfully`, `success`);
+            }
+        });
+    };
+
     return (
-        <>
+        <DragDropContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragUpdate={handleDragUpdate}>
             {subsectionState === 'add' && (
                 <AddSubSection
                     sectionId={section.id}
@@ -52,6 +77,23 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                         handleUpdateState('manage');
                         refresh();
                     }}
+                />
+            )}
+            {subsectionState === 'edit' && (
+                <AddSubSection
+                    sectionId={section.id}
+                    pageId={page.id}
+                    onCancel={() => {
+                        handleUpdateState('manage');
+                    }}
+                    onSubSectionTouched={() => {
+                        onSetAlert?.(`Your changes have been successfully updated`, `success`);
+                        handleUpdateState('manage');
+                        setEditSubsection(undefined);
+                        refresh();
+                    }}
+                    subsectionEdit={editSubsection}
+                    isEdit
                 />
             )}
             {subsectionState === 'manage' && (
@@ -93,20 +135,30 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                             </div>
                             <p className={styles.sectionName}>{section?.name}</p>
                         </div>
-
-                        <div>
-                            {section.subSections.map((s, k) => {
-                                return (
-                                    <ManageSubsectionTile
-                                        action={onAction}
-                                        subsection={s}
-                                        key={k}
-                                        setOnAction={setOnAction}
-                                        onDelete={onDelete}
-                                    />
-                                );
-                            })}
-                        </div>
+                        <Droppable droppableId={section.id!.toString()} type="subsection">
+                            {(provided) => (
+                                <div
+                                    className="manage-subsections"
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}>
+                                    {section.subSections.map((s, k) => {
+                                        return (
+                                            <ManageSubsectionTile
+                                                action={onAction}
+                                                subsection={s}
+                                                key={k}
+                                                setOnAction={setOnAction}
+                                                setEdit={onEdit}
+                                                onDelete={onDelete}
+                                                index={k}
+                                                onChangeVisibility={handleChangeVisibility}
+                                            />
+                                        );
+                                    })}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
                     </div>
                     <div className={styles.footer}>
                         <Button
@@ -120,6 +172,6 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                     </div>
                 </div>
             )}
-        </>
+        </DragDropContext>
     );
 };

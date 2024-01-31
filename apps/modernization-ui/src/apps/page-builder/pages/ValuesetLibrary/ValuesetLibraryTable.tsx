@@ -41,7 +41,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
     const asTableRow = (valueSet: ValueSet): TableBody => ({
-        id: valueSet.nbsUid,
+        id: valueSet.codeSetGroupId,
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
         expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         selectable: true,
@@ -49,12 +49,15 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
         tableDetails: [
             {
                 id: 1,
-                title: <div className="page-name">{valueSet?.valueSetTypeCd}</div> || null
+                title: <div className="page-name">{valueSet?.valueSetTypeCd || valueSet?.type!}</div> || null
             },
-            { id: 2, title: <div className="event-text">{valueSet?.valueSetNm}</div> || null },
+            {
+                id: 2,
+                title: <div className="event-text">{valueSet?.valueSetNm || valueSet?.valueSetName}</div> || null
+            },
             {
                 id: 3,
-                title: <div>{valueSet?.codeSetDescTxt}</div> || null
+                title: <div>{valueSet?.codeSetDescTxt || valueSet?.valueSetDescription}</div> || null
             },
             {
                 id: 4,
@@ -114,7 +117,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
 
     const handleSelected = ({ target }: any, item: any) => {
         if (target.checked) {
-            const value = summaries.find((val: ValueSet) => item.id === val.nbsUid) || {};
+            const value = summaries.find((val: ValueSet) => item.id === val.codeSetGroupId) || {};
             setSelectedValueSet(value);
             setSearchValueSet?.(value);
         } else {
@@ -276,9 +279,9 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
                     tableHead={tableColumns}
                     tableBody={tableRows}
                     isPagination={true}
-                    pageSize={pages?.pageSize || 0}
-                    totalResults={pages?.totalElements || 0}
-                    currentPage={pages?.currentPage || 0}
+                    pageSize={pages?.pageSize}
+                    totalResults={pages?.totalElements}
+                    currentPage={pages?.currentPage}
                     handleNext={setCurrentPage}
                     sortData={handleSort}
                     selectable

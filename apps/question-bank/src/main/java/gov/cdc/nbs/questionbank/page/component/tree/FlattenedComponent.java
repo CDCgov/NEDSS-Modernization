@@ -20,7 +20,11 @@ record FlattenedComponent(
     String toolTip,
     String defaultValue,
     String valueSet,
-    String adminComments
+    String adminComments,
+    String fieldLength,
+    String defaultRdbTableName,
+    String rdbColumnName,
+    String defaultLabelInReport
 ) {
 
   FlattenedComponent(
@@ -32,6 +36,6 @@ record FlattenedComponent(
   ) {
     this(identifier, type, name, visible, order, false, null, null, null, null, null, false, false, false, false, null,
         null,
-        null, null, null);
+        null, null, null,null, null, null,null);
   }
 }

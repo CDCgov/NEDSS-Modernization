@@ -215,7 +215,11 @@ class TreeifyTest {
             "tool-tip-value",
             "default-value-value",
             "value-set-value",
-            "admin-comments"
+            "admin-comments",
+            "10",
+            "default-rdb-table-name",
+            "rdb-column-name",
+            "default-label-in-report"
         )
     ).collect(Treeify.asTree());
 
@@ -267,7 +271,11 @@ class TreeifyTest {
             "tool-tip-value",
             "default-value-value",
             "value-set-value",
-            "admin-comments"
+            "admin-comments",
+            "10",
+            "default-rdb-table-name",
+            "rdb-column-name",
+            "default-label-in-report"
         ),
         new FlattenedComponent(13L, 1010, "Tab", true, 6)
     ).collect(Treeify.asTree());

@@ -1,6 +1,7 @@
 import { Input } from 'components/FormInputs/Input';
 import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import { useState } from 'react';
+import '../../pages/QuestionLibrary/QuestionLibrary.scss';
 export const SearchBar = ({ onChange }: any) => {
     const [searchTags, setSearchTags] = useState<any>([]);
     const [search, setSearch] = useState<string>('');

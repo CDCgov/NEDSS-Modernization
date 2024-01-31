@@ -29,9 +29,17 @@ class TemplateReaderTest {
   @Test
   void findAllTemplates() {
     when(templateRepository.findAllByTemplateType(eq("TEMPLATE"), Mockito.any())).thenReturn(List.of(getWaTemplate(1)));
-    List<Template> result = templateReader.findAllTemplates();
+    List<Template> result = templateReader.findAllTemplates("");
     assertNotNull(result);
   }
+
+  @Test
+  void findAllTemplatesInv() {
+    when(templateRepository.findAllByTemplateTypeAndBusObjType(eq("TEMPLATE"), eq("INV"), Mockito.any())).thenReturn(List.of(getWaTemplate(1)));
+    List<Template> result = templateReader.findAllTemplates("INV");
+    assertNotNull(result);
+  }
+
 
 
   private WaTemplate getWaTemplate(int i) {

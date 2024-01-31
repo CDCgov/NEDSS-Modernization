@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState, ReactNode } from 'react';
+import React, { useContext, useEffect, useState, ReactNode } from 'react';
 import './Concept.scss';
 import { ConceptsContext } from '../../context/ConceptContext';
 import { useConceptAPI } from './useConceptAPI';
 import { ConceptTable } from './ConceptTable';
-import { Button } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import { ValueSet, ValueSetControllerService } from '../../generated';
 import { authorization } from 'authorization';
 import { EditConcept } from './EditConcept/EditConcept';
@@ -12,22 +12,23 @@ import { AlertBanner } from '../AlertBanner/AlertBanner';
 
 type Props = {
     valueset: ValueSet;
+    onEdit?: () => void;
 };
 interface CodeSystemOption {
     label: string;
     value: string;
 }
 
-export const Concept = ({ valueset }: Props) => {
+export const Concept = ({ valueset, onEdit }: Props) => {
     const { selectedConcept } = useContext(ConceptsContext);
     const { searchQuery, sortDirection, currentPage, pageSize } = useContext(ConceptsContext);
     const [summaries, setSummaries] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
-    const [isShowFrom, setShowForm] = useState(false);
+    const [showForm, setShowForm] = useState(false);
     const [codeSystemOptionList, setCodeSystemOptionList] = useState<CodeSystemOption[]>([]);
     const [editMode, setEditMode] = useState(false);
     const [alertMessage, setAlertMessage] = useState<AlertMessage | undefined>(undefined);
-    type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number };
+    type AlertMessage = { type: 'error' | 'success'; message: string | ReactNode; expiration: number | undefined };
 
     const fetchContent = async () => {
         try {
@@ -43,14 +44,14 @@ export const Concept = ({ valueset }: Props) => {
 
     useEffect(() => {
         fetchContent();
-    }, [searchQuery, currentPage, pageSize, sortDirection]);
+    }, [searchQuery, currentPage, pageSize, sortDirection, valueset!.valueSetCode]);
 
     useEffect(() => {
-        selectedConcept.status && setShowForm(!isShowFrom);
+        selectedConcept.status && setShowForm(!showForm);
     }, [selectedConcept]);
 
     useEffect(() => {
-        setTimeout(() => setAlertMessage(undefined), 3000);
+        setTimeout(() => setAlertMessage(undefined), 5000);
     }, [alertMessage]);
 
     const updateCallback = () => {
@@ -80,7 +81,10 @@ export const Concept = ({ valueset }: Props) => {
     ];
     return (
         <div className={`concept ${editMode ? 'edit' : ''}`}>
-            <h3>Value set details</h3>
+            <div className="concept-header">
+                <h3>Value set details</h3>
+                <Icon.Edit onClick={onEdit} style={{ cursor: 'pointer' }} size={3} />
+            </div>
             <div>
                 <ul className="list-details">
                     {list.map((ls, index) => (
@@ -99,7 +103,7 @@ export const Concept = ({ valueset }: Props) => {
                     {alertMessage.message}
                 </AlertBanner>
             )}
-            {isShowFrom ? (
+            {showForm ? (
                 editMode ? (
                     <EditConcept
                         valueset={valueset}
@@ -108,6 +112,7 @@ export const Concept = ({ valueset }: Props) => {
                         setShowForm={() => setShowForm(false)}
                         updateCallback={updateCallback}
                         setAlertMessage={setAlertMessage}
+                        closeForm={() => setShowForm(false)}
                     />
                 ) : (
                     <CreateConcept
@@ -116,6 +121,7 @@ export const Concept = ({ valueset }: Props) => {
                         setShowForm={() => setShowForm(false)}
                         updateCallback={updateCallback}
                         setAlertMessage={setAlertMessage}
+                        closeForm={() => setShowForm(false)}
                     />
                 )
             ) : (
@@ -151,7 +157,7 @@ export const Concept = ({ valueset }: Props) => {
                             type="submit"
                             onClick={() => {
                                 setEditMode(false);
-                                setShowForm(!isShowFrom);
+                                setShowForm(!showForm);
                             }}>
                             <span>Add New concept</span>
                         </Button>

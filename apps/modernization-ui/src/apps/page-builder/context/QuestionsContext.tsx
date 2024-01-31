@@ -18,7 +18,9 @@ const questionContextDefaultValue: ContextData = {
     isLoading: false,
     setIsLoading: () => {},
     searchValueSet: {},
-    setSearchValueSet: () => {}
+    setSearchValueSet: () => {},
+    editValueSet: {},
+    setEditValueSet: () => {}
 };
 
 export const QuestionsContext = createContext<ContextData>(questionContextDefaultValue);
@@ -32,6 +34,7 @@ export const QuestionProvider = ({ children }: any) => {
     const [isLoading, setIsLoading] = useState(false);
     const [filter, setFilter] = useState(questionContextDefaultValue.filter);
     const [searchValueSet, setSearchValueSet] = useState(questionContextDefaultValue.searchValueSet);
+    const [editValueSet, setEditValueSet] = useState(questionContextDefaultValue.editValueSet);
 
     return (
         <QuestionsContext.Provider
@@ -51,7 +54,9 @@ export const QuestionProvider = ({ children }: any) => {
                 isLoading,
                 setIsLoading,
                 searchValueSet,
-                setSearchValueSet
+                setSearchValueSet,
+                editValueSet,
+                setEditValueSet
             }}>
             {children}
         </QuestionsContext.Provider>

@@ -89,6 +89,6 @@ describe('when ManageSectionTile renders', () => {
                 </DragDropContext>
             </DragDropProvider>
         );
-        expect(getByTestId('manageSectionTileId').innerHTML).toBe('Test Section(2)');
+        expect(getByTestId('manageSectionTileId').innerHTML).toBe('Test Section (2)');
     });
 });

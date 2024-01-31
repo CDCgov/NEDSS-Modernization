@@ -35,7 +35,7 @@ public class AuthorizationRoleMother {
   }
 
   public void allowAny(final long user, final long set) {
-    allow(user, set, 'F', null, null);
+    allow(user, set, 'F', "STD", "all");
   }
 
   public void allowAny(final long user, final long set, final String programArea, final String jurisdiction) {
@@ -43,7 +43,7 @@ public class AuthorizationRoleMother {
   }
 
   public void allowShared(final long user, final long set) {
-    allow(user, set, 'T', null, null);
+    allow(user, set, 'T', "STD", "all");
   }
 
   public void allowShared(final long user, final long set, final String programArea, final String jurisdiction) {

@@ -3,11 +3,12 @@ import { Input } from 'components/FormInputs/Input';
 import { Heading } from 'components/heading';
 import { ValueSetControllerService, Concept } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
-import { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Selectable } from 'options/selectable';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { Icon } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
+import { QuestionsContext } from '../../../../context/QuestionsContext';
 
 type Props = {
     defaultValue: string;
@@ -28,6 +29,7 @@ const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, participa
 
 export const QuestionContent = ({ type, valueSet, name, identifier, displayComponent, defaultValue }: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
+    const { setEditValueSet } = useContext(QuestionsContext);
 
     useEffect(() => {
         if (valueSet) {
@@ -88,6 +90,20 @@ export const QuestionContent = ({ type, valueSet, name, identifier, displayCompo
 
                 {type === 'DATE' && <Icon.CalendarToday size={4} className={styles.icon} data-testid="calendar-icon" />}
             </div>
+            {valueSet && (
+                <div className="margin-top-1em">
+                    <Button
+                        className={styles.unStyledButton}
+                        type="button"
+                        onClick={() => {
+                            setEditValueSet?.({ valueSetNm: valueSet });
+                        }}
+                        unstyled>
+                        <Icon.Edit className="margin-right-2px" />
+                        <span> Edit Value set</span>
+                    </Button>
+                </div>
+            )}
         </div>
     );
     return (

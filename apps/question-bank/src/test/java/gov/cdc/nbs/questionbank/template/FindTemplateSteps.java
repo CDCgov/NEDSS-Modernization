@@ -39,6 +39,11 @@ public class FindTemplateSteps {
     response.active(requester.getAll());
   }
 
+  @When("I search for all investigation templates")
+  public void i_search_for_all_investigation_templates() throws Exception {
+    response.active(requester.getAllInv());
+  }
+
   @Then("templates are returned")
   public void templates_are_returned() throws Exception {
     response.active()

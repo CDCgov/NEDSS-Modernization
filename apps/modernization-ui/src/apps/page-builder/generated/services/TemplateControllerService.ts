@@ -16,14 +16,22 @@ export class TemplateControllerService {
      */
     public static findAllTemplatesUsingGet({
         authorization,
+        type,
     }: {
         authorization: string,
+        /**
+         * type
+         */
+        type?: string,
     }): CancelablePromise<Array<Template>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/template/',
             headers: {
                 'Authorization': authorization,
+            },
+            query: {
+                'type': type,
             },
             errors: {
                 401: `Unauthorized`,

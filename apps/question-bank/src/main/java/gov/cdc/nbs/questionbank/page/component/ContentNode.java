@@ -15,7 +15,12 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       String mask,
       String toolTip,
       String defaultValue,
-      String adminComments) {
+      String adminComments,
+      String fieldLength,
+      String defaultRdbTableName,
+      String rdbColumnName,
+      String defaultLabelInReport) {
+
   }
 
 
