@@ -136,7 +136,7 @@ public class QuestionCommandMother {
         return new QuestionCommand.ReportingData(
             "report label",
             "RDB_TABLE_NM",
-            "RDB_COL_NM",
+            "ADM_RDB_COL_NM",
             "DATA_MRT_COL_NM");
     }
 
