@@ -30,10 +30,6 @@ const useAnalyticsSettings = (): AnalyticsSettings => {
         }
     }, [ready, settings]);
 
-    useEffect(() => {
-        console.log('ready', ready);
-    }, [ready]);
-
     return analyticsSettings;
 };
 
