@@ -12,15 +12,14 @@ import {
 } from '@trussworks/react-uswds';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
-import { Controller, useFormContext } from 'react-hook-form';
-import { FormValues } from './Add/AddBusinessRule';
+import { Controller, UseFormReturn } from 'react-hook-form';
 import { nonDateCompare, dateCompare } from '../../constant/constant';
 import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
-import { maxLengthRule } from '../../../../validation/entry';
 import { Input } from '../../../../components/FormInputs/Input';
 import { useConceptAPI } from '../../components/Concept/useConceptAPI';
 import { authorization } from 'authorization';
+import { CreateRuleRequest } from 'apps/page-builder/generated';
 
 type QuestionProps = {
     id: number;
@@ -35,14 +34,22 @@ type FieldProps = {
     value: string;
 };
 
-const BusinessRulesForm = () => {
-    const form = useFormContext<FormValues>();
+interface formProps {
+    form: UseFormReturn<CreateRuleRequest, any, undefined>;
+}
+
+const BusinessRulesForm = ({ form }: formProps) => {
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
     const [targetQuestion, setTargetQuestion] = useState<QuestionProps[]>([]);
     const [sourceList, setSourceList] = useState<FieldProps[]>([]);
     const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
     const { pageId } = useParams();
+    const [sourceDescription, setSourceDescription] = useState<string>(
+        form.watch('sourceText') && form.watch('sourceIdentifier')
+            ? `${form.watch('sourceText')} (${form.watch('sourceIdentifier')})`
+            : ''
+    );
 
     const fetchSourceRecord = async (valueSet: string) => {
         const content: any = await useConceptAPI(authorization(), valueSet);
@@ -62,6 +69,7 @@ const BusinessRulesForm = () => {
         setSelectedSource(data);
         form.setValue('sourceIdentifier', data[0].question);
         form.setValue('sourceText', data[0].name);
+        setSourceDescription(`${data[0].name} (${data[0].question})`);
         fetchSourceRecord(data[0].valueSet);
     };
 
@@ -89,26 +97,32 @@ const BusinessRulesForm = () => {
     const handleRuleDescription = () => {
         let description = '';
         const logic = form.watch('comparator');
-        if (selectedSource.length || targetQuestion.length || logic) {
+        const sourceValue = form.watch('sourceValue');
+        const sourceValueDescription = `${sourceValue?.sourceValueText?.join(' ')} `;
+        if (selectedSource.length && targetQuestion.length && logic) {
             const targetValue = targetQuestion.map((val) => `${val.name} (${val.question})`);
-            const sourceValue = selectedSource.map((val) => `${val.name} (${val.question})`);
-            description = `${sourceValue} ${logic} ${targetValue}`;
+            description = `${sourceDescription} ${logic} ${sourceValueDescription} ${form.watch(
+                'ruleFunction'
+            )} ${targetValue}`;
+            form.setValue('ruleDescription', description);
         }
-        form.setValue('ruleDescription', description);
     };
 
     const ruleFunction = form.watch('ruleFunction');
-    const logicList = ruleFunction === 'Date Compare' ? dateCompare : nonDateCompare;
+    const logicList = ruleFunction == 'Data validation' ? dateCompare : nonDateCompare;
 
     const handleSourceValueChange = (data: string[]) => {
-        form.setValue('sourceValueIds', data);
-        const sourceValueText: string[] = [];
-        data.forEach((value) => {
-            const sourceValue = sourceList.find((src) => src.value === value);
-            sourceValueText.push(sourceValue?.name!);
-        });
-        form.setValue('sourceValueText', sourceValueText);
+        const values = form.getValues('sourceValue');
+        if (values) {
+            values.sourceValueText = [...data];
+            form.setValue('sourceValue', values);
+        } else {
+            form.setValue('sourceValue', { sourceValueText: data, sourceValueId: [] });
+        }
+        handleRuleDescription();
     };
+
+    console.log('form', form.getValues());
 
     return (
         <>
@@ -118,10 +132,10 @@ const BusinessRulesForm = () => {
                 rules={{
                     required: { value: true, message: 'Source questions is required.' }
                 }}
-                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={2}>
-                            <label className="input-label">Source Questions</label>
+                        <Grid col={3}>
+                            <label className="input-label">Source Question</label>
                         </Grid>
                         <ModalToggleButton
                             modalRef={sourceModalRef}
@@ -130,10 +144,10 @@ const BusinessRulesForm = () => {
                             outline>
                             hide
                         </ModalToggleButton>
-                        <Grid col={10}>
+                        <Grid col={9}>
                             <Input
                                 className={'text-input'}
-                                defaultValue={value}
+                                defaultValue={sourceDescription}
                                 onChange={onChange}
                                 onClick={openSourceModal}
                                 type="text"
@@ -145,28 +159,31 @@ const BusinessRulesForm = () => {
                     </Grid>
                 )}
             />
-            <Controller
-                control={form.control}
-                name="anySourceValue"
-                render={({ field: { onChange, value } }) => (
-                    <Grid row className="inline-field">
-                        <Grid col={2}>
-                            <label className="input-label">Any source value</label>
+            {ruleFunction != 'Data validation' && (
+                <Controller
+                    control={form.control}
+                    name="anySourceValue"
+                    render={({ field: { onChange, value } }) => (
+                        <Grid row className="inline-field">
+                            <Grid col={3}>
+                                <label className="input-label">Any source value</label>
+                            </Grid>
+                            <Grid col={9} className="height-3">
+                                <Checkbox
+                                    onChange={onChange}
+                                    className=""
+                                    id="anySourceValue"
+                                    type="checkbox"
+                                    checked={value}
+                                    label=" "
+                                    name="anySourceValue"
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid col={10} className="height-3">
-                            <Checkbox
-                                onChange={onChange}
-                                className=""
-                                id="anySourceValue"
-                                type="checkbox"
-                                checked={value}
-                                label=" "
-                                name="anySourceValue"
-                            />
-                        </Grid>
-                    </Grid>
-                )}
-            />
+                    )}
+                />
+            )}
+
             <Controller
                 control={form.control}
                 name="comparator"
@@ -175,10 +192,10 @@ const BusinessRulesForm = () => {
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={2}>
+                        <Grid col={3}>
                             <label className="input-label">Logic</label>
                         </Grid>
-                        <Grid col={10}>
+                        <Grid col={9}>
                             <SelectInput
                                 className="text-input"
                                 defaultValue={value}
@@ -192,36 +209,40 @@ const BusinessRulesForm = () => {
                     </Grid>
                 )}
             />
-            <Controller
-                control={form.control}
-                name="sourceValue"
-                render={() => (
-                    <Grid row className="inline-field">
-                        <Grid col={2}>
-                            <label className="input-label">Source value(s)</label>
+
+            {ruleFunction != 'Data validation' && (
+                <Controller
+                    control={form.control}
+                    name="sourceValue"
+                    render={() => (
+                        <Grid row className="inline-field">
+                            <Grid col={3}>
+                                <label className="input-label">Source value(s)</label>
+                            </Grid>
+                            <Grid col={9}>
+                                <div className="text-input">
+                                    <MultiSelectInput
+                                        onChange={(e) => {
+                                            handleSourceValueChange(e);
+                                        }}
+                                        options={sourceList}
+                                    />
+                                </div>
+                            </Grid>
                         </Grid>
-                        <Grid col={10}>
-                            <div className="text-input">
-                                <MultiSelectInput
-                                    onChange={(e) => {
-                                        handleSourceValueChange(e);
-                                    }}
-                                    options={sourceList}
-                                />
-                            </div>
-                        </Grid>
-                    </Grid>
-                )}
-            />
+                    )}
+                />
+            )}
+
             <Controller
                 control={form.control}
                 name="targetType"
                 render={({ field: { onChange, value } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={2}>
+                        <Grid col={3}>
                             <label className="input-label">Target type</label>
                         </Grid>
-                        <Grid col={10} className="radio-group">
+                        <Grid col={9} className="radio-group">
                             <Radio
                                 className="radio-button"
                                 type="radio"
@@ -246,10 +267,10 @@ const BusinessRulesForm = () => {
                 )}
             />
             <Grid row className="inline-field">
-                <Grid col={2}>
+                <Grid col={3}>
                     <label className="input-label">Target Question(s)</label>
                 </Grid>
-                <Grid col={10}>
+                <Grid col={9}>
                     {!targetQtn ? (
                         <div className="width-48-p margin-bottom-1em">
                             <ModalToggleButton
@@ -301,18 +322,18 @@ const BusinessRulesForm = () => {
             <Controller
                 control={form.control}
                 name="ruleDescription"
-                rules={maxLengthRule(50)}
                 render={({ field: { name, onChange, onBlur, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={2}>
-                            <Label htmlFor={name}>Rules Description</Label>
+                        <Grid col={3}>
+                            <Label htmlFor={name}>Rule Description</Label>
                         </Grid>
-                        <Grid col={10}>
+                        <Grid col={9}>
                             <Input
                                 onChange={onChange}
                                 type="text"
                                 multiline
                                 defaultValue={value}
+                                value={value}
                                 onBlur={onBlur}
                                 name={name}
                                 id={name}
