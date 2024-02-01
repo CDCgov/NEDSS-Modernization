@@ -5,6 +5,7 @@ import { SubsectionComponent } from './Subsection';
 describe('when Subsection renders', () => {
     const subsection: PagesSubSection = {
         id: 123456,
+        isGrouped: false,
         name: 'Test Subsection',
         visible: true,
         order: 1,

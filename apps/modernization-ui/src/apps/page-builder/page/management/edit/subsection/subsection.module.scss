@@ -16,13 +16,15 @@
 
         .info {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            align-items: center;
             gap: 0.5rem;
             .name {
                 color: colors.$base-black;
                 text-align: center;
                 font-size: 1rem;
                 font-weight: 700;
+                margin-bottom: 0.5rem;
             }
             .count {
                 color: colors.$base-darkest;
@@ -41,5 +43,21 @@
                 cursor: pointer;
             }
         }
+        &.grouped {
+            background-color: colors.$primary-lighter;
+        }
+        .indicator {
+            background-color: colors.$primary-dark;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: colors.$base-white;
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+    .footer {
+        display: flex;
+        justify-content: flex-end;
     }
 }

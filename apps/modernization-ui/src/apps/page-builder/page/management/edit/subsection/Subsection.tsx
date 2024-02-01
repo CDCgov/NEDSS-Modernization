@@ -76,9 +76,7 @@ export const Subsection = ({
     return (
         <div className={styles.subsection}>
             <SubsectionHeader
-                name={subsection.name ?? ''}
-                id={subsection.id}
-                questionCount={subsection.questions?.length ?? 0}
+                subsection={subsection}
                 onAddQuestion={onAddQuestion}
                 onExpandedChange={handleExpandedChange}
                 isExpanded={isExpanded}

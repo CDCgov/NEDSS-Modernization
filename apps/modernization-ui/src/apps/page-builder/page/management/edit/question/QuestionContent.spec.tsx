@@ -37,6 +37,7 @@ const dropDownQuestion: PagesQuestion = {
 
 const subSections: PagesSubSection = {
     id: 2,
+    isGrouped: false,
     name: 'test subsection',
     order: 2,
     questions: [dateQuestion, dropDownQuestion],
