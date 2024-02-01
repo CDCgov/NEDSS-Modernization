@@ -638,13 +638,16 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             rules={{
                                 required: { value: !editDisabledFields, message: 'RDB column name required' },
                                 pattern: { value: startWithNonInteger, message: 'RDB column name invalid' },
-                                ...maxLengthRule(50)
+                                ...maxLengthRule(20)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
                                     defaultValue={value}
                                     label="RDB column name"
+                                    onBlur={() => {
+                                        questionForm.setValue('dataMartColumnName', value);
+                                    }}
                                     disabled={editDisabledFields || readOnlyControl}
                                     type="text"
                                     error={error?.message}
@@ -657,7 +660,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             name="dataMartColumnName"
                             rules={{
                                 pattern: { value: startWithNonInteger, message: 'Data mart column name invalid' },
-                                ...maxLengthRule(50)
+                                ...maxLengthRule(20)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
