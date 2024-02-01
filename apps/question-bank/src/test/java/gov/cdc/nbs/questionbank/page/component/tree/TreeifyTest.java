@@ -219,7 +219,8 @@ class TreeifyTest {
             "10",
             "default-rdb-table-name",
             "rdb-column-name",
-            "default-label-in-report"
+            "default-label-in-report",
+            false
         )
     ).collect(Treeify.asTree());
 
@@ -275,7 +276,8 @@ class TreeifyTest {
             "10",
             "default-rdb-table-name",
             "rdb-column-name",
-            "default-label-in-report"
+            "default-label-in-report",
+            false
         ),
         new FlattenedComponent(13L, 1010, "Tab", true, 6)
     ).collect(Treeify.asTree());
