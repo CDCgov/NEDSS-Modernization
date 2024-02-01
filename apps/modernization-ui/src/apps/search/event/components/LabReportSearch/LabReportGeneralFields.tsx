@@ -387,24 +387,20 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                     }}
                 />
             </Label>
-
-            <>
-                <Controller
-                    control={form.control}
-                    name="createdBy"
-                    render={({ field: { onChange } }) => (
-                        <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
-                    )}
-                />
-                <Controller
-                    control={form.control}
-                    name="lastUpdatedBy"
-                    render={({ field: { onChange } }) => (
-                        <UserAutocomplete id="lastUpdatedBy" onChange={onChange} label="Event updated by user" />
-                    )}
-                />
-            </>
-
+            <Controller
+                control={form.control}
+                name="createdBy"
+                render={({ field: { onChange } }) => (
+                    <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
+                )}
+            />
+            <Controller
+                control={form.control}
+                name="lastUpdatedBy"
+                render={({ field: { onChange } }) => (
+                    <UserAutocomplete id="lastUpdatedBy" onChange={onChange} label="Event updated by user" />
+                )}
+            />
             <Controller
                 control={form.control}
                 name="providerSearch.providerType"
