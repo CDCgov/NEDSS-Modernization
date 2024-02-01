@@ -58,6 +58,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     valueSet={question.valueSet ?? ''}
                     identifier={question.question ?? ''}
                     name={question.name}
+                    id={question.id}
                     type={question.dataType ?? ''}
                     displayComponent={question.displayComponent}
                 />

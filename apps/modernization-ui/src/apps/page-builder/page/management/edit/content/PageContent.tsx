@@ -95,7 +95,9 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
     }, [response, error]);
 
     useEffect(() => {
-        if (editValueSet?.valueSetNm) {
+        if (editValueSet?.statusCd) {
+            addValueModalRef.current?.toggleModal(undefined, true);
+        } else if (editValueSet?.valueSetNm) {
             createValueModalRef.current?.toggleModal(undefined, true);
         }
     }, [editValueSet]);
