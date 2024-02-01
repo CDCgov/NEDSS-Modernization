@@ -138,8 +138,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
             questionForm.setValue('fieldLength', updatedQuestion.fieldLength);
         }
     }, [question]);
-
-    const valueSetName = searchValueSet?.valueSetName || searchValueSet?.valueSetNm || watch('valueSet') || '';
+    const valueSetName = searchValueSet?.valueSetName || searchValueSet?.valueSetNm || question?.valueSet || '';
     const valueSetCode = searchValueSet?.valueSetCode || valueSetName;
     useEffect(() => {
         if (searchValueSet) questionForm.setValue('valueSet', searchValueSet.codeSetGroupId);
@@ -518,7 +517,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                         <Controller
                             control={control}
                             name="description"
-                            rules={maxLengthRule(50)}
+                            rules={maxLengthRule(2000)}
                             render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                                 <>
                                     <Label htmlFor={name}>Description</Label>
@@ -609,7 +608,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     label="Default label in report"
                                     type="text"
                                     error={error?.message}
-                                    required
+                                    required={!readOnlyControl}
                                 />
                             )}
                         />
@@ -636,7 +635,10 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             control={control}
                             name="rdbColumnName"
                             rules={{
-                                required: { value: !editDisabledFields, message: 'RDB column name required' },
+                                required: {
+                                    value: !(editDisabledFields || readOnlyControl),
+                                    message: 'RDB column name required'
+                                },
                                 pattern: { value: startWithNonInteger, message: 'RDB column name invalid' },
                                 ...maxLengthRule(20)
                             }}
@@ -651,7 +653,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     disabled={editDisabledFields || readOnlyControl}
                                     type="text"
                                     error={error?.message}
-                                    required
+                                    required={!(editDisabledFields || readOnlyControl)}
                                 />
                             )}
                         />
