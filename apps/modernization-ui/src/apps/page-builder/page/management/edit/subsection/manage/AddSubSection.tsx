@@ -13,6 +13,7 @@ import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { maxLengthRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { useEffect } from 'react';
+import { checkEmptyRule } from 'validation/entry/checkEmptyRule';
 
 type subSectionProps = {
     sectionId?: number;
@@ -90,7 +91,7 @@ export const AddSubSection = ({
                         name="name"
                         rules={{
                             required: { value: true, message: 'Subsection name is required' },
-                            pattern: { value: /\A\s*\z/gm, message: 'Subsection name cannot be empty' },
+                            ...checkEmptyRule,
                             ...maxLengthRule(50)
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
