@@ -69,7 +69,7 @@ export const QuestionContent = ({ type, valueSet, name, identifier, displayCompo
                     {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
                     {displayComponent === 1001 && (
                         <>
-                            <RadioButtons options={conceptState} />
+                            <RadioButtons options={conceptState} isChecked={false} />
                         </>
                     )}
 
