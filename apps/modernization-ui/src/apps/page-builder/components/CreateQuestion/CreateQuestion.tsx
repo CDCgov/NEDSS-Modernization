@@ -518,7 +518,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                         <Controller
                             control={control}
                             name="description"
-                            rules={maxLengthRule(2000)}
+                            rules={maxLengthRule(50)}
                             render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                                 <>
                                     <Label htmlFor={name}>Description</Label>
