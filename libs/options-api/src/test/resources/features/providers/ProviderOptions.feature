@@ -1,5 +1,5 @@
 @providers
-Feature: User Options REST API
+Feature: Provider Options REST API
 
   Background:
     Given there is a provider for "Tommy" "Oliver"
