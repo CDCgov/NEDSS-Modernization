@@ -1,0 +1,16 @@
+@use 'styles/colors';
+
+.radioBtn {
+    display: flex;
+    flex-direction: row;
+
+    .select{
+        cursor: pointer;
+    }
+
+    .text {
+        display: flex;
+        align-items: center;
+        margin-left: 0.5rem;
+    }
+}
