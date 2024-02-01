@@ -1,5 +1,5 @@
 import { Checkbox, ErrorMessage, Label } from '@trussworks/react-uswds';
-import { AutoCompleteInput } from 'components/AutoCompleteInput';
+import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -388,48 +388,23 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 />
             </Label>
 
-            <SearchCriteriaContext.Consumer>
-                {({ searchCriteria }) => (
-                    <>
-                        <Controller
-                            control={form.control}
-                            name="createdBy"
-                            render={({ field: { onChange, value, name } }) => (
-                                <AutoCompleteInput
-                                    name={name}
-                                    value={value}
-                                    onChange={onChange}
-                                    label="Event created by user"
-                                    options={searchCriteria.userResults.map((user) => {
-                                        return {
-                                            label: `${user.userLastNm}, ${user.userFirstNm}`,
-                                            value: user.nedssEntryId
-                                        };
-                                    })}
-                                />
-                            )}
-                        />
-                        <Controller
-                            control={form.control}
-                            name="lastUpdatedBy"
-                            render={({ field: { onChange, value, name } }) => (
-                                <AutoCompleteInput
-                                    name={name}
-                                    value={value as string | undefined}
-                                    onChange={onChange}
-                                    label="Event updated by user"
-                                    options={searchCriteria.userResults.map((user) => {
-                                        return {
-                                            label: `${user.userLastNm}, ${user.userFirstNm}`,
-                                            value: user.nedssEntryId
-                                        };
-                                    })}
-                                />
-                            )}
-                        />
-                    </>
-                )}
-            </SearchCriteriaContext.Consumer>
+            <>
+                <Controller
+                    control={form.control}
+                    name="createdBy"
+                    render={({ field: { onChange } }) => (
+                        <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
+                    )}
+                />
+                <Controller
+                    control={form.control}
+                    name="lastUpdatedBy"
+                    render={({ field: { onChange } }) => (
+                        <UserAutocomplete id="lastUpdatedBy" onChange={onChange} label="Event updated by user" />
+                    )}
+                />
+            </>
+
             <Controller
                 control={form.control}
                 name="providerSearch.providerType"
