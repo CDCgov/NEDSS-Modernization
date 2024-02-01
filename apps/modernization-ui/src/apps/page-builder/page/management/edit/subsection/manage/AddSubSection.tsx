@@ -90,6 +90,7 @@ export const AddSubSection = ({
                         name="name"
                         rules={{
                             required: { value: true, message: 'Subsection name is required' },
+                            pattern: { value: /\A\s*\z/gm, message: 'Subsection name cannot be empty' },
                             ...maxLengthRule(50)
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
@@ -127,17 +128,38 @@ export const AddSubSection = ({
             </Form>
             <div className={styles.footer}>
                 <div className={styles.footerBtns}>
-                    <Button
-                        type="button"
-                        onClick={() => {
-                            form.reset();
-                            onCancel?.();
-                        }}>
-                        Cancel
-                    </Button>
-                    <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
-                        Add subsection
-                    </Button>
+                    {isEdit ? (
+                        <>
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    form.reset();
+                                    onCancel?.();
+                                }}>
+                                Cancel
+                            </Button>
+                            <Button
+                                type="button"
+                                onClick={onSubmit}
+                                disabled={!form.formState.isDirty || !form.formState.isValid}>
+                                Save changes
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    form.reset();
+                                    onCancel?.();
+                                }}>
+                                Cancel
+                            </Button>
+                            <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
+                                Add subsection
+                            </Button>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

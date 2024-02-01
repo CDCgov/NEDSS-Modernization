@@ -126,7 +126,7 @@ export const AddSection = ({
                             type="button"
                             onClick={onSubmit}
                             disabled={!form.formState.isDirty || !form.formState.isValid}>
-                            Save
+                            Save changes
                         </Button>
                     ) : (
                         <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
