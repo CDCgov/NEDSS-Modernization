@@ -11,8 +11,9 @@ import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
 import { Heading } from 'components/heading';
 import { useEffect } from 'react';
-import { maxLengthRule } from 'validation/entry';
+import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
+import { checkEmptyRule } from 'validation/entry/checkEmptyRule';
 
 type sectionProps = {
     tabId?: number;
@@ -82,7 +83,12 @@ export const AddSection = ({
                     <Controller
                         control={form.control}
                         name="name"
-                        rules={{ required: { value: true, message: 'Section name is required' }, ...maxLengthRule(50) }}
+                        rules={{
+                            required: { value: true, message: 'Section name is required' },
+                            ...maxLengthRule(50),
+                            ...validPageNameRule,
+                            ...checkEmptyRule
+                        }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <>
                                 <Input
