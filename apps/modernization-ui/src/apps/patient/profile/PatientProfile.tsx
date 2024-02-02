@@ -89,18 +89,18 @@ export const PatientProfile = () => {
                     <div>
                         <Button
                             type={'button'}
-                            className="display-inline-flex print-btn"
+                            className="display-inline-flex flex-align-center"
                             onClick={openPrintableView(patient?.id)}>
-                            <Icon.Print className="margin-right-05" />
+                            <Icon.Print className="margin-right-05 font-body-lg" />
                             Print
                         </Button>
                         {permissions.delete && (
                             <ModalToggleButton
                                 modalRef={modalRef}
                                 opener
-                                className="delete-btn display-inline-flex"
+                                className="flex-align-center display-inline-flex"
                                 type={'submit'}>
-                                <Icon.Delete className="margin-right-05" />
+                                <Icon.Delete className="margin-right-05 font-body-lg" />
                                 Delete patient
                             </ModalToggleButton>
                         )}
