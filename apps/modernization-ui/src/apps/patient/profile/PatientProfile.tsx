@@ -138,39 +138,50 @@ export const PatientProfile = () => {
                     {patient && summary && <PatientProfileSummary summary={summary} patient={patient} />}
 
                     <div role="tablist" className="grid-row flex-align-center">
-                        <p
+                        <button
+                            className="tab-panel-unstyled-button"
+                            type="button"
+                            tabIndex={0}
+                            onClick={() => setActiveTab(ACTIVE_TAB.SUMMARY)}
                             role="tab"
                             aria-labelledby="summary-tabpanel"
                             aria-controls="summary-tabpanel"
-                            aria-selected={activeTab === ACTIVE_TAB.SUMMARY && 'true'}
-                            className={`${
-                                activeTab === ACTIVE_TAB.SUMMARY && 'active'
-                            } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}
-                            onClick={() => setActiveTab(ACTIVE_TAB.SUMMARY)}>
-                            {ACTIVE_TAB.SUMMARY}
-                        </p>
-                        <p
+                            aria-selected={activeTab === ACTIVE_TAB.SUMMARY && 'true'}>
+                            <p
+                                className={`${
+                                    activeTab === ACTIVE_TAB.SUMMARY && 'active'
+                                } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
+                                {ACTIVE_TAB.SUMMARY}
+                            </p>
+                        </button>
+                        <button
+                            className="tab-panel-unstyled-button"
+                            type="button"
+                            tabIndex={0}
+                            onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}
                             role="tab"
                             aria-labelledby="events-tabpanel"
                             aria-selected={activeTab === ACTIVE_TAB.EVENT && 'true'}
-                            aria-controls="events-tabpanel"
-                            className={`${
-                                activeTab === ACTIVE_TAB.EVENT && 'active'
-                            } padding-bottom-1 type text-normal margin-y-3 font-sans-md margin-x-3 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}
-                            onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}>
-                            {ACTIVE_TAB.EVENT}
-                        </p>
-                        <p
-                            role="tab"
-                            aria-labelledby="demographics-tabpanel"
-                            aria-selected={activeTab === ACTIVE_TAB.DEMOGRAPHICS && 'true'}
-                            aria-controls="demographics-tabpanel"
-                            className={`${
-                                activeTab === ACTIVE_TAB.DEMOGRAPHICS && 'active'
-                            } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}
+                            aria-controls="events-tabpanel">
+                            <p
+                                className={`${
+                                    activeTab === ACTIVE_TAB.EVENT && 'active'
+                                } padding-bottom-1 type text-normal margin-y-3 font-sans-md margin-x-3 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
+                                {ACTIVE_TAB.EVENT}
+                            </p>
+                        </button>
+                        <button
+                            className="tab-panel-unstyled-button"
+                            type="button"
+                            tabIndex={0}
                             onClick={() => setActiveTab(ACTIVE_TAB.DEMOGRAPHICS)}>
-                            {ACTIVE_TAB.DEMOGRAPHICS}
-                        </p>
+                            <p
+                                className={`${
+                                    activeTab === ACTIVE_TAB.DEMOGRAPHICS && 'active'
+                                } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
+                                {ACTIVE_TAB.DEMOGRAPHICS}
+                            </p>
+                        </button>
                     </div>
 
                     {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={patient?.id} />}
