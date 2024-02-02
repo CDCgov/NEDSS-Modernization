@@ -18,6 +18,7 @@ type Props = {
     identifier: string;
     valueSet: string;
     id: number;
+    isStandard: boolean;
 };
 
 const hyperlinkId = 1003;
@@ -28,7 +29,16 @@ const originalElecDocId = 1036;
 
 const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, participantListId, originalElecDocId];
 
-export const QuestionContent = ({ type, valueSet, name, identifier, displayComponent, defaultValue, id }: Props) => {
+export const QuestionContent = ({
+    type,
+    valueSet,
+    name,
+    identifier,
+    displayComponent,
+    defaultValue,
+    id,
+    isStandard
+}: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
     const { setEditValueSet } = useContext(QuestionsContext);
 
@@ -91,10 +101,10 @@ export const QuestionContent = ({ type, valueSet, name, identifier, displayCompo
 
                 {type === 'DATE' && <Icon.CalendarToday size={4} className={styles.icon} data-testid="calendar-icon" />}
             </div>
-            {valueSet && (
-                <div className="margin-top-1em gap-10">
+            {valueSet && !isStandard && (
+                <div className="margin-top-1em">
                     <Button
-                        className={styles.unStyledButton}
+                        className={`${styles.unStyledButton} margin-right-2`}
                         type="button"
                         onClick={() => {
                             setEditValueSet?.({ valueSetNm: valueSet });
