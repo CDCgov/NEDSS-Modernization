@@ -1,6 +1,5 @@
 import { Icon, Modal, ModalRef } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import { Heading } from 'components/heading';
 import { ReactNode, RefObject } from 'react';
 import styles from './entry-modal.module.scss';
 
@@ -27,7 +26,7 @@ export const EntryModal = ({ modal, id, title, children, overflow = false, class
             ref={modal}
             className={classNames(styles.modal, className, { [styles.overflow]: overflow })}>
             <header>
-                <Heading level={2}>{title}</Heading>
+                <h2 className="heading_heading__Xr81l heading_two__eM+ke margin-0">{title}</h2>
                 <Icon.Close size={3} onClick={onClose} />
             </header>
             <div className={styles.content}>{children}</div>

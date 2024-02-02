@@ -8,11 +8,11 @@ type SummaryProp = {
 
 export const Summary = ({ patient }: SummaryProp) => {
     return (
-        <>
+        <div role="tabpanel" id="summary-tabpanel">
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <PatientOpenInvestigationsTable patient={patient} pageSize={TOTAL_TABLE_DATA} />
             </div>
             <DocumentRequiringReview patient={patient} />
-        </>
+        </div>
     );
 };
