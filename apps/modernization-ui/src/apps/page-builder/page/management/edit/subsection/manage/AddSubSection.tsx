@@ -39,14 +39,12 @@ export const AddSubSection = ({
 
     useEffect(() => {
         if (subsectionEdit && isEdit) {
-            console.log(subsectionEdit.visible);
             form.reset({ name: subsectionEdit.name, visible: subsectionEdit.visible, sectionId: sectionId });
         }
     }, [subsectionEdit]);
 
     const onSubmit = form.handleSubmit((data) => {
         if (isEdit) {
-            console.log(data);
             SubSectionControllerService.updateSubSectionUsingPut({
                 authorization: authorization(),
                 page: pageId ?? 0,
