@@ -44,7 +44,7 @@ export const DateFields = ({ maskOptions }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        required
+                        disabled
                     />
                 )}
             />
