@@ -98,7 +98,7 @@ export const PatientProfile = () => {
                             <ModalToggleButton
                                 modalRef={modalRef}
                                 opener
-                                className="flex-align-center display-inline-flex"
+                                className="flex-align-center display-inline-flex delete-button"
                                 type={'submit'}>
                                 <Icon.Delete className="margin-right-05 font-body-lg" />
                                 Delete patient
