@@ -13,7 +13,7 @@ import { Heading } from 'components/heading';
 import { useEffect } from 'react';
 import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
-import { checkEmptyRule } from 'validation/entry/checkEmptyRule';
+import { notEmptyRule } from 'validation/entry/notEmptyRule';
 
 type sectionProps = {
     tabId?: number;
@@ -87,7 +87,7 @@ export const AddSection = ({
                             required: { value: true, message: 'Section name is required' },
                             ...maxLengthRule(50),
                             ...validPageNameRule,
-                            ...checkEmptyRule
+                            ...notEmptyRule
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <>
