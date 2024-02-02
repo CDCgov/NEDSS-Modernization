@@ -1,7 +1,7 @@
 import { Label, Radio } from '@trussworks/react-uswds';
 import { CreateNumericQuestionRequest, ValueSetControllerService } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SelectInput, Selectable } from 'components/FormInputs/SelectInput';
 import { Option } from 'generated';
 import { useEffect, useState } from 'react';
 import { Controller, UseFormReturn, useFormContext, useWatch } from 'react-hook-form';
@@ -20,22 +20,11 @@ export const NumericFields = ({ maskOptions }: Props) => {
     );
     const [numericMaskOptions, setNumericMaskOptions] = useState<Option[]>([]);
     const [relatedUnits, setRelatedUnits] = useState(false);
-    const [valueSets, setValueSets] = useState<Option[]>([]);
+    const [valueSets, setValueSets] = useState<Selectable[]>([]);
 
     useEffect(() => {
-        ValueSetControllerService.findAllUsingGet({ authorization: authorization() }).then((response) =>
-            setValueSets(
-                response
-                    .filter((vs) => vs.valueSetNm?.length && vs.codeSetGroupId !== undefined)
-                    .map((vs) => {
-                        return {
-                            name: vs.valueSetNm ?? '',
-                            label: vs.valueSetNm ?? '',
-                            value: vs.codeSetGroupId?.toString() ?? ''
-                        };
-                    })
-                    .sort((a, b) => a.name.localeCompare(b.name))
-            )
+        ValueSetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) =>
+            setValueSets(response)
         );
 
         form.reset({
@@ -270,7 +259,6 @@ export const NumericFields = ({ maskOptions }: Props) => {
                                     />
                                 )}
                             />
-                            Value set: {watch.relatedUnitsValueSet}
                         </>
                     )}
                 </>

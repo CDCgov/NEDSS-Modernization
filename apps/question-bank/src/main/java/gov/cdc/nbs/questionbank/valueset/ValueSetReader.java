@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.valueset;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,10 +35,6 @@ public class ValueSetReader {
     this.valueSetFinder = valueSetFinder;
   }
 
-  public List<ValueSet> findAll() {
-    return valueSetRepository.findAll().stream().map(this::toValueSet).toList();
-  }
-
   public Page<ValueSet> findAllValueSets(Pageable pageable) {
     Page<Codeset> rawResults = valueSetRepository.findAll(pageable);
     List<ValueSet> formatResults = toReadValueSet(rawResults);
@@ -50,39 +47,39 @@ public class ValueSetReader {
   }
 
   public List<ValueSet> toReadValueSet(Page<Codeset> rawResults) {
-    return rawResults.getContent()
-        .stream()
-        .map(this::toValueSet)
-        .toList();
-  }
+    List<ValueSet> results = new ArrayList<>();
 
-  private ValueSet toValueSet(Codeset codeSet) {
-    return new ValueSet(
-        codeSet.getId().getClassCd(),
-        codeSet.getId().getCodeSetNm(),
-        codeSet.getAssigningAuthorityCd(),
-        codeSet.getAssigningAuthorityDescTxt(),
-        codeSet.getCodeSetDescTxt(),
-        codeSet.getEffectiveFromTime(),
-        codeSet.getEffectiveToTime(),
-        codeSet.getIsModifiableInd(),
-        codeSet.getNbsUid(),
-        codeSet.getSourceVersionTxt(),
-        codeSet.getSourceDomainNm(),
-        codeSet.getStatusCd(),
-        codeSet.getStatusToTime(),
-        (codeSet.getCodeSetGroup() != null) ? codeSet.getCodeSetGroup().getId() : null,
-        codeSet.getAdminComments(),
-        codeSet.getValueSetNm(),
-        codeSet.getLdfPicklistIndCd(),
-        codeSet.getValueSetCode(),
-        codeSet.getValueSetTypeCd(),
-        codeSet.getValueSetOid(),
-        codeSet.getValueSetStatusCd(),
-        codeSet.getValueSetStatusTime(),
-        codeSet.getParentIsCd(),
-        codeSet.getAddTime(),
-        codeSet.getAddUserId());
+    for (Codeset codeSet : rawResults.getContent()) {
+
+            results.add(new ValueSet(
+                    codeSet.getId().getClassCd(),
+                    codeSet.getId().getCodeSetNm(),
+                    codeSet.getAssigningAuthorityCd(),
+                    codeSet.getAssigningAuthorityDescTxt(),
+                    codeSet.getCodeSetDescTxt(),
+                    codeSet.getEffectiveFromTime(),
+                    codeSet.getEffectiveToTime(),
+                    codeSet.getIsModifiableInd(),
+                    codeSet.getNbsUid(),
+                    codeSet.getSourceVersionTxt(),
+                    codeSet.getSourceDomainNm(),
+                    codeSet.getStatusCd(),
+                    codeSet.getStatusToTime(),
+                    (codeSet.getCodeSetGroup() != null) ? codeSet.getCodeSetGroup().getId() : null,
+                    codeSet.getAdminComments(),
+                    codeSet.getValueSetNm(),
+                    codeSet.getLdfPicklistIndCd(),
+                    codeSet.getValueSetCode(),
+                    codeSet.getValueSetTypeCd(),
+                    codeSet.getValueSetOid(),
+                    codeSet.getValueSetStatusCd(),
+                    codeSet.getValueSetStatusTime(),
+                    codeSet.getParentIsCd(),
+                    codeSet.getAddTime(),
+                    codeSet.getAddUserId()));
+
+    }
+    return results;
   }
 
   public List<Concept> findConceptCodes(String codeSetNm) {
@@ -97,18 +94,18 @@ public class ValueSetReader {
         .toList();
   }
 
-  public Concept toConcept(CodeValueGeneral codeValueGeneral) {
-    return new Concept(
-        codeValueGeneral.getId().getCode(),
-        codeValueGeneral.getId().getCodeSetNm(),
-        codeValueGeneral.getCodeShortDescTxt(),
-        codeValueGeneral.getCodeDescTxt(),
-        codeValueGeneral.getConceptCode(),
-        codeValueGeneral.getConceptPreferredNm(),
-        codeValueGeneral.getCodeSystemDescTxt(),
-        codeValueGeneral.getConceptStatusCd(),
-        codeValueGeneral.getEffectiveFromTime(),
-        codeValueGeneral.getEffectiveToTime());
-  }
+    public Concept toConcept(CodeValueGeneral codeValueGeneral) {
+        return new Concept(
+                codeValueGeneral.getId().getCode(),
+                codeValueGeneral.getId().getCodeSetNm(),
+                codeValueGeneral.getCodeShortDescTxt(),
+                codeValueGeneral.getCodeDescTxt(),
+                codeValueGeneral.getConceptCode(),
+                codeValueGeneral.getConceptPreferredNm(),
+                codeValueGeneral.getCodeSystemDescTxt(),
+                codeValueGeneral.getConceptStatusCd(),
+                codeValueGeneral.getEffectiveFromTime(),
+                codeValueGeneral.getEffectiveToTime());
+    }
 
 }

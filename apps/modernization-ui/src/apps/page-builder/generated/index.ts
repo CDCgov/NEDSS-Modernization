@@ -119,6 +119,7 @@ export type { ValueSetByOIDResults } from './models/ValueSetByOIDResults';
 export type { ValueSetConcept } from './models/ValueSetConcept';
 export type { ValueSetCreateRequest } from './models/ValueSetCreateRequest';
 export type { ValueSetCreateShort } from './models/ValueSetCreateShort';
+export type { ValueSetOption } from './models/ValueSetOption';
 export type { ValueSetSearchRequest } from './models/ValueSetSearchRequest';
 export type { ValueSetSearchResponse } from './models/ValueSetSearchResponse';
 export { ValueSetStateChangeResponse } from './models/ValueSetStateChangeResponse';

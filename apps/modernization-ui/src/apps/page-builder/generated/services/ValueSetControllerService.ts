@@ -8,8 +8,8 @@ import type { Page_ValueSet_ } from '../models/Page_ValueSet_';
 import type { Page_ValueSetSearchResponse_ } from '../models/Page_ValueSetSearchResponse_';
 import type { UpdateConceptRequest } from '../models/UpdateConceptRequest';
 import type { UpdatedValueSetResponse } from '../models/UpdatedValueSetResponse';
-import type { ValueSet } from '../models/ValueSet';
 import type { ValueSetCreateRequest } from '../models/ValueSetCreateRequest';
+import type { ValueSetOption } from '../models/ValueSetOption';
 import type { ValueSetSearchRequest } from '../models/ValueSetSearchRequest';
 import type { ValueSetStateChangeResponse } from '../models/ValueSetStateChangeResponse';
 import type { ValueSetUpdateRequest } from '../models/ValueSetUpdateRequest';
@@ -87,18 +87,18 @@ export class ValueSetControllerService {
     }
 
     /**
-     * findAll
-     * @returns ValueSet OK
+     * findValueSetOptions
+     * @returns ValueSetOption OK
      * @throws ApiError
      */
-    public static findAllUsingGet({
+    public static findValueSetOptionsUsingGet({
         authorization,
     }: {
         authorization: string,
-    }): CancelablePromise<Array<ValueSet>> {
+    }): CancelablePromise<Array<ValueSetOption>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/valueset/all',
+            url: '/nbs/page-builder/api/v1/valueset/options',
             headers: {
                 'Authorization': authorization,
             },
