@@ -46,6 +46,9 @@ public class SubSectionGrouper {
       throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
     }
 
+    // find max question_group_seq_nbr within the questions of the page
+    // look for question from batch in the WA_RDB_metadata table and add the block number (check for the WA_UI_metadata uid and the template uid)
+
     WaUiMetadata section =
         page.groupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
     return ResponseEntity.ok(
