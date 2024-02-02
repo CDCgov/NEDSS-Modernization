@@ -11,7 +11,7 @@ public class ProviderOptionSteps {
     this.mother = mother;
   }
 
-  @Before("@condition")
+  @Before("@providers")
   public void clean() {
     mother.reset();
   }
