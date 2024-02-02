@@ -24,7 +24,8 @@ record FlattenedComponent(
     String fieldLength,
     String defaultRdbTableName,
     String rdbColumnName,
-    String defaultLabelInReport
+    String defaultLabelInReport,
+    boolean isGrouped
 ) {
 
   FlattenedComponent(
@@ -33,9 +34,10 @@ record FlattenedComponent(
       String name,
       boolean visible,
       int order
+
   ) {
     this(identifier, type, name, visible, order, false, null, null, null, null, null, false, false, false, false, null,
         null,
-        null, null, null,null, null, null,null);
+        null, null, null,null, null, null,null,false);
   }
 }

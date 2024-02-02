@@ -7,9 +7,15 @@ import java.util.List;
 public final class SubSectionNode extends LayoutNode {
 
   private final Collection<ContentNode> children;
+  private boolean isGrouped;
 
-  public SubSectionNode(final long identifier, final Definition definition) {
+  public boolean isGrouped() {
+    return isGrouped;
+  }
+
+  public SubSectionNode(final long identifier, final Definition definition,boolean isGrouped) {
     super(identifier, LayoutNode.Type.SUB_SECTION, definition);
+    this.isGrouped=isGrouped;
     this.children = new ArrayList<>();
   }
 
