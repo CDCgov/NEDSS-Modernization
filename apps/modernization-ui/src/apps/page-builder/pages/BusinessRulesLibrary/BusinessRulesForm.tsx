@@ -12,7 +12,7 @@ import {
 } from '@trussworks/react-uswds';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
-import { Controller, UseFormReturn } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { nonDateCompare, dateCompare } from '../../constant/constant';
 import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
@@ -34,11 +34,8 @@ type FieldProps = {
     value: string;
 };
 
-interface formProps {
-    form: UseFormReturn<CreateRuleRequest, any, undefined>;
-}
-
-const BusinessRulesForm = ({ form }: formProps) => {
+const BusinessRulesForm = () => {
+    const form = useFormContext<CreateRuleRequest>();
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
     const [targetQuestion, setTargetQuestion] = useState<QuestionProps[]>([]);
