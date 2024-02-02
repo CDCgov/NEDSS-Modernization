@@ -33,6 +33,7 @@ class FlattenedComponentMapperTest {
     when(resultSet.getString(columns.toolTip())).thenReturn("tool-tip-value");
     when(resultSet.getString(columns.defaultValue())).thenReturn("default-value-value");
     when(resultSet.getString(columns.valueSet())).thenReturn("value-set-value");
+    when(resultSet.getString(columns.blockName())).thenReturn("blockName");
 
     FlattenedComponentMapper mapper = new FlattenedComponentMapper(columns);
 
@@ -57,6 +58,7 @@ class FlattenedComponentMapperTest {
     assertThat(actual.toolTip()).isEqualTo("tool-tip-value");
     assertThat(actual.defaultValue()).isEqualTo("default-value-value");
     assertThat(actual.valueSet()).isEqualTo("value-set-value");
+    assertThat(actual.isGrouped()).isTrue();
   }
 
   @Test

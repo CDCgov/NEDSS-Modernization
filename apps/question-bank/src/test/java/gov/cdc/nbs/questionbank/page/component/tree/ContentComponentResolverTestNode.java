@@ -40,7 +40,8 @@ class ContentComponentResolverTest {
         "10",
         "default-rdb-table-name",
         "rdb-column-name",
-        "default-label-in-report"
+        "default-label-in-report",
+        false
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -97,7 +98,8 @@ class ContentComponentResolverTest {
         "10",
         "default-rdb-table-name",
         "rdb-column-name",
-        "default-label-in-report"
+        "default-label-in-report",
+        false
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -153,7 +155,8 @@ class ContentComponentResolverTest {
         "10",
         "default-rdb-table-name",
         "rdb-column-name",
-        "default-label-in-report"
+        "default-label-in-report",
+        false
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -209,7 +212,8 @@ class ContentComponentResolverTest {
         "10",
         "default-rdb-table-name",
         "rdb-column-name",
-        "default-label-in-report"
+        "default-label-in-report",
+        false
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();

@@ -36,14 +36,15 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int fieldLength,
       int defaultRdbTableName,
       int rdbColumnName,
-      int defaultLabelInReport
+      int defaultLabelInReport,
+      int blockName
 
   ) {
     Column() {
       this(1, 2, 3, 4, 5, 6, 7, 8, 9,
           10, 11, 12, 13, 14, 15, 16,
           17, 18, 19, 20, 21, 22,
-          23, 24);
+          23, 24, 25);
     }
   }
 
@@ -83,6 +84,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     String rdbColumnName = resultSet.getString(this.columns.rdbColumnName());
     String defaultLabelInReport = resultSet.getString(this.columns.defaultLabelInReport());
 
+    boolean isSubsectionGrouped = resultSet.getString(this.columns.blockName()) != null;
+
     return new FlattenedComponent(
         identifier,
         type,
@@ -107,8 +110,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         fieldLength,
         defaultRdbTableName,
         rdbColumnName,
-        defaultLabelInReport
-
+        defaultLabelInReport,
+        isSubsectionGrouped
     );
   }
 

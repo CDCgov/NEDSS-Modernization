@@ -33,7 +33,8 @@ class FlattenedComponentFinder {
           [waQuestion].field_size               as [Field_length],
           [waQuestion].rdb_table_nm             as [default_rdb_table_nm],
           [waQuestion].rdb_column_nm            as [rdb_column_nm],
-          [waQuestion].rpt_admin_column_nm      as [Default_label_in_report]
+          [waQuestion].rpt_admin_column_nm      as [Default_label_in_report],
+          [component].block_nm                 as [blockName]
           
       from WA_UI_metadata [component]
           left join WA_question [waQuestion] on
