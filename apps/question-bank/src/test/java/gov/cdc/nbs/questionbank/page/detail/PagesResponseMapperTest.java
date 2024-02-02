@@ -195,7 +195,8 @@ class PagesResponseMapperTest {
                         "sub-section-name-value",
                         true,
                         4
-                    )
+                    ),
+                    false
                 )
             )
         )
@@ -260,6 +261,7 @@ class PagesResponseMapperTest {
                         true,
                         4
                     )
+                    , false
                 ).add(
                     new StaticNode(
                         1697L,

@@ -91,6 +91,7 @@ class PagesResponseMapper {
         subsection.definition().name(),
         subsection.definition().order(),
         subsection.definition().visible(),
+        subsection.isGrouped(),
         mapAll(this::asQuestion, subsection.children())
     );
   }
