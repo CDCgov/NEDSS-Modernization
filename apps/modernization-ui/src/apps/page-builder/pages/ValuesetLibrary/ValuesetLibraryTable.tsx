@@ -33,6 +33,7 @@ type Props = {
 };
 export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValueModalRef }: Props) => {
     const { showAlert } = useAlert();
+    const { editValueSet, setEditValueSet, searchValueSet } = useContext(QuestionsContext);
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
     const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -41,7 +42,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
     const asTableRow = (valueSet: ValueSet): TableBody => ({
-        id: valueSet.nbsUid,
+        id: valueSet.codeSetGroupId,
         expanded: expandedRows.some((id) => id === valueSet.nbsUid),
         expandedViewComponent: <ValuesetLibraryTableRowExpanded data={valueSet} />,
         selectable: true,
@@ -117,7 +118,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
 
     const handleSelected = ({ target }: any, item: any) => {
         if (target.checked) {
-            const value = summaries.find((val: ValueSet) => item.id === val.nbsUid) || {};
+            const value = summaries.find((val: ValueSet) => item.id === val.codeSetGroupId) || {};
             setSelectedValueSet(value);
             setSearchValueSet?.(value);
         } else {
@@ -160,7 +161,7 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
     };
 
     const handleAddQsn = async () => {
-        const id: number = parseInt(localStorage.getItem('selectedQuestion')!);
+        const id = editValueSet?.nbsUid;
         if (!id) return;
         const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
             authorization,
@@ -169,47 +170,19 @@ export const ValuesetLibraryTable = ({ summaries, labModalRef, pages, createValu
             return response;
         });
 
-        const {
-            valueSet,
-            unitValue,
-            description,
-            messagingInfo,
-            label,
-            tooltip,
-            displayControl,
-            mask,
-            dataMartInfo,
-            uniqueName,
-            fieldLength,
-            size,
-            fieldSize
-        }: any = question;
-
         const request = {
-            description,
-            labelInMessage: messagingInfo.labelInMessage,
-            messageVariableId: messagingInfo.messageVariableId,
-            hl7DataType: messagingInfo.hl7DataType,
-            label,
-            tooltip,
-            displayControl,
-            mask,
-            fieldLength,
-            defaultLabelInReport: dataMartInfo.defaultLabelInReport,
-            uniqueName,
-            valueSet,
-            unitValue,
-            size: size,
-            fieldSize
+            ...question,
+            valueSet: searchValueSet?.codeSetGroupId
         };
 
-        QuestionControllerService.updateQuestionUsingPut({
+        QuestionControllerService.updateCodedQuestionUsingPut({
             authorization,
             id,
             request
         }).then((response: any) => {
             setSelectedValueSet({});
-            showAlert({ type: 'success', header: 'Add', message: 'Question Added successfully' });
+            showAlert({ type: 'success', header: 'Add', message: 'ValueSet changed successfully' });
+            setEditValueSet?.({});
             return response;
         });
     };

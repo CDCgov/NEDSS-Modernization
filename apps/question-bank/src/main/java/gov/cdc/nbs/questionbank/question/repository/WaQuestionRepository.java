@@ -39,4 +39,10 @@ public interface WaQuestionRepository extends JpaRepository<WaQuestion, Long> {
 
     List<Object[]> findIdByQuestionNm(@Param("questionNm") String questionNm);
 
+    List<Object[]> findIdByUserDefinedColumnNm(@Param("userDefinedColumnNm") String dataMart);
+
+    List<Object[]> findIdByRdbColumnNm(@Param("rdbColumnNm") String rdbColumnNm);
+
+
+
 }

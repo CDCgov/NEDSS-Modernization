@@ -79,14 +79,14 @@ export const CreateTextQuestion = ({ control, options, isText }: TextQuestionPro
                 control={control}
                 name="defaultValue"
                 rules={{
-                    ...maxLengthRule(4)
+                    ...maxLengthRule(50)
                 }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
                         className="field-space"
                         defaultValue={value}
-                        label="default Value"
+                        label="Default value"
                         type="text"
                         error={error?.message}
                     />

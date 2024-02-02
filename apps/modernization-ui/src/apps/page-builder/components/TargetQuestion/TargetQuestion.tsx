@@ -46,7 +46,7 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
                 setPage(data);
             });
         }
-    }, [pageId]);
+    }, [pageId, modalRef]);
 
     const visible = true;
     const selectedRecord = sourceList.filter((list) => list.selected);
@@ -77,6 +77,7 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
 
         setSourceList(updateList);
     };
+
     const handleSourceList = (question: QuestionProps[]) => {
         const newList = question.map((qtn: QuestionProps) => ({
             name: qtn.name,
@@ -85,6 +86,7 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
             valueSet: qtn.valueSet,
             selected: false
         }));
+
         setSourceList(newList);
     };
 

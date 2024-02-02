@@ -97,7 +97,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         return (
             <Grid row gap={3}>
                 <Grid col={12} className="margin-bottom-2">
-                    <h5 className="margin-0 text-normal text-gray-50 search-result-item-label">LEGAL NAME</h5>
+                    <p className="margin-0 text-normal text-gray-50 search-result-item-label">LEGAL NAME</p>
                     {name ? (
                         <a
                             onClick={redirectPatientProfile}
@@ -111,9 +111,9 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                 </Grid>
                 <Grid col={12} className="margin-bottom-2">
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                        <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                             DATE OF BIRTH
-                        </h5>
+                        </p>
                         <p className="margin-0 font-sans-1xs text-normal">
                             <>
                                 {birthDate ? birthDate : <NoData />}
@@ -122,15 +122,13 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                         </p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
-                            SEX
-                        </h5>
+                        <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">SEX</p>
                         <p className="margin-0 font-sans-1xs text-normal">{sex ? sex : <NoData />}</p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                        <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                             PATIENT ID
-                        </h5>
+                        </p>
                         <p className="margin-0 font-sans-1xs text-normal">{patient?.shortId}</p>
                     </div>
                 </Grid>
@@ -152,9 +150,9 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                 <Grid col={3}>
                                     <Grid row gap={3}>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50">
                                                 DOCUMENT TYPE
-                                            </h5>
+                                            </p>
                                             <ClassicLink
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                                                 url={`/nbs/api/profile/${getPatient(item)?.shortId}/report/lab/${
@@ -164,17 +162,17 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                             </ClassicLink>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 DATE RECEIVED
-                                            </h5>
+                                            </p>
                                             <p className="margin-0 font-sans-1xs text-normal">
                                                 {formatDate(item.addTime) || 'No Data'}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 DESCRIPTION
-                                            </h5>
+                                            </p>
                                             {getDescription(item) === 'No Data' ? (
                                                 <NoData />
                                             ) : (
@@ -188,17 +186,17 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                 <Grid col={3}>
                                     <Grid row gap={3}>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 REPORTING FACILITY
-                                            </h5>
+                                            </p>
                                             <p className="margin-0 font-sans-1xs text-normal">
                                                 {getReportingFacility(item)?.name ?? <NoData />}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 ORDERING PROVIDOR
-                                            </h5>
+                                            </p>
                                             <p className="margin-0 font-sans-1xs text-normal">
                                                 {getOrderingProvidorName(item) ?? <NoData />}
                                             </p>
@@ -206,9 +204,9 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                         <SearchCriteriaContext.Consumer>
                                             {({ searchCriteria }) => (
                                                 <Grid col={12} className="margin-bottom-2">
-                                                    <h5 className="margin-0 text-normal search-result-item-label text-gray-50">
+                                                    <p className="margin-0 text-normal search-result-item-label text-gray-50">
                                                         JURISDICTION
-                                                    </h5>
+                                                    </p>
                                                     <p className="margin-0 font-sans-1xs text-normal">
                                                         {item.jurisdictionCd ? (
                                                             searchCriteria.jurisdictions.find(
@@ -226,9 +224,9 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                 <Grid col={2}>
                                     <Grid row gap={3}>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 ASSOCIATED WITH
-                                            </h5>
+                                            </p>
                                             <div className="margin-0 font-sans-1xs text-normal">
                                                 {(!item.associatedInvestigations ||
                                                     item.associatedInvestigations.length == 0) && <NoData />}
@@ -247,9 +245,9 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
                                             </div>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 LOCAL ID
-                                            </h5>
+                                            </p>
                                             <p className="margin-0 font-sans-1xs text-normal">
                                                 {item.localId || <NoData />}
                                             </p>

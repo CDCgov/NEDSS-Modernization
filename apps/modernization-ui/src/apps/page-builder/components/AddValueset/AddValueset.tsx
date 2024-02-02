@@ -20,6 +20,7 @@ export const AddValueset = ({ modalRef, updateCallback, valueSetName }: Props) =
     const [desc, setDesc] = useState('');
     const [code, setCode] = useState('');
     const [activeTab, setActiveTab] = useState('details');
+    const [valueSet, setValueSet] = useState({});
     const [isValuesetNameNotValid, setIsValuesetNameNotValid] = useState(false);
     const [isValuesetCodeNotValid, setIsValuesetCodeNotValid] = useState(false);
     const [isValidationFailure, setIsValidationFailure] = useState(false);
@@ -37,7 +38,7 @@ export const AddValueset = ({ modalRef, updateCallback, valueSetName }: Props) =
             authorization,
             request
         }).then(({ body }) => {
-            setSearchValueSet?.({ valueSetNm: body.valueSetNm, codeSetGroupId: body.codeSetGroupId });
+            setValueSet({ valueSetNm: body.valueSetNm, codeSetGroupId: body.codeSetGroupId });
         });
     };
     const handleUpdateValueSet = () => {
@@ -50,11 +51,12 @@ export const AddValueset = ({ modalRef, updateCallback, valueSetName }: Props) =
             authorization,
             update
         }).then(({ body }) => {
-            setSearchValueSet?.({ valueSetNm: body.valueSetNm, codeSetGroupId: body.codeSetGroupId });
+            setValueSet({ valueSetNm: body.valueSetNm, codeSetGroupId: body.codeSetGroupId });
         });
     };
 
     const updateQuestion = async () => {
+        setSearchValueSet?.(valueSet);
         setDesc('');
         setCode('');
         setName('');

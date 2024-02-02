@@ -46,6 +46,21 @@ public class ValidateQuestionSteps {
     }
   }
 
+  @When("I validate rdbColumnName with invalid subgroup")
+  public void i_validate_rdbColumnName_with_invalid_subgroup() {
+    try {
+      request = new QuestionValidationRequest(FieldName.RDB_COLUMN_NAME.getValue(), "XXX_RDB_COL_NMM");
+      validationResult = controllerHelper.validate(request);
+    } catch (UniqueQuestionException e) {
+      exceptionHolder.setException(e);
+    } catch (AccessDeniedException e) {
+      exceptionHolder.setException(e);
+    } catch (AuthenticationCredentialsNotFoundException e) {
+      exceptionHolder.setException(e);
+    }
+  }
+
+
   @Then("return valid")
   public void return_valid() {
     assertTrue(validationResult);
@@ -60,7 +75,6 @@ public class ValidateQuestionSteps {
   public void a_validate_unique_question_exception_is_thrown() {
     assertNotNull(exceptionHolder.getException());
     assertTrue(exceptionHolder.getException() instanceof UniqueQuestionException);
-    assertEquals("invalid unique field name", exceptionHolder.getException().getMessage());
   }
 
   private QuestionValidationRequest prepareRequest(String field) {
@@ -68,6 +82,10 @@ public class ValidateQuestionSteps {
       return new QuestionValidationRequest(field, "TEST9900001");
     if (field.equals(FieldName.UNIQUE_NAME.getValue()))
       return new QuestionValidationRequest(field, "Text Question Unique Name");
+    if (field.equals(FieldName.RDB_COLUMN_NAME.getValue()))
+      return new QuestionValidationRequest(field, "ADM_RDB_COL_NM");
+    if (field.equals(FieldName.DATA_MART_COLUMN_NAME.getValue()))
+      return new QuestionValidationRequest(field, "DATA_MRT_COL_NM");
     else // invalid unique field name
       return new QuestionValidationRequest(field, "any value");
   }

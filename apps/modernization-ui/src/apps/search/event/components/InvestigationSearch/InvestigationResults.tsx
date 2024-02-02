@@ -96,7 +96,7 @@ export const InvestigationResults = ({
         return (
             <Grid row gap={3}>
                 <Grid col={12} className="margin-bottom-2">
-                    <h5 className="margin-0 text-normal text-gray-50 search-result-item-label">LEGAL NAME</h5>
+                    <p className="margin-0 text-normal text-gray-50 search-result-item-label">LEGAL NAME</p>
                     <a
                         onClick={redirectPatientProfile}
                         className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
@@ -106,9 +106,9 @@ export const InvestigationResults = ({
                 </Grid>
                 <Grid col={12} className="margin-bottom-2">
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                        <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                             DATE OF BIRTH
-                        </h5>
+                        </p>
                         <p className="margin-0 font-sans-2xs text-normal">
                             <>
                                 {birthDate ? birthDate : <NoData />}
@@ -117,15 +117,13 @@ export const InvestigationResults = ({
                         </p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
-                            SEX
-                        </h5>
+                        <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">SEX</p>
                         <p className="margin-0 font-sans-2xs text-normal">{sex ? sex : <NoData />}</p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                        <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                             PATIENT ID
-                        </h5>
+                        </p>
                         <p className="margin-0 font-sans-2xs text-normal">{patient?.shortId || <NoData />}</p>
                     </div>
                 </Grid>
@@ -147,9 +145,9 @@ export const InvestigationResults = ({
                                 <Grid col={3}>
                                     <Grid row gap={3} className="fill-height">
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50 search-result-item-label">
+                                            <p className="margin-0 text-normal text-gray-50 search-result-item-label">
                                                 CONDITION
-                                            </h5>
+                                            </p>
                                             <ClassicLink
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                                                 url={`/nbs/api/profile/${getPatient(item)?.shortId}/investigation/${
@@ -161,9 +159,9 @@ export const InvestigationResults = ({
                                             <span>{item.localId}</span>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 START DATE
-                                            </h5>
+                                            </p>
                                             <p className="margin-0 font-sans-1xs text-normal">
                                                 {formatDate(item.addTime) || <NoData />}
                                             </p>
@@ -173,17 +171,17 @@ export const InvestigationResults = ({
                                 <Grid col={3}>
                                     <Grid row gap={3} className="fill-height">
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50 search-result-item-label">
+                                            <p className="margin-0 text-normal text-gray-50 search-result-item-label">
                                                 JURISDICTION
-                                            </h5>
+                                            </p>
                                             <p className="margin-0 font-sans-1xs text-normal">
                                                 {item.jurisdictionCodeDescTxt || <NoData />}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 INVESTIGATOR
-                                            </h5>
+                                            </p>
                                             <p className="margin-0 font-sans-1xs text-normal">
                                                 {getInvestigatorName(item) ?? <NoData />}
                                             </p>
@@ -193,7 +191,9 @@ export const InvestigationResults = ({
                                 <Grid col={2}>
                                     <Grid row gap={3} className="fill-height">
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50">STATUS</h5>
+                                            <p className="margin-0 text-normal text-gray-50 search-result-item-label">
+                                                STATUS
+                                            </p>
                                             {getInvestigationStatusString(item) === 'No Data' ? (
                                                 <NoData />
                                             ) : (
@@ -205,9 +205,9 @@ export const InvestigationResults = ({
                                             )}
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
+                                            <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                                 NOTIFICATION
-                                            </h5>
+                                            </p>
                                             {item.notificationRecordStatusCd ? (
                                                 <p className="margin-0 font-sans-1xs text-normal">
                                                     {item.notificationRecordStatusCd ?? <NoData />}

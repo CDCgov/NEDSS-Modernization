@@ -417,7 +417,7 @@ export const AdvancedSearch = () => {
                 }`}>
                 <Grid row className="page-title-bar bg-white">
                     <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
-                        Search
+                        <h1 className="advanced-search-title margin-0">Search</h1>
                         <div className="button-group">
                             <Button
                                 disabled={!lastSearchType}
@@ -450,24 +450,24 @@ export const AdvancedSearch = () => {
                 <Grid row className="search-page-height">
                     <Grid col={3} className="bg-white border-right border-base-light">
                         <div className="left-searchbar">
-                            <h3 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h3>
+                            <h2 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h2>
                             <div
                                 className="grid-row flex-align-center"
                                 style={{ borderBottom: '1.5px solid lightgray' }}>
-                                <h6
+                                <p
                                     className={`${
                                         activeTab === ACTIVE_TAB.PERSON && 'active'
                                     } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
                                     onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}>
                                     Patient search
-                                </h6>
-                                <h6
+                                </p>
+                                <p
                                     className={`${
                                         activeTab === ACTIVE_TAB.EVENT && 'active'
                                     } padding-bottom-1 type text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
                                     onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}>
                                     Event search
-                                </h6>
+                                </p>
                             </div>
                             {activeTab === ACTIVE_TAB.PERSON ? (
                                 <PatientSearch
@@ -496,7 +496,7 @@ export const AdvancedSearch = () => {
                                     aria-label={resultTotal + ' Results have been found'}
                                     className="margin-0 font-sans-md margin-top-05 text-normal grid-row results-for"
                                     style={{ maxWidth: '55%' }}>
-                                    <strong className="margin-right-1">{resultTotal}</strong> Results for
+                                    <h2 className="advanced-search-results-title">{resultTotal} Results for:</h2>
                                     <AdvancedSearchChips
                                         lastSearchType={lastSearchType}
                                         personFilter={personFilter}

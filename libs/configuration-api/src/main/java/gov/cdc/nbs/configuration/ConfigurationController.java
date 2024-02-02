@@ -1,10 +1,11 @@
 package gov.cdc.nbs.configuration;
 
+import gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder;
+import gov.cdc.nbs.configuration.settings.Settings;
+import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder;
-import io.swagger.annotations.ApiImplicitParam;
 
 
 
@@ -13,12 +14,16 @@ import io.swagger.annotations.ApiImplicitParam;
 public class ConfigurationController {
 
   private final Features features;
+  private final Settings settings;
   private final NbsPropertiesFinder finder;
 
   public ConfigurationController(
       final Features features,
-      final NbsPropertiesFinder finder) {
+      final Settings settings,
+      final NbsPropertiesFinder finder
+  ) {
     this.features = features;
+    this.settings = settings;
     this.finder = finder;
   }
 
@@ -29,6 +34,10 @@ public class ConfigurationController {
       dataTypeClass = String.class)
   @GetMapping
   public Configuration getConfiguration() {
-    return new Configuration(features, finder.find());
+    return new Configuration(
+        features,
+        settings,
+        finder.find()
+    );
   }
 }

@@ -25,11 +25,14 @@ nbs:
       results:
         max: 25
 
+
 logging:
   file:
     path: ./log/
 
 spring:
+  profiles:
+    include: ui
   graphql:
     path: /graphql
     graphiql:
@@ -70,19 +73,3 @@ kafkadef:
     patient:
       request: patient
       status: patient-status
-
-nbs.ui:
-    features:
-      address:
-          autocomplete: false
-          verification: false
-      pageBuilder:
-        enabled: false
-        page:
-          library: 
-            enabled: false
-          management: 
-            create:
-              enabled: false
-            edit:
-              enabled: false

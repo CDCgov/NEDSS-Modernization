@@ -31,7 +31,10 @@ export const AddSubSection = ({
     subsectionEdit,
     isEdit
 }: subSectionProps) => {
-    const form = useForm<CreateSubSectionRequest | UpdateSubSectionRequest>({ mode: 'onBlur' });
+    const form = useForm<CreateSubSectionRequest | UpdateSubSectionRequest>({
+        mode: 'onBlur',
+        defaultValues: { visible: true }
+    });
 
     useEffect(() => {
         if (subsectionEdit && isEdit) {
@@ -65,7 +68,11 @@ export const AddSubSection = ({
         <div className={styles.subSection}>
             <div className={styles.header}>
                 <div className={styles.headerContent}>
-                    <Heading level={4}>Add subsection</Heading>
+                    {isEdit ? (
+                        <Heading level={4}>Edit subsection</Heading>
+                    ) : (
+                        <Heading level={4}>Add subsection</Heading>
+                    )}
                 </div>
                 <Icon.Close
                     size={3}
@@ -107,7 +114,11 @@ export const AddSubSection = ({
                         render={({ field: { onChange, value } }) => (
                             <div className={styles.visibleToggle}>
                                 Not visible
-                                <ToggleButton defaultChecked={value} className={styles.toggleBtn} onChange={onChange} />
+                                <ToggleButton
+                                    defaultChecked={subsectionEdit ? subsectionEdit.visible : value}
+                                    className={styles.toggleBtn}
+                                    onChange={onChange}
+                                />
                                 Visible
                             </div>
                         )}
