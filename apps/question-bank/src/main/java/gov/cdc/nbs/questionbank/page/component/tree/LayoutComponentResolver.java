@@ -63,7 +63,8 @@ class LayoutComponentResolver {
   private SubSectionNode asSubSection(final FlattenedComponent component) {
     return new SubSectionNode(
         component.identifier(),
-        asDefinition(component)
+        asDefinition(component),
+        component.isGrouped()
     );
   }
 }
