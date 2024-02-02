@@ -26,11 +26,15 @@ export const MessagingFields = ({ editing = false }: Props) => {
 
     useEffect(() => {
         if (!watch.messagingInfo?.includedInMessage) {
-            form.resetField('messagingInfo.messageVariableId');
-            form.resetField('messagingInfo.labelInMessage');
-            form.resetField('messagingInfo.codeSystem');
-            form.resetField('messagingInfo.requiredInMessage');
-            form.resetField('messagingInfo.hl7DataType');
+            form.reset({
+                ...form.getValues(),
+                messagingInfo: {
+                    messageVariableId: undefined,
+                    labelInMessage: undefined,
+                    requiredInMessage: undefined,
+                    hl7DataType: undefined
+                }
+            });
         }
     }, [watch.messagingInfo?.includedInMessage]);
 
@@ -67,11 +71,11 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
-                        disabled={editing || !watch.messagingInfo?.includedInMessage}
                         type="text"
                         name={name}
                         id={name}
                         htmlFor={name}
+                        disabled={!watch.messagingInfo?.includedInMessage}
                         required={watch.messagingInfo?.includedInMessage}
                         error={error?.message}
                     />
@@ -89,13 +93,13 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         label="Message label"
                         onChange={onChange}
                         onBlur={onBlur}
-                        disabled={editing || !watch.messagingInfo?.includedInMessage}
                         defaultValue={value}
                         type="text"
                         name={name}
                         id={name}
                         htmlFor={name}
                         required={watch.messagingInfo?.includedInMessage}
+                        disabled={!watch.messagingInfo?.includedInMessage}
                         error={error?.message}
                     />
                 )}
@@ -118,8 +122,8 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={editing || !watch.messagingInfo?.includedInMessage}
                         options={codeSystems}
+                        disabled={!watch.messagingInfo?.includedInMessage}
                         required={watch.messagingInfo?.includedInMessage}
                     />
                 )}
@@ -152,13 +156,13 @@ export const MessagingFields = ({ editing = false }: Props) => {
                     <SelectInput
                         label="HL7 data type"
                         defaultValue={value}
-                        disabled={editing || !watch.messagingInfo?.includedInMessage}
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
                         name={name}
                         id={name}
                         htmlFor={name}
+                        disabled={!watch.messagingInfo?.includedInMessage}
                         required={watch.messagingInfo?.includedInMessage}
                         options={hl7Options}
                     />
@@ -169,6 +173,15 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 value={'OBX-3.0'}
                 disabled
                 options={[{ name: 'OBX-3.0', value: 'OBX-3.0' }]}
+            />
+            <Input
+                label="Group number (Order group ID)"
+                defaultValue={'2'}
+                type="text"
+                name="Group number"
+                id="Group number"
+                htmlFor="Group number"
+                disabled={true}
             />
         </>
     );

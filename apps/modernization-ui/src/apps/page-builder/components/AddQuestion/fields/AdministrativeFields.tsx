@@ -23,11 +23,11 @@ export const AdministrativeFields = () => {
                         <Textarea
                             onChange={onChange}
                             onBlur={onBlur}
+                            className={styles.textaArea}
                             defaultValue={value}
                             name={name}
                             id={name}
                             rows={1}
-                            className={styles.textaArea}
                         />
                     </>
                 )}

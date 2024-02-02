@@ -88,7 +88,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                 name="fieldLength"
                 rules={{
                     required: { value: true, message: 'Field length is required' },
-                    ...maxLengthRule(4)
+                    ...maxLengthRule(10)
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
@@ -111,6 +111,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
             <Controller
                 control={form.control}
                 name="defaultValue"
+                rules={maxLengthRule(10)}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
                         label="Default value"
@@ -196,7 +197,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         rules={{ required: { value: true, message: 'Unit type is required' } }}
                         render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                             <SelectInput
-                                label="Unit type"
+                                label="Units type"
                                 onChange={(e) => {
                                     onChange(e);
                                     onBlur();
@@ -219,6 +220,10 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         <Controller
                             control={form.control}
                             name="relatedUnitsLiteral"
+                            rules={{
+                                required: { value: true, message: 'Literal units value is required' },
+                                ...maxLengthRule(50)
+                            }}
                             render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                                 <Input
                                     label="Literal units value"
@@ -236,30 +241,31 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         />
                     )}
                     {watch.unitType === 'coded' && (
-                        <>
-                            <Controller
-                                control={form.control}
-                                name="relatedUnitsValueSet"
-                                rules={{ required: { value: true, message: 'Related units value set is required' } }}
-                                render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
-                                    <SelectInput
-                                        label="Related units value set"
-                                        onChange={(e) => {
-                                            onChange(e);
-                                            onBlur();
-                                        }}
-                                        onBlur={onBlur}
-                                        defaultValue={value}
-                                        options={valueSets}
-                                        error={error?.message}
-                                        name={name}
-                                        id={name}
-                                        htmlFor={name}
-                                        required
-                                    />
-                                )}
-                            />
-                        </>
+                        <Controller
+                            control={form.control}
+                            name="relatedUnitsValueSet"
+                            rules={{
+                                required: { value: true, message: 'Related units value set is required' },
+                                ...maxLengthRule(50)
+                            }}
+                            render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
+                                <SelectInput
+                                    label="Related units value set"
+                                    onChange={(e) => {
+                                        onChange(e);
+                                        onBlur();
+                                    }}
+                                    onBlur={onBlur}
+                                    defaultValue={value}
+                                    options={valueSets}
+                                    error={error?.message}
+                                    name={name}
+                                    id={name}
+                                    htmlFor={name}
+                                    required
+                                />
+                            )}
+                        />
                     )}
                 </>
             )}

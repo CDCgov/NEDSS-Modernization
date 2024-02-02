@@ -4,7 +4,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Option } from 'generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 
@@ -88,20 +88,23 @@ export const DataMartFields = ({ editing = false }: Props) => {
                         value: alphanumericUnderscoreNotStartingWithNumber,
                         message: 'Must not start with a number and valid characters are A-Z, a-z, 0-9, or _'
                     },
-                    ...maxLengthRule(50)
+                    ...maxLengthRule(20)
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
                         label="RDB column name"
-                        onChange={onChange}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });
+                            form.setValue('dataMartInfo.dataMartColumnName', e.target.value?.toUpperCase());
+                        }}
                         onBlur={onBlur}
                         defaultValue={value}
-                        disabled={editing}
                         type="text"
                         error={error?.message}
                         name={name}
                         id={name}
                         htmlFor={name}
+                        disabled={editing}
                         required
                     />
                 )}
@@ -114,12 +117,14 @@ export const DataMartFields = ({ editing = false }: Props) => {
                         value: alphanumericUnderscoreNotStartingWithNumber,
                         message: 'Must not start with a number and valid characters are A-Z, a-z, 0-9, or _'
                     },
-                    ...maxLengthRule(50)
+                    ...maxLengthRule(20)
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
                         label="Data mart column name"
-                        onChange={onChange}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });
+                        }}
                         onBlur={onBlur}
                         className="field-space"
                         defaultValue={value}

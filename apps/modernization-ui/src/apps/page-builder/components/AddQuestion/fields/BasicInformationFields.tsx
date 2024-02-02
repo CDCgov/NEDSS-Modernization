@@ -70,7 +70,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                     control={form.control}
                     name="uniqueId"
                     rules={{
-                        pattern: { value: /^[a-zA-Z0-9_]*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' },
+                        pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' },
                         ...maxLengthRule(50)
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
@@ -84,7 +84,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            readOnly={editing}
+                            disabled={editing}
                         />
                     )}
                 />
@@ -108,7 +108,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         id={name}
                         error={error?.message}
                         required
-                        readOnly={editing}
+                        disabled={editing}
                     />
                 )}
             />
@@ -120,14 +120,17 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                     <SelectInput
                         label="Subgroup"
                         defaultValue={value}
-                        disabled={editing}
-                        onChange={onChange}
+                        onChange={(e) => {
+                            onChange(e);
+                            onBlur();
+                        }}
                         onBlur={onBlur}
                         error={error?.message}
                         options={subgroups}
                         name={name}
                         htmlFor={name}
                         id={name}
+                        disabled={editing}
                         required
                     />
                 )}
@@ -135,7 +138,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
             <Controller
                 control={form.control}
                 name="description"
-                rules={{ required: { value: true, message: 'Description is required' }, ...maxLengthRule(100) }}
+                rules={{ required: { value: true, message: 'Description is required' }, ...maxLengthRule(2000) }}
                 render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                     <>
                         <Label className="required" htmlFor={name}>
