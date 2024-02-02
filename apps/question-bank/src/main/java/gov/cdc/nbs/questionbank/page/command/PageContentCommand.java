@@ -153,40 +153,41 @@ public sealed interface PageContentCommand {
         }
 
         public record GroupSubsection(
-                long subsection,
-                String blockName,
-                List<GroupSubSectionRequest.Batch> batches,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        long subsection,
+                        String blockName,
+                        List<GroupSubSectionRequest.Batch> batches,
+                        long repeatingNbr,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record UnGroupSubsection(
-                long subsection,
-                List<Long> batches,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        long subsection,
+                        List<Long> batches,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record DeleteQuestion(
-                Long question,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        Long question,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record AddRule(
-                String ruleCd,
-                String errMsgTxt,
-                String recordStatusCd,
-                String javascriptFunction,
-                String javascriptFunctionNm,
-                long userId,
-                Instant requestedOn) implements PageContentCommand {
+                        String ruleCd,
+                        String errMsgTxt,
+                        String recordStatusCd,
+                        String javascriptFunction,
+                        String javascriptFunctionNm,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
         public record DeleteRule(
-                long ruleId,
-                long userId,
-                Instant requestedOn)implements PageContentCommand {
+                        long ruleId,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
         }
 
 

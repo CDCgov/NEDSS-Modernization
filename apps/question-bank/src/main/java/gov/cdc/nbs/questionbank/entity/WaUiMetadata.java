@@ -448,7 +448,7 @@ public class WaUiMetadata {
     added(command);
   }
 
-   public WaUiMetadata(WaTemplate page, PageContentCommand.AddSubsection command, Integer orderNumber) {
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddSubsection command, Integer orderNumber) {
     this();
     this.nbsUiComponentUid = 1016L;
     this.waTemplateUid = page;
@@ -548,13 +548,15 @@ public class WaUiMetadata {
 
   public void update(PageContentCommand.GroupSubsection command) {
     this.blockNm = command.blockName();
+    this.questionGroupSeqNbr = (int) command.repeatingNbr();
     updated(command);
   }
 
   public void updateQuestionBatch(PageContentCommand.GroupSubsection command) {
     this.blockNm = command.blockName();
+    this.questionGroupSeqNbr = (int) command.repeatingNbr();
     GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
-            .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
+        .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
     this.batchTableAppearIndCd = batch.batchTableAppearIndCd();
     this.batchTableHeader = batch.batchTableHeader();
     this.batchTableColumnWidth = batch.batchTableColumnWidth();
@@ -562,15 +564,15 @@ public class WaUiMetadata {
   }
 
   public void update(PageContentCommand.UnGroupSubsection command) {
-    this.blockNm =null;
+    this.blockNm = null;
     updated(command);
   }
 
   public void updateQuestionBatch(PageContentCommand.UnGroupSubsection command) {
-    this.blockNm=null;
-    this.batchTableAppearIndCd=null;
-    this.batchTableHeader=null;
-    this.batchTableColumnWidth=null;
+    this.blockNm = null;
+    this.batchTableAppearIndCd = null;
+    this.batchTableHeader = null;
+    this.batchTableColumnWidth = null;
     updated(command);
   }
 

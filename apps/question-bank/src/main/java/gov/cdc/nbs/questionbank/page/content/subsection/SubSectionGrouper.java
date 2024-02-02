@@ -21,8 +21,7 @@ public class SubSectionGrouper {
   private final EntityManager entityManager;
   private final QuestionManagementUtil questionManagementUtil;
 
-  public SubSectionGrouper(final EntityManager entityManager, QuestionManagementUtil questionManagementUtil
-  ) {
+  public SubSectionGrouper(final EntityManager entityManager, QuestionManagementUtil questionManagementUtil) {
     this.entityManager = entityManager;
     this.questionManagementUtil = questionManagementUtil;
   }
@@ -58,7 +57,8 @@ public class SubSectionGrouper {
     if (page == null) {
       throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
     }
-    WaUiMetadata section = page.unGroupSubSection(asCommand(userId, request),questionManagementUtil.getQuestionNbsUiComponentUids());
+    WaUiMetadata section =
+        page.unGroupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
     return ResponseEntity.ok("Subsection " + section.getId() + " is ungrouped Successfully ");
   }
 
@@ -69,6 +69,7 @@ public class SubSectionGrouper {
         request.id(),
         request.blockName(),
         request.batches(),
+        request.repeatingNbr(),
         userId,
         Instant.now());
   }

@@ -521,10 +521,10 @@ public class WaTemplate {
     // ensure page already contain question
     WaUiMetadata question = uiMetadata.stream()
         .filter(e -> e.getId() != null
-            && e.getId().equals(command.question())).findFirst()
-        .orElseThrow(() ->
-            new PageContentModificationException(
-                "Unable to delete a question from a page, the page does not contain the question"));
+            && e.getId().equals(command.question()))
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException(
+            "Unable to delete a question from a page, the page does not contain the question"));
 
     //can not delete standard questions
     if (question.getStandardQuestionIndCd() == 'T') {
@@ -680,8 +680,7 @@ public class WaTemplate {
 
   public void createTemplate(
       final TemplateNameVerifier verifier,
-      final PageCommand.CreateTemplate create
-  ) {
+      final PageCommand.CreateTemplate create) {
 
     //  This method should return a new Template object however, the creation of templates is being delegated to classic
     //  NBS because of the complexity surrounding the XML payload.  For now, it is just verifying the template name is
@@ -693,8 +692,7 @@ public class WaTemplate {
 
   private void checkTemplateCreation(
       final TemplateNameVerifier verifier,
-      final PageCommand.CreateTemplate create
-  ) {
+      final PageCommand.CreateTemplate create) {
 
     String name = create.name();
 
@@ -721,7 +719,8 @@ public class WaTemplate {
   }
 
 
-  public WaUiMetadata groupSubSection(PageContentCommand.GroupSubsection command, List<Long> questionNbsUiComponentUids) {
+  public WaUiMetadata groupSubSection(PageContentCommand.GroupSubsection command,
+      List<Long> questionNbsUiComponentUids) {
     verifyDraftType();
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
     uiMetadata.stream()
@@ -745,7 +744,8 @@ public class WaTemplate {
     return subsection;
   }
 
-  public WaUiMetadata unGroupSubSection(PageContentCommand.UnGroupSubsection command, List<Long> questionNbsUiComponentUids) {
+  public WaUiMetadata unGroupSubSection(PageContentCommand.UnGroupSubsection command,
+      List<Long> questionNbsUiComponentUids) {
     verifyDraftType();
 
     List<Long> batchIds = command.batches();
