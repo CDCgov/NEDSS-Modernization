@@ -64,7 +64,11 @@ public class ValueSetController {
   @GetMapping
   public Page<ValueSet> findAllValueSets(@PageableDefault(size = 25) Pageable pageable) {
     return valueSetReader.findAllValueSets(pageable);
+  }
 
+  @GetMapping("/all")
+  public List<ValueSet> findAll() {
+    return valueSetReader.findAll();
   }
 
   @PostMapping("/update")
@@ -75,8 +79,8 @@ public class ValueSetController {
   }
 
   @PostMapping("search")
-  public Page<ValueSetSearchResponse> searchValueSet(@PageableDefault(size = 25) Pageable pageable
-      , @RequestBody ValueSetSearchRequest search) {
+  public Page<ValueSetSearchResponse> searchValueSet(@PageableDefault(size = 25) Pageable pageable,
+      @RequestBody ValueSetSearchRequest search) {
     return valueSetReader.searchValueSet(search, pageable);
   }
 

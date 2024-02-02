@@ -20,10 +20,12 @@ export type CreateQuestionForm = (
     | CreateCodedQuestionRequest
     | CreateDateQuestionRequest
 ) &
-    QuestionTypeFormEntry;
+    AdditionalQuestionFields;
 
-type QuestionTypeFormEntry = {
+type AdditionalQuestionFields = {
     questionType?: QuestionType;
+    relatedUnits?: boolean;
+    unitType?: 'literal' | 'coded' | '';
 };
 
 type Props = {

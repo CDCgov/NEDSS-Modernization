@@ -11,9 +11,9 @@ import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm, QuestionType } from '../QuestionForm';
 import styles from '../question-form.module.scss';
 import { CodedFields } from './CodedFields';
+import { DateFields } from './DateFields';
 import { NumericFields } from './NumericFields';
 import { TextFields } from './TextFields';
-import { DateFields } from './DateFields';
 
 const questionTypes: { name: string; value: QuestionType }[] = [
     { name: 'Value set', value: 'CODED' },
@@ -36,11 +36,6 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
         useOptions('NBS_MASK_TYPE').then((response) => setMaskOptions(response.options));
     }, []);
 
-    useEffect(() => {
-        // When the question type changes, reset the question specific fields
-        form.resetField('mask');
-        form.resetField('allowFutureDates');
-    }, [watch.questionType]);
     return (
         <>
             <Heading level={4}>Basic information</Heading>
@@ -189,8 +184,8 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                 )}
             />
             {watch.questionType === 'CODED' && <CodedFields />}
-            {watch.questionType === 'NUMERIC' && <NumericFields />}
-            {watch.questionType === 'TEXT' && <TextFields />}
+            {watch.questionType === 'NUMERIC' && <NumericFields maskOptions={maskOptions} />}
+            {watch.questionType === 'TEXT' && <TextFields maskOptions={maskOptions} />}
             {watch.questionType === 'DATE' && <DateFields maskOptions={maskOptions} />}
         </>
     );

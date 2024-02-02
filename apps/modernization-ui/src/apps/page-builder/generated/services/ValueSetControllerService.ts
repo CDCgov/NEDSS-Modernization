@@ -8,6 +8,7 @@ import type { Page_ValueSet_ } from '../models/Page_ValueSet_';
 import type { Page_ValueSetSearchResponse_ } from '../models/Page_ValueSetSearchResponse_';
 import type { UpdateConceptRequest } from '../models/UpdateConceptRequest';
 import type { UpdatedValueSetResponse } from '../models/UpdatedValueSetResponse';
+import type { ValueSet } from '../models/ValueSet';
 import type { ValueSetCreateRequest } from '../models/ValueSetCreateRequest';
 import type { ValueSetSearchRequest } from '../models/ValueSetSearchRequest';
 import type { ValueSetStateChangeResponse } from '../models/ValueSetStateChangeResponse';
@@ -77,6 +78,30 @@ export class ValueSetControllerService {
                 'Authorization': authorization,
             },
             body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * findAll
+     * @returns ValueSet OK
+     * @throws ApiError
+     */
+    public static findAllUsingGet({
+        authorization,
+    }: {
+        authorization: string,
+    }): CancelablePromise<Array<ValueSet>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/valueset/all',
+            headers: {
+                'Authorization': authorization,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
