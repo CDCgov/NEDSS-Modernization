@@ -1,6 +1,6 @@
 import React from 'react';
 import './CreateQuestion.scss';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, useWatch } from 'react-hook-form';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import {
@@ -29,13 +29,17 @@ type TextQuestionProps = {
 
 export const CreateTextQuestion = ({ control, options, isText }: TextQuestionProps) => {
     const type = isText ? 'TXT' : 'NUM';
-    const maskOption = options.filter((opt) => opt.value?.includes(type)) || [];
+    const maskOption =
+        options.filter((opt) => opt.value?.includes(type) || (isText && opt.value?.includes('CENSUS_TRACT'))) || [];
+    const formWatch = useWatch({ control });
+    const isDisable = ['TXT', 'NUM'].includes(formWatch.mask);
+
     return (
         <>
             <Controller
                 control={control}
-                name="mask"
                 defaultValue={type}
+                name="mask"
                 rules={{ required: { value: true, message: 'Mask required' } }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <SelectInput
@@ -53,7 +57,7 @@ export const CreateTextQuestion = ({ control, options, isText }: TextQuestionPro
                 control={control}
                 name="fieldLength"
                 rules={{
-                    required: { value: true, message: 'Field length required' },
+                    required: { value: isDisable, message: 'Field length required' },
                     ...maxLengthRule(4)
                 }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -66,7 +70,25 @@ export const CreateTextQuestion = ({ control, options, isText }: TextQuestionPro
                         error={error?.message}
                         min={1}
                         max={2000}
-                        required
+                        required={isDisable}
+                        disabled={!isDisable}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="defaultValue"
+                rules={{
+                    ...maxLengthRule(50)
+                }}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <Input
+                        onChange={onChange}
+                        className="field-space"
+                        defaultValue={value}
+                        label="Default value"
+                        type="text"
+                        error={error?.message}
                     />
                 )}
             />

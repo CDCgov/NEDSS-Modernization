@@ -1,0 +1,20 @@
+nbs:
+  ui:
+    features:
+      address:
+        autocomplete: false
+        verification: false
+      pageBuilder:
+        enabled: false
+        page:
+          library:
+            enabled: false
+          management:
+            create:
+              enabled: false
+            edit:
+              enabled: false
+
+    settings:
+      analytics:
+        host: https://us.posthog.com

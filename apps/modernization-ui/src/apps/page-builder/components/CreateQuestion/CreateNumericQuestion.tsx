@@ -1,7 +1,7 @@
 import React from 'react';
 import './CreateQuestion.scss';
 import { Radio } from '@trussworks/react-uswds';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, useWatch } from 'react-hook-form';
 import { Input } from '../../../../components/FormInputs/Input';
 import {
     CreateCodedQuestionRequest,
@@ -24,8 +24,6 @@ type CreateQuestionFormType = CreateNumericQuestionRequest &
 
 type NumericQuestionProps = {
     control?: Control<CreateQuestionFormType, any>;
-    isDisableUnitType: boolean;
-    unitType?: string;
 };
 const unitTypeOption = [
     {
@@ -38,10 +36,14 @@ const unitTypeOption = [
     }
 ];
 
-export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: NumericQuestionProps) => {
+export const CreateNumericQuestion = ({ control }: NumericQuestionProps) => {
     let text = '';
+    const formWatch = useWatch({ control });
+    const unitType = formWatch.unitType;
+    const relatedUnits = formWatch.relatedUnits;
+    const isDisableUnitType = relatedUnits !== 'Yes';
     if (unitType) {
-        text = unitType === 'coded' ? 'Related units valueset' : 'Related units literal';
+        text = unitType === 'coded' ? 'Related Units Value set' : 'Literal Units Value';
     }
     return (
         <>
@@ -49,7 +51,6 @@ export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: 
                 control={control}
                 name="minValue"
                 rules={{
-                    required: { value: true, message: 'Minimum Value required' },
                     maxLength: 50
                 }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -60,7 +61,6 @@ export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: 
                         label="Minimum Value"
                         type="number"
                         error={error?.message}
-                        required
                     />
                 )}
             />
@@ -68,7 +68,6 @@ export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: 
                 control={control}
                 name="maxValue"
                 rules={{
-                    required: { value: true, message: 'Maximum Value required' },
                     maxLength: 50
                 }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -79,7 +78,6 @@ export const CreateNumericQuestion = ({ control, isDisableUnitType, unitType }: 
                         label="Maximum Value"
                         type="number"
                         error={error?.message}
-                        required
                     />
                 )}
             />

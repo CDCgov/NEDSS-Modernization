@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.document;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
-import gov.cdc.nbs.entity.odse.EdxEventProcess;
 import gov.cdc.nbs.entity.odse.NbsDocument;
 import gov.cdc.nbs.entity.odse.NbsDocumentMetadatum;
 import gov.cdc.nbs.entity.odse.Participation;
@@ -11,7 +10,7 @@ import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
+
 import javax.persistence.EntityManager;
 
 @Component
@@ -73,7 +72,9 @@ public class DocumentMother {
         document.setRecordStatusTime(settings.createdOn());
         document.setAddTime(settings.createdOn());
         document.setAddUserId(settings.createdBy());
+
         document.setProgramJurisdictionOid(CLAYTON_STD_OID); // Clayton
+        document.setCd("10093"); //
 
         document.setNbsDocumentMetadataUid(metadatum());
 
@@ -124,7 +125,7 @@ public class DocumentMother {
         return document;
     }
 
-    private Participation subjectOfDocument(final long patient, final long document) {
+    private void subjectOfDocument(final long patient, final long document) {
 
         //  create the act
         Act act = new Act();
@@ -150,7 +151,6 @@ public class DocumentMother {
 
         entityManager.persist(act);
 
-        return participation;
     }
 
     private NbsDocumentMetadatum metadatum() {
@@ -186,29 +186,22 @@ public class DocumentMother {
         document.setRecordStatusTime(settings.createdOn());
         document.setAddTime(settings.createdOn());
         document.setAddUserId(settings.createdBy());
-        document.setProgramJurisdictionOid(CLAYTON_STD_OID); // Clayton
 
         document.setNbsDocumentMetadataUid(metadatum());
 
-        entityManager.persist(document);
+        // Jurisdiction: Out of system
+        document.setProgAreaCd("STD");
+        document.setJurisdictionCd("999999");
+        document.setProgramJurisdictionOid(1300200015L);   //  STD Out of System
+        document.setCd("10093"); //
 
-        Participation participation = subjectOfDocument(patient, identifier);
-        edxEventProcess(document, participation);
+        subjectOfDocument(patient, identifier);
+
+        entityManager.persist(document);
 
         this.documents.available(document.getId());
 
         return document;
     }
 
-    private EdxEventProcess edxEventProcess(NbsDocument document, Participation participation) {
-        EdxEventProcess eventProcess = new EdxEventProcess();
-        eventProcess.setNbsDocumentUid(document);
-        eventProcess.setNbsEventUid(participation.getActUid());
-        eventProcess.setDocEventTypeCd("CASE");
-        eventProcess.setParsedInd('N');
-        eventProcess.setAddTime(Instant.now());
-        eventProcess.setAddUserId(settings.createdBy());
-        entityManager.persist(eventProcess);
-        return eventProcess;
-    }
 }

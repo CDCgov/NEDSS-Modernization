@@ -35,10 +35,6 @@ const init = {
     codeSet: 'LOCAL',
     label: '',
     description: '',
-    minValue: 0,
-    maxValue: 50,
-    relatedUnitsLiteral: 'ML',
-    relatedUnitsValueSet: 2,
     includedInMessage: false
 };
 
@@ -142,9 +138,8 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
             questionForm.setValue('fieldLength', updatedQuestion.fieldLength);
         }
     }, [question]);
-
-    const valueSetName = searchValueSet?.valueSetName || searchValueSet?.valueSetName || watch('valueSet') || '';
-    const valueSetCode = searchValueSet?.valueSetCode || watch('valueSet') || '';
+    const valueSetName = searchValueSet?.valueSetName || searchValueSet?.valueSetNm || question?.valueSet || '';
+    const valueSetCode = searchValueSet?.valueSetCode || valueSetName;
     useEffect(() => {
         if (searchValueSet) questionForm.setValue('valueSet', searchValueSet.codeSetGroupId);
     }, [searchValueSet]);
@@ -314,12 +309,32 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
             case UpdateDateQuestionRequest.type.TEXT:
                 return textOption;
             case UpdateDateQuestionRequest.type.NUMERIC:
+                return dateOrNumeric;
             case UpdateDateQuestionRequest.type.DATE:
                 return dateOrNumeric;
             default:
                 return coded;
         }
     };
+    const getDefaultSelection = () => {
+        switch (selectedFieldType) {
+            case UpdateDateQuestionRequest.type.TEXT:
+                questionForm.setValue('mask', 'TXT');
+                break;
+            case UpdateDateQuestionRequest.type.NUMERIC:
+                questionForm.setValue('mask', 'NUM');
+                break;
+            case UpdateDateQuestionRequest.type.DATE:
+                questionForm.setValue('mask', 'DATE');
+                break;
+            default:
+                questionForm.setValue('mask', '');
+        }
+    };
+
+    useEffect(() => {
+        if (!editDisabledFields) getDefaultSelection();
+    }, [selectedFieldType]);
 
     const renderUserInterface = (
         <>
@@ -395,10 +410,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
         </>
     );
     const includedInMessage = watch('includedInMessage');
-    const relatedUnits = watch('relatedUnits');
-    const unitTypeValue = watch('unitType');
     const IsIncludedInMessage = !includedInMessage;
-    const isDisableUnitType = relatedUnits !== 'Yes';
     const editDisabledFields = question?.id !== undefined;
     const readOnlyControl = watch('displayControl') == 1026;
 
@@ -505,7 +517,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                         <Controller
                             control={control}
                             name="description"
-                            rules={maxLengthRule(100)}
+                            rules={maxLengthRule(2000)}
                             render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                                 <>
                                     <Label htmlFor={name}>Description</Label>
@@ -570,11 +582,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             />
                         )}
                         {selectedFieldType === UpdateDateQuestionRequest.type.NUMERIC && (
-                            <CreateNumericQuestion
-                                control={control!}
-                                isDisableUnitType={isDisableUnitType}
-                                unitType={unitTypeValue}
-                            />
+                            <CreateNumericQuestion control={control} />
                         )}
                         {selectedFieldType === UpdateDateQuestionRequest.type.DATE && (
                             <CreateDateQuestion control={control} options={maskOptions} />
@@ -600,7 +608,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     label="Default label in report"
                                     type="text"
                                     error={error?.message}
-                                    required
+                                    required={!readOnlyControl}
                                 />
                             )}
                         />
@@ -608,7 +616,6 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             control={control}
                             name="defaultRdbTableName"
                             rules={{
-                                required: { value: !readOnlyControl, message: 'Default RDB table name required' },
                                 pattern: { value: /^\w*$/, message: 'Default RDB table name invalid' },
                                 ...maxLengthRule(50)
                             }}
@@ -621,7 +628,6 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                     label="Default RDB table name"
                                     type="text"
                                     error={error?.message}
-                                    required
                                 />
                             )}
                         />
@@ -629,19 +635,25 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             control={control}
                             name="rdbColumnName"
                             rules={{
-                                required: { value: !editDisabledFields, message: 'RDB column name required' },
+                                required: {
+                                    value: !(editDisabledFields || readOnlyControl),
+                                    message: 'RDB column name required'
+                                },
                                 pattern: { value: startWithNonInteger, message: 'RDB column name invalid' },
-                                ...maxLengthRule(50)
+                                ...maxLengthRule(20)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
                                     defaultValue={value}
                                     label="RDB column name"
+                                    onBlur={() => {
+                                        questionForm.setValue('dataMartColumnName', value);
+                                    }}
                                     disabled={editDisabledFields || readOnlyControl}
                                     type="text"
                                     error={error?.message}
-                                    required
+                                    required={!(editDisabledFields || readOnlyControl)}
                                 />
                             )}
                         />
@@ -650,7 +662,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                             name="dataMartColumnName"
                             rules={{
                                 pattern: { value: startWithNonInteger, message: 'Data mart column name invalid' },
-                                ...maxLengthRule(50)
+                                ...maxLengthRule(20)
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input

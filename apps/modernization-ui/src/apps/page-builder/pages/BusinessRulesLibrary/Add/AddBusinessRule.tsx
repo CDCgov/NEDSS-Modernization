@@ -1,9 +1,9 @@
-import { Button, ButtonGroup, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
+import { Button, ButtonGroup, Form, Grid, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import './AddBusinessRule.scss';
-import { PageRuleControllerService, ViewRuleResponse } from '../../../generated';
+import { CreateRuleRequest, PageRuleControllerService, ViewRuleResponse } from '../../../generated';
 import { useAlert } from 'alert';
 import BusinessRulesForm from '../BusinessRulesForm';
 import { Breadcrumb } from 'breadcrumb';
@@ -30,7 +30,7 @@ export type FormValues = {
 
 const AddBusinessRule = () => {
     const navigate = useNavigate();
-    const form = useForm<FormValues>({
+    const form = useForm<CreateRuleRequest>({
         defaultValues: { targetType: 'SUBSECTION', anySourceValue: false },
         mode: 'onChange'
     });
@@ -46,45 +46,27 @@ const AddBusinessRule = () => {
                 authorization: authorization(),
                 ruleId: Number(ruleId)
             }).then((resp: ViewRuleResponse) => {
+                const sourceText = resp?.sourceValue?.sourceValueText || '';
                 form.setValue('anySourceValue', resp?.anySourceValue!);
+                form.setValue('comparator', resp?.comparator!);
                 form.setValue('ruleDescription', resp?.ruleDescription!);
                 form.setValue('ruleFunction', resp?.ruleFunction!);
-                form.setValue('comparator', resp?.comparator!);
-                form.setValue('targetType', resp?.targetType!);
                 form.setValue('sourceIdentifier', resp?.sourceIdentifier!);
-                form.setValue('sourceText', resp?.sourceIdentifier!);
-                form.setValue('sourceValueIds', resp?.sourceValue?.sourceValueId!);
-                form.setValue('sourceValueText', resp?.sourceValue?.sourceValueText!);
+                form.setValue('sourceText', `${sourceText} (${resp?.sourceIdentifier!})`);
                 form.setValue('targetValueIdentifier', resp?.targetValueIdentifier!);
-                form.setValue('targetValueText', ['testing']);
+                form.setValue('targetValueText', resp?.targetValueText!);
+                form.setValue('targetType', resp?.targetType!);
                 setSelectedFieldType(resp.ruleFunction!);
             });
         }
     }, [ruleId]);
 
     const onSubmit = form.handleSubmit(async (data) => {
-        const sourceValue = {
-            sourceValueId: data.sourceValueIds,
-            sourceValueText: data.sourceValueText
-        };
-        const request = {
-            anySourceValue: data.anySourceValue,
-            comparator: data.comparator,
-            ruleDescription: data.ruleDescription,
-            ruleFunction: data.ruleFunction,
-            sourceIdentifier: data.sourceIdentifier,
-            sourceText: data.sourceText,
-            sourceValue: sourceValue,
-            targetType: data.targetType,
-            targetValueIdentifier: data.targetValueIdentifier,
-            targetValueText: data.targetValueText
-        };
-
         if (!ruleId) {
             PageRuleControllerService.createBusinessRuleUsingPost({
                 authorization: authorization(),
                 id: Number(pageId),
-                request
+                request: data
             }).then((resp) => {
                 showAlert({ type: 'success', header: 'added', message: resp.message });
             });
@@ -93,7 +75,7 @@ const AddBusinessRule = () => {
                 authorization: authorization(),
                 page: Number(pageId),
                 ruleId: Number(ruleId),
-                request
+                request: data
             }).then((resp) => {
                 showAlert({ type: 'success', header: 'updated', message: resp.message });
             });
@@ -112,7 +94,7 @@ const AddBusinessRule = () => {
             ruleId: Number(ruleId)
         }).then((resp: any) => {
             handleCancel();
-            showAlert({ type: 'success', header: 'Deleted', message: resp.message });
+            showAlert({ type: 'success', header: 'Deleted', message: resp });
         });
     };
 
@@ -182,26 +164,33 @@ const AddBusinessRule = () => {
                                 </Grid>
                                 {selectedFieldType == '' ? null : (
                                     <FormProvider {...form}>
-                                        <BusinessRulesForm />
+                                        <BusinessRulesForm form={form} />
                                     </FormProvider>
                                 )}
                             </div>
                         </div>
                     </div>
-                    <div className="edit-rules__buttons">
-                        {ruleId ? (
-                            <Button type="button" className="delete-btn" unstyled onClick={handleDeleteRule}>
-                                <Icon.Delete size={3} className="margin-right-2px" />
-                                <span> Delete</span>
-                            </Button>
-                        ) : null}
-                        <div>
-                            <Button type="button" outline onClick={handleCancel}>
-                                Cancel
-                            </Button>
-                            <Button type="submit" className="lbr" disabled={!form.formState.isValid}>
-                                Add to Library
-                            </Button>
+                    <div className="edit-rules">
+                        <div className="edit-rules__buttons">
+                            {ruleId ? (
+                                <ModalToggleButton
+                                    opener
+                                    modalRef={deleteWarningModal}
+                                    type="button"
+                                    className="delete-btn"
+                                    unstyled>
+                                    <Icon.Delete size={3} className="margin-right-2px" />
+                                    <span>Delete</span>
+                                </ModalToggleButton>
+                            ) : null}
+                            <div>
+                                <Button type="button" outline onClick={handleCancel}>
+                                    Cancel
+                                </Button>
+                                <Button type="submit" className="lbr">
+                                    {ruleId ? 'Update' : 'Add to library'}
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </Form>

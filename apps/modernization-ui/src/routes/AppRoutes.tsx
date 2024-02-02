@@ -37,12 +37,13 @@ export const AppRoutes = () => {
     const config = useConfiguration();
 
     useEffect(() => {
-        if (state) {
-            if (state.isLoggedIn && !config.loading) {
-                setLoading(false);
-            }
-        }
-    }, [state, config]);
+        // allow 1 second to initialize and send a login request
+        const timer = setTimeout(() => {
+            setInitializing(false);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     useEffect(() => {
         // After initialization timeout, if the login isn't at least pending, send to the login page
@@ -51,10 +52,13 @@ export const AppRoutes = () => {
         }
     }, [initializing, state.isLoggedIn, state.isLoginPending]);
 
-    // allow 1 second to initialize and send a login request
-    setTimeout(() => {
-        setInitializing(false);
-    }, 1000);
+    useEffect(() => {
+        if (state.isLoggedIn && !config.ready) {
+            config.load();
+        } else if (config.ready) {
+            setLoading(false);
+        }
+    }, [state.isLoggedIn, config.ready]);
 
     const pageLibraryRoutes = (libraryConfig: Library) => {
         return libraryConfig.enabled && <Route index element={<PageLibrary />} />;

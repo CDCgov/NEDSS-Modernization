@@ -13,7 +13,7 @@ type Props = {
 
 export const AddEditTab = ({ tabData, onChanged }: Props) => {
     const [name, setName] = useState<string>(tabData?.name ?? '');
-    const [visible, setVisible] = useState<boolean>(tabData?.visible ?? false);
+    const [visible, setVisible] = useState<boolean>(tabData?.visible ?? true);
 
     useEffect(() => {
         onChanged({ name: name, visible: visible, order: 0 });

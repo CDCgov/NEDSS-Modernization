@@ -5,11 +5,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Optional;
+
+import java.util.*;
+
+import gov.cdc.nbs.questionbank.valueset.response.Concept;
+import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
+import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.FieldName;
+import gov.cdc.nbs.questionbank.valueset.ValueSetReader;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -32,96 +38,158 @@ import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 @ExtendWith(MockitoExtension.class)
 class QuestionFinderTest {
 
-    @Mock
-    private WaQuestionRepository questionRepository;
+  @Mock
+  private WaQuestionRepository questionRepository;
 
-    @Spy
-    private QuestionMapper questionMapper = new QuestionMapper();
+  @Spy
+  private QuestionMapper questionMapper = new QuestionMapper();
 
-    @Mock
-    private WaUiMetadataRepository metadatumRepository;
+  @Mock
+  private WaUiMetadataRepository metadatumRepository;
 
-    @InjectMocks
-    private QuestionFinder finder;
+  @Mock
+  private ValueSetReader valueSetReader;
 
-    @Test
-    void find_test() {
-        // given a question exists
-        DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
-        when(questionRepository.findById(1L)).thenReturn(Optional.of(spy));
+  @InjectMocks
+  private QuestionFinder finder;
 
-        // and it is not in use
-        when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
-                .thenReturn(new ArrayList<>());
+  @Test
+  void find_test() {
+    // given a question exists
+    DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
+    when(questionRepository.findById(1L)).thenReturn(Optional.of(spy));
 
-        // when i try to find a question
-        GetQuestionResponse response = finder.find(1L);
+    // and it is not in use
+    when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
+        .thenReturn(new ArrayList<>());
 
-        // then a question is found
-        assertNotNull(response);
-        assertFalse(response.isInUse());
-    }
+    // when i try to find a question
+    GetQuestionResponse response = finder.find(1L);
 
-    @Test
-    void not_found() {
-        // given a question doesn't exist
+    // then a question is found
+    assertNotNull(response);
+    assertFalse(response.isInUse());
+  }
 
-        // when i try to find a question
-        // then a question not found exception is thrown
-        assertThrows(QuestionNotFoundException.class, () -> finder.find(1L));
-    }
+  @Test
+  void not_found() {
+    // given a question doesn't exist
 
-    @Test
-    void in_use_test() {
-        // given a question exists
-        DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
-        when(questionRepository.findById(1L)).thenReturn(Optional.of(spy));
+    // when i try to find a question
+    // then a question not found exception is thrown
+    assertThrows(QuestionNotFoundException.class, () -> finder.find(1L));
+  }
 
-        // and it is in use
-        when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
-                .thenReturn(Collections.singletonList(new WaUiMetadata()));
+  @Test
+  void in_use_test() {
+    // given a question exists
+    DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
+    when(questionRepository.findById(1L)).thenReturn(Optional.of(spy));
 
-        // when i try to find a question
-        GetQuestionResponse response = finder.find(1L);
+    // and it is in use
+    when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
+        .thenReturn(Collections.singletonList(new WaUiMetadata()));
 
-        // then a question is found
-        assertNotNull(response);
-        assertTrue(response.isInUse());
-    }
+    // when i try to find a question
+    GetQuestionResponse response = finder.find(1L);
 
-    @Test
-    void should_try_search_id() {
-        // given a request that can be converted to an id
-        FindQuestionRequest request = new FindQuestionRequest("123", "LOCAL");
+    // then a question is found
+    assertNotNull(response);
+    assertTrue(response.isInUse());
+  }
 
-        // and a question exists
-        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-        when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("123"), captor.capture(),
-                Mockito.anyString(), Mockito.any()))
-                        .thenReturn(new PageImpl<>(new ArrayList<>()));
+  @Test
+  void should_try_search_id() {
+    // given a request that can be converted to an id
+    FindQuestionRequest request = new FindQuestionRequest("123", "LOCAL");
 
-        // when a query is run
-        finder.find(request, PageRequest.ofSize(10));
+    // and a question exists
+    ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+    when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("123"), captor.capture(),
+        Mockito.anyString(), Mockito.any()))
+        .thenReturn(new PageImpl<>(new ArrayList<>()));
 
-        // then the Id is queried
-        assertEquals(123L, captor.getValue().longValue());
-    }
+    // when a query is run
+    finder.find(request, PageRequest.ofSize(10));
 
-    @Test
-    void should_try_not_fail_if_search_not_id() {
-        // given a request that can be converted to an id
-        FindQuestionRequest request = new FindQuestionRequest("abc", "LOCAL");
+    // then the Id is queried
+    assertEquals(123L, captor.getValue().longValue());
+  }
 
-        // and a question exists
-        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-        when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("abc"), captor.capture(),
-                Mockito.anyString(), Mockito.any()))
-                        .thenReturn(new PageImpl<>(new ArrayList<>()));
+  @Test
+  void should_try_not_fail_if_search_not_id() {
+    // given a request that can be converted to an id
+    FindQuestionRequest request = new FindQuestionRequest("abc", "LOCAL");
 
-        // when a query is run
-        finder.find(request, PageRequest.ofSize(10));
+    // and a question exists
+    ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+    when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("abc"), captor.capture(),
+        Mockito.anyString(), Mockito.any()))
+        .thenReturn(new PageImpl<>(new ArrayList<>()));
 
-        // then the Id is queried
-        assertEquals(-1L, captor.getValue().longValue());
-    }
+    // when a query is run
+    finder.find(request, PageRequest.ofSize(10));
+
+    // then the Id is queried
+    assertEquals(-1L, captor.getValue().longValue());
+  }
+
+  @Test
+  void should_return_true_for_unique_fields() {
+    when(questionRepository.findIdByQuestionIdentifier(anyString())).thenReturn(Collections.EMPTY_LIST);
+    when(questionRepository.findIdByQuestionNm(anyString())).thenReturn(Collections.EMPTY_LIST);
+    when(questionRepository.findIdByRdbColumnNm(anyString())).thenReturn(Collections.EMPTY_LIST);
+    when(questionRepository.findIdByUserDefinedColumnNm(anyString())).thenReturn(Collections.EMPTY_LIST);
+
+    when(valueSetReader.findConceptCodes(anyString())).thenReturn(getConceptList());
+
+    assertTrue(finder.checkUnique(new QuestionValidationRequest(FieldName.UNIQUE_ID.getValue(), "unique")));
+    assertTrue(finder.checkUnique(new QuestionValidationRequest(FieldName.UNIQUE_NAME.getValue(), "unique")));
+    assertTrue(finder.checkUnique(new QuestionValidationRequest(FieldName.DATA_MART_COLUMN_NAME.getValue(), "unique")));
+    assertTrue(
+        finder.checkUnique(new QuestionValidationRequest(FieldName.RDB_COLUMN_NAME.getValue(), "subgroup_unique")));
+  }
+
+  @Test
+  void should_return_false_for_duplicate_fields() {
+    List<Object[]> result = new ArrayList<>();
+    result.add(new Object[] {"Sample"});
+    when(questionRepository.findIdByQuestionIdentifier(anyString())).thenReturn(result);
+    when(questionRepository.findIdByQuestionNm(anyString())).thenReturn(result);
+    when(questionRepository.findIdByRdbColumnNm(anyString())).thenReturn(result);
+    when(questionRepository.findIdByUserDefinedColumnNm(anyString())).thenReturn(result);
+
+    when(valueSetReader.findConceptCodes(anyString())).thenReturn(getConceptList());
+
+    assertFalse(finder.checkUnique(new QuestionValidationRequest(FieldName.UNIQUE_ID.getValue(), "duplicate")));
+    assertFalse(finder.checkUnique(new QuestionValidationRequest(FieldName.UNIQUE_NAME.getValue(), "duplicate")));
+    assertFalse(
+        finder.checkUnique(new QuestionValidationRequest(FieldName.RDB_COLUMN_NAME.getValue(), "subgroup_duplicate")));
+    assertFalse(
+        finder.checkUnique(new QuestionValidationRequest(FieldName.DATA_MART_COLUMN_NAME.getValue(), "duplicate")));
+  }
+
+  @Test
+  void should_throw_exception_for_invalid_subgroup() {
+    QuestionValidationRequest invalidSubgroupRequest =
+        new QuestionValidationRequest(FieldName.RDB_COLUMN_NAME.getValue(), "xxx_unique");
+    when(valueSetReader.findConceptCodes(anyString())).thenReturn(getConceptList());
+    UniqueQuestionException exception =
+        assertThrows(UniqueQuestionException.class, () -> finder.checkUnique(invalidSubgroupRequest));
+    assertEquals("invalid subgroup Code", exception.getMessage());
+  }
+
+  @Test
+  void should_throw_exception_for_invalid_unique_field_name() {
+    QuestionValidationRequest invalidFieldRequest = new QuestionValidationRequest("invalid_Field", "value");
+    UniqueQuestionException exception =
+        assertThrows(UniqueQuestionException.class, () -> finder.checkUnique(invalidFieldRequest));
+    assertEquals("invalid unique field name", exception.getMessage());
+  }
+
+  private List<Concept> getConceptList() {
+    Concept concept = new Concept("subgroup", null, null, null, null,
+        null, null, null, null, null);
+    return Arrays.asList(concept);
+  }
 }

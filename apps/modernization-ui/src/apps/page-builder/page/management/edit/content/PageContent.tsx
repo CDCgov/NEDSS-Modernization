@@ -4,7 +4,7 @@ import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
 import { EditStaticElement } from '../staticelement/EditStaticElement';
 import { Icon, ModalRef } from '@trussworks/react-uswds';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ValuesetLibrary } from '../../../../pages/ValuesetLibrary/ValuesetLibrary';
 import { AddValueset } from '../../../../components/AddValueset/AddValueset';
 import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
@@ -14,6 +14,7 @@ import { AddQuestionModal } from '../add-question/modal/AddQuestionModal';
 import { usePageManagement } from '../../usePageManagement';
 import { useAlert } from 'alert';
 import { useAddQuestionsToPage } from 'apps/page-builder/hooks/api/useAddQuestionsToPage';
+import { QuestionsContext } from '../../../../context/QuestionsContext';
 
 type Props = {
     tab: PagesTab;
@@ -43,6 +44,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
     const addValueModalRef = useRef<ModalRef>(null);
     const createValueModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
+    const { editValueSet, setEditValueSet } = useContext(QuestionsContext);
 
     const handleAddQuestion = (subsection: number) => {
         setSubsectionId(subsection);
@@ -91,6 +93,14 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
             });
         }
     }, [response, error]);
+
+    useEffect(() => {
+        if (editValueSet?.statusCd) {
+            addValueModalRef.current?.toggleModal(undefined, true);
+        } else if (editValueSet?.valueSetNm) {
+            createValueModalRef.current?.toggleModal(undefined, true);
+        }
+    }, [editValueSet]);
 
     return (
         <div className={styles.pageContent}>
@@ -156,9 +166,11 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
                 modalBody={
                     <AddValueset
                         modalRef={createValueModalRef}
+                        valueSetName={editValueSet?.valueSetNm}
                         updateCallback={() => {
                             createValueModalRef.current?.toggleModal(undefined, false);
                             addValueModalRef.current?.toggleModal(undefined, false);
+                            setEditValueSet?.({});
                         }}
                     />
                 }
