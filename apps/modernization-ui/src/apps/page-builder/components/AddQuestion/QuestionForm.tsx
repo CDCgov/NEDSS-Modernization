@@ -15,15 +15,18 @@ import { QuestionSpecificFields } from './fields/QuestionSpecificFields';
 import { UserInterfaceFields } from './fields/UserInterfaceFields';
 import styles from './question-form.module.scss';
 
-export type CreateQuestionForm = (
-    | CreateNumericQuestionRequest
-    | CreateTextQuestionRequest
-    | CreateCodedQuestionRequest
-    | CreateDateQuestionRequest
-) &
-    AdditionalQuestionFields;
+export type CreateQuestionForm = Omit<
+    (
+        | CreateNumericQuestionRequest
+        | CreateTextQuestionRequest
+        | CreateCodedQuestionRequest
+        | CreateDateQuestionRequest
+    ) &
+        AdditionalQuestionFields,
+    'codeSet'
+> & { codeSet: 'LOCAL' | 'PHIN' };
 
-type AdditionalQuestionFields = {
+export type AdditionalQuestionFields = {
     questionType?: QuestionType;
     relatedUnits?: boolean;
     unitType?: 'literal' | 'coded' | '';

@@ -4,14 +4,13 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Option } from 'generated';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
 
 type Props = {
     maskOptions: Option[];
 };
 export const DateFields = ({ maskOptions }: Props) => {
-    const form = useFormContext<CreateQuestionForm>();
+    const form = useFormContext<CreateDateQuestionRequest>();
     const [allowFuture, setAllowFuture] = useState<boolean>(false);
     const [dateMaskOptions, setDateMaskOptions] = useState<Option[]>([]);
 

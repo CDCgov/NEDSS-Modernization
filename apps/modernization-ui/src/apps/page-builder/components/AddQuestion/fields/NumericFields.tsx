@@ -1,23 +1,21 @@
 import { Label, Radio } from '@trussworks/react-uswds';
 import { CreateNumericQuestionRequest, ValueSetControllerService } from 'apps/page-builder/generated';
+import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput, Selectable } from 'components/FormInputs/SelectInput';
 import { Option } from 'generated';
 import { useEffect, useState } from 'react';
-import { Controller, UseFormReturn, useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
-import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
-import { authorization } from 'authorization';
+import { AdditionalQuestionFields } from '../QuestionForm';
 
 type Props = {
     maskOptions: Option[];
 };
 export const NumericFields = ({ maskOptions }: Props) => {
-    const form = useFormContext<CreateQuestionForm>();
-    const watch = useWatch<CreateQuestionForm & CreateNumericQuestionRequest>(
-        form as UseFormReturn<CreateNumericQuestionRequest>
-    );
+    const form = useFormContext<CreateNumericQuestionRequest & AdditionalQuestionFields>();
+    const watch = useWatch(form);
     const [numericMaskOptions, setNumericMaskOptions] = useState<Option[]>([]);
     const [relatedUnits, setRelatedUnits] = useState(false);
     const [valueSets, setValueSets] = useState<Selectable[]>([]);

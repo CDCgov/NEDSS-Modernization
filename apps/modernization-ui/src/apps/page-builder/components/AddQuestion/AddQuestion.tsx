@@ -1,6 +1,5 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
-import { CreateDateQuestionRequest } from 'apps/page-builder/generated';
 import { CreateQuestionRequest, useCreateQuestion } from 'apps/page-builder/hooks/api/useCreateQuestion';
 import classNames from 'classnames';
 import { Heading } from 'components/heading';
@@ -23,9 +22,7 @@ export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
     const form = useForm<CreateQuestionForm>({
         mode: 'onBlur',
         defaultValues: {
-            codeSet: CreateDateQuestionRequest.codeSet.LOCAL,
-            valueSet: undefined,
-            defaultValue: undefined,
+            codeSet: 'LOCAL',
             messagingInfo: { includedInMessage: false, requiredInMessage: false }
         }
     });

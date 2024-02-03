@@ -1,18 +1,17 @@
+import { CreateTextQuestionRequest } from 'apps/page-builder/generated';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Option } from 'generated';
 import { useEffect, useState } from 'react';
-import { Controller, UseFormReturn, useFormContext, useWatch } from 'react-hook-form';
-import { CreateQuestionForm } from '../QuestionForm';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
-import { CreateTextQuestionRequest } from 'apps/page-builder/generated';
 
 type Props = {
     maskOptions: Option[];
 };
 export const TextFields = ({ maskOptions }: Props) => {
-    const form = useFormContext<CreateQuestionForm>();
-    const watch = useWatch<CreateTextQuestionRequest>(form as UseFormReturn<CreateTextQuestionRequest>);
+    const form = useFormContext<CreateTextQuestionRequest>();
+    const watch = useWatch(form);
     const [textMaskOptions, setTextMaskOptions] = useState<Option[]>([]);
 
     useEffect(() => {
