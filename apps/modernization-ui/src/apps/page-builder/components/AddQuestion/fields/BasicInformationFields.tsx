@@ -10,10 +10,6 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm, QuestionType } from '../QuestionForm';
 import styles from '../question-form.module.scss';
-import { CodedFields } from './CodedFields';
-import { DateFields } from './DateFields';
-import { NumericFields } from './NumericFields';
-import { TextFields } from './TextFields';
 
 const questionTypes: { name: string; value: QuestionType }[] = [
     { name: 'Value set', value: 'CODED' },
@@ -29,11 +25,9 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
     const [subgroups, setSubgroups] = useState<Option[]>([]);
-    const [maskOptions, setMaskOptions] = useState<Option[]>([]);
 
     useEffect(() => {
         useOptions('NBS_QUES_SUBGROUP').then((response) => setSubgroups(response.options));
-        useOptions('NBS_MASK_TYPE').then((response) => setMaskOptions(response.options));
     }, []);
 
     return (
@@ -186,10 +180,6 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                     </>
                 )}
             />
-            {watch.questionType === 'CODED' && <CodedFields />}
-            {watch.questionType === 'NUMERIC' && <NumericFields maskOptions={maskOptions} />}
-            {watch.questionType === 'TEXT' && <TextFields maskOptions={maskOptions} />}
-            {watch.questionType === 'DATE' && <DateFields maskOptions={maskOptions} />}
         </>
     );
 };

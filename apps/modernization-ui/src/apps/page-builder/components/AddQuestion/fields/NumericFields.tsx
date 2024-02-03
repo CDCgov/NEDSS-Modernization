@@ -87,7 +87,10 @@ export const NumericFields = ({ maskOptions }: Props) => {
                 control={form.control}
                 name="fieldLength"
                 rules={{
-                    required: { value: true, message: 'Field length is required' },
+                    required: {
+                        value: watch.mask === CreateNumericQuestionRequest.mask.NUM,
+                        message: 'Field length is required'
+                    },
                     ...maxLengthRule(10)
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (

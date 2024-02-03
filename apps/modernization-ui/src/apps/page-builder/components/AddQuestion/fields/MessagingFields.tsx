@@ -62,7 +62,10 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 control={form.control}
                 name="messagingInfo.messageVariableId"
                 rules={{
-                    required: { value: true, message: 'Message ID is required' },
+                    required: {
+                        value: watch.messagingInfo?.includedInMessage ?? false,
+                        message: 'Message ID is required'
+                    },
                     ...maxLengthRule(50)
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
@@ -85,7 +88,10 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 control={form.control}
                 name="messagingInfo.labelInMessage"
                 rules={{
-                    required: { value: true, message: 'Message label is required' },
+                    required: {
+                        value: watch.messagingInfo?.includedInMessage ?? false,
+                        message: 'Message label is required'
+                    },
                     ...maxLengthRule(100)
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
@@ -109,7 +115,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 name="messagingInfo.codeSystem"
                 rules={{
                     required: {
-                        value: true,
+                        value: watch.messagingInfo?.includedInMessage ?? false,
                         message: 'Code system name is required'
                     }
                 }}
@@ -151,7 +157,12 @@ export const MessagingFields = ({ editing = false }: Props) => {
             <Controller
                 control={form.control}
                 name="messagingInfo.hl7DataType"
-                rules={{ required: { value: true, message: 'HL7 data type required' } }}
+                rules={{
+                    required: {
+                        value: watch.messagingInfo?.includedInMessage ?? false,
+                        message: 'HL7 data type required'
+                    }
+                }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="HL7 data type"

@@ -60,7 +60,11 @@ const AddQuestionModalContent = ({ pageId, modal, onClose }: Props) => {
                         pageId={pageId}
                     />
                 ) : (
-                    <AddQuestion onBack={() => setState('search')} onClose={handleClose} />
+                    <AddQuestion
+                        onBack={() => setState('search')}
+                        onClose={handleClose}
+                        onQuestionCreated={(e) => handleClose([e])}
+                    />
                 )}
             </div>
         </Modal>

@@ -5,14 +5,15 @@ import {
     CreateTextQuestionRequest
 } from 'apps/page-builder/generated';
 
+import { useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { AdministrativeFields } from './fields/AdministrativeFields';
 import { BasicInformationFields } from './fields/BasicInformationFields';
 import { DataMartFields } from './fields/DataMartFields';
 import { MessagingFields } from './fields/MessagingFields';
+import { QuestionSpecificFields } from './fields/QuestionSpecificFields';
 import { UserInterfaceFields } from './fields/UserInterfaceFields';
 import styles from './question-form.module.scss';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { useEffect } from 'react';
 
 export type CreateQuestionForm = (
     | CreateNumericQuestionRequest
@@ -40,15 +41,22 @@ export const QuestionForm = ({ question }: Props) => {
     useEffect(() => {
         if (watch.displayControl?.toString() === '1026') {
             // Clear data mart values when `Readonly User text, number, or date` display control is selected
-            form.setValue('dataMartInfo.reportLabel', undefined);
-            form.setValue('dataMartInfo.defaultRdbTableName', undefined);
-            form.setValue('dataMartInfo.dataMartColumnName', undefined);
-            form.setValue('dataMartInfo.rdbColumnName', undefined);
+            form.reset({
+                ...form.getValues(),
+                dataMartInfo: {
+                    reportLabel: undefined,
+                    defaultRdbTableName: undefined,
+                    dataMartColumnName: undefined,
+                    rdbColumnName: undefined
+                }
+            });
         }
     }, [watch.displayControl]);
+
     return (
         <div className={styles.form}>
             <BasicInformationFields editing={question !== undefined} />
+            <QuestionSpecificFields />
             <div className={styles.divider} />
             <UserInterfaceFields />
             {watch.displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'

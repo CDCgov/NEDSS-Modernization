@@ -34,7 +34,7 @@ const questionTypes = [1001, 1006, 1007, 1008, 1009, 1013, 1017, 1019, 1024, 102
 
 export const PageContent = ({ tab, handleAddSection, handleManageSection }: Props) => {
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
-    const [subsectionId, setSubsectionId] = useState<number | undefined>(undefined);
+    const [subsectionId, setSubsectionId] = useState<number>(-1);
     const { error, response, add } = useAddQuestionsToPage();
     const { showAlert } = useAlert();
     const { page, refresh } = usePageManagement();
