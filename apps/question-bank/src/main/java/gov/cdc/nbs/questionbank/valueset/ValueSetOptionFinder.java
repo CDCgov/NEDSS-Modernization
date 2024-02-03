@@ -22,7 +22,8 @@ public class ValueSetOptionFinder {
   public List<ValueSetOption> findValueSetOptions() {
     return factory.select(
         metadataTable.id,
-        metadataTable.codeSetShortDescTxt)
+        metadataTable.codeSetShortDescTxt,
+        metadataTable.codeSetNm)
         .from(metadataTable)
         .where(metadataTable.ldfPicklistIndCd.eq('Y')
             .and(metadataTable.id.in(
@@ -39,7 +40,8 @@ public class ValueSetOptionFinder {
   private ValueSetOption toOption(Tuple row) {
     return new ValueSetOption(
         row.get(metadataTable.codeSetShortDescTxt),
-        row.get(metadataTable.id).toString());
+        row.get(metadataTable.id).toString(),
+        row.get(metadataTable.codeSetNm));
   }
 
 }

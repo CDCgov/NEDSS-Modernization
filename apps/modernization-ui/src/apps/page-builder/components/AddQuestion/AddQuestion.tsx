@@ -1,23 +1,16 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import {
-    CancelablePromise,
-    CodedQuestion,
-    CreateCodedQuestionRequest,
-    CreateDateQuestionRequest,
-    CreateNumericQuestionRequest,
-    CreateTextQuestionRequest,
-    QuestionControllerService
-} from 'apps/page-builder/generated';
+import { useAlert } from 'alert';
+import { CreateDateQuestionRequest } from 'apps/page-builder/generated';
+import { CreateQuestionRequest, useCreateQuestion } from 'apps/page-builder/hooks/api/useCreateQuestion';
 import classNames from 'classnames';
 import { Heading } from 'components/heading';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
-import { CreateQuestionForm, QuestionForm } from './QuestionForm';
-import { authorization } from 'authorization';
 import './AddQuestion.scss';
+import { CreateQuestionForm, QuestionForm } from './QuestionForm';
 import styles from './add-question.module.scss';
-import { useAlert } from 'alert';
 
 type Props = {
     onBack: () => void;
@@ -25,54 +18,30 @@ type Props = {
     onQuestionCreated: (id: number) => void;
 };
 export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
+    const { createQuestion, questionId, error } = useCreateQuestion();
     const { alertError } = useAlert();
     const form = useForm<CreateQuestionForm>({
         mode: 'onBlur',
         defaultValues: {
-            codeSet: CreateTextQuestionRequest.codeSet.LOCAL,
+            codeSet: CreateDateQuestionRequest.codeSet.LOCAL,
+            valueSet: undefined,
+            defaultValue: undefined,
             messagingInfo: { includedInMessage: false, requiredInMessage: false }
         }
     });
 
     const handleSubmit = () => {
-        let request: CancelablePromise<CodedQuestion>;
-        switch (form.getValues('questionType')) {
-            case 'CODED':
-                request = QuestionControllerService.createCodedQuestionUsingPost({
-                    authorization: authorization(),
-                    request: { ...(form.getValues() as CreateCodedQuestionRequest) }
-                });
-                break;
-            case 'TEXT':
-                request = QuestionControllerService.createTextQuestionUsingPost({
-                    authorization: authorization(),
-                    request: { ...(form.getValues() as CreateTextQuestionRequest) }
-                });
-                break;
-            case 'DATE':
-                request = QuestionControllerService.createDateQuestionUsingPost({
-                    authorization: authorization(),
-                    request: { ...(form.getValues() as CreateDateQuestionRequest) }
-                });
-                break;
-            case 'NUMERIC':
-                request = QuestionControllerService.createNumericQuestionUsingPost({
-                    authorization: authorization(),
-                    request: { ...(form.getValues() as CreateNumericQuestionRequest) }
-                });
-                break;
-            default:
-                throw new Error('Failed to create question');
-        }
-        request
-            .then((response) => {
-                response.id && onQuestionCreated(response.id);
-            })
-            .catch((error) => {
-                console.error('error', error);
-                alertError({ message: 'Failed to create question' });
-            });
+        createQuestion(form.getValues() as CreateQuestionRequest);
     };
+
+    useEffect(() => {
+        if (questionId) {
+            onQuestionCreated(questionId);
+        }
+        if (error) {
+            alertError({ message: error });
+        }
+    }, [questionId, error]);
 
     return (
         <div className={classNames(styles.addQuestion, 'add-question')}>

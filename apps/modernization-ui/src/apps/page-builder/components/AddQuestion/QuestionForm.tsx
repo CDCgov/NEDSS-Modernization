@@ -36,11 +36,11 @@ export type QuestionType = 'CODED' | 'NUMERIC' | 'TEXT' | 'DATE';
 
 export const QuestionForm = ({ question }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
-    const watch = useWatch();
+    const watch = useWatch<CreateQuestionForm>(form);
 
     useEffect(() => {
         if (watch.displayControl?.toString() === '1026') {
-            // Clear data mart values when `Readonly User text, number, or date` display control is selected
+            // Clear data mart / messaging values when `Readonly User text, number, or date` display control is selected
             form.reset({
                 ...form.getValues(),
                 dataMartInfo: {
@@ -48,6 +48,12 @@ export const QuestionForm = ({ question }: Props) => {
                     defaultRdbTableName: undefined,
                     dataMartColumnName: undefined,
                     rdbColumnName: undefined
+                },
+                messagingInfo: {
+                    messageVariableId: undefined,
+                    labelInMessage: undefined,
+                    codeSystem: undefined,
+                    hl7DataType: undefined
                 }
             });
         }

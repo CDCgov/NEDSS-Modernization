@@ -18,7 +18,7 @@ export const TextFields = ({ maskOptions }: Props) => {
     useEffect(() => {
         form.setValue('mask', CreateTextQuestionRequest.mask.TXT);
         form.resetField('fieldLength');
-        form.resetField('defaultValue');
+        form.setValue('defaultValue', '');
     }, []);
 
     useEffect(() => {

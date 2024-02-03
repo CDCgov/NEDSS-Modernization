@@ -5,4 +5,5 @@
 export type ValueSetOption = {
     name: string;
     value: string;
+    codeSetNm: string;
 };
