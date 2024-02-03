@@ -13,50 +13,53 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @DiscriminatorValue(DateQuestionEntity.DATE_QUESION_TYPE)
 public class DateQuestionEntity extends WaQuestion {
-    static final String DATE_QUESION_TYPE = "DATE";
+  static final String DATE_QUESION_TYPE = "DATE";
 
-    @Column(name = "mask", length = 50)
-    private String mask;
+  @Column(name = "mask", length = 50)
+  private String mask;
 
-    @Override
-    public String getDataType() {
-        return DateQuestionEntity.DATE_QUESION_TYPE;
+  @Override
+  public String getDataType() {
+    return DateQuestionEntity.DATE_QUESION_TYPE;
+  }
+
+  public DateQuestionEntity(QuestionCommand.AddDateQuestion command) {
+    super(command);
+
+    this.mask = requireNonNull(command.mask().toString(), "Mask");
+    this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
+
+
+    // Audit
+    created(command);
+
+    // Do not set reporting or messaging data for readonly user data
+    if (command.questionData().displayControl() != 1026) {
+      // Reporting
+      setReportingData(command);
+
+      // Messaging
+      setMessagingData(command.messagingData());
     }
+  }
 
-    public DateQuestionEntity(QuestionCommand.AddDateQuestion command) {
-        super(command);
+  @Override
+  public void update(QuestionCommand.Update command) {
+    // Update general fields
+    update(command.questionData());
 
-        this.mask = requireNonNull(command.mask().toString(), "Mask");
-        this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
+    // Date fields
+    this.mask = requireNonNull(command.mask(), "Mask");
+    this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
 
+    // Reporting
+    setReportingData(command);
 
-        // Audit
-        created(command);
+    // Messaging
+    setMessagingData(command.messagingData());
 
-        // Reporting
-        setReportingData(command);
-
-        // Messaging
-        setMessagingData(command.messagingData());
-    }
-
-    @Override
-    public void update(QuestionCommand.Update command) {
-        // Update general fields
-        update(command.questionData());
-
-        // Date fields
-        this.mask = requireNonNull(command.mask(), "Mask");
-        this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
-
-        // Reporting
-        setReportingData(command);
-
-        // Messaging
-        setMessagingData(command.messagingData());
-
-        // Audit
-        changed(command);
-    }
+    // Audit
+    changed(command);
+  }
 
 }
