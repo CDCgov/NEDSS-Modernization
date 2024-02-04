@@ -1,41 +1,21 @@
-import React, { ReactNode, useEffect, useReducer } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ApiError, Me, UserService } from 'generated';
+import React, { ReactNode, useReducer } from 'react';
+
 import { Config } from 'config';
-import { authorization } from 'authorization';
-import { UserControllerService } from 'generated/services/UserControllerService';
+import { User } from 'user';
 
 const USER_ID = 'nbs_user=';
 const TOKEN = 'nbs_token=';
 
-type User = {
-    identifier: number;
-    name: {
-        first: string;
-        last: string;
-        display: string;
-    };
-    permissions: string[];
-};
-
 type TokenProvider = () => string | undefined;
 
 type InternalState = {
-    status: 'idle' | 'pending' | 'logged-in' | 'ready' | 'error';
-    isLoggedIn: boolean;
-    isLoginPending: boolean;
-    error?: string | undefined;
-    username?: string | undefined;
+    status: 'waiting' | 'ready';
     user?: User;
-    getToken: TokenProvider;
 };
 
 type LoginState = {
-    isLoggedIn: boolean;
-    isLoginPending: boolean;
-    error?: string | undefined;
-    username?: string | undefined;
     user?: User;
+    isLoggedIn: boolean;
     getToken: TokenProvider;
 };
 
@@ -50,72 +30,44 @@ const getToken: TokenProvider = () => {
     }
 };
 
-// proxied requests set the USER_ID cookie. use it on initialization to log in
-const getUserNameFromCookie = (): string | undefined => {
-    if (document.cookie.includes(USER_ID)) {
-        const userIdStart = document.cookie.indexOf(USER_ID) + USER_ID.length;
-        const userIdEnd = document.cookie.indexOf(';', userIdStart);
-        return document.cookie.substring(userIdStart, userIdEnd > -1 ? userIdEnd : document.cookie.length);
-    } else {
-        return undefined;
-    }
+const waiting: InternalState = {
+    status: 'waiting'
 };
 
-const initialState: InternalState = {
-    status: 'idle',
-    isLoggedIn: false,
-    isLoginPending: false,
-    error: undefined,
-    username: undefined,
-    getToken
-};
+type Action = { type: 'ready'; user: User } | { type: 'logout' };
 
-type Action =
-    | { type: 'login'; name: string }
-    | { type: 'initialize'; name?: string }
-    | { type: 'error'; error: string }
-    | { type: 'ready'; user: User }
-    | { type: 'logout' };
-
-const reducer = (state: InternalState, action: Action): InternalState => {
+const reducer = (_state: InternalState, action: Action): InternalState => {
     switch (action.type) {
-        case 'login':
-            return { ...initialState, status: 'pending', isLoginPending: true, username: action.name };
-        case 'initialize':
-            return { ...state, status: 'logged-in' };
-        case 'error':
-            return { ...state, status: 'error', isLoginPending: false, error: action.error };
         case 'ready':
-            return { ...state, status: 'ready', isLoginPending: false, isLoggedIn: true, user: action.user };
+            return { status: 'ready', user: action.user };
         case 'logout':
-            return { ...initialState };
+            return waiting;
     }
 };
 
 export const UserContext = React.createContext<{
     state: LoginState;
-    login: (username: string) => void;
     logout: () => void;
 }>({
-    state: initialState,
-    login: () => {},
+    state: { isLoggedIn: false, getToken },
     logout: () => {}
 });
 
-type Props = {
-    children: ReactNode;
+const initialize = (user?: User): InternalState => {
+    if (user) {
+        return { status: 'ready', user };
+    } else {
+        return waiting;
+    }
 };
 
-const UserContextProvider = ({ children }: Props) => {
-    const navigateTo = useNavigate();
+type Props = {
+    children: ReactNode;
+    user?: User;
+};
 
-    const [state, dispatch] = useReducer(reducer, initialState);
-
-    const login = (username: string) => {
-        if (Config.enableLogin) {
-            dispatch({ type: 'login', name: username });
-        }
-    };
+const UserContextProvider = ({ user, children }: Props) => {
+    const [state, dispatch] = useReducer(reducer, user, initialize);
 
     const logout = () => {
         // delete cookies
@@ -124,61 +76,13 @@ const UserContextProvider = ({ children }: Props) => {
         if (Config.enableLogin) {
             // reset state
             dispatch({ type: 'logout' });
-            navigateTo('/dev/login');
         } else {
             // loading external page will clear state
             window.location.href = `${Config.nbsUrl}/logOut`;
         }
     };
 
-    // on init attempt to login using USER_ID cookie
-    useEffect(() => {
-        const resolved = getUserNameFromCookie();
-        if (resolved) {
-            dispatch({ type: 'initialize', name: resolved });
-        }
-    }, []);
-
-    const handleMeSuccess = ({ identifier, firstName, lastName, permissions }: Me) => {
-        const user = {
-            identifier,
-            name: {
-                first: firstName,
-                last: lastName,
-                display: firstName + ' ' + lastName
-            },
-            permissions
-        };
-        dispatch({ type: 'ready', user });
-    };
-
-    const handleError = (error: ApiError) => {
-        if (error.status === 401) {
-            dispatch({ type: 'error', error: 'Incorrect username or password' });
-        } else {
-            dispatch({ type: 'error', error: 'Login failed' });
-        }
-    };
-
-    useEffect(() => {
-        if (state.status === 'logged-in' && Config.enableLogin) {
-            document.cookie = `nbs_user=${state.username}`;
-        }
-
-        if (state.status === 'pending' && state.username) {
-            UserControllerService.loginUsingPost({
-                request: { username: state.username, password: '' }
-            })
-                .then(() => dispatch({ type: 'initialize' }))
-                .catch(handleError);
-        }
-
-        if (state.status === 'logged-in') {
-            UserService.meUsingGet({ authorization: authorization() }).then(handleMeSuccess).catch(handleError);
-        }
-    }, [state.status, state.username]);
-
-    const value = { state, login, logout };
+    const value = { state: { ...state, isLoggedIn: state.status === 'ready', getToken }, logout };
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
