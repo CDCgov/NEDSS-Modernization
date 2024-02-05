@@ -17,6 +17,9 @@
                     border: none;
                     align-items: center;
                 }
+                button {
+                    padding: 0;
+                }
                 button:disabled {
                     cursor: text;
                     .usa-icon {
