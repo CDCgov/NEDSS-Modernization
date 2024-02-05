@@ -33,7 +33,7 @@ class FlattenedComponentFinder {
           [component].field_size                as [Field_length],
           [WaRdbMetadatum].rdb_table_nm         as [default_rdb_table_nm],
           [WaRdbMetadatum].rdb_column_nm        as [rdb_column_nm],
-          [WaRdbMetadatum].rpt_admin_column_nm  as [Default_label_in_report]
+          [WaRdbMetadatum].rpt_admin_column_nm  as [Default_label_in_report],
           [component].block_nm                  as [blockName]
           
       from WA_UI_metadata [component]
