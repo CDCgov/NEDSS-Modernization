@@ -26,7 +26,6 @@ class OrganizationMother {
       """;
 
   private static final String CREATE = """
-      delete from Entity where entity_uid in (:identifier)
       insert into Entity(entity_uid, class_cd) values (:identifier, 'ORG');
       insert into Organization(organization_uid, display_nm, version_ctrl_nbr)
       values (:identifier, :name, 1);
@@ -41,7 +40,8 @@ class OrganizationMother {
       final SequentialIdentityGenerator idGenerator,
       final JdbcTemplate template,
       final Available<OrganizationIdentifier> available,
-      final Active<OrganizationIdentifier> active) {
+      final Active<OrganizationIdentifier> active
+  ) {
     this.idGenerator = idGenerator;
     this.template = new NamedParameterJdbcTemplate(template);
 
@@ -62,7 +62,8 @@ class OrganizationMother {
       template.execute(
           DELETE_IN,
           new MapSqlParameterSource(parameters),
-          PreparedStatement::executeUpdate);
+          PreparedStatement::executeUpdate
+      );
       this.active.reset();
     }
   }
@@ -75,12 +76,14 @@ class OrganizationMother {
     Map<String, ? extends Serializable> parameters = Map.of(
         "identifier", identifier,
         "name", name,
-        "local", localId);
+        "local", localId
+    );
 
     template.execute(
         CREATE,
         new MapSqlParameterSource(parameters),
-        PreparedStatement::executeUpdate);
+        PreparedStatement::executeUpdate
+    );
 
     OrganizationIdentifier created = new OrganizationIdentifier(identifier);
 
