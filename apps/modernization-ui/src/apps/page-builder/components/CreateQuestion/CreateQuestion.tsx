@@ -68,6 +68,7 @@ export type optionsType = { name: string; value: string };
 
 export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValueModalRef }: any) => {
     const questionForm = useForm<CreateQuestionFormType, any>({
+        mode: 'onBlur',
         defaultValues: { ...init }
     });
     const { handleSubmit, reset, control, watch } = questionForm;
@@ -484,9 +485,10 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                 pattern: { value: handleValidation(false), message: 'Unique name invalid' },
                                 ...maxLengthRule(50)
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     className="field-space"
                                     defaultValue={value}
                                     label="Unique name"
@@ -599,9 +601,10 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                 pattern: { value: /^\w*$/, message: 'Default label in report invalid' },
                                 ...maxLengthRule(50)
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     className="field-space"
                                     defaultValue={value}
                                     disabled={readOnlyControl}
@@ -642,16 +645,18 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                 pattern: { value: startWithNonInteger, message: 'RDB column name invalid' },
                                 ...maxLengthRule(20)
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
                                     defaultValue={value}
                                     label="RDB column name"
                                     onBlur={() => {
+                                        onBlur();
                                         questionForm.setValue('dataMartColumnName', value);
                                     }}
                                     disabled={editDisabledFields || readOnlyControl}
                                     type="text"
+                                    max={20}
                                     error={error?.message}
                                     required={!(editDisabledFields || readOnlyControl)}
                                 />
@@ -664,9 +669,10 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
                                 pattern: { value: startWithNonInteger, message: 'Data mart column name invalid' },
                                 ...maxLengthRule(20)
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                                 <Input
                                     onChange={onChange}
+                                    onBlur={onBlur}
                                     className="field-space"
                                     defaultValue={value}
                                     label="Data mart column name"

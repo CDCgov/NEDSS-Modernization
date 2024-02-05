@@ -164,7 +164,7 @@ const AddBusinessRule = () => {
                                 </Grid>
                                 {selectedFieldType == '' ? null : (
                                     <FormProvider {...form}>
-                                        <BusinessRulesForm form={form} />
+                                        <BusinessRulesForm />
                                     </FormProvider>
                                 )}
                             </div>
