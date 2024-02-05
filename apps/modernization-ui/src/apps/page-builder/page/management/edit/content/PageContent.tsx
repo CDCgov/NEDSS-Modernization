@@ -120,12 +120,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
                     )
                 }
             />
-            <AddQuestionModal
-                pageId={page.id}
-                onClose={handleAddQuestionClose}
-                modal={addQuestionModalRef}
-                valueSetModalRef={addValueModalRef}
-            />
+            <AddQuestionModal pageId={page.id} onClose={handleAddQuestionClose} modal={addQuestionModalRef} />
             <ModalComponent
                 modalRef={editQuestionModalRef}
                 closer

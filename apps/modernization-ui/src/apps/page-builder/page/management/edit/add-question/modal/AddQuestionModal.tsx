@@ -11,7 +11,6 @@ type Props = {
     modal: RefObject<ModalRef>;
     pageId: number;
     onClose?: (questions: number[]) => void;
-    valueSetModalRef: RefObject<ModalRef>;
 };
 
 export const AddQuestionModal = (props: Props) => {
