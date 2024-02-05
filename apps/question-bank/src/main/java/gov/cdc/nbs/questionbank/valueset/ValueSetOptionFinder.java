@@ -11,7 +11,7 @@ import gov.cdc.nbs.questionbank.valueset.response.ValueSetOption;
 
 @Component
 public class ValueSetOptionFinder {
-  private static final QCodeset codesetTable = QCodeset.codeset;
+  private static final QCodeset valuesetTable = QCodeset.codeset;
   private static final QCodeSetGroupMetadatum metadataTable = QCodeSetGroupMetadatum.codeSetGroupMetadatum;
   final JPAQueryFactory factory;
 
@@ -27,9 +27,9 @@ public class ValueSetOptionFinder {
         .from(metadataTable)
         .where(metadataTable.ldfPicklistIndCd.eq('Y')
             .and(metadataTable.id.in(
-                JPAExpressions.select(codesetTable.codeSetGroup.id)
-                    .from(codesetTable)
-                    .where(codesetTable.id.classCd.eq("code_value_general").and(codesetTable.statusCd.eq("A"))))))
+                JPAExpressions.select(valuesetTable.codeSetGroup.id)
+                    .from(valuesetTable)
+                    .where(valuesetTable.id.classCd.eq("code_value_general").and(valuesetTable.statusCd.eq("A"))))))
         .orderBy(metadataTable.codeSetShortDescTxt.asc())
         .fetch()
         .stream()
