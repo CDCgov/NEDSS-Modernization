@@ -1,11 +1,5 @@
 @use 'styles/colors';
 
-.delete-btn {
-    &:hover {
-        background-color: #ec3823 !important;
-    }
-}
-
 .main-banner {
     background-color: colors.$background;
 }

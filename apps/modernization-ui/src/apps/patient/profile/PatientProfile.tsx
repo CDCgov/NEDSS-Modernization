@@ -17,6 +17,7 @@ import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert';
 import { formattedName } from 'utils';
 import { ProfileProvider } from './ProfileContext';
+import styles from './patient-profile.module.scss';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -87,20 +88,17 @@ export const PatientProfile = () => {
                 <div className="padding-left-2 padding-right-1 bg-white grid-row flex-align-center flex-justify border-bottom-style">
                     <h1 className="font-sans-xl text-medium">Patient profile</h1>
                     <div>
-                        <Button
-                            type={'button'}
-                            className="display-inline-flex print-btn"
-                            onClick={openPrintableView(patient?.id)}>
-                            <Icon.Print className="margin-right-05" />
+                        <Button type={'button'} onClick={openPrintableView(patient?.id)}>
+                            <Icon.Print size={3} />
                             Print
                         </Button>
                         {permissions.delete && (
                             <ModalToggleButton
                                 modalRef={modalRef}
                                 opener
-                                className="delete-btn display-inline-flex"
+                                className={styles.destructive}
                                 type={'submit'}>
-                                <Icon.Delete className="margin-right-05" />
+                                <Icon.Delete size={3} />
                                 Delete patient
                             </ModalToggleButton>
                         )}
