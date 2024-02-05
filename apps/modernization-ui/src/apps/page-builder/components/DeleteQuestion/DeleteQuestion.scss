@@ -1,26 +1,19 @@
 @use 'styles/colors';
 
-.visible-container {
-    margin-top: 16px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
 
-.toggle-visible {
-    margin: 0 16px;
-}
-.footer {
-    display: flex !important;
-    justify-content: flex-end!important;
-}
-#example-modal-1 {
-    .usa-modal,
-        &.usa-modal {
-        border-radius: 5px;
-        border: 2px solid colors.$base-lighter;
+.question-header-button {
+    .usa-button.delete-btn {
+        font-size: 1.25rem;
     }
 }
-.usa-button.delete-btn {
-    font-size: 20px;
+#confirmation {
+    .usa-modal,
+    &.usa-modal {
+        border-radius: 0.313rem;
+        border: .125rem solid colors.$base-lighter;
+    }
+    .usa-modal__footer {
+        display: flex !important;
+        justify-content: flex-end!important;
+    }
 }

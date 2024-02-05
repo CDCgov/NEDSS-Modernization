@@ -41,7 +41,7 @@ export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onD
                 {question.isStandard && <div className={styles.standardIndicator}>S</div>}
                 <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>
             </div>
-            <div className={styles.questionButtons}>
+            <div className={`${styles.questionButtons} question-header-button`}>
                 <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" onClick={onEditQuestion} />
                 {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
