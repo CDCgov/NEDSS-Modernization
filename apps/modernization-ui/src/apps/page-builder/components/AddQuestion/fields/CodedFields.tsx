@@ -22,6 +22,7 @@ export const CodedFields = () => {
     useEffect(() => {
         const selected = valueSets.find((v) => v.value === watch.valueSet?.toString());
         selected && fetch(selected.codeSetNm);
+        form.setValue('defaultValue', undefined);
     }, [watch.valueSet]);
 
     return (
@@ -58,7 +59,7 @@ export const CodedFields = () => {
                         label="Default value"
                         onChange={onChange}
                         defaultValue={value}
-                        options={options}
+                        options={watch.valueSet ? options : []}
                         error={error?.message}
                         name={name}
                         id={name}
