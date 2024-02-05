@@ -15,7 +15,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "WA_RDB_metadata", catalog = "NBS_ODSE")
-public class WaRdbMetadatum {
+public class WaRdbMetadata {
     @Id
     @Column(name = "wa_rdb_metadata_uid", nullable = false)
     private Long id;
