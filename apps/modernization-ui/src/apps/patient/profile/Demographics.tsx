@@ -35,45 +35,47 @@ export type AlertType = {
 
 export const Demographics = ({ patient }: DemographicProps) => {
     return (
-        <AlertProvider>
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <AdministrativeTable patient={patient} />
-            </div>
+        <div role="tabpanel" id="demographics-tabpanel">
+            <AlertProvider>
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <AdministrativeTable patient={patient} />
+                </div>
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <NamesTable patient={patient} />
-            </div>
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <NamesTable patient={patient} />
+                </div>
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <AddressesTable patient={patient} />
-            </div>
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <AddressesTable patient={patient} />
+                </div>
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PhoneAndEmailTable patient={patient} />
-            </div>
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <PhoneAndEmailTable patient={patient} />
+                </div>
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <IdentificationsTable patient={patient} />
-            </div>
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <IdentificationsTable patient={patient} />
+                </div>
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <RacesTable patient={patient} />
-            </div>
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <RacesTable patient={patient} />
+                </div>
 
-            <Grid row gap className="margin-auto">
-                <Grid col={6}>
-                    <Grid row>
-                        <GeneralPatient patient={patient} />
-                        <Mortality patient={patient} />
+                <Grid row gap className="margin-auto">
+                    <Grid col={6}>
+                        <Grid row>
+                            <GeneralPatient patient={patient} />
+                            <Mortality patient={patient} />
+                        </Grid>
+                    </Grid>
+                    <Grid col={6}>
+                        <Grid row>
+                            <Ethnicity patient={patient} />
+                            <SexBirth patient={patient} />
+                        </Grid>
                     </Grid>
                 </Grid>
-                <Grid col={6}>
-                    <Grid row>
-                        <Ethnicity patient={patient} />
-                        <SexBirth patient={patient} />
-                    </Grid>
-                </Grid>
-            </Grid>
-        </AlertProvider>
+            </AlertProvider>
+        </div>
     );
 };

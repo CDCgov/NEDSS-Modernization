@@ -18,28 +18,34 @@ type EventTabProp = {
 
 export const Events = ({ patient, addEventsAllowed = true }: EventTabProp) => {
     return (
-        <ClassicModalProvider>
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PatientInvestigationsTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
-            </div>
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <LabReportTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
-            </div>
+        <div role="tabpanel" id="events-tabpanel">
+            <ClassicModalProvider>
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <PatientInvestigationsTable
+                        patient={patient}
+                        pageSize={TOTAL_TABLE_DATA}
+                        allowAdd={addEventsAllowed}
+                    />
+                </div>
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <LabReportTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
+                </div>
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <MorbidityTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
-            </div>
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <MorbidityTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
+                </div>
 
-            <PatientProfileVaccinations patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PatientTreatmentTable patient={patient} />
-            </div>
+                <PatientProfileVaccinations patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
+                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                    <PatientTreatmentTable patient={patient} />
+                </div>
 
-            <PatientProfileDocuments patient={patient} pageSize={TOTAL_TABLE_DATA} />
+                <PatientProfileDocuments patient={patient} pageSize={TOTAL_TABLE_DATA} />
 
-            <PatientProfileContactsNamedByPatient patient={patient} pageSize={TOTAL_TABLE_DATA} />
+                <PatientProfileContactsNamedByPatient patient={patient} pageSize={TOTAL_TABLE_DATA} />
 
-            <PatientProfilePatientNamedByContact patient={patient} pageSize={TOTAL_TABLE_DATA} />
-        </ClassicModalProvider>
+                <PatientProfilePatientNamedByContact patient={patient} pageSize={TOTAL_TABLE_DATA} />
+            </ClassicModalProvider>
+        </div>
     );
 };
