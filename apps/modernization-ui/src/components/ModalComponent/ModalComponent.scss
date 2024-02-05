@@ -88,5 +88,23 @@
                 overflow: hidden;
             }
         }
+        .usa-modal__footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5.6rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 0 0 0.5rem 0.5rem;
+            display: flex;
+            justify-content: flex-end;
+            button {
+                margin: 0;
+                &:last-of-type {
+                    margin-left: 0.5rem;
+                }
+            }
+        }
     }
 }

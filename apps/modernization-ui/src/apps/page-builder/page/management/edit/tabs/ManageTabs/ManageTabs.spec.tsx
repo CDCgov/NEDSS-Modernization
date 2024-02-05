@@ -22,6 +22,7 @@ const content: PagesResponse = {
                     subSections: [
                         {
                             id: 123,
+                            isGrouped: false,
                             name: 'Subsection1',
                             visible: true,
                             order: 1,
@@ -29,6 +30,7 @@ const content: PagesResponse = {
                         },
                         {
                             id: 456,
+                            isGrouped: false,
                             name: 'Subsection2',
                             visible: true,
                             order: 2,
