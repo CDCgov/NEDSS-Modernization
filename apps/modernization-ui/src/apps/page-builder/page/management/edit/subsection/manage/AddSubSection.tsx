@@ -10,10 +10,10 @@ import { Heading } from 'components/heading';
 import { Button, Form, Icon } from '@trussworks/react-uswds';
 import { authorization } from 'authorization';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
-import { maxLengthRule, validPageNameRule } from 'validation/entry';
+import { maxLengthRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { useEffect } from 'react';
-import { notEmptyRule } from 'validation/entry/notEmptyRule';
+import { validSubsectionNameRule } from 'validation/entry/validSubsectionNameRule';
 
 type subSectionProps = {
     sectionId?: number;
@@ -91,9 +91,8 @@ export const AddSubSection = ({
                         name="name"
                         rules={{
                             required: { value: true, message: 'Subsection name is required' },
-                            ...maxLengthRule(50),
-                            ...validPageNameRule,
-                            ...notEmptyRule
+                            validate: (v) => validSubsectionNameRule(v ?? ''),
+                            ...maxLengthRule(50)
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <>
