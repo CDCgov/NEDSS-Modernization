@@ -66,7 +66,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                             <td className={styles.number}>
                                 <p>{index + 1}</p>
                             </td>
-                            <td className={styles.name}>{questions[index].name}</td>
+                            <td className={styles.name}>{questions[index]?.name}</td>
                             <td className={styles.appears}>
                                 <Controller
                                     control={control}
