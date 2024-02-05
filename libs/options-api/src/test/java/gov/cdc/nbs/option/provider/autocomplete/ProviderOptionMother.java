@@ -22,7 +22,7 @@ class ProviderOptionMother {
       delete from Participation where subject_class_cd = 'PSN' and subject_entity_uid in (:identifiers)
       delete from Person_name where person_uid in (:identifiers);
       delete from Person where person_uid in (:identifiers);
-      delete from Entity where entity_uid in (:identifiers) and class_cd = 'PSN';
+      delete from Entity where entity_uid in (:identifiers);
       """;
 
   private static final String CREATE =

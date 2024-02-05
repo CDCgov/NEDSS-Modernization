@@ -23,14 +23,15 @@ class FacilityOptionMother {
       delete
       from Organization
       where organization_uid in (:identifiers);
-      delete from Entity where entity_uid in (:identifiers) and class_cd = 'ORG';
+      delete from Entity where entity_uid in (:identifiers);
       """;
 
-  private static final String CREATE = """
-      insert into Entity(entity_uid, class_cd) values (:identifier, 'ORG');
-      insert into Organization(organization_uid, display_nm, version_ctrl_nbr)
-      values (:identifier, :name, 1);
-      """;
+  private static final String CREATE =
+      """
+          insert into Entity(entity_uid, class_cd) values (:identifier, 'ORG');
+          insert into Organization(organization_uid, display_nm, version_ctrl_nbr)
+          values (:identifier, :name, 1);
+          """;
 
 
   private final NamedParameterJdbcTemplate template;
