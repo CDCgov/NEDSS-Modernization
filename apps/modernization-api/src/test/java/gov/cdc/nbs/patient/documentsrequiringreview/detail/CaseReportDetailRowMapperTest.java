@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -31,8 +31,13 @@ class CaseReportDetailRowMapperTest {
     ResultSet resultSet = mock(ResultSet.class);
 
     when(resultSet.getLong(columns.identifier())).thenReturn(37L);
-    when(resultSet.getTimestamp(columns.receivedOn())).thenReturn(
-        Timestamp.from(Instant.parse("1989-03-19T00:00:00Z")));
+    when(resultSet.getObject(columns.receivedOn(), LocalDateTime.class)).thenReturn(
+        LocalDateTime.of(
+            1989, Month.MARCH, 19,
+            0, 0, 0
+        )
+    );
+
     when(resultSet.getString(columns.type())).thenReturn("type-value");
     when(resultSet.getString(columns.event())).thenReturn("event-value");
     when(resultSet.getBoolean(columns.updated())).thenReturn(true);
@@ -57,8 +62,12 @@ class CaseReportDetailRowMapperTest {
     ResultSet resultSet = mock(ResultSet.class);
 
     when(resultSet.getLong(columns.identifier())).thenReturn(37L);
-    when(resultSet.getTimestamp(columns.receivedOn())).thenReturn(
-        Timestamp.from(Instant.parse("1989-03-19T00:00:00Z")));
+    when(resultSet.getObject(columns.receivedOn(), LocalDateTime.class)).thenReturn(
+        LocalDateTime.of(
+            1989, Month.MARCH, 19,
+            0, 0, 0
+        )
+    );
     when(resultSet.getString(columns.facilities().sending().name())).thenReturn("sending-facility-value");
 
 
@@ -80,8 +89,12 @@ class CaseReportDetailRowMapperTest {
     ResultSet resultSet = mock(ResultSet.class);
 
     when(resultSet.getLong(columns.identifier())).thenReturn(37L);
-    when(resultSet.getTimestamp(columns.receivedOn())).thenReturn(
-        Timestamp.from(Instant.parse("1989-03-19T00:00:00Z")));
+    when(resultSet.getObject(columns.receivedOn(), LocalDateTime.class)).thenReturn(
+        LocalDateTime.of(
+            1989, Month.MARCH, 19,
+            0, 0, 0
+        )
+    );
     when(resultSet.getString(columns.condition())).thenReturn("condition-value");
 
     DocumentRequiringReview mapped = mapper.mapRow(resultSet, 0);

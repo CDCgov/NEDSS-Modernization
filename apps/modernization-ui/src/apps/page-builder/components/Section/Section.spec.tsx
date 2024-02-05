@@ -10,6 +10,7 @@ describe('when Section renders', () => {
         subSections: [
             {
                 id: 1234,
+                isGrouped: false,
                 name: 'Sub 1',
                 visible: true,
                 order: 1,
@@ -17,6 +18,7 @@ describe('when Section renders', () => {
             },
             {
                 id: 1234,
+                isGrouped: false,
                 name: 'Sub 1',
                 visible: true,
                 order: 2,

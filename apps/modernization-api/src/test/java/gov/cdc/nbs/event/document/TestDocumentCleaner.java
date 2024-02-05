@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.document;
+package gov.cdc.nbs.event.document;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;

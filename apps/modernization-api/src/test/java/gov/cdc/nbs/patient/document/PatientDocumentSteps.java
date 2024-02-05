@@ -1,14 +1,10 @@
 package gov.cdc.nbs.patient.document;
 
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Available;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,38 +16,19 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientDocumentSteps {
 
   private final GraphQLPage page = new GraphQLPage(1);
-  @Autowired
-  Authenticated authenticated;
 
-  @Autowired
-  Available<PatientIdentifier> patients;
+  private final Authenticated authenticated;
+  private final Available<PatientIdentifier> patients;
+  private final PatientDocumentByPatientResolver resolver;
 
-  @Autowired
-  PatientMother patientMother;
-
-  @Autowired
-  PatientDocumentByPatientResolver resolver;
-
-  @Autowired
-  DocumentMother mother;
-
-  @Before("@documents")
-  public void clean() {
-    mother.reset();
-  }
-
-  @When("the patient has a Case Report")
-  public void the_patient_has_a_Case_Report() {
-    PatientIdentifier revision = patientMother.revise(patients.one());
-
-    this.mother.caseReport(revision.id());
-  }
-
-  @When("the patient only has a Case Report with no program area or jurisdiction")
-  public void the_patient_only_has_a_report_with_no_program_area_or_jurisdiction() {
-    PatientIdentifier revision = patientMother.revise(patients.one());
-    this.mother.reset();
-    this.mother.caseReportWithoutJurisdiction(revision.id());
+  PatientDocumentSteps(
+      final Authenticated authenticated,
+      final Available<PatientIdentifier> patients,
+      final PatientDocumentByPatientResolver resolver
+  ) {
+    this.authenticated = authenticated;
+    this.patients = patients;
+    this.resolver = resolver;
   }
 
   @Then("the profile has an associated document")

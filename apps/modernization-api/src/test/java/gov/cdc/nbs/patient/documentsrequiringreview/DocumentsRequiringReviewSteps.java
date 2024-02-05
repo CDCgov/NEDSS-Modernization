@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.documentsrequiringreview;
 
+import gov.cdc.nbs.event.document.CaseReportIdentifier;
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
@@ -7,6 +8,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.time.Instant;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
@@ -16,6 +19,7 @@ public class DocumentsRequiringReviewSteps {
 
   private final Active<PatientIdentifier> activePatient;
   private final Active<LabReportIdentifier> activeLabReport;
+  private final Active<CaseReportIdentifier> activeCaseReport;
   private final Active<Pageable> activePageable;
   private final PatientProfileDocumentsRequiringReviewRequester requester;
   private final Active<ResultActions> response;
@@ -23,12 +27,14 @@ public class DocumentsRequiringReviewSteps {
   DocumentsRequiringReviewSteps(
       final Active<PatientIdentifier> activePatient,
       final Active<LabReportIdentifier> activeLabReport,
+      final Active<CaseReportIdentifier> activeCaseReport,
       final Active<Pageable> activePageable,
       final PatientProfileDocumentsRequiringReviewRequester requester,
       final Active<ResultActions> response
   ) {
     this.activePatient = activePatient;
     this.activeLabReport = activeLabReport;
+    this.activeCaseReport = activeCaseReport;
     this.activePageable = activePageable;
     this.requester = requester;
     this.response = response;
@@ -76,6 +82,40 @@ public class DocumentsRequiringReviewSteps {
         );
   }
 
+  @Then("the patient {documentType} requiring review was received on {date}")
+  public void the_patient_document_requiring_review_was_received_on(
+      final String documentType,
+      final Instant received
+  )
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findDocumentsRequiringReviewForPatient.content[?(@.type=='%s')].dateReceived",
+                documentType
+            )
+                .value(hasItem(equalTo(received.toString())))
+        );
+
+  }
+
+  @Then("the patient {documentType} requiring review was sent by (the ){string}")
+  public void the_patient_document_requiring_review_was_sent_by(
+      final String documentType,
+      final String facility
+  )
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findDocumentsRequiringReviewForPatient.content[?(@.type=='%s')].facilityProviders.sendingFacility.name",
+                documentType
+            )
+                .value(hasItem(equalTo(facility)))
+        );
+
+  }
+
   @Then("the patient {documentType} requiring review was reported by the {string} facility")
   public void the_patient_document_requiring_review_was_reported_by(
       final String documentType,
@@ -110,6 +150,40 @@ public class DocumentsRequiringReviewSteps {
 
   }
 
+  @Then("the patient {documentType} requiring review has the description title {string}")
+  public void the_patient_document_requiring_review_has_the_description_title(
+      final String documentType,
+      final String title
+  )
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findDocumentsRequiringReviewForPatient.content[?(@.type=='%s')].descriptions[*].title",
+                documentType
+            )
+                .value(hasItem(equalTo(title)))
+        );
+
+  }
+
+  @Then("the patient {documentType} requiring review has the description value {string}")
+  public void the_patient_document_requiring_review_has_the_description_value(
+      final String documentType,
+      final String value
+  )
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findDocumentsRequiringReviewForPatient.content[?(@.type=='%s')].descriptions[*].value",
+                documentType
+            )
+                .value(hasItem(equalTo(value)))
+        );
+
+  }
+
   @Then("the patient {documentType} requiring review is electronic")
   public void the_patient_document_requiring_review_is_electronic(final String documentType)
       throws Exception {
@@ -137,10 +211,45 @@ public class DocumentsRequiringReviewSteps {
         );
   }
 
+  @Then("the patient {documentType} requiring review was updated")
+  public void the_patient_document_requiring_review_was_updated(final String documentType)
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findDocumentsRequiringReviewForPatient.content[?(@.type=='%s')].isUpdate",
+                documentType
+            )
+                .value(hasItem(equalTo(true)))
+        );
+  }
+
+  @Then("the patient {documentType} requiring review was not updated")
+  public void the_patient_document_requiring_review_was_not_updated(final String documentType)
+      throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findDocumentsRequiringReviewForPatient.content[?(@.type=='%s')].isUpdate",
+                documentType
+            )
+                .value(hasItem(equalTo(false)))
+        );
+  }
+
+
+
   @Then("the patient {documentType} requiring review has the event of the Lab Report")
   public void the_patient_document_requiring_review_has_the_event_of_the_lab_report(final String documentType)
       throws Exception {
     String expected = this.activeLabReport.maybeActive().map(LabReportIdentifier::local).orElse(null);
+    checkDocumentEvent(documentType, expected);
+  }
+
+  @Then("the patient {documentType} requiring review has the event of the Case Report")
+  public void the_patient_document_requiring_review_has_the_event_of_the_case_report(final String documentType)
+      throws Exception {
+    String expected = this.activeCaseReport.maybeActive().map(CaseReportIdentifier::local).orElse(null);
     checkDocumentEvent(documentType, expected);
   }
 
