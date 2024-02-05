@@ -40,7 +40,6 @@ const DragDropProvider: React.FC<{
             if (pageData.tabs) {
                 if (pageData.tabs[currentTab]) {
                     setSections(pageData.tabs![currentTab].sections!);
-                } else {
                     setTabs(pageData.tabs);
                 }
             }
