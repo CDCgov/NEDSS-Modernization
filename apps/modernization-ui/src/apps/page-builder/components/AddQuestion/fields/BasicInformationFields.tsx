@@ -4,8 +4,6 @@ import { Heading } from 'components/heading';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Option } from 'generated';
-import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm, QuestionType } from '../QuestionForm';
@@ -24,11 +22,7 @@ type Props = {
 export const BasicInformationFields = ({ editing = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
-    const [subgroups, setSubgroups] = useState<Option[]>([]);
-
-    useEffect(() => {
-        useOptions('NBS_QUES_SUBGROUP').then((response) => setSubgroups(response.options));
-    }, []);
+    const { options: subgroups } = useOptions('NBS_QUES_SUBGROUP');
 
     return (
         <>

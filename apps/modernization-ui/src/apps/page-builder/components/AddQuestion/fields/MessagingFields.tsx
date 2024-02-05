@@ -1,28 +1,22 @@
-import { Heading } from 'components/heading';
-import styles from '../question-form.module.scss';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { CreateQuestionForm } from '../QuestionForm';
-import { ToggleButton } from '../../ToggleButton';
-import { Input } from 'components/FormInputs/Input';
-import { useEffect, useState } from 'react';
-import { maxLengthRule } from 'validation/entry';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Option } from 'generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { Heading } from 'components/heading';
+import { useEffect } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { maxLengthRule } from 'validation/entry';
+import { ToggleButton } from '../../ToggleButton';
+import { CreateQuestionForm } from '../QuestionForm';
+import styles from '../question-form.module.scss';
 
 type Props = {
     editing?: boolean;
 };
 export const MessagingFields = ({ editing = false }: Props) => {
-    const [codeSystems, setCodeSystems] = useState<Option[]>([]);
-    const [hl7Options, setHl7Options] = useState<Option[]>([]);
+    const { options: codeSystems } = useOptions('CODE_SYSTEM');
+    const { options: hl7Options } = useOptions('NBS_HL7_DATA_TYPE');
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
-
-    useEffect(() => {
-        useOptions('CODE_SYSTEM').then((response) => setCodeSystems(response.options));
-        useOptions('NBS_HL7_DATA_TYPE').then((response) => setHl7Options(response.options));
-    }, []);
 
     useEffect(() => {
         if (!watch.messagingInfo?.includedInMessage) {
@@ -44,7 +38,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 Messaging
             </Heading>
             <div className={styles.fieldInfo}>These fields will not be displayed to your users</div>
-            <label className={styles.toggleLabel}>
+            <label htmlFor="messagingInfo.includedInMessage" className={styles.toggleLabel}>
                 Included in message? <span className={styles.mandatory}>*</span>
             </label>
             <Controller
@@ -134,24 +128,27 @@ export const MessagingFields = ({ editing = false }: Props) => {
                     />
                 )}
             />
-            <label className={styles.toggleLabel}>
-                Required in message? <span className={styles.mandatory}>*</span>
-            </label>
+
             <Controller
                 control={form.control}
                 name="messagingInfo.requiredInMessage"
                 render={({ field: { onChange, value } }) => (
-                    <div className={styles.toggleGroup}>
-                        <div>Not required</div>
-                        <ToggleButton
-                            className="requiredInMessage"
-                            checked={value}
-                            name="includedInMessage"
-                            disabled={!watch.messagingInfo?.includedInMessage}
-                            onChange={onChange}
-                        />
-                        <div>Required</div>
-                    </div>
+                    <>
+                        <label htmlFor="includedInMessage" className={styles.toggleLabel}>
+                            Required in message? <span className={styles.mandatory}>*</span>
+                        </label>
+                        <div className={styles.toggleGroup}>
+                            <div>Not required</div>
+                            <ToggleButton
+                                className="requiredInMessage"
+                                checked={value}
+                                name="includedInMessage"
+                                disabled={!watch.messagingInfo?.includedInMessage}
+                                onChange={onChange}
+                            />
+                            <div>Required</div>
+                        </div>
+                    </>
                 )}
             />
             <Controller

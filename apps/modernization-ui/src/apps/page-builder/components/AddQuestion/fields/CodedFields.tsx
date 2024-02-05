@@ -2,7 +2,6 @@ import { CreateCodedQuestionRequest, ValueSetControllerService, ValueSetOption }
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { authorization } from 'authorization';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Option } from 'generated';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
@@ -10,7 +9,7 @@ export const CodedFields = () => {
     const form = useFormContext<CreateCodedQuestionRequest>();
     const watch = useWatch(form);
     const [valueSets, setValueSets] = useState<ValueSetOption[]>([]);
-    const [options, setOptions] = useState<Option[]>([]);
+    const { options, fetch } = useOptions();
 
     useEffect(() => {
         ValueSetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) => {
@@ -22,7 +21,7 @@ export const CodedFields = () => {
 
     useEffect(() => {
         const selected = valueSets.find((v) => v.value === watch.valueSet?.toString());
-        selected && useOptions(selected.codeSetNm).then((response) => setOptions(response.options));
+        selected && fetch(selected.codeSetNm);
     }, [watch.valueSet]);
 
     return (

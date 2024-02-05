@@ -1,25 +1,20 @@
+import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { Input } from 'components/FormInputs/Input';
 import { Heading } from 'components/heading';
+import { ChangeEvent, useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { Option } from 'generated';
-import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 
 type Props = {
     editing?: boolean;
 };
 export const DataMartFields = ({ editing = false }: Props) => {
-    const [rdbTableNames, setRdbTableNames] = useState<Option[]>([]);
+    const { options: rdbTableNames } = useOptions('NBS_PH_DOMAINS');
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
-    const alphanumericUnderscoreNotStartingWithNumber = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
-
-    useEffect(() => {
-        useOptions('NBS_PH_DOMAINS').then((response) => setRdbTableNames(response.options));
-    }, []);
+    const alphanumericUnderscoreNotStartingWithNumber = /^[a-zA-Z_]\w*$/;
 
     useEffect(() => {
         if (watch.displayControl?.toString() !== '1026') {

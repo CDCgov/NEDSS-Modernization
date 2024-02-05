@@ -1,6 +1,4 @@
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
-import { Option } from 'generated';
-import { useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { CreateQuestionForm } from '../QuestionForm';
 import { CodedFields } from './CodedFields';
@@ -10,11 +8,8 @@ import { TextFields } from './TextFields';
 
 export const QuestionSpecificFields = () => {
     const watch = useWatch(useFormContext<CreateQuestionForm>());
-    const [maskOptions, setMaskOptions] = useState<Option[]>([]);
+    const { options: maskOptions } = useOptions('NBS_MASK_TYPE');
 
-    useEffect(() => {
-        useOptions('NBS_MASK_TYPE').then((response) => setMaskOptions(response.options));
-    }, []);
     return (
         <>
             {watch.questionType === 'CODED' && <CodedFields />}
