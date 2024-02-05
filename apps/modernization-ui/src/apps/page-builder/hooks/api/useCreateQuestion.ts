@@ -8,6 +8,7 @@ import {
     CreateNumericQuestionRequest,
     CreateTextQuestionRequest,
     DateQuestion,
+    NumericQuestion,
     QuestionControllerService,
     TextQuestion
 } from '../../generated';
@@ -50,7 +51,7 @@ export const useCreateQuestion = () => {
 
     useEffect(() => {
         if (state.status === 'creating') {
-            let request: CancelablePromise<CodedQuestion | TextQuestion | DateQuestion | CodedQuestion>;
+            let request: CancelablePromise<CodedQuestion | TextQuestion | DateQuestion | NumericQuestion>;
             switch (state.request.questionType) {
                 case 'CODED':
                     request = QuestionControllerService.createCodedQuestionUsingPost({

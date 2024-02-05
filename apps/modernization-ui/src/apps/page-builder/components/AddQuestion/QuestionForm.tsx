@@ -1,10 +1,4 @@
-import {
-    CreateCodedQuestionRequest,
-    CreateDateQuestionRequest,
-    CreateNumericQuestionRequest,
-    CreateTextQuestionRequest
-} from 'apps/page-builder/generated';
-
+import { CreateQuestionRequest } from 'apps/page-builder/hooks/api/useCreateQuestion';
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { AdministrativeFields } from './fields/AdministrativeFields';
@@ -15,16 +9,9 @@ import { QuestionSpecificFields } from './fields/QuestionSpecificFields';
 import { UserInterfaceFields } from './fields/UserInterfaceFields';
 import styles from './question-form.module.scss';
 
-export type CreateQuestionForm = Omit<
-    (
-        | CreateNumericQuestionRequest
-        | CreateTextQuestionRequest
-        | CreateCodedQuestionRequest
-        | CreateDateQuestionRequest
-    ) &
-        AdditionalQuestionFields,
-    'codeSet'
-> & { codeSet: 'LOCAL' | 'PHIN' };
+export type CreateQuestionForm = Omit<CreateQuestionRequest & AdditionalQuestionFields, 'codeSet'> & {
+    codeSet: 'LOCAL' | 'PHIN';
+};
 
 export type AdditionalQuestionFields = {
     questionType?: QuestionType;
