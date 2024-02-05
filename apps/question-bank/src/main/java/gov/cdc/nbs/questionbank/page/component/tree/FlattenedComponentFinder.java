@@ -30,15 +30,15 @@ class FlattenedComponentFinder {
           [component].default_value             as [default_value],
           [set].[code_set_nm]                   as [value_set],
           [component].admin_comment             as [adminComments],
-          [waQuestion].field_size               as [Field_length],
-          [waQuestion].rdb_table_nm             as [default_rdb_table_nm],
-          [waQuestion].rdb_column_nm            as [rdb_column_nm],
-          [waQuestion].rpt_admin_column_nm      as [Default_label_in_report],
-          [component].block_nm                 as [blockName]
+          [component].field_size                as [Field_length],
+          [WaRdbMetadatum].rdb_table_nm         as [default_rdb_table_nm],
+          [WaRdbMetadatum].rdb_column_nm        as [rdb_column_nm],
+          [WaRdbMetadatum].rpt_admin_column_nm  as [Default_label_in_report]
+          [component].block_nm                  as [blockName]
           
       from WA_UI_metadata [component]
-          left join WA_question [waQuestion] on
-                  [waQuestion].question_identifier = [component].[question_identifier]
+          left join WA_RDB_metadata [WaRdbMetadatum] on
+              [WaRdbMetadatum].wa_ui_metadata_uid = [component].[wa_ui_metadata_uid]
 
           left join [NBS_SRTE]..Codeset [set] on
                   [set].code_set_group_id = [component].[code_set_group_id]
