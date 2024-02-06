@@ -1,22 +1,16 @@
 package gov.cdc.nbs.questionbank.question.request;
 
-public record QuestionValidationRequest(String fieldName, String value) {
+import io.swagger.annotations.ApiModelProperty;
 
-  public enum FieldName {
-    UNIQUE_ID("uniqueId"),
-    UNIQUE_NAME("uniqueName"),
-    RDB_COLUMN_NAME("rdbColumnName"),
-    DATA_MART_COLUMN_NAME("dataMartColumnName");
+public record QuestionValidationRequest(
+    @ApiModelProperty(required = true) Field field,
+    @ApiModelProperty(required = true) String value) {
 
-    private final String value;
-
-    FieldName(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
+  public enum Field {
+    UNIQUE_ID,
+    UNIQUE_NAME,
+    RDB_COLUMN_NAME,
+    DATA_MART_COLUMN_NAME
   }
 
 }
