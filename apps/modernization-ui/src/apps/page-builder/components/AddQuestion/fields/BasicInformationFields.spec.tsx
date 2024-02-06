@@ -8,6 +8,8 @@ import userEvent from '@testing-library/user-event';
 const { result } = renderHook(() =>
     useForm<CreateQuestionForm>({ mode: 'onBlur', defaultValues: { uniqueId: 'duplicateUniqueId' } })
 );
+
+const setError = jest.fn();
 const validate = jest.fn();
 const mockUseQuestionValidation = {
     validate,
@@ -29,7 +31,7 @@ jest.mock('apps/page-builder/hooks/api/useOptions', () => ({
 describe('BasicInformationFields', () => {
     it('should validate unique Id on blur', async () => {
         const { getByText } = render(
-            <FormProvider {...result.current}>
+            <FormProvider {...result.current} setError={setError}>
                 <BasicInformationFields />
             </FormProvider>
         );
@@ -42,7 +44,9 @@ describe('BasicInformationFields', () => {
 
         await waitFor(() => {
             expect(validate).toHaveBeenCalled();
-            expect(result.current.getFieldState('uniqueId').invalid).toBeTruthy();
+            expect(setError).toHaveBeenCalledWith('uniqueId', {
+                message: 'A question with Unique ID: duplicateUniqueId already exists in the system'
+            });
         });
     });
 });
