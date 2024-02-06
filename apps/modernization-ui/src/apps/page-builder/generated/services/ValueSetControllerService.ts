@@ -9,6 +9,7 @@ import type { Page_ValueSetSearchResponse_ } from '../models/Page_ValueSetSearch
 import type { UpdateConceptRequest } from '../models/UpdateConceptRequest';
 import type { UpdatedValueSetResponse } from '../models/UpdatedValueSetResponse';
 import type { ValueSetCreateRequest } from '../models/ValueSetCreateRequest';
+import type { ValueSetOption } from '../models/ValueSetOption';
 import type { ValueSetSearchRequest } from '../models/ValueSetSearchRequest';
 import type { ValueSetStateChangeResponse } from '../models/ValueSetStateChangeResponse';
 import type { ValueSetUpdateRequest } from '../models/ValueSetUpdateRequest';
@@ -77,6 +78,30 @@ export class ValueSetControllerService {
                 'Authorization': authorization,
             },
             body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * findValueSetOptions
+     * @returns ValueSetOption OK
+     * @throws ApiError
+     */
+    public static findValueSetOptionsUsingGet({
+        authorization,
+    }: {
+        authorization: string,
+    }): CancelablePromise<Array<ValueSetOption>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/valueset/options',
+            headers: {
+                'Authorization': authorization,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

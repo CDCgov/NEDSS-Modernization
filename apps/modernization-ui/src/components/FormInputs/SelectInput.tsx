@@ -3,7 +3,7 @@ import { Dropdown } from '@trussworks/react-uswds';
 import { EntryWrapper } from 'components/Entry';
 import { useMemo } from 'react';
 
-type Selectable = { name: string; value: string };
+export type Selectable = { name: string; value: string };
 
 type SelectProps = {
     htmlFor?: string;
