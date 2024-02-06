@@ -1,10 +1,10 @@
-import { ValueSetControllerService } from '../../generated';
+import { Concept, ValueSetControllerService } from '../../generated';
 
 export const useConceptAPI = (authorization: string, codeSetNm: string) => {
     return ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
         authorization,
         codeSetNm: codeSetNm
-    }).then((response: any) => {
+    }).then((response: Concept[]) => {
         return response || [];
     });
 };

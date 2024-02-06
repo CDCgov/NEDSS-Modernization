@@ -218,8 +218,9 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                     Add new business rule
                 </NavLinkButton>
             </div>
-            <div>{<SearchBar onChange={setSearchQuery} />}</div>
-
+            <div style={{ backgroundColor: 'green' }}>
+                <SearchBar onChange={setSearchQuery} />
+            </div>
             {summaries?.length ? (
                 <TableComponent
                     display="zebra"

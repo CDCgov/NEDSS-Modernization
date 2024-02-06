@@ -138,10 +138,10 @@ const AddBusinessRule = () => {
                             </div>
                             <div className="edit-rules__content">
                                 <Grid row className="inline-field">
-                                    <Grid col={2}>
+                                    <Grid col={3}>
                                         <label className="input-label">Function</label>
                                     </Grid>
-                                    <Grid col={10}>
+                                    <Grid col={9}>
                                         {ruleId ? (
                                             <label>{ruleFunction}</label>
                                         ) : (
