@@ -7,7 +7,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 export const CodedFields = () => {
     const form = useFormContext<CreateCodedQuestionRequest>();
-    const watch = useWatch(form);
+    const valueSet = useWatch({ control: form.control, name: 'valueSet', exact: true });
     const [valueSets, setValueSets] = useState<ValueSetOption[]>([]);
     const { options, fetch } = useOptions();
 
@@ -20,10 +20,10 @@ export const CodedFields = () => {
     }, []);
 
     useEffect(() => {
-        const selected = valueSets.find((v) => v.value === watch.valueSet?.toString());
+        const selected = valueSets.find((v) => v.value === valueSet?.toString());
         selected && fetch(selected.codeSetNm);
         form.setValue('defaultValue', undefined);
-    }, [watch.valueSet]);
+    }, [valueSet]);
 
     return (
         <>
@@ -59,7 +59,7 @@ export const CodedFields = () => {
                         label="Default value"
                         onChange={onChange}
                         defaultValue={value}
-                        options={watch.valueSet ? options : []}
+                        options={valueSet ? options : []}
                         error={error?.message}
                         name={name}
                         id={name}

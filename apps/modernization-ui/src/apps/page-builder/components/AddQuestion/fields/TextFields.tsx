@@ -11,7 +11,7 @@ type Props = {
 };
 export const TextFields = ({ maskOptions }: Props) => {
     const form = useFormContext<CreateTextQuestionRequest>();
-    const watch = useWatch(form);
+    const mask = useWatch({ control: form.control, name: 'mask', exact: true });
     const [textMaskOptions, setTextMaskOptions] = useState<Option[]>([]);
 
     useEffect(() => {
@@ -29,10 +29,10 @@ export const TextFields = ({ maskOptions }: Props) => {
     }, [maskOptions]);
 
     useEffect(() => {
-        if (watch.mask !== 'TXT') {
+        if (mask !== 'TXT') {
             form.resetField('fieldLength');
         }
-    }, [watch.mask]);
+    }, [mask]);
 
     return (
         <>
@@ -62,7 +62,10 @@ export const TextFields = ({ maskOptions }: Props) => {
                 control={form.control}
                 name="fieldLength"
                 rules={{
-                    required: { value: true, message: 'Field length is required' },
+                    required: {
+                        value: mask === CreateTextQuestionRequest.mask.TXT,
+                        message: 'Field length is required'
+                    },
                     ...maxLengthRule(4)
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
@@ -78,8 +81,8 @@ export const TextFields = ({ maskOptions }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={watch.mask !== 'TXT'}
-                        required
+                        disabled={mask !== CreateTextQuestionRequest.mask.TXT}
+                        required={mask === CreateTextQuestionRequest.mask.TXT}
                     />
                 )}
             />
