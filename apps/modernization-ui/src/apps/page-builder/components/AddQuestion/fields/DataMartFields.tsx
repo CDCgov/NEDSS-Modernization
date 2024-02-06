@@ -15,9 +15,9 @@ type Props = {
 export const DataMartFields = ({ editing = false }: Props) => {
     const { options: rdbTableNames } = useOptions('NBS_PH_DOMAINS');
     const form = useFormContext<CreateQuestionForm>();
-    const [displayControl, subgroup, dataMartInfo] = useWatch({
+    const [displayControl, subgroup, dataMartColumnName, rdbColumnName] = useWatch({
         control: form.control,
-        name: ['displayControl', 'subgroup', 'dataMartInfo'],
+        name: ['displayControl', 'subgroup', 'dataMartInfo.dataMartColumnName', 'dataMartInfo.rdbColumnName'],
         exact: true
     });
     const alphanumericUnderscoreNotStartingWithNumber = /^[a-zA-Z_]\w*$/;
@@ -36,6 +36,7 @@ export const DataMartFields = ({ editing = false }: Props) => {
     }, [subgroup, rdbTableNames]);
 
     const handleRdbColumnNameValidation = (subgroup: string | undefined, columnName: string | undefined) => {
+        console.log('doing validation!', subgroup, columnName);
         if (columnName && subgroup) {
             validateRdbColumnName(`${subgroup}_${columnName}`);
         }
@@ -49,8 +50,8 @@ export const DataMartFields = ({ editing = false }: Props) => {
 
     // If subgroup changes, we have to re-validate the rdbColumnName
     useEffect(() => {
-        if (subgroup && dataMartInfo?.rdbColumnName) {
-            handleRdbColumnNameValidation(subgroup, dataMartInfo.rdbColumnName);
+        if (subgroup && rdbColumnName) {
+            handleRdbColumnNameValidation(subgroup, rdbColumnName);
         }
     }, [subgroup]);
 
@@ -58,15 +59,17 @@ export const DataMartFields = ({ editing = false }: Props) => {
         // check === false to keep undefined from triggering an error
         if (isValidRdbColumn === false) {
             form.setError('dataMartInfo.rdbColumnName', {
-                message: `An Rdb column named: ${dataMartInfo?.rdbColumnName} already exists in the system for the specified subgroup`
+                message: `An Rdb column named: ${rdbColumnName} already exists in the system for the specified subgroup`
             });
+        } else {
+            form.clearErrors('dataMartInfo.rdbColumnName');
         }
     }, [isValidRdbColumn]);
 
     useEffect(() => {
         if (isValidDataMartColumnName === false) {
             form.setError('dataMartInfo.dataMartColumnName', {
-                message: `A Data mart column named: ${dataMartInfo?.dataMartColumnName} already exists in the system`
+                message: `A Data mart column named: ${dataMartColumnName} already exists in the system`
             });
         }
     }, [isValidDataMartColumnName]);
@@ -142,7 +145,7 @@ export const DataMartFields = ({ editing = false }: Props) => {
                         }}
                         onBlur={() => {
                             onBlur();
-                            handleRdbColumnNameValidation(subgroup, dataMartInfo?.rdbColumnName);
+                            handleRdbColumnNameValidation(subgroup, rdbColumnName);
                         }}
                         defaultValue={value}
                         type="text"
@@ -173,7 +176,7 @@ export const DataMartFields = ({ editing = false }: Props) => {
                         }}
                         onBlur={() => {
                             onBlur();
-                            handleDataMartColumnNameValidation(dataMartInfo?.dataMartColumnName);
+                            handleDataMartColumnNameValidation(dataMartColumnName);
                         }}
                         className="field-space"
                         defaultValue={value}
