@@ -1,7 +1,11 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
 import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import java.time.Instant;
 import org.junit.jupiter.api.Test;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest.TextMask;
 import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
@@ -23,5 +27,29 @@ class TextQuestionEntityTest {
         assertEquals(command.mask(), entity.getMask());
         assertEquals(command.fieldLength(), entity.getFieldSize());
         assertEquals(command.defaultValue(), entity.getDefaultValue());
+    }
+
+    @Test
+    void should_not_set_reporting_messaging_readonly() {
+       var command = new QuestionCommand.AddTextQuestion(
+            TextMask.TXT,
+            50,
+            "default value",
+            new QuestionCommand.QuestionData(
+                CodeSet.LOCAL,
+                "TEST9900001",
+                "Text Question Unique Name",
+                "ADMN",
+                "Text question description",
+                "Text question label",
+                "Text question tooltip",
+                1026l, // readonly
+                "Text question admin comments",
+                new QuestionCommand.QuestionOid("oid", "oid system")),
+            null,
+            null,
+            9999000L,
+            Instant.now());
+      assertThat(new TextQuestionEntity(command)).isNotNull();
     }
 }
