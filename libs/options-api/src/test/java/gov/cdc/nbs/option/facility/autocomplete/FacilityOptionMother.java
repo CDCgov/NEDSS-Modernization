@@ -1,4 +1,4 @@
-package gov.cdc.nbs.option.provider.autocomplete;
+package gov.cdc.nbs.option.facility.autocomplete;
 
 import gov.cdc.nbs.option.Option;
 import gov.cdc.nbs.testing.support.Available;
@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
@@ -16,42 +17,28 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
-class ProviderOptionMother {
+class FacilityOptionMother {
 
   private static final String DELETE_IN = """
-      delete from Participation where subject_class_cd = 'PSN' and subject_entity_uid in (:identifiers)
-      delete from Person_name where person_uid in (:identifiers);
-      delete from Person where person_uid in (:identifiers);
+      delete
+      from Organization
+      where organization_uid in (:identifiers);
       delete from Entity where entity_uid in (:identifiers);
       """;
 
   private static final String CREATE =
       """
-          insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
-            insert into Person(person_uid, version_ctrl_nbr, cd, first_nm, last_nm) values (:identifier, 1, 'PRV', :first, :last);
+          insert into Entity(entity_uid, class_cd) values (:identifier, 'ORG');
+          insert into Organization(organization_uid, display_nm, version_ctrl_nbr)
+          values (:identifier, :name, 1);
+          """;
 
-            insert into Person_name(
-              person_uid,
-              person_name_seq,
-              first_nm,
-              last_nm,
-              status_cd,
-              status_time
-            ) values (
-              :identifier,
-              1,
-              :first,
-              :last,
-              'A',
-              GETDATE()
-            )
-            """;
 
   private final NamedParameterJdbcTemplate template;
   private final Available<Option> available;
   private final AtomicLong identifier;
 
-  ProviderOptionMother(final JdbcTemplate template) {
+  FacilityOptionMother(final JdbcTemplate template) {
     this.template = new NamedParameterJdbcTemplate(template);
     this.available = new Available<>();
     this.identifier = new AtomicLong(Long.MIN_VALUE);
@@ -79,33 +66,25 @@ class ProviderOptionMother {
     return identifier.getAndIncrement();
   }
 
-  void create(final String first, final String last) {
-
-    String username = UUID.randomUUID().toString()
-        .replace("-", "")
-        .substring(0, 20);
+  void create(final String name) {
 
     int order = this.available.all()
         .map(Option::order)
         .max(Comparator.naturalOrder())
         .orElse(1);
 
-    long next = nextIdentifier();
+    long identifier = nextIdentifier();
 
     Map<String, ? extends Serializable> parameters = Map.of(
-        "username", username,
-        "first", first,
-        "last", last,
-        "identifier", next);
+        "identifier", identifier,
+        "name", name);
 
     template.execute(
         CREATE,
         new MapSqlParameterSource(parameters),
         PreparedStatement::executeUpdate);
 
-    String name = String.format("%s %s", first, last);
-
-    this.available.available(new Option(String.valueOf(next), name, name, order));
+    this.available.available(new Option(String.valueOf(identifier), name, name, order));
 
   }
 
