@@ -26,22 +26,42 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
     const { options: subgroups } = useOptions('NBS_QUES_SUBGROUP');
-    const { isValid, validate } = useQuestionValidation(QuestionValidationRequest.field.UNIQUE_ID);
+    const { isValid: uniqueIdIsValid, validate: validateUniqueId } = useQuestionValidation(
+        QuestionValidationRequest.field.UNIQUE_ID
+    );
+    const { isValid: uniqueNameIsValid, validate: validateUniqueName } = useQuestionValidation(
+        QuestionValidationRequest.field.UNIQUE_NAME
+    );
 
-    const validateUniqueId = async (uniqueId?: string) => {
+    const handleUniqueIdValidation = async (uniqueId?: string) => {
         if (uniqueId) {
-            validate(uniqueId);
+            validateUniqueId(uniqueId);
+        }
+    };
+
+    const handleUniqueNameValidation = async (name?: string) => {
+        if (name) {
+            validateUniqueName(name);
         }
     };
 
     useEffect(() => {
         // check === false to keep undefined from triggering an error
-        if (isValid === false) {
+        if (uniqueIdIsValid === false) {
             form.setError('uniqueId', {
                 message: `A question with Unique ID: ${watch.uniqueId} already exists in the system`
             });
         }
-    }, [isValid]);
+    }, [uniqueIdIsValid]);
+
+    useEffect(() => {
+        // check === false to keep undefined from triggering an error
+        if (uniqueNameIsValid === false) {
+            form.setError('uniqueName', {
+                message: `A question with Unique name: ${watch.uniqueName} already exists in the system`
+            });
+        }
+    }, [uniqueNameIsValid]);
 
     return (
         <>
@@ -85,7 +105,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                             onChange={onChange}
                             onBlur={() => {
                                 onBlur();
-                                validateUniqueId(watch.uniqueId);
+                                handleUniqueIdValidation(watch.uniqueId);
                             }}
                             defaultValue={value}
                             label="Unique ID"
@@ -109,7 +129,10 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
-                        onBlur={onBlur}
+                        onBlur={() => {
+                            onBlur();
+                            handleUniqueNameValidation(watch.uniqueName);
+                        }}
                         defaultValue={value}
                         label="Unique name"
                         type="text"

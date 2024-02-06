@@ -6,6 +6,8 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
+import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
+import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 
 type Props = {
     editing?: boolean;
@@ -15,6 +17,12 @@ export const DataMartFields = ({ editing = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
     const alphanumericUnderscoreNotStartingWithNumber = /^[a-zA-Z_]\w*$/;
+    const { isValid: isValidRdbColumn, validate: validateRdbColumnName } = useQuestionValidation(
+        QuestionValidationRequest.field.RDB_COLUMN_NAME
+    );
+    const { isValid: isValidDataMartColumnName, validate: validateDataMartColumnName } = useQuestionValidation(
+        QuestionValidationRequest.field.DATA_MART_COLUMN_NAME
+    );
 
     useEffect(() => {
         if (watch.displayControl?.toString() !== '1026') {
@@ -22,6 +30,42 @@ export const DataMartFields = ({ editing = false }: Props) => {
             form.setValue('dataMartInfo.defaultRdbTableName', tableName?.name);
         }
     }, [watch.subgroup]);
+
+    const handleRdbColumnNameValidation = (subgroup: string | undefined, columnName: string | undefined) => {
+        if (columnName && subgroup) {
+            validateRdbColumnName(`${subgroup}_${columnName}`);
+        }
+    };
+
+    const handleDataMartColumnNameValidation = (columnName: string | undefined) => {
+        if (columnName) {
+            validateDataMartColumnName(columnName);
+        }
+    };
+
+    // If subgroup changes, we have to re-validate the rdbColumnName
+    useEffect(() => {
+        if (watch.subgroup && watch.dataMartInfo?.rdbColumnName) {
+            handleRdbColumnNameValidation(watch.subgroup, watch.dataMartInfo.rdbColumnName);
+        }
+    }, [watch.subgroup]);
+
+    useEffect(() => {
+        // check === false to keep undefined from triggering an error
+        if (isValidRdbColumn === false) {
+            form.setError('dataMartInfo.rdbColumnName', {
+                message: `A column name: ${watch.dataMartInfo?.rdbColumnName} already exists in the system with the specified subgroup`
+            });
+        }
+    }, [isValidRdbColumn]);
+
+    useEffect(() => {
+        if (isValidDataMartColumnName === false) {
+            form.setError('dataMartInfo.dataMartColumnName', {
+                message: `A column name: ${watch.dataMartInfo?.dataMartColumnName} already exists in the system`
+            });
+        }
+    }, [isValidDataMartColumnName]);
 
     return (
         <>
@@ -92,7 +136,10 @@ export const DataMartFields = ({ editing = false }: Props) => {
                             onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });
                             form.setValue('dataMartInfo.dataMartColumnName', e.target.value?.toUpperCase());
                         }}
-                        onBlur={onBlur}
+                        onBlur={() => {
+                            onBlur();
+                            handleRdbColumnNameValidation(watch.subgroup, watch.dataMartInfo?.rdbColumnName);
+                        }}
                         defaultValue={value}
                         type="text"
                         error={error?.message}
@@ -120,7 +167,10 @@ export const DataMartFields = ({ editing = false }: Props) => {
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });
                         }}
-                        onBlur={onBlur}
+                        onBlur={() => {
+                            onBlur();
+                            handleDataMartColumnNameValidation(watch.dataMartInfo?.dataMartColumnName);
+                        }}
                         className="field-space"
                         defaultValue={value}
                         type="text"
