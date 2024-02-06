@@ -35,12 +35,14 @@ public class CodedQuestionEntity extends WaQuestion {
 
     // Audit
     created(command);
+    // Do not set reporting or messaging data for readonly user data
+    if (command.questionData().displayControl() != 1026) {
+      // Reporting
+      setReportingData(command);
 
-    // Reporting
-    setReportingData(command);
-
-    // Messaging
-    setMessagingData(command.messagingData());
+      // Messaging
+      setMessagingData(command.messagingData());
+    }
   }
 
   @Override
@@ -52,14 +54,11 @@ public class CodedQuestionEntity extends WaQuestion {
     this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet");
     this.defaultValue = command.defaultValue();
 
-    // Do not set reporting or messaging data for readonly user data
-    if (command.questionData().displayControl() != 1026) {
-      // Reporting
-      setReportingData(command);
+    // Reporting
+    setReportingData(command);
 
-      // Messaging
-      setMessagingData(command.messagingData());
-    }
+    // Messaging
+    setMessagingData(command.messagingData());
 
     // Audit
     changed(command);
