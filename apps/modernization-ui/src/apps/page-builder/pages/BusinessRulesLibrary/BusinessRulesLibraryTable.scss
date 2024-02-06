@@ -18,8 +18,23 @@
 
 .business-rules-table {
     thead tr th {
+        &:nth-of-type(1) {
+            width: 29.6rem;
+        }
+        &:nth-of-type(2) {
+            width: 11.9rem;
+        }
+        &:nth-of-type(3) {
+            width: 9.19rem;
+        }
+        &:nth-of-type(4) {
+            width: 9.25rem;
+        }
+        &:nth-of-type(5) {
+            width: 19.9rem;
+        }
         &:nth-of-type(6) {
-            width: 4.4375rem;
+            width: 4.44rem;
         }
     }
 }

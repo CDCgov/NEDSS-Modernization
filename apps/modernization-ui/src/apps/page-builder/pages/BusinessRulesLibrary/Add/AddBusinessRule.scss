@@ -57,8 +57,8 @@
                     flex-direction: row;
                     margin-top: 1.25rem;
                     padding: 0;
-                    align-items: flex-start;
-                    justify-content: center;
+                    align-items: center;
+                    justify-content: flex-start;
                     .text-input {
                         width: 28.0625rem;
                         height: 2.5rem;
@@ -67,6 +67,11 @@
                     }
                     .input-label {
                         margin-right: 1.5rem;
+                        width: 6.25rem;
+                        font-size: 1rem;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
                     }
                     .radio-group {
                         display: flex;
@@ -76,6 +81,13 @@
                         .radio-button {
                             width: 8.25rem;
                         }
+                    }
+
+                    .usa-checkbox__label {
+                        margin-top: 0;
+                    }
+                    .rule-description-label {
+                        align-self: flex-start;
                     }
                 }
 
@@ -103,9 +115,17 @@
                     position: absolute;
                     margin-top: 5px;
                 }
-                .que-valueset {
+
+                .selected-target-questions-display {
+                    border: 1px solid colors.$base-black;
+                    display: flex;
+                    padding: 0.875rem 1.25rem;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 0.625rem;
+                    flex: 1 0 0;
                     .target-edit-btn {
-                        padding-top: 4px;
+                        padding-top: 0.625rem;
                         text-align: right;
                         border-top: 1px solid #55595b4d;
                         width: 100%;

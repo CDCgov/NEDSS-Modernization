@@ -11,20 +11,15 @@
             cursor: pointer;
             color: var(--base-black, #000);
             font-family: Public Sans;
-            font-size: 16px;
+            font-size: 1rem;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
-            background: #ffffff;
-            margin-right: 8rem;
+            background: colors.$base-white;
+            margin-right: 2.5rem;
+            padding-bottom: 0.62rem;
             &.active {
-                font-family: Public Sans;
-                font-size: 2rem;
-                font-style: normal;
-                font-weight: 700;
-                line-height: normal;
-                border-bottom: 0.5rem solid var(--primary-primary, #005ea2);
-                padding-bottom: 1.2rem;
+                border-bottom: 0.4375rem solid var(--primary-primary, #005ea2);
             }
         }
     }

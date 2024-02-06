@@ -27,11 +27,11 @@ export const SearchBar = ({ onChange }: any) => {
                     type="text"
                     htmlFor="searchbar"
                     onChange={handleSearch}
-                    id="searchbar"
+                    id="business-rules-search"
                     defaultValue={search}
                 />
-                <Button type="submit" onClick={handleSubmit}>
-                    <Icon.Search size={3} />
+                <Button type="submit" onClick={handleSubmit} className="business-rules-search-button">
+                    <Icon.Search size={5} className="business-rules-search-icon" />
                 </Button>
                 <FilterButton />
             </div>

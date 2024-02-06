@@ -1,15 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-    Button,
-    Checkbox,
-    ErrorMessage,
-    Grid,
-    Icon,
-    Label,
-    ModalRef,
-    ModalToggleButton,
-    Radio
-} from '@trussworks/react-uswds';
+import { Checkbox, ErrorMessage, Grid, Icon, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Controller, UseFormReturn } from 'react-hook-form';
@@ -19,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
 import { useConceptAPI } from '../../components/Concept/useConceptAPI';
 import { authorization } from 'authorization';
-import { CreateRuleRequest } from 'apps/page-builder/generated';
+import { Concept, CreateRuleRequest } from 'apps/page-builder/generated';
 
 type QuestionProps = {
     id: number;
@@ -42,7 +32,7 @@ const BusinessRulesForm = ({ form }: formProps) => {
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
     const [targetQuestion, setTargetQuestion] = useState<QuestionProps[]>([]);
-    const [sourceList, setSourceList] = useState<FieldProps[]>([]);
+    const [sourceValueList, setSourceValueList] = useState<FieldProps[]>([]);
     const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
     const { pageId } = useParams();
     const [sourceDescription, setSourceDescription] = useState<string>(
@@ -51,13 +41,13 @@ const BusinessRulesForm = ({ form }: formProps) => {
             : ''
     );
 
-    const fetchSourceRecord = async (valueSet: string) => {
-        const content: any = await useConceptAPI(authorization(), valueSet);
+    const fetchSourceValueSets = async (valueSet: string) => {
+        const content: Concept[] = await useConceptAPI(authorization(), valueSet);
         const list = content?.map((src: any) => ({ name: src.longName, value: src.conceptCode }));
-        setSourceList(list);
+        setSourceValueList(list);
     };
 
-    const handleFetchQuestion = (data: QuestionProps[]) => {
+    const handleChangeTargetQuestion = (data: QuestionProps[]) => {
         setTargetQuestion(data);
         const value = data.map((val) => val.question);
         const text = data.map((val) => val.name);
@@ -65,12 +55,12 @@ const BusinessRulesForm = ({ form }: formProps) => {
         form.setValue('targetValueText', text);
     };
 
-    const handleFetchSource = (data: QuestionProps[]) => {
+    const handleChangeSource = (data: QuestionProps[]) => {
         setSelectedSource(data);
         form.setValue('sourceIdentifier', data[0].question);
         form.setValue('sourceText', data[0].name);
         setSourceDescription(`${data[0].name} (${data[0].question})`);
-        fetchSourceRecord(data[0].valueSet);
+        fetchSourceValueSets(data[0].valueSet);
     };
 
     useEffect(() => {
@@ -79,19 +69,13 @@ const BusinessRulesForm = ({ form }: formProps) => {
 
     const targetValueIdentifier = form.watch('targetValueIdentifier') || [];
 
-    const targetQtn = targetQuestion.length > 1 || targetValueIdentifier?.length > 1;
+    const isTargetQuestionSelected = targetQuestion.length || targetValueIdentifier.length;
 
     const openSourceModal = () => {
         if (sourceModalRef.current && sourceModalRef.current) {
             const sourceModalBtn = document.getElementById('sourceQuestionId');
             sourceModalBtn?.click();
         }
-    };
-
-    const clearFetchQuestion = () => {
-        setTargetQuestion([]);
-        form.setValue('targetValueIdentifier', []);
-        form.setValue('targetValueText', []);
     };
 
     const handleRuleDescription = () => {
@@ -122,6 +106,19 @@ const BusinessRulesForm = ({ form }: formProps) => {
         handleRuleDescription();
     };
 
+    useEffect(() => {
+        if (form.watch('sourceValue')) {
+            const test = form.getValues('sourceValue');
+            handleSourceValueChange(test?.sourceValueText || []);
+        }
+    }, []);
+
+    const isTargetTypeEnabled =
+        form.watch('ruleFunction') === 'Enabled' ||
+        form.watch('ruleFunction') === 'Disabled' ||
+        form.watch('ruleFunction') === 'Hide' ||
+        form.watch('ruleFunction') === 'Unhide';
+
     return (
         <>
             <Controller
@@ -142,7 +139,7 @@ const BusinessRulesForm = ({ form }: formProps) => {
                             outline>
                             hide
                         </ModalToggleButton>
-                        <Grid col={10}>
+                        <Grid col={9}>
                             <Input
                                 className={'text-input'}
                                 defaultValue={sourceDescription}
@@ -169,11 +166,11 @@ const BusinessRulesForm = ({ form }: formProps) => {
                             <Grid col={9} className="height-3">
                                 <Checkbox
                                     onChange={onChange}
-                                    className=""
+                                    className="any-source-value-checkbox"
                                     id="anySourceValue"
                                     type="checkbox"
                                     checked={value}
-                                    label=" "
+                                    label=""
                                     name="anySourceValue"
                                 />
                             </Grid>
@@ -181,7 +178,6 @@ const BusinessRulesForm = ({ form }: formProps) => {
                     )}
                 />
             )}
-
             <Controller
                 control={form.control}
                 name="comparator"
@@ -190,10 +186,10 @@ const BusinessRulesForm = ({ form }: formProps) => {
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={2}>
+                        <Grid col={3}>
                             <label className="input-label">Logic</label>
                         </Grid>
-                        <Grid col={10}>
+                        <Grid col={9}>
                             <SelectInput
                                 className="text-input"
                                 defaultValue={value}
@@ -223,7 +219,7 @@ const BusinessRulesForm = ({ form }: formProps) => {
                                         onChange={(e) => {
                                             handleSourceValueChange(e);
                                         }}
-                                        options={sourceList}
+                                        options={sourceValueList}
                                     />
                                 </div>
                             </Grid>
@@ -231,45 +227,46 @@ const BusinessRulesForm = ({ form }: formProps) => {
                     )}
                 />
             )}
-
-            <Controller
-                control={form.control}
-                name="targetType"
-                render={({ field: { onChange, value } }) => (
-                    <Grid row className="inline-field">
-                        <Grid col={2}>
-                            <label className="input-label">Target type</label>
+            {isTargetTypeEnabled && (
+                <Controller
+                    control={form.control}
+                    name="targetType"
+                    render={({ field: { onChange, value } }) => (
+                        <Grid row className="inline-field">
+                            <Grid col={2}>
+                                <label className="input-label">Target type</label>
+                            </Grid>
+                            <Grid col={9} className="radio-group">
+                                <Radio
+                                    className="radio-button"
+                                    type="radio"
+                                    name="targetType"
+                                    value="QUESTION"
+                                    id="targetType_Qtn"
+                                    checked={value === 'QUESTION'}
+                                    onChange={onChange}
+                                    label="Question"
+                                />
+                                <Radio
+                                    className="radio-button"
+                                    id="targetType_Sub"
+                                    name="targetType"
+                                    value="SUBSECTION"
+                                    checked={value === 'SUBSECTION'}
+                                    onChange={onChange}
+                                    label="Subsection"
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid col={9} className="radio-group">
-                            <Radio
-                                className="radio-button"
-                                type="radio"
-                                name="targetType"
-                                value="QUESTION"
-                                id="targetType_Qtn"
-                                checked={value === 'QUESTION'}
-                                onChange={onChange}
-                                label="Question"
-                            />
-                            <Radio
-                                className="radio-button"
-                                id="targetType_Sub"
-                                name="targetType"
-                                value="SUBSECTION"
-                                checked={value === 'SUBSECTION'}
-                                onChange={onChange}
-                                label="Subsection"
-                            />
-                        </Grid>
-                    </Grid>
-                )}
-            />
+                    )}
+                />
+            )}
             <Grid row className="inline-field">
-                <Grid col={2}>
+                <Grid col={3}>
                     <label className="input-label">Target Question(s)</label>
                 </Grid>
                 <Grid col={9}>
-                    {!targetQtn ? (
+                    {!isTargetQuestionSelected ? (
                         <div className="width-48-p margin-bottom-1em">
                             <ModalToggleButton
                                 modalRef={TargetQtnModalRef}
@@ -280,20 +277,14 @@ const BusinessRulesForm = ({ form }: formProps) => {
                             </ModalToggleButton>
                         </div>
                     ) : (
-                        <div className="que-valueset">
+                        <div className="selected-target-questions-display">
                             {targetQuestion?.map((qtn, index: number) => (
                                 <div className="margin-bottom-1" key={index}>
                                     <Icon.Check />
                                     <span className="margin-left-1"> {`${qtn.name} (${qtn.question})`}</span>
                                 </div>
                             ))}
-                            {!targetQuestion.length &&
-                                targetValueIdentifier?.map((targetValue: string, index: number) => (
-                                    <div className="margin-bottom-1" key={index}>
-                                        <Icon.Check />
-                                        <span className="margin-left-1"> {targetValue}</span>
-                                    </div>
-                                ))}
+
                             <div className="target-edit-btn">
                                 <ModalToggleButton
                                     modalRef={TargetQtnModalRef}
@@ -306,15 +297,6 @@ const BusinessRulesForm = ({ form }: formProps) => {
                             </div>
                         </div>
                     )}
-                    {targetQtn && (
-                        <Button
-                            type="submit"
-                            className="margin-right-2 line-btn clear-target"
-                            unstyled
-                            onClick={clearFetchQuestion}>
-                            <span>Clear all target selections</span>
-                        </Button>
-                    )}
                 </Grid>
             </Grid>
             <Controller
@@ -322,8 +304,10 @@ const BusinessRulesForm = ({ form }: formProps) => {
                 name="ruleDescription"
                 render={({ field: { name, onChange, onBlur, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
-                        <Grid col={3}>
-                            <Label htmlFor={name}>Rule Description</Label>
+                        <Grid col={3} className="rule-description-label">
+                            <label htmlFor={name} className="input-label">
+                                Rule Description
+                            </label>
                         </Grid>
                         <Grid col={9}>
                             <Input
@@ -341,14 +325,23 @@ const BusinessRulesForm = ({ form }: formProps) => {
                     </Grid>
                 )}
             />
-            <TargetQuestion modalRef={TargetQtnModalRef} getList={handleFetchQuestion} pageId={pageId!} />
-            <TargetQuestion
-                modalRef={sourceModalRef}
-                getList={handleFetchSource}
-                multiSelected={false}
-                header="Source Question"
-                pageId={pageId!}
-            />
+            {pageId && (
+                <>
+                    <TargetQuestion
+                        modalRef={TargetQtnModalRef}
+                        getList={handleChangeTargetQuestion}
+                        pageId={pageId}
+                        header="Target question"
+                    />
+                    <TargetQuestion
+                        modalRef={sourceModalRef}
+                        getList={handleChangeSource}
+                        multiSelected={false}
+                        header="Source Question"
+                        pageId={pageId}
+                    />
+                </>
+            )}
         </>
     );
 };
