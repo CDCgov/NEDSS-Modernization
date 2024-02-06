@@ -9,6 +9,7 @@ const { result } = renderHook(() =>
     useForm<CreateQuestionForm>({
         mode: 'onBlur',
         defaultValues: {
+            subgroup: 'RSK',
             dataMartInfo: { dataMartColumnName: 'duplicateDataMartColumnName', rdbColumnName: 'duplicateRdbColumnName' }
         }
     })
@@ -71,7 +72,8 @@ describe('DataMartFields', () => {
         await waitFor(() => {
             expect(validate).toHaveBeenCalled();
             expect(setError).toHaveBeenNthCalledWith(1, 'dataMartInfo.rdbColumnName', {
-                message: 'A column name: duplicateRdbColumnName already exists in the system'
+                message:
+                    'A column name: duplicateRdbColumnName already exists in the system with the specified subgroup'
             });
         });
     });
