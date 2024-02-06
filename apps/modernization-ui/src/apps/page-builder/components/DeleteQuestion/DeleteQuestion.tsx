@@ -19,7 +19,7 @@ const DeleteQuestion = ({ onDelete }: CommonProps) => {
             </ModalToggleButton>
             <ConfirmationModal
                 modal={deleteModalRef}
-                title="Confirmation"
+                title="Warning"
                 message="Are you sure you want to delete the question?"
                 detail="Deleting this question cannot be undone. Are you sure you want to continue?"
                 confirmText="Yes, delete"
