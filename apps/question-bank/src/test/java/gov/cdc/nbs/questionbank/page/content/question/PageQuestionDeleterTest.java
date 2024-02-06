@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.page.content.question;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.exception.DeleteQuestionException;
+import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -70,9 +70,9 @@ class PageQuestionDeleterTest {
         page.setUiMetadata(new ArrayList<WaUiMetadata>());
 
         PageContentModificationException exception =
-                assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
+            assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
         Assertions.assertEquals("Unable to delete a question from a page, the page does not contain the question",
-                exception.getMessage());
+            exception.getMessage());
     }
 
     @Test
@@ -93,9 +93,9 @@ class PageQuestionDeleterTest {
         page.setUiMetadata(new ArrayList<WaUiMetadata>());
 
         PageContentModificationException exception =
-                assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
+            assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
         Assertions.assertEquals("Unable to delete a question from a page, the page does not contain the question",
-                exception.getMessage());
+            exception.getMessage());
     }
 
     @Test
@@ -115,7 +115,7 @@ class PageQuestionDeleterTest {
         page.setUiMetadata(waUiMetadataList);
 
         PageContentModificationException exception =
-                assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
+            assertThrows(PageContentModificationException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
         Assertions.assertEquals("Unable to delete standard question", exception.getMessage());
     }
 
@@ -125,6 +125,6 @@ class PageQuestionDeleterTest {
         when(entityManager.find(WaTemplate.class, 1L)).thenReturn(null);
 
         // When a request is processed to delete a question , DeleteQuestionException is thrown
-        assertThrows(DeleteQuestionException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
+        assertThrows(PageNotFoundException.class, () -> deleter.deleteQuestion(1L, 2L, 3L));
     }
 }
