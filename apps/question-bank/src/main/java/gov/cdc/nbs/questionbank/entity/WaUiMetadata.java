@@ -1,15 +1,9 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
+
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -21,6 +15,7 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
+import gov.cdc.nbs.questionbank.question.request.update.UpdateQuestionRequest.DataType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -213,6 +208,15 @@ public class WaUiMetadata {
 
   @Column(name = "block_nm", length = 30)
   private String blockNm;
+
+  @OneToOne(fetch = FetchType.LAZY, mappedBy = "waUiMetadataUid",
+      cascade = {CascadeType.REMOVE},
+      orphanRemoval = true)
+  private WaRdbMetadatum waRdbMetadatum;
+
+
+  @OneToOne(fetch = FetchType.LAZY, mappedBy = "codeSetGroup")
+  private Codeset codeset;
 
   public WaUiMetadata() {
     this.standardNndIndCd = 'F';
@@ -448,7 +452,7 @@ public class WaUiMetadata {
     added(command);
   }
 
-   public WaUiMetadata(WaTemplate page, PageContentCommand.AddSubsection command, Integer orderNumber) {
+  public WaUiMetadata(WaTemplate page, PageContentCommand.AddSubsection command, Integer orderNumber) {
     this();
     this.nbsUiComponentUid = 1016L;
     this.waTemplateUid = page;
@@ -539,7 +543,11 @@ public class WaUiMetadata {
         original.getBatchTableHeader(),
         original.getBatchTableColumnWidth(),
         original.getCoinfectionIndCd(),
-        original.getBlockNm());
+        original.getBlockNm(),
+        original.waRdbMetadatum,
+        original.codeset
+    );
+
   }
 
   private void setVisible(boolean visible) {
@@ -554,7 +562,7 @@ public class WaUiMetadata {
   public void updateQuestionBatch(PageContentCommand.GroupSubsection command) {
     this.blockNm = command.blockName();
     GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
-            .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
+        .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
     this.batchTableAppearIndCd = batch.batchTableAppearIndCd();
     this.batchTableHeader = batch.batchTableHeader();
     this.batchTableColumnWidth = batch.batchTableColumnWidth();
@@ -562,15 +570,34 @@ public class WaUiMetadata {
   }
 
   public void update(PageContentCommand.UnGroupSubsection command) {
-    this.blockNm =null;
+    this.blockNm = null;
     updated(command);
   }
 
   public void updateQuestionBatch(PageContentCommand.UnGroupSubsection command) {
-    this.blockNm=null;
-    this.batchTableAppearIndCd=null;
-    this.batchTableHeader=null;
-    this.batchTableColumnWidth=null;
+    this.blockNm = null;
+    this.batchTableAppearIndCd = null;
+    this.batchTableHeader = null;
+    this.batchTableColumnWidth = null;
+    updated(command);
+  }
+
+  public void update(PageContentCommand.UpdatePageQuestion command, String dataType) {
+    this.questionLabel = command.updatePageQuestionRequest().questionLabel();
+    this.questionToolTip = command.updatePageQuestionRequest().tooltip();
+    this.displayInd = command.updatePageQuestionRequest().display();
+    this.enableInd = command.updatePageQuestionRequest().enabled();
+    this.requiredInd = command.updatePageQuestionRequest().required();
+    this.adminComment = command.updatePageQuestionRequest().adminComments();
+    if (!dataType.equals(DataType.DATE.toString()))
+      this.defaultValue = command.updatePageQuestionRequest().defaultValue();
+    if (dataType.equals(DataType.TEXT.toString()) || dataType.equals(DataType.NUMERIC.toString()))
+      this.fieldSize = command.updatePageQuestionRequest().fieldLength();
+
+    if (this.waRdbMetadatum != null) {
+      this.waRdbMetadatum.setRptAdminColumnNm(command.updatePageQuestionRequest().defaultLabelInReport());
+      this.waRdbMetadatum.setUserDefinedColumnNm(command.updatePageQuestionRequest().dataMartColumnName());
+    }
     updated(command);
   }
 

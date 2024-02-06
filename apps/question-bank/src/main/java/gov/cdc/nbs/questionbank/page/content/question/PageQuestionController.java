@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
+import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
+import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesQuestion;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +17,15 @@ public class PageQuestionController {
 
   private final PageQuestionAdder adder;
   private final PageQuestionDeleter deleter;
+  private final PageQuestionUpdater updater;
 
 
-  public PageQuestionController(final PageQuestionAdder contentManager, final PageQuestionDeleter deleter) {
+  public PageQuestionController(final PageQuestionAdder contentManager,
+      final PageQuestionDeleter deleter,
+      final PageQuestionUpdater updater) {
     this.adder = contentManager;
     this.deleter = deleter;
+    this.updater = updater;
   }
 
   @PostMapping("subsection/{subsection}/questions")
@@ -37,5 +43,14 @@ public class PageQuestionController {
       @PathVariable("questionId") Long questionId,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     deleter.deleteQuestion(page, questionId, details.getId());
+  }
+
+  @PutMapping("questions/{questionId}")
+  public PagesQuestion updatePageQuestion(
+      @PathVariable("page") Long pageId,
+      @PathVariable("questionId") Long questionId,
+      @RequestBody UpdatePageQuestionRequest request,
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+    return updater.updatePageQuestion(pageId, questionId, request, details.getId());
   }
 }
