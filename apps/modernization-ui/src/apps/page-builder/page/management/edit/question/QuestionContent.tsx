@@ -17,6 +17,8 @@ type Props = {
     displayComponent?: number;
     identifier: string;
     valueSet: string;
+    id: number;
+    isStandard: boolean;
 };
 
 const hyperlinkId = 1003;
@@ -27,7 +29,16 @@ const originalElecDocId = 1036;
 
 const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, participantListId, originalElecDocId];
 
-export const QuestionContent = ({ type, valueSet, name, identifier, displayComponent, defaultValue }: Props) => {
+export const QuestionContent = ({
+    type,
+    valueSet,
+    name,
+    identifier,
+    displayComponent,
+    defaultValue,
+    id,
+    isStandard
+}: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
     const { setEditValueSet } = useContext(QuestionsContext);
 
@@ -90,17 +101,27 @@ export const QuestionContent = ({ type, valueSet, name, identifier, displayCompo
 
                 {type === 'DATE' && <Icon.CalendarToday size={4} className={styles.icon} data-testid="calendar-icon" />}
             </div>
-            {valueSet && (
+            {valueSet && !isStandard && (
                 <div className="margin-top-1em">
                     <Button
-                        className={styles.unStyledButton}
+                        className={`${styles.unStyledButton} margin-right-2`}
                         type="button"
                         onClick={() => {
                             setEditValueSet?.({ valueSetNm: valueSet });
                         }}
                         unstyled>
                         <Icon.Edit className="margin-right-2px" />
-                        <span> Edit Value set</span>
+                        <span> Edit value set</span>
+                    </Button>
+                    <Button
+                        className={styles.unStyledButton}
+                        type="button"
+                        onClick={() => {
+                            setEditValueSet?.({ valueSetNm: valueSet, statusCd: 'change', nbsUid: id });
+                        }}
+                        unstyled>
+                        <Icon.Edit className="margin-right-2px" />
+                        <span> Change value set</span>
                     </Button>
                 </div>
             )}

@@ -36,6 +36,7 @@ describe('when ReorderSubsection renders', () => {
     };
     const subsection: PagesSubSection = {
         id: 123456,
+        isGrouped: false,
         name: 'Test Section',
         order: 1,
         questions: [

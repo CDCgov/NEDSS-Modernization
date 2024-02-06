@@ -15,7 +15,10 @@ Feature: Patient Profile Documents Requiring Review: Lab Report Permission
     Given I can "View" any "Document"
     And I can "View" any "ObservationMorbidityReport"
     And the patient has a lab report
+    And the lab report has not been processed
     And the patient has a morbidity report
-    And the patient has an unprocessed document
+    And the morbidity report has not been processed
+    And the patient has a Case Report
+    And the case report has not been processed
     When I search for documents requiring review for the patient
     Then no lab reports are returned

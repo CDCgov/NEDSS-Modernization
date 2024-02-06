@@ -1,0 +1,80 @@
+@use 'styles/colors';
+
+.block {
+    border: 1px solid colors.$base-lighter;
+    .header {
+        padding: 1rem 1rem;
+        background-color: colors.$cool-accent-lighter;
+    }
+    .row {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-around;
+        gap: 0.25rem;
+        .number {
+            width: 3%;
+        }
+        .name {
+            width: 40%;
+        }
+        .appears {
+            width: 20%;
+        }
+        .label {
+            width: 22%;
+        }
+        .width {
+            width: 15%;
+        }
+        &.header {
+            background-color: colors.$base-white;
+            border-bottom: 2px solid colors.$base-lighter;
+            font-size: 1rem;
+            font-weight: 700;
+            padding: .5rem 0 1rem;
+            p {
+                margin: 0;
+            }
+            .appears {
+                width: 20%;
+                p::after {
+                    content: '*';
+                    color: colors.$secondary;
+                }
+            }
+            .label {
+                width: 22%;
+                p::after {
+                    content: '*';
+                    color: colors.$secondary;
+                }
+            }
+            .width {
+                width: 15%;
+                p::after {
+                    content: '*';
+                    color: colors.$secondary;
+                }
+            }
+        }
+    }
+    .table {
+        width: 100%;
+        padding: 1rem;
+        tfoot tr td {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 0.85rem;
+            h4 {
+                margin-left: 1.5rem;
+                width: 2rem;
+                color: colors.$secondary-vivid;
+            }
+            &.valid h4 {
+                color: colors.$base-darkest;
+            }
+        }
+    }
+}

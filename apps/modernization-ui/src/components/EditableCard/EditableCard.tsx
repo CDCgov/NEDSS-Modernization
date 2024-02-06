@@ -19,7 +19,7 @@ export const EditableCard = ({ title, data, children, editing = false, onEdit, r
     return (
         <div className="common-card">
             <div className="grid-row flex-align-center flex-justify padding-x-2 padding-y-3 border-bottom border-base-lighter">
-                <p className="font-sans-lg text-bold margin-0 table-header">{title}</p>
+                <h2 className="font-sans-lg text-bold margin-0 table-header">{title}</h2>
                 {!editing && (
                     <Button type="button" className="grid-row" onClick={onEdit} disabled={readOnly}>
                         <Icon.Edit className="margin-right-05" />

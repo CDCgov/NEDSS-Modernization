@@ -11,6 +11,9 @@ Feature: Validate question
                 | unique-field       |
                 | uniqueId           |
                 | uniqueName         |
+                | rdbColumnName      |
+                | dataMartColumnName |
+
 
     Scenario: I cannot use invalid unique field
         Given I am an admin user
@@ -22,11 +25,19 @@ Feature: Validate question
                  | unique-field       |
                  | uniqueId           |
                  | uniqueName         |
+                 | rdbColumnName      |
+                 | dataMartColumnName |
 
     Scenario: I cannot validate non unique field
         Given I am an admin user
         And A text question exists
         When I validate unique field "non-unique"
+        Then a validate unique question exception is thrown
+
+    Scenario: I cannot validate rdbColumnName with invalid subgroup
+        Given I am an admin user
+        And A text question exists
+        When I validate rdbColumnName with invalid subgroup
         Then a validate unique question exception is thrown
 
     Scenario: I cannot validate unique field without logging in

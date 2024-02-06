@@ -77,8 +77,13 @@ table.usa-table {
 }
 
 // Default button styling
-button.usa-button {
-    font-size: 1rem;
+.usa-button {
+    &:has(svg) {
+        align-items: center;
+        padding: 0.6875rem 1.25rem;
+        display: inline-flex;
+        gap: 0.3125rem
+    }
 
     svg {
         vertical-align: bottom;

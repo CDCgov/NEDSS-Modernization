@@ -11,9 +11,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.*;
 
+import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
-import org.junit.jupiter.api.Assertions;
+import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.FieldName;
+import gov.cdc.nbs.questionbank.valueset.ValueSetReader;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -44,6 +46,9 @@ class QuestionFinderTest {
 
   @Mock
   private WaUiMetadataRepository metadatumRepository;
+
+  @Mock
+  private ValueSetReader valueSetReader;
 
   @InjectMocks
   private QuestionFinder finder;
@@ -133,11 +138,16 @@ class QuestionFinderTest {
   void should_return_true_for_unique_fields() {
     when(questionRepository.findIdByQuestionIdentifier(anyString())).thenReturn(Collections.EMPTY_LIST);
     when(questionRepository.findIdByQuestionNm(anyString())).thenReturn(Collections.EMPTY_LIST);
+    when(questionRepository.findIdByRdbColumnNm(anyString())).thenReturn(Collections.EMPTY_LIST);
+    when(questionRepository.findIdByUserDefinedColumnNm(anyString())).thenReturn(Collections.EMPTY_LIST);
 
-    assertTrue(finder.checkUnique(
-        new QuestionValidationRequest(QuestionValidationRequest.FieldName.UNIQUE_ID.getValue(), "unique")));
-    assertTrue(finder.checkUnique(
-        new QuestionValidationRequest(QuestionValidationRequest.FieldName.UNIQUE_NAME.getValue(), "unique")));
+    when(valueSetReader.findConceptCodes(anyString())).thenReturn(getConceptList());
+
+    assertTrue(finder.checkUnique(new QuestionValidationRequest(FieldName.UNIQUE_ID.getValue(), "unique")));
+    assertTrue(finder.checkUnique(new QuestionValidationRequest(FieldName.UNIQUE_NAME.getValue(), "unique")));
+    assertTrue(finder.checkUnique(new QuestionValidationRequest(FieldName.DATA_MART_COLUMN_NAME.getValue(), "unique")));
+    assertTrue(
+        finder.checkUnique(new QuestionValidationRequest(FieldName.RDB_COLUMN_NAME.getValue(), "subgroup_unique")));
   }
 
   @Test
@@ -146,11 +156,27 @@ class QuestionFinderTest {
     result.add(new Object[] {"Sample"});
     when(questionRepository.findIdByQuestionIdentifier(anyString())).thenReturn(result);
     when(questionRepository.findIdByQuestionNm(anyString())).thenReturn(result);
+    when(questionRepository.findIdByRdbColumnNm(anyString())).thenReturn(result);
+    when(questionRepository.findIdByUserDefinedColumnNm(anyString())).thenReturn(result);
 
-    assertFalse(finder.checkUnique(
-        new QuestionValidationRequest(QuestionValidationRequest.FieldName.UNIQUE_ID.getValue(), "duplicate")));
-    assertFalse(finder.checkUnique(
-        new QuestionValidationRequest(QuestionValidationRequest.FieldName.UNIQUE_NAME.getValue(), "duplicate")));
+    when(valueSetReader.findConceptCodes(anyString())).thenReturn(getConceptList());
+
+    assertFalse(finder.checkUnique(new QuestionValidationRequest(FieldName.UNIQUE_ID.getValue(), "duplicate")));
+    assertFalse(finder.checkUnique(new QuestionValidationRequest(FieldName.UNIQUE_NAME.getValue(), "duplicate")));
+    assertFalse(
+        finder.checkUnique(new QuestionValidationRequest(FieldName.RDB_COLUMN_NAME.getValue(), "subgroup_duplicate")));
+    assertFalse(
+        finder.checkUnique(new QuestionValidationRequest(FieldName.DATA_MART_COLUMN_NAME.getValue(), "duplicate")));
+  }
+
+  @Test
+  void should_throw_exception_for_invalid_subgroup() {
+    QuestionValidationRequest invalidSubgroupRequest =
+        new QuestionValidationRequest(FieldName.RDB_COLUMN_NAME.getValue(), "xxx_unique");
+    when(valueSetReader.findConceptCodes(anyString())).thenReturn(getConceptList());
+    UniqueQuestionException exception =
+        assertThrows(UniqueQuestionException.class, () -> finder.checkUnique(invalidSubgroupRequest));
+    assertEquals("invalid subgroup Code", exception.getMessage());
   }
 
   @Test
@@ -159,6 +185,11 @@ class QuestionFinderTest {
     UniqueQuestionException exception =
         assertThrows(UniqueQuestionException.class, () -> finder.checkUnique(invalidFieldRequest));
     assertEquals("invalid unique field name", exception.getMessage());
+  }
 
+  private List<Concept> getConceptList() {
+    Concept concept = new Concept("subgroup", null, null, null, null,
+        null, null, null, null, null);
+    return Arrays.asList(concept);
   }
 }

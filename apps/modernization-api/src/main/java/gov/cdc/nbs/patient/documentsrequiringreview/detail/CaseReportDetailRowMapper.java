@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.documentsrequiringreview.detail;
 
+import gov.cdc.nbs.data.time.InstantColumnMapper;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -33,7 +34,9 @@ class CaseReportDetailRowMapper implements RowMapper<DocumentRequiringReview> {
   @Override
   public DocumentRequiringReview mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
     long identifier = resultSet.getLong(columns.identifier());
-    Instant receivedOn = resultSet.getTimestamp(columns.receivedOn()).toInstant();
+
+    Instant receivedOn = InstantColumnMapper.map(resultSet, columns.receivedOn());
+
     String type = resultSet.getString(columns.type());
     boolean updated = resultSet.getBoolean(columns.updated());
     String event = resultSet.getString(columns.event());

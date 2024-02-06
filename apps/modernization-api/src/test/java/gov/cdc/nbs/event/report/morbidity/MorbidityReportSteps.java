@@ -49,12 +49,12 @@ public class MorbidityReportSteps {
         );
   }
 
-  @Given("the morbidity report has not been processed")
+  @Given("^(?i)the morbidity report has not been processed")
   public void the_morbidity_report_has_been_processed() {
     activeReport.maybeActive().ifPresent(reportMother::unprocessed);
   }
 
-  @Given("the morbidity report was ordered by the provider")
+  @Given("^(?i)the morbidity report was ordered by the provider")
   public void the_morbidity_report_was_ordered_by_the_provider() {
     activeReport.maybeActive()
         .ifPresent(lab -> this.activeProvider.maybeActive()

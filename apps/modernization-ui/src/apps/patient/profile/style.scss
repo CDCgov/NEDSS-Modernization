@@ -1,11 +1,5 @@
 @use 'styles/colors';
 
-.delete-btn {
-    &:hover {
-        background-color: #ec3823 !important;
-    }
-}
-
 .main-banner {
     background-color: colors.$background;
 }
@@ -36,4 +30,11 @@
         position: relative !important;
         left: 0;
     }
+}
+
+.tab-panel-unstyled-button {
+    color: initial;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
 }

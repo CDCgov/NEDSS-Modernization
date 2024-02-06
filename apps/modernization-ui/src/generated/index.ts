@@ -7,6 +7,7 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { Address } from './models/Address';
+export type { Analytics } from './models/Analytics';
 export type { ConceptOptionsResponse } from './models/ConceptOptionsResponse';
 export type { Configuration } from './models/Configuration';
 export type { Create } from './models/Create';
@@ -31,6 +32,8 @@ export type { Page } from './models/Page';
 export type { PageBuilder } from './models/PageBuilder';
 export type { Properties } from './models/Properties';
 export { ProviderFacilitySearch } from './models/ProviderFacilitySearch';
+export type { Settings } from './models/Settings';
+export type { Smarty } from './models/Smarty';
 
 export { ConceptOptionsService } from './services/ConceptOptionsService';
 export { ConditionOptionsService } from './services/ConditionOptionsService';

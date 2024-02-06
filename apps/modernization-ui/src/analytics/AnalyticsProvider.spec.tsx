@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { AnalyticsProvider } from './AnalyticsContext';
+import { AnalyticsProvider } from './AnalyticsProvider';
 
 describe('AnalyticsWrapper', () => {
     it('renders children with ApolloProvider', async () => {

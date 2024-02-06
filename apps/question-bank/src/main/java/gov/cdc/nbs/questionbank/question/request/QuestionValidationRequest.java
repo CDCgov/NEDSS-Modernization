@@ -5,7 +5,7 @@ public record QuestionValidationRequest(String fieldName, String value) {
   public enum FieldName {
     UNIQUE_ID("uniqueId"),
     UNIQUE_NAME("uniqueName"),
-    RDB_TABLE_NAME("rdbTableName"),
+    RDB_COLUMN_NAME("rdbColumnName"),
     DATA_MART_COLUMN_NAME("dataMartColumnName");
 
     private final String value;

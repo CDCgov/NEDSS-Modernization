@@ -25,7 +25,7 @@ const PatientResult = ({ result, onSelected }: PatientResultProps) => {
             <Grid col={4}>
                 <Grid row gap={3}>
                     <Grid col={12} className="margin-bottom-2">
-                        <h5 className="margin-0 text-normal search-result-item-label text-gray-50">LEGAL NAME</h5>
+                        <p className="margin-0 text-normal search-result-item-label text-gray-50">LEGAL NAME</p>
                         <a
                             onClick={() => onSelected(result)}
                             tabIndex={0}
