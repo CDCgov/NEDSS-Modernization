@@ -14,7 +14,6 @@ export type CreateQuestionForm = Omit<CreateQuestionRequest & AdditionalQuestion
 };
 
 export type AdditionalQuestionFields = {
-    questionType?: QuestionType;
     relatedUnits?: boolean;
     unitType?: 'literal' | 'coded' | '';
 };
@@ -22,7 +21,6 @@ export type AdditionalQuestionFields = {
 type Props = {
     question?: CreateQuestionForm;
 };
-export type QuestionType = 'CODED' | 'NUMERIC' | 'TEXT' | 'DATE';
 
 export const QuestionForm = ({ question }: Props) => {
     const form = useFormContext<CreateQuestionForm>();

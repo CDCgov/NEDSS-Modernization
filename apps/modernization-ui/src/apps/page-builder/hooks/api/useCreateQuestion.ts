@@ -13,12 +13,11 @@ import {
     TextQuestion
 } from '../../generated';
 
-export type CreateQuestionRequest = (
-    | CreateNumericQuestionRequest
-    | CreateTextQuestionRequest
-    | CreateCodedQuestionRequest
-    | CreateDateQuestionRequest
-) & { questionType: 'CODED' | 'NUMERIC' | 'TEXT' | 'DATE' };
+export type CreateQuestionRequest =
+    | (CreateNumericQuestionRequest & { questionType: 'NUMERIC' })
+    | (CreateTextQuestionRequest & { questionType: 'TEXT' })
+    | (CreateCodedQuestionRequest & { questionType: 'CODED' })
+    | (CreateDateQuestionRequest & { questionType: 'DATE' });
 
 type State =
     | { status: 'idle' }

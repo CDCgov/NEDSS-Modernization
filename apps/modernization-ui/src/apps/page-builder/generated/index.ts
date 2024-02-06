@@ -141,6 +141,7 @@ export { PageSummaryService } from './services/PageSummaryService';
 export { PageSummaryDownloadControllerService } from './services/PageSummaryDownloadControllerService';
 export { ProgramAreaControllerService } from './services/ProgramAreaControllerService';
 export { QuestionControllerService } from './services/QuestionControllerService';
+export { QuestionControllerHelperService } from './services/QuestionControllerHelperService';
 export { ReorderControllerService } from './services/ReorderControllerService';
 export { SectionControllerService } from './services/SectionControllerService';
 export { SubSectionControllerService } from './services/SubSectionControllerService';

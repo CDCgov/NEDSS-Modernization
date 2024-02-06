@@ -1,15 +1,18 @@
 import { Button, ButtonGroup, ErrorMessage, Label, Radio, Textarea } from '@trussworks/react-uswds';
 import { Heading } from 'components/heading';
 
+import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
+import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
-import { CreateQuestionForm, QuestionType } from '../QuestionForm';
+import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
 
-const questionTypes: { name: string; value: QuestionType }[] = [
+const questionTypes: { name: string; value: 'CODED' | 'NUMERIC' | 'TEXT' | 'DATE' }[] = [
     { name: 'Value set', value: 'CODED' },
     { name: 'Numeric entry', value: 'NUMERIC' },
     { name: 'Text only', value: 'TEXT' },
@@ -23,6 +26,22 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const watch = useWatch(form);
     const { options: subgroups } = useOptions('NBS_QUES_SUBGROUP');
+    const { isValid, validate } = useQuestionValidation(QuestionValidationRequest.field.UNIQUE_ID);
+
+    const validateUniqueId = async (uniqueId?: string) => {
+        if (uniqueId) {
+            validate(uniqueId);
+        }
+    };
+
+    useEffect(() => {
+        // check === false to keep undefined from triggering an error
+        if (isValid === false) {
+            form.setError('uniqueId', {
+                message: `A question with Unique ID: ${watch.uniqueId} already exists in the system`
+            });
+        }
+    }, [isValid]);
 
     return (
         <>
@@ -64,7 +83,10 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                         <Input
                             onChange={onChange}
-                            onBlur={onBlur}
+                            onBlur={() => {
+                                onBlur();
+                                validateUniqueId(watch.uniqueId);
+                            }}
                             defaultValue={value}
                             label="Unique ID"
                             type="text"
