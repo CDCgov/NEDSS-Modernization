@@ -58,7 +58,7 @@ export const DataMartFields = ({ editing = false }: Props) => {
         // check === false to keep undefined from triggering an error
         if (isValidRdbColumn === false) {
             form.setError('dataMartInfo.rdbColumnName', {
-                message: `A column name: ${dataMartInfo?.rdbColumnName} already exists in the system with the specified subgroup`
+                message: `An Rdb column named: ${dataMartInfo?.rdbColumnName} already exists in the system for the specified subgroup`
             });
         }
     }, [isValidRdbColumn]);
@@ -66,7 +66,7 @@ export const DataMartFields = ({ editing = false }: Props) => {
     useEffect(() => {
         if (isValidDataMartColumnName === false) {
             form.setError('dataMartInfo.dataMartColumnName', {
-                message: `A column name: ${dataMartInfo?.dataMartColumnName} already exists in the system`
+                message: `A Data mart column named: ${dataMartInfo?.dataMartColumnName} already exists in the system`
             });
         }
     }, [isValidDataMartColumnName]);
