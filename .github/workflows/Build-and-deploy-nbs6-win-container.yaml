@@ -7,7 +7,7 @@ on:
     #   - "cdc-sandbox/nbs6-win-container/**"
 jobs:
   call-build-windows-container-workflow:
-    name: Build Container
+    name: Build Windows Container
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@nbs6-docker-image
     with:
       container_name: nbs6
