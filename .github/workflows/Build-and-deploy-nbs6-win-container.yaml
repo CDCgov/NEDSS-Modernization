@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - nbs6-docker-image
-    paths:
-      - "cdc-sandbox/nbs-classic/**"
+    # paths:
+    #   - "cdc-sandbox/nbs6-win-container/**"
 jobs:
   sonar_scan:
     uses: ./.github/workflows/sonar.yaml
