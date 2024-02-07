@@ -79,10 +79,10 @@ const codedDisplayOptions: SelectOption[] = [
 
 export const UserInterfaceFields = () => {
     const form = useFormContext<CreateQuestionForm>();
-    const watch = useWatch(form);
+    const questionType = useWatch({ control: form.control, name: 'questionType', exact: true });
 
     const getDisplayTypeOptions = (): SelectOption[] => {
-        switch (watch.questionType) {
+        switch (questionType) {
             case 'CODED':
                 return codedDisplayOptions;
             case 'DATE':

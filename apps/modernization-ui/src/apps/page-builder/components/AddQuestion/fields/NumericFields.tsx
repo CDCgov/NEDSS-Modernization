@@ -15,9 +15,13 @@ type Props = {
 };
 export const NumericFields = ({ maskOptions }: Props) => {
     const form = useFormContext<CreateNumericQuestionRequest & AdditionalQuestionFields>();
-    const watch = useWatch(form);
+    const [mask, relatedUnits, unitType] = useWatch({
+        control: form.control,
+        name: ['mask', 'relatedUnits', 'unitType'],
+        exact: true
+    });
     const [numericMaskOptions, setNumericMaskOptions] = useState<Option[]>([]);
-    const [relatedUnits, setRelatedUnits] = useState(false);
+    const [relatedUnitsToggle, setRelatedUnitsToggle] = useState(false);
     const [valueSets, setValueSets] = useState<Selectable[]>([]);
 
     useEffect(() => {
@@ -44,18 +48,18 @@ export const NumericFields = ({ maskOptions }: Props) => {
     }, [maskOptions]);
 
     useEffect(() => {
-        if (watch.mask !== CreateNumericQuestionRequest.mask.NUM) {
+        if (mask !== CreateNumericQuestionRequest.mask.NUM) {
             form.resetField('fieldLength');
         }
-    }, [watch.mask]);
+    }, [mask]);
 
     useEffect(() => {
         form.resetField('relatedUnitsLiteral');
         form.resetField('relatedUnitsValueSet');
-        if (!watch.relatedUnits) {
+        if (!relatedUnits) {
             form.resetField('unitType');
         }
-    }, [watch.unitType, watch.relatedUnits]);
+    }, [unitType, relatedUnits]);
 
     return (
         <>
@@ -86,7 +90,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                 name="fieldLength"
                 rules={{
                     required: {
-                        value: watch.mask === CreateNumericQuestionRequest.mask.NUM,
+                        value: mask === CreateNumericQuestionRequest.mask.NUM,
                         message: 'Field length is required'
                     },
                     ...maxLengthRule(10)
@@ -104,8 +108,8 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={watch.mask !== CreateNumericQuestionRequest.mask.NUM}
-                        required
+                        disabled={mask !== CreateNumericQuestionRequest.mask.NUM}
+                        required={mask === CreateNumericQuestionRequest.mask.NUM}
                     />
                 )}
             />
@@ -173,10 +177,10 @@ export const NumericFields = ({ maskOptions }: Props) => {
                     value="yes"
                     label="Yes"
                     onChange={() => {
-                        setRelatedUnits(true);
+                        setRelatedUnitsToggle(true);
                         form.setValue('relatedUnits', true);
                     }}
-                    checked={relatedUnits}
+                    checked={relatedUnitsToggle}
                 />
                 <Radio
                     id="allowFutureDates no"
@@ -184,13 +188,13 @@ export const NumericFields = ({ maskOptions }: Props) => {
                     value="no"
                     label="No"
                     onChange={() => {
-                        setRelatedUnits(false);
+                        setRelatedUnitsToggle(false);
                         form.setValue('relatedUnits', false);
                     }}
-                    checked={!relatedUnits}
+                    checked={!relatedUnitsToggle}
                 />
             </div>
-            {watch.relatedUnits && (
+            {relatedUnits && (
                 <>
                     <Controller
                         control={form.control}
@@ -217,7 +221,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                             />
                         )}
                     />
-                    {watch.unitType === 'literal' && (
+                    {unitType === 'literal' && (
                         <Controller
                             control={form.control}
                             name="relatedUnitsLiteral"
@@ -241,7 +245,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                             )}
                         />
                     )}
-                    {watch.unitType === 'coded' && (
+                    {unitType === 'coded' && (
                         <Controller
                             control={form.control}
                             name="relatedUnitsValueSet"

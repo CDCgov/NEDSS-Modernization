@@ -24,7 +24,11 @@ type Props = {
 };
 export const BasicInformationFields = ({ editing = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
-    const watch = useWatch(form);
+    const [uniqueId, uniqueName, questionType] = useWatch({
+        control: form.control,
+        name: ['uniqueId', 'uniqueName', 'questionType'],
+        exact: true
+    });
     const { options: subgroups } = useOptions('NBS_QUES_SUBGROUP');
     const { isValid: uniqueIdIsValid, validate: validateUniqueId } = useQuestionValidation(
         QuestionValidationRequest.field.UNIQUE_ID
@@ -49,7 +53,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
         // check === false to keep undefined from triggering an error
         if (uniqueIdIsValid === false) {
             form.setError('uniqueId', {
-                message: `A question with Unique ID: ${watch.uniqueId} already exists in the system`
+                message: `A question with Unique ID: ${uniqueId} already exists in the system`
             });
         }
     }, [uniqueIdIsValid]);
@@ -58,7 +62,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
         // check === false to keep undefined from triggering an error
         if (uniqueNameIsValid === false) {
             form.setError('uniqueName', {
-                message: `A question with Unique name: ${watch.uniqueName} already exists in the system`
+                message: `A question with Unique name: ${uniqueName} already exists in the system`
             });
         }
     }, [uniqueNameIsValid]);
@@ -105,7 +109,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                             onChange={onChange}
                             onBlur={() => {
                                 onBlur();
-                                handleUniqueIdValidation(watch.uniqueId);
+                                handleUniqueIdValidation(uniqueId);
                             }}
                             defaultValue={value}
                             label="Unique ID"
@@ -131,7 +135,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         onChange={onChange}
                         onBlur={() => {
                             onBlur();
-                            handleUniqueNameValidation(watch.uniqueName);
+                            handleUniqueNameValidation(uniqueName);
                         }}
                         defaultValue={value}
                         label="Unique name"
@@ -207,7 +211,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                                 <Button
                                     key={k}
                                     type="button"
-                                    outline={field.value !== watch.questionType}
+                                    outline={field.value !== questionType}
                                     disabled={editing}
                                     onClick={() => {
                                         onChange(field.value);

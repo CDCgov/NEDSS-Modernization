@@ -7,15 +7,16 @@ import { NumericFields } from './NumericFields';
 import { TextFields } from './TextFields';
 
 export const QuestionSpecificFields = () => {
-    const watch = useWatch(useFormContext<CreateQuestionForm>());
+    const form = useFormContext<CreateQuestionForm>();
+    const questionType = useWatch({ control: form.control, name: 'questionType', exact: true });
     const { options: maskOptions } = useOptions('NBS_MASK_TYPE');
 
     return (
         <>
-            {watch.questionType === 'CODED' && <CodedFields />}
-            {watch.questionType === 'NUMERIC' && <NumericFields maskOptions={maskOptions} />}
-            {watch.questionType === 'TEXT' && <TextFields maskOptions={maskOptions} />}
-            {watch.questionType === 'DATE' && <DateFields maskOptions={maskOptions} />}
+            {questionType === 'CODED' && <CodedFields />}
+            {questionType === 'NUMERIC' && <NumericFields maskOptions={maskOptions} />}
+            {questionType === 'TEXT' && <TextFields maskOptions={maskOptions} />}
+            {questionType === 'DATE' && <DateFields maskOptions={maskOptions} />}
         </>
     );
 };

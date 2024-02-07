@@ -24,28 +24,19 @@ type Props = {
 
 export const QuestionForm = ({ question }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
-    const watch = useWatch<CreateQuestionForm>(form);
+    const displayControl = useWatch<CreateQuestionForm>({
+        control: form.control,
+        name: 'displayControl',
+        exact: true
+    });
 
     useEffect(() => {
-        if (watch.displayControl?.toString() === '1026') {
+        if (displayControl?.toString() === '1026') {
             // Clear data mart / messaging values when `Readonly User text, number, or date` display control is selected
-            form.reset({
-                ...form.getValues(),
-                dataMartInfo: {
-                    reportLabel: undefined,
-                    defaultRdbTableName: undefined,
-                    dataMartColumnName: undefined,
-                    rdbColumnName: undefined
-                },
-                messagingInfo: {
-                    messageVariableId: undefined,
-                    labelInMessage: undefined,
-                    codeSystem: undefined,
-                    hl7DataType: undefined
-                }
-            });
+            form.resetField('dataMartInfo');
+            form.resetField('messagingInfo');
         }
-    }, [watch.displayControl]);
+    }, [displayControl]);
 
     return (
         <div className={styles.form}>
@@ -53,7 +44,7 @@ export const QuestionForm = ({ question }: Props) => {
             <QuestionSpecificFields />
             <div className={styles.divider} />
             <UserInterfaceFields />
-            {watch.displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'
+            {displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'
                 <>
                     <div className={styles.divider} />
                     <DataMartFields editing={question !== undefined} />

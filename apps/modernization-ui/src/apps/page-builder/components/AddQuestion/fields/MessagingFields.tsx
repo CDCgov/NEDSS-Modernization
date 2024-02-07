@@ -16,10 +16,10 @@ export const MessagingFields = ({ editing = false }: Props) => {
     const { options: codeSystems } = useOptions('CODE_SYSTEM');
     const { options: hl7Options } = useOptions('NBS_HL7_DATA_TYPE');
     const form = useFormContext<CreateQuestionForm>();
-    const watch = useWatch(form);
+    const messagingInfo = useWatch({ control: form.control, name: 'messagingInfo', exact: true });
 
     useEffect(() => {
-        if (!watch.messagingInfo?.includedInMessage) {
+        if (!messagingInfo?.includedInMessage) {
             form.reset({
                 ...form.getValues(),
                 messagingInfo: {
@@ -30,7 +30,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 }
             });
         }
-    }, [watch.messagingInfo?.includedInMessage]);
+    }, [messagingInfo?.includedInMessage]);
 
     return (
         <>
@@ -57,7 +57,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 name="messagingInfo.messageVariableId"
                 rules={{
                     required: {
-                        value: watch.messagingInfo?.includedInMessage ?? false,
+                        value: messagingInfo?.includedInMessage ?? false,
                         message: 'Message ID is required'
                     },
                     ...maxLengthRule(50)
@@ -72,8 +72,8 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={!watch.messagingInfo?.includedInMessage}
-                        required={watch.messagingInfo?.includedInMessage}
+                        disabled={!messagingInfo?.includedInMessage}
+                        required={messagingInfo?.includedInMessage}
                         error={error?.message}
                     />
                 )}
@@ -83,7 +83,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 name="messagingInfo.labelInMessage"
                 rules={{
                     required: {
-                        value: watch.messagingInfo?.includedInMessage ?? false,
+                        value: messagingInfo?.includedInMessage ?? false,
                         message: 'Message label is required'
                     },
                     ...maxLengthRule(100)
@@ -98,8 +98,8 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        required={watch.messagingInfo?.includedInMessage}
-                        disabled={!watch.messagingInfo?.includedInMessage}
+                        required={messagingInfo?.includedInMessage}
+                        disabled={!messagingInfo?.includedInMessage}
                         error={error?.message}
                     />
                 )}
@@ -109,7 +109,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 name="messagingInfo.codeSystem"
                 rules={{
                     required: {
-                        value: watch.messagingInfo?.includedInMessage ?? false,
+                        value: messagingInfo?.includedInMessage ?? false,
                         message: 'Code system name is required'
                     }
                 }}
@@ -123,8 +123,8 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         id={name}
                         htmlFor={name}
                         options={codeSystems}
-                        disabled={!watch.messagingInfo?.includedInMessage}
-                        required={watch.messagingInfo?.includedInMessage}
+                        disabled={!messagingInfo?.includedInMessage}
+                        required={messagingInfo?.includedInMessage}
                     />
                 )}
             />
@@ -143,7 +143,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                                 className="requiredInMessage"
                                 checked={value}
                                 name="includedInMessage"
-                                disabled={!watch.messagingInfo?.includedInMessage}
+                                disabled={!messagingInfo?.includedInMessage}
                                 onChange={onChange}
                             />
                             <div>Required</div>
@@ -156,7 +156,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 name="messagingInfo.hl7DataType"
                 rules={{
                     required: {
-                        value: watch.messagingInfo?.includedInMessage ?? false,
+                        value: messagingInfo?.includedInMessage ?? false,
                         message: 'HL7 data type required'
                     }
                 }}
@@ -170,8 +170,8 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={!watch.messagingInfo?.includedInMessage}
-                        required={watch.messagingInfo?.includedInMessage}
+                        disabled={!messagingInfo?.includedInMessage}
+                        required={messagingInfo?.includedInMessage}
                         options={hl7Options}
                     />
                 )}
