@@ -23,7 +23,7 @@ const ProtectedLayout = () => {
 const WithUser = (user: User) => {
     const data = useLoaderData() as InitializationLoaderResult;
     return (
-        <UserContextProvider user={user}>
+        <UserContextProvider initial={user}>
             <Await resolve={data?.configuration}>{WithConfiguration}</Await>
         </UserContextProvider>
     );

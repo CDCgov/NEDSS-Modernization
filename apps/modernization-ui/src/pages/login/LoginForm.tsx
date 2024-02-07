@@ -23,6 +23,7 @@ const LoginForm = () => {
                     } else {
                         setError('Login failed');
                     }
+                    setPending(false);
                 });
         }
     }, [pending, username, setError]);

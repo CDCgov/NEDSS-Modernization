@@ -1,35 +1,11 @@
-import React, { ReactNode, useReducer } from 'react';
+import React, { ReactNode, useEffect, useReducer } from 'react';
 
 import { Config } from 'config';
 import { User } from 'user';
+import { getToken } from 'authorization';
+import { TokenProvider } from 'authorization/authorization';
 
-const USER_ID = 'nbs_user=';
-const TOKEN = 'nbs_token=';
-
-type TokenProvider = () => string | undefined;
-
-type InternalState = {
-    status: 'waiting' | 'ready';
-    user?: User;
-};
-
-type LoginState = {
-    user?: User;
-    isLoggedIn: boolean;
-    getToken: TokenProvider;
-};
-
-// Grab token from cookie as it is updated on every request
-const getToken: TokenProvider = () => {
-    if (document.cookie.includes(TOKEN)) {
-        const tokenStart = document.cookie.indexOf(TOKEN) + TOKEN.length;
-        const tokenEnd = document.cookie.indexOf(';', tokenStart);
-        return document.cookie.substring(tokenStart, tokenEnd > -1 ? tokenEnd : document.cookie.length);
-    } else {
-        return undefined;
-    }
-};
-
+type InternalState = { status: 'waiting' } | { status: 'ready'; user: User } | { status: 'logout' };
 const waiting: InternalState = {
     status: 'waiting'
 };
@@ -41,52 +17,55 @@ const reducer = (_state: InternalState, action: Action): InternalState => {
         case 'ready':
             return { status: 'ready', user: action.user };
         case 'logout':
-            return waiting;
+            return { status: 'logout' };
     }
 };
 
-export const UserContext = React.createContext<{
-    state: LoginState;
+type LoginInteraction = {
+    user?: User;
+    isLoggedIn: boolean;
+    getToken: TokenProvider;
+};
+
+type Interaction = {
+    state: LoginInteraction;
     logout: () => void;
-}>({
+};
+
+const UserContext = React.createContext<Interaction>({
     state: { isLoggedIn: false, getToken },
     logout: () => {}
 });
 
-const initialize = (user?: User): InternalState => {
-    if (user) {
-        return { status: 'ready', user };
-    } else {
-        return waiting;
-    }
-};
+const initialize = (user?: User): InternalState => (user ? { status: 'ready', user } : waiting);
 
 type Props = {
     children: ReactNode;
-    user?: User;
+    initial?: User;
 };
 
-const UserContextProvider = ({ user, children }: Props) => {
-    const [state, dispatch] = useReducer(reducer, user, initialize);
+const UserContextProvider = ({ initial, children }: Props) => {
+    const [state, dispatch] = useReducer(reducer, initial, initialize);
 
-    const logout = () => {
-        // delete cookies
-        document.cookie = USER_ID + '=; Max-Age=0; path=/;';
-        // load appropriate page
-        if (Config.enableLogin) {
-            // reset state
-            dispatch({ type: 'logout' });
-        } else {
-            // loading external page will clear state
-            window.location.href = `${Config.nbsUrl}/logOut`;
+    useEffect(() => {
+        if (state.status === 'logout') {
+            // delete cookies
+            document.cookie = 'nbs_user=; Max-Age=0; path=/;';
+            document.cookie = 'nbs_token=; Max-Age=0; path=/;';
+            if (Config.enableLogin) {
+                // loading external page will clear state
+                window.location.href = '/nbs/logOut';
+            }
         }
-    };
+    }, [dispatch, state.status]);
+
+    const logout = () => dispatch({ type: 'logout' });
 
     const value = { state: { ...state, isLoggedIn: state.status === 'ready', getToken }, logout };
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
-export { UserContextProvider };
+export { UserContextProvider, UserContext };
 
-export type { User, LoginState };
+export type { User, LoginInteraction as LoginState };
