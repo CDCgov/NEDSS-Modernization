@@ -1,27 +1,22 @@
 package gov.cdc.nbs.patient.profile.administrative.change;
 
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 
 @Component
-@Transactional
-public class PatientAdministrativeChangeService {
+class PatientAdministrativeChangeService {
 
-    private final EntityManager entityManager;
+  private final PatientProfileService service;
 
-    public PatientAdministrativeChangeService(final EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+  PatientAdministrativeChangeService(final PatientProfileService service) {
+    this.service = service;
+  }
 
-    public void update(final RequestContext context, final UpdatePatientAdministrative input) {
-        Person patient = managed(input.patient());
+  void update(final RequestContext context, final UpdatePatientAdministrative input) {
 
-        patient.update(
+    this.service.using(input.patient(), found -> found.update(
             new PatientCommand.UpdateAdministrativeInfo(
                 input.patient(),
                 input.asOf(),
@@ -29,11 +24,9 @@ public class PatientAdministrativeChangeService {
                 context.requestedBy(),
                 context.requestedAt()
             )
-        );
-    }
+        )
+    );
 
-    private Person managed(final long patient) {
-        return this.entityManager.find(Person.class, patient);
-    }
 
+  }
 }

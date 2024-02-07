@@ -35,7 +35,7 @@ public class PatientMother {
   private final EntityManager entityManager;
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
-  private final TestPatientCleaner cleaner;
+  private final PatientCleaner cleaner;
 
   PatientMother(
       final MotherSettings settings,
@@ -46,7 +46,7 @@ public class PatientMother {
       final EntityManager entityManager,
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
-      final TestPatientCleaner cleaner
+      final PatientCleaner cleaner
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -61,7 +61,8 @@ public class PatientMother {
   }
 
   void reset() {
-    this.cleaner.clean(settings.starting());
+
+    this.cleaner.clean();
     this.available.reset();
   }
 
