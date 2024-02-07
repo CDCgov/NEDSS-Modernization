@@ -22,7 +22,4 @@ jobs:
       dockerfile_relative_path: -f ./cdc-sandbox/nbs-classic/Dockerfile .
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-      ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+      ECR_CLASSIC_REPO_BASE_NAME: ${{secrets.ECR_CLASSIC_REPO_BASE_NAME}}
