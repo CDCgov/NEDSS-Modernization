@@ -49,7 +49,7 @@ export const ValuesetLibrary = ({ hideTabs, types, modalRef, createValueModalRef
     const renderValueSetList = (
         <>
             <div className="search-description-block">
-                <p>Let’s find the right value set for your single choice question</p>
+                <p>Let's find the right value set for your single choice question</p>
             </div>
             <div className="valueset-local-library__container">
                 <div className="valueset-local-library__table">
