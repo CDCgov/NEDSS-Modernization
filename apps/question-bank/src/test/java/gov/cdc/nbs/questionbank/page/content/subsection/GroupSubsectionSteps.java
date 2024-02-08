@@ -73,10 +73,10 @@ public class GroupSubsectionSteps {
         try {
             for (WaQuestion question : questionsList) {
                 AddQuestionResponse response = pageQuestionController.addQuestionToPage(
-                  page.getId(),
-                  section.getId(),
-                  new AddQuestionRequest(Arrays.asList(question.getId())),
-                  user.getCurrentUserDetails());
+                        page.getId(),
+                        section.getId(),
+                        new AddQuestionRequest(Arrays.asList(question.getId())),
+                        user.getCurrentUserDetails());
                 questionsIds.add(response.ids().get(0));
             }
         } catch (AccessDeniedException e) {
@@ -94,16 +94,16 @@ public class GroupSubsectionSteps {
         WaQuestion question = questionMother.one();
         try {
             AddQuestionResponse addQuestionResponse = pageQuestionController.addQuestionToPage(
-              page.getId(),
-              section.getId(),
-              new AddQuestionRequest(Arrays.asList(question.getId())),
-              user.getCurrentUserDetails());
+                    page.getId(),
+                    section.getId(),
+                    new AddQuestionRequest(Arrays.asList(question.getId())),
+                    user.getCurrentUserDetails());
             questionsIds.add(addQuestionResponse.ids().get(0));
 
             StaticContentRequests.AddDefault request = new StaticContentRequests.AddDefault("test_comment",
-                section.getId());
+                    section.getId());
             AddStaticResponse addStaticResponse =
-                pageStaticController.addStaticLineSeparator(page.getId(), request, user.getCurrentUserDetails());
+                    pageStaticController.addStaticLineSeparator(page.getId(), request, user.getCurrentUserDetails());
             staticElementId = addStaticResponse.componentId();
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -121,12 +121,13 @@ public class GroupSubsectionSteps {
         WaUiMetadata section = getSection(page);
         try {
             response = subsectionController.groupSubSection(
-                page.getId(),
-                new GroupSubSectionRequest(
-                    section.getId(),
-                    "BLOCK_NAME",
-                    getBatchList()),
-                user.getCurrentUserDetails());
+                    page.getId(),
+                    new GroupSubSectionRequest(
+                            section.getId(),
+                            "BLOCK_NAME",
+                            getBatchList(),
+                            2),
+                    user.getCurrentUserDetails());
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -156,11 +157,14 @@ public class GroupSubsectionSteps {
         List<GroupSubSectionRequest.Batch> batchList = new ArrayList<>();
         if (staticElementId != null) {
             batchList.add(new GroupSubSectionRequest.Batch(staticElementId, 'Y', "header_" + staticElementId, 50));
-            batchList.add(new GroupSubSectionRequest.Batch(questionsIds.get(0), 'Y', "header_" + questionsIds.get(0), 50));
+            batchList.add(
+                    new GroupSubSectionRequest.Batch(questionsIds.get(0), 'Y', "header_" + questionsIds.get(0), 50));
         } else {
             if (!questionsIds.isEmpty()) {
-                batchList.add(new GroupSubSectionRequest.Batch(questionsIds.get(0), 'Y', "header_" + questionsIds.get(0), 50));
-                batchList.add(new GroupSubSectionRequest.Batch(questionsIds.get(1), 'Y', "header_" + questionsIds.get(1), 50));
+                batchList.add(new GroupSubSectionRequest.Batch(questionsIds.get(0), 'Y',
+                        "header_" + questionsIds.get(0), 50));
+                batchList.add(new GroupSubSectionRequest.Batch(questionsIds.get(1), 'Y',
+                        "header_" + questionsIds.get(1), 50));
             }
         }
         return batchList;
@@ -168,9 +172,9 @@ public class GroupSubsectionSteps {
 
     WaUiMetadata getSection(WaTemplate page) {
         WaUiMetadata section = page.getUiMetadata().stream()
-            .filter(u -> u.getNbsUiComponentUid() == 1016l)
-            .findFirst()
-            .orElseThrow();
+                .filter(u -> u.getNbsUiComponentUid() == 1016l)
+                .findFirst()
+                .orElseThrow();
         return section;
     }
 }

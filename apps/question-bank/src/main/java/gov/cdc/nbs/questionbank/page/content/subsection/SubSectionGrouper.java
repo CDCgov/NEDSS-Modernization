@@ -52,7 +52,6 @@ public class SubSectionGrouper {
       throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
     }
 
-    // grabs all the questions for the page from the rdb database, then it goes through and makes the necessary changes to the rdb object
     Collection<RdbQuestion> temp = finder.resolve(pageId);
     for (GroupSubSectionRequest.Batch b : request.batches()) {
       for (RdbQuestion question : temp) {
@@ -63,8 +62,6 @@ public class SubSectionGrouper {
         }
       }
     }
-    // find max question_group_seq_nbr within the questions of the page
-
     WaUiMetadata section =
         page.groupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
     return ResponseEntity.ok(
