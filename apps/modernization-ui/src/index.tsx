@@ -1,25 +1,13 @@
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import { UserContextProvider } from './providers/UserContext';
 import { AppRoutes } from 'routes/AppRoutes';
-import { AnalyticsProvider } from 'analytics';
 
 import 'styles/global.scss';
-import { ConfigurationProvider } from 'configuration';
 
 render(
     <StrictMode>
-        <BrowserRouter>
-            <ConfigurationProvider>
-                <AnalyticsProvider>
-                    <UserContextProvider>
-                        <AppRoutes />
-                    </UserContextProvider>
-                </AnalyticsProvider>
-            </ConfigurationProvider>
-        </BrowserRouter>
+        <AppRoutes />
     </StrictMode>,
     document.getElementById('root')
 );
