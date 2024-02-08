@@ -1,6 +1,6 @@
 package gov.cdc.nbs.config.security;
 
-import gov.cdc.nbs.authentication.NBSAuthenticationConfigurer;
+import gov.cdc.nbs.authentication.SecurityConfigurer;
 import gov.cdc.nbs.graphql.GraphQLExceptionHandlingConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +17,11 @@ class WebSecurityConfig {
   @Bean
   SecurityFilterChain securityFilterChain(
       final HttpSecurity http,
-      final NBSAuthenticationConfigurer authenticationConfigurer,
+      final SecurityConfigurer configurer,
       final GraphQLExceptionHandlingConfigurer graphQLConfigurer
   )
       throws Exception {
-    return authenticationConfigurer.configure(http)
+    return configurer.configure(http)
         .exceptionHandling(graphQLConfigurer::configure)
         .build();
   }

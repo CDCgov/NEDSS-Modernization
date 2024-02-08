@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.config;
 
-import gov.cdc.nbs.authentication.NBSAuthenticationConfigurer;
+import gov.cdc.nbs.authentication.SecurityConfigurer;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +21,10 @@ class WebSecurityConfig {
   @Bean
   SecurityFilterChain securityFilterChain(
       final HttpSecurity http,
-      final NBSAuthenticationConfigurer authenticationConfigurer
+      final SecurityConfigurer configurer
   )
       throws Exception {
-    return authenticationConfigurer.configure(http)
+    return configurer.configure(http)
         .build();
   }
 
