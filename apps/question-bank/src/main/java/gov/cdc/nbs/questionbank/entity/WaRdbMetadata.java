@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -65,5 +66,15 @@ public class WaRdbMetadata {
 
     @Column(name = "block_pivot_nbr")
     private Integer blockPivotNbr;
+
+    public void groupQuestion(PageContentCommand.GroupSubsectionRdb command) {
+        this.blockPivotNbr = command.repeatingNbr();
+        changed(command);
+    }
+
+    public void changed(PageContentCommand command) {
+        this.lastChgTime = command.requestedOn();
+        this.lastChgUserId = command.userId();
+    }
 
 }

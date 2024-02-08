@@ -161,6 +161,13 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+        public record GroupSubsectionRdb(
+                        int repeatingNbr,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
+
+        }
+
         public record UnGroupSubsection(
                         long subsection,
                         List<Long> batches,

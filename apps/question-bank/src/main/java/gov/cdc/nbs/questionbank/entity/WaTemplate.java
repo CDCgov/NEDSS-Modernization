@@ -153,7 +153,7 @@ public class WaTemplate {
       CascadeType.MERGE,
       CascadeType.REMOVE
   }, orphanRemoval = true)
-  private List<WaRdbMetadatum> waRdbMetadatums;
+  private List<WaRdbMetadata> waRdbMetadatums;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
       CascadeType.PERSIST,

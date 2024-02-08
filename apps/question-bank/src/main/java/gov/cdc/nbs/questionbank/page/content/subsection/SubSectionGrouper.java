@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
+import gov.cdc.nbs.questionbank.entity.WaRdbMetadata;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
+import java.util.Collection;
 
 @Component
 @Service
@@ -20,9 +22,12 @@ public class SubSectionGrouper {
 
   private final EntityManager entityManager;
   private final QuestionManagementUtil questionManagementUtil;
+  private final SubSectionQuestionFinder finder;
 
-  public SubSectionGrouper(final EntityManager entityManager, QuestionManagementUtil questionManagementUtil) {
+  public SubSectionGrouper(final EntityManager entityManager, QuestionManagementUtil questionManagementUtil,
+      final SubSectionQuestionFinder finder) {
     this.entityManager = entityManager;
+    this.finder = finder;
     this.questionManagementUtil = questionManagementUtil;
   }
 
@@ -46,8 +51,17 @@ public class SubSectionGrouper {
       throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
     }
 
+    // grabs all the questions for the page from the rdb database, then it goes through and makes the necessary changes to the rdb object
+    Collection<RdbQuestion> temp = finder.resolve(pageId);
+    for (GroupSubSectionRequest.Batch b : request.batches()) {
+      for (RdbQuestion question : temp) {
+        if (b.id() == question.waIdentifier()) {
+          WaRdbMetadata cur = entityManager.find(WaRdbMetadata.class, question.identifier());
+          cur.groupQuestion(asCommand(userId, request.repeatingNbr()));
+        }
+      }
+    }
     // find max question_group_seq_nbr within the questions of the page
-    // look for question from batch in the WA_RDB_metadata table and add the block number (check for the WA_UI_metadata uid and the template uid)
 
     WaUiMetadata section =
         page.groupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
@@ -63,6 +77,12 @@ public class SubSectionGrouper {
     WaUiMetadata section =
         page.unGroupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
     return ResponseEntity.ok("Subsection " + section.getId() + " is ungrouped Successfully ");
+  }
+
+  private PageContentCommand.GroupSubsectionRdb asCommand(
+      Long userId,
+      int repeatingNbr) {
+    return new PageContentCommand.GroupSubsectionRdb(repeatingNbr, userId, Instant.now());
   }
 
   private PageContentCommand.GroupSubsection asCommand(
