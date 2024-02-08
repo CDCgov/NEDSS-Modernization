@@ -44,3 +44,4 @@ export { PatientRaceService } from './services/PatientRaceService';
 export { UserService } from './services/UserService';
 export { UserControllerService } from './services/UserControllerService';
 export { UserOptionsService } from './services/UserOptionsService';
+export { ProviderOptionsService } from './services/ProviderOptionsService';
