@@ -546,19 +546,20 @@ public class WaUiMetadata {
     this.displayInd = visible ? "T" : "F";
   }
 
-  public void update(PageContentCommand.GroupSubsection command) {
+  public void update(PageContentCommand.GroupSubsection command, int questionGroupSeqNbr) {
     this.blockNm = command.blockName();
-    this.questionGroupSeqNbr = (int) command.repeatingNbr();
+    this.questionGroupSeqNbr = questionGroupSeqNbr;
     updated(command);
   }
 
-  public void updateQuestionBatch(PageContentCommand.GroupSubsection command) {
+  public void updateQuestionBatch(PageContentCommand.GroupSubsection command, int groupSeqNbr) {
     this.blockNm = command.blockName();
     GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
     this.batchTableAppearIndCd = batch.batchTableAppearIndCd();
     this.batchTableHeader = batch.batchTableHeader();
     this.batchTableColumnWidth = batch.batchTableColumnWidth();
+    this.questionGroupSeqNbr = groupSeqNbr;
     updated(command);
   }
 

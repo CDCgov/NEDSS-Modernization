@@ -722,6 +722,13 @@ public class WaTemplate {
   public WaUiMetadata groupSubSection(PageContentCommand.GroupSubsection command,
       List<Long> questionNbsUiComponentUids) {
     verifyDraftType();
+    int max = 0;
+    for (WaUiMetadata entry : uiMetadata) {
+      if (entry.getQuestionGroupSeqNbr() != null) {
+        max = Math.max(entry.getQuestionGroupSeqNbr(), max);
+      }
+    }
+    final int finalMax = ++max;
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
     uiMetadata.stream()
         .filter(ui -> batchIds.contains(ui.getId()))
@@ -731,15 +738,16 @@ public class WaTemplate {
           }
           return true;
         }).forEach(questionBatch -> {
-          questionBatch.updateQuestionBatch(command);
+          questionBatch.updateQuestionBatch(command, finalMax);
           changed(command);
         });
+
 
     WaUiMetadata subsection = uiMetadata.stream()
         .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
-    subsection.update(command);
+    subsection.update(command, finalMax);
     changed(command);
     return subsection;
   }

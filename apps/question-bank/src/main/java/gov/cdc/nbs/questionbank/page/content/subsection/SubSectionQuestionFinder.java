@@ -13,7 +13,7 @@ class SubSectionQuestionFinder {
                 [component].wa_rdb_metadata_uid     as [identifier],
                 [component].wa_ui_metadata_uid      as [waIdentifier],
                 [component].wa_template_uid         as [templateId],
-                [component].bloack_pivot_nbr        as [repeatingNbr]
+                [component].block_pivot_nbr        as [repeatingNbr]
 
             from WA_RDB_metadata [component]
 

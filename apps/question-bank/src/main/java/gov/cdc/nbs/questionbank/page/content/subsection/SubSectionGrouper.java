@@ -11,13 +11,14 @@ import gov.cdc.nbs.questionbank.question.QuestionManagementUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.util.Collection;
 
 @Component
 @Service
+@Transactional
 public class SubSectionGrouper {
 
   private final EntityManager entityManager;
@@ -58,6 +59,7 @@ public class SubSectionGrouper {
         if (b.id() == question.waIdentifier()) {
           WaRdbMetadata cur = entityManager.find(WaRdbMetadata.class, question.identifier());
           cur.groupQuestion(asCommand(userId, request.repeatingNbr()));
+          entityManager.flush();
         }
       }
     }
