@@ -51,7 +51,7 @@ describe('DataMartFields', () => {
         await waitFor(() => {
             expect(validate).toHaveBeenCalled();
             expect(setError).toHaveBeenNthCalledWith(2, 'dataMartInfo.dataMartColumnName', {
-                message: 'A column name: duplicateDataMartColumnName already exists in the system'
+                message: 'A Data mart column named: duplicateDataMartColumnName already exists in the system'
             });
         });
     });
@@ -73,7 +73,7 @@ describe('DataMartFields', () => {
             expect(validate).toHaveBeenCalled();
             expect(setError).toHaveBeenNthCalledWith(1, 'dataMartInfo.rdbColumnName', {
                 message:
-                    'A column name: duplicateRdbColumnName already exists in the system with the specified subgroup'
+                    'An Rdb column named: duplicateRdbColumnName already exists in the system for the specified subgroup'
             });
         });
     });
