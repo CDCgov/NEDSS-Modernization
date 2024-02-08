@@ -20,7 +20,7 @@ import { authorization } from 'authorization';
 type CommonProps = {
     modalRef: RefObject<ModalRef>;
     pageId: string;
-    getList?: (data: any) => void;
+    getList: (data: QuestionProps[]) => void;
     multiSelected?: boolean;
     header?: string;
 };
@@ -217,7 +217,7 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
                                 onClick={() => {
                                     getList !== undefined && getList(selectedRecord);
                                 }}>
-                                continue
+                                Continue
                             </ModalToggleButton>
                         </ButtonGroup>
                     </ModalFooter>

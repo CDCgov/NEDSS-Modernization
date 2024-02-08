@@ -1,12 +1,9 @@
 import { ApolloClient, ApolloProvider, createHttpLink, from, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { useContext } from 'react';
+import { authorization } from 'authorization';
 import { Config } from '../config';
-import { UserContext } from './UserContext';
 
 export default function ApolloWrapper(props: any) {
-    const { state } = useContext(UserContext);
-
     const httpLink = createHttpLink({
         uri: `${Config.modernizationUrl}/graphql`
     });
@@ -14,7 +11,7 @@ export default function ApolloWrapper(props: any) {
         let header = {};
         header = {
             ...headers,
-            authorization: `Bearer ${state.getToken()}`
+            authorization: authorization()
         };
         return {
             headers: header

@@ -1,0 +1,56 @@
+import { render } from '@testing-library/react';
+import { PagesSubSection } from 'apps/page-builder/generated';
+import { SubsectionDetails } from './SubsectionDetails';
+import { useForm, FormProvider } from 'react-hook-form';
+import { ReactNode } from 'react';
+import { GroupSubSectionRequest } from 'apps/page-builder/generated';
+
+type Additional = {
+    repeatNumber: number;
+    visibleText: string;
+};
+
+type GroupQuestionFormType = GroupSubSectionRequest & PagesSubSection & Additional;
+
+const Wrapper = ({ children }: { children: ReactNode }) => {
+    const methods = useForm<GroupQuestionFormType>({
+        defaultValues: {
+            name: "subsection.name",
+            batches: [{
+                batchTableAppearIndCd: undefined,
+                batchTableColumnWidth: undefined,
+                batchTableHeader: undefined,
+                id: 1234
+            }],
+            blockName: undefined,
+            id: 1234,
+            visibleText: 'Y',
+            repeatNumber: 1
+        },
+        mode: 'onBlur'
+    });
+
+    return <FormProvider {...methods}>{children}</FormProvider>;
+};
+
+const setup = () => {
+    return render(
+        <Wrapper>
+            <SubsectionDetails />
+        </Wrapper>
+    );
+};
+
+describe('when Subsection renders', () => {
+
+    it('should display input fields', () => {
+        const { container } = setup();
+        const inputs = container.getElementsByTagName('input');
+        expect(inputs.length).toBe(5);
+    });
+    it('should display input labels', () => {
+        const { container } = setup();
+        const labels = container.getElementsByTagName('label');
+        expect(labels.length).toBe(2);
+    });
+});

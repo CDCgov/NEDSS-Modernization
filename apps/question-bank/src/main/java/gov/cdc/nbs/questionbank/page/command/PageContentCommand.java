@@ -2,9 +2,12 @@ package gov.cdc.nbs.questionbank.page.command;
 
 import java.time.Instant;
 import java.util.List;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
+
 
 public sealed interface PageContentCommand {
         long userId();
@@ -19,11 +22,13 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record UpdateDefaultStaticElement(
                         long userId,
                         String adminComments,
                         Instant requestedOn) implements PageContentCommand {
         }
+
 
         public record AddReadOnlyParticipantsList(
                         WaTemplate page,
@@ -33,6 +38,7 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record AddOrignalElectronicDocList(
                         WaTemplate page,
                         Integer orderNumber,
@@ -40,6 +46,7 @@ public sealed interface PageContentCommand {
                         String adminComments,
                         Instant requestedOn) implements PageContentCommand {
         }
+
 
         public record AddHyperLink(
                         WaTemplate page,
@@ -51,6 +58,7 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record UpdateHyperlink(
                         long userId,
                         String adminComments,
@@ -58,6 +66,7 @@ public sealed interface PageContentCommand {
                         String linkUrl,
                         Instant requestedOn) implements PageContentCommand {
         }
+
 
         public record AddReadOnlyComments(
                         WaTemplate page,
@@ -68,12 +77,14 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record UpdateReadOnlyComments(
                         long userId,
                         String comments,
                         String adminComments,
                         Instant requestedOn) implements PageContentCommand {
         }
+
 
         public record AddQuestion(
                         Long page,
@@ -83,6 +94,7 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record AddTab(
                         String label,
                         boolean visible,
@@ -90,6 +102,7 @@ public sealed interface PageContentCommand {
                         long userId,
                         Instant requestedOn) implements PageContentCommand {
         }
+
 
         public record UpdateTab(
                         String label,
@@ -99,11 +112,13 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record DeleteTab(
                         long tabId,
                         long userId,
                         Instant requestedOn) implements PageContentCommand {
         }
+
 
         public record AddSection(
                         String label,
@@ -114,6 +129,7 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record UpdateSection(
                         String label,
                         boolean visible,
@@ -122,11 +138,13 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record DeleteSection(
                         long setionId,
                         long userId,
                         Instant requestedOn) implements PageContentCommand {
         }
+
 
         public record AddSubsection(
                         String label,
@@ -137,6 +155,7 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record UpdateSubsection(
                         String label,
                         boolean visible,
@@ -145,12 +164,14 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record DeleteSubsection(
                         long subsectionId,
                         long userId,
                         Instant requestedOn) implements PageContentCommand {
 
         }
+
 
         public record GroupSubsection(
                         long subsection,
@@ -168,6 +189,7 @@ public sealed interface PageContentCommand {
 
         }
 
+
         public record UnGroupSubsection(
                         long subsection,
                         List<Long> batches,
@@ -175,11 +197,13 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record DeleteQuestion(
                         Long question,
                         long userId,
                         Instant requestedOn) implements PageContentCommand {
         }
+
 
         public record AddRule(
                         String ruleCd,
@@ -191,8 +215,17 @@ public sealed interface PageContentCommand {
                         Instant requestedOn) implements PageContentCommand {
         }
 
+
         public record DeleteRule(
                         long ruleId,
+                        long userId,
+                        Instant requestedOn) implements PageContentCommand {
+        }
+
+
+        public record UpdatePageQuestion(
+                        Long question,
+                        UpdatePageQuestionRequest updatePageQuestionRequest,
                         long userId,
                         Instant requestedOn) implements PageContentCommand {
         }

@@ -802,4 +802,22 @@ public class WaTemplate {
   }
 
 
+  public WaUiMetadata updatePageQuestion(PageContentCommand.UpdatePageQuestion command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // ensure page already contain question
+    WaUiMetadata question = uiMetadata.stream()
+        .filter(e -> e.getId() != null
+            && e.getId().equals(command.question())).findFirst()
+        .orElseThrow(() ->
+            new PageContentModificationException(
+                "Unable to update a question from a page, the page does not contain the question"));
+
+    question.update(command, question.getDataType());
+    changed(command);
+    return question;
+  }
+
+
 }

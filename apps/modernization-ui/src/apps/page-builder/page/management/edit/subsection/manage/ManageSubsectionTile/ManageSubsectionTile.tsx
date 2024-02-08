@@ -123,7 +123,7 @@ export const ManageSubsectionTile = ({
                                     outline
                                     disabled={action}
                                     onClick={() => {
-                                        setDeleteWarning(undefined);
+                                        setDeleteWarning(subsection);
                                         setOnAction?.(true);
                                     }}>
                                     <Icon.Delete style={{ cursor: 'pointer' }} size={3} />

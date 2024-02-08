@@ -30,7 +30,7 @@ public class AvailableQuestionMapper {
         tuple.get(tables.uiComponent().typeCdDesc),
 
         // Datamart - Reporting
-        tuple.get(tables.question().questionLabelNnd),
+        tuple.get(tables.question().rptAdminColumnNm),
         tuple.get(tables.question().rdbTableNm),
         tuple.get(tables.question().rdbColumnNm),
         tuple.get(tables.question().userDefinedColumnNm),

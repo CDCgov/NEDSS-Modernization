@@ -111,7 +111,7 @@ public class AvailableQuestionFinder {
         this.tables.question().nbsUiComponentUid,
         this.tables.uiComponent().typeCdDesc,
         // Datamart - Reporting
-        this.tables.question().questionLabelNnd,
+        this.tables.question().rptAdminColumnNm,
         this.tables.question().rdbTableNm,
         this.tables.question().rdbColumnNm,
         this.tables.question().userDefinedColumnNm,

@@ -49,8 +49,9 @@ public class WaRdbMetadata {
     @Column(name = "local_id", length = 50)
     private String localId;
 
-    @Column(name = "wa_ui_metadata_uid")
-    private Long waUiMetadataUid;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "wa_ui_metadata_uid", nullable = false)
+    private WaUiMetadata waUiMetadataUid;
 
     @Column(name = "rdb_table_nm", length = 30)
     private String rdbTableNm;

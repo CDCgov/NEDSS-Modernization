@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 export type ValueSetSearchResponse = {
+    codeSetGroupId?: number;
     type?: string;
     valueSetCode?: string;
     valueSetDescription?: string;

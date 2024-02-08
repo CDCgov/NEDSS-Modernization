@@ -1,0 +1,43 @@
+@use 'styles/colors';
+
+.details, .block {
+    border: 1px solid colors.$base-lighter;
+    width: 100%;
+    .header {
+        padding: 1rem 1rem;
+        background-color: colors.$cool-accent-lighter;
+    }
+}
+.details {
+    margin-bottom: 1.5rem;
+    .row {
+        margin: 1rem;
+        border: 1px solid colors.$base-lighter;
+        display: flex;
+        padding: 0.5rem;
+        .label, .field {
+            width: 50%;
+            p {
+                font-size: 1rem;
+                font-weight: 600;
+                margin-left: 2.5rem;
+                &::after {
+                    content: '*';
+                    color: colors.$secondary;
+                }
+            }
+        }
+        .field {
+            p {
+                margin-left: 0;
+                font-weight: 400;
+                font-size: 1rem;
+            }
+        }
+        .radio {
+            display: flex;
+            gap: 1rem;
+            color: colors.$base-light;
+        }
+    }
+}

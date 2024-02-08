@@ -147,7 +147,7 @@ public class QuestionMapper {
 
     }
 
-    UpdateQuestion toUpdateQuestion(UpdateQuestionRequest updateQuestionRequest) {
+    public UpdateQuestion toUpdateQuestion(UpdateQuestionRequest updateQuestionRequest) {
         if (updateQuestionRequest instanceof UpdateTextQuestionRequest tq) {
             return new UpdateQuestion(tq);
         } else if (updateQuestionRequest instanceof UpdateDateQuestionRequest dq) {
