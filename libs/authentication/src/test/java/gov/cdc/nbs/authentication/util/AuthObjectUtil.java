@@ -53,10 +53,6 @@ public class AuthObjectUtil {
             "test",
             "test",
             "test",
-            false,
-            false,
-            null,
-            null,
             authorities(),
             true
         );
@@ -68,8 +64,6 @@ public class AuthObjectUtil {
             BUSINESS_OPERATION,
             BUSINESS_OBJECT,
             "programArea",
-            123,
-            "jurisdiction",
             AUTHORITY));
         return authorities;
     }

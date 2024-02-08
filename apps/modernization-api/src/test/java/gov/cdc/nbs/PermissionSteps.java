@@ -2,19 +2,17 @@ package gov.cdc.nbs;
 
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.event.search.investigation.InvestigationResolver;
 import gov.cdc.nbs.event.search.labreport.LabReportResolver;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
+import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,18 +27,25 @@ import static org.junit.Assert.assertNull;
 @Transactional
 public class PermissionSteps {
 
-  @Autowired
-  Active<ActiveUser> activeUser;
+  private final Active<ActiveUser> activeUser;
+  private final LabReportResolver labReportResolver;
+  private final InvestigationResolver investigationResolver;
+  private final Active<UserDetails> activeUserDetails;
 
-  @Autowired
-  ProgramAreaCodeRepository programAreaCodeRepository;
-  @Autowired
-  LabReportResolver labReportResolver;
-  @Autowired
-  InvestigationResolver investigationResolver;
+  private Object response;
+  private AccessDeniedException exception;
 
-  @Autowired
-  Active<UserDetails> activeUserDetails;
+  public PermissionSteps(
+      final Active<ActiveUser> activeUser,
+      final LabReportResolver labReportResolver,
+      final InvestigationResolver investigationResolver,
+      final Active<UserDetails> activeUserDetails
+  ) {
+    this.activeUser = activeUser;
+    this.labReportResolver = labReportResolver;
+    this.investigationResolver = investigationResolver;
+    this.activeUserDetails = activeUserDetails;
+  }
 
   @Before
   public void clearAuth() {
@@ -48,16 +53,11 @@ public class PermissionSteps {
     activeUserDetails.reset();
   }
 
-  private Object response;
-  private AccessDeniedException exception;
-
   @Given("I have the authorities: {string} for the jurisdiction: {string} and program area: {string}")
   public void i_have_the_authority(String authoritiesString, String jurisdiction, String programArea) {
     var authorities = authoritiesString.split(",");
     var nbsAuthorities = new HashSet<NbsAuthority>();
-    var programAreas = programAreaCodeRepository.findAll();
-    var programAreaEntry = programAreas.stream().filter(f -> f.getId().equals(programArea)).findFirst()
-        .orElseThrow(() -> new IllegalArgumentException("Unable to find program area: " + programArea));
+
     for (var authority : authorities) {
       // Create a NbsAuthority object based on provided input
       var operationObject = authority.trim().split("-");
@@ -67,9 +67,7 @@ public class PermissionSteps {
           .businessOperation(operation)
           .businessObject(object)
           .authority(authority.trim())
-          .jurisdiction(jurisdiction)
           .programArea(programArea)
-          .programAreaUid(programAreaEntry.getNbsUid())
           .build());
     }
 

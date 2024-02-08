@@ -99,8 +99,6 @@ public class UserPermissionFinder {
         var businessOperation = t.get(QAuthBusOpType.authBusOpType.busOpNm);
         var businessObject = t.get(QAuthBusObjType.authBusObjType.busObjNm);
         var progArea = t.get(QAuthUserRole.authUserRole.progAreaCd);
-        var progAreaCode = t.get(QAuthProgramAreaCode.authProgramAreaCode.nbsUid);
-        var jurisdiction = t.get(QAuthUserRole.authUserRole.jurisdictionCd);
         // if current user is assigned 'user' role and perm is valid for 'user' role
         // or current user has 'guest' role and perm is valid for 'guest' role
         if ((userIsGuest.equals('F') && userRight != null && userRight.equals('T'))
@@ -109,8 +107,6 @@ public class UserPermissionFinder {
                     .businessObject(businessObject)
                     .businessOperation(businessOperation)
                     .programArea(progArea)
-                    .programAreaUid(progAreaCode)
-                    .jurisdiction(jurisdiction)
                     .authority(businessOperation + "-" + businessObject)
                     .build();
         } else {

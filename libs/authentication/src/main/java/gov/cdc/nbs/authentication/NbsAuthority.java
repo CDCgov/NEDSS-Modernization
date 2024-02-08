@@ -21,7 +21,5 @@ public class NbsAuthority implements GrantedAuthority {
     private final String businessOperation;
     private final String businessObject;
     private final String programArea;
-    private final Integer programAreaUid;
-    private final String jurisdiction;
     private final String authority;
 }

@@ -28,10 +28,7 @@ dependencies {
 
     implementation libs.springBoot.web
     implementation libs.bundles.security
-    implementation 'org.springframework.security:spring-security-oauth2-resource-server:5.8.8'
-    implementation 'org.springframework.security:spring-security-oauth2-jose:5.8.8'
-
-
+    implementation libs.bundles.oidc
 
     // database
     implementation libs.mssql.jdbc

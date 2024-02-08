@@ -52,9 +52,7 @@ class UserPermissionFinderTest {
         assertEquals("ADD-CT_CONTACT", authority.getAuthority());
         assertEquals("CT_CONTACT", authority.getBusinessObject());
         assertEquals("ADD", authority.getBusinessOperation());
-        assertEquals("ALL", authority.getJurisdiction());
         assertEquals("STD", authority.getProgramArea());
-        assertEquals(15, authority.getProgramAreaUid());
     }
 
     @Test

@@ -28,10 +28,10 @@ public class TokenCreator {
 
     public NBSToken forUser(final String username) {
         Instant now = Instant.now(clock);
-        Instant expiry = now.plus(Duration.ofMillis(properties.getTokenExpirationMillis()));
+        Instant expiry = now.plus(Duration.ofMillis(properties.tokenExpirationMillis()));
         String token = JWT
             .create()
-            .withIssuer(properties.getTokenIssuer())
+            .withIssuer(properties.tokenIssuer())
             .withIssuedAt(now)
             .withExpiresAt(expiry)
             .withSubject(username)

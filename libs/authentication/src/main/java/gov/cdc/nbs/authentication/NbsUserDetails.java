@@ -16,12 +16,13 @@ public class NbsUserDetails implements UserDetails {
   private final String username;
   private final String firstName;
   private final String lastName;
-  private final boolean isMasterSecurityAdmin;
-  private final boolean isProgramAreaAdmin;
-  private final Set<String> adminProgramAreas;
-  private final String password;
   private final Set<NbsAuthority> authorities;
   private final boolean isEnabled;
+
+  @Override
+  public String getPassword() {
+    return null;
+  }
 
   @Override
   public boolean isAccountNonExpired() {
@@ -45,7 +46,7 @@ public class NbsUserDetails implements UserDetails {
    * @param operation The granted action
    * @return {@code true} if the operation can be performed on the object.
    */
-  public boolean hasPermission(
+  private boolean hasPermission(
       final String object,
       final String operation
   ) {
