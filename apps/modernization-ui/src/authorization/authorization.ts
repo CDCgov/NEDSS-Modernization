@@ -14,4 +14,5 @@ const getToken: TokenProvider = () => {
 
 const authorization = () => `Bearer ${getToken()}`;
 
-export { authorization };
+export { authorization, getToken };
+export type { TokenProvider };
