@@ -6,6 +6,7 @@
         "@apollo/client": "^3.8.6",
         "@apollo/react-testing": "^4.0.0",
         "@trussworks/react-uswds": "^5.3.1",
+        "@types/jest": "^28.1.6",
         "@types/react": "18.2.42",
         "@types/react-beautiful-dnd": "^13.1.5",
         "@types/react-dom": "^17",
@@ -34,7 +35,10 @@
         "start": "react-scripts start",
         "build": "npx react-scripts test --watchAll=false && react-scripts build",
         "test": "react-scripts test",
-        "test:coverage": "react-scripts test --coverage",
+        "test:coverageAll": "react-scripts test src/ --coverage --watchAll=false",
+        "test:coveragePatient": "react-scripts test apps/patient/ --coverage --watchAll=false",
+        "test:coveragePageBuilder": "react-scripts test apps/page-builder/ --coverage --watchAll=false",
+        "test:coverageSearch": "react-scripts test apps/search/ --coverage --watchAll=false",
         "eject": "react-scripts eject",
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
@@ -64,6 +68,9 @@
             }
         ]
     },
+    "jest": {
+        "globalSetup": "./global-setup.test.js"
+    },
     "browserslist": {
         "production": [
             ">0.2%",
@@ -87,7 +94,6 @@
         "@testing-library/react": "^12",
         "@testing-library/react-hooks": "^7.0.2",
         "@testing-library/user-event": "^12",
-        "@types/jest": "^29.5.12",
         "@types/lodash.debounce": "^4.0.7",
         "@types/node": "^18.11.5",
         "@typescript-eslint/eslint-plugin": "^5.32.0",
@@ -100,12 +106,10 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "gql-generator": "^1.0.19",
         "http-proxy-middleware": "^2.0.6",
-        "jest": "^29.7.0",
         "openapi-typescript-codegen": "^0.23.0",
         "prettier": "^2.7.1",
         "prop-types": "^15.8.1",
         "sass": "^1.54.0",
-        "ts-jest": "^29.1.2",
         "typescript-plugin-css-modules": "^5.0.2",
         "webpack": "^5.89.0"
     }
