@@ -10,22 +10,22 @@
         "@types/react": "18.2.42",
         "@types/react-beautiful-dnd": "^13.1.5",
         "@types/react-dom": "^17",
-        "classnames": "^2.3.2",
+        "classnames": "^2.5.1",
         "date-fns": "^2.30.0",
         "graphql": "^16.8.1",
         "lodash.debounce": "^4.0.8",
         "multiselect-react-dropdown": "^2.0.25",
-        "posthog-js": "^1.103.1",
+        "posthog-js": "^1.105.3",
         "react": "^17",
         "react-beautiful-dnd": "^13.1.1",
         "react-dom": "^17",
-        "react-hook-form": "^7.36.1",
+        "react-hook-form": "^7.50.1",
         "react-refresh": "^0.14.0",
-        "react-router-dom": "^6.20.1",
+        "react-router-dom": "^6.22.0",
         "react-scripts": "5.0.1",
         "react-select": "^5.7.2",
         "typescript": "^4.7.4",
-        "web-vitals": "^3.5.0"
+        "web-vitals": "^3.5.2"
     },
     "overrides": {
         "react-refresh": "^0.14.0"
@@ -105,8 +105,8 @@
         "openapi-typescript-codegen": "^0.23.0",
         "prettier": "^2.7.1",
         "prop-types": "^15.8.1",
-        "sass": "^1.54.0",
+        "sass": "^1.70.0",
         "typescript-plugin-css-modules": "^5.0.2",
-        "webpack": "^5.89.0"
+        "webpack": "^5.90.1"
     }
 }

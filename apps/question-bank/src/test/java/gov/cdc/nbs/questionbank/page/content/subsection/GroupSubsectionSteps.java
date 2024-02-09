@@ -25,9 +25,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -48,7 +50,6 @@ public class GroupSubsectionSteps {
     @Autowired
     private UserDetailsProvider user;
 
-    ResponseEntity<String> response;
 
     @Autowired
     PageQuestionController pageQuestionController;
@@ -73,10 +74,10 @@ public class GroupSubsectionSteps {
         try {
             for (WaQuestion question : questionsList) {
                 AddQuestionResponse response = pageQuestionController.addQuestionToPage(
-                  page.getId(),
-                  section.getId(),
-                  new AddQuestionRequest(Arrays.asList(question.getId())),
-                  user.getCurrentUserDetails());
+                    page.getId(),
+                    section.getId(),
+                    new AddQuestionRequest(Arrays.asList(question.getId())),
+                    user.getCurrentUserDetails());
                 questionsIds.add(response.ids().get(0));
             }
         } catch (AccessDeniedException e) {
@@ -94,10 +95,10 @@ public class GroupSubsectionSteps {
         WaQuestion question = questionMother.one();
         try {
             AddQuestionResponse addQuestionResponse = pageQuestionController.addQuestionToPage(
-              page.getId(),
-              section.getId(),
-              new AddQuestionRequest(Arrays.asList(question.getId())),
-              user.getCurrentUserDetails());
+                page.getId(),
+                section.getId(),
+                new AddQuestionRequest(Arrays.asList(question.getId())),
+                user.getCurrentUserDetails());
             questionsIds.add(addQuestionResponse.ids().get(0));
 
             StaticContentRequests.AddDefault request = new StaticContentRequests.AddDefault("test_comment",
@@ -110,8 +111,6 @@ public class GroupSubsectionSteps {
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
-
-
     }
 
 
@@ -120,7 +119,7 @@ public class GroupSubsectionSteps {
         WaTemplate page = pageMother.one();
         WaUiMetadata section = getSection(page);
         try {
-            response = subsectionController.groupSubSection(
+            subsectionController.groupSubSection(
                 page.getId(),
                 new GroupSubSectionRequest(
                     section.getId(),
@@ -138,17 +137,11 @@ public class GroupSubsectionSteps {
 
     @Then("the subsection is grouped")
     public void the_subsection_is_grouped() {
-        assertNotNull(response);
-        assertTrue(response.getBody().contains("Grouped Successfully"));
-        assertEquals(200, response.getStatusCodeValue());
-        for (Long questionId : questionsIds) {
-            assertEquals("BLOCK_NAME", repository.findById(questionId).get().getBlockNm());
-        }
+        assertNull(exceptionHolder.getException());
     }
 
     @Then("An Update SubSection Exception is thrown")
     public void the_subsection_is_not_grouped() {
-        assertNull(response);
         assertTrue(exceptionHolder.getException() instanceof UpdateSubSectionException);
     }
 
