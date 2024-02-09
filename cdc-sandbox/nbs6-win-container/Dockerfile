@@ -4,7 +4,7 @@
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 #Set Zip File Name 
-ENV ZIP_NAME="wildfly-10.0.0.Final-<ADD-VERSION>"
+ARG ZIP_NAME="wildfly-10.0.0.Final-<ADD-VERSION>"
 
 # Run Shell as Powershell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
