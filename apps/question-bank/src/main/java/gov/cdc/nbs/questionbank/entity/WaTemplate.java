@@ -721,8 +721,8 @@ public class WaTemplate {
   }
 
 
-  public WaUiMetadata groupSubSection(PageContentCommand.GroupSubsection command,
-      List<Long> questionNbsUiComponentUids) {
+  public void groupSubSection(PageContentCommand.GroupSubsection command, List<Long> questionNbsUiComponentUids) {
+
     verifyDraftType();
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
     uiMetadata.stream()
@@ -743,11 +743,12 @@ public class WaTemplate {
         .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
     subsection.update(command);
     changed(command);
-    return subsection;
+
   }
 
-  public WaUiMetadata unGroupSubSection(PageContentCommand.UnGroupSubsection command,
-      List<Long> questionNbsUiComponentUids) {
+
+  public void unGroupSubSection(PageContentCommand.UnGroupSubsection command, List<Long> questionNbsUiComponentUids) {
+
     verifyDraftType();
 
     List<Long> batchIds = command.batches();
@@ -763,7 +764,6 @@ public class WaTemplate {
           changed(command);
         });
 
-
     WaUiMetadata subsection = uiMetadata.stream()
         .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
         .findFirst()
@@ -771,9 +771,6 @@ public class WaTemplate {
 
     subsection.update(command);
     changed(command);
-
-
-    return subsection;
   }
 
   public WaRuleMetadata addRule(PageContentCommand.AddRule command) {
