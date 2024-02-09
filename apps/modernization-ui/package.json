@@ -5,6 +5,7 @@
     "dependencies": {
         "@apollo/client": "^3.8.6",
         "@apollo/react-testing": "^4.0.0",
+        "@jest/globals": "^29.7.0",
         "@trussworks/react-uswds": "^5.3.1",
         "@types/jest": "^28.1.6",
         "@types/react": "18.2.42",
