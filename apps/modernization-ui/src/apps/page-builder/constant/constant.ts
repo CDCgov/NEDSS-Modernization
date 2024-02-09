@@ -288,7 +288,7 @@ const nonDateCompare = [
         value: '='
     },
     {
-        name: 'No equal to',
+        name: 'Not equal to',
         value: '!='
     }
 ];

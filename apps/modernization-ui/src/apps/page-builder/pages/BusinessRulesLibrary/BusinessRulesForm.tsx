@@ -82,8 +82,38 @@ const BusinessRulesForm = () => {
         }
     };
 
+    const nonDateCompare = [
+        {
+            name: 'Equal to',
+            value: '='
+        },
+        {
+            name: 'Not equal to',
+            value: '!='
+        }
+    ];
+
+    const dateCompare = [
+        {
+            name: 'Less than',
+            value: '<'
+        },
+        {
+            name: 'Less or equal to',
+            value: '<='
+        },
+        {
+            name: 'Greater or equal to',
+            value: '>='
+        },
+        {
+            name: 'Greater than',
+            value: '>'
+        }
+    ];
+
     const ruleFunction = form.watch('ruleFunction');
-    const logicList = ruleFunction == 'Data validation' ? dateCompare : nonDateCompare;
+    const logicList = ruleFunction == 'Date validation' ? dateCompare : nonDateCompare;
 
     const handleSourceValueChange = (data: string[]) => {
         const values = form.getValues('sourceValue');
