@@ -26,7 +26,6 @@ import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetOption;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
@@ -73,7 +72,7 @@ public class ValueSetController {
 
   @GetMapping("/options")
   public List<ValueSetOption> findValueSetOptions() {
-    return optionFinder.findValueSetOptions();
+    return optionFinder.findAllValueSetOptions();
   }
 
   @PostMapping("/update")
@@ -84,9 +83,10 @@ public class ValueSetController {
   }
 
   @PostMapping("search")
-  public Page<ValueSetSearchResponse> searchValueSet(@PageableDefault(size = 25) Pageable pageable,
-      @RequestBody ValueSetSearchRequest search) {
-    return valueSetReader.searchValueSet(search, pageable);
+  public Page<ValueSetOption> searchValueSet(
+      @PageableDefault(size = 25) Pageable pageable,
+      @RequestBody ValueSetSearchRequest request) {
+    return optionFinder.search(request, pageable);
   }
 
   @GetMapping("{codeSetNm}/concepts")

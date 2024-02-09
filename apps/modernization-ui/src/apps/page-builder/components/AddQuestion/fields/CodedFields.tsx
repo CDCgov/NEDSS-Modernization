@@ -20,7 +20,6 @@ export const CodedFields = ({ onFindValueSet }: Props) => {
         ValueSetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) => {
             setValueSets(response);
         });
-        form.setValue('valueSet', -1);
         form.resetField('defaultValue');
     }, []);
 

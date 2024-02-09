@@ -12,8 +12,6 @@ import java.util.UUID;
 
 
 import gov.cdc.nbs.questionbank.entity.*;
-import gov.cdc.nbs.questionbank.valueset.ValueSetFinder;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,16 +25,12 @@ import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import gov.cdc.nbs.questionbank.valueset.ValueSetReader;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
-import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import org.springframework.data.domain.Sort;
 
 class ValueSetReaderTest {
 
   @Mock
   ValueSetRepository valueSetRepository;
-
-  @Mock
-  ValueSetFinder valueSetFinder;
 
   @InjectMocks
   ValueSetReader valueSetReader;
@@ -61,25 +55,6 @@ class ValueSetReaderTest {
     ValueSet one = result.get().toList().get(0);
     assertNotNull(one.valueSetNm());
     assertNotNull(one.valueSetCode());
-  }
-
-  @Test
-  void searchValueSetTest() {
-    ValueSetSearchRequest search = new ValueSetSearchRequest("setnm", "setCode", "descText");
-    List<ValueSetSearchResponse> searchResult = List.of(new ValueSetSearchResponse("LOCAL", "setCode",
-        "setnm", "descText", "Active",100l));
-    Pageable pageable = Pageable.ofSize(1);
-    int start = (int) pageable.getOffset();
-    int end = (start + pageable.getPageSize());
-    Page<ValueSetSearchResponse> expectedResult =
-        new PageImpl<>(searchResult.subList(0, 1), pageable, searchResult.size());
-    when(valueSetFinder.findValueSet(any(ValueSetSearchRequest.class), any(Pageable.class))).thenReturn(expectedResult);
-    Page<ValueSetSearchResponse> actualResult = valueSetReader.searchValueSet(search, pageable);
-    assertNotNull(actualResult);
-    boolean isEquals = (expectedResult.toList().containsAll(actualResult.toList()) &&
-        actualResult.toList().containsAll(expectedResult.stream().toList()));
-    assertTrue(isEquals);
-
   }
 
   private Page<Codeset> getCodeSetPage(int max, Pageable pageable) {

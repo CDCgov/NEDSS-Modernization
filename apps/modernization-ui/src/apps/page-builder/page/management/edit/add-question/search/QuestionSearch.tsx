@@ -83,7 +83,7 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
                     questions={response?.content ?? []}
                     isLoading={isLoading}
                     query={query}
-                    onQuerySubmit={(query) => setQuery(query)}
+                    onQuerySubmit={setQuery}
                     onSortChange={setSort}
                     onSelectionChange={handleSelectedQuestionChange}
                     onCreateNew={onCreateNew}

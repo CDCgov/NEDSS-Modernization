@@ -1,11 +1,10 @@
-import { ValueSetSearchResponse } from 'apps/page-builder/generated';
-import styles from './valueset-search-table.module.scss';
-import { TableComponent } from 'components/Table';
+import { ValueSetOption } from 'apps/page-builder/generated';
+import { TableComponent, TableBody } from 'components/Table';
 import { Button, Icon } from '@trussworks/react-uswds';
 import { Search } from 'components/Search/Search';
 import { Status, usePage } from 'page';
-import { TableBody } from 'components/Table';
 import { useEffect, useState } from 'react';
+import styles from './valueset-search-table.module.scss';
 
 const tableHeaders = [
     { name: 'Type', sortable: true },
@@ -15,9 +14,9 @@ const tableHeaders = [
 
 type Props = {
     isLoading?: boolean;
-    valuesets: ValueSetSearchResponse[];
+    valuesets: ValueSetOption[];
     query?: string;
-    onQuerySubmit?: (query: string) => void;
+    onQuerySubmit: (query: string) => void;
     onSelectionChange: (id: number) => void;
     onCreateNew: () => void;
 };
@@ -38,23 +37,23 @@ export const ValuesetSearchTable = ({
         }
     };
 
-    const toTableRow = (valueset: ValueSetSearchResponse): TableBody => {
+    const toTableRow = (valueset: ValueSetOption): TableBody => {
         return {
-            id: valueset.valueSetCode,
-            key: valueset.valueSetCode,
+            id: valueset.id,
+            key: valueset.id,
             checkbox: false,
             selectable: false,
             radioButton: true,
-            onSelect: () => valueset.codeSetGroupId && onSelectionChange(valueset.codeSetGroupId),
+            onSelect: () => valueset.id && onSelectionChange(valueset.id),
             tableDetails: [
                 {
                     id: 1,
-                    title: valueset?.type
+                    title: valueset.type
                 },
-                { id: 2, title: valueset.valueSetName },
+                { id: 2, title: valueset.name },
                 {
                     id: 3,
-                    title: valueset.valueSetDescription
+                    title: valueset.description
                 }
             ]
         };
