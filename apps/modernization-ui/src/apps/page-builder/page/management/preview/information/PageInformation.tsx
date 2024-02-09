@@ -65,7 +65,7 @@ const PageInformation = () => {
     };
 
     const handleViewPage = () => {
-        navigate(`/page-builder/pages/page-details/${pageId}`);
+        navigate(`/page-builder/pages/${pageId}/details`);
     };
 
     const renderTabs = (
@@ -81,7 +81,7 @@ const PageInformation = () => {
     const renderBlock = (header: string, desc: string = '-') => (
         <div className={styles.lineBlock}>
             <div className={styles.detailHeader}>{header}</div>
-            <div className={styles.smallBodyText}>{desc}</div>
+            <div className={styles.smallBodyText}>{desc || '-'}</div>
         </div>
     );
 
