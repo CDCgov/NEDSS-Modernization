@@ -34,8 +34,10 @@ public class ValueSetOptionFinder {
         metadataTable.id,
         metadataTable.codeSetShortDescTxt,
         metadataTable.codeSetNm,
-        metadataTable.codeSetDescTxt)
+        metadataTable.codeSetDescTxt,
+        valuesetTable.valueSetTypeCd)
         .from(metadataTable)
+        .leftJoin(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
         .where(metadataTable.ldfPicklistIndCd.eq('Y')
             .and(metadataTable.id.in(
                 JPAExpressions.select(valuesetTable.codeSetGroup.id)
@@ -54,6 +56,7 @@ public class ValueSetOptionFinder {
     // Get the value set Ids that match the provided criteria
     List<Long> allIds = findIds(request.query())
         .orderBy(orders)
+        .fetch()
         .stream()
         .map(tuple -> tuple.get(metadataTable.id))
         .toList();
@@ -74,23 +77,24 @@ public class ValueSetOptionFinder {
   }
 
   private JPAQuery<Tuple> findIds(String query) {
+    query = "%" + query + "%";
     return factory.select(
         metadataTable.id,
         metadataTable.codeSetShortDescTxt,
         metadataTable.codeSetNm,
         metadataTable.codeSetDescTxt,
         valuesetTable.valueSetTypeCd)
-        .join(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
         .from(metadataTable)
+        .join(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
         .where(metadataTable.ldfPicklistIndCd.eq('Y')
             .and(metadataTable.id.in(
                 JPAExpressions.select(valuesetTable.codeSetGroup.id)
                     .from(valuesetTable)
-                    .where(valuesetTable.id.classCd.eq("code_value_general").and(valuesetTable.statusCd.eq("A"))
-                        .and(
-                            metadataTable.codeSetShortDescTxt.like(query)
-                                .or(metadataTable.codeSetDescTxt.like(query)
-                                    .or(metadataTable.codeSetNm.like(query))))))));
+                    .where(valuesetTable.id.classCd.eq("code_value_general").and(valuesetTable.statusCd.eq("A"))))
+                .and(
+                    metadataTable.codeSetShortDescTxt.like(query)
+                        .or(metadataTable.codeSetDescTxt.like(query)
+                            .or(metadataTable.codeSetNm.like(query))))));
   }
 
   private List<ValueSetOption> findByIds(List<Long> ids, OrderSpecifier<?>[] orders) {
@@ -99,11 +103,12 @@ public class ValueSetOptionFinder {
         metadataTable.codeSetShortDescTxt,
         metadataTable.codeSetNm,
         metadataTable.codeSetDescTxt,
-        valuesetTable.valueSetTypeCd.toUpperCase())
-        .join(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
+        valuesetTable.valueSetTypeCd)
         .from(metadataTable)
+        .join(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
         .where(metadataTable.id.in(ids))
         .orderBy(orders)
+        .fetch()
         .stream()
         .map(this::toOption)
         .toList();
@@ -137,6 +142,6 @@ public class ValueSetOptionFinder {
         row.get(metadataTable.codeSetShortDescTxt),
         row.get(metadataTable.codeSetNm),
         row.get(metadataTable.codeSetDescTxt),
-        row.get(valuesetTable.valueSetTypeCd));
+        row.get(valuesetTable.valueSetTypeCd).toUpperCase());
   }
 }
