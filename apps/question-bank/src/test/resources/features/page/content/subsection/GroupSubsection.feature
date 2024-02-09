@@ -18,7 +18,8 @@ Feature: Group Subsection
 
     Scenario: I cannot group a subsection contains static elements
         Given I am an admin user
-        And i add a list of questions and a static element to a subsection
+        And i add a list of questions to a subsection
+        And I create an add line separator request with "admin comments"
         When I send a group subsection request
         Then An Update SubSection Exception is thrown
 

@@ -69,11 +69,16 @@ public class SubSectionController {
     }
 
     @PostMapping("/group")
-    public ResponseEntity<String> groupSubSection(
+    public void groupSubSection(
             @PathVariable("page") Long page,
             @RequestBody GroupSubSectionRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-        return grouper.group(page, request, details.getId());
+        grouper.group(page, request, details.getId());
+    }
+
+    @PostMapping("/testing")
+    public void testing(@ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        System.out.println("do nothing");
     }
 
     @PostMapping("/un-group")

@@ -10,14 +10,12 @@ import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectio
 import gov.cdc.nbs.questionbank.question.QuestionManagementUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.util.Collection;
 
 @Component
-@Service
 @Transactional
 public class SubSectionGrouper {
 
@@ -33,7 +31,7 @@ public class SubSectionGrouper {
   }
 
 
-  public ResponseEntity<String> group(Long pageId, GroupSubSectionRequest request, Long userId) {
+  public void group(Long pageId, GroupSubSectionRequest request, Long userId) {
     if (request.blockName() == null) {
       throw new UpdateSubSectionException("SubSection Block Name is required");
     }
@@ -62,10 +60,7 @@ public class SubSectionGrouper {
         }
       }
     }
-    WaUiMetadata section =
-        page.groupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
-    return ResponseEntity.ok(
-        "Subsection " + section.getId() + " is  Grouped Successfully , Block Name is " + section.getBlockNm());
+    page.groupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
   }
 
   public ResponseEntity<String> unGroup(Long pageId, UnGroupSubSectionRequest request, Long userId) {

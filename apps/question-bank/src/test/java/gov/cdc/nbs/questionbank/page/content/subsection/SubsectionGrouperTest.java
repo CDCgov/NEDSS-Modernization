@@ -66,9 +66,8 @@ class SubsectionGrouperTest {
         when(entityManager.find(WaRdbMetadata.class, 2L)).thenReturn(temp2);
 
         Long userId = 456L;
-        ResponseEntity<String> result = grouper.group(1l, request, userId);
-        assertEquals("Subsection " + request.id() + " is  Grouped Successfully , Block Name is " + request.blockName(),
-                result.getBody());
+        grouper.group(1l, request, userId);
+        verify(page).groupSubSection(any(), any());
     }
 
     @Test

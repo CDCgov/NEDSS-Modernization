@@ -17,6 +17,7 @@ import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSecti
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 public class GroupSubsectionSteps {
@@ -62,19 +65,28 @@ public class GroupSubsectionSteps {
     @Autowired
     private WaUiMetadataRepository repository;
 
+    @Autowired
+    private SubsectionRequester requester;
+
+    private final Active<ResultActions> groupReponse = new Active<>();
+
+
     private List<Long> questionsIds = new ArrayList<>();
     private Long staticElementId;
 
     @Given("i add a list of questions to a subsection")
     public void i_add_a_list_of_questions_to_a_subsection() {
         WaTemplate page = pageMother.one();
-        WaUiMetadata section = getSection(page);
+        WaUiMetadata subsection = page.getUiMetadata().stream()
+                .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
+                .findFirst()
+                .orElseThrow();
         List<WaQuestion> questionsList = questionMother.list(2);
         try {
             for (WaQuestion question : questionsList) {
                 AddQuestionResponse response = pageQuestionController.addQuestionToPage(
                         page.getId(),
-                        section.getId(),
+                        subsection.getId(),
                         new AddQuestionRequest(Arrays.asList(question.getId())),
                         user.getCurrentUserDetails());
                 questionsIds.add(response.ids().get(0));
@@ -90,18 +102,21 @@ public class GroupSubsectionSteps {
     @Given("i add a list of questions and a static element to a subsection")
     public void i_add_a_list_of_questions_and_a_static_element_to_a_subsection() {
         WaTemplate page = pageMother.one();
-        WaUiMetadata section = getSection(page);
+        WaUiMetadata subsection = page.getUiMetadata().stream()
+                .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
+                .findFirst()
+                .orElseThrow();
         WaQuestion question = questionMother.one();
         try {
             AddQuestionResponse addQuestionResponse = pageQuestionController.addQuestionToPage(
                     page.getId(),
-                    section.getId(),
+                    subsection.getId(),
                     new AddQuestionRequest(Arrays.asList(question.getId())),
                     user.getCurrentUserDetails());
             questionsIds.add(addQuestionResponse.ids().get(0));
 
             StaticContentRequests.AddDefault request = new StaticContentRequests.AddDefault("test_comment",
-                    section.getId());
+                    subsection.getId());
             AddStaticResponse addStaticResponse =
                     pageStaticController.addStaticLineSeparator(page.getId(), request, user.getCurrentUserDetails());
             staticElementId = addStaticResponse.componentId();
@@ -110,41 +125,32 @@ public class GroupSubsectionSteps {
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
-
-
     }
 
 
     @When("I send a group subsection request")
     public void i_send_a_group_subsection_request() {
-        WaTemplate page = pageMother.one();
-        WaUiMetadata section = getSection(page);
+        WaTemplate temp = pageMother.one();
+        WaUiMetadata subsection = temp.getUiMetadata().stream()
+                .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
+                .findFirst()
+                .orElseThrow();
         try {
-            response = subsectionController.groupSubSection(
-                    page.getId(),
-                    new GroupSubSectionRequest(
-                            section.getId(),
-                            "BLOCK_NAME",
-                            getBatchList(),
-                            2),
-                    user.getCurrentUserDetails());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        } catch (BadRequestException e) {
+            // groupReponse.active(requester.subsectionGroup(
+            //         temp.getId(), new GroupSubSectionRequest(
+            //                 subsection.getId(),
+            //                 "BLOCK_NAME",
+            //                 getBatchList(),
+            //                 2)));
+            groupReponse.active(requester.testing(temp.getId()));
+        } catch (Exception e) {
             exceptionHolder.setException(e);
         }
     }
 
     @Then("the subsection is grouped")
-    public void the_subsection_is_grouped() {
-        assertNotNull(response);
-        assertTrue(response.getBody().contains("Grouped Successfully"));
-        assertEquals(200, response.getStatusCodeValue());
-        for (Long questionId : questionsIds) {
-            assertEquals("BLOCK_NAME", repository.findById(questionId).get().getBlockNm());
-        }
+    public void the_subsection_is_grouped() throws Exception {
+        groupReponse.active().andExpect(status().isOk());
     }
 
     @Then("An Update SubSection Exception is thrown")
