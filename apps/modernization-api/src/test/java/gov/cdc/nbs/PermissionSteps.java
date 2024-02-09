@@ -63,12 +63,14 @@ public class PermissionSteps {
       var operationObject = authority.trim().split("-");
       var operation = operationObject.length > 0 ? operationObject[0] : null;
       var object = operationObject.length > 1 ? operationObject[1] : null;
-      nbsAuthorities.add(NbsAuthority.builder()
-          .businessOperation(operation)
-          .businessObject(object)
-          .authority(authority.trim())
-          .programArea(programArea)
-          .build());
+      nbsAuthorities.add(
+          new NbsAuthority(
+              operation,
+              object,
+              programArea,
+              authority.trim()
+          )
+      );
     }
 
     var currentAuth = SecurityContextHolder.getContext().getAuthentication();

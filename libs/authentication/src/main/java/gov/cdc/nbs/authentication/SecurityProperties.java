@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication.config;
+package gov.cdc.nbs.authentication;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

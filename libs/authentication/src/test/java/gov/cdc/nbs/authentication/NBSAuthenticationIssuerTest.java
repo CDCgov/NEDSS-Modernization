@@ -16,7 +16,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
 import gov.cdc.nbs.authentication.token.NBSTokenCookieEnsurer;
 
 @ExtendWith(MockitoExtension.class)

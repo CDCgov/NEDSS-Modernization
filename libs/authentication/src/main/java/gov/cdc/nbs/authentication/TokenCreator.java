@@ -2,7 +2,6 @@ package gov.cdc.nbs.authentication;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;

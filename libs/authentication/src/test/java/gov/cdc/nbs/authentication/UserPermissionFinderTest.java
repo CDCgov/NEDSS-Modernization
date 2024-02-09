@@ -50,9 +50,9 @@ class UserPermissionFinderTest {
         assertEquals(1, authorities.size());
         var authority = authorities.iterator().next();
         assertEquals("ADD-CT_CONTACT", authority.getAuthority());
-        assertEquals("CT_CONTACT", authority.getBusinessObject());
-        assertEquals("ADD", authority.getBusinessOperation());
-        assertEquals("STD", authority.getProgramArea());
+        assertEquals("CT_CONTACT", authority.object());
+        assertEquals("ADD", authority.operation());
+        assertEquals("STD", authority.programArea());
     }
 
     @Test

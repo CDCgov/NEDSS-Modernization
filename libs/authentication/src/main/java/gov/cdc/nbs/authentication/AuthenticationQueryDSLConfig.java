@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication.config;
+package gov.cdc.nbs.authentication;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;

@@ -11,10 +11,8 @@ class NbsUserDetailsTest {
 
   @Test
   void has_permission() {
-    NbsAuthority authority = NbsAuthority.builder()
-        .businessObject("TestObject")
-        .businessOperation("TestOperation")
-        .build();
+    NbsAuthority authority = new NbsAuthority("TestOperation", "TestObject");
+
     NbsUserDetails userDetails = NbsUserDetails.builder()
         .authorities(Collections.singleton(authority))
         .build();
@@ -23,11 +21,10 @@ class NbsUserDetailsTest {
   }
 
   @Test
-  void does_not_have_permission() {
-    NbsAuthority authority = NbsAuthority.builder()
-        .businessObject("Wrong Permission")
-        .businessOperation("TestOperation")
-        .build();
+  void does_not_have_permission_for_object() {
+    NbsAuthority authority = new NbsAuthority("TestOperation", "WrongObject");
+
+
     NbsUserDetails userDetails = NbsUserDetails.builder()
         .authorities(Collections.singleton(authority))
         .build();
@@ -35,6 +32,16 @@ class NbsUserDetailsTest {
     assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isFalse();
   }
 
+  @Test
+  void does_not_have_permission_for_operation() {
+    NbsAuthority authority = new NbsAuthority("WrongOperation", "TestObject");
+
+    NbsUserDetails userDetails = NbsUserDetails.builder()
+        .authorities(Collections.singleton(authority))
+        .build();
+
+    assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isFalse();
+  }
   @Test
   void does_not_have_permission_null() {
     NbsUserDetails userDetails = NbsUserDetails.builder().build();

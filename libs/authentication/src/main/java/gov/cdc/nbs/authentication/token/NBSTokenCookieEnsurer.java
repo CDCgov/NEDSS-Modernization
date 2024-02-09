@@ -2,7 +2,7 @@ package gov.cdc.nbs.authentication.token;
 
 import gov.cdc.nbs.authentication.NBSToken;
 import gov.cdc.nbs.authentication.TokenCreator;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
+import gov.cdc.nbs.authentication.SecurityProperties;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;

@@ -98,15 +98,14 @@ class NBSUserDetailsResolverTest {
 
         when(finder.getUserPermissions(any())).thenReturn(
             Set.of(
-                NbsAuthority.builder()
-                    .businessObject("business-object-value")
-                    .businessOperation("business-operation-value")
-                    .programArea("program-area-value")
-                    .authority("authority-value")
-                    .build()
+                new NbsAuthority(
+                    "business-operation-value",
+                    "business-object-value",
+                    "program-area-value",
+                    "authority-value"
+                    )
             )
         );
-
 
         AuthUser user = new AuthUser();
         user.setId(17L);
@@ -125,9 +124,9 @@ class NBSUserDetailsResolverTest {
         assertThat(resolved.getAuthorities())
             .satisfiesExactly(
                 actual -> assertThat(actual)
-                    .returns("business-object-value", NbsAuthority::getBusinessObject)
-                    .returns("business-operation-value", NbsAuthority::getBusinessOperation)
-                    .returns("program-area-value", NbsAuthority::getProgramArea)
+                    .returns("business-object-value", NbsAuthority::object)
+                    .returns("business-operation-value", NbsAuthority::operation)
+                    .returns("program-area-value", NbsAuthority::programArea)
                     .returns("authority-value", NbsAuthority::getAuthority)
             );
 

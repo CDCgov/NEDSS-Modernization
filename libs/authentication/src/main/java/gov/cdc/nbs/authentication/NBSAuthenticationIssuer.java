@@ -1,6 +1,5 @@
 package gov.cdc.nbs.authentication;
 
-import gov.cdc.nbs.authentication.config.SecurityProperties;
 import gov.cdc.nbs.authentication.token.NBSTokenCookieEnsurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
