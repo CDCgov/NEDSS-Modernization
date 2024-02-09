@@ -282,36 +282,6 @@ const arithOperator = [
     }
 ];
 
-const nonDateCompare = [
-    {
-        name: 'Equal to',
-        value: '='
-    },
-    {
-        name: 'Not equal to',
-        value: '!='
-    }
-];
-
-const dateCompare = [
-    {
-        name: 'Less than',
-        value: '<'
-    },
-    {
-        name: 'Less or equal to',
-        value: '<='
-    },
-    {
-        name: 'Greater or equal to',
-        value: '>='
-    },
-    {
-        name: 'Greater than',
-        value: '>'
-    }
-];
-
 const dateOperator = [
     {
         name: 'Between',
@@ -349,7 +319,5 @@ export {
     businessRuleFieldList,
     questionFieldList,
     valueSetFieldList,
-    conditionFieldList,
-    nonDateCompare,
-    dateCompare
+    conditionFieldList
 };
