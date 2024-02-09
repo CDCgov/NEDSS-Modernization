@@ -91,6 +91,18 @@
                     }
                 }
 
+                .source-question-display {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 28.0625rem;
+                    height: 2.5rem;
+                    flex-shrink: 0;
+                    border: 1px solid colors.$base-black;
+                    padding-left: 1rem;
+                    padding-right: 0.6rem;
+                }
+
                 a {
                     text-decoration: none;
                 }

@@ -68,13 +68,6 @@ const BusinessRulesForm = () => {
 
     const isTargetQuestionSelected = targetQuestion.length || targetValueIdentifier.length;
 
-    const openSourceModal = () => {
-        if (sourceModalRef.current && sourceModalRef.current) {
-            const sourceModalBtn = document.getElementById('sourceQuestionId');
-            sourceModalBtn?.click();
-        }
-    };
-
     const handleRuleDescription = () => {
         let description = '';
         const logic = form.watch('comparator');
@@ -116,41 +109,40 @@ const BusinessRulesForm = () => {
         form.watch('ruleFunction') === 'Hide' ||
         form.watch('ruleFunction') === 'Unhide';
 
+    const handleResetSourceQuestion = () => {
+        setSelectedSource([]);
+        setSourceDescription('');
+        form.setValue('sourceIdentifier', '');
+        form.setValue('sourceText', '');
+        form.setValue('sourceValue', { sourceValueText: [], sourceValueId: [] });
+        sourceModalRef.current?.toggleModal(undefined, true);
+    };
+
     return (
         <>
-            <Controller
-                control={form.control}
-                name="sourceText"
-                rules={{
-                    required: { value: true, message: 'Source questions is required.' }
-                }}
-                render={({ field: { onBlur, onChange }, fieldState: { error } }) => (
-                    <Grid row className="inline-field">
-                        <Grid col={3}>
-                            <label className="input-label">Source Question</label>
-                        </Grid>
+            <Grid row className="inline-field">
+                <Grid col={3}>
+                    <label className="input-label">Source Question</label>
+                </Grid>
+                <Grid col={9}>
+                    {selectedSource.length ? (
+                        <div className="source-question-display">
+                            {selectedSource[0].name}
+                            <Icon.Close onClick={handleResetSourceQuestion} />
+                        </div>
+                    ) : (
                         <ModalToggleButton
                             modalRef={sourceModalRef}
                             id="sourceQuestionId"
-                            className="display-none"
-                            outline>
-                            hide
+                            outline
+                            className="text-input"
+                            type="submit">
+                            Search source question
                         </ModalToggleButton>
-                        <Grid col={9}>
-                            <Input
-                                className={'text-input'}
-                                defaultValue={sourceDescription}
-                                onChange={onChange}
-                                onClick={openSourceModal}
-                                type="text"
-                                onBlur={onBlur}
-                                error={error?.message}
-                                required
-                            />
-                        </Grid>
-                    </Grid>
-                )}
-            />
+                    )}
+                </Grid>
+            </Grid>
+
             {ruleFunction != 'Data validation' && (
                 <Controller
                     control={form.control}
@@ -270,7 +262,7 @@ const BusinessRulesForm = () => {
                                 className="text-input"
                                 type="submit"
                                 outline>
-                                Search Target Question
+                                Search target question
                             </ModalToggleButton>
                         </div>
                     ) : (
