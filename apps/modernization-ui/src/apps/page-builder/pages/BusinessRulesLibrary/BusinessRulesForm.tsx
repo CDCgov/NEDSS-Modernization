@@ -83,7 +83,7 @@ const BusinessRulesForm = () => {
     };
 
     const ruleFunction = form.watch('ruleFunction');
-    const logicList = ruleFunction == 'Data validation' ? dateCompare : nonDateCompare;
+    const logicList = ruleFunction == 'Date validation' ? dateCompare : nonDateCompare;
 
     const handleSourceValueChange = (data: string[]) => {
         const values = form.getValues('sourceValue');
@@ -143,7 +143,7 @@ const BusinessRulesForm = () => {
                 </Grid>
             </Grid>
 
-            {ruleFunction != 'Data validation' && (
+            {ruleFunction != 'Date validation' && (
                 <Controller
                     control={form.control}
                     name="anySourceValue"
@@ -193,7 +193,7 @@ const BusinessRulesForm = () => {
                 )}
             />
 
-            {ruleFunction != 'Data validation' && (
+            {ruleFunction != 'Date validation' && (
                 <Controller
                     control={form.control}
                     name="sourceValue"

@@ -12,7 +12,7 @@ import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { ViewRuleResponse } from 'apps/page-builder/generated';
 
 export enum Column {
-    SourceFields = 'Source Fields',
+    SourceFields = 'Source Field',
     Logic = 'Logic',
     Values = 'Values',
     Function = 'Function',
@@ -212,7 +212,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         <div>
             <div className="add-business-rules-block">
                 <div className="business-rules-header">
-                    <h3> {page?.name} | business rules </h3>
+                    <h3> {page?.name} | Business rules </h3>
                 </div>
                 <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`}>
                     Add new business rule

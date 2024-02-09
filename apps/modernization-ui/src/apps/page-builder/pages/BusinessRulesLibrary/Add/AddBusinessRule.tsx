@@ -101,7 +101,7 @@ const AddBusinessRule = () => {
     const fieldTypeTab = [
         { name: 'Enable' },
         { name: 'Disable' },
-        { name: 'Data validation' },
+        { name: 'Date validation' },
         { name: 'Hide' },
         { name: 'Unhide' },
         { name: 'Require If' }
