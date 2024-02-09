@@ -9,6 +9,7 @@ import BusinessRulesForm from '../BusinessRulesForm';
 import { Breadcrumb } from 'breadcrumb';
 import { authorization } from 'authorization';
 import { ConfirmationModal } from 'confirmation';
+import RequiredFieldMarker from '../RequiredFieldMarker';
 
 export type FormValues = {
     ruleFunction: string;
@@ -139,7 +140,13 @@ const AddBusinessRule = () => {
                             <div className="edit-rules__content">
                                 <Grid row className="inline-field">
                                     <Grid col={3}>
-                                        <label className="input-label">Function</label>
+                                        <label className="input-label" aria-required>
+                                            Function{' '}
+                                            <RequiredFieldMarker
+                                                functionName={form.watch('ruleFunction') || 'default'}
+                                                fieldName="ruleFunction"
+                                            />
+                                        </label>
                                     </Grid>
                                     <Grid col={9}>
                                         {ruleId ? (

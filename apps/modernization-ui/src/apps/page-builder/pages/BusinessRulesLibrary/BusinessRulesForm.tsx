@@ -10,6 +10,7 @@ import { Input } from '../../../../components/FormInputs/Input';
 import { useConceptAPI } from '../../components/Concept/useConceptAPI';
 import { authorization } from 'authorization';
 import { Concept, CreateRuleRequest } from 'apps/page-builder/generated';
+import RequiredFieldMarker from './RequiredFieldMarker';
 
 type QuestionProps = {
     id: number;
@@ -122,7 +123,13 @@ const BusinessRulesForm = () => {
         <>
             <Grid row className="inline-field">
                 <Grid col={3}>
-                    <label className="input-label">Source Question</label>
+                    <label className="input-label">
+                        Source Question
+                        <RequiredFieldMarker
+                            functionName={form.watch('ruleFunction') || 'default'}
+                            fieldName="sourceText"
+                        />
+                    </label>
                 </Grid>
                 <Grid col={9}>
                     {selectedSource.length ? (
@@ -176,7 +183,13 @@ const BusinessRulesForm = () => {
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
                         <Grid col={3}>
-                            <label className="input-label">Logic</label>
+                            <label className="input-label">
+                                Logic{' '}
+                                <RequiredFieldMarker
+                                    functionName={form.watch('ruleFunction') || 'default'}
+                                    fieldName="comparitor"
+                                />
+                            </label>
                         </Grid>
                         <Grid col={9}>
                             <SelectInput
@@ -200,7 +213,13 @@ const BusinessRulesForm = () => {
                     render={() => (
                         <Grid row className="inline-field">
                             <Grid col={3}>
-                                <label className="input-label">Source value(s)</label>
+                                <label className="input-label">
+                                    Source value(s){' '}
+                                    <RequiredFieldMarker
+                                        functionName={form.watch('ruleFunction') || 'default'}
+                                        fieldName="sourceValues"
+                                    />
+                                </label>
                             </Grid>
                             <Grid col={9}>
                                 <div className="text-input">
@@ -223,7 +242,13 @@ const BusinessRulesForm = () => {
                     render={({ field: { onChange, value } }) => (
                         <Grid row className="inline-field">
                             <Grid col={3}>
-                                <label className="input-label">Target type</label>
+                                <label className="input-label">
+                                    Target type{' '}
+                                    <RequiredFieldMarker
+                                        functionName={form.watch('ruleFunction') || 'default'}
+                                        fieldName="targetType"
+                                    />
+                                </label>
                             </Grid>
                             <Grid col={9} className="radio-group">
                                 <Radio
@@ -252,7 +277,13 @@ const BusinessRulesForm = () => {
             )}
             <Grid row className="inline-field">
                 <Grid col={3}>
-                    <label className="input-label">Target Question(s)</label>
+                    <label className="input-label">
+                        Target Question(s){' '}
+                        <RequiredFieldMarker
+                            functionName={form.watch('ruleFunction') || 'default'}
+                            fieldName="targetQuestions"
+                        />
+                    </label>
                 </Grid>
                 <Grid col={9}>
                     {!isTargetQuestionSelected ? (
