@@ -128,8 +128,8 @@ export const ValuesetSearchTable = ({
                         id="question-search"
                         value={query}
                     />
-                    <Button disabled type="button" className={styles.createNewButton} outline onClick={onCreateNew}>
-                        Create new value set - coming soon
+                    <Button type="button" className={styles.createNewButton} outline onClick={onCreateNew}>
+                        Create new value set
                     </Button>
                 </div>
             </div>
