@@ -104,8 +104,8 @@ const BusinessRulesForm = () => {
     }, []);
 
     const isTargetTypeEnabled =
-        form.watch('ruleFunction') === 'Enabled' ||
-        form.watch('ruleFunction') === 'Disabled' ||
+        form.watch('ruleFunction') === 'Enable' ||
+        form.watch('ruleFunction') === 'Disable' ||
         form.watch('ruleFunction') === 'Hide' ||
         form.watch('ruleFunction') === 'Unhide';
 
@@ -222,7 +222,7 @@ const BusinessRulesForm = () => {
                     name="targetType"
                     render={({ field: { onChange, value } }) => (
                         <Grid row className="inline-field">
-                            <Grid col={2}>
+                            <Grid col={3}>
                                 <label className="input-label">Target type</label>
                             </Grid>
                             <Grid col={9} className="radio-group">
