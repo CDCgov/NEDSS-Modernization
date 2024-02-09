@@ -43,32 +43,6 @@ public class PageRuleServiceImpl implements PageRuleService {
         this.waRuleMetaDataRepository = waRuleMetaDataRepository;
     }
 
-
-    private WaRuleMetadata setRuleDataValues(Long userId, CreateRuleRequest request, Long page) {
-        WaRuleMetadata ruleMetadata = new WaRuleMetadata();
-        RuleData ruleData = createRuleData(request, ruleMetadata);
-        ruleMetadata.setRuleCd(request.ruleFunction());
-        ruleMetadata.setRuleDescText(request.ruleDescription());
-        ruleMetadata.setSourceValues(ruleData.sourceValues());
-        ruleMetadata.setLogic(request.comparator());
-        ruleMetadata.setSourceQuestionIdentifier(ruleData.sourceIdentifier());
-        ruleMetadata.setTargetQuestionIdentifier(ruleData.targetIdentifiers());
-        ruleMetadata.setTargetType(request.targetType());
-        ruleMetadata.setAddTime(Instant.now());
-        ruleMetadata.setAddUserId(userId);
-        ruleMetadata.setLastChgTime(Instant.now());
-        ruleMetadata.setRecordStatusCd("ACTIVE");
-        ruleMetadata.setLastChgUserId(userId);
-        ruleMetadata.setRecordStatusTime(Instant.now());
-        ruleMetadata.setErrormsgText(ruleData.errorMsgText());
-        ruleMetadata.setJsFunction(ruleData.jsFunctionNameHelper().jsFunction());
-        ruleMetadata.setJsFunctionName(ruleData.jsFunctionNameHelper().jsFunctionName());
-        ruleMetadata.setWaTemplateUid(page);
-        ruleMetadata.setRuleExpression(ruleData.ruleExpression());
-
-        return ruleMetadata;
-    }
-
     private RuleData createRuleData(
         CreateRuleRequest request,
         WaRuleMetadata ruleMetadata) {
