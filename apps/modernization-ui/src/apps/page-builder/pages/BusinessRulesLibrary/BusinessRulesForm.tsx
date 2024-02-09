@@ -3,7 +3,6 @@ import { Checkbox, ErrorMessage, Grid, Icon, ModalRef, ModalToggleButton, Radio 
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Controller, useFormContext } from 'react-hook-form';
-import { nonDateCompare, dateCompare } from '../../constant/constant';
 import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
