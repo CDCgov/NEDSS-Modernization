@@ -82,7 +82,7 @@ public class ValueSetController {
 
   }
 
-  @PostMapping("search")
+  @PostMapping("/options/search")
   public Page<ValueSetOption> searchValueSet(
       @PageableDefault(size = 25, sort = "name") Pageable pageable,
       @RequestBody ValueSetSearchRequest request) {

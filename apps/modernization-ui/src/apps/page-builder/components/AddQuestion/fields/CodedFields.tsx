@@ -20,14 +20,13 @@ export const CodedFields = ({ onFindValueSet }: Props) => {
         ValueSetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) => {
             setValueSets(response);
         });
-        form.resetField('defaultValue');
     }, []);
 
     useEffect(() => {
         const selected = valueSets.find((v) => v.value === valueSet?.toString());
         selected && fetch(selected.codeSetNm);
         form.setValue('defaultValue', undefined);
-    }, [valueSet]);
+    }, [valueSet, JSON.stringify(valueSets)]);
 
     return (
         <>

@@ -134,7 +134,7 @@ export class ValueSetControllerService {
     }): CancelablePromise<Page_ValueSetOption_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/valueset/search',
+            url: '/nbs/page-builder/api/v1/valueset/options/search',
             headers: {
                 'Authorization': authorization,
             },

@@ -112,8 +112,6 @@ const FindValueSet = ({ onCancel, onClose }: FindValueSetProps) => {
     const form = useFormContext<CreateCodedQuestionRequest>();
 
     const handleSetValueset = (valueset: number) => {
-        console.log('setting valueset', valueset);
-        console.log('current vs value:', form.getValues('valueSet'));
         form.setValue('valueSet', valueset);
         onCancel();
     };
