@@ -17,8 +17,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -82,7 +84,7 @@ public class PageRuleSteps {
   @Given("the business rule has {string} of:")
   public void the_business_rule_has(final String property, List<List<String>> values) {
     List<String> actValues = new ArrayList<>();
-    for(List<String> val : values) {
+    for (List<String> val : values) {
       actValues.add(val.get(0));
     }
     switch (property.toLowerCase()) {
@@ -120,12 +122,10 @@ public class PageRuleSteps {
   @Then("the business rule should have {string} of {string}")
   public void the_business_rule_should_have_of(final String property, final String value) throws Exception {
     switch (property.toLowerCase()) {
-      case "source identifier" -> this.detailResponse.active()
-          .andExpect(jsonPath("$.sourceIdentifier", is(value)));
       case "rule description" -> this.detailResponse.active()
-          .andExpect(jsonPath("$.ruleDescription", is(value)));
+          .andExpect(jsonPath("$.description", is(value)));
       case "function" -> this.detailResponse.active()
-          .andExpect(jsonPath("$.ruleFunction", is(value)));
+          .andExpect(jsonPath("$.function", is(value)));
       case "comparator" -> this.detailResponse.active()
           .andExpect(jsonPath("$.comparator", is(value)));
       case "target type" -> this.detailResponse.active()
@@ -137,7 +137,7 @@ public class PageRuleSteps {
   public void the_business_rule_should_have_of(final String property, final List<String> values) throws Exception {
     switch (property.toLowerCase()) {
       case "source values" -> this.detailResponse.active()
-          .andExpect(jsonPath("$.sourceValue", is(values)));
+          .andExpect(jsonPath("$.sourceValues", is(values)));
     }
   }
 
@@ -160,8 +160,8 @@ public class PageRuleSteps {
     int i = 0;
     for (QuestionInfo question : expectedQuestionInfoList) {
       this.detailResponse.active().
-          andExpect(jsonPath("$.targetQuestions[" + i + "].label", is(question.label()))).
-          andExpect(jsonPath("$.targetQuestions[" + i + "].id", is(question.id())));
+          andExpect(jsonPath("$.targets[" + i + "].label", is(question.label()))).
+          andExpect(jsonPath("$.targets[" + i + "].id", is(question.id())));
       i++;
     }
   }

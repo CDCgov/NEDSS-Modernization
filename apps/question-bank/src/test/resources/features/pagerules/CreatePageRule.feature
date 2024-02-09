@@ -28,7 +28,6 @@ Feature: Create Business Rule
         When I send the page rule create request
         Then I retrieve the information of the page rule
         And the business rule should have "function" of "Require If"
-        And the business rule should have "source identifier" of "DEM113"
         And the business rule should have "rule description" of "Require If"
         And the business rule should have "comparator" of "="
         And the business rule should have "target type" of "Question"
@@ -62,7 +61,6 @@ Feature: Create Business Rule
         When I send the page rule create request
         Then I retrieve the information of the page rule
         And the business rule should have "function" of "Disable"
-        And the business rule should have "source identifier" of "DEM113"
         And the business rule should have "rule description" of "Disable"
         And the business rule should have "comparator" of "="
         And the business rule should have "target type" of "Question"
@@ -97,7 +95,6 @@ Feature: Create Business Rule
         When I send the page rule create request
         Then I retrieve the information of the page rule
         And the business rule should have "function" of "Unhide"
-        And the business rule should have "source identifier" of "DEM113"
         And the business rule should have "rule description" of "Unhide"
         And the business rule should have "comparator" of "="
         And the business rule should have "target type" of "Question"
@@ -131,7 +128,6 @@ Feature: Create Business Rule
         When I send the page rule create request
         Then I retrieve the information of the page rule
         And the business rule should have "function" of "Hide"
-        And the business rule should have "source identifier" of "DEM113"
         And the business rule should have "rule description" of "Hide"
         And the business rule should have "comparator" of "="
         And the business rule should have "target type" of "Question"
@@ -165,7 +161,6 @@ Feature: Create Business Rule
         When I send the page rule create request
         Then I retrieve the information of the page rule
         And the business rule should have "function" of "Enable"
-        And the business rule should have "source identifier" of "DEM113"
         And the business rule should have "rule description" of "Enable"
         And the business rule should have "comparator" of "="
         And the business rule should have "target type" of "Question"

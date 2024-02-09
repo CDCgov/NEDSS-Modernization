@@ -1,18 +1,17 @@
 package gov.cdc.nbs.questionbank.pagerules.response;
 
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class RuleResponse{
-    String ruleFunction;
-    String ruleDescription;
-    String source;
-    String sourceValues;
-    String targetType;
-    String errorMsgText;
-    String comparator;
-    String targetValue;
+public record RuleResponse(
+    long ruleId,
+    long templateId,
+    String function,
+    String description,
+    String sourceQuestion,
+    String ruleExpression,
+    String sourceValues,
+    String comparator,
+    String targetType,
+    String targetQuestions,
+    long totalCount) {
 }
 

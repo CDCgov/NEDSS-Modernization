@@ -43,6 +43,9 @@ public interface WaQuestionRepository extends JpaRepository<WaQuestion, Long> {
 
     List<Object[]> findIdByRdbColumnNm(@Param("rdbColumnNm") String rdbColumnNm);
 
+    @Query("SELECT q.questionLabel, q.questionIdentifier FROM WaQuestion q WHERE q.questionIdentifier=:identifier")
+    List<Object[]> findLabelByIdentifier(@Param("identifier") String identifier);
+
 
 
 }

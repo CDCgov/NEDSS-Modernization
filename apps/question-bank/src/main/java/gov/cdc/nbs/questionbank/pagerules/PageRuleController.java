@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
@@ -18,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
+
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 @RequestMapping("/api/v1/pages/{id}/rules")
@@ -27,21 +27,23 @@ public class PageRuleController {
 
   private final UserDetailsProvider userDetailsProvider;
 
-  private final PageRuleFinderService pageRuleFinderService;
 
 
   private final PageRuleDeleter pageRuleDeleter;
 
   private final PageRuleCreator pageRuleCreator;
 
+  private final PageRuleReader pageRuleReader;
+
   public PageRuleController(PageRuleService pageRuleService, UserDetailsProvider userDetailsProvider,
-      PageRuleFinderService pageRuleFinderService,
-      PageRuleDeleter pageRuleDeleter, PageRuleCreator pageRuleCreator) {
+      PageRuleDeleter pageRuleDeleter, PageRuleCreator pageRuleCreator,
+      PageRuleReader pageRuleReader) {
     this.userDetailsProvider = userDetailsProvider;
     this.pageRuleService = pageRuleService;
-    this.pageRuleFinderService = pageRuleFinderService;
     this.pageRuleDeleter = pageRuleDeleter;
     this.pageRuleCreator = pageRuleCreator;
+    this.pageRuleReader = pageRuleReader;
+
   }
 
   @PostMapping()
@@ -71,21 +73,21 @@ public class PageRuleController {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return pageRuleService.updatePageRule(ruleId, request, userId, page);
   }
-
   @GetMapping("/{ruleId}")
-  public ViewRuleResponse viewRuleResponse(@PathVariable Long ruleId) {
-    return pageRuleFinderService.getRuleResponse(ruleId);
+  public Rule viewRuleResponse(@PathVariable Long ruleId) {
+    return pageRuleReader.findByRuleId(ruleId);
   }
 
   @GetMapping
-  public Page<ViewRuleResponse> getAllPageRule(@PageableDefault(size = 25) Pageable pageable,
+  public Page<Rule> getAllPageRule(@PageableDefault(size = 25) Pageable pageable,
       @PathVariable Long id) {
-    return pageRuleFinderService.getAllPageRule(pageable, id);
+    return pageRuleReader.findByPageId(id, pageable);
   }
 
   @PostMapping("/search")
-  public Page<ViewRuleResponse> findPageRule(@RequestBody SearchPageRuleRequest request,
+  public Page<Rule> findPageRule(@RequestBody SearchPageRuleRequest request,
       @PageableDefault(size = 25) Pageable pageable) {
-    return pageRuleFinderService.findPageRule(request, pageable);
+    return pageRuleReader.searchPageRule(request, pageable);
   }
+
 }
