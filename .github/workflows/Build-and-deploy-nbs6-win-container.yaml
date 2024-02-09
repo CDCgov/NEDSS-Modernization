@@ -12,7 +12,7 @@ jobs:
     with:
       container_name: nbs6
       nbs6_version: "6.0.15.1"
-      dockerfile_relative_path: -f ./cdc-sandbox/nbs6-win-container/Dockerfile .
+      dockerfile_relative_path: ./cdc-sandbox/nbs6-win-container/
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
       ECR_CLASSIC_REPO_BASE_NAME: ${{secrets.ECR_CLASSIC_REPO_BASE_NAME}}
