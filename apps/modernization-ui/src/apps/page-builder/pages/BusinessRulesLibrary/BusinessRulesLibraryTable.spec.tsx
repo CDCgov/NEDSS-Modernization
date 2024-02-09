@@ -28,7 +28,7 @@ describe('BusinessRulesLibraryTable', () => {
             );
 
             const tableHeads = await screen.findAllByRole('columnheader');
-            expect(tableHeads[0]).toHaveTextContent('Source Fields');
+            expect(tableHeads[0]).toHaveTextContent('Source Field');
             expect(tableHeads[1]).toHaveTextContent('Logic');
             expect(tableHeads[2]).toHaveTextContent('Values');
             expect(tableHeads[3]).toHaveTextContent('Function');
