@@ -6,7 +6,7 @@ import { CloseableHeader } from '../../CloseableHeader/CloseableHeader';
 import { ValuesetSearchTable } from '../../ValuesetSearchTable/ValuesetSearchTable';
 import styles from './valueset-search.module.scss';
 import { Status, usePage } from 'page';
-import { useFindValuesets } from 'apps/page-builder/hooks/api/useFindValueset';
+import { ValuesetSort, useFindValuesets } from 'apps/page-builder/hooks/api/useFindValueset';
 
 type Props = {
     onCancel: () => void;
@@ -17,6 +17,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept }: Props) => {
     const [selectedValueset, setSelectedValueset] = useState<number | undefined>(undefined);
     const { page, ready, firstPage, reload } = usePage();
     const [query, setQuery] = useState<string>('');
+    const [sort, setSort] = useState<ValuesetSort | undefined>(undefined);
     const { isLoading, search, response } = useFindValuesets();
 
     useEffect(() => {
@@ -30,7 +31,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept }: Props) => {
                 query,
                 page: page.current - 1,
                 pageSize: page.pageSize,
-                sort: undefined
+                sort: sort
             });
         }
     }, [page.status]);
@@ -41,7 +42,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept }: Props) => {
         } else {
             firstPage();
         }
-    }, [query]);
+    }, [query, sort]);
 
     useEffect(() => {
         const currentPage = response?.number ? response?.number + 1 : 1;
@@ -66,6 +67,8 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept }: Props) => {
                     <ValuesetSearchTable
                         onSelectionChange={setSelectedValueset}
                         onQuerySubmit={setQuery}
+                        onSortChange={setSort}
+                        query={query}
                         valuesets={response?.content ?? []}
                         onCreateNew={() => {}}
                         isLoading={isLoading}

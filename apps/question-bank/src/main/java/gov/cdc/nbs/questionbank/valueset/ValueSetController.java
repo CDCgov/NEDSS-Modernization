@@ -84,7 +84,7 @@ public class ValueSetController {
 
   @PostMapping("search")
   public Page<ValueSetOption> searchValueSet(
-      @PageableDefault(size = 25) Pageable pageable,
+      @PageableDefault(size = 25, sort = "name") Pageable pageable,
       @RequestBody ValueSetSearchRequest request) {
     return optionFinder.search(request, pageable);
   }

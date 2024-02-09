@@ -4,12 +4,22 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import { Search } from 'components/Search/Search';
 import { Status, usePage } from 'page';
 import { useEffect, useState } from 'react';
+import { SortField, ValuesetSort } from 'apps/page-builder/hooks/api/useFindValueset';
+import { Direction } from 'sorting';
 import styles from './valueset-search-table.module.scss';
 
+const enum Header {
+    TYPE = 'Type',
+    NAME = 'Value set name',
+    CODE = 'Code',
+    DESCRIPTION = 'Value set description'
+}
+
 const tableHeaders = [
-    { name: 'Type', sortable: true },
-    { name: 'Value set name', sortable: true },
-    { name: 'Value set description', sortable: true }
+    { name: Header.TYPE, sortable: true },
+    { name: Header.CODE, sortable: true },
+    { name: Header.NAME, sortable: true },
+    { name: Header.DESCRIPTION, sortable: true }
 ];
 
 type Props = {
@@ -18,6 +28,7 @@ type Props = {
     query?: string;
     onQuerySubmit: (query: string) => void;
     onSelectionChange: (id: number) => void;
+    onSortChange: (sort: ValuesetSort | undefined) => void;
     onCreateNew: () => void;
 };
 export const ValuesetSearchTable = ({
@@ -26,6 +37,7 @@ export const ValuesetSearchTable = ({
     query,
     onQuerySubmit,
     onSelectionChange,
+    onSortChange,
     onCreateNew
 }: Props) => {
     const { page, request } = usePage();
@@ -50,6 +62,7 @@ export const ValuesetSearchTable = ({
                     id: 1,
                     title: valueset.type
                 },
+                { id: 2, title: valueset.id },
                 { id: 2, title: valueset.name },
                 {
                     id: 3,
@@ -62,6 +75,34 @@ export const ValuesetSearchTable = ({
     useEffect(() => {
         setTableRows(valuesets.map(toTableRow));
     }, [valuesets]);
+
+    const handleSort = (name: string, direction: Direction) => {
+        if (direction === Direction.None) {
+            onSortChange(undefined);
+            return;
+        }
+
+        let sortField: SortField | undefined = undefined;
+        switch (name) {
+            case Header.TYPE:
+                sortField = SortField.TYPE;
+                break;
+            case Header.CODE:
+                sortField = SortField.CODE;
+                break;
+            case Header.NAME:
+                sortField = SortField.NAME;
+                break;
+            case Header.DESCRIPTION:
+                sortField = SortField.DESCRIPTION;
+                break;
+        }
+        if (sortField) {
+            onSortChange({ field: sortField, direction });
+        } else {
+            onSortChange(undefined);
+        }
+    };
 
     return (
         <>
@@ -87,13 +128,14 @@ export const ValuesetSearchTable = ({
                         id="question-search"
                         value={query}
                     />
-                    <Button type="button" className={styles.createNewButton} outline onClick={onCreateNew}>
-                        Create new value set
+                    <Button disabled type="button" className={styles.createNewButton} outline onClick={onCreateNew}>
+                        Create new value set - coming soon
                     </Button>
                 </div>
             </div>
             <div className={styles.tableContainer}>
                 <TableComponent
+                    className={styles.searchResultTable}
                     tableHead={tableHeaders}
                     tableBody={tableRows}
                     isPagination={true}
@@ -101,7 +143,7 @@ export const ValuesetSearchTable = ({
                     totalResults={page.total}
                     currentPage={page.current}
                     handleNext={request}
-                    // sortData={handleSort}
+                    sortData={handleSort}
                     selectable={page.status === Status.Ready}
                     rangeSelector={isLoading === true || valuesets.length > 0}
                     isLoading={isLoading}

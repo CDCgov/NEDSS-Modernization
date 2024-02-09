@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -94,7 +95,8 @@ public class ValueSetOptionFinder {
                 .and(
                     metadataTable.codeSetShortDescTxt.like(query)
                         .or(metadataTable.codeSetDescTxt.like(query)
-                            .or(metadataTable.codeSetNm.like(query))))));
+                            .or(metadataTable.codeSetNm.like(query))
+                            .or(metadataTable.id.like(query))))));
   }
 
   private List<ValueSetOption> findByIds(List<Long> ids, OrderSpecifier<?>[] orders) {
@@ -119,7 +121,8 @@ public class ValueSetOptionFinder {
       case "type" -> applyOrder(order, valuesetTable.valueSetTypeCd);
       case "name" -> applyOrder(order, metadataTable.codeSetShortDescTxt);
       case "description" -> applyOrder(order, metadataTable.codeSetDescTxt);
-      default -> null;
+      case "code" -> applyOrder(order, metadataTable.id);
+      default -> metadataTable.codeSetShortDescTxt.asc();
     };
   }
 
@@ -127,10 +130,14 @@ public class ValueSetOptionFinder {
     return order.isAscending() ? path.asc() : path.desc();
   }
 
+  private OrderSpecifier<Long> applyOrder(Order order, NumberPath<Long> path) {
+    return order.isAscending() ? path.asc() : path.desc();
+  }
+
   private OrderSpecifier<?>[] resolveOrdering(final Pageable pageable) {
     return Stream.concat(
         pageable.getSort().map(this::resolveOrder).stream(),
-        Stream.of(metadataTable.codeSetShortDescTxt.asc()))
+        Stream.of(metadataTable.codeSetNm.asc()))
         .filter(Objects::nonNull)
         .toArray(OrderSpecifier[]::new);
   }

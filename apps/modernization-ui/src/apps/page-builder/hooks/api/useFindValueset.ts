@@ -13,8 +13,9 @@ export type ValuesetSearch = {
 
 export enum SortField {
     TYPE = 'type',
-    UNIQUE_ID = 'name',
-    LABEL = 'description'
+    NAME = 'name',
+    DESCRIPTION = 'description',
+    CODE = 'code'
 }
 export type ValuesetSort = {
     field: SortField;

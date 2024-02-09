@@ -45,3 +45,14 @@
         }
     }
 }
+
+.searchResultTable {
+    thead tr th {
+        &:nth-of-type(2) {
+            width: 10ch;
+        }
+        &:nth-of-type(3) {
+            width: 22ch;
+        }
+    }
+}
