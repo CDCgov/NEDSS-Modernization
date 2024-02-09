@@ -22,30 +22,30 @@ class ProviderOptionMother {
       delete from Participation where subject_class_cd = 'PSN' and subject_entity_uid in (:identifiers)
       delete from Person_name where person_uid in (:identifiers);
       delete from Person where person_uid in (:identifiers);
-      delete from Entity where entity_uid in (:identifiers) and class_cd = 'PSN';
+      delete from Entity where entity_uid in (:identifiers);
       """;
 
   private static final String CREATE =
       """
           insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
-          insert into Person(person_uid, version_ctrl_nbr, cd, first_nm, last_nm) values (:identifier, 1, 'PRV', :first, :last);
+            insert into Person(person_uid, version_ctrl_nbr, cd, first_nm, last_nm) values (:identifier, 1, 'PRV', :first, :last);
 
-          insert into Person_name(
-            person_uid,
-            person_name_seq,
-            first_nm,
-            last_nm,
-            status_cd,
-            status_time
-          ) values (
-            :identifier,
-            1,
-            :first,
-            :last,
-            'A',
-            GETDATE()
-          )
-          """;
+            insert into Person_name(
+              person_uid,
+              person_name_seq,
+              first_nm,
+              last_nm,
+              status_cd,
+              status_time
+            ) values (
+              :identifier,
+              1,
+              :first,
+              :last,
+              'A',
+              GETDATE()
+            )
+            """;
 
   private final NamedParameterJdbcTemplate template;
   private final Available<Option> available;

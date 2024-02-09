@@ -1,18 +1,16 @@
-import { Icon, Modal, ModalRef } from '@trussworks/react-uswds';
-import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
-import { CreateQuestion } from 'apps/page-builder/components/CreateQuestion/CreateQuestion';
+import { Modal, ModalRef } from '@trussworks/react-uswds';
+import { AddQuestion } from 'apps/page-builder/components/AddQuestion/AddQuestion';
 import { PageProvider, usePage } from 'page';
 import { RefObject, useEffect, useState } from 'react';
+import { usePageManagement } from '../../../usePageManagement';
 import { QuestionSearch } from '../search/QuestionSearch';
 import './AddQuestionModal.scss';
 import styles from './add-question-modal.module.scss';
-import { usePageManagement } from '../../../usePageManagement';
 
 type Props = {
     modal: RefObject<ModalRef>;
     pageId: number;
     onClose?: (questions: number[]) => void;
-    valueSetModalRef: RefObject<ModalRef>;
 };
 
 export const AddQuestionModal = (props: Props) => {
@@ -23,7 +21,7 @@ export const AddQuestionModal = (props: Props) => {
     );
 };
 
-const AddQuestionModalContent = ({ pageId, modal, onClose, valueSetModalRef }: Props) => {
+const AddQuestionModalContent = ({ pageId, modal, onClose }: Props) => {
     const [state, setState] = useState<'search' | 'add'>('search');
     const { page } = usePageManagement();
     const { firstPage } = usePage();
@@ -61,21 +59,11 @@ const AddQuestionModalContent = ({ pageId, modal, onClose, valueSetModalRef }: P
                         pageId={pageId}
                     />
                 ) : (
-                    <>
-                        <CloseableHeader
-                            title={
-                                <div className={styles.createQuestionHeader}>
-                                    <Icon.ArrowBack onClick={() => setState('search')} /> Add question
-                                </div>
-                            }
-                            onClose={handleClose}
-                        />
-                        <CreateQuestion
-                            onAddQuestion={(e: number) => handleClose([e])}
-                            onCloseModal={handleClose}
-                            addValueModalRef={valueSetModalRef}
-                        />
-                    </>
+                    <AddQuestion
+                        onBack={() => setState('search')}
+                        onClose={handleClose}
+                        onQuestionCreated={(e) => handleClose([e])}
+                    />
                 )}
             </div>
         </Modal>

@@ -1,5 +1,6 @@
 package gov.cdc.nbs.option.provider.autocomplete;
 
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 
@@ -11,6 +12,7 @@ public class ProviderOptionSteps {
     this.mother = mother;
   }
 
+  @After("@providers")
   @Before("@providers")
   public void clean() {
     mother.reset();

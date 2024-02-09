@@ -56,9 +56,9 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
         }).then(() => {
             refresh?.();
             if (visibility) {
-                onSetAlert?.(`Section unhidden successfully`, `success`);
+                onSetAlert?.(`Subsection unhidden successfully`, `success`);
             } else {
-                onSetAlert?.(`Section hidden successfully`, `success`);
+                onSetAlert?.(`Subsection hidden successfully`, `success`);
             }
         });
     };

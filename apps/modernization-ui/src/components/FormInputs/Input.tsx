@@ -19,6 +19,7 @@ type InputProps = {
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
     flexBox?: boolean;
     multiline?: boolean;
+    rows?: number;
     textInputRef?: RefObject<HTMLInputElement>;
     textAreaRef?: RefObject<HTMLTextAreaElement>;
     mask?: string;
@@ -41,6 +42,7 @@ export const Input = ({
     inputMode,
     flexBox,
     multiline,
+    rows,
     textInputRef,
     textAreaRef,
     mask,
@@ -102,6 +104,7 @@ export const Input = ({
                         placeholder={placeholder}
                         id={id}
                         onChange={onChange}
+                        rows={rows}
                         value={defaultValue ?? ''}
                         name={name ?? ''}
                         inputRef={textAreaRef}

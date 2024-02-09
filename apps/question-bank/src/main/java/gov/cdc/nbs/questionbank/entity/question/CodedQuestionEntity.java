@@ -13,53 +13,55 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @DiscriminatorValue(CodedQuestionEntity.CODED_QUESTION_TYPE)
 public class CodedQuestionEntity extends WaQuestion {
-    static final String CODED_QUESTION_TYPE = "CODED";
+  static final String CODED_QUESTION_TYPE = "CODED";
 
-    @Column(name = "code_set_group_id")
-    private Long codeSetGroupId;
+  @Column(name = "code_set_group_id")
+  private Long codeSetGroupId;
 
-    @Column(name = "default_value", length = 300)
-    private String defaultValue;
+  @Column(name = "default_value", length = 300)
+  private String defaultValue;
 
-    @Override
-    public String getDataType() {
-        return CodedQuestionEntity.CODED_QUESTION_TYPE;
+  @Override
+  public String getDataType() {
+    return CodedQuestionEntity.CODED_QUESTION_TYPE;
+  }
+
+  public CodedQuestionEntity(QuestionCommand.AddCodedQuestion command) {
+    super(command);
+
+    this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet");
+    this.defaultValue = command.defaultValue();
+    this.otherValueIndCd = 'F';
+
+    // Audit
+    created(command);
+    // Do not set reporting or messaging data for readonly user data
+    if (command.questionData().displayControl() != 1026) {
+      // Reporting
+      setReportingData(command);
+
+      // Messaging
+      setMessagingData(command.messagingData());
     }
+  }
 
-    public CodedQuestionEntity(QuestionCommand.AddCodedQuestion command) {
-        super(command);
+  @Override
+  public void update(QuestionCommand.Update command) {
+    // Update general fields
+    update(command.questionData());
 
-        this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet");
-        this.defaultValue = command.defaultValue();
-        this.otherValueIndCd = 'F';
+    // Coded fields
+    this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet");
+    this.defaultValue = command.defaultValue();
 
-        // Audit
-        created(command);
+    // Reporting
+    setReportingData(command);
 
-        // Reporting
-        setReportingData(command);
+    // Messaging
+    setMessagingData(command.messagingData());
 
-        // Messaging
-        setMessagingData(command.messagingData());
-    }
-
-    @Override
-    public void update(QuestionCommand.Update command) {
-        // Update general fields
-        update(command.questionData());
-
-        // Coded fields
-        this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet");
-        this.defaultValue = command.defaultValue();
-
-        // Reporting
-        setReportingData(command);
-
-        // Messaging
-        setMessagingData(command.messagingData());
-
-        // Audit
-        changed(command);
-    }
+    // Audit
+    changed(command);
+  }
 
 }

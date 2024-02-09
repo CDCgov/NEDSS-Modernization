@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Instant;
@@ -146,6 +147,34 @@ class NumericQuestionEntityTest {
         entity.update(command);
         assertEquals("CODED", entity.getUnitTypeCd());
         assertEquals("1000", entity.getUnitValue());
+    }
+
+    @Test
+    void should_not_set_reporting_messaging_readonly() {
+      var command = new QuestionCommand.AddNumericQuestion(
+            NumericMask.NUM,
+            3,
+            1l,
+            0l,
+            100l,
+            "CCs",
+            null,
+            new QuestionCommand.QuestionData(
+                CodeSet.LOCAL,
+                "TEST9900003",
+                "Numeric Question Unique Name",
+                "ADMN",
+                "Numeric question description",
+                "Numeric question label",
+                "Numeric question tooltip",
+                1026l, // readonly
+                "Numeric question admin comments",
+                new QuestionCommand.QuestionOid("oid", "oid system")),
+            null,
+            null,
+            9999000L,
+            Instant.now());
+      assertThat(new NumericQuestionEntity(command)).isNotNull();
     }
 
 }

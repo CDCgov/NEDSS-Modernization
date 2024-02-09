@@ -32,4 +32,3 @@ export type ValueSet = {
     valueSetDescription?: string;
     type?: string;
 };
-

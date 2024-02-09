@@ -20,6 +20,7 @@ import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 @Transactional
 public class ValueSetMother {
     private final String CODESET_NAME = "TestCodeset";
+    private int codesetIds = 9910;
 
     @Autowired
     private ValueSetRepository valueSetRepository;
@@ -49,6 +50,13 @@ public class ValueSetMother {
                 .orElseGet(this::valueSetWithConcepts);
     }
 
+    public Codeset valueSet(String name) {
+      return allValueSets.stream()
+              .filter(v -> name.equals(v.getValueSetNm()))
+              .findFirst()
+              .orElseGet(() -> valueset(name));
+    }
+
     public Codeset one() {
         return allValueSets.stream()
                 .findFirst()
@@ -64,6 +72,31 @@ public class ValueSetMother {
         v = valueSetRepository.save(v);
         allValueSets.add(v);
         return v;
+    }
+
+    public Codeset setActive(Codeset valueset, boolean active) {
+      valueset.setStatusCd(active ? "A" : "I");
+      return valueSetRepository.save(valueset);
+    }
+
+    private Codeset valueset(String name) {
+      Instant now = Instant.now();
+        Codeset codeset = new Codeset();
+        codeset.setId(new CodesetId("code_value_general", name));
+        codeset.setValueSetNm(name);
+        codeset.setStatusCd("A");
+        codeset.setLdfPicklistIndCd('Y');
+        codeset.setStatusToTime(now);
+        codeset.setCodeSetDescTxt(name);
+        codeset.setAssigningAuthorityCd("L");
+        codeset.setValueSetTypeCd("LOCAL");
+        codeset.setAddTime(now);
+        codeset.setAddUserId(99999999L);
+        codeset.setEffectiveFromTime(now);
+        codeset = valueSetRepository.save(codeset);
+        codeset = createMetadataEntry(codeset);
+        allValueSets.add(codeset);
+        return codeset;
     }
 
     private Codeset valueSetWithConcepts() {
@@ -127,25 +160,24 @@ public class ValueSetMother {
 
     public Codeset createCodeSetGroupForValueSet() {
         Codeset v = createValueSet();
-        CodeSetGroupMetadatum codeGrp = new CodeSetGroupMetadatum();
+        return createMetadataEntry(v);
+    }
+
+    public Codeset createMetadataEntry(Codeset valueset) {
+      CodeSetGroupMetadatum codeGrp = new CodeSetGroupMetadatum();
         codeGrp.setId(getCodeSetGroupID());
-        codeGrp.setCodeSetDescTxt(v.getCodeSetDescTxt());
-        codeGrp.setCodeSetNm(v.getValueSetNm());
-        codeGrp.setLdfPicklistIndCd(v.getLdfPicklistIndCd());
-        CodeSetGroupMetadatum result = codeSetGrpMetaRepository.save(codeGrp);
-        v.setCodeSetGroup(result);
-        Codeset codeSetResult = valueSetRepository.save(v);
-        return codeSetResult;
+        codeGrp.setCodeSetDescTxt(valueset.getCodeSetDescTxt());
+        codeGrp.setCodeSetNm(valueset.getValueSetNm());
+        codeGrp.setCodeSetShortDescTxt(valueset.getValueSetNm());
+        codeGrp.setLdfPicklistIndCd(valueset.getLdfPicklistIndCd());
+        codeGrp = codeSetGrpMetaRepository.save(codeGrp);
+        valueset.setCodeSetGroup(codeGrp);
+        valueset = valueSetRepository.save(valueset);
+        return valueset;
     }
 
     private long getCodeSetGroupID() {
-        long maxGroupID = valueSetRepository.getCodeSetGroupCeilID();
-        if (maxGroupID > 0) {
-            maxGroupID = codeSetGrpMetaRepository.getCodeSetGroupMaxID() + 10;
-        } else {
-            maxGroupID = 9910;
-        }
-        return maxGroupID;
+      return codesetIds += 10;
     }
 
 }

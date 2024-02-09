@@ -11,6 +11,19 @@
     &.usa-modal {
         border-radius: 0.313rem;
         border: .125rem solid colors.$base-lighter;
+        max-width: 38rem;
+        h2 {
+            font-family: "Public Sans";
+            font-size: 1.375rem;
+        }
+        #confirmation-description {
+            margin-top: 0;
+            font-family: "Public Sans";
+            font-size: 1.375rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
     }
     .usa-modal__footer {
         display: flex !important;

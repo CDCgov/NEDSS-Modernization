@@ -1,0 +1,12 @@
+@use 'styles/colors';
+
+.radioBtn {
+    display: flex;
+    flex-direction: row;
+
+    .text {
+        display: flex;
+        align-items: center;
+        margin-left: 0.5rem;
+    }
+}
