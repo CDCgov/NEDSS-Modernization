@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.UnsupportedEncodingException;
 import java.util.Comparator;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.web.servlet.ResultActions;
 import com.jayway.jsonpath.JsonPath;
 import gov.cdc.nbs.questionbank.entity.Codeset;
@@ -52,9 +55,10 @@ public class ValueSetOptionsSteps {
     response.active(request.findAll());
   }
 
-  @When("I search for valuesets with query {string}")
-  public void i_search_for_valuesets_by_query(String query) throws Exception {
-    response.active(request.search(new ValueSetSearchRequest(query)));
+  @When("I search for valuesets with query {string} sorted by {string} {string}")
+  public void i_search_for_valuesets_by_query(String query, String sortField, String direction) throws Exception {
+    Pageable pageable = PageRequest.of(0, 25, direction.contains("asc") ? Direction.ASC : Direction.DESC, sortField);
+    response.active(request.search(new ValueSetSearchRequest(query), pageable));
   }
 
   @Then("{string} is in the valueset options")
@@ -87,7 +91,7 @@ public class ValueSetOptionsSteps {
         .getContentAsString();
 
     boolean isAsc = direction.contains("asc");
-    List<String> results = JsonPath.read(content, "$.content[*]." + field);
+    List<String> results = JsonPath.read(content, "$.content.[*]." + field);
     Comparator<String> comparator = (a, b) -> isAsc ? a.compareToIgnoreCase(b) : b.compareToIgnoreCase(a);
     assertTrue(Comparators.isInOrder(results, comparator));
   }
