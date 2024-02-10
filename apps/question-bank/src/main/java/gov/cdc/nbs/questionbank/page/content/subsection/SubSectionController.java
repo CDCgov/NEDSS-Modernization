@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.page.content.subsection;
 
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectionRequest;
+import javax.swing.text.html.parser.Entity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -68,17 +69,12 @@ public class SubSectionController {
         return updater.update(page, subSectionId, request, details.getId());
     }
 
-    @PostMapping("/group")
+    @PostMapping("group")
     public void groupSubSection(
             @PathVariable("page") Long page,
             @RequestBody GroupSubSectionRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         grouper.group(page, request, details.getId());
-    }
-
-    @PostMapping("/testing")
-    public void testing(@ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-        System.out.println("do nothing");
     }
 
     @PostMapping("/un-group")
