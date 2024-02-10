@@ -4,7 +4,8 @@
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 #Set Zip File Name 
-ARG ZIP_NAME="wildfly-10.0.0.Final-<ADD-VERSION>"
+ARG ZIP_NAME="<ADD-FULL-ZIP-FILE-NAME>"
+ARG USER_GUIDE_NAME="<ADD-GUIDE-NAME>"
 
 # Run Shell as Powershell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -23,8 +24,13 @@ RUN New-Item -ItemType directory -Path C:\nbs ; \
 # 1) Verify Zip File is downloaded from S3 and place in same directory, example: wildfly-10.0.0.Final-6.0.15.1.zip
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 WORKDIR /nbs
-COPY $ZIP_NAME.zip $ZIP_NAME.zip
-RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME.zip; mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:ZIP_NAME; rm C:\nbs\$env:ZIP_NAME.zip
+COPY $ZIP_NAME $ZIP_NAME
+COPY $USER_GUIDE_NAME $USER_GUIDE_NAME
+
+#Unzip and Wildfly Zip
+RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME; mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:ZIP_NAME; rm C:\nbs\$env:ZIP_NAME
+
+RUN ls
 
 # Replace datasources in standalone.xml file
 COPY entrypoint.ps1 entrypoint.ps1
