@@ -11,8 +11,6 @@ import gov.cdc.nbs.questionbank.page.content.question.PageQuestionController;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.page.content.staticelement.PageStaticController;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
-import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -21,7 +19,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Transactional
 public class GroupSubsectionSteps {
@@ -86,33 +80,6 @@ public class GroupSubsectionSteps {
             exceptionHolder.setException(e);
         }
     }
-
-
-    @Given("i add a list of questions and a static element to a subsection")
-    public void i_add_a_list_of_questions_and_a_static_element_to_a_subsection() {
-        WaTemplate page = pageMother.one();
-        WaUiMetadata section = getSection(page);
-        WaQuestion question = questionMother.one();
-        try {
-            AddQuestionResponse addQuestionResponse = pageQuestionController.addQuestionToPage(
-                page.getId(),
-                section.getId(),
-                new AddQuestionRequest(Arrays.asList(question.getId())),
-                user.getCurrentUserDetails());
-            questionsIds.add(addQuestionResponse.ids().get(0));
-
-            StaticContentRequests.AddDefault request = new StaticContentRequests.AddDefault("test_comment",
-                section.getId());
-            AddStaticResponse addStaticResponse =
-                pageStaticController.addStaticLineSeparator(page.getId(), request, user.getCurrentUserDetails());
-            staticElementId = addStaticResponse.componentId();
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
-    }
-
 
     @When("I send a group subsection request")
     public void i_send_a_group_subsection_request() {
