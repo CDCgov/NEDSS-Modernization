@@ -15,12 +15,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FindUsersSteps {
 
   private final Active<Pageable> activePageable;
-  private final UserListRequester requester;
+  private final UserListItemRequester requester;
   private final Active<ResultActions> response;
 
   FindUsersSteps(
       final Active<Pageable> activePageable,
-      final UserListRequester requester,
+      final UserListItemRequester requester,
       final Active<ResultActions> response
   ) {
     this.activePageable = activePageable;

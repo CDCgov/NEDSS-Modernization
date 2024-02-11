@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.ResultActions;
 
 @Component
-class UserListRequester {
+class UserListItemRequester {
 
   private static final String QUERY = """
       query users($page: Page) {
@@ -27,7 +27,7 @@ class UserListRequester {
 
   private final GraphQLRequest graphql;
 
-  UserListRequester(final GraphQLRequest graphql) {
+  UserListItemRequester(final GraphQLRequest graphql) {
     this.graphql = graphql;
   }
 
