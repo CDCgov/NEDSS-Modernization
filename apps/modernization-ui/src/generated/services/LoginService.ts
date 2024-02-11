@@ -8,15 +8,16 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class UserControllerService {
+export class LoginService {
 
     /**
-     * login
+     * NBS User Authentication
+     * Provides options from Users that have a name matching a criteria.
      * @returns LoginResponse OK
      * @returns any Created
      * @throws ApiError
      */
-    public static loginUsingPost({
+    public static login({
         request,
     }: {
         /**

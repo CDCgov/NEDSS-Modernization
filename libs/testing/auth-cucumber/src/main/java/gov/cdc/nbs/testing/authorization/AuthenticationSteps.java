@@ -40,13 +40,16 @@ public class AuthenticationSteps {
     sessionMother.reset();
   }
 
+  @Given("A user exists")
   @Given("I am logged in")
+  @Given("I have authenticated as a user")
   public void i_am_logged_in() {
     ActiveUser user = mother.create();
 
     activate(user);
   }
 
+  @Given("I have not authenticated as a user")
   @Given("I am not logged in( at all)")
   public void i_am_not_logged_in() {
     activeUser.reset();
