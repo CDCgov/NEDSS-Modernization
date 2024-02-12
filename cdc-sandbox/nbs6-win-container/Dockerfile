@@ -24,11 +24,11 @@ RUN New-Item -ItemType directory -Path C:\nbs ; \
 # 1) Verify Zip File is downloaded from S3 and place in same directory, example: wildfly-10.0.0.Final-6.0.15.1.zip
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 WORKDIR /nbs
-COPY $ZIP_NAME $ZIP_NAME
+COPY $ZIP_NAME $ZIP_NAME.zip
 COPY $USER_GUIDE_NAME $USER_GUIDE_NAME
 RUN ls
 #Unzip and Wildfly Zip
-RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME
+RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME.zip
 RUN ls
 RUN ls C:\nbs\$env:ZIP_NAME
 RUN mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs
