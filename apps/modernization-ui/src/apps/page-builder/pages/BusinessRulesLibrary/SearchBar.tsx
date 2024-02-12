@@ -1,7 +1,6 @@
 import { Input } from 'components/FormInputs/Input';
 import { Button, Icon } from '@trussworks/react-uswds';
 import { useState } from 'react';
-import { FilterButton } from './FilterButton/Filter';
 import './SearchBar.scss';
 
 export const SearchBar = ({ onChange }: any) => {
@@ -33,7 +32,6 @@ export const SearchBar = ({ onChange }: any) => {
                 <Button type="submit" onClick={handleSubmit} className="business-rules-search-button">
                     <Icon.Search size={5} className="business-rules-search-icon" />
                 </Button>
-                <FilterButton />
             </div>
         </div>
     );
