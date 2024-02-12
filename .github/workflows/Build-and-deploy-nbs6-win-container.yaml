@@ -29,7 +29,7 @@ on:
           default: "NBS 7.2.2 User Guide.docx"       
   push:
     branches:
-      - main
+      - nbs6-docker-image
     paths:
       - "cdc-sandbox/nbs6-win-container/**"
 jobs:
