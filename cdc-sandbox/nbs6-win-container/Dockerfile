@@ -28,7 +28,9 @@ COPY $ZIP_NAME $ZIP_NAME
 COPY $USER_GUIDE_NAME $USER_GUIDE_NAME
 RUN ls
 #Unzip and Wildfly Zip
-RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME; mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:ZIP_NAME; rm C:\nbs\$env:ZIP_NAME
+RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME
+RUN mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs
+RUN rm C:\nbs\$env:ZIP_NAME; rm C:\nbs\$env:ZIP_NAME
 
 
 # Replace datasources in standalone.xml file
