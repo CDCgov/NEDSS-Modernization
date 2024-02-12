@@ -3,7 +3,7 @@
 # Use Windows Server Core as the base image
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
-#Set Zip File Name 
+#Setting Docker Build Arguments
 ARG ZIP_NAME="<ADD-FULL-ZIP-FILE-NAME>"
 ARG USER_GUIDE_NAME="<ADD-GUIDE-NAME>"
 
@@ -26,11 +26,10 @@ RUN New-Item -ItemType directory -Path C:\nbs ; \
 WORKDIR /nbs
 COPY $ZIP_NAME $ZIP_NAME
 COPY $USER_GUIDE_NAME $USER_GUIDE_NAME
-
+RUN ls
 #Unzip and Wildfly Zip
 RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME; mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:ZIP_NAME; rm C:\nbs\$env:ZIP_NAME
 
-RUN ls
 
 # Replace datasources in standalone.xml file
 COPY entrypoint.ps1 entrypoint.ps1
