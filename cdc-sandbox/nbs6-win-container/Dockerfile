@@ -30,8 +30,7 @@ COPY $ZIP_NAME.zip $ZIP_NAME.zip
 RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME.zip; mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:ZIP_NAME.zip; rm C:\nbs\$env:ZIP_NAME
 
 # Update User Guide
-# NOTE:
-# 1) Verify NBS User Training Guide.pdf is located in release zip file
+# NOTE: Verify NBS User Training Guide.pdf is located in release zip file
 COPY $USER_GUIDE_NAME $USER_GUIDE_NAME
 RUN Rename-Item -Path $env:USER_GUIDE_NAME -NewName $env:NBS_USER_GUIDE_NAME
 RUN mv C:\nbs\$env:NBS_USER_GUIDE_NAME C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide -Force
