@@ -34,7 +34,7 @@ RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME.zip; mv C:\nbs\$env:ZIP_NAME\wildf
 # 1) Verify NBS User Training Guide.pdf is located in release zip file
 COPY $USER_GUIDE_NAME $USER_GUIDE_NAME
 RUN Rename-Item -Path $env:USER_GUIDE_NAME -NewName $env:NBS_USER_GUIDE_NAME
-RUN mv C:\nbs\$env:NBS_USER_GUIDE_NAME C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide
+RUN mv C:\nbs\$env:NBS_USER_GUIDE_NAME C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide -Force
 
 # Replace datasources in standalone.xml file
 COPY entrypoint.ps1 entrypoint.ps1
