@@ -13,6 +13,7 @@ import './AddQuestion.scss';
 import { CreateQuestionForm, QuestionForm } from './QuestionForm';
 import styles from './add-question.module.scss';
 import { ValuesetSearch } from './valueset/ValuesetSearch';
+import { CreateValueset } from '../CreateValueset/CreateValueset';
 
 type Props = {
     onBack: () => void;
@@ -20,7 +21,7 @@ type Props = {
     onQuestionCreated: (id: number) => void;
 };
 export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
-    const [state, setState] = useState<'create' | 'findValueSet'>('create');
+    const [state, setState] = useState<'create' | 'findValueset' | 'createValueset'>('create');
     const { createQuestion, questionId, error } = useCreateQuestion();
     const { alertError } = useAlert();
     const form = useForm<CreateQuestionForm>({
@@ -48,16 +49,23 @@ export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
         <FormProvider {...form}>
             {state === 'create' && (
                 <AddQuestionContent
-                    onFindValueSet={() => setState('findValueSet')}
+                    onFindValueSet={() => setState('findValueset')}
                     onBack={onBack}
                     onClose={onClose}
                     onSubmit={handleSubmit}
                 />
             )}
-            {state === 'findValueSet' && (
+            {state === 'findValueset' && (
                 <PageProvider>
-                    <FindValueSet onCancel={() => setState('create')} onClose={onClose} />
+                    <FindValueSet
+                        onCancel={() => setState('create')}
+                        onClose={onClose}
+                        onCreateNew={() => setState('createValueset')}
+                    />
                 </PageProvider>
+            )}
+            {state === 'createValueset' && (
+                <CreateValueset onCancel={() => setState('findValueset')} onClose={onClose} />
             )}
         </FormProvider>
     );
@@ -107,8 +115,9 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
 type FindValueSetProps = {
     onCancel: () => void;
     onClose: () => void;
+    onCreateNew: () => void;
 };
-const FindValueSet = ({ onCancel, onClose }: FindValueSetProps) => {
+const FindValueSet = ({ onCancel, onClose, onCreateNew }: FindValueSetProps) => {
     const form = useFormContext<CreateCodedQuestionRequest>();
 
     const handleSetValueset = (valueset: number) => {
@@ -116,5 +125,7 @@ const FindValueSet = ({ onCancel, onClose }: FindValueSetProps) => {
         onCancel();
     };
 
-    return <ValuesetSearch onCancel={onCancel} onClose={onClose} onAccept={handleSetValueset} />;
+    return (
+        <ValuesetSearch onCancel={onCancel} onClose={onClose} onAccept={handleSetValueset} onCreateNew={onCreateNew} />
+    );
 };

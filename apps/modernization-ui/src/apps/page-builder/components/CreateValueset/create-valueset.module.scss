@@ -1,0 +1,22 @@
+.createValueset {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    .addValuesetHeader {
+        display: flex;
+        align-items: center;
+
+        svg {
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+    }
+
+    .scrollableContent {
+        display: flex;
+        justify-content: center;
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+}
