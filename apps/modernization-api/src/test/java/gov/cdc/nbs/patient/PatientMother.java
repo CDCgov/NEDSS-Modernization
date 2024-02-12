@@ -119,7 +119,6 @@ public class PatientMother {
     Person patient = managed(identifier);
 
     patient.setRecordStatusCd(RecordStatus.SUPERCEDED);
-    this.entityManager.persist(patient);
   }
 
   public void withAddress(
