@@ -13,7 +13,8 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 # Set environment variables and AWS credentials and region
 ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
     JBOSS_HOME="D:\wildfly-10.0.0.Final" \
-    JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437"
+    JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
+    USER_GUIDE_PATH="C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide"
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
 RUN New-Item -ItemType directory -Path C:\nbs ; \
@@ -25,16 +26,15 @@ RUN New-Item -ItemType directory -Path C:\nbs ; \
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 WORKDIR /nbs
 COPY $ZIP_NAME.zip $ZIP_NAME.zip
-COPY $USER_GUIDE_NAME $USER_GUIDE_NAME
-RUN ls
-#Unzip and Wildfly Zip
-RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME.zip
-RUN ls
-RUN ls C:\nbs\$env:ZIP_NAME
-RUN mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs
-RUN rm C:\nbs\$env:ZIP_NAME.zip
-RUN rm C:\nbs\$env:ZIP_NAME
 
+#Unzip and Wildfly Zip
+RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME.zip; mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:ZIP_NAME.zip; rm C:\nbs\$env:ZIP_NAME
+
+#Update User Guide
+RUN rm $USER_GUIDE_PATH\*
+COPY $USER_GUIDE_NAME $USER_GUIDE_PATH\$USER_GUIDE_NAME
+
+RUN ls $USER_GUIDE_PATH
 
 # Replace datasources in standalone.xml file
 COPY entrypoint.ps1 entrypoint.ps1
