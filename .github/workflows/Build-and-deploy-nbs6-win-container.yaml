@@ -14,7 +14,7 @@ jobs:
       nbs6_version: "6.0.15.1"
       dockerfile_relative_path: ./cdc-sandbox/nbs6-win-container/
       zip_file_name: "v7.2.2.NEDSS.NBS.Modernized.Documentation.zip"
-      user_guide_doc_name: "NBS 7.2.2 Release Notes.docx"
+      user_guide_doc_name: "NBS 7.2.2 User Guide.docx"
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
       ECR_CLASSIC_REPO_BASE_NAME: ${{secrets.ECR_CLASSIC_REPO_BASE_NAME}}
