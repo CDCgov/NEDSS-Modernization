@@ -8,13 +8,14 @@ import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectio
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import gov.cdc.nbs.questionbank.question.QuestionManagementUtil;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.time.Instant;
 
 @Component
-@Service
+@Transactional
 public class SubSectionGrouper {
 
   private final EntityManager entityManager;
@@ -46,6 +47,7 @@ public class SubSectionGrouper {
       throw new PageNotFoundException(pageId);
     }
     page.groupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
+    entityManager.flush();
   }
 
   public void unGroup(Long pageId, UnGroupSubSectionRequest request, Long userId) {
@@ -54,6 +56,7 @@ public class SubSectionGrouper {
       throw new PageNotFoundException(pageId);
     }
     page.unGroupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
+    entityManager.flush();
   }
 
   private PageContentCommand.GroupSubsection asCommand(
