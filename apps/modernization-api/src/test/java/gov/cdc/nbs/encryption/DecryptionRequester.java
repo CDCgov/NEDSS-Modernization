@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.search;
+package gov.cdc.nbs.encryption;
 
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
 public class DecryptionRequester {
@@ -30,7 +29,7 @@ public class DecryptionRequester {
               post("/encryption/decrypt")
                   .content(encrypted)
           )
-      ).andDo(print());
+      );
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to execute Page Information Request", exception);
     }

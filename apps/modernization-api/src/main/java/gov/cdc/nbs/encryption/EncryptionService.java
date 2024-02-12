@@ -1,8 +1,7 @@
-package gov.cdc.nbs.service;
+package gov.cdc.nbs.encryption;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.exception.EncryptionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +15,21 @@ import java.util.Base64;
 
 @Service
 public class EncryptionService {
-    @Value("${nbs.security.parameterSecret}")
-    private String secret;
 
-    @Autowired
-    private ObjectMapper mapper;
-
-    private final SecureRandom random = new SecureRandom();
     public static final int SALT_LENGTH = 16;
+    private final String secret;
+    private final ObjectMapper mapper;
+    private final SecureRandom random = new SecureRandom();
+
+
+    public EncryptionService(
+        @Value("${nbs.security.parameterSecret}")
+        final String secret,
+        final ObjectMapper mapper
+    ) {
+        this.secret = secret;
+        this.mapper = mapper;
+    }
 
     public String handleEncryption(Object object) {
         try {
@@ -88,7 +94,7 @@ public class EncryptionService {
             // deserialize object
             return mapper.readValue(serialized, Object.class);
         } catch (Exception e) {
-            throw new EncryptionException("Failed to decrypt provied string.");
+            throw new EncryptionException("Failed to decrypt provided string.");
         }
     }
 }
