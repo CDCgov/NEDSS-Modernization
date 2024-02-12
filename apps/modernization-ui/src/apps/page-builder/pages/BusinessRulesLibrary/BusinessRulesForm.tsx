@@ -3,7 +3,6 @@ import { Checkbox, ErrorMessage, Grid, Icon, ModalRef, ModalToggleButton, Radio 
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Controller, useFormContext } from 'react-hook-form';
-import { nonDateCompare, dateCompare } from '../../constant/constant';
 import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
@@ -82,8 +81,38 @@ const BusinessRulesForm = () => {
         }
     };
 
+    const nonDateCompare = [
+        {
+            name: 'Equal to',
+            value: '='
+        },
+        {
+            name: 'Not equal to',
+            value: '!='
+        }
+    ];
+
+    const dateCompare = [
+        {
+            name: 'Less than',
+            value: '<'
+        },
+        {
+            name: 'Less or equal to',
+            value: '<='
+        },
+        {
+            name: 'Greater or equal to',
+            value: '>='
+        },
+        {
+            name: 'Greater than',
+            value: '>'
+        }
+    ];
+
     const ruleFunction = form.watch('ruleFunction');
-    const logicList = ruleFunction == 'Data validation' ? dateCompare : nonDateCompare;
+    const logicList = ruleFunction == 'Date validation' ? dateCompare : nonDateCompare;
 
     const handleSourceValueChange = (data: string[]) => {
         const values = form.getValues('sourceValue');
