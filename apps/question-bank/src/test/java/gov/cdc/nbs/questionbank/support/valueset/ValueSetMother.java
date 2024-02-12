@@ -180,4 +180,25 @@ public class ValueSetMother {
       return codesetIds += 10;
     }
 
+    public void addConcept(Codeset codeset, String name, String value) {
+      Instant now = Instant.now();
+      CodeValueGeneral concept = new CodeValueGeneral();
+        concept.setId(new CodeValueGeneralId(codeset.getId().getCodeSetNm(), value));
+        concept.setCodeDescTxt(name);
+        concept.setCodeShortDescTxt(name);
+        concept.setCodeSystemCd(codeset.getAssigningAuthorityCd());
+        concept.setCodeSystemDescTxt(codeset.getAssigningAuthorityDescTxt());
+        concept.setEffectiveFromTime(now);
+        concept.setIsModifiableInd('Y');
+        concept.setStatusCd('A');
+        concept.setStatusTime(now);
+        concept.setConceptTypeCd("LOCAL");
+        concept.setConceptPreferredNm(name);
+        concept.setConceptStatusCd("Active");
+        concept.setConceptStatusTime(now);
+        concept.setAddTime(now);
+        concept.setAddUserId(99999999L);
+        concept = conceptRepository.save(concept);
+    }
+
 }

@@ -24,7 +24,6 @@ import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
 import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetOption;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +37,11 @@ public class ValueSetController {
 
   private final ValueSetOptionFinder optionFinder;
   private final ValueSetStateManager valueSetStateManager;
-  private final ValueSetReader valueSetReader;
   private final ValueSetUpdater valueSetUpdater;
   private final ValueSetCreator valueSetCreator;
   private final ConceptCreator conceptCreator;
   private final ConceptUpdater conceptUpdater;
+  private final ConceptFinder conceptFinder;
   private final UserDetailsProvider userDetailsProvider;
 
   @PostMapping
@@ -65,11 +64,6 @@ public class ValueSetController {
     return new ResponseEntity<>(response, null, response.getStatus());
   }
 
-  @GetMapping
-  public Page<ValueSet> findAllValueSets(@PageableDefault(size = 25) Pageable pageable) {
-    return valueSetReader.findAllValueSets(pageable);
-  }
-
   @GetMapping("/options")
   public List<ValueSetOption> findValueSetOptions() {
     return optionFinder.findAllValueSetOptions();
@@ -79,7 +73,6 @@ public class ValueSetController {
   public ResponseEntity<UpdatedValueSetResponse> updateValueSet(@RequestBody ValueSetUpdateRequest update) {
     UpdatedValueSetResponse response = valueSetUpdater.updateValueSet(update);
     return new ResponseEntity<>(response, null, response.getStatus());
-
   }
 
   @PostMapping("/options/search")
@@ -91,7 +84,7 @@ public class ValueSetController {
 
   @GetMapping("{codeSetNm}/concepts")
   public List<Concept> findConceptsByCodeSetName(@PathVariable String codeSetNm) {
-    return valueSetReader.findConceptCodes(codeSetNm);
+    return conceptFinder.find(codeSetNm);
   }
 
   @PutMapping("/{valueSetCode}/concepts/{localCode}")

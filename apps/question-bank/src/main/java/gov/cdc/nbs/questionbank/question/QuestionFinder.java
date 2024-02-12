@@ -6,7 +6,7 @@ import java.util.List;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.Field;
-import gov.cdc.nbs.questionbank.valueset.ValueSetReader;
+import gov.cdc.nbs.questionbank.valueset.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,7 +26,7 @@ public class QuestionFinder {
   private final WaQuestionRepository questionRepository;
   private final WaUiMetadataRepository uiMetadataRepository;
   private final QuestionMapper questionMapper;
-  private final ValueSetReader valueSetReader;
+  private final ConceptFinder conceptFinder;
 
   private static final String SUBGROUP_CODE_SET = "NBS_QUES_SUBGROUP";
 
@@ -34,11 +34,11 @@ public class QuestionFinder {
       final WaQuestionRepository questionRepository,
       final QuestionMapper questionMapper,
       WaUiMetadataRepository uiMetadataRepository,
-      ValueSetReader valueSetReader) {
+      ConceptFinder conceptFinder) {
     this.questionRepository = questionRepository;
     this.questionMapper = questionMapper;
     this.uiMetadataRepository = uiMetadataRepository;
-    this.valueSetReader = valueSetReader;
+    this.conceptFinder = conceptFinder;
   }
 
   public GetQuestionResponse find(Long id) {
@@ -96,7 +96,7 @@ public class QuestionFinder {
 
   private void checkSubGroupValidity(String rdbColumnName) {
     String subGroupCode = rdbColumnName.substring(0, rdbColumnName.indexOf("_"));
-    boolean isMatch = valueSetReader.findConceptCodes(SUBGROUP_CODE_SET)
+    boolean isMatch = conceptFinder.find(SUBGROUP_CODE_SET)
         .stream().map(Concept::localCode).anyMatch(code -> code.equals(subGroupCode));
     if (!isMatch)
       throw new UniqueQuestionException("invalid subgroup Code");
