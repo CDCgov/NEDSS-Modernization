@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Form, Grid, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ButtonGroup, Form, Grid, Icon, Label, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,7 +9,6 @@ import BusinessRulesForm from '../BusinessRulesForm';
 import { Breadcrumb } from 'breadcrumb';
 import { authorization } from 'authorization';
 import { ConfirmationModal } from 'confirmation';
-import RequiredFieldMarker from '../RequiredFieldMarker';
 
 export type FormValues = {
     ruleFunction: string;
@@ -140,13 +139,9 @@ const AddBusinessRule = () => {
                             <div className="edit-rules__content">
                                 <Grid row className="inline-field">
                                     <Grid col={3}>
-                                        <label className="input-label" aria-required>
-                                            Function{' '}
-                                            <RequiredFieldMarker
-                                                functionName={form.watch('ruleFunction') || 'default'}
-                                                fieldName="ruleFunction"
-                                            />
-                                        </label>
+                                        <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
+                                            Function
+                                        </Label>
                                     </Grid>
                                     <Grid col={9}>
                                         {ruleId ? (
