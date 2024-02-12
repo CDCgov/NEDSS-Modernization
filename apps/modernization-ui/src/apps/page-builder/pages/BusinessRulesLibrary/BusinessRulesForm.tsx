@@ -172,7 +172,7 @@ const BusinessRulesForm = () => {
                 </Grid>
             </Grid>
 
-            {ruleFunction != 'Data validation' && (
+            {ruleFunction != 'Date validation' && (
                 <Controller
                     control={form.control}
                     name="anySourceValue"
@@ -222,7 +222,7 @@ const BusinessRulesForm = () => {
                 )}
             />
 
-            {ruleFunction != 'Data validation' && (
+            {ruleFunction != 'Date validation' && (
                 <Controller
                     control={form.control}
                     name="sourceValue"
