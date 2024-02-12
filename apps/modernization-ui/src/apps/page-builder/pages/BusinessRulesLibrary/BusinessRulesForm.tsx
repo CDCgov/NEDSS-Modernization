@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Checkbox, ErrorMessage, Grid, Icon, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
+import { Checkbox, ErrorMessage, Grid, Icon, Label, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -151,7 +151,9 @@ const BusinessRulesForm = () => {
         <>
             <Grid row className="inline-field">
                 <Grid col={3}>
-                    <label className="input-label">Source Question</label>
+                    <Label className="input-label" htmlFor="sourceQuestion" requiredMarker>
+                        Source Question
+                    </Label>
                 </Grid>
                 <Grid col={9}>
                     {selectedSource.length ? (
@@ -161,6 +163,7 @@ const BusinessRulesForm = () => {
                         </div>
                     ) : (
                         <ModalToggleButton
+                            name="sourceQuestion"
                             modalRef={sourceModalRef}
                             id="sourceQuestionId"
                             outline
@@ -179,7 +182,9 @@ const BusinessRulesForm = () => {
                     render={({ field: { onChange, value } }) => (
                         <Grid row className="inline-field">
                             <Grid col={3}>
-                                <label className="input-label">Any source value</label>
+                                <Label className="input-label" htmlFor="anySourceValue">
+                                    Any source value
+                                </Label>
                             </Grid>
                             <Grid col={9} className="height-3">
                                 <Checkbox
@@ -205,7 +210,9 @@ const BusinessRulesForm = () => {
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
                         <Grid col={3}>
-                            <label className="input-label">Logic</label>
+                            <Label className="input-label" htmlFor="sourceQuestion" requiredMarker>
+                                Logic
+                            </Label>
                         </Grid>
                         <Grid col={9}>
                             <SelectInput
@@ -229,7 +236,9 @@ const BusinessRulesForm = () => {
                     render={() => (
                         <Grid row className="inline-field">
                             <Grid col={3}>
-                                <label className="input-label">Source value(s)</label>
+                                <Label className="input-label" htmlFor="sourceValue" requiredMarker>
+                                    Source value(s)
+                                </Label>
                             </Grid>
                             <Grid col={9}>
                                 <div className="text-input">
@@ -252,7 +261,9 @@ const BusinessRulesForm = () => {
                     render={({ field: { onChange, value } }) => (
                         <Grid row className="inline-field">
                             <Grid col={3}>
-                                <label className="input-label">Target type</label>
+                                <Label className="input-label" htmlFor="targetType" requiredMarker>
+                                    Target type
+                                </Label>
                             </Grid>
                             <Grid col={9} className="radio-group">
                                 <Radio
@@ -281,7 +292,9 @@ const BusinessRulesForm = () => {
             )}
             <Grid row className="inline-field">
                 <Grid col={3}>
-                    <label className="input-label">Target Question(s)</label>
+                    <Label className="input-label" htmlFor="targetQuestions" requiredMarker>
+                        Target Question(s)
+                    </Label>
                 </Grid>
                 <Grid col={9}>
                     {!isTargetQuestionSelected ? (
@@ -323,9 +336,9 @@ const BusinessRulesForm = () => {
                 render={({ field: { name, onChange, onBlur, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
                         <Grid col={3} className="rule-description-label">
-                            <label htmlFor={name} className="input-label">
+                            <Label htmlFor={name} className="input-label">
                                 Rule Description
-                            </label>
+                            </Label>
                         </Grid>
                         <Grid col={9}>
                             <Input

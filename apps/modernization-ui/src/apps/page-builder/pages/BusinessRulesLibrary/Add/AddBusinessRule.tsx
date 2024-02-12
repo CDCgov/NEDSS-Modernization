@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Form, Grid, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ButtonGroup, Form, Grid, Icon, Label, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -139,7 +139,9 @@ const AddBusinessRule = () => {
                             <div className="edit-rules__content">
                                 <Grid row className="inline-field">
                                     <Grid col={3}>
-                                        <label className="input-label">Function</label>
+                                        <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
+                                            Function
+                                        </Label>
                                     </Grid>
                                     <Grid col={9}>
                                         {ruleId ? (
