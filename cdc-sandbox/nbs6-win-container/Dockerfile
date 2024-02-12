@@ -14,7 +14,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
     JBOSS_HOME="D:\wildfly-10.0.0.Final" \
     JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
-    USER_GUIDE_PATH="C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide"
+    USER_GUIDE_PATH="C:\\nbs\\wildfly-10.0.0.Final\\nedssdomain\\Nedss\\UserGuide"
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
 RUN New-Item -ItemType directory -Path C:\nbs ; \
