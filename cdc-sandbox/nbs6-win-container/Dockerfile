@@ -31,7 +31,8 @@ COPY $ZIP_NAME.zip $ZIP_NAME.zip
 RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME.zip; mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:ZIP_NAME.zip; rm C:\nbs\$env:ZIP_NAME
 
 #Update User Guide
-COPY $USER_GUIDE_NAME C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$USER_GUIDE_NAME
+RUN ls C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide
+COPY $USER_GUIDE_NAME .\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$USER_GUIDE_NAME
 RUN ls C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide
 
 # Replace datasources in standalone.xml file
