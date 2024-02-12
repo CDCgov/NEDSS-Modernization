@@ -14,7 +14,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
     JBOSS_HOME="D:\wildfly-10.0.0.Final" \
     JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
-    USER_GUIDE_PATH="C:\\nbs\\wildfly-10.0.0.Final\\nedssdomain\\Nedss\\UserGuide"
+    NBS_USER_GUIDE_NAME="NBS User Training Guide.pdf"
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
 RUN New-Item -ItemType directory -Path C:\nbs ; \
@@ -29,9 +29,12 @@ COPY $ZIP_NAME.zip $ZIP_NAME.zip
 #Unzip and Wildfly Zip
 RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME.zip; mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:ZIP_NAME.zip; rm C:\nbs\$env:ZIP_NAME
 
-#Update User Guide
+# Update User Guide
+# NOTE:
+# 1) Verify NBS User Training Guide.pdf is located in release zip file
 COPY $USER_GUIDE_NAME $USER_GUIDE_NAME
-RUN mv C:\nbs\$env:USER_GUIDE_NAME C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide
+RUN Rename-Item -Path $env:USER_GUIDE_NAME -NewName $env:NBS_USER_GUIDE_NAME
+RUN mv C:\nbs\$env:NBS_USER_GUIDE_NAME C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide
 
 # Replace datasources in standalone.xml file
 COPY entrypoint.ps1 entrypoint.ps1
