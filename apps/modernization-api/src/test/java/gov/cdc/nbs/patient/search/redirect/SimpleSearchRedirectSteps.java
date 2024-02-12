@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.search.redirect;
 
-import gov.cdc.nbs.patient.search.DecryptionRequester;
+import gov.cdc.nbs.encryption.DecryptionRequester;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.ParameterType;

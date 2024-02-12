@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 import java.util.UUID;
 
 @Component
-public class ActiveUserMother {
+class ActiveUserMother {
 
   private final AuthenticationSupportSettings settings;
   private final SequentialIdentityGenerator idGenerator;
@@ -38,11 +38,11 @@ public class ActiveUserMother {
     this.users.reset();
   }
 
-  public ActiveUser create(final String name) {
+  ActiveUser create(final String name) {
     return create(name, "test", "user");
   }
 
-  public ActiveUser create(
+  ActiveUser create(
       final String username,
       final String first,
       final String last
@@ -74,7 +74,7 @@ public class ActiveUserMother {
     return activeUser;
   }
 
-  public ActiveUser create() {
+  ActiveUser create() {
     return create(UUID.randomUUID().toString());
   }
 }
