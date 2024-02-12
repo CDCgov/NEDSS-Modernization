@@ -43,6 +43,8 @@ public class AuthenticationSteps {
   @Given("A user exists")
   @Given("I am logged in")
   @Given("I have authenticated as a user")
+  @Given("I am logged into NBS")
+  @Given("I am logged into NBS and a security log entry exists")
   public void i_am_logged_in() {
     ActiveUser user = mother.create();
 
