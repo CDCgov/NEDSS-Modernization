@@ -94,11 +94,11 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
         <ModalComponent
             modalRef={modalRef}
             isLarge
-            modalHeading={header || 'Target Questions'}
+            modalHeading={header || 'Target questions'}
             modalBody={
                 <>
-                    <div style={{ padding: '0 24px' }}>
-                        <h5>{`{Please select ${header ? header.toLowerCase() : 'targeted questions'}.}`}</h5>
+                    <div className="target-question-modal-content">
+                        <h5>{`Please select ${header ? header.toLowerCase() : 'targeted questions'}.`}</h5>
                         <div className="target-question-tabs">
                             <ul className="tabs">
                                 {page?.tabs?.map(({ name }, key) => (
@@ -112,19 +112,17 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
                             </ul>
                         </div>
                         <div className="selected-question list">
-                            <div className="title">Selected Question</div>
-                            <>
-                                <div className="search-tag">
-                                    {sourceList
-                                        .filter((list) => list.selected)
-                                        .map((list: any, index: number) => (
-                                            <div className="tag-cover" key={index}>
-                                                <Tag background="#F0F7FD">{list.name}</Tag>
-                                                <UswIcon.Close onClick={() => handleRemove(list.name)} />
-                                            </div>
-                                        ))}
-                                </div>
-                            </>
+                            <div className="title">Selected questions</div>
+                            <div className="search-tags">
+                                {sourceList
+                                    .filter((list) => list.selected)
+                                    .map((list: any, index: number) => (
+                                        <div className="tag-cover" key={index}>
+                                            <Tag>{list.name}</Tag>
+                                            <UswIcon.Close onClick={() => handleRemove(list.name)} />
+                                        </div>
+                                    ))}
+                            </div>
                         </div>
                         <div className="question-list-container">
                             <div className="tree-section">
