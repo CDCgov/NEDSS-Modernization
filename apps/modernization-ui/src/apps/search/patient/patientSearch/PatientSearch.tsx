@@ -37,7 +37,6 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
 
     useAltX(() => {
         focusedTarget('lastName');
-        handleClearAll();
     });
 
     useEffect(() => {}, [form.formState.errors]);
@@ -62,18 +61,6 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
         Object.values(filter.identification ?? {}).length > 0;
         filter.identification = objectOrUndefined(filter.identification);
         handleSubmission(filter);
-    };
-
-    const handleClearAll = () => {
-        // Because of the customized nature of Date picker errors, the date picker doesn't reset when the clear all is clicked.
-        // So you need to set the error to false and then run the form reset and clearAll methods.
-        // None instead of empty string because Trusswork's DatePicker doesn't update with empty string.
-        form.setValue('dateOfBirth', 'none');
-        setTimeout(() => {
-            form.reset({}, { keepDefaultValues: true });
-            clearAll();
-            skipTo('lastName');
-        });
     };
 
     const simpleSearchItems: AccordionItemProps[] = [
@@ -307,7 +294,21 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                     </Button>
                 </Grid>
                 <Grid col={12} className="padding-x-2">
-                    <Button className="width-full clear-btn" type={'button'} onClick={handleClearAll} outline>
+                    <Button
+                        className="width-full clear-btn"
+                        type={'button'}
+                        onClick={() => {
+                            // Because of the customized nature of Date picker errors, the date picker doesn't reset when the clear all is clicked.
+                            // So you need to set the error to false and then run the form reset and clearAll methods.
+                            // None instead of empty string because Trusswork's DatePicker doesn't update with empty string.
+                            form.setValue('dateOfBirth', 'none');
+                            setTimeout(() => {
+                                form.reset({}, { keepDefaultValues: true });
+                                clearAll();
+                                skipTo('lastName');
+                            });
+                        }}
+                        outline>
                         Clear all
                     </Button>
                 </Grid>
