@@ -183,17 +183,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         </div>
     );
 
-    const dataNotAvailableElement = (
-        <div className="no-data-available">
-            <label className="margin-bottom-1em no-text">
-                {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
-            </label>
-            <NavLinkButton className="submit-btn" type="outline" to={`${redirectRuleURL}/add`}>
-                Create New
-            </NavLinkButton>
-        </div>
-    );
-
     const searchAvailableElement = (
         <div className="no-data-available">
             <label className="no-text">Still can't find what are you're looking for?</label>
@@ -202,6 +191,19 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             </label>
             <div>
                 <NavLinkButton className="submit-btn" type="outline" to={`${redirectRuleURL}/add`}>
+                    Create New
+                </NavLinkButton>
+            </div>
+        </div>
+    );
+
+    const dataNotAvailableElement = (
+        <div className="no-data-available">
+            <div className="no-data-main">No Data</div>
+            <div className="no-data-info">
+                <span className="no-items">No items to display</span>
+                <p>Click 'Add new business rule' to add new rule</p>
+                <NavLinkButton className="submit-btn" to={`${redirectRuleURL}/add`}>
                     Create New
                 </NavLinkButton>
             </div>
@@ -218,29 +220,26 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                     Add new business rule
                 </NavLinkButton>
             </div>
-            <div style={{ backgroundColor: 'green' }}>
+            <div>
                 <SearchBar onChange={setSearchQuery} />
             </div>
-            {summaries?.length ? (
-                <TableComponent
-                    display="zebra"
-                    contextName="businessRules"
-                    className="business-rules-table"
-                    tableHeader=""
-                    tableHead={tableColumns}
-                    tableBody={tableRows}
-                    isPagination={true}
-                    pageSize={pages?.pageSize}
-                    totalResults={pages?.totalElements}
-                    currentPage={pages?.currentPage}
-                    handleNext={setCurrentPage}
-                    sortData={handleSort}
-                    rangeSelector={true}
-                    isLoading={isLoading}
-                />
-            ) : (
-                dataNotAvailableElement
-            )}
+            <TableComponent
+                display="zebra"
+                contextName="businessRules"
+                className="business-rules-table"
+                tableHeader=""
+                tableHead={tableColumns}
+                tableBody={tableRows}
+                isPagination={true}
+                pageSize={pages?.pageSize}
+                totalResults={pages.totalElements}
+                currentPage={pages?.currentPage}
+                handleNext={setCurrentPage}
+                sortData={handleSort}
+                rangeSelector={true}
+                isLoading={isLoading}
+                noDataElement={dataNotAvailableElement}
+            />
             {summaries?.length > 0 && searchQuery && searchAvailableElement}
             <div className="footer-action display-none">{footerActionBtn}</div>
         </div>

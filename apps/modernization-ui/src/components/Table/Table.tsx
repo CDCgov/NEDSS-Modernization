@@ -8,7 +8,6 @@ import { TableHeader } from './TableHeader';
 import classNames from 'classnames';
 import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
 import { Column, resolveColumns } from './resolveColumns';
-
 import styles from './table.module.scss';
 
 type SelectionMode = 'select' | 'deselect';
@@ -58,6 +57,7 @@ export type Props = {
     handleSelected?: OldSelectionHandler;
     isLoading?: boolean;
     contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates' | 'businessRules';
+    noDataElement?: ReactNode;
 };
 
 export const TableComponent = ({
@@ -77,7 +77,8 @@ export const TableComponent = ({
     selectable = false,
     handleSelected,
     isLoading = false,
-    contextName
+    contextName,
+    noDataElement
 }: Props) => {
     const sorting = useTableSorting({ enabled: tableBody && totalResults > 1, onSort: sortData });
 
@@ -97,7 +98,7 @@ export const TableComponent = ({
 
     const renderRows = (sorting: Sorting, rows: TableBody[], selectable: boolean) => {
         if (rows?.length === 0) {
-            return dataNotAvailalbe(columns.length);
+            return dataNotAvailalbe(columns.length, noDataElement);
         }
 
         const offset = selectable ? 1 : 0;
@@ -158,54 +159,62 @@ export const TableComponent = ({
                     {buttons}
                 </header>
             )}
-            <Table
-                bordered={false}
-                fullWidth
-                className={classNames(
-                    {
-                        [styles.standard]: display === 'standard',
-                        [styles.zebra]: display === 'zebra'
-                    },
-                    className
-                )}>
-                <TableHeaders sorting={sorting} columns={columns} />
-                <tbody>
-                    {isLoading ? <LoadingRow columns={columns.length} /> : renderRows(sorting, tableBody, selectable)}
-                </tbody>
-            </Table>
-            <footer>
-                <div className={styles.range}>
-                    {!rangeSelector ? (
-                        <>
-                            Showing {tableBody?.length} of {totalResults}
-                        </>
-                    ) : (
-                        <>
-                            Showing <RangeToggle contextName={contextName} /> of {totalResults}
-                        </>
+            <>
+                <Table
+                    bordered={false}
+                    fullWidth
+                    className={classNames(
+                        {
+                            [styles.standard]: display === 'standard',
+                            [styles.zebra]: display === 'zebra'
+                        },
+                        className
+                    )}>
+                    <TableHeaders sorting={sorting} columns={columns} />
+
+                    <tbody>
+                        {isLoading ? (
+                            <LoadingRow columns={columns.length} />
+                        ) : (
+                            renderRows(sorting, tableBody, selectable)
+                        )}
+                    </tbody>
+                </Table>
+                <footer>
+                    {totalResults > 0 ? (
+                        <div className={styles.range}>
+                            {!rangeSelector ? (
+                                <>
+                                    Showing {tableBody?.length} of {totalResults}
+                                </>
+                            ) : (
+                                <>
+                                    Showing <RangeToggle contextName={contextName} /> of {totalResults}
+                                </>
+                            )}
+                        </div>
+                    ) : null}
+
+                    {isPagination && totalResults >= pageSize && (
+                        <Pagination
+                            className={styles.pagination}
+                            totalPages={Math.ceil(totalResults / pageSize)}
+                            currentPage={currentPage}
+                            pathname={'/patient-profile'}
+                            onClickNext={() => handleNext?.(currentPage + 1)}
+                            onClickPrevious={() => handleNext?.(currentPage - 1)}
+                            onClickPageNumber={(_, page) => handleNext?.(page)}
+                        />
                     )}
-                </div>
-                {isPagination && totalResults >= pageSize && (
-                    <Pagination
-                        className={styles.pagination}
-                        totalPages={Math.ceil(totalResults / pageSize)}
-                        currentPage={currentPage}
-                        pathname={'/patient-profile'}
-                        onClickNext={() => handleNext?.(currentPage + 1)}
-                        onClickPrevious={() => handleNext?.(currentPage - 1)}
-                        onClickPageNumber={(_, page) => handleNext?.(page)}
-                    />
-                )}
-            </footer>
+                </footer>
+            </>
         </div>
     );
 };
 
-const dataNotAvailalbe = (columns: number) => (
+const dataNotAvailalbe = (columns: number, noDataElement?: ReactNode) => (
     <tr className="text-center no-data not-available">
-        <td colSpan={columns}>
-            <NoData />
-        </td>
+        <td colSpan={columns}>{noDataElement ? <>{noDataElement}</> : <NoData />}</td>
     </tr>
 );
 
