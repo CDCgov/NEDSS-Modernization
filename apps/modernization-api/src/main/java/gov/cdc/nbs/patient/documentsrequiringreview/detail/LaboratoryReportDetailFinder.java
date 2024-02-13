@@ -131,11 +131,11 @@ class LaboratoryReportDetailFinder {
         "identifiers", identifiers
     );
 
-    return this.template.queryForStream(
+    return this.template.query(
         QUERY,
         parameters,
         this.mapper
-    ).collect(
+    ).stream().collect(
         Accumulator.collecting(
             DocumentRequiringReview::id,
             this.merger::merge
