@@ -51,7 +51,7 @@ public class NBSAuthenticationFilter extends OncePerRequestFilter {
       switch (tokenValidation.status()) {
         case VALID:
           // Set the Spring auth context for the user
-          authIssuer.issue(tokenValidation.user(), incoming, outgoing);
+          authIssuer.issue(tokenValidation.user(), outgoing);
           break;
         case EXPIRED, UNSET:
           // attempt authentication using the JSESSIONID

@@ -46,7 +46,7 @@ class NBSAuthenticationFilterTest {
     filter.doFilterInternal(request, null, chain);
 
     // then authorization is issued
-    verify(authIssuer).issue("user", request, null);
+    verify(authIssuer).issue("user", null);
 
   }
 

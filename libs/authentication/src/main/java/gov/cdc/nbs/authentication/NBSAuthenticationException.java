@@ -6,7 +6,4 @@ public class NBSAuthenticationException extends RuntimeException {
     super("There is no active NBS session.");
   }
 
-  public NBSAuthenticationException(final String msg) {
-    super(msg);
-  }
 }

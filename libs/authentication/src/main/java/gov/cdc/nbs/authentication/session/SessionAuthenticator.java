@@ -26,7 +26,7 @@ public class SessionAuthenticator {
   ) {
     SessionAuthorization sessionAuthorization = sessionResolver.resolve(incoming);
     if (sessionAuthorization instanceof SessionAuthorization.Authorized authorized) {
-      authIssuer.issue(authorized.user(), incoming, outgoing);
+      authIssuer.issue(authorized.user(), outgoing);
     } else if (sessionAuthorization instanceof SessionAuthorization.Unauthorized) {
       throw new NBSAuthenticationException();
     }

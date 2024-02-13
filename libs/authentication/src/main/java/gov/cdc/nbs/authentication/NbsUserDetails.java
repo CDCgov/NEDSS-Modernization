@@ -1,24 +1,58 @@
 package gov.cdc.nbs.authentication;
 
 import gov.cdc.nbs.authorization.permission.Permission;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
 
-@Getter
-@Builder
-@RequiredArgsConstructor
 public class NbsUserDetails implements UserDetails {
   private final Long id;
   private final String username;
   private final String firstName;
   private final String lastName;
-  private final Set<NbsAuthority> authorities;
+  private final Set<GrantedAuthority> authorities;
   private final boolean isEnabled;
 
+  public NbsUserDetails(
+      final long id,
+      final String username,
+      final String firstName,
+      final String lastName,
+      final Set<GrantedAuthority> authorities,
+      boolean isEnabled
+  ) {
+    this.id = id;
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.authorities = authorities;
+    this.isEnabled = isEnabled;
+  }
+
+  public Long getId() {
+    return this.id;
+  }
+
+  public String getUsername() {
+    return this.username;
+  }
+
+  public String getFirstName() {
+    return this.firstName;
+  }
+
+  public String getLastName() {
+    return this.lastName;
+  }
+
+  public Set<GrantedAuthority> getAuthorities() {
+    return this.authorities;
+  }
+
+  public boolean isEnabled() {
+    return this.isEnabled;
+  }
   @Override
   public String getPassword() {
     return null;
@@ -47,16 +81,18 @@ public class NbsUserDetails implements UserDetails {
    * @return {@code true} if the operation can be performed on the object.
    */
   private boolean hasPermission(
-      final String object,
-      final String operation
+      final String operation,
+      final String object
   ) {
     if (getAuthorities() == null) {
       return false;
     }
+
+    String authority = operation + "-" + object;
+
     return getAuthorities()
         .stream()
-        .anyMatch(a -> a.object().equalsIgnoreCase(object)
-            && a.operation().equalsIgnoreCase(operation));
+        .anyMatch(found -> found.getAuthority().equalsIgnoreCase(authority));
   }
 
   /**
@@ -66,6 +102,8 @@ public class NbsUserDetails implements UserDetails {
    * @return {@code true} if the Permission has been granted.
    */
   public boolean hasPermission(final Permission permission) {
-    return permission != null && hasPermission(permission.object(), permission.operation());
+    return permission != null
+        && hasPermission(permission.operation(), permission.object());
   }
+
 }

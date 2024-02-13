@@ -1,24 +1,21 @@
 package gov.cdc.nbs.testing.interaction.http;
 
 import gov.cdc.nbs.authentication.NBSToken;
-import gov.cdc.nbs.authentication.NBSUserDetailsResolver;
-import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.SessionCookie;
-import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Component
@@ -26,29 +23,26 @@ public class Authenticated {
 
   private final Active<ActiveUser> activeUser;
   private final Active<SessionCookie> activeSession;
-  private final NBSUserDetailsResolver resolver;
-  private final EntityManager entityManager;
+  private final UserDetailsService resolver;
 
   public Authenticated(
       final Active<ActiveUser> activeUser,
       final Active<SessionCookie> activeSession,
-      final NBSUserDetailsResolver resolver,
-      final EntityManager entityManager
+      final UserDetailsService resolver
   ) {
     this.activeUser = activeUser;
     this.activeSession = activeSession;
     this.resolver = resolver;
-    this.entityManager = entityManager;
   }
 
   public void reset() {
     SecurityContextHolder.getContext().setAuthentication(null);
   }
 
-  private Optional<NbsUserDetails> userDetails() {
+  private Optional<UserDetails> userDetails() {
     return this.activeUser.maybeActive()
-        .map(user -> this.entityManager.find(AuthUser.class, user.id()))
-        .map(resolver::resolve);
+        .map(ActiveUser::username)
+        .map(resolver::loadUserByUsername);
   }
 
   private Optional<Authentication> authentication() {
@@ -77,23 +71,6 @@ public class Authenticated {
 
     try {
       return action.get();
-    } finally {
-      reset();
-    }
-
-  }
-
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public <T> T using(final Function<NbsUserDetails, T> action) {
-    Optional<NbsUserDetails> userDetails = userDetails();
-
-    userDetails.map(details -> new PreAuthenticatedAuthenticationToken(
-        details,
-        null,
-        details.getAuthorities())).ifPresent(SecurityContextHolder.getContext()::setAuthentication);
-
-    try {
-      return action.apply(userDetails.orElse(null));
     } finally {
       reset();
     }

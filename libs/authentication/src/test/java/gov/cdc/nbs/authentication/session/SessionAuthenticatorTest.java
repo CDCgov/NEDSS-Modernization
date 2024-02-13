@@ -42,7 +42,7 @@ class SessionAuthenticatorTest {
     authenticator.authenticate(request, response);
 
     // Then nbs credentials should be issued
-    verify(authIssuer).issue("user", request, response);
+    verify(authIssuer).issue("user", response);
 
   }
 

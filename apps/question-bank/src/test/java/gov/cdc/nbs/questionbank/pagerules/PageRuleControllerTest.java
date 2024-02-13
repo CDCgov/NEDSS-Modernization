@@ -52,8 +52,9 @@ class PageRuleControllerTest {
     Long ruleId = 99L;
     Long userId = 123L;
     CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
-    NbsUserDetails nbsUserDetails =
-        NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+    NbsUserDetails nbsUserDetails = mock(NbsUserDetails.class);
+    when(nbsUserDetails.getId()).thenReturn(123L);
+
     when(pageRuleService.updatePageRule(ruleId, ruleRequest, userId, 123456L))
         .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Updated"));
     when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
