@@ -26,7 +26,13 @@ const PageManagementLayout = ({ name, mode, children }: PageBuilderLayoutProps) 
                         [styles.edit]: mode === 'Edit',
                         [styles.published]: mode === 'Published'
                     })}>
-                    {mode}
+                    {mode === 'Published' ? (
+                        <>Previewing Published</>
+                    ) : mode === 'Draft' ? (
+                        <>Previewing initial draft</>
+                    ) : (
+                        <>Previewing Published with Draft</>
+                    )}
                 </span>
             </div>
             <div className={styles.content}>{children}</div>

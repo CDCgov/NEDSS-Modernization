@@ -13,3 +13,8 @@
         @include borders.rounded();
     }
 }
+.link {
+    border: 2px solid colors.$primary;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.25rem;
+}
