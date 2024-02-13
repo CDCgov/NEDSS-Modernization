@@ -35,9 +35,9 @@ on:
           default: ${{ vars.user_guide_doc_name_env }}    
   push:
     branches:
-      - main
-    paths:
-      - "cdc-sandbox/nbs6-win-container/**"
+      - nbs6-docker-image
+    # paths:
+    #   - "cdc-sandbox/nbs6-win-container/**"
 jobs:
   call-build-windows-container-workflow:
     name: Build Windows Container
