@@ -9,7 +9,6 @@ import {
     PageControllerService,
     PageHistory
 } from 'apps/page-builder/generated';
-import { download } from '../../../../../../utils/download';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -55,12 +54,13 @@ const PageInformation = () => {
             authorization: authorization(),
             id: Number(pageId)
         }).then((data) => {
-            const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-            download({
-                data,
-                fileName: 'PageMetadata.xlsx',
-                fileType
-            });
+            const dataIn = data as Blob;
+            const newBlob = new Blob([dataIn], { type: '.xlsx' });
+            const downloadURL = window.URL.createObjectURL(newBlob);
+            const link = document.createElement('a');
+            link.href = downloadURL;
+            link.download = 'PageMetadata' + '.xlsx';
+            link.click();
         });
     };
 
@@ -102,7 +102,7 @@ const PageInformation = () => {
                     <div className={styles.detailsContainer}>
                         <div className={styles.informationBlock}>
                             {renderBlock('Event type', pageInfo?.eventType?.name)}
-                            {renderBlock('Message mapping guide', pageInfo?.messageMappingGuide?.name)}
+                            {renderBlock('Report Mechanism', pageInfo?.messageMappingGuide?.name)}
                         </div>
                         <div className={styles.informationBlock}>
                             {renderBlock('Page name', pageInfo?.name!)}

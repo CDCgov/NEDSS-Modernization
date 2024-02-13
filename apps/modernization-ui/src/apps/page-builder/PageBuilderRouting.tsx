@@ -4,6 +4,7 @@ import PageBuilderContextProvider from './context/PageBuilderContext';
 import { PageLibrary } from './page/library/PageLibrary';
 import { Edit } from './page/management/edit/Edit';
 import { PreviewPage } from './page/management/preview';
+import { PageDetails } from './page/management/preview/PageDetails/PageDetails';
 import { AddNewPage } from './pages/AddNewPage/AddNewPage';
 import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import AddBusinessRule from './pages/BusinessRulesLibrary/Add/AddBusinessRule';
@@ -53,6 +54,10 @@ const routing: RouteObject[] = [
                             {
                                 path: 'edit',
                                 element: <Edit />
+                            },
+                            {
+                                path: 'details',
+                                element: <PageDetails />
                             },
                             {
                                 path: 'business-rules',
