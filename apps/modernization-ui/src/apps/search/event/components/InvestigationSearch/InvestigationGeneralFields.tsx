@@ -15,6 +15,8 @@ import { ChangeEvent, ReactElement } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
+import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 
 type InvestigationGeneralAccordionProps = {
     form: UseFormReturn<InvestigationFilter>;
@@ -270,6 +272,30 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
 
             <Controller
                 control={form.control}
+                name="providerFacilitySearch.id"
+                render={({ field: { onChange } }) => (
+                    <ProviderAutocomplete
+                        id="providerFacilitySearch.id"
+                        label="Event provider type"
+                        onChange={onChange}
+                    />
+                )}
+            />
+
+            <Controller
+                control={form.control}
+                name="providerFacilitySearch.id"
+                render={({ field: { onChange } }) => (
+                    <FacilityAutocomplete
+                        id="providerFacilitySearch.id"
+                        label="Event facility type"
+                        onChange={(e) => handleFacilityTypeChange(e, onChange)}
+                    />
+                )}
+            />
+
+            <Controller
+                control={form.control}
                 name="providerFacilitySearch.entityType"
                 render={({ field: { onChange, value, name } }) => (
                     <SelectInput
@@ -288,32 +314,6 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     />
                 )}
             />
-
-            {watch.providerFacilitySearch?.entityType && (
-                <Controller
-                    control={form.control}
-                    name="providerFacilitySearch.id"
-                    rules={{
-                        required: { value: true, message: `ID is required` }
-                    }}
-                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                        <>
-                            <Input
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                data-testid={name}
-                                defaultValue={value}
-                                type="text"
-                                label="ID:"
-                                htmlFor={name}
-                                id={name}
-                                required
-                            />
-                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                        </>
-                    )}
-                />
-            )}
         </>
     );
 };
