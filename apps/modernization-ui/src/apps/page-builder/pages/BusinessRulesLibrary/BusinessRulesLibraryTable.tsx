@@ -203,7 +203,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 <span className="no-items">No items to display</span>
                 <p>Click 'Add new business rule' to add new rule</p>
                 <NavLinkButton className="submit-btn" to={`${redirectRuleURL}/add`}>
-                    Create New
+                    Add new business rule
                 </NavLinkButton>
             </div>
         </div>
