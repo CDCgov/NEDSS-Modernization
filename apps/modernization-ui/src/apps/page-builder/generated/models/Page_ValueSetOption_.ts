@@ -4,10 +4,10 @@
 
 import type { Pageable } from './Pageable';
 import type { Sort } from './Sort';
-import type { ValueSetSearchResponse } from './ValueSetSearchResponse';
+import type { ValueSetOption } from './ValueSetOption';
 
-export type Page_ValueSetSearchResponse_ = {
-    content?: Array<ValueSetSearchResponse>;
+export type Page_ValueSetOption_ = {
+    content?: Array<ValueSetOption>;
     empty?: boolean;
     first?: boolean;
     last?: boolean;
