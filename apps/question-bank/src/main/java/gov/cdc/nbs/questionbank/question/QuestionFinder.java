@@ -7,7 +7,7 @@ import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.Field;
 import gov.cdc.nbs.questionbank.valueset.ConceptFinder;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

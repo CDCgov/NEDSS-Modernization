@@ -10,8 +10,9 @@ type Props = {
     onClose: () => void;
     onCancel: () => void;
 };
-export const CreateValueset = ({ onClose, onCancel }: Props) => {
+export const AddValueset = ({ onClose, onCancel }: Props) => {
     const form = useForm<ValueSetCreateRequest>({ mode: 'onBlur', defaultValues: { valueSetType: 'PHIN' } });
+
     const handleCreate = () => {
         console.log('clicked submit');
     };

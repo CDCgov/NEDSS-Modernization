@@ -2,101 +2,109 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import java.time.Instant;
 import java.util.Arrays;
-
-import gov.cdc.nbs.questionbank.entity.question.CodeSet;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
-import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
-import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
-import gov.cdc.nbs.questionbank.valueset.request.ValueSetCreateRequest;
-import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
-import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
+import gov.cdc.nbs.questionbank.valueset.exception.CreateValuesetException;
+import gov.cdc.nbs.questionbank.valueset.model.Valueset;
+import gov.cdc.nbs.questionbank.valueset.request.CreateValuesetRequest;
 
+@Component
+@Transactional
+public class ValuesetCreator {
+  private static final List<String> validTypes = Arrays.asList("PHIN", "LOCAL");
+  private final JdbcTemplate template;
+  private final EntityManager entityManager;
 
-@Service
-public class ValueSetCreator {
+  public ValuesetCreator(
+      final EntityManager entityManager,
+      final JdbcTemplate template) {
+    this.entityManager = entityManager;
+    this.template = template;
+  }
 
-	private final ValueSetRepository valueSetRepository;
+  private static final String GET_ID_QUERY = """
+      SELECT
+      ISNULL(MAX(code_set_group_id + 10), 9910)
+      FROM NBS_SRTE.dbo.Codeset_Group_Metadata
+      """;
 
-	private final CodesetGroupMetadatumRepository codeSetGrpMetaRepository;
+  private static final String CODE_EXISTS_QUERY = """
+      SELECT
+        count(*)
+      FROM
+        NBS_SRTE.dbo.codeset
+      WHERE
+        codeset.code_set_nm = ?
+        AND codeSet.class_cd = 'code_value_general'
+      """;
 
-	public ValueSetCreator(ValueSetRepository valueSetRepository,
-			CodesetGroupMetadatumRepository codeSetGrpMetaRepository) {
-		this.valueSetRepository = valueSetRepository;
-		this.codeSetGrpMetaRepository = codeSetGrpMetaRepository;
-	}
+  private static final String NAME_EXISTS_QUERY = """
+      SELECT
+        count(*)
+      FROM
+        NBS_SRTE.dbo.codeset
+      WHERE
+        codeset.value_set_nm = ?
+        AND codeSet.class_cd = 'code_value_general'
+      """;
 
-	public CreateValueSetResponse createValueSet(ValueSetCreateRequest request, long userId) {
-		CreateValueSetResponse response = new CreateValueSetResponse();
-		String codeSetName = request.valueSetCode().toUpperCase();
-		String codeShortDescTxt = request.valueSetName();
+  public Valueset create(CreateValuesetRequest request, long userId) {
+    String upperCaseCode = request.code().toUpperCase();
 
-		if (checkCodeType(request.valueSetType().toUpperCase())) {
-			response.setMessage(ValueSetConstants.CODE_SET_TYPE_NOT_VALID);
-			response.setStatus(HttpStatus.BAD_REQUEST);
-			return response;
-		}
-		if (checkValueSetNameExists(codeSetName)) {
-			response.setMessage(ValueSetConstants.VALUE_SET_NAME_EXISTS);
-			response.setStatus(HttpStatus.BAD_REQUEST);
-			return response;
-		}
-		if (checkCodeSetGrpMetaDatEntry(codeShortDescTxt, codeSetName)) {
-			response.setMessage(ValueSetConstants.CODE_SET_GRP_TEXT_NAME_EXISTS);
-			response.setStatus(HttpStatus.BAD_REQUEST);
-			return response;
-		}
-		try {
-			CodeSetGroupMetadatum savedGroup = codeSetGrpMetaRepository.save(new CodeSetGroupMetadatum(getCodeSetGroupID(),
-					request.valueSetDescription(), codeShortDescTxt, codeSetName));
-			Codeset resultCodeSet = valueSetRepository.save(new Codeset(asAdd(request, savedGroup, userId)));
-			response.setBody(CreateValueSetResponse.ValueSetCreateShort.fromResult(resultCodeSet));
-			response.setMessage(ValueSetConstants.SUCCESS_MESSAGE);
-			response.setStatus(HttpStatus.CREATED);
-		} catch (Exception e) {
-			response.setMessage(e.getMessage());
-			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return response;
-	}
+    if (!validTypes.contains(request.type().toUpperCase())) {
+      throw new CreateValuesetException("Invalid Type specified");
+    }
+    if (nameAlreadyExists(request.name())) {
+      throw new CreateValuesetException("Value set name already exists");
+    }
+    if (codeAlreadyExists(upperCaseCode)) {
+      throw new CreateValuesetException("Value set code already exists");
+    }
 
-	public boolean checkValueSetNameExists(String codeSetNm) {
-		return (codeSetNm != null && valueSetRepository.checkValueSetName(codeSetNm) > 0);
-	}
+    Codeset valueset = new Codeset(asAdd(request, userId));
+    try {
+      entityManager.persist(valueset);
+      return new Valueset(
+          valueset.getValueSetTypeCd(),
+          valueset.getId().getCodeSetNm(),
+          valueset.getValueSetNm(),
+          valueset.getCodeSetDescTxt());
+    } catch (Exception e) {
+      throw new CreateValuesetException("Failed to create valueset");
+    }
+  }
 
-	public boolean checkCodeSetGrpMetaDatEntry(String codeShrtDescTxt, String codeSetNm) {
-		return (codeShrtDescTxt != null && codeSetNm != null
-				&& codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(codeShrtDescTxt, codeSetNm) > 0);
-	}
+  public boolean nameAlreadyExists(String name) {
+    Long count = template.queryForObject(NAME_EXISTS_QUERY, Long.class, name);
+    return count != null && count > 0;
+  }
 
-	public boolean checkCodeType(String codeType) {
-		return Arrays.stream(CodeSet.values())
-				.noneMatch(enumValue -> enumValue.name().equals(codeType));
-	}
+  public boolean codeAlreadyExists(String code) {
+    Long count = template.queryForObject(CODE_EXISTS_QUERY, Long.class, code);
+    return count != null && count > 0;
+  }
 
-	public long getCodeSetGroupID() {
-		long maxGroupID = valueSetRepository.getCodeSetGroupCeilID();
-		if (maxGroupID > 0) {
-			maxGroupID = codeSetGrpMetaRepository.getCodeSetGroupMaxID() + 10;
-		} else {
-			maxGroupID = 9910;
-		}
-		return maxGroupID;
-	}
+  public long getNextCodesetId() {
+    Long id = template.queryForObject(GET_ID_QUERY, Long.class);
+    return id != null ? id : 9910l;
+  }
 
-	public ValueSetCommand.AddValueSet asAdd(final ValueSetCreateRequest request,
-			CodeSetGroupMetadatum codeSetGroupMetadatum, long userId) {
-		return new ValueSetCommand.AddValueSet(
-				request.valueSetType().toUpperCase(),
-				request.valueSetName(),
-				request.valueSetCode(),
-				request.valueSetDescription(),
-				codeSetGroupMetadatum,
-				Instant.now(),
-				userId);
+  public ValueSetCommand.AddValueSet asAdd(
+      final CreateValuesetRequest request,
+      long userId) {
+    return new ValueSetCommand.AddValueSet(
+        request.type().toUpperCase(),
+        request.name(),
+        request.code(),
+        request.description(),
+        getNextCodesetId(),
+        Instant.now(),
+        userId);
 
-	}
+  }
 }

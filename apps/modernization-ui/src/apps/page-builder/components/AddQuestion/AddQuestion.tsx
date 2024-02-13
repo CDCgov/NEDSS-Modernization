@@ -13,7 +13,7 @@ import './AddQuestion.scss';
 import { CreateQuestionForm, QuestionForm } from './QuestionForm';
 import styles from './add-question.module.scss';
 import { ValuesetSearch } from './valueset/ValuesetSearch';
-import { CreateValueset } from '../CreateValueset/CreateValueset';
+import { AddValueset } from '../AddValueset/AddValueset';
 
 type Props = {
     onBack: () => void;
@@ -64,9 +64,7 @@ export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
                     />
                 </PageProvider>
             )}
-            {state === 'createValueset' && (
-                <CreateValueset onCancel={() => setState('findValueset')} onClose={onClose} />
-            )}
+            {state === 'createValueset' && <AddValueset onCancel={() => setState('findValueset')} onClose={onClose} />}
         </FormProvider>
     );
 };

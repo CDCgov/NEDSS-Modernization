@@ -2,7 +2,7 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
 
 @Component
 public class ConceptMapper {

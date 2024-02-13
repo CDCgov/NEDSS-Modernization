@@ -10,8 +10,8 @@ import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.valueset.command.ConceptCommand;
 import gov.cdc.nbs.questionbank.valueset.exception.ConceptNotFoundException;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
 
 @Component
 public class ConceptUpdater {

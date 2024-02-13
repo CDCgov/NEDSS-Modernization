@@ -18,8 +18,8 @@ import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.exception.NullObjectException;
 import gov.cdc.nbs.questionbank.valueset.ConceptMapper;
 import gov.cdc.nbs.questionbank.valueset.ConceptUpdater;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
 
 @ExtendWith(MockitoExtension.class)
 class ConceptUpdaterTest {

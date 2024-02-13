@@ -15,41 +15,53 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
+import gov.cdc.nbs.questionbank.valueset.model.ValueSetOption;
+import gov.cdc.nbs.questionbank.valueset.model.Valueset;
 import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest;
+import gov.cdc.nbs.questionbank.valueset.request.CreateValuesetRequest;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
-import gov.cdc.nbs.questionbank.valueset.request.ValueSetCreateRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
-import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetOption;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
-import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/api/v1/valueset")
-@RequiredArgsConstructor
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-public class ValueSetController {
+public class ValuesetController {
 
   private final ValueSetOptionFinder optionFinder;
   private final ValueSetStateManager valueSetStateManager;
   private final ValueSetUpdater valueSetUpdater;
-  private final ValueSetCreator valueSetCreator;
+  private final ValuesetCreator valueSetCreator;
   private final ConceptCreator conceptCreator;
   private final ConceptUpdater conceptUpdater;
   private final ConceptFinder conceptFinder;
-  private final UserDetailsProvider userDetailsProvider;
+
+  public ValuesetController(
+      final ValueSetOptionFinder optionFinder,
+      final ValueSetStateManager valueSetStateManager,
+      final ValueSetUpdater valueSetUpdater,
+      final ValuesetCreator valueSetCreator,
+      final ConceptCreator conceptCreator,
+      final ConceptUpdater conceptUpdater,
+      final ConceptFinder conceptFinder) {
+    this.optionFinder = optionFinder;
+    this.valueSetStateManager = valueSetStateManager;
+    this.valueSetUpdater = valueSetUpdater;
+    this.valueSetCreator = valueSetCreator;
+    this.conceptCreator = conceptCreator;
+    this.conceptUpdater = conceptUpdater;
+    this.conceptFinder = conceptFinder;
+  }
 
   @PostMapping
-  public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody ValueSetCreateRequest request) {
-    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-    CreateValueSetResponse response = valueSetCreator.createValueSet(request, userId);
-    return new ResponseEntity<>(response, null, response.getStatus());
-
+  public Valueset create(
+      @RequestBody CreateValuesetRequest request,
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+    return valueSetCreator.create(request, details.getId());
   }
 
   @PutMapping("{codeSetNm}/deactivate")
@@ -97,9 +109,11 @@ public class ValueSetController {
   }
 
   @PostMapping("{codeSetNm}/concepts")
-  public Concept addConcept(@PathVariable String codeSetNm, @RequestBody AddConceptRequest request) {
-    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-    return conceptCreator.addConcept(codeSetNm, request, userId);
+  public Concept addConcept(
+    @PathVariable String codeSetNm,
+    @RequestBody AddConceptRequest request,
+    @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+    return conceptCreator.addConcept(codeSetNm, request, details.getId());
   }
 
 

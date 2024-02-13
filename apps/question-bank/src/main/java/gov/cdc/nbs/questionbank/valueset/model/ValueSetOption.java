@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.valueset.response;
+package gov.cdc.nbs.questionbank.valueset.model;
 
 import io.swagger.annotations.ApiModelProperty;
 

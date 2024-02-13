@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.questionbank.entity.QCodeValueGeneral;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
 
 @Component
 public class ConceptFinder {

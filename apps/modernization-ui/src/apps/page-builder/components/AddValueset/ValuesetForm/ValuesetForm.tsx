@@ -99,7 +99,6 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                     control={form.control}
                     name="valueSetDescription"
                     rules={{
-                        required: { value: true, message: 'Value set description is required' },
                         ...maxLengthRule(2000)
                     }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
@@ -113,7 +112,6 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
                         />
                     )}
                 />

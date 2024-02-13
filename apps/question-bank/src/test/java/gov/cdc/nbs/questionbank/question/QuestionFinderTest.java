@@ -10,12 +10,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.util.*;
-
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.Field;
 import gov.cdc.nbs.questionbank.valueset.ConceptFinder;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

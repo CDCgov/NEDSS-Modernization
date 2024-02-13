@@ -7,7 +7,7 @@ import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralId;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
 
 class ConceptMapperTest {
 
