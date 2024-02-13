@@ -57,7 +57,6 @@ export type Props = {
     handleSelected?: OldSelectionHandler;
     isLoading?: boolean;
     contextName?: 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates' | 'businessRules';
-    noDataElement?: ReactNode;
 };
 
 export const TableComponent = ({
@@ -77,8 +76,7 @@ export const TableComponent = ({
     selectable = false,
     handleSelected,
     isLoading = false,
-    contextName,
-    noDataElement
+    contextName
 }: Props) => {
     const sorting = useTableSorting({ enabled: tableBody && totalResults > 1, onSort: sortData });
 
@@ -98,7 +96,7 @@ export const TableComponent = ({
 
     const renderRows = (sorting: Sorting, rows: TableBody[], selectable: boolean) => {
         if (rows?.length === 0) {
-            return dataNotAvailalbe(columns.length, noDataElement);
+            return dataNotAvailalbe(columns.length);
         }
 
         const offset = selectable ? 1 : 0;
@@ -171,7 +169,6 @@ export const TableComponent = ({
                         className
                     )}>
                     <TableHeaders sorting={sorting} columns={columns} />
-
                     <tbody>
                         {isLoading ? (
                             <LoadingRow columns={columns.length} />
@@ -212,9 +209,11 @@ export const TableComponent = ({
     );
 };
 
-const dataNotAvailalbe = (columns: number, noDataElement?: ReactNode) => (
+const dataNotAvailalbe = (columns: number) => (
     <tr className="text-center no-data not-available">
-        <td colSpan={columns}>{noDataElement ? <>{noDataElement}</> : <NoData />}</td>
+        <td colSpan={columns}>
+            <NoData />
+        </td>
     </tr>
 );
 

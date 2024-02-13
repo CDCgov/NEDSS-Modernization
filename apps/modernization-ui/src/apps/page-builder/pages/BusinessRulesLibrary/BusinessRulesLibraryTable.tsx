@@ -199,7 +199,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
 
     const dataNotAvailableElement = (
         <div className="no-data-available">
-            <div className="no-data-main">No Data</div>
             <div className="no-data-info">
                 <span className="no-items">No items to display</span>
                 <p>Click 'Add new business rule' to add new rule</p>
@@ -238,9 +237,9 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 sortData={handleSort}
                 rangeSelector={true}
                 isLoading={isLoading}
-                noDataElement={dataNotAvailableElement}
             />
-            {summaries?.length > 0 && searchQuery && searchAvailableElement}
+            {summaries.length === 0 && dataNotAvailableElement}
+            {summaries.length > 0 && searchQuery && searchAvailableElement}
             <div className="footer-action display-none">{footerActionBtn}</div>
         </div>
     );

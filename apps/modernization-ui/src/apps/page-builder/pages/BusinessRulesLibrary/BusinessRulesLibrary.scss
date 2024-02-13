@@ -128,8 +128,8 @@
     }
     &.outer-search-box {
         border-radius: 5px;
-        border-bottom: 1px solid var(--base-lighter, #dcdee0);
-        background: var(--base-lightest, #f0f0f0);
+        border-bottom: 1px solid colors.$base-lighter;
+        background: colors.$base-lightest;
         padding: 16px;
         margin-bottom: 16px;
     }
