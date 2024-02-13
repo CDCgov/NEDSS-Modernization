@@ -1,6 +1,5 @@
 @use 'styles/colors';
 @use 'styles/borders';
-
 .searchBar {
     display: flex;
     width: 100%;
@@ -47,31 +46,13 @@
     }
 }
 
-.tableContainer {
-    position: relative;
-    margin-top: 0.88rem;
-    margin-bottom: 0.25rem;
-    @extend %thin;
-    @include borders.rounded();
-
-    .loadingIndicator {
-        div {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-        }
-    }
-
-    .expandButton {
-        cursor: pointer;
-    }
-
+.searchResultTable {
     thead tr th {
         &:nth-of-type(2) {
-            width: 6rem;
+            width: 10ch;
         }
-        &:nth-of-type(6) {
-            width: 6rem;
+        &:nth-of-type(3) {
+            width: 22ch;
         }
     }
 }

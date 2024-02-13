@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { MessagingInfo0 } from './MessagingInfo0';
+import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
 
 export type UpdateCodedQuestionRequest = {
@@ -12,7 +12,7 @@ export type UpdateCodedQuestionRequest = {
     description?: string;
     displayControl?: number;
     label?: string;
-    messagingInfo?: MessagingInfo0;
+    messagingInfo?: MessagingInfo;
     tooltip?: string;
     type?: UpdateCodedQuestionRequest.type;
     uniqueName?: string;

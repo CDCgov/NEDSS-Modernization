@@ -30,6 +30,7 @@ import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
+import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
@@ -38,7 +39,6 @@ import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionReque
 import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.QuestionRequest.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;

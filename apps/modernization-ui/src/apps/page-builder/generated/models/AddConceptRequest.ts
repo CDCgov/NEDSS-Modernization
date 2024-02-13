@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { MessagingInfo } from './MessagingInfo';
+import type { ConceptMessagingInfo } from './ConceptMessagingInfo';
 
 export type AddConceptRequest = {
     adminComments?: string;
@@ -10,7 +10,7 @@ export type AddConceptRequest = {
     displayName: string;
     effectiveFromTime: string;
     effectiveToTime?: string;
-    messagingInfo: MessagingInfo;
+    messagingInfo: ConceptMessagingInfo;
     shortDisplayName: string;
     statusCode: AddConceptRequest.statusCode;
 };

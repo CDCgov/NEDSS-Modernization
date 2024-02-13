@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { MessagingInfo0 } from './MessagingInfo0';
+import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
 
 export type UpdateTextQuestionRequest = {
@@ -14,7 +14,7 @@ export type UpdateTextQuestionRequest = {
     fieldLength?: number;
     label?: string;
     mask?: UpdateTextQuestionRequest.mask;
-    messagingInfo?: MessagingInfo0;
+    messagingInfo?: MessagingInfo;
     tooltip?: string;
     type?: UpdateTextQuestionRequest.type;
     uniqueName?: string;
