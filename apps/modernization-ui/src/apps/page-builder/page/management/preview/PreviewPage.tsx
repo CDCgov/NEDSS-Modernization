@@ -30,7 +30,7 @@ const PreviewPageContent = () => {
     const { page, selected } = usePageManagement();
 
     return (
-        <PageManagementLayout name={page.name} mode={'draft'}>
+        <PageManagementLayout name={page.name} mode={page.status}>
             <PageHeader page={page} tabs={page.tabs ?? []}>
                 <PageManagementMenu>
                     <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
@@ -39,12 +39,20 @@ const PreviewPageContent = () => {
                     <Button outline type="button">
                         Save as Template
                     </Button>
-                    <Button type="button" outline>
-                        Create draft
-                    </Button>
-                    <Button type="button" outline>
-                        Delete draft
-                    </Button>
+                    {page.status === 'Published' ? (
+                        <Button type="button" outline>
+                            Create draft
+                        </Button>
+                    ) : (
+                        <>
+                            <Button type="button" outline>
+                                Delete draft
+                            </Button>
+                            <Button type="button" outline>
+                                Edit draft
+                            </Button>
+                        </>
+                    )}
                     <NavLinkButton type="outline" to="edit">
                         Edit draft
                     </NavLinkButton>
