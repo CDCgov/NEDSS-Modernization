@@ -4,7 +4,6 @@
 import type { AddConceptRequest } from '../models/AddConceptRequest';
 import type { Concept } from '../models/Concept';
 import type { CreateValueSetResponse } from '../models/CreateValueSetResponse';
-import type { Page_ValueSet_ } from '../models/Page_ValueSet_';
 import type { Page_ValueSetOption_ } from '../models/Page_ValueSetOption_';
 import type { UpdateConceptRequest } from '../models/UpdateConceptRequest';
 import type { UpdatedValueSetResponse } from '../models/UpdatedValueSetResponse';
@@ -19,41 +18,6 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class ValueSetControllerService {
-
-    /**
-     * findAllValueSets
-     * @returns Page_ValueSet_ OK
-     * @throws ApiError
-     */
-    public static findAllValueSetsUsingGet({
-        authorization,
-        page,
-        size,
-        sort,
-    }: {
-        authorization: string,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_ValueSet_> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/valueset',
-            headers: {
-                'Authorization': authorization,
-            },
-            query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
 
     /**
      * createValueSet

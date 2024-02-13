@@ -2,13 +2,12 @@ import styles from './question-content.module.scss';
 import { Input } from 'components/FormInputs/Input';
 import { Heading } from 'components/heading';
 import { authorization } from 'authorization';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Selectable } from 'options/selectable';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
 import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
 import { Button, Icon } from '@trussworks/react-uswds';
-import { QuestionsContext } from '../../../../context/QuestionsContext';
 import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
 
 type Props = {
@@ -37,11 +36,9 @@ export const QuestionContent = ({
     identifier,
     displayComponent,
     defaultValue,
-    id,
     isStandard
 }: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
-    const { setEditValueSet } = useContext(QuestionsContext);
 
     useEffect(() => {
         if (valueSet) {
@@ -78,11 +75,7 @@ export const QuestionContent = ({
                     )}
                     {/* create custom checkbox component */}
                     {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
-                    {displayComponent === 1001 && (
-                        <>
-                            <RadioButtons options={conceptState} />
-                        </>
-                    )}
+                    {displayComponent === 1001 && <RadioButtons options={conceptState} />}
 
                     {displayComponent === 1008 && (
                         <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
@@ -106,20 +99,12 @@ export const QuestionContent = ({
                     <Button
                         className={`${styles.unStyledButton} margin-right-2`}
                         type="button"
-                        onClick={() => {
-                            setEditValueSet?.({ valueSetNm: valueSet });
-                        }}
+                        onClick={() => {}}
                         unstyled>
                         <Icon.Edit className="margin-right-2px" />
                         <span> Edit value set</span>
                     </Button>
-                    <Button
-                        className={styles.unStyledButton}
-                        type="button"
-                        onClick={() => {
-                            setEditValueSet?.({ valueSetNm: valueSet, statusCd: 'change', nbsUid: id });
-                        }}
-                        unstyled>
+                    <Button className={styles.unStyledButton} type="button" onClick={() => {}} unstyled>
                         <Icon.Edit className="margin-right-2px" />
                         <span> Change value set</span>
                     </Button>

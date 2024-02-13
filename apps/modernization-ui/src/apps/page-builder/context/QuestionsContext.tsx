@@ -16,11 +16,7 @@ const questionContextDefaultValue: ContextData = {
     pageSize: 10,
     setPageSize: () => {},
     isLoading: false,
-    setIsLoading: () => {},
-    searchValueSet: {},
-    setSearchValueSet: () => {},
-    editValueSet: {},
-    setEditValueSet: () => {}
+    setIsLoading: () => {}
 };
 
 export const QuestionsContext = createContext<ContextData>(questionContextDefaultValue);
@@ -33,8 +29,6 @@ export const QuestionProvider = ({ children }: any) => {
     const [pageSize, setPageSize] = useState(questionContextDefaultValue.pageSize);
     const [isLoading, setIsLoading] = useState(false);
     const [filter, setFilter] = useState(questionContextDefaultValue.filter);
-    const [searchValueSet, setSearchValueSet] = useState(questionContextDefaultValue.searchValueSet);
-    const [editValueSet, setEditValueSet] = useState(questionContextDefaultValue.editValueSet);
 
     return (
         <QuestionsContext.Provider
@@ -52,11 +46,7 @@ export const QuestionProvider = ({ children }: any) => {
                 pageSize,
                 setPageSize,
                 isLoading,
-                setIsLoading,
-                searchValueSet,
-                setSearchValueSet,
-                editValueSet,
-                setEditValueSet
+                setIsLoading
             }}>
             {children}
         </QuestionsContext.Provider>
