@@ -155,13 +155,14 @@ public class PageRuleSteps {
 
   @Then("the business rule should have target questions list of:")
   public void the_business_rule_should_have_of(DataTable expectedDataTable) throws Exception {
-    List<QuestionInfo> expectedQuestionInfoList = expectedDataTable.asMaps().stream()
-        .map(row -> new QuestionInfo(row.get("label"), row.get("id"))).toList();
+    List<Rule.Target> expectedQuestionInfoList = expectedDataTable.asMaps().stream()
+        .map(row -> new Rule.Target(row.get("id"), row.get("label"))).toList();
     int i = 0;
-    for (QuestionInfo question : expectedQuestionInfoList) {
+    for (Rule.Target question : expectedQuestionInfoList) {
       this.detailResponse.active().
-          andExpect(jsonPath("$.targets[" + i + "].label", is(question.label()))).
-          andExpect(jsonPath("$.targets[" + i + "].id", is(question.id())));
+          andExpect(jsonPath("$.targets[" + i + "].targetIdentifier", is(question.targetIdentifier())))
+          .andExpect(jsonPath("$.targets[" + i + "].label", is(question.label())));
+
       i++;
     }
   }

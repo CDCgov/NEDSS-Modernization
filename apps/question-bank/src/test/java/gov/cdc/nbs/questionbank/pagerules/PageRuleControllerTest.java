@@ -35,7 +35,7 @@ class PageRuleControllerTest {
   private PageRuleDeleter pageRuleDeleter;
 
   @Mock
-  PageRuleReader pageRuleReader;
+  PageRuleFinder pageRuleFinder;
 
 
   @Test
@@ -64,7 +64,7 @@ class PageRuleControllerTest {
   void shouldReadRule() {
     Long ruleId = 99L;
     Rule rule = getRuleList().get(0);
-    when(pageRuleReader.findByRuleId(ruleId)).thenReturn(rule);
+    when(pageRuleFinder.findByRuleId(ruleId)).thenReturn(rule);
     Rule ruleResponse = pageRuleController.viewRuleResponse(ruleId);
     assertNotNull(ruleResponse);
   }
@@ -76,7 +76,7 @@ class PageRuleControllerTest {
     String sort = "id";
     Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
     List<Rule> content = getRuleList();
-    when(pageRuleReader.findByPageId(123456L, pageRequest))
+    when(pageRuleFinder.findByPageId(123456L, pageRequest))
         .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
     Page<Rule> ruleResponse = pageRuleController.getAllPageRule(pageRequest, 123456L);
     assertNotNull(ruleResponse);
@@ -91,18 +91,19 @@ class PageRuleControllerTest {
     Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
     SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
     List<Rule> content = getRuleList();
-    when(pageRuleReader.searchPageRule(request, pageRequest))
+    when(pageRuleFinder.searchPageRule(123456L, request, pageRequest))
         .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
-    Page<Rule> ruleResponse = pageRuleController.findPageRule(request, pageRequest);
+    Page<Rule> ruleResponse = pageRuleController.findPageRule(123456L, request, pageRequest);
     assertNotNull(ruleResponse);
   }
 
   private List<Rule> getRuleList() {
     List<String> sourceValues = new ArrayList<>();
-    List<QuestionInfo> targetQuestions = new ArrayList<>();
+    List<Rule.Target> targetQuestions = new ArrayList<>();
     List<Rule> content = new ArrayList<>();
-    content.add(new Rule(100l, 123l, "testFunction", "testDesc", null,
-        false, sourceValues, "testComparator", "testType", targetQuestions));
+    Rule.SourceQuestion sourceQuestion = new Rule.SourceQuestion("identifier", "label", "codeSet");
+    content.add(new Rule(100l, 123l, Rule.Function.ENABLE, "testDesc", sourceQuestion,
+        false, sourceValues, Rule.Comparator.EQUAL_TO, Rule.TargetType.QUESTION, targetQuestions));
     return content;
   }
 

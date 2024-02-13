@@ -33,16 +33,16 @@ public class PageRuleController {
 
   private final PageRuleCreator pageRuleCreator;
 
-  private final PageRuleReader pageRuleReader;
+  private final PageRuleFinder pageRuleFinder;
 
   public PageRuleController(PageRuleService pageRuleService, UserDetailsProvider userDetailsProvider,
       PageRuleDeleter pageRuleDeleter, PageRuleCreator pageRuleCreator,
-      PageRuleReader pageRuleReader) {
+      PageRuleFinder pageRuleFinder) {
     this.userDetailsProvider = userDetailsProvider;
     this.pageRuleService = pageRuleService;
     this.pageRuleDeleter = pageRuleDeleter;
     this.pageRuleCreator = pageRuleCreator;
-    this.pageRuleReader = pageRuleReader;
+    this.pageRuleFinder = pageRuleFinder;
 
   }
 
@@ -73,21 +73,23 @@ public class PageRuleController {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return pageRuleService.updatePageRule(ruleId, request, userId, page);
   }
+
   @GetMapping("/{ruleId}")
   public Rule viewRuleResponse(@PathVariable Long ruleId) {
-    return pageRuleReader.findByRuleId(ruleId);
+    return pageRuleFinder.findByRuleId(ruleId);
   }
 
   @GetMapping
   public Page<Rule> getAllPageRule(@PageableDefault(size = 25) Pageable pageable,
       @PathVariable Long id) {
-    return pageRuleReader.findByPageId(id, pageable);
+    return pageRuleFinder.findByPageId(id, pageable);
   }
 
   @PostMapping("/search")
-  public Page<Rule> findPageRule(@RequestBody SearchPageRuleRequest request,
+  public Page<Rule> findPageRule(@PathVariable("id") Long pageId,
+      @RequestBody SearchPageRuleRequest request,
       @PageableDefault(size = 25) Pageable pageable) {
-    return pageRuleReader.searchPageRule(request, pageable);
+    return pageRuleFinder.searchPageRule(pageId, request, pageable);
   }
 
 }

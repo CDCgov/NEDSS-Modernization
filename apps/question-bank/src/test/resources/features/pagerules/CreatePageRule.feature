@@ -27,10 +27,10 @@ Feature: Create Business Rule
             |Female|
         When I send the page rule create request
         Then I retrieve the information of the page rule
-        And the business rule should have "function" of "Require If"
+        And the business rule should have "function" of "REQUIRE_IF"
         And the business rule should have "rule description" of "Require If"
-        And the business rule should have "comparator" of "="
-        And the business rule should have "target type" of "Question"
+        And the business rule should have "comparator" of "EQUAL_TO"
+        And the business rule should have "target type" of "QUESTION"
         And the business rule should have "target identifiers list" of:
             | INV143 |
         And the business rule should have "source values" of:
@@ -60,13 +60,13 @@ Feature: Create Business Rule
             |Female|
         When I send the page rule create request
         Then I retrieve the information of the page rule
-        And the business rule should have "function" of "Disable"
+        And the business rule should have "function" of "DISABLE"
         And the business rule should have "rule description" of "Disable"
-        And the business rule should have "comparator" of "="
-        And the business rule should have "target type" of "Question"
+        And the business rule should have "comparator" of "EQUAL_TO"
+        And the business rule should have "target type" of "QUESTION"
         And the business rule should have target questions list of:
-         | label          | id           |
-         | Age at Onset   | INV143       |
+         | id           | label         |
+         | INV143       | Age at Onset  |
 
         And the business rule should have "source values" of:
             | Male |
@@ -94,13 +94,13 @@ Feature: Create Business Rule
             |Female|
         When I send the page rule create request
         Then I retrieve the information of the page rule
-        And the business rule should have "function" of "Unhide"
+        And the business rule should have "function" of "UNHIDE"
         And the business rule should have "rule description" of "Unhide"
-        And the business rule should have "comparator" of "="
-        And the business rule should have "target type" of "Question"
+        And the business rule should have "comparator" of "EQUAL_TO"
+        And the business rule should have "target type" of "QUESTION"
         And the business rule should have target questions list of:
-            | label          | id           |
-            | Age at Onset   | INV143       |
+            | id           | label         |
+            | INV143       | Age at Onset  |
         And the business rule should have "source values" of:
             | Male |
             | Female |
@@ -127,13 +127,13 @@ Feature: Create Business Rule
             |Female|
         When I send the page rule create request
         Then I retrieve the information of the page rule
-        And the business rule should have "function" of "Hide"
+        And the business rule should have "function" of "HIDE"
         And the business rule should have "rule description" of "Hide"
-        And the business rule should have "comparator" of "="
-        And the business rule should have "target type" of "Question"
+        And the business rule should have "comparator" of "EQUAL_TO"
+        And the business rule should have "target type" of "QUESTION"
         And the business rule should have target questions list of:
-            | label          | id           |
-            | Age at Onset   | INV143       |
+            | id           | label         |
+            | INV143       | Age at Onset  |
         And the business rule should have "source values" of:
             | Male |
             | Female |
@@ -160,13 +160,13 @@ Feature: Create Business Rule
             |Female|
         When I send the page rule create request
         Then I retrieve the information of the page rule
-        And the business rule should have "function" of "Enable"
+        And the business rule should have "function" of "ENABLE"
         And the business rule should have "rule description" of "Enable"
-        And the business rule should have "comparator" of "="
-        And the business rule should have "target type" of "Question"
+        And the business rule should have "comparator" of "EQUAL_TO"
+        And the business rule should have "target type" of "QUESTION"
         And the business rule should have target questions list of:
-            | label          | id           |
-            | Age at Onset   | INV143       |
+            | id           | label         |
+            | INV143       | Age at Onset  |
         And the business rule should have "source values" of:
             | Male |
             | Female |

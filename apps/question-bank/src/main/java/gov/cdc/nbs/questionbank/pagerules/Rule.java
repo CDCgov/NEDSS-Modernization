@@ -1,19 +1,72 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public record Rule(
-    long id,
-    long template,
-    String function,
+    @ApiModelProperty(required = true) long id,
+    @ApiModelProperty(required = true) long template,
+    @ApiModelProperty(required = true) Function function,
     String description,
-    QuestionInfo sourceQuestion,
-    boolean anySourceValue,
+    @ApiModelProperty(required = true) SourceQuestion sourceQuestion,
+    @ApiModelProperty(required = true) boolean anySourceValue,
     List<String> sourceValues,
-    String comparator,
-    String targetType,
-    List<QuestionInfo> targets
+    @ApiModelProperty(required = true) Comparator comparator,
+    @ApiModelProperty(required = true) TargetType targetType,
+    @ApiModelProperty(required = true) List<Target> targets
 ) {
+
+  public record SourceQuestion(String questionIdentifier, String label , String codeSetName) {
+  }
+
+  public record Target(String targetIdentifier, String label) {
+  }
+
+  public enum Function {
+    DATE_COMPARE("Date Compare"),
+    DISABLE("Disable"),
+    ENABLE("Enable"),
+    HIDE("Hide"),
+    REQUIRE_IF("Require If"),
+    UNHIDE("Unhide");
+    private final String value;
+
+    Function(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return this.value;
+    }
+  }
+
+
+  public enum Comparator {
+    EQUAL_TO("="),
+    NOT_EQUAL_TO("<>"),
+    GREATER_THAN(">"),
+    GREATER_THAN_OR_EQUAL_TO(">="),
+    LESS_THAN("<"),
+    LESS_THAN_OR_EQUAL_TO("<=");
+    private final String value;
+
+    Comparator(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return this.value;
+    }
+  }
+
+
+  public enum TargetType {
+    QUESTION,
+    SUBSECTION
+  }
+
+
 }
 
 
