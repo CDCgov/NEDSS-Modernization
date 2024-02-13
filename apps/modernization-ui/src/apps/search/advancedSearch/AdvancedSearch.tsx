@@ -428,6 +428,7 @@ export const AdvancedSearch = () => {
                                 Add new
                                 <img
                                     src={lastSearchType ? '/icons/down-arrow-blue.svg' : '/icons/down-arrow-white.svg'}
+                                    alt="down-arrow"
                                 />
                             </Button>
                             {showAddNewDropDown && (
@@ -537,6 +538,7 @@ export const AdvancedSearch = () => {
                                                         ? '/icons/down-arrow-white.svg'
                                                         : '/icons/down-arrow-blue.svg'
                                                 }
+                                                alt="down-arrow"
                                             />
                                         </Button>
                                     )}

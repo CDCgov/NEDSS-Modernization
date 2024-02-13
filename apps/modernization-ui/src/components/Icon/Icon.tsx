@@ -31,6 +31,6 @@ const IconList = [
 
 export const Icon = ({ name, size, color }: IconProps) => {
     return IconList.indexOf(name) !== -1 ? (
-        <img src={`/icons/${name}.svg`} className={`icon ${size} ${color}`} />
+        <img src={`/icons/${name}.svg`} className={`icon ${size} ${color}`} alt={name} />
     ) : null;
 };
