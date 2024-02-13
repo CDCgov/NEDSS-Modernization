@@ -46,7 +46,7 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
                 setPage(data);
             });
         }
-    }, [pageId, modalRef]);
+    }, [pageId, modalRef.current?.modalIsOpen]);
 
     const visible = true;
     const selectedRecord = sourceList.filter((list) => list.selected);

@@ -5,26 +5,26 @@ import javax.annotation.Nullable;
 import io.swagger.annotations.ApiModelProperty;
 
 public record AddConceptRequest(
-        @ApiModelProperty(required = true) String code,
-        @ApiModelProperty(required = true) String displayName,
-        @ApiModelProperty(required = true) String shortDisplayName,
-        @ApiModelProperty(required = true) Instant effectiveFromTime,
-        @Nullable Instant effectiveToTime,
-        @ApiModelProperty(required = true, example = "A") StatusCode statusCode,
-        String adminComments,
-        @ApiModelProperty(required = true) MessagingInfo messagingInfo) {
+    @ApiModelProperty(required = true) String code,
+    @ApiModelProperty(required = true) String displayName,
+    @ApiModelProperty(required = true) String shortDisplayName,
+    @ApiModelProperty(required = true) Instant effectiveFromTime,
+    @Nullable Instant effectiveToTime,
+    @ApiModelProperty(required = true, example = "A") StatusCode statusCode,
+    String adminComments,
+    @ApiModelProperty(required = true) ConceptMessagingInfo messagingInfo) {
 
-    public record MessagingInfo(
-            @ApiModelProperty(required = true) String conceptCode,
-            @ApiModelProperty(required = true) String conceptName,
-            @ApiModelProperty(required = true) String preferredConceptName,
-            @ApiModelProperty(required = true, example = "ABNORMAL_FLAGS_HL7") String codeSystem) {
-    }
+  public record ConceptMessagingInfo(
+      @ApiModelProperty(required = true) String conceptCode,
+      @ApiModelProperty(required = true) String conceptName,
+      @ApiModelProperty(required = true) String preferredConceptName,
+      @ApiModelProperty(required = true, example = "ABNORMAL_FLAGS_HL7") String codeSystem) {
+  }
 
-    public enum StatusCode {
-        A,
-        I
-    }
+  public enum StatusCode {
+    A,
+    I
+  }
 }
 
 

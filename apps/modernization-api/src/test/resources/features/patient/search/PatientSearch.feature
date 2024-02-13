@@ -31,6 +31,18 @@ Feature: Patient Search
     When I search for patients
     Then I am not able to execute the search
 
+  Scenario: I can find patients with superseded record status
+    Given I can "findInactive" any "patient"
+    And the patient is superseded
+    And I would like patients that are "superceded"
+    When I search for patients
+    Then the search results have a patient with a "status" equal to "SUPERCEDED"
+
+  Scenario: I cant search for superceded records without the correct permission
+    Given I would like patients that are "superceded"
+    When I search for patients
+    Then I am not able to execute the search
+
 
   Scenario Outline: When search criteria ends with a space, only the expected patients are returned
     Given the patient has a "<field>" of "<value>"

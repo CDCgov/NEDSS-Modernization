@@ -1,11 +1,16 @@
+import { Button } from '@trussworks/react-uswds';
 import { CreateCodedQuestionRequest, ValueSetControllerService, ValueSetOption } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { authorization } from 'authorization';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import styles from '../question-form.module.scss';
 
-export const CodedFields = () => {
+type Props = {
+    onFindValueSet: () => void;
+};
+export const CodedFields = ({ onFindValueSet }: Props) => {
     const form = useFormContext<CreateCodedQuestionRequest>();
     const valueSet = useWatch({ control: form.control, name: 'valueSet', exact: true });
     const [valueSets, setValueSets] = useState<ValueSetOption[]>([]);
@@ -15,15 +20,13 @@ export const CodedFields = () => {
         ValueSetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) => {
             setValueSets(response);
         });
-        form.setValue('valueSet', -1);
-        form.resetField('defaultValue');
     }, []);
 
     useEffect(() => {
         const selected = valueSets.find((v) => v.value === valueSet?.toString());
         selected && fetch(selected.codeSetNm);
         form.setValue('defaultValue', undefined);
-    }, [valueSet]);
+    }, [valueSet, JSON.stringify(valueSets)]);
 
     return (
         <>
@@ -51,6 +54,9 @@ export const CodedFields = () => {
                     />
                 )}
             />
+            <Button className={styles.valuesetSearchButton} type="button" outline onClick={onFindValueSet}>
+                Search value set
+            </Button>
             <Controller
                 control={form.control}
                 name="defaultValue"

@@ -5,7 +5,6 @@ import styles from './page-content.module.scss';
 import { EditStaticElement } from '../staticelement/EditStaticElement';
 import { Icon, ModalRef } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { ValuesetLibrary } from '../../../../pages/ValuesetLibrary/ValuesetLibrary';
 import { AddValueset } from '../../../../components/AddValueset/AddValueset';
 import { CreateQuestion } from '../../../../components/CreateQuestion/CreateQuestion';
 import { Heading } from '../../../../../../components/heading';
@@ -120,7 +119,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
                     )
                 }
             />
-            <AddQuestionModal pageId={page.id} onClose={handleAddQuestionClose} modal={addQuestionModalRef} />
+            <AddQuestionModal onAddQuestion={handleAddQuestionClose} modal={addQuestionModalRef} />
             <ModalComponent
                 modalRef={editQuestionModalRef}
                 closer
@@ -138,15 +137,6 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
                         addValueModalRef={addValueModalRef}
                     />
                 }
-            />
-            <ModalComponent
-                size="wide"
-                modalRef={addValueModalRef}
-                modalHeading={<Heading level={2}>Search value set</Heading>}
-                modalBody={
-                    <ValuesetLibrary hideTabs modalRef={addValueModalRef} createValueModalRef={createValueModalRef} />
-                }
-                closer
             />
             <ModalComponent
                 isLarge

@@ -54,8 +54,7 @@ export class SubSectionControllerService {
 
     /**
      * groupSubSection
-     * @returns string OK
-     * @returns any Created
+     * @returns any OK
      * @throws ApiError
      */
     public static groupSubSectionUsingPost({
@@ -72,7 +71,7 @@ export class SubSectionControllerService {
          * request
          */
         request: GroupSubSectionRequest,
-    }): CancelablePromise<string | any> {
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/pages/{page}/subsections/group',
@@ -93,8 +92,7 @@ export class SubSectionControllerService {
 
     /**
      * unGroupSubSection
-     * @returns string OK
-     * @returns any Created
+     * @returns any OK
      * @throws ApiError
      */
     public static unGroupSubSectionUsingPost({
@@ -111,7 +109,7 @@ export class SubSectionControllerService {
          * request
          */
         request: UnGroupSubSectionRequest,
-    }): CancelablePromise<string | any> {
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/pages/{page}/subsections/un-group',

@@ -46,7 +46,7 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
                     <div className="padding-left-3">
                         <Breadcrumb
                             start="../.."
-                            currentPage="Rules library"
+                            currentPage="Business rules"
                             crumbs={[{ name: page.name, position: 1, to: '..' }]}>
                             Page library
                         </Breadcrumb>

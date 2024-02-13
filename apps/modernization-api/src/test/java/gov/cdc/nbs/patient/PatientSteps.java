@@ -35,11 +35,15 @@ public class PatientSteps {
     mother.deleted(patient.active());
   }
 
+  @Given("the patient is superseded")
+  public void the_patient_is_superseded() {
+    mother.superseded(patient.active());
+  }
+
   @Given("the patient has a(n) {string} of {string}")
   public void the_patient_has_a_field_with_a_value_of(
       final String field,
-      final String value
-  ) {
+      final String value) {
 
     PatientIdentifier identifier = this.patient.active();
 
@@ -48,65 +52,55 @@ public class PatientSteps {
           identifier,
           "L",
           value,
-          null
-      );
+          null);
 
       case "last name" -> mother.withName(
           identifier,
           "L",
           null,
-          value
-      );
+          value);
 
       case "race" -> mother.withRace(
           identifier,
-          resolveRace(value)
-      );
+          resolveRace(value));
 
       case "birthday" -> mother.withBirthday(
           identifier,
-          LocalDate.parse(value)
-      );
+          LocalDate.parse(value));
 
       case "phone number" -> mother.withPhone(
           identifier,
-          value
-      );
+          value);
 
       case "country code" -> mother.withPhone(
           identifier,
           value,
           null,
-          null
-      );
+          null);
 
       case "extension" -> mother.withPhone(
           identifier,
           null,
           null,
-          value
-      );
+          value);
 
       case "email", "email address" -> mother.withEmail(
           identifier,
-          value
-      );
+          value);
 
       case "address" -> mother.withAddress(
           identifier,
           value,
           null,
           null,
-          null
-      );
+          null);
 
       case "city" -> mother.withAddress(
           identifier,
           null,
           value,
           null,
-          null
-      );
+          null);
     }
 
   }
@@ -130,8 +124,7 @@ public class PatientSteps {
   public void the_patient_has_the_phone_number(
       final String countryCode,
       final String number,
-      final String extension
-  ) {
+      final String extension) {
 
     PatientIdentifier identifier = this.patient.active();
 
@@ -139,8 +132,7 @@ public class PatientSteps {
         identifier,
         countryCode,
         number,
-        extension
-    );
+        extension);
 
   }
 

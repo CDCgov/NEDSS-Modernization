@@ -39,7 +39,8 @@
         display: flex;
 
         .createNewButton {
-            background-color: colors.$base-white;
+            background-color: colors.$primary;
+            color: colors.$base-white;
             line-height: 1rem;
             margin-right: 0;
         }

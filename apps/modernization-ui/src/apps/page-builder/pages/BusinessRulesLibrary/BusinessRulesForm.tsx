@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Checkbox, ErrorMessage, Grid, Icon, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
+import { Checkbox, ErrorMessage, Grid, Icon, Label, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Controller, useFormContext } from 'react-hook-form';
-import { nonDateCompare, dateCompare } from '../../constant/constant';
 import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
@@ -68,13 +67,6 @@ const BusinessRulesForm = () => {
 
     const isTargetQuestionSelected = targetQuestion.length || targetValueIdentifier.length;
 
-    const openSourceModal = () => {
-        if (sourceModalRef.current && sourceModalRef.current) {
-            const sourceModalBtn = document.getElementById('sourceQuestionId');
-            sourceModalBtn?.click();
-        }
-    };
-
     const handleRuleDescription = () => {
         let description = '';
         const logic = form.watch('comparator');
@@ -89,8 +81,38 @@ const BusinessRulesForm = () => {
         }
     };
 
+    const nonDateCompare = [
+        {
+            name: 'Equal to',
+            value: '='
+        },
+        {
+            name: 'Not equal to',
+            value: '!='
+        }
+    ];
+
+    const dateCompare = [
+        {
+            name: 'Less than',
+            value: '<'
+        },
+        {
+            name: 'Less or equal to',
+            value: '<='
+        },
+        {
+            name: 'Greater or equal to',
+            value: '>='
+        },
+        {
+            name: 'Greater than',
+            value: '>'
+        }
+    ];
+
     const ruleFunction = form.watch('ruleFunction');
-    const logicList = ruleFunction == 'Data validation' ? dateCompare : nonDateCompare;
+    const logicList = ruleFunction == 'Date validation' ? dateCompare : nonDateCompare;
 
     const handleSourceValueChange = (data: string[]) => {
         const values = form.getValues('sourceValue');
@@ -111,54 +133,58 @@ const BusinessRulesForm = () => {
     }, []);
 
     const isTargetTypeEnabled =
-        form.watch('ruleFunction') === 'Enabled' ||
-        form.watch('ruleFunction') === 'Disabled' ||
+        form.watch('ruleFunction') === 'Enable' ||
+        form.watch('ruleFunction') === 'Disable' ||
         form.watch('ruleFunction') === 'Hide' ||
         form.watch('ruleFunction') === 'Unhide';
 
+    const handleResetSourceQuestion = () => {
+        setSelectedSource([]);
+        setSourceDescription('');
+        form.setValue('sourceIdentifier', '');
+        form.setValue('sourceText', '');
+        form.setValue('sourceValue', { sourceValueText: [], sourceValueId: [] });
+        sourceModalRef.current?.toggleModal(undefined, true);
+    };
+
     return (
         <>
-            <Controller
-                control={form.control}
-                name="sourceText"
-                rules={{
-                    required: { value: true, message: 'Source questions is required.' }
-                }}
-                render={({ field: { onBlur, onChange }, fieldState: { error } }) => (
-                    <Grid row className="inline-field">
-                        <Grid col={3}>
-                            <label className="input-label">Source Question</label>
-                        </Grid>
+            <Grid row className="inline-field">
+                <Grid col={3}>
+                    <Label className="input-label" htmlFor="sourceQuestion" requiredMarker>
+                        Source Question
+                    </Label>
+                </Grid>
+                <Grid col={9}>
+                    {selectedSource.length ? (
+                        <div className="source-question-display">
+                            {selectedSource[0].name}
+                            <Icon.Close onClick={handleResetSourceQuestion} />
+                        </div>
+                    ) : (
                         <ModalToggleButton
+                            name="sourceQuestion"
                             modalRef={sourceModalRef}
                             id="sourceQuestionId"
-                            className="display-none"
-                            outline>
-                            hide
+                            outline
+                            className="text-input"
+                            type="submit">
+                            Search source question
                         </ModalToggleButton>
-                        <Grid col={9}>
-                            <Input
-                                className={'text-input'}
-                                defaultValue={sourceDescription}
-                                onChange={onChange}
-                                onClick={openSourceModal}
-                                type="text"
-                                onBlur={onBlur}
-                                error={error?.message}
-                                required
-                            />
-                        </Grid>
-                    </Grid>
-                )}
-            />
-            {ruleFunction != 'Data validation' && (
+                    )}
+                </Grid>
+            </Grid>
+
+            {ruleFunction != 'Date validation' && (
                 <Controller
                     control={form.control}
                     name="anySourceValue"
                     render={({ field: { onChange, value } }) => (
                         <Grid row className="inline-field">
                             <Grid col={3}>
-                                <label className="input-label">Any source value</label>
+                                <Label className="input-label" htmlFor="anySourceValue">
+                                    Any source value
+                                </Label>
                             </Grid>
                             <Grid col={9} className="height-3">
                                 <Checkbox
@@ -184,7 +210,9 @@ const BusinessRulesForm = () => {
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
                         <Grid col={3}>
-                            <label className="input-label">Logic</label>
+                            <Label className="input-label" htmlFor="sourceQuestion" requiredMarker>
+                                Logic
+                            </Label>
                         </Grid>
                         <Grid col={9}>
                             <SelectInput
@@ -201,14 +229,16 @@ const BusinessRulesForm = () => {
                 )}
             />
 
-            {ruleFunction != 'Data validation' && (
+            {ruleFunction != 'Date validation' && (
                 <Controller
                     control={form.control}
                     name="sourceValue"
                     render={() => (
                         <Grid row className="inline-field">
                             <Grid col={3}>
-                                <label className="input-label">Source value(s)</label>
+                                <Label className="input-label" htmlFor="sourceValue" requiredMarker>
+                                    Source value(s)
+                                </Label>
                             </Grid>
                             <Grid col={9}>
                                 <div className="text-input">
@@ -230,8 +260,10 @@ const BusinessRulesForm = () => {
                     name="targetType"
                     render={({ field: { onChange, value } }) => (
                         <Grid row className="inline-field">
-                            <Grid col={2}>
-                                <label className="input-label">Target type</label>
+                            <Grid col={3}>
+                                <Label className="input-label" htmlFor="targetType" requiredMarker>
+                                    Target type
+                                </Label>
                             </Grid>
                             <Grid col={9} className="radio-group">
                                 <Radio
@@ -260,7 +292,9 @@ const BusinessRulesForm = () => {
             )}
             <Grid row className="inline-field">
                 <Grid col={3}>
-                    <label className="input-label">Target Question(s)</label>
+                    <Label className="input-label" htmlFor="targetQuestions" requiredMarker>
+                        Target Question(s)
+                    </Label>
                 </Grid>
                 <Grid col={9}>
                     {!isTargetQuestionSelected ? (
@@ -270,7 +304,7 @@ const BusinessRulesForm = () => {
                                 className="text-input"
                                 type="submit"
                                 outline>
-                                Search Target Question
+                                Search target question
                             </ModalToggleButton>
                         </div>
                     ) : (
@@ -302,9 +336,9 @@ const BusinessRulesForm = () => {
                 render={({ field: { name, onChange, onBlur, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
                         <Grid col={3} className="rule-description-label">
-                            <label htmlFor={name} className="input-label">
+                            <Label htmlFor={name} className="input-label">
                                 Rule Description
-                            </label>
+                            </Label>
                         </Grid>
                         <Grid col={9}>
                             <Input

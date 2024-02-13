@@ -3,8 +3,6 @@
 /* eslint-disable */
 
 export type ValueSetSearchRequest = {
-    valueSetCode?: string;
-    valueSetDescription?: string;
-    valueSetNm?: string;
+    query: string;
 };
 

@@ -12,7 +12,7 @@ import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { ViewRuleResponse } from 'apps/page-builder/generated';
 
 export enum Column {
-    SourceFields = 'Source Fields',
+    SourceFields = 'Source Field',
     Logic = 'Logic',
     Values = 'Values',
     Function = 'Function',
@@ -183,17 +183,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         </div>
     );
 
-    const dataNotAvailableElement = (
-        <div className="no-data-available">
-            <label className="margin-bottom-1em no-text">
-                {searchQuery ? `No results found for ‘${searchQuery}’` : 'No results found '}
-            </label>
-            <NavLinkButton className="submit-btn" type="outline" to={`${redirectRuleURL}/add`}>
-                Create New
-            </NavLinkButton>
-        </div>
-    );
-
     const searchAvailableElement = (
         <div className="no-data-available">
             <label className="no-text">Still can't find what are you're looking for?</label>
@@ -208,40 +197,49 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         </div>
     );
 
+    const dataNotAvailableElement = (
+        <div className="no-data-available">
+            <div className="no-data-info">
+                <span className="no-items">No items to display</span>
+                <p>Click 'Add new business rule' to add new rule</p>
+                <NavLinkButton className="submit-btn" to={`${redirectRuleURL}/add`}>
+                    Create New
+                </NavLinkButton>
+            </div>
+        </div>
+    );
+
     return (
         <div>
             <div className="add-business-rules-block">
                 <div className="business-rules-header">
-                    <h3> {page?.name} | business rules </h3>
+                    <h3> {page?.name} | Business rules </h3>
                 </div>
                 <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`}>
                     Add new business rule
                 </NavLinkButton>
             </div>
-            <div style={{ backgroundColor: 'green' }}>
+            <div>
                 <SearchBar onChange={setSearchQuery} />
             </div>
-            {summaries?.length ? (
-                <TableComponent
-                    display="zebra"
-                    contextName="businessRules"
-                    className="business-rules-table"
-                    tableHeader=""
-                    tableHead={tableColumns}
-                    tableBody={tableRows}
-                    isPagination={true}
-                    pageSize={pages?.pageSize}
-                    totalResults={pages?.totalElements}
-                    currentPage={pages?.currentPage}
-                    handleNext={setCurrentPage}
-                    sortData={handleSort}
-                    rangeSelector={true}
-                    isLoading={isLoading}
-                />
-            ) : (
-                dataNotAvailableElement
-            )}
-            {summaries?.length > 0 && searchQuery && searchAvailableElement}
+            <TableComponent
+                display="zebra"
+                contextName="businessRules"
+                className="business-rules-table"
+                tableHeader=""
+                tableHead={tableColumns}
+                tableBody={tableRows}
+                isPagination={true}
+                pageSize={pages?.pageSize}
+                totalResults={pages.totalElements}
+                currentPage={pages?.currentPage}
+                handleNext={setCurrentPage}
+                sortData={handleSort}
+                rangeSelector={true}
+                isLoading={isLoading}
+            />
+            {summaries.length === 0 && dataNotAvailableElement}
+            {summaries.length > 0 && searchQuery && searchAvailableElement}
             <div className="footer-action display-none">{footerActionBtn}</div>
         </div>
     );
