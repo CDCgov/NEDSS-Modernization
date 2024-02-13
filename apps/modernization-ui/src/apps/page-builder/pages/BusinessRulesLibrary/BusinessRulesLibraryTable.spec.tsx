@@ -20,10 +20,13 @@ describe('BusinessRulesLibraryTable', () => {
                 targetValueIdentifier: [{ label: '404400' }]
             };
             const summaries = [rulesSummary];
+            const pages = {
+                totalElements: 1
+            };
 
             render(
                 <BrowserRouter>
-                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} />
+                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} pages={pages} />
                 </BrowserRouter>
             );
 
@@ -52,9 +55,13 @@ describe('BusinessRulesLibraryTable', () => {
                 targetQuestions: [{ label: '404400' }]
             };
             const summaries = [rulesSummary];
+            const pages = {
+                totalElements: 1
+            };
+
             const { findAllByRole } = render(
                 <BrowserRouter>
-                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} />
+                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} pages={pages} />
                 </BrowserRouter>
             );
 
