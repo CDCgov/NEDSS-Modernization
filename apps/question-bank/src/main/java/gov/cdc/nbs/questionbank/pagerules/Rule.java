@@ -17,11 +17,31 @@ public record Rule(
     @ApiModelProperty(required = true) List<Target> targets
 ) {
 
-  public record SourceQuestion(String questionIdentifier, String label , String codeSetName) {
+  public record CreateRuleRequest(
+      @ApiModelProperty(required = true) Function function,
+      String description,
+      @ApiModelProperty(required = true) String sourceIdentifier,
+      @ApiModelProperty(required = true) boolean anySourceValue,
+      List<SourceValue> sourceValues,
+      @ApiModelProperty(required = true) Comparator comparator,
+      @ApiModelProperty(required = true) TargetType targetType,
+      @ApiModelProperty(required = true) List<String> targetIdentifiers,
+      String sourceText,
+      List<String> targetValueText) {
   }
+
+
+  public record SourceValue(String id, String text) {
+  }
+
+
+  public record SourceQuestion(String questionIdentifier, String label, String codeSetName) {
+  }
+
 
   public record Target(String targetIdentifier, String label) {
   }
+
 
   public enum Function {
     DATE_COMPARE("Date Compare"),

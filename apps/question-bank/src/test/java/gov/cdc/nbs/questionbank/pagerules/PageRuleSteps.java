@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest.SourceValues;
+import gov.cdc.nbs.questionbank.pagerules.Rule.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
@@ -52,9 +51,9 @@ public class PageRuleSteps {
         null,
         null,
         null,
-        null,
-        new SourceValues(null, null),
         false,
+        null,
+        null,
         null,
         null,
         null,
@@ -92,11 +91,15 @@ public class PageRuleSteps {
           .active(PageRuleCreateRequestHelper.withTargetValues(this.request.active(), actValues));
       case "target identifiers list" -> this.request
           .active(PageRuleCreateRequestHelper.withTargetIdentifiers(this.request.active(), actValues));
-      case "source value ids" -> this.request
-          .active(PageRuleCreateRequestHelper.withSourceValueId(this.request.active(), actValues));
-      case "source value texts" -> this.request
-          .active(PageRuleCreateRequestHelper.withSourceValueText(this.request.active(), actValues));
     }
+  }
+
+  @Given("the business rule has source values list of:")
+  public void the_business_rule_has(DataTable expectedDataTable) {
+    List<Rule.SourceValue> expectedSourceValuesList = expectedDataTable.asMaps().stream()
+        .map(row -> new Rule.SourceValue(row.get("id"), row.get("text"))).toList();
+    this.request
+        .active(PageRuleCreateRequestHelper.withSourceValues(this.request.active(), expectedSourceValuesList));
   }
 
   @When("I send the page rule create request")

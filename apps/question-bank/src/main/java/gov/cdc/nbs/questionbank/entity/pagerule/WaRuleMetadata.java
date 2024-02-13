@@ -83,13 +83,13 @@ public class WaRuleMetadata {
 
 
   public WaRuleMetadata(PageRuleCommand.AddPageRule command) {
-    this.ruleCd = command.ruleRequest().ruleFunction();
-    this.ruleDescText = command.ruleRequest().ruleDescription();
+    this.ruleCd = command.ruleRequest().function().getValue();
+    this.ruleDescText = command.ruleRequest().description();
     this.sourceValues = command.ruleData().sourceValues();
-    this.logic = command.ruleRequest().comparator();
+    this.logic = command.ruleRequest().comparator().getValue();
     this.sourceQuestionIdentifier = command.ruleData().sourceIdentifier();
     this.targetQuestionIdentifier = command.ruleData().targetIdentifiers();
-    this.targetType = command.ruleRequest().targetType();
+    this.targetType = command.ruleRequest().targetType().toString();
     this.addTime = command.requestedOn();
     this.addUserId = command.userId();
     this.lastChgTime = command.requestedOn();

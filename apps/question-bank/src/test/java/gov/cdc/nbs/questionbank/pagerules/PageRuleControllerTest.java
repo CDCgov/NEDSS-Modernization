@@ -2,7 +2,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.Rule.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;

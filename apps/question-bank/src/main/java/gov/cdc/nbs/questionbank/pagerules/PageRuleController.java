@@ -6,7 +6,6 @@ import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import springfox.documentation.annotations.ApiIgnore;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +48,7 @@ public class PageRuleController {
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public CreateRuleResponse createBusinessRule(
-      @RequestBody CreateRuleRequest request,
+      @RequestBody Rule.CreateRuleRequest request,
       @PathVariable("id") Long page,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     try {
@@ -69,7 +68,7 @@ public class PageRuleController {
 
   @PutMapping("/{ruleId}")
   public CreateRuleResponse updatePageRule(@PathVariable Long ruleId,
-      @RequestBody CreateRuleRequest request, @PathVariable Long page) throws RuleException {
+      @RequestBody Rule.CreateRuleRequest request, @PathVariable Long page) throws RuleException {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return pageRuleService.updatePageRule(ruleId, request, userId, page);
   }

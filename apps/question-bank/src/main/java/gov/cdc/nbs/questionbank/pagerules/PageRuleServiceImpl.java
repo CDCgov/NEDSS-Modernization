@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.Rule.CreateRuleRequest;
 
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -50,19 +51,19 @@ public class PageRuleServiceImpl implements PageRuleService {
         TargetValuesHelper targetValuesHelper = targetValuesHelper(request);
         RuleExpressionHelper expressionValues = null;
 
-        if (DATE_COMPARE.equals(request.ruleFunction())) {
+        if (DATE_COMPARE.equals(request.function().getValue())) {
             expressionValues = dateCompareFunction(request, sourceValuesHelper, targetValuesHelper, ruleMetadata);
         }
-        if (DISABLE.equals(request.ruleFunction()) || ENABLE.equals(request.ruleFunction())) {
+        if (DISABLE.equals(request.function().getValue()) || ENABLE.equals(request.function().getValue())) {
             expressionValues = enableOrDisableFunction(request, sourceValuesHelper, targetValuesHelper, ruleMetadata);
         }
-        if (HIDE.equals(request.ruleFunction())) {
+        if (HIDE.equals(request.function().getValue())) {
             expressionValues = hideFunction(request, sourceValuesHelper, targetValuesHelper, ruleMetadata);
         }
-        if (REQUIRE_IF.equals(request.ruleFunction())) {
+        if (REQUIRE_IF.equals(request.function().getValue())) {
             expressionValues = requireIfFunction(request, sourceValuesHelper, targetValuesHelper, ruleMetadata);
         }
-        if (UNHIDE.equals(request.ruleFunction())) {
+        if (UNHIDE.equals(request.function().getValue())) {
             expressionValues = unHideFunction(request, sourceValuesHelper, targetValuesHelper, ruleMetadata);
         }
         if (expressionValues != null) {
@@ -82,19 +83,19 @@ public class PageRuleServiceImpl implements PageRuleService {
     private SourceValuesHelper sourceValuesHelper(CreateRuleRequest request) {
         String sourceText = request.sourceText();
         String sourceIdentifier = request.sourceIdentifier();
-        CreateRuleRequest.SourceValues sourceValues = request.sourceValue();
+        List<Rule.SourceValue> sourceValues = request.sourceValues();
         String sourceIds = null;
         String sourceValueText = null;
-        if (request.sourceValue() != null) {
-            sourceIds = String.join(",", sourceValues.sourceValueId());
-            sourceValueText = String.join(",", sourceValues.sourceValueText());
+        if (sourceValues != null) {
+            sourceIds = sourceValues.stream().map(Rule.SourceValue::id).collect(Collectors.joining(","));
+            sourceValueText = sourceValues.stream().map(Rule.SourceValue::text).collect(Collectors.joining(","));
         }
         return new SourceValuesHelper(sourceIds, sourceValueText, sourceText, sourceIdentifier);
     }
 
     private TargetValuesHelper targetValuesHelper(CreateRuleRequest request) {
         List<String> targetTextList = request.targetValueText();
-        List<String> targetValueIdentifierList = request.targetValueIdentifier();
+        List<String> targetValueIdentifierList = request.targetIdentifiers();
         String targetIdentifier = String.join(",", targetValueIdentifierList);
 
         return new TargetValuesHelper(targetIdentifier, targetTextList);
@@ -111,7 +112,7 @@ public class PageRuleServiceImpl implements PageRuleService {
         String targetIdentifier = targetValuesHelper.targetIdentifier();
         List<String> targetTextList = targetValuesHelper.targetTextList();
         String ruleExpression = sourceIdentifier.concat(" ")
-            .concat(request.comparator())
+            .concat(request.comparator().getValue())
             .concat(" ")
             .concat("^ DT")
             .concat(" ")
@@ -120,7 +121,7 @@ public class PageRuleServiceImpl implements PageRuleService {
             String errMsg = sourceText.concat(" ")
                 .concat(MUST_BE)
                 .concat(" ")
-                .concat(request.comparator())
+                .concat(request.comparator().getValue())
                 .concat(" ")
                 .concat(targetText);
             errorMessageList.add(errMsg);
@@ -149,7 +150,7 @@ public class PageRuleServiceImpl implements PageRuleService {
         List<String> targetTextList = targetValuesHelper.targetTextList();
         String sourceIds = sourceValuesHelper.sourceValueIds();
         String sourceValueText = sourceValuesHelper.sourceValueText();
-        String indicator = ENABLE.equals(request.ruleFunction()) ? "E" : "D";
+        String indicator = ENABLE.equals(request.function().getValue()) ? "E" : "D";
 
         String commonErrMsgForAnySource = sourceText.concat(" ")
             .concat(" ")
@@ -174,7 +175,7 @@ public class PageRuleServiceImpl implements PageRuleService {
                 errorMessageList.add(errMsg);
             }
         } else {
-            ruleExpression = commonRuleExpForSourceValue.concat(request.comparator())
+            ruleExpression = commonRuleExpForSourceValue.concat(request.comparator().getValue())
                 .concat(" ")
                 .concat("^ ")
                 .concat(indicator)
@@ -182,7 +183,7 @@ public class PageRuleServiceImpl implements PageRuleService {
                 .concat("(" + targetIdentifier + ")");
             for (String targetText : targetTextList) {
                 String errMsg = sourceText.concat(" ")
-                    .concat(request.comparator())
+                    .concat(request.comparator().getValue())
                     .concat(" ")
                     .concat(MUST_BE)
                     .concat(" ")
@@ -236,14 +237,14 @@ public class PageRuleServiceImpl implements PageRuleService {
                 errorMessageList.add(errMsg);
             }
         } else {
-            ruleExpression = commonRuleExpForSourceValue.concat(request.comparator())
+            ruleExpression = commonRuleExpForSourceValue.concat(request.comparator().getValue())
                 .concat(" ")
                 .concat("^ H")
                 .concat(" ")
                 .concat("(" + targetIdentifier + ")");
             for (String targetText : targetTextList) {
                 String errMsg = sourceText.concat(" ")
-                    .concat(request.comparator())
+                    .concat(request.comparator().getValue())
                     .concat(" ")
                     .concat(MUST_BE)
                     .concat(" ")
@@ -296,14 +297,14 @@ public class PageRuleServiceImpl implements PageRuleService {
                 errorMessageList.add(errMsg);
             }
         } else {
-            ruleExpression = commonRuleExpForSourceValue.concat(request.comparator())
+            ruleExpression = commonRuleExpForSourceValue.concat(request.comparator().getValue())
                 .concat(" ")
                 .concat("^ R")
                 .concat(" ")
                 .concat("(" + targetIdentifier + ")");
             for (String targetText : targetTextList) {
                 String errMsg = sourceText.concat(" ")
-                    .concat(request.comparator())
+                    .concat(request.comparator().getValue())
                     .concat(" ")
                     .concat("(" + sourceValueText + ")")
                     .concat(" ")
@@ -354,13 +355,13 @@ public class PageRuleServiceImpl implements PageRuleService {
             errorMessageList.add(errMsg);
 
         } else {
-            ruleExpression = commonRuleExpForSourceValue.concat(request.comparator())
+            ruleExpression = commonRuleExpForSourceValue.concat(request.comparator().getValue())
                 .concat(" ")
                 .concat("^ S")
                 .concat(" ")
                 .concat("(" + targetIdentifier + ")");
             String errMsg = sourceText.concat(" ")
-                .concat(request.comparator())
+                .concat(request.comparator().getValue())
                 .concat(MUST_BE)
                 .concat("(" + sourceValueText + ")")
                 .concat(" ")
@@ -393,7 +394,7 @@ public class PageRuleServiceImpl implements PageRuleService {
         secondSB.append(
             "\n var srcDate = sourceStr.substring(6,10) + sourceStr.substring(0,2) + sourceStr.substring(3,5);");
         secondSB.append("\n var targetElt;\n var targetStr = ''; \n var targetDate = '';");
-        Collection<String> coll = request.targetValueIdentifier();
+        Collection<String> coll = request.targetIdentifiers();
         for (String targetQuestionIdentifier : coll) {
             //check for null just in case the target got deleted or is not visible except for edit
             secondSB.append("\n targetStr =getElementByIdOrByName(\"").append(targetQuestionIdentifier.trim())
@@ -495,16 +496,16 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
 
     private StringBuilder commonElementPartForEnDs(CreateRuleRequest request, StringBuilder stringBuilder) {
-        List<String> targetQuestionIdentifiers = request.targetValueIdentifier();
+        List<String> targetQuestionIdentifiers = request.targetIdentifiers();
 
-        if ("Question".equalsIgnoreCase(request.targetType())) {
+        if ("Question" .equalsIgnoreCase(request.targetType().toString())) {
             for (String targetId : targetQuestionIdentifiers) {
-                if (ENABLE.equalsIgnoreCase(request.ruleFunction()) && Objects.equals(request.comparator(), "=")) {
+                if (ENABLE.equalsIgnoreCase(request.function().toString()) && Objects.equals(request.comparator(), "=")) {
                     stringBuilder.append(PG_ENABLE_ELEMENT).append(targetId).append(PARANTHESIS).append(" }");
                     stringBuilder.append(" else { \n").append(PG_DISABLE_ELEMENT).append(targetId).append(PARANTHESIS)
                         .append(" }");
                 }
-                if (!Objects.equals(ENABLE, request.ruleFunction()) && Objects.equals(request.comparator(), "=")) {
+                if (!Objects.equals(ENABLE, request.function()) && Objects.equals(request.comparator(), "=")) {
                     stringBuilder.append(PG_DISABLE_ELEMENT).append(targetId).append(PARANTHESIS);
                     stringBuilder.append(" else { \n").append(PG_ENABLE_ELEMENT).append(targetId).append(PARANTHESIS)
                         .append(" }");
@@ -643,11 +644,11 @@ public class PageRuleServiceImpl implements PageRuleService {
         CreateRuleRequest request,
         StringBuilder stringBuilder,
         String suffix) {
-        List<String> targetQuestionIdentifiers = request.targetValueIdentifier();
-        if ("Question".equalsIgnoreCase(request.targetType())) {
+        List<String> targetQuestionIdentifiers = request.targetIdentifiers();
+        if ("Question" .equalsIgnoreCase(request.targetType().toString())) {
             for (String targetId : targetQuestionIdentifiers) {
                 targetId += suffix;
-                if (Objects.equals(request.ruleFunction(), UNHIDE) && Objects.equals(request.comparator(), "=")) {
+                if (Objects.equals(request.function(), UNHIDE) && Objects.equals(request.comparator(), "=")) {
                     stringBuilder.append("pgUnhideElement('").append(targetId).append(PARANTHESIS);
                     stringBuilder.append(ELSE);
                     stringBuilder.append("pgHideElement('").append(targetId).append(PARANTHESIS);
@@ -677,16 +678,16 @@ public class PageRuleServiceImpl implements PageRuleService {
         CreateRuleRequest request,
         StringBuilder stringBuilder,
         String suffix) {
-        List<String> targetQuestionIdentifiers = request.targetValueIdentifier();
-        if ("Subsection".equalsIgnoreCase(request.targetType())) {
+        List<String> targetQuestionIdentifiers = request.targetIdentifiers();
+        if ("Subsection" .equalsIgnoreCase(request.targetType().toString())) {
             for (String targetId : targetQuestionIdentifiers) {
                 targetId += suffix;
-                if (Objects.equals(request.ruleFunction(), UNHIDE) && Objects.equals(request.comparator(), "=")) {
+                if (Objects.equals(request.function(), UNHIDE) && Objects.equals(request.comparator(), "=")) {
                     stringBuilder.append("pgSubSectionShown('").append(targetId).append(PARANTHESIS);
                 } else {
                     stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
                 }
-                if (!Objects.equals(request.ruleFunction(), UNHIDE) && Objects.equals(request.comparator(), "=")) {
+                if (!Objects.equals(request.function().toString(), UNHIDE) && Objects.equals(request.comparator(), "=")) {
                     stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
                 } else {
                     stringBuilder.append("pgSubSectionShown('").append(targetId).append(PARANTHESIS);
@@ -723,14 +724,14 @@ public class PageRuleServiceImpl implements PageRuleService {
         CreateRuleRequest request,
         Long userId, Long page) {
         Instant now = Instant.now();
-        ruleMetadata.setRuleCd(request.ruleFunction());
-        ruleMetadata.setLogic(request.comparator());
+        ruleMetadata.setRuleCd(request.function().getValue());
+        ruleMetadata.setLogic(request.comparator().getValue());
         ruleMetadata.setJsFunction(ruleData.jsFunctionNameHelper().jsFunction());
         ruleMetadata.setSourceValues(ruleData.sourceValues());
         ruleMetadata.setErrormsgText(ruleData.errorMsgText());
         ruleMetadata.setSourceQuestionIdentifier(ruleData.sourceIdentifier());
         ruleMetadata.setTargetQuestionIdentifier(ruleData.targetIdentifiers());
-        ruleMetadata.setTargetType(request.targetType());
+        ruleMetadata.setTargetType(request.targetType().toString());
         ruleMetadata.setAddTime(now);
         ruleMetadata.setAddUserId(userId);
         ruleMetadata.setLastChgTime(now);
