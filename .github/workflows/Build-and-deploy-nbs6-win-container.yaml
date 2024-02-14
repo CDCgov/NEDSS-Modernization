@@ -1,37 +1,5 @@
 name: Build NBS6 Windows Container Build
 on:
-  workflow_dispatch:
-    inputs: 
-        image_name:
-          description: "Name of image in quay.io. Example: org/base_name/<IMAGE-NAME>:tag"
-          type: string
-          required: true
-          default: "nbs6"
-        nbs6_version:
-          description: "NBS6 Version. This will be used to pull NBS ZIP from S3 Bucker in Shared Account and Tag Docker Image"
-          type: string
-          required: true
-          default: "6.0.15.1"
-        dockerfile_relative_path:
-          description: "Relative path to dockerfile being built (use '-f' docker argument if the dockerfile referenced from the root directory)."
-          type: string
-          required: true
-          default: "./cdc-sandbox/nbs6-win-container/"    
-        zip_file_name:
-          description: "Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository"
-          type: string
-          required: true
-          default: "v7.2.2.NEDSS.NBS.Modernized.Documentation.zip"
-        user_guide_doc_name:
-          description: "Full user guide name with file format to be configured in NBS6 container. This will be overwritten to NBS User Training Guide.pdf"
-          type: string
-          required: true
-          default: "NBS 7.2.2 User Guide.docx"
-        release_tag :
-          description: "Full user guide name with file format to be configured in NBS6 container. This will be overwritten to NBS User Training Guide.pdf"
-          type: string
-          required: true
-          default: "7.2.2"   
   push:
     branches:
       - docker-nbs6-win
@@ -41,7 +9,7 @@ jobs:
   push-call-build-windows-container-workflow:
     name: On Push Build Windows Container
     if: github.event_name == 'push'
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@main
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@docker-nbs6-win
     with:
       image_name: "nbs6"
       nbs6_version: "6.0.15.1"
@@ -49,16 +17,4 @@ jobs:
       zip_file_name: "v7.2.2.NEDSS.NBS.Modernized.Documentation.zip"
       user_guide_doc_name: "NBS 7.2.2 User Guide.docx" 
     secrets:
-      CLASSIC_ZIP_S3_BUCKET: ${{secrets.CLASSIC_ZIP_S3_BUCKET}}
-  call-build-windows-container-workflow-workflow_dispatch:
-    if: github.event_name == 'workflow_dispatch'
-    name: On Workflow Dispatch Build Windows Container
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@main
-    with:
-      image_name: ${{ inputs.image_name }}
-      nbs6_version: ${{ inputs.nbs6_version }}
-      dockerfile_relative_path: ${{ inputs.dockerfile_relative_path }}
-      zip_file_name: ${{ inputs.zip_file_name }}
-      user_guide_doc_name: ${{ inputs.user_guide_doc_name }}
-    secrets:
-      CLASSIC_ZIP_S3_BUCKET: ${{secrets.CLASSIC_ZIP_S3_BUCKET}}
+      CLASSIC_ZIP_S3_BUCKET: ${{secrets.NBS6_ZIP_S3_BUCKET_NAME}}
