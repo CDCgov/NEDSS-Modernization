@@ -7,11 +7,11 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2019
 # NBS Zip File to download from S3
 ARG S3_ZIP_NAME 
 # GITHUB URL to download Release Package from
-ARG GITHUB_API_URL
+ARG GITHUB_RELEASE_TAG
 # Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository
 ARG GITHUB_ZIP_FILE_NAME
 # Full user guide name with file format to be configured in NBS6 container"
-ARG USER_GUIDE_NAME
+ARG USER_GUIDE_DOC_NAME
 
 # Run Shell as Powershell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -21,9 +21,9 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
     JBOSS_HOME="D:\wildfly-10.0.0.Final" \
     JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
     FINAL_NBS_USER_GUIDE_NAME="NBS User Training Guide.pdf" \
-    GITHUB_API_URL=$GITHUB_API_URL  \
+    GITHUB_RELEASE_TAG=$GITHUB_RELEASE_TAG  \
     GITHUB_ZIP_FILE_NAME=$GITHUB_ZIP_FILE_NAME  \
-    USER_GUIDE_NAME=$USER_GUIDE_NAME
+    USER_GUIDE_DOC_NAME=$USER_GUIDE_DOC_NAME
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
 RUN New-Item -ItemType directory -Path C:\nbs ; \

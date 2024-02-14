@@ -46,16 +46,23 @@ $xmlDoc.Save($xmlFileName)
 
 ############# Configure User Guide #############
 # NOTE: Verify NBS User Training Guide.pdf is located in release zip file
+
+if ($env:GITHUB_RELEASE_TAG -eq 'latest') {
+    $github_api_Url = "https://api.github.com/repos/CDCgov/NEDSS-Modernization/releases/latest"
+  } else {
+    $github_api_Url = "https://api.github.com/repos/CDCgov/NEDSS-Modernization/releases/tags/$env:GITHUB_RELEASE_TAG"
+  }
+
 # Fetch the latest release
-$latestRelease = Invoke-RestMethod -Uri $GITHUB_API_URL
+$githubRelease = Invoke-RestMethod -Uri $GITHUB_API_URL
 # Output the latest tag name
-$latestTag = $latestRelease.tag_name
-Write-Output "Latest Release Tag: $latestTag"
+$releaseTag = $githubRelease.tag_name
+Write-Output "Release Tag to Download Zip From: $releaseTag"
 # Set Zip File Name
-$zip_url = ($latestRelease.assets | Where-Object { $_.name -eq $env:GITHUB_ZIP_FILE_NAME }).browser_download_url
+$zip_url = ($githubRelease.assets | Where-Object { $_.name -eq $env:GITHUB_ZIP_FILE_NAME }).browser_download_url
 # Download Zip File
 Invoke-WebRequest -Uri $zip_url -OutFile $env:GITHUB_ZIP_FILE_NAME
-Write-Output "Downloaded Zip File: $env:ZIP_FILE_NAME"
+Write-Output "Downloaded Zip File: $env:GITHUB_ZIP_FILE_NAME"
 # Extract ZIP to temporary directory
 Expand-Archive -LiteralPath "$env:GITHUB_ZIP_FILE_NAME" -Force
 Write-Output "$env:GITHUB_ZIP_FILE_NAME"        
