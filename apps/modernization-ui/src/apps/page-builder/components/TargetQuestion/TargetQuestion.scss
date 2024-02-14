@@ -67,12 +67,12 @@
             width: 75%;
         }
         .tag-cover {
-            background: #f0f7fd;
+            background: colors.$primary-lightest;
             color: colors.$primary;
 
             .question-tag {
                 color: colors.$primary;
-                background-color: #f0f7fd;
+                background-color: colors.$primary-lightest;
                 font-size: 1rem;
                 font-style: normal;
                 font-weight: 400;
@@ -89,9 +89,7 @@
         max-height: 66.3rem;
         .tree-section {
             width: 35%;
-            min-width: 200px;
-            border-right: 1px solid slategray;
-            margin-right: 16px;
+            margin-right: 2rem;
             overflow-y: scroll;
         }
         .list-section {
