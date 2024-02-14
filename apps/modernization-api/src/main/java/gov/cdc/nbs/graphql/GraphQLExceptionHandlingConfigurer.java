@@ -30,9 +30,6 @@ public class GraphQLExceptionHandlingConfigurer {
     exceptions.defaultAuthenticationEntryPointFor(
         adapter.authenticationEntryPoint(),
         matcher
-    ).defaultAccessDeniedHandlerFor(
-        adapter.accessDeniedHandler(),
-        matcher
     );
   }
 

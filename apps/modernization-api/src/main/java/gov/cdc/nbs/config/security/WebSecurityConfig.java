@@ -21,8 +21,7 @@ class WebSecurityConfig {
       final GraphQLExceptionHandlingConfigurer graphQLConfigurer
   )
       throws Exception {
-    return configurer.configure(http)
-        .exceptionHandling(graphQLConfigurer::configure)
+    return configurer.configure(http.exceptionHandling(graphQLConfigurer::configure))
         .build();
   }
 

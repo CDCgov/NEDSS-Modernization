@@ -5,10 +5,8 @@ import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,14 +28,6 @@ class GraphQLSecurityExceptionAdapter {
         final AuthenticationException exception
     ) -> failure(response, String.format("Access denied. %s", exception.getMessage()));
 
-  }
-
-  AccessDeniedHandler accessDeniedHandler() {
-    return (
-        final HttpServletRequest request,
-        final HttpServletResponse response,
-        final AccessDeniedException exception
-    ) -> failure(response, "Access denied, insufficient permissions.");
   }
 
   private void failure(final HttpServletResponse response, final String reason) throws IOException {
