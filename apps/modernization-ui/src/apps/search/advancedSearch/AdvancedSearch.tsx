@@ -428,7 +428,7 @@ export const AdvancedSearch = () => {
                                 outline>
                                 Add new
                                 <IconComponent
-                                    name={lastSearchType ? 'down-arrow-white' : 'down-arrow-blue'}
+                                    name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'}
                                     size="s"
                                 />
                             </Button>
