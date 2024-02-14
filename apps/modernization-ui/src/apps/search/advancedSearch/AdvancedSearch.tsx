@@ -38,7 +38,7 @@ import { externalize, internalize } from 'apps/search/patient';
 import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
-import { Icon as IconComponent } from 'components/Icon/Icon';
+import { Icon as NBSIcon } from 'components/Icon/Icon';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -427,10 +427,7 @@ export const AdvancedSearch = () => {
                                 onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
                                 outline>
                                 Add new
-                                <IconComponent
-                                    name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'}
-                                    size="s"
-                                />
+                                <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
                             </Button>
                             {showAddNewDropDown && (
                                 <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
@@ -529,7 +526,7 @@ export const AdvancedSearch = () => {
                                             onClick={() => setShowSorting(!showSorting)}
                                             outline>
                                             Sort by
-                                            <IconComponent
+                                            <NBSIcon
                                                 name={
                                                     (!investigationData?.content ||
                                                         investigationData?.content?.length === 0) &&
