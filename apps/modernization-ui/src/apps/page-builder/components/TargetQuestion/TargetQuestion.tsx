@@ -51,9 +51,11 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
     const visible = true;
     const selectedRecord = sourceList.filter((list) => list.selected);
     const isSelectedAll = selectedRecord?.length === sourceList.length;
+
     const handleSelectAll = (e: any) => {
         setSourceList((prevState: any) => prevState.map((list: any) => ({ ...list, selected: e.target.checked })));
     };
+
     const handleRemove = (val: any) => {
         const updateList = [...sourceList];
         const index = sourceList.findIndex((list) => list?.name === val);
@@ -92,134 +94,139 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
 
     return (
         <ModalComponent
+            size="wide"
             modalRef={modalRef}
             isLarge
             modalHeading={header || 'Target questions'}
             modalBody={
-                <>
-                    <div className="target-question-modal-content">
-                        <h5>{`Please select ${header ? header.toLowerCase() : 'targeted questions'}.`}</h5>
-                        <div className="target-question-tabs">
-                            <ul className="tabs">
-                                {page?.tabs?.map(({ name }, key) => (
-                                    <li
-                                        key={key}
-                                        className={activeTab === key ? 'active' : ''}
-                                        onClick={() => setActiveTab(key)}>
-                                        {name}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className="selected-question list">
-                            <div className="title">Selected questions</div>
-                            <div className="search-tags">
-                                {sourceList
-                                    .filter((list) => list.selected)
-                                    .map((list: any, index: number) => (
+                <div className="target-question-modal__container">
+                    <h5>{`Please select ${header ? header.toLowerCase() : 'targeted questions'}.`}</h5>
+                    <div className="target-question-tabs">
+                        <ul className="tabs">
+                            {page?.tabs?.map(({ name }, key) => (
+                                <li
+                                    key={key}
+                                    className={activeTab === key ? 'active' : ''}
+                                    onClick={() => setActiveTab(key)}>
+                                    {name}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="selected-question list">
+                        <div className="title">Selected questions</div>
+                        <div className="search-tags">
+                            {sourceList
+                                .filter((question) => question.selected)
+                                .map((question: QuestionProps, index: number) => {
+                                    return (
                                         <div className="tag-cover" key={index}>
-                                            <Tag>{list.name}</Tag>
-                                            <UswIcon.Close onClick={() => handleRemove(list.name)} />
+                                            <Tag className="question-tag">
+                                                {question.name} ({question.question})
+                                            </Tag>
+                                            <UswIcon.Close onClick={() => handleRemove(question.name)} />
                                         </div>
-                                    ))}
-                            </div>
-                        </div>
-                        <div className="question-list-container">
-                            <div className="tree-section">
-                                {page?.tabs?.[activeTab] &&
-                                    page?.tabs?.[activeTab]?.sections?.map((section: any, key) => (
-                                        <div key={key} className={`reorder-section ${visible ? '' : 'hidden'}`}>
-                                            <div className="reorder-section__tile">
-                                                <div
-                                                    className={`reorder-section__toggle ${
-                                                        subsectionOpen == section.id ? 'open' : ''
-                                                    } `}
-                                                    onClick={() => setSubsectionOpen(section.id)}>
-                                                    <Icon name={'group'} size={'m'} />
-                                                    <span>{section.name}</span>
-                                                </div>
-                                            </div>
-                                            <div
-                                                className={`reorder-section__subsections ${
-                                                    subsectionOpen === section.id ? '' : 'closed'
-                                                }`}>
-                                                {section.subSections.map((sub: any, id: number) => (
-                                                    <div
-                                                        key={id}
-                                                        className="reorder-section__tiles"
-                                                        onClick={() => {
-                                                            setSource(id);
-                                                            handleSourceList(sub.questions);
-                                                        }}>
-                                                        <div
-                                                            className={`reorder-question__tile ${
-                                                                id === sourceId && 'selected'
-                                                            }`}>
-                                                            <Icon name="group" size={'m'} />
-                                                            <span>{sub.name}</span>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-                            <div className="list-section">
-                                {multiSelected && (
-                                    <Checkbox
-                                        onChange={handleSelectAll}
-                                        id="hots1"
-                                        checked={isSelectedAll}
-                                        name={'race1'}
-                                        label="Select All"
-                                    />
-                                )}
-                                <br />
-                                {sourceList.map((list: any, index) => {
-                                    if (multiSelected) {
-                                        return (
-                                            <Checkbox
-                                                onChange={(e) => handleSelect(e, index)}
-                                                key={index}
-                                                id={`sourceId${index}`}
-                                                checked={list.selected}
-                                                name={`sourceName ${index}`}
-                                                label={list?.name!}
-                                            />
-                                        );
-                                    } else {
-                                        return (
-                                            <Radio
-                                                key={index}
-                                                id={`sourceId${index}`}
-                                                checked={list.selected}
-                                                name={`sourceName ${index}`}
-                                                label={list?.name!}
-                                                onChange={(e) => handleSelect(e, index)}
-                                            />
-                                        );
-                                    }
+                                    );
                                 })}
-                            </div>
                         </div>
                     </div>
-                    <ModalFooter className="padding-2 margin-left-auto footer">
-                        <ButtonGroup className="flex-justify-end">
-                            <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
-                                Cancel
-                            </ModalToggleButton>
-                            <ModalToggleButton
-                                modalRef={modalRef}
-                                closer
-                                data-testid="section-add-btn"
-                                onClick={() => {
-                                    getList !== undefined && getList(selectedRecord);
-                                }}>
-                                Continue
-                            </ModalToggleButton>
-                        </ButtonGroup>
-                    </ModalFooter>
-                </>
+                    <div className="question-list-container">
+                        <div className="tree-section">
+                            {page?.tabs?.[activeTab] &&
+                                page?.tabs?.[activeTab]?.sections?.map((section: any, key) => (
+                                    <div key={key} className={`reorder-section ${visible ? '' : 'hidden'}`}>
+                                        <div className="reorder-section__tile">
+                                            <div
+                                                className={`reorder-section__toggle ${
+                                                    subsectionOpen == section.id ? 'open' : ''
+                                                } `}
+                                                onClick={() => setSubsectionOpen(section.id)}>
+                                                <Icon name={'group'} size={'m'} />
+                                                <span>{section.name}</span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            className={`reorder-section__subsections ${
+                                                subsectionOpen === section.id ? '' : 'closed'
+                                            }`}>
+                                            {section.subSections.map((sub: any, id: number) => (
+                                                <div
+                                                    key={id}
+                                                    className="reorder-section__tiles"
+                                                    onClick={() => {
+                                                        setSource(id);
+                                                        handleSourceList(sub.questions);
+                                                    }}>
+                                                    <div
+                                                        className={`reorder-question__tile ${
+                                                            id === sourceId && 'selected'
+                                                        }`}>
+                                                        <Icon name="group" size={'m'} />
+                                                        <span>{sub.name}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                        </div>
+                        <div className="list-section">
+                            {multiSelected && (
+                                <Checkbox
+                                    onChange={handleSelectAll}
+                                    id="hots1"
+                                    checked={isSelectedAll}
+                                    name={'race1'}
+                                    label="Select All"
+                                />
+                            )}
+                            <br />
+                            {sourceList.map((list: any, index) => {
+                                if (multiSelected) {
+                                    return (
+                                        <Checkbox
+                                            onChange={(e) => handleSelect(e, index)}
+                                            key={index}
+                                            id={`sourceId${index}`}
+                                            checked={list.selected}
+                                            name={`sourceName ${index}`}
+                                            label={list?.name!}
+                                        />
+                                    );
+                                } else {
+                                    return (
+                                        <Radio
+                                            key={index}
+                                            id={`sourceId${index}`}
+                                            checked={list.selected}
+                                            name={`sourceName ${index}`}
+                                            label={list?.name!}
+                                            onChange={(e) => handleSelect(e, index)}
+                                        />
+                                    );
+                                }
+                            })}
+                        </div>
+                    </div>
+                </div>
+            }
+            modalFooter={
+                <ModalFooter className="padding-2 margin-left-auto footer">
+                    <ButtonGroup className="flex-justify-end">
+                        <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
+                            Cancel
+                        </ModalToggleButton>
+                        <ModalToggleButton
+                            modalRef={modalRef}
+                            closer
+                            data-testid="section-add-btn"
+                            onClick={() => {
+                                getList !== undefined && getList(selectedRecord);
+                            }}>
+                            Continue
+                        </ModalToggleButton>
+                    </ButtonGroup>
+                </ModalFooter>
             }></ModalComponent>
     );
 };
