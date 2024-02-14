@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.valueset;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,6 +17,7 @@ import gov.cdc.nbs.questionbank.valueset.request.CreateValuesetRequest;
 @Component
 @Transactional
 public class ValuesetCreator {
+  private static final Pattern PATTERN = Pattern.compile("^\\w+$");
   private static final List<String> validTypes = Arrays.asList("PHIN", "LOCAL");
   private final JdbcTemplate template;
   private final EntityManager entityManager;
@@ -56,6 +58,12 @@ public class ValuesetCreator {
   public Valueset create(CreateValuesetRequest request, long userId) {
     String upperCaseCode = request.code().toUpperCase();
 
+    if (!PATTERN.matcher(request.code()).matches()) {
+      throw new CreateValuesetException("Invalid Value set code. Only [a-zA-Z0-9_] are supported");
+    }
+    if (!PATTERN.matcher(request.name()).matches()) {
+      throw new CreateValuesetException("Invalid Value set name. Only [a-zA-Z0-9_] are supported");
+    }
     if (!validTypes.contains(request.type().toUpperCase())) {
       throw new CreateValuesetException("Invalid Type specified");
     }

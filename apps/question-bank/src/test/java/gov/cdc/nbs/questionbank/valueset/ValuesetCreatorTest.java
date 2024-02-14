@@ -31,7 +31,7 @@ class ValuesetCreatorTest {
   @Test
   void should_create_valueset() {
     // Given a valid request
-    CreateValuesetRequest request = request();
+    CreateValuesetRequest request = validRequest();
 
     // And the code is not already in use
     when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("CODE"))).thenReturn(0L);
@@ -51,18 +51,39 @@ class ValuesetCreatorTest {
   }
 
   @Test
+  void should_fail_code_pattern() {
+    // Given a request with invalid code
+    CreateValuesetRequest request = new CreateValuesetRequest("PHIN", "bad code", "name", "description");
+
+    // When a create valueset request is processed
+    // Then an exception is thrown
+    assertThrows(CreateValuesetException.class, () -> creator.create(request, 1l));
+  }
+
+  @Test
+  void should_fail_name_pattern() {
+    // Given a request with invalid code
+    CreateValuesetRequest request = new CreateValuesetRequest("PHIN", "CODE", "bad!name", "description");
+
+    // When a create valueset request is processed
+    // Then an exception is thrown
+    assertThrows(CreateValuesetException.class, () -> creator.create(request, 1l));
+  }
+
+  @Test
   void should_fail_bad_type() {
     // Given a request with bad type
     CreateValuesetRequest request = new CreateValuesetRequest("BAD", "CODE", "name", "description");
 
     // When a create valueset request is processed
+    // Then an exception is thrown
     assertThrows(CreateValuesetException.class, () -> creator.create(request, 1l));
   }
 
   @Test
   void should_fail_code_in_use() {
     // Given a valid request
-    CreateValuesetRequest request = request();
+    CreateValuesetRequest request = validRequest();
 
     // And the code is in use
     when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("CODE"))).thenReturn(1L);
@@ -71,25 +92,27 @@ class ValuesetCreatorTest {
     when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("name"))).thenReturn(0L);
 
     // When a create valueset request is processed
+    // Then an exception is thrown
     assertThrows(CreateValuesetException.class, () -> creator.create(request, 1l));
   }
 
   @Test
   void should_fail_name_in_use() {
     // Given a valid request
-    CreateValuesetRequest request = request();
+    CreateValuesetRequest request = validRequest();
 
     // And the name is not already in use
     when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("name"))).thenReturn(1L);
 
     // When a create valueset request is processed
+    // Then an exception is thrown
     assertThrows(CreateValuesetException.class, () -> creator.create(request, 1l));
   }
 
   @Test
   void should_fail_db_exception() {
     // Given a valid request
-    CreateValuesetRequest request = request();
+    CreateValuesetRequest request = validRequest();
 
     // And the code is not already in use
     when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("CODE"))).thenReturn(0L);
@@ -101,10 +124,11 @@ class ValuesetCreatorTest {
     doThrow(new RuntimeException()).when(entityManager).persist(Mockito.any());
 
     // When a create valueset request is processed
+    // Then an exception is thrown
     assertThrows(CreateValuesetException.class, () -> creator.create(request, 1l));
   }
 
-  private CreateValuesetRequest request() {
+  private CreateValuesetRequest validRequest() {
     return new CreateValuesetRequest("PHIN", "CODE", "name", "description");
   }
 }
