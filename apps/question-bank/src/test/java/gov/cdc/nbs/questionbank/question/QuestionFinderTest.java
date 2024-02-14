@@ -196,7 +196,7 @@ class QuestionFinderTest {
 
   private List<Concept> getConceptList() {
     Concept concept = new Concept("subgroup", null, null, null, null,
-        null, null, null, null, null);
+        null, null, null, null, null, null, null);
     return Arrays.asList(concept);
   }
 }

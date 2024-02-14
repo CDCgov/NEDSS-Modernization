@@ -17,13 +17,10 @@ import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 public class ConceptUpdater {
 
   private final CodeValueGeneralRepository repository;
-  private final ConceptMapper conceptMapper;
 
   public ConceptUpdater(
-      final CodeValueGeneralRepository repository,
-      final ConceptMapper conceptMapper) {
+      final CodeValueGeneralRepository repository) {
     this.repository = repository;
-    this.conceptMapper = conceptMapper;
   }
 
   /**
@@ -52,7 +49,8 @@ public class ConceptUpdater {
         codeSystem.getCodeSystemCd(),
         userId));
     concept = repository.save(concept);
-    return conceptMapper.toConcept(concept);
+    return null; // TODO
+    // return conceptMapper.toConcept(concept);
   }
 
   @SuppressWarnings("squid:S107")

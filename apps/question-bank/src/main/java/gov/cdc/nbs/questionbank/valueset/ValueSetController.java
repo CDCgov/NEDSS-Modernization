@@ -18,7 +18,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import gov.cdc.nbs.questionbank.valueset.model.ValueSetOption;
 import gov.cdc.nbs.questionbank.valueset.model.Valueset;
-import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest;
+import gov.cdc.nbs.questionbank.valueset.request.CreateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.CreateValuesetRequest;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
@@ -109,12 +109,11 @@ public class ValuesetController {
   }
 
   @PostMapping("{codeSetNm}/concepts")
-  public Concept addConcept(
-    @PathVariable String codeSetNm,
-    @RequestBody AddConceptRequest request,
-    @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-    return conceptCreator.addConcept(codeSetNm, request, details.getId());
+  public Concept createConcept(
+      @PathVariable String codeSetNm,
+      @RequestBody CreateConceptRequest request,
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+    return conceptCreator.create(codeSetNm, request, details.getId());
   }
-
 
 }

@@ -2,35 +2,35 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import java.time.Instant;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
-import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.valueset.command.ConceptCommand;
+import gov.cdc.nbs.questionbank.valueset.exception.ConceptCreationException;
 import gov.cdc.nbs.questionbank.valueset.exception.ConceptNotFoundException;
 import gov.cdc.nbs.questionbank.valueset.exception.DuplicateConceptException;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
-import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest;
+import gov.cdc.nbs.questionbank.valueset.model.Concept.Status;
+import gov.cdc.nbs.questionbank.valueset.request.CreateConceptRequest;
 
 @Component
+@Transactional
 public class ConceptCreator {
 
-  private final CodeValueGeneralRepository repository;
-  private final ConceptMapper conceptMapper;
+  private final EntityManager entityManager;
+  private final ConceptFinder finder;
 
   public ConceptCreator(
-      final CodeValueGeneralRepository repository,
-      final ConceptMapper conceptMapper) {
-    this.repository = repository;
-    this.conceptMapper = conceptMapper;
+      final EntityManager entityManager,
+      final ConceptFinder finder) {
+    this.entityManager = entityManager;
+    this.finder = finder;
   }
 
-
-
-  private CodeValueGeneral findCodeSystem(String codeSystemName) {
-    return repository
-        .findByIdCodeSetNmAndIdCode("CODE_SYSTEM", codeSystemName)
-        .orElseThrow(() -> new ConceptNotFoundException(
-            "Failed to find code system with code: " + codeSystemName));
+  private Concept findCodeSystem(String codeSystemName) {
+    return finder.find("CODE_SYSTEM", codeSystemName)
+        .orElseThrow(() -> new ConceptNotFoundException("Failed to find code system with code: " + codeSystemName));
   }
 
   /**
@@ -41,56 +41,59 @@ public class ConceptCreator {
    * @param userId
    * @return
    */
-  public Concept addConcept(String valueSet, AddConceptRequest request, Long userId) {
-    Optional<CodeValueGeneral> existingConcept =
-        repository.findByIdCodeSetNmAndIdCode(valueSet, request.code());
+  public Concept create(
+      String valueSet,
+      CreateConceptRequest request,
+      Long userId) {
+    // Check if concept already exists for the valueset
+    Optional<Concept> existingConcept = finder.find(valueSet, request.localCode());
     if (existingConcept.isPresent()) {
-      throw new DuplicateConceptException(valueSet, request.code());
+      throw new DuplicateConceptException(valueSet, request.localCode());
     }
 
-    CodeValueGeneral codeSystem = findCodeSystem(request.messagingInfo().codeSystem());
-    String codeSystemType;
+    // Find the specified code system entry, for some reason it doesn't just add the code but the codeDescTxt and codeShortDescTxt
+    Concept codeSystem = findCodeSystem(request.codeSystem());
 
     // Seems to me that we should pull the typeCd from the codeSystem's typeCd but in Classic ValueSetConcept.jsp #145,
     // only concepts with 'L' or "NBS_CDC" code will be set to 'LOCAL'
-    if (codeSystem.getId().getCode().equals("L") || codeSystem.getId().getCode().equals("NBS_CDC")) {
+    String codeSystemType = "PHIN";
+    if (codeSystem.localCode().equals("L") || codeSystem.localCode().equals("NBS_CDC")) {
       codeSystemType = "LOCAL";
-    } else {
-      codeSystemType = "PHIN";
     }
+
     ConceptCommand.AddConcept command = asAdd(
         valueSet,
         request,
         userId,
         codeSystemType,
-        codeSystem.getCodeShortDescTxt(),
-        codeSystem.getCodeDescTxt());
+        codeSystem.display(),
+        codeSystem.longName());
 
-    CodeValueGeneral newConcept = new CodeValueGeneral(command);
-    newConcept = repository.save(newConcept);
-    return conceptMapper.toConcept(newConcept);
+    entityManager.persist(new CodeValueGeneral(command));
+    return finder.find(valueSet, request.localCode())
+        .orElseThrow(() -> new ConceptCreationException("Failed to create concept"));
   }
 
   private ConceptCommand.AddConcept asAdd(
       String codeset,
-      AddConceptRequest request,
+      CreateConceptRequest request,
       Long userId,
       String conceptType,
       String codeSystemDescription,
       String codeSystemId) {
     return new ConceptCommand.AddConcept(
         codeset,
-        request.code(),
-        request.displayName(),
-        request.shortDisplayName(),
+        request.localCode(),
+        request.longName(),
+        request.display(),
         request.effectiveFromTime(),
         request.effectiveToTime(),
-        request.statusCode(),
+        Status.ACTIVE.equals(request.status()) ? 'A' : 'I',
         request.adminComments(),
         conceptType,
-        request.messagingInfo().conceptCode(),
-        request.messagingInfo().conceptName(),
-        request.messagingInfo().preferredConceptName(),
+        request.conceptCode(),
+        request.conceptName(),
+        request.preferredConceptName(),
         codeSystemDescription,
         codeSystemId,
         userId,

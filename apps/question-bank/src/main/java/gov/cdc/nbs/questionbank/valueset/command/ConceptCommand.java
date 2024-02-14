@@ -2,8 +2,6 @@ package gov.cdc.nbs.questionbank.valueset.command;
 
 import java.time.Instant;
 
-import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest.StatusCode;
-
 public sealed interface ConceptCommand {
   long userId();
 
@@ -16,7 +14,7 @@ public sealed interface ConceptCommand {
       String shortDisplayName,
       Instant effectiveFromTime,
       Instant effectiveToTime,
-      StatusCode statusCode,
+      Character status,
       String adminComments,
       String conceptTypeCd,
 
@@ -45,8 +43,7 @@ public sealed interface ConceptCommand {
 
       // Audit Fields
       long userId,
-      Instant requestedOn
-  ) implements ConceptCommand {
+      Instant requestedOn) implements ConceptCommand {
 
   }
 }

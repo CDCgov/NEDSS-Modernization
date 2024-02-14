@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import gov.cdc.nbs.questionbank.valueset.command.ConceptCommand;
-import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest.StatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -114,7 +113,7 @@ public class CodeValueGeneral {
     this.conceptStatusCd = (command.active()) ? "Active" : "Inactive";
     this.conceptCode = command.conceptCode();
     this.conceptNm = command.conceptName();
-    this.conceptPreferredNm =  command.preferredConceptName();
+    this.conceptPreferredNm = command.preferredConceptName();
     this.codeSystemCd = command.codeSystem();
     return this;
   }
@@ -127,9 +126,9 @@ public class CodeValueGeneral {
     this.codeDescTxt = command.displayName();
     this.codeShortDescTxt = command.shortDisplayName();
 
-    this.statusCd = command.statusCode().equals(StatusCode.A) ? 'A' : 'I';
+    this.statusCd = command.status();
     this.statusTime = command.requestedOn();
-    this.conceptStatusCd = command.statusCode().equals(StatusCode.A) ? "Active" : "Inactive";
+    this.conceptStatusCd = command.status().equals('A') ? "Active" : "Inactive";
     this.conceptStatusTime = command.requestedOn();
     this.adminComments = command.adminComments();
     this.conceptCode = command.conceptCode();

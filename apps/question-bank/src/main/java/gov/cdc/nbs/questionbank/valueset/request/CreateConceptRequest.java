@@ -1,10 +1,10 @@
-package gov.cdc.nbs.questionbank.valueset.model;
+package gov.cdc.nbs.questionbank.valueset.request;
 
 import java.time.Instant;
+import gov.cdc.nbs.questionbank.valueset.model.Concept.Status;
 import io.swagger.annotations.ApiModelProperty;
 
-public record Concept(
-    @ApiModelProperty(required = true) String codeSetName,
+public record CreateConceptRequest(
     @ApiModelProperty(required = true) String localCode,
     @ApiModelProperty(required = true) String longName,
     @ApiModelProperty(required = true) String display,
@@ -17,9 +17,6 @@ public record Concept(
     @ApiModelProperty(required = true) String conceptName,
     @ApiModelProperty(required = true) String preferredConceptName,
     @ApiModelProperty(required = true) String codeSystem) {
-
-  public enum Status {
-    ACTIVE,
-    INACTIVE
-  }
 }
+
+
