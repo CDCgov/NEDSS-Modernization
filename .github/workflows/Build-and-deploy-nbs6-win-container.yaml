@@ -8,7 +8,6 @@ on:
 jobs:
   push-call-build-windows-container-workflow:
     name: On Push Build Windows Container
-    if: github.event_name == 'push'
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@docker-nbs6-win
     with:
       image_name: "nbs6"
@@ -16,7 +15,4 @@ jobs:
       dockerfile_relative_path: "./cdc-sandbox/nbs6-win-container/" 
       release_tag: "7.2.2"
       github_zip_file_name: "v7.2.2.NEDSS.NBS.Modernized.Documentation.zip"
-      user_guide_doc_name: "NBS 7.2.2 User Guide.docx" 
-      
-    secrets:
-      CLASSIC_ZIP_S3_BUCKET: ${{secrets.NBS6_ZIP_S3_BUCKET_NAME}}
+      user_guide_doc_name: "NBS 7.2.2 User Guide.docx"
