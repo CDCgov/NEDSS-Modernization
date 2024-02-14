@@ -4,6 +4,7 @@ type IconProps = {
     name: string;
     size?: string;
     color?: string;
+    alt?: string;
 };
 
 const IconList = [
@@ -29,8 +30,8 @@ const IconList = [
     'ungroup'
 ];
 
-export const Icon = ({ name, size, color }: IconProps) => {
+export const Icon = ({ name, size, color, alt = '' }: IconProps) => {
     return IconList.indexOf(name) !== -1 ? (
-        <img src={`/icons/${name}.svg`} className={`icon ${size} ${color}`} alt={name} />
+        <img src={`/icons/${name}.svg`} className={`icon ${size} ${color}`} alt={alt} />
     ) : null;
 };
