@@ -6,7 +6,7 @@ import java.util.List;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.Field;
-import gov.cdc.nbs.questionbank.valueset.ConceptFinder;
+import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.valueset;
+package gov.cdc.nbs.questionbank.valueset.concept;
 
 import java.time.Instant;
 import java.util.Optional;
