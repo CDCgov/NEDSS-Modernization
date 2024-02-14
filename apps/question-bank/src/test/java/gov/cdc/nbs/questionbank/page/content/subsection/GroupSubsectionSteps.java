@@ -8,6 +8,7 @@ import gov.cdc.nbs.questionbank.page.content.question.PageQuestionController;
 import gov.cdc.nbs.questionbank.page.content.staticelement.PageStaticController;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
@@ -47,10 +48,8 @@ public class GroupSubsectionSteps {
     @When("I send a group subsection request")
     public void i_send_a_group_subsection_request() throws Exception {
         WaTemplate temp = pageMother.one();
-        WaUiMetadata subsection = pageMother.pageContent().stream()
-                .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
-                .findFirst()
-                .orElseThrow();
+        WaUiMetadata subsection = pageMother.pageContent();
+
         groupReponse.active(requester.subsectionGroup(
                 temp.getId(), new GroupSubSectionRequest(
                         subsection.getId(),

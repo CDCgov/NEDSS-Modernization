@@ -60,8 +60,10 @@ public class PageMother {
         .orElseThrow(() -> new IllegalStateException("No pages exist"));
   }
 
-  public List<WaUiMetadata> pageContent() {
-    return one().getUiMetadata();
+  public WaUiMetadata pageContent() {
+    return one().getUiMetadata().stream().filter(ui -> ui.getNbsUiComponentUid() == PageConstants.SUB_SECTION_COMPONENT)
+        .findFirst()
+        .orElseThrow();
   }
 
   private WaTemplate managed(final PageIdentifier identifier) {

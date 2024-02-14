@@ -105,7 +105,7 @@ class PageContentMother {
                         final WaUiMetadata container,
                         final String name) {
 
-                placeWithin(found.getUiMetadata(), container, PageConstants.SECTION_COMPONENT)
+                placeWithin(found.getUiMetadata(), container, PageConstants.TAB_COMPONENT)
                                 .ifPresent(order -> found.addSection(name, order, this.settings.createdBy(),
                                                 Instant.now()));
         }
