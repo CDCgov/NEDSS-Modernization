@@ -15,8 +15,8 @@ import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.util.Collection;
 
-@Component
 @Transactional
+@Component
 public class SubSectionGrouper {
 
   private final EntityManager entityManager;
@@ -56,7 +56,6 @@ public class SubSectionGrouper {
         if (b.id() == question.waIdentifier()) {
           WaRdbMetadata cur = entityManager.find(WaRdbMetadata.class, question.identifier());
           cur.groupQuestion(asCommand(userId, request.repeatingNbr()));
-          entityManager.flush();
         }
       }
     }

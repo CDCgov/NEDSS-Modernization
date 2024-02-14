@@ -167,6 +167,7 @@ public class WaTemplate {
     this.recordStatusCd = "ACTIVE";
     this.conditionMappings = new HashSet<>();
     this.uiMetadata = new ArrayList<>();
+    this.waRdbMetadatums = new ArrayList<>();
   }
 
   public WaTemplate(
@@ -416,7 +417,14 @@ public class WaTemplate {
         addedBy,
         addedOn);
 
+    WaRdbMetadata rdbComponent = new WaRdbMetadata(this, component, addedOn, addedBy);
+    addRdb(rdbComponent);
+
     including(component);
+  }
+
+  public void addRdb(WaRdbMetadata component) {
+    waRdbMetadatums.add(component);
   }
 
   public void deleteSection(PageContentCommand.DeleteSection command) {
@@ -809,10 +817,10 @@ public class WaTemplate {
     // ensure page already contain question
     WaUiMetadata question = uiMetadata.stream()
         .filter(e -> e.getId() != null
-            && e.getId().equals(command.question())).findFirst()
-        .orElseThrow(() ->
-            new PageContentModificationException(
-                "Unable to update a question from a page, the page does not contain the question"));
+            && e.getId().equals(command.question()))
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException(
+            "Unable to update a question from a page, the page does not contain the question"));
 
     question.update(command, question.getDataType());
     changed(command);

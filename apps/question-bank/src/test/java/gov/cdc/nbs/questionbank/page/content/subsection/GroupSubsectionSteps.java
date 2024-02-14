@@ -9,11 +9,9 @@ import gov.cdc.nbs.questionbank.page.content.staticelement.PageStaticController;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,45 +21,42 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Transactional
 public class GroupSubsectionSteps {
 
-    @Autowired
-    private PageMother pageMother;
-
-    @Autowired
-    private ExceptionHolder exceptionHolder;
-
+    private final PageMother pageMother;
+    private final ExceptionHolder exceptionHolder;
     ResponseEntity<String> response;
-
-    @Autowired
     PageQuestionController pageQuestionController;
-
-    @Autowired
     PageStaticController pageStaticController;
+    private final SubSectionController subSectionController;
+    private final SubsectionRequester requester;
+    private final Active<ResultActions> groupReponse;
+    private UserDetailsProvider user;
 
-    @Autowired
-    private SubsectionRequester requester;
+    GroupSubsectionSteps(PageMother pageMother, ExceptionHolder exceptionHolder,
+            SubsectionRequester requester, SubSectionController subSectionController, UserDetailsProvider user) {
+        this.pageMother = pageMother;
+        this.exceptionHolder = exceptionHolder;
+        this.requester = requester;
+        groupReponse = new Active<>();
+        this.subSectionController = subSectionController;
+        this.user = user;
+    }
 
-    private final Active<ResultActions> groupReponse = new Active<>();
 
     @When("I send a group subsection request")
-    public void i_send_a_group_subsection_request() {
+    public void i_send_a_group_subsection_request() throws Exception {
         WaTemplate temp = pageMother.one();
-        WaUiMetadata subsection = temp.getUiMetadata().stream()
+        WaUiMetadata subsection = pageMother.pageContent().stream()
                 .filter(ui -> ui.getNbsUiComponentUid() == 1016L)
                 .findFirst()
                 .orElseThrow();
-        try {
-            groupReponse.active(requester.subsectionGroup(
-                    temp.getId(), new GroupSubSectionRequest(
-                            subsection.getId(),
-                            "BLOCK_NAME",
-                            getBatchList(temp),
-                            2)));
-        } catch (Exception e) {
-            exceptionHolder.setException(e);
-        }
+        groupReponse.active(requester.subsectionGroup(
+                temp.getId(), new GroupSubSectionRequest(
+                        subsection.getId(),
+                        "BLOCK_NAME",
+                        getBatchList(temp),
+                        2)));
     }
 
     @Then("the subsection is grouped")

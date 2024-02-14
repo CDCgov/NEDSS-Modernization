@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 @Transactional
@@ -57,6 +58,10 @@ public class PageMother {
     return available.maybeOne()
         .map(this::managed)
         .orElseThrow(() -> new IllegalStateException("No pages exist"));
+  }
+
+  public List<WaUiMetadata> pageContent() {
+    return one().getUiMetadata();
   }
 
   private WaTemplate managed(final PageIdentifier identifier) {
@@ -102,9 +107,7 @@ public class PageMother {
         new PageCommand.RelateCondition(
             BRUCELLOSIS_ID,
             this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+            this.settings.createdOn()));
 
     WaUiMetadata pageType = new WaUiMetadata();
     pageType.setWaTemplateUid(page);
@@ -211,9 +214,7 @@ public class PageMother {
         new PageCommand.RelateCondition(
             ASEPTIC_MENINGITIS_ID,
             this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+            this.settings.createdOn()));
 
     include(page);
 
@@ -252,9 +253,7 @@ public class PageMother {
         new PageCommand.RelateCondition(
             ASEPTIC_MENINGITIS_ID,
             this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+            this.settings.createdOn()));
 
     include(page);
 
@@ -290,8 +289,7 @@ public class PageMother {
   public void create(
       final String eventType,
       final String name,
-      final String mappingGuide
-  ) {
+      final String mappingGuide) {
 
     WaTemplate page = new WaTemplate(
         eventType,
@@ -323,10 +321,7 @@ public class PageMother {
             new PageCommand.ChangeName(
                 value,
                 user,
-                when
-            )
-        )
-    );
+                when)));
   }
 
   public void withDatamart(final PageIdentifier page, final String value) {
@@ -344,8 +339,7 @@ public class PageMother {
         found -> {
           found.setTemplateType("Draft");
           found.setPublishIndCd('F');
-        }
-    );
+        });
   }
 
   public void template(final PageIdentifier page) {
@@ -355,8 +349,7 @@ public class PageMother {
           //  with that becoming the Active page
           found.setTemplateType("Template");
           found.setPublishIndCd('F');
-        }
-    );
+        });
   }
 
   public void legacy(final PageIdentifier page) {
@@ -366,8 +359,7 @@ public class PageMother {
           //  with that becoming the Active page
           found.setTemplateType("LEGACY");
           found.setPublishIndCd('F');
-        }
-    );
+        });
   }
 
   public void published(final PageIdentifier page) {
@@ -375,10 +367,7 @@ public class PageMother {
         found -> found.publish(
             new PageCommand.Publish(
                 this.settings.createdBy(),
-                this.settings.createdOn()
-            )
-        )
-    );
+                this.settings.createdOn())));
   }
 
   public void withCondition(final PageIdentifier page, final String condition) {
@@ -387,10 +376,7 @@ public class PageMother {
             new PageCommand.RelateCondition(
                 condition,
                 this.settings.createdBy(),
-                this.settings.createdOn()
-            )
-        )
-    );
+                this.settings.createdOn())));
   }
 
 }

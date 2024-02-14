@@ -2,22 +2,20 @@ package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import java.time.Instant;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "WA_RDB_metadata", catalog = "NBS_ODSE")
 public class WaRdbMetadata {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wa_rdb_metadata_uid", nullable = false)
     private Long id;
 
@@ -77,5 +75,20 @@ public class WaRdbMetadata {
         this.lastChgTime = command.requestedOn();
         this.lastChgUserId = command.userId();
     }
+
+    public WaRdbMetadata() {
+        this.recordStatusCd = "Active";
+    }
+
+    public WaRdbMetadata(WaTemplate template, WaUiMetadata waUiMetadata, Instant addedOn, long addedBy) {
+        this();
+        this.waTemplateUid = template;
+        this.waUiMetadataUid = waUiMetadata;
+        this.addTime = addedOn;
+        this.addUserId = addedBy;
+        this.recordStatusTime = addedOn;
+    }
+
+
 
 }
