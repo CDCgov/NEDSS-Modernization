@@ -210,7 +210,8 @@ public class WaUiMetadata {
   private String blockNm;
 
   @OneToOne(fetch = FetchType.LAZY, mappedBy = "waUiMetadataUid",
-      cascade = {CascadeType.REMOVE},
+      cascade = {CascadeType.PERSIST,
+          CascadeType.REMOVE},
       orphanRemoval = true)
   private WaRdbMetadatum waRdbMetadatum;
 
@@ -408,6 +409,7 @@ public class WaUiMetadata {
     } else {
       throw new AddQuestionException("Failed to determine question type");
     }
+    this.waRdbMetadatum = new WaRdbMetadatum(page, this, command);
 
     // Audit info
     this.added(command);
