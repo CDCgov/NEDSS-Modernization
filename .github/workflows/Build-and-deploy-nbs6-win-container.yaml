@@ -17,4 +17,4 @@ jobs:
       github_zip_file_name: "v7.2.2.NEDSS.NBS.Modernized.Documentation.zip"
       user_guide_doc_name: "NBS 7.2.2 User Guide.docx"
     secrets:
-      CLASSIC_ZIP_S3_BUCKET: ${{ secrets.NBS6_ZIP_S3_BUCKET_NAME }}
+      NBS6_ZIP_S3_BUCKET_NAME : ${{ secrets.NBS6_ZIP_S3_BUCKET_NAME }}
