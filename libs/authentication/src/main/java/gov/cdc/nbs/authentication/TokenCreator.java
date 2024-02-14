@@ -2,7 +2,6 @@ package gov.cdc.nbs.authentication;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
@@ -28,10 +27,10 @@ public class TokenCreator {
 
     public NBSToken forUser(final String username) {
         Instant now = Instant.now(clock);
-        Instant expiry = now.plus(Duration.ofMillis(properties.getTokenExpirationMillis()));
+        Instant expiry = now.plus(Duration.ofMillis(properties.tokenExpirationMillis()));
         String token = JWT
             .create()
-            .withIssuer(properties.getTokenIssuer())
+            .withIssuer(properties.tokenIssuer())
             .withIssuedAt(now)
             .withExpiresAt(expiry)
             .withSubject(username)

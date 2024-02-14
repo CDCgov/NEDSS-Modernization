@@ -1,46 +1,48 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
-import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.CoreMatchers.startsWith;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class PatientProfileIncomingRedirectionSteps {
 
-  @Autowired
-  Available<PatientIdentifier> patients;
 
-  @Autowired
-  MockMvc mvc;
+  private final Available<PatientIdentifier> patients;
+  private final Authenticated authenticated;
+  private final MockMvc mvc;
+  private final Active<ResultActions> response;
 
-  @Autowired
-  Active<SessionCookie> activeSession;
-
-  @Autowired
-  Active<ResultActions> response;
+  PatientProfileIncomingRedirectionSteps(
+      final Available<PatientIdentifier> patients,
+      final Authenticated authenticated,
+      final MockMvc mvc,
+      final Active<ResultActions> response
+  ) {
+    this.patients = patients;
+    this.authenticated = authenticated;
+    this.mvc = mvc;
+    this.response = response;
+  }
 
   @When("Redirecting a Classic Master Patient Record Profile")
   public void redirecting_a_classic_master_patient_record_profile() throws Exception {
 
     PatientIdentifier patient = patients.one();
 
-    SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
-
     response.active(
         mvc
             .perform(
-                MockMvcRequestBuilders.post("/nbs/redirect/patientProfile")
+                authenticated.withSession(post("/nbs/redirect/patientProfile"))
                     .param("MPRUid", String.valueOf(patient.id()))
-                    .cookie(session.asCookie())
             )
     );
   }
@@ -49,14 +51,11 @@ public class PatientProfileIncomingRedirectionSteps {
   public void redirecting_a_classic_revision_patient_profile() throws Exception {
     PatientIdentifier patient = patients.one();
 
-    SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
-
     response.active(
         mvc
             .perform(
-                MockMvcRequestBuilders.post("/nbs/redirect/patientProfile")
+                authenticated.withSession(post("/nbs/redirect/patientProfile"))
                     .param("uid", String.valueOf(patient.id()))
-                    .cookie(session.asCookie())
             )
     );
   }
