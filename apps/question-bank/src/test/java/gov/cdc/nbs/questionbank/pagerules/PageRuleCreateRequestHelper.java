@@ -1,8 +1,9 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import java.util.List;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest.SourceValues;
+
+import gov.cdc.nbs.questionbank.pagerules.Rule.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
 
 public class PageRuleCreateRequestHelper {
 
@@ -10,145 +11,143 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withSourceText(CreateRuleRequest request, final String sourceText) {
         return new CreateRuleRequest(
-                request.ruleFunction(),
-                request.ruleDescription(),
-                sourceText,
-                request.sourceIdentifier(),
-                request.sourceValue(),
-                request.anySourceValue(),
-                request.comparator(),
-                request.targetType(),
-                request.targetValueText(),
-                request.targetValueIdentifier());
+            request.function(),
+            request.description(),
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            request.sourceValues(),
+            request.comparator(),
+            request.targetType(),
+            request.targetIdentifiers(),
+            sourceText,
+            request.targetValueText());
     }
+
     public static CreateRuleRequest withSourceIdentifier(CreateRuleRequest request, final String sourceIdentifier) {
         return new CreateRuleRequest(
-                request.ruleFunction(),
-                request.ruleDescription(),
-                request.sourceText(),
-                sourceIdentifier,
-                request.sourceValue(),
-                request.anySourceValue(),
-                request.comparator(),
-                request.targetType(),
-                request.targetValueText(),
-                request.targetValueIdentifier());
+            request.function(),
+            request.description(),
+            sourceIdentifier,
+            request.anySourceValue(),
+            request.sourceValues(),
+            request.comparator(),
+            request.targetType(),
+            request.targetIdentifiers(),
+            request.sourceText(),
+            request.targetValueText());
     }
+
     public static CreateRuleRequest withRuleDescription(CreateRuleRequest request, final String ruleDescription) {
         return new CreateRuleRequest(
-                request.ruleFunction(),
-                ruleDescription,
-                request.sourceText(),
-                request.sourceIdentifier(),
-                request.sourceValue(),
-                request.anySourceValue(),
-                request.comparator(),
-                request.targetType(),
-                request.targetValueText(),
-                request.targetValueIdentifier());
+            request.function(),
+            ruleDescription,
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            request.sourceValues(),
+            request.comparator(),
+            request.targetType(),
+            request.targetIdentifiers(),
+            request.sourceText(),
+            request.targetValueText());
     }
+
     public static CreateRuleRequest withFunction(CreateRuleRequest request, final String function) {
         return new CreateRuleRequest(
-                function,
-                request.ruleDescription(),
-                request.sourceText(),
-                request.sourceIdentifier(),
-                request.sourceValue(),
-                request.anySourceValue(),
-                request.comparator(),
-                request.targetType(),
-                request.targetValueText(),
-                request.targetValueIdentifier());
+            Rule.Function.valueOf(function),
+            request.description(),
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            request.sourceValues(),
+            request.comparator(),
+            request.targetType(),
+            request.targetIdentifiers(),
+            request.sourceText(),
+            request.targetValueText());
     }
+
     public static CreateRuleRequest withComparator(CreateRuleRequest request, final String comparator) {
         return new CreateRuleRequest(
-                request.ruleFunction(),
-                request.ruleDescription(),
-                request.sourceText(),
-                request.sourceIdentifier(),
-                request.sourceValue(),
-                request.anySourceValue(),
-                comparator,
-                request.targetType(),
-                request.targetValueText(),
-                request.targetValueIdentifier());
+            request.function(),
+            request.description(),
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            request.sourceValues(),
+            Rule.Comparator.valueOf(comparator),
+            request.targetType(),
+            request.targetIdentifiers(),
+            request.sourceText(),
+            request.targetValueText());
     }
+
     public static CreateRuleRequest withAnySourceValue(CreateRuleRequest request, final boolean value) {
         return new CreateRuleRequest(
-                request.ruleFunction(),
-                request.ruleDescription(),
-                request.sourceText(),
-                request.sourceIdentifier(),
-                request.sourceValue(),
-                value,
-                request.comparator(),
-                request.targetType(),
-                request.targetValueText(),
-                request.targetValueIdentifier());
+            request.function(),
+            request.description(),
+            request.sourceIdentifier(),
+            value,
+            request.sourceValues(),
+            request.comparator(),
+            request.targetType(),
+            request.targetIdentifiers(),
+            request.sourceText(),
+            request.targetValueText());
     }
+
     public static CreateRuleRequest withTargetType(CreateRuleRequest request, final String targetType) {
         return new CreateRuleRequest(
-                request.ruleFunction(),
-                request.ruleDescription(),
-                request.sourceText(),
-                request.sourceIdentifier(),
-                request.sourceValue(),
-                request.anySourceValue(),
-                request.comparator(),
-                targetType,
-                request.targetValueText(),
-                request.targetValueIdentifier());
+            request.function(),
+            request.description(),
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            request.sourceValues(),
+            request.comparator(),
+            Rule.TargetType.valueOf(targetType),
+            request.targetIdentifiers(),
+            request.sourceText(),
+            request.targetValueText());
     }
+
     public static CreateRuleRequest withTargetValues(CreateRuleRequest request, List<String> values) {
         return new CreateRuleRequest(
-                request.ruleFunction(),
-                request.ruleDescription(),
-                request.sourceText(),
-                request.sourceIdentifier(),
-                request.sourceValue(),
-                request.anySourceValue(),
-                request.comparator(),
-                request.targetType(),
-                values,
-                request.targetValueIdentifier());
+            request.function(),
+            request.description(),
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            request.sourceValues(),
+            request.comparator(),
+            request.targetType(),
+            request.targetIdentifiers(),
+            request.sourceText(),
+            values);
     }
+
     public static CreateRuleRequest withTargetIdentifiers(CreateRuleRequest request, List<String> values) {
         return new CreateRuleRequest(
-                request.ruleFunction(),
-                request.ruleDescription(),
-                request.sourceText(),
-                request.sourceIdentifier(),
-                request.sourceValue(),
-                request.anySourceValue(),
-                request.comparator(),
-                request.targetType(),
-                request.targetValueText(),
-                values);
+            request.function(),
+            request.description(),
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            request.sourceValues(),
+            request.comparator(),
+            request.targetType(),
+            values,
+            request.sourceText(),
+            request.targetValueText());
     }
-    public static CreateRuleRequest withSourceValueId(CreateRuleRequest request, List<String> values) {
+
+    public static CreateRuleRequest withSourceValues(CreateRuleRequest request, List<SourceValue> values) {
         return new CreateRuleRequest(
-                request.ruleFunction(),
-                request.ruleDescription(),
-                request.sourceText(),
-                request.sourceIdentifier(),
-                new SourceValues(values, request.sourceValue().sourceValueText()),
-                request.anySourceValue(),
-                request.comparator(),
-                request.targetType(),
-                request.targetValueText(),
-                request.targetValueIdentifier());
+            request.function(),
+            request.description(),
+            request.sourceIdentifier(),
+            request.anySourceValue(),
+            values,
+            request.comparator(),
+            request.targetType(),
+            request.targetIdentifiers(),
+            request.sourceText(),
+            request.targetValueText());
+
     }
-    public static CreateRuleRequest withSourceValueText(CreateRuleRequest request, List<String> values) {
-        return new CreateRuleRequest(
-                request.ruleFunction(),
-                request.ruleDescription(),
-                request.sourceText(),
-                request.sourceIdentifier(),
-                new SourceValues(request.sourceValue().sourceValueId(), values),
-                request.anySourceValue(),
-                request.comparator(),
-                request.targetType(),
-                request.targetValueText(),
-                request.targetValueIdentifier());
-    }
+
 }

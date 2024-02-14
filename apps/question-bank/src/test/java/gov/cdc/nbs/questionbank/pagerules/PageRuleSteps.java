@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest.SourceValues;
+import gov.cdc.nbs.questionbank.pagerules.Rule.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
@@ -17,8 +16,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -50,9 +51,9 @@ public class PageRuleSteps {
         null,
         null,
         null,
-        null,
-        new SourceValues(null, null),
         false,
+        null,
+        null,
         null,
         null,
         null,
@@ -82,7 +83,7 @@ public class PageRuleSteps {
   @Given("the business rule has {string} of:")
   public void the_business_rule_has(final String property, List<List<String>> values) {
     List<String> actValues = new ArrayList<>();
-    for(List<String> val : values) {
+    for (List<String> val : values) {
       actValues.add(val.get(0));
     }
     switch (property.toLowerCase()) {
@@ -90,11 +91,15 @@ public class PageRuleSteps {
           .active(PageRuleCreateRequestHelper.withTargetValues(this.request.active(), actValues));
       case "target identifiers list" -> this.request
           .active(PageRuleCreateRequestHelper.withTargetIdentifiers(this.request.active(), actValues));
-      case "source value ids" -> this.request
-          .active(PageRuleCreateRequestHelper.withSourceValueId(this.request.active(), actValues));
-      case "source value texts" -> this.request
-          .active(PageRuleCreateRequestHelper.withSourceValueText(this.request.active(), actValues));
     }
+  }
+
+  @Given("the business rule has source values list of:")
+  public void the_business_rule_has(DataTable expectedDataTable) {
+    List<Rule.SourceValue> expectedSourceValuesList = expectedDataTable.asMaps().stream()
+        .map(row -> new Rule.SourceValue(row.get("id"), row.get("text"))).toList();
+    this.request
+        .active(PageRuleCreateRequestHelper.withSourceValues(this.request.active(), expectedSourceValuesList));
   }
 
   @When("I send the page rule create request")
@@ -120,12 +125,10 @@ public class PageRuleSteps {
   @Then("the business rule should have {string} of {string}")
   public void the_business_rule_should_have_of(final String property, final String value) throws Exception {
     switch (property.toLowerCase()) {
-      case "source identifier" -> this.detailResponse.active()
-          .andExpect(jsonPath("$.sourceIdentifier", is(value)));
       case "rule description" -> this.detailResponse.active()
-          .andExpect(jsonPath("$.ruleDescription", is(value)));
+          .andExpect(jsonPath("$.description", is(value)));
       case "function" -> this.detailResponse.active()
-          .andExpect(jsonPath("$.ruleFunction", is(value)));
+          .andExpect(jsonPath("$.function", is(value)));
       case "comparator" -> this.detailResponse.active()
           .andExpect(jsonPath("$.comparator", is(value)));
       case "target type" -> this.detailResponse.active()
@@ -137,7 +140,7 @@ public class PageRuleSteps {
   public void the_business_rule_should_have_of(final String property, final List<String> values) throws Exception {
     switch (property.toLowerCase()) {
       case "source values" -> this.detailResponse.active()
-          .andExpect(jsonPath("$.sourceValue", is(values)));
+          .andExpect(jsonPath("$.sourceValues", is(values)));
     }
   }
 
@@ -155,13 +158,14 @@ public class PageRuleSteps {
 
   @Then("the business rule should have target questions list of:")
   public void the_business_rule_should_have_of(DataTable expectedDataTable) throws Exception {
-    List<QuestionInfo> expectedQuestionInfoList = expectedDataTable.asMaps().stream()
-        .map(row -> new QuestionInfo(row.get("label"), row.get("id"))).toList();
+    List<Rule.Target> expectedQuestionInfoList = expectedDataTable.asMaps().stream()
+        .map(row -> new Rule.Target(row.get("id"), row.get("label"))).toList();
     int i = 0;
-    for (QuestionInfo question : expectedQuestionInfoList) {
+    for (Rule.Target question : expectedQuestionInfoList) {
       this.detailResponse.active().
-          andExpect(jsonPath("$.targetQuestions[" + i + "].label", is(question.label()))).
-          andExpect(jsonPath("$.targetQuestions[" + i + "].id", is(question.id())));
+          andExpect(jsonPath("$.targets[" + i + "].targetIdentifier", is(question.targetIdentifier())))
+          .andExpect(jsonPath("$.targets[" + i + "].label", is(question.label())));
+
       i++;
     }
   }

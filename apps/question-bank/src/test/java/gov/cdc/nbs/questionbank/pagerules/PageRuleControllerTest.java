@@ -2,8 +2,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
+import gov.cdc.nbs.questionbank.pagerules.Rule.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
@@ -33,10 +32,10 @@ class PageRuleControllerTest {
   private UserDetailsProvider userDetailsProvider;
 
   @Mock
-  private PageRuleFinderService pageRuleFinderServiceImpl;
+  private PageRuleDeleter pageRuleDeleter;
 
   @Mock
-  private PageRuleDeleter pageRuleDeleter;
+  PageRuleFinder pageRuleFinder;
 
 
   @Test
@@ -64,12 +63,9 @@ class PageRuleControllerTest {
   @Test
   void shouldReadRule() {
     Long ruleId = 99L;
-    List<String> sourceValues = new ArrayList<>();
-    List<QuestionInfo> targetQuestions = new ArrayList<>();
-    when(pageRuleFinderServiceImpl.getRuleResponse(ruleId))
-        .thenReturn(new ViewRuleResponse(ruleId, 123l, "testFunction", "testDesc", "TestINV",
-            sourceValues, "=>", "TestTargetType", "testErrorMsg", targetQuestions));
-    ViewRuleResponse ruleResponse = pageRuleController.viewRuleResponse(ruleId);
+    Rule rule = getRuleList().get(0);
+    when(pageRuleFinder.findByRuleId(ruleId)).thenReturn(rule);
+    Rule ruleResponse = pageRuleController.viewRuleResponse(ruleId);
     assertNotNull(ruleResponse);
   }
 
@@ -79,33 +75,13 @@ class PageRuleControllerTest {
     int size = 1;
     String sort = "id";
     Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
-    List<String> sourceValues = new ArrayList<>();
-    List<QuestionInfo> targetQuestions = new ArrayList<>();
-    List<ViewRuleResponse> content = new ArrayList<>();
-    content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
-        sourceValues, "=>", "TestTargetType", "testErrorMsg", targetQuestions));
-    when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest, 123456L))
+    List<Rule> content = getRuleList();
+    when(pageRuleFinder.findByPageId(123456L, pageRequest))
         .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
-    Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest, 123456L);
+    Page<Rule> ruleResponse = pageRuleController.getAllPageRule(pageRequest, 123456L);
     assertNotNull(ruleResponse);
   }
 
-  @Test
-  void getAllPageRuleTest() throws Exception {
-    int page = 0;
-    int size = 1;
-    String sort = "id";
-    Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
-    List<String> sourceValues = new ArrayList<>();
-    List<QuestionInfo> targetQuestions = new ArrayList<>();
-    List<ViewRuleResponse> content = new ArrayList<>();
-    content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
-        sourceValues, "=>", "TestTargetType", "testErrorMsg", targetQuestions));
-    when(pageRuleFinderServiceImpl.getAllPageRule(pageRequest, 123456L))
-        .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
-    Page<ViewRuleResponse> ruleResponse = pageRuleController.getAllPageRule(pageRequest, 123456L);
-    assertNotNull(ruleResponse);
-  }
 
   @Test
   void findPageRuleTest() throws Exception {
@@ -114,14 +90,21 @@ class PageRuleControllerTest {
     String sort = "id";
     Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
     SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
-    List<String> sourceValues = new ArrayList<>();
-    List<QuestionInfo> targetQuestions = new ArrayList<>();
-    List<ViewRuleResponse> content = new ArrayList<>();
-    content.add(new ViewRuleResponse(3546L, 123l, "testFunction", "testDesc", "TestINV",
-        sourceValues, "=>", "TestTargetType", "testErrorMsg", targetQuestions));
-    when(pageRuleFinderServiceImpl.findPageRule(request, pageRequest))
+    List<Rule> content = getRuleList();
+    when(pageRuleFinder.searchPageRule(123456L, request, pageRequest))
         .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
-    Page<ViewRuleResponse> ruleResponse = pageRuleController.findPageRule(request, pageRequest);
+    Page<Rule> ruleResponse = pageRuleController.findPageRule(123456L, request, pageRequest);
     assertNotNull(ruleResponse);
   }
+
+  private List<Rule> getRuleList() {
+    List<String> sourceValues = new ArrayList<>();
+    List<Rule.Target> targetQuestions = new ArrayList<>();
+    List<Rule> content = new ArrayList<>();
+    Rule.SourceQuestion sourceQuestion = new Rule.SourceQuestion("identifier", "label", "codeSet");
+    content.add(new Rule(100l, 123l, Rule.Function.ENABLE, "testDesc", sourceQuestion,
+        false, sourceValues, Rule.Comparator.EQUAL_TO, Rule.TargetType.QUESTION, targetQuestions));
+    return content;
+  }
+
 }

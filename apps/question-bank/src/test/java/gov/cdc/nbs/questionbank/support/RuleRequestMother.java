@@ -1,8 +1,10 @@
 package gov.cdc.nbs.questionbank.support;
 
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.Rule;
+import gov.cdc.nbs.questionbank.pagerules.Rule.CreateRuleRequest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -16,25 +18,21 @@ public class RuleRequestMother {
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
 
-        List<String> sourceIds = new ArrayList<>();
-        sourceIds.add("Test Id");
-        sourceIds.add("Test Id2");
+        Rule.SourceValue sourceValue1 = new Rule.SourceValue("Test Id", "TestSource1");
+        Rule.SourceValue sourceValue2 = new Rule.SourceValue("Test Id2", "TestSource2");
+        List<Rule.SourceValue> sourceValues = Arrays.asList(sourceValue1, sourceValue2);
 
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueText.add("TestSource1");
-        sourceValueText.add("TestSource2");
-        CreateRuleRequest.SourceValues sourceValue = new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
         return new CreateRuleRequest(
-                "Enable",
-                "TestDescription",
-                "testSource",
-                "INV214",
-                sourceValue,
-                false,
-                ">=",
-                "testTargetValue",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.ENABLE,
+            "TestDescription",
+            "INV214",
+            true,
+            sourceValues,
+            Rule.Comparator.GREATER_THAN_OR_EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "testSource",
+            targetValuesList);
     }
 
     public static CreateRuleRequest dateCompareRuleRequest() {
@@ -46,26 +44,23 @@ public class RuleRequestMother {
         targetIdentifiers.add("INV133");
 
         return new CreateRuleRequest(
-                "Date Compare",
-                "'Admission Date (INV132)' must be <= 'Discharge Date (INV133)'.",
-                "Admission Date",
-                "INV132",
-                null,
-                false,
-                "<=",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.DATE_COMPARE,
+            "'Admission Date (INV132)' must be <= 'Discharge Date (INV133)'.",
+            "INV132",
+            false,
+            null,
+            Rule.Comparator.LESS_THAN_OR_EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Admission Date",
+            targetValuesList);
     }
 
-    public static CreateRuleRequest.SourceValues testData() {
-        List<String> sourceIds = new ArrayList<>();
-        sourceIds.add("Test Id");
-        sourceIds.add("Test Id2");
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueText.add("TestSource1");
-        sourceValueText.add("TestSource2");
-        return new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
+    public static List<Rule.SourceValue> testData() {
+        Rule.SourceValue sourceValue1 = new Rule.SourceValue("Test Id", "TestSource1");
+        Rule.SourceValue sourceValue2 = new Rule.SourceValue("Test Id2", "TestSource2");
+        List<Rule.SourceValue> sourceValues = Arrays.asList(sourceValue1, sourceValue2);
+        return sourceValues;
     }
 
     public static CreateRuleRequest EnableRuleRequest() {
@@ -74,25 +69,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Enable",
-                "Enable",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "=",
-                "QUESTION",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.ENABLE,
+            "Enable",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest EnableRuleRequestNotEq() {
@@ -101,25 +91,21 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Enable",
-                "Enable",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "<>",
-                "QUESTION",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.ENABLE,
+            "Enable",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.NOT_EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList
+        );
     }
 
     public static CreateRuleRequest DisableRuleRequest() {
@@ -129,19 +115,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
-        CreateRuleRequest.SourceValues sourceDetails = testData();
+
+        List<Rule.SourceValue> sourceDetails = testData();
 
         return new CreateRuleRequest(
-                "Disable",
-                "Disable",
-                "test",
-                "INV123",
-                sourceDetails,
-                false,
-                "<>",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.DISABLE,
+            "Disable",
+            "INV123",
+            false,
+            sourceDetails,
+            Rule.Comparator.NOT_EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "test",
+            targetValuesList);
     }
 
     public static CreateRuleRequest HideRuleRequest() {
@@ -150,25 +137,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Hide",
-                "Testing hid Function",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "=",
-                "Question",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.HIDE,
+            "Testing hid Function",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest RequireIfRuleRequest() {
@@ -177,27 +159,21 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-        sourceValueId.add("F");
-        sourceValueText.add("Female");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue1 = new Rule.SourceValue("M", "Male");
+        Rule.SourceValue sourceValue2 = new Rule.SourceValue("F", "Female");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue1, sourceValue2);
 
         return new CreateRuleRequest(
-                "Require If",
-                "Require If",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "=",
-                "Question",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.REQUIRE_IF,
+            "Require If",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest RequireIfRuleRequestAnyOtherComp() {
@@ -206,27 +182,21 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-        sourceValueId.add("F");
-        sourceValueText.add("Female");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue1 = new Rule.SourceValue("M", "Male");
+        Rule.SourceValue sourceValue2 = new Rule.SourceValue("F", "Female");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue1, sourceValue2);
 
         return new CreateRuleRequest(
-                "Require If",
-                "Require If",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                true,
-                "<>",
-                "Question",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.REQUIRE_IF,
+            "Require If",
+            "DEM113",
+            true,
+            sourceDetails,
+            Rule.Comparator.NOT_EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest RequireIfRuleRequestAny() {
@@ -235,27 +205,21 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-        sourceValueId.add("F");
-        sourceValueText.add("Female");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue1 = new Rule.SourceValue("M", "Male");
+        Rule.SourceValue sourceValue2 = new Rule.SourceValue("F", "Female");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue1, sourceValue2);
 
         return new CreateRuleRequest(
-                "Require If",
-                "Require If",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                true,
-                "=",
-                "Question",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.REQUIRE_IF,
+            "Require If",
+            "DEM113",
+            true,
+            sourceDetails,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest RequireIfRuleRequestOneSource() {
@@ -264,25 +228,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Require If",
-                "Require If",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "<>",
-                "Question",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.REQUIRE_IF,
+            "Require If",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.NOT_EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest RequireIfRuleTestData_othercomparator() {
@@ -294,16 +253,16 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-                "Require If",
-                "require if ",
-                "test",
-                "INV123",
-                null,
-                true,
-                "Something else",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.REQUIRE_IF,
+            "require if ",
+            "INV123",
+            true,
+            null,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "test",
+            targetValuesList);
     }
 
 
@@ -314,16 +273,16 @@ public class RuleRequestMother {
         targetIdentifiers.add("INV143");
 
         return new CreateRuleRequest(
-                "Require If",
-                "Require If",
-                "Current Sex",
-                "DEM113",
-                null,
-                true,
-                "=",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.REQUIRE_IF,
+            "Require If",
+            "DEM113",
+            true,
+            null,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest HideRuleTestDataAnySourceIsTrue() {
@@ -333,16 +292,16 @@ public class RuleRequestMother {
         targetIdentifiers.add("INV143");
 
         return new CreateRuleRequest(
-                "Hide",
-                "Hide",
-                "Current Sex",
-                "DEM113",
-                null,
-                true,
-                "=",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.HIDE,
+            "Hide",
+            "DEM113",
+            true,
+            null,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest EnableRuleTestDataAnySourceIsTrue() {
@@ -352,16 +311,16 @@ public class RuleRequestMother {
         targetIdentifiers.add("INV143");
 
         return new CreateRuleRequest(
-                "Enable",
-                "Enable",
-                "Current Sex",
-                "DEM113",
-                null,
-                true,
-                "=",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.ENABLE,
+            "Enable",
+            "DEM113",
+            true,
+            null,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest DisableRuleTestDataAnySourceIsTrue() {
@@ -370,16 +329,16 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
         return new CreateRuleRequest(
-                "Disable",
-                "Disable",
-                "Current Sex",
-                "DEM113",
-                null,
-                true,
-                "=",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.DISABLE,
+            "Disable",
+            "DEM113",
+            true,
+            null,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest UnhideRuleRequest() {
@@ -388,25 +347,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Unhide",
-                "Unhide",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "<>",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.UNHIDE,
+            "Unhide",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.NOT_EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest UnhideRuleRequestEq() {
@@ -415,25 +369,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Unhide",
-                "Unhide",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "=",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.UNHIDE,
+            "Unhide",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest UnhideRuleRequestSubsectionType() {
@@ -442,25 +391,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Unhide",
-                "Unhide",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "=",
-                "Subsection",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.UNHIDE,
+            "Unhide",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.SUBSECTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest UnhideRuleRequestSubsectionTypeComparator() {
@@ -469,25 +413,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Unhide",
-                "Unhide",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "<>",
-                "Subsection",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.UNHIDE,
+            "Unhide",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.NOT_EQUAL_TO,
+            Rule.TargetType.SUBSECTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest HideRuleRequestSubsectionType() {
@@ -496,25 +435,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Hide",
-                "Hide",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "=",
-                "Subsection",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.HIDE,
+            "Hide",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.SUBSECTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest HideRuleRequestSubsectionTypeComparator() {
@@ -523,25 +457,20 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
 
-        List<String> sourceValueId = new ArrayList<>();
-        List<String> sourceValueText = new ArrayList<>();
-        sourceValueId.add("M");
-        sourceValueText.add("Male");
-
-        CreateRuleRequest.SourceValues sourceDetails =
-                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
+        Rule.SourceValue sourceValue = new Rule.SourceValue("M", "Male");
+        List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-                "Hide",
-                "Hide",
-                "Current Sex",
-                "DEM113",
-                sourceDetails,
-                false,
-                "<>",
-                "Subsection",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.HIDE,
+            "Hide",
+            "DEM113",
+            false,
+            sourceDetails,
+            Rule.Comparator.NOT_EQUAL_TO,
+            Rule.TargetType.SUBSECTION,
+            targetIdentifiers,
+            "Current Sex",
+            targetValuesList);
     }
 
     public static CreateRuleRequest UnhideRuleRequestIfAnySource() {
@@ -553,16 +482,16 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-                "Unhide",
-                "Unhide",
-                "test",
-                "INV123",
-                null,
-                true,
-                "=",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.UNHIDE,
+            "Unhide",
+            "INV123",
+            true,
+            null,
+            Rule.Comparator.EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "test",
+            targetValuesList);
     }
 
     public static CreateRuleRequest UnhideRuleRequestIfAnySourceComp() {
@@ -574,16 +503,16 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-                "Unhide",
-                "Unhide",
-                "test",
-                "INV123",
-                null,
-                true,
-                "<>",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.UNHIDE,
+            "Unhide",
+            "INV123",
+            true,
+            null,
+            Rule.Comparator.NOT_EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            targetIdentifiers,
+            "test",
+            targetValuesList);
     }
 
     public static CreateRuleRequest InvalidRuleRequest() {
@@ -593,18 +522,18 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
-        CreateRuleRequest.SourceValues sourceDetails = testData();
+        List<Rule.SourceValue> sourceDetails = testData();
 
         return new CreateRuleRequest(
-                "Invalid",
-                "Invalid",
-                "test",
-                "INV123",
-                sourceDetails,
-                false,
-                "<>",
-                "TestQuestion",
-                targetValuesList,
-                targetIdentifiers);
+            Rule.Function.UNHIDE,
+            null,
+            null,
+            false,
+            null,
+            Rule.Comparator.NOT_EQUAL_TO,
+            Rule.TargetType.QUESTION,
+            null,
+            "test",
+            null);
     }
 }
