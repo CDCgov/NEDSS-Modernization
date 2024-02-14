@@ -32,16 +32,19 @@ public sealed interface ConceptCommand {
 
   public record UpdateConcept(
       String displayName,
-      String conceptCode,
+      String shortDisplayName,
+      Instant effectiveFromTime,
       Instant effectiveToTime,
-      boolean active,
+      Character status,
+      String adminComments,
 
-      // Concept Messaging Info
+      // Messaging fields
+      String conceptCode,
       String conceptName,
       String preferredConceptName,
       String codeSystem,
-
-      // Audit Fields
+      String codeSystemId,
+      // Audit fields
       long userId,
       Instant requestedOn) implements ConceptCommand {
 

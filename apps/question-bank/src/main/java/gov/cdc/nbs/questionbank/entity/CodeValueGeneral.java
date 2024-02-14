@@ -105,16 +105,18 @@ public class CodeValueGeneral {
     this.isModifiableInd = 'Y';
   }
 
-  public CodeValueGeneral updateValueGeneral(ConceptCommand.UpdateConcept command) {
+  public CodeValueGeneral update(ConceptCommand.UpdateConcept command) {
     this.codeShortDescTxt = command.displayName();
-    this.effectiveFromTime = Instant.now();
-    this.effectiveToTime = (command.effectiveToTime() == null) ? this.effectiveToTime : command.effectiveToTime();
-    this.statusCd = (command.active()) ? 'A' : 'I';
-    this.conceptStatusCd = (command.active()) ? "Active" : "Inactive";
+    this.effectiveFromTime = command.effectiveFromTime();
+    this.effectiveToTime = command.effectiveToTime();
+    this.statusCd = command.status();
+    this.conceptStatusCd = command.status().equals('A') ? "Active" : "Inactive";
     this.conceptCode = command.conceptCode();
     this.conceptNm = command.conceptName();
     this.conceptPreferredNm = command.preferredConceptName();
-    this.codeSystemCd = command.codeSystem();
+    this.codeSystemDescTxt = command.codeSystem();
+    this.codeSystemCd = command.codeSystemId();
+    this.adminComments = command.adminComments();
     return this;
   }
 
