@@ -47,7 +47,6 @@
                 margin-bottom: 0;
             }
             .operator {
-                color: var(--Base-base, #71767A);
                 color: colors.$base;
                 font-size: 0.875rem;
                 font-weight: 400;
@@ -83,7 +82,7 @@
         }
 
         .unsupported-event-type-message {
-            border: .25rem solid var(--warm-accent-accent, #fa9441);
+            border: .25rem solid colors.$warm-accent;
             background: rgba(250, 243, 209, 0.44);
             display: flex;
             margin-top: 1.5rem;
@@ -104,7 +103,7 @@
         align-items: center;
         @extend %thin;
 
-        background: var(--base-white, #fff);
+        background: colors.$base-white;
         .usa-button {
             margin-top: 0 !important;
         }

@@ -3,7 +3,8 @@ import {
     Condition,
     PageInformation,
     PageInformationChangeRequest,
-    PageInformationService
+    PageInformationService,
+    SelectableCondition
 } from 'apps/page-builder/generated';
 import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
@@ -39,7 +40,7 @@ export const PageDetails = () => {
             .then((data) => {
                 setMmgs(data);
             })
-            .catch((error: any) => {
+            .catch((error) => {
                 console.log('Error', error);
             });
         fetchConditions(token).then((data) => {
@@ -48,35 +49,38 @@ export const PageDetails = () => {
     }, []);
     useEffect(() => {
         if (pageId) {
-            const getConditions = (data: any) => {
-                return data.map((dt: any) => dt.value);
+            const getConditions = (data?: SelectableCondition[]) => {
+                return data?.map((dt: SelectableCondition) => dt.value);
             };
             PageInformationService.find({
-                authorization: authorization(),
+                authorization: token,
                 page: Number(pageId)
             }).then((data: PageInformation) => {
-                setPageEvent(data?.eventType?.value!);
-                const condition = getConditions(data?.conditions);
-                form.setValue('datamart', data?.datamart!);
-                form.setValue('messageMappingGuide', data?.messageMappingGuide?.value);
-                form.setValue('name', data?.name!);
-                form.setValue('description', data?.description!);
-                form.setValue('conditions', condition);
+                setPageEvent(data?.eventType?.value ?? '');
+                const condition = getConditions(data.conditions);
+                form.reset({
+                    ...form.getValues(),
+                    datamart: data.datamart,
+                    messageMappingGuide: data?.messageMappingGuide?.value,
+                    description: data?.description,
+                    name: data.name,
+                    conditions: condition
+                });
             });
         }
     }, [pageId]);
     const handleCancel = () => {
-        navigate(-1);
+        navigate('..');
     };
     const onSubmit = form.handleSubmit((request) => {
         PageInformationService.change({
-            authorization: authorization(),
+            authorization: token,
             page: Number(pageId),
             request
         })
             .then(() => {
                 form.reset();
-                navigate(-1);
+                navigate('..');
             })
             .catch(() => {
                 alertError({ message: 'Failed to save page' });
