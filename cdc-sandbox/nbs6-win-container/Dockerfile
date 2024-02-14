@@ -3,9 +3,15 @@
 # Use Windows Server Core as the base image
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
-#Setting Docker Build Arguments
-ARG ZIP_NAME="<ADD-FULL-ZIP-FILE-NAME>"
-ARG USER_GUIDE_NAME="<ADD-GUIDE-NAME>"
+### Setting Docker Build Arguments ###
+# NBS Zip File to download from S3
+ARG S3_ZIP_NAME 
+# GITHUB URL to download Release Package from
+ARG GITHUB_API_URL
+# Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository
+ARG GITHUB_ZIP_FILE_NAME
+# Full user guide name with file format to be configured in NBS6 container"
+ARG USER_GUIDE_NAME
 
 # Run Shell as Powershell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -14,7 +20,10 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
     JBOSS_HOME="D:\wildfly-10.0.0.Final" \
     JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
-    NBS_USER_GUIDE_NAME="NBS User Training Guide.pdf"
+    FINAL_NBS_USER_GUIDE_NAME="NBS User Training Guide.pdf" \
+    GITHUB_API_URL=$GITHUB_API_URL  \
+    GITHUB_ZIP_FILE_NAME=$GITHUB_ZIP_FILE_NAME  \
+    USER_GUIDE_NAME=$USER_GUIDE_NAME
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
 RUN New-Item -ItemType directory -Path C:\nbs ; \
@@ -25,15 +34,9 @@ RUN New-Item -ItemType directory -Path C:\nbs ; \
 # 1) Verify Zip File is downloaded from S3 and place in same directory, example: wildfly-10.0.0.Final-6.0.15.1.zip
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 WORKDIR /nbs
-COPY $ZIP_NAME.zip $ZIP_NAME.zip
+COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
 #Unzip and Wildfly Zip
-RUN Expand-Archive -Path C:\nbs\$env:ZIP_NAME.zip; mv C:\nbs\$env:ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:ZIP_NAME.zip; rm C:\nbs\$env:ZIP_NAME
-
-# Update User Guide
-# NOTE: Verify NBS User Training Guide.pdf is located in release zip file
-COPY $USER_GUIDE_NAME $USER_GUIDE_NAME
-RUN Rename-Item -Path $env:USER_GUIDE_NAME -NewName $env:NBS_USER_GUIDE_NAME
-RUN mv C:\nbs\$env:NBS_USER_GUIDE_NAME C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide -Force
+RUN Expand-Archive -Path C:\nbs\$env:S3_ZIP_NAME.zip; mv C:\nbs\$env:S3_ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:S3_ZIP_NAME.zip; rm C:\nbs\$env:S3_ZIP_NAME
 
 # Replace datasources in standalone.xml file
 COPY entrypoint.ps1 entrypoint.ps1

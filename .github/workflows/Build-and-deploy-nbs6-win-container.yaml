@@ -2,8 +2,8 @@ name: Build NBS6 Windows Container Build
 on:
   workflow_dispatch:
     inputs: 
-        container_name:
-          description: "Name of container in ECR. Example: cdc-nbs-classic/<Container-Name>"
+        image_name:
+          description: "Name of image in quay.io. Example: org/base_name/<IMAGE-NAME>:tag"
           type: string
           required: true
           default: "nbs6"
@@ -26,40 +26,39 @@ on:
           description: "Full user guide name with file format to be configured in NBS6 container. This will be overwritten to NBS User Training Guide.pdf"
           type: string
           required: true
-          default: "NBS 7.2.2 User Guide.docx"       
+          default: "NBS 7.2.2 User Guide.docx"
+        release_tag :
+          description: "Full user guide name with file format to be configured in NBS6 container. This will be overwritten to NBS User Training Guide.pdf"
+          type: string
+          required: true
+          default: "7.2.2"   
   push:
     branches:
-      - main
-    paths:
-      - "cdc-sandbox/nbs6-win-container/**"
+      - docker-nbs6-win
+    # paths:
+    #   - "cdc-sandbox/nbs6-win-container/**"
 jobs:
   push-call-build-windows-container-workflow:
     name: On Push Build Windows Container
     if: github.event_name == 'push'
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@main
     with:
-      container_name: "nbs6"
+      image_name: "nbs6"
       nbs6_version: "6.0.15.1"
       dockerfile_relative_path: "./cdc-sandbox/nbs6-win-container/" 
       zip_file_name: "v7.2.2.NEDSS.NBS.Modernized.Documentation.zip"
       user_guide_doc_name: "NBS 7.2.2 User Guide.docx" 
     secrets:
-      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-      ECR_CLASSIC_REPO_BASE_NAME: ${{secrets.ECR_CLASSIC_REPO_BASE_NAME}}
       CLASSIC_ZIP_S3_BUCKET: ${{secrets.CLASSIC_ZIP_S3_BUCKET}}
-      USER_GUIDE_S3_BUCKET: ${{secrets.USER_GUIDE_S3_BUCKET}}
   call-build-windows-container-workflow-workflow_dispatch:
     if: github.event_name == 'workflow_dispatch'
     name: On Workflow Dispatch Build Windows Container
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@main
     with:
-      container_name: ${{ inputs.container_name }}
+      image_name: ${{ inputs.image_name }}
       nbs6_version: ${{ inputs.nbs6_version }}
       dockerfile_relative_path: ${{ inputs.dockerfile_relative_path }}
       zip_file_name: ${{ inputs.zip_file_name }}
       user_guide_doc_name: ${{ inputs.user_guide_doc_name }}
     secrets:
-      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-      ECR_CLASSIC_REPO_BASE_NAME: ${{secrets.ECR_CLASSIC_REPO_BASE_NAME}}
       CLASSIC_ZIP_S3_BUCKET: ${{secrets.CLASSIC_ZIP_S3_BUCKET}}
-      USER_GUIDE_S3_BUCKET: ${{secrets.USER_GUIDE_S3_BUCKET}}
